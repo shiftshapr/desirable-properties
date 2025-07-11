@@ -59,7 +59,7 @@ The project currently tracks 21 core Desirable Properties for the Meta-Layer:
 18. **DP18** - Feedback Loops and Reputation
 19. **DP19** - Amplifying Presence and Community Engagement
 20. **DP20** - Community Ownership
-21. **DP21** - Open Source and Accessibility
+21. **DP21** - Multi-modal 
 
 ## 🔧 Usage
 
@@ -130,12 +130,34 @@ All submissions follow this structure:
 - **100% data integrity** across all submissions
 - **183KB compiled dataset** ready for analysis
 
-### Most Addressed Properties
-1. **DP14** - Trust and Transparency (25 submissions)
-2. **DP2** - Participant Agency and Empowerment (19 submissions)
-3. **DP4** - Data Sovereignty and Privacy (19 submissions)
-4. **DP7** - Simplicity and Interoperability (18 submissions)
-5. **DP11** - Safe and Ethical AI (18 submissions)
+📋 Most Addressed Desirable Properties
+----------------------------------------
+DP14 - Trust and Transparency: 25
+DP2 - Participant Agency and Empowerment: 19
+DP4 - Data Sovereignty and Privacy: 19
+DP7 - Simplicity and Interoperability: 18
+DP11 - Safe and Ethical AI: 18
+DP8 - Collaborative Environment and Meta-Communities: 15
+DP18 - Feedback Loops and Reputation: 14
+DP15 - Security and Provenance: 13
+DP20 - Community Ownership: 12
+DP1 - Federated Authentication & Accountability: 11
+
+🔧 Most Extended DPs
+--------------------
+DP14 – Trust and Transparency: 10
+DP10 – Education: 6
+DP18 – Feedback Loops and Reputation: 6
+DP4 – Data Sovereignty and Privacy: 5
+DP11 – Safe and Ethical AI: 5
+
+💡 Most Clarified DPs
+----------------------
+DP14 – Trust and Transparency: 8
+DP1 – Federated Authentication & Accountability: 4
+DP4 – Data Sovereignty and Privacy: 3
+DP8 – Collaborative Environment and Meta-Communities: 3
+DP13 – AI Containment: 3
 
 ## 🚀 Getting Started
 
