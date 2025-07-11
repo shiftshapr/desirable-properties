@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "dp_number": 17,
+    "dp": "DP17 – Financial Sustainability",
+    "generated_at": "2025-07-11T14:31:44.415536",
+    "total_alignments": 1,
+    "total_clarifications": 0,
+    "total_extensions": 0,
+    "source_compiled_file": "allstructured.json"
+  },
+  "alignments": [
+    {
+      "summary": "Leverages EU funding and municipal investment to reduce per-unit development cost across cities.",
+      "submission_title": "Meta-Layer as Municipal Infrastructure: European Cities as Pioneering Use Case",
+      "submission_overview": "This submission proposes that development of the Meta-Layer begin with a targeted pilot in European municipalities. Unlike the U.S., many European cities retain civic trust and robust public funding. Recent German policy dialogues show alignment with the Meta-Layer's civic tools. Municipalities could deploy the Meta-Layer for feedback systems, participatory governance, youth digital literacy, and cross-regional collaboration. The proposal imagines Meta-Layer adoption as a digital public commons co-owned by cities and their citizens, providing a foundation for regional democratic resilience. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Eric Schneider",
+      "submitter_email": "eric@jpberlin.de",
+      "source_file": "39.json"
+    }
+  ],
+  "clarifications": [],
+  "extensions": []
+}

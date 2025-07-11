@@ -1,0 +1,8 @@
+Website: themetalayer.org
+Form name: Contribution Form
+Details: Name: Scott
+Last name: Frankum
+Short answer email: scottfrankum@gmail.com
+Desirable Property : Ethical products for the Global South
+Contribute an Idea: Hi Meta Layer, I have been working to solve a challenge in the Global South. Most blockchain products are too expensive and top-down or middle out for people at the bottom. I know this from field work and six years of analysis in India's crafts producing communities. The EU's Green Deal requires Digital Product Passports, which will run on Web3. Most products are so expensive that poor people won't use them. Even if the expense problem gets solved, current products will be experienced as ongoing colonialism for the forced UI/UX. I think it would be a service to elevate this issue. It could cause the EU's Green Deal and lots of other big projects to fail, but no one is talking about it. The other notion is interoperability, which to me, is the whole ballgame of economic transformation. I see most legacy businesses trying to mess with interoperability to maintain advantages. Is there a playbook for how to create consensus around the need for native interoperability and getting to standards setting before big business does? Full Disclosure: I'm working on a Holochain project for free Digital Product Passports and write analysis at www.weave3.org on a free Substack.
+Please check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain

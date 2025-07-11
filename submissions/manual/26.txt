@@ -1,0 +1,8 @@
+Website: themetalayer.org
+Form name: Contribution Form
+Details: Name: Ruben
+Last name: Diaz
+Short answer email: rubenraul75@gmail.com
+Desirable Property : Multiple
+Contribute an Idea: Generative artificial intelligence applications hosted on websites should place very clear metadata in the created digital artifacts, whether podcasts, audios, videos, images or texts, clearly stating that they are the result of artificial intelligence.
+Please check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge

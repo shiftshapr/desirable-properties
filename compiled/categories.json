@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "Authentication and Accountability",
+      "description": "Ensure decentralized, trusted identity verification. Allow participants to control their presence and interactions on the Metaweb. Support scalable, adaptive governance to meet the needs of a growing community."
+    },
+    {
+      "name": "Sovereignty and Privacy",
+      "description": "Full user control over personal data and privacy. Enable unique identities and data ownership within a decentralized system. Empower participants with data control in digital transactions and sustainable economies."
+    },
+    {
+      "name": "Interoperability and Participant Experience",
+      "description": "Support seamless interactions across platforms and reduces complexity. Facilitate cross-platform collaboration, allowing meta-communities to flourish. Encourages developer engagement by offering cross-platform reach. Structured onboarding and resources to help participants navigate the Metaweb."
+    },
+    {
+      "name": "AI Governance and Safety",
+      "description": "Ethical AI frameworks ensure AI actions are transparent and align with community standards. Facilitate responsible AI use, ensuring actions are explainable and auditable. Constrain the actions and behavior of AI agents within the meta-environment."
+    },
+    {
+      "name": "Security, Transparency, & Trust",
+      "description": "Establish clear standards for behavior, including transparent AI practices. Ensure data and content authenticity through secure, traceable sources. Provide clear development guidelines to ensure security and transparent progress. Ensure the Meta-layer's security and infrastructure are sustainably funded."
+    },
+    {
+      "name": "Community Participation and Feedback",
+      "description": "Build accountability through feedback and reputation-based rewards. Encourage community-led promotion and engagement. Incentivize participants with rewards, supporting community-driven growth. Encourage community-driven learning and collaboration within meta-communities."
+    }
+  ]
+}

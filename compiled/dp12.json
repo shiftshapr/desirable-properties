@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "dp_number": 12,
+    "dp": "DP12 – Community-based AI Governance",
+    "generated_at": "2025-07-11T14:31:44.412446",
+    "total_alignments": 9,
+    "total_clarifications": 1,
+    "total_extensions": 2,
+    "source_compiled_file": "allstructured.json"
+  },
+  "alignments": [
+    {
+      "summary": "Provides protective fragmentation to avoid AI domination and preserve local autonomy in oversight structures.",
+      "submission_title": "Vicariance as a Desirable Meta-Layer Property",
+      "submission_overview": "Vicariance, drawn from biological systems, describes how temporary divisions in ecosystems allow novel or fragile designs to incubate before facing widespread exposure or competition. This submission proposes Vicariance as a desirable meta-layer property — one that would enable safe experimentation and staged integration of innovations, ideas, and social formations within decentralized digital networks. It suggests resisting immediate global unification to maintain diverse paths of emergence. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "4.json"
+    },
+    {
+      "summary": "Advocates for spiritually guided values encoded into AGI design, echoing collective ethical traditions.",
+      "submission_title": "Algorithmic Kabbalah: A Mystical Framework for Ethical AGI",
+      "submission_overview": "This submission proposes a visionary synthesis of Kabbalistic mysticism and artificial general intelligence. It frames the ten Sefirot and the Tree of Life not only as symbolic metaphors but as structured metaphysical models that can inform the design of spiritually resonant, ethically grounded AGI systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Paul Carpenter",
+      "submitter_email": "mentallyhyp2012@gmail.com",
+      "source_file": "7.json"
+    },
+    {
+      "summary": "Aligns AI behavior with evolving community norms in real-time.",
+      "submission_title": "Cultivating Trust in AI-Assisted Online Conversations",
+      "submission_overview": "This submission proposes a values-based framework for moderation, reputation, and friction in AI-mediated online discourse. Instead of punitive moderation, the system introduces soft interventions such as modulated visibility and reflection cues. These tools promote respectful, legible, and community-aligned interactions. The design treats moderation as a participatory, adaptive mechanism shaped by community values. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Christopher C Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "8.json"
+    },
+    {
+      "summary": "Formalized participatory control over AI agent behavior in shared workflows.",
+      "submission_title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "submission_overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "9.json"
+    },
+    {
+      "summary": "Suggests federated global governance tools to manage AI across jurisdictions.",
+      "submission_title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
+      "submission_overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Tristan Harris",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "11.json"
+    },
+    {
+      "summary": "Open-source AI reviewed by multidisciplinary ethics council for transparency.",
+      "submission_title": "Security Protocols and Ethical Safeguards in the Lyra System",
+      "submission_overview": "This submission distills the architecture and protective mechanisms of the Lyra System—a privacy-centric, emotionally intelligent interface—focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
+      "submitter_name": "Alex Nassarius",
+      "submitter_email": "alex.nassarius@gmail.com",
+      "source_file": "13.json"
+    },
+    {
+      "summary": "Establishes community oversight mechanisms for advanced AI systems.",
+      "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
+      "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "24.json"
+    },
+    {
+      "summary": "LGBTQ+ perspectives must be structurally included in AI oversight and policy adaptation.",
+      "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
+      "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "38.json"
+    },
+    {
+      "summary": "Distributed ontologies allow communities to control their own semantic frameworks.",
+      "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
+      "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "40.json"
+    }
+  ],
+  "clarifications": [
+    {
+      "title": "Norm-Adaptive Mediation Strategies",
+      "why_it_matters": "Enables dynamic alignment with diverse social norms rather than static enforcement.",
+      "submission_title": "Cultivating Trust in AI-Assisted Online Conversations",
+      "submission_overview": "This submission proposes a values-based framework for moderation, reputation, and friction in AI-mediated online discourse. Instead of punitive moderation, the system introduces soft interventions such as modulated visibility and reflection cues. These tools promote respectful, legible, and community-aligned interactions. The design treats moderation as a participatory, adaptive mechanism shaped by community values. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Christopher C Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "8.json",
+      "clarification": "AI mediators should continuously adjust based on community-defined values and behaviors."
+    }
+  ],
+  "extensions": [
+    {
+      "title": "Global Federated Governance",
+      "why_it_matters": "Prevents centralized domination and supports distributed oversight.",
+      "submission_title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
+      "submission_overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Tristan Harris",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "11.json",
+      "extension": "Implement cross-jurisdictional frameworks for norm-setting and emergency coordination around AI."
+    },
+    {
+      "title": "Participatory Oversight Models",
+      "why_it_matters": "Governance that includes those most affected ensures alignment with real-world user needs and contextual nuance.",
+      "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
+      "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "38.json",
+      "extension": "The report implies the need for direct LGBTQ+ community participation in the design and auditing of algorithmic systems."
+    }
+  ]
+}

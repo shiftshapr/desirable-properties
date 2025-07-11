@@ -1,0 +1,62 @@
+{
+  "submitter": {
+    "first_name": "Wojak",
+    "last_name": "K",
+    "email": "wojakk3336@gmail.com"
+  },
+  "submission": {
+    "title": "Layered Transparency and Co-Presence for Metaweb Navigation",
+    "overview": "This submission addresses five major problems on the web—false information, cognitive isolation, data exploitation, siloed knowledge, and value signal absence—by proposing overlay-based tools to augment transparency, collaboration, and data agency. These include 'fact-tag' systems, presence-aware overlays, data tracking awareness extensions, public notebooks, and trust-score visualizations. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Supports opt-in, user-controlled data sharing models to counter data exploitation by ad networks."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Proposes overlays and extensions that function across existing web infrastructure without requiring major adoption shifts."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Encourages presence-aware interactions and co-curation within shared web experiences."
+    },
+    {
+      "dp": "DP10 - Education",
+      "summary": "Enables contextual annotation and fact-tagging, allowing peer-to-peer learning and source critique."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Visualizes value signals like endorsements and trust scores, improving discernment and trustworthiness in content."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Proposes tools that allow user participation in tagging and voting, generating live reputational feedback on content."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "type": "Clarification",
+      "title": "Interactive Data Awareness Overlays",
+      "clarification": "Proposes a tool that identifies what data is being extracted from a page, and empowers users to selectively share their data in return for transparent benefits.",
+      "why_it_matters": "This enhances data agency and transparency by making personal data flows legible and consensual."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "type": "Clarification",
+      "title": "Presence-Aware Layered Collaboration",
+      "clarification": "Envisions live overlays that show who is co-reading or co-curating content, with space for annotation, conversation, and perspective mapping.",
+      "why_it_matters": "Fosters emergent communities through ambient presence and co-exploration, which are core to the Meta-layer's collaborative ethos."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "type": "Clarification",
+      "title": "Alignment Visualizations and Trust Indicators",
+      "clarification": "Introduces 'alignment meters' and source linkage overlays to show content credibility, social endorsement, and debate contexts.",
+      "why_it_matters": "Builds a more trustable web environment by visually surfacing the epistemic and social position of digital artifacts."
+    }
+  ]
+}

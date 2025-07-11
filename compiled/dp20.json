@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "dp_number": 20,
+    "dp": "DP20 – Community Ownership",
+    "generated_at": "2025-07-11T14:31:44.416794",
+    "total_alignments": 15,
+    "total_clarifications": 2,
+    "total_extensions": 4,
+    "source_compiled_file": "allstructured.json"
+  },
+  "alignments": [
+    {
+      "summary": "Dev environments are stewarded by the communities they serve.",
+      "submission_title": "Sacred Stacks and Post-Extractive Dev Environments",
+      "submission_overview": "Sacred Stacks is an effort to build software environments that reframe code and digital infrastructure as sacred, relational practice. It proposes a post-extractive model of development where communities can co-create and maintain digital tools grounded in ceremony, kinship, and long-term care. Rather than maximizing speed or efficiency, these environments prioritize collective authorship, slow knowledge, and epistemic sovereignty. Dev environments become cultural environments. This submission was generated with protocol META-DP-EVAL-v1.3",
+      "submitter_name": "None None",
+      "submitter_email": "Jamagax@gmail.com",
+      "source_file": "1.json"
+    },
+    {
+      "summary": "Decentralized committee and council design ensures that communities actively shape infrastructure and govern deployment.",
+      "submission_title": "UMi’s Contribution to the Meta-Layer Initiative: Sector-Specific Integration of DP4",
+      "submission_overview": "UMi proposes a sector-specific and civic infrastructure–based implementation of Desirable Property #4 (Data Sovereignty). This approach moves beyond conceptual alignment by embedding DP4 into active social, digital, and physical environments, rooted in lived expertise. The project anchors DP4 within UMi’s phygital civic economy, utilizing feedback loops and community-specific commentary to support its integration into educational, policy, and economic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Phahsa Ras",
+      "submitter_email": "Phahsa@protonmail.com",
+      "source_file": "3.json"
+    },
+    {
+      "summary": "Shared knowledge graphs become co-curated commons governed by communities.",
+      "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
+      "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "6.json"
+    },
+    {
+      "summary": "NUIs act as community-authored infrastructure supporting participatory design.",
+      "submission_title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "submission_overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "9.json"
+    },
+    {
+      "summary": "Recognizes the value of open, decentralized collective governance in AI evolution.",
+      "submission_title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
+      "submission_overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Tristan Harris",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "11.json"
+    },
+    {
+      "summary": "No central entity controls namespace, data routing, or identity verification—users and their communities manage these through shared schemas.",
+      "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
+      "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "22.json"
+    },
+    {
+      "summary": "The reframed social contract insists on individual ownership of data selves, with institutional access gated by service.",
+      "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "23.json"
+    },
+    {
+      "summary": "Clarifies how non-human agents can co-own systems and participate in governance.",
+      "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
+      "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "24.json"
+    },
+    {
+      "summary": "Community ownership should encompass governance and purpose-declaration mechanisms as well as interface infrastructure.",
+      "submission_title": "IETF-Inspired Governance Framework for the Meta-Layer Initiative",
+      "submission_overview": "This submission draws from IETF processes as possible templates for Meta-Layer evolution and proposes both clarifications/extensions to existing Desirable Properties (DPs) and a new DP. It emphasizes reflexive meta-governance, transparent contextualization, and living governance patterns inspired by proven open-source governance models. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Brad deGraf",
+      "submitter_email": "bdegraf@gmail.com",
+      "source_file": "29.json"
+    },
+    {
+      "summary": "Affirms data self-sovereignty as a core social contract principle.",
+      "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "30.json"
+    },
+    {
+      "summary": "The Meta-Layer reclaims the internet as a connective space, countering the isolating tendencies of existing platforms and restoring community cohesion and shared stewardship across digital life.",
+      "submission_title": "Levelling the Digital Playing Field: A Meta-Layer for a Post-Capitalist Web",
+      "submission_overview": "The web should serve as a planetary commons, empowering individuals rather than extending the dominance of governments or corporate interests. Instead of fueling extractive capitalist agendas, it must foster community resilience and global solidarity. This submission proposes a meta-layer that reorients the web toward cooperative engagement: connecting those in need with those able to help, and enabling flows of knowledge, support, and solutions across divisive boundaries. By doing so, it reclaims the web as a site of mutual aid and regenerative exchange. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Lindsay Jane",
+      "submitter_email": "lindsayjanecontent@proton.me",
+      "source_file": "32.json"
+    },
+    {
+      "summary": "Enables bottom-up formation of trust networks without institutional gatekeeping.",
+      "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
+      "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Rick Byers",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "33.json"
+    },
+    {
+      "summary": "Advocates for a name that reflects grassroots identity and shared authorship rather than co-opted corporate branding.",
+      "submission_title": "Rebranding the Metaweb to Overweb",
+      "submission_overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'—a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Eric Schneider",
+      "submitter_email": "eric@jpberlin.de",
+      "source_file": "34.json"
+    },
+    {
+      "summary": "Municipalities and their citizens retain ownership of their layer while contributing to and benefiting from the shared Meta-Layer ecosystem.",
+      "submission_title": "Meta-Layer as Municipal Infrastructure: European Cities as Pioneering Use Case",
+      "submission_overview": "This submission proposes that development of the Meta-Layer begin with a targeted pilot in European municipalities. Unlike the U.S., many European cities retain civic trust and robust public funding. Recent German policy dialogues show alignment with the Meta-Layer's civic tools. Municipalities could deploy the Meta-Layer for feedback systems, participatory governance, youth digital literacy, and cross-regional collaboration. The proposal imagines Meta-Layer adoption as a digital public commons co-owned by cities and their citizens, providing a foundation for regional democratic resilience. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Eric Schneider",
+      "submitter_email": "eric@jpberlin.de",
+      "source_file": "39.json"
+    },
+    {
+      "summary": "Advocates for supporting human creators directly through tools like Patreon and community-backed initiatives.",
+      "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
+      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "43.json"
+    }
+  ],
+  "clarifications": [
+    {
+      "title": "Public Grounding of Meta-Infrastructure",
+      "why_it_matters": "Shared ownership of governance reinforces legitimacy and prevents institutional capture.",
+      "submission_title": "IETF-Inspired Governance Framework for the Meta-Layer Initiative",
+      "submission_overview": "This submission draws from IETF processes as possible templates for Meta-Layer evolution and proposes both clarifications/extensions to existing Desirable Properties (DPs) and a new DP. It emphasizes reflexive meta-governance, transparent contextualization, and living governance patterns inspired by proven open-source governance models. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Brad deGraf",
+      "submitter_email": "bdegraf@gmail.com",
+      "source_file": "29.json",
+      "clarification": "Community ownership should encompass governance and purpose-declaration mechanisms as well as interface infrastructure. Meta-institutions themselves must be openly steered and accountable to the community of contributors."
+    },
+    {
+      "title": "Bottom-Up Trust Network Formation",
+      "why_it_matters": "Prevents co-optation of the trust layer by dominant entities.",
+      "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
+      "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Rick Byers",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "33.json",
+      "clarification": "No curation or gatekeeping—trust networks arise through opt-in community choice, not institutional approval."
+    }
+  ],
+  "extensions": [
+    {
+      "title": "Commons Curation via Synaptic Participation",
+      "why_it_matters": "This empowers communities to shape their own epistemic landscapes rather than consume top-down narratives.",
+      "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
+      "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "6.json",
+      "extension": "Bridge graphs are built and maintained by usage, trust, and local context — aligning stewardship with presence and perspective."
+    },
+    {
+      "title": "Community-maintained Navigational Infrastructure",
+      "why_it_matters": "Shifts UI control from platforms to people.",
+      "submission_title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "submission_overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "9.json",
+      "extension": "Design NUIs as co-owned scaffolding tools that grow with community needs."
+    },
+    {
+      "title": "Participatory Semantics through Ontology Crafting",
+      "why_it_matters": "Fosters semantic sovereignty and localized knowledge representation in a decentralized framework.",
+      "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
+      "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "40.json",
+      "extension": "Any community can define and share ontologies, participating in the creation of semantic meaning."
+    },
+    {
+      "title": "Humanmade Content as a Public Good",
+      "why_it_matters": "As AI becomes ubiquitous, humanmade contributions risk becoming boutique rarities. If these disappear, so does the soul of digital culture.",
+      "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
+      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "43.json",
+      "extension": "Real human-generated content should be protected and valued similarly to other public goods. Mechanisms that support individual creators—through funding, discovery, and validation—must be prioritized in protocol design."
+    }
+  ]
+}
