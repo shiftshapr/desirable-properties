@@ -5,21 +5,19 @@
     "version": "1.0",
     "total_properties": 20,
     "categories": [
-      "Identity & Authentication",
-      "Governance & Community",
-      "Privacy & Security",
-      "Infrastructure & Interoperability",
-      "Economic & Commerce",
-      "AI & Intelligence",
-      "Education & Engagement",
-      "Sustainability & Growth"
+      "Authentication and Accountability",
+      "Sovereignty and Privacy",
+      "Interoperability and Participant Experience",
+      "AI Governance and Safety",
+      "Security, Transparency, & Trust",
+      "Community Participation and Feedback"
     ]
   },
   "desirable_properties": [
     {
       "id": "DP1",
       "name": "Federated Authentication & Accountability",
-      "category": "Identity & Authentication",
+      "category": "Authentication and Accountability",
       "description": "The meta-layer implements federated strong authentication to enable decentralized identity verification, ensuring trust and reducing fraud. Accountability mechanisms enforce transparency and responsibility for actions, promoting safe and trustworthy interactions within the ecosystem.",
       "elements": [
         {
@@ -43,7 +41,7 @@
     {
       "id": "DP2",
       "name": "Participant Agency and Empowerment",
-      "category": "Governance & Community",
+      "category": "Authentication and Accountability",
       "description": "Empowering participants is central to the meta-layer, granting full control over interactions, content views, and digital identities. Reputation systems reward positive contributions and combat misuse, while non-monetary incentives encourage ongoing engagement. Future-proof governance protocols ensure adaptability to dynamic challenges and opportunities.",
       "elements": [
         {
@@ -71,7 +69,7 @@
     {
       "id": "DP3",
       "name": "Adaptive Governance Supporting an Exponentially Growing Community",
-      "category": "Governance & Community",
+      "category": "Authentication and Accountability",
       "description": "As the Metaweb scales, its governance must remain decentralized and adaptive, promoting fairness and collaboration. A compensated organizing team and structured roles like sponsors, advisors, and developers will drive progress. Token-based incentives and community-led subgroups enable inclusive and scalable decision-making.",
       "elements": [
         {
@@ -99,7 +97,7 @@
     {
       "id": "DP4",
       "name": "Data Sovereignty and Privacy",
-      "category": "Privacy & Security",
+      "category": "Sovereignty and Privacy",
       "description": "Participants maintain full control of their data through privacy-centric designs, dynamic privacy settings, and secure personal data vaults. Context-specific frameworks and quantum-resistant encryption ensure long-term data security and sovereignty within a decentralized system.",
       "elements": [
         {
@@ -127,7 +125,7 @@
     {
       "id": "DP5",
       "name": "Decentralized Namespace",
-      "category": "Infrastructure & Interoperability",
+      "category": "Sovereignty and Privacy",
       "description": "The meta-layer introduces meta-domains and personal identifiers, serving as tradable assets that anchor identity and ownership in a decentralized ecosystem. These innovations enable seamless integration with the web, fostering interoperability and supporting vibrant virtual economies.",
       "elements": [
         {
@@ -151,7 +149,7 @@
     {
       "id": "DP6",
       "name": "Commerce",
-      "category": "Economic & Commerce",
+      "category": "Sovereignty and Privacy",
       "description": "The meta-layer facilitates fair compensation through microtransactions, rewards, and diverse payment methods, including both decentralized and fiat systems. Meta-communities can establish their own economic ecosystems, supporting sustainable development through innovative models like the care economy and contextual advertising.",
       "elements": [
         {
@@ -179,7 +177,7 @@
     {
       "id": "DP7",
       "name": "Simplicity and Interoperability",
-      "category": "Infrastructure & Interoperability",
+      "category": "Interoperability and Participant Experience",
       "description": "The meta-layer emphasizes simplicity by reducing complexity in its design and promoting seamless interoperability across platforms. This ensures participants can engage effortlessly, while AI tools monitor data flow to maintain privacy and foster efficient cross-domain collaboration.",
       "elements": [
         {
@@ -203,7 +201,7 @@
     {
       "id": "DP8",
       "name": "Collaborative Environment and Meta-Communities",
-      "category": "Governance & Community",
+      "category": "Interoperability and Participant Experience",
       "description": "The meta-layer fosters meta-communities that enable participants to collaborate and share insights across platforms. Features like shared collaboration spaces and AI-augmented decision-making ensure persistent, trust-driven engagement in a decentralized environment.",
       "elements": [
         {
@@ -231,7 +229,7 @@
     {
       "id": "DP9",
       "name": "Developer and Community Incentives",
-      "category": "Economic & Commerce",
+      "category": "Interoperability and Participant Experience",
       "description": "Developers gain broader reach with tools to build applications across the Metaweb, while participants enjoy persistent community spaces. Incentive systems, such as rewards and recognition, encourage active contribution and sustained community involvement.",
       "elements": [
         {
@@ -247,7 +245,7 @@
     {
       "id": "DP10",
       "name": "Education",
-      "category": "Education & Engagement",
+      "category": "Interoperability and Participant Experience",
       "description": "Education initiatives within the meta-layer offer interactive onboarding, lifelong learning opportunities, and dynamic knowledge-sharing environments. AI-powered learning assistants provide personalized support, while gamified achievements, such as PEARL digital badges, incentivize learning and skill development.",
       "elements": [
         {
@@ -279,7 +277,7 @@
     {
       "id": "DP11",
       "name": "Safe and Ethical AI",
-      "category": "AI & Intelligence",
+      "category": "AI Governance and Safety",
       "description": "AI systems in the meta-layer operate transparently and ethically, with explainable decision-making and adherence to community standards. Ethical AI ensures user protection and fosters trust by aligning AI behavior with societal values and goals.",
       "elements": [
         {
@@ -307,7 +305,7 @@
     {
       "id": "DP12",
       "name": "Community-based AI Governance",
-      "category": "AI & Intelligence",
+      "category": "AI Governance and Safety",
       "description": "Meta-communities play an active role in governing AI systems, ensuring their actions align with community standards and ethical principles. This collaborative oversight promotes accountability and trust in AI-driven interactions and decisions.",
       "elements": [
         {
@@ -319,7 +317,7 @@
     {
       "id": "DP13",
       "name": "AI Containment",
-      "category": "AI & Intelligence",
+      "category": "AI Governance and Safety",
       "description": "AI systems are constrained within transparent frameworks that align actions with participant and community goals. Containment strategies, informed by RLADP principles, prevent misuse and ensure AI serves human interests without compromising privacy or trust.",
       "elements": [
         {
@@ -339,7 +337,7 @@
     {
       "id": "DP14",
       "name": "Trust and Transparency",
-      "category": "Privacy & Security",
+      "category": "Security, Transparency, & Trust",
       "description": "The Meta-Layer aims to foster trust and transparency by creating environments where participants can interact confidently, supported by strong authentication, reputation systems, and ethical standards. Transparency in AI use ensures all actions are auditable, explainable, and governed responsibly, while AI operates within containment frameworks to align with community goals.",
       "elements": [
         {
@@ -367,7 +365,7 @@
     {
       "id": "DP15",
       "name": "Security and Provenance",
-      "category": "Privacy & Security",
+      "category": "Security, Transparency, & Trust",
       "description": "Robust encryption and secure communication channels safeguard interactions within the meta-layer. Content provenance ensures participants can trace origins and modifications, providing a reliable foundation for trust and authenticity.",
       "elements": [
         {
@@ -387,7 +385,7 @@
     {
       "id": "DP16",
       "name": "Roadmap and Milestones",
-      "category": "Sustainability & Growth",
+      "category": "Security, Transparency, & Trust",
       "description": "A phased development approach includes implementing strong authentication, decentralized governance, and community-driven strategies. Foresight-informed milestones prepare the meta-layer for unexpected challenges, ensuring long-term relevance and adaptability.",
       "elements": [
         {
@@ -407,7 +405,7 @@
     {
       "id": "DP17",
       "name": "Financial Sustainability",
-      "category": "Economic & Commerce",
+      "category": "Security, Transparency, & Trust",
       "description": "Sustainable funding models such as DAOs, grants, and token ecosystems ensure grassroots alignment and ongoing development. By monetizing applications and overlay services, the meta-layer enables financial stability while rewarding early contributors and developers.",
       "elements": [
         {
@@ -435,7 +433,7 @@
     {
       "id": "DP18",
       "name": "Feedback Loops and Reputation",
-      "category": "Governance & Community",
+      "category": "Community Participation and Feedback",
       "description": "Continuous feedback mechanisms, supported by AI-adaptive systems, enable communities to refine governance and operations. Reputation-based rewards promote positive contributions and accountability, fostering a responsible and vibrant ecosystem.",
       "elements": [
         {
@@ -463,7 +461,7 @@
     {
       "id": "DP19",
       "name": "Amplifying Presence and Community Engagement",
-      "category": "Education & Engagement",
+      "category": "Community Participation and Feedback",
       "description": "Creating awareness, building a resonant identity, and fostering community-led promotion are central to the success of the Metaweb. This property emphasizes both traditional and community-driven marketing strategies, with strong brand identity and sustainable engagement channels.",
       "elements": [
         {
@@ -491,7 +489,7 @@
     {
       "id": "DP20",
       "name": "Community Ownership",
-      "category": "Governance & Community",
+      "category": "Community Participation and Feedback",
       "description": "Ownership of the meta-layer and the universal knowledge graph empowers participants to control and monetize shared systems. These mechanisms promote decentralization, ensuring equitable access and alignment with community values.",
       "elements": [
         {
