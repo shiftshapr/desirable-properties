@@ -1,0 +1,43 @@
+{
+  "submitter": {
+    "first_name": "Chris",
+    "last_name": "Santos-Lang",
+    "email": "langchri@gmail.com"
+  },
+  "submission": {
+    "title": "Vicariance as a Desirable Meta-Layer Property",
+    "overview": "Vicariance, drawn from biological systems, describes how temporary divisions in ecosystems allow novel or fragile designs to incubate before facing widespread exposure or competition. This submission proposes Vicariance as a desirable meta-layer property — one that would enable safe experimentation and staged integration of innovations, ideas, and social formations within decentralized digital networks. It suggests resisting immediate global unification to maintain diverse paths of emergence. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Chris\nLast name: Santos-Lang\nShort answer email: langchri@gmail.com\nDesirable Property : Vicariance\nContribute an Idea: In ecosystems, vicariance refers to the way ecosystems are temporarily divided, such that a half-baked (biological) design can be incubated before having to face the toughest competitors in the world. I am suggesting that it would be desirable for the Internet to maintain this property, rather than unify the human population as fast as AI can reach-out to all of us simultaneously.\nPlease check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
+      "summary": "Supports community divergence and parallel experimentation through semi-isolated governance domains."
+    },
+    {
+      "dp": "DP8 – Collaborative Environment and Meta-Communities",
+      "summary": "Enables diverse sub-communities to emerge and evolve organically without premature centralization."
+    },
+    {
+      "dp": "DP12 – Community-based AI Governance",
+      "summary": "Provides protective fragmentation to avoid AI domination and preserve local autonomy in oversight structures."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
+      "type": "Extension",
+      "title": "Incubation Through Vicariance",
+      "extension": "Recommends preserving semi-isolated network zones to allow gradual, protected development of social, technical, and cultural innovations.",
+      "why_it_matters": "Without vicariant conditions, emergent systems face immediate exposure to dominant actors and dynamics, which can prematurely suppress diversity and resilience."
+    },
+    {
+      "dp": "DP13 – AI Containment",
+      "type": "Clarification",
+      "title": "Containment via Structural Vicariance",
+      "clarification": "Suggests vicariance as a structural containment mechanism — not by suppression, but by designing segments of the network where AI influence can be regulated and scaled carefully.",
+      "why_it_matters": "This enables human communities to evolve practices without undue pressure from uniform, unbounded AI systems — preserving choice, context, and co-development."
+    }
+  ]
+}

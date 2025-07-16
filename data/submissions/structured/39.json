@@ -1,0 +1,78 @@
+{
+  "submitter": {
+    "first_name": "Eric",
+    "last_name": "Schneider",
+    "email": "eric@jpberlin.de"
+  },
+  "submission": {
+    "title": "Meta-Layer as Municipal Infrastructure: European Cities as Pioneering Use Case",
+    "overview": "This submission proposes that development of the Meta-Layer begin with a targeted pilot in European municipalities. Unlike the U.S., many European cities retain civic trust and robust public funding. Recent German policy dialogues show alignment with the Meta-Layer's civic tools. Municipalities could deploy the Meta-Layer for feedback systems, participatory governance, youth digital literacy, and cross-regional collaboration. The proposal imagines Meta-Layer adoption as a digital public commons co-owned by cities and their citizens, providing a foundation for regional democratic resilience. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "Enables citizens to co-create and govern digital public infrastructure within their municipalities."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "summary": "Public data remains under municipal and citizen stewardship, not vendor lock-in."
+    },
+    {
+      "dp": "DP6 – Commerce",
+      "summary": "Establishes a foundation for local economic and civic exchange that supports social enterprise."
+    },
+    {
+      "dp": "DP8 – Collaborative Environment and Meta-Communities",
+      "summary": "Builds city-scale communities linked across Europe by interoperable, open civic infrastructure."
+    },
+    {
+      "dp": "DP10 – Education",
+      "summary": "Offers municipalities a gateway to integrate digital civic tools into youth and family education for generational adoption."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "Provides a trusted platform where citizen input, government response, and system operations are visible and auditable."
+    },
+    {
+      "dp": "DP16 – Roadmap and Milestones",
+      "summary": "Offers a phased plan beginning with 1–3 pilot cities scaling to thousands, aligned with EU funding mechanisms."
+    },
+    {
+      "dp": "DP17 – Financial Sustainability",
+      "summary": "Leverages EU funding and municipal investment to reduce per-unit development cost across cities."
+    },
+    {
+      "dp": "DP19 – Amplifying Presence and Community Engagement",
+      "summary": "Activates citizen participation and bridges isolated civic initiatives into a unified framework."
+    },
+    {
+      "dp": "DP20 – Community Ownership",
+      "summary": "Municipalities and their citizens retain ownership of their layer while contributing to and benefiting from the shared Meta-Layer ecosystem."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "type": "Extension",
+      "title": "Civic-Scale Digital Co-Creation",
+      "extension": "The proposal extends the scope of 'participant agency' from individual platform users to civic actors, such as municipalities and regional coalitions, enabling them to co-develop and customize the municipal layer of the Meta-Layer.",
+      "why_it_matters": "City-level digital infrastructure often excludes citizen control and excludes co-ownership by municipalities. This approach redefines 'users' as civic partners with real agency in shaping and owning public infrastructure."
+    },
+    {
+      "dp": "DP16 – Roadmap and Milestones",
+      "type": "Clarification",
+      "title": "Federated Piloting via EU Municipal Frameworks",
+      "clarification": "The rollout model emphasizes leveraging existing transnational municipal alliances and EU funding frameworks to scale from pilot cities to network-wide adoption.",
+      "why_it_matters": "Instead of isolated, high-cost deployments, this enables a federated development model where initial investments compound in value by serving multiple cities, regions, and demographic segments."
+    },
+    {
+      "dp": "DP19 – Amplifying Presence and Community Engagement",
+      "type": "Extension",
+      "title": "Beyond Complaint Systems",
+      "extension": "The Meta-Layer's municipal deployment is not limited to feedback channels or service requests but includes real-time dialogue, civic collaboration, and participatory design tools.",
+      "why_it_matters": "Many cities are overwhelmed by public input systems that generate complaints without resolution pathways. A participatory Meta-Layer transforms engagement from reactive grievance logging to generative co-creation."
+    }
+  ]
+}

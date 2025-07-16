@@ -1,0 +1,54 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
+    "overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Allows digital artifacts to carry authenticated provenance, supporting modular and federated trust resolution."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Individuals can mint, sign, challenge, or verify named objects across contexts without reliance on a single platform."
+    },
+    {
+      "dp": "DP5 - Decentralized Namespace",
+      "summary": "Utilizes name chains (@user/object) as decentralized pointers with verifiable semantics and conflict resolution logic."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Ensures digital artifacts retain cryptographic marks, signature chains, and verifiable metadata as they propagate."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 – Federated Authentication & Accountability",
+      "type": "Clarification",
+      "title": "Interoperable Trust Marks for Multi-Format Artifacts",
+      "clarification": "Authentication marks are not bound to a specific format or issuer. The architecture supports a modular resolver model capable of interpreting claims across formats (e.g., JSON-LD, PDF metadata, DIDs, NFTs, IMA containers).",
+      "why_it_matters": "Without flexible and interoperable trust anchors, authentication systems fragment across silos. A shared approach ensures continuity of trust even as artifacts move between overlay networks."
+    },
+    {
+      "dp": "DP5 – Decentralized Namespace",
+      "type": "Extension",
+      "title": "Name Chains as URI-Resolvable Trust Anchors",
+      "extension": "Name chains (e.g., @jaime/artifact99) function as semantic, URI-like identifiers with resolution pathways that combine identity verification and object authentication.",
+      "why_it_matters": "This extends DNS-style naming into the trust layer of the Metaweb, enabling structured reference to people, objects, and assertions in a verifiable and user-controlled manner."
+    },
+    {
+      "dp": "DP15 – Security and Provenance",
+      "type": "Extension",
+      "title": "Challenge-Response and Endorsement Histories",
+      "extension": "Trust marks optionally include challenge-response trails, timestamped endorsements, or revocation notices, layered into a common verification envelope.",
+      "why_it_matters": "Trust isn't binary; surfacing historical context of authentication (who signed, who challenged, who endorsed) allows recipients to make nuanced trust decisions."
+    }
+  ]
+}

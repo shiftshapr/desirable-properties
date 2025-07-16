@@ -1,0 +1,72 @@
+{
+  "submitter": {
+    "first_name": "Christopher",
+    "last_name": "C Santos-Lang",
+    "email": "langchri@gmail.com"
+  },
+  "submission": {
+    "title": "Cultivating Trust in AI-Assisted Online Conversations",
+    "overview": "This submission proposes a values-based framework for moderation, reputation, and friction in AI-mediated online discourse. Instead of punitive moderation, the system introduces soft interventions such as modulated visibility and reflection cues. These tools promote respectful, legible, and community-aligned interactions. The design treats moderation as a participatory, adaptive mechanism shaped by community values. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Contribute an Idea: 🔸 Title Cultivating Trust in AI-Assisted Online Conversations: A Values-Based Proposal for Moderation, Friction, and Reputation 🔸 Summary of the Proposal This submission proposes a socially-grounded, trust-oriented framework for AI-assisted online conversations. Instead of treating moderation as binary (e.g. delete/ban), it introduces values-expressive friction, context-sensitive reputation, and ambient AI mediation as tools to help foster respectful, trustworthy, and legible interactions in online communities. By introducing soft, explainable moderation cues—like modulated visibility, tone adjustments, or frictional delays—the system empowers participants to reflect, adjust, and align their behavior with community norms. This framework treats moderation as a participatory design space, not just an enforcement mechanism, and aligns well with AI safety, community governance, and trust-building. 🔸 Desirable Properties this Proposal Relates To DP11 – Safe and Ethical AI DP12 – Community-based AI Governance DP18 – Feedback Loops and Reputation DP2 – Participant Agency and Empowerment DP14 – Trust and Transparency 🔸 Suggested Changes, Extensions, or Clarifications DP11 – Safe and Ethical AI Extend to support interaction-level modulation and friction-based trust signaling, helping AI systems cultivate safety within conversation dynamics—not just through content filters. DP12 – Community-based AI Governance Clarify that AI systems should be responsive to community norms in real-time, and able to adapt mediation strategies based on communal values. DP18 – Feedback Loops and Reputation Extend to include conversational, real-time reputation signals that evolve through dialogue and are visible and understandable to participants. DP2 – Participant Agency and Empowerment Reframe friction and moderation tools as empowerment mechanisms that invite reflection, rather than simply restrict behavior. DP14 – Trust and Transparency Include socially legible trust cues and explainable mediation actions as part of the transparency framework for AI-supported spaces. 🔸 Why this matters As AI becomes a co-participant in digital discourse, we must ensure its presence enhances—not erodes—trust, legibility, and collective norms. This proposal introduces design patterns for cultivating healthier AI-mediated interaction by foregrounding social context, values-based friction, and evolving, legible reputation. It calls for a moderation layer that helps us learn to live well with AI, not just control or resist it.\nName: Christopher\nLast name: C Santos-Lang\nShort answer email: langchri@gmail.com\nPlease check all that apply: I used Metta to help craft this submission"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Reframes friction and moderation as tools for self-guided reflection and norm alignment."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "Supports interaction-level friction and mediation to enhance conversational safety."
+    },
+    {
+      "dp": "DP12 - Community-based AI Governance",
+      "summary": "Aligns AI behavior with evolving community norms in real-time."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Introduces legible trust cues and explainable AI moderation logic."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Defines real-time, dialogic reputation indicators as evolving trust signals."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP11 – Safe and Ethical AI",
+      "type": "Extension",
+      "title": "Trust Signaling via Frictional Interaction Design",
+      "extension": "AI systems should include micro-interventions that modulate tone, timing, or visibility of responses to foster reflective, socially aligned engagement.",
+      "why_it_matters": "These subtle signals guide safer, more respectful online conversations without top-down enforcement."
+    },
+    {
+      "dp": "DP12 – Community-based AI Governance",
+      "type": "Clarification",
+      "title": "Norm-Adaptive Mediation Strategies",
+      "clarification": "AI mediators should continuously adjust based on community-defined values and behaviors.",
+      "why_it_matters": "Enables dynamic alignment with diverse social norms rather than static enforcement."
+    },
+    {
+      "dp": "DP18 – Feedback Loops and Reputation",
+      "type": "Extension",
+      "title": "Conversational Reputation as a Social Signal",
+      "extension": "Introduces moment-to-moment reputation markers visible to all participants, informed by ongoing dialogue quality.",
+      "why_it_matters": "Encourages accountability and alignment with community expectations in real-time."
+    },
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "type": "Clarification",
+      "title": "Reflective Moderation as Empowerment",
+      "clarification": "Friction-based tools should invite user introspection and growth, rather than impose constraints.",
+      "why_it_matters": "Promotes autonomy while guiding social responsibility."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Explainable Mediation Cues",
+      "extension": "AI interactions should include interpretable indicators of why and how moderation is occurring.",
+      "why_it_matters": "Builds trust in AI by making its moderation actions socially intelligible and inspectable."
+    }
+  ]
+}

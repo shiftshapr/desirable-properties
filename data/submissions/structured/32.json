@@ -1,0 +1,28 @@
+{
+  "submitter": {
+    "first_name": "Lindsay",
+    "last_name": "Jane",
+    "email": "lindsayjanecontent@proton.me"
+  },
+  "submission": {
+    "title": "Levelling the Digital Playing Field: A Meta-Layer for a Post-Capitalist Web",
+    "overview": "The web should serve as a planetary commons, empowering individuals rather than extending the dominance of governments or corporate interests. Instead of fueling extractive capitalist agendas, it must foster community resilience and global solidarity. This submission proposes a meta-layer that reorients the web toward cooperative engagement: connecting those in need with those able to help, and enabling flows of knowledge, support, and solutions across divisive boundaries. By doing so, it reclaims the web as a site of mutual aid and regenerative exchange. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "The Meta-Layer expands individual freedom and agency by facilitating access to knowledge, communication, and mutual aid unconstrained by socio-economic, geographic, political, or ideological repression."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "By ensuring that the origin and intent of information are openly visible, the Meta-Layer fosters a web built on truth, transparency, and the rebuilding of trust."
+    },
+    {
+      "dp": "DP20 – Community Ownership",
+      "summary": "The Meta-Layer reclaims the internet as a connective space, countering the isolating tendencies of existing platforms and restoring community cohesion and shared stewardship across digital life."
+    }
+  ],
+  "clarifications_and_extensions": []
+}

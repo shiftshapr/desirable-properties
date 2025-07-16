@@ -1,0 +1,21 @@
+Details:  Name: Michelle 
+Last name: Thuo 
+Short answer email: thuomichelle2020@gmail.com 
+Please check all that apply: I’m open to being contacted about this idea,I want to put my idea onchain myself,I can't wait to get my Overweb badge,I'd like my idea put onchain,I used the submission assistant Bridgit to help craft this submission 
+Desirable Property : Multiple 
+Contribute an Idea: MetaBridge: An AI Powered, Privacy Respecting Bridge Between Platforms for Civic Collaboration
+
+As the web becomes increasingly fragmented across platforms, communities and interfaces, there’s a growing need for a shared meta layer that can connect intent, identity and impact especially for civic engagement and youth led innovation.
+
+My idea is MetaBridge, a composable overlay tool that allows users to:
+1) Tag any webpage, forum or social media post with a shared civic topic for example "Climate Petition - Nairobi"
+2) Overlay context like translated summaries, verifiable endorsements, deadlines or decision making status
+3) Enable portable participation, where actions like signing, donating, commenting or voting can happen directly within the overlay, linked securely to user wallets or decentralized IDs
+4) Respect privacy by using zero knowledge proofs or selective disclosure for participation tracking
+5) Show presence and support in real time, creating momentum without platform lock in
+
+MetaBridge would serve both as a civic toolkit and a proof of concept for interoperable participation. It could be used by youth groups, NGOs, local governments and DAOs to run cross platform campaigns, with full transparency and modular AI support.
+
+This ties into desirable properties like Privacy & Data Sovereignty, Trust & Transparency, Adaptive Governance and AI Accountability.
+
+As someone active in digital governance circles like ICANN and ISOC, and with experience in AI and open web development, I’m deeply excited about the potential of the MetaLayer to unlock shared digital agency across borders.

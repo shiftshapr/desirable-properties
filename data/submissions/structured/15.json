@@ -1,0 +1,57 @@
+{
+  "submitter": {
+    "first_name": "Scott",
+    "last_name": "Frankum",
+    "email": "scottfrankum@gmail.com"
+  },
+  "submission": {
+    "title": "Ethical Products for the Global South",
+    "overview": "This submission highlights two interlinked challenges: (1) current blockchain and Web3 product models are prohibitively expensive and culturally misaligned for crafts-producing communities in the Global South; (2) lack of interoperable standards risks reinforcing digital colonialism and undermining transformative policies like the EU's Green Deal. The author calls for early standardization and native interoperability, particularly around Digital Product Passports (DPPs), to empower bottom-up adoption and avoid top-down imposition. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": "https://www.weave3.org"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Emphasizes tools and standards that allow Global South participants to engage on their own terms, not dictated by legacy systems."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Raises concern about forced UI/UX and centralized control in digital tools, advocating for local control of data flows."
+    },
+    {
+      "dp": "DP6 - Commerce",
+      "summary": "Addresses economic access and viability of blockchain products for artisans and marginalized producers."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Argues for early interoperability standards to prevent exploitation and preserve openness in the transition to Web3."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Warns that lack of cultural alignment and affordability will erode trust in otherwise promising digital public goods."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP6 - Commerce",
+      "type": "Clarification",
+      "title": "Affordability as a Prerequisite for Inclusion",
+      "clarification": "Ethical commerce requires that Web3 products be usable without imposing financial burden—especially for informal economies and vulnerable communities.",
+      "why_it_matters": "If systems are only accessible to the affluent, they replicate existing exclusions and undermine the decentralization premise of the Meta-layer."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "type": "Extension",
+      "title": "Native Interoperability to Prevent Digital Colonialism",
+      "extension": "Standards should be developed collaboratively, with Global South input, to ensure interoperability reflects pluralistic needs rather than corporate defaults.",
+      "why_it_matters": "Without proactive inclusion in standards-setting, Global South participants will face yet another era of imposed technical dependencies."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "type": "Clarification",
+      "title": "Cultural Sovereignty Embedded in Interface Design",
+      "clarification": "UI/UX must be co-developed with communities to reflect local languages, practices, and values—avoiding external imposition.",
+      "why_it_matters": "Forced UI paradigms can feel like colonial imposition and disempower users, regardless of the underlying technical ethics."
+    }
+  ]
+}

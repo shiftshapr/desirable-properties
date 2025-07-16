@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "dp_number": 9,
+    "dp": "DP9 - Developer and Community Incentives",
+    "generated_at": "2025-07-11T14:31:44.410058",
+    "total_alignments": 1,
+    "total_clarifications": 0,
+    "total_extensions": 0,
+    "source_compiled_file": "allstructured.json"
+  },
+  "alignments": [
+    {
+      "summary": "Addresses incentive structures for AI development and community engagement.",
+      "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
+      "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "24.json"
+    }
+  ],
+  "clarifications": [],
+  "extensions": []
+}

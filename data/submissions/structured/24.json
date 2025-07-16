@@ -1,0 +1,113 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Governance for Advanced Non-Human Agents and AI Systems",
+    "overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Extends accountability frameworks to encompass AGI and complex systems managing critical infrastructure."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Defines what 'agency' means for non-human agents, especially those with action vectors and AI autonomy."
+    },
+    {
+      "dp": "DP3 - Adaptive Governance Supporting an Exponentially Growing Community",
+      "summary": "Governance must adapt to include advanced AI systems as contributors, regulators, or infrastructure operators."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Clarifies how non-human agents may hold or manage identities, data, and digital presence."
+    },
+    {
+      "dp": "DP5 - Decentralized Namespace",
+      "summary": "Addresses namespace rights and management for non-human entities in interoperable systems."
+    },
+    {
+      "dp": "DP6 - Commerce",
+      "summary": "Clarifies whether non-human agents can own, generate, or transact value within the Meta-layer."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Ensures interoperability frameworks accommodate both human and non-human agents."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Defines the role of AI in collaborative environments and community participation."
+    },
+    {
+      "dp": "DP9 - Developer and Community Incentives",
+      "summary": "Addresses incentive structures for AI development and community engagement."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "Specifies containment, governance, and ethical frameworks for embodied or infrastructure-managing AGI."
+    },
+    {
+      "dp": "DP12 - Community-Based AI Governance",
+      "summary": "Establishes community oversight mechanisms for advanced AI systems."
+    },
+    {
+      "dp": "DP13 - AI Containment",
+      "summary": "Defines containment strategies for advanced AI in critical domains."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Clarifies how systems can verify AI-originated actions and maintain audit trails."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Ensures transparency applies to AI as much as human interactions in high-trust networks."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Defines whether and how non-human agents can have reputations and give feedback."
+    },
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "summary": "Addresses AI participation in community presence and engagement systems."
+    },
+    {
+      "dp": "DP20 - Community Ownership",
+      "summary": "Clarifies how non-human agents can co-own systems and participate in governance."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 – Federated Authentication & Accountability",
+      "type": "Clarification",
+      "title": "Extending Accountability to Non-Human Agents",
+      "clarification": "Clarify how advanced AI systems and embodied agents are authenticated, how their actions are tracked, and how accountability is enforced.",
+      "why_it_matters": "Federated accountability must encompass AGI and complex systems managing critical infrastructure."
+    },
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "type": "Clarification",
+      "title": "Defining Agency for AI and Systems",
+      "clarification": "Define what 'agency' means for non-human agents, especially those with action vectors and AI autonomy.",
+      "why_it_matters": "To ensure the Meta-layer accommodates AGI entities as coherent participants with defined roles."
+    },
+    {
+      "dp": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
+      "type": "Extension",
+      "title": "Including System Complexity in Governance",
+      "extension": "Governance must adapt to include advanced AI systems as contributors, regulators, or infrastructure operators.",
+      "why_it_matters": "The scope of governance should extend beyond population growth to complexity of agents."
+    },
+    {
+      "dp": "DP6 – Commerce",
+      "type": "Clarification",
+      "title": "Non-Human Participation in Value Exchange",
+      "clarification": "Clarify whether non-human agents can own, generate, or transact value within the Meta-layer.",
+      "why_it_matters": "Ensuring the commerce layer includes mechanisms for AI economic interactions."
+    }
+  ]
+}

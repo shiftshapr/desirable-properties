@@ -1,0 +1,50 @@
+name: Deploy Web App
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'web-app/**'
+      - 'data/**'
+      - '.github/workflows/deploy-webapp.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: web-app/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd web-app
+        npm ci
+        
+    - name: Build application
+      run: |
+        cd web-app
+        npm run build
+      env:
+        NODE_ENV: production
+        
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/ubuntu/desirable-properties
+          git pull origin main
+          cd web-app
+          npm ci --production
+          npm run build
+          pm2 restart app-themetalayer 

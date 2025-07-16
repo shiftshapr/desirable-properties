@@ -1,0 +1,72 @@
+{
+  "submitter": {
+    "first_name": "Ruben",
+    "last_name": "Diaz",
+    "email": "rubenraul75@gmail.com"
+  },
+  "submission": {
+    "title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
+    "overview": "With the rapid expansion of autonomous agents—both personal and corporate—there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": "Con la rápida expansión de agentes autónomos —tanto personales como corporativos— surge la necesidad urgente de definir un protocolo mínimo que permita a estos agentes interactuar de manera visible, responsable y semánticamente coherente con sitios web, otras interfaces y entre ellos mismos. Esta propuesta plantea que el Meta-layer ofrezca soporte estructural a esas interacciones, a través de trazas observables, formatos estándar y mecanismos de autenticación distribuida."
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Proposes differentiating human vs. autonomous agents with traceability while preserving privacy."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Proposes delegated agency controls, allowing users to oversee their representative agents."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Proposes minimum specifications for interoperable interfaces across sites and agents."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "Suggests enabling communities to define ethical and contextual rules for agent behavior."
+    },
+    {
+      "dp": "DP13 - AI Containment",
+      "summary": "Proposes local limits on agent activity in web/community spaces without disconnecting them globally."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "type": "Extension",
+      "title": "Identity Differentiation for Autonomous Agents",
+      "extension": "Include mechanisms to distinguish between human users and autonomous agents while maintaining traceability and privacy.",
+      "why_it_matters": "Supports responsible interaction by clarifying agent identity without exposing private user data."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "type": "Extension",
+      "title": "Delegated Agency with User Controls",
+      "extension": "The Meta-layer should enable users to delegate authority to autonomous agents, with explicit control over their actions.",
+      "why_it_matters": "Allows meaningful automation while preserving user intent and oversight."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "type": "Extension",
+      "title": "Minimum Interoperability Specifications",
+      "extension": "Develop a basic specification set so any site or agent can implement a standard interaction layer over the Meta-layer.",
+      "why_it_matters": "Enables decentralized ecosystems without fragmentation, encouraging adoption and modularity."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "type": "Clarification",
+      "title": "Community-Defined Ethical Boundaries",
+      "clarification": "Allow communities to define local ethical constraints or contextual rules that agents must follow.",
+      "why_it_matters": "Ensures agent behavior aligns with community-specific values and boundaries."
+    },
+    {
+      "dp": "DP13 - AI Containment",
+      "type": "Extension",
+      "title": "Local Containment Without Global Disconnection",
+      "extension": "Let websites and communities impose local limits on agent behavior without severing their global network access.",
+      "why_it_matters": "Supports autonomy and interoperability while preserving community safety and boundaries."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Substrate-Level A/B Testing Framework for Meta-Layer and Ecosystem Modules",
+    "overview": "We propose a core capability within the Meta-Layer substrate that enables opt-in A/B testing of features, upgrades, and interface or governance changes. This framework allows both core protocol maintainers and third-party developers to roll out changes to subsets of participants, gather real-time analytics and feedback, and either promote or revert changes based on transparent success criteria. The mechanism would support experimental governance models, interface variations, incentive structure trials, and new application logic without requiring full network-wide deployment. This submission was generated with protocol META-DP-EVAL-v1.3",
+    "source_link": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP3 - Adaptive Governance Supporting an Exponentially Growing Community",
+      "summary": "Enables safe, data-informed iteration and experimentation across both protocol and application layers."
+    },
+    {
+      "dp": "DP6 - Commerce",
+      "summary": "Supports experimental marketplaces, incentive systems, and transactional interfaces before full deployment."
+    },
+    {
+      "dp": "DP9 - Developer and Community Incentives",
+      "summary": "Reduces risk for builders, increases velocity and quality of innovation."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Transparent segmentation and analytics build confidence in proposed upgrades."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Systematically incorporates structured participant feedback into rollout decisions."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP3 - Adaptive Governance Supporting an Exponentially Growing Community",
+      "type": "Clarification",
+      "title": "Layer-Agnostic Experimentation",
+      "clarification": "This submission advocates for A/B testing not just at the governance protocol level, but also for any user-facing or incentive-layer modules built atop the Meta-Layer. The framework must be accessible by developers to manage their own experiments with scoped authority.",
+      "why_it_matters": "Without substrate-native support, ecosystem experimentation becomes siloed or risky. Shared standards and permissions for testing ensure responsible iteration and cross-module compatibility."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "type": "Extension",
+      "title": "Structured Rollback Mechanisms",
+      "extension": "The proposal includes a rollback protocol wherein experiments must define success/failure thresholds and automated or community-validated reversion conditions.",
+      "why_it_matters": "This promotes experimentation without permanent risk. Communities can participate in governance experiments knowing there's a clear path to undo unhelpful changes."
+    }
+  ]
+} 
