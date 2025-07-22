@@ -3,6 +3,8 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import { ReactNode } from 'react';
 
+console.log('PRIVY DEBUG: NEXT_PUBLIC_PRIVY_APP_ID =', process.env.NEXT_PUBLIC_PRIVY_APP_ID);
+
 interface ProvidersProps {
   children: ReactNode;
 }

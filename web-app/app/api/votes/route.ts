@@ -5,6 +5,13 @@ const privy = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_S
 
 export async function POST(request: NextRequest) {
   try {
+    // Debug: Log environment variables
+    console.log('Environment variables:', {
+      PRIVY_APP_ID: process.env.PRIVY_APP_ID,
+      PRIVY_APP_SECRET: process.env.PRIVY_APP_SECRET ? '***' : 'undefined',
+      NEXT_PUBLIC_PRIVY_APP_ID: process.env.NEXT_PUBLIC_PRIVY_APP_ID,
+    });
+
     const body = await request.json();
     const { elementId, elementType, submissionId, vote } = body;
 
@@ -15,6 +22,8 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.replace('Bearer ', '');
+    console.log('Token received:', token.substring(0, 20) + '...');
+    
     const verifiedClaims = await privy.verifyAuthToken(token);
     
     if (!verifiedClaims) {

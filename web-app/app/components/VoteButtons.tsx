@@ -126,11 +126,13 @@ export default function VoteButtons({
   };
 
   const submitVote = async (vote: 'up' | 'down') => {
-    // TODO: Implement actual API call
+    const accessToken = await privy?.getAccessToken?.();
+    
     const response = await fetch('/api/votes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       },
       body: JSON.stringify({
         elementId,
