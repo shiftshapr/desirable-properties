@@ -1,0 +1,63 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
+    "overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
+    "source_link": "https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "LGBTQ+ users must be able to express identity and participate in digital life without fear of erasure or discrimination."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "summary": "Protecting identity data and ensuring consent-based sharing is critical for safety in queer communities."
+    },
+    {
+      "dp": "DP7 – Simplicity and Interoperability",
+      "summary": "Modular moderation frameworks can empower communities to define their norms and integrate protective tools."
+    },
+    {
+      "dp": "DP8 – Collaborative Environment and Meta-Communities",
+      "summary": "Historic examples show how LGBTQ+ communities thrive when peer-supported networks are enabled."
+    },
+    {
+      "dp": "DP11 – Safe and Ethical AI",
+      "summary": "Algorithmic moderation must be trained and governed to avoid encoding systemic biases."
+    },
+    {
+      "dp": "DP12 – Community-based AI Governance",
+      "summary": "LGBTQ+ perspectives must be structurally included in AI oversight and policy adaptation."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "Transparency in content moderation and platform governance is vital to rebuilding user trust."
+    },
+    {
+      "dp": "DP18 – Feedback Loops and Reputation",
+      "summary": "Inclusion of marginalized voices in feedback mechanisms is essential to adaptive governance."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP11 – Safe and Ethical AI",
+      "type": "Clarification",
+      "title": "Moderation Algorithmic Harm Reduction",
+      "clarification": "The report provides evidence that AI-driven moderation systems, when not trained with inclusive datasets or overseen by diverse communities, systematically misclassify queer content. To be considered ethical, AI must minimize false positives against marginalized identity expression.",
+      "why_it_matters": "Without adjustments, automated tools risk replicating systemic discrimination, undermining the Meta-Layer's mission of inclusive, safe digital spaces."
+    },
+    {
+      "dp": "DP12 – Community-based AI Governance",
+      "type": "Extension",
+      "title": "Participatory Oversight Models",
+      "extension": "The report implies the need for direct LGBTQ+ community participation in the design and auditing of algorithmic systems.",
+      "why_it_matters": "Governance that includes those most affected ensures alignment with real-world user needs and contextual nuance."
+    }
+  ]
+}

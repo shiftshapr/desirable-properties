@@ -1,0 +1,51 @@
+{
+  "submitter": {
+    "first_name": null,
+    "last_name": null,
+    "email": "Jamagax@gmail.com"
+  },
+  "submission": {
+    "title": "Sacred Stacks and Post-Extractive Dev Environments",
+    "overview": "Sacred Stacks is an effort to build software environments that reframe code and digital infrastructure as sacred, relational practice. It proposes a post-extractive model of development where communities can co-create and maintain digital tools grounded in ceremony, kinship, and long-term care. Rather than maximizing speed or efficiency, these environments prioritize collective authorship, slow knowledge, and epistemic sovereignty. Dev environments become cultural environments. This submission was generated with protocol META-DP-EVAL-v1.3",
+    "source_link": null,
+    "raw_content": "Title: Sacred Stacks and Post-Extractive Dev Environments\n\nContribution Overview:\nSacred Stacks is an effort to build software environments that reframe code and digital infrastructure as sacred, relational practice. It proposes a post-extractive model of development where communities can co-create and maintain digital tools grounded in ceremony, kinship, and long-term care. Rather than maximizing speed or efficiency, these environments prioritize collective authorship, slow knowledge, and epistemic sovereignty. Dev environments become cultural environments.\nThis submission was generated with protocol META-DP-EVAL-v1.3\n\nDirectly Addressed Desirable Properties:\n- DP2 – Participant Agency and Empowerment: Communities define the epistemologies and protocols that shape their tooling.\n- DP4 – Data Sovereignty and Privacy: Local-first principles guide data flows and custodianship.\n- DP10 – Education: Learning environments are embedded within the dev stack, encouraging intergenerational transmission.\n- DP14 – Trust and Transparency: Transparent rituals and authoring protocols build trust within and across stacks.\n- DP20 – Community Ownership: Dev environments are stewarded by the communities they serve.\n\nClarifications & Extensions:\n**DP10 – Education: Slow Knowledge and Intergenerational Contexts**\nExtension: Education is treated as a long-term community process. Dev environments support lineage-based learning and non-linear exploration.\nWhy it matters: Helps shift from extractive, market-based skills training to community-authored knowledge ecosystems.\n\n**DP4 – Data Sovereignty and Privacy: Relational Data Ethics**\nClarification: Data governance models incorporate relational and ceremonial constraints, grounded in community-specific ontologies.\nWhy it matters: Expands privacy beyond technical boundaries into cultural and ecological relationships.\n\n(End of Submission)"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "Communities define the epistemologies and protocols that shape their tooling."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "summary": "Local-first principles guide data flows and custodianship."
+    },
+    {
+      "dp": "DP10 – Education",
+      "summary": "Learning environments are embedded within the dev stack, encouraging intergenerational transmission."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "Transparent rituals and authoring protocols build trust within and across stacks."
+    },
+    {
+      "dp": "DP20 – Community Ownership",
+      "summary": "Dev environments are stewarded by the communities they serve."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP10 – Education",
+      "type": "Extension",
+      "title": "Slow Knowledge and Intergenerational Contexts",
+      "extension": "Education is treated as a long-term community process. Dev environments support lineage-based learning and non-linear exploration.",
+      "why_it_matters": "Helps shift from extractive, market-based skills training to community-authored knowledge ecosystems."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "type": "Clarification",
+      "title": "Relational Data Ethics",
+      "clarification": "Data governance models incorporate relational and ceremonial constraints, grounded in community-specific ontologies.",
+      "why_it_matters": "Expands privacy beyond technical boundaries into cultural and ecological relationships."
+    }
+  ]
+}

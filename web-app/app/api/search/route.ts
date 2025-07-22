@@ -6,7 +6,7 @@ import Fuse from 'fuse.js';
 // Load data helper functions
 function loadDesirableProperties() {
   try {
-    const filePath = path.join(process.cwd(), 'data', 'desirable-properties.json');
+    const filePath = path.join(process.cwd(), 'data', 'compiled', 'desirable-properties.json');
     console.log('Loading DPs from:', filePath);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(fileContent);
@@ -34,7 +34,7 @@ function loadSubmissions() {
 
 function loadCategories() {
   try {
-    const filePath = path.join(process.cwd(), 'data', 'categories.json');
+    const filePath = path.join(process.cwd(), 'data', 'compiled', 'categories.json');
     console.log('Loading categories from:', filePath);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(fileContent);

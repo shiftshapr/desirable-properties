@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "dp_number": 5,
+    "dp": "DP5 - Decentralized Namespace",
+    "generated_at": "2025-07-11T14:31:44.407897",
+    "total_alignments": 5,
+    "total_clarifications": 1,
+    "total_extensions": 2,
+    "source_compiled_file": "allstructured.json"
+  },
+  "alignments": [
+    {
+      "summary": "Protects community identifiers from seizure or censorship.",
+      "submission_title": "Secure, Organic Community Formation on the Meta-layer",
+      "submission_overview": "This submission proposes pathways for vulnerable and like-minded communities to discover one another, coordinate securely, and exchange value peer-to-peer without relying on centralized platforms. It includes recommendations for enhancing Desirable Properties to better protect these communities from deplatforming, surveillance, and identity compromise. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Liz Sweigart",
+      "submitter_email": "lizsweig@gmail.com",
+      "source_file": "5.json"
+    },
+    {
+      "summary": "Decentralized IDs and tags for posts, paths, and navigation objects.",
+      "submission_title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "submission_overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "9.json"
+    },
+    {
+      "summary": "Utilizes name chains (@user/object) as decentralized pointers with verifiable semantics and conflict resolution logic.",
+      "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
+      "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "21.json"
+    },
+    {
+      "summary": "NDN supports hierarchical, semantically meaningful naming that maps directly to users and their data, independent of physical nodes.",
+      "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
+      "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "22.json"
+    },
+    {
+      "summary": "Addresses namespace rights and management for non-human entities in interoperable systems.",
+      "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
+      "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "24.json"
+    }
+  ],
+  "clarifications": [
+    {
+      "title": "Trust Schema-Driven Semantics",
+      "why_it_matters": "This approach empowers communities to create and evolve naming structures meaningful to their use cases, with security guarantees that scale organically.",
+      "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
+      "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "22.json",
+      "clarification": "This work exemplifies how semantic, hierarchical namespaces can be coupled with enforceable trust schemas, allowing context-aware permissions and auditability without DNS or platform dependency."
+    }
+  ],
+  "extensions": [
+    {
+      "title": "Interoperable Navigation Identifiers",
+      "why_it_matters": "Enables search, recomposition, and reuse without central indexing.",
+      "submission_title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "submission_overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submitter_name": "Chris Santos-Lang",
+      "submitter_email": "langchri@gmail.com",
+      "source_file": "9.json",
+      "extension": "Define a decentralized naming system for posts, paths, and navigator components."
+    },
+    {
+      "title": "Name Chains as URI-Resolvable Trust Anchors",
+      "why_it_matters": "This extends DNS-style naming into the trust layer of the Metaweb, enabling structured reference to people, objects, and assertions in a verifiable and user-controlled manner.",
+      "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
+      "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+      "submitter_name": "Daveed Benjamin",
+      "submitter_email": "daveed@bridgit.io",
+      "source_file": "21.json",
+      "extension": "Name chains (e.g., @jaime/artifact99) function as semantic, URI-like identifiers with resolution pathways that combine identity verification and object authentication."
+    }
+  ]
+}

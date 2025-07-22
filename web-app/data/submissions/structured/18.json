@@ -1,0 +1,56 @@
+{
+  "submitter": {
+    "first_name": "Patrick",
+    "last_name": "Hoagland",
+    "email": "sfghoagland@gmail.com"
+  },
+  "submission": {
+    "title": "DiCAMS: Dynamic Intelligent Context-Aware Memory System",
+    "overview": "DiCAMS (Dynamic Intelligent Context-Aware Memory System) is a patent-pending cognitive infrastructure designed to give AI true continuity over time — across both structured and unstructured data. Most AI systems today — even those using RAG or agent-based architectures — lack persistent, intelligent memory. They retrieve information but don’t maintain continuity. DiCAMS solves this by generating a dynamic memory graph that grows and adapts with user input, real-world data, and contextual signals. Think of it as a scaffolded memory system that doesn’t just store — it organizes, summarizes, and forgets intelligently.\n\nWhere this matters most:\n- Healthcare: longitudinal patient data contextualization\n- Enterprise AI: evolving knowledge workflows\n- Agent ecosystems: shared context and alignment\n\nDiCAMS acts like a smart librarian — not only filing information but writing the index, linking the chapters, and updating the story as it unfolds. It’s not just a better retrieval system. It’s a meta-layer for cognition — the missing infrastructure for truly intelligent, user-aligned AI.\n\nThis submission was generated with protocol META-DP-EVAL-v1.3"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "Supports ethical AI by maintaining contextual continuity and avoiding hallucinations or disjointed actions across time."
+    },
+    {
+      "dp": "DP13 - AI Containment",
+      "summary": "Establishes structured memory boundaries, enabling agents to retain context without uncontrolled knowledge accumulation."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Dynamic memory adapts based on real-world feedback and contextual learning, supporting evolving reputational frameworks."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Structured memory graphs enable fine-grained control and partitioning of personal or enterprise data."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Acts as a cognitive bridge across data types and systems, simplifying agent memory handling."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP11",
+      "type": "Clarification",
+      "title": "Continuity as a Foundation for Ethical AI",
+      "clarification": "DiCAMS ensures that AI systems don’t behave unpredictably due to memory loss or lack of context. Ethical behavior is reinforced by sustained situational awareness.",
+      "why_it_matters": "Many harms from AI arise from decontextualized interactions. Continuity is foundational to responsibility."
+    },
+    {
+      "dp": "DP13",
+      "type": "Extension",
+      "title": "Dynamic Memory Containment for Multi-Agent Context Sharing",
+      "extension": "Rather than confining an AI’s behavior via sandboxing alone, DiCAMS enables memory containment—scoping what an agent remembers or forgets per domain or task.",
+      "why_it_matters": "Context sharing between agents is powerful—but without containment, it creates security and alignment risks."
+    },
+    {
+      "dp": "DP18",
+      "type": "Extension",
+      "title": "Memory-Informed Feedback Loops",
+      "extension": "The evolving structure of DiCAMS’ graph reflects interaction feedback, reputation signals, and relevance decay.",
+      "why_it_matters": "Feedback becomes more meaningful when it shapes what the system remembers and emphasizes."
+    }
+  ]
+}

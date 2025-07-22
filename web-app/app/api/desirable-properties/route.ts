@@ -31,12 +31,23 @@ let cachedDesirableProperties: DesirablePropertiesData | null = null;
 let lastModified: number = 0;
 
 // File path for the data
-const dataFilePath = path.join(process.cwd(), 'data', 'desirable-properties.json');
+const dataFilePath = path.join(process.cwd(), 'data', 'compiled', 'desirable-properties.json');
 
 // Load data from JSON file
 function loadDesirableProperties(): DesirablePropertiesData {
   const fileContent = fs.readFileSync(dataFilePath, 'utf8');
-  return JSON.parse(fileContent);
+  const data = JSON.parse(fileContent);
+  console.log('Loaded desirable properties data:', {
+    total_properties: data.desirable_properties.length,
+    sample_dp: data.desirable_properties[0] ? {
+      id: data.desirable_properties[0].id,
+      name: data.desirable_properties[0].name,
+      has_landing_title: !!data.desirable_properties[0].landing_title,
+      has_landing_subtitle: !!data.desirable_properties[0].landing_subtitle,
+      has_landing_text: !!data.desirable_properties[0].landing_text
+    } : null
+  });
+  return data;
 }
 
 // Check if file has been modified and reload if necessary

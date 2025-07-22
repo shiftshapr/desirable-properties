@@ -1,0 +1,54 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Can Directories Rise Again?",
+    "overview": "This submission reflects on the current deteriorating state of web search, emphasizing how AI-generated content and algorithmic prioritization have reduced the human-centric experience of exploration. It draws parallels with the early days of Yahoo! and its surfer-driven directories to propose a revival of decentralized, point-of-view-rich human directories. These directories, distributed across communities rather than centralized institutions, can rekindle authentic discovery and trust online. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": "https://thehistoryoftheweb.com/can-directories-rise-again/"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Encourages individuals to become surfers—curators of the web—reclaiming control over discovery."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Decentralized directories lessen reliance on centralized data-harvesting engines."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Advocates for human-readable, easily navigable collections of web content."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Envisions fragmented but federated groups forming their own directories based on shared interests."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Replaces opaque algorithmic filters with visible human judgement."
+    },
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "summary": "Celebrates and reinvigorates community-authored content as a core navigational tool."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "type": "Clarification",
+      "title": "Surfing, Not Culling",
+      "clarification": "While traditional curation aims to distill content into elite lists, the proposed surfer-model embraces broader and more inclusive collection. Surfers may embrace abundance and variety, linking generously rather than minimalistically, enabling multi-threaded explorations across topics and interests.",
+      "why_it_matters": "This promotes a more vibrant and participatory discovery ecosystem, where communities can grow organically around shared explorations rather than compete for finite slots in a rigid canon."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "type": "Extension",
+      "title": "Voice and Visibility",
+      "extension": "Trust in modern web search has declined due to hidden ranking criteria and impersonal AI output. Directories created by named individuals or communities, expressing unique voices, offer an alternative trust model based on visible provenance and subjective transparency.",
+      "why_it_matters": "Reintroducing voice and human discernment in content organization helps rebuild credibility in online navigation, encouraging ethical and accountable information sharing."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "submitter": {
+    "first_name": "Wojak",
+    "last_name": "K",
+    "email": "wojakk3336@gmail.com"
+  },
+  "submission": {
+    "title": "AI-Augmented Data Visibility for Safer Web Experiences",
+    "overview": "This submission proposes an AI-augmented tool (e.g., a browser extension or embedded prototype) that transparently reveals what data is being collected and tracked during web interactions. It aims to equip users with actionable insight into data flows and help mitigate exploitative ad-based surveillance. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Empowers users to understand and control how their data is collected and shared."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Enables visibility into third-party trackers and data collectors, promoting stronger user data control."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Introduces transparent, real-time visualizations of data tracking behavior to rebuild trust in web interactions."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Supports efforts to prevent data misuse by surfacing insecure or opaque data flows."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "type": "Clarification",
+      "title": "Visual Data Awareness Tools",
+      "clarification": "This submission suggests that tools helping users visualize which data is being harvested—especially through ads or embedded trackers—should be considered a core part of data sovereignty.",
+      "why_it_matters": "When users are unaware of ongoing surveillance, sovereignty is functionally absent. Making data tracking legible is a first step toward reclaiming control."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Real-Time Adversarial Tracking Indicators",
+      "extension": "Integrating AI-driven detection of manipulative or excessive tracking behavior with real-time alerts and summaries can extend the Meta-layer's trust framework.",
+      "why_it_matters": "This creates a responsive and educational layer that cultivates informed digital behavior while countering abusive practices."
+    }
+  ]
+}

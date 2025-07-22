@@ -1,0 +1,63 @@
+{
+  "submitter": {
+    "first_name": "Eric",
+    "last_name": "Schneider",
+    "email": "eric@jpberlin.de"
+  },
+  "submission": {
+    "title": "Seeding Generational Familiarity with the Meta-Layer Through Purpose-Driven Educational Use and Scandinavian Journalism Partnerships",
+    "overview": "Early Use Case Scandinavian Journalism Newsrooms combined with Seeding Generational Familiarity through Purpose-Driven Use in Education. This submission proposes a dual-entry approach to introduce the Meta-Layer and the Overweb to broad audiences by focusing on two interrelated use cases: education and journalism. First, in the school sector—particularly across Europe—project-based learning environments can integrate Meta-Layer tools to foster youth engagement with a safer, purpose-driven, and participatory web. Second, Scandinavia represents a particularly fertile region for a journalist-specific integration of the Meta-Layer. With strong traditions of collaborative civic culture, peaceful education systems, and relatively depolarized journalism ecosystems, countries like Denmark and Sweden could pioneer the use of a dedicated journalistic layer. This would empower newsrooms to verify content, trace sources, and resist the creep of misinformation. These use cases are mutually reinforcing and could provide a resilient first foothold for broader adoption. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "Enables both students and journalists to actively contribute to truth-marking and bridge-building that shape public understanding."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "summary": "Protects privacy and integrity in classrooms and newsrooms by avoiding surveillance and platform exploitation."
+    },
+    {
+      "dp": "DP7 – Simplicity and Interoperability",
+      "summary": "Supports integration into educational and journalistic workflows without replacing existing systems."
+    },
+    {
+      "dp": "DP8 – Collaborative Environment and Meta-Communities",
+      "summary": "Fosters cross-institutional civic collaboration between schools and newsrooms for mutual verification and shared mission."
+    },
+    {
+      "dp": "DP10 – Education",
+      "summary": "Provides structured environments for students to develop digital literacy, inquiry, and collaborative knowledge validation."
+    },
+    {
+      "dp": "DP11 – Safe and Ethical AI",
+      "summary": "Ensures human oversight in digital content mediation through verified annotation and bridge-building tools."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "Supports reclaiming journalistic and educational integrity through visibility into source consensus and controversy."
+    },
+    {
+      "dp": "DP19 – Amplifying Presence and Community Engagement",
+      "summary": "Uses youth and Scandinavian newsroom engagement to scale adoption and relevance of the Meta-Layer."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP10 – Education",
+      "type": "Extension",
+      "title": "Integrative Use in Formal Curricula",
+      "extension": "Proposes the Meta-Layer as a core educational tool embedded in curricula across sustainability, citizenship, and intercultural themes, enabling youth to use Meta-Layer tools for inquiry, annotation, and presentation.",
+      "why_it_matters": "Embedding the Meta-Layer in student learning ensures early familiarity with trustworthy digital practices and collaborative, ethical knowledge creation."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Scandinavian Journalism as a Pilot Region",
+      "extension": "Suggests piloting the Meta-Layer with Scandinavian newsrooms due to civic trust and low polarization, allowing verification tools to enhance newsroom practices and public trust.",
+      "why_it_matters": "A low-risk, high-trust context offers an ideal environment for demonstrating the Meta-Layer's power in journalism, with models ready to be replicated globally."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "submitter": {
+    "first_name": "Eric",
+    "last_name": "Schneider",
+    "email": "eric@jpberlin.de"
+  },
+  "submission": {
+    "title": "Rebranding the Metaweb to Overweb",
+    "overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'—a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "summary": "Addresses public perception and narrative clarity by distinguishing the Metaweb from negative connotations of the Metaverse, thus supporting adoption and engagement."
+    },
+    {
+      "dp": "DP20 - Community Ownership",
+      "summary": "Advocates for a name that reflects grassroots identity and shared authorship rather than co-opted corporate branding."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "type": "Clarification",
+      "title": "Overweb as Memetic Anchor",
+      "clarification": "The term 'Overweb' offers intuitive resonance, framing the Meta-Layer as something above and beyond traditional web systems, and sidestepping metaphoric confusion with dystopian 'Metaverse' narratives.",
+      "why_it_matters": "Names shape public discourse. A clear, distinct, and resonant name helps communities rally, media to clarify, and the public to differentiate between extractive and empowering digital futures."
+    }
+  ]
+}

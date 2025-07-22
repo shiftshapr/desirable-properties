@@ -1,0 +1,71 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Enhancing Whistleblower Protection within the Meta-Layer",
+    "overview": "This submission draws upon established frameworks from WPAC (2015) and Security.org to propose enhancements to whistleblower systems in alignment with the Meta-Layer's Desirable Properties. It emphasizes secure, anonymized federated authentication, user-controlled data sovereignty, interoperable and simplified reporting interfaces, and system-wide transparency and security protocols. These systems are essential to protect whistleblowers from retaliation and to ensure credibility, participation, and systemic accountability. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Supports secure, anonymous access through decentralized ID while maintaining accountability."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Proposes whistleblower-controlled data and encrypted, decentralized storage."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Recommends standardized open protocols for reporting and data handling."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Calls for transparent case updates and anonymized reporting to build trust."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Proposes blockchain-based timestamping and digital signatures to secure reports."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "type": "Clarification",
+      "title": "Enhancing Whistleblower Protections",
+      "clarification": "Implementing federated authentication can authenticate users without revealing identities using decentralized identity solutions.",
+      "why_it_matters": "Balancing accountability with anonymity encourages whistleblowing while deterring fraud."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "type": "Extension",
+      "title": "Empowering Whistleblowers through Data Control",
+      "extension": "Platforms should allow whistleblowers to manage, delete, or anonymize data, with end-to-end encryption and decentralized storage.",
+      "why_it_matters": "Data sovereignty increases trust and compliance, encouraging more disclosures."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "type": "Clarification",
+      "title": "Streamlining Reporting Mechanisms",
+      "clarification": "Standardized interfaces simplify whistleblower submissions across systems.",
+      "why_it_matters": "Ease of use reduces barriers to participation and improves processing efficiency."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "type": "Extension",
+      "title": "Building Confidence in Whistleblower Systems",
+      "extension": "Provide submission updates and publish anonymized outcome data to show system effectiveness.",
+      "why_it_matters": "Visible accountability reassures users that reports lead to meaningful action."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "type": "Clarification",
+      "title": "Ensuring Integrity of Whistleblower Reports",
+      "clarification": "Use digital signatures and blockchain-based timestamping to verify authenticity.",
+      "why_it_matters": "Securing report integrity is essential for legal and investigative follow-up."
+    }
+  ]
+}

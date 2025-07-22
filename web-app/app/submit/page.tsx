@@ -12,7 +12,10 @@ interface SubmissionForm {
   title: string;
   overview: string;
   rawContent: string;
-  addressedDPs: string[];
+  addressedDPs: Array<{
+    dp: string;
+    summary: string;
+  }>;
   clarifications: Array<{
     dp: string;
     type: 'Clarification' | 'Extension';
@@ -63,15 +66,16 @@ export default function SubmitPage() {
     'DP17 - Financial Sustainability',
     'DP18 - Feedback Loops and Reputation',
     'DP19 - Amplifying Presence and Community Engagement',
-    'DP20 - Community Ownership'
+    'DP20 - Community Ownership',
+    'DP21 - Multi-modal'
   ];
 
   const handleDPToggle = (dp: string) => {
     setFormData(prev => ({
       ...prev,
-      addressedDPs: prev.addressedDPs.includes(dp)
-        ? prev.addressedDPs.filter(d => d !== dp)
-        : [...prev.addressedDPs, dp]
+      addressedDPs: prev.addressedDPs.some(d => d.dp === dp)
+        ? prev.addressedDPs.filter(d => d.dp !== dp)
+        : [...prev.addressedDPs, { dp, summary: '' }]
     }));
   };
 
@@ -124,8 +128,8 @@ export default function SubmitPage() {
           raw_content: formData.rawContent
         },
         directly_addressed_dps: formData.addressedDPs.map(dp => ({
-          dp,
-          summary: `This submission addresses ${dp}`
+          dp: dp.dp,
+          summary: dp.summary || `This submission addresses ${dp.dp}`
         })),
         clarifications_and_extensions: formData.clarifications.map(clar => ({
           dp: clar.dp,
@@ -323,18 +327,55 @@ export default function SubmitPage() {
             <p className="text-sm text-gray-600 mb-4">
               Select all Desirable Properties that your submission addresses:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
-              {desirableProperties.map((dp) => (
-                <label key={dp} className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.addressedDPs.includes(dp)}
-                    onChange={() => handleDPToggle(dp)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{dp}</span>
-                </label>
-              ))}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {desirableProperties.map((dp) => (
+                  <label key={dp} className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.addressedDPs.some(d => d.dp === dp)}
+                      onChange={() => handleDPToggle(dp)}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-gray-700">{dp}</span>
+                  </label>
+                ))}
+              </div>
+              
+              {/* Summary inputs for selected DPs */}
+              {formData.addressedDPs.length > 0 && (
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">
+                    Summary for Each Selected Desirable Property
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Please provide a brief summary of how your submission addresses each selected Desirable Property:
+                  </p>
+                  <div className="space-y-4">
+                    {formData.addressedDPs.map((dpItem, index) => (
+                      <div key={dpItem.dp} className="border border-gray-200 rounded-lg p-4 bg-white">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {dpItem.dp}
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={dpItem.summary}
+                          onChange={(e) => {
+                            setFormData(prev => ({
+                              ...prev,
+                              addressedDPs: prev.addressedDPs.map((item, i) =>
+                                i === index ? { ...item, summary: e.target.value } : item
+                              )
+                            }));
+                          }}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder={`Briefly explain how your submission addresses ${dpItem.dp}...`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

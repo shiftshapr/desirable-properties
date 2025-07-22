@@ -1,0 +1,128 @@
+{
+  "submitter": {
+    "first_name": "Chris",
+    "last_name": "Santos-Lang",
+    "email": "langchri@gmail.com"
+  },
+  "submission": {
+    "title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+    "overview": "This submission introduces Navigator User Interfaces (NUIs) as a new standard for customizable, shareable navigation tools across web-based tasks, educational flows, and collaborative work. NUIs propose a federated ecosystem of navigation frameworks allowing pluralistic learning, interaction, and AI-guided exploration, grounded in a shared regular panel. This enables remixable workflows while supporting agency, privacy, transparency, and ethical alignment. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": "[Full original submission text, as provided, is preserved here.]"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Standard hooks for federated trust, attribution, and user-linked navigation components."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "User-created paths and tools empower navigational authorship and customization."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Privacy protections and user-controlled sharing in collaborative navigation flows."
+    },
+    {
+      "dp": "DP5 - Decentralized Namespace",
+      "summary": "Decentralized IDs and tags for posts, paths, and navigation objects."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Cross-platform plug-in model for browser or overlay-based NUI modules."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Remixable meta-environment for shared pedagogy, research, and workflow design."
+    },
+    {
+      "dp": "DP10 - Education",
+      "summary": "Structured learning flows, feedback loops, and teaching tools embedded in NUI design."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "AI agents within NUI paths are visible, reviewable, and governed through feedback."
+    },
+    {
+      "dp": "DP12 - Community-based AI Governance",
+      "summary": "Formalized participatory control over AI agent behavior in shared workflows."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Versioning, edit history, and transparent navigator behaviors build trust."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Path usage and adoption informs reputation of components and contributors."
+    },
+    {
+      "dp": "DP20 - Community Ownership",
+      "summary": "NUIs act as community-authored infrastructure supporting participatory design."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 – Federated Authentication & Accountability",
+      "type": "Change",
+      "title": "Navigator Preference and Trust Hook Integration",
+      "extension": "Support shared user-linked metadata across NUIs for reputation, settings, and context continuity.",
+      "why_it_matters": "Enables personalized yet portable experiences across community tools and teams."
+    },
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "type": "Extension",
+      "title": "Path Authorship and Remixing as User Empowerment",
+      "extension": "Users should be able to author and fork navigational flows with fine-grained control.",
+      "why_it_matters": "Gives agency over how tools are used, shared, and adapted."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "type": "Clarification",
+      "title": "Private and Granular Visibility of Navigational Artifacts",
+      "clarification": "Clarify mechanisms for selectively sharing, subscribing, or encrypting shared paths and posts.",
+      "why_it_matters": "Protects user context while enabling collaborative utility."
+    },
+    {
+      "dp": "DP5 – Decentralized Namespace",
+      "type": "Extension",
+      "title": "Interoperable Navigation Identifiers",
+      "extension": "Define a decentralized naming system for posts, paths, and navigator components.",
+      "why_it_matters": "Enables search, recomposition, and reuse without central indexing."
+    },
+    {
+      "dp": "DP7 – Simplicity and Interoperability",
+      "type": "Extension",
+      "title": "Pluggable Navigator Layers",
+      "extension": "Support light-touch modular implementation that overlays on existing apps.",
+      "why_it_matters": "Avoids heavy platform coupling, encourages adoption."
+    },
+    {
+      "dp": "DP10 – Education",
+      "type": "Extension",
+      "title": "Live Learning Flows and Adaptive Guidance",
+      "extension": "Support NUI-based pedagogy through real-time feedback, question paths, and comprehension scaffolds.",
+      "why_it_matters": "Supports asynchronous and distributed learning communities."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Versioning and Edit Trails in Navigational Layers",
+      "extension": "Track and display modifications to shared paths and flows.",
+      "why_it_matters": "Supports epistemic integrity and collaborative governance."
+    },
+    {
+      "dp": "DP18 – Feedback Loops and Reputation",
+      "type": "Extension",
+      "title": "Usage-informed Curation Metrics",
+      "extension": "Log and surface usage metrics for navigators to inform remix and signal trust.",
+      "why_it_matters": "Allows bottom-up reputation and preference emergence."
+    },
+    {
+      "dp": "DP20 – Community Ownership",
+      "type": "Extension",
+      "title": "Community-maintained Navigational Infrastructure",
+      "extension": "Design NUIs as co-owned scaffolding tools that grow with community needs.",
+      "why_it_matters": "Shifts UI control from platforms to people."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "submitter": {
+    "first_name": "Michael",
+    "last_name": "Witmore",
+    "email": "michaelwitmore@gmail.com"
+  },
+  "submission": {
+    "title": "A Trusted Annotation Layer for Shakespeare's Plays",
+    "overview": "This submission proposes a web-based annotation layer focused initially on the works of William Shakespeare. For centuries, scholars and readers have annotated Shakespeare’s plays with footnotes and glosses. Yet, most online editions—including high-traffic projects like Open Source Shakespeare—lack accessible footnotes. This effort would establish a collaborative, trusted, and extensible annotation system allowing footnotes and glosses to be layered directly onto public web texts. With a focus on educational value, transparency, and collaborative authorship, this system would begin with Shakespeare but extend to other canonical and public domain texts. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Enables distributed annotation and scholarly collaboration through a structured, community-based interface."
+    },
+    {
+      "dp": "DP10 - Education",
+      "summary": "Creates an open educational resource that enhances learning, literacy, and contextual understanding of classical texts."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Implements clearly sourced, peer-reviewed annotations and visible version history to ensure reliability."
+    },
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "summary": "Invites wide participation from educators, students, and literature enthusiasts, fostering cultural engagement and co-creation."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "type": "Clarification",
+      "title": "Peer Review and Version Tracking in Annotation Layers",
+      "clarification": "The annotation system includes mechanisms for peer review and visible version histories, ensuring transparency in scholarly collaboration.",
+      "why_it_matters": "Scholarly annotations must be both credible and open to scrutiny; version tracking fosters trust in collaborative contributions."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "type": "Clarification",
+      "title": "Structured Collaboration Across Domains",
+      "clarification": "The platform allows contributors to collaboratively annotate texts in a modular, structured format that supports future extension to other texts and contexts.",
+      "why_it_matters": "This structured collaborative interface lowers barriers to entry and encourages sustained contribution from diverse communities."
+    }
+  ]
+}

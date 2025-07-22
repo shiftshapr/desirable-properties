@@ -1,0 +1,62 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
+    "overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
+    "source_link": null,
+    "raw_content": "Website: themetalayer.org\nForm name: Contact form\nDetails: Name: Daveed\nLast name: Benjamin\nShort answer email: daveed@bridgit.io\nDesirable Property: Multiple\nContribute an Idea: Title: Shared Tray Protocol for Coordinated Overlay Interfaces Summary: I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction. Overlays would be able to: Register a “startup icon” and metadata (name, role, permissions) Indicate availability or priority Respect a shared system for tray placement and visibility Defer to user preferences in display and ordering Users could: Configure which overlays are pinned or expanded Access others on demand via an expandable tray Rely on consistent placement and behavior across sites and browsers Next Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX. Related Desirable Properties: DP2 - Participant Agency and Empowerment: Enhances control over the interface layer. DP7 - Simplicity and Interoperability: Establishes a common UX protocol for overlays. DP8 - Collaborative Environment and Meta-Communities: Enables coexistence of decentralized overlay tools. DP14 - Trust and Transparency: Provides a transparent view into which overlays are active. DP16 - Roadmap and Milestones: Suggests a clear pathway toward W3C standardization. DP19 - Amplifying Presence and Community Engagement: Surfaces community overlays without clutter. Proposal Type: Cross-cutting system-level extension with a potential path to web standardization. Open Questions: Should the Meta-layer take responsibility for bootstrapping such a protocol, or should it emerge separately and plug in? What permission model should govern overlay visibility or auto-activation? Could overlays be ranked or filtered contextually based on the site being visited?"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Enhances control over the interface layer."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "Establishes a common UX protocol for overlays."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "Enables coexistence of decentralized overlay tools."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Provides a transparent view into which overlays are active."
+    },
+    {
+      "dp": "DP16 - Roadmap and Milestones",
+      "summary": "Suggests a clear pathway toward W3C standardization."
+    },
+    {
+      "dp": "DP19 - Amplifying Presence and Community Engagement",
+      "summary": "Surfaces community overlays without clutter."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "type": "Clarification",
+      "title": "Overlay Autonomy via Interface Preferences",
+      "clarification": "User interface autonomy is extended to the tray layer, giving users the ability to manage and curate their engagement with decentralized tools.",
+      "why_it_matters": "Agency at the interface level increases usability and inclusivity, especially when decentralized tools proliferate."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "type": "Extension",
+      "title": "System-wide Protocol for Tray Coordination",
+      "extension": "Establishing a UX-wide protocol harmonizes tool coexistence while reducing cognitive load and visual clutter.",
+      "why_it_matters": "Interoperability across diverse overlays improves accessibility and promotes ecosystem cohesion."
+    },
+    {
+      "dp": "DP16 - Roadmap and Milestones",
+      "type": "Extension",
+      "title": "W3C Community Group Formation",
+      "extension": "Proposal includes a concrete first step: establish an open standard via a recognized governance body.",
+      "why_it_matters": "Incorporating a standards track legitimizes the work and supports long-term adoption across browsers."
+    }
+  ]
+}

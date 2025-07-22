@@ -1,0 +1,79 @@
+{
+  "submitter": {
+    "first_name": "Daveed",
+    "last_name": "Benjamin",
+    "email": "daveed@bridgit.io"
+  },
+  "submission": {
+    "title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
+    "overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Trust schemas and semantic naming underpin a federated model allowing users to authenticate and verify data without centralized servers."
+    },
+    {
+      "dp": "DP2 - Participant Agency and Empowerment",
+      "summary": "Users hold their own keys, control their identities, and can securely communicate without intermediaries."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Data is secured at rest and in transit using cryptographic methods, with users retaining full control over access and replication."
+    },
+    {
+      "dp": "DP5 - Decentralized Namespace",
+      "summary": "NDN supports hierarchical, semantically meaningful naming that maps directly to users and their data, independent of physical nodes."
+    },
+    {
+      "dp": "DP7 - Simplicity and Interoperability",
+      "summary": "The SVS-PS framework and modular architecture enable developers to build interoperable applications using standardized primitives."
+    },
+    {
+      "dp": "DP8 - Collaborative Environment and Meta-Communities",
+      "summary": "NDN Workspace facilitates real-time and asynchronous collaboration among peers using common protocols and shared semantics."
+    },
+    {
+      "dp": "DP11 - Safe and Ethical AI",
+      "summary": "Semantic naming and data integrity verification provide foundational structures for embedding safety checks and traceability into AI outputs."
+    },
+    {
+      "dp": "DP13 - AI Containment",
+      "summary": "Data packets and their lineage are verifiable and auditable, ensuring that outputs from intelligent agents can be bounded by trust domains."
+    },
+    {
+      "dp": "DP14 - Trust and Transparency",
+      "summary": "Hierarchical trust schemas and immutable certificates make the provenance of user actions and data auditable by all peers."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Every piece of data is cryptographically signed, allowing recipients to verify authorship and detect tampering."
+    },
+    {
+      "dp": "DP18 - Feedback Loops and Reputation",
+      "summary": "Future extensions with certificate revocation and verifiable endorser sets support decentralized audit and reputation."
+    },
+    {
+      "dp": "DP20 - Community Ownership",
+      "summary": "No central entity controls namespace, data routing, or identity verification—users and their communities manage these through shared schemas."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP5 – Decentralized Namespace",
+      "type": "Clarification",
+      "title": "Trust Schema-Driven Semantics",
+      "clarification": "This work exemplifies how semantic, hierarchical namespaces can be coupled with enforceable trust schemas, allowing context-aware permissions and auditability without DNS or platform dependency.",
+      "why_it_matters": "This approach empowers communities to create and evolve naming structures meaningful to their use cases, with security guarantees that scale organically."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Packet-Level Provenance",
+      "extension": "Beyond naming and signature verification, this work implements record-level validation chains where each action can be traced to a user and verified through their certificate lineage.",
+      "why_it_matters": "It shifts the trust boundary from servers and platforms to cryptographically verified assertions made by individuals, enhancing transparency and minimizing systemic trust dependencies."
+    }
+  ]
+}

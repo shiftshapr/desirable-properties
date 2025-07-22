@@ -1,0 +1,47 @@
+{
+  "submitter": {
+    "first_name": "Sandeep",
+    "last_name": "Chakravartty",
+    "email": "sandeepchakravartty@gmail.com"
+  },
+  "submission": {
+    "title": "Global Recognition of Prior Learning via Meta-Layer Credentials",
+    "overview": "This submission proposes a standardized extension of Recognition of Previous Learning (RPL) by leveraging the badge-based credentialing system of the Meta-Layer. The objective is to create a globally verifiable, interoperable framework that educational institutions can universally recognize, enabling learners to carry validated learning achievements across jurisdictions and systems. The initiative encourages integration with existing academic accreditation bodies while preserving decentralized verification and learner agency. This submission was generated with protocol META-DP-EVAL-v1.3",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "Empowers learners by formalizing their informal, non-traditional, or experiential learning into portable credentials."
+    },
+    {
+      "dp": "DP10 – Education",
+      "summary": "Elevates lifelong learning by making Meta-Layer badges recognizable and redeemable within formal education systems globally."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "summary": "Ensures open verification of credentials via cryptographic provenance, building institutional and learner trust."
+    },
+    {
+      "dp": "DP18 – Feedback Loops and Reputation",
+      "summary": "Institutions gain visibility into the quality and application of decentralized learning credentials, enhancing iterative refinement and adoption."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP10 – Education",
+      "type": "Extension",
+      "title": "Cross-System Recognition Framework for Meta-Layer Credentials",
+      "extension": "This extension introduces an open protocol and institutional toolkit for educational bodies to evaluate and formally recognize Meta-Layer badges as equivalent to course credits or certifications. It includes schema translation modules, peer-review validation mechanics, and compatibility scoring.",
+      "why_it_matters": "Without institutional recognition, the utility of Meta-Layer credentials remains limited. A cross-system framework enables decentralized learning to materially impact academic progression, career mobility, and policy influence at scale."
+    },
+    {
+      "dp": "DP14 – Trust and Transparency",
+      "type": "Extension",
+      "title": "Accreditor-Attestable Verification Layer",
+      "extension": "Adds a feature allowing third-party educational accreditors to digitally co-sign badge authenticity, improving trust in international or high-stakes credential applications.",
+      "why_it_matters": "To gain widespread adoption, especially among conservative institutions, credentials must be both machine-verifiable and humanly trusted. This co-signing mechanism provides a clear audit trail and formal endorsement."
+    }
+  ]
+}

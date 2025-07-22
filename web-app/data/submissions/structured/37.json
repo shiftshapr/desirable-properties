@@ -1,0 +1,59 @@
+{
+  "submitter": {
+    "first_name": "Eric",
+    "last_name": "Schneider",
+    "email": "eric@jpberlin.de"
+  },
+  "submission": {
+    "title": "Family-Centered Introduction of the Meta-Layer for Safer, Co-Creative Internet Engagement",
+    "overview": "This submission proposes a public introduction strategy for the Meta-Layer and the Overweb that centers on families—parents, children, and teenagers—by addressing their everyday digital challenges and aspirations. It emphasizes trust-based engagement over restriction, promoting an environment where youth can safely explore, learn, and contribute meaningfully to the co-creation of digital culture. Rather than pursuing institutional entry points (e.g., via schools or governments), this strategy focuses on engaging family media—parenting magazines, youth outlets, school take-home materials—with an invitation to participate. The initiative envisions the Meta-Layer as a viable alternative to the corporate internet, providing young people with a healthier, more creative, and civically empowered online life. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": null
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP2 – Participant Agency and Empowerment",
+      "summary": "Empowers youth and parents alike to shape online experiences collaboratively rather than being passive consumers."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "summary": "Highlights the Meta-Layer as a safer space with reduced surveillance and predatory behavior, appealing to family concerns."
+    },
+    {
+      "dp": "DP7 – Simplicity and Interoperability",
+      "summary": "Uses existing family-facing channels for scalable, low-friction adoption and introduces the Meta-Layer in everyday contexts."
+    },
+    {
+      "dp": "DP8 – Collaborative Environment and Meta-Communities",
+      "summary": "Encourages intergenerational co-creation and cross-contextual participation in a shared digital commons."
+    },
+    {
+      "dp": "DP10 – Education",
+      "summary": "Positions the Meta-Layer as an informal learning platform that bridges home, school, and community experiences."
+    },
+    {
+      "dp": "DP11 – Safe and Ethical AI",
+      "summary": "Promotes a digital space where families can trust the presence of ethical moderation and containment of harmful bots."
+    },
+    {
+      "dp": "DP19 – Amplifying Presence and Community Engagement",
+      "summary": "Strategically engages parents and youth to organically expand the Meta-Layer's visibility and use within communities."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP10 – Education",
+      "type": "Clarification",
+      "title": "Intergenerational and School-Linked Learning Pathways",
+      "clarification": "This proposal expands 'education' beyond institutional curricula to include home-based, peer-led, and informal learning. Parents become curators and facilitators, offering their children a civic internet alternative through simple actions like sharing flyers or recommending the Meta-Layer to educators.",
+      "why_it_matters": "This distributed model builds long-term familiarity and normalization of the Meta-Layer, empowering youth to integrate it across different areas of life—school, home, and community—without waiting for top-down institutional reform."
+    },
+    {
+      "dp": "DP19 – Amplifying Presence and Community Engagement",
+      "type": "Extension",
+      "title": "Press-Driven Family Campaigns",
+      "extension": "Rather than relying on tech-centric or policy-focused channels, this submission advocates using widely read family media outlets as primary vectors of adoption. Press kits, parenting articles, and youth-oriented features can provide narrative bridges into the Meta-Layer.",
+      "why_it_matters": "These channels are low-cost, high-reach, and trusted by parents. They offer a fast route to community-scale adoption while reinforcing the Meta-Layer's values of care, creativity, and shared stewardship."
+    }
+  ]
+}

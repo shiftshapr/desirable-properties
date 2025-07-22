@@ -1,0 +1,65 @@
+{
+  "submitter": {
+    "first_name": "Liz",
+    "last_name": "Sweigart",
+    "email": "lizsweig@gmail.com"
+  },
+  "submission": {
+    "title": "Secure, Organic Community Formation on the Meta-layer",
+    "overview": "This submission proposes pathways for vulnerable and like-minded communities to discover one another, coordinate securely, and exchange value peer-to-peer without relying on centralized platforms. It includes recommendations for enhancing Desirable Properties to better protect these communities from deplatforming, surveillance, and identity compromise. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "source_link": null,
+    "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Liz\nLast name: Sweigart\nShort answer email: lizsweig@gmail.com\nContribute an Idea: I believe the Meta-layer should support a pathway for communities to form organically by discovering like-minded participants, establishing secure and private communication channels, and exchanging value peer-to-peer without dependence on centralized platforms. Communities should be able to organize, coordinate, and provide mutual aid—even under threat from hostile actors or governments—without risking deplatforming, surveillance, or compromise of their data and identities. To enable this, I suggest the following additions and clarifications to relevant Desirable Properties: - DP1 - Federated Authentication & Accountability: Include support for decentralized member discovery mechanisms that protect user privacy and resist central indexing or profiling. - DP4 - Data Sovereignty and Privacy: Extend to cover encrypted group messaging and community-level data hosting solutions that offer protection from state-level surveillance and platform censorship. - DP5 - Decentralized Namespace: Clarify support for resilient group identifiers and private namespaces that can't be seized or blocked. - DP6 - Commerce: Expand to include mutual aid and privacy-preserving payments, especially for communities excluded from traditional financial infrastructure. - DP15 - Security and Provenance: Acknowledge threat models involving authoritarian regimes or powerful centralized platforms, and ensure safeguards for vulnerable communities. I think the Meta-layer should be a space where even the most at-risk groups can safely exist, organize, and thrive.\nPlease check all that apply: I used Metta to help craft this submission,I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge"
+  },
+  "directly_addressed_dps": [
+    {
+      "dp": "DP1 - Federated Authentication & Accountability",
+      "summary": "Support for private, decentralized member discovery without central profiling."
+    },
+    {
+      "dp": "DP4 - Data Sovereignty and Privacy",
+      "summary": "Covers encrypted group communication and sovereign community data hosting."
+    },
+    {
+      "dp": "DP5 - Decentralized Namespace",
+      "summary": "Protects community identifiers from seizure or censorship."
+    },
+    {
+      "dp": "DP6 - Commerce",
+      "summary": "Enables mutual aid and private transactions for underserved groups."
+    },
+    {
+      "dp": "DP15 - Security and Provenance",
+      "summary": "Safeguards against platform coercion and state-level adversaries."
+    }
+  ],
+  "clarifications_and_extensions": [
+    {
+      "dp": "DP1 – Federated Authentication & Accountability",
+      "type": "Extension",
+      "title": "Decentralized Discovery with Privacy Guarantees",
+      "extension": "Federation protocols should include user-controlled discovery mechanisms that do not rely on public directories or metadata exposure.",
+      "why_it_matters": "Communities under threat need safe ways to find each other without exposing themselves to indexing or surveillance."
+    },
+    {
+      "dp": "DP4 – Data Sovereignty and Privacy",
+      "type": "Extension",
+      "title": "Encrypted Group Communication and Community Data Hosting",
+      "extension": "Support infrastructure that allows communities to host data and coordinate securely without dependence on third-party platforms.",
+      "why_it_matters": "This ensures operational sovereignty and continuity even under pressure from governments or private intermediaries."
+    },
+    {
+      "dp": "DP6 – Commerce",
+      "type": "Extension",
+      "title": "Mutual Aid and Anonymous Transactions",
+      "extension": "Commerce protocols should enable reciprocal economic support while minimizing surveillance or exclusion from legacy finance.",
+      "why_it_matters": "Excluded communities often rely on mutual aid, which must remain viable in adversarial or informal environments."
+    },
+    {
+      "dp": "DP15 – Security and Provenance",
+      "type": "Clarification",
+      "title": "Threat-Resilient Infrastructure Design",
+      "clarification": "Security protocols should account for coercion, targeting, and compromise by centralized authorities or surveillance networks.",
+      "why_it_matters": "Vulnerable groups require infrastructure that is resilient against hostile, well-resourced adversaries."
+    }
+  ]
+}
