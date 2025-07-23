@@ -379,12 +379,12 @@ export default function CommentSection({ elementId, elementType, submissionId }:
   };
 
   const renderComment = (comment: Comment, isReply = false) => (
-    <div key={comment.id} className={`${isReply ? 'ml-8 border-l-2 border-gray-600 pl-4' : ''}`}>
-      <div className="bg-gray-800 rounded-lg p-4 mb-3">
+    <div key={comment.id} className={`${isReply ? 'ml-4 border-l border-gray-600 pl-2' : ''}`}>
+      <div className="bg-gray-800 rounded p-2 mb-2">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-medium text-white">{comment.userName}</span>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-medium text-white text-sm">{comment.userName}</span>
               <span className="text-xs text-gray-400">{formatDate(comment.createdAt)}</span>
               {comment.isEdited && (
                 <span className="text-xs text-gray-500">(edited)</span>
@@ -418,10 +418,10 @@ export default function CommentSection({ elementId, elementType, submissionId }:
                 </div>
               </div>
             ) : (
-              <p className="text-gray-200 mb-3">{comment.content}</p>
+              <p className="text-gray-200 mb-2 text-sm">{comment.content}</p>
             )}
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <VoteButtons
                 elementId={`comment-${comment.id}`}
                 elementType="comment"
@@ -496,18 +496,18 @@ export default function CommentSection({ elementId, elementType, submissionId }:
 
         {/* Reply form */}
         {replyingTo === comment.id && (
-          <div className="mt-4 pt-4 border-t border-gray-700">
+          <div className="mt-2 pt-2 border-t border-gray-700">
             <textarea
               value={replyContent}
               onChange={(e) => setReplyContent(e.target.value)}
               placeholder="Write a reply..."
-              className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 resize-none"
-              rows={3}
+              className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white placeholder-gray-400 resize-none text-sm"
+              rows={2}
             />
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-1">
               <button
                 onClick={() => handleSubmitReply(comment.id)}
-                className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-cyan-600 hover:bg-cyan-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors"
               >
                 Reply
               </button>
@@ -516,7 +516,7 @@ export default function CommentSection({ elementId, elementType, submissionId }:
                   setReplyingTo(null);
                   setReplyContent('');
                 }}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -537,12 +537,12 @@ export default function CommentSection({ elementId, elementType, submissionId }:
   const sortedComments = sortComments(comments, sortBy);
 
   return (
-    <div className="mt-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mt-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <MessageCircle className="h-5 w-5 text-cyan-400" />
-          <h3 className="text-lg font-semibold text-white">Comments</h3>
-          <span className="text-gray-400 text-sm">({comments.length})</span>
+          <MessageCircle className="h-4 w-4 text-cyan-400" />
+          <h3 className="text-sm font-semibold text-white">Comments</h3>
+          <span className="text-gray-400 text-xs">({comments.length})</span>
         </div>
         
         {/* Sort Menu */}
@@ -583,22 +583,22 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       </div>
 
       {/* Comment form */}
-      <div className="mb-6">
+      <div className="mb-3">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Add a comment..."
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg p-4 text-white placeholder-gray-400 resize-none"
-          rows={4}
+          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white placeholder-gray-400 resize-none text-sm"
+          rows={2}
         />
-        <div className="flex justify-between items-center mt-3">
-          <span className="text-sm text-gray-400">
+        <div className="flex justify-between items-center mt-2">
+          <span className="text-xs text-gray-400">
             {privy ? (authenticated ? 'Commenting as yourself' : 'Sign in to comment') : 'Anonymous commenting'}
           </span>
           <button
             onClick={handleSubmitComment}
             disabled={!newComment.trim()}
-            className="bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            className="bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1 rounded text-xs font-medium transition-colors"
           >
             Comment
           </button>

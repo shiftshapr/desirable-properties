@@ -2,8 +2,9 @@
 
 import { usePrivy } from '@privy-io/react-auth';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ThumbsUp, ThumbsDown, User, Activity } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, User, Activity, Trophy } from 'lucide-react';
 import Link from 'next/link';
+import ScoreDisplay from '../components/ScoreDisplay';
 
 interface Vote {
   id: string;
@@ -28,11 +29,13 @@ interface UserActivity {
 export default function ProfilePage() {
   const { user, login, logout, authenticated, ready } = usePrivy();
   const [userActivity, setUserActivity] = useState<UserActivity | null>(null);
+  const [userRank, setUserRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (authenticated && user) {
       fetchUserActivity();
+      fetchUserRank();
     }
   }, [authenticated, user]);
 
@@ -68,6 +71,21 @@ export default function ProfilePage() {
     }
   };
 
+  const fetchUserRank = async () => {
+    try {
+      const response = await fetch('/api/leaderboard');
+      if (response.ok) {
+        const data = await response.json();
+        const currentUser = data.leaderboard.find((entry: { userId: string; email: string }) => 
+          entry.userId === user?.id || entry.email === user?.email?.address
+        );
+        setUserRank(currentUser?.rank || null);
+      }
+    } catch (error) {
+      console.error('Error fetching user rank:', error);
+    }
+  };
+
   if (!ready) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -95,29 +113,72 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
+      {/* Top Navigation Bar */}
+      <div className="bg-gray-900 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo on the left */}
+            <Link href="/" className="flex items-center">
+              <img 
+                src="/mli_logo_white.png" 
+                alt="Meta-Layer Initiative" 
+                className="h-6 w-auto"
+              />
+            </Link>
+            
+            {/* Navigation items on the right */}
+            <div className="flex items-center gap-4">
+              {ready && (
+                <>
+                  <Link 
+                    href="/leaderboard" 
+                    className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
+                  >
+                    <Trophy className="h-5 w-5" />
+                    <span className="text-sm hidden sm:inline">Leaderboard</span>
+                  </Link>
+                  {authenticated ? (
+                    <>
+                      <Link 
+                        href="/profile" 
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                      >
+                        <User className="h-5 w-5" />
+                        <span className="text-sm hidden sm:inline">
+                          {user?.email?.address || user?.wallet?.address || 'Profile'}
+                        </span>
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={login}
+                      className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      Sign In
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Link href="/" className="text-cyan-400 hover:text-cyan-300 flex items-center gap-2">
-                <ArrowLeft className="h-5 w-5" />
-                Back to Home
-              </Link>
-            </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <User className="h-5 w-5 text-gray-400" />
-                <span className="text-gray-300">
-                  {user?.email?.address || user?.wallet?.address || 'User'}
-                </span>
+                <User className="h-6 w-6 text-cyan-400" />
+                <h1 className="text-xl font-bold text-white">Profile</h1>
               </div>
-              <button
-                onClick={logout}
-                className="text-gray-400 hover:text-gray-300 text-sm"
-              >
-                Sign Out
-              </button>
             </div>
           </div>
         </div>
@@ -126,6 +187,48 @@ export default function ProfilePage() {
       {/* Profile Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Score Display */}
+          <div className="lg:col-span-1">
+            <ScoreDisplay userId={user?.id || 'default-user'} />
+          </div>
+          
+          {/* Rank Display */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+              <div className="flex items-center gap-3 mb-4">
+                <Trophy className="h-6 w-6 text-yellow-400" />
+                <h2 className="text-xl font-bold text-white">Your Rank</h2>
+              </div>
+              
+              {userRank ? (
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-yellow-400 mb-2">
+                    #{userRank}
+                  </div>
+                  <div className="text-sm text-gray-400 mb-4">Current Rank</div>
+                  <Link 
+                    href="/leaderboard" 
+                    className="inline-flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    <Trophy className="h-4 w-4" />
+                    View Leaderboard
+                  </Link>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div className="text-gray-400 mb-4">Not ranked yet</div>
+                  <Link 
+                    href="/leaderboard" 
+                    className="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    <Trophy className="h-4 w-4" />
+                    View Leaderboard
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+          
           {/* Profile Stats */}
           <div className="lg:col-span-1">
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
@@ -194,7 +297,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1">
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h2 className="text-2xl font-bold text-white mb-6">Recent Activity</h2>
               

@@ -1,41 +1,90 @@
 #!/bin/bash
 
-# Quick deployment script for web app updates
-# Run this from the web-app directory
-
 set -e
 
-echo "🚀 Deploying web app updates..."
+echo "[INFO] Starting deployment process..."
 
-# Colors for output
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
+# Function to kill any processes using port 3000
+kill_port_processes() {
+    echo "[INFO] Checking for processes using port 3000..."
+    PORT_PIDS=$(sudo netstat -tulpn 2>/dev/null | grep :3000 | awk '{print $7}' | cut -d'/' -f1 | grep -v "^-$" || true)
+    
+    if [ ! -z "$PORT_PIDS" ]; then
+        echo "[INFO] Found processes using port 3000: $PORT_PIDS"
+        for pid in $PORT_PIDS; do
+            if [ ! -z "$pid" ] && [ "$pid" != "-" ]; then
+                echo "[INFO] Killing process $pid"
+                sudo kill -9 $pid 2>/dev/null || true
+            fi
+        done
+        sleep 2
+    else
+        echo "[INFO] No processes found using port 3000"
+    fi
+}
 
-# Check if we're in the right directory
-if [ ! -f "package.json" ]; then
-    echo "❌ Please run this script from the web-app directory"
-    exit 1
-fi
+# Function to stop PM2 processes
+stop_pm2_processes() {
+    echo "[INFO] Stopping PM2 processes..."
+    sudo pm2 stop app-themetalayer 2>/dev/null || true
+    sudo pm2 delete app-themetalayer 2>/dev/null || true
+    sleep 2
+}
 
-echo -e "${GREEN}[INFO]${NC} Copying files to production..."
-sudo cp -r * /var/www/app.themetalayer.org/public/
+# Function to start PM2 processes
+start_pm2_processes() {
+    echo "[INFO] Starting PM2 processes..."
+    cd /var/www/app.themetalayer.org/public
+    sudo pm2 start npm --name "app-themetalayer" -- start
+    sudo pm2 save
+    sudo pm2 startup
+}
 
-echo -e "${GREEN}[INFO]${NC} Ensuring .next directory is copied..."
-sudo cp -r .next /var/www/app.themetalayer.org/public/ 2>/dev/null || echo "Warning: .next directory not found in source"
+# Main deployment process
+echo "[INFO] Installing dependencies and building locally..."
 
-echo -e "${GREEN}[INFO]${NC} Installing dependencies..."
-cd /var/www/app.themetalayer.org/public
+# Install dependencies
 npm install
 
-echo -e "${GREEN}[INFO]${NC} Building application..."
+# Build the application
 npm run build
 
-echo -e "${GREEN}[INFO]${NC} Restarting application..."
-pm2 restart app-themetalayer
+echo "[INFO] Build completed successfully"
 
-echo -e "${GREEN}[INFO]${NC} Checking status..."
-pm2 status
+# Kill any processes using port 3000
+kill_port_processes
 
-echo -e "${GREEN}✅ Deployment complete!${NC}"
-echo -e "${YELLOW}Visit: https://app.themetalayer.org${NC}" 
+# Stop existing PM2 processes
+stop_pm2_processes
+
+# Sync ALL necessary files to production (zero-downtime deployment)
+echo "[INFO] Syncing files to production..."
+sudo rsync -av --delete \
+    --exclude='node_modules' \
+    --exclude='.git' \
+    --exclude='.next' \
+    --exclude='.env.local' \
+    --exclude='.env.development' \
+    . /var/www/app.themetalayer.org/public/
+
+# Copy build files separately
+echo "[INFO] Syncing build files..."
+sudo rsync -av --delete .next/ /var/www/app.themetalayer.org/public/.next/
+
+# Copy static files to root directory for web server access
+echo "[INFO] Copying static files to root directory..."
+sudo cp -r /var/www/app.themetalayer.org/public/.next/static /var/www/app.themetalayer.org/public/
+
+# Install production dependencies in production directory
+echo "[INFO] Installing production dependencies..."
+cd /var/www/app.themetalayer.org/public
+sudo npm install --production
+
+# Start PM2 processes
+start_pm2_processes
+
+echo "[INFO] Deployment completed successfully!"
+echo "[INFO] Checking PM2 status..."
+sudo pm2 status
+
+echo "[INFO] Deployment finished. The application should now be running at https://app.themetalayer.org" 

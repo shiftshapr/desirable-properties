@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, BarChart3, User } from 'lucide-react';
+import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, BarChart3, User, MessageCircle, Trophy } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 import Link from 'next/link';
 import VoteButtons from './components/VoteButtons';
@@ -96,6 +96,7 @@ export default function DesirablePropertiesApp() {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [dpDetail, setDpDetail] = useState<DesirableProperty | null>(null);
   const [submissionDetail, setSubmissionDetail] = useState<Submission | null>(null);
+  const [visibleComments, setVisibleComments] = useState<Set<string>>(new Set());
   const [searchResults, setSearchResults] = useState<{
     query: string;
     results: {
@@ -359,6 +360,18 @@ export default function DesirablePropertiesApp() {
   };
 
   // Helper function to get top DPs by type
+  const toggleComments = (elementId: string) => {
+    setVisibleComments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(elementId)) {
+        newSet.delete(elementId);
+      } else {
+        newSet.add(elementId);
+      }
+      return newSet;
+    });
+  };
+
   const getTopDPs = (type: 'alignments' | 'clarifications' | 'extensions') => {
     const dpCounts: { [key: string]: number } = {};
     
@@ -488,6 +501,12 @@ export default function DesirablePropertiesApp() {
   // Submission Detail Modal
   const renderSubmissionDetail = (sub: Submission) => {
     console.log('renderSubmissionDetail called for:', sub.submission.title);
+    console.log('Submission data:', {
+      title: sub.submission.title,
+      alignmentsCount: sub.directly_addressed_dps?.length || 0,
+      clarificationsCount: sub.clarifications_and_extensions?.length || 0,
+      clarifications: sub.clarifications_and_extensions
+    });
     return (
       <div>
         <div className="flex items-start justify-between mb-4">
@@ -504,110 +523,222 @@ export default function DesirablePropertiesApp() {
           />
         </div>
         <p className="mb-4 text-gray-200">{sub.submission.overview}</p>
-        <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Alignments (Desirable Properties Addressed)</h3>
-        <ul className="mb-4 list-disc pl-6">
-          {sub.directly_addressed_dps.map((dp, i) => {
-            const dpObj = getDPByIdOrName(dp.dp);
-            return (
-              <li key={i} className="text-gray-200">
+        
+        {/* Directly Addressed DPs */}
+        <div>
+          <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Alignments (Desirable Properties Addressed)</h3>
+          <div className="space-y-3">
+            {sub.directly_addressed_dps.map((dp: { dp: string; summary: string }, dpIndex: number) => (
+              <div key={dpIndex} className="bg-blue-50 rounded-lg p-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <button 
-                      className="text-cyan-400 hover:text-cyan-300 hover:underline font-medium text-left" 
-                      onClick={() => { 
-                        console.log('Opening DP detail for:', dp.dp);
-                        if (dpObj) { 
-                          setDpDetail(dpObj); 
-                          setSubmissionDetail(null); 
-                        } 
+                      onClick={() => {
+                        console.log('DP reference clicked in submission:', dp.dp);
+                        const dpObj = getDPByIdOrName(dp.dp);
+                        if (dpObj) {
+                          setDpDetail(dpObj);
+                          setSubmissionDetail(null);
+                        }
                       }}
+                      className="font-medium text-blue-900 mb-1 hover:text-blue-700 transition-colors text-left"
                     >
                       {dp.dp}
                     </button>
-                    {dp.summary && (
-                      <div className="text-sm text-amber-300 mt-1">{dp.summary}</div>
-                    )}
+                    <p className="text-blue-700 text-sm">{dp.summary}</p>
                   </div>
-                  <VoteButtons
-                    elementId={`alignment-${sub._metadata.file_number}-${i}`}
-                    elementType="alignment"
-                    submissionId={sub._metadata.file_number.toString()}
-                    initialUpvotes={Math.floor(Math.random() * 30)}
-                    initialDownvotes={Math.floor(Math.random() * 10)}
-                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => toggleComments(`alignment-${sub._metadata.file_number}-${dpIndex}`)}
+                      className="flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors text-gray-400 hover:text-blue-400 hover:bg-blue-500/10"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      <span>3</span>
+                    </button>
+                    <VoteButtons
+                      elementId={`alignment-${sub._metadata.file_number}-${dpIndex}`}
+                      elementType="alignment"
+                      submissionId={sub._metadata.file_number.toString()}
+                      initialUpvotes={Math.floor(Math.random() * 30)}
+                      initialDownvotes={Math.floor(Math.random() * 10)}
+                    />
+                  </div>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
-        <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Clarifications & Extensions</h3>
-        <ul className="mb-4 list-disc pl-6">
-          {sub.clarifications_and_extensions.map((c, i) => {
-            const dpObj = getDPByIdOrName(c.dp);
-            return (
-              <li key={i} className="text-gray-200">
+                
+                {/* Comments for Alignment */}
+                {visibleComments.has(`alignment-${sub._metadata.file_number}-${dpIndex}`) && (
+                  <div className="mt-3 pt-3 border-t border-blue-200 bg-gray-50 p-3 rounded">
+                    <CommentSection
+                      elementId={`alignment-${sub._metadata.file_number}-${dpIndex}`}
+                      elementType="alignment"
+                      submissionId={sub._metadata.file_number.toString()}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Clarifications and Extensions */}
+        <div>
+          <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Clarifications & Extensions</h3>
+          <div className="text-sm text-yellow-400 mb-2">DEBUG: clarifications_and_extensions length: {sub.clarifications_and_extensions?.length || 0}</div>
+          <div className="space-y-3">
+            {sub.clarifications_and_extensions?.map((item: { dp: string; type: string; title: string; clarification?: string; extension?: string; why_it_matters: string }, itemIndex: number) => (
+              <div key={itemIndex} className="bg-purple-50 rounded-lg p-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <span className="font-semibold text-amber-300">{c.type}:</span> <span className="font-semibold text-white">{c.title}</span>
-                    <span className="ml-2">(
-                      <button 
-                        className="text-cyan-400 hover:text-cyan-300 hover:underline" 
-                        onClick={() => { 
-                          console.log('Opening DP detail from clarification for:', c.dp);
-                          if (dpObj) { 
-                            setDpDetail(dpObj); 
-                            setSubmissionDetail(null); 
-                          } 
-                        }}
-                      >
-                        {c.dp}
-                      </button>
-                    )</span>
-                    <div className="text-gray-200 ml-2">
-                      {c.clarification && <div><span className="italic text-amber-200">Clarification:</span> {c.clarification}</div>}
-                      {c.extension && <div><span className="italic text-amber-200">Extension:</span> {c.extension}</div>}
-                      <div className="text-xs text-amber-300">Why it matters: {c.why_it_matters}</div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded">
+                        {item.type}
+                      </span>
+                      <h5 className="font-medium text-purple-900">{item.title}</h5>
                     </div>
+                    <div className="mb-2">
+                      <span className="text-sm text-purple-700">For: </span>
+                      <button 
+                        onClick={() => {
+                          console.log('DP reference clicked in clarification:', item.dp);
+                          const dpObj = getDPByIdOrName(item.dp);
+                          if (dpObj) {
+                            setDpDetail(dpObj);
+                            setSubmissionDetail(null);
+                          }
+                        }}
+                        className="text-sm text-blue-600 hover:text-blue-800 underline"
+                      >
+                        {item.dp}
+                      </button>
+                    </div>
+                    {item.clarification && (
+                      <p className="text-purple-700 text-sm mb-2">{item.clarification}</p>
+                    )}
+                    {item.extension && (
+                      <p className="text-purple-700 text-sm mb-2">{item.extension}</p>
+                    )}
+                    <p className="text-purple-600 text-xs italic">Why it matters: {item.why_it_matters}</p>
                   </div>
-                  <VoteButtons
-                    elementId={`${c.type.toLowerCase()}-${sub._metadata.file_number}-${i}`}
-                    elementType={c.type.toLowerCase() as 'clarification' | 'extension'}
-                    submissionId={sub._metadata.file_number.toString()}
-                    initialUpvotes={Math.floor(Math.random() * 25)}
-                    initialDownvotes={Math.floor(Math.random() * 8)}
-                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => toggleComments(`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`)}
+                      className="flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors text-gray-400 hover:text-purple-400 hover:bg-purple-500/10"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      <span>2</span>
+                    </button>
+                    <VoteButtons
+                      elementId={`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`}
+                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                      submissionId={sub._metadata.file_number.toString()}
+                      initialUpvotes={Math.floor(Math.random() * 25)}
+                      initialDownvotes={Math.floor(Math.random() * 8)}
+                    />
+                  </div>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
+                
+                {/* Comments for Clarification/Extension */}
+                {visibleComments.has(`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`) && (
+                  <div className="mt-3 pt-3 border-t border-purple-200 bg-gray-50 p-3 rounded">
+                    <CommentSection
+                      elementId={`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`}
+                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                      submissionId={sub._metadata.file_number.toString()}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Source Link */}
         {sub.submission.source_link && (
-          <div className="mt-4 pt-4 border-t border-gray-600">
+          <div className="mt-4 pt-4 border-t border-gray-200">
             <a
               href={sub.submission.source_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cyan-400 hover:text-cyan-300 flex items-center gap-2"
+              className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
             >
               <ExternalLink className="h-4 w-4" />
               View Source
             </a>
           </div>
         )}
-        
-        {/* Comments Section */}
-        <CommentSection
-          elementId={sub._metadata.file_number.toString()}
-          elementType="submission"
-          submissionId={sub._metadata.file_number.toString()}
-        />
+
+        {/* Comments for the full submission */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <CommentSection
+            elementId={sub._metadata.file_number.toString()}
+            elementType="submission"
+            submissionId={sub._metadata.file_number.toString()}
+          />
+        </div>
       </div>
     );
   };
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
+      {/* Top Navigation Bar */}
+      <div className="bg-gray-900 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo on the left */}
+            <Link href="/" className="flex items-center">
+              <img 
+                src="/mli_logo_white.png" 
+                alt="Meta-Layer Initiative" 
+                className="h-6 w-auto"
+              />
+            </Link>
+            
+            {/* Navigation items on the right */}
+            <div className="flex items-center gap-4">
+              {privy && ready && (
+                <>
+                  <Link 
+                    href="/leaderboard" 
+                    className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
+                  >
+                    <Trophy className="h-5 w-5" />
+                    <span className="text-sm hidden sm:inline">Leaderboard</span>
+                  </Link>
+                  {authenticated ? (
+                    <>
+                      <Link 
+                        href="/profile" 
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                      >
+                        <User className="h-5 w-5" />
+                        <span className="text-sm hidden sm:inline">
+                          {user?.email?.address || user?.wallet?.address || 'Profile'}
+                        </span>
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={login}
+                      className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      Sign In
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
       <header className="bg-gray-800 shadow-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-start justify-between">
@@ -620,36 +751,6 @@ export default function DesirablePropertiesApp() {
                 <span>Community Submissions: {submissions.length}</span>
               </div>
             </div>
-            {privy && ready && (
-              <div className="flex items-center gap-4 ml-4">
-                {authenticated ? (
-                  <>
-                    <Link 
-                      href="/profile" 
-                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
-                    >
-                      <User className="h-5 w-5" />
-                      <span className="text-sm hidden sm:inline">
-                        {user?.email?.address || user?.wallet?.address || 'Profile'}
-                      </span>
-                    </Link>
-                    <button
-                      onClick={logout}
-                      className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
-                    >
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={login}
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    Sign In
-                  </button>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </header>
@@ -1195,6 +1296,16 @@ export default function DesirablePropertiesApp() {
                                     initialDownvotes={Math.floor(Math.random() * 10)}
                                   />
                                 </div>
+                                
+                                {/* Comments for Alignment */}
+                                <div className="mt-3 pt-3 border-t border-blue-200 bg-yellow-100 p-2">
+                                  <div className="text-sm text-yellow-800 mb-2">DEBUG: Comment section for alignment {dp.dp}</div>
+                                  <CommentSection
+                                    elementId={`alignment-${submission._metadata.file_number}-${dpIndex}`}
+                                    elementType="alignment"
+                                    submissionId={submission._metadata.file_number.toString()}
+                                  />
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -1244,6 +1355,16 @@ export default function DesirablePropertiesApp() {
                                     submissionId={submission._metadata.file_number.toString()}
                                     initialUpvotes={Math.floor(Math.random() * 25)}
                                     initialDownvotes={Math.floor(Math.random() * 8)}
+                                  />
+                                </div>
+                                
+                                {/* Comments for Clarification/Extension */}
+                                <div className="mt-3 pt-3 border-t border-purple-200 bg-green-100 p-2">
+                                  <div className="text-sm text-green-800 mb-2">DEBUG: Comment section for {item.type.toLowerCase()} {item.title}</div>
+                                  <CommentSection
+                                    elementId={`${item.type.toLowerCase()}-${submission._metadata.file_number}-${itemIndex}`}
+                                    elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                                    submissionId={submission._metadata.file_number.toString()}
                                   />
                                 </div>
                               </div>
