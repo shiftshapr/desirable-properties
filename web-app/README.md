@@ -224,6 +224,18 @@ sudo systemctl status nginx
 2. **Data not loading**: Verify data files exist in `../data/compiled/`
 3. **Build errors**: Check Node.js version and dependencies
 4. **Deployment issues**: Review PM2 and Nginx logs
+5. **404 errors on static files**: Ensure static files are copied to `_next/static/` not `static/`
+
+### Static Files Issues
+
+If you see 404 errors for static files (like `_next/static/chunks/...`), the issue is likely that static files are being copied to the wrong location. The deploy script should copy files to `_next/static/` not `static/`.
+
+**Fix**: Update the deploy script to use the correct path:
+```bash
+# Correct path for Next.js static files
+sudo mkdir -p /var/www/app.themetalayer.org/public/_next/static
+sudo cp -r /var/www/app.themetalayer.org/public/.next/static/* /var/www/app.themetalayer.org/public/_next/static/
+```
 
 ### Log Locations
 

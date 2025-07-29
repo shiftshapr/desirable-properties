@@ -71,9 +71,19 @@ sudo rsync -av --delete \
 echo "[INFO] Syncing build files..."
 sudo rsync -av --delete .next/ /var/www/app.themetalayer.org/public/.next/
 
-# Copy static files to root directory for web server access
-echo "[INFO] Copying static files to root directory..."
-sudo cp -r /var/www/app.themetalayer.org/public/.next/static /var/www/app.themetalayer.org/public/
+# Copy static files to the correct location for Next.js
+echo "[INFO] Copying static files..."
+sudo mkdir -p /var/www/app.themetalayer.org/public/_next/static
+sudo cp -r /var/www/app.themetalayer.org/public/.next/static/* /var/www/app.themetalayer.org/public/_next/static/
+
+# Verify static files were copied correctly
+echo "[INFO] Verifying static files..."
+if [ -d "/var/www/app.themetalayer.org/public/_next/static/chunks/app/submit/" ] && [ -d "/var/www/app.themetalayer.org/public/_next/static/chunks/app/leaderboard/" ]; then
+    echo "[INFO] Static files verified successfully"
+else
+    echo "[ERROR] Static files verification failed!"
+    exit 1
+fi
 
 # Install production dependencies in production directory
 echo "[INFO] Installing production dependencies..."

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Medal, Crown, TrendingUp, User } from 'lucide-react';
+import { Trophy, Medal, Crown, TrendingUp, User, FileText, MessageCircle, ThumbsUp, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePrivy } from '@privy-io/react-auth';
 
@@ -40,34 +40,98 @@ interface LeaderboardData {
   lastUpdated: string;
 }
 
+interface Submission {
+  submitter: {
+    first_name: string | null;
+    last_name: string | null;
+    email: string;
+  };
+  submission: {
+    title: string;
+    overview: string;
+    source_link: string | null;
+  };
+  directly_addressed_dps: Array<{
+    dp: string;
+    summary: string;
+  }>;
+  clarifications_and_extensions: Array<{
+    dp: string;
+    type: string;
+    title: string;
+    clarification?: string;
+    extension?: string;
+    why_it_matters: string;
+  }>;
+  _metadata: {
+    source_file: string;
+    file_number: number;
+  };
+  totalPoints?: number;
+  thumbsUpPoints?: number;
+  commentPoints?: number;
+}
+
 export default function LeaderboardPage() {
   const privy = usePrivy();
   const { user, login, logout, authenticated, ready } = privy || {};
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'leaderboard' | 'submissions'>('leaderboard');
+  const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
 
   useEffect(() => {
-    const fetchLeaderboard = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/leaderboard');
         
-        if (!response.ok) {
+        // Fetch leaderboard data
+        const leaderboardResponse = await fetch('/api/leaderboard');
+        if (!leaderboardResponse.ok) {
           throw new Error('Failed to fetch leaderboard data');
         }
+        const leaderboardData = await leaderboardResponse.json();
+        setLeaderboardData(leaderboardData);
         
-        const data = await response.json();
-        setLeaderboardData(data);
+        // Fetch submissions data
+        const submissionsResponse = await fetch('/api/submissions');
+        if (submissionsResponse.ok) {
+          const submissionsData = await submissionsResponse.json();
+          const allSubmissions = submissionsData.submissions || [];
+          
+          // Calculate points for each submission and sort by total points
+          const submissionsWithPoints = allSubmissions.map((submission: Submission) => {
+            // Calculate points: 1 per thumbs up, 2 per comment
+            const thumbsUpPoints = 0; // Placeholder for actual thumbs up count
+            const commentPoints = 0;
+            const totalPoints = thumbsUpPoints + commentPoints;
+            
+            return {
+              ...submission,
+              totalPoints,
+              thumbsUpPoints,
+              commentPoints
+            };
+          });
+          
+          // Sort by total points (highest first) and take top 10
+          const sortedSubmissions = submissionsWithPoints
+            .sort((a: Submission, b: Submission) => (b.totalPoints || 0) - (a.totalPoints || 0))
+            .slice(0, 10);
+          
+          setSubmissions(sortedSubmissions);
+        }
       } catch (error) {
-        console.error('Error fetching leaderboard:', error);
-        setError('Failed to load leaderboard data');
+        console.error('Error fetching data:', error);
+        setError('Failed to load data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLeaderboard();
+    fetchData();
   }, []);
 
   const getRankIcon = (rank: number) => {
@@ -82,6 +146,14 @@ export default function LeaderboardPage() {
     if (rank === 2) return 'bg-gray-500/10 border-gray-500/30';
     if (rank === 3) return 'bg-amber-500/10 border-amber-500/30';
     return 'bg-gray-700/50 border-gray-600';
+  };
+
+  const openSubmissionModal = (submission: Submission) => {
+    setSelectedSubmission(submission);
+  };
+
+  const closeSubmissionModal = () => {
+    setSelectedSubmission(null);
   };
 
   if (loading) {
@@ -111,13 +183,13 @@ export default function LeaderboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo on the left */}
-            <Link href="/" className="flex items-center">
-              <img 
-                src="/mli_logo_white.png" 
-                alt="Meta-Layer Initiative" 
+              <Link href="/" className="flex items-center">
+                <img 
+                  src="/mli_logo_white.png" 
+                  alt="Meta-Layer Initiative" 
                 className="h-6 w-auto"
-              />
-            </Link>
+                />
+              </Link>
             
             {/* Navigation items on the right */}
             <div className="flex items-center gap-4">
@@ -180,8 +252,44 @@ export default function LeaderboardPage() {
         </div>
       </header>
 
-      {/* Leaderboard Content */}
+      {/* Tab Navigation */}
+      <div className="bg-gray-800 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('leaderboard')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'leaderboard'
+                  ? 'border-yellow-400 text-yellow-400'
+                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Trophy className="h-4 w-4" />
+                <span>Leaderboard</span>
+              </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('submissions')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'submissions'
+                  ? 'border-cyan-400 text-cyan-400'
+                  : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                <span>Submissions</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'leaderboard' ? (
+          <>
         {/* Stats */}
         <div className="mb-8">
           <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
@@ -248,8 +356,178 @@ export default function LeaderboardPage() {
             <h3 className="text-xl font-semibold text-gray-400 mb-2">No participants yet</h3>
             <p className="text-gray-500">Be the first to start earning points!</p>
           </div>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Submissions Stats */}
+            <div className="mb-8">
+              <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-6 w-6 text-cyan-400" />
+                    <span className="text-white font-medium">Top Submissions</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            {/* Submissions List */}
+            <div className="space-y-4">
+              {submissions.map((submission, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 rounded-lg p-6 border border-gray-700 transition-all hover:scale-[1.02]"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <button 
+                          onClick={() => openSubmissionModal(submission)}
+                          className="text-lg font-bold text-cyan-400 hover:text-cyan-300 hover:underline transition-colors text-left"
+                        >
+                          {submission.submission.title}
+                        </button>
+                        <span className="text-xs bg-cyan-600 text-white px-2 py-1 rounded">
+                          #{index + 1}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-400 mb-2">
+                        By: {(submission.submitter.first_name || submission.submitter.last_name) 
+                          ? `${submission.submitter.first_name || ''} ${submission.submitter.last_name || ''}`.trim() 
+                          : 'Anon'}
+                      </div>
+                      <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+                        {submission.submission.overview}
+                      </p>
+                      <div className="flex items-center gap-4 text-xs text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <MessageCircle className="h-3 w-3" />
+                          {submission.directly_addressed_dps?.length || 0} alignments
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          {submission.clarifications_and_extensions?.length || 0} clarifications/extensions
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-2 ml-4">
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-yellow-400">
+                          {submission.totalPoints || 0}
+                        </div>
+                        <div className="text-xs text-gray-400">points</div>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <ThumbsUp className="h-3 w-3" />
+                          <span>{submission.thumbsUpPoints || 0}</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MessageCircle className="h-3 w-3" />
+                          <span>{submission.commentPoints || 0}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Empty State */}
+            {submissions.length === 0 && (
+              <div className="text-center py-12">
+                <FileText className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-400 mb-2">No submissions yet</h3>
+                <p className="text-gray-500">Be the first to submit a contribution!</p>
+              </div>
+            )}
+          </>
         )}
       </div>
+
+      {/* Submission Modal */}
+      {selectedSubmission && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">
+                  {selectedSubmission.submission.title}
+                </h2>
+                <button
+                  onClick={closeSubmissionModal}
+                  className="text-gray-400 hover:text-gray-300 transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              
+              <div className="mb-4">
+                <p className="text-gray-300 mb-4">
+                  By: {(selectedSubmission.submitter.first_name || selectedSubmission.submitter.last_name) 
+                    ? `${selectedSubmission.submitter.first_name || ''} ${selectedSubmission.submitter.last_name || ''}`.trim() 
+                    : 'Anonymous'}
+                </p>
+                <p className="text-gray-300 leading-relaxed">
+                  {selectedSubmission.submission.overview}
+                </p>
+              </div>
+
+              {/* Directly Addressed DPs */}
+              {selectedSubmission.directly_addressed_dps && selectedSubmission.directly_addressed_dps.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-xl font-semibold text-white mb-4">Directly Addressed Desirable Properties</h3>
+                  <div className="space-y-3">
+                    {selectedSubmission.directly_addressed_dps.map((dp, index) => (
+                      <div key={index} className="bg-gray-700 rounded-lg p-4">
+                        <h4 className="font-medium text-cyan-400 mb-2">{dp.dp}</h4>
+                        <p className="text-gray-300 text-sm">{dp.summary}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Clarifications & Extensions */}
+              {selectedSubmission.clarifications_and_extensions && selectedSubmission.clarifications_and_extensions.length > 0 && (
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-4">Clarifications & Extensions</h3>
+                  <div className="space-y-4">
+                    {selectedSubmission.clarifications_and_extensions.map((item, index) => (
+                      <div key={index} className="bg-gray-700 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs bg-amber-600 text-white px-2 py-1 rounded">
+                            {item.type}
+                          </span>
+                          <h4 className="font-medium text-amber-400">{item.title}</h4>
+                        </div>
+                        {item.clarification && (
+                          <div className="mb-3">
+                            <h5 className="text-sm font-medium text-gray-300 mb-1">Clarification:</h5>
+                            <p className="text-gray-300 text-sm">{item.clarification}</p>
+                          </div>
+                        )}
+                        {item.extension && (
+                          <div className="mb-3">
+                            <h5 className="text-sm font-medium text-gray-300 mb-1">Extension:</h5>
+                            <p className="text-gray-300 text-sm">{item.extension}</p>
+                          </div>
+                        )}
+                        <div>
+                          <h5 className="text-sm font-medium text-gray-300 mb-1">Why it matters:</h5>
+                          <p className="text-gray-300 text-sm">{item.why_it_matters}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

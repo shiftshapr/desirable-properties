@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, BarChart3, User, MessageCircle, Trophy } from 'lucide-react';
+import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, BarChart3, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 import Link from 'next/link';
 import VoteButtons from './components/VoteButtons';
@@ -321,10 +321,32 @@ export default function DesirablePropertiesApp() {
   const getSubmissionsForDP = (dpId: string) => {
     console.log('getSubmissionsForDP called with:', dpId);
     const result = submissions.filter(sub =>
-      sub.directly_addressed_dps.some(dp => dp.dp.replace(/^DP\d+\s*-\s*/, '').trim() === dpId.replace(/^DP\d+\s*-\s*/, '').trim() || dp.dp === dpId || dp.dp.startsWith(dpId))
+      sub.directly_addressed_dps.some(dp => {
+        // Extract DP number from both strings for exact matching
+        const dpNumber = dp.dp.match(/^DP(\d+)/)?.[1];
+        const targetNumber = dpId.match(/^DP(\d+)/)?.[1];
+        
+        // Exact DP number match
+        if (dpNumber && targetNumber && dpNumber === targetNumber) {
+          return true;
+        }
+        
+        // Fallback to original logic for non-numeric cases
+        return dp.dp.replace(/^DP\d+\s*-\s*/, '').trim() === dpId.replace(/^DP\d+\s*-\s*/, '').trim() || 
+               dp.dp === dpId;
+      })
     );
-    console.log('Found submissions:', result.length);
-    return result;
+    
+    // Deduplicate submissions by title and submitter
+    const uniqueSubmissions = result.filter((sub, index, self) => {
+      const key = `${sub.submission.title}-${sub.submitter.first_name}-${sub.submitter.last_name}`;
+      return index === self.findIndex(s => 
+        `${s.submission.title}-${s.submitter.first_name}-${s.submitter.last_name}` === key
+      );
+    });
+    
+    console.log('Found submissions:', result.length, 'Unique submissions:', uniqueSubmissions.length);
+    return uniqueSubmissions;
   };
 
   // Helper: Find DP by id or name
@@ -398,10 +420,10 @@ export default function DesirablePropertiesApp() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mx-auto"></div>
+          <p className="mt-4 text-gray-300">Loading data...</p>
         </div>
       </div>
     );
@@ -409,9 +431,9 @@ export default function DesirablePropertiesApp() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <div className="bg-red-900/20 border border-red-500/50 text-red-400 px-4 py-3 rounded">
             Error: {error}
           </div>
         </div>
@@ -448,12 +470,43 @@ export default function DesirablePropertiesApp() {
           ))}
         </ul>
         <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Aligned Community Submissions</h3>
+        
+        {/* Stats for this DP */}
+        <div className="flex items-center gap-6 mb-4 text-sm">
+          <div className="flex items-center gap-2 text-cyan-400">
+            <MessageCircle className="h-4 w-4" />
+            <span>{relatedSubmissions.reduce((total, sub) => total + sub.directly_addressed_dps.filter(alignment => {
+              const dpNumber = alignment.dp.match(/^DP(\d+)/)?.[1];
+              const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
+              return dpNumber && targetNumber && dpNumber === targetNumber;
+            }).length, 0)} alignments</span>
+          </div>
+          <div className="flex items-center gap-2 text-amber-400">
+            <Lightbulb className="h-4 w-4" />
+            <span>{relatedSubmissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => {
+              const ceDpNumber = ce.dp.match(/^DP(\d+)/)?.[1];
+              const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
+              return ceDpNumber && targetNumber && ceDpNumber === targetNumber && ce.type === 'Extension';
+            }).length, 0)} extensions</span>
+          </div>
+          <div className="flex items-center gap-2 text-yellow-400">
+            <HelpCircle className="h-4 w-4" />
+            <span>{relatedSubmissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => {
+              const ceDpNumber = ce.dp.match(/^DP(\d+)/)?.[1];
+              const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
+              return ceDpNumber && targetNumber && ceDpNumber === targetNumber && ce.type === 'Clarification';
+            }).length, 0)} clarifications</span>
+          </div>
+        </div>
+        
         {relatedSubmissions.length === 0 ? (
           <p className="text-gray-400">No submissions aligned to this property.</p>
         ) : (
           <ul className="space-y-3">
             {relatedSubmissions.map((sub, i) => (
               <li key={i}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
                 <button 
                   className="text-cyan-400 hover:text-cyan-300 hover:underline font-medium text-left" 
                   onClick={() => { 
@@ -465,6 +518,27 @@ export default function DesirablePropertiesApp() {
                   {sub.submission.title}
                 </button>
                 <div className="text-xs text-gray-400">By: {(sub.submitter.first_name || sub.submitter.last_name) ? `${sub.submitter.first_name || ''} ${sub.submitter.last_name || ''}`.trim() : 'Anon'}</div>
+                  </div>
+                  <div className="flex items-center gap-2 ml-2">
+                    <button
+                      onClick={() => toggleComments(`submission-${sub._metadata.file_number}`)}
+                      className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-cyan-400 hover:bg-cyan-500/10"
+                    >
+                      <MessageCircle className="h-3 w-3" />
+                      <span>5</span>
+                    </button>
+                    <div className="flex items-center gap-1">
+                      <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-green-400">
+                        <ThumbsUp className="h-3 w-3" />
+                        <span>{Math.floor(Math.random() * 50)}</span>
+                      </button>
+                      <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-red-400">
+                        <ThumbsDown className="h-3 w-3" />
+                        <span>{Math.floor(Math.random() * 20)}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 {/* Show alignment summary if present */}
                 {(() => {
                   const alignment = sub.directly_addressed_dps.find(a => 
@@ -479,13 +553,48 @@ export default function DesirablePropertiesApp() {
                 })()}
                 {/* Show clarifications/extensions for this DP from this submission */}
                 <div className="ml-2 mt-1">
-                  {sub.clarifications_and_extensions.filter(c => c.dp === dp.id || c.dp.includes(dp.name) || c.dp.includes(dp.id)).map((c, j) => (
+                  {sub.clarifications_and_extensions.filter(c => {
+                    // Extract DP number from both strings for exact matching
+                    const cDpNumber = c.dp.match(/^DP(\d+)/)?.[1];
+                    const targetDpNumber = dp.id.match(/^DP(\d+)/)?.[1];
+                    
+                    // Exact DP number match
+                    if (cDpNumber && targetDpNumber && cDpNumber === targetDpNumber) {
+                      return true;
+                    }
+                    
+                    // Fallback to original logic for non-numeric cases
+                    return c.dp === dp.id || c.dp.includes(dp.name);
+                  }).map((c, j) => (
                     <div key={j} className="text-sm mb-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1">
                       <span className="font-semibold text-amber-300">{c.type}:</span> <span className="font-semibold text-white">{c.title}</span>
                       <div className="text-gray-200 ml-2">
                         {c.clarification && <div><span className="italic text-amber-200">Clarification:</span> {c.clarification}</div>}
                         {c.extension && <div><span className="italic text-amber-200">Extension:</span> {c.extension}</div>}
                         <div className="text-xs text-amber-300">Why it matters: {c.why_it_matters}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 ml-2">
+                          <button
+                            onClick={() => toggleComments(`${c.type.toLowerCase()}-${sub._metadata.file_number}-${j}`)}
+                            className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-amber-400 hover:bg-amber-500/10"
+                          >
+                            <MessageCircle className="h-3 w-3" />
+                            <span>2</span>
+                          </button>
+                          <div className="flex items-center gap-1">
+                            <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-green-400">
+                              <ThumbsUp className="h-3 w-3" />
+                              <span>{Math.floor(Math.random() * 25)}</span>
+                            </button>
+                            <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-red-400">
+                              <ThumbsDown className="h-3 w-3" />
+                              <span>{Math.floor(Math.random() * 8)}</span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -518,8 +627,8 @@ export default function DesirablePropertiesApp() {
             elementId={sub._metadata.file_number.toString()}
             elementType="submission"
             submissionId={sub._metadata.file_number.toString()}
-            initialUpvotes={Math.floor(Math.random() * 50)}
-            initialDownvotes={Math.floor(Math.random() * 20)}
+            initialUpvotes={0}
+            initialDownvotes={0}
           />
         </div>
         <p className="mb-4 text-gray-200">{sub.submission.overview}</p>
@@ -559,8 +668,8 @@ export default function DesirablePropertiesApp() {
                       elementId={`alignment-${sub._metadata.file_number}-${dpIndex}`}
                       elementType="alignment"
                       submissionId={sub._metadata.file_number.toString()}
-                      initialUpvotes={Math.floor(Math.random() * 30)}
-                      initialDownvotes={Math.floor(Math.random() * 10)}
+                      initialUpvotes={0}
+                      initialDownvotes={0}
                     />
                   </div>
                 </div>
@@ -631,8 +740,8 @@ export default function DesirablePropertiesApp() {
                       elementId={`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`}
                       elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                       submissionId={sub._metadata.file_number.toString()}
-                      initialUpvotes={Math.floor(Math.random() * 25)}
-                      initialDownvotes={Math.floor(Math.random() * 8)}
+                      initialUpvotes={0}
+                      initialDownvotes={0}
                     />
                   </div>
                 </div>
@@ -1106,8 +1215,8 @@ export default function DesirablePropertiesApp() {
             </div>
 
             {/* Categories as Links */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Property Categories</h3>
+            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Property Categories</h3>
               <div className="flex flex-wrap gap-4">
                 {data?.meta.categories.map((category) => (
                   <button
@@ -1116,7 +1225,7 @@ export default function DesirablePropertiesApp() {
                       setActiveTab('properties');
                       setSelectedCategory(category);
                     }}
-                    className="px-4 py-2 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition-colors"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     {category}
                   </button>
@@ -1125,15 +1234,15 @@ export default function DesirablePropertiesApp() {
             </div>
 
             {/* Community Activity in Reverse Order */}
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Community Activity</h3>
+            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Recent Community Activity</h3>
               <div className="space-y-3">
                 {submissions.slice().reverse().slice(0, 5).map((submission, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <div className="flex-1">
-                      <div className="font-medium text-gray-900">{submission.submission.title}</div>
-                      <div className="text-sm text-gray-600">
+                      <div className="font-medium text-white">{submission.submission.title}</div>
+                      <div className="text-sm text-gray-300">
                         By {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
                         {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
                       </div>
@@ -1153,7 +1262,7 @@ export default function DesirablePropertiesApp() {
           /* Properties List */
           <div className="space-y-4">
             {filteredProperties.map((property: DesirableProperty) => (
-              <div key={property.id} className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+              <div key={property.id} className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 hover:shadow-md transition-shadow">
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -1163,23 +1272,23 @@ export default function DesirablePropertiesApp() {
                             console.log('DP title clicked:', property.name);
                             setDpDetail(property);
                           }}
-                          className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors text-left"
+                          className="text-xl font-semibold text-white hover:text-blue-400 transition-colors text-left"
                         >
                           {property.name}
                         </button>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-600 text-white">
                           {property.id}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">{property.category}</p>
-                      <p className="text-gray-700 leading-relaxed">{property.description}</p>
+                      <p className="text-sm text-gray-300 mb-3">{property.category}</p>
+                      <p className="text-gray-200 leading-relaxed">{property.description}</p>
                     </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleProperty(property.id);
                       }}
-                      className="ml-4 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                      className="ml-4 p-2 text-gray-400 hover:text-gray-200 transition-colors"
                     >
                       {expandedProperties.has(property.id) ? 
                         <ChevronUp className="h-5 w-5" /> : 
@@ -1190,13 +1299,13 @@ export default function DesirablePropertiesApp() {
 
                   {/* Expanded Elements */}
                   {expandedProperties.has(property.id) && (
-                    <div className="mt-6 pt-6 border-t border-gray-200">
-                      <h4 className="text-lg font-medium text-gray-900 mb-4">Elements</h4>
+                    <div className="mt-6 pt-6 border-t border-gray-600">
+                      <h4 className="text-lg font-medium text-white mb-4">Elements</h4>
                       <div className="space-y-4">
                         {property.elements.map((element, index) => (
-                          <div key={index} className="bg-gray-50 rounded-lg p-4">
-                            <h5 className="font-medium text-gray-900 mb-2">{element.name}</h5>
-                            <p className="text-gray-700 text-sm leading-relaxed">{element.description}</p>
+                          <div key={index} className="bg-gray-700 rounded-lg p-4">
+                            <h5 className="font-medium text-white mb-2">{element.name}</h5>
+                            <p className="text-gray-200 text-sm leading-relaxed">{element.description}</p>
                           </div>
                         ))}
                       </div>
@@ -1210,7 +1319,7 @@ export default function DesirablePropertiesApp() {
           /* Submissions List */
           <div className="space-y-4">
             {filteredSubmissions.map((submission: Submission, index: number) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+              <div key={index} className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 hover:shadow-md transition-shadow">
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -1220,15 +1329,15 @@ export default function DesirablePropertiesApp() {
                             console.log('Submission title clicked:', submission.submission.title);
                             setSubmissionDetail(submission);
                           }}
-                          className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors text-left"
+                          className="text-xl font-semibold text-white hover:text-blue-400 transition-colors text-left"
                         >
                           {submission.submission.title}
                         </button>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-600 text-white">
                           #{submission._metadata.file_number}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                      <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
                         <span>
                           By: {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
                           {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
@@ -1236,14 +1345,14 @@ export default function DesirablePropertiesApp() {
                         <span>•</span>
                         <span>{submission.directly_addressed_dps.length} DPs addressed</span>
                       </div>
-                      <p className="text-gray-700 leading-relaxed">{submission.submission.overview}</p>
+                      <p className="text-gray-200 leading-relaxed">{submission.submission.overview}</p>
                       <div className="mt-3">
                         <VoteButtons
                           elementId={submission._metadata.file_number.toString()}
                           elementType="submission"
                           submissionId={submission._metadata.file_number.toString()}
-                          initialUpvotes={Math.floor(Math.random() * 50)}
-                          initialDownvotes={Math.floor(Math.random() * 20)}
+                          initialUpvotes={0}
+                          initialDownvotes={0}
                         />
                       </div>
                     </div>
@@ -1292,8 +1401,8 @@ export default function DesirablePropertiesApp() {
                                     elementId={`alignment-${submission._metadata.file_number}-${dpIndex}`}
                                     elementType="alignment"
                                     submissionId={submission._metadata.file_number.toString()}
-                                    initialUpvotes={Math.floor(Math.random() * 30)}
-                                    initialDownvotes={Math.floor(Math.random() * 10)}
+                                    initialUpvotes={0}
+                                    initialDownvotes={0}
                                   />
                                 </div>
                                 
@@ -1353,8 +1462,8 @@ export default function DesirablePropertiesApp() {
                                     elementId={`${item.type.toLowerCase()}-${submission._metadata.file_number}-${itemIndex}`}
                                     elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                                     submissionId={submission._metadata.file_number.toString()}
-                                    initialUpvotes={Math.floor(Math.random() * 25)}
-                                    initialDownvotes={Math.floor(Math.random() * 8)}
+                                    initialUpvotes={0}
+                                    initialDownvotes={0}
                                   />
                                 </div>
                                 
@@ -1408,12 +1517,12 @@ export default function DesirablePropertiesApp() {
               );
               
               return (
-                <div key={category} className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                <div key={category} className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 hover:shadow-md transition-shadow">
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">{category}</h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                        <h3 className="text-xl font-semibold text-white mb-2">{category}</h3>
+                        <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
                           <span>{categoryProperties.length} Desirable Properties</span>
                           <span>•</span>
                           <span>{categorySubmissions.length} Community Submissions</span>
@@ -1432,12 +1541,12 @@ export default function DesirablePropertiesApp() {
                     
                     {/* Category Properties Preview */}
                     <div className="mb-4">
-                      <h4 className="text-lg font-medium text-gray-900 mb-3">Desirable Properties in this Category</h4>
+                      <h4 className="text-lg font-medium text-white mb-3">Desirable Properties in this Category</h4>
                       <div className="grid gap-3">
                         {categoryProperties.map((property) => (
-                          <div key={property.id} className="bg-gray-50 rounded-lg p-3">
+                          <div key={property.id} className="bg-gray-700 rounded-lg p-3">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-600 text-white">
                                 {property.id}
                               </span>
                               <button 
@@ -1445,12 +1554,12 @@ export default function DesirablePropertiesApp() {
                                   console.log('DP title clicked from category:', property.name);
                                   setDpDetail(property);
                                 }}
-                                className="font-medium text-gray-900 hover:text-blue-600 transition-colors text-left"
+                                className="font-medium text-white hover:text-blue-400 transition-colors text-left"
                               >
                                 {property.name}
                               </button>
                             </div>
-                            <p className="text-gray-700 text-sm leading-relaxed">{property.description}</p>
+                            <p className="text-gray-200 text-sm leading-relaxed">{property.description}</p>
                           </div>
                         ))}
                       </div>
@@ -1459,12 +1568,12 @@ export default function DesirablePropertiesApp() {
                     {/* Category Submissions Preview */}
                     {categorySubmissions.length > 0 && (
                       <div>
-                        <h4 className="text-lg font-medium text-gray-900 mb-3">Recent Community Submissions</h4>
+                        <h4 className="text-lg font-medium text-white mb-3">Recent Community Submissions</h4>
                         <div className="space-y-3">
                           {categorySubmissions.slice(0, 3).map((submission, index) => (
-                            <div key={index} className="bg-green-50 rounded-lg p-3">
+                            <div key={index} className="bg-gray-700 rounded-lg p-3">
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-600 text-white">
                                   #{submission._metadata.file_number}
                                 </span>
                                 <button 
@@ -1472,16 +1581,16 @@ export default function DesirablePropertiesApp() {
                                     console.log('Submission title clicked from category:', submission.submission.title);
                                     setSubmissionDetail(submission);
                                   }}
-                                  className="font-medium text-gray-900 hover:text-green-600 transition-colors text-left"
+                                  className="font-medium text-white hover:text-green-400 transition-colors text-left"
                                 >
                                   {submission.submission.title}
                                 </button>
                               </div>
-                              <div className="text-sm text-gray-600 mb-2">
+                              <div className="text-sm text-gray-300 mb-2">
                                 By: {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
                                 {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
                               </div>
-                              <p className="text-gray-700 text-sm leading-relaxed">{submission.submission.overview}</p>
+                              <p className="text-gray-200 text-sm leading-relaxed">{submission.submission.overview}</p>
                             </div>
                           ))}
                           {categorySubmissions.length > 3 && (
@@ -1491,7 +1600,7 @@ export default function DesirablePropertiesApp() {
                                   setActiveTab('submissions');
                                   setSearchTerm(category);
                                 }}
-                                className="text-green-600 hover:text-green-800 text-sm font-medium"
+                                className="text-green-400 hover:text-green-300 text-sm font-medium"
                               >
                                 View all {categorySubmissions.length} submissions for {category} →
                               </button>
@@ -1518,10 +1627,10 @@ export default function DesirablePropertiesApp() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-12">
+      <footer className="bg-gray-800 border-t border-gray-700 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Meta-Layer Desirable Properties • Version {data?.meta.version}
             </p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -1529,7 +1638,7 @@ export default function DesirablePropertiesApp() {
                 href="https://github.com/meta-layer/desirable-properties"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                className="text-gray-300 hover:text-gray-100 flex items-center gap-2"
               >
                 <ExternalLink className="h-4 w-4" />
                 GitHub
