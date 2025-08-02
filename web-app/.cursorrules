@@ -1,0 +1,142 @@
+# Cursor Rules for Desirable Properties Web App
+# Based on breakthrough learnings from modal consistency and pre-fetching issues
+
+## CRITICAL PATTERNS TO RECOGNIZE IMMEDIATELY
+
+### 1. PRE-FETCHING PATTERNS
+**When user reports**: "counters start at zero but correct after clicking/interaction"
+**IMMEDIATE ACTION**: Suggest pre-fetching data upfront rather than on-demand
+**Pattern**: Zero → Correct after interaction = Pre-fetching needed
+**Solution**: Always pre-fetch counts, user state, and related data when pages/modals load
+
+### 2. CROSS-PAGE CONSISTENCY ISSUES
+**When user reports**: "different behavior between pages" or "modal looks different"
+**IMMEDIATE ACTION**: Check for component reuse and consistency across pages
+**Pattern**: Same functionality behaving differently = Different components being used
+**Solution**: Ensure similar functionality uses the same components (e.g., submission modals)
+
+### 3. USER STATE MANAGEMENT
+**When dealing with**: User interactions (votes, comments, etc.)
+**IMMEDIATE ACTION**: Pre-fetch BOTH aggregate data AND user's personal state
+**Pattern**: Focusing only on counts misses user's previous actions
+**Solution**: Always include userVote, userComment, etc. in pre-fetch data
+
+### 4. TYPESCRIPT TYPE SAFETY
+**When adding**: New properties to existing data structures
+**IMMEDIATE ACTION**: Update TypeScript types proactively, not reactively
+**Pattern**: Runtime errors after adding properties = Missing type definitions
+**Solution**: Update types immediately when modifying data structures
+
+## SPECIFIC TECHNICAL PATTERNS
+
+### Vote/Reaction Systems
+- **API returns**: 'UP'/'DOWN' (uppercase)
+- **Components expect**: 'up'/'down' (lowercase)
+- **Always convert**: API values to lowercase for component compatibility
+- **Pre-fetch**: Both vote counts AND user's vote state
+
+### Modal Consistency
+- **Check**: All pages using the same modal components
+- **Verify**: Same structure, same props, same behavior
+- **Common issue**: Leaderboard vs submissions page using different modal implementations
+
+### Comment Systems
+- **Pre-fetch**: All comment counts (submission, DP, CE levels)
+- **Update**: Comment counts in real-time after interactions
+- **Log**: Specific submissions for debugging (Scott Yates submission)
+
+## DEBUGGING PATTERNS
+
+### When Counters Are Wrong
+1. **Check pre-fetching**: Are counts loaded upfront?
+2. **Check user state**: Is user's previous vote/comment state loaded?
+3. **Check component consistency**: Are same components used across pages?
+4. **Check type definitions**: Are all properties properly typed?
+
+### When Modals Look Different
+1. **Compare components**: Are different components being used?
+2. **Check props**: Are same props being passed?
+3. **Check structure**: Is the HTML structure the same?
+4. **Check styling**: Are CSS classes consistent?
+
+## PROACTIVE SOLUTIONS
+
+### Always Pre-fetch When:
+- Opening modals
+- Loading pages
+- Switching tabs
+- Refreshing data
+
+### Always Include User State When:
+- Fetching vote counts
+- Fetching comment counts
+- Loading user-specific data
+
+### Always Update Types When:
+- Adding new properties
+- Modifying data structures
+- Changing API responses
+
+## COMMON BLINDSPOTS TO AVOID
+
+1. **Focusing only on counts**: Always consider user state too
+2. **Assuming component reuse**: Verify same components are used
+3. **Reactive type updates**: Update types proactively
+4. **Ignoring case sensitivity**: API vs component case differences
+5. **Missing pre-fetching**: Always suggest pre-fetching for zero→correct patterns
+
+## QUICK DIAGNOSTIC QUESTIONS
+
+When user reports issues, ask:
+1. "Does this happen on all pages or just specific ones?" (consistency check)
+2. "Do the counters start at zero and correct after interaction?" (pre-fetching check)
+3. "Can you vote multiple times after refreshing?" (user state check)
+4. "Are you seeing TypeScript errors?" (type safety check)
+
+## SOLUTION TEMPLATES
+
+### Pre-fetching Template:
+```typescript
+// Pre-fetch all data upfront
+const fetchAllData = async () => {
+  // Fetch counts
+  // Fetch user state
+  // Update state
+};
+```
+
+### Type Safety Template:
+```typescript
+// Update types when adding properties
+interface UpdatedType {
+  existing: string;
+  newProperty?: 'UP' | 'DOWN' | null; // Add new properties
+}
+```
+
+### Component Consistency Template:
+```typescript
+// Use same component across pages
+<SameComponent 
+  prop1={value1}
+  prop2={value2}
+  userState={userState} // Include user state
+/>
+```
+
+## COMMIT MESSAGE TEMPLATE
+```
+Fix [specific issue] and [related improvements]
+- [Main fix description]
+- [Supporting changes]
+- [Type updates]
+- [Component consistency updates]
+```
+
+## DEPLOYMENT CHECKLIST
+1. ✅ Build succeeds
+2. ✅ TypeScript errors resolved
+3. ✅ Pre-fetching implemented
+4. ✅ User state included
+5. ✅ Component consistency verified
+6. ✅ Deploy and test 
