@@ -101,6 +101,11 @@ export default function VoteButtons({
 
     if (isVoting) return;
 
+    // Prevent duplicate votes - if user already voted this way, do nothing
+    if (currentVote === vote) {
+      return;
+    }
+
     try {
       setIsVoting(true);
 
@@ -131,7 +136,7 @@ export default function VoteButtons({
         onVoteChange?.(vote);
       }
 
-      // TODO: Send vote to API
+      // Send vote to API
       await submitVote(vote);
     } catch (error) {
       console.error('Error voting:', error);
