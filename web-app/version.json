@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "build": "159",
+  "timestamp": "2025-08-02T19:40:56Z",
+  "commit": "initial",
+  "description": "Initial version with voting fixes and environment variable setup"
+}

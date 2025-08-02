@@ -1,124 +1,160 @@
 import { NextResponse } from 'next/server';
-import ScoringService from '../../lib/scoringService';
-
-// Mock leaderboard data - in a real app, this would come from a database
-const mockLeaderboardData = [
-  {
-    userId: 'user1',
-    userName: 'Alice Johnson',
-    email: 'alice@example.com',
-    submissions: 5,
-    comments: 25,
-    replies: 12,
-    thumbsupGiven: 89,
-    thumbsdownGiven: 15,
-    thumbsupReceived: 156,
-    commentsReceived: 45,
-    repliesReceived: 23,
-    signupDate: '2024-01-10T00:00:00Z',
-    firstSubmissionDate: '2024-01-11T00:00:00Z',
-    lastActivityDate: '2024-01-25T00:00:00Z'
-  },
-  {
-    userId: 'user2',
-    userName: 'Bob Smith',
-    email: 'bob@example.com',
-    submissions: 3,
-    comments: 18,
-    replies: 8,
-    thumbsupGiven: 67,
-    thumbsdownGiven: 12,
-    thumbsupReceived: 98,
-    commentsReceived: 32,
-    repliesReceived: 15,
-    signupDate: '2024-01-12T00:00:00Z',
-    firstSubmissionDate: '2024-01-13T00:00:00Z',
-    lastActivityDate: '2024-01-24T00:00:00Z'
-  },
-  {
-    userId: 'user3',
-    userName: 'Carol Davis',
-    email: 'carol@example.com',
-    submissions: 2,
-    comments: 15,
-    replies: 8,
-    thumbsupGiven: 45,
-    thumbsdownGiven: 12,
-    thumbsupReceived: 67,
-    commentsReceived: 23,
-    repliesReceived: 12,
-    signupDate: '2024-01-15T00:00:00Z',
-    firstSubmissionDate: '2024-01-16T00:00:00Z',
-    lastActivityDate: '2024-01-25T00:00:00Z'
-  },
-  {
-    userId: 'user4',
-    userName: 'David Wilson',
-    email: 'david@example.com',
-    submissions: 1,
-    comments: 8,
-    replies: 3,
-    thumbsupGiven: 23,
-    thumbsdownGiven: 5,
-    thumbsupReceived: 34,
-    commentsReceived: 12,
-    repliesReceived: 6,
-    signupDate: '2024-01-18T00:00:00Z',
-    firstSubmissionDate: '2024-01-19T00:00:00Z',
-    lastActivityDate: '2024-01-23T00:00:00Z'
-  },
-  {
-    userId: 'user5',
-    userName: 'Eva Brown',
-    email: 'eva@example.com',
-    submissions: 0,
-    comments: 5,
-    replies: 2,
-    thumbsupGiven: 15,
-    thumbsdownGiven: 3,
-    thumbsupReceived: 12,
-    commentsReceived: 4,
-    repliesReceived: 2,
-    signupDate: '2024-01-20T00:00:00Z',
-    lastActivityDate: '2024-01-22T00:00:00Z'
-  }
-];
+import { prisma } from '../../../lib/db';
 
 export async function GET() {
   try {
-    const scoringService = new ScoringService();
+    console.log('Leaderboard API called');
     
-    // Calculate scores for all users
-    const leaderboard = mockLeaderboardData.map((userActivity, index) => {
-      const scoreBreakdown = scoringService.getScoreBreakdown(userActivity);
+    // Test basic database connection
+    const userCount = await prisma.user.count();
+    console.log('User count:', userCount);
+    
+    // Get all users with their activity and received interactions
+    const users = await prisma.user.findMany({
+      include: {
+        submissions: {
+          select: { id: true, createdAt: true },
+          orderBy: { createdAt: 'asc' }
+        },
+        comments: {
+          select: { id: true }
+        },
+        votes: {
+          select: { id: true, type: true }
+        }
+      },
+      orderBy: { lastActivity: 'desc' }
+    });
+    
+    console.log('Found users:', users.length);
+    
+    // Calculate received interactions for each user
+    const usersWithReceivedInteractions = await Promise.all(
+      users.map(async (user) => {
+        // Get votes received on user's submissions
+        const submissionsVotesReceived = await prisma.vote.count({
+          where: {
+            submissionId: {
+              in: user.submissions.map(s => s.id)
+            },
+            type: 'UP'
+          }
+        });
+
+        // Get comments received on user's submissions
+        const submissionsCommentsReceived = await prisma.comment.count({
+          where: {
+            submissionId: {
+              in: user.submissions.map(s => s.id)
+            }
+          }
+        });
+
+        // Replies not implemented yet in the schema
+        const repliesReceived = 0;
+
+        // Get votes received on user's comments
+        const commentsVotesReceived = await prisma.vote.count({
+          where: {
+            commentId: {
+              in: user.comments.map(c => c.id)
+            },
+            type: 'UP'
+          }
+        });
+
+        return {
+          ...user,
+          submissionsVotesReceived,
+          submissionsCommentsReceived,
+          repliesReceived,
+          commentsVotesReceived
+        };
+      })
+    );
+    
+    // Create leaderboard with proper scoring
+    const leaderboard = usersWithReceivedInteractions.map((user, index) => {
+      const submissionsCount = user.submissions.length;
+      const commentsCount = user.comments.length;
+      const thumbsUpGiven = user.votes.filter((v: any) => v.type === 'UP').length;
+      const thumbsDownGiven = user.votes.filter((v: any) => v.type === 'DOWN').length;
+      
+      // Calculate submission points: 10 for first, 1 for each subsequent
+      const submissionPoints = submissionsCount > 0 ? 10 + (submissionsCount - 1) : 0;
+      
+      // Calculate engagement points
+      const dailyThumbsupLimit = Math.min(thumbsUpGiven, 20); // Daily limit
+      const engagementPoints = (dailyThumbsupLimit * 1) + (commentsCount * 2);
+      
+      // Calculate received interaction points
+      const receivedPoints = user.submissionsVotesReceived + user.submissionsCommentsReceived + 
+                           user.repliesReceived + user.commentsVotesReceived;
+      
+      // Create display name without email
+      const displayName = user.firstName && user.lastName 
+        ? `${user.firstName} ${user.lastName}`
+        : user.firstName || user.lastName || 'Anonymous';
+      
       return {
         rank: index + 1,
-        userId: userActivity.userId,
-        userName: userActivity.userName,
-        email: userActivity.email,
-        totalScore: scoreBreakdown.total,
-        scoreBreakdown,
-        activity: userActivity
+        userId: user.id,
+        userName: displayName,
+        totalScore: submissionPoints + engagementPoints + receivedPoints,
+        scoreBreakdown: {
+          contribution: submissionPoints,
+          engagement: engagementPoints,
+          received: receivedPoints
+        },
+        activity: {
+          userId: user.id,
+          userName: displayName,
+          submissions: submissionsCount,
+          comments: commentsCount,
+          replies: 0, // TODO: Add replies count when available
+          thumbsupGiven: thumbsUpGiven,
+          thumbsdownGiven: thumbsDownGiven,
+          thumbsupReceived: user.submissionsVotesReceived + user.commentsVotesReceived,
+          thumbsdownReceived: 0, // TODO: Add downvotes received
+          commentsReceived: user.submissionsCommentsReceived,
+          repliesReceived: user.repliesReceived,
+          signupDate: user.signupDate.toISOString(),
+          firstSubmissionDate: user.submissions.length > 0 ? user.submissions[0].createdAt.toISOString() : undefined,
+          lastActivityDate: user.lastActivity.toISOString()
+        }
       };
     });
 
+    // Filter out users with no activity (no submissions, no comments, no votes)
+    const activeUsers = leaderboard.filter(user => 
+      user.activity.submissions > 0 || 
+      user.activity.comments > 0 || 
+      user.activity.thumbsupGiven > 0 ||
+      user.activity.thumbsupReceived > 0
+    );
+
     // Sort by total score (descending)
-    leaderboard.sort((a, b) => b.totalScore - a.totalScore);
+    activeUsers.sort((a, b) => b.totalScore - a.totalScore);
+
+    // Limit to top 10
+    const topUsers = activeUsers.slice(0, 10);
 
     // Update ranks after sorting
-    leaderboard.forEach((user, index) => {
+    topUsers.forEach((user, index) => {
       user.rank = index + 1;
     });
 
+    console.log('Returning leaderboard with', topUsers.length, 'active users');
+
     return NextResponse.json({
-      leaderboard,
-      totalUsers: leaderboard.length,
+      leaderboard: topUsers,
+      totalUsers: topUsers.length,
       lastUpdated: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch leaderboard' },
+      { error: 'Failed to fetch leaderboard', details: String(error) },
       { status: 500 }
     );
   }

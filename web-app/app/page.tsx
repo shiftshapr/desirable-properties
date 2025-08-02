@@ -6,6 +6,8 @@ import { usePrivy } from '@privy-io/react-auth';
 import Link from 'next/link';
 import VoteButtons from './components/VoteButtons';
 import CommentSection from './components/CommentSection';
+import ChatModal from './components/ChatModal';
+import { UnifiedElement, SubmissionElement, CommentElement, ReactionElement } from './components/UnifiedElement';
 
 interface DesirableProperty {
   id: string;
@@ -33,32 +35,28 @@ interface ApiResponse {
 }
 
 interface Submission {
+  id: string;
+  title: string;
+  overview: string;
+  sourceLink: string | null;
   submitter: {
-    first_name: string | null;
-    last_name: string | null;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
   };
-  submission: {
-    title: string;
-    overview: string;
-    source_link: string | null;
-  };
-  directly_addressed_dps: Array<{
+  directlyAddressedDPs: Array<{
     dp: string;
     summary: string;
   }>;
-  clarifications_and_extensions: Array<{
+  clarificationsExtensions: Array<{
     dp: string;
     type: string;
     title: string;
-    clarification?: string;
-    extension?: string;
-    why_it_matters: string;
+    content: string;
+    whyItMatters: string;
   }>;
-  _metadata: {
-    source_file: string;
-    file_number: number;
-  };
+  upvotes: number;
+  downvotes: number;
 }
 
 type TabType = 'summary' | 'properties' | 'submissions' | 'categories';
@@ -97,16 +95,12 @@ export default function DesirablePropertiesApp() {
   const [dpDetail, setDpDetail] = useState<DesirableProperty | null>(null);
   const [submissionDetail, setSubmissionDetail] = useState<Submission | null>(null);
   const [visibleComments, setVisibleComments] = useState<Set<string>>(new Set());
-  const [searchResults, setSearchResults] = useState<{
-    query: string;
-    results: {
-      desirable_properties: Array<{ item: DesirableProperty; score: number; matches: unknown[] }>;
-      submissions: Array<{ item: Submission; score: number; matches: unknown[] }>;
-      categories: Array<{ item: { name: string; description: string }; score: number; matches: unknown[] }>;
-    };
-    total_results: number;
-  } | null>(null);
+  const [searchResults, setSearchResults] = useState<any>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [chatModalOpen, setChatModalOpen] = useState(false);
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [voteCounts, setVoteCounts] = useState<Record<string, { upvotes: number; downvotes: number; userVote?: 'UP' | 'DOWN' | null }>>({});
+  const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,28 +109,31 @@ export default function DesirablePropertiesApp() {
         setError(null);
         
         // Fetch desirable properties data
-        const propertiesResponse = await fetch('/api/desirable-properties');
+        const propertiesResponse = await fetch(`/api/desirable-properties?t=${Date.now()}`);
         if (!propertiesResponse.ok) {
           throw new Error('Failed to fetch desirable properties');
         }
         const propertiesData: ApiResponse = await propertiesResponse.json();
-        console.log('Loaded properties:', propertiesData.desirable_properties.length);
-        console.log('Sample property:', propertiesData.desirable_properties[0]);
-        console.log('Sample property landing fields:', {
-          landing_title: propertiesData.desirable_properties[0]?.landing_title,
-          landing_subtitle: propertiesData.desirable_properties[0]?.landing_subtitle,
-          landing_text: propertiesData.desirable_properties[0]?.landing_text
-        });
+            // console.log('Loaded properties:', propertiesData.desirable_properties.length);
+    // console.log('Sample property:', propertiesData.desirable_properties[0]);
+    // console.log('Sample property landing fields:', {
+    //   landing_title: propertiesData.desirable_properties[0]?.landing_title,
+    //   landing_subtitle: propertiesData.desirable_properties[0]?.landing_subtitle,
+    //   landing_text: propertiesData.desirable_properties[0]?.landing_text
+    // });
         setData(propertiesData);
         
         // Fetch submissions data
-        const submissionsResponse = await fetch('/api/submissions');
+        const submissionsResponse = await fetch(`/api/submissions?t=${Date.now()}`);
         if (!submissionsResponse.ok) {
           throw new Error('Failed to fetch submissions');
         }
         const submissionsData: { submissions: Submission[] } = await submissionsResponse.json();
-        console.log('Loaded submissions:', submissionsData.submissions?.length);
-        setSubmissions(submissionsData.submissions || []);
+        // console.log('Loaded submissions:', submissionsData.submissions?.length);
+        const submissionsList = submissionsData.submissions || [];
+        setSubmissions(submissionsList);
+        // Pre-fetch all comment and vote counts for all submissions
+        fetchAllSubmissionCounts(submissionsList);
         
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -147,7 +144,34 @@ export default function DesirablePropertiesApp() {
     };
 
     fetchData();
+    
+    // Fetch and display build version
+    setTimeout(() => {
+      fetch(`/api/version?t=${Date.now()}`)
+        .then(response => response.json())
+        .then(data => {
+          const buildElement = document.getElementById('build-version');
+          if (buildElement && data.build) {
+            buildElement.textContent = data.build;
+          }
+        })
+        .catch(error => {
+          console.error('Failed to fetch version:', error);
+          const buildElement = document.getElementById('build-version');
+          if (buildElement) {
+            buildElement.textContent = 'Unknown';
+          }
+        });
+    }, 1000); // Wait 1 second for DOM to be ready
   }, []);
+
+  // Re-fetch counts when submissions tab is activated
+  useEffect(() => {
+    if (activeTab === 'submissions' && submissions.length > 0) {
+      console.log('🔴 [MainPage] Submissions tab activated, re-fetching all counts');
+      fetchAllSubmissionCounts(submissions);
+    }
+  }, [activeTab, submissions]);
 
   // Handle hash and URL parameter navigation
   useEffect(() => {
@@ -157,20 +181,20 @@ export default function DesirablePropertiesApp() {
       const hash = window.location.hash;
       const urlParams = new URLSearchParams(window.location.search);
       
-      console.log('Hash:', hash, 'URL params:', urlParams.toString());
+      // console.log('Hash:', hash, 'URL params:', urlParams.toString());
 
       // Check for hash-based navigation (#dp3, #dp15, etc.)
       if (hash && hash.startsWith('#dp')) {
         const dpId = hash.substring(1).toUpperCase(); // Remove # and convert to uppercase
-        console.log('Looking for DP from hash:', dpId);
+        // console.log('Looking for DP from hash:', dpId);
         
         const dp = getDPByIdOrName(dpId);
         if (dp) {
-          console.log('Opening DP modal from hash:', dp.name);
+          // console.log('Opening DP modal from hash:', dp.name);
           setDpDetail(dp);
           setSubmissionDetail(null);
         } else {
-          console.log('DP not found for hash:', dpId);
+          // console.log('DP not found for hash:', dpId);
         }
       }
       
@@ -178,15 +202,15 @@ export default function DesirablePropertiesApp() {
       const dpParam = urlParams.get('dp') || urlParams.get('DP');
       if (dpParam) {
         const dpId = dpParam.toUpperCase();
-        console.log('Looking for DP from URL param:', dpId);
+        // console.log('Looking for DP from URL param:', dpId);
         
         const dp = getDPByIdOrName(dpId);
         if (dp) {
-          console.log('Opening DP modal from URL param:', dp.name);
+          // console.log('Opening DP modal from URL param:', dp.name);
           setDpDetail(dp);
           setSubmissionDetail(null);
         } else {
-          console.log('DP not found for URL param:', dpId);
+          // console.log('DP not found for URL param:', dpId);
         }
       }
     };
@@ -196,13 +220,13 @@ export default function DesirablePropertiesApp() {
 
     // Listen for hash changes
     const handleHashChange = () => {
-      console.log('Hash changed to:', window.location.hash);
+      // console.log('Hash changed to:', window.location.hash);
       handleHashAndParams();
     };
 
     // Listen for URL parameter changes (popstate event)
     const handlePopState = () => {
-      console.log('URL changed to:', window.location.href);
+      // console.log('URL changed to:', window.location.href);
       handleHashAndParams();
     };
 
@@ -233,11 +257,11 @@ export default function DesirablePropertiesApp() {
 
   // Debug useEffect for modal states
   useEffect(() => {
-    console.log('dpDetail state changed:', dpDetail?.name || 'null');
+    // console.log('dpDetail state changed:', dpDetail?.name || 'null');
   }, [dpDetail]);
 
   useEffect(() => {
-    console.log('submissionDetail state changed:', submissionDetail?.submission.title || 'null');
+    // console.log('submissionDetail state changed:', submissionDetail?.title || 'null');
   }, [submissionDetail]);
 
   const toggleProperty = (propertyId: string) => {
@@ -269,7 +293,7 @@ export default function DesirablePropertiesApp() {
 
     try {
       setSearchLoading(true);
-      console.log('Performing search for:', query);
+      // console.log('Performing search for:', query);
       
       const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
       if (!response.ok) {
@@ -277,7 +301,7 @@ export default function DesirablePropertiesApp() {
       }
       
       const results = await response.json();
-      console.log('Search results:', results);
+      // console.log('Search results:', results);
       setSearchResults(results);
     } catch (error) {
       console.error('Search error:', error);
@@ -309,19 +333,19 @@ export default function DesirablePropertiesApp() {
 
   const filteredSubmissions = submissions.filter(submission => {
     const searchLower = searchTerm.toLowerCase();
-    return submission.submission.title.toLowerCase().includes(searchLower) ||
-           submission.submission.overview.toLowerCase().includes(searchLower) ||
-           submission.directly_addressed_dps.some(dp => 
+    return submission.title.toLowerCase().includes(searchLower) ||
+           submission.overview.toLowerCase().includes(searchLower) ||
+           (Array.isArray(submission.directlyAddressedDPs) && submission.directlyAddressedDPs.some(dp => 
              dp.dp.toLowerCase().includes(searchLower) || 
              dp.summary.toLowerCase().includes(searchLower)
-           );
+           ));
   });
 
   // Helper: Find all submissions aligned to a DP
   const getSubmissionsForDP = (dpId: string) => {
-    console.log('getSubmissionsForDP called with:', dpId);
+    // console.log('getSubmissionsForDP called with:', dpId);
     const result = submissions.filter(sub =>
-      sub.directly_addressed_dps.some(dp => {
+      Array.isArray(sub.directlyAddressedDPs) && sub.directlyAddressedDPs.some(dp => {
         // Extract DP number from both strings for exact matching
         const dpNumber = dp.dp.match(/^DP(\d+)/)?.[1];
         const targetNumber = dpId.match(/^DP(\d+)/)?.[1];
@@ -339,19 +363,19 @@ export default function DesirablePropertiesApp() {
     
     // Deduplicate submissions by title and submitter
     const uniqueSubmissions = result.filter((sub, index, self) => {
-      const key = `${sub.submission.title}-${sub.submitter.first_name}-${sub.submitter.last_name}`;
-      return index === self.findIndex(s => 
-        `${s.submission.title}-${s.submitter.first_name}-${s.submitter.last_name}` === key
-      );
+                const key = `${sub.title}-${sub.submitter.firstName}-${sub.submitter.lastName}`;
+              return index === self.findIndex(s => 
+          `${s.title}-${s.submitter.firstName}-${s.submitter.lastName}` === key
+        );
     });
     
-    console.log('Found submissions:', result.length, 'Unique submissions:', uniqueSubmissions.length);
+    // console.log('Found submissions:', result.length, 'Unique submissions:', uniqueSubmissions.length);
     return uniqueSubmissions;
   };
 
   // Helper: Find DP by id or name
   const getDPByIdOrName = (idOrName: string) => {
-    console.log('getDPByIdOrName called with:', idOrName);
+    // console.log('getDPByIdOrName called with:', idOrName);
     
     // First try exact match
     let result = data?.desirable_properties.find(dp => dp.id === idOrName || dp.name === idOrName);
@@ -383,7 +407,7 @@ export default function DesirablePropertiesApp() {
 
   // Helper function to get top DPs by type
   const toggleComments = (elementId: string) => {
-    setVisibleComments(prev => {
+    setExpandedComments(prev => {
       const newSet = new Set(prev);
       if (newSet.has(elementId)) {
         newSet.delete(elementId);
@@ -394,20 +418,193 @@ export default function DesirablePropertiesApp() {
     });
   };
 
+  const updateCommentCount = (elementId: string, count: number) => {
+    // Always log for Scott Yates submission
+    const isScottYatesSubmission = elementId.includes('cmds3zumt00s3h2108o3bojs9');
+    if (isScottYatesSubmission) {
+      console.log('🔴 [MainPage] updateCommentCount called for Scott Yates submission - elementId:', elementId, 'new count:', count);
+    }
+    setCommentCounts(prev => {
+      const newCounts = {
+        ...prev,
+        [elementId]: count
+      };
+      if (isScottYatesSubmission) {
+        console.log('🔴 [MainPage] Updated commentCounts state:', newCounts);
+      }
+      return newCounts;
+    });
+  };
+
+  // Pre-fetch all comment counts for a submission
+  const fetchAllCommentCounts = async (submission: Submission) => {
+    if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
+      console.log('🔴 [MainPage] Pre-fetching all comment counts for Scott Yates submission');
+    }
+    
+    try {
+      // Fetch submission-level comments
+      const submissionResponse = await fetch(`/api/comments?submissionId=${submission.id}`);
+      if (submissionResponse.ok) {
+        const submissionComments = await submissionResponse.json();
+        const submissionCount = Array.isArray(submissionComments) ? submissionComments.length : 0;
+        updateCommentCount(submission.id, submissionCount);
+        
+        if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
+          console.log('🔴 [MainPage] Pre-fetched submission comment count:', submissionCount);
+        }
+      }
+      
+      // Fetch comments for each DP
+      for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
+        const dpElementId = `${submission.id}-dp-${dpIndex}`;
+        const dpResponse = await fetch(`/api/comments?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`);
+        if (dpResponse.ok) {
+          const dpComments = await dpResponse.json();
+          const dpCount = Array.isArray(dpComments) ? dpComments.length : 0;
+          updateCommentCount(dpElementId, dpCount);
+          
+          if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
+            console.log('🔴 [MainPage] Pre-fetched DP comment count:', dpCount, 'for elementId:', dpElementId);
+          }
+        }
+      }
+      
+      // Fetch comments for each Clarification/Extension
+      for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
+        const ceElementId = `${submission.id}-ce-${ceIndex}`;
+        const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
+        const ceResponse = await fetch(`/api/comments?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`);
+        if (ceResponse.ok) {
+          const ceComments = await ceResponse.json();
+          const ceCount = Array.isArray(ceComments) ? ceComments.length : 0;
+          updateCommentCount(ceElementId, ceCount);
+          
+          if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
+            console.log('🔴 [MainPage] Pre-fetched CE comment count:', ceCount, 'for elementId:', ceElementId);
+          }
+        }
+      }
+      
+      if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
+        console.log('🔴 [MainPage] Completed pre-fetching all comment counts for Scott Yates submission');
+      }
+    } catch (error) {
+      console.error('Error pre-fetching comment counts:', error);
+    }
+  };
+
+  // Pre-fetch all comment and vote counts for all submissions
+  const fetchAllSubmissionCounts = async (submissionsList: Submission[]) => {
+    console.log('🔴 [MainPage] Pre-fetching all comment and vote counts for all submissions');
+    
+    try {
+      for (const submission of submissionsList) {
+        // Pre-fetch comment counts for this submission
+        await fetchAllCommentCounts(submission);
+        
+        // Pre-fetch vote counts and user vote state for submission-level
+        const voteResponse = await fetch(`/api/votes?submissionId=${submission.id}`);
+        if (voteResponse.ok) {
+          const voteData = await voteResponse.json();
+          setVoteCounts(prev => ({
+            ...prev,
+            [submission.id]: {
+              upvotes: voteData.upvotes || 0,
+              downvotes: voteData.downvotes || 0,
+              userVote: voteData.userVote || null // Include user's vote state
+            }
+          }));
+        }
+        
+        // Pre-fetch vote counts and user vote state for each DP
+        for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
+          const dpElementId = `${submission.id}-dp-${dpIndex}`;
+          const dpVoteResponse = await fetch(`/api/votes?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`);
+          if (dpVoteResponse.ok) {
+            const dpVoteData = await dpVoteResponse.json();
+            setVoteCounts(prev => ({
+              ...prev,
+              [dpElementId]: {
+                upvotes: dpVoteData.upvotes || 0,
+                downvotes: dpVoteData.downvotes || 0,
+                userVote: dpVoteData.userVote || null // Include user's vote state
+              }
+            }));
+          }
+        }
+        
+        // Pre-fetch vote counts and user vote state for each Clarification/Extension
+        for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
+          const ceElementId = `${submission.id}-ce-${ceIndex}`;
+          const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
+          const ceVoteResponse = await fetch(`/api/votes?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`);
+          if (ceVoteResponse.ok) {
+            const ceVoteData = await ceVoteResponse.json();
+            setVoteCounts(prev => ({
+              ...prev,
+              [ceElementId]: {
+                upvotes: ceVoteData.upvotes || 0,
+                downvotes: ceVoteData.downvotes || 0,
+                userVote: ceVoteData.userVote || null // Include user's vote state
+              }
+            }));
+          }
+        }
+      }
+      
+      console.log('🔴 [MainPage] Completed pre-fetching all counts for all submissions');
+    } catch (error) {
+      console.error('Error pre-fetching all submission counts:', error);
+    }
+  };
+
+  // Abstracted function to open submission detail modal
+  const openSubmissionDetail = (submission: Submission) => {
+    setSubmissionDetail(submission);
+    // Pre-fetch comment counts for this submission
+    fetchAllCommentCounts(submission);
+  };
+
+  // Calculate total comment count for a submission (including all elements)
+  const getTotalCommentCount = (submission: Submission) => {
+    let total = commentCounts[submission.id] || 0;
+    
+    // Add comments on alignment elements
+    if (Array.isArray(submission.directlyAddressedDPs)) {
+      submission.directlyAddressedDPs.forEach((_, dpIndex) => {
+        total += commentCounts[`${submission.id}-dp-${dpIndex}`] || 0;
+      });
+    }
+    
+    // Add comments on clarification/extension elements
+    if (Array.isArray(submission.clarificationsExtensions)) {
+      submission.clarificationsExtensions.forEach((item, itemIndex) => {
+        total += commentCounts[`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`] || 0;
+      });
+    }
+    
+    return total;
+  };
+
   const getTopDPs = (type: 'alignments' | 'clarifications' | 'extensions') => {
     const dpCounts: { [key: string]: number } = {};
     
     submissions.forEach(submission => {
       if (type === 'alignments') {
-        submission.directly_addressed_dps.forEach(dp => {
-          dpCounts[dp.dp] = (dpCounts[dp.dp] || 0) + 1;
-        });
-      } else {
-        submission.clarifications_and_extensions
-          .filter(ce => ce.type === (type === 'clarifications' ? 'Clarification' : 'Extension'))
-          .forEach(ce => {
-            dpCounts[ce.dp] = (dpCounts[ce.dp] || 0) + 1;
+        if (Array.isArray(submission.directlyAddressedDPs)) {
+          submission.directlyAddressedDPs.forEach(dp => {
+            dpCounts[dp.dp] = (dpCounts[dp.dp] || 0) + 1;
           });
+        }
+      } else {
+        if (Array.isArray(submission.clarificationsExtensions)) {
+          submission.clarificationsExtensions
+            .filter(ce => ce.type === (type === 'clarifications' ? 'Clarification' : 'Extension'))
+            .forEach(ce => {
+              dpCounts[ce.dp] = (dpCounts[ce.dp] || 0) + 1;
+            });
+        }
       }
     });
     
@@ -443,12 +640,12 @@ export default function DesirablePropertiesApp() {
 
   // DP Detail Modal
   const renderDPDetail = (dp: DesirableProperty) => {
-    console.log('renderDPDetail called for:', dp.name);
-    console.log('DP landing fields:', {
-      landing_title: dp.landing_title,
-      landing_subtitle: dp.landing_subtitle,
-      landing_text: dp.landing_text
-    });
+    // console.log('renderDPDetail called for:', dp.name);
+    // console.log('DP landing fields:', {
+    //   landing_title: dp.landing_title,
+    //   landing_subtitle: dp.landing_subtitle,
+    //   landing_text: dp.landing_text
+    // });
     const relatedSubmissions = getSubmissionsForDP(dp.id);
     return (
       <div>
@@ -465,9 +662,9 @@ export default function DesirablePropertiesApp() {
         <p className="mb-4 text-gray-200">{dp.description}</p>
         <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Elements</h3>
         <ul className="mb-4 list-disc pl-6">
-          {dp.elements.map((el, i) => (
+          {Array.isArray(dp.elements) ? dp.elements.map((el, i) => (
             <li key={i} className="mb-1 text-gray-200"><span className="font-medium text-amber-200">{el.name}:</span> {el.description}</li>
-          ))}
+          )) : null}
         </ul>
         <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Aligned Community Submissions</h3>
         
@@ -475,27 +672,27 @@ export default function DesirablePropertiesApp() {
         <div className="flex items-center gap-6 mb-4 text-sm">
           <div className="flex items-center gap-2 text-cyan-400">
             <MessageCircle className="h-4 w-4" />
-            <span>{relatedSubmissions.reduce((total, sub) => total + sub.directly_addressed_dps.filter(alignment => {
+            <span>{relatedSubmissions.reduce((total, sub) => total + (Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.filter(alignment => {
               const dpNumber = alignment.dp.match(/^DP(\d+)/)?.[1];
               const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
               return dpNumber && targetNumber && dpNumber === targetNumber;
-            }).length, 0)} alignments</span>
+            }).length : 0), 0)} alignments</span>
           </div>
           <div className="flex items-center gap-2 text-amber-400">
             <Lightbulb className="h-4 w-4" />
-            <span>{relatedSubmissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => {
+            <span>{relatedSubmissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => {
               const ceDpNumber = ce.dp.match(/^DP(\d+)/)?.[1];
               const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
               return ceDpNumber && targetNumber && ceDpNumber === targetNumber && ce.type === 'Extension';
-            }).length, 0)} extensions</span>
+            }).length : 0), 0)} extensions</span>
           </div>
           <div className="flex items-center gap-2 text-yellow-400">
             <HelpCircle className="h-4 w-4" />
-            <span>{relatedSubmissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => {
+            <span>{relatedSubmissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => {
               const ceDpNumber = ce.dp.match(/^DP(\d+)/)?.[1];
               const targetNumber = dp.id.match(/^DP(\d+)/)?.[1];
               return ceDpNumber && targetNumber && ceDpNumber === targetNumber && ce.type === 'Clarification';
-            }).length, 0)} clarifications</span>
+            }).length : 0), 0)} clarifications</span>
           </div>
         </div>
         
@@ -509,19 +706,23 @@ export default function DesirablePropertiesApp() {
                   <div className="flex-1">
                 <button 
                   className="text-cyan-400 hover:text-cyan-300 hover:underline font-medium text-left" 
-                  onClick={() => { 
-                    console.log('Opening submission detail for:', sub.submission.title);
-                    setSubmissionDetail(sub); 
-                    setDpDetail(null); 
+                  onClick={() => {
+                    // console.log('=== SETTING SUBMISSION DETAIL FROM DP DETAIL ===');
+                    // console.log('Submission object being set:', sub);
+                    // console.log('Submission directlyAddressedDPs:', sub.directlyAddressedDPs);
+                    // console.log('Submission clarificationsExtensions:', sub.clarificationsExtensions);
+                    // console.log('Opening submission detail for:', sub.title);
+                    openSubmissionDetail(sub);
+                    setDpDetail(null);
                   }}
                 >
-                  {sub.submission.title}
+                                      {sub.title}
                 </button>
-                <div className="text-xs text-gray-400">By: {(sub.submitter.first_name || sub.submitter.last_name) ? `${sub.submitter.first_name || ''} ${sub.submitter.last_name || ''}`.trim() : 'Anon'}</div>
+                                  <div className="text-xs text-gray-400">By: {(sub.submitter.firstName || sub.submitter.lastName) ? `${sub.submitter.firstName || ''} ${sub.submitter.lastName || ''}`.trim() : 'Anon'}</div>
                   </div>
                   <div className="flex items-center gap-2 ml-2">
                     <button
-                      onClick={() => toggleComments(`submission-${sub._metadata.file_number}`)}
+                      onClick={() => toggleComments(`submission-${sub.id}`)}
                       className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-cyan-400 hover:bg-cyan-500/10"
                     >
                       <MessageCircle className="h-3 w-3" />
@@ -541,19 +742,19 @@ export default function DesirablePropertiesApp() {
                 </div>
                 {/* Show alignment summary if present */}
                 {(() => {
-                  const alignment = sub.directly_addressed_dps.find(a => 
+                  const alignment = Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.find(a => 
                     a.dp === dp.id || 
                     a.dp === dp.name || 
                     a.dp.startsWith(dp.id + ' ') ||
                     a.dp.includes(dp.name)
-                  );
+                  ) : null;
                   return alignment && alignment.summary ? (
                     <div className="text-sm text-amber-300 mt-1">{alignment.summary}</div>
                   ) : null;
                 })()}
                 {/* Show clarifications/extensions for this DP from this submission */}
                 <div className="ml-2 mt-1">
-                  {sub.clarifications_and_extensions.filter(c => {
+                  {Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(c => {
                     // Extract DP number from both strings for exact matching
                     const cDpNumber = c.dp.match(/^DP(\d+)/)?.[1];
                     const targetDpNumber = dp.id.match(/^DP(\d+)/)?.[1];
@@ -571,14 +772,13 @@ export default function DesirablePropertiesApp() {
                         <div className="flex-1">
                       <span className="font-semibold text-amber-300">{c.type}:</span> <span className="font-semibold text-white">{c.title}</span>
                       <div className="text-gray-200 ml-2">
-                        {c.clarification && <div><span className="italic text-amber-200">Clarification:</span> {c.clarification}</div>}
-                        {c.extension && <div><span className="italic text-amber-200">Extension:</span> {c.extension}</div>}
-                        <div className="text-xs text-amber-300">Why it matters: {c.why_it_matters}</div>
+                        <div><span className="italic text-amber-200">{c.type}:</span> {c.content}</div>
+                        <div className="text-xs text-amber-300">Why it matters: {c.whyItMatters}</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 ml-2">
                           <button
-                            onClick={() => toggleComments(`${c.type.toLowerCase()}-${sub._metadata.file_number}-${j}`)}
+                            onClick={() => toggleComments(`${c.type.toLowerCase()}-${sub.id}-${j}`)}
                             className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-amber-400 hover:bg-amber-500/10"
                           >
                             <MessageCircle className="h-3 w-3" />
@@ -587,17 +787,17 @@ export default function DesirablePropertiesApp() {
                           <div className="flex items-center gap-1">
                             <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-green-400">
                               <ThumbsUp className="h-3 w-3" />
-                              <span>{Math.floor(Math.random() * 25)}</span>
+                              <span>{Math.floor(Math.random() * 20)}</span>
                             </button>
                             <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-red-400">
                               <ThumbsDown className="h-3 w-3" />
-                              <span>{Math.floor(Math.random() * 8)}</span>
+                              <span>{Math.floor(Math.random() * 10)}</span>
                             </button>
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               </li>
             ))}
@@ -609,183 +809,279 @@ export default function DesirablePropertiesApp() {
 
   // Submission Detail Modal
   const renderSubmissionDetail = (sub: Submission) => {
-    console.log('renderSubmissionDetail called for:', sub.submission.title);
-    console.log('Submission data:', {
-      title: sub.submission.title,
-      alignmentsCount: sub.directly_addressed_dps?.length || 0,
-      clarificationsCount: sub.clarifications_and_extensions?.length || 0,
-      clarifications: sub.clarifications_and_extensions
-    });
-    return (
-      <div>
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold mb-2 text-white">{sub.submission.title}</h2>
-            <div className="text-sm text-gray-400 mb-2">By: {(sub.submitter.first_name || sub.submitter.last_name) ? `${sub.submitter.first_name || ''} ${sub.submitter.last_name || ''}`.trim() : 'Anon'}</div>
-          </div>
-          <VoteButtons
-            elementId={sub._metadata.file_number.toString()}
-            elementType="submission"
-            submissionId={sub._metadata.file_number.toString()}
-            initialUpvotes={0}
-            initialDownvotes={0}
-          />
-        </div>
-        <p className="mb-4 text-gray-200">{sub.submission.overview}</p>
-        
-        {/* Directly Addressed DPs */}
-        <div>
-          <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Alignments (Desirable Properties Addressed)</h3>
-          <div className="space-y-3">
-            {sub.directly_addressed_dps.map((dp: { dp: string; summary: string }, dpIndex: number) => (
-              <div key={dpIndex} className="bg-blue-50 rounded-lg p-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <button 
-                      onClick={() => {
-                        console.log('DP reference clicked in submission:', dp.dp);
-                        const dpObj = getDPByIdOrName(dp.dp);
-                        if (dpObj) {
-                          setDpDetail(dpObj);
-                          setSubmissionDetail(null);
-                        }
-                      }}
-                      className="font-medium text-blue-900 mb-1 hover:text-blue-700 transition-colors text-left"
-                    >
-                      {dp.dp}
-                    </button>
-                    <p className="text-blue-700 text-sm">{dp.summary}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => toggleComments(`alignment-${sub._metadata.file_number}-${dpIndex}`)}
-                      className="flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors text-gray-400 hover:text-blue-400 hover:bg-blue-500/10"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      <span>3</span>
-                    </button>
-                    <VoteButtons
-                      elementId={`alignment-${sub._metadata.file_number}-${dpIndex}`}
-                      elementType="alignment"
-                      submissionId={sub._metadata.file_number.toString()}
-                      initialUpvotes={0}
-                      initialDownvotes={0}
-                    />
-                  </div>
-                </div>
-                
-                {/* Comments for Alignment */}
-                {visibleComments.has(`alignment-${sub._metadata.file_number}-${dpIndex}`) && (
-                  <div className="mt-3 pt-3 border-t border-blue-200 bg-gray-50 p-3 rounded">
-                    <CommentSection
-                      elementId={`alignment-${sub._metadata.file_number}-${dpIndex}`}
-                      elementType="alignment"
-                      submissionId={sub._metadata.file_number.toString()}
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+    // console.log('=== RENDER SUBMISSION DETAIL START ===');
+    // console.log('Submission object:', sub);
+    // console.log('Submission type:', typeof sub);
+    // console.log('Submission keys:', Object.keys(sub));
+    
+    try {
+      // console.log('=== CREATING SAFE SUBMISSION ===');
+      // Defensive checks to ensure all array properties are actually arrays
+      const safeSubmission = {
+        ...sub,
+        directlyAddressedDPs: Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs : [],
+        clarificationsExtensions: Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions : []
+      };
+      // console.log('Safe submission created:', safeSubmission);
+      // console.log('Safe directlyAddressedDPs:', safeSubmission.directlyAddressedDPs);
+      // console.log('Safe clarificationsExtensions:', safeSubmission.clarificationsExtensions);
 
-        {/* Clarifications and Extensions */}
+      // console.log('=== RENDERING SUBMISSION DETAIL ===');
+      return (
         <div>
-          <h3 className="text-lg font-semibold mt-6 mb-2 text-white">Clarifications & Extensions</h3>
-          <div className="text-sm text-yellow-400 mb-2">DEBUG: clarifications_and_extensions length: {sub.clarifications_and_extensions?.length || 0}</div>
-          <div className="space-y-3">
-            {sub.clarifications_and_extensions?.map((item: { dp: string; type: string; title: string; clarification?: string; extension?: string; why_it_matters: string }, itemIndex: number) => (
-              <div key={itemIndex} className="bg-purple-50 rounded-lg p-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-medium text-purple-700 bg-purple-100 px-2 py-1 rounded">
-                        {item.type}
-                      </span>
-                      <h5 className="font-medium text-purple-900">{item.title}</h5>
-                    </div>
-                    <div className="mb-2">
-                      <span className="text-sm text-purple-700">For: </span>
-                      <button 
-                        onClick={() => {
-                          console.log('DP reference clicked in clarification:', item.dp);
-                          const dpObj = getDPByIdOrName(item.dp);
-                          if (dpObj) {
-                            setDpDetail(dpObj);
-                            setSubmissionDetail(null);
-                          }
-                        }}
-                        className="text-sm text-blue-600 hover:text-blue-800 underline"
-                      >
-                        {item.dp}
-                      </button>
-                    </div>
-                    {item.clarification && (
-                      <p className="text-purple-700 text-sm mb-2">{item.clarification}</p>
-                    )}
-                    {item.extension && (
-                      <p className="text-purple-700 text-sm mb-2">{item.extension}</p>
-                    )}
-                    <p className="text-purple-600 text-xs italic">Why it matters: {item.why_it_matters}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => toggleComments(`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`)}
-                      className="flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors text-gray-400 hover:text-purple-400 hover:bg-purple-500/10"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      <span>2</span>
-                    </button>
-                    <VoteButtons
-                      elementId={`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`}
-                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                      submissionId={sub._metadata.file_number.toString()}
-                      initialUpvotes={0}
-                      initialDownvotes={0}
-                    />
-                  </div>
-                </div>
-                
-                {/* Comments for Clarification/Extension */}
-                {visibleComments.has(`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`) && (
-                  <div className="mt-3 pt-3 border-t border-purple-200 bg-gray-50 p-3 rounded">
-                    <CommentSection
-                      elementId={`${item.type.toLowerCase()}-${sub._metadata.file_number}-${itemIndex}`}
-                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                      submissionId={sub._metadata.file_number.toString()}
-                    />
-                  </div>
-                )}
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">{safeSubmission.title}</h2>
+          </div>
+
+          {/* Submitter Info */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-300">
+                By: {(safeSubmission.submitter.firstName || safeSubmission.submitter.lastName) 
+                  ? `${safeSubmission.submitter.firstName || ''} ${safeSubmission.submitter.lastName || ''}`.trim() 
+                  : 'Anonymous'}
+              </p>
+              <div className="flex items-center gap-4">
+                                          <VoteButtons
+                            elementId={safeSubmission.id}
+                            elementType="submission"
+                            submissionId={safeSubmission.id}
+                            initialUpvotes={safeSubmission.upvotes}
+                            initialDownvotes={safeSubmission.downvotes}
+                            userVote={voteCounts[safeSubmission.id]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
+                          />
               </div>
-            ))}
+            </div>
+          </div>
+
+
+
+          {/* Overview */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-white mb-2">Overview</h3>
+            <p className="text-gray-300 leading-relaxed">{safeSubmission.overview}</p>
+          </div>
+
+          {/* Source Link */}
+          {safeSubmission.sourceLink && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-white mb-2">Source</h3>
+              <a 
+                href={safeSubmission.sourceLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-cyan-400 hover:text-cyan-300 underline"
+              >
+                {safeSubmission.sourceLink}
+              </a>
+            </div>
+          )}
+
+          {/* Directly Addressed DPs */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Directly Addressed Desirable Properties</h3>
+            <div className="space-y-3">
+              {safeSubmission.directlyAddressedDPs && safeSubmission.directlyAddressedDPs.length > 0 ? (
+                safeSubmission.directlyAddressedDPs.map((dp: { dp: string; summary: string }, dpIndex: number) => {
+                  // console.log('=== MAPPING DIRECTLY ADDRESSED DP ===');
+                  // console.log('DP:', dp);
+                  // console.log('DP Index:', dpIndex);
+                  return (
+                    <div key={dpIndex} className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-cyan-400">{dp.dp}</h4>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
+                            <VoteButtons
+                              elementId={`${safeSubmission.id}-dp-${dpIndex}`}
+                              elementType="alignment"
+                              submissionId={safeSubmission.id}
+                              initialUpvotes={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0}
+                              initialDownvotes={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0}
+                              userVote={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
+                              onVoteChange={(vote) => {
+                                setVoteCounts(prev => ({
+                                  ...prev,
+                                  [`${safeSubmission.id}-dp-${dpIndex}`]: {
+                                    upvotes: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0,
+                                    downvotes: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0,
+                                    userVote: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.userVote || null,
+                                    ...(vote === 'up' ? { upvotes: (prev[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0) + 1 } : {}),
+                                    ...(vote === 'down' ? { downvotes: (prev[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0) + 1 } : {})
+                                  }
+                                }));
+                              }}
+                            />
+                            <button
+                              onClick={() => toggleComments(`${safeSubmission.id}-dp-${dpIndex}`)}
+                              className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                              <span className="text-xs">{(() => {
+                  const count = commentCounts[`${safeSubmission.id}-dp-${dpIndex}`] || 0;
+                  if (safeSubmission.id === 'cmds3zumt00s3h2108o3bojs9') {
+                    console.log('🔴 [MainPage] Displaying DP comment count for Scott Yates submission:', count, 'elementId:', `${safeSubmission.id}-dp-${dpIndex}`);
+                  }
+                  return count;
+                })()}</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-sm mb-3">{dp.summary}</p>
+                      
+                      {/* Comments for DP - Collapsible */}
+                      {expandedComments.has(`${safeSubmission.id}-dp-${dpIndex}`) && (
+                        <div className="mt-3">
+                          <CommentSection
+                            elementId={`${safeSubmission.id}-dp-${dpIndex}`}
+                            elementType="alignment"
+                            submissionId={safeSubmission.id}
+                            onCommentCountChange={(count) => updateCommentCount(`${safeSubmission.id}-dp-${dpIndex}`, count)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-gray-400 italic">No directly addressed desirable properties listed.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Clarifications and Extensions */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Clarifications and Extensions</h3>
+            <div className="space-y-4">
+              {safeSubmission.clarificationsExtensions && safeSubmission.clarificationsExtensions.length > 0 ? (
+                safeSubmission.clarificationsExtensions.map((item: { dp: string; type: string; title: string; content: string; whyItMatters: string }, itemIndex: number) => {
+                  // console.log('=== MAPPING CLARIFICATIONS EXTENSIONS ===');
+                  // console.log('Item:', item);
+                  // console.log('Item Index:', itemIndex);
+                  return (
+                    <div key={itemIndex} className="bg-gray-700 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-1 text-xs rounded ${
+                            item.type === 'Clarification' 
+                              ? 'bg-blue-600 text-blue-100' 
+                              : 'bg-green-600 text-green-100'
+                          }`}>
+                            {item.type}
+                          </span>
+                          <h4 className="font-medium text-cyan-400">{item.title}</h4>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <VoteButtons
+                            elementId={`${safeSubmission.id}-ce-${itemIndex}`}
+                            elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                            submissionId={safeSubmission.id}
+                            initialUpvotes={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0}
+                            initialDownvotes={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0}
+                                                          userVote={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
+                            onVoteChange={(vote) => {
+                              setVoteCounts(prev => ({
+                                ...prev,
+                                [`${safeSubmission.id}-ce-${itemIndex}`]: {
+                                  upvotes: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0,
+                                  downvotes: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0,
+                                  userVote: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.userVote || null,
+                                  ...(vote === 'up' ? { upvotes: (prev[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0) + 1 } : {}),
+                                  ...(vote === 'down' ? { downvotes: (prev[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0) + 1 } : {})
+                                }
+                              }));
+                            }}
+                          />
+                          <button
+                            onClick={() => toggleComments(`${safeSubmission.id}-ce-${itemIndex}`)}
+                            className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                            <span className="text-xs">{(() => {
+                  const count = commentCounts[`${safeSubmission.id}-ce-${itemIndex}`] || 0;
+                  if (safeSubmission.id === 'cmds3zumt00s3h2108o3bojs9') {
+                    console.log('🔴 [MainPage] Displaying CE comment count for Scott Yates submission:', count, 'elementId:', `${safeSubmission.id}-ce-${itemIndex}`);
+                  }
+                  return count;
+                })()}</span>
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-sm mb-2">{item.dp}</p>
+                      <p className="text-gray-300 text-sm mb-3">{item.content}</p>
+                      <p className="text-gray-300 text-sm mb-3">
+                        <span className="text-gray-400">Why it matters:</span> {item.whyItMatters}
+                      </p>
+                      
+
+
+                      {/* Comments for Clarification/Extension - Collapsible */}
+                      {expandedComments.has(`${safeSubmission.id}-ce-${itemIndex}`) && (
+                        <div className="mt-3">
+                          <CommentSection
+                            elementId={`${safeSubmission.id}-ce-${itemIndex}`}
+                            elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                            submissionId={safeSubmission.id}
+                            onCommentCountChange={(count) => updateCommentCount(`${safeSubmission.id}-ce-${itemIndex}`, count)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-gray-400 italic">No clarifications or extensions listed.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Comments Section */}
+          <div className="comments-section mt-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Comments</h3>
+            <CommentSection
+              elementId={safeSubmission.id}
+              elementType="submission"
+              submissionId={safeSubmission.id}
+              onCommentCountChange={(count) => updateCommentCount(safeSubmission.id, count)}
+            />
           </div>
         </div>
-
-        {/* Source Link */}
-        {sub.submission.source_link && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <a
-              href={sub.submission.source_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
+      );
+    } catch (error) {
+      console.error('=== ERROR IN RENDER SUBMISSION DETAIL ===');
+      console.error('Error:', error);
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+      console.error('Submission that caused error:', sub);
+      return (
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">Submission Details</h2>
+            <button
+              onClick={() => setSubmissionDetail(null)}
+              className="text-gray-400 hover:text-gray-300 transition-colors"
             >
-              <ExternalLink className="h-4 w-4" />
-              View Source
-            </a>
+              <X className="h-6 w-6" />
+            </button>
           </div>
-        )}
-
-        {/* Comments for the full submission */}
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <CommentSection
-            elementId={sub._metadata.file_number.toString()}
-            elementType="submission"
-            submissionId={sub._metadata.file_number.toString()}
-          />
+          <div className="bg-red-900 border border-red-700 rounded-lg p-4 mb-4">
+            <h3 className="text-lg font-semibold text-red-200 mb-2">Error Loading Submission</h3>
+            <p className="text-red-300">
+              There was an error loading the submission details. Please try refreshing the page or contact support if the problem persists.
+            </p>
+            <p className="text-red-400 text-sm mt-2">
+              Error: {error instanceof Error ? error.message : 'Unknown error'}
+            </p>
+          </div>
+          <div className="text-gray-300">
+            <p><strong>Title:</strong> {sub.title}</p>
+            <p><strong>Overview:</strong> {sub.overview}</p>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   };
 
   return (
@@ -928,15 +1224,15 @@ export default function DesirablePropertiesApp() {
                 placeholder="Search properties, submissions, and categories..."
                 value={searchTerm}
                 onChange={(e) => {
-                  console.log('Search input changed:', e.target.value);
+                  // console.log('Search input changed:', e.target.value);
                   setSearchTerm(e.target.value);
                 }}
-                onKeyDown={(e) => {
-                  console.log('Search keydown event:', e.key, 'value:', e.currentTarget.value);
-                }}
-                onKeyUp={(e) => {
-                  console.log('Search keyup event:', e.key, 'value:', e.currentTarget.value);
-                }}
+                                  onKeyDown={(e) => {
+                    // console.log('Search keydown event:', e.key, 'value:', e.currentTarget.value);
+                  }}
+                  onKeyUp={(e) => {
+                    // console.log('Search keyup event:', e.key, 'value:', e.currentTarget.value);
+                  }}
                 className="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 text-white placeholder-gray-400"
               />
               {searchLoading && (
@@ -956,9 +1252,9 @@ export default function DesirablePropertiesApp() {
                   className="w-full pl-10 pr-8 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 text-white"
                 >
                   <option value="all">All Categories</option>
-                  {data?.meta.categories.map(category => (
+                  {Array.isArray(data?.meta.categories) ? data.meta.categories.map(category => (
                     <option key={category} value={category}>{category}</option>
-                  ))}
+                  )) : null}
                 </select>
               </div>
             )}
@@ -991,7 +1287,7 @@ export default function DesirablePropertiesApp() {
                   Desirable Properties ({searchResults.results.desirable_properties.length})
                 </h3>
                 <div className="space-y-4">
-                  {searchResults.results.desirable_properties.map((result, index: number) => (
+                  {Array.isArray(searchResults.results.desirable_properties) ? searchResults.results.desirable_properties.map((result: any, index: number) => (
                     <div key={index} className="border-l-4 border-blue-500 pl-4">
                       <button 
                         onClick={() => {
@@ -1009,7 +1305,7 @@ export default function DesirablePropertiesApp() {
                         </div>
                       </button>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               </div>
             )}
@@ -1021,27 +1317,31 @@ export default function DesirablePropertiesApp() {
                   Submissions ({searchResults.results.submissions.length})
                 </h3>
                 <div className="space-y-4">
-                  {searchResults.results.submissions.map((result, index: number) => (
+                  {Array.isArray(searchResults.results.submissions) ? searchResults.results.submissions.map((result: any, index: number) => (
                     <div key={index} className="border-l-4 border-green-500 pl-4">
                       <button 
                         onClick={() => {
-                          setSubmissionDetail(result.item);
+                                            // console.log('=== SETTING SUBMISSION DETAIL FROM SEARCH RESULTS ===');
+                  // console.log('Search result item being set:', result.item);
+                  // console.log('Search result item directlyAddressedDPs:', result.item.directlyAddressedDPs);
+                  // console.log('Search result item clarificationsExtensions:', result.item.clarificationsExtensions);
+                          openSubmissionDetail(result.item);
                           setSearchResults(null);
                           setSearchTerm('');
                         }}
                         className="text-left w-full hover:bg-gray-50 p-2 rounded transition-colors"
                       >
-                        <h4 className="font-semibold text-green-600 hover:text-green-800">{result.item.submission.title}</h4>
+                        <h4 className="font-semibold text-green-600 hover:text-green-800">{result.item.title}</h4>
                         <p className="text-sm text-gray-600 mb-2">
-                          By: {result.item.submitter.first_name || ''} {result.item.submitter.last_name || ''}
+                          By: {result.item.submitter.firstName || ''} {result.item.submitter.lastName || ''}
                         </p>
-                        <p className="text-gray-700">{result.item.submission.overview}</p>
+                        <p className="text-gray-700">{result.item.overview}</p>
                         <div className="text-xs text-gray-500 mt-2">
                           Match score: {(1 - (result.score || 0)).toFixed(2)} • Click to view details
                         </div>
                       </button>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               </div>
             )}
@@ -1053,7 +1353,7 @@ export default function DesirablePropertiesApp() {
                   Categories ({searchResults.results.categories.length})
                 </h3>
                 <div className="space-y-4">
-                  {searchResults.results.categories.map((result, index: number) => (
+                  {Array.isArray(searchResults.results.categories) ? searchResults.results.categories.map((result: any, index: number) => (
                     <div key={index} className="border-l-4 border-purple-500 pl-4">
                       <button 
                         onClick={() => {
@@ -1071,7 +1371,7 @@ export default function DesirablePropertiesApp() {
                         </div>
                       </button>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               </div>
             )}
@@ -1127,21 +1427,21 @@ export default function DesirablePropertiesApp() {
 
                 <div className="bg-gray-700 rounded-lg shadow-sm border border-gray-600 p-3 sm:p-4 text-center">
                   <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
-                    {submissions.reduce((total, sub) => total + sub.directly_addressed_dps.length, 0)}
+                    {submissions.reduce((total, sub) => total + (Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.length : 0), 0)}
                   </div>
                   <div className="text-xs sm:text-sm text-gray-300"># of Alignments</div>
                 </div>
 
                 <div className="bg-gray-700 rounded-lg shadow-sm border border-gray-600 p-3 sm:p-4 text-center">
                   <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">
-                    {submissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => ce.type === 'Clarification').length, 0)}
+                    {submissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => ce.type === 'Clarification').length : 0), 0)}
                   </div>
                   <div className="text-xs sm:text-sm text-gray-300"># of Clarifications</div>
                 </div>
 
                 <div className="bg-gray-700 rounded-lg shadow-sm border border-gray-600 p-3 sm:p-4 text-center">
                   <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 sm:mb-2">
-                    {submissions.reduce((total, sub) => total + sub.clarifications_and_extensions.filter(ce => ce.type === 'Extension').length, 0)}
+                    {submissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => ce.type === 'Extension').length : 0), 0)}
                   </div>
                   <div className="text-xs sm:text-sm text-gray-300"># of Extensions</div>
                 </div>
@@ -1154,20 +1454,23 @@ export default function DesirablePropertiesApp() {
               <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Most Aligned DPs</h3>
                 <div className="space-y-2">
-                  {getTopDPs('alignments').slice(0, 10).map((dp) => (
-                    <div key={dp.dp} className="flex justify-between items-center">
-                      <button 
-                        onClick={() => {
-                          setActiveTab('properties');
-                          setSearchTerm(dp.dp);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 underline text-left"
-                      >
-                        {dp.dp}
-                      </button>
-                      <span className="text-sm text-gray-400">{dp.count}</span>
-                    </div>
-                  ))}
+                  {(() => {
+                    const topDPs = getTopDPs('alignments');
+                    return Array.isArray(topDPs) ? topDPs.slice(0, 10).map((dp) => (
+                      <div key={dp.dp} className="flex justify-between items-center">
+                        <button 
+                          onClick={() => {
+                            setActiveTab('properties');
+                            setSearchTerm(dp.dp);
+                          }}
+                          className="text-blue-400 hover:text-blue-300 underline text-left"
+                        >
+                          {dp.dp}
+                        </button>
+                        <span className="text-sm text-gray-400">{dp.count}</span>
+                      </div>
+                    )) : null;
+                  })()}
                 </div>
               </div>
 
@@ -1175,20 +1478,23 @@ export default function DesirablePropertiesApp() {
               <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Most Clarifications</h3>
                 <div className="space-y-2">
-                  {getTopDPs('clarifications').slice(0, 10).map((dp) => (
-                    <div key={dp.dp} className="flex justify-between items-center">
-                      <button 
-                        onClick={() => {
-                          setActiveTab('properties');
-                          setSearchTerm(dp.dp);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 underline text-left"
-                      >
-                        {dp.dp}
-                      </button>
-                      <span className="text-sm text-gray-400">{dp.count}</span>
-                    </div>
-                  ))}
+                  {(() => {
+                    const topDPs = getTopDPs('clarifications');
+                    return Array.isArray(topDPs) ? topDPs.slice(0, 10).map((dp) => (
+                      <div key={dp.dp} className="flex justify-between items-center">
+                        <button 
+                          onClick={() => {
+                            setActiveTab('properties');
+                            setSearchTerm(dp.dp);
+                          }}
+                          className="text-blue-400 hover:text-blue-300 underline text-left"
+                        >
+                          {dp.dp}
+                        </button>
+                        <span className="text-sm text-gray-400">{dp.count}</span>
+                      </div>
+                    )) : null;
+                  })()}
                 </div>
               </div>
 
@@ -1196,20 +1502,23 @@ export default function DesirablePropertiesApp() {
               <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Most Extensions</h3>
                 <div className="space-y-2">
-                  {getTopDPs('extensions').slice(0, 10).map((dp) => (
-                    <div key={dp.dp} className="flex justify-between items-center">
-                      <button 
-                        onClick={() => {
-                          setActiveTab('properties');
-                          setSearchTerm(dp.dp);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 underline text-left"
-                      >
-                        {dp.dp}
-                      </button>
-                      <span className="text-sm text-gray-400">{dp.count}</span>
-                    </div>
-                  ))}
+                  {(() => {
+                    const topDPs = getTopDPs('extensions');
+                    return Array.isArray(topDPs) ? topDPs.slice(0, 10).map((dp) => (
+                      <div key={dp.dp} className="flex justify-between items-center">
+                        <button 
+                          onClick={() => {
+                            setActiveTab('properties');
+                            setSearchTerm(dp.dp);
+                          }}
+                          className="text-blue-400 hover:text-blue-300 underline text-left"
+                        >
+                          {dp.dp}
+                        </button>
+                        <span className="text-sm text-gray-400">{dp.count}</span>
+                      </div>
+                    )) : null;
+                  })()}
                 </div>
               </div>
             </div>
@@ -1218,7 +1527,7 @@ export default function DesirablePropertiesApp() {
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Property Categories</h3>
               <div className="flex flex-wrap gap-4">
-                {data?.meta.categories.map((category) => (
+                {Array.isArray(data?.meta.categories) ? data.meta.categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => {
@@ -1229,7 +1538,7 @@ export default function DesirablePropertiesApp() {
                   >
                     {category}
                   </button>
-                ))}
+                )) : null}
               </div>
             </div>
 
@@ -1237,24 +1546,26 @@ export default function DesirablePropertiesApp() {
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Recent Community Activity</h3>
               <div className="space-y-3">
-                {submissions.slice().reverse().slice(0, 5).map((submission, index) => (
+                {Array.isArray(submissions) ? submissions.slice().reverse().slice(0, 5).map((submission, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <div className="flex-1">
-                      <div className="font-medium text-white">{submission.submission.title}</div>
+                      <div className="font-medium text-white">{submission.title}</div>
                       <div className="text-sm text-gray-300">
-                        By {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
-                        {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
+                        By {submission.submitter.firstName || ''} {submission.submitter.lastName || ''} 
+                        {(!submission.submitter.firstName && !submission.submitter.lastName) && 'Anonymous'}
                       </div>
                     </div>
                     <button
-                      onClick={() => setSubmissionDetail(submission)}
+                      onClick={() => {
+                        openSubmissionDetail(submission);
+                      }}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                     >
                       View Details
                     </button>
                   </div>
-                ))}
+                )) : null}
               </div>
             </div>
           </div>
@@ -1269,7 +1580,7 @@ export default function DesirablePropertiesApp() {
                       <div className="flex items-center gap-3 mb-2">
                         <button 
                           onClick={() => {
-                            console.log('DP title clicked:', property.name);
+                            // console.log('DP title clicked:', property.name);
                             setDpDetail(property);
                           }}
                           className="text-xl font-semibold text-white hover:text-blue-400 transition-colors text-left"
@@ -1302,12 +1613,12 @@ export default function DesirablePropertiesApp() {
                     <div className="mt-6 pt-6 border-t border-gray-600">
                       <h4 className="text-lg font-medium text-white mb-4">Elements</h4>
                       <div className="space-y-4">
-                        {property.elements.map((element, index) => (
+                        {Array.isArray(property.elements) ? property.elements.map((element, index) => (
                           <div key={index} className="bg-gray-700 rounded-lg p-4">
                             <h5 className="font-medium text-white mb-2">{element.name}</h5>
                             <p className="text-gray-200 text-sm leading-relaxed">{element.description}</p>
                           </div>
-                        ))}
+                        )) : null}
                       </div>
                     </div>
                   )}
@@ -1326,65 +1637,63 @@ export default function DesirablePropertiesApp() {
                       <div className="flex items-center gap-3 mb-2">
                         <button 
                           onClick={() => {
-                            console.log('Submission title clicked:', submission.submission.title);
-                            setSubmissionDetail(submission);
+                                              // console.log('=== SETTING SUBMISSION DETAIL FROM SUBMISSIONS LIST ===');
+                  // console.log('Submission object being set:', submission);
+                  // console.log('Submission directlyAddressedDPs:', submission.directlyAddressedDPs);
+                  // console.log('Submission clarificationsExtensions:', submission.clarificationsExtensions);
+                  // console.log('Submission title clicked:', submission.title);
+                            openSubmissionDetail(submission);
                           }}
                           className="text-xl font-semibold text-white hover:text-blue-400 transition-colors text-left"
                         >
-                          {submission.submission.title}
+                          {submission.title}
                         </button>
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-600 text-white">
-                          #{submission._metadata.file_number}
+                          #{index + 1}
                         </span>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
                         <span>
-                          By: {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
-                          {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
+                          By: {submission.submitter.firstName || ''} {submission.submitter.lastName || ''} 
+                          {(!submission.submitter.firstName && !submission.submitter.lastName) && 'Anonymous'}
                         </span>
                         <span>•</span>
-                        <span>{submission.directly_addressed_dps.length} DPs addressed</span>
+                        <span>{submission.directlyAddressedDPs.length} DPs addressed</span>
                       </div>
-                      <p className="text-gray-200 leading-relaxed">{submission.submission.overview}</p>
+                      <p className="text-gray-200 leading-relaxed">{submission.overview}</p>
                       <div className="mt-3">
-                        <VoteButtons
-                          elementId={submission._metadata.file_number.toString()}
+                        <UnifiedElement
+                          elementId={submission.id}
                           elementType="submission"
-                          submissionId={submission._metadata.file_number.toString()}
-                          initialUpvotes={0}
-                          initialDownvotes={0}
+                          submissionId={submission.id}
+                          showVotes={true}
+                          showComments={true}
+                          showAuthor={false}
+                          showTimestamp={false}
+                          commentCount={commentCounts[submission.id] || 0}
+                          onCommentToggle={() => toggleComments(submission.id)}
+                          initialUpvotes={submission.upvotes || 0}
+                          initialDownvotes={submission.downvotes || 0}
                         />
                       </div>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleSubmission(submission._metadata.file_number);
-                      }}
-                      className="ml-4 p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                      {expandedSubmissions.has(submission._metadata.file_number) ? 
-                        <ChevronUp className="h-5 w-5" /> : 
-                        <ChevronDown className="h-5 w-5" />
-                      }
-                    </button>
                   </div>
 
                   {/* Expanded Details */}
-                  {expandedSubmissions.has(submission._metadata.file_number) && (
+                  {expandedSubmissions.has(index) && (
                     <div className="mt-6 pt-6 border-t border-gray-200">
                       <div className="grid md:grid-cols-2 gap-6">
                         {/* Directly Addressed DPs */}
                         <div>
                           <h4 className="text-lg font-medium text-gray-900 mb-4">Directly Addressed DPs</h4>
                           <div className="space-y-3">
-                            {submission.directly_addressed_dps.map((dp: { dp: string; summary: string }, dpIndex: number) => (
+                            {Array.isArray(submission.directlyAddressedDPs) ? submission.directlyAddressedDPs.map((dp: { dp: string; summary: string }, dpIndex: number) => (
                               <div key={dpIndex} className="bg-blue-50 rounded-lg p-3">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <button 
                                       onClick={() => {
-                                        console.log('DP reference clicked in submission:', dp.dp);
+                                        // console.log('DP reference clicked in submission:', dp.dp);
                                         const dpObj = getDPByIdOrName(dp.dp);
                                         if (dpObj) {
                                           setDpDetail(dpObj);
@@ -1397,26 +1706,40 @@ export default function DesirablePropertiesApp() {
                                     </button>
                                     <p className="text-blue-700 text-sm">{dp.summary}</p>
                                   </div>
-                                  <VoteButtons
-                                    elementId={`alignment-${submission._metadata.file_number}-${dpIndex}`}
-                                    elementType="alignment"
-                                    submissionId={submission._metadata.file_number.toString()}
-                                    initialUpvotes={0}
-                                    initialDownvotes={0}
-                                  />
+                                  <div className="flex items-center gap-2">
+                                    <VoteButtons
+                                      elementId={`alignment-${submission.id}-${dpIndex}`}
+                                      elementType="alignment"
+                                      submissionId={submission.id}
+                                      initialUpvotes={0}
+                                      initialDownvotes={0}
+                                      onVoteChange={(vote) => {
+                                                                        // console.log('=== DP VOTE CHANGE ===');
+                                // console.log('DP Index:', dpIndex);
+                                // console.log('Vote:', vote);
+                                      }}
+                                    />
+                                    <button
+                                      onClick={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
+                                      className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                                    >
+                                      <MessageCircle className="h-4 w-4" />
+                                      <span className="text-xs">{commentCounts[`${submission.id}-dp-${dpIndex}`] || 0}</span>
+                                    </button>
+                                  </div>
                                 </div>
                                 
                                 {/* Comments for Alignment */}
                                 <div className="mt-3 pt-3 border-t border-blue-200 bg-yellow-100 p-2">
                                   <div className="text-sm text-yellow-800 mb-2">DEBUG: Comment section for alignment {dp.dp}</div>
                                   <CommentSection
-                                    elementId={`alignment-${submission._metadata.file_number}-${dpIndex}`}
+                                    elementId={`alignment-${submission.id}-${dpIndex}`}
                                     elementType="alignment"
-                                    submissionId={submission._metadata.file_number.toString()}
+                                    submissionId={submission.id}
                                   />
                                 </div>
                               </div>
-                            ))}
+                            )) : null}
                           </div>
                         </div>
 
@@ -1424,7 +1747,7 @@ export default function DesirablePropertiesApp() {
                         <div>
                           <h4 className="text-lg font-medium text-gray-900 mb-4">Clarifications & Extensions</h4>
                           <div className="space-y-3">
-                            {submission.clarifications_and_extensions.map((item: { dp: string; type: string; title: string; clarification?: string; extension?: string; why_it_matters: string }, itemIndex: number) => (
+                            {Array.isArray(submission.clarificationsExtensions) ? submission.clarificationsExtensions.map((item: { dp: string; type: string; title: string; content: string; whyItMatters: string }, itemIndex: number) => (
                               <div key={itemIndex} className="bg-purple-50 rounded-lg p-3">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
@@ -1438,7 +1761,7 @@ export default function DesirablePropertiesApp() {
                                       <span className="text-sm text-purple-700">For: </span>
                                       <button 
                                         onClick={() => {
-                                          console.log('DP reference clicked in clarification:', item.dp);
+                                          // console.log('DP reference clicked in clarification:', item.dp);
                                           const dpObj = getDPByIdOrName(item.dp);
                                           if (dpObj) {
                                             setDpDetail(dpObj);
@@ -1450,43 +1773,50 @@ export default function DesirablePropertiesApp() {
                                         {item.dp}
                                       </button>
                                     </div>
-                                    {item.clarification && (
-                                      <p className="text-purple-700 text-sm mb-2">{item.clarification}</p>
+                                    {item.content && (
+                                      <p className="text-purple-700 text-sm mb-2">{item.content}</p>
                                     )}
-                                    {item.extension && (
-                                      <p className="text-purple-700 text-sm mb-2">{item.extension}</p>
-                                    )}
-                                    <p className="text-purple-600 text-xs italic">Why it matters: {item.why_it_matters}</p>
+                                    <p className="text-purple-600 text-xs italic">Why it matters: {item.whyItMatters}</p>
                                   </div>
-                                  <VoteButtons
-                                    elementId={`${item.type.toLowerCase()}-${submission._metadata.file_number}-${itemIndex}`}
-                                    elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                                    submissionId={submission._metadata.file_number.toString()}
-                                    initialUpvotes={0}
-                                    initialDownvotes={0}
-                                  />
+                                  <div className="flex items-center gap-2">
+                                    <VoteButtons
+                                      elementId={`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`}
+                                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                                      submissionId={submission.id}
+                                      initialUpvotes={0}
+                                      initialDownvotes={0}
+                                    />
+                                    <button
+                                      onClick={() => toggleComments(`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`)}
+                                      className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                                    >
+                                      <MessageCircle className="h-4 w-4" />
+                                      <span className="text-xs">{commentCounts[`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`] || 0}</span>
+                                    </button>
+                                  </div>
                                 </div>
                                 
                                 {/* Comments for Clarification/Extension */}
                                 <div className="mt-3 pt-3 border-t border-purple-200 bg-green-100 p-2">
                                   <div className="text-sm text-green-800 mb-2">DEBUG: Comment section for {item.type.toLowerCase()} {item.title}</div>
                                   <CommentSection
-                                    elementId={`${item.type.toLowerCase()}-${submission._metadata.file_number}-${itemIndex}`}
+                                    elementId={`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`}
                                     elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                                    submissionId={submission._metadata.file_number.toString()}
+                                    submissionId={submission.id}
+                                    onCommentCountChange={(count) => updateCommentCount(`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`, count)}
                                   />
                                 </div>
                               </div>
-                            ))}
+                            )) : null}
                           </div>
                         </div>
                       </div>
 
                       {/* Source Link */}
-                      {submission.submission.source_link && (
+                      {submission.sourceLink && (
                         <div className="mt-4 pt-4 border-t border-gray-200">
                           <a
-                            href={submission.submission.source_link}
+                            href={submission.sourceLink}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
@@ -1505,15 +1835,15 @@ export default function DesirablePropertiesApp() {
         ) : activeTab === 'categories' ? (
           /* Categories List */
           <div className="space-y-6">
-            {data?.meta.categories.map((category) => {
+            {Array.isArray(data?.meta.categories) ? data.meta.categories.map((category) => {
               const categoryProperties = data.desirable_properties.filter(property => property.category === category);
               const categorySubmissions = submissions.filter(submission => 
-                submission.directly_addressed_dps.some(dp => 
+                (Array.isArray(submission.directlyAddressedDPs) && submission.directlyAddressedDPs.some(dp => 
                   categoryProperties.some(cp => dp.dp.includes(cp.id) || dp.dp.includes(cp.name))
-                ) ||
-                submission.clarifications_and_extensions.some(ce => 
+                )) ||
+                (Array.isArray(submission.clarificationsExtensions) && submission.clarificationsExtensions.some(ce => 
                   categoryProperties.some(cp => ce.dp.includes(cp.id) || ce.dp.includes(cp.name))
-                )
+                ))
               );
               
               return (
@@ -1543,7 +1873,7 @@ export default function DesirablePropertiesApp() {
                     <div className="mb-4">
                       <h4 className="text-lg font-medium text-white mb-3">Desirable Properties in this Category</h4>
                       <div className="grid gap-3">
-                        {categoryProperties.map((property) => (
+                        {Array.isArray(categoryProperties) ? categoryProperties.map((property) => (
                           <div key={property.id} className="bg-gray-700 rounded-lg p-3">
                             <div className="flex items-center gap-2 mb-1">
                               <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-600 text-white">
@@ -1551,7 +1881,7 @@ export default function DesirablePropertiesApp() {
                               </span>
                               <button 
                                 onClick={() => {
-                                  console.log('DP title clicked from category:', property.name);
+                                  // console.log('DP title clicked from category:', property.name);
                                   setDpDetail(property);
                                 }}
                                 className="font-medium text-white hover:text-blue-400 transition-colors text-left"
@@ -1561,7 +1891,7 @@ export default function DesirablePropertiesApp() {
                             </div>
                             <p className="text-gray-200 text-sm leading-relaxed">{property.description}</p>
                           </div>
-                        ))}
+                        )) : null}
                       </div>
                     </div>
 
@@ -1570,29 +1900,33 @@ export default function DesirablePropertiesApp() {
                       <div>
                         <h4 className="text-lg font-medium text-white mb-3">Recent Community Submissions</h4>
                         <div className="space-y-3">
-                          {categorySubmissions.slice(0, 3).map((submission, index) => (
+                          {Array.isArray(categorySubmissions) ? categorySubmissions.slice(0, 3).map((submission, index) => (
                             <div key={index} className="bg-gray-700 rounded-lg p-3">
                               <div className="flex items-center gap-2 mb-1">
                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-600 text-white">
-                                  #{submission._metadata.file_number}
+                                  #{index + 1}
                                 </span>
                                 <button 
                                   onClick={() => {
-                                    console.log('Submission title clicked from category:', submission.submission.title);
-                                    setSubmissionDetail(submission);
+                                                      // console.log('=== SETTING SUBMISSION DETAIL FROM CATEGORIES ===');
+                  // console.log('Submission object being set:', submission);
+                  // console.log('Submission directlyAddressedDPs:', submission.clarificationsExtensions);
+                  // console.log('Submission clarificationsExtensions:', submission.clarificationsExtensions);
+                  // console.log('Submission title clicked from category:', submission.title);
+                                    openSubmissionDetail(submission);
                                   }}
                                   className="font-medium text-white hover:text-green-400 transition-colors text-left"
                                 >
-                                  {submission.submission.title}
+                                  {submission.title}
                                 </button>
                               </div>
                               <div className="text-sm text-gray-300 mb-2">
-                                By: {submission.submitter.first_name || ''} {submission.submitter.last_name || ''} 
-                                {(!submission.submitter.first_name && !submission.submitter.last_name) && 'Anonymous'}
+                                By: {submission.submitter.firstName || ''} {submission.submitter.lastName || ''} 
+                                {(!submission.submitter.firstName && !submission.submitter.lastName) && 'Anonymous'}
                               </div>
-                              <p className="text-gray-200 text-sm leading-relaxed">{submission.submission.overview}</p>
+                              <p className="text-gray-200 text-sm leading-relaxed">{submission.overview}</p>
                             </div>
-                          ))}
+                          )) : null}
                           {categorySubmissions.length > 3 && (
                             <div className="text-center">
                               <button
@@ -1612,7 +1946,7 @@ export default function DesirablePropertiesApp() {
                   </div>
                 </div>
               );
-            })}
+            }) : null}
           </div>
         ) : (
           /* No Results */
@@ -1631,7 +1965,7 @@ export default function DesirablePropertiesApp() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-300">
-              Meta-Layer Desirable Properties • Version {data?.meta.version}
+              Meta-Layer Desirable Properties • Version {data?.meta.version} • Build <span id="build-version">Loading...</span>
             </p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <a
@@ -1650,7 +1984,7 @@ export default function DesirablePropertiesApp() {
 
       {/* Modals */}
       <Modal open={!!dpDetail} onClose={() => {
-        console.log('Closing DP detail modal');
+        // console.log('Closing DP detail modal');
         setDpDetail(null);
         // Clear hash and URL parameters when closing modal
         if (window.location.hash.startsWith('#dp')) {
@@ -1666,7 +2000,7 @@ export default function DesirablePropertiesApp() {
         {dpDetail && renderDPDetail(dpDetail)}
       </Modal>
       <Modal open={!!submissionDetail} onClose={() => {
-        console.log('Closing submission detail modal');
+        // console.log('Closing submission detail modal');
         setSubmissionDetail(null);
       }}>
         {submissionDetail && renderSubmissionDetail(submissionDetail)}

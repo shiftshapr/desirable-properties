@@ -23,11 +23,12 @@ interface CommentSectionProps {
   elementId: string;
   elementType: 'submission' | 'alignment' | 'clarification' | 'extension';
   submissionId: string;
+  onCommentCountChange?: (count: number) => void;
 }
 
 type SortOption = 'newest' | 'oldest' | 'most_voted' | 'least_voted';
 
-export default function CommentSection({ elementId, elementType, submissionId }: CommentSectionProps) {
+export default function CommentSection({ elementId, elementType, submissionId, onCommentCountChange }: CommentSectionProps) {
   const privy = usePrivy();
   const { authenticated, login, user, getAccessToken } = privy || {};
   const [comments, setComments] = useState<Comment[]>([]);
@@ -41,65 +42,78 @@ export default function CommentSection({ elementId, elementType, submissionId }:
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [showSortMenu, setShowSortMenu] = useState(false);
 
+  // Only log for Scott Yates submission
+  const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
+
   useEffect(() => {
     fetchComments();
-  }, [elementId]);
+  }, [elementId, elementType, submissionId]);
 
   const fetchComments = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/comments?elementId=${elementId}&elementType=${elementType}&submissionId=${submissionId}`);
+      let url = `/api/comments?submissionId=${submissionId}`;
+      
+      // Add elementId and elementType if this is for a specific element (not submission-level)
+      if (elementId && elementType && elementType !== 'submission') {
+        url += `&elementId=${elementId}&elementType=${elementType}`;
+      }
+      
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Fetching comments for Scott Yates submission:', submissionId, 'elementId:', elementId, 'elementType:', elementType, 'URL:', url);
+        console.log('🔵 [CommentSection] This CommentSection is for:', elementType === 'submission' ? 'SUBMISSION-LEVEL' : 'ELEMENT-SPECIFIC');
+      }
+      
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error('Failed to fetch comments');
       }
       
       const comments = await response.json();
-      setComments(comments);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-      // Fallback to mock data if API fails
-      const mockComments: Comment[] = [
-        {
-          id: '1',
-          userId: 'user1',
-          userName: 'Alice',
-          content: 'This is a great submission! I particularly like how it addresses the decentralization aspects.',
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          upvotes: 12,
-          downvotes: 2,
-          replies: [
-            {
-              id: '1-1',
-              userId: 'user2',
-              userName: 'Bob',
-              content: 'I agree! The implementation details are well thought out.',
-              createdAt: new Date(Date.now() - 43200000).toISOString(),
-              upvotes: 5,
-              downvotes: 0,
-              replies: [],
-              parentId: '1'
-            }
-          ]
-        },
-        {
-          id: '2',
-          userId: 'user3',
-          userName: 'Charlie',
-          content: 'I have some concerns about the scalability aspects. Has this been tested at scale?',
-          createdAt: new Date(Date.now() - 172800000).toISOString(),
-          upvotes: 8,
-          downvotes: 3,
-          replies: []
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Received comments:', comments);
+      }
+      
+      // Ensure comments is always an array
+      if (Array.isArray(comments)) {
+        setComments(comments);
+        const commentCount = comments.length;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Setting comment count to:', commentCount, 'for elementId:', elementId, 'elementType:', elementType);
         }
-      ];
-      setComments(mockComments);
+        onCommentCountChange?.(commentCount);
+      } else {
+        if (isScottYatesSubmission) {
+          console.warn('API returned non-array comments:', comments);
+        }
+        setComments([]);
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Setting comment count to 0 (non-array response) for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(0);
+      }
+    } catch (error) {
+      if (isScottYatesSubmission) {
+        console.error('Error fetching comments:', error);
+      }
+      // Fallback to empty array if API fails
+      setComments([]);
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Setting comment count to 0 (error) for elementId:', elementId, 'elementType:', elementType);
+      }
+      onCommentCountChange?.(0);
     } finally {
       setLoading(false);
     }
   };
 
   const sortComments = (comments: Comment[], sortBy: SortOption): Comment[] => {
+    if (!Array.isArray(comments)) {
+      console.warn('sortComments received non-array:', comments);
+      return [];
+    }
+    
     const sorted = [...comments];
     
     switch (sortBy) {
@@ -129,6 +143,10 @@ export default function CommentSection({ elementId, elementType, submissionId }:
   const handleSubmitComment = async () => {
     if (!newComment.trim()) return;
 
+    if (isScottYatesSubmission) {
+      console.log('🔵 [CommentSection] Submitting comment for Scott Yates submission:', submissionId, 'elementId:', elementId, 'elementType:', elementType, 'content:', newComment);
+    }
+
     if (!privy) {
       // If Privy is not configured, just add to local state
       const comment: Comment = {
@@ -142,6 +160,11 @@ export default function CommentSection({ elementId, elementType, submissionId }:
         replies: []
       };
       setComments(prev => [comment, ...prev]);
+      const newCount = comments.length + 1;
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Updated comment count (no privy):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+      }
+      onCommentCountChange?.(newCount);
       setNewComment('');
       return;
     }
@@ -152,18 +175,31 @@ export default function CommentSection({ elementId, elementType, submissionId }:
     }
 
     try {
+      // For submission-level comments, don't send elementId and elementType
+      const requestBody = elementType === 'submission' 
+        ? {
+            submissionId,
+            content: newComment,
+          }
+        : {
+            elementId,
+            elementType,
+            submissionId,
+            content: newComment,
+          };
+
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Comment type:', elementType === 'submission' ? 'SUBMISSION-LEVEL' : 'ELEMENT-SPECIFIC');
+        console.log('🔵 [CommentSection] Request body:', requestBody);
+      }
+
       const response = await fetch('/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${await getAccessToken?.()}`,
         },
-        body: JSON.stringify({
-          elementId,
-          elementType,
-          submissionId,
-          content: newComment,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -171,10 +207,52 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       }
 
       const result = await response.json();
-      setComments(prev => [result.comment, ...prev]);
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Comment submission result:', result);
+      }
+      
+      // Handle both unified service response and legacy response
+      if (result.comment) {
+        // Legacy response format
+        setComments(prev => [result.comment, ...prev]);
+        const newCount = comments.length + 1;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Updated comment count (legacy response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(newCount);
+      } else if (result.comments) {
+        // Unified service response format
+        setComments(result.comments);
+        const newCount = result.comments.length;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Updated comment count (unified response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(newCount);
+      } else {
+        // Fallback
+        const comment: Comment = {
+          id: Date.now().toString(),
+          userId: user?.id || 'anonymous',
+          userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+          content: newComment,
+          createdAt: new Date().toISOString(),
+          upvotes: 0,
+          downvotes: 0,
+          replies: []
+        };
+        setComments(prev => [comment, ...prev]);
+        const newCount = comments.length + 1;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Updated comment count (fallback):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(newCount);
+      }
+      
       setNewComment('');
     } catch (error) {
-      console.error('Error submitting comment:', error);
+      if (isScottYatesSubmission) {
+        console.error('Error submitting comment:', error);
+      }
       // Fallback to local state if API fails
       const comment: Comment = {
         id: Date.now().toString(),
@@ -187,6 +265,11 @@ export default function CommentSection({ elementId, elementType, submissionId }:
         replies: []
       };
       setComments(prev => [comment, ...prev]);
+      const newCount = comments.length + 1;
+      if (isScottYatesSubmission) {
+        console.log('🔵 [CommentSection] Updated comment count (error fallback):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+      }
+      onCommentCountChange?.(newCount);
       setNewComment('');
     }
   };
@@ -213,6 +296,8 @@ export default function CommentSection({ elementId, elementType, submissionId }:
             : comment
         )
       );
+      const newCount = comments.length + 1;
+      onCommentCountChange?.(newCount);
       setReplyContent('');
       setReplyingTo(null);
       return;
@@ -244,13 +329,48 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       }
 
       const result = await response.json();
-      setComments(prev => 
-        prev.map(comment => 
-          comment.id === parentId 
-            ? { ...comment, replies: [...comment.replies, result.comment] }
-            : comment
-        )
-      );
+      
+      // Handle both unified service response and legacy response
+      if (result.comment) {
+        // Legacy response format
+        setComments(prev => 
+          prev.map(comment => 
+            comment.id === parentId 
+              ? { ...comment, replies: [...comment.replies, result.comment] }
+              : comment
+          )
+        );
+        const newCount = comments.length + 1;
+        onCommentCountChange?.(newCount);
+      } else if (result.comments) {
+        // Unified service response format - refresh all comments
+        setComments(result.comments);
+        const newCount = result.comments.length;
+        onCommentCountChange?.(newCount);
+      } else {
+        // Fallback
+        const reply: Comment = {
+          id: `${parentId}-${Date.now()}`,
+          userId: user?.id || 'anonymous',
+          userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+          content: replyContent,
+          createdAt: new Date().toISOString(),
+          upvotes: 0,
+          downvotes: 0,
+          replies: [],
+          parentId
+        };
+        setComments(prev => 
+          prev.map(comment => 
+            comment.id === parentId 
+              ? { ...comment, replies: [...comment.replies, reply] }
+              : comment
+          )
+        );
+        const newCount = comments.length + 1;
+        onCommentCountChange?.(newCount);
+      }
+      
       setReplyContent('');
       setReplyingTo(null);
     } catch (error) {
@@ -274,6 +394,8 @@ export default function CommentSection({ elementId, elementType, submissionId }:
             : comment
         )
       );
+      const newCount = comments.length + 1;
+      onCommentCountChange?.(newCount);
       setReplyContent('');
       setReplyingTo(null);
     }
@@ -333,6 +455,8 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       }
 
       setComments(prev => prev.filter(comment => comment.id !== commentId));
+      const newCount = comments.length - 1;
+      onCommentCountChange?.(newCount);
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
@@ -526,9 +650,9 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       </div>
 
       {/* Replies */}
-      {comment.replies.length > 0 && (
+      {comment.replies && Array.isArray(comment.replies) && comment.replies.length > 0 && (
         <div className="ml-4">
-          {comment.replies.map(reply => renderComment(reply, true))}
+          {Array.isArray(comment.replies) ? comment.replies.map(reply => renderComment(reply, true)) : null}
         </div>
       )}
     </div>
@@ -557,7 +681,7 @@ export default function CommentSection({ elementId, elementType, submissionId }:
           
           {showSortMenu && (
             <div className="absolute right-0 top-8 bg-gray-700 rounded-lg shadow-lg border border-gray-600 z-10 min-w-[140px]">
-              {(['newest', 'oldest', 'most_voted', 'least_voted'] as SortOption[]).map((option) => (
+              {Array.isArray(['newest', 'oldest', 'most_voted', 'least_voted']) ? (['newest', 'oldest', 'most_voted', 'least_voted'] as SortOption[]).map((option) => (
                 <button
                   key={option}
                   onClick={() => {
@@ -576,7 +700,7 @@ export default function CommentSection({ elementId, elementType, submissionId }:
                   {option === 'least_voted' && <SortAsc className="h-4 w-4" />}
                   {getSortLabel(option)}
                 </button>
-              ))}
+              )) : null}
             </div>
           )}
         </div>
@@ -608,7 +732,7 @@ export default function CommentSection({ elementId, elementType, submissionId }:
       {/* Comments list */}
       {loading ? (
         <div className="space-y-4">
-          {[...Array(3)].map((_, i) => (
+          {Array.isArray([...Array(3)]) ? [...Array(3)].map((_, i) => (
             <div key={i} className="animate-pulse">
               <div className="bg-gray-800 rounded-lg p-4">
               <div className="h-4 bg-gray-700 rounded w-1/4 mb-2"></div>
@@ -616,11 +740,11 @@ export default function CommentSection({ elementId, elementType, submissionId }:
               <div className="h-3 bg-gray-700 rounded w-3/4"></div>
               </div>
             </div>
-          ))}
+          )) : null}
         </div>
       ) : sortedComments.length > 0 ? (
         <div className="space-y-4">
-          {sortedComments.map(comment => renderComment(comment))}
+          {Array.isArray(sortedComments) ? sortedComments.map(comment => renderComment(comment)) : null}
         </div>
       ) : (
         <div className="text-center py-8 text-gray-400">

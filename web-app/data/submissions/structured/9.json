@@ -63,7 +63,7 @@
   "clarifications_and_extensions": [
     {
       "dp": "DP1 – Federated Authentication & Accountability",
-      "type": "Change",
+      "type": "Extension",
       "title": "Navigator Preference and Trust Hook Integration",
       "extension": "Support shared user-linked metadata across NUIs for reputation, settings, and context continuity.",
       "why_it_matters": "Enables personalized yet portable experiences across community tools and teams."

@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Medal, Crown, TrendingUp, User, FileText, MessageCircle, ThumbsUp, X } from 'lucide-react';
+import { Trophy, Medal, Crown, TrendingUp, Users, FileText, X, MessageCircle, ThumbsUp, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePrivy } from '@privy-io/react-auth';
+import VoteButtons from '../components/VoteButtons';
+import CommentSection from '../components/CommentSection';
 
 interface ScoreBreakdown {
   contribution: number;
   engagement: number;
-  bonus: number;
+  received: number;
   total: number;
 }
 
@@ -16,7 +18,6 @@ interface LeaderboardEntry {
   rank: number;
   userId: string;
   userName: string;
-  email: string;
   totalScore: number;
   scoreBreakdown: ScoreBreakdown;
   activity: {
@@ -41,35 +42,31 @@ interface LeaderboardData {
 }
 
 interface Submission {
+  id: string;
+  title: string;
+  overview: string;
+  sourceLink: string | null;
   submitter: {
-    first_name: string | null;
-    last_name: string | null;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
   };
-  submission: {
-    title: string;
-    overview: string;
-    source_link: string | null;
-  };
-  directly_addressed_dps: Array<{
+  directlyAddressedDPs: Array<{
     dp: string;
     summary: string;
   }>;
-  clarifications_and_extensions: Array<{
+  clarificationsExtensions: Array<{
     dp: string;
     type: string;
     title: string;
-    clarification?: string;
-    extension?: string;
-    why_it_matters: string;
+    content: string;
+    whyItMatters: string;
   }>;
-  _metadata: {
-    source_file: string;
-    file_number: number;
-  };
+  upvotes: number;
+  downvotes: number;
   totalPoints?: number;
   thumbsUpPoints?: number;
   commentPoints?: number;
+  submissionPoints?: number;
 }
 
 export default function LeaderboardPage() {
@@ -81,6 +78,8 @@ export default function LeaderboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'leaderboard' | 'submissions'>('leaderboard');
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [voteCounts, setVoteCounts] = useState<Record<string, { upvotes: number; downvotes: number }>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,18 +100,24 @@ export default function LeaderboardPage() {
           const submissionsData = await submissionsResponse.json();
           const allSubmissions = submissionsData.submissions || [];
           
-          // Calculate points for each submission and sort by total points
+          // Calculate points for each submission using the correct scoring system
           const submissionsWithPoints = allSubmissions.map((submission: Submission) => {
-            // Calculate points: 1 per thumbs up, 2 per comment
-            const thumbsUpPoints = 0; // Placeholder for actual thumbs up count
-            const commentPoints = 0;
-            const totalPoints = thumbsUpPoints + commentPoints;
+            // Base submission points: 10 for first, 1 for each subsequent
+            // For now, we'll use a simplified approach since we don't have user context here
+            const submissionPoints = 10; // Base points for having a submission
+            
+            // Points from received interactions
+            const thumbsUpPoints = submission.upvotes || 0; // 1 point per upvote received
+            const commentPoints = 0; // TODO: Add comment count when available
+            
+            const totalPoints = submissionPoints + thumbsUpPoints + commentPoints;
             
             return {
               ...submission,
               totalPoints,
               thumbsUpPoints,
-              commentPoints
+              commentPoints,
+              submissionPoints
             };
           });
           
@@ -154,6 +159,18 @@ export default function LeaderboardPage() {
 
   const closeSubmissionModal = () => {
     setSelectedSubmission(null);
+  };
+
+  const toggleComments = (elementId: string) => {
+    setExpandedComments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(elementId)) {
+        newSet.delete(elementId);
+      } else {
+        newSet.add(elementId);
+      }
+      return newSet;
+    });
   };
 
   if (loading) {
@@ -296,9 +313,8 @@ export default function LeaderboardPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <TrendingUp className="h-6 w-6 text-cyan-400" />
-                <span className="text-white font-medium">Total Participants</span>
+                <span className="text-white font-medium">Top Participants</span>
               </div>
-              <span className="text-2xl font-bold text-cyan-400">{leaderboardData?.totalUsers || 0}</span>
             </div>
           </div>
         </div>
@@ -318,17 +334,16 @@ export default function LeaderboardPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
                       <h3 className="text-lg font-bold text-white">{entry.userName}</h3>
-                      <span className="text-sm text-gray-400">({entry.email})</span>
                     </div>
                     <div className="flex items-center gap-4 mt-2 text-sm">
                       <span className="text-gray-400">
-                        {entry.activity.submissions} submissions
+                        Submissions: {entry.activity.submissions}
                       </span>
                       <span className="text-gray-400">
-                        {entry.activity.comments} comments
+                        Comments: {entry.activity.comments}
                       </span>
                       <span className="text-gray-400">
-                        {entry.activity.thumbsupReceived} thumbs up
+                        Thumbs up: {entry.activity.thumbsupReceived}
                       </span>
                     </div>
                   </div>
@@ -339,9 +354,9 @@ export default function LeaderboardPage() {
                   </div>
                   <div className="text-sm text-gray-400">points</div>
                   <div className="flex gap-2 mt-2 text-xs">
-                    <span className="text-blue-400">C: {entry.scoreBreakdown.contribution}</span>
-                    <span className="text-green-400">E: {entry.scoreBreakdown.engagement}</span>
-                    <span className="text-purple-400">B: {entry.scoreBreakdown.bonus}</span>
+                    <span className="text-blue-400">Sub: {entry.scoreBreakdown.contribution}</span>
+                    <span className="text-green-400">Eng: {entry.scoreBreakdown.engagement}</span>
+                    <span className="text-purple-400">Rec: {entry.scoreBreakdown.received}</span>
                   </div>
                 </div>
               </div>
@@ -387,28 +402,28 @@ export default function LeaderboardPage() {
                           onClick={() => openSubmissionModal(submission)}
                           className="text-lg font-bold text-cyan-400 hover:text-cyan-300 hover:underline transition-colors text-left"
                         >
-                          {submission.submission.title}
+                          {submission.title}
                         </button>
                         <span className="text-xs bg-cyan-600 text-white px-2 py-1 rounded">
                           #{index + 1}
                         </span>
                       </div>
                       <div className="text-sm text-gray-400 mb-2">
-                        By: {(submission.submitter.first_name || submission.submitter.last_name) 
-                          ? `${submission.submitter.first_name || ''} ${submission.submitter.last_name || ''}`.trim() 
+                        By: {(submission.submitter.firstName || submission.submitter.lastName) 
+                          ? `${submission.submitter.firstName || ''} ${submission.submitter.lastName || ''}`.trim() 
                           : 'Anon'}
                       </div>
-                      <p className="text-gray-300 text-sm mb-3 line-clamp-2">
-                        {submission.submission.overview}
+                      <p className="text-gray-300 text-sm mb-3 line-clamp-2 max-h-12 overflow-hidden">
+                        {submission.overview}
                       </p>
                       <div className="flex items-center gap-4 text-xs text-gray-400">
                         <span className="flex items-center gap-1">
                           <MessageCircle className="h-3 w-3" />
-                          {submission.directly_addressed_dps?.length || 0} alignments
+                          {submission.directlyAddressedDPs?.length || 0} alignments
                         </span>
                         <span className="flex items-center gap-1">
                           <FileText className="h-3 w-3" />
-                          {submission.clarifications_and_extensions?.length || 0} clarifications/extensions
+                          {submission.clarificationsExtensions?.length || 0} clarifications/extensions
                         </span>
                       </div>
                     </div>
@@ -420,6 +435,10 @@ export default function LeaderboardPage() {
                         <div className="text-xs text-gray-400">points</div>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          <span>{submission.submissionPoints || 0}</span>
+                        </span>
                         <span className="flex items-center gap-1">
                           <ThumbsUp className="h-3 w-3" />
                           <span>{submission.thumbsUpPoints || 0}</span>
@@ -454,7 +473,7 @@ export default function LeaderboardPage() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-bold text-white">
-                  {selectedSubmission.submission.title}
+                  {selectedSubmission.title}
                 </h2>
                 <button
                   onClick={closeSubmissionModal}
@@ -464,66 +483,180 @@ export default function LeaderboardPage() {
                 </button>
               </div>
               
+              {/* Submitter Info */}
               <div className="mb-4">
-                <p className="text-gray-300 mb-4">
-                  By: {(selectedSubmission.submitter.first_name || selectedSubmission.submitter.last_name) 
-                    ? `${selectedSubmission.submitter.first_name || ''} ${selectedSubmission.submitter.last_name || ''}`.trim() 
-                    : 'Anonymous'}
-                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-gray-300">
+                    By: {(selectedSubmission.submitter.firstName || selectedSubmission.submitter.lastName) 
+                      ? `${selectedSubmission.submitter.firstName || ''} ${selectedSubmission.submitter.lastName || ''}`.trim() 
+                      : 'Anonymous'}
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <VoteButtons
+                      elementId={selectedSubmission.id}
+                      elementType="submission"
+                      submissionId={selectedSubmission.id}
+                      initialUpvotes={selectedSubmission.upvotes}
+                      initialDownvotes={selectedSubmission.downvotes}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Overview */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white mb-2">Overview</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  {selectedSubmission.submission.overview}
+                  {selectedSubmission.overview}
                 </p>
               </div>
 
+              {/* Source Link */}
+              {selectedSubmission.sourceLink && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-white mb-2">Source</h3>
+                  <a 
+                    href={selectedSubmission.sourceLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-cyan-400 hover:text-cyan-300 underline"
+                  >
+                    {selectedSubmission.sourceLink}
+                  </a>
+                </div>
+              )}
+
               {/* Directly Addressed DPs */}
-              {selectedSubmission.directly_addressed_dps && selectedSubmission.directly_addressed_dps.length > 0 && (
+              {selectedSubmission.directlyAddressedDPs && Array.isArray(selectedSubmission.directlyAddressedDPs) && selectedSubmission.directlyAddressedDPs.length > 0 && (
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold text-white mb-4">Directly Addressed Desirable Properties</h3>
                   <div className="space-y-3">
-                    {selectedSubmission.directly_addressed_dps.map((dp, index) => (
+                    {Array.isArray(selectedSubmission.directlyAddressedDPs) ? selectedSubmission.directlyAddressedDPs.map((dp, index) => (
                       <div key={index} className="bg-gray-700 rounded-lg p-4">
-                        <h4 className="font-medium text-cyan-400 mb-2">{dp.dp}</h4>
-                        <p className="text-gray-300 text-sm">{dp.summary}</p>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium text-cyan-400">{dp.dp}</h4>
+                          <div className="flex items-center gap-2">
+                            <VoteButtons
+                              elementId={`${selectedSubmission.id}-dp-${index}`}
+                              elementType="alignment"
+                              submissionId={selectedSubmission.id}
+                              initialUpvotes={voteCounts[`${selectedSubmission.id}-dp-${index}`]?.upvotes || 0}
+                              initialDownvotes={voteCounts[`${selectedSubmission.id}-dp-${index}`]?.downvotes || 0}
+                            />
+                            <button
+                              onClick={() => toggleComments(`${selectedSubmission.id}-dp-${index}`)}
+                              className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                            >
+                              <MessageCircle className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-gray-300 text-sm mb-3">{dp.summary}</p>
+                        
+
+
+                        {/* Comment Button for DP */}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => toggleComments(`${selectedSubmission.id}-dp-${index}`)}
+                            className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 text-sm transition-colors"
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                            <span className="text-xs text-gray-500">(0)</span>
+                          </button>
+                        </div>
+
+                        {/* Comments for DP - Collapsible */}
+                        {expandedComments.has(`${selectedSubmission.id}-dp-${index}`) && (
+                          <div className="mt-3">
+                            <CommentSection
+                              elementId={`${selectedSubmission.id}-dp-${index}`}
+                              elementType="alignment"
+                              submissionId={selectedSubmission.id}
+                            />
+                          </div>
+                        )}
                       </div>
-                    ))}
+                    )) : null}
                   </div>
                 </div>
               )}
 
               {/* Clarifications & Extensions */}
-              {selectedSubmission.clarifications_and_extensions && selectedSubmission.clarifications_and_extensions.length > 0 && (
+              {selectedSubmission.clarificationsExtensions && Array.isArray(selectedSubmission.clarificationsExtensions) && selectedSubmission.clarificationsExtensions.length > 0 && (
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">Clarifications & Extensions</h3>
                   <div className="space-y-4">
-                    {selectedSubmission.clarifications_and_extensions.map((item, index) => (
+                    {Array.isArray(selectedSubmission.clarificationsExtensions) ? selectedSubmission.clarificationsExtensions.map((item, index) => (
                       <div key={index} className="bg-gray-700 rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs bg-amber-600 text-white px-2 py-1 rounded">
-                            {item.type}
-                          </span>
-                          <h4 className="font-medium text-amber-400">{item.title}</h4>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2 py-1 text-xs rounded ${item.type === 'Clarification' ? 'bg-blue-600 text-blue-100' : 'bg-green-600 text-green-100'}`}>{item.type}</span>
+                            <h4 className="font-medium text-cyan-400">{item.title}</h4>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <VoteButtons
+                              elementId={`${selectedSubmission.id}-ce-${index}`}
+                              elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                              submissionId={selectedSubmission.id}
+                              initialUpvotes={voteCounts[`${selectedSubmission.id}-ce-${index}`]?.upvotes || 0}
+                              initialDownvotes={voteCounts[`${selectedSubmission.id}-ce-${index}`]?.downvotes || 0}
+                            />
+                            <button
+                              onClick={() => toggleComments(`${selectedSubmission.id}-ce-${index}`)}
+                              className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                            >
+                              <MessageCircle className="h-3 w-3" />
+                            </button>
+                          </div>
                         </div>
-                        {item.clarification && (
-                          <div className="mb-3">
-                            <h5 className="text-sm font-medium text-gray-300 mb-1">Clarification:</h5>
-                            <p className="text-gray-300 text-sm">{item.clarification}</p>
-                          </div>
-                        )}
-                        {item.extension && (
-                          <div className="mb-3">
-                            <h5 className="text-sm font-medium text-gray-300 mb-1">Extension:</h5>
-                            <p className="text-gray-300 text-sm">{item.extension}</p>
-                          </div>
-                        )}
-                        <div>
+                        <div className="mb-3">
+                          <h5 className="text-sm font-medium text-gray-300 mb-1">{item.type}:</h5>
+                          <p className="text-gray-300 text-sm">{item.content}</p>
+                        </div>
+                        <div className="mb-3">
                           <h5 className="text-sm font-medium text-gray-300 mb-1">Why it matters:</h5>
-                          <p className="text-gray-300 text-sm">{item.why_it_matters}</p>
+                          <p className="text-gray-300 text-sm">{item.whyItMatters}</p>
                         </div>
+                        
+
+
+                        {/* Comment Button for Clarification/Extension */}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => toggleComments(`${selectedSubmission.id}-ce-${index}`)}
+                            className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 text-sm transition-colors"
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                            <span className="text-xs text-gray-500">(0)</span>
+                          </button>
+                        </div>
+
+                        {/* Comments for Clarification/Extension - Collapsible */}
+                        {expandedComments.has(`${selectedSubmission.id}-ce-${index}`) && (
+                          <div className="mt-3">
+                            <CommentSection
+                              elementId={`${selectedSubmission.id}-ce-${index}`}
+                              elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                              submissionId={selectedSubmission.id}
+                            />
+                          </div>
+                        )}
                       </div>
-                    ))}
+                    )) : null}
                   </div>
                 </div>
               )}
+
+              {/* Comments Section */}
+              <div className="comments-section mt-4">
+                <h3 className="text-lg font-semibold text-white mb-4">Comments</h3>
+                <CommentSection
+                  elementId={selectedSubmission.id}
+                  elementType="submission"
+                  submissionId={selectedSubmission.id}
+                />
+              </div>
             </div>
           </div>
         </div>

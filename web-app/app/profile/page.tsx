@@ -76,9 +76,9 @@ export default function ProfilePage() {
       const response = await fetch('/api/leaderboard');
       if (response.ok) {
         const data = await response.json();
-        const currentUser = data.leaderboard.find((entry: { userId: string; email: string }) => 
+        const currentUser = Array.isArray(data.leaderboard) ? data.leaderboard.find((entry: { userId: string; email: string }) => 
           entry.userId === user?.id || entry.email === user?.email?.address
-        );
+        ) : null;
         setUserRank(currentUser?.rank || null);
       }
     } catch (error) {
@@ -303,13 +303,13 @@ export default function ProfilePage() {
               
               {loading ? (
                 <div className="animate-pulse space-y-4">
-                  {[...Array(5)].map((_, i) => (
+                  {Array.isArray([...Array(5)]) ? [...Array(5)].map((_, i) => (
                     <div key={i} className="h-16 bg-gray-700 rounded"></div>
-                  ))}
+                  )) : null}
                 </div>
               ) : userActivity?.recentVotes && userActivity.recentVotes.length > 0 ? (
                 <div className="space-y-4">
-                  {userActivity.recentVotes.map((vote) => (
+                  {Array.isArray(userActivity.recentVotes) ? userActivity.recentVotes.map((vote) => (
                     <div key={vote.id} className="flex items-center gap-4 p-4 bg-gray-700 rounded-lg">
                       <div className={`p-2 rounded-full ${
                         vote.vote === 'up' ? 'bg-green-500/20' : 'bg-red-500/20'
@@ -329,7 +329,7 @@ export default function ProfilePage() {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  )) : null}
                 </div>
               ) : (
                 <div className="text-gray-400 text-center py-8">

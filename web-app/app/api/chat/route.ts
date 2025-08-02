@@ -29,7 +29,8 @@ function getRAGContext(userMessage: string): string {
     const ragFiles = [
       'desirable_properties.md',
       'gpt_instructions.md', 
-      'protocol_META-DP-EVAL-v1.3.md'
+      'protocol_META-DP-EVAL-v1.3.md',
+      'meta-layer-knowledge.md'
     ];
     
     let ragContext = '';
@@ -83,12 +84,43 @@ async function callDeepSeek(message: string, context: string): Promise<string> {
     throw new Error('DeepSeek API key not configured');
   }
 
-  const systemPrompt = `You are a helpful assistant for the Meta-Layer Initiative. You have access to the following context about the Meta-Layer and its submission process. Use this context to provide accurate, helpful responses.
+  const systemPrompt = `You are Bridgit, a rigorous, protocol-bound guide for preparing Meta-Layer Initiative submissions. Your role is to help contributors turn their ideas, critiques, or proposals into fully compliant submissions using protocol META-DP-EVAL-v1.4.
 
 Context:
 ${context}
 
-Please respond to user questions about the Meta-Layer Initiative, Desirable Properties, submission guidelines, and related topics. Be helpful, accurate, and reference the provided context when appropriate.`;
+PROTOCOL REQUIREMENTS - You must follow META-DP-EVAL-v1.4 exactly:
+
+When users share ideas, help them create submissions with this EXACT structure:
+
+**Title:** [Clear, descriptive title]
+
+**Contribution Overview:** [Detailed explanation ending with "This submission was generated with protocol META-DP-EVAL-v1.4"]
+
+**Directly Addressed Desirable Properties:**
+- DP#[Number]: [Exact DP title] - [How your submission addresses this DP]
+- DP#[Number]: [Exact DP title] - [How your submission addresses this DP]
+[Continue for all relevant DPs]
+
+**Clarifications & Extensions (optional):**
+DP# – [Exact DP Title]: [Clarification or Extension Title]
+Clarification: [Your text]
+Why it matters: [Your text]
+
+**Final line:** (End of Submission)
+
+CRITICAL RULES:
+1. ALWAYS include the exact phrase "This submission was generated with protocol META-DP-EVAL-v1.4" at the end of Contribution Overview
+2. ALWAYS reference specific DP numbers and exact titles from the framework (DP1-DP21)
+3. ALWAYS structure responses in the exact format above
+4. NEVER give general advice - create actual submission content
+5. ALWAYS explain how the submission addresses specific DPs
+6. ALWAYS reference specific Meta-Layer components, technical standards, and integration patterns when relevant
+7. ALWAYS consider how the submission fits into the broader Meta-Layer ecosystem
+8. ALWAYS suggest specific implementation approaches using the technical knowledge provided
+9. ALWAYS end with "(End of Submission)"
+
+When users share ideas, create a complete submission following this protocol exactly. Use the Meta-Layer technical knowledge to provide specific, implementable solutions.`;
 
   const payload = {
     model: "deepseek-chat",
@@ -171,10 +203,10 @@ function getFallbackResponse(userMessage: string): string {
   }
   
   if (message.includes('help') || message.includes('assist')) {
-    return "I can help you with:\n• Understanding Desirable Properties (DP1-DP20)\n• Writing submission titles and overviews\n• Choosing which DPs your submission addresses\n• Clarifications and extensions\n\nWhat specific aspect would you like help with?";
+    return "I'm Bridgit, your Meta-Layer submission assistant! I can help you:\n• Identify which Desirable Properties (DP1-DP20) your idea addresses\n• Improve your submission structure and content\n• Suggest clarifications or extensions\n• Understand how your idea fits the Meta-Layer vision\n\nShare your idea and I'll help you create a better submission!";
   }
   
-  return "I'm here to help with your Meta-Layer submission! You can ask me about Desirable Properties, submission guidelines, or request help with specific parts of your form. What would you like to know?";
+  return "I'm Bridgit, your Meta-Layer submission assistant! Share your idea, critique, or proposal, and I'll help you identify which Desirable Properties it addresses and how to improve it. What would you like to submit?";
 }
 
 export async function POST(request: Request) {

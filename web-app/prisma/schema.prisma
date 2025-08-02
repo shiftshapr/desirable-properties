@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - connected to Privy authentication
+model User {
+  id            String   @id @default(cuid())
+  privyId       String   @unique // Privy user ID
+  email         String?  @unique
+  walletAddress String?  @unique
+  firstName     String?
+  lastName      String?
+  userName      String?
+  avatar        String?
+  
+  // Activity tracking
+  signupDate    DateTime @default(now())
+  lastActivity  DateTime @updatedAt
+  
+  // Relationships
+  submissions   Submission[]
+  comments      Comment[]
+  votes         Vote[]
+  
+  // User activity stats (computed fields)
+  submissionsCount   Int @default(0)
+  commentsCount      Int @default(0)
+  votesGivenCount    Int @default(0)
+  votesReceivedCount Int @default(0)
+  
+  @@map("users")
+}
+
+// Submission model for desirable properties
+model Submission {
+  id          String   @id @default(cuid())
+  title       String
+  overview    String
+  sourceLink  String?
+  
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  submitterId String
+  submitter   User     @relation(fields: [submitterId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  votes       Vote[]
+  
+  // Directly addressed DPs
+  directlyAddressedDPs DirectlyAddressedDP[]
+  
+  // Clarifications and extensions
+  clarificationsExtensions ClarificationExtension[]
+  
+  @@map("submissions")
+}
+
+// Directly Addressed DPs
+model DirectlyAddressedDP {
+  id           String   @id @default(cuid())
+  dp           String   // Desirable Property identifier
+  summary      String
+  
+  // Relationships
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  
+  @@map("directly_addressed_dps")
+}
+
+// Clarifications and Extensions
+model ClarificationExtension {
+  id           String   @id @default(cuid())
+  dp           String   // Desirable Property identifier
+  type         String   // "clarification" or "extension"
+  title        String
+  content      String   // clarification or extension text
+  whyItMatters String
+  
+  // Relationships
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  
+  @@map("clarifications_extensions")
+}
+
+// Comment model
+model Comment {
+  id          String   @id @default(cuid())
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relationships
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  submissionId String
+  submission  Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  
+  // Element tracking for comments on specific elements
+  elementId   String?  // ID of the element being commented on
+  elementType String?  // "submission", "alignment", "clarification", "extension"
+  
+  // Voting
+  votes       Vote[]
+  
+  @@map("comments")
+}
+
+// Vote model for thumbs up/down
+model Vote {
+  id          String   @id @default(cuid())
+  type        VoteType // UP or DOWN
+  createdAt   DateTime @default(now())
+  
+  // Relationships
+  voterId     String
+  voter       User     @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  
+  // Vote can be on a comment, submission, or element (alignment, clarification, extension)
+  commentId   String?
+  comment     Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  submissionId String?
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  
+  // For voting on elements (alignments, clarifications, extensions)
+  elementId   String?
+  elementType String? // "alignment", "clarification", "extension"
+  
+  // Ensure vote is on either comment, submission, or element, not multiple
+  @@unique([voterId, commentId])
+  @@unique([voterId, elementId, elementType, submissionId])
+  @@map("votes")
+}
+
+// Vote type enum
+enum VoteType {
+  UP
+  DOWN
+}

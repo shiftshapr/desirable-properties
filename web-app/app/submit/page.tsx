@@ -49,6 +49,40 @@ export default function SubmitPage() {
 
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  // Function to handle copying submission data from chat
+  const handleCopySubmission = (data: {
+    title: string;
+    overview: string;
+    addressedDPs: Array<{
+      dp: string;
+      summary: string;
+    }>;
+    clarifications: Array<{
+      dp: string;
+      type: 'Clarification' | 'Extension';
+      title: string;
+      content: string;
+      whyItMatters: string;
+    }>;
+  }) => {
+    setFormData(prev => ({
+      ...prev,
+      title: data.title,
+      overview: data.overview,
+      addressedDPs: data.addressedDPs,
+      clarifications: data.clarifications
+    }));
+    
+    // Close the chat modal
+    setIsChatOpen(false);
+    
+    // Show a success message
+    setSubmissionResult({
+      success: true,
+      message: 'Submission data copied from AI assistant! You can now review and submit.'
+    });
+  };
+
   const desirableProperties = [
     'DP1 - Federated Authentication & Accountability',
     'DP2 - Participant Agency and Empowerment',

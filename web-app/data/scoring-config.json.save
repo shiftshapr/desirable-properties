@@ -1,45 +1,46 @@
-{
+qpm2 restart app-themetalayer
+
   "contribution_points": {
     "submissions": {
-      "first_submission": 10,
-      "subsequent_submissions": 1,
+      "first_submission": 33,
+      "subsequent_submissions": 10,
       "per_thumbsup_received": 1,
       "per_comment_received": 1
     },
     "comments": {
-      "per_comment_posted": 2,
+      "per_comment_posted": 1,
       "per_thumbsup_received": 1,
       "per_reply_received": 1
     },
     "alignments": {
       "per_thumbsup_received": 1,
-      "per_comment_received": 2
+      "per_comment_received": 1
     },
     "clarifications": {
       "per_thumbsup_received": 1,
-      "per_comment_received": 2
+      "per_comment_received": 1
     },
     "extensions": {
       "per_thumbsup_received": 1,
-      "per_comment_received": 2
+      "per_comment_received": 1
     }
   },
   "engagement_points": {
     "daily_limits": {
       "thumbsup_given": 20,
-      "thumbsdown_given": 5
+      "thumbsdown_given": 20
     },
     "actions": {
       "thumbsup_given": 1,
-      "thumbsdown_given": 0,
-      "comment_posted": 2,
-      "reply_posted": 1.5,
+      "thumbsdown_given": 1,
+      "comment_posted": 1,
+      "reply_posted": 1,
       "signup": 10
     }
   },
   "bonus_points": {
-    "first_week_activity": 10,
+    "first_week_activity": 50,
     "consistent_participation": 25,
-    "helpful_contributor": 10
+    "helpful_contributor": 100
   }
 } 

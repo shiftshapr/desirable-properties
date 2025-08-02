@@ -1,98 +1,39 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { watch } from 'fs';
+import { PrismaClient } from '@prisma/client';
 
-// Types for submissions data
+const prisma = new PrismaClient();
+
+// Types for submissions data from database
 interface Submission {
+  id: string;
+  title: string;
+  overview: string;
+  sourceLink: string | null;
   submitter: {
-    first_name: string | null;
-    last_name: string | null;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
   };
-  submission: {
-    title: string;
-    overview: string;
-    source_link: string | null;
-    raw_content: string;
-  };
-  directly_addressed_dps: Array<{
+  directlyAddressedDPs: Array<{
     dp: string;
     summary: string;
   }>;
-  clarifications_and_extensions: Array<{
+  clarificationsExtensions: Array<{
     dp: string;
     type: string;
     title: string;
-    clarification?: string;
-    extension?: string;
-    why_it_matters: string;
+    content: string;
+    whyItMatters: string;
   }>;
-  _metadata: {
-    source_file: string;
-    file_number: number;
-  };
+  upvotes: number;
+  downvotes: number;
 }
 
 interface SubmissionsData {
   meta: {
-    generated_at: string;
     total_submissions: number;
-    source_directory: string;
-    failed_files: string[];
-    format_version: string;
     description: string;
   };
   submissions: Submission[];
-}
-
-// In-memory cache for submissions data
-let cachedSubmissions: SubmissionsData | null = null;
-let lastModified: number = 0;
-
-// File path for the data
-const dataFilePath = path.join(process.cwd(), 'data', 'compiled', 'allstructured.json');
-
-// Load submissions data from JSON file
-function loadSubmissions(): SubmissionsData {
-  const fileContent = fs.readFileSync(dataFilePath, 'utf8');
-  return JSON.parse(fileContent);
-}
-
-// Check if file has been modified and reload if necessary
-function getSubmissionsData(): SubmissionsData {
-  try {
-    const stats = fs.statSync(dataFilePath);
-    const currentModified = stats.mtime.getTime();
-    
-    // If file has been modified or cache is empty, reload
-    if (!cachedSubmissions || currentModified > lastModified) {
-      console.log('Reloading submissions data from file...');
-      cachedSubmissions = loadSubmissions();
-      lastModified = currentModified;
-    }
-    
-    return cachedSubmissions;
-  } catch (error) {
-    console.error('Error loading submissions data:', error);
-    throw error;
-  }
-}
-
-// Set up file watching for hot reloading
-if (typeof window === 'undefined') { // Only run on server side
-  try {
-    // Watch the data file for changes
-    watch(dataFilePath, (eventType) => {
-      if (eventType === 'change') {
-        console.log('Submissions data file changed, clearing cache...');
-        cachedSubmissions = null; // Clear cache to force reload on next request
-      }
-    });
-    console.log('File watching enabled for hot reloading');
-  } catch (error) {
-    console.warn('Could not set up file watching:', error);
-  }
 }
 
 export async function GET(request: Request) {
@@ -100,19 +41,70 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dp = searchParams.get('dp'); // Filter by specific DP
     
-    const data = getSubmissionsData();
+    // Fetch submissions from database with vote counts
+    const submissions = await prisma.submission.findMany({
+      include: {
+        submitter: true,
+        directlyAddressedDPs: true,
+        clarificationsExtensions: true,
+        votes: true, // Include votes
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+    
+    // Transform to match expected format with vote counts
+    const transformedSubmissions = submissions.map(sub => {
+      // Calculate vote counts
+      const upvotes = sub.votes.filter(vote => vote.type === 'UP').length;
+      const downvotes = sub.votes.filter(vote => vote.type === 'DOWN').length;
+      
+      return {
+        id: sub.id,
+        title: sub.title,
+        overview: sub.overview,
+        sourceLink: sub.sourceLink,
+        submitter: {
+          firstName: sub.submitter.firstName,
+          lastName: sub.submitter.lastName,
+        },
+        directlyAddressedDPs: Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.map(dp => ({
+          dp: dp.dp,
+          summary: dp.summary,
+        })) : [],
+        clarificationsExtensions: Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.map(ce => ({
+          dp: ce.dp,
+          type: ce.type,
+          title: ce.title,
+          content: ce.content,
+          whyItMatters: ce.whyItMatters,
+        })) : [],
+        upvotes,
+        downvotes,
+      };
+    });
     
     // Filter by DP if provided
+    let filteredSubmissions = transformedSubmissions;
     if (dp) {
-      data.submissions = data.submissions.filter(submission => 
-        submission.directly_addressed_dps.some(addressedDP => 
+      filteredSubmissions = transformedSubmissions.filter(submission => 
+        submission.directlyAddressedDPs.some(addressedDP => 
           addressedDP.dp.toLowerCase().includes(dp.toLowerCase())
         ) ||
-        submission.clarifications_and_extensions.some(clarification => 
+        submission.clarificationsExtensions.some(clarification => 
           clarification.dp.toLowerCase().includes(dp.toLowerCase())
         )
       );
     }
+    
+    const data: SubmissionsData = {
+      meta: {
+        total_submissions: filteredSubmissions.length,
+        description: 'Submissions from database'
+      },
+      submissions: filteredSubmissions
+    };
     
     return NextResponse.json(data);
   } catch (error) {
@@ -128,12 +120,11 @@ export async function GET(request: Request) {
 export async function POST() {
   try {
     console.log('Manual reload requested...');
-    cachedSubmissions = null; // Clear cache
-    const data = getSubmissionsData();
+    const count = await prisma.submission.count();
     return NextResponse.json({ 
       success: true, 
       message: 'Data reloaded successfully',
-      total_submissions: data.meta.total_submissions 
+      total_submissions: count 
     });
   } catch (error) {
     console.error('Error during manual reload:', error);

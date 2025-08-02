@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
@@ -23,39 +23,75 @@ export default function VoteButtons({
   userVote = null,
   onVoteChange,
 }: VoteButtonsProps) {
-  const privy = usePrivy();
-  const { authenticated, login } = privy || {};
+  // Only log for Scott Yates submission
+  const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
+  if (isScottYatesSubmission) {
+    console.log('🔵 [VoteButtons] Component loaded for Scott Yates submission!', { elementId, elementType, submissionId });
+  }
+  
+  const { user, authenticated, login } = usePrivy();
+  const privyInstance = usePrivy(); // Get privy instance for access token
+  const [currentVote, setCurrentVote] = useState<'up' | 'down' | null>(userVote);
+  
+  // Update currentVote when userVote prop changes
+  useEffect(() => {
+    setCurrentVote(userVote);
+  }, [userVote]);
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [downvotes, setDownvotes] = useState(initialDownvotes);
-  const [currentVote, setCurrentVote] = useState<'up' | 'down' | null>(userVote);
   const [isVoting, setIsVoting] = useState(false);
 
-  const handleVote = async (vote: 'up' | 'down') => {
-    if (!privy) {
-      // If Privy is not configured, just update the UI optimistically
-      if (currentVote === vote) {
-        if (vote === 'up') {
-          setUpvotes(prev => prev - 1);
+  // Fetch actual vote counts and user vote on component mount
+  useEffect(() => {
+    const fetchVotes = async () => {
+      try {
+        // Build URL parameters based on element type
+        let url = '';
+        if (elementType === 'comment') {
+          url = `/api/votes?commentId=${elementId}&submissionId=${submissionId}`;
+        } else if (elementType === 'submission') {
+          url = `/api/votes?submissionId=${submissionId}`;
         } else {
-          setDownvotes(prev => prev - 1);
+          // For alignments, clarifications, extensions
+          url = `/api/votes?elementId=${elementId}&elementType=${elementType}&submissionId=${submissionId}`;
         }
-        setCurrentVote(null);
-        onVoteChange?.(null);
-      } else {
-        if (currentVote === 'up') {
-          setUpvotes(prev => prev - 1);
-        } else if (currentVote === 'down') {
-          setDownvotes(prev => prev - 1);
+        
+        // Add userId if authenticated
+        if (authenticated && user) {
+          url += `&userId=${user.id}`;
         }
-        if (vote === 'up') {
-          setUpvotes(prev => prev + 1);
-        } else {
-          setDownvotes(prev => prev + 1);
+        
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          // Only update if we don't have initial values or if the fetched values are different
+          if (initialUpvotes === 0 && initialDownvotes === 0) {
+            setUpvotes(data.upvotes || 0);
+            setDownvotes(data.downvotes || 0);
+          } else {
+            // If we have initial values, only update if the fetched values are different
+            const fetchedUpvotes = data.upvotes || 0;
+            const fetchedDownvotes = data.downvotes || 0;
+            if (fetchedUpvotes !== initialUpvotes || fetchedDownvotes !== initialDownvotes) {
+              setUpvotes(fetchedUpvotes);
+              setDownvotes(fetchedDownvotes);
+            }
+          }
+          setCurrentVote(data.userVote || null);
         }
-        setCurrentVote(vote);
-        onVoteChange?.(vote);
+      } catch (error) {
+        console.error('Error fetching votes:', error);
       }
-      return;
+    };
+
+    fetchVotes();
+  }, [elementId, elementType, submissionId, authenticated, user, initialUpvotes, initialDownvotes]);
+
+  const handleVote = async (vote: 'up' | 'down', event?: React.MouseEvent) => {
+    // Prevent event bubbling to avoid triggering parent click handlers
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
     }
 
     if (!authenticated) {
@@ -126,7 +162,26 @@ export default function VoteButtons({
   };
 
   const submitVote = async (vote: 'up' | 'down') => {
-    const accessToken = await privy?.getAccessToken?.();
+    const accessToken = await privyInstance?.getAccessToken?.();
+    
+    // Prepare the request body based on element type
+    const requestBody: any = {
+      type: vote.toUpperCase() as 'UP' | 'DOWN',
+    };
+    
+    if (elementType === 'comment') {
+      requestBody.commentId = elementId;
+      requestBody.submissionId = submissionId;
+    } else if (elementType === 'submission') {
+      requestBody.submissionId = submissionId;
+    } else {
+      // For alignments, clarifications, extensions
+      requestBody.elementId = elementId;
+      requestBody.elementType = elementType;
+      requestBody.submissionId = submissionId;
+    }
+    
+    console.log('Sending vote request:', requestBody);
     
     const response = await fetch('/api/votes', {
       method: 'POST',
@@ -134,15 +189,12 @@ export default function VoteButtons({
         'Content-Type': 'application/json',
         ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       },
-      body: JSON.stringify({
-        elementId,
-        elementType,
-        submissionId,
-        vote,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Vote API error:', response.status, errorText);
       throw new Error('Failed to submit vote');
     }
   };
@@ -150,7 +202,7 @@ export default function VoteButtons({
   return (
     <div className="flex items-center gap-2">
       <button
-        onClick={() => handleVote('up')}
+        onClick={(e) => handleVote('up', e)}
         disabled={isVoting}
         className={`flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors ${
           currentVote === 'up'
@@ -163,7 +215,7 @@ export default function VoteButtons({
       </button>
       
       <button
-        onClick={() => handleVote('down')}
+        onClick={(e) => handleVote('down', e)}
         disabled={isVoting}
         className={`flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors ${
           currentVote === 'down'
@@ -176,4 +228,4 @@ export default function VoteButtons({
       </button>
     </div>
   );
-} 
+}

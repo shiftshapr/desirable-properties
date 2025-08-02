@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -127,7 +128,9 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
                     : 'bg-gray-100 text-gray-900'
                 }`}
               >
-                <p className="text-sm">{message.text}</p>
+                <div className="text-sm prose prose-sm max-w-none">
+                  <ReactMarkdown>{message.text}</ReactMarkdown>
+                </div>
                 <p className="text-xs opacity-70 mt-1">
                   {message.timestamp.toLocaleTimeString()}
                 </p>
@@ -158,7 +161,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask me about Desirable Properties, submission guidelines, or request help with your form..."
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-black placeholder-gray-300 font-medium"
               rows={2}
               disabled={isLoading}
             />

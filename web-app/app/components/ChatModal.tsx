@@ -1,21 +1,118 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle } from 'lucide-react';
+import { X, Send, MessageCircle, Copy, Check } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
   text: string;
   sender: 'user' | 'assistant';
   timestamp: Date;
+  submissionData?: ParsedSubmissionData;
+}
+
+interface ParsedSubmissionData {
+  title: string;
+  overview: string;
+  addressedDPs: Array<{
+    dp: string;
+    summary: string;
+  }>;
+  clarifications: Array<{
+    dp: string;
+    type: 'Clarification' | 'Extension';
+    title: string;
+    content: string;
+    whyItMatters: string;
+  }>;
 }
 
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onCopySubmission?: (data: ParsedSubmissionData) => void;
 }
 
-export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
+// Function to parse submission data from AI response
+function parseSubmissionData(text: string): ParsedSubmissionData | null {
+  try {
+    // Check if this looks like a complete submission
+    if (!text.includes('**Title:**') || !text.includes('**Contribution Overview:**') || !text.includes('**Directly Addressed Desirable Properties:**')) {
+      return null;
+    }
+
+    // Extract title
+    const titleMatch = text.match(/\*\*Title:\*\*\s*(.+?)(?=\n|$)/);
+    const title = titleMatch ? titleMatch[1].trim() : '';
+
+    // Extract overview
+    const overviewMatch = text.match(/\*\*Contribution Overview:\*\*[ \t\n\r]*([^]*?)\n\*\*Directly Addressed Desirable Properties:\*\*/);
+    const overview = overviewMatch ? overviewMatch[1].trim() : '';
+
+    // Extract addressed DPs
+    const dpsSection = text.match(/\*\*Directly Addressed Desirable Properties:\*\*[ \t\n\r]*([^]*?)(\n\*\*Clarifications & Extensions|\\(End of Submission\\))/);
+    const addressedDPs: Array<{ dp: string; summary: string }> = [];
+    
+    if (dpsSection) {
+      const dpLines = dpsSection[1].split('\n').filter(line => line.trim().startsWith('- DP'));
+      dpLines.forEach(line => {
+        const dpMatch = line.match(/-\s*(DP\d+[^:]*):\s*(.+)/);
+        if (dpMatch) {
+          addressedDPs.push({
+            dp: dpMatch[1].trim(),
+            summary: dpMatch[2].trim()
+          });
+        }
+      });
+    }
+
+    // Extract clarifications and extensions
+    const clarificationsSection = text.match(/\*\*Clarifications & Extensions \(optional\):\*\*[ \t\n\r]*([^]*?)(\\(End of Submission\\)|$)/);
+    const clarifications: Array<{
+      dp: string;
+      type: 'Clarification' | 'Extension';
+      title: string;
+      content: string;
+      whyItMatters: string;
+    }> = [];
+
+    if (clarificationsSection) {
+      const clarBlocks = clarificationsSection[1].split(/(?=DP#)/).filter(block => block.trim());
+      clarBlocks.forEach(block => {
+        const dpMatch = block.match(/DP#[ \t\n\r]*–[ \t\n\r]*([^:]+):[ \t\n\r]*(.+)/);
+        const typeMatch = block.match(/(Clarification|Extension):[ \t\n\r]*([^]*?)(\nWhy it matters:|$)/);
+        const whyMatch = block.match(/Why it matters:[ \t\n\r]*([^]*?)(\n|$)/);
+
+        if (dpMatch && typeMatch) {
+          clarifications.push({
+            dp: dpMatch[1].trim(),
+            type: typeMatch[1] as 'Clarification' | 'Extension',
+            title: typeMatch[2].trim(),
+            content: typeMatch[2].trim(),
+            whyItMatters: whyMatch ? whyMatch[1].trim() : ''
+          });
+        }
+      });
+    }
+
+    // Only return data if we have at least a title and overview
+    if (title && overview) {
+      return {
+        title,
+        overview,
+        addressedDPs,
+        clarifications
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error parsing submission data:', error);
+    return null;
+  }
+}
+
+export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatModalProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
@@ -26,6 +123,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -58,21 +156,25 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
         },
         body: JSON.stringify({
           message: inputMessage,
-          history: messages.map(msg => ({
+          history: Array.isArray(messages) ? messages.map(msg => ({
             text: msg.text,
             sender: msg.sender
-          }))
+          })) : []
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        // Parse submission data from the response
+        const submissionData = parseSubmissionData(data.response);
+        
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           text: data.response,
           sender: 'assistant',
-          timestamp: new Date()
+          timestamp: new Date(),
+          submissionData: submissionData || undefined
         };
         setMessages(prev => [...prev, assistantMessage]);
       } else {
@@ -104,6 +206,15 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
     }
   };
 
+  const handleCopySubmission = (messageId: string) => {
+    const message = messages.find(m => m.id === messageId);
+    if (message?.submissionData && onCopySubmission) {
+      onCopySubmission(message.submissionData);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 2000);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -127,7 +238,7 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
+          {Array.isArray(messages) ? messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -145,9 +256,31 @@ export default function ChatModal({ isOpen, onClose }: ChatModalProps) {
                 }`}>
                   {message.timestamp.toLocaleTimeString()}
                 </p>
+                
+                {/* Copy to Submission Form Button */}
+                {message.sender === 'assistant' && message.submissionData && (
+                  <div className="mt-3 pt-2 border-t border-gray-200">
+                    <button
+                      onClick={() => handleCopySubmission(message.id)}
+                      className="flex items-center gap-2 text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition-colors"
+                    >
+                      {copiedMessageId === message.id ? (
+                        <>
+                          <Check className="h-3 w-3" />
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          Copy to Submission Form
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-          ))}
+          )) : null}
           {isLoading && (
             <div className="flex justify-start">
               <div className="bg-gray-100 text-gray-900 rounded-lg px-4 py-2">

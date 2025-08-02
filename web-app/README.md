@@ -130,10 +130,39 @@ For regular updates to the web application:
 ```
 
 This script will:
-1. Copy files to production directory
-2. Install dependencies
-3. Build the application
-4. Restart the PM2 process
+1. ✅ Build the application locally
+2. ✅ Sync files to production directory
+3. ✅ Install production dependencies
+4. ✅ Start PM2 processes
+5. ✅ **Verify application is responding**
+6. ✅ **Check critical files were deployed correctly**
+
+### Deployment Verification
+
+The deploy script now includes automatic verification:
+
+- **Application Response**: Tests if the app is responding at https://app.themetalayer.org
+- **Critical Files**: Verifies that important files like VoteButtons.tsx were deployed
+- **Latest Fixes**: Checks for specific code patterns to ensure latest fixes are deployed
+- **PM2 Status**: Confirms the process is running correctly
+
+### Manual Verification
+
+If you need to verify deployment manually:
+
+```bash
+# Check PM2 status
+pm2 status
+
+# Test application response
+curl -I https://app.themetalayer.org
+
+# Verify critical files
+ls -la /var/www/app.themetalayer.org/public/app/components/VoteButtons.tsx
+
+# Check for latest fixes
+grep -n "voteType" /var/www/app.themetalayer.org/public/app/components/VoteButtons.tsx
+```
 
 ### Initial Server Setup
 
