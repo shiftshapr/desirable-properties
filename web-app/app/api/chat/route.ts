@@ -33,6 +33,17 @@ function getRAGContext(userMessage: string): string {
       'meta-layer-knowledge.md'
     ];
     
+    // Load new specification files from data/specifications directory
+    const specsDir = path.join(process.cwd(), '..', 'data', 'specifications');
+    console.log('📁 [RAG] Looking for specifications in:', specsDir);
+    
+    const specFiles = [
+      'META-DP-EVAL-v1.5.md',
+      'META-DP-VALIDATE-v1.1.md',
+      'META-CREATIVE-v1.1.md',
+      'README.md'
+    ];
+    
     let ragContext = '';
     
     for (const filename of ragFiles) {
@@ -45,6 +56,20 @@ function getRAGContext(userMessage: string): string {
         ragContext += `\n\n--- ${filename} ---\n${content}`;
       } catch (fileError) {
         console.error('❌ [RAG] Failed to read', filename, ':', fileError);
+      }
+    }
+    
+    // Load specification files
+    for (const filename of specFiles) {
+      const filePath = path.join(specsDir, filename);
+      console.log('📖 [RAG] Attempting to read spec:', filePath);
+      
+      try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        console.log('✅ [RAG] Successfully read spec', filename, 'size:', content.length, 'chars');
+        ragContext += `\n\n--- ${filename} ---\n${content}`;
+      } catch (fileError) {
+        console.error('❌ [RAG] Failed to read spec', filename, ':', fileError);
       }
     }
     
@@ -84,18 +109,18 @@ async function callDeepSeek(message: string, context: string): Promise<string> {
     throw new Error('DeepSeek API key not configured');
   }
 
-  const systemPrompt = `You are Bridgit, a rigorous, protocol-bound guide for preparing Meta-Layer Initiative submissions. Your role is to help contributors turn their ideas, critiques, or proposals into fully compliant submissions using protocol META-DP-EVAL-v1.4.
+  const systemPrompt = `You are Bridgit, a rigorous, protocol-bound guide for preparing Meta-Layer Initiative submissions. Your role is to help contributors turn their ideas, critiques, or proposals into fully compliant submissions using protocol META-DP-EVAL-v1.5.
 
 Context:
 ${context}
 
-PROTOCOL REQUIREMENTS - You must follow META-DP-EVAL-v1.4 exactly:
+PROTOCOL REQUIREMENTS - You must follow META-DP-EVAL-v1.5 exactly:
 
 When users share ideas, help them create submissions with this EXACT structure:
 
 **Title:** [Clear, descriptive title]
 
-**Contribution Overview:** [Detailed explanation ending with "This submission was generated with protocol META-DP-EVAL-v1.4"]
+**Contribution Overview:** [Detailed explanation ending with "This submission was generated with protocol META-DP-EVAL-v1.5"]
 
 **Directly Addressed Desirable Properties:**
 - DP#[Number]: [Exact DP title] - [How your submission addresses this DP]
@@ -110,7 +135,7 @@ Why it matters: [Your text]
 **Final line:** (End of Submission)
 
 CRITICAL RULES:
-1. ALWAYS include the exact phrase "This submission was generated with protocol META-DP-EVAL-v1.4" at the end of Contribution Overview
+1. ALWAYS include the exact phrase "This submission was generated with protocol META-DP-EVAL-v1.5" at the end of Contribution Overview
 2. ALWAYS reference specific DP numbers and exact titles from the framework (DP1-DP21)
 3. ALWAYS structure responses in the exact format above
 4. NEVER give general advice - create actual submission content
