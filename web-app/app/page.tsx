@@ -2031,7 +2031,7 @@ export default function DesirablePropertiesApp() {
       
       {/* Chat Modal */}
       <ChatModal 
-        open={chatModalOpen} 
+        isOpen={chatModalOpen} 
         onClose={() => setChatModalOpen(false)} 
         onCopySubmission={handleCopySubmission}
       />
