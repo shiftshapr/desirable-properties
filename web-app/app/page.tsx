@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, BarChart3, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 import Link from 'next/link';
 import VoteButtons from './components/VoteButtons';
@@ -1103,6 +1103,54 @@ export default function DesirablePropertiesApp() {
             <div className="flex items-center gap-4">
               {privy && ready && (
                 <>
+                <Link
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    setActiveTab('properties');
+                  }}
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
+                    activeTab === 'properties'
+                      ? 'border-blue-400 text-blue-400'
+                      : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                  }`}
+                  scroll={false}
+                >
+                  <FileText className="h-4 w-4" />
+                  Desirable Properties
+                </Link>
+                <Link
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    setActiveTab('submissions');
+                  }}
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
+                    activeTab === 'submissions'
+                      ? 'border-blue-400 text-blue-400'
+                      : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                  }`}
+                  scroll={false}
+                >
+                  <Users className="h-4 w-4" />
+                  Submissions
+                </Link>
+                <Link
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    setActiveTab('categories');
+                  }}
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
+                    activeTab === 'categories'
+                      ? 'border-blue-400 text-blue-400'
+                      : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                  }`}
+                  scroll={false}
+                >
+                  <Filter className="h-4 w-4" />
+                  Categories
+                </Link>
                   <Link 
                     href="/leaderboard" 
                     className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
@@ -1143,74 +1191,16 @@ export default function DesirablePropertiesApp() {
         </div>
       </div>
 
-      {/* Main Header */}
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">{data?.meta.title}</h1>
-              <p className="mt-2 text-base sm:text-lg text-gray-300">{data?.meta.description}</p>
-              <div className="mt-4 flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400">
-                <span>Version: {data?.meta.version}</span>
-                <span>Total Properties: {data?.meta.total_properties}</span>
-                <span>Community Submissions: {submissions.length}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
 
-      {/* Tab Navigation */}
-      <div className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-hide">
-            <button
-              onClick={() => setActiveTab('summary')}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
-                activeTab === 'summary'
-                  ? 'border-blue-400 text-blue-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
-              }`}
-            >
-              <BarChart3 className="h-4 w-4" />
-              Summary
-            </button>
-            <button
-              onClick={() => setActiveTab('properties')}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
-                activeTab === 'properties'
-                  ? 'border-blue-400 text-blue-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
-              }`}
-            >
-              <FileText className="h-4 w-4" />
-              Desirable Properties
-            </button>
-            <button
-              onClick={() => setActiveTab('submissions')}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
-                activeTab === 'submissions'
-                  ? 'border-blue-400 text-blue-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
-              }`}
-            >
-              <Users className="h-4 w-4" />
-              Community Submissions
-            </button>
-            <button
-              onClick={() => setActiveTab('categories')}
-              className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap ${
-                activeTab === 'categories'
-                  ? 'border-blue-400 text-blue-400'
-                  : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
-              }`}
-            >
-              <Filter className="h-4 w-4" />
-              Categories
-            </button>
-          </div>
-        </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-8 text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-cyan-400 mb-2">
+          The Desirable Properties of a Meta-Layer
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-300 max-w-[600px] mx-auto break-words">
+          Community-defined desirable properties for a trustworthy and safe coordination zone above the webpage
+        </p>
       </div>
+
 
       {/* Search and Filter Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
@@ -1266,13 +1256,11 @@ export default function DesirablePropertiesApp() {
           <p className="text-gray-300">
             {searchResults 
               ? `Search results for "${searchTerm}" (${searchResults.total_results} total)`
-              : activeTab === 'summary' 
-              ? 'Overview and Statistics'
               : activeTab === 'properties'
               ? `Showing ${filteredProperties.length} of ${data?.meta.total_properties} properties`
               : activeTab === 'submissions'
               ? `Showing ${filteredSubmissions.length} of ${submissions.length} submissions`
-              : `Showing ${data?.meta.categories.length} of ${data?.meta.categories.length} categories`
+              : null
             }
           </p>
         </div>
@@ -1402,7 +1390,7 @@ export default function DesirablePropertiesApp() {
                   <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
                     {data?.meta.total_properties || 0}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300">Desirable Properties</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Desirable Properties {data?.meta.total_properties || 0}</div>
                 </button>
 
                 <button 
@@ -1412,7 +1400,7 @@ export default function DesirablePropertiesApp() {
                   <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">
                     {submissions.length}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300">Community Submissions</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Submissions {submissions.length}</div>
                 </button>
 
                 <button 
