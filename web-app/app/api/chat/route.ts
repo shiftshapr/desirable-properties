@@ -28,8 +28,6 @@ function getRAGContext(userMessage: string): string {
     
     const ragFiles = [
       'desirable_properties.md',
-      'gpt_instructions.md', 
-      'protocol_META-DP-EVAL-v1.3.md',
       'meta-layer-knowledge.md'
     ];
     
