@@ -79,13 +79,11 @@ function getRAGContext(userMessage: string): string {
     const keywords = userMessage.toLowerCase().split(' ');
     let relevantContext = '';
 
-    // Check for DP-related queries
-    if (keywords.some(k => k.includes('dp') || k.includes('desirable'))) {
-      console.log('🎯 [RAG] Detected DP-related query, adding DP context');
-      relevantContext += `\n\nDesirable Properties:\n${dps.desirable_properties.map((dp: { id: string; name: string; description: string }) => 
-        `${dp.id} - ${dp.name}: ${dp.description}`
-      ).join('\n')}`;
-    }
+    // Always include DP list for proper submission creation
+    console.log('🎯 [RAG] Adding DP context for submission creation');
+    relevantContext += `\n\nDesirable Properties:\n${dps.desirable_properties.map((dp: { id: string; name: string; description: string }) => 
+      `${dp.id} - ${dp.name}: ${dp.description}`
+    ).join('\n')}`;
 
     // Always include RAG context for DeepSeek
     relevantContext += `\n\nRAG Knowledge Base:\n${ragContext}`;
@@ -136,7 +134,7 @@ Why it matters: [Your text]
 
 CRITICAL RULES:
 1. ALWAYS include the exact phrase "This submission was generated with protocol META-DP-EVAL-v1.5" at the end of Contribution Overview
-2. ALWAYS reference specific DP numbers and exact titles from the framework (DP1-DP21)
+2. ALWAYS reference specific DP numbers and exact titles from the framework (DP1-DP21) - use ONLY the DP numbers provided in the context
 3. ALWAYS structure responses in the exact format above
 4. NEVER give general advice - create actual submission content
 5. ALWAYS explain how the submission addresses specific DPs
@@ -144,6 +142,7 @@ CRITICAL RULES:
 7. ALWAYS consider how the submission fits into the broader Meta-Layer ecosystem
 8. ALWAYS suggest specific implementation approaches using the technical knowledge provided
 9. ALWAYS end with "(End of Submission)"
+10. NEVER use fake DP numbers - only use DP1, DP2, DP3, etc. as listed in the context
 
 When users share ideas, create a complete submission following this protocol exactly. Use the Meta-Layer technical knowledge to provide specific, implementable solutions.`;
 
