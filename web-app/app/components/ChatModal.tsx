@@ -36,27 +36,40 @@ interface ChatModalProps {
 // Function to parse submission data from AI response
 function parseSubmissionData(text: string): ParsedSubmissionData | null {
   try {
-    // Check if this looks like a complete submission
-    if (!text.includes('**Title:**') || !text.includes('**Contribution Overview:**') || !text.includes('**Directly Addressed Desirable Properties:**')) {
+    // Check if this looks like a complete submission with v1.5 protocol
+    const hasV15Footer = text.includes('This submission was generated with protocol META-DP-EVAL-v1.5');
+    const hasTitle = text.includes('**Title:**');
+    const hasOverview = text.includes('**Contribution Overview:**');
+    const hasDPs = text.includes('**Directly Addressed Desirable Properties:**');
+    
+    // More flexible detection - check for v1.5 footer OR standard structure
+    if (!hasV15Footer && (!hasTitle || !hasOverview || !hasDPs)) {
+      console.log('❌ [Parse] Not a valid submission - missing required elements');
       return null;
     }
 
-    // Extract title
+    // Extract title - more flexible regex
     const titleMatch = text.match(/\*\*Title:\*\*\s*(.+?)(?=\n|$)/);
     const title = titleMatch ? titleMatch[1].trim() : '';
 
-    // Extract overview
-    const overviewMatch = text.match(/\*\*Contribution Overview:\*\*[ \t\n\r]*([^]*?)\n\*\*Directly Addressed Desirable Properties:\*\*/);
+    // Extract overview - more flexible regex
+    const overviewMatch = text.match(/\*\*Contribution Overview:\*\*[ \t\n\r]*([^]*?)(?=\n\*\*Directly Addressed Desirable Properties:\*\*|\n\*\*Clarifications|\\(End of Submission\\))/);
     const overview = overviewMatch ? overviewMatch[1].trim() : '';
 
-    // Extract addressed DPs
-    const dpsSection = text.match(/\*\*Directly Addressed Desirable Properties:\*\*[ \t\n\r]*([^]*?)(\n\*\*Clarifications & Extensions|\\(End of Submission\\))/);
+    // Extract addressed DPs - more flexible parsing
+    const dpsSection = text.match(/\*\*Directly Addressed Desirable Properties:\*\*[ \t\n\r]*([^]*?)(?=\n\*\*Clarifications|\\(End of Submission\\)|$)/);
     const addressedDPs: Array<{ dp: string; summary: string }> = [];
     
     if (dpsSection) {
-      const dpLines = dpsSection[1].split('\n').filter(line => line.trim().startsWith('- DP'));
+      // Look for DP lines with various formats
+      const dpLines = dpsSection[1].split('\n').filter(line => {
+        const trimmed = line.trim();
+        return trimmed.startsWith('- DP') || trimmed.startsWith('DP') || trimmed.match(/DP\d+/);
+      });
+      
       dpLines.forEach(line => {
-        const dpMatch = line.match(/-\s*(DP\d+[^:]*):\s*(.+)/);
+        // More flexible DP matching
+        const dpMatch = line.match(/(?:-)?\s*(DP\d+[^:]*):\s*(.+)/);
         if (dpMatch) {
           addressedDPs.push({
             dp: dpMatch[1].trim(),
@@ -66,8 +79,8 @@ function parseSubmissionData(text: string): ParsedSubmissionData | null {
       });
     }
 
-    // Extract clarifications and extensions
-    const clarificationsSection = text.match(/\*\*Clarifications & Extensions \(optional\):\*\*[ \t\n\r]*([^]*?)(\\(End of Submission\\)|$)/);
+    // Extract clarifications and extensions - more flexible
+    const clarificationsSection = text.match(/\*\*Clarifications & Extensions \(optional\):\*\*[ \t\n\r]*([^]*?)(?=\\(End of Submission\\)|$)/);
     const clarifications: Array<{
       dp: string;
       type: 'Clarification' | 'Extension';
@@ -95,19 +108,21 @@ function parseSubmissionData(text: string): ParsedSubmissionData | null {
       });
     }
 
-    // Only return data if we have at least a title and overview
-    if (title && overview) {
+    // Return data if we have at least a title and overview, OR if it has v1.5 footer
+    if ((title && overview) || hasV15Footer) {
+      console.log('✅ [Parse] Successfully parsed submission data');
       return {
-        title,
-        overview,
+        title: title || 'Generated Submission',
+        overview: overview || 'AI-generated submission following v1.5 protocol',
         addressedDPs,
         clarifications
       };
     }
 
+    console.log('❌ [Parse] Missing required title or overview');
     return null;
   } catch (error) {
-    console.error('Error parsing submission data:', error);
+    console.error('❌ [Parse] Error parsing submission data:', error);
     return null;
   }
 }
