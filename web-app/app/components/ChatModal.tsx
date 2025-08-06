@@ -36,11 +36,20 @@ interface ChatModalProps {
 // Function to parse submission data from AI response
 function parseSubmissionData(text: string): ParsedSubmissionData | null {
   try {
+    console.log('🔍 [Parse] Attempting to parse submission data...');
+    console.log('🔍 [Parse] Text length:', text.length);
+    console.log('🔍 [Parse] Text preview:', text.substring(0, 200) + '...');
+    
     // Check if this looks like a complete submission with v1.5 protocol
     const hasV15Footer = text.includes('This submission was generated with protocol META-DP-EVAL-v1.5');
     const hasTitle = text.includes('**Title:**');
     const hasOverview = text.includes('**Contribution Overview:**');
     const hasDPs = text.includes('**Directly Addressed Desirable Properties:**');
+    
+    console.log('🔍 [Parse] Has v1.5 footer:', hasV15Footer);
+    console.log('🔍 [Parse] Has title:', hasTitle);
+    console.log('🔍 [Parse] Has overview:', hasOverview);
+    console.log('🔍 [Parse] Has DPs:', hasDPs);
     
     // More flexible detection - check for v1.5 footer OR standard structure
     if (!hasV15Footer && (!hasTitle || !hasOverview || !hasDPs)) {
@@ -179,10 +188,14 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
       });
 
       const data = await response.json();
+      console.log('🔍 [ChatModal] Received response:', data);
+      console.log('🔍 [ChatModal] Response text length:', data.response?.length || 0);
 
       if (response.ok) {
         // Parse submission data from the response
+        console.log('🔍 [ChatModal] Attempting to parse submission data...');
         const submissionData = parseSubmissionData(data.response);
+        console.log('🔍 [ChatModal] Parse result:', submissionData ? 'SUCCESS' : 'FAILED');
         
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
