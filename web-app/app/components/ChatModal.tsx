@@ -137,6 +137,8 @@ function parseSubmissionData(text: string): ParsedSubmissionData | null {
 }
 
 export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatModalProps) {
+  console.log('🔍 [ChatModal] Component rendered, isOpen:', isOpen);
+  
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
