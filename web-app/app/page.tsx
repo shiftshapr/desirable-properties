@@ -98,6 +98,7 @@ export default function DesirablePropertiesApp() {
   const [searchResults, setSearchResults] = useState<any>(null);
   const [searchLoading, setSearchLoading] = useState(false);
   const [chatModalOpen, setChatModalOpen] = useState(false);
+  console.log('🔍 [Page] Component rendered, chatModalOpen:', chatModalOpen);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [voteCounts, setVoteCounts] = useState<Record<string, { upvotes: number; downvotes: number; userVote?: 'UP' | 'DOWN' | null }>>({});
   const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
@@ -118,13 +119,16 @@ export default function DesirablePropertiesApp() {
       whyItMatters: string;
     }>;
   }) => {
+    console.log('🔍 [Page] handleCopySubmission called with data:', data);
     // Navigate to submit page with pre-filled data
     const submitUrl = new URL('/submit', window.location.origin);
     submitUrl.searchParams.set('title', data.title);
     submitUrl.searchParams.set('overview', data.overview);
     submitUrl.searchParams.set('addressedDPs', JSON.stringify(data.addressedDPs));
     submitUrl.searchParams.set('clarifications', JSON.stringify(data.clarifications));
-    window.location.href = submitUrl.toString();
+    const finalUrl = submitUrl.toString();
+    console.log('🔍 [Page] Navigating to:', finalUrl);
+    window.location.href = finalUrl;
   };
 
   useEffect(() => {
@@ -1185,14 +1189,17 @@ export default function DesirablePropertiesApp() {
                   </Link>
                   
                   {/* Chat Assistant Button */}
-                  <button
-                    onClick={() => setChatModalOpen(true)}
-                    className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
-                    title="Chat with AI Assistant"
-                  >
-                    <MessageCircle className="h-5 w-5" />
-                    <span className="text-sm hidden sm:inline">Assistant</span>
-                  </button>
+                              <button
+                onClick={() => {
+                  console.log('🔍 [Page] Assistant button clicked');
+                  setChatModalOpen(true);
+                }}
+                className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
+                title="Chat with AI Assistant"
+            >
+                <MessageCircle className="h-5 w-5" />
+                <span className="text-sm hidden sm:inline">Assistant</span>
+            </button>
                   {authenticated ? (
                     <>
                       <Link 
@@ -2030,11 +2037,14 @@ export default function DesirablePropertiesApp() {
       </Modal>
       
       {/* Chat Modal */}
-      <ChatModal 
-        isOpen={chatModalOpen} 
-        onClose={() => setChatModalOpen(false)} 
-        onCopySubmission={handleCopySubmission}
-      />
+                  <ChatModal 
+                isOpen={chatModalOpen} 
+                onClose={() => {
+                  console.log('🔍 [Page] ChatModal closing');
+                  setChatModalOpen(false);
+                }} 
+                onCopySubmission={handleCopySubmission}
+            />
     </div>
   );
 }
