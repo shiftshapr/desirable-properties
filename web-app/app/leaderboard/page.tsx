@@ -100,14 +100,25 @@ export default function LeaderboardPage() {
           const allSubmissions = submissionsData.submissions || [];
           
           // Calculate points for each submission using the correct scoring system
-          const submissionsWithPoints = allSubmissions.map((submission: Submission) => {
+          const submissionsWithPoints = await Promise.all(allSubmissions.map(async (submission: Submission) => {
             // Base submission points: 10 for first, 1 for each subsequent
             // For now, we'll use a simplified approach since we don't have user context here
             const submissionPoints = 10; // Base points for having a submission
             
             // Points from received interactions
             const thumbsUpPoints = submission.upvotes || 0; // 1 point per upvote received
-            const commentPoints = 0; // TODO: Add comment count when available
+            
+            // Fetch actual comment count for this submission
+            let commentPoints = 0;
+            try {
+              const commentResponse = await fetch(`/api/comments?submissionId=${submission.id}`);
+              if (commentResponse.ok) {
+                const comments = await commentResponse.json();
+                commentPoints = Array.isArray(comments) ? comments.length : 0;
+              }
+            } catch (error) {
+              console.error('Error fetching comment count for submission:', submission.id, error);
+            }
             
             const totalPoints = submissionPoints + thumbsUpPoints + commentPoints;
             
@@ -118,7 +129,7 @@ export default function LeaderboardPage() {
               commentPoints,
               submissionPoints
             };
-          });
+          }));
           
           // Sort by total points (highest first) and take top 10
           const sortedSubmissions = submissionsWithPoints
@@ -463,9 +474,9 @@ export default function LeaderboardPage() {
                     <div className="flex flex-col items-end gap-2 ml-4">
                       <div className="text-right">
                         <div className="text-2xl font-bold text-yellow-400">
-                          {submission.totalPoints || 0}
+                          {submission.commentPoints || 0}
                         </div>
-                        <div className="text-xs text-gray-400">points</div>
+                        <div className="text-xs text-gray-400">comments</div>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-400">
                         <span className="flex items-center gap-1">

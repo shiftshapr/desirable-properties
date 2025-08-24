@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../lib/auth';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
 
 interface VoteButtonsProps {
   elementId: string;
@@ -12,6 +12,9 @@ interface VoteButtonsProps {
   initialDownvotes?: number;
   userVote?: 'up' | 'down' | null;
   onVoteChange?: (vote: 'up' | 'down' | null) => void;
+  showComments?: boolean;
+  commentCount?: number;
+  onCommentToggle?: () => void;
 }
 
 export default function VoteButtons({
@@ -22,6 +25,9 @@ export default function VoteButtons({
   initialDownvotes = 0,
   userVote = null,
   onVoteChange,
+  showComments = false,
+  commentCount = 0,
+  onCommentToggle,
 }: VoteButtonsProps) {
   // Only log for Scott Yates submission
   const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
@@ -231,6 +237,16 @@ export default function VoteButtons({
         <ThumbsDown className="h-4 w-4" />
         <span>{downvotes}</span>
       </button>
+      
+      {showComments && onCommentToggle && (
+        <button
+          onClick={onCommentToggle}
+          className="flex items-center gap-1 px-2 py-1 rounded text-sm text-gray-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"
+        >
+          <MessageCircle className="h-4 w-4" />
+          <span>{commentCount}</span>
+        </button>
+      )}
     </div>
   );
 }

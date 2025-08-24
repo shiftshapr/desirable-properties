@@ -1221,7 +1221,7 @@ export default function DesirablePropertiesApp() {
                       >
                         <User className="h-5 w-5" />
                         <span className="text-sm hidden sm:inline">
-                          {user?.email || user?.name || 'Profile'}
+                          Profile
                         </span>
                       </Link>
                       <button
