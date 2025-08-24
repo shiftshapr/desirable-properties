@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '../../lib/auth';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface VoteButtonsProps {
@@ -29,8 +29,8 @@ export default function VoteButtons({
     console.log('🔵 [VoteButtons] Component loaded for Scott Yates submission!', { elementId, elementType, submissionId });
   }
   
-  const { user, authenticated, login } = usePrivy();
-  const privyInstance = usePrivy(); // Get privy instance for access token
+  const { user, isAuthenticated: authenticated, login } = useAuth();
+  // const privyInstance = usePrivy(); // Authentication disabled
   const [currentVote, setCurrentVote] = useState<'up' | 'down' | null>(userVote);
   
   // Update currentVote when userVote prop changes
@@ -57,8 +57,8 @@ export default function VoteButtons({
         }
         
         // Add userId if authenticated
-        if (authenticated && user) {
-          url += `&userId=${user.id}`;
+        if (false) { // Authentication disabled
+          // url += `url += `&userId=${user.id}`;userId=${user.id}`; // Authentication disabled
         }
         
         const response = await fetch(url);
@@ -167,7 +167,7 @@ export default function VoteButtons({
   };
 
   const submitVote = async (vote: 'up' | 'down') => {
-    const accessToken = await privyInstance?.getAccessToken?.();
+    // const accessToken = await privyInstance?.getAccessToken?.(); // Authentication disabled
     
     // Prepare the request body based on element type
     const requestBody: any = {
@@ -192,7 +192,7 @@ export default function VoteButtons({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
+        // ...(accessToken ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),...(accessToken && { 'Authorization': `Bearer ${accessToken}` }), { 'Authorization': `Bearer ${accessToken}` }), // Authentication disabled
       },
       body: JSON.stringify(requestBody),
     });

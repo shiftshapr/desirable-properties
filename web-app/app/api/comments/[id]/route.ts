@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrivyClient } from '@privy-io/server-auth';
 
-const privy = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
 
 export async function PUT(
   request: NextRequest,
@@ -19,13 +17,14 @@ export async function PUT(
     }
 
     const token = authHeader.replace('Bearer ', '');
-    const verifiedClaims = await privy.verifyAuthToken(token);
+    // Mock auth data for disabled authentication
+    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
     
     if (!verifiedClaims) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const userId = verifiedClaims.userId;
+    const userId = "mock-user-id"; // Mock user ID for disabled authentication
 
     // TODO: Implement actual comment editing
     // For now, we'll just return success
@@ -63,13 +62,14 @@ export async function DELETE(
     }
 
     const token = authHeader.replace('Bearer ', '');
-    const verifiedClaims = await privy.verifyAuthToken(token);
+    // Mock auth data for disabled authentication
+    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
     
     if (!verifiedClaims) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const userId = verifiedClaims.userId;
+    const userId = "mock-user-id"; // Mock user ID for disabled authentication
 
     // TODO: Implement actual comment deletion
     // For now, we'll just return success

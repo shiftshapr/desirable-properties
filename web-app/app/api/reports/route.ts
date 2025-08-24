@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrivyClient } from '@privy-io/server-auth';
 
-const privy = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,13 +13,14 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    const verifiedClaims = await privy.verifyAuthToken(token);
+    // Mock auth data for disabled authentication
+    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
     
     if (!verifiedClaims) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const userId = verifiedClaims.userId;
+    const userId = "mock-user-id"; // Mock user ID for disabled authentication
 
     // TODO: Implement actual report storage
     // For now, we'll just return success

@@ -1,5 +1,5 @@
 import { prisma } from './db';
-import { PrivyClient } from '@privy-io/server-auth';
+// import { PrivyClient } from '@privy-io/server-auth'; // Authentication disabled
 
 export interface ElementData {
   id: string;
@@ -28,10 +28,10 @@ export interface DisplayData {
 }
 
 export class UnifiedInteractionService {
-  private privyClient: PrivyClient;
+  // private privyClient: PrivyClient; // Authentication disabled
 
   constructor() {
-    this.privyClient = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
+    // this.privyClient = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!); // Authentication disabled
   }
 
   /**
@@ -48,10 +48,8 @@ export class UnifiedInteractionService {
       let userId: string | undefined;
       
       if (authToken) {
-        // console.log('🔵 [UnifiedInteractionService] Verifying auth token...');
-        const verifiedClaims = await this.privyClient.verifyAuthToken(authToken);
-        userId = verifiedClaims.userId;
-        // console.log('🔵 [UnifiedInteractionService] Auth token verified, userId:', userId);
+        // console.log('🔵 [UnifiedInteractionService] Auth token provided but authentication disabled');
+        userId = 'mock-user-id'; // Mock user ID for disabled authentication
       } else {
         // console.log('🔵 [UnifiedInteractionService] No auth token provided');
       }

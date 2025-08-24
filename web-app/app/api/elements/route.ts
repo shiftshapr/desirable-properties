@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { unifiedInteractionService } from '../../../lib/unifiedInteractionService';
-import { PrivyClient } from '@privy-io/server-auth';
 
-const privyClient = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,8 +17,9 @@ export async function GET(request: NextRequest) {
     let userId: string | undefined;
     if (authToken) {
       try {
-        const verifiedClaims = await privyClient.verifyAuthToken(authToken);
-        userId = verifiedClaims.userId;
+        // Mock auth data for disabled authentication
+        const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
+        userId = "mock-user-id"; // Mock user ID for disabled authentication
       } catch (error) {
         console.error('Auth token verification failed:', error);
       }

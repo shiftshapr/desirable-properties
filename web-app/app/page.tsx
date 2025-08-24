@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '../lib/auth';
 import Link from 'next/link';
 import VoteButtons from './components/VoteButtons';
 import CommentSection from './components/CommentSection';
@@ -81,8 +81,7 @@ function Modal({ open, onClose, children }: { open: boolean; onClose: () => void
 }
 
 export default function DesirablePropertiesApp() {
-  const privy = usePrivy();
-  const { user, login, logout, authenticated, ready } = privy || {};
+  const { user, login, logout, isAuthenticated: authenticated, isReady: ready } = useAuth();
   const [data, setData] = useState<ApiResponse | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1130,7 +1129,7 @@ export default function DesirablePropertiesApp() {
             
             {/* Navigation items on the right */}
             <div className="flex items-center gap-4">
-              {privy && ready && (
+              {false && ( // Authentication disabled - was: {privy && ready && (
                 <>
                 <Link
                   href="#"
@@ -1208,7 +1207,7 @@ export default function DesirablePropertiesApp() {
                       >
                         <User className="h-5 w-5" />
                         <span className="text-sm hidden sm:inline">
-                          {user?.email?.address || user?.wallet?.address || 'Profile'}
+                          {user?.email || user?.name || 'Profile'}
                         </span>
                       </Link>
                       <button

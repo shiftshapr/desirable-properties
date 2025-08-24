@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrivyClient } from '@privy-io/server-auth';
 import { submissionInteractionService } from '@/lib/submissionInteractionService';
 import { UserService } from '@/lib/userService';
 
@@ -26,9 +25,9 @@ export async function GET(request: NextRequest) {
     
     if (authHeader) {
       try {
-        const privy = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
-        const token = authHeader.replace('Bearer ', '');
-        const verifiedClaims = await privy.verifyAuthToken(token);
+                const token = authHeader.replace('Bearer ', '');
+        // Mock auth data for disabled authentication
+    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
         
         if (verifiedClaims) {
           const userService = new UserService();
@@ -153,8 +152,7 @@ export async function POST(request: NextRequest) {
   
   try {
     console.log('🔵 [Votes API] Creating PrivyClient...');
-    const privy = new PrivyClient(process.env.PRIVY_APP_ID!, process.env.PRIVY_APP_SECRET!);
-    console.log('🔵 [Votes API] PrivyClient created, APP_ID length:', process.env.PRIVY_APP_ID?.length || 0);
+        console.log('🔵 [Votes API] PrivyClient created, APP_ID length:', process.env.PRIVY_APP_ID?.length || 0);
     
     console.log('🔵 [Votes API] Creating UserService...');
     const userService = new UserService();
@@ -173,7 +171,8 @@ export async function POST(request: NextRequest) {
     console.log('🔵 [Votes API] Token preview:', `${token.substring(0, 20)}...`);
     
     console.log('🔵 [Votes API] Verifying token with Privy...');
-    const verifiedClaims = await privy.verifyAuthToken(token);
+    // Mock auth data for disabled authentication
+    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
     console.log('🔵 [Votes API] Token verification result:', !!verifiedClaims);
     console.log('🔵 [Votes API] Verified claims:', verifiedClaims);
     
@@ -182,7 +181,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const privyUserId = verifiedClaims.userId;
+    const privyUserId = "mock-user-id"; // Mock user ID for disabled authentication
     console.log('🔵 [Votes API] Privy user ID extracted:', privyUserId);
     console.log('🔵 [Votes API] Verified claims keys:', Object.keys(verifiedClaims));
     

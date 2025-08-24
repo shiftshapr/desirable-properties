@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
-    "@privy-io/react-auth": "^2.19.1",
-    "@privy-io/server-auth": "^1.28.7",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^6.4.19",
     "@wagmi/core": "^2.18.0",

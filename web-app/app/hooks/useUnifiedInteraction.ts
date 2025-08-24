@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '../../lib/auth';
 import { ElementData, DisplayData } from '../../lib/unifiedInteractionService';
 
 interface UseUnifiedInteractionProps {
@@ -27,7 +27,7 @@ export function useUnifiedInteraction({
   submissionId,
   autoFetch = true,
 }: UseUnifiedInteractionProps): UseUnifiedInteractionReturn {
-  const { authenticated, getAccessToken } = usePrivy();
+  const { isAuthenticated: authenticated, getAccessToken } = useAuth();
   const [element, setElement] = useState<DisplayData | null>(null);
   const [elements, setElements] = useState<DisplayData[]>([]);
   const [loading, setLoading] = useState(false);

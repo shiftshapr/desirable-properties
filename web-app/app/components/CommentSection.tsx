@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '../../lib/auth';
 import { MessageCircle, Reply, Edit, Trash2, Flag, MoreHorizontal, Filter, SortAsc, SortDesc } from 'lucide-react';
 import VoteButtons from './VoteButtons';
 
@@ -29,8 +29,7 @@ interface CommentSectionProps {
 type SortOption = 'newest' | 'oldest' | 'most_voted' | 'least_voted';
 
 export default function CommentSection({ elementId, elementType, submissionId, onCommentCountChange }: CommentSectionProps) {
-  const privy = usePrivy();
-  const { authenticated, login, user, getAccessToken } = privy || {};
+  const { isAuthenticated: authenticated, login, user, getAccessToken } = useAuth();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -147,7 +146,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       console.log('🔵 [CommentSection] Submitting comment for Scott Yates submission:', submissionId, 'elementId:', elementId, 'elementType:', elementType, 'content:', newComment);
     }
 
-    if (!privy) {
+    if (!authenticated) {
       // If Privy is not configured, just add to local state
       const comment: Comment = {
         id: Date.now().toString(),
@@ -233,7 +232,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         const comment: Comment = {
           id: Date.now().toString(),
           userId: user?.id || 'anonymous',
-          userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+          userName: user?.email || user?.name || 'Anonymous',
           content: newComment,
           createdAt: new Date().toISOString(),
           upvotes: 0,
@@ -257,7 +256,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       const comment: Comment = {
         id: Date.now().toString(),
         userId: user?.id || 'anonymous',
-        userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+        userName: user?.email || user?.name || 'Anonymous',
         content: newComment,
         createdAt: new Date().toISOString(),
         upvotes: 0,
@@ -277,7 +276,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   const handleSubmitReply = async (parentId: string) => {
     if (!replyContent.trim()) return;
 
-    if (!privy) {
+    if (!authenticated) {
       const reply: Comment = {
         id: `${parentId}-${Date.now()}`,
         userId: 'anonymous',
@@ -352,7 +351,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         const reply: Comment = {
           id: `${parentId}-${Date.now()}`,
           userId: user?.id || 'anonymous',
-          userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+          userName: user?.email || user?.name || 'Anonymous',
           content: replyContent,
           createdAt: new Date().toISOString(),
           upvotes: 0,
@@ -379,7 +378,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       const reply: Comment = {
         id: `${parentId}-${Date.now()}`,
         userId: user?.id || 'anonymous',
-        userName: user?.email?.address || user?.wallet?.address || 'Anonymous',
+        userName: user?.email || user?.name || 'Anonymous',
         content: replyContent,
         createdAt: new Date().toISOString(),
         upvotes: 0,
@@ -499,7 +498,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const isCommentOwner = (comment: Comment) => {
-    return privy && authenticated && user?.id === comment.userId;
+    return false; // Authentication disabled - was: return privy return privy && authenticated && user?.id === comment.userId;return privy && authenticated && user?.id === comment.userId; authenticated return privy && authenticated && user?.id === comment.userId;return privy && authenticated && user?.id === comment.userId; user?.id === comment.userId;
   };
 
   const renderComment = (comment: Comment, isReply = false) => (
@@ -717,7 +716,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         />
         <div className="flex justify-between items-center mt-2">
           <span className="text-xs text-gray-400">
-            {privy ? (authenticated ? 'Commenting as yourself' : 'Sign in to comment') : 'Anonymous commenting'}
+            {authenticated ? 'Commenting as yourself' : 'Sign in to comment'}
           </span>
           <button
             onClick={handleSubmitComment}
