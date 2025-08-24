@@ -1129,7 +1129,7 @@ export default function DesirablePropertiesApp() {
             
             {/* Navigation items on the right */}
             <div className="flex items-center gap-4">
-              {false && ( // Authentication disabled - was: {privy && ready && (
+              {ready {false && ( // Authentication disabled - was: {privy && ready && ({false && ( // Authentication disabled - was: {privy && ready && ( (
                 <>
                 <Link
                   href="#"
