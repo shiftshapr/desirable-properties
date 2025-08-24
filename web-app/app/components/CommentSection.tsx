@@ -498,7 +498,29 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const isCommentOwner = (comment: Comment) => {
-    return false; // Authentication disabled - was: return privy return privy && authenticated && user?.id === comment.userId;return privy && authenticated && user?.id === comment.userId; authenticated return privy && authenticated && user?.id === comment.userId;return privy && authenticated && user?.id === comment.userId; user?.id === comment.userId;
+    return authenticated && user?.id === comment.userId;
+  };
+
+  const canEditComment = (comment: Comment) => {
+    if (!isCommentOwner(comment)) return false;
+    
+    // Check if comment is within 1 hour of creation
+    const commentDate = new Date(comment.createdAt);
+    const now = new Date();
+    const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
+    
+    return diffInHours <= 1;
+  };
+
+  const canDeleteComment = (comment: Comment) => {
+    if (!isCommentOwner(comment)) return false;
+    
+    // Check if comment is within 1 hour of creation
+    const commentDate = new Date(comment.createdAt);
+    const now = new Date();
+    const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
+    
+    return diffInHours <= 1;
   };
 
   const renderComment = (comment: Comment, isReply = false) => (
@@ -573,30 +595,35 @@ export default function CommentSection({ elementId, elementType, submissionId, o
                 
                 {showModMenu === comment.id && (
                   <div className="absolute right-0 top-8 bg-gray-700 rounded-lg shadow-lg border border-gray-600 z-10 min-w-[120px]">
-                    {isCommentOwner(comment) && (
-                      <>
-                        <button
-                          onClick={() => {
-                            setEditingComment(comment.id);
-                            setEditContent(comment.content);
-                            setShowModMenu(null);
-                          }}
-                          className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 transition-colors"
-                        >
-                          <Edit className="h-4 w-4" />
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeleteComment(comment.id);
-                            setShowModMenu(null);
-                          }}
-                          className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-400 hover:bg-gray-600 transition-colors"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          Delete
-                        </button>
-                      </>
+                    {canEditComment(comment) && (
+                      <button
+                        onClick={() => {
+                          setEditingComment(comment.id);
+                          setEditContent(comment.content);
+                          setShowModMenu(null);
+                        }}
+                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 transition-colors"
+                      >
+                        <Edit className="h-4 w-4" />
+                        Edit
+                      </button>
+                    )}
+                    {canDeleteComment(comment) && (
+                      <button
+                        onClick={() => {
+                          handleDeleteComment(comment.id);
+                          setShowModMenu(null);
+                        }}
+                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-400 hover:bg-gray-600 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Delete
+                      </button>
+                    )}
+                    {isCommentOwner(comment) && !canEditComment(comment) && !canDeleteComment(comment) && (
+                      <div className="px-3 py-2 text-xs text-gray-500">
+                        Edit/delete window expired (1 hour)
+                      </div>
                     )}
                     {!isCommentOwner(comment) && (
                       <button

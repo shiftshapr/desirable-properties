@@ -466,17 +466,15 @@ export default function DesirablePropertiesApp() {
 
   // Pre-fetch all comment and vote counts for all submissions together
   const fetchAllSubmissionCounts = async (submissionsList: Submission[]) => {
-    console.log('🔴 [MainPage] Pre-fetching all comment and vote counts for all submissions');
+    console.log('🔴 [MainPage] Starting pre-fetch for', submissionsList.length, 'submissions');
     
     try {
       const token = await getAccessToken();
       const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+      console.log('🔴 [MainPage] Auth token available:', !!token);
       
       for (const submission of submissionsList) {
-        const isScottYatesSubmission = submission.id.includes('cmds3zumt00s3h2108o3bojs9');
-        if (isScottYatesSubmission) {
-          console.log('🔴 [MainPage] Pre-fetching all counts for Scott Yates submission');
-        }
+        console.log('🔴 [MainPage] Pre-fetching for submission:', submission.id, submission.title);
         
         // Create all the fetch promises for this submission
         const fetchPromises: Promise<void>[] = [];
@@ -485,17 +483,19 @@ export default function DesirablePropertiesApp() {
         fetchPromises.push(
           fetch(`/api/comments?submissionId=${submission.id}`, { headers })
             .then(async (response) => {
+              console.log('🔴 [MainPage] Submission comments response:', response.status, 'for', submission.id);
               if (response.ok) {
                 const comments = await response.json();
                 const count = Array.isArray(comments) ? comments.length : 0;
                 updateCommentCount(submission.id, count);
-                if (isScottYatesSubmission) {
-                  console.log('🔴 [MainPage] Pre-fetched submission comment count:', count);
-                }
+                console.log('🔴 [MainPage] Pre-fetched submission comment count:', count, 'for', submission.id);
+              } else {
+                console.error('🔴 [MainPage] Failed to fetch submission comments:', response.status, 'for', submission.id);
               }
             }),
           fetch(`/api/votes?submissionId=${submission.id}`, { headers })
             .then(async (response) => {
+              console.log('🔴 [MainPage] Submission votes response:', response.status, 'for', submission.id);
               if (response.ok) {
                 const voteData = await response.json();
                 setVoteCounts(prev => ({
@@ -506,6 +506,9 @@ export default function DesirablePropertiesApp() {
                     userVote: voteData.userVote || null
                   }
                 }));
+                console.log('🔴 [MainPage] Pre-fetched submission vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', submission.id);
+              } else {
+                console.error('🔴 [MainPage] Failed to fetch submission votes:', response.status, 'for', submission.id);
               }
             })
         );
@@ -513,21 +516,24 @@ export default function DesirablePropertiesApp() {
         // DP comments and votes
         for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
           const dpElementId = `${submission.id}-dp-${dpIndex}`;
+          console.log('🔴 [MainPage] Pre-fetching DP element:', dpElementId);
           
           fetchPromises.push(
             fetch(`/api/comments?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
               .then(async (response) => {
+                console.log('🔴 [MainPage] DP comments response:', response.status, 'for', dpElementId);
                 if (response.ok) {
                   const comments = await response.json();
                   const count = Array.isArray(comments) ? comments.length : 0;
                   updateCommentCount(dpElementId, count);
-                  if (isScottYatesSubmission) {
-                    console.log('🔴 [MainPage] Pre-fetched DP comment count:', count, 'for elementId:', dpElementId);
-                  }
+                  console.log('🔴 [MainPage] Pre-fetched DP comment count:', count, 'for', dpElementId);
+                } else {
+                  console.error('🔴 [MainPage] Failed to fetch DP comments:', response.status, 'for', dpElementId);
                 }
               }),
             fetch(`/api/votes?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
               .then(async (response) => {
+                console.log('🔴 [MainPage] DP votes response:', response.status, 'for', dpElementId);
                 if (response.ok) {
                   const voteData = await response.json();
                   setVoteCounts(prev => ({
@@ -538,6 +544,9 @@ export default function DesirablePropertiesApp() {
                       userVote: voteData.userVote || null
                     }
                   }));
+                  console.log('🔴 [MainPage] Pre-fetched DP vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', dpElementId);
+                } else {
+                  console.error('🔴 [MainPage] Failed to fetch DP votes:', response.status, 'for', dpElementId);
                 }
               })
           );
@@ -547,21 +556,24 @@ export default function DesirablePropertiesApp() {
         for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
           const ceElementId = `${submission.id}-ce-${ceIndex}`;
           const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
+          console.log('🔴 [MainPage] Pre-fetching CE element:', ceElementId, 'type:', ceType);
           
           fetchPromises.push(
             fetch(`/api/comments?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
               .then(async (response) => {
+                console.log('🔴 [MainPage] CE comments response:', response.status, 'for', ceElementId);
                 if (response.ok) {
                   const comments = await response.json();
                   const count = Array.isArray(comments) ? comments.length : 0;
                   updateCommentCount(ceElementId, count);
-                  if (isScottYatesSubmission) {
-                    console.log('🔴 [MainPage] Pre-fetched CE comment count:', count, 'for elementId:', ceElementId);
-                  }
+                  console.log('🔴 [MainPage] Pre-fetched CE comment count:', count, 'for', ceElementId);
+                } else {
+                  console.error('🔴 [MainPage] Failed to fetch CE comments:', response.status, 'for', ceElementId);
                 }
               }),
             fetch(`/api/votes?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
               .then(async (response) => {
+                console.log('🔴 [MainPage] CE votes response:', response.status, 'for', ceElementId);
                 if (response.ok) {
                   const voteData = await response.json();
                   setVoteCounts(prev => ({
@@ -572,6 +584,9 @@ export default function DesirablePropertiesApp() {
                       userVote: voteData.userVote || null
                     }
                   }));
+                  console.log('🔴 [MainPage] Pre-fetched CE vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', ceElementId);
+                } else {
+                  console.error('🔴 [MainPage] Failed to fetch CE votes:', response.status, 'for', ceElementId);
                 }
               })
           );
@@ -579,10 +594,7 @@ export default function DesirablePropertiesApp() {
         
         // Wait for all fetches for this submission to complete
         await Promise.all(fetchPromises);
-        
-        if (isScottYatesSubmission) {
-          console.log('🔴 [MainPage] Completed pre-fetching all counts for Scott Yates submission');
-        }
+        console.log('🔴 [MainPage] Completed pre-fetching all counts for submission:', submission.id);
       }
       
       console.log('🔴 [MainPage] Completed pre-fetching all counts for all submissions');
@@ -610,7 +622,7 @@ export default function DesirablePropertiesApp() {
     // Add comments on clarification/extension elements
     if (Array.isArray(submission.clarificationsExtensions)) {
       submission.clarificationsExtensions.forEach((item, itemIndex) => {
-        total += commentCounts[`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`] || 0;
+        total += commentCounts[`${submission.id}-ce-${itemIndex}`] || 0;
       });
     }
     
@@ -1739,7 +1751,7 @@ export default function DesirablePropertiesApp() {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <VoteButtons
-                                      elementId={`alignment-${submission.id}-${dpIndex}`}
+                                      elementId={`${submission.id}-dp-${dpIndex}`}
                                       elementType="alignment"
                                       submissionId={submission.id}
                                       initialUpvotes={0}
@@ -1764,7 +1776,7 @@ export default function DesirablePropertiesApp() {
                                 <div className="mt-3 pt-3 border-t border-blue-200 bg-yellow-100 p-2">
                                   <div className="text-sm text-yellow-800 mb-2">DEBUG: Comment section for alignment {dp.dp}</div>
                                   <CommentSection
-                                    elementId={`alignment-${submission.id}-${dpIndex}`}
+                                    elementId={`${submission.id}-dp-${dpIndex}`}
                                     elementType="alignment"
                                     submissionId={submission.id}
                                   />
@@ -1811,18 +1823,18 @@ export default function DesirablePropertiesApp() {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <VoteButtons
-                                      elementId={`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`}
+                                      elementId={`${submission.id}-ce-${itemIndex}`}
                                       elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                                       submissionId={submission.id}
                                       initialUpvotes={0}
                                       initialDownvotes={0}
                                     />
                                     <button
-                                      onClick={() => toggleComments(`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`)}
+                                      onClick={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
                                       className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
                                     >
                                       <MessageCircle className="h-4 w-4" />
-                                      <span className="text-xs">{commentCounts[`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`] || 0}</span>
+                                      <span className="text-xs">{commentCounts[`${submission.id}-ce-${itemIndex}`] || 0}</span>
                                     </button>
                                   </div>
                                 </div>
@@ -1831,10 +1843,10 @@ export default function DesirablePropertiesApp() {
                                 <div className="mt-3 pt-3 border-t border-purple-200 bg-green-100 p-2">
                                   <div className="text-sm text-green-800 mb-2">DEBUG: Comment section for {item.type.toLowerCase()} {item.title}</div>
                                   <CommentSection
-                                    elementId={`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`}
+                                    elementId={`${submission.id}-ce-${itemIndex}`}
                                     elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                                     submissionId={submission.id}
-                                    onCommentCountChange={(count) => updateCommentCount(`${item.type.toLowerCase()}-${submission.id}-${itemIndex}`, count)}
+                                    onCommentCountChange={(count) => updateCommentCount(`${submission.id}-ce-${itemIndex}`, count)}
                                   />
                                 </div>
                               </div>
