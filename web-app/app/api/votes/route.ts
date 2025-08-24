@@ -16,7 +16,14 @@ export async function GET(request: NextRequest) {
     }
 
     if (!submissionId) {
-      return NextResponse.json({ error: 'Submission ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Submission ID is required' }, { 
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // Try to get user authentication if available
@@ -79,7 +86,13 @@ export async function GET(request: NextRequest) {
         userVote = userVoteRecord?.type || null;
       }
 
-      return NextResponse.json({ votes, upvotes, downvotes, userVote });
+      return NextResponse.json({ votes, upvotes, downvotes, userVote }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // If this is for a specific element (not comment), use the existing logic
@@ -113,7 +126,13 @@ export async function GET(request: NextRequest) {
         userVote = userVoteRecord?.type || null;
       }
 
-      return NextResponse.json({ votes, upvotes, downvotes, userVote });
+      return NextResponse.json({ votes, upvotes, downvotes, userVote }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // For submission-level reactions, get ALL votes for the submission
@@ -145,7 +164,13 @@ export async function GET(request: NextRequest) {
       userVote = userVoteRecord?.type || null;
     }
 
-    return NextResponse.json({ votes, upvotes, downvotes, userVote });
+          return NextResponse.json({ votes, upvotes, downvotes, userVote }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
   } catch (error) {
     console.error('🔴 [Votes API] Error fetching reactions:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -324,7 +349,13 @@ export async function POST(request: NextRequest) {
       const downvotes = votes.filter(v => v.type === 'DOWN').length;
 
       console.log('🔵 [Votes API] Final comment counts:', { upvotes, downvotes });
-      return NextResponse.json({ votes, upvotes, downvotes });
+      return NextResponse.json({ votes, upvotes, downvotes }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // If this is for a specific element (not comment), use the existing logic
@@ -397,7 +428,13 @@ export async function POST(request: NextRequest) {
       const downvotes = votes.filter(v => v.type === 'DOWN').length;
 
       console.log('🔵 [Votes API] Final counts:', { upvotes, downvotes });
-      return NextResponse.json({ votes, upvotes, downvotes });
+      return NextResponse.json({ votes, upvotes, downvotes }, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // For submission-level reactions, use the unified service
@@ -414,14 +451,34 @@ export async function POST(request: NextRequest) {
     
     if (!result.success) {
       console.error('🔴 [Votes API] Failed to add submission level reaction:', result.error);
-      return NextResponse.json({ error: result.error }, { status: 500 });
+      return NextResponse.json({ error: result.error }, { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     console.log('🔵 [Votes API] Returning submission-level reaction data');
-    return NextResponse.json(result.data);
+    return NextResponse.json(result.data, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
+    });
   } catch (error) {
     console.error('🔴 [Votes API] Error processing vote:', error);
     console.error('🔴 [Votes API] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { 
+      status: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
+    });
   }
 } 

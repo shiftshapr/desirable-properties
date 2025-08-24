@@ -12,7 +12,14 @@ export async function GET(request: NextRequest) {
     console.log('🔵 [Comments API] GET request - submissionId:', submissionId, 'elementId:', elementId, 'elementType:', elementType);
 
     if (!submissionId) {
-      return NextResponse.json({ error: 'Submission ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Submission ID is required' }, { 
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // If this is for a specific element, use the existing logic
@@ -62,7 +69,13 @@ export async function GET(request: NextRequest) {
         return { ...comment, upvotes, downvotes };
       });
 
-      return NextResponse.json(commentsWithVotes);
+      return NextResponse.json(commentsWithVotes, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
     // For submission-level comments, use the unified service
@@ -75,7 +88,13 @@ export async function GET(request: NextRequest) {
     }
 
     console.log('🔵 [Comments API] Found submission-level comments:', result.data?.length || 0);
-    return NextResponse.json(result.data);
+    return NextResponse.json(result.data, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
+    });
   } catch (error) {
     console.error('Error fetching comments:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
