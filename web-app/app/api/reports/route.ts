@@ -13,14 +13,14 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    // Mock auth data for disabled authentication
-    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
+    // For test authentication, use a consistent mock user ID
+    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
     
     if (!verifiedClaims) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const userId = "mock-user-id"; // Mock user ID for disabled authentication
+    const userId = "test-user-123"; // Test user ID for authentication
 
     // TODO: Implement actual report storage
     // For now, we'll just return success

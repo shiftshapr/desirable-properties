@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
     let userId: string | undefined;
     if (authToken) {
       try {
-        // Mock auth data for disabled authentication
-        const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
-        userId = "mock-user-id"; // Mock user ID for disabled authentication
+        // For test authentication, use a consistent mock user ID
+        const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
+        userId = "test-user-123"; // Test user ID for authentication
       } catch (error) {
         console.error('Auth token verification failed:', error);
       }

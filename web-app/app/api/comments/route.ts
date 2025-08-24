@@ -109,8 +109,8 @@ export async function POST(request: NextRequest) {
     console.log('🔵 [Comments API] Token preview:', `${token.substring(0, 20)}...`);
     
     console.log('🔵 [Comments API] Verifying token with Privy...');
-    // Mock auth data for disabled authentication
-    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
+    // For test authentication, use a consistent mock user ID
+    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
     console.log('🔵 [Comments API] Token verification result:', !!verifiedClaims);
     console.log('🔵 [Comments API] Verified claims:', verifiedClaims);
     
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const privyUserId = "mock-user-id"; // Mock user ID for disabled authentication
+    const privyUserId = "test-user-123"; // Test user ID for authentication
     console.log('🔵 [Comments API] Privy user ID extracted:', privyUserId);
     console.log('🔵 [Comments API] Verified claims keys:', Object.keys(verifiedClaims));
     

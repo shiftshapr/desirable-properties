@@ -25,18 +25,26 @@ export async function GET(request: NextRequest) {
     
     if (authHeader) {
       try {
-                const token = authHeader.replace('Bearer ', '');
-        // Mock auth data for disabled authentication
-    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
+        const token = authHeader.replace('Bearer ', '');
+        // For test authentication, use a consistent mock user ID
+        const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
         
         if (verifiedClaims) {
           const userService = new UserService();
           const user = await userService.getUserByPrivyId(verifiedClaims.userId);
           if (user) {
             userId = user.id;
+          } else {
+            // Create the test user if it doesn't exist
+            const newUser = await userService.getOrCreateUser({
+              id: verifiedClaims.userId,
+              email: verifiedClaims.email
+            });
+            userId = newUser.id;
           }
         }
       } catch (error) {
+        console.error('🔴 [Votes API] Auth error:', error);
         // Continue without user authentication
       }
     }
@@ -171,8 +179,8 @@ export async function POST(request: NextRequest) {
     console.log('🔵 [Votes API] Token preview:', `${token.substring(0, 20)}...`);
     
     console.log('🔵 [Votes API] Verifying token with Privy...');
-    // Mock auth data for disabled authentication
-    const verifiedClaims = { userId: "mock-user-id", email: "mock@example.com", name: "Mock User" };
+    // For test authentication, use a consistent mock user ID
+    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
     console.log('🔵 [Votes API] Token verification result:', !!verifiedClaims);
     console.log('🔵 [Votes API] Verified claims:', verifiedClaims);
     
@@ -181,7 +189,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const privyUserId = "mock-user-id"; // Mock user ID for disabled authentication
+    const privyUserId = "test-user-123"; // Test user ID for authentication
     console.log('🔵 [Votes API] Privy user ID extracted:', privyUserId);
     console.log('🔵 [Votes API] Verified claims keys:', Object.keys(verifiedClaims));
     

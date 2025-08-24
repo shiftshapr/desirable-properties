@@ -1,10 +1,10 @@
 'use client';
 
-// Authentication removed - will be reimplemented cleanly
 import { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, User, Activity, Trophy, FileText, Users, Filter, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import ScoreDisplay from '../components/ScoreDisplay';
+import { useAuth } from '../../lib/auth';
 
 interface Vote {
   id: string;
@@ -27,11 +27,7 @@ interface UserActivity {
 }
 
 export default function ProfilePage() {
-  // Authentication removed - will be reimplemented cleanly
-  const authenticated = false;
-  const ready = true;
-  const session = null;
-  const user = null;
+  const { user, isAuthenticated: authenticated, isReady: ready } = useAuth();
   const [userActivity, setUserActivity] = useState<UserActivity | null>(null);
   const [userRank, setUserRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);

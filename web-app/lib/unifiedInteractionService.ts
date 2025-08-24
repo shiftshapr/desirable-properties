@@ -49,7 +49,7 @@ export class UnifiedInteractionService {
       
       if (authToken) {
         // console.log('🔵 [UnifiedInteractionService] Auth token provided but authentication disabled');
-        userId = 'mock-user-id'; // Mock user ID for disabled authentication
+        userId = 'test-user-123'; // Test user ID for authentication
       } else {
         // console.log('🔵 [UnifiedInteractionService] No auth token provided');
       }

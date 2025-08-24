@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-// Authentication removed - will be reimplemented cleanly
 import { Trophy, User, FileText, Users, Filter, MessageCircle } from 'lucide-react';
 import ChatModal from '../../components/ChatModal';
 import { isFeatureEnabled } from '../../lib/features';
+import { useAuth } from '../../lib/auth';
 
 interface SubmissionForm {
   firstName: string;
@@ -28,11 +28,7 @@ interface SubmissionForm {
 }
 
 export default function SubmitPage() {
-  // Authentication removed - will be reimplemented cleanly
-  const authenticated = false;
-  const ready = true;
-  const session = null;
-  const user = null;
+  const { user, isAuthenticated: authenticated, isReady: ready } = useAuth();
   const [formData, setFormData] = useState<SubmissionForm>({
     firstName: '',
     lastName: '',

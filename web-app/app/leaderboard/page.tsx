@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Medal, Crown, TrendingUp, Users, FileText, X, MessageCircle, ThumbsUp, User, Filter } from 'lucide-react';
 import Link from 'next/link';
-// Authentication removed - will be reimplemented cleanly
 import VoteButtons from '../components/VoteButtons';
 import CommentSection from '../components/CommentSection';
+import { useAuth } from '../../lib/auth';
 
 interface ScoreBreakdown {
   contribution: number;
@@ -70,10 +70,7 @@ interface Submission {
 }
 
 export default function LeaderboardPage() {
-  // Authentication removed - will be reimplemented cleanly
-  const authenticated = false;
-  const ready = true;
-  const session = null;
+  const { user, isAuthenticated: authenticated, isReady: ready } = useAuth();
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -319,7 +316,7 @@ export default function LeaderboardPage() {
             >
               <div className="flex items-center gap-2">
                 <Trophy className="h-4 w-4" />
-                <span>Leaderboard</span>
+                <span>Participants</span>
               </div>
             </button>
             <button
