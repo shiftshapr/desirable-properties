@@ -81,7 +81,7 @@ function Modal({ open, onClose, children }: { open: boolean; onClose: () => void
 }
 
 export default function DesirablePropertiesApp() {
-  const { user, login, logout, isAuthenticated: authenticated, isReady: ready } = useAuth();
+  const { user, login, logout, isAuthenticated: authenticated, isReady: ready, getAccessToken } = useAuth();
   const [data, setData] = useState<ApiResponse | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -464,120 +464,124 @@ export default function DesirablePropertiesApp() {
     });
   };
 
-  // Pre-fetch all comment counts for a submission
-  const fetchAllCommentCounts = async (submission: Submission) => {
-    if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
-      console.log('🔴 [MainPage] Pre-fetching all comment counts for Scott Yates submission');
-    }
-    
-    try {
-      // Fetch submission-level comments
-      const submissionResponse = await fetch(`/api/comments?submissionId=${submission.id}`);
-      if (submissionResponse.ok) {
-        const submissionComments = await submissionResponse.json();
-        const submissionCount = Array.isArray(submissionComments) ? submissionComments.length : 0;
-        updateCommentCount(submission.id, submissionCount);
-        
-        if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
-          console.log('🔴 [MainPage] Pre-fetched submission comment count:', submissionCount);
-        }
-      }
-      
-      // Fetch comments for each DP
-      for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
-        const dpElementId = `${submission.id}-dp-${dpIndex}`;
-        const dpResponse = await fetch(`/api/comments?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`);
-        if (dpResponse.ok) {
-          const dpComments = await dpResponse.json();
-          const dpCount = Array.isArray(dpComments) ? dpComments.length : 0;
-          updateCommentCount(dpElementId, dpCount);
-          
-          if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
-            console.log('🔴 [MainPage] Pre-fetched DP comment count:', dpCount, 'for elementId:', dpElementId);
-          }
-        }
-      }
-      
-      // Fetch comments for each Clarification/Extension
-      for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
-        const ceElementId = `${submission.id}-ce-${ceIndex}`;
-        const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
-        const ceResponse = await fetch(`/api/comments?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`);
-        if (ceResponse.ok) {
-          const ceComments = await ceResponse.json();
-          const ceCount = Array.isArray(ceComments) ? ceComments.length : 0;
-          updateCommentCount(ceElementId, ceCount);
-          
-          if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
-            console.log('🔴 [MainPage] Pre-fetched CE comment count:', ceCount, 'for elementId:', ceElementId);
-          }
-        }
-      }
-      
-      if (submission.id.includes('cmds3zumt00s3h2108o3bojs9')) {
-        console.log('🔴 [MainPage] Completed pre-fetching all comment counts for Scott Yates submission');
-      }
-    } catch (error) {
-      console.error('Error pre-fetching comment counts:', error);
-    }
-  };
-
-  // Pre-fetch all comment and vote counts for all submissions
+  // Pre-fetch all comment and vote counts for all submissions together
   const fetchAllSubmissionCounts = async (submissionsList: Submission[]) => {
     console.log('🔴 [MainPage] Pre-fetching all comment and vote counts for all submissions');
     
     try {
+      const token = await getAccessToken();
+      const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
+      
       for (const submission of submissionsList) {
-        // Pre-fetch comment counts for this submission
-        await fetchAllCommentCounts(submission);
-        
-        // Pre-fetch vote counts and user vote state for submission-level
-        const voteResponse = await fetch(`/api/votes?submissionId=${submission.id}`);
-        if (voteResponse.ok) {
-          const voteData = await voteResponse.json();
-          setVoteCounts(prev => ({
-            ...prev,
-            [submission.id]: {
-              upvotes: voteData.upvotes || 0,
-              downvotes: voteData.downvotes || 0,
-              userVote: voteData.userVote || null // Include user's vote state
-            }
-          }));
+        const isScottYatesSubmission = submission.id.includes('cmds3zumt00s3h2108o3bojs9');
+        if (isScottYatesSubmission) {
+          console.log('🔴 [MainPage] Pre-fetching all counts for Scott Yates submission');
         }
         
-        // Pre-fetch vote counts and user vote state for each DP
+        // Create all the fetch promises for this submission
+        const fetchPromises: Promise<void>[] = [];
+        
+        // Submission-level comments and votes
+        fetchPromises.push(
+          fetch(`/api/comments?submissionId=${submission.id}`, { headers })
+            .then(async (response) => {
+              if (response.ok) {
+                const comments = await response.json();
+                const count = Array.isArray(comments) ? comments.length : 0;
+                updateCommentCount(submission.id, count);
+                if (isScottYatesSubmission) {
+                  console.log('🔴 [MainPage] Pre-fetched submission comment count:', count);
+                }
+              }
+            }),
+          fetch(`/api/votes?submissionId=${submission.id}`, { headers })
+            .then(async (response) => {
+              if (response.ok) {
+                const voteData = await response.json();
+                setVoteCounts(prev => ({
+                  ...prev,
+                  [submission.id]: {
+                    upvotes: voteData.upvotes || 0,
+                    downvotes: voteData.downvotes || 0,
+                    userVote: voteData.userVote || null
+                  }
+                }));
+              }
+            })
+        );
+        
+        // DP comments and votes
         for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
           const dpElementId = `${submission.id}-dp-${dpIndex}`;
-          const dpVoteResponse = await fetch(`/api/votes?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`);
-          if (dpVoteResponse.ok) {
-            const dpVoteData = await dpVoteResponse.json();
-            setVoteCounts(prev => ({
-              ...prev,
-              [dpElementId]: {
-                upvotes: dpVoteData.upvotes || 0,
-                downvotes: dpVoteData.downvotes || 0,
-                userVote: dpVoteData.userVote || null // Include user's vote state
-              }
-            }));
-          }
+          
+          fetchPromises.push(
+            fetch(`/api/comments?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
+              .then(async (response) => {
+                if (response.ok) {
+                  const comments = await response.json();
+                  const count = Array.isArray(comments) ? comments.length : 0;
+                  updateCommentCount(dpElementId, count);
+                  if (isScottYatesSubmission) {
+                    console.log('🔴 [MainPage] Pre-fetched DP comment count:', count, 'for elementId:', dpElementId);
+                  }
+                }
+              }),
+            fetch(`/api/votes?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
+              .then(async (response) => {
+                if (response.ok) {
+                  const voteData = await response.json();
+                  setVoteCounts(prev => ({
+                    ...prev,
+                    [dpElementId]: {
+                      upvotes: voteData.upvotes || 0,
+                      downvotes: voteData.downvotes || 0,
+                      userVote: voteData.userVote || null
+                    }
+                  }));
+                }
+              })
+          );
         }
         
-        // Pre-fetch vote counts and user vote state for each Clarification/Extension
+        // Clarification/Extension comments and votes
         for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
           const ceElementId = `${submission.id}-ce-${ceIndex}`;
           const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
-          const ceVoteResponse = await fetch(`/api/votes?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`);
-          if (ceVoteResponse.ok) {
-            const ceVoteData = await ceVoteResponse.json();
-            setVoteCounts(prev => ({
-              ...prev,
-              [ceElementId]: {
-                upvotes: ceVoteData.upvotes || 0,
-                downvotes: ceVoteData.downvotes || 0,
-                userVote: ceVoteData.userVote || null // Include user's vote state
-              }
-            }));
-          }
+          
+          fetchPromises.push(
+            fetch(`/api/comments?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
+              .then(async (response) => {
+                if (response.ok) {
+                  const comments = await response.json();
+                  const count = Array.isArray(comments) ? comments.length : 0;
+                  updateCommentCount(ceElementId, count);
+                  if (isScottYatesSubmission) {
+                    console.log('🔴 [MainPage] Pre-fetched CE comment count:', count, 'for elementId:', ceElementId);
+                  }
+                }
+              }),
+            fetch(`/api/votes?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
+              .then(async (response) => {
+                if (response.ok) {
+                  const voteData = await response.json();
+                  setVoteCounts(prev => ({
+                    ...prev,
+                    [ceElementId]: {
+                      upvotes: voteData.upvotes || 0,
+                      downvotes: voteData.downvotes || 0,
+                      userVote: voteData.userVote || null
+                    }
+                  }));
+                }
+              })
+          );
+        }
+        
+        // Wait for all fetches for this submission to complete
+        await Promise.all(fetchPromises);
+        
+        if (isScottYatesSubmission) {
+          console.log('🔴 [MainPage] Completed pre-fetching all counts for Scott Yates submission');
         }
       }
       
@@ -590,8 +594,6 @@ export default function DesirablePropertiesApp() {
   // Abstracted function to open submission detail modal
   const openSubmissionDetail = (submission: Submission) => {
     setSubmissionDetail(submission);
-    // Pre-fetch comment counts for this submission
-    fetchAllCommentCounts(submission);
   };
 
   // Calculate total comment count for a submission (including all elements)
