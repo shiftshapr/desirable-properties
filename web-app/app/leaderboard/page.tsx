@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Medal, Crown, TrendingUp, Users, FileText, X, MessageCircle, ThumbsUp, User } from 'lucide-react';
+import { Trophy, Medal, Crown, TrendingUp, Users, FileText, X, MessageCircle, ThumbsUp, User, Filter } from 'lucide-react';
 import Link from 'next/link';
-import { usePrivy } from '@privy-io/react-auth';
+// Authentication removed - will be reimplemented cleanly
 import VoteButtons from '../components/VoteButtons';
 import CommentSection from '../components/CommentSection';
 
@@ -70,8 +70,10 @@ interface Submission {
 }
 
 export default function LeaderboardPage() {
-  const privy = usePrivy();
-  const { user, login, logout, authenticated, ready } = privy || {};
+  // Authentication removed - will be reimplemented cleanly
+  const authenticated = false;
+  const ready = true;
+  const session = null;
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -210,8 +212,29 @@ export default function LeaderboardPage() {
             
             {/* Navigation items on the right */}
             <div className="flex items-center gap-4">
-              {privy && ready && (
+              {ready && (
                 <>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <FileText className="h-4 w-4" />
+                  Desirable Properties
+                </Link>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <Users className="h-4 w-4" />
+                  Submissions
+                </Link>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <Filter className="h-4 w-4" />
+                  Categories
+                </Link>
                   <Link 
                     href="/leaderboard" 
                     className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
@@ -219,6 +242,19 @@ export default function LeaderboardPage() {
                     <Trophy className="h-5 w-5" />
                     <span className="text-sm hidden sm:inline">Leaderboard</span>
                   </Link>
+                  
+                  {/* Chat Assistant Button */}
+                  <button
+                    onClick={() => {
+                      // TODO: Add chat modal functionality
+                      console.log('Chat assistant clicked');
+                    }}
+                    className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
+                    title="Chat with AI Assistant"
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    <span className="text-sm hidden sm:inline">Assistant</span>
+                  </button>
                   {authenticated ? (
                     <>
                       <Link 
@@ -227,11 +263,11 @@ export default function LeaderboardPage() {
                       >
                         <User className="h-5 w-5" />
                         <span className="text-sm hidden sm:inline">
-                          {user?.email?.address || user?.wallet?.address || 'Profile'}
+                          Profile
                         </span>
                       </Link>
                       <button
-                        onClick={logout}
+                        onClick={() => console.log('Sign out - auth removed')}
                         className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
                       >
                         Sign Out
@@ -239,7 +275,7 @@ export default function LeaderboardPage() {
                     </>
                   ) : (
                     <button
-                      onClick={login}
+                      onClick={() => console.log('Sign in - auth removed')}
                       className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     >
                       Sign In

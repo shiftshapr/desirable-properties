@@ -86,7 +86,11 @@ start_pm2_processes() {
         exit 1
     fi
     
-    sudo pm2 start npm --name "app-themetalayer" -- start
+    # Create log directory if it doesn't exist
+    sudo mkdir -p /var/log/pm2
+    
+    # Start using ecosystem config
+    sudo pm2 start ecosystem.config.js --env production
     sudo pm2 save
     sudo pm2 startup
     

@@ -1,22 +1,24 @@
 module.exports = {
   apps : [{
-    script: 'index.js',
-    watch: '.'
-  }, {
-    script: './service-worker/',
-    watch: ['./service-worker']
-  }],
-
-  deploy : {
-    production : {
-      user : 'SSH_USERNAME',
-      host : 'SSH_HOSTMACHINE',
-      ref  : 'origin/master',
-      repo : 'GIT_REPOSITORY',
-      path : 'DESTINATION_PATH',
-      'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': ''
-    }
-  }
+    name: 'app-themetalayer',
+    script: 'npm',
+    args: 'start',
+    cwd: '/var/www/app.themetalayer.org/public',
+    env: {
+      NODE_ENV: 'production',
+      PORT: 3000
+    },
+    env_production: {
+      NODE_ENV: 'production',
+      PORT: 3000
+    },
+    instances: 1,
+    exec_mode: 'fork',
+    watch: false,
+    max_memory_restart: '1G',
+    error_file: '/var/log/pm2/app-themetalayer-error.log',
+    out_file: '/var/log/pm2/app-themetalayer-out.log',
+    log_file: '/var/log/pm2/app-themetalayer-combined.log',
+    time: true
+  }]
 };

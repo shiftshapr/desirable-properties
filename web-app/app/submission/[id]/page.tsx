@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MessageCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import CommentSection from '../../components/CommentSection';
 import VoteButtons from '../../components/VoteButtons';
 
@@ -181,7 +180,7 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
                   onClick={() => toggleComments(submission.id)}
                   className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  
                   <span className="text-xs">{(() => {
                   const count = commentCounts[submission.id] || 0;
                   if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {
@@ -238,7 +237,7 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
                           onClick={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
                           className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
                         >
-                          <MessageCircle className="h-4 w-4" />
+                          
                           <span className="text-xs">{(() => {
                   const count = commentCounts[`${submission.id}-dp-${dpIndex}`] || 0;
                   if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {
@@ -311,7 +310,7 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
                           onClick={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
                           className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
                         >
-                          <MessageCircle className="h-4 w-4" />
+                          
                           <span className="text-xs">{(() => {
                   const count = commentCounts[`${submission.id}-ce-${itemIndex}`] || 0;
                   if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {

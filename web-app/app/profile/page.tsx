@@ -1,8 +1,8 @@
 'use client';
 
-import { usePrivy } from '@privy-io/react-auth';
+// Authentication removed - will be reimplemented cleanly
 import { useState, useEffect } from 'react';
-import { ThumbsUp, ThumbsDown, User, Activity, Trophy } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, User, Activity, Trophy, FileText, Users, Filter, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import ScoreDisplay from '../components/ScoreDisplay';
 
@@ -27,7 +27,11 @@ interface UserActivity {
 }
 
 export default function ProfilePage() {
-  const { user, login, logout, authenticated, ready } = usePrivy();
+  // Authentication removed - will be reimplemented cleanly
+  const authenticated = false;
+  const ready = true;
+  const session = null;
+  const user = null;
   const [userActivity, setUserActivity] = useState<UserActivity | null>(null);
   const [userRank, setUserRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,7 +57,7 @@ export default function ProfilePage() {
         recentVotes: [
           {
             id: '1',
-            userId: user?.id || '',
+            userId: 'default-user',
             submissionId: 'submission-1',
             elementType: 'submission',
             elementId: 'submission-1',
@@ -77,7 +81,7 @@ export default function ProfilePage() {
       if (response.ok) {
         const data = await response.json();
         const currentUser = Array.isArray(data.leaderboard) ? data.leaderboard.find((entry: { userId: string; email: string }) => 
-          entry.userId === user?.id || entry.email === user?.email?.address
+          entry.userId === 'default-user' || entry.email === 'default@example.com'
         ) : null;
         setUserRank(currentUser?.rank || null);
       }
@@ -101,7 +105,7 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold text-white mb-6">Welcome to Meta-Layer</h1>
           <p className="text-gray-300 mb-8">Sign in to view your profile and activity</p>
           <button
-            onClick={login}
+            onClick={() => console.log('Sign in - auth removed')}
             className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
             Sign In
@@ -130,6 +134,27 @@ export default function ProfilePage() {
             <div className="flex items-center gap-4">
               {ready && (
                 <>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <FileText className="h-4 w-4" />
+                  Desirable Properties
+                </Link>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <Users className="h-4 w-4" />
+                  Submissions
+                </Link>
+                <Link
+                  href="/"
+                  className={`py-4 px-2 sm:px-1 border-b-2 font-medium text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600`}
+                >
+                  <Filter className="h-4 w-4" />
+                  Categories
+                </Link>
                   <Link 
                     href="/leaderboard" 
                     className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 transition-colors"
@@ -137,6 +162,19 @@ export default function ProfilePage() {
                     <Trophy className="h-5 w-5" />
                     <span className="text-sm hidden sm:inline">Leaderboard</span>
                   </Link>
+                  
+                  {/* Chat Assistant Button */}
+                  <button
+                    onClick={() => {
+                      // TODO: Add chat modal functionality
+                      console.log('Chat assistant clicked');
+                    }}
+                    className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
+                    title="Chat with AI Assistant"
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    <span className="text-sm hidden sm:inline">Assistant</span>
+                  </button>
                   {authenticated ? (
                     <>
                       <Link 
@@ -145,11 +183,11 @@ export default function ProfilePage() {
                       >
                         <User className="h-5 w-5" />
                         <span className="text-sm hidden sm:inline">
-                          {user?.email?.address || user?.wallet?.address || 'Profile'}
+                          Profile
                         </span>
                       </Link>
                       <button
-                        onClick={logout}
+                        onClick={() => console.log('Sign out - auth removed')}
                         className="text-gray-400 hover:text-gray-300 text-sm transition-colors"
                       >
                         Sign Out
@@ -157,7 +195,7 @@ export default function ProfilePage() {
                     </>
                   ) : (
                     <button
-                      onClick={login}
+                      onClick={() => console.log('Sign in - auth removed')}
                       className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     >
                       Sign In
@@ -189,7 +227,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Score Display */}
           <div className="lg:col-span-1">
-            <ScoreDisplay userId={user?.id || 'default-user'} />
+            <ScoreDisplay userId={'default-user'} />
           </div>
           
           {/* Rank Display */}

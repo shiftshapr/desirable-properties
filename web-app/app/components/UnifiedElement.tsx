@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react';
 import VoteButtons from './VoteButtons';
 import CommentSection from './CommentSection';
 
@@ -95,7 +94,7 @@ export function UnifiedElement({
               onClick={handleCommentToggle}
               className="flex items-center gap-1 px-2 py-1 rounded text-sm transition-colors text-gray-400 hover:text-cyan-400 hover:bg-cyan-500/10"
             >
-              <MessageCircle className="h-4 w-4" />
+              
               <span>{commentCount}</span>
             </button>
           )}

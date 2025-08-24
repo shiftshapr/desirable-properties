@@ -74,7 +74,7 @@ function getRAGContext(userMessage: string): string {
     console.log('📊 [RAG] Total RAG context assembled, size:', ragContext.length, 'chars');
     
     // Simple keyword matching for context
-    const keywords = userMessage.toLowerCase().split(' ');
+    // const keywords = userMessage.toLowerCase().split(' ');
     let relevantContext = '';
 
     // Always include DP list for proper submission creation
