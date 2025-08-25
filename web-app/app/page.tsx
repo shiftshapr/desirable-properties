@@ -1756,19 +1756,15 @@ export default function DesirablePropertiesApp() {
                                       submissionId={submission.id}
                                       initialUpvotes={0}
                                       initialDownvotes={0}
+                                      showComments={true}
+                                      commentCount={commentCounts[`${submission.id}-dp-${dpIndex}`] || 0}
+                                      onCommentToggle={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
                                       onVoteChange={(vote) => {
-                                                                        // console.log('=== DP VOTE CHANGE ===');
-                                // console.log('DP Index:', dpIndex);
-                                // console.log('Vote:', vote);
+                                        // console.log('=== DP VOTE CHANGE ===');
+                                        // console.log('DP Index:', dpIndex);
+                                        // console.log('Vote:', vote);
                                       }}
                                     />
-                                    <button
-                                      onClick={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
-                                      className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                                    >
-                                      <MessageCircle className="h-4 w-4" />
-                                      <span className="text-xs">{commentCounts[`${submission.id}-dp-${dpIndex}`] || 0}</span>
-                                    </button>
                                   </div>
                                 </div>
                                 
@@ -1828,14 +1824,10 @@ export default function DesirablePropertiesApp() {
                                       submissionId={submission.id}
                                       initialUpvotes={0}
                                       initialDownvotes={0}
+                                      showComments={true}
+                                      commentCount={commentCounts[`${submission.id}-ce-${itemIndex}`] || 0}
+                                      onCommentToggle={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
                                     />
-                                    <button
-                                      onClick={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
-                                      className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                                    >
-                                      <MessageCircle className="h-4 w-4" />
-                                      <span className="text-xs">{commentCounts[`${submission.id}-ce-${itemIndex}`] || 0}</span>
-                                    </button>
                                   </div>
                                 </div>
                                 

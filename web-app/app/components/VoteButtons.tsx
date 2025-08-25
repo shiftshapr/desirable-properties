@@ -29,13 +29,12 @@ export default function VoteButtons({
   commentCount = 0,
   onCommentToggle,
 }: VoteButtonsProps) {
+  const { user, isAuthenticated: authenticated, login, getAccessToken } = useAuth();
   // Only log for Scott Yates submission
   const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
   if (isScottYatesSubmission) {
     console.log('🔵 [VoteButtons] Component loaded for Scott Yates submission!', { elementId, elementType, submissionId });
   }
-  
-  const { user, isAuthenticated: authenticated, login } = useAuth();
   // const privyInstance = usePrivy(); // Authentication disabled
   const [currentVote, setCurrentVote] = useState<'up' | 'down' | null>(userVote);
   
@@ -62,12 +61,14 @@ export default function VoteButtons({
           url = `/api/votes?elementId=${elementId}&elementType=${elementType}&submissionId=${submissionId}`;
         }
         
-        // Add userId if authenticated
-        if (false) { // Authentication disabled
-          // url += `url += `&userId=${user.id}`;userId=${user.id}`; // Authentication disabled
+        // Add authorization header if authenticated
+        const accessToken = await getAccessToken();
+        const headers: Record<string, string> = {};
+        if (accessToken) {
+          headers['Authorization'] = `Bearer ${accessToken}`;
         }
         
-        const response = await fetch(url);
+        const response = await fetch(url, { headers });
         if (response.ok) {
           const data = await response.json();
           // Only update if we don't have initial values or if the fetched values are different
@@ -173,7 +174,7 @@ export default function VoteButtons({
   };
 
   const submitVote = async (vote: 'up' | 'down') => {
-    // const accessToken = await privyInstance?.getAccessToken?.(); // Authentication disabled
+    const accessToken = await getAccessToken();
     
     // Prepare the request body based on element type
     const requestBody: any = {
@@ -198,7 +199,7 @@ export default function VoteButtons({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // ...(accessToken ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),...(accessToken && { 'Authorization': `Bearer ${accessToken}` }), { 'Authorization': `Bearer ${accessToken}` }), // Authentication disabled
+        ...(accessToken && { 'Authorization': `Bearer ${accessToken}` }),
       },
       body: JSON.stringify(requestBody),
     });
