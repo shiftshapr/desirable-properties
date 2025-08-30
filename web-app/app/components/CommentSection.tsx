@@ -89,14 +89,47 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       // IMMEDIATE DEBUGGING - log the comments data
       console.log('🔴 [CommentSection] Comments data received:', comments);
       
+      // EXPANDED DEBUGGING - show each comment individually
+      console.log('🔴 [CommentSection] Individual comments:');
+      if (Array.isArray(comments)) {
+        comments.forEach((comment, index) => {
+          console.log(`🔴 [CommentSection] Comment ${index}:`, {
+            id: comment.id,
+            userId: comment.userId,
+            authorId: comment.authorId,
+            author: comment.author,
+            userName: comment.userName,
+            content: comment.content?.substring(0, 50) + '...',
+            createdAt: comment.createdAt
+          });
+        });
+      }
+      
       if (isScottYatesSubmission) {
         console.log('🔵 [CommentSection] Received comments:', comments);
       }
       
-      // Ensure comments is always an array
+      // Ensure comments is always an array and transform to match Comment interface
       if (Array.isArray(comments)) {
-        setComments(comments);
-        const commentCount = comments.length;
+        // Transform API response to match Comment interface
+        const transformedComments = comments.map(comment => ({
+          id: comment.id,
+          userId: comment.author?.id || comment.userId || comment.authorId || 'unknown',
+          userName: comment.author?.userName || comment.author?.email || comment.userName || 'Unknown',
+          content: comment.content,
+          createdAt: comment.createdAt,
+          upvotes: comment.upvotes || 0,
+          downvotes: comment.downvotes || 0,
+          replies: comment.replies || [],
+          parentId: comment.parentId,
+          isEdited: comment.isEdited,
+          editedAt: comment.editedAt
+        }));
+        
+        console.log('🔴 [CommentSection] Transformed comments:', transformedComments);
+        
+        setComments(transformedComments);
+        const commentCount = transformedComments.length;
         if (isScottYatesSubmission) {
           console.log('🔵 [CommentSection] Setting comment count to:', commentCount, 'for elementId:', elementId, 'elementType:', elementType);
         }
