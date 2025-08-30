@@ -1,21 +1,7 @@
 import { NextResponse } from 'next/server';
 import ScoringService from '../../lib/scoringService';
 
-// Mock user activity data - in a real app, this would come from a database
-const mockUserActivity = {
-  userId: 'user123',
-  submissions: 2,
-  comments: 15,
-  replies: 8,
-  thumbsupGiven: 45,
-  thumbsdownGiven: 12,
-  thumbsupReceived: 67,
-  commentsReceived: 23,
-  repliesReceived: 12,
-  signupDate: '2024-01-15T00:00:00Z',
-  firstSubmissionDate: '2024-01-16T00:00:00Z',
-  lastActivityDate: '2024-01-25T00:00:00Z'
-};
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
@@ -29,16 +15,125 @@ export async function GET(request: Request) {
       );
     }
 
-    const scoringService = new ScoringService();
-    
-    // For now, using mock data - in a real app, you'd fetch user activity from database
-    const userActivity = mockUserActivity;
-    userActivity.userId = userId;
+    // Verify authentication
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
+    const token = authHeader.replace('Bearer ', '');
+    
+    // Map test tokens to actual user IDs
+    let authenticatedUserId;
+    if (token === 'test-user-123') {
+      // Use Daveed's user for testing
+      const { prisma } = await import('@/lib/db');
+      const testUser = await prisma.user.findFirst({
+        where: { email: 'daveed@bridgit.io' }
+      });
+      authenticatedUserId = testUser?.id;
+    } else {
+      authenticatedUserId = token;
+    }
+
+    if (!authenticatedUserId) {
+      return NextResponse.json({ error: 'User not found' }, { status: 401 });
+    }
+
+    const { prisma } = await import('@/lib/db');
+
+    // Fetch user's submissions
+    const submissions = await prisma.submission.findMany({
+      where: { authorId: authenticatedUserId },
+      select: {
+        id: true,
+        createdAt: true
+      },
+      orderBy: { createdAt: 'asc' }
+    });
+
+    // Fetch user's comments
+    const comments = await prisma.comment.findMany({
+      where: { authorId: authenticatedUserId },
+      select: {
+        id: true,
+        createdAt: true,
+        parentId: true
+      }
+    });
+
+    // Fetch user's votes
+    const votes = await prisma.vote.findMany({
+      where: { userId: authenticatedUserId },
+      select: {
+        type: true
+      }
+    });
+
+    // Get user info
+    const user = await prisma.user.findUnique({
+      where: { id: authenticatedUserId },
+      select: {
+        signupDate: true,
+        lastActivity: true
+      }
+    });
+
+    // Calculate activity metrics
+    const submissionCount = submissions.length;
+    const commentCount = comments.filter(c => !c.parentId).length; // Top-level comments
+    const replyCount = comments.filter(c => c.parentId).length; // Replies
+    
+    const thumbsUpGiven = votes.filter(v => v.type === 'UP').length;
+    const thumbsDownGiven = votes.filter(v => v.type === 'DOWN').length;
+
+    // Get votes received on user's content
+    const userSubmissionIds = submissions.map(s => s.id);
+    const userCommentIds = comments.map(c => c.id);
+    
+    const votesReceived = await prisma.vote.findMany({
+      where: {
+        OR: [
+          { submissionId: { in: userSubmissionIds } },
+          { elementId: { in: userCommentIds }, elementType: 'comment' }
+        ]
+      },
+      select: {
+        type: true
+      }
+    });
+
+    const thumbsUpReceived = votesReceived.filter(v => v.type === 'UP').length;
+    const commentsReceived = await prisma.comment.count({
+      where: {
+        OR: [
+          { submissionId: { in: userSubmissionIds } },
+          { parentId: { in: userCommentIds } }
+        ]
+      }
+    });
+
+    // Create real user activity data
+    const userActivity = {
+      userId: authenticatedUserId,
+      submissions: submissionCount,
+      comments: commentCount,
+      replies: replyCount,
+      thumbsupGiven: thumbsUpGiven,
+      thumbsdownGiven: thumbsDownGiven,
+      thumbsupReceived: thumbsUpReceived,
+      commentsReceived: commentsReceived,
+      repliesReceived: 0, // TODO: Implement when reply system is enhanced
+      signupDate: user?.signupDate?.toISOString() || new Date().toISOString(),
+      firstSubmissionDate: submissions.length > 0 ? submissions[0].createdAt.toISOString() : undefined,
+      lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
+    };
+
+    const scoringService = new ScoringService();
     const scoreBreakdown = scoringService.getScoreBreakdown(userActivity);
 
     return NextResponse.json({
-      userId,
+      userId: authenticatedUserId,
       scoreBreakdown,
       activity: userActivity
     });
