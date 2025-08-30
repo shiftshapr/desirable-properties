@@ -58,6 +58,14 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         url += `&elementId=${elementId}&elementType=${elementType}`;
       }
       
+      // IMMEDIATE DEBUGGING - log the fetch attempt
+      console.log('🔴 [CommentSection] Fetching comments:', {
+        url,
+        elementId,
+        elementType,
+        submissionId
+      });
+      
       if (isScottYatesSubmission) {
         console.log('🔵 [CommentSection] Fetching comments for Scott Yates submission:', submissionId, 'elementId:', elementId, 'elementType:', elementType, 'URL:', url);
         console.log('🔵 [CommentSection] This CommentSection is for:', elementType === 'submission' ? 'SUBMISSION-LEVEL' : 'ELEMENT-SPECIFIC');
@@ -65,20 +73,28 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       
       const response = await fetch(url);
       
+      // IMMEDIATE DEBUGGING - log the response
+      console.log('🔴 [CommentSection] Response received:', {
+        status: response.status,
+        ok: response.ok,
+        url: response.url
+      });
+      
       if (!response.ok) {
         throw new Error('Failed to fetch comments');
       }
       
       const comments = await response.json();
+      
+      // IMMEDIATE DEBUGGING - log the comments data
+      console.log('🔴 [CommentSection] Comments data received:', comments);
+      
       if (isScottYatesSubmission) {
         console.log('🔵 [CommentSection] Received comments:', comments);
       }
       
       // Ensure comments is always an array
       if (Array.isArray(comments)) {
-        // IMMEDIATE DEBUGGING - log the raw comments data
-        console.log('🔴 [CommentSection] Raw comments from API:', comments);
-        
         setComments(comments);
         const commentCount = comments.length;
         if (isScottYatesSubmission) {
@@ -526,16 +542,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
     return diffInHours <= 24;
   };
 
-  const renderComment = (comment: Comment, isReply = false) => {
-    // IMMEDIATE DEBUGGING - log every comment being rendered
-    console.log('🔴 [CommentSection] Rendering comment:', {
-      commentId: comment.id,
-      commentUserName: comment.userName,
-      commentUserId: comment.userId,
-      isReply
-    });
-    
-    return (
+  const renderComment = (comment: Comment, isReply = false) => (
     <div key={comment.id} className={`${isReply ? 'ml-4 border-l border-gray-600 pl-2' : ''}`}>
       <div className="bg-gray-800 rounded p-2 mb-2">
         <div className="flex items-start justify-between">
@@ -693,7 +700,6 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       )}
     </div>
   );
-  };
 
   const sortedComments = sortComments(comments, sortBy);
 
@@ -791,4 +797,4 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       )}
     </div>
   );
-  }; 
+} 
