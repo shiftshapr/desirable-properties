@@ -23,6 +23,12 @@ interface UserActivity {
   submissions: number;
   clarifications: number;
   extensions: number;
+  comments: number;
+  replies: number;
+  thumbsUpGiven: number;
+  thumbsDownGiven: number;
+  thumbsUpReceived: number;
+  commentsReceived: number;
   recentVotes: Vote[];
 }
 
@@ -42,30 +48,34 @@ export default function ProfilePage() {
   const fetchUserActivity = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      const mockActivity: UserActivity = {
-        totalVotes: 42,
-        upvotes: 35,
-        downvotes: 7,
-        submissions: 3,
-        clarifications: 8,
-        extensions: 5,
-        recentVotes: [
-          {
-            id: '1',
-            userId: 'default-user',
-            submissionId: 'submission-1',
-            elementType: 'submission',
-            elementId: 'submission-1',
-            vote: 'up',
-            createdAt: new Date().toISOString(),
-          },
-          // Add more mock votes...
-        ],
-      };
-      setUserActivity(mockActivity);
+      
+      // Get the user's actual ID
+      const actualUserId = user?.id || 'default-user';
+      
+      const response = await fetch(`/api/user-activity?userId=${actualUserId}`, {
+        headers: {
+          'Authorization': `Bearer ${user?.accessToken || 'test-user-123'}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch user activity');
+      }
+      
+      const activityData = await response.json();
+      setUserActivity(activityData);
     } catch (error) {
       console.error('Error fetching user activity:', error);
+      // Fallback to empty activity if API fails
+      setUserActivity({
+        totalVotes: 0,
+        upvotes: 0,
+        downvotes: 0,
+        submissions: 0,
+        clarifications: 0,
+        extensions: 0,
+        recentVotes: []
+      });
     } finally {
       setLoading(false);
     }
@@ -76,8 +86,9 @@ export default function ProfilePage() {
       const response = await fetch('/api/leaderboard');
       if (response.ok) {
         const data = await response.json();
+        const actualUserId = user?.id || 'default-user';
         const currentUser = Array.isArray(data.leaderboard) ? data.leaderboard.find((entry: { userId: string; email: string }) => 
-          entry.userId === 'default-user' || entry.email === 'default@example.com'
+          entry.userId === actualUserId || entry.email === user?.email
         ) : null;
         setUserRank(currentUser?.rank || null);
       }
@@ -223,7 +234,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Score Display */}
           <div className="lg:col-span-1">
-            <ScoreDisplay userId={'default-user'} />
+            <ScoreDisplay userId={user?.id || 'default-user'} />
           </div>
           
           {/* Rank Display */}
@@ -312,12 +323,39 @@ export default function ProfilePage() {
                         <span className="text-white font-medium">{userActivity.submissions}</span>
                       </div>
                       <div className="flex justify-between">
+                        <span className="text-gray-300">Comments</span>
+                        <span className="text-white font-medium">{userActivity.comments}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Replies</span>
+                        <span className="text-white font-medium">{userActivity.replies}</span>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-gray-300">Clarifications</span>
                         <span className="text-white font-medium">{userActivity.clarifications}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-300">Extensions</span>
                         <span className="text-white font-medium">{userActivity.extensions}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Engagement */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-white mb-3">Engagement</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Thumbs up given</span>
+                        <span className="text-white font-medium">{userActivity.thumbsUpGiven}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Thumbs up received</span>
+                        <span className="text-white font-medium">{userActivity.thumbsUpReceived}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Comments received</span>
+                        <span className="text-white font-medium">{userActivity.commentsReceived}</span>
                       </div>
                     </div>
                   </div>
