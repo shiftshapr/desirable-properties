@@ -76,9 +76,6 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       
       // Ensure comments is always an array
       if (Array.isArray(comments)) {
-        // IMMEDIATE DEBUGGING - log the raw comments data
-        console.log('🔴 [CommentSection] Raw comments from API:', comments);
-        
         setComments(comments);
         const commentCount = comments.length;
         if (isScottYatesSubmission) {
@@ -521,6 +518,17 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       location: window.location.pathname
     });
     
+    // IMMEDIATE DEBUGGING WITH ALERT
+    if (comment.userName === 'Daveed Benjamin' || comment.userName === 'daveed@bridgit.io') {
+      alert(`DEBUG: Comment ownership check for Daveed's comment
+Comment ID: ${comment.id}
+User ID: ${user?.id}
+Comment User ID: ${comment.userId}
+Authenticated: ${authenticated}
+Is Owner: ${authenticated && user?.id === comment.userId}
+Location: ${window.location.pathname}`);
+    }
+    
     if (isScottYatesSubmission || isDPDetailModal) {
       console.log('🔵 [CommentSection] Checking comment ownership:', {
         elementId,
@@ -541,53 +549,25 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const canEditComment = (comment: Comment) => {
-    // IMMEDIATE DEBUGGING - always log this
-    console.log('🔴 [CommentSection] canEditComment called for comment:', comment.id);
-    
-    if (!isCommentOwner(comment)) {
-      console.log('🔴 [CommentSection] canEditComment: false - not owner');
-      return false;
-    }
+    if (!isCommentOwner(comment)) return false;
     
     // Check if comment is within 24 hours of creation (matches API)
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
-    const canEdit = diffInHours <= 24;
-    console.log('🔴 [CommentSection] canEditComment result:', {
-      commentId: comment.id,
-      commentCreatedAt: comment.createdAt,
-      diffInHours,
-      canEdit
-    });
-    
-    return canEdit;
+    return diffInHours <= 24;
   };
 
   const canDeleteComment = (comment: Comment) => {
-    // IMMEDIATE DEBUGGING - always log this
-    console.log('🔴 [CommentSection] canDeleteComment called for comment:', comment.id);
-    
-    if (!isCommentOwner(comment)) {
-      console.log('🔴 [CommentSection] canDeleteComment: false - not owner');
-      return false;
-    }
+    if (!isCommentOwner(comment)) return false;
     
     // Check if comment is within 24 hours of creation (matches API)
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
-    const canDelete = diffInHours <= 24;
-    console.log('🔴 [CommentSection] canDeleteComment result:', {
-      commentId: comment.id,
-      commentCreatedAt: comment.createdAt,
-      diffInHours,
-      canDelete
-    });
-    
-    return canDelete;
+    return diffInHours <= 24;
   };
 
   const renderComment = (comment: Comment, isReply = false) => (
