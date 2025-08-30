@@ -1362,7 +1362,7 @@ export default function DesirablePropertiesApp() {
                   <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
                     {data?.meta.total_properties || 0}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300">Desirable Properties {data?.meta.total_properties || 0}</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Desirable Properties</div>
                 </button>
 
                 <button 
@@ -1372,7 +1372,7 @@ export default function DesirablePropertiesApp() {
                   <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">
                     {submissions.length}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300">Submissions {submissions.length}</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Submissions</div>
                 </button>
 
                 <button 
@@ -1389,21 +1389,21 @@ export default function DesirablePropertiesApp() {
                   <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">
                     {submissions.reduce((total, sub) => total + (Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.length : 0), 0)}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300"># of Alignments</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Alignments</div>
                 </div>
 
                 <div className="bg-gray-700 rounded-lg shadow-sm border border-gray-600 p-3 sm:p-4 text-center">
                   <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">
                     {submissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => ce.type === 'Clarification').length : 0), 0)}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300"># of Clarifications</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Clarifications</div>
                 </div>
 
                 <div className="bg-gray-700 rounded-lg shadow-sm border border-gray-600 p-3 sm:p-4 text-center">
                   <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 sm:mb-2">
                     {submissions.reduce((total, sub) => total + (Array.isArray(sub.clarificationsExtensions) ? sub.clarificationsExtensions.filter(ce => ce.type === 'Extension').length : 0), 0)}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-300"># of Extensions</div>
+                  <div className="text-xs sm:text-sm text-gray-300">Extensions</div>
                 </div>
               </div>
             </div>

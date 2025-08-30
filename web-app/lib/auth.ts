@@ -19,9 +19,9 @@ export interface AuthService {
   getAccessToken: () => Promise<string | null>;
 }
 
-// Test user data
+// Test user data - using the actual database user ID
 const testUser: AuthUser = {
-  id: "test-user-123",
+  id: "cme65z5gr000hh2vv2jcz9r36", // Daveed's actual user ID from database
   email: "daveed@bridgit.io",
   name: "Daveed Benjamin",
   affiliation: "ISOC",
@@ -45,7 +45,7 @@ export const defaultAuthService: AuthService = {
   },
   getAccessToken: async () => {
     if (TEST_MODE_AUTHENTICATED) {
-      return 'test-user-123'; // Use consistent test token that maps to real user
+      return 'test-user-123'; // Keep this as 'test-user-123' for API mapping
     }
     return null;
   },
