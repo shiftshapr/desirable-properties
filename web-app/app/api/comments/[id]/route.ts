@@ -115,7 +115,8 @@ export async function PUT(
       });
     }
 
-    // 2. Check edit window (24 hours)
+    // 2. Check edit window (configurable via env)
+    const editWindowHours = parseInt(process.env.COMMENT_EDIT_WINDOW_HOURS || '1');
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
@@ -125,12 +126,13 @@ export async function PUT(
       commentDate: commentDate.toISOString(),
       now: now.toISOString(),
       diffInHours,
-      canEdit: diffInHours <= 24
+      editWindowHours,
+      canEdit: diffInHours <= editWindowHours
     });
     
-    if (diffInHours > 24) {
+    if (diffInHours > editWindowHours) {
       console.log('🔴 [API] Edit window expired');
-      return NextResponse.json({ error: 'Edit window expired (24 hours)' }, { 
+      return NextResponse.json({ error: `Edit window expired (${editWindowHours} hour${editWindowHours !== 1 ? 's' : ''})` }, { 
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -289,7 +291,8 @@ export async function DELETE(
       });
     }
 
-    // 2. Check delete window (24 hours)
+    // 2. Check delete window (configurable via env)
+    const deleteWindowHours = parseInt(process.env.COMMENT_DELETE_WINDOW_HOURS || '1');
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
@@ -299,12 +302,13 @@ export async function DELETE(
       commentDate: commentDate.toISOString(),
       now: now.toISOString(),
       diffInHours,
-      canDelete: diffInHours <= 24
+      deleteWindowHours,
+      canDelete: diffInHours <= deleteWindowHours
     });
     
-    if (diffInHours > 24) {
+    if (diffInHours > deleteWindowHours) {
       console.log('🔴 [API] Delete window expired');
-      return NextResponse.json({ error: 'Delete window expired (24 hours)' }, { 
+      return NextResponse.json({ error: `Delete window expired (${deleteWindowHours} hour${deleteWindowHours !== 1 ? 's' : ''})` }, { 
         status: 400,
         headers: {
           'Access-Control-Allow-Origin': '*',

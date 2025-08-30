@@ -556,23 +556,25 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   const canEditComment = (comment: Comment) => {
     if (!isCommentOwner(comment)) return false;
     
-    // Check if comment is within 24 hours of creation (matches API)
+    // Check if comment is within configurable window (matches API)
+    const editWindowHours = parseInt(process.env.NEXT_PUBLIC_COMMENT_EDIT_WINDOW_HOURS || '1');
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
-    return diffInHours <= 24;
+    return diffInHours <= editWindowHours;
   };
 
   const canDeleteComment = (comment: Comment) => {
     if (!isCommentOwner(comment)) return false;
     
-    // Check if comment is within 24 hours of creation (matches API)
+    // Check if comment is within configurable window (matches API)
+    const deleteWindowHours = parseInt(process.env.NEXT_PUBLIC_COMMENT_DELETE_WINDOW_HOURS || '1');
     const commentDate = new Date(comment.createdAt);
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
-    return diffInHours <= 24;
+    return diffInHours <= deleteWindowHours;
   };
 
   const renderComment = (comment: Comment, isReply = false) => (
@@ -672,7 +674,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
                     )}
                     {isCommentOwner(comment) && !canEditComment(comment) && !canDeleteComment(comment) && (
                       <div className="px-3 py-2 text-xs text-gray-500">
-                        Edit/delete window expired (24 hours)
+                        Edit/delete window expired ({process.env.NEXT_PUBLIC_COMMENT_EDIT_WINDOW_HOURS || '1'} hour{(process.env.NEXT_PUBLIC_COMMENT_EDIT_WINDOW_HOURS || '1') !== '1' ? 's' : ''})
                       </div>
                     )}
                     {!isCommentOwner(comment) && (
