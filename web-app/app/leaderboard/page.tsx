@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Medal, Crown, TrendingUp, Users, FileText, X, MessageCircle, ThumbsUp, User, Filter } from 'lucide-react';
 import Link from 'next/link';
-import VoteButtons from '../components/VoteButtons';
+import UnifiedVotingDisplay from '../components/UnifiedVotingDisplay';
 import CommentSection from '../components/CommentSection';
 import { useAuth } from '../../lib/auth';
 
@@ -536,12 +536,10 @@ export default function LeaderboardPage() {
                       : 'Anonymous'}
                   </p>
                   <div className="flex items-center gap-4">
-                    <VoteButtons
+                    <UnifiedVotingDisplay
                       elementId={selectedSubmission.id}
                       elementType="submission"
                       submissionId={selectedSubmission.id}
-                      initialUpvotes={selectedSubmission.upvotes}
-                      initialDownvotes={selectedSubmission.downvotes}
                     />
                   </div>
                 </div>
@@ -580,12 +578,10 @@ export default function LeaderboardPage() {
                         <div className="flex items-center justify-between mb-2">
                           <h4 className="font-medium text-cyan-400">{dp.dp}</h4>
                           <div className="flex items-center gap-2">
-                            <VoteButtons
+                            <UnifiedVotingDisplay
                               elementId={`${selectedSubmission.id}-dp-${index}`}
                               elementType="alignment"
                               submissionId={selectedSubmission.id}
-                              initialUpvotes={voteCounts[`${selectedSubmission.id}-dp-${index}`]?.upvotes || 0}
-                              initialDownvotes={voteCounts[`${selectedSubmission.id}-dp-${index}`]?.downvotes || 0}
                             />
                             <button
                               onClick={() => toggleComments(`${selectedSubmission.id}-dp-${index}`)}
@@ -617,6 +613,7 @@ export default function LeaderboardPage() {
                               elementId={`${selectedSubmission.id}-dp-${index}`}
                               elementType="alignment"
                               submissionId={selectedSubmission.id}
+                              
                             />
                           </div>
                         )}
@@ -639,12 +636,10 @@ export default function LeaderboardPage() {
                             <h4 className="font-medium text-cyan-400">{item.title}</h4>
                           </div>
                           <div className="flex items-center gap-2">
-                            <VoteButtons
+                            <UnifiedVotingDisplay
                               elementId={`${selectedSubmission.id}-ce-${index}`}
                               elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                               submissionId={selectedSubmission.id}
-                              initialUpvotes={voteCounts[`${selectedSubmission.id}-ce-${index}`]?.upvotes || 0}
-                              initialDownvotes={voteCounts[`${selectedSubmission.id}-ce-${index}`]?.downvotes || 0}
                             />
                             <button
                               onClick={() => toggleComments(`${selectedSubmission.id}-ce-${index}`)}
@@ -681,7 +676,7 @@ export default function LeaderboardPage() {
                           <div className="mt-3">
                             <CommentSection
                               elementId={`${selectedSubmission.id}-ce-${index}`}
-                              elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                              elementType="clarification"
                               submissionId={selectedSubmission.id}
                             />
                           </div>

@@ -43,7 +43,12 @@ export const defaultAuthService: AuthService = {
   logout: async () => {
     console.log('Sign out - auth disabled');
   },
-  getAccessToken: async () => TEST_MODE_AUTHENTICATED ? "test-token-123" : null,
+  getAccessToken: async () => {
+    if (TEST_MODE_AUTHENTICATED) {
+      return 'test-user-123'; // Use consistent test token that maps to real user
+    }
+    return null;
+  },
 };
 
 // Global auth service instance

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import VoteButtons from './VoteButtons';
+import UnifiedVotingDisplay from './UnifiedVotingDisplay';
 import CommentSection from './CommentSection';
 import { MessageCircle } from 'lucide-react';
 
@@ -80,12 +80,10 @@ export function UnifiedElement({
         <div className="flex items-center gap-2">
           {/* Vote Controls */}
           {showVotes && elementId && submissionId && (
-            <VoteButtons
+            <UnifiedVotingDisplay
               elementId={elementId}
-              elementType={elementType as 'submission' | 'alignment' | 'clarification' | 'extension' | 'comment'}
+              elementType={elementType || 'submission'}
               submissionId={submissionId}
-              initialUpvotes={initialUpvotes}
-              initialDownvotes={initialDownvotes}
             />
           )}
           

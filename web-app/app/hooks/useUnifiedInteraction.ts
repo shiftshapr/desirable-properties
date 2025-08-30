@@ -1,6 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../lib/auth';
-import { ElementData, DisplayData } from '../../lib/unifiedInteractionService';
+import { ElementData } from '../../lib/unifiedVotingService';
+
+export interface DisplayData {
+  id: string;
+  type: 'submission' | 'comment' | 'reaction';
+  content?: string;
+  upvotes: number;
+  downvotes: number;
+  userVote?: 'UP' | 'DOWN';
+  comments?: DisplayData[];
+  createdAt?: Date;
+  author?: {
+    firstName?: string;
+    lastName?: string;
+  };
+}
 
 interface UseUnifiedInteractionProps {
   elementId?: string;

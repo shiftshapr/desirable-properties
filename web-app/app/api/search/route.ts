@@ -3,6 +3,9 @@ import fs from 'fs';
 import path from 'path';
 import Fuse from 'fuse.js';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 // Load data helper functions
 function loadDesirableProperties() {
   try {

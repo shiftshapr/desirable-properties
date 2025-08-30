@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submissionInteractionService } from '@/lib/submissionInteractionService';
 import { UserService } from '@/lib/userService';
+import { prisma } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,35 +31,53 @@ export async function GET(request: NextRequest) {
     let userId: string | undefined;
     const authHeader = request.headers.get('authorization');
     
+    // Force logging by writing debug info to response headers
+    const debugInfo: string[] = [];
+    debugInfo.push(`Auth header: ${authHeader || 'none'}`);
+    
     if (authHeader) {
       try {
         const token = authHeader.replace('Bearer ', '');
-        // For test authentication, use a consistent mock user ID
-        const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
+        debugInfo.push(`Token: ${token}`);
         
-        if (verifiedClaims) {
-          const userService = new UserService();
-          const user = await userService.getUserByPrivyId(verifiedClaims.userId);
-          if (user) {
-            userId = user.id;
-          } else {
-            // Create the test user if it doesn't exist
-            const newUser = await userService.getOrCreateUser({
-              id: verifiedClaims.userId,
-              email: verifiedClaims.email
+        // For test mode, accept any token that starts with "test-"
+        if (token.startsWith('test-')) {
+          debugInfo.push('Test token detected');
+          // Map test tokens to existing users
+          if (token === 'test-user-123') {
+            debugInfo.push('Mapping test-user-123 to Daveed');
+            // Use Daveed's user for testing
+            const testUser = await prisma.user.findFirst({
+              where: { email: 'daveed@bridgit.io' }
             });
-            userId = newUser.id;
+            debugInfo.push(`Found test user: ${testUser ? 'YES' : 'NO'}, id: ${testUser?.id}`);
+            userId = testUser?.id;
+          } else {
+            userId = token; // Use token as user ID for other test tokens
+          }
+          
+          debugInfo.push(`Final userId: ${userId || 'undefined'}`);
+          
+          if (!userId) {
+            return NextResponse.json({ error: 'Test user not found' }, { 
+              status: 401,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'X-Debug-Info': debugInfo.join(' | '),
+              }
+            });
           }
         }
       } catch (error) {
-        console.error('🔴 [Votes API] Auth error:', error);
+        debugInfo.push(`Auth error: ${error}`);
         // Continue without user authentication
       }
     }
 
     // If this is for a comment, use commentId
     if (commentId) {
-      const { prisma } = await import('@/lib/db');
       
       const votes = await prisma.vote.findMany({
         where: {
@@ -97,7 +116,6 @@ export async function GET(request: NextRequest) {
 
     // If this is for a specific element (not comment), use the existing logic
     if (elementId && elementType) {
-      const { prisma } = await import('@/lib/db');
       
       const votes = await prisma.vote.findMany({
         where: {
@@ -122,8 +140,12 @@ export async function GET(request: NextRequest) {
       // Find user's vote if authenticated
       let userVote: 'UP' | 'DOWN' | null = null;
       if (userId) {
+        console.log('🔍 [DEBUG] Looking for user vote. userId:', userId, 'votes:', votes.map(v => ({ id: v.id, voterId: v.voterId, type: v.type })));
         const userVoteRecord = votes.find(v => v.voterId === userId);
+        console.log('🔍 [DEBUG] Found user vote record:', userVoteRecord);
         userVote = userVoteRecord?.type || null;
+      } else {
+        debugInfo.push('No userId available for user vote lookup');
       }
 
       return NextResponse.json({ votes, upvotes, downvotes, userVote }, {
@@ -131,12 +153,12 @@ export async function GET(request: NextRequest) {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'X-Debug-Info': debugInfo.join(' | '),
         }
       });
     }
 
     // For submission-level reactions, get ALL votes for the submission
-    const { prisma } = await import('@/lib/db');
     
     const votes = await prisma.vote.findMany({
       where: {
@@ -178,291 +200,170 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('🔵 [Votes API] POST request received');
-  console.log('🔵 [Votes API] Request URL:', request.url);
-  console.log('🔵 [Votes API] Request method:', request.method);
-  console.log('🔵 [Votes API] Request headers:', Object.fromEntries(request.headers.entries()));
-  
   try {
-    console.log('🔵 [Votes API] Creating PrivyClient...');
-        console.log('🔵 [Votes API] PrivyClient created, APP_ID length:', process.env.PRIVY_APP_ID?.length || 0);
-    
-    console.log('🔵 [Votes API] Creating UserService...');
-    const userService = new UserService();
-    
-    const authHeader = request.headers.get('authorization');
-    console.log('🔵 [Votes API] Auth header present:', !!authHeader);
-    console.log('🔵 [Votes API] Auth header value:', authHeader ? `${authHeader.substring(0, 20)}...` : 'null');
-    
-    if (!authHeader) {
-      console.log('🔴 [Votes API] No auth header provided - returning 401');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    if (!token || !token.startsWith('test-')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { 
+        status: 401,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
     }
 
-    const token = authHeader.replace('Bearer ', '');
-    console.log('🔵 [Votes API] Token extracted, length:', token.length);
-    console.log('🔵 [Votes API] Token preview:', `${token.substring(0, 20)}...`);
-    
-    console.log('🔵 [Votes API] Verifying token with Privy...');
-    // For test authentication, use a consistent mock user ID
-    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
-    console.log('🔵 [Votes API] Token verification result:', !!verifiedClaims);
-    console.log('🔵 [Votes API] Verified claims:', verifiedClaims);
-    
-    if (!verifiedClaims) {
-      console.log('🔴 [Votes API] Token verification failed - returning 401');
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    // Map test tokens to actual user IDs
+    let voterId;
+    if (token === 'test-user-123') {
+      // Use Daveed's user for testing
+      const testUser = await prisma.user.findFirst({
+        where: { email: 'daveed@bridgit.io' }
+      });
+      voterId = testUser?.id;
+    } else {
+      voterId = token; // Use token as user ID for other test tokens
     }
 
-    const privyUserId = "test-user-123"; // Test user ID for authentication
-    console.log('🔵 [Votes API] Privy user ID extracted:', privyUserId);
-    console.log('🔵 [Votes API] Verified claims keys:', Object.keys(verifiedClaims));
+    if (!voterId) {
+      return NextResponse.json({ error: 'Test user not found' }, { 
+        status: 401,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
+    }
+
+    const { elementId, voteType, submissionId, elementType, commentId } = await request.json();
+    if (!['UP', 'DOWN'].includes(voteType)) {
+      return NextResponse.json({ error: 'Invalid vote type' }, { 
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
+    }
+
+    // Validate that we have at least one target (elementId, commentId, or submissionId)
+    if (!elementId && !commentId && !submissionId) {
+      return NextResponse.json({ error: 'Must specify elementId, commentId, or submissionId' }, { 
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+      });
+    }
+
+    // Build query based on vote target type
+    let whereClause: any = { voterId: voterId };
     
-    // Convert Privy user ID to internal user ID, create user if doesn't exist
-    console.log('🔵 [Votes API] Looking up user by Privy ID...');
-    let user = await userService.getUserByPrivyId(privyUserId);
-    console.log('🔵 [Votes API] User lookup result:', user ? `Found user ${user.id}` : 'User not found');
-    console.log('🔵 [Votes API] User details:', user);
-    
-    if (!user) {
-      console.log('🔵 [Votes API] Creating new user...');
-      // Create a basic user if they don't exist
-      const { prisma } = await import('@/lib/db');
-      console.log('🔵 [Votes API] Prisma imported, creating user...');
-      
-      // Extract user information from Privy claims
-      const userEmail = (verifiedClaims as any).email || `user-${privyUserId}@temp.com`;
-      const userName = (verifiedClaims as any).name || (verifiedClaims as any).email?.split('@')[0] || `User-${privyUserId.slice(-6)}`;
-      
-      try {
-        user = await prisma.user.create({
-          data: {
-            privyId: privyUserId,
-            email: userEmail,
-            userName: userName,
-            signupDate: new Date(),
-            lastActivity: new Date()
-          }
+    if (commentId) {
+      // Vote on a comment
+      whereClause.commentId = commentId;
+    } else if (elementId && elementType) {
+      // Vote on an element (alignment, clarification, extension)
+      whereClause.elementId = elementId;
+      whereClause.elementType = elementType;
+      if (submissionId) whereClause.submissionId = submissionId;
+    } else if (submissionId) {
+      // Vote on submission itself
+      whereClause.submissionId = submissionId;
+      whereClause.elementId = null;
+      whereClause.elementType = null;
+      whereClause.commentId = null;
+    }
+
+    console.log('🔵 [Votes API] Looking for existing vote with criteria:', whereClause);
+
+    // Check existing vote
+    const existingVote = await prisma.vote.findFirst({
+      where: whereClause
+    });
+
+    if (existingVote) {
+      if (existingVote.type === voteType) {
+        // Remove vote if same type clicked
+        await prisma.vote.delete({ where: { id: existingVote.id } });
+      } else {
+        // Switch vote type
+        await prisma.vote.update({
+          where: { id: existingVote.id },
+          data: { type: voteType }
         });
-        console.log(`🔵 [Votes API] Created new user: ${user.id} for Privy ID: ${privyUserId}, email: ${user.email}, userName: ${user.userName}`);
-      } catch (error) {
-        console.error('🔴 [Votes API] Error creating user:', error);
-        throw error;
       }
     } else {
-      // Update existing user's last activity
-      const { prisma } = await import('@/lib/db');
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { lastActivity: new Date() }
+      // Create new vote based on target type
+      let voteData: any = { 
+        voterId: voterId, 
+        type: voteType
+      };
+      
+      if (commentId) {
+        voteData.commentId = commentId;
+        if (submissionId) voteData.submissionId = submissionId;
+      } else if (elementId && elementType) {
+        voteData.elementId = elementId;
+        voteData.elementType = elementType;
+        if (submissionId) voteData.submissionId = submissionId;
+      } else if (submissionId) {
+        voteData.submissionId = submissionId;
+      }
+
+      console.log('🔵 [Votes API] Creating new vote with data:', voteData);
+      
+      await prisma.vote.create({
+        data: voteData
       });
     }
+
+    // Get updated counts based on target type
+    let countWhereClause: any = { type: 'UP' };
+    let downvoteWhereClause: any = { type: 'DOWN' };
     
-    console.log('🔵 [Votes API] Parsing request body...');
-    const body = await request.json();
-    console.log('🔵 [Votes API] Raw request body:', body);
-    
-    const { submissionId, elementId, elementType, commentId, type } = body;
-    console.log('🔵 [Votes API] Extracted fields:', {
-      submissionId,
-      elementId,
-      elementType,
-      commentId,
-      type
-    });
-
-    if (!submissionId || !type) {
-      console.log('🔴 [Votes API] Missing required fields:', { submissionId, type });
-      return NextResponse.json({ error: 'Submission ID and vote type are required' }, { status: 400 });
-    }
-
-    if (!['UP', 'DOWN'].includes(type)) {
-      console.log('🔴 [Votes API] Invalid vote type:', type);
-      return NextResponse.json({ error: 'Invalid vote type' }, { status: 400 });
-    }
-
-    // If this is for a comment, use commentId
     if (commentId) {
-      console.log('🔵 [Votes API] Processing comment vote...');
-      const { prisma } = await import('@/lib/db');
-      
-      // Check if user already has a vote on this comment
-      console.log('🔵 [Votes API] Checking for existing comment vote...');
-      const existingVote = await prisma.vote.findFirst({
-        where: {
-          commentId,
-          voterId: user.id,
-          submissionId
-        }
-      });
-
-      console.log('🔵 [Votes API] Existing comment vote found:', !!existingVote, existingVote ? `ID: ${existingVote.id}, Type: ${existingVote.type}` : '');
-
-      if (existingVote) {
-        if (existingVote.type === type) {
-          console.log('🔵 [Votes API] Removing existing comment vote (same type)');
-          // Remove vote if same type
-          await prisma.vote.delete({
-            where: { id: existingVote.id }
-          });
-        } else {
-          console.log('🔵 [Votes API] Updating existing comment vote type');
-          // Update vote type
-          await prisma.vote.update({
-            where: { id: existingVote.id },
-            data: { type }
-          });
-        }
-      } else {
-        console.log('🔵 [Votes API] Creating new comment vote...');
-        // Create new vote
-        const newVote = await prisma.vote.create({
-          data: {
-            submissionId,
-            voterId: user.id,
-            type,
-            commentId,
-            elementId: null,
-            elementType: null
-          }
-        });
-        console.log('🔵 [Votes API] New comment vote created:', newVote.id);
+      countWhereClause.commentId = commentId;
+      downvoteWhereClause.commentId = commentId;
+    } else if (elementId) {
+      countWhereClause.elementId = elementId;
+      downvoteWhereClause.elementId = elementId;
+      if (elementType) {
+        countWhereClause.elementType = elementType;
+        downvoteWhereClause.elementType = elementType;
       }
-
-      // Get updated counts for comment
-      console.log('🔵 [Votes API] Getting updated comment vote counts...');
-      const votes = await prisma.vote.findMany({
-        where: {
-          commentId,
-          submissionId
-        }
-      });
-
-      console.log('🔵 [Votes API] Found comment votes for counting:', votes.length);
-      console.log('🔵 [Votes API] Comment vote details for counting:', votes.map(v => ({
-        id: v.id,
-        type: v.type,
-        voterId: v.voterId
-      })));
-
-      const upvotes = votes.filter(v => v.type === 'UP').length;
-      const downvotes = votes.filter(v => v.type === 'DOWN').length;
-
-      console.log('🔵 [Votes API] Final comment counts:', { upvotes, downvotes });
-      return NextResponse.json({ votes, upvotes, downvotes }, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
-      });
+    } else if (submissionId) {
+      countWhereClause.submissionId = submissionId;
+      countWhereClause.elementId = null;
+      countWhereClause.commentId = null;
+      downvoteWhereClause.submissionId = submissionId;
+      downvoteWhereClause.elementId = null;
+      downvoteWhereClause.commentId = null;
     }
 
-    // If this is for a specific element (not comment), use the existing logic
-    if (elementId && elementType) {
-      console.log('🔵 [Votes API] Processing element-specific vote...');
-      const { prisma } = await import('@/lib/db');
-      
-      // Check if user already has a vote
-      console.log('🔵 [Votes API] Checking for existing vote...');
-      const existingVote = await prisma.vote.findFirst({
-        where: {
-          submissionId,
-          voterId: user.id,
-          elementId,
-          elementType
-        }
-      });
-
-      console.log('🔵 [Votes API] Existing vote found:', !!existingVote, existingVote ? `ID: ${existingVote.id}, Type: ${existingVote.type}` : '');
-
-      if (existingVote) {
-        if (existingVote.type === type) {
-          console.log('🔵 [Votes API] Removing existing vote (same type)');
-          // Remove vote if same type
-          await prisma.vote.delete({
-            where: { id: existingVote.id }
-          });
-        } else {
-          console.log('🔵 [Votes API] Updating existing vote type');
-          // Update vote type
-          await prisma.vote.update({
-            where: { id: existingVote.id },
-            data: { type }
-          });
-        }
-      } else {
-        console.log('🔵 [Votes API] Creating new vote...');
-        // Create new vote
-        const newVote = await prisma.vote.create({
-          data: {
-            submissionId,
-            voterId: user.id,
-            type,
-            elementId,
-            elementType,
-            commentId: null
-          }
-        });
-        console.log('🔵 [Votes API] New vote created:', newVote.id);
-      }
-
-      // Get updated counts
-      console.log('🔵 [Votes API] Getting updated vote counts...');
-      const votes = await prisma.vote.findMany({
-        where: {
-          submissionId,
-          elementId,
-          elementType
-        }
-      });
-
-      console.log('🔵 [Votes API] Found votes for counting:', votes.length);
-      console.log('🔵 [Votes API] Vote details for counting:', votes.map(v => ({
-        id: v.id,
-        type: v.type,
-        voterId: v.voterId
-      })));
-
-      const upvotes = votes.filter(v => v.type === 'UP').length;
-      const downvotes = votes.filter(v => v.type === 'DOWN').length;
-
-      console.log('🔵 [Votes API] Final counts:', { upvotes, downvotes });
-      return NextResponse.json({ votes, upvotes, downvotes }, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
-      });
-    }
-
-    // For submission-level reactions, use the unified service
-    console.log('🔵 [Votes API] Processing submission-level reaction...');
-    console.log('🔵 [Votes API] Calling submissionInteractionService.addSubmissionLevelReaction with:', {
-      submissionId,
-      userId: user.id,
-      type
+    const upvotes = await prisma.vote.count({
+      where: countWhereClause
     });
     
-    const result = await submissionInteractionService.addSubmissionLevelReaction(submissionId, user.id, type);
-    
-    console.log('🔵 [Votes API] Submission-level reaction result:', result);
-    
-    if (!result.success) {
-      console.error('🔴 [Votes API] Failed to add submission level reaction:', result.error);
-      return NextResponse.json({ error: result.error }, { 
-        status: 500,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
-      });
-    }
+    const downvotes = await prisma.vote.count({
+      where: downvoteWhereClause
+    });
 
-    console.log('🔵 [Votes API] Returning submission-level reaction data');
-    return NextResponse.json(result.data, {
+    // Get user's current vote after the operation
+    let userVote: 'UP' | 'DOWN' | null = null;
+    const currentUserVote = await prisma.vote.findFirst({
+      where: {
+        voterId: voterId,
+        ...whereClause
+      }
+    });
+    userVote = currentUserVote?.type || null;
+
+    return NextResponse.json({ upvotes, downvotes, userVote }, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -470,15 +371,17 @@ export async function POST(request: NextRequest) {
       }
     });
   } catch (error) {
-    console.error('🔴 [Votes API] Error processing vote:', error);
-    console.error('🔴 [Votes API] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-    return NextResponse.json({ error: 'Internal server error' }, { 
-      status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    console.error('Vote error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
       }
-    });
+    );
   }
-} 
+}

@@ -138,48 +138,60 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const privyUserId = "test-user-123"; // Test user ID for authentication
-    console.log('🔵 [Comments API] Privy user ID extracted:', privyUserId);
-    console.log('🔵 [Comments API] Verified claims keys:', Object.keys(verifiedClaims));
-    
-    // Convert Privy user ID to internal user ID, create user if doesn't exist
-    console.log('🔵 [Comments API] Looking up user by Privy ID...');
-    let user = await userService.getUserByPrivyId(privyUserId);
-    console.log('🔵 [Comments API] User lookup result:', user ? `Found user ${user.id}` : 'User not found');
-    console.log('🔵 [Comments API] User details:', user);
-    
-    if (!user) {
-      console.log('🔵 [Comments API] Creating new user...');
-      // Create a basic user if they don't exist
+    // Map test tokens to actual user IDs
+    let user;
+    if (token === 'test-user-123') {
+      // Use Daveed's user for testing
       const { prisma } = await import('@/lib/db');
-      console.log('🔵 [Comments API] Prisma imported, creating user...');
+      user = await prisma.user.findFirst({
+        where: { email: 'daveed@bridgit.io' }
+      });
       
-      // Extract user information from Privy claims
-      const userEmail = (verifiedClaims as any).email || `user-${privyUserId}@temp.com`;
-      const userName = (verifiedClaims as any).name || (verifiedClaims as any).email?.split('@')[0] || `User-${privyUserId.slice(-6)}`;
-      
-      try {
-        user = await prisma.user.create({
-          data: {
-            privyId: privyUserId,
-            email: userEmail,
-            userName: userName,
-            signupDate: new Date(),
-            lastActivity: new Date()
-          }
-        });
-        console.log(`🔵 [Comments API] Created new user: ${user.id} for Privy ID: ${privyUserId}, email: ${user.email}, userName: ${user.userName}`);
-      } catch (error) {
-        console.error('🔴 [Comments API] Error creating user:', error);
-        throw error;
+      if (!user) {
+        console.error('🔴 [Comments API] Test user (Daveed) not found');
+        return NextResponse.json({ error: 'Test user not found' }, { status: 401 });
       }
-    } else {
-      // Update existing user's last activity
-      const { prisma } = await import('@/lib/db');
+      
+      console.log(`🔵 [Comments API] Using test user: ${user.id} (${user.email})`);
+      
+      // Update last activity
       await prisma.user.update({
         where: { id: user.id },
         data: { lastActivity: new Date() }
       });
+    } else {
+      // For other test tokens, try to find by privyId
+      console.log('🔵 [Comments API] Looking up user by Privy ID...');
+      user = await userService.getUserByPrivyId(token);
+      
+      if (!user) {
+        console.log('🔵 [Comments API] Creating new user for token:', token);
+        // Create a basic user if they don't exist
+        const { prisma } = await import('@/lib/db');
+        
+        try {
+          user = await prisma.user.create({
+            data: {
+              privyId: token,
+              email: `${token}@temp.com`,
+              userName: `User-${token.slice(-6)}`,
+              signupDate: new Date(),
+              lastActivity: new Date()
+            }
+          });
+          console.log(`🔵 [Comments API] Created new user: ${user.id} for token: ${token}`);
+        } catch (error) {
+          console.error('🔴 [Comments API] Error creating user:', error);
+          throw error;
+        }
+      } else {
+        // Update existing user's last activity
+        const { prisma } = await import('@/lib/db');
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastActivity: new Date() }
+        });
+      }
     }
     
     console.log('🔵 [Comments API] Parsing request body...');

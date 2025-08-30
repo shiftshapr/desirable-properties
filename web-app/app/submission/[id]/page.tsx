@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import CommentSection from '../../components/CommentSection';
-import VoteButtons from '../../components/VoteButtons';
+import UnifiedVotingDisplay from '../../components/UnifiedVotingDisplay';
 
 interface Submission {
   id: string;
@@ -157,39 +157,14 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
           <div className="mb-6 p-4 bg-gray-700 rounded-lg">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-white">Submission</h2>
-              <div className="flex items-center gap-4">
-                <VoteButtons
-                  elementId={submission.id}
-                  elementType="submission"
-                  submissionId={submission.id}
-                  initialUpvotes={voteCounts[submission.id]?.upvotes || submission.upvotes}
-                  initialDownvotes={voteCounts[submission.id]?.downvotes || submission.downvotes}
-                  onVoteChange={(vote) => {
-                    setVoteCounts(prev => ({
-                      ...prev,
-                      [submission.id]: {
-                        upvotes: prev[submission.id]?.upvotes || submission.upvotes,
-                        downvotes: prev[submission.id]?.downvotes || submission.downvotes,
-                        ...(vote === 'up' ? { upvotes: (prev[submission.id]?.upvotes || submission.upvotes) + 1 } : {}),
-                        ...(vote === 'down' ? { downvotes: (prev[submission.id]?.downvotes || submission.downvotes) + 1 } : {})
-                      }
-                    }));
-                  }}
-                />
-                <button
-                  onClick={() => toggleComments(submission.id)}
-                  className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                >
-                  
-                  <span className="text-xs">{(() => {
-                  const count = commentCounts[submission.id] || 0;
-                  if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {
-                    console.log('🟡 [SubmissionDetail] Displaying comment count for Scott Yates submission:', count, 'elementId:', submission.id);
-                  }
-                  return count;
-                })()}</span>
-                </button>
-              </div>
+              <UnifiedVotingDisplay
+                elementId={submission.id}
+                elementType="submission"
+                submissionId={submission.id}
+                showComments={true}
+                commentCount={commentCounts[submission.id] || 0}
+                onCommentToggle={() => toggleComments(submission.id)}
+              />
             </div>
             
             {/* Submission-Level Comments */}
@@ -214,39 +189,14 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
                   <div key={dpIndex} className="bg-gray-700 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium text-cyan-400">{dp.dp}</h4>
-                      <div className="flex items-center gap-2">
-                        <VoteButtons
-                          elementId={`${submission.id}-dp-${dpIndex}`}
-                          elementType="alignment"
-                          submissionId={submission.id}
-                          initialUpvotes={voteCounts[`${submission.id}-dp-${dpIndex}`]?.upvotes || 0}
-                          initialDownvotes={voteCounts[`${submission.id}-dp-${dpIndex}`]?.downvotes || 0}
-                          onVoteChange={(vote) => {
-                            setVoteCounts(prev => ({
-                              ...prev,
-                              [`${submission.id}-dp-${dpIndex}`]: {
-                                upvotes: prev[`${submission.id}-dp-${dpIndex}`]?.upvotes || 0,
-                                downvotes: prev[`${submission.id}-dp-${dpIndex}`]?.downvotes || 0,
-                                ...(vote === 'up' ? { upvotes: (prev[`${submission.id}-dp-${dpIndex}`]?.upvotes || 0) + 1 } : {}),
-                                ...(vote === 'down' ? { downvotes: (prev[`${submission.id}-dp-${dpIndex}`]?.downvotes || 0) + 1 } : {})
-                              }
-                            }));
-                          }}
-                        />
-                        <button
-                          onClick={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
-                          className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                        >
-                          
-                          <span className="text-xs">{(() => {
-                  const count = commentCounts[`${submission.id}-dp-${dpIndex}`] || 0;
-                  if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {
-                    console.log('🟡 [SubmissionDetail] Displaying DP comment count for Scott Yates submission:', count, 'elementId:', `${submission.id}-dp-${dpIndex}`);
-                  }
-                  return count;
-                })()}</span>
-                        </button>
-                      </div>
+                      <UnifiedVotingDisplay
+                        elementId={`${submission.id}-dp-${dpIndex}`}
+                        elementType="alignment"
+                        submissionId={submission.id}
+                        showComments={true}
+                        commentCount={commentCounts[`${submission.id}-dp-${dpIndex}`] || 0}
+                        onCommentToggle={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
+                      />
                     </div>
                     <p className="text-gray-300 text-sm mb-3">{dp.summary}</p>
                     
@@ -287,39 +237,14 @@ export default function SubmissionPage({ params }: { params: Promise<{ id: strin
                         </span>
                         <h4 className="font-medium text-cyan-400">{item.title}</h4>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <VoteButtons
-                          elementId={`${submission.id}-ce-${itemIndex}`}
-                          elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                          submissionId={submission.id}
-                          initialUpvotes={voteCounts[`${submission.id}-ce-${itemIndex}`]?.upvotes || 0}
-                          initialDownvotes={voteCounts[`${submission.id}-ce-${itemIndex}`]?.downvotes || 0}
-                          onVoteChange={(vote) => {
-                            setVoteCounts(prev => ({
-                              ...prev,
-                              [`${submission.id}-ce-${itemIndex}`]: {
-                                upvotes: prev[`${submission.id}-ce-${itemIndex}`]?.upvotes || 0,
-                                downvotes: prev[`${submission.id}-ce-${itemIndex}`]?.downvotes || 0,
-                                ...(vote === 'up' ? { upvotes: (prev[`${submission.id}-ce-${itemIndex}`]?.upvotes || 0) + 1 } : {}),
-                                ...(vote === 'down' ? { downvotes: (prev[`${submission.id}-ce-${itemIndex}`]?.downvotes || 0) + 1 } : {})
-                              }
-                            }));
-                          }}
-                        />
-                        <button
-                          onClick={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
-                          className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                        >
-                          
-                          <span className="text-xs">{(() => {
-                  const count = commentCounts[`${submission.id}-ce-${itemIndex}`] || 0;
-                  if (submission.id === 'cmds3zumt00s3h2108o3bojs9') {
-                    console.log('🟡 [SubmissionDetail] Displaying CE comment count for Scott Yates submission:', count, 'elementId:', `${submission.id}-ce-${itemIndex}`);
-                  }
-                  return count;
-                })()}</span>
-                        </button>
-                      </div>
+                      <UnifiedVotingDisplay
+                        elementId={`${submission.id}-ce-${itemIndex}`}
+                        elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                        submissionId={submission.id}
+                        showComments={true}
+                        commentCount={commentCounts[`${submission.id}-ce-${itemIndex}`] || 0}
+                        onCommentToggle={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
+                      />
                     </div>
                     <p className="text-gray-300 text-sm mb-2">{item.dp}</p>
                     <p className="text-gray-300 text-sm mb-3">{item.content}</p>

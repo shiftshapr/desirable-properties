@@ -38,23 +38,24 @@ export class UnifiedInteractionService {
    * Save any element (submission, comment, reaction)
    */
   async saveElement(elementData: ElementData, authToken?: string): Promise<DisplayData> {
-    // console.log('🔵 [UnifiedInteractionService] saveElement called with:', {
-    //   elementData,
-    //   hasAuthToken: !!authToken,
-    //   authTokenLength: authToken?.length
-    // });
+    console.log('🔵 [UnifiedInteractionService] saveElement called with:', {
+      elementData,
+      hasAuthToken: !!authToken,
+      authTokenLength: authToken?.length,
+      timestamp: new Date().toISOString()
+    });
 
     try {
       let userId: string | undefined;
       
       if (authToken) {
-        // console.log('🔵 [UnifiedInteractionService] Auth token provided but authentication disabled');
-        userId = 'test-user-123'; // Test user ID for authentication
+        console.log('🔵 [UnifiedInteractionService] Auth token provided but authentication disabled');
+        userId = authToken; // Use token as user ID for test authentication
       } else {
-        // console.log('🔵 [UnifiedInteractionService] No auth token provided');
+        console.log('🔵 [UnifiedInteractionService] No auth token provided');
       }
 
-      // console.log('🔵 [UnifiedInteractionService] Processing element type:', elementData.type);
+      console.log('🔵 [UnifiedInteractionService] Processing element type:', elementData.type, 'with userId:', userId);
 
       switch (elementData.type) {
         case 'submission':
@@ -201,13 +202,14 @@ export class UnifiedInteractionService {
   }
 
   private async saveReaction(elementData: ElementData, userId?: string): Promise<DisplayData> {
-    // console.log('🔵 [UnifiedInteractionService] saveReaction called with:', {
-    //   elementData,
-    //   userId,
-    //   hasUserId: !!userId,
-    //   hasVoteType: !!elementData.voteType,
-    //   hasSubmissionId: !!elementData.submissionId
-    // });
+    console.log('🔵 [UnifiedInteractionService] saveReaction called with:', {
+      elementData,
+      userId,
+      hasUserId: !!userId,
+      hasVoteType: !!elementData.voteType,
+      hasSubmissionId: !!elementData.submissionId,
+      timestamp: new Date().toISOString()
+    });
 
     if (!userId || !elementData.voteType || !elementData.submissionId) {
       console.error('🔴 [UnifiedInteractionService] Missing required fields for reaction:', {
@@ -218,7 +220,7 @@ export class UnifiedInteractionService {
       throw new Error('Missing required fields for reaction');
     }
 
-    // console.log('🔵 [UnifiedInteractionService] Checking for existing vote...');
+    console.log('🔵 [UnifiedInteractionService] Checking for existing vote...');
     // Check if user already voted
     const existingVote = await prisma.vote.findFirst({
       where: {
@@ -229,7 +231,7 @@ export class UnifiedInteractionService {
       },
     });
 
-    // console.log('🔵 [UnifiedInteractionService] Existing vote found:', !!existingVote);
+    console.log('🔵 [UnifiedInteractionService] Existing vote found:', !!existingVote, existingVote ? { id: existingVote.id, type: existingVote.type } : null);
 
     if (existingVote) {
       // console.log('🔵 [UnifiedInteractionService] Updating existing vote:', existingVote.id);

@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import Link from 'next/link';
-import VoteButtons from './components/VoteButtons';
+
+import UnifiedVotingDisplay from './components/UnifiedVotingDisplay';
 import CommentSection from './components/CommentSection';
 import ChatModal from './components/ChatModal';
 import { UnifiedElement, SubmissionElement, CommentElement, ReactionElement } from './components/UnifiedElement';
@@ -97,7 +98,7 @@ export default function DesirablePropertiesApp() {
   const [searchResults, setSearchResults] = useState<any>(null);
   const [searchLoading, setSearchLoading] = useState(false);
   const [chatModalOpen, setChatModalOpen] = useState(false);
-  console.log('🔍 [Page] Component rendered, chatModalOpen:', chatModalOpen);
+  // console.log('🔍 [Page] Component rendered, chatModalOpen:', chatModalOpen);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [voteCounts, setVoteCounts] = useState<Record<string, { upvotes: number; downvotes: number; userVote?: 'UP' | 'DOWN' | null }>>({});
   const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
@@ -196,7 +197,7 @@ export default function DesirablePropertiesApp() {
   // Re-fetch counts when submissions tab is activated
   useEffect(() => {
     if (activeTab === 'submissions' && submissions.length > 0) {
-      console.log('🔴 [MainPage] Submissions tab activated, re-fetching all counts');
+      // Re-fetch all counts when submissions tab is activated
       fetchAllSubmissionCounts(submissions);
     }
   }, [activeTab, submissions]);
@@ -447,55 +448,34 @@ export default function DesirablePropertiesApp() {
   };
 
   const updateCommentCount = (elementId: string, count: number) => {
-    // Always log for Scott Yates submission
-    const isScottYatesSubmission = elementId.includes('cmds3zumt00s3h2108o3bojs9');
-    if (isScottYatesSubmission) {
-      console.log('🔴 [MainPage] updateCommentCount called for Scott Yates submission - elementId:', elementId, 'new count:', count);
-    }
-    setCommentCounts(prev => {
-      const newCounts = {
-        ...prev,
-        [elementId]: count
-      };
-      if (isScottYatesSubmission) {
-        console.log('🔴 [MainPage] Updated commentCounts state:', newCounts);
-      }
-      return newCounts;
-    });
+    setCommentCounts(prev => ({
+      ...prev,
+      [elementId]: count
+    }));
   };
 
   // Pre-fetch all comment and vote counts for all submissions together
   const fetchAllSubmissionCounts = async (submissionsList: Submission[]) => {
-    console.log('🔴 [MainPage] Starting pre-fetch for', submissionsList.length, 'submissions');
-    
     try {
       const token = await getAccessToken();
       const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
-      console.log('🔴 [MainPage] Auth token available:', !!token);
+      
+      // Create all fetch promises for all submissions
+      const allFetchPromises: Promise<void>[] = [];
       
       for (const submission of submissionsList) {
-        console.log('🔴 [MainPage] Pre-fetching for submission:', submission.id, submission.title);
-        
-        // Create all the fetch promises for this submission
-        const fetchPromises: Promise<void>[] = [];
-        
         // Submission-level comments and votes
-        fetchPromises.push(
+        allFetchPromises.push(
           fetch(`/api/comments?submissionId=${submission.id}`, { headers })
             .then(async (response) => {
-              console.log('🔴 [MainPage] Submission comments response:', response.status, 'for', submission.id);
               if (response.ok) {
                 const comments = await response.json();
                 const count = Array.isArray(comments) ? comments.length : 0;
                 updateCommentCount(submission.id, count);
-                console.log('🔴 [MainPage] Pre-fetched submission comment count:', count, 'for', submission.id);
-              } else {
-                console.error('🔴 [MainPage] Failed to fetch submission comments:', response.status, 'for', submission.id);
               }
             }),
           fetch(`/api/votes?submissionId=${submission.id}`, { headers })
             .then(async (response) => {
-              console.log('🔴 [MainPage] Submission votes response:', response.status, 'for', submission.id);
               if (response.ok) {
                 const voteData = await response.json();
                 setVoteCounts(prev => ({
@@ -506,9 +486,6 @@ export default function DesirablePropertiesApp() {
                     userVote: voteData.userVote || null
                   }
                 }));
-                console.log('🔴 [MainPage] Pre-fetched submission vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', submission.id);
-              } else {
-                console.error('🔴 [MainPage] Failed to fetch submission votes:', response.status, 'for', submission.id);
               }
             })
         );
@@ -516,24 +493,18 @@ export default function DesirablePropertiesApp() {
         // DP comments and votes
         for (let dpIndex = 0; dpIndex < (submission.directlyAddressedDPs?.length || 0); dpIndex++) {
           const dpElementId = `${submission.id}-dp-${dpIndex}`;
-          console.log('🔴 [MainPage] Pre-fetching DP element:', dpElementId);
           
-          fetchPromises.push(
+          allFetchPromises.push(
             fetch(`/api/comments?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
               .then(async (response) => {
-                console.log('🔴 [MainPage] DP comments response:', response.status, 'for', dpElementId);
                 if (response.ok) {
                   const comments = await response.json();
                   const count = Array.isArray(comments) ? comments.length : 0;
                   updateCommentCount(dpElementId, count);
-                  console.log('🔴 [MainPage] Pre-fetched DP comment count:', count, 'for', dpElementId);
-                } else {
-                  console.error('🔴 [MainPage] Failed to fetch DP comments:', response.status, 'for', dpElementId);
                 }
               }),
             fetch(`/api/votes?submissionId=${submission.id}&elementId=${dpElementId}&elementType=alignment`, { headers })
               .then(async (response) => {
-                console.log('🔴 [MainPage] DP votes response:', response.status, 'for', dpElementId);
                 if (response.ok) {
                   const voteData = await response.json();
                   setVoteCounts(prev => ({
@@ -544,9 +515,6 @@ export default function DesirablePropertiesApp() {
                       userVote: voteData.userVote || null
                     }
                   }));
-                  console.log('🔴 [MainPage] Pre-fetched DP vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', dpElementId);
-                } else {
-                  console.error('🔴 [MainPage] Failed to fetch DP votes:', response.status, 'for', dpElementId);
                 }
               })
           );
@@ -556,24 +524,18 @@ export default function DesirablePropertiesApp() {
         for (let ceIndex = 0; ceIndex < (submission.clarificationsExtensions?.length || 0); ceIndex++) {
           const ceElementId = `${submission.id}-ce-${ceIndex}`;
           const ceType = submission.clarificationsExtensions[ceIndex].type.toLowerCase();
-          console.log('🔴 [MainPage] Pre-fetching CE element:', ceElementId, 'type:', ceType);
           
-          fetchPromises.push(
+          allFetchPromises.push(
             fetch(`/api/comments?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
               .then(async (response) => {
-                console.log('🔴 [MainPage] CE comments response:', response.status, 'for', ceElementId);
                 if (response.ok) {
                   const comments = await response.json();
                   const count = Array.isArray(comments) ? comments.length : 0;
                   updateCommentCount(ceElementId, count);
-                  console.log('🔴 [MainPage] Pre-fetched CE comment count:', count, 'for', ceElementId);
-                } else {
-                  console.error('🔴 [MainPage] Failed to fetch CE comments:', response.status, 'for', ceElementId);
                 }
               }),
             fetch(`/api/votes?submissionId=${submission.id}&elementId=${ceElementId}&elementType=${ceType}`, { headers })
               .then(async (response) => {
-                console.log('🔴 [MainPage] CE votes response:', response.status, 'for', ceElementId);
                 if (response.ok) {
                   const voteData = await response.json();
                   setVoteCounts(prev => ({
@@ -584,20 +546,14 @@ export default function DesirablePropertiesApp() {
                       userVote: voteData.userVote || null
                     }
                   }));
-                  console.log('🔴 [MainPage] Pre-fetched CE vote counts:', voteData.upvotes, 'up,', voteData.downvotes, 'down for', ceElementId);
-                } else {
-                  console.error('🔴 [MainPage] Failed to fetch CE votes:', response.status, 'for', ceElementId);
                 }
               })
           );
         }
-        
-        // Wait for all fetches for this submission to complete
-        await Promise.all(fetchPromises);
-        console.log('🔴 [MainPage] Completed pre-fetching all counts for submission:', submission.id);
       }
       
-      console.log('🔴 [MainPage] Completed pre-fetching all counts for all submissions');
+      // Wait for all promises to complete before continuing
+      await Promise.all(allFetchPromises);
     } catch (error) {
       console.error('Error pre-fetching all submission counts:', error);
     }
@@ -763,23 +719,15 @@ export default function DesirablePropertiesApp() {
                                   <div className="text-xs text-gray-400">By: {(sub.submitter.firstName || sub.submitter.lastName) ? `${sub.submitter.firstName || ''} ${sub.submitter.lastName || ''}`.trim() : 'Anon'}</div>
                   </div>
                   <div className="flex items-center gap-2 ml-2">
-                    <button
-                      onClick={() => toggleComments(`submission-${sub.id}`)}
-                      className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-cyan-400 hover:bg-cyan-500/10"
-                    >
-                      <MessageCircle className="h-3 w-3" />
-                      <span>5</span>
-                    </button>
-                    <div className="flex items-center gap-1">
-                      <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-green-400">
-                        <ThumbsUp className="h-3 w-3" />
-                        <span>{Math.floor(Math.random() * 50)}</span>
-                      </button>
-                      <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-red-400">
-                        <ThumbsDown className="h-3 w-3" />
-                        <span>{Math.floor(Math.random() * 20)}</span>
-                      </button>
-                    </div>
+                    <UnifiedVotingDisplay
+                      elementId={sub.id}
+                      elementType="submission"
+                      submissionId={sub.id}
+                      showComments={true}
+                      commentCount={commentCounts[sub.id] || 0}
+                      onCommentToggle={() => toggleComments(sub.id)}
+                      commentsExpanded={expandedComments.has(sub.id)}
+                    />
                   </div>
                 </div>
                 {/* Show alignment summary if present */}
@@ -819,28 +767,44 @@ export default function DesirablePropertiesApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2 ml-2">
-                          <button
-                            onClick={() => toggleComments(`${c.type.toLowerCase()}-${sub.id}-${j}`)}
-                            className="flex items-center gap-1 px-1 py-0.5 rounded text-xs transition-colors text-gray-400 hover:text-amber-400 hover:bg-amber-500/10"
-                          >
-                            <MessageCircle className="h-3 w-3" />
-                            <span>2</span>
-                          </button>
-                          <div className="flex items-center gap-1">
-                            <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-green-400">
-                              <ThumbsUp className="h-3 w-3" />
-                              <span>{Math.floor(Math.random() * 20)}</span>
-                            </button>
-                            <button className="flex items-center gap-1 px-1 py-0.5 text-xs text-gray-400 hover:text-red-400">
-                              <ThumbsDown className="h-3 w-3" />
-                              <span>{Math.floor(Math.random() * 10)}</span>
-                            </button>
-                          </div>
+                          <UnifiedVotingDisplay
+                            elementId={`${sub.id}-ce-${j}`}
+                            elementType={c.type.toLowerCase() as 'clarification' | 'extension'}
+                            submissionId={sub.id}
+                            showComments={true}
+                            commentCount={commentCounts[`${sub.id}-ce-${j}`] || 0}
+                            onCommentToggle={() => toggleComments(`${sub.id}-ce-${j}`)}
+                            commentsExpanded={expandedComments.has(`${sub.id}-ce-${j}`)}
+                          />
                         </div>
                       </div>
+                      
+                      {/* Comments for Clarification/Extension in DP Detail Modal - Collapsible */}
+                      {expandedComments.has(`${sub.id}-ce-${j}`) && (
+                        <div className="mt-3">
+                          <CommentSection
+                            elementId={`${sub.id}-ce-${j}`}
+                            elementType={c.type.toLowerCase() as 'clarification' | 'extension'}
+                            submissionId={sub.id}
+                            onCommentCountChange={(count) => updateCommentCount(`${sub.id}-ce-${j}`, count)}
+                          />
+                        </div>
+                      )}
                     </div>
                   )) : null}
                 </div>
+                
+                {/* Comments for Submission in DP Detail Modal - Collapsible */}
+                {expandedComments.has(sub.id) && (
+                  <div className="mt-3">
+                    <CommentSection
+                      elementId={sub.id}
+                      elementType="submission"
+                      submissionId={sub.id}
+                      onCommentCountChange={(count) => updateCommentCount(sub.id, count)}
+                    />
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -884,15 +848,16 @@ export default function DesirablePropertiesApp() {
                   ? `${safeSubmission.submitter.firstName || ''} ${safeSubmission.submitter.lastName || ''}`.trim() 
                   : 'Anonymous'}
               </p>
-              <div className="flex items-center gap-4">
-                                          <VoteButtons
-                            elementId={safeSubmission.id}
-                            elementType="submission"
-                            submissionId={safeSubmission.id}
-                            initialUpvotes={safeSubmission.upvotes}
-                            initialDownvotes={safeSubmission.downvotes}
-                            userVote={voteCounts[safeSubmission.id]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
-                          />
+                            <div className="flex items-center gap-4">
+                <UnifiedVotingDisplay
+                  elementId={safeSubmission.id}
+                  elementType="submission"
+                  submissionId={safeSubmission.id}
+                  showComments={true}
+                  commentCount={commentCounts[safeSubmission.id] || 0}
+                  onCommentToggle={() => toggleComments(safeSubmission.id)}
+                  commentsExpanded={expandedComments.has(safeSubmission.id)}
+                />
               </div>
             </div>
           </div>
@@ -934,41 +899,15 @@ export default function DesirablePropertiesApp() {
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-medium text-cyan-400">{dp.dp}</h4>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <VoteButtons
-                              elementId={`${safeSubmission.id}-dp-${dpIndex}`}
-                              elementType="alignment"
-                              submissionId={safeSubmission.id}
-                              initialUpvotes={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0}
-                              initialDownvotes={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0}
-                              userVote={voteCounts[`${safeSubmission.id}-dp-${dpIndex}`]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
-                              onVoteChange={(vote) => {
-                                setVoteCounts(prev => ({
-                                  ...prev,
-                                  [`${safeSubmission.id}-dp-${dpIndex}`]: {
-                                    upvotes: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0,
-                                    downvotes: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0,
-                                    userVote: prev[`${safeSubmission.id}-dp-${dpIndex}`]?.userVote || null,
-                                    ...(vote === 'up' ? { upvotes: (prev[`${safeSubmission.id}-dp-${dpIndex}`]?.upvotes || 0) + 1 } : {}),
-                                    ...(vote === 'down' ? { downvotes: (prev[`${safeSubmission.id}-dp-${dpIndex}`]?.downvotes || 0) + 1 } : {})
-                                  }
-                                }));
-                              }}
-                            />
-                            <button
-                              onClick={() => toggleComments(`${safeSubmission.id}-dp-${dpIndex}`)}
-                              className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                            >
-                              <MessageCircle className="h-4 w-4" />
-                              <span className="text-xs">{(() => {
-                  const count = commentCounts[`${safeSubmission.id}-dp-${dpIndex}`] || 0;
-                  if (safeSubmission.id === 'cmds3zumt00s3h2108o3bojs9') {
-                    console.log('🔴 [MainPage] Displaying DP comment count for Scott Yates submission:', count, 'elementId:', `${safeSubmission.id}-dp-${dpIndex}`);
-                  }
-                  return count;
-                })()}</span>
-                            </button>
-                          </div>
+                          <UnifiedVotingDisplay
+                            elementId={`${safeSubmission.id}-dp-${dpIndex}`}
+                            elementType="alignment"
+                            submissionId={safeSubmission.id}
+                            showComments={true}
+                            commentCount={commentCounts[`${safeSubmission.id}-dp-${dpIndex}`] || 0}
+                            onCommentToggle={() => toggleComments(`${safeSubmission.id}-dp-${dpIndex}`)}
+                            commentsExpanded={expandedComments.has(`${safeSubmission.id}-dp-${dpIndex}`)}
+                          />
                         </div>
                       </div>
                       <p className="text-gray-300 text-sm mb-3">{dp.summary}</p>
@@ -1016,39 +955,15 @@ export default function DesirablePropertiesApp() {
                           <h4 className="font-medium text-cyan-400">{item.title}</h4>
                         </div>
                         <div className="flex items-center gap-2">
-                          <VoteButtons
+                          <UnifiedVotingDisplay
                             elementId={`${safeSubmission.id}-ce-${itemIndex}`}
                             elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                             submissionId={safeSubmission.id}
-                            initialUpvotes={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0}
-                            initialDownvotes={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0}
-                                                          userVote={voteCounts[`${safeSubmission.id}-ce-${itemIndex}`]?.userVote?.toLowerCase() as 'up' | 'down' | null || null}
-                            onVoteChange={(vote) => {
-                              setVoteCounts(prev => ({
-                                ...prev,
-                                [`${safeSubmission.id}-ce-${itemIndex}`]: {
-                                  upvotes: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0,
-                                  downvotes: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0,
-                                  userVote: prev[`${safeSubmission.id}-ce-${itemIndex}`]?.userVote || null,
-                                  ...(vote === 'up' ? { upvotes: (prev[`${safeSubmission.id}-ce-${itemIndex}`]?.upvotes || 0) + 1 } : {}),
-                                  ...(vote === 'down' ? { downvotes: (prev[`${safeSubmission.id}-ce-${itemIndex}`]?.downvotes || 0) + 1 } : {})
-                                }
-                              }));
-                            }}
+                            showComments={true}
+                            commentCount={commentCounts[`${safeSubmission.id}-ce-${itemIndex}`] || 0}
+                            onCommentToggle={() => toggleComments(`${safeSubmission.id}-ce-${itemIndex}`)}
+                            commentsExpanded={expandedComments.has(`${safeSubmission.id}-ce-${itemIndex}`)}
                           />
-                          <button
-                            onClick={() => toggleComments(`${safeSubmission.id}-ce-${itemIndex}`)}
-                            className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 transition-colors"
-                          >
-                            <MessageCircle className="h-4 w-4" />
-                            <span className="text-xs">{(() => {
-                  const count = commentCounts[`${safeSubmission.id}-ce-${itemIndex}`] || 0;
-                  if (safeSubmission.id === 'cmds3zumt00s3h2108o3bojs9') {
-                    console.log('🔴 [MainPage] Displaying CE comment count for Scott Yates submission:', count, 'elementId:', `${safeSubmission.id}-ce-${itemIndex}`);
-                  }
-                  return count;
-                })()}</span>
-                          </button>
                         </div>
                       </div>
                       <p className="text-gray-300 text-sm mb-2">{item.dp}</p>
@@ -1079,16 +994,18 @@ export default function DesirablePropertiesApp() {
             </div>
           </div>
 
-          {/* Comments Section */}
-          <div className="comments-section mt-4">
-            <h3 className="text-lg font-semibold text-white mb-4">Comments</h3>
-            <CommentSection
-              elementId={safeSubmission.id}
-              elementType="submission"
-              submissionId={safeSubmission.id}
-              onCommentCountChange={(count) => updateCommentCount(safeSubmission.id, count)}
-            />
-          </div>
+          {/* Submission-Level Comments - Collapsible */}
+          {expandedComments.has(safeSubmission.id) && (
+            <div className="comments-section mt-4">
+              <h3 className="text-lg font-semibold text-white mb-4">Comments</h3>
+              <CommentSection
+                elementId={safeSubmission.id}
+                elementType="submission"
+                submissionId={safeSubmission.id}
+                onCommentCountChange={(count) => updateCommentCount(safeSubmission.id, count)}
+              />
+            </div>
+          )}
         </div>
       );
     } catch (error) {
@@ -1750,33 +1667,28 @@ export default function DesirablePropertiesApp() {
                                     <p className="text-blue-700 text-sm">{dp.summary}</p>
                                   </div>
                                   <div className="flex items-center gap-2">
-                                    <VoteButtons
+                                    <UnifiedVotingDisplay
                                       elementId={`${submission.id}-dp-${dpIndex}`}
                                       elementType="alignment"
                                       submissionId={submission.id}
-                                      initialUpvotes={0}
-                                      initialDownvotes={0}
                                       showComments={true}
                                       commentCount={commentCounts[`${submission.id}-dp-${dpIndex}`] || 0}
                                       onCommentToggle={() => toggleComments(`${submission.id}-dp-${dpIndex}`)}
-                                      onVoteChange={(vote) => {
-                                        // console.log('=== DP VOTE CHANGE ===');
-                                        // console.log('DP Index:', dpIndex);
-                                        // console.log('Vote:', vote);
-                                      }}
                                     />
                                   </div>
                                 </div>
                                 
                                 {/* Comments for Alignment */}
-                                <div className="mt-3 pt-3 border-t border-blue-200 bg-yellow-100 p-2">
-                                  <div className="text-sm text-yellow-800 mb-2">DEBUG: Comment section for alignment {dp.dp}</div>
-                                  <CommentSection
-                                    elementId={`${submission.id}-dp-${dpIndex}`}
-                                    elementType="alignment"
-                                    submissionId={submission.id}
-                                  />
-                                </div>
+                                {expandedComments.has(`${submission.id}-dp-${dpIndex}`) && (
+                                  <div className="mt-3 pt-3 border-t border-blue-200">
+                                    <CommentSection
+                                      elementId={`${submission.id}-dp-${dpIndex}`}
+                                      elementType="alignment"
+                                      submissionId={submission.id}
+                                      onCommentCountChange={(count) => updateCommentCount(`${submission.id}-dp-${dpIndex}`, count)}
+                                    />
+                                  </div>
+                                )}
                               </div>
                             )) : null}
                           </div>
@@ -1818,12 +1730,10 @@ export default function DesirablePropertiesApp() {
                                     <p className="text-purple-600 text-xs italic">Why it matters: {item.whyItMatters}</p>
                                   </div>
                                   <div className="flex items-center gap-2">
-                                    <VoteButtons
+                                    <UnifiedVotingDisplay
                                       elementId={`${submission.id}-ce-${itemIndex}`}
                                       elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
                                       submissionId={submission.id}
-                                      initialUpvotes={0}
-                                      initialDownvotes={0}
                                       showComments={true}
                                       commentCount={commentCounts[`${submission.id}-ce-${itemIndex}`] || 0}
                                       onCommentToggle={() => toggleComments(`${submission.id}-ce-${itemIndex}`)}
@@ -1832,15 +1742,16 @@ export default function DesirablePropertiesApp() {
                                 </div>
                                 
                                 {/* Comments for Clarification/Extension */}
-                                <div className="mt-3 pt-3 border-t border-purple-200 bg-green-100 p-2">
-                                  <div className="text-sm text-green-800 mb-2">DEBUG: Comment section for {item.type.toLowerCase()} {item.title}</div>
-                                  <CommentSection
-                                    elementId={`${submission.id}-ce-${itemIndex}`}
-                                    elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
-                                    submissionId={submission.id}
-                                    onCommentCountChange={(count) => updateCommentCount(`${submission.id}-ce-${itemIndex}`, count)}
-                                  />
-                                </div>
+                                {expandedComments.has(`${submission.id}-ce-${itemIndex}`) && (
+                                  <div className="mt-3 pt-3 border-t border-purple-200">
+                                    <CommentSection
+                                      elementId={`${submission.id}-ce-${itemIndex}`}
+                                      elementType={item.type.toLowerCase() as 'clarification' | 'extension'}
+                                      submissionId={submission.id}
+                                      onCommentCountChange={(count) => updateCommentCount(`${submission.id}-ce-${itemIndex}`, count)}
+                                    />
+                                  </div>
+                                )}
                               </div>
                             )) : null}
                           </div>
