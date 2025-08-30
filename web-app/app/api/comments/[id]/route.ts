@@ -10,9 +10,12 @@ export async function PUT(
     const body = await request.json();
     const { content } = body;
 
+    console.log('🔴 [API] PUT /api/comments/[id] called:', { id, content });
+
     // Verify authentication
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
+      console.log('🔴 [API] No authorization header');
       return NextResponse.json({ error: 'Unauthorized' }, { 
         status: 401,
         headers: {
@@ -24,7 +27,10 @@ export async function PUT(
     }
 
     const token = authHeader.replace('Bearer ', '');
+    console.log('🔴 [API] Token received:', token);
+    
     if (!token.startsWith('test-')) {
+      console.log('🔴 [API] Invalid token format');
       return NextResponse.json({ error: 'Invalid token' }, { 
         status: 401,
         headers: {
@@ -44,11 +50,19 @@ export async function PUT(
         where: { email: 'daveed@bridgit.io' }
       });
       userId = testUser?.id;
+      console.log('🔴 [API] Test user lookup:', { 
+        token, 
+        testUserEmail: 'daveed@bridgit.io', 
+        foundUser: testUser,
+        mappedUserId: userId 
+      });
     } else {
       userId = token; // Use token as user ID for other test tokens
+      console.log('🔴 [API] Using token as userId:', userId);
     }
 
     if (!userId) {
+      console.log('🔴 [API] No userId found');
       return NextResponse.json({ error: 'Test user not found' }, { 
         status: 401,
         headers: {
@@ -66,7 +80,16 @@ export async function PUT(
       where: { id }
     });
 
+    console.log('🔴 [API] Comment lookup:', { 
+      commentId: id, 
+      foundComment: comment,
+      commentAuthorId: comment?.authorId,
+      requestingUserId: userId,
+      isOwner: comment?.authorId === userId
+    });
+
     if (!comment) {
+      console.log('🔴 [API] Comment not found');
       return NextResponse.json({ error: 'Comment not found' }, { 
         status: 404,
         headers: {
@@ -78,6 +101,10 @@ export async function PUT(
     }
 
     if (comment.authorId !== userId) {
+      console.log('🔴 [API] Not comment owner:', { 
+        commentAuthorId: comment.authorId, 
+        requestingUserId: userId 
+      });
       return NextResponse.json({ error: 'Not comment owner' }, { 
         status: 403,
         headers: {
@@ -93,7 +120,16 @@ export async function PUT(
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
+    console.log('🔴 [API] Edit window check:', {
+      commentCreatedAt: comment.createdAt,
+      commentDate: commentDate.toISOString(),
+      now: now.toISOString(),
+      diffInHours,
+      canEdit: diffInHours <= 24
+    });
+    
     if (diffInHours > 24) {
+      console.log('🔴 [API] Edit window expired');
       return NextResponse.json({ error: 'Edit window expired (24 hours)' }, { 
         status: 400,
         headers: {
@@ -112,6 +148,8 @@ export async function PUT(
       }
     });
 
+    console.log('🔴 [API] Comment updated successfully:', updatedComment);
+
     return NextResponse.json({ 
       success: true,
       comment: updatedComment
@@ -124,7 +162,7 @@ export async function PUT(
     });
 
   } catch (error) {
-    console.error('Error editing comment:', error);
+    console.error('🔴 [API] Error editing comment:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { 
@@ -146,9 +184,12 @@ export async function DELETE(
   try {
     const { id } = await params;
 
+    console.log('🔴 [API] DELETE /api/comments/[id] called:', { id });
+
     // Verify authentication
     const authHeader = request.headers.get('authorization');
     if (!authHeader) {
+      console.log('🔴 [API] No authorization header');
       return NextResponse.json({ error: 'Unauthorized' }, { 
         status: 401,
         headers: {
@@ -160,7 +201,10 @@ export async function DELETE(
     }
 
     const token = authHeader.replace('Bearer ', '');
+    console.log('🔴 [API] Token received:', token);
+    
     if (!token.startsWith('test-')) {
+      console.log('🔴 [API] Invalid token format');
       return NextResponse.json({ error: 'Invalid token' }, { 
         status: 401,
         headers: {
@@ -180,11 +224,19 @@ export async function DELETE(
         where: { email: 'daveed@bridgit.io' }
       });
       userId = testUser?.id;
+      console.log('🔴 [API] Test user lookup:', { 
+        token, 
+        testUserEmail: 'daveed@bridgit.io', 
+        foundUser: testUser,
+        mappedUserId: userId 
+      });
     } else {
       userId = token; // Use token as user ID for other test tokens
+      console.log('🔴 [API] Using token as userId:', userId);
     }
 
     if (!userId) {
+      console.log('🔴 [API] No userId found');
       return NextResponse.json({ error: 'Test user not found' }, { 
         status: 401,
         headers: {
@@ -202,7 +254,16 @@ export async function DELETE(
       where: { id }
     });
 
+    console.log('🔴 [API] Comment lookup:', { 
+      commentId: id, 
+      foundComment: comment,
+      commentAuthorId: comment?.authorId,
+      requestingUserId: userId,
+      isOwner: comment?.authorId === userId
+    });
+
     if (!comment) {
+      console.log('🔴 [API] Comment not found');
       return NextResponse.json({ error: 'Comment not found' }, { 
         status: 404,
         headers: {
@@ -214,6 +275,10 @@ export async function DELETE(
     }
 
     if (comment.authorId !== userId) {
+      console.log('🔴 [API] Not comment owner:', { 
+        commentAuthorId: comment.authorId, 
+        requestingUserId: userId 
+      });
       return NextResponse.json({ error: 'Not comment owner' }, { 
         status: 403,
         headers: {
@@ -229,7 +294,16 @@ export async function DELETE(
     const now = new Date();
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
+    console.log('🔴 [API] Delete window check:', {
+      commentCreatedAt: comment.createdAt,
+      commentDate: commentDate.toISOString(),
+      now: now.toISOString(),
+      diffInHours,
+      canDelete: diffInHours <= 24
+    });
+    
     if (diffInHours > 24) {
+      console.log('🔴 [API] Delete window expired');
       return NextResponse.json({ error: 'Delete window expired (24 hours)' }, { 
         status: 400,
         headers: {
@@ -245,6 +319,8 @@ export async function DELETE(
       where: { id }
     });
 
+    console.log('🔴 [API] Comment deleted successfully');
+
     return NextResponse.json({ 
       success: true,
       message: 'Comment deleted successfully'
@@ -257,7 +333,7 @@ export async function DELETE(
     });
 
   } catch (error) {
-    console.error('Error deleting comment:', error);
+    console.error('🔴 [API] Error deleting comment:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { 
