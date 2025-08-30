@@ -498,11 +498,8 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const isCommentOwner = (comment: Comment) => {
-    // Add comprehensive logging for debugging comment ownership
-    const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
-    
     // IMMEDIATE DEBUGGING - always log this
+    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
     console.log('🔴 [CommentSection] isCommentOwner called:', {
       elementId,
       elementType,
@@ -529,22 +526,21 @@ Is Owner: ${authenticated && user?.id === comment.userId}
 Location: ${window.location.pathname}`);
     }
     
-    if (isScottYatesSubmission || isDPDetailModal) {
-      console.log('🔵 [CommentSection] Checking comment ownership:', {
-        elementId,
-        elementType,
-        submissionId,
-        authenticated,
-        userId: user?.id,
-        userEmail: user?.email,
-        commentUserId: comment.userId,
-        commentId: comment.id,
-        commentUserName: comment.userName,
-        isOwner: authenticated && user?.id === comment.userId,
-        context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE',
-        location: window.location.pathname
-      });
-    }
+    // EXPANDED DEBUGGING - show full object
+    console.log('🔴 [CommentSection] FULL OBJECT DETAILS:', {
+      user: user,
+      comment: comment,
+      comparison: {
+        user_id: user?.id,
+        comment_user_id: comment.userId,
+        user_id_type: typeof user?.id,
+        comment_user_id_type: typeof comment.userId,
+        are_equal: user?.id === comment.userId,
+        authenticated: authenticated,
+        final_result: authenticated && user?.id === comment.userId
+      }
+    });
+    
     return authenticated && user?.id === comment.userId;
   };
 
