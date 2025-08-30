@@ -54,7 +54,8 @@ export default function ProfilePage() {
       
       const response = await fetch(`/api/user-activity?userId=${actualUserId}`, {
         headers: {
-          'Authorization': `Bearer ${user?.accessToken || 'test-user-123'}`
+          'Authorization': `Bearer ${user?.accessToken || 'test-user-123'}`,
+          'Content-Type': 'application/json'
         }
       });
       
@@ -234,7 +235,10 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Score Display */}
           <div className="lg:col-span-1">
-            <ScoreDisplay userId={user?.id || 'default-user'} />
+            <ScoreDisplay 
+              userId={user?.id || 'default-user'} 
+              accessToken={user?.accessToken || 'test-user-123'}
+            />
           </div>
           
           {/* Rank Display */}

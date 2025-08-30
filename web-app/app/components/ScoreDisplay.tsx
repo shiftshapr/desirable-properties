@@ -27,9 +27,10 @@ interface UserActivity {
 
 interface ScoreDisplayProps {
   userId: string;
+  accessToken?: string;
 }
 
-export default function ScoreDisplay({ userId }: ScoreDisplayProps) {
+export default function ScoreDisplay({ userId, accessToken }: ScoreDisplayProps) {
   const [scoreData, setScoreData] = useState<{
     scoreBreakdown: ScoreBreakdown;
     activity: UserActivity;
@@ -41,7 +42,12 @@ export default function ScoreDisplay({ userId }: ScoreDisplayProps) {
     const fetchScore = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/scores?userId=${userId}`);
+        const response = await fetch(`/api/scores?userId=${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken || 'test-user-123'}`,
+            'Content-Type': 'application/json'
+          }
+        });
         
         if (!response.ok) {
           throw new Error('Failed to fetch score data');
