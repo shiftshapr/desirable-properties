@@ -76,6 +76,9 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       
       // Ensure comments is always an array
       if (Array.isArray(comments)) {
+        // IMMEDIATE DEBUGGING - log the raw comments data
+        console.log('🔴 [CommentSection] Raw comments from API:', comments);
+        
         setComments(comments);
         const commentCount = comments.length;
         if (isScottYatesSubmission) {
@@ -498,49 +501,6 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const isCommentOwner = (comment: Comment) => {
-    // IMMEDIATE DEBUGGING - always log this
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
-    console.log('🔴 [CommentSection] isCommentOwner called:', {
-      elementId,
-      elementType,
-      submissionId,
-      authenticated,
-      userId: user?.id,
-      userEmail: user?.email,
-      commentUserId: comment.userId,
-      commentId: comment.id,
-      commentUserName: comment.userName,
-      isOwner: authenticated && user?.id === comment.userId,
-      context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE',
-      location: window.location.pathname
-    });
-    
-    // IMMEDIATE DEBUGGING WITH ALERT
-    if (comment.userName === 'Daveed Benjamin' || comment.userName === 'daveed@bridgit.io') {
-      alert(`DEBUG: Comment ownership check for Daveed's comment
-Comment ID: ${comment.id}
-User ID: ${user?.id}
-Comment User ID: ${comment.userId}
-Authenticated: ${authenticated}
-Is Owner: ${authenticated && user?.id === comment.userId}
-Location: ${window.location.pathname}`);
-    }
-    
-    // EXPANDED DEBUGGING - show full object
-    console.log('🔴 [CommentSection] FULL OBJECT DETAILS:', {
-      user: user,
-      comment: comment,
-      comparison: {
-        user_id: user?.id,
-        comment_user_id: comment.userId,
-        user_id_type: typeof user?.id,
-        comment_user_id_type: typeof comment.userId,
-        are_equal: user?.id === comment.userId,
-        authenticated: authenticated,
-        final_result: authenticated && user?.id === comment.userId
-      }
-    });
-    
     return authenticated && user?.id === comment.userId;
   };
 
@@ -566,7 +526,16 @@ Location: ${window.location.pathname}`);
     return diffInHours <= 24;
   };
 
-  const renderComment = (comment: Comment, isReply = false) => (
+  const renderComment = (comment: Comment, isReply = false) => {
+    // IMMEDIATE DEBUGGING - log every comment being rendered
+    console.log('🔴 [CommentSection] Rendering comment:', {
+      commentId: comment.id,
+      commentUserName: comment.userName,
+      commentUserId: comment.userId,
+      isReply
+    });
+    
+    return (
     <div key={comment.id} className={`${isReply ? 'ml-4 border-l border-gray-600 pl-2' : ''}`}>
       <div className="bg-gray-800 rounded p-2 mb-2">
         <div className="flex items-start justify-between">
@@ -724,6 +693,7 @@ Location: ${window.location.pathname}`);
       )}
     </div>
   );
+  };
 
   const sortedComments = sortComments(comments, sortBy);
 
@@ -821,4 +791,4 @@ Location: ${window.location.pathname}`);
       )}
     </div>
   );
-} 
+  }; 
