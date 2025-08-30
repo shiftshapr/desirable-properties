@@ -74,30 +74,14 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         console.log('🔵 [CommentSection] Received comments:', comments);
       }
       
-              // Ensure comments is always an array and transform to match Comment interface
-        if (Array.isArray(comments)) {
-          // Transform API response to match Comment interface
-          const transformedComments = comments.map(comment => ({
-            id: comment.id,
-            userId: comment.author?.id || comment.userId || 'unknown',
-            userName: comment.author?.userName || comment.author?.email || comment.userName || 'Unknown',
-            content: comment.content,
-            createdAt: comment.createdAt,
-            upvotes: comment.upvotes || 0,
-            downvotes: comment.downvotes || 0,
-            replies: comment.replies || [],
-            parentId: comment.parentId,
-            isEdited: comment.isEdited,
-            editedAt: comment.editedAt
-          }));
-          
-          setComments(transformedComments);
-          const commentCount = transformedComments.length;
-          if (isScottYatesSubmission) {
-            console.log('🔵 [CommentSection] Setting comment count to:', commentCount, 'for elementId:', elementId, 'elementType:', elementType);
-            console.log('🔵 [CommentSection] Transformed comments:', transformedComments);
-          }
-          onCommentCountChange?.(commentCount);
+      // Ensure comments is always an array
+      if (Array.isArray(comments)) {
+        setComments(comments);
+        const commentCount = comments.length;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Setting comment count to:', commentCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(commentCount);
       } else {
         if (isScottYatesSubmission) {
           console.warn('API returned non-array comments:', comments);
@@ -226,43 +210,23 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         console.log('🔵 [CommentSection] Comment submission result:', result);
       }
       
-              // Handle both unified service response and legacy response
-        if (result.comment) {
-          // Legacy response format - transform to match Comment interface
-          const transformedComment: Comment = {
-            id: result.comment.id,
-            userId: result.comment.author?.id || result.comment.userId || 'unknown',
-            userName: result.comment.author?.userName || result.comment.author?.email || result.comment.userName || 'Unknown',
-            content: result.comment.content,
-            createdAt: result.comment.createdAt,
-            upvotes: result.comment.upvotes || 0,
-            downvotes: result.comment.downvotes || 0,
-            replies: result.comment.replies || []
-          };
-          setComments(prev => [transformedComment, ...prev]);
-          const newCount = comments.length + 1;
-          if (isScottYatesSubmission) {
-            console.log('🔵 [CommentSection] Updated comment count (legacy response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
-          }
-          onCommentCountChange?.(newCount);
-        } else if (result.comments) {
-          // Unified service response format - transform to match Comment interface
-          const transformedComments = result.comments.map((comment: any) => ({
-            id: comment.id,
-            userId: comment.author?.id || comment.userId || 'unknown',
-            userName: comment.author?.userName || comment.author?.email || comment.userName || 'Unknown',
-            content: comment.content,
-            createdAt: comment.createdAt,
-            upvotes: comment.upvotes || 0,
-            downvotes: comment.downvotes || 0,
-            replies: comment.replies || []
-          }));
-          setComments(transformedComments);
-          const newCount = transformedComments.length;
-          if (isScottYatesSubmission) {
-            console.log('🔵 [CommentSection] Updated comment count (unified response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
-          }
-          onCommentCountChange?.(newCount);
+      // Handle both unified service response and legacy response
+      if (result.comment) {
+        // Legacy response format
+        setComments(prev => [result.comment, ...prev]);
+        const newCount = comments.length + 1;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Updated comment count (legacy response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(newCount);
+      } else if (result.comments) {
+        // Unified service response format
+        setComments(result.comments);
+        const newCount = result.comments.length;
+        if (isScottYatesSubmission) {
+          console.log('🔵 [CommentSection] Updated comment count (unified response):', newCount, 'for elementId:', elementId, 'elementType:', elementType);
+        }
+        onCommentCountChange?.(newCount);
       } else {
         // Fallback
         const comment: Comment = {
@@ -439,54 +403,20 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   const handleEditComment = async (commentId: string) => {
     if (!editContent.trim()) return;
 
-    const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
-    
-    if (isScottYatesSubmission || isDPDetailModal) {
-      console.log('🔵 [CommentSection] handleEditComment called:', {
-        commentId,
-        editContent,
-        elementId,
-        elementType,
-        submissionId,
-        context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE',
-        location: window.location.pathname
-      });
-    }
-
     try {
-      const token = await getAccessToken?.();
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Edit token:', token);
-      }
-
       const response = await fetch(`/api/comments/${commentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${await getAccessToken?.()}`,
         },
         body: JSON.stringify({
           content: editContent,
         }),
       });
 
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Edit response status:', response.status);
-        console.log('🔵 [CommentSection] Edit response ok:', response.ok);
-      }
-
       if (!response.ok) {
-        const errorText = await response.text();
-        if (isScottYatesSubmission || isDPDetailModal) {
-          console.log('🔵 [CommentSection] Edit error response:', errorText);
-        }
-        throw new Error(`Failed to edit comment: ${errorText}`);
-      }
-
-      const result = await response.json();
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Edit success result:', result);
+        throw new Error('Failed to edit comment');
       }
 
       setComments(prev => 
@@ -505,69 +435,28 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       setEditContent('');
     } catch (error) {
       console.error('Error editing comment:', error);
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Edit error caught:', error);
-      }
     }
   };
 
   const handleDelete = async (commentId: string) => {
     if (!window.confirm('Are you sure you want to delete this comment?')) return;
     
-    const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
-    
-    if (isScottYatesSubmission || isDPDetailModal) {
-      console.log('🔵 [CommentSection] handleDelete called:', {
-        commentId,
-        elementId,
-        elementType,
-        submissionId,
-        context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE',
-        location: window.location.pathname
-      });
-    }
-    
     try {
       const token = await getAccessToken();
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Delete token:', token);
-      }
-      
-      if (!token) {
-        if (isScottYatesSubmission || isDPDetailModal) {
-          console.log('🔵 [CommentSection] No token available for delete');
-        }
-        return;
-      }
+      if (!token) return;
   
       const response = await fetch(`/api/comments/${commentId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
   
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Delete response status:', response.status);
-        console.log('🔵 [CommentSection] Delete response ok:', response.ok);
-      }
-  
       if (response.ok) {
-        if (isScottYatesSubmission || isDPDetailModal) {
-          console.log('🔵 [CommentSection] Delete successful, updating comments state');
-        }
         setComments(prev => prev.filter(c => c.id !== commentId));
       } else {
-        const errorText = await response.text();
-        if (isScottYatesSubmission || isDPDetailModal) {
-          console.log('🔵 [CommentSection] Delete error response:', errorText);
-        }
-        throw new Error(`Delete failed: ${errorText}`);
+        throw new Error('Delete failed');
       }
     } catch (error) {
       console.error('Error deleting comment:', error);
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] Delete error caught:', error);
-      }
       alert('Failed to delete comment');
     }
   };
@@ -613,6 +502,22 @@ export default function CommentSection({ elementId, elementType, submissionId, o
     const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
     const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
     
+    // IMMEDIATE DEBUGGING - always log this
+    console.log('🔴 [CommentSection] isCommentOwner called:', {
+      elementId,
+      elementType,
+      submissionId,
+      authenticated,
+      userId: user?.id,
+      userEmail: user?.email,
+      commentUserId: comment.userId,
+      commentId: comment.id,
+      commentUserName: comment.userName,
+      isOwner: authenticated && user?.id === comment.userId,
+      context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE',
+      location: window.location.pathname
+    });
+    
     if (isScottYatesSubmission || isDPDetailModal) {
       console.log('🔵 [CommentSection] Checking comment ownership:', {
         elementId,
@@ -633,13 +538,11 @@ export default function CommentSection({ elementId, elementType, submissionId, o
   };
 
   const canEditComment = (comment: Comment) => {
-    const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
+    // IMMEDIATE DEBUGGING - always log this
+    console.log('🔴 [CommentSection] canEditComment called for comment:', comment.id);
     
     if (!isCommentOwner(comment)) {
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] canEditComment: false - not owner');
-      }
+      console.log('🔴 [CommentSection] canEditComment: false - not owner');
       return false;
     }
     
@@ -649,27 +552,22 @@ export default function CommentSection({ elementId, elementType, submissionId, o
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
     const canEdit = diffInHours <= 24;
-    if (isScottYatesSubmission || isDPDetailModal) {
-      console.log('🔵 [CommentSection] canEditComment:', {
-        commentId: comment.id,
-        commentCreatedAt: comment.createdAt,
-        diffInHours,
-        canEdit,
-        context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE'
-      });
-    }
+    console.log('🔴 [CommentSection] canEditComment result:', {
+      commentId: comment.id,
+      commentCreatedAt: comment.createdAt,
+      diffInHours,
+      canEdit
+    });
     
     return canEdit;
   };
 
   const canDeleteComment = (comment: Comment) => {
-    const isScottYatesSubmission = submissionId === 'cmds3zumt00s3h2108o3bojs9';
-    const isDPDetailModal = window.location.pathname === '/'; // Main page has DP detail modal
+    // IMMEDIATE DEBUGGING - always log this
+    console.log('🔴 [CommentSection] canDeleteComment called for comment:', comment.id);
     
     if (!isCommentOwner(comment)) {
-      if (isScottYatesSubmission || isDPDetailModal) {
-        console.log('🔵 [CommentSection] canDeleteComment: false - not owner');
-      }
+      console.log('🔴 [CommentSection] canDeleteComment: false - not owner');
       return false;
     }
     
@@ -679,15 +577,12 @@ export default function CommentSection({ elementId, elementType, submissionId, o
     const diffInHours = (now.getTime() - commentDate.getTime()) / (1000 * 60 * 60);
     
     const canDelete = diffInHours <= 24;
-    if (isScottYatesSubmission || isDPDetailModal) {
-      console.log('🔵 [CommentSection] canDeleteComment:', {
-        commentId: comment.id,
-        commentCreatedAt: comment.createdAt,
-        diffInHours,
-        canDelete,
-        context: isDPDetailModal ? 'DP_DETAIL_MODAL' : 'SUBMISSION_DETAIL_PAGE'
-      });
-    }
+    console.log('🔴 [CommentSection] canDeleteComment result:', {
+      commentId: comment.id,
+      commentCreatedAt: comment.createdAt,
+      diffInHours,
+      canDelete
+    });
     
     return canDelete;
   };
