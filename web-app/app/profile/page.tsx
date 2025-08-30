@@ -33,17 +33,22 @@ interface UserActivity {
 }
 
 export default function ProfilePage() {
-  const { user, isAuthenticated: authenticated, isReady: ready } = useAuth();
+  const { user, isAuthenticated: authenticated, isReady: ready, getAccessToken } = useAuth();
   const [userActivity, setUserActivity] = useState<UserActivity | null>(null);
   const [userRank, setUserRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState<string>('test-user-123');
 
   useEffect(() => {
     if (authenticated && user) {
+      // Get access token first
+      getAccessToken().then(token => {
+        setAccessToken(token || 'test-user-123');
+      });
       fetchUserActivity();
       fetchUserRank();
     }
-  }, [authenticated, user]);
+  }, [authenticated, user, getAccessToken]);
 
   const fetchUserActivity = async () => {
     try {
@@ -54,7 +59,7 @@ export default function ProfilePage() {
       
       const response = await fetch(`/api/user-activity?userId=${actualUserId}`, {
         headers: {
-          'Authorization': `Bearer ${user?.accessToken || 'test-user-123'}`,
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
@@ -237,7 +242,7 @@ export default function ProfilePage() {
           <div className="lg:col-span-1">
             <ScoreDisplay 
               userId={user?.id || 'default-user'} 
-              accessToken={user?.accessToken || 'test-user-123'}
+              accessToken={accessToken}
             />
           </div>
           
