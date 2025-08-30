@@ -76,6 +76,9 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       
       // Ensure comments is always an array
       if (Array.isArray(comments)) {
+        // IMMEDIATE DEBUGGING - log the raw comments data
+        console.log('🔴 [CommentSection] Raw comments from API:', comments);
+        
         setComments(comments);
         const commentCount = comments.length;
         if (isScottYatesSubmission) {
