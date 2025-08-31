@@ -86,12 +86,17 @@ export async function GET(request: Request) {
       lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
     };
 
-    const scoringService = new ScoringService();
-    const scoreBreakdown = scoringService.getScoreBreakdown(userActivity);
-
+    // Simple score calculation for now
+    const totalScore = submissionCount * 10 + commentCount * 2 + thumbsUpGiven * 1;
+    
     return NextResponse.json({
       userId: authenticatedUserId,
-      scoreBreakdown,
+      scoreBreakdown: {
+        total: totalScore,
+        submissions: submissionCount * 10,
+        comments: commentCount * 2,
+        engagement: thumbsUpGiven * 1
+      },
       activity: userActivity
     });
   } catch (error) {
