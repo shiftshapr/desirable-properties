@@ -38,101 +38,12 @@ export async function GET(request: NextRequest) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Fetch user's votes
-    const votes = await prisma.vote.findMany({
-      where: { userId: authenticatedUserId },
-      select: {
-        type: true,
-        createdAt: true,
-        submissionId: true,
-        elementType: true,
-        elementId: true
-      }
+    // Simple test response first
+    return NextResponse.json({
+      userId: authenticatedUserId,
+      message: "User activity API is working",
+      timestamp: new Date().toISOString()
     });
-
-    // Fetch user's submissions
-    const submissions = await prisma.submission.findMany({
-      where: { authorId: authenticatedUserId },
-      select: {
-        id: true,
-        createdAt: true
-      }
-    });
-
-    // Fetch user's comments
-    const comments = await prisma.comment.findMany({
-      where: { authorId: authenticatedUserId },
-      select: {
-        id: true,
-        createdAt: true,
-        parentId: true
-      }
-    });
-
-    // Calculate activity metrics
-    const totalVotes = votes.length;
-    const upvotes = votes.filter(v => v.type === 'UP').length;
-    const downvotes = votes.filter(v => v.type === 'DOWN').length;
-    
-    const submissionCount = submissions.length;
-    const commentCount = comments.filter(c => !c.parentId).length; // Top-level comments
-    const replyCount = comments.filter(c => c.parentId).length; // Replies
-
-    // Get votes received on user's content
-    const userSubmissionIds = submissions.map(s => s.id);
-    const userCommentIds = comments.map(c => c.id);
-    
-    const votesReceived = await prisma.vote.findMany({
-      where: {
-        OR: [
-          { submissionId: { in: userSubmissionIds } },
-          { elementId: { in: userCommentIds }, elementType: 'comment' }
-        ]
-      },
-      select: {
-        type: true
-      }
-    });
-
-    const thumbsUpReceived = votesReceived.filter(v => v.type === 'UP').length;
-    const commentsReceived = await prisma.comment.count({
-      where: {
-        OR: [
-          { submissionId: { in: userSubmissionIds } },
-          { parentId: { in: userCommentIds } }
-        ]
-      }
-    });
-
-    // Get votes given by user
-    const thumbsUpGiven = upvotes;
-    const thumbsDownGiven = downvotes;
-
-    const userActivity = {
-      totalVotes,
-      upvotes,
-      downvotes,
-      submissions: submissionCount,
-      clarifications: 0, // TODO: Implement when clarification system is added
-      extensions: 0, // TODO: Implement when extension system is added
-      comments: commentCount,
-      replies: replyCount,
-      thumbsUpGiven,
-      thumbsDownGiven,
-      thumbsUpReceived,
-      commentsReceived,
-      recentVotes: votes.slice(0, 10).map(vote => ({
-        id: vote.elementId,
-        userId: authenticatedUserId,
-        submissionId: vote.submissionId,
-        elementType: vote.elementType,
-        elementId: vote.elementId,
-        vote: vote.type.toLowerCase() as 'up' | 'down',
-        createdAt: vote.createdAt.toISOString()
-      }))
-    };
-
-    return NextResponse.json(userActivity);
 
   } catch (error) {
     console.error('Error fetching user activity:', error);
