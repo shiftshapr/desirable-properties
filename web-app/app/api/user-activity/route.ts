@@ -38,12 +38,65 @@ export async function GET(request: NextRequest) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Simple test response first
-    return NextResponse.json({
-      userId: authenticatedUserId,
-      message: "User activity API is working",
-      timestamp: new Date().toISOString()
+    // Fetch basic user activity data
+    const votes = await prisma.vote.findMany({
+      where: { userId: authenticatedUserId },
+      select: {
+        type: true,
+        createdAt: true
+      }
     });
+
+    const submissions = await prisma.submission.findMany({
+      where: { authorId: authenticatedUserId },
+      select: {
+        id: true,
+        createdAt: true
+      }
+    });
+
+    const comments = await prisma.comment.findMany({
+      where: { authorId: authenticatedUserId },
+      select: {
+        id: true,
+        createdAt: true,
+        parentId: true
+      }
+    });
+
+    // Calculate basic metrics
+    const totalVotes = votes.length;
+    const upvotes = votes.filter(v => v.type === 'UP').length;
+    const downvotes = votes.filter(v => v.type === 'DOWN').length;
+    const submissionCount = submissions.length;
+    const commentCount = comments.filter(c => !c.parentId).length;
+    const replyCount = comments.filter(c => c.parentId).length;
+
+    const userActivity = {
+      totalVotes,
+      upvotes,
+      downvotes,
+      submissions: submissionCount,
+      clarifications: 0,
+      extensions: 0,
+      comments: commentCount,
+      replies: replyCount,
+      thumbsUpGiven: upvotes,
+      thumbsDownGiven: downvotes,
+      thumbsUpReceived: 0, // Simplified for now
+      commentsReceived: 0, // Simplified for now
+      recentVotes: votes.slice(0, 10).map(vote => ({
+        id: vote.createdAt.getTime().toString(),
+        userId: authenticatedUserId,
+        submissionId: null,
+        elementType: 'vote',
+        elementId: vote.createdAt.getTime().toString(),
+        vote: vote.type.toLowerCase() as 'up' | 'down',
+        createdAt: vote.createdAt.toISOString()
+      }))
+    };
+
+    return NextResponse.json(userActivity);
 
   } catch (error) {
     console.error('Error fetching user activity:', error);

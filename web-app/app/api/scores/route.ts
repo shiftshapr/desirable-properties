@@ -42,11 +42,57 @@ export async function GET(request: Request) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Simple test response first
+    // Fetch basic user data
+    const votes = await prisma.vote.findMany({
+      where: { userId: authenticatedUserId },
+      select: { type: true }
+    });
+
+    const submissions = await prisma.submission.findMany({
+      where: { authorId: authenticatedUserId },
+      select: { id: true, createdAt: true }
+    });
+
+    const comments = await prisma.comment.findMany({
+      where: { authorId: authenticatedUserId },
+      select: { id: true, parentId: true }
+    });
+
+    const user = await prisma.user.findUnique({
+      where: { id: authenticatedUserId },
+      select: { signupDate: true, lastActivity: true }
+    });
+
+    // Calculate basic metrics
+    const submissionCount = submissions.length;
+    const commentCount = comments.filter(c => !c.parentId).length;
+    const replyCount = comments.filter(c => c.parentId).length;
+    const thumbsUpGiven = votes.filter(v => v.type === 'UP').length;
+    const thumbsDownGiven = votes.filter(v => v.type === 'DOWN').length;
+
+    // Create user activity data
+    const userActivity = {
+      userId: authenticatedUserId,
+      submissions: submissionCount,
+      comments: commentCount,
+      replies: replyCount,
+      thumbsupGiven: thumbsUpGiven,
+      thumbsdownGiven: thumbsDownGiven,
+      thumbsupReceived: 0, // Simplified for now
+      commentsReceived: 0, // Simplified for now
+      repliesReceived: 0,
+      signupDate: user?.signupDate?.toISOString() || new Date().toISOString(),
+      firstSubmissionDate: submissions.length > 0 ? submissions[0].createdAt.toISOString() : undefined,
+      lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
+    };
+
+    const scoringService = new ScoringService();
+    const scoreBreakdown = scoringService.getScoreBreakdown(userActivity);
+
     return NextResponse.json({
       userId: authenticatedUserId,
-      message: "API is working",
-      timestamp: new Date().toISOString()
+      scoreBreakdown,
+      activity: userActivity
     });
   } catch (error) {
     console.error('Error calculating user score:', error);
