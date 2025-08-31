@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import ScoringService from '../../app/lib/scoringService';
+import ScoringService from '@/app/lib/scoringService';
 
 export const dynamic = 'force-dynamic';
 
