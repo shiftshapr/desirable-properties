@@ -42,100 +42,11 @@ export async function GET(request: Request) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Fetch user's submissions
-    const submissions = await prisma.submission.findMany({
-      where: { authorId: authenticatedUserId },
-      select: {
-        id: true,
-        createdAt: true
-      },
-      orderBy: { createdAt: 'asc' }
-    });
-
-    // Fetch user's comments
-    const comments = await prisma.comment.findMany({
-      where: { authorId: authenticatedUserId },
-      select: {
-        id: true,
-        createdAt: true,
-        parentId: true
-      }
-    });
-
-    // Fetch user's votes
-    const votes = await prisma.vote.findMany({
-      where: { userId: authenticatedUserId },
-      select: {
-        type: true
-      }
-    });
-
-    // Get user info
-    const user = await prisma.user.findUnique({
-      where: { id: authenticatedUserId },
-      select: {
-        signupDate: true,
-        lastActivity: true
-      }
-    });
-
-    // Calculate activity metrics
-    const submissionCount = submissions.length;
-    const commentCount = comments.filter(c => !c.parentId).length; // Top-level comments
-    const replyCount = comments.filter(c => c.parentId).length; // Replies
-    
-    const thumbsUpGiven = votes.filter(v => v.type === 'UP').length;
-    const thumbsDownGiven = votes.filter(v => v.type === 'DOWN').length;
-
-    // Get votes received on user's content
-    const userSubmissionIds = submissions.map(s => s.id);
-    const userCommentIds = comments.map(c => c.id);
-    
-    const votesReceived = await prisma.vote.findMany({
-      where: {
-        OR: [
-          { submissionId: { in: userSubmissionIds } },
-          { elementId: { in: userCommentIds }, elementType: 'comment' }
-        ]
-      },
-      select: {
-        type: true
-      }
-    });
-
-    const thumbsUpReceived = votesReceived.filter(v => v.type === 'UP').length;
-    const commentsReceived = await prisma.comment.count({
-      where: {
-        OR: [
-          { submissionId: { in: userSubmissionIds } },
-          { parentId: { in: userCommentIds } }
-        ]
-      }
-    });
-
-    // Create real user activity data
-    const userActivity = {
-      userId: authenticatedUserId,
-      submissions: submissionCount,
-      comments: commentCount,
-      replies: replyCount,
-      thumbsupGiven: thumbsUpGiven,
-      thumbsdownGiven: thumbsDownGiven,
-      thumbsupReceived: thumbsUpReceived,
-      commentsReceived: commentsReceived,
-      repliesReceived: 0, // TODO: Implement when reply system is enhanced
-      signupDate: user?.signupDate?.toISOString() || new Date().toISOString(),
-      firstSubmissionDate: submissions.length > 0 ? submissions[0].createdAt.toISOString() : undefined,
-      lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
-    };
-
-    const scoringService = new ScoringService();
-    const scoreBreakdown = scoringService.getScoreBreakdown(userActivity);
-
+    // Simple test response first
     return NextResponse.json({
       userId: authenticatedUserId,
-      scoreBreakdown,
-      activity: userActivity
+      message: "API is working",
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error calculating user score:', error);
