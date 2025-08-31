@@ -42,62 +42,11 @@ export async function GET(request: Request) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Fetch basic user data
-    const votes = await prisma.vote.findMany({
-      where: { userId: authenticatedUserId },
-      select: { type: true }
-    });
-
-    const submissions = await prisma.submission.findMany({
-      where: { authorId: authenticatedUserId },
-      select: { id: true, createdAt: true }
-    });
-
-    const comments = await prisma.comment.findMany({
-      where: { authorId: authenticatedUserId },
-      select: { id: true, parentId: true }
-    });
-
-    const user = await prisma.user.findUnique({
-      where: { id: authenticatedUserId },
-      select: { signupDate: true, lastActivity: true }
-    });
-
-    // Calculate basic metrics
-    const submissionCount = submissions.length;
-    const commentCount = comments.filter(c => !c.parentId).length;
-    const replyCount = comments.filter(c => c.parentId).length;
-    const thumbsUpGiven = votes.filter(v => v.type === 'UP').length;
-    const thumbsDownGiven = votes.filter(v => v.type === 'DOWN').length;
-
-    // Create user activity data
-    const userActivity = {
-      userId: authenticatedUserId,
-      submissions: submissionCount,
-      comments: commentCount,
-      replies: replyCount,
-      thumbsupGiven: thumbsUpGiven,
-      thumbsdownGiven: thumbsDownGiven,
-      thumbsupReceived: 0, // Simplified for now
-      commentsReceived: 0, // Simplified for now
-      repliesReceived: 0,
-      signupDate: user?.signupDate?.toISOString() || new Date().toISOString(),
-      firstSubmissionDate: submissions.length > 0 ? submissions[0].createdAt.toISOString() : undefined,
-      lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
-    };
-
-    // Simple score calculation for now
-    const totalScore = submissionCount * 10 + commentCount * 2 + thumbsUpGiven * 1;
-    
+    // Simple test response
     return NextResponse.json({
       userId: authenticatedUserId,
-      scoreBreakdown: {
-        total: totalScore,
-        submissions: submissionCount * 10,
-        comments: commentCount * 2,
-        engagement: thumbsUpGiven * 1
-      },
-      activity: userActivity
+      message: "Scores API working",
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error calculating user score:', error);
