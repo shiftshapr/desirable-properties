@@ -38,12 +38,85 @@ export async function GET(request: NextRequest) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Simple test response
-    return NextResponse.json({
-      userId: authenticatedUserId,
-      message: "User activity API working",
-      timestamp: new Date().toISOString()
-    });
+    // Fetch basic user activity data with error handling
+    try {
+      const votes = await prisma.vote.findMany({
+        where: { userId: authenticatedUserId },
+        select: {
+          type: true,
+          createdAt: true
+        }
+      });
+
+      const submissions = await prisma.submission.findMany({
+        where: { authorId: authenticatedUserId },
+        select: {
+          id: true,
+          createdAt: true
+        }
+      });
+
+      const comments = await prisma.comment.findMany({
+        where: { authorId: authenticatedUserId },
+        select: {
+          id: true,
+          createdAt: true,
+          parentId: true
+        }
+      });
+
+      // Calculate basic metrics
+      const totalVotes = votes.length;
+      const upvotes = votes.filter(v => v.type === 'UP').length;
+      const downvotes = votes.filter(v => v.type === 'DOWN').length;
+      const submissionCount = submissions.length;
+      const commentCount = comments.filter(c => !c.parentId).length;
+      const replyCount = comments.filter(c => c.parentId).length;
+
+      const userActivity = {
+        totalVotes,
+        upvotes,
+        downvotes,
+        submissions: submissionCount,
+        clarifications: 0,
+        extensions: 0,
+        comments: commentCount,
+        replies: replyCount,
+        thumbsUpGiven: upvotes,
+        thumbsDownGiven: downvotes,
+        thumbsUpReceived: 0, // Simplified for now
+        commentsReceived: 0, // Simplified for now
+        recentVotes: votes.slice(0, 10).map(vote => ({
+          id: vote.createdAt.getTime().toString(),
+          userId: authenticatedUserId,
+          submissionId: null,
+          elementType: 'vote',
+          elementId: vote.createdAt.getTime().toString(),
+          vote: vote.type.toLowerCase() as 'up' | 'down',
+          createdAt: vote.createdAt.toISOString()
+        }))
+      };
+
+      return NextResponse.json(userActivity);
+    } catch (dbError) {
+      console.error('Database error in user-activity API:', dbError);
+      // Return fallback data if database fails
+      return NextResponse.json({
+        totalVotes: 0,
+        upvotes: 0,
+        downvotes: 0,
+        submissions: 0,
+        clarifications: 0,
+        extensions: 0,
+        comments: 0,
+        replies: 0,
+        thumbsUpGiven: 0,
+        thumbsDownGiven: 0,
+        thumbsUpReceived: 0,
+        commentsReceived: 0,
+        recentVotes: []
+      });
+    }
 
   } catch (error) {
     console.error('Error fetching user activity:', error);
