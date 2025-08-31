@@ -139,8 +139,13 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error calculating user score:', error);
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      userId: authenticatedUserId
+    });
     return NextResponse.json(
-      { error: 'Failed to calculate user score' },
+      { error: 'Failed to calculate user score', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
