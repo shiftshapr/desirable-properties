@@ -42,61 +42,98 @@ export async function GET(request: Request) {
 
     const { prisma } = await import('@/lib/db');
 
-    // Fetch basic user data with error handling
+    // Fetch comprehensive user data with the same logic as leaderboard
     try {
-      const votes = await prisma.vote.findMany({
-        where: { userId: authenticatedUserId },
-        select: { type: true }
-      });
-
-      const submissions = await prisma.submission.findMany({
-        where: { authorId: authenticatedUserId },
-        select: { id: true, createdAt: true }
-      });
-
-      const comments = await prisma.comment.findMany({
-        where: { authorId: authenticatedUserId },
-        select: { id: true, parentId: true }
-      });
-
       const user = await prisma.user.findUnique({
         where: { id: authenticatedUserId },
-        select: { signupDate: true, lastActivity: true }
+        include: {
+          submissions: {
+            select: { id: true, createdAt: true },
+            orderBy: { createdAt: 'asc' }
+          },
+          comments: {
+            select: { id: true }
+          },
+          votes: {
+            select: { id: true, type: true }
+          }
+        }
       });
 
-      // Calculate basic metrics
-      const submissionCount = submissions.length;
-      const commentCount = comments.filter(c => !c.parentId).length;
-      const replyCount = comments.filter(c => c.parentId).length;
-      const thumbsUpGiven = votes.filter(v => v.type === 'UP').length;
-      const thumbsDownGiven = votes.filter(v => v.type === 'DOWN').length;
+      if (!user) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
+
+      // Get votes received on user's submissions
+      const submissionsVotesReceived = await prisma.vote.count({
+        where: {
+          submissionId: {
+            in: user.submissions.map(s => s.id)
+          },
+          type: 'UP'
+        }
+      });
+
+      // Get comments received on user's submissions
+      const submissionsCommentsReceived = await prisma.comment.count({
+        where: {
+          submissionId: {
+            in: user.submissions.map(s => s.id)
+          }
+        }
+      });
+
+      // Get votes received on user's comments
+      const commentsVotesReceived = await prisma.vote.count({
+        where: {
+          commentId: {
+            in: user.comments.map(c => c.id)
+          },
+          type: 'UP'
+        }
+      });
+
+      // Calculate metrics
+      const submissionsCount = user.submissions.length;
+      const commentsCount = user.comments.length;
+      const thumbsUpGiven = user.votes.filter((v: any) => v.type === 'UP').length;
+      const thumbsDownGiven = user.votes.filter((v: any) => v.type === 'DOWN').length;
+      
+      // Calculate submission points: 10 for first, 1 for each subsequent
+      const submissionPoints = submissionsCount > 0 ? 10 + (submissionsCount - 1) : 0;
+      
+      // Calculate engagement points
+      const dailyThumbsupLimit = Math.min(thumbsUpGiven, 20); // Daily limit
+      const engagementPoints = (dailyThumbsupLimit * 1) + (commentsCount * 2);
+      
+      // Calculate received interaction points
+      const receivedPoints = submissionsVotesReceived + submissionsCommentsReceived + commentsVotesReceived;
+      
+      const totalScore = submissionPoints + engagementPoints + receivedPoints;
 
       // Create user activity data
       const userActivity = {
         userId: authenticatedUserId,
-        submissions: submissionCount,
-        comments: commentCount,
-        replies: replyCount,
+        submissions: submissionsCount,
+        comments: commentsCount,
+        replies: 0, // TODO: Add replies count when available
         thumbsupGiven: thumbsUpGiven,
         thumbsdownGiven: thumbsDownGiven,
-        thumbsupReceived: 0, // Simplified for now
-        commentsReceived: 0, // Simplified for now
+        thumbsupReceived: submissionsVotesReceived + commentsVotesReceived,
+        commentsReceived: submissionsCommentsReceived,
         repliesReceived: 0,
-        signupDate: user?.signupDate?.toISOString() || new Date().toISOString(),
-        firstSubmissionDate: submissions.length > 0 ? submissions[0].createdAt.toISOString() : undefined,
-        lastActivityDate: user?.lastActivity?.toISOString() || new Date().toISOString()
+        signupDate: user.signupDate?.toISOString() || new Date().toISOString(),
+        firstSubmissionDate: user.submissions.length > 0 ? user.submissions[0].createdAt.toISOString() : undefined,
+        lastActivityDate: user.lastActivity?.toISOString() || new Date().toISOString()
       };
-
-      // Simple score calculation
-      const totalScore = submissionCount * 10 + commentCount * 2 + thumbsUpGiven * 1;
       
       return NextResponse.json({
         userId: authenticatedUserId,
         scoreBreakdown: {
           total: totalScore,
-          submissions: submissionCount * 10,
-          comments: commentCount * 2,
-          engagement: thumbsUpGiven * 1
+          contribution: submissionPoints,
+          engagement: engagementPoints,
+          received: receivedPoints
         },
         activity: userActivity
       });

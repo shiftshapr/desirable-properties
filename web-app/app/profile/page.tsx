@@ -228,7 +228,9 @@ export default function ProfilePage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <User className="h-6 w-6 text-cyan-400" />
-                <h1 className="text-xl font-bold text-white">Profile</h1>
+                <h1 className="text-xl font-bold text-white">
+                  {user?.name || 'Profile'}
+                </h1>
               </div>
             </div>
           </div>
