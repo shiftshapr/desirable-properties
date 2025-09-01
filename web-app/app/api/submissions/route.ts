@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 // Types for submissions data from database
 interface Submission {
@@ -41,6 +41,36 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dp = searchParams.get('dp'); // Filter by specific DP
     
+    // TEMPORARY: Return mock data while testing NextAuth
+    const mockSubmissions: Submission[] = [
+      {
+        id: 'mock-1',
+        title: 'Test Submission',
+        overview: 'This is a test submission while we test NextAuth',
+        sourceLink: null,
+        submitter: {
+          firstName: 'Test',
+          lastName: 'User',
+        },
+        directlyAddressedDPs: [],
+        clarificationsExtensions: [],
+        upvotes: 0,
+        downvotes: 0,
+      }
+    ];
+    
+    const submissionsData: SubmissionsData = {
+      meta: {
+        total_submissions: mockSubmissions.length,
+        description: 'Mock submissions data for NextAuth testing'
+      },
+      submissions: mockSubmissions
+    };
+    
+    return NextResponse.json(submissionsData);
+    
+    // ORIGINAL CODE COMMENTED OUT FOR NEXTAUTH TESTING:
+    /*
     // Fetch submissions from database with vote counts
     const submissions = await prisma.submission.findMany({
       include: {
@@ -98,19 +128,20 @@ export async function GET(request: Request) {
       );
     }
     
-    const data: SubmissionsData = {
+    const submissionsData: SubmissionsData = {
       meta: {
         total_submissions: filteredSubmissions.length,
-        description: 'Submissions from database'
+        description: 'Submissions data from database'
       },
       submissions: filteredSubmissions
     };
     
-    return NextResponse.json(data);
+    return NextResponse.json(submissionsData);
+    */
   } catch (error) {
-    console.error('Error loading submissions:', error);
+    console.error('Error fetching submissions:', error);
     return NextResponse.json(
-      { error: 'Failed to load submissions' },
+      { error: 'Failed to fetch submissions' },
       { status: 500 }
     );
   }
@@ -120,11 +151,11 @@ export async function GET(request: Request) {
 export async function POST() {
   try {
     console.log('Manual reload requested...');
-    const count = await prisma.submission.count();
+    // const count = await prisma.submission.count(); // This line was removed as per the edit hint
     return NextResponse.json({ 
       success: true, 
       message: 'Data reloaded successfully',
-      total_submissions: count 
+      // total_submissions: count // This line was removed as per the edit hint
     });
   } catch (error) {
     console.error('Error during manual reload:', error);
