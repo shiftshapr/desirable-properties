@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn, getProviders } from 'next-auth/react'
+import { signIn, signOut, getProviders } from 'next-auth/react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -33,7 +33,7 @@ export default function SignIn() {
               Go to Home Page
             </button>
             <button
-              onClick={() => signIn('signOut')}
+              onClick={() => signOut({ callbackUrl: '/auth/signin' })}
               className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Sign Out
