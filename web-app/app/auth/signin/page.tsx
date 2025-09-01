@@ -12,10 +12,36 @@ export default function SignIn() {
   const { data: session } = useSession()
   const router = useRouter()
 
-  // Redirect if already signed in
+  // Show message if already signed in instead of redirecting
   if (session) {
-    router.push('/')
-    return null
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="max-w-md w-full space-y-8 p-8 bg-gray-800 rounded-lg">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+              Already Signed In
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-400">
+              You are already signed in as {session.user?.email}
+            </p>
+          </div>
+          <div className="space-y-4">
+            <button
+              onClick={() => router.push('/')}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Go to Home Page
+            </button>
+            <button
+              onClick={() => signIn('signOut')}
+              className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -42,7 +68,7 @@ export default function SignIn() {
       }
     } catch (error) {
       setMessage('An error occurred. Please try again.')
-      console.error('🔍 [SignIn] Sign-in exception:', error)
+      console.error('🔍 [SignIn] Sign-in error:', error)
     } finally {
       setLoading(false)
     }
