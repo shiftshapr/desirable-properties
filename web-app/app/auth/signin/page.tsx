@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn, getProviders } from 'next-auth/react'
 
 export default function SignIn() {
   const [email, setEmail] = useState('')
@@ -33,7 +33,7 @@ export default function SignIn() {
   }
 
   const handleOAuthSignIn = async (provider: string) => {
-    await signIn(provider, { callbackUrl: '/auth/signin' })
+    await signIn(provider, { callbackUrl: '/' })
   }
 
   return (
