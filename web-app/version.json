@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "build": "360",
-  "timestamp": "2025-09-01T01:58:55Z",
+  "build": "361",
+  "timestamp": "2025-09-01T02:03:42Z",
   "commit": "initial",
   "description": "Initial version with voting fixes and environment variable setup"
 }

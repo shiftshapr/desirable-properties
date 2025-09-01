@@ -130,11 +130,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      // If the URL is relative, prefix it with the base URL
-      if (url.startsWith('/')) return `${baseUrl}${url}`
-      // If the URL is on the same origin, allow it
-      else if (new URL(url).origin === baseUrl) return url
-      // Otherwise, redirect to the auth page
+      // ALWAYS redirect back to the signin page for testing
       return `${baseUrl}/auth/signin`
     },
   },
