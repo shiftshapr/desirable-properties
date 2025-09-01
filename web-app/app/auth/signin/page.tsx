@@ -12,6 +12,36 @@ export default function SignIn() {
   const { data: session } = useSession()
   const router = useRouter()
 
+  const handleSignOut = async () => {
+    console.log('🔍 [SignIn] Starting aggressive sign-out...')
+    
+    try {
+      // Sign out with NextAuth
+      await signOut({ 
+        callbackUrl: '/auth/signin',
+        redirect: false 
+      })
+      
+      console.log('🔍 [SignIn] NextAuth sign-out completed')
+      
+      // Clear any local storage or session storage
+      if (typeof window !== 'undefined') {
+        localStorage.clear()
+        sessionStorage.clear()
+        console.log('🔍 [SignIn] Local and session storage cleared')
+      }
+      
+      // Force a hard refresh to clear all React state
+      console.log('🔍 [SignIn] Forcing page refresh...')
+      window.location.href = '/auth/signin'
+      
+    } catch (error) {
+      console.error('🔍 [SignIn] Sign-out error:', error)
+      // Fallback: force refresh anyway
+      window.location.href = '/auth/signin'
+    }
+  }
+
   // Show message if already signed in instead of redirecting
   if (session) {
     return (
@@ -33,7 +63,7 @@ export default function SignIn() {
               Go to Home Page
             </button>
             <button
-              onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+              onClick={handleSignOut}
               className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Sign Out
