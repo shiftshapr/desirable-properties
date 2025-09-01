@@ -4,13 +4,16 @@ import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider from 'next-auth/providers/google'
 import DiscordProvider from 'next-auth/providers/discord'
 import TwitterProvider from 'next-auth/providers/twitter'
-// import { PrismaAdapter } from "@next-auth/prisma-adapter"
-// import { PrismaClient } from "@prisma/client"
+import { createStorage } from "unstorage"
+import memoryDriver from "unstorage/drivers/memory"
+import { UnstorageAdapter } from "@auth/unstorage-adapter"
 
-// const prisma = new PrismaClient()
+const storage = createStorage({
+  driver: memoryDriver(),
+})
 
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma),
+  adapter: UnstorageAdapter(storage),
   providers: [
     EmailProvider({
       server: {
@@ -22,32 +25,6 @@ export const authOptions: NextAuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM || 'noreply@themetalayer.org',
-      sendVerificationRequest: async ({ identifier, url, provider }) => {
-        console.log('🔍 [NextAuth] sendVerificationRequest called')
-        console.log('🔍 [NextAuth] identifier:', identifier)
-        console.log('🔍 [NextAuth] url:', url)
-        console.log('🔍 [NextAuth] provider:', provider)
-        
-        try {
-          const { createTransport } = await import('nodemailer')
-          const transport = createTransport(provider.server)
-          
-          console.log('🔍 [NextAuth] Transport created successfully')
-          
-          const result = await transport.sendMail({
-            to: identifier,
-            from: provider.from,
-            subject: `Sign in to The Metalayer`,
-            text: `Click here to sign in: ${url}`,
-            html: `<p>Click <a href="${url}">here</a> to sign in to The Metalayer.</p>`,
-          })
-          
-          console.log('🔍 [NextAuth] Email sent successfully:', result)
-        } catch (error) {
-          console.error('🔍 [NextAuth] Email send error:', error)
-          throw error
-        }
-      },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -71,41 +48,88 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   pages: {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    },
+    callbackUrl: {
+      name: `next-auth.callback-url`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    },
+    csrfToken: {
+      name: `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    },
+    pkceCodeVerifier: {
+      name: `next-auth.pkce.code_verifier`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    },
+    state: {
+      name: `next-auth.state`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    },
+    nonce: {
+      name: `next-auth.nonce`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+        domain: '.themetalayer.org'
+      }
+    }
+  },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('🔍 [NextAuth] signIn callback called')
-      console.log('🔍 [NextAuth] user:', user)
-      console.log('🔍 [NextAuth] account:', account)
-      console.log('🔍 [NextAuth] profile:', profile)
-      console.log('🔍 [NextAuth] email:', email)
-      console.log('🔍 [NextAuth] credentials:', credentials)
-      return true
-    },
-    async session({ session, token, user }) {
-      console.log('🔍 [NextAuth] session callback called')
-      console.log('🔍 [NextAuth] session:', session)
-      console.log('🔍 [NextAuth] token:', token)
-      console.log('🔍 [NextAuth] user:', user)
-      return session
-    },
-    async jwt({ token, user, account, profile, trigger, session }) {
-      console.log('🔍 [NextAuth] jwt callback called')
-      console.log('🔍 [NextAuth] token:', token)
-      console.log('🔍 [NextAuth] user:', user)
-      console.log('🔍 [NextAuth] account:', account)
-      console.log('🔍 [NextAuth] profile:', profile)
-      console.log('🔍 [NextAuth] trigger:', trigger)
-      console.log('🔍 [NextAuth] session:', session)
+    async jwt({ token, account, user }) {
+      if (account && user) {
+        token.accessToken = account.access_token
+      }
       return token
     },
+    async session({ session, token }) {
+      return {
+        ...session,
+        accessToken: token.accessToken
+      }
+    },
   },
-  debug: true,
 }
 
 export default NextAuth(authOptions)
