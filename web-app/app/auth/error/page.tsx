@@ -1,10 +1,13 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import Link from 'next/link'
 
-export default function AuthError() {
-  const searchParams = useSearchParams()
+function AuthErrorContent() {
+  // Use a different approach to get search params
+  const searchParams = typeof window !== 'undefined' 
+    ? new URLSearchParams(window.location.search)
+    : new URLSearchParams()
   const error = searchParams.get('error')
 
   const getErrorMessage = (error: string | null) => {
@@ -58,5 +61,20 @@ export default function AuthError() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function AuthError() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600 mx-auto"></div>
+          <p className="mt-4 text-gray-300">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AuthErrorContent />
+    </Suspense>
   )
 }
