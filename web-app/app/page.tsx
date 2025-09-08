@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ChevronDown, ChevronUp, ExternalLink, Users, FileText, X, User, MessageCircle, Trophy, Lightbulb, HelpCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useAuth } from '../lib/auth';
+import { useAuthState } from '../lib/useAuthState';
 import Link from 'next/link';
 
 import UnifiedVotingDisplay from './components/UnifiedVotingDisplay';
@@ -83,6 +84,7 @@ function Modal({ open, onClose, children }: { open: boolean; onClose: () => void
 
 export default function DesirablePropertiesApp() {
   const { user, login, logout, isAuthenticated: authenticated, isReady: ready, getAccessToken } = useAuth();
+  const { isAuthenticated: authState, user: authUser, isReady: authReady } = useAuthState();
   const [data, setData] = useState<ApiResponse | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1130,7 +1132,7 @@ export default function DesirablePropertiesApp() {
                 <MessageCircle className="h-5 w-5" />
                 <span className="text-sm hidden sm:inline">Assistant</span>
             </button>
-                  {authenticated ? (
+                  {authState ? (
                     <>
                       <Link 
                         href="/profile" 

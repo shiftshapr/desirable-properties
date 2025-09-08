@@ -1,5 +1,6 @@
 // Generic Authentication Service
 // This abstracts away the specific auth provider (Privy, NextAuth, etc.)
+// Now using Magic Link Authentication
 
 export interface AuthUser {
   id: string;
@@ -14,7 +15,7 @@ export interface AuthService {
   isAuthenticated: boolean;
   isReady: boolean;
   user: AuthUser | null;
-  login: () => Promise<void>;
+  login: (email: string) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
   getAccessToken: () => Promise<string | null>;
 }
@@ -28,31 +29,36 @@ const testUser: AuthUser = {
   age: 30,
 };
 
+// Import magic link auth service
+import { getMagicLinkAuth, MagicLinkAuthService } from './magic-link-auth';
+
 // Test mode toggle - set to true to enable authenticated state for testing
-const TEST_MODE_AUTHENTICATED = true; // Change this to true to test authenticated state
+const TEST_MODE_AUTHENTICATED = false; // Disabled to use real magic link auth
 
-
-// Default unauthenticated state
+// Default unauthenticated state (fallback)
 export const defaultAuthService: AuthService = {
   isAuthenticated: TEST_MODE_AUTHENTICATED,
   isReady: true,
   user: TEST_MODE_AUTHENTICATED ? testUser : null,
-  login: async () => {
-    console.log('Sign in - auth disabled');
+  login: async (email: string) => {
+    const magicLinkAuth = getMagicLinkAuth();
+    return await magicLinkAuth.login(email);
   },
   logout: async () => {
-    console.log('Sign out - auth disabled');
+    const magicLinkAuth = getMagicLinkAuth();
+    await magicLinkAuth.logout();
   },
   getAccessToken: async () => {
     if (TEST_MODE_AUTHENTICATED) {
       return 'test-user-123'; // Keep this as 'test-user-123' for API mapping
     }
-    return null;
+    const magicLinkAuth = getMagicLinkAuth();
+    return await magicLinkAuth.getAccessToken();
   },
 };
 
-// Global auth service instance
-let authService: AuthService = defaultAuthService;
+// Global auth service instance - now using magic link auth
+let authService: AuthService = getMagicLinkAuth();
 
 // Setter for the auth service
 export const setAuthService = (service: AuthService) => {
@@ -66,7 +72,8 @@ export const getAuthService = (): AuthService => {
 
 // Hook for components to use
 export const useAuth = (): AuthService => {
-  return authService;
+  // Always return the magic link auth service to ensure consistency
+  return getMagicLinkAuth();
 };
 
 // Test helper functions

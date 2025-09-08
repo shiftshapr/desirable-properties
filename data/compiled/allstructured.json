@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2025-07-16T19:25:42.393047",
+    "generated_at": "2025-07-28T00:57:14.855636",
     "total_submissions": 47,
     "source_directory": "/home/ubuntu/desirable-properties/data/submissions/structured",
     "failed_files": [],
@@ -615,7 +615,7 @@
       "clarifications_and_extensions": [
         {
           "dp": "DP1 – Federated Authentication & Accountability",
-          "type": "Change",
+          "type": "Extension",
           "title": "Navigator Preference and Trust Hook Integration",
           "extension": "Support shared user-linked metadata across NUIs for reputation, settings, and context continuity.",
           "why_it_matters": "Enables personalized yet portable experiences across community tools and teams."

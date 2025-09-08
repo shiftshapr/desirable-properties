@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 export default function SignOut() {
@@ -9,7 +8,7 @@ export default function SignOut() {
 
   useEffect(() => {
     const performSignOut = async () => {
-      console.log('🔍 [SignOut] Starting forced sign-out...')
+      console.log('🔍 [SignOut] Starting magic link sign-out...')
       
       try {
         // Clear all storage
@@ -19,13 +18,13 @@ export default function SignOut() {
           console.log('🔍 [SignOut] Storage cleared')
         }
         
-        // Sign out with NextAuth
-        await signOut({ 
-          callbackUrl: '/',
-          redirect: false 
+        // Sign out with magic link system
+        await fetch('/api/auth/signout', {
+          method: 'POST',
+          credentials: 'include'
         })
         
-        console.log('🔍 [SignOut] NextAuth sign-out completed')
+        console.log('🔍 [SignOut] Magic link sign-out completed')
         
         // Force redirect to home
         window.location.href = '/'

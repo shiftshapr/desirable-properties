@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyMagicLink, createToken, User } from '@/lib/simple-auth'
+import jwt from 'jsonwebtoken'
+import { tokenStore } from '@/lib/token-store'
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
 
 export const dynamic = 'force-dynamic'
 
@@ -12,25 +15,36 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Token is required' }, { status: 400 })
     }
     
-    const email = verifyMagicLink(token)
-    
-    if (!email) {
+    // Check if token is in active tokens set
+    if (!tokenStore.hasToken(token)) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 })
     }
     
-    // Create user object
-    const user: User = {
-      id: email, // Use email as ID for simplicity
-      email,
-      provider: 'email'
+    // Verify JWT token
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    
+    if (!decoded || decoded.type !== 'magic-link' || !decoded.email) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 400 })
     }
     
-    // Create JWT token
-    const jwtToken = createToken(user)
+    // Remove token from active set (one-time use)
+    tokenStore.removeToken(token);
+    
+    // Create session token
+    const sessionToken = jwt.sign(
+      { 
+        email: decoded.email,
+        userId: decoded.userId,
+        name: decoded.email.split('@')[0],
+        type: 'session'
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    )
     
     // Set cookie and redirect
-    const response = NextResponse.redirect(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}`)
-    response.cookies.set('auth-token', jwtToken, {
+    const response = NextResponse.redirect(`${process.env.NEXTAUTH_URL || 'https://app.themetalayer.org'}`)
+    response.cookies.set('session-token', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
