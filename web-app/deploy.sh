@@ -92,7 +92,16 @@ start_pm2_processes() {
     # Start using ecosystem config
     sudo pm2 start ecosystem.config.js --env production
     sudo pm2 save
-    sudo pm2 startup
+    
+    # Setup PM2 startup script (capture and execute the generated command)
+    echo "[INFO] Setting up PM2 startup script..."
+    STARTUP_CMD=$(sudo pm2 startup | grep -E "sudo.*pm2" || echo "")
+    if [ -n "$STARTUP_CMD" ]; then
+        echo "[INFO] Executing PM2 startup command..."
+        echo "$STARTUP_CMD" | sh
+    else
+        echo "[INFO] PM2 startup already configured or no command needed"
+    fi
     
     # Wait a moment for the process to start
     sleep 5
@@ -174,7 +183,24 @@ sudo npm install --production
 
 # Copy production environment variables to main .env file
 echo "[INFO] Setting up production environment variables..."
-sudo cp .env.production .env
+if [ -f ".env.production" ]; then
+    sudo cp .env.production .env
+    echo "[INFO] ✅ Copied .env.production to .env"
+elif [ -f "/var/www/app.themetalayer.org/public/.env.production" ]; then
+    echo "[INFO] Using existing .env.production from production directory"
+    sudo cp /var/www/app.themetalayer.org/public/.env.production .env
+    echo "[INFO] ✅ Copied production .env.production to .env"
+else
+    echo "[WARNING] ⚠️  .env.production not found - using .env.local if available"
+    if [ -f ".env.local" ]; then
+        sudo cp .env.local .env
+        echo "[INFO] ✅ Copied .env.local to .env"
+    else
+        echo "[ERROR] ❌ No environment file found (.env.production or .env.local)"
+        echo "[ERROR] Please create .env.production or .env.local before deploying"
+        exit 1
+    fi
+fi
 
 # Start PM2 processes
 start_pm2_processes

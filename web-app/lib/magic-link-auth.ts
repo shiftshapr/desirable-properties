@@ -31,8 +31,16 @@ class MagicLinkAuth implements MagicLinkAuthService {
     this.clearAuthState();
     this._isReady = false;
     
-    // Check auth status
-    this.checkAuth();
+    // Only check auth in browser environment (not during SSR/build)
+    if (typeof window !== 'undefined') {
+      // Defer check to next tick to ensure we're fully in browser context
+      setTimeout(() => {
+        this.checkAuth();
+      }, 0);
+    } else {
+      // During SSR/build, mark as ready without auth check
+      this._isReady = true;
+    }
   }
 
   get isAuthenticated(): boolean {
@@ -49,8 +57,18 @@ class MagicLinkAuth implements MagicLinkAuthService {
 
   checkAuth = async (): Promise<void> => {
     try {
+      // Skip auth check during build time (SSR/SSG) - no window/fetch available
+      if (typeof window === 'undefined' || typeof fetch === 'undefined') {
+        console.log('🔍 [MagicLinkAuth] Skipping auth check (server-side/build-time)');
+        this._isReady = true;
+        this._isAuthenticated = false;
+        this._user = null;
+        return;
+      }
+
       console.log('🔍 [MagicLinkAuth] Checking auth status...');
       
+      // Use relative URL in browser - it will work correctly
       const response = await fetch('/api/magic-link/me', {
         credentials: 'include',
       });

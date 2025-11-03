@@ -2,7 +2,9 @@ import jwt from 'jsonwebtoken'
 import { Resend } from 'resend'
 import crypto from 'crypto'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Initialize Resend only if API key is available (prevents build-time errors)
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null
 const JWT_SECRET = process.env.NEXTAUTH_SECRET || 'fallback-secret'
 
 export interface User {
@@ -27,6 +29,11 @@ const oauthStates = new Map<string, { provider: string; expires: number }>()
 
 export async function sendMagicLink(email: string): Promise<boolean> {
   try {
+    if (!resend || !RESEND_API_KEY) {
+      console.error('Resend not configured - missing RESEND_API_KEY')
+      return false
+    }
+    
     const token = crypto.randomBytes(32).toString('hex')
     const expires = Date.now() + 10 * 60 * 1000 // 10 minutes
     

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,141 +7,184 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User model - connected to Privy authentication
 model User {
-  id            String   @id @default(cuid())
-  privyId       String   @unique // Privy user ID
-  email         String?  @unique
-  walletAddress String?  @unique
-  firstName     String?
-  lastName      String?
-  userName      String?
-  avatar        String?
-  
-  // Activity tracking
-  signupDate    DateTime @default(now())
-  lastActivity  DateTime @updatedAt
-  
-  // Relationships
-  submissions   Submission[]
-  comments      Comment[]
-  votes         Vote[]
-  
-  // User activity stats (computed fields)
-  submissionsCount   Int @default(0)
-  commentsCount      Int @default(0)
-  votesGivenCount    Int @default(0)
-  votesReceivedCount Int @default(0)
-  
+  id                 String              @id @default(cuid())
+  privyId            String              @unique
+  email              String?             @unique
+  walletAddress      String?             @unique
+  firstName          String?
+  lastName           String?
+  userName           String?
+  avatar             String?
+  signupDate         DateTime            @default(now())
+  lastActivity       DateTime            @updatedAt
+  submissionsCount   Int                 @default(0)
+  commentsCount      Int                 @default(0)
+  votesGivenCount    Int                 @default(0)
+  votesReceivedCount Int                 @default(0)
+  affiliation        String?
+  birthYear          Int?
+  guild              String?
+  profileComplete    Boolean             @default(false)
+  calibration_scores calibration_scores?
+  comments           Comment[]
+  guild_memberships  guild_memberships[]
+  submissions        Submission[]
+  user_activity      user_activity?
+  votes              Vote[]
+
   @@map("users")
 }
 
-// Submission model for desirable properties
 model Submission {
-  id          String   @id @default(cuid())
-  title       String
-  overview    String
-  sourceLink  String?
-  
-  // Metadata
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relationships
-  submitterId String
-  submitter   User     @relation(fields: [submitterId], references: [id], onDelete: Cascade)
-  comments    Comment[]
-  votes       Vote[]
-  
-  // Directly addressed DPs
-  directlyAddressedDPs DirectlyAddressedDP[]
-  
-  // Clarifications and extensions
+  id                       String                   @id @default(cuid())
+  title                    String
+  overview                 String
+  sourceLink               String?
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
+  submitterId              String
   clarificationsExtensions ClarificationExtension[]
-  
+  comments                 Comment[]
+  directlyAddressedDPs     DirectlyAddressedDP[]
+  quality_scores           quality_scores?
+  submitter                User                     @relation(fields: [submitterId], references: [id], onDelete: Cascade)
+  votes                    Vote[]
+
   @@map("submissions")
 }
 
-// Directly Addressed DPs
 model DirectlyAddressedDP {
-  id           String   @id @default(cuid())
-  dp           String   // Desirable Property identifier
+  id           String     @id @default(cuid())
+  dp           String
   summary      String
-  
-  // Relationships
   submissionId String
   submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  
+
   @@map("directly_addressed_dps")
 }
 
-// Clarifications and Extensions
 model ClarificationExtension {
-  id           String   @id @default(cuid())
-  dp           String   // Desirable Property identifier
-  type         String   // "clarification" or "extension"
+  id           String     @id @default(cuid())
+  dp           String
+  type         String
   title        String
-  content      String   // clarification or extension text
+  content      String
   whyItMatters String
-  
-  // Relationships
   submissionId String
   submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  
+
   @@map("clarifications_extensions")
 }
 
-// Comment model
 model Comment {
-  id          String   @id @default(cuid())
-  content     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relationships
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id           String     @id @default(cuid())
+  content      String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  authorId     String
   submissionId String
-  submission  Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  
-  // Element tracking for comments on specific elements
-  elementId   String?  // ID of the element being commented on
-  elementType String?  // "submission", "alignment", "clarification", "extension"
-  
-  // Voting
-  votes       Vote[]
-  
+  elementId    String?
+  elementType  String?
+  author       User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  votes        Vote[]
+
   @@map("comments")
 }
 
-// Vote model for thumbs up/down
 model Vote {
-  id          String   @id @default(cuid())
-  type        VoteType // UP or DOWN
-  createdAt   DateTime @default(now())
-  
-  // Relationships
-  voterId     String
-  voter       User     @relation(fields: [voterId], references: [id], onDelete: Cascade)
-  
-  // Vote can be on a comment, submission, or element (alignment, clarification, extension)
-  commentId   String?
-  comment     Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  
+  id           String      @id @default(cuid())
+  type         VoteType
+  createdAt    DateTime    @default(now())
+  voterId      String
+  commentId    String?
   submissionId String?
+  elementId    String?
+  elementType  String?
+  comment      Comment?    @relation(fields: [commentId], references: [id], onDelete: Cascade)
   submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  
-  // For voting on elements (alignments, clarifications, extensions)
-  elementId   String?
-  elementType String? // "alignment", "clarification", "extension"
-  
-  // Ensure vote is on either comment, submission, or element, not multiple
+  voter        User        @relation(fields: [voterId], references: [id], onDelete: Cascade)
+
   @@unique([voterId, commentId])
   @@unique([voterId, elementId, elementType, submissionId])
   @@map("votes")
 }
 
-// Vote type enum
+model calibration_scores {
+  id          String   @id
+  userId      String   @unique
+  accuracy    Float
+  consistency Float
+  helpfulness Float
+  bonus       Int
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
+  users       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model guild_memberships {
+  id       String   @id
+  guildId  String
+  userId   String
+  joinedAt DateTime @default(now())
+  guilds   guilds   @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  users    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([guildId, userId])
+}
+
+model guilds {
+  id                String              @id
+  name              String              @unique
+  description       String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  guild_memberships guild_memberships[]
+}
+
+model quality_scores {
+  id           String     @id
+  submissionId String     @unique
+  relevance    Int
+  substance    Int
+  novelty      Int
+  civility     Int
+  overall      Int
+  modelVersion String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime
+  submissions  Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model user_activity {
+  id           String    @id
+  userId       String    @unique
+  submissions  Int       @default(0)
+  comments     Int       @default(0)
+  votes        Int       @default(0)
+  dailyVotes   Int       @default(0)
+  lastActivity DateTime  @default(now())
+  lastVoteDate DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime
+  users        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model vote_consensus {
+  id             String   @id
+  targetId       String
+  targetType     String
+  consensusScore Float
+  totalVotes     Int
+  positiveVotes  Int
+  negativeVotes  Int
+  calculatedAt   DateTime @default(now())
+  updatedAt      DateTime
+
+  @@unique([targetId, targetType])
+}
+
 enum VoteType {
   UP
   DOWN
