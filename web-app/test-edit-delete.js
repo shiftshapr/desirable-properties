@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 async function testEditDelete() {
   const baseUrl = 'https://app.themetalayer.org';
-  const commentId = 'cmeyj2s3i0009h25re1fnncvs'; // Recent comment by Daveed
+  const commentId = 'cmeyj2s3i0009h25re1fnncvs'; // Recent comment by Anon
   const token = 'test-user-123';
 
   console.log('Testing comment edit/delete functionality...');

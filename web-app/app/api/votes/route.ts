@@ -45,10 +45,10 @@ export async function GET(request: NextRequest) {
           debugInfo.push('Test token detected');
           // Map test tokens to existing users
           if (token === 'test-user-123') {
-            debugInfo.push('Mapping test-user-123 to Daveed');
-            // Use Daveed's user for testing
+            debugInfo.push('Mapping test-user-123 to Anon');
+            // Use Anon's user for testing
             const testUser = await prisma.user.findFirst({
-              where: { email: 'daveed@bridgit.io' }
+              where: { email: 'noreply@themetalayer.org' }
             });
             debugInfo.push(`Found test user: ${testUser ? 'YES' : 'NO'}, id: ${testUser?.id}`);
             userId = testUser?.id;
@@ -216,9 +216,9 @@ export async function POST(request: NextRequest) {
     // Map test tokens to actual user IDs
     let voterId;
     if (token === 'test-user-123') {
-      // Use Daveed's user for testing
+      // Use Anon's user for testing
       const testUser = await prisma.user.findFirst({
-        where: { email: 'daveed@bridgit.io' }
+        where: { email: 'noreply@themetalayer.org' }
       });
       voterId = testUser?.id;
     } else {

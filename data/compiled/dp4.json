@@ -69,16 +69,16 @@
       "summary": "Proposes whistleblower-controlled data and encrypted, decentralized storage.",
       "submission_title": "Enhancing Whistleblower Protection within the Meta-Layer",
       "submission_overview": "This submission draws upon established frameworks from WPAC (2015) and Security.org to propose enhancements to whistleblower systems in alignment with the Meta-Layer's Desirable Properties. It emphasizes secure, anonymized federated authentication, user-controlled data sovereignty, interoperable and simplified reporting interfaces, and system-wide transparency and security protocols. These systems are essential to protect whistleblowers from retaliation and to ensure credibility, participation, and systemic accountability. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "16.json"
     },
     {
       "summary": "Decentralized directories lessen reliance on centralized data-harvesting engines.",
       "submission_title": "Can Directories Rise Again?",
       "submission_overview": "This submission reflects on the current deteriorating state of web search, emphasizing how AI-generated content and algorithmic prioritization have reduced the human-centric experience of exploration. It draws parallels with the early days of Yahoo! and its surfer-driven directories to propose a revival of decentralized, point-of-view-rich human directories. These directories, distributed across communities rather than centralized institutions, can rekindle authentic discovery and trust online. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "17.json"
     },
     {
@@ -93,24 +93,24 @@
       "summary": "Data is secured at rest and in transit using cryptographic methods, with users retaining full control over access and replication.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "22.json"
     },
     {
       "summary": "VeMe vaults ensure personal data resides with the user, upholding privacy.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json"
     },
     {
       "summary": "Clarifies how non-human agents may hold or manage identities, data, and digital presence.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json"
     },
     {
@@ -133,16 +133,16 @@
       "summary": "VeMe vaults anchor data in user-controlled, agentic structures.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json"
     },
     {
       "summary": "Ensures privacy by default with user-controlled data sharing mechanisms.",
       "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
       "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Rick Byers",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json"
     },
     {
@@ -173,8 +173,8 @@
       "summary": "Protecting identity data and ensuring consent-based sharing is critical for safety in queer communities.",
       "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
       "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "38.json"
     },
     {
@@ -189,32 +189,32 @@
       "summary": "Promotes user control over data access and verification via access certificates and assertions.",
       "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
       "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "40.json"
     },
     {
       "summary": "Centralizes data visibility and control with export and deletion options in clear language.",
       "submission_title": "Humane Design Patterns for Ethical Tech Platforms",
       "submission_overview": "This submission synthesizes practical interface and architectural patterns from the 'Humane Tech Framework' to inform the development of platforms that enhance user agency, attention, relationships, and understanding. The design patterns tackle common harms such as compulsive usage, information overload, and manipulative defaults by emphasizing user wellbeing, transparency, and ethical engagement. This submission was generated with protocol META-DP-EVAL-v1.3 https://github.com/ErikaOnFire/humane-tech-framework/blob/main/docs/design-patterns.md",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "41.json"
     },
     {
       "summary": "Ensures all data processing and AI analysis occur locally, preventing data leakage.",
       "submission_title": "AI as the Ultimate Safety Layer",
       "submission_overview": "Digital crimes—scams, phishing, deepfakes, and sophisticated social-engineered fraud—are rapidly escalating in complexity and frequency. Rather than viewing AI as merely exacerbating these threats, this submission proposes an OS-level 'Safety Agent,' a localized AI capable of proactively detecting digital threats, providing mental health interventions, improving personal judgment, and enabling enterprise compliance without compromising privacy. By operating solely on-device and integrated at the operating system level, this solution maximizes data security and user trust. This submission was generated with protocol META-DP-EVAL-v1.3 Based on article by Scott Belsky: https://www.implications.com/p/the-emergence-of-safety-layers-religion",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "42.json"
     },
     {
       "summary": "Highlights misuse of personal data for AI training and unauthorized deepfakes.",
       "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
       "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "43.json"
     }
   ],
@@ -316,8 +316,8 @@
       "why_it_matters": "Data sovereignty increases trust and compliance, encouraging more disclosures.",
       "submission_title": "Enhancing Whistleblower Protection within the Meta-Layer",
       "submission_overview": "This submission draws upon established frameworks from WPAC (2015) and Security.org to propose enhancements to whistleblower systems in alignment with the Meta-Layer's Desirable Properties. It emphasizes secure, anonymized federated authentication, user-controlled data sovereignty, interoperable and simplified reporting interfaces, and system-wide transparency and security protocols. These systems are essential to protect whistleblowers from retaliation and to ensure credibility, participation, and systemic accountability. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "16.json",
       "extension": "Platforms should allow whistleblowers to manage, delete, or anonymize data, with end-to-end encryption and decentralized storage."
     },
@@ -326,8 +326,8 @@
       "why_it_matters": "Framing VeMes as sovereign units offers a model for interoperable but user-controlled AI in both public and commercial contexts.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json",
       "extension": "Nordfors's 'VeMe' introduces not just storage, but active AI units operating under the sole discretion of individuals. These are not passive repositories but agentic extensions."
     },
@@ -336,8 +336,8 @@
       "why_it_matters": "Supports interoperable but user-controlled AI participation.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json",
       "extension": "VeMes act as AI agents governed solely by individual users, not just data containers."
     },
@@ -346,8 +346,8 @@
       "why_it_matters": "Enables personalization and trust without surveillance-based profiling.",
       "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
       "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Rick Byers",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json",
       "extension": "Incorporates zero-knowledge methods like anonymizing proxies and hash-prefix lookups to preserve user privacy."
     }

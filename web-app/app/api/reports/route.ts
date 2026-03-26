@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     const token = authHeader.replace('Bearer ', '');
     // For test authentication, use a consistent mock user ID
-    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
+    const verifiedClaims = { userId: "test-user-123", email: "noreply@themetalayer.org", name: "Anon" };
     
     if (!verifiedClaims) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });

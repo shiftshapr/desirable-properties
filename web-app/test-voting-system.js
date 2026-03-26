@@ -6,18 +6,18 @@ async function testVotingSystem() {
   console.log('🧪 TESTING VOTING SYSTEM FUNCTIONALITY\n');
 
   try {
-    // 1. Test user authentication - find Daveed
+    // 1. Test user authentication - find Anon
     console.log('1. TESTING USER AUTHENTICATION:');
     const daveedUser = await prisma.user.findFirst({
-      where: { email: 'daveed@bridgit.io' }
+      where: { email: 'noreply@themetalayer.org' }
     });
     
     if (!daveedUser) {
-      console.log('❌ Daveed user not found!');
+      console.log('❌ Anon user not found!');
       return;
     }
     
-    console.log('✅ Daveed user found:');
+    console.log('✅ Anon user found:');
     console.log(`   ID: ${daveedUser.id}`);
     console.log(`   Privy ID: ${daveedUser.privyId}`);
     console.log(`   Email: ${daveedUser.email}`);
@@ -65,7 +65,7 @@ async function testVotingSystem() {
       include: { voter: true }
     });
     
-    console.log(`Current votes by Daveed on submission: ${existingVotes.length}`);
+    console.log(`Current votes by Anon on submission: ${existingVotes.length}`);
     existingVotes.forEach((vote, index) => {
       console.log(`   ${index + 1}. ${vote.type} vote on ${vote.elementType || 'submission'} (${vote.elementId || 'main'})`);
     });
@@ -96,7 +96,7 @@ async function testVotingSystem() {
       }
     });
     
-    console.log(`Daveed's vote on main submission: ${userMainVote ? userMainVote.type : 'None'}`);
+    console.log(`Anon's vote on main submission: ${userMainVote ? userMainVote.type : 'None'}`);
     console.log('');
 
     // 5. Test alignment votes if available
@@ -128,7 +128,7 @@ async function testVotingSystem() {
         }
       });
       
-      console.log(`Daveed's vote on alignment: ${userAlignmentVote ? userAlignmentVote.type : 'None'}`);
+      console.log(`Anon's vote on alignment: ${userAlignmentVote ? userAlignmentVote.type : 'None'}`);
       console.log('');
     }
 

@@ -65,7 +65,7 @@ async function testSpecificSubmission() {
     const mainDownvotes = mainVotes.filter(v => v.type === 'DOWN').length;
     console.log(`Main submission: ${mainUpvotes} up, ${mainDownvotes} down`);
 
-    // Test Daveed's vote on main submission
+    // Test Anon's vote on main submission
     const daveedMainVote = await prisma.vote.findFirst({
       where: {
         voterId: daveedUserId,
@@ -73,7 +73,7 @@ async function testSpecificSubmission() {
         elementId: null
       }
     });
-    console.log(`Daveed's main vote: ${daveedMainVote ? daveedMainVote.type : 'None'}`);
+    console.log(`Anon's main vote: ${daveedMainVote ? daveedMainVote.type : 'None'}`);
 
     // Test alignment votes
     const alignmentElementId = `${targetSubmissionId}-dp-0`;
@@ -88,7 +88,7 @@ async function testSpecificSubmission() {
     const alignmentDownvotes = alignmentVotes.filter(v => v.type === 'DOWN').length;
     console.log(`Alignment votes: ${alignmentUpvotes} up, ${alignmentDownvotes} down`);
 
-    // Test Daveed's alignment vote
+    // Test Anon's alignment vote
     const daveedAlignmentVote = await prisma.vote.findFirst({
       where: {
         voterId: daveedUserId,
@@ -97,7 +97,7 @@ async function testSpecificSubmission() {
         submissionId: targetSubmissionId
       }
     });
-    console.log(`Daveed's alignment vote: ${daveedAlignmentVote ? daveedAlignmentVote.type : 'None'}`);
+    console.log(`Anon's alignment vote: ${daveedAlignmentVote ? daveedAlignmentVote.type : 'None'}`);
     console.log('');
 
     console.log('5. SIMULATING API RESPONSES:');

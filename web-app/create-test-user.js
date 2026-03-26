@@ -13,10 +13,10 @@ async function createTestUser() {
       testUser = await prisma.user.create({
         data: {
           privyId: 'test-user-123',
-          email: 'daveed@bridgit.io',
-          userName: 'Daveed Benjamin (Test)',
-          firstName: 'Daveed',
-          lastName: 'Benjamin'
+          email: 'noreply@themetalayer.org',
+          userName: 'Anon (Test)',
+          firstName: 'Anon',
+          lastName: ''
         }
       });
       console.log('✅ Created test user:', testUser);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { publicSubmitterWithEmail } from '@/lib/publicSubmitter';
 
 export async function GET(
   request: NextRequest,
@@ -54,11 +55,11 @@ export async function GET(
       title: submission.title,
       overview: submission.overview,
       sourceLink: submission.sourceLink,
-      submitter: {
+      submitter: publicSubmitterWithEmail({
         firstName: submission.submitter.firstName,
         lastName: submission.submitter.lastName,
-        email: submission.submitter.email
-      },
+        email: submission.submitter.email,
+      }),
       directlyAddressedDPs: submission.directlyAddressedDPs.map(dp => ({
         dp: dp.dp,
         summary: dp.summary

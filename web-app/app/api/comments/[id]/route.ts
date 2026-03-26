@@ -44,15 +44,15 @@ export async function PUT(
     // Map test tokens to actual user IDs
     let userId;
     if (token === 'test-user-123') {
-      // Use Daveed's user for testing
+      // Use Anon's user for testing
       const { prisma } = await import('@/lib/db');
       const testUser = await prisma.user.findFirst({
-        where: { email: 'daveed@bridgit.io' }
+        where: { email: 'noreply@themetalayer.org' }
       });
       userId = testUser?.id;
       console.log('🔴 [API] Test user lookup:', { 
         token, 
-        testUserEmail: 'daveed@bridgit.io', 
+        testUserEmail: 'noreply@themetalayer.org', 
         foundUser: testUser,
         mappedUserId: userId 
       });
@@ -220,15 +220,15 @@ export async function DELETE(
     // Map test tokens to actual user IDs
     let userId;
     if (token === 'test-user-123') {
-      // Use Daveed's user for testing
+      // Use Anon's user for testing
       const { prisma } = await import('@/lib/db');
       const testUser = await prisma.user.findFirst({
-        where: { email: 'daveed@bridgit.io' }
+        where: { email: 'noreply@themetalayer.org' }
       });
       userId = testUser?.id;
       console.log('🔴 [API] Test user lookup:', { 
         token, 
-        testUserEmail: 'daveed@bridgit.io', 
+        testUserEmail: 'noreply@themetalayer.org', 
         foundUser: testUser,
         mappedUserId: userId 
       });

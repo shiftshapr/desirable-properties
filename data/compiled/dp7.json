@@ -13,16 +13,16 @@
       "summary": "Establishes a common UX protocol for overlays.",
       "submission_title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
       "submission_overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "2.json"
     },
     {
       "summary": "Standardized bridge types support interoperability of knowledge structures across platforms.",
       "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
       "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "6.json"
     },
     {
@@ -61,16 +61,16 @@
       "summary": "Recommends standardized open protocols for reporting and data handling.",
       "submission_title": "Enhancing Whistleblower Protection within the Meta-Layer",
       "submission_overview": "This submission draws upon established frameworks from WPAC (2015) and Security.org to propose enhancements to whistleblower systems in alignment with the Meta-Layer's Desirable Properties. It emphasizes secure, anonymized federated authentication, user-controlled data sovereignty, interoperable and simplified reporting interfaces, and system-wide transparency and security protocols. These systems are essential to protect whistleblowers from retaliation and to ensure credibility, participation, and systemic accountability. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "16.json"
     },
     {
       "summary": "Advocates for human-readable, easily navigable collections of web content.",
       "submission_title": "Can Directories Rise Again?",
       "submission_overview": "This submission reflects on the current deteriorating state of web search, emphasizing how AI-generated content and algorithmic prioritization have reduced the human-centric experience of exploration. It draws parallels with the early days of Yahoo! and its surfer-driven directories to propose a revival of decentralized, point-of-view-rich human directories. These directories, distributed across communities rather than centralized institutions, can rekindle authentic discovery and trust online. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "17.json"
     },
     {
@@ -93,24 +93,24 @@
       "summary": "The SVS-PS framework and modular architecture enable developers to build interoperable applications using standardized primitives.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "22.json"
     },
     {
       "summary": "Nordfors asserts the underlying tech 'is here,' stressing implementable systems over theoretical ideals.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json"
     },
     {
       "summary": "Ensures interoperability frameworks accommodate both human and non-human agents.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json"
     },
     {
@@ -125,16 +125,16 @@
       "summary": "Reinforces readiness for implementation, not just theory.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json"
     },
     {
       "summary": "Offers a unified and extensible provider integration interface.",
       "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
       "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Rick Byers",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json"
     },
     {
@@ -165,32 +165,32 @@
       "summary": "Modular moderation frameworks can empower communities to define their norms and integrate protective tools.",
       "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
       "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "38.json"
     },
     {
       "summary": "RDF and XML enable standardized, platform-agnostic data exchange with preserved semantics.",
       "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
       "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "40.json"
     },
     {
       "summary": "Implements humane defaults and layered complexity through clear, progressive UX flows.",
       "submission_title": "Humane Design Patterns for Ethical Tech Platforms",
       "submission_overview": "This submission synthesizes practical interface and architectural patterns from the 'Humane Tech Framework' to inform the development of platforms that enhance user agency, attention, relationships, and understanding. The design patterns tackle common harms such as compulsive usage, information overload, and manipulative defaults by emphasizing user wellbeing, transparency, and ethical engagement. This submission was generated with protocol META-DP-EVAL-v1.3 https://github.com/ErikaOnFire/humane-tech-framework/blob/main/docs/design-patterns.md",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "41.json"
     },
     {
       "summary": "Notes the complexity of modern digital environments flooded with SEO-choked, AI-generated spam.",
       "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
       "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "43.json"
     }
   ],
@@ -200,8 +200,8 @@
       "why_it_matters": "These primitives enable open-source agents, tools, and interfaces to collaborate on shared meaning-making.",
       "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
       "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "6.json",
       "clarification": "A small number of well-defined bridge types (supports, contradicts, cites, etc.) form the semantic basis for cross-system understanding."
     },
@@ -210,8 +210,8 @@
       "why_it_matters": "Ease of use reduces barriers to participation and improves processing efficiency.",
       "submission_title": "Enhancing Whistleblower Protection within the Meta-Layer",
       "submission_overview": "This submission draws upon established frameworks from WPAC (2015) and Security.org to propose enhancements to whistleblower systems in alignment with the Meta-Layer's Desirable Properties. It emphasizes secure, anonymized federated authentication, user-controlled data sovereignty, interoperable and simplified reporting interfaces, and system-wide transparency and security protocols. These systems are essential to protect whistleblowers from retaliation and to ensure credibility, participation, and systemic accountability. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "16.json",
       "clarification": "Standardized interfaces simplify whistleblower submissions across systems."
     }
@@ -222,8 +222,8 @@
       "why_it_matters": "Interoperability across diverse overlays improves accessibility and promotes ecosystem cohesion.",
       "submission_title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
       "submission_overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "2.json",
       "extension": "Establishing a UX-wide protocol harmonizes tool coexistence while reducing cognitive load and visual clutter."
     },

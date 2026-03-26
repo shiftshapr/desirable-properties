@@ -29,16 +29,16 @@
       "summary": "Clarifies whether non-human agents can own, generate, or transact value within the Meta-layer.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json"
     },
     {
       "summary": "Enables trusted transactions through reputation-enhanced validation.",
       "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
       "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Rick Byers",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json"
     },
     {
@@ -66,8 +66,8 @@
       "why_it_matters": "Ensuring the commerce layer includes mechanisms for AI economic interactions.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json",
       "clarification": "Clarify whether non-human agents can own, generate, or transact value within the Meta-layer."
     }

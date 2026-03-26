@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { publicSubmitterNames } from '@/lib/publicSubmitter';
 
 const prisma = new PrismaClient();
 
@@ -65,10 +66,11 @@ export async function GET(request: Request) {
         title: sub.title,
         overview: sub.overview,
         sourceLink: sub.sourceLink,
-        submitter: {
-          firstName: sub.submitter.firstName,
-          lastName: sub.submitter.lastName,
-        },
+        submitter: publicSubmitterNames(
+          sub.submitter.firstName,
+          sub.submitter.lastName,
+          sub.submitter.email
+        ),
         directlyAddressedDPs: Array.isArray(sub.directlyAddressedDPs) ? sub.directlyAddressedDPs.map(dp => ({
           dp: dp.dp,
           summary: dp.summary,

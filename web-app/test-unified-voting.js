@@ -30,11 +30,11 @@ async function testUnifiedVoting() {
     // 2. Get test user
     console.log('\n2. Getting test user...');
     const daveedUser = await prisma.user.findFirst({
-      where: { email: 'daveed@bridgit.io' }
+      where: { email: 'noreply@themetalayer.org' }
     });
     
     if (!daveedUser) {
-      console.log('❌ No Daveed user found for testing');
+      console.log('❌ No Anon user found for testing');
       return;
     }
     

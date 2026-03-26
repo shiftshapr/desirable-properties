@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     
     console.log('🔵 [Comments API] Verifying token with Privy...');
     // For test authentication, use a consistent mock user ID
-    const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
+    const verifiedClaims = { userId: "test-user-123", email: "noreply@themetalayer.org", name: "Anon" };
     console.log('🔵 [Comments API] Token verification result:', !!verifiedClaims);
     console.log('🔵 [Comments API] Verified claims:', verifiedClaims);
     
@@ -141,14 +141,14 @@ export async function POST(request: NextRequest) {
     // Map test tokens to actual user IDs
     let user;
     if (token === 'test-user-123') {
-      // Use Daveed's user for testing
+      // Use Anon's user for testing
       const { prisma } = await import('@/lib/db');
       user = await prisma.user.findFirst({
-        where: { email: 'daveed@bridgit.io' }
+        where: { email: 'noreply@themetalayer.org' }
       });
       
       if (!user) {
-        console.error('🔴 [Comments API] Test user (Daveed) not found');
+        console.error('🔴 [Comments API] Test user (Anon) not found');
         return NextResponse.json({ error: 'Test user not found' }, { status: 401 });
       }
       

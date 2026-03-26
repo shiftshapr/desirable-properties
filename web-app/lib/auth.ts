@@ -22,9 +22,9 @@ export interface AuthService {
 
 // Test user data - using the actual database user ID
 const testUser: AuthUser = {
-  id: "cme65z5gr000hh2vv2jcz9r36", // Daveed's actual user ID from database
-  email: "daveed@bridgit.io",
-  name: "Daveed Benjamin",
+  id: "cme65z5gr000hh2vv2jcz9r36", // Legacy test user ID (DB row anonymized to noreply@themetalayer.org)
+  email: "noreply@themetalayer.org",
+  name: "Anon",
   affiliation: "ISOC",
   age: 30,
 };

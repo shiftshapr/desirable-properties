@@ -26,10 +26,10 @@ export async function GET(request: Request) {
     // Map test tokens to actual user IDs
     let authenticatedUserId;
     if (token === 'test-user-123') {
-      // Use Daveed's user for testing
+      // Use Anon's user for testing
       const { prisma } = await import('@/lib/db');
       const testUser = await prisma.user.findFirst({
-        where: { email: 'daveed@bridgit.io' }
+        where: { email: 'noreply@themetalayer.org' }
       });
       authenticatedUserId = testUser?.id;
     } else {

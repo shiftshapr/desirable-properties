@@ -29,24 +29,24 @@
       "summary": "Utilizes name chains (@user/object) as decentralized pointers with verifiable semantics and conflict resolution logic.",
       "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
       "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "21.json"
     },
     {
       "summary": "NDN supports hierarchical, semantically meaningful naming that maps directly to users and their data, independent of physical nodes.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "22.json"
     },
     {
       "summary": "Addresses namespace rights and management for non-human entities in interoperable systems.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json"
     }
   ],
@@ -56,8 +56,8 @@
       "why_it_matters": "This approach empowers communities to create and evolve naming structures meaningful to their use cases, with security guarantees that scale organically.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "22.json",
       "clarification": "This work exemplifies how semantic, hierarchical namespaces can be coupled with enforceable trust schemas, allowing context-aware permissions and auditability without DNS or platform dependency."
     }
@@ -78,8 +78,8 @@
       "why_it_matters": "This extends DNS-style naming into the trust layer of the Metaweb, enabling structured reference to people, objects, and assertions in a verifiable and user-controlled manner.",
       "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
       "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "21.json",
       "extension": "Name chains (e.g., @jaime/artifact99) function as semantic, URI-like identifiers with resolution pathways that combine identity verification and object authentication."
     }

@@ -13,8 +13,8 @@
       "summary": "Suggests a clear pathway toward W3C standardization.",
       "submission_title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
       "submission_overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "2.json"
     },
     {
@@ -44,8 +44,8 @@
       "why_it_matters": "Incorporating a standards track legitimizes the work and supports long-term adoption across browsers.",
       "submission_title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
       "submission_overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "2.json",
       "extension": "Proposal includes a concrete first step: establish an open standard via a recognized governance body."
     }

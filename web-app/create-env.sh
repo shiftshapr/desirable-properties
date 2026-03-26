@@ -78,3 +78,20 @@ echo "  2. Or if using local PostgreSQL, it's typically:"
 echo "     postgresql://postgres:your-password@localhost:5432/database_name"
 echo ""
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

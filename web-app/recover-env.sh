@@ -51,3 +51,20 @@ fi
 echo ""
 echo "✅ Recovery complete! You can now try: npm run build"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     if (authToken) {
       try {
         // For test authentication, use a consistent mock user ID
-        const verifiedClaims = { userId: "test-user-123", email: "daveed@bridgit.io", name: "Daveed Benjamin" };
+        const verifiedClaims = { userId: "test-user-123", email: "noreply@themetalayer.org", name: "Anon" };
         userId = "test-user-123"; // Test user ID for authentication
       } catch (error) {
         console.error('Auth token verification failed:', error);

@@ -21,7 +21,7 @@ async function testCommentSystem() {
     });
     
     const daveedUser = await prisma.user.findFirst({
-      where: { email: 'daveed@bridgit.io' }
+      where: { email: 'noreply@themetalayer.org' }
     });
     
     if (!submission || !daveedUser) {

@@ -3,11 +3,11 @@ const prisma = new PrismaClient();
 
 async function checkComments() {
   try {
-    // Check if Daveed's user exists
+    // Check if Anon's user exists
     const daveed = await prisma.user.findFirst({
-      where: { email: 'daveed@bridgit.io' }
+      where: { email: 'noreply@themetalayer.org' }
     });
-    console.log('Daveed user:', daveed);
+    console.log('Anon user:', daveed);
 
     // Get all comments
     const comments = await prisma.comment.findMany({

@@ -13,8 +13,8 @@
       "summary": "Structured bridges improve context-aware AI behavior and explainability.",
       "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
       "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "6.json"
     },
     {
@@ -53,8 +53,8 @@
       "summary": "Proposes operational criteria like red-teaming and risk profiling for AI safety.",
       "submission_title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
       "submission_overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Tristan Harris",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "11.json"
     },
     {
@@ -93,24 +93,24 @@
       "summary": "Semantic naming and data integrity verification provide foundational structures for embedding safety checks and traceability into AI outputs.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "22.json"
     },
     {
       "summary": "Hollywood's policy wins exemplify enforceable norms around consent and generative content.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json"
     },
     {
       "summary": "Specifies containment, governance, and ethical frameworks for embodied or infrastructure-managing AGI.",
       "submission_title": "Governance for Advanced Non-Human Agents and AI Systems",
       "submission_overview": "Based on Dr. Paul John Werbos's Saving the World and New Jerusalem posts, this submission proposes clarifications and extensions to numerous Desirable Properties to account for the governance, authentication, and accountability of advanced non-human agents and AI systems, including those that may operate in physical or hybrid embodiments, participate in economic systems, or manage critical infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "24.json"
     },
     {
@@ -125,16 +125,16 @@
       "summary": "Hollywood's AI clauses exemplify enforceable ethical standards.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
       "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json"
     },
     {
       "summary": "Allows AI-enhanced reputation to be modular, uninstallable, and transparent.",
       "submission_title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
       "submission_overview": "This draft proposal from the Chromium team outlines a browser-native framework enabling users to install, manage, and utilize multiple independent reputation providers. It envisions a decentralized ecosystem for reputational signals, facilitating both positive and negative assessments of websites and content. This approach prioritizes user choice, system resilience, and reputational pluralism over centralized moderation or gatekeeping by browser vendors. It aims to replicate the utility of walled-garden trust systems (e.g., Amazon reviews) while retaining the open and user-controlled nature of the web. The framework proposes multiple technical mechanisms for secure and privacy-respecting attestations, enabling scalable and nuanced integration of reputational data into browsing experiences. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Rick Byers",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json"
     },
     {
@@ -157,32 +157,32 @@
       "summary": "Algorithmic moderation must be trained and governed to avoid encoding systemic biases.",
       "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
       "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "38.json"
     },
     {
       "summary": "Supports traceable and auditable reasoning processes to avoid opaque AI outcomes.",
       "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
       "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "40.json"
     },
     {
       "summary": "Counters manipulative patterns with designs that reflect true system behavior and promote user wellbeing.",
       "submission_title": "Humane Design Patterns for Ethical Tech Platforms",
       "submission_overview": "This submission synthesizes practical interface and architectural patterns from the 'Humane Tech Framework' to inform the development of platforms that enhance user agency, attention, relationships, and understanding. The design patterns tackle common harms such as compulsive usage, information overload, and manipulative defaults by emphasizing user wellbeing, transparency, and ethical engagement. This submission was generated with protocol META-DP-EVAL-v1.3 https://github.com/ErikaOnFire/humane-tech-framework/blob/main/docs/design-patterns.md",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "41.json"
     },
     {
       "summary": "Implements protective measures ensuring AI safety and promoting ethical user interactions.",
       "submission_title": "AI as the Ultimate Safety Layer",
       "submission_overview": "Digital crimes—scams, phishing, deepfakes, and sophisticated social-engineered fraud—are rapidly escalating in complexity and frequency. Rather than viewing AI as merely exacerbating these threats, this submission proposes an OS-level 'Safety Agent,' a localized AI capable of proactively detecting digital threats, providing mental health interventions, improving personal judgment, and enabling enterprise compliance without compromising privacy. By operating solely on-device and integrated at the operating system level, this solution maximizes data security and user trust. This submission was generated with protocol META-DP-EVAL-v1.3 Based on article by Scott Belsky: https://www.implications.com/p/the-emergence-of-safety-layers-religion",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "42.json"
     }
   ],
@@ -232,8 +232,8 @@
       "why_it_matters": "Without adjustments, automated tools risk replicating systemic discrimination, undermining the Meta-Layer's mission of inclusive, safe digital spaces.",
       "submission_title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
       "submission_overview": "The March 2024 Kairos Fellowship report, User Error: LGBTQ+, documents historical and ongoing harms experienced by LGBTQ+ individuals in digital environments, with emphasis on the erasure and marginalization caused by platform policies and automated moderation systems. Drawing from this analysis, this submission argues for the incorporation of inclusive design principles into the Meta-Layer Initiative, particularly those that protect vulnerable populations. Key recommendations include increasing transparency, empowering community-based governance, and ensuring AI systems respect identity and context. This submission was generated with protocol META-DP-EVAL-v1.3 https://static1.squarespace.com/static/580a3e6403596e9f6d5a46bf/t/65f1fd44c0590a0681dc4cea/1710357856560/Kairos_UserError-LGBTQ",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "38.json",
       "clarification": "The report provides evidence that AI-driven moderation systems, when not trained with inclusive datasets or overseen by diverse communities, systematically misclassify queer content. To be considered ethical, AI must minimize false positives against marginalized identity expression."
     }
@@ -244,8 +244,8 @@
       "why_it_matters": "This improves safety, interpretability, and alignment with pluralistic ethical baselines.",
       "submission_title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
       "submission_overview": "This multi-part proposal outlines an architectural evolution of the web through three interconnected primitives: 1) Bridges as first-class web infrastructure, 2) The Synaptic Web as an adaptive, evolving collective intelligence, and 3) Universal knowledge maps for navigation, learning, and sensemaking. Together, these ideas transform the Meta-layer into a dynamic scaffold for contextual intelligence, verifiable information, and community co-creation. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "6.json",
       "extension": "Embedding AI reasoning in bridge-based graphs constrains inference to verifiable, community-grounded pathways."
     },
@@ -274,8 +274,8 @@
       "why_it_matters": "Ensures that safety mechanisms are proactive, not reactive, especially for at-risk groups.",
       "submission_title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
       "submission_overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
-      "submitter_name": "Tristan Harris",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "11.json",
       "extension": "Include thresholds for red-teaming, behavioral profiling, and transparency audits with a focus on protecting vulnerable populations."
     },
@@ -284,8 +284,8 @@
       "why_it_matters": "Enhancing mental health through OS-level AI-driven interventions can substantially improve users' emotional well-being, especially vulnerable demographics like adolescents.",
       "submission_title": "AI as the Ultimate Safety Layer",
       "submission_overview": "Digital crimes—scams, phishing, deepfakes, and sophisticated social-engineered fraud—are rapidly escalating in complexity and frequency. Rather than viewing AI as merely exacerbating these threats, this submission proposes an OS-level 'Safety Agent,' a localized AI capable of proactively detecting digital threats, providing mental health interventions, improving personal judgment, and enabling enterprise compliance without compromising privacy. By operating solely on-device and integrated at the operating system level, this solution maximizes data security and user trust. This submission was generated with protocol META-DP-EVAL-v1.3 Based on article by Scott Belsky: https://www.implications.com/p/the-emergence-of-safety-layers-religion",
-      "submitter_name": "Daveed Benjamin",
-      "submitter_email": "daveed@bridgit.io",
+      "submitter_name": "Anon",
+      "submitter_email": "noreply@themetalayer.org",
       "source_file": "42.json",
       "extension": "AI-based safety layers embedded at the operating system level could proactively identify unhealthy digital habits, such as doomscrolling or patterns indicative of depression, triggering timely interventions or supportive prompts."
     }

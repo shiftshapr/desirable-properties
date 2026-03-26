@@ -34,3 +34,20 @@ echo ""
 echo "Once you find it, update .env.local with:"
 echo "  DATABASE_URL=your-connection-string-here"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

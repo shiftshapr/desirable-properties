@@ -1,4 +1,5 @@
 import { prisma } from './db';
+import { publicSubmitterNames } from './publicSubmitter';
 // import { PrivyClient } from '@privy-io/server-auth'; // Authentication disabled
 
 export interface ElementData {
@@ -423,10 +424,11 @@ export class UnifiedInteractionService {
       downvotes: submission.votes.filter((v: any) => v.type === 'DOWN').length,
       userVote,
       createdAt: submission.createdAt,
-      author: {
-        firstName: submission.submitter.firstName,
-        lastName: submission.submitter.lastName,
-      },
+      author: publicSubmitterNames(
+        submission.submitter.firstName,
+        submission.submitter.lastName,
+        submission.submitter.email
+      ),
     };
   }
 
@@ -441,10 +443,11 @@ export class UnifiedInteractionService {
       downvotes: comment.votes.filter((v: any) => v.type === 'DOWN').length,
       userVote,
       createdAt: comment.createdAt,
-      author: {
-        firstName: comment.author.firstName,
-        lastName: comment.author.lastName,
-      },
+      author: publicSubmitterNames(
+        comment.author.firstName,
+        comment.author.lastName,
+        comment.author.email
+      ),
     };
   }
 }

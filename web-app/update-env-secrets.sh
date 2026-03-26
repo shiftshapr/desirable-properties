@@ -47,3 +47,20 @@ echo ""
 echo "New JWT_SECRET:"
 grep "^JWT_SECRET=" "$ENV_FILE" || echo "Not found"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -65,15 +65,15 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
         "overview": "I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction.\n\nOverlays would be able to:\n- Register a “startup icon” and metadata (name, role, permissions)\n- Indicate availability or priority\n- Respect a shared system for tray placement and visibility\n- Defer to user preferences in display and ordering\n\nUsers could:\n- Configure which overlays are pinned or expanded\n- Access others on demand via an expandable tray\n- Rely on consistent placement and behavior across sites and browsers\n\nNext Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX.",
         "source_link": null,
-        "raw_content": "Website: themetalayer.org\nForm name: Contact form\nDetails: Name: Daveed\nLast name: Benjamin\nShort answer email: daveed@bridgit.io\nDesirable Property: Multiple\nContribute an Idea: Title: Shared Tray Protocol for Coordinated Overlay Interfaces Summary: I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction. Overlays would be able to: Register a “startup icon” and metadata (name, role, permissions) Indicate availability or priority Respect a shared system for tray placement and visibility Defer to user preferences in display and ordering Users could: Configure which overlays are pinned or expanded Access others on demand via an expandable tray Rely on consistent placement and behavior across sites and browsers Next Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX. Related Desirable Properties: DP2 - Participant Agency and Empowerment: Enhances control over the interface layer. DP7 - Simplicity and Interoperability: Establishes a common UX protocol for overlays. DP8 - Collaborative Environment and Meta-Communities: Enables coexistence of decentralized overlay tools. DP14 - Trust and Transparency: Provides a transparent view into which overlays are active. DP16 - Roadmap and Milestones: Suggests a clear pathway toward W3C standardization. DP19 - Amplifying Presence and Community Engagement: Surfaces community overlays without clutter. Proposal Type: Cross-cutting system-level extension with a potential path to web standardization. Open Questions: Should the Meta-layer take responsibility for bootstrapping such a protocol, or should it emerge separately and plug in? What permission model should govern overlay visibility or auto-activation? Could overlays be ranked or filtered contextually based on the site being visited?"
+        "raw_content": "Website: themetalayer.org\nForm name: Contact form\nDetails: Name: Anon\nLast name: \nShort answer email: noreply@themetalayer.org\nDesirable Property: Multiple\nContribute an Idea: Title: Shared Tray Protocol for Coordinated Overlay Interfaces Summary: I propose the development of a browser-level interface protocol that allows multiple overlays (e.g. assistants, wallets, chat tools) to register themselves into a shared, user-configurable tray, typically anchored in the lower-right corner of the screen. This would support coexistence of decentralized tools, prevent UX collisions, and empower users to customize their digital environment without friction. Overlays would be able to: Register a “startup icon” and metadata (name, role, permissions) Indicate availability or priority Respect a shared system for tray placement and visibility Defer to user preferences in display and ordering Users could: Configure which overlays are pinned or expanded Access others on demand via an expandable tray Rely on consistent placement and behavior across sites and browsers Next Steps: I suggest forming a W3C Community Group to define an open standard for overlay registration and tray coordination. This standard could help browsers and web apps harmonize decentralized UI layers, supporting both open innovation and excellent UX. Related Desirable Properties: DP2 - Participant Agency and Empowerment: Enhances control over the interface layer. DP7 - Simplicity and Interoperability: Establishes a common UX protocol for overlays. DP8 - Collaborative Environment and Meta-Communities: Enables coexistence of decentralized overlay tools. DP14 - Trust and Transparency: Provides a transparent view into which overlays are active. DP16 - Roadmap and Milestones: Suggests a clear pathway toward W3C standardization. DP19 - Amplifying Presence and Community Engagement: Surfaces community overlays without clutter. Proposal Type: Cross-cutting system-level extension with a potential path to web standardization. Open Questions: Should the Meta-layer take responsibility for bootstrapping such a protocol, or should it emerge separately and plug in? What permission model should govern overlay visibility or auto-activation? Could overlays be ranked or filtered contextually based on the site being visited?"
       },
       "directly_addressed_dps": [
         {
@@ -309,9 +309,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
@@ -760,15 +760,15 @@
     },
     {
       "submitter": {
-        "first_name": "Tristan",
-        "last_name": "Harris",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
         "overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Submited by Daveed 📬 Meta-layer Call for Input Contribution Draft\n\nTitle: Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer\n\nSummary: Drawing from Tristan Harris's TED 2025 talk, The Narrow Path: Why AI is Our Ultimate Test and Greatest Invitation, this submission reinforces the critical importance of existing Desirable Properties—particularly those related to AI governance, containment, and transparency..."
+        "raw_content": "Submited by Anon 📬 Meta-layer Call for Input Contribution Draft\n\nTitle: Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer\n\nSummary: Drawing from Tristan Harris's TED 2025 talk, The Narrow Path: Why AI is Our Ultimate Test and Greatest Invitation, this submission reinforces the critical importance of existing Desirable Properties—particularly those related to AI governance, containment, and transparency..."
       },
       "directly_addressed_dps": [
         {
@@ -1131,9 +1131,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Enhancing Whistleblower Protection within the Meta-Layer",
@@ -1206,9 +1206,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Can Directories Rise Again?",
@@ -1421,9 +1421,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
@@ -1479,9 +1479,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
@@ -1562,9 +1562,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "The Engineer's Ledger and the People-Centered Paraidox",
@@ -1655,9 +1655,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Governance for Advanced Non-Human Agents and AI Systems",
@@ -1772,9 +1772,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Integrating Multi-Modal Systems into the Meta-Layer Framework",
@@ -2054,9 +2054,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "The Engineer's Ledger and the People-Centered Paraidox",
@@ -2230,9 +2230,9 @@
     },
     {
       "submitter": {
-        "first_name": "Rick",
-        "last_name": "Byers",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
@@ -2559,9 +2559,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
@@ -2708,9 +2708,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Enabling Machine-Readable Meaning through the Semantic Web",
@@ -2797,9 +2797,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "Humane Design Patterns for Ethical Tech Platforms",
@@ -2864,9 +2864,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "AI as the Ultimate Safety Layer",
@@ -2933,9 +2933,9 @@
     },
     {
       "submitter": {
-        "first_name": "Daveed",
-        "last_name": "Benjamin",
-        "email": "daveed@bridgit.io"
+        "first_name": "Anon",
+        "last_name": "",
+        "email": "noreply@themetalayer.org"
       },
       "submission": {
         "title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
