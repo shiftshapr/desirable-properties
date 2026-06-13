@@ -626,15 +626,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
                 elementType="comment"
                 submissionId={submissionId}
               />
-              {!isReply && (
-                <button
-                  onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                  className="flex items-center gap-1 text-gray-400 hover:text-cyan-400 text-sm transition-colors"
-                >
-                  <Reply className="h-4 w-4" />
-                  Reply
-                </button>
-              )}
+              {/* Reply button removed as commenting is frozen */}
               
               {/* Moderation Menu */}
               <div className="relative">
@@ -784,27 +776,12 @@ export default function CommentSection({ elementId, elementType, submissionId, o
         </div>
       </div>
 
-      {/* Comment form */}
-      <div className="mb-3">
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment..."
-          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white placeholder-gray-400 resize-none text-sm"
-          rows={2}
-        />
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-gray-400">
-            {authenticated ? 'Commenting as yourself' : 'Sign in to comment'}
-          </span>
-          <button
-            onClick={handleSubmitComment}
-            disabled={!newComment.trim()}
-            className="bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1 rounded text-xs font-medium transition-colors"
-          >
-            Comment
-          </button>
-        </div>
+      {/* Comment form - Frozen */}
+      <div className="mb-3 p-3 bg-gray-800 border border-gray-700 rounded text-center">
+        <p className="text-sm text-gray-400">
+          The legacy commenting system is frozen to prevent governance fragmentation. 
+          Please visit <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline">desirableproperties.org</a> or <a href="https://govhub.live" className="text-cyan-400 hover:underline">Gov Hub</a> for active discussions.
+        </p>
       </div>
 
       {/* Comments list */}

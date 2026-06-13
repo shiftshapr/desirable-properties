@@ -148,9 +148,10 @@ export default function UnifiedVotingDisplay({
     return (
       <>
         <button
-          onClick={() => handleVote('UP')}
-          disabled={votingData.isLoading}
+          onClick={() => {}}
+          disabled={true}
           className={upvoteClass}
+          title="Voting is frozen on the historical archive"
           data-testid={`upvote-${elementId}`}
         >
           <ThumbsUp size={iconSize} />
@@ -158,9 +159,10 @@ export default function UnifiedVotingDisplay({
         </button>
 
         <button
-          onClick={() => handleVote('DOWN')}
-          disabled={votingData.isLoading}
+          onClick={() => {}}
+          disabled={true}
           className={downvoteClass}
+          title="Voting is frozen on the historical archive"
           data-testid={`downvote-${elementId}`}
         >
           <ThumbsDown size={iconSize} />

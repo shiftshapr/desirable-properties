@@ -163,8 +163,10 @@ export default function DesirablePropertiesApp() {
         // console.log('Loaded submissions:', submissionsData.submissions?.length);
         const submissionsList = submissionsData.submissions || [];
         setSubmissions(submissionsList);
-        // Pre-fetch all comment and vote counts for all submissions
-        fetchAllSubmissionCounts(submissionsList);
+        // Defer + throttle: avoid hammering the server before first paint
+        setTimeout(() => {
+          void fetchAllSubmissionCounts(submissionsList);
+        }, 300);
         
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -456,6 +458,13 @@ export default function DesirablePropertiesApp() {
     }));
   };
 
+  /** Run promises in small batches so we do not overwhelm the Node server / DB with hundreds of parallel API calls. */
+  const runPromisePool = async (tasks: Promise<void>[], batchSize: number) => {
+    for (let i = 0; i < tasks.length; i += batchSize) {
+      await Promise.all(tasks.slice(i, i + batchSize));
+    }
+  };
+
   // Pre-fetch all comment and vote counts for all submissions together
   const fetchAllSubmissionCounts = async (submissionsList: Submission[]) => {
     try {
@@ -554,8 +563,7 @@ export default function DesirablePropertiesApp() {
         }
       }
       
-      // Wait for all promises to complete before continuing
-      await Promise.all(allFetchPromises);
+      await runPromisePool(allFetchPromises, 14);
     } catch (error) {
       console.error('Error pre-fetching all submission counts:', error);
     }
@@ -1168,11 +1176,17 @@ export default function DesirablePropertiesApp() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-8 text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-cyan-400 mb-2">
-          The Desirable Properties of a Meta-Layer
+          The Memory Layer
         </h1>
-        <p className="text-lg sm:text-xl text-gray-300 max-w-[600px] mx-auto break-words">
-          Community-defined desirable properties for a trustworthy and safe coordination zone above the webpage
+        <p className="text-lg sm:text-xl text-gray-300 max-w-[600px] mx-auto break-words mb-6">
+          Historical archive, provenance layer, and idea discovery platform for the Meta-Layer Initiative.
         </p>
+        <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4 text-left">
+          <p className="text-blue-200">
+            <strong>Notice:</strong> This site preserves and organizes community contributions from the Second Meta-Layer Call for Input. 
+            Current Desirable Property development, stewardship, and governance now occur through the <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline font-semibold">Desirable Properties Challenge</a> and <a href="https://govhub.live" className="text-cyan-400 hover:underline font-semibold">Gov Hub</a>.
+          </p>
+        </div>
       </div>
 
 
