@@ -1,0 +1,537 @@
+{
+  "meta": {
+    "description": "On-chain articles from the Meta-Layer Call for Input satplication",
+    "satplication_source_id": "meta-layer-call-for-input",
+    "call_for_input_inscription": "41b5ea02ed344cacfe828595491ca224f2e487052447b7d004c62ab323a1b6c4i0",
+    "how_to_inscribe": "7c15d859d71fed6f2a31bdde7d11c0d16eefe4a580b31b9d9507dee401e3e082i0",
+    "meta_domain_inscription": "00bb89cdd16d44e2418c21ee4a85ccfafde0651ad396541f0d4cdb56808f63afi0"
+  },
+  "pci_emails": [
+    {
+      "id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "subject": "Meta-Layer Initiative Meeting on Sept 16 with special guest Vint Cerf",
+      "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+      "author": "Anon",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "tags": [
+        "Metaweb",
+        "Metadata",
+        "Data",
+        "AI",
+        "Privacy",
+        "Vint Cerf"
+      ],
+      "date": "09 Sep 2024 15:56:20 -0700"
+    },
+    {
+      "id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "title": "Anticipating PCEs and Meta-Layer Alignment",
+      "reply-to": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "author": "Cindy Mason",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "tags": [
+        "Privacy",
+        "Data",
+        "AI",
+        "Decentralization"
+      ],
+      "date": "09 Sep 2024 17:07:45 -0700"
+    },
+    {
+      "id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+      "author": "Anon",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "tags": [
+        "Decentralization",
+        "AI",
+        "Metaweb",
+        "Collective Intelligence",
+        "Data"
+      ],
+      "date": "11 Sep 2024 16:23:50 -0700"
+    },
+    {
+      "id": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "title": "Metalevel Initiative: Challenges and Opportunities",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Paul Werbos",
+      "tags": [
+        "Sustainability",
+        "AI",
+        "Collaboration"
+      ],
+      "date": "11 Sep 2024 16:35:06 -0700"
+    },
+    {
+      "id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "David Bray, PhD",
+      "tags": [
+        "Collective Intelligence",
+        "AI",
+        "Sustainability"
+      ],
+      "date": "12 Sep 2024 04:24:41 -0700"
+    },
+    {
+      "id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "title": "The Overweb: Building a Decentralized Meta-Layer",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Metadata",
+        "Decentralization",
+        "Collaboration",
+        "AI",
+        "Overweb"
+      ],
+      "date": "12 Sep 2024 12:23:45 -0700"
+    },
+    {
+      "id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Collective Intelligence",
+        "AI",
+        "Collaboration",
+        "Metaweb",
+        "Interfaces",
+        "Overweb"
+      ],
+      "date": "12 Sep 2024 13:39:51 -0700"
+    },
+    {
+      "id": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "title": "Defining Goals for Effective Collective Intelligence",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "David Bray, PhD",
+      "tags": [
+        "Collective Intelligence",
+        "Collaboration"
+      ],
+      "date": "12 Sep 2024 14:04:03 -0700"
+    },
+    {
+      "id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Collective Intelligence",
+        "Collaboration",
+        "Metaweb",
+        "Empowerment",
+        "Innovation",
+        "Overweb"
+      ],
+      "date": "12 Sep 2024 16:18:12 -0700"
+    },
+    {
+      "id": "205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "title": "Future of Interaction: Moving Beyond Webpages",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "David Bray, PhD",
+      "tags": [
+        "Internet Evolution",
+        "Interfaces",
+        "AI",
+        "Decentralization"
+      ],
+      "date": "12 Sep 2024 16:33:05 -0700"
+    },
+    {
+      "id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "title": "Acknowledging Contributions in Collaborative Spaces",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Cindy Mason",
+      "tags": [
+        "Collaboration",
+        "Empowerment"
+      ],
+      "date": "12 Sep 2024 17:26:44 -0700"
+    },
+    {
+      "id": "9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "title": "Collective Intelligence and Brain Synchronization",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Paul Werbos",
+      "tags": [
+        "Collective Intelligence",
+        "Sustainability",
+        "Collaboration"
+      ],
+      "date": "12 Sep 2024 18:48:32 -0700"
+    },
+    {
+      "id": "3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "title": "Cross-Cultural and Multilingual AI Tools",
+      "author": "David Michaelis",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "tags": [
+        "AI",
+        "Collaboration",
+        "Empowerment"
+      ],
+      "date": "12 Sep 2024 19:32:18 -0700"
+    },
+    {
+      "id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "title": "Digital Cognitive Pathways and Metaweb Evolution",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Interfaces",
+        "Transparency"
+      ],
+      "date": "13 Sep 2024 08:23:09 -0700"
+    },
+    {
+      "id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "reply-to": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "title": "Recognizing and Rewarding Contributions in the Metaweb",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Transparency",
+        "Collaboration"
+      ],
+      "date": "13 Sep 2024 08:39:53 -0700"
+    },
+    {
+      "id": "bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+      "title": "Call for Ideas: Help Shape the Future of the Web",
+      "subject": "[PCI-C] Call for Ideas: Help Shape the Future of the Web",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Decentralization",
+        "Collaboration"
+      ],
+      "date": "04 Oct 2024 14:10:10 -0700"
+    },
+    {
+      "id": "0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0",
+      "title": "AI and Humanity's Deepest Problems: Love and Compassion",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Cindy Mason",
+      "tags": [
+        "Metaweb",
+        "Decentralization",
+        "Collaboration",
+        "AI"
+      ],
+      "date": "13 Oct 2024 08:27:02 -0700"
+    },
+    {
+      "id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+      "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+      "subject": "Re: [PCI-C] The Morning: What the A.I. Nobels teach us about humanity",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Collaboration",
+        "Impact",
+        "Collective Intelligence"
+      ],
+      "date": "15 Oct 2024 10:23:02 -0700"
+    },
+    {
+      "id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+      "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+      "subject": "[PCI-C] Join Us for Meta-Layer Working Sessions @mdash; Let's Shape the Future of the Web Together",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Paul Werbos",
+      "tags": [
+        "AI",
+        "Sustainability",
+        "Governance",
+        "Impact"
+      ],
+      "date": "18 Oct 2024 07:26:38 -0700"
+    },
+    {
+      "id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+      "title": "Human-Centered AI: A Critical Perspective",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Cindy Mason",
+      "tags": [
+        "AI",
+        "Privacy",
+        "Ethics",
+        "Data"
+      ],
+      "date": "25 Oct 2024 08:36:38 -0700"
+    },
+    {
+      "id": "97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+      "title": "Legal Liabilities in the Meta-Layer",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Brian Donohue",
+      "tags": [
+        "Metaweb",
+        "Legal",
+        "Governance"
+      ],
+      "date": "28 Oct 2024 06:04:38 -0700"
+    },
+    {
+      "id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "title": "Strategic Opportunity for Internet Reform with New Leadership",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Internet Evolution",
+        "Governance",
+        "Privacy"
+      ],
+      "date": "28 Oct 2024 16:18:38 -0700"
+    },
+    {
+      "id": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "reply-to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "title": "Ensuring Balance and Preventing Weaponization of Principles",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "David Bray, PhD",
+      "tags": [
+        "Governance",
+        "Transparency",
+        "Metaweb",
+        "Security"
+      ],
+      "date": "28 Oct 2024 17:05:01 -0700"
+    },
+    {
+      "id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+      "reply-to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "title": "Preserving Real History and Strengthening Cybersecurity",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Paul Werbos",
+      "tags": [
+        "Security",
+        "Transparency",
+        "Governance"
+      ],
+      "date": "29 Oct 2024 11:01:01 -0700"
+    },
+    {
+      "id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+      "reply-to": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Governance",
+        "Privacy"
+      ],
+      "date": "29 Oct 2024 12:42:01 -0700"
+    },
+    {
+      "id": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "reply-to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "title": "Critique of Decentralization and Bitcoin in Meta-Layer Principles",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Dave Troy",
+      "tags": [
+        "Bitcoin",
+        "Decentralization",
+        "Governance",
+        "Financial Systems"
+      ],
+      "date": "29 Oct 2024 14:18:01 -0700"
+    },
+    {
+      "id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "reply-to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "title": "Incorporating Security and Privacy in the Meta-Layer",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Vandana Upadhyay",
+      "tags": [
+        "Metaweb",
+        "Privacy",
+        "Security"
+      ],
+      "date": "29 Oct 2024 17:18 -0700"
+    },
+    {
+      "id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+      "reply-to": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "title": "Customizable Software Agents for Security and Privacy",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Cindy Mason",
+      "tags": [
+        "Privacy",
+        "Security",
+        "AI"
+      ],
+      "date": "29 Oct 2024 21:40:01 -0700"
+    },
+    {
+      "id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+      "reply-to": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "title": "Preserving Open Letters with Bitcoin Ordinals",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Bitcoin",
+        "Metadata",
+        "Transparency",
+        "Metaweb",
+        "Blockchain",
+        "Impact",
+        "Governance",
+        "Digital Artifacts"
+      ],
+      "date": "29 Oct 2024 20:09:01 -0700"
+    },
+    {
+      "id": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "reply-to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "title": "Visualizing Customizable Software Agents as Guardrails",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Cindy Mason",
+      "tags": [
+        "Privacy",
+        "Security",
+        "Interfaces"
+      ],
+      "date": "29 Oct 2024 21:41:38 -0700"
+    },
+    {
+      "id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+      "replyTo": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "title": "Security and Privacy as Pillars of the Meta-Layer",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "medium": "email",
+      "source": "PCI-Community-Calls (PCI-C)",
+      "author": "Anon",
+      "tags": [
+        "Metaweb",
+        "Privacy",
+        "Security",
+        "Decentralization",
+        "Digital Identity",
+        "Data"
+      ],
+      "date": "18 Oct 2024 07:26:38 -0700"
+    }
+  ],
+  "key_articles": [
+    {
+      "id": "5a01482ab569384d0cd136b07918a959f302e344ce73e42c85d79dbe48e5b13ai0",
+      "title": "The Desirable Properties of a Meta-Layer",
+      "author": "Bridgit DAO",
+      "source": "Google Doc",
+      "tags": [
+        "Metaweb",
+        "Data",
+        "Collaboration",
+        "Decentralization",
+        "AI"
+      ],
+      "date": "18 Sep 2024 15:00:00 -0700"
+    },
+    {
+      "id": "41b5ea02ed344cacfe828595491ca224f2e487052447b7d004c62ab323a1b6c4i0",
+      "title": "Help Shape the Future of the Web",
+      "author": "Bridgit DAO",
+      "tags": [
+        "Metaweb",
+        "Collaboration",
+        "Data",
+        "Transparency"
+      ],
+      "replace": [
+        {
+          "this": "Jan. 31st",
+          "with": "June 30th"
+        },
+        {
+          "this": "January 31st",
+          "with": "June 30th"
+        }
+      ]
+    },
+    {
+      "id": "7c15d859d71fed6f2a31bdde7d11c0d16eefe4a580b31b9d9507dee401e3e082i0",
+      "reply-to": "41b5ea02ed344cacfe828595491ca224f2e487052447b7d004c62ab323a1b6c4i0",
+      "title": "How to Create a BRC333 Inscription",
+      "author": "Bridgit DAO",
+      "tags": [
+        "Bitcoin",
+        "Metaweb",
+        "Blockchain"
+      ]
+    }
+  ]
+}

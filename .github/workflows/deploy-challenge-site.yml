@@ -1,0 +1,51 @@
+name: Deploy Challenge Site
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'challenge-site/**'
+      - '.github/workflows/deploy-challenge-site.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: challenge-site/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd challenge-site
+        npm ci
+
+    - name: Build application
+      run: |
+        cd challenge-site
+        npm run build
+      env:
+        NODE_ENV: production
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/ubuntu/desirable-properties
+          git pull origin main
+          cd challenge-site
+          npm ci
+          npm run build
+          pm2 delete desirableproperties 2>/dev/null || true
+          pm2 start ecosystem.config.js
+          pm2 save

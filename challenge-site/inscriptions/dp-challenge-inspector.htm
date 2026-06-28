@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DP Challenge Satplication Inspector</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a12;color:#f0ead6;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.6;padding:1.5rem 1rem}
+h1{text-align:center;font-size:1.5rem;color:#00bfff;margin-bottom:.2rem}
+.subtitle{text-align:center;color:#87cefa;font-size:.8rem;margin-bottom:1.5rem}
+.status-bar{text-align:center;padding:.5rem;background:#111;border-radius:6px;margin-bottom:1.5rem;font-size:.75rem;color:#999}
+.status-bar .live{color:#6ee7b7}
+.status-bar .err{color:#f87171}
+.sat-card{border:1px solid #333;border-radius:8px;margin-bottom:1rem;overflow:hidden}
+.sat-header{background:#111;padding:.6rem 1rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;cursor:pointer}
+.sat-header:hover{background:#1a1a2a}
+.sat-role{background:#003;color:#00bfff;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+.sat-number{font-family:monospace;font-size:.8rem;color:#ccc}
+.sat-meta{margin-left:auto;font-size:.7rem;color:#666}
+.sat-body{padding:.8rem 1rem;display:none;border-top:1px solid #222}
+.sat-body.open{display:block}
+.inscription-row{display:flex;align-items:center;gap:.5rem;padding:.3rem 0;border-bottom:1px solid #1a1a2a;font-size:.75rem}
+.inscription-row:last-child{border-bottom:none}
+.insc-idx{color:#666;font-family:monospace;width:2rem;text-align:right}
+.insc-id{font-family:monospace;color:#87cefa;word-break:break-all;flex:1}
+.insc-id a{color:#87cefa;text-decoration:none}
+.insc-id a:hover{color:#00bfff;text-decoration:underline}
+.insc-type{font-size:.6rem;text-transform:uppercase;padding:1px 5px;border-radius:3px;background:#1a1a2a;color:#999}
+.loading{color:#666;font-style:italic;padding:.5rem 0;font-size:.8rem}
+.error{color:#f87171;font-size:.8rem}
+.legend{margin-top:1.5rem;border-top:1px solid #333;padding-top:1rem}
+.legend h3{font-size:.8rem;color:#87cefa;margin-bottom:.4rem}
+.legend p{font-size:.7rem;color:#999;line-height:1.8}
+.refresh-btn{display:block;margin:1rem auto;padding:.4rem 1.2rem;background:#003;color:#00bfff;border:1px solid #00bfff;border-radius:4px;cursor:pointer;font-size:.75rem}
+.refresh-btn:hover{background:#004}
+</style>
+</head>
+<body>
+<h1>DP Challenge Satplication Inspector</h1>
+<p class="subtitle">Live view of the on-chain satplication structure</p>
+<div class="status-bar" id="status">Initializing...</div>
+<button class="refresh-btn" onclick="inspect()">↻ Refresh</button>
+<div id="sats"></div>
+
+<div class="legend">
+<h3>Satplication Architecture</h3>
+<p>
+<strong>Premise/Articles sat</strong> — contains the preface (reinscribed) + article manifest (JSON listing all articles/DPs)<br>
+<strong>Layout sat</strong> — CSS theme + structural layout inscribed as HTML<br>
+<strong>Script sats</strong> — modular JavaScript: Oracle (main loader), TimeTravel, Articles module, Data module, UI, Pagination, Tags, Sources<br>
+<strong>Config sat</strong> — sources JSON: key-value pairs defining the satplication's runtime behavior<br>
+<strong>Hook sat</strong> — BRC333 hook logic for dynamic behavior triggers<br>
+<strong>Styles sat</strong> — additional CSS/theme overrides
+</p>
+</div>
+
+<script>
+const BASE = 'https://ordinals.com';
+
+const SATS = [
+    { role: 'Articles / Premise', sat: '1954778638335406', description: 'Preface + article manifest (DP Challenge)' },
+    { role: 'Layout', sat: '1608984000627538', description: 'HTML/CSS layout template' },
+    { role: 'Oracle (script)', sat: '1742692208973887', description: 'Main satplication loader' },
+    { role: 'TimeTravel (script)', sat: '1742692208923721', description: 'Version history / time-travel logic' },
+    { role: 'Articles (script)', sat: '1055369956031183', description: 'Article rendering module' },
+    { role: 'Data (script)', sat: '1055369956031729', description: 'Data fetching & caching module' },
+    { role: 'UI (script)', sat: '1055369955956989', description: 'User interface components' },
+    { role: 'Pagination (script)', sat: '1055369955967961', description: 'List pagination logic' },
+    { role: 'Tags (script)', sat: '1055369955974047', description: 'Tag filtering module' },
+    { role: 'Sources (script)', sat: '1245363721346832', description: 'Source/config loader' },
+    { role: 'Hook', sat: '1954778638321042', description: 'BRC333 hook triggers' },
+    { role: 'Styles', sat: '1117075618770135', description: 'CSS theme overrides' },
+];
+
+async function fetchSatInfo(sat) {
+    try {
+        const resp = await fetch(`${BASE}/r/sat/${sat}`);
+        const data = await resp.json();
+        let allIds = data.ids || [];
+        let more = data.more;
+        let page = 1;
+        while (more) {
+            const resp2 = await fetch(`${BASE}/r/sat/${sat}/${page}`);
+            const data2 = await resp2.json();
+            allIds = allIds.concat(data2.ids || []);
+            more = data2.more;
+            page++;
+        }
+        return { ids: allIds, error: null };
+    } catch (e) {
+        return { ids: [], error: e.message };
+    }
+}
+
+async function getContentType(inscriptionId) {
+    try {
+        const resp = await fetch(`${BASE}/r/inscription/${inscriptionId}`, { method: 'HEAD' });
+        return resp.headers.get('content-type') || 'unknown';
+    } catch {
+        return 'unknown';
+    }
+}
+
+function truncId(id) {
+    if (!id || id.length < 20) return id;
+    return id.slice(0, 10) + '…' + id.slice(-8);
+}
+
+function renderSatCard(satDef, info) {
+    const card = document.createElement('div');
+    card.className = 'sat-card';
+
+    const header = document.createElement('div');
+    header.className = 'sat-header';
+    header.innerHTML = `
+        <span class="sat-role">${satDef.role}</span>
+        <span class="sat-number">${satDef.sat}</span>
+        <span class="sat-meta">${info.error ? '<span class="err">error</span>' : info.ids.length + ' inscription' + (info.ids.length !== 1 ? 's' : '')}</span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'sat-body';
+
+    if (info.error) {
+        body.innerHTML = `<p class="error">Failed: ${info.error}</p>`;
+    } else if (info.ids.length === 0) {
+        body.innerHTML = `<p class="loading">No inscriptions found on this sat.</p>`;
+    } else {
+        body.innerHTML = `<p style="font-size:.7rem;color:#666;margin-bottom:.4rem">${satDef.description}</p>`;
+        info.ids.forEach((id, i) => {
+            const row = document.createElement('div');
+            row.className = 'inscription-row';
+            row.innerHTML = `
+                <span class="insc-idx">#${i}</span>
+                <span class="insc-id"><a href="${BASE}/inscription/${id}" target="_blank" title="${id}">${truncId(id)}</a></span>
+                <span class="insc-type">${i === info.ids.length - 1 ? 'latest' : ''}</span>
+            `;
+            body.appendChild(row);
+        });
+    }
+
+    header.addEventListener('click', () => body.classList.toggle('open'));
+    card.appendChild(header);
+    card.appendChild(body);
+    return card;
+}
+
+async function inspect() {
+    const container = document.getElementById('sats');
+    const status = document.getElementById('status');
+    container.innerHTML = '';
+    status.innerHTML = '<span class="live">Querying ordinals.com...</span>';
+
+    let totalInscriptions = 0;
+    let errors = 0;
+
+    for (const satDef of SATS) {
+        const info = await fetchSatInfo(satDef.sat);
+        if (info.error) errors++;
+        else totalInscriptions += info.ids.length;
+        container.appendChild(renderSatCard(satDef, info));
+    }
+
+    if (errors > 0) {
+        status.innerHTML = `<span class="err">${errors} sat(s) failed</span> • ${totalInscriptions} inscriptions found on ${SATS.length - errors} sats`;
+    } else {
+        status.innerHTML = `<span class="live">● Live</span> • ${totalInscriptions} total inscriptions across ${SATS.length} sats • ${new Date().toISOString().slice(0,16)}Z`;
+    }
+}
+
+inspect();
+</script>
+</body>
+</html>

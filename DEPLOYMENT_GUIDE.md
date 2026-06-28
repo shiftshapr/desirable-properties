@@ -21,16 +21,24 @@ cd /home/ubuntu/desirable-properties/web-app/
 
 | Purpose | Location | Description |
 |---------|----------|-------------|
-| **Development** | `/home/ubuntu/desirable-properties/web-app/` | Edit code here |
-| **Production** | `/var/www/app.themetalayer.org/public/` | Users see this |
+| **Challenge site (dev)** | `/home/ubuntu/desirable-properties/challenge-site/` | desirableproperties.org |
+| **Archive app (dev)** | `/home/ubuntu/desirable-properties/web-app/` | app.themetalayer.org |
+| **Production (archive)** | `/var/www/app.themetalayer.org/public/` | Historical submissions |
 | **Data** | `/home/ubuntu/desirable-properties/data/` | Hot-reloaded |
-| **PM2 Process** | `app-themetalayer` | Manages running app |
+| **PM2 (archive)** | `app-themetalayer` | Manages metalayer app |
+| **PM2 (challenge)** | `desirableproperties` | Port 3005 → nginx |
 
 ## 🔄 Update Methods
 
-### Method 1: Quick Deployment (Recommended)
+### Challenge site (desirableproperties.org)
 
-For regular web app updates:
+```bash
+cd /home/ubuntu/desirable-properties/challenge-site/
+# Make your changes...
+./deploy.sh
+```
+
+### Archive web app (app.themetalayer.org)
 
 ```bash
 cd /home/ubuntu/desirable-properties/web-app/

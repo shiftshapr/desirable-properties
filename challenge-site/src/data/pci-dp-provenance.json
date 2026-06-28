@@ -1,0 +1,1639 @@
+{
+  "meta": {
+    "generated_at": "2026-06-18T20:45:26.017866+00:00",
+    "reviewed_at": "2026-06-18T22:39:00.482967+00:00",
+    "generator": "GPT-5.5 draft mapping from pci-emails-corpus.json and dp-context-for-pci-mapping.json",
+    "reviewer": "claude-4.6-opus-high-thinking",
+    "status": "opus_reviewed",
+    "email_count": 31,
+    "linked_dp_count": 20,
+    "total_links": 94,
+    "review_stats": {
+      "kept": 83,
+      "downgraded": 10,
+      "removed": 41,
+      "added": 1
+    },
+    "schema": {
+      "relationship": [
+        "informed",
+        "aligned",
+        "context"
+      ],
+      "confidence": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "notes": [
+      "AI-generated mapping reviewed by Opus. Requires steward sign-off before rendering on DP pages.",
+      "Relationship=informed means the email directly contributes a concept or requirement to the DP.",
+      "Relationship=aligned means thematic support or resonance with an existing DP.",
+      "Relationship=context means useful historical background but weaker direct provenance."
+    ]
+  },
+  "mappings": [
+    {
+      "pci_id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+      "author": "Anon",
+      "date": "09 Sep 2024 15:56:20 -0700",
+      "source_file": "0909_1556_daveed_.htm",
+      "ordinals_url": "https://ordinals.com/inscription/506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP7",
+          "relationship": "informed",
+          "summary": "Frames the Meta-Layer as protocol-agnostic infrastructure for overlay applications and smart tags across webpages.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Introduces portable communities that travel through the web experience.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Names data sovereignty and privacy as baseline requirements for the environment.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "aligned",
+          "summary": "Calls for safely enabling and using AI in the application substrate.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "title": "Anticipating PCEs and Meta-Layer Alignment",
+      "author": "Cindy Mason",
+      "date": "09 Sep 2024 17:07:45 -0700",
+      "source_file": "0909_1707_cindy0.text",
+      "ordinals_url": "https://ordinals.com/inscription/40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Discusses personal computing environments, private clouds, autonomy, privacy, and control over personal and biodata.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP13",
+          "relationship": "aligned",
+          "summary": "Describes PCEs as personal guardrails shielding users from harms in AI-driven systems.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "aligned",
+          "summary": "Warns about GenAI and dataset provenance issues that affect safe and ethical AI design.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+      "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+      "author": "Anon",
+      "date": "11 Sep 2024 16:23:50 -0700",
+      "source_file": "0911_1623_daveed1.txt",
+      "ordinals_url": "https://ordinals.com/inscription/977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP1",
+          "relationship": "informed",
+          "summary": "Requires networks of real people in good standing while allowing pseudo-anonymity.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP3",
+          "relationship": "informed",
+          "summary": "Calls for decentralized structures supported by AI-assisted community moderation.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP7",
+          "relationship": "informed",
+          "summary": "Emphasizes seamless interaction across all digital spaces rather than isolated silos.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Centers persistent tools for meeting, interacting, collaborating, and annotating across the web.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "aligned",
+          "summary": "Names control over one\u2019s own data as a requirement for thriving human networks.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "title": "Metalevel Initiative: Challenges and Opportunities",
+      "author": "Paul Werbos",
+      "date": "11 Sep 2024 16:35:06 -0700",
+      "source_file": "0911_1635_paul0.text",
+      "ordinals_url": "https://ordinals.com/inscription/6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "review_status": "opus_reviewed",
+      "dp_links": []
+    },
+    {
+      "pci_id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 04:24:41 -0700",
+      "source_file": "0912_0424_davidbray1.txt",
+      "ordinals_url": "https://ordinals.com/inscription/29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Argues that collective intelligence paired with AI agents can help large/global networks coordinate.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "informed",
+          "summary": "Centers AI agents that listen to humans rather than manipulate attention.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP18",
+          "relationship": "aligned",
+          "summary": "Relates to feedback mechanisms for emergent collaboration and crowd judgment.",
+          "confidence": "low"
+        }
+      ]
+    },
+    {
+      "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "title": "The Overweb: Building a Decentralized Meta-Layer",
+      "author": "Anon",
+      "date": "12 Sep 2024 12:23:45 -0700",
+      "source_file": "0912_1223_daveed2.txt",
+      "ordinals_url": "https://ordinals.com/inscription/7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Defines the Overweb as a safe decentralized environment where communities meet, interact, and collaborate above webpages.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "States that individuals own their data and participate in a privacy-respecting environment.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP7",
+          "relationship": "informed",
+          "summary": "Explains a layer above webpages using current protocols, browser technology, cryptography, and AI without needing a major breakthrough.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP6",
+          "relationship": "aligned",
+          "summary": "Mentions fair value exchange for participant contributions.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP20",
+          "relationship": "aligned",
+          "summary": "Rejects centralized platform control and points toward shared infrastructure outside government or Big Tech ownership.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+      "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+      "author": "Anon",
+      "date": "12 Sep 2024 13:39:51 -0700",
+      "source_file": "0912_1339_daveed3.txt",
+      "ordinals_url": "https://ordinals.com/inscription/958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Connects augmented conversations, shared simulations, and global collaboration to the Meta-Layer vision.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "informed",
+          "summary": "Positions AI as a participant in collaborative work that must enhance human capability without exploiting attention.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "informed",
+          "summary": "Requires trustworthy shared truth: what one participant sees, all participants see, with auditable effects.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP22",
+          "relationship": "aligned",
+          "summary": "Describes a shared information ecology connecting content snippets through explicit relationships.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP7",
+          "relationship": "aligned",
+          "summary": "Emphasizes interoperability between connected information, simulations, and collaborative tools.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "title": "Defining Goals for Effective Collective Intelligence",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 14:04:03 -0700",
+      "source_file": "0912_1404_davidbray2.txt",
+      "ordinals_url": "https://ordinals.com/inscription/d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "aligned",
+          "summary": "Defines collective intelligence as requiring divergent perspectives around shared goals.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP3",
+          "relationship": "aligned",
+          "summary": "Highlights the need to define outcomes and goals upfront for networks of teams or society.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+      "author": "Anon",
+      "date": "12 Sep 2024 16:18:12 -0700",
+      "source_file": "0912_1618_daveed4.txt",
+      "ordinals_url": "https://ordinals.com/inscription/94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Proposes innovation studios as collaborative spaces for applying collective intelligence to Overweb systems.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP18",
+          "relationship": "informed",
+          "summary": "Describes synthesis, moderation, and feedback processes for proposals emerging from multiple groups.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP9",
+          "relationship": "informed",
+          "summary": "Links value creation and verification to compensation and contributor rewards.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP3",
+          "relationship": "aligned",
+          "summary": "Provides a process model for decentralized community design and governance.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP20",
+          "relationship": "aligned",
+          "summary": "Points to shared information ecosystems and community participation in substrate design.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+      "title": "Future of Interaction: Moving Beyond Webpages",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 16:33:05 -0700",
+      "source_file": "0912_1633_davidbray3.txt",
+      "ordinals_url": "https://ordinals.com/inscription/205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP21",
+          "relationship": "informed",
+          "summary": "Challenges the webpage-centric model and calls for support across video, audio, voice, text, and body language.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP7",
+          "relationship": "informed",
+          "summary": "Suggests interoperability among personal AI agents without centralized hosting platforms.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "pci_id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "title": "Acknowledging Contributions in Collaborative Spaces",
+      "author": "Cindy Mason",
+      "date": "12 Sep 2024 17:26:44 -0700",
+      "source_file": "0912_1726_cindy3.txt",
+      "ordinals_url": "https://ordinals.com/inscription/01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP9",
+          "relationship": "informed",
+          "summary": "Stresses acknowledging contributors so their input remains visible and career-sustaining.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP18",
+          "relationship": "aligned",
+          "summary": "Relates contribution recognition to reputation and feedback mechanisms.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP6",
+          "relationship": "aligned",
+          "summary": "Points to the economic need for contributors to feed families and be compensated.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0",
+      "title": "Collective Intelligence and Brain Synchronization",
+      "author": "Paul Werbos",
+      "date": "12 Sep 2024 18:48:32 -0700",
+      "source_file": "0912_1848_paul1.txt",
+      "ordinals_url": "https://ordinals.com/inscription/9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "aligned",
+          "summary": "Develops collective intelligence as a fundamental challenge requiring many communities and ideas.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0",
+      "title": "Cross-Cultural and Multilingual AI Tools",
+      "author": "David Michaelis",
+      "date": "12 Sep 2024 19:32:18 -0700",
+      "source_file": "0912_1932_davidm.txt",
+      "ordinals_url": "https://ordinals.com/inscription/3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0",
+      "review_status": "opus_reviewed",
+      "dp_links": []
+    },
+    {
+      "pci_id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+      "title": "Digital Cognitive Pathways and Metaweb Evolution",
+      "author": "Anon",
+      "date": "13 Sep 2024 08:23:09 -0700",
+      "source_file": "0913_0823_daveed5.txt",
+      "ordinals_url": "https://ordinals.com/inscription/d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP21",
+          "relationship": "informed",
+          "summary": "Introduces Digital Cognitive Pathways across webpages, VR, AR, audio, video, and AI-driven interfaces.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Proposes hashing terrains and artifacts so annotations remain consistent and traceable across mediums.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "informed",
+          "summary": "Requires AI-agent interactions to be logged on-chain in human-readable form for trust and accountability.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP7",
+          "relationship": "aligned",
+          "summary": "Supports interoperability across terrains, artifacts, agents, and annotation layers.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+      "title": "Recognizing and Rewarding Contributions in the Metaweb",
+      "author": "Anon",
+      "date": "13 Sep 2024 08:39:53 -0700",
+      "source_file": "0913_0839_daveed6.txt",
+      "ordinals_url": "https://ordinals.com/inscription/b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP9",
+          "relationship": "informed",
+          "summary": "Explores fiat or token-based rewards tied directly to valuable contributions.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP6",
+          "relationship": "informed",
+          "summary": "Frames fair compensation for connections, verification, and innovation-studio contributions.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP18",
+          "relationship": "informed",
+          "summary": "Calls for contribution tracking and reputation-like attribution mechanisms.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Emphasizes transparent decentralized attribution for valuable insights.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+      "title": "Call for Ideas: Help Shape the Future of the Web",
+      "author": "Anon",
+      "date": "04 Oct 2024 14:10:10 -0700",
+      "source_file": "1004_1410_daveed_.txt",
+      "ordinals_url": "https://ordinals.com/inscription/bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP19",
+          "relationship": "informed",
+          "summary": "Invites the PCI community into the Call for Ideas and movement-building around the Meta-Layer.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP9",
+          "relationship": "aligned",
+          "summary": "Mentions digital badges recognizing contributors to the call for input.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0",
+      "title": "AI and Humanity's Deepest Problems: Love and Compassion",
+      "author": "Cindy Mason",
+      "date": "13 Oct 2024 08:27:02 -0700",
+      "source_file": "1013_0827_cindy1.txt",
+      "ordinals_url": "https://ordinals.com/inscription/0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP11",
+          "relationship": "aligned",
+          "summary": "Asks whether AI can help with compassion, love, forgiveness, and human flourishing.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+      "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+      "author": "Anon",
+      "date": "15 Oct 2024 10:23:02 -0700",
+      "source_file": "1015_1023_dave__.txt",
+      "ordinals_url": "https://ordinals.com/inscription/5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP8",
+          "relationship": "informed",
+          "summary": "Presents the meta-layer as a safe space for meaningful serendipitous connection and collaboration above webpages.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP1",
+          "relationship": "informed",
+          "summary": "Requires authentic, accountable interactions to avoid scammers and predators.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP2",
+          "relationship": "aligned",
+          "summary": "Emphasizes participant purpose, belonging, and self-directed connection.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "aligned",
+          "summary": "Connects safe relational computing to privacy and trust.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+      "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+      "author": "Paul Werbos",
+      "date": "18 Oct 2024 07:26:38 -0700",
+      "source_file": "1018_0726_paul2.txt",
+      "ordinals_url": "https://ordinals.com/inscription/6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP13",
+          "relationship": "informed",
+          "summary": "Argues that the metaframework must address AGI-level minefield decision problems and information-flow restrictions.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "informed",
+          "summary": "Discusses AGI, conflict-of-interest risks, and the need for AI systems aligned with human survival.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP3",
+          "relationship": "aligned",
+          "summary": "Frames governance and decision design as essential to avoid systemic instability.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP16",
+          "relationship": "aligned",
+          "summary": "Calls for minefield-aware strategy and future-risk planning.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "aligned",
+          "summary": "Raises cybersecurity and sensitive information-flow restrictions as survival issues.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+      "title": "Human-Centered AI: A Critical Perspective",
+      "author": "Cindy Mason",
+      "date": "25 Oct 2024 08:36:38 -0700",
+      "source_file": "1025_0836_cindy2.txt",
+      "ordinals_url": "https://ordinals.com/inscription/0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP11",
+          "relationship": "informed",
+          "summary": "Critiques \u201chuman-centered AI\u201d and argues caring AI must protect people rather than exploit them.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Focuses on data duty of care, data economy extraction, surveillance, and protecting personal data.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Warns that AI language can obscure exploitative behavior unless transparency is required.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+      "title": "Legal Liabilities in the Meta-Layer",
+      "author": "Brian Donohue",
+      "date": "28 Oct 2024 06:04:38 -0700",
+      "source_file": "1028_0604_brian.txt",
+      "ordinals_url": "https://ordinals.com/inscription/97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP3",
+          "relationship": "aligned",
+          "summary": "Warns that governance must account for legal rights, liabilities, and human responsibility.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Links trust to transparent understanding of legal accountability in machine-mediated systems.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "title": "Strategic Opportunity for Internet Reform with New Leadership",
+      "author": "Anon",
+      "date": "28 Oct 2024 16:18:38 -0700",
+      "source_file": "1028_1618_daveed---.txt",
+      "ordinals_url": "https://ordinals.com/inscription/0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP3",
+          "relationship": "informed",
+          "summary": "Proposes decentralized, community-based governance as part of internet reform.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Centers privacy, data sovereignty, and digital rights against surveillance and platform control.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP20",
+          "relationship": "informed",
+          "summary": "Frames decentralized information infrastructure as community-controlled digital commons.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "informed",
+          "summary": "Calls for trust, transparency, and information integrity in decentralized systems.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP8",
+          "relationship": "aligned",
+          "summary": "Supports freedom of association and meta-communities across platforms.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP12",
+          "relationship": "aligned",
+          "summary": "Mentions community oversight and governance of AI usage.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "title": "Ensuring Balance and Preventing Weaponization of Principles",
+      "author": "David Bray, PhD",
+      "date": "28 Oct 2024 17:05:01 -0700",
+      "source_file": "1028_1705_davidbray4.txt",
+      "ordinals_url": "https://ordinals.com/inscription/51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP3",
+          "relationship": "aligned",
+          "summary": "Asks how well-intended principles could be weaponized against free societies.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Warns that principles require balance and cannot be treated as absolutes.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+      "title": "Preserving Real History and Strengthening Cybersecurity",
+      "author": "Paul Werbos",
+      "date": "29 Oct 2024 11:01:01 -0700",
+      "source_file": "1029_1101_paul3.txt",
+      "ordinals_url": "https://ordinals.com/inscription/b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP22",
+          "relationship": "informed",
+          "summary": "Calls for archives of what has really happened and preservation of real history.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Emphasizes cybersecurity and secure historical records as survival needs.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Links transparency and trustworthy records to resisting fake history.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+      "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+      "author": "Anon",
+      "date": "29 Oct 2024 12:42:01 -0700",
+      "source_file": null,
+      "ordinals_url": "https://ordinals.com/inscription/11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP3",
+          "relationship": "informed",
+          "summary": "Argues the meta-layer must proactively design rules that balance privacy, safety, agency, and accountability.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "informed",
+          "summary": "Frames balanced transparency and trust as protection against weaponized principles.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "aligned",
+          "summary": "Names privacy as a principle that must be balanced rather than made absolute.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP2",
+          "relationship": "aligned",
+          "summary": "Names agency as one of the principles to preserve in system design.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "title": "Critique of Decentralization and Bitcoin in Meta-Layer Principles",
+      "author": "Dave Troy",
+      "date": "29 Oct 2024 14:18:01 -0700",
+      "source_file": "1029_1418_dave.txt",
+      "ordinals_url": "https://ordinals.com/inscription/69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "review_status": "opus_reviewed",
+      "dp_links": []
+    },
+    {
+      "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "title": "Incorporating Security and Privacy in the Meta-Layer",
+      "author": "Vandana Upadhyay",
+      "date": "29 Oct 2024 17:18 -0700",
+      "source_file": "1029_1718_vandana.txt",
+      "ordinals_url": "https://ordinals.com/inscription/a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP1",
+          "relationship": "informed",
+          "summary": "Discusses authentication and verifiable identities while preserving context-specific anonymity.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Makes privacy and data protection foundational rather than optional.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Argues security must be designed into the meta-layer and IoT ecosystem from the start.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Balances trust, identity, anonymity, and transparency in secure systems.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP5",
+          "relationship": "aligned",
+          "confidence": "medium",
+          "summary": "Vandana explicitly discusses context-dependent multiple identities: 'There may not be one identity but multiple identities depending on context and usage.' She uses the SIM authentication analogy. This directly resonates with DP5's decentralized namespace and personal identifiers \u2014 notably absent from the draft."
+        }
+      ]
+    },
+    {
+      "pci_id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+      "title": "Customizable Software Agents for Security and Privacy",
+      "author": "Cindy Mason",
+      "date": "29 Oct 2024 21:40:01 -0700",
+      "source_file": "1029_1851_cindy4.txt",
+      "ordinals_url": "https://ordinals.com/inscription/eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Proposes customizable personal software agents to protect data privacy and user preferences.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Frames agents as security guardrails between users, internal systems, apps, and external systems.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP1",
+          "relationship": "aligned",
+          "summary": "Suggests agents may need registration, accountability, or licensing.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP13",
+          "relationship": "aligned",
+          "summary": "Positions agents as filters and containment boundaries for external interactions.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+      "title": "Preserving Open Letters with Bitcoin Ordinals",
+      "author": "Anon",
+      "date": "29 Oct 2024 20:09:01 -0700",
+      "source_file": "1029_2009_daveed7.txt",
+      "ordinals_url": "https://ordinals.com/inscription/71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP22",
+          "relationship": "aligned",
+          "summary": "Uses Bitcoin Ordinals as durable civic memory for preserving open letters and cultural artifacts.",
+          "confidence": "medium"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Treats ordinals as immutable provenance and backup for important public records.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "aligned",
+          "summary": "Supports transparency and posterity without necessarily promoting Bitcoin as ideology.",
+          "confidence": "medium"
+        }
+      ]
+    },
+    {
+      "pci_id": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "title": "Visualizing Customizable Software Agents as Guardrails",
+      "author": "Cindy Mason",
+      "date": "29 Oct 2024 21:41:38 -0700",
+      "source_file": "1029_2140_cindy5.htm",
+      "ordinals_url": "https://ordinals.com/inscription/2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "review_status": "opus_reviewed",
+      "dp_links": []
+    },
+    {
+      "pci_id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+      "title": "Security and Privacy as Pillars of the Meta-Layer",
+      "author": "Anon",
+      "date": "18 Oct 2024 07:26:38 -0700",
+      "source_file": "1030_1006_daveed8.txt",
+      "ordinals_url": "https://ordinals.com/inscription/6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+      "review_status": "opus_reviewed",
+      "dp_links": [
+        {
+          "dp_id": "DP1",
+          "relationship": "informed",
+          "summary": "Develops decentralized identities, DID protocols, and contextual authentication.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "informed",
+          "summary": "Places privacy and decentralized control at the core of the meta-layer.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP15",
+          "relationship": "informed",
+          "summary": "Extends security-first design to IoT, devices, authentication, and trusted networks.",
+          "confidence": "high"
+        },
+        {
+          "dp_id": "DP5",
+          "relationship": "aligned",
+          "summary": "Discusses multiple identities and identifiers that vary by context.",
+          "confidence": "medium"
+        }
+      ]
+    }
+  ],
+  "by_dp_id": {
+    "DP1": [
+      {
+        "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+        "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+        "relationship": "informed",
+        "summary": "Requires networks of real people in good standing while allowing pseudo-anonymity.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+        "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Requires authentic, accountable interactions to avoid scammers and predators.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+        "title": "Incorporating Security and Privacy in the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Discusses authentication and verifiable identities while preserving context-specific anonymity.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+        "title": "Customizable Software Agents for Security and Privacy",
+        "relationship": "aligned",
+        "summary": "Suggests agents may need registration, accountability, or licensing.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+        "title": "Security and Privacy as Pillars of the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Develops decentralized identities, DID protocols, and contextual authentication.",
+        "confidence": "high"
+      }
+    ],
+    "DP2": [
+      {
+        "pci_id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+        "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Emphasizes participant purpose, belonging, and self-directed connection.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+        "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+        "relationship": "aligned",
+        "summary": "Names agency as one of the principles to preserve in system design.",
+        "confidence": "medium"
+      }
+    ],
+    "DP3": [
+      {
+        "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+        "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+        "relationship": "informed",
+        "summary": "Calls for decentralized structures supported by AI-assisted community moderation.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+        "title": "Defining Goals for Effective Collective Intelligence",
+        "relationship": "aligned",
+        "summary": "Highlights the need to define outcomes and goals upfront for networks of teams or society.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+        "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+        "relationship": "aligned",
+        "summary": "Provides a process model for decentralized community design and governance.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+        "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+        "relationship": "aligned",
+        "summary": "Frames governance and decision design as essential to avoid systemic instability.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+        "title": "Legal Liabilities in the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Warns that governance must account for legal rights, liabilities, and human responsibility.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "informed",
+        "summary": "Proposes decentralized, community-based governance as part of internet reform.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+        "title": "Ensuring Balance and Preventing Weaponization of Principles",
+        "relationship": "aligned",
+        "summary": "Asks how well-intended principles could be weaponized against free societies.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+        "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+        "relationship": "informed",
+        "summary": "Argues the meta-layer must proactively design rules that balance privacy, safety, agency, and accountability.",
+        "confidence": "high"
+      }
+    ],
+    "DP4": [
+      {
+        "pci_id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+        "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+        "relationship": "informed",
+        "summary": "Names data sovereignty and privacy as baseline requirements for the environment.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+        "title": "Anticipating PCEs and Meta-Layer Alignment",
+        "relationship": "informed",
+        "summary": "Discusses personal computing environments, private clouds, autonomy, privacy, and control over personal and biodata.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+        "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+        "relationship": "aligned",
+        "summary": "Names control over one\u2019s own data as a requirement for thriving human networks.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+        "title": "The Overweb: Building a Decentralized Meta-Layer",
+        "relationship": "informed",
+        "summary": "States that individuals own their data and participate in a privacy-respecting environment.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+        "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Connects safe relational computing to privacy and trust.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+        "title": "Human-Centered AI: A Critical Perspective",
+        "relationship": "informed",
+        "summary": "Focuses on data duty of care, data economy extraction, surveillance, and protecting personal data.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "informed",
+        "summary": "Centers privacy, data sovereignty, and digital rights against surveillance and platform control.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+        "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+        "relationship": "aligned",
+        "summary": "Names privacy as a principle that must be balanced rather than made absolute.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+        "title": "Incorporating Security and Privacy in the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Makes privacy and data protection foundational rather than optional.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+        "title": "Customizable Software Agents for Security and Privacy",
+        "relationship": "informed",
+        "summary": "Proposes customizable personal software agents to protect data privacy and user preferences.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+        "title": "Security and Privacy as Pillars of the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Places privacy and decentralized control at the core of the meta-layer.",
+        "confidence": "high"
+      }
+    ],
+    "DP5": [
+      {
+        "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+        "title": "Incorporating Security and Privacy in the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Vandana explicitly discusses context-dependent multiple identities: 'There may not be one identity but multiple identities depending on context and usage.' She uses the SIM authentication analogy. This directly resonates with DP5's decentralized namespace and personal identifiers \u2014 notably absent from the draft.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+        "title": "Security and Privacy as Pillars of the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Discusses multiple identities and identifiers that vary by context.",
+        "confidence": "medium"
+      }
+    ],
+    "DP6": [
+      {
+        "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+        "title": "The Overweb: Building a Decentralized Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Mentions fair value exchange for participant contributions.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+        "title": "Acknowledging Contributions in Collaborative Spaces",
+        "relationship": "aligned",
+        "summary": "Points to the economic need for contributors to feed families and be compensated.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+        "title": "Recognizing and Rewarding Contributions in the Metaweb",
+        "relationship": "informed",
+        "summary": "Frames fair compensation for connections, verification, and innovation-studio contributions.",
+        "confidence": "high"
+      }
+    ],
+    "DP7": [
+      {
+        "pci_id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+        "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+        "relationship": "informed",
+        "summary": "Frames the Meta-Layer as protocol-agnostic infrastructure for overlay applications and smart tags across webpages.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+        "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+        "relationship": "informed",
+        "summary": "Emphasizes seamless interaction across all digital spaces rather than isolated silos.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+        "title": "The Overweb: Building a Decentralized Meta-Layer",
+        "relationship": "informed",
+        "summary": "Explains a layer above webpages using current protocols, browser technology, cryptography, and AI without needing a major breakthrough.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+        "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+        "relationship": "aligned",
+        "summary": "Emphasizes interoperability between connected information, simulations, and collaborative tools.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+        "title": "Future of Interaction: Moving Beyond Webpages",
+        "relationship": "informed",
+        "summary": "Suggests interoperability among personal AI agents without centralized hosting platforms.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+        "title": "Digital Cognitive Pathways and Metaweb Evolution",
+        "relationship": "aligned",
+        "summary": "Supports interoperability across terrains, artifacts, agents, and annotation layers.",
+        "confidence": "medium"
+      }
+    ],
+    "DP8": [
+      {
+        "pci_id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+        "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+        "relationship": "informed",
+        "summary": "Introduces portable communities that travel through the web experience.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+        "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+        "relationship": "informed",
+        "summary": "Centers persistent tools for meeting, interacting, collaborating, and annotating across the web.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+        "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+        "relationship": "informed",
+        "summary": "Argues that collective intelligence paired with AI agents can help large/global networks coordinate.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+        "title": "The Overweb: Building a Decentralized Meta-Layer",
+        "relationship": "informed",
+        "summary": "Defines the Overweb as a safe decentralized environment where communities meet, interact, and collaborate above webpages.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+        "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+        "relationship": "informed",
+        "summary": "Connects augmented conversations, shared simulations, and global collaboration to the Meta-Layer vision.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+        "title": "Defining Goals for Effective Collective Intelligence",
+        "relationship": "aligned",
+        "summary": "Defines collective intelligence as requiring divergent perspectives around shared goals.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+        "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+        "relationship": "informed",
+        "summary": "Proposes innovation studios as collaborative spaces for applying collective intelligence to Overweb systems.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0",
+        "title": "Collective Intelligence and Brain Synchronization",
+        "relationship": "aligned",
+        "summary": "Develops collective intelligence as a fundamental challenge requiring many communities and ideas.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+        "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Presents the meta-layer as a safe space for meaningful serendipitous connection and collaboration above webpages.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "aligned",
+        "summary": "Supports freedom of association and meta-communities across platforms.",
+        "confidence": "medium"
+      }
+    ],
+    "DP9": [
+      {
+        "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+        "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+        "relationship": "informed",
+        "summary": "Links value creation and verification to compensation and contributor rewards.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+        "title": "Acknowledging Contributions in Collaborative Spaces",
+        "relationship": "informed",
+        "summary": "Stresses acknowledging contributors so their input remains visible and career-sustaining.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+        "title": "Recognizing and Rewarding Contributions in the Metaweb",
+        "relationship": "informed",
+        "summary": "Explores fiat or token-based rewards tied directly to valuable contributions.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+        "title": "Call for Ideas: Help Shape the Future of the Web",
+        "relationship": "aligned",
+        "summary": "Mentions digital badges recognizing contributors to the call for input.",
+        "confidence": "medium"
+      }
+    ],
+    "DP11": [
+      {
+        "pci_id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+        "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+        "relationship": "aligned",
+        "summary": "Calls for safely enabling and using AI in the application substrate.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+        "title": "Anticipating PCEs and Meta-Layer Alignment",
+        "relationship": "aligned",
+        "summary": "Warns about GenAI and dataset provenance issues that affect safe and ethical AI design.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+        "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+        "relationship": "informed",
+        "summary": "Centers AI agents that listen to humans rather than manipulate attention.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+        "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+        "relationship": "informed",
+        "summary": "Positions AI as a participant in collaborative work that must enhance human capability without exploiting attention.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0",
+        "title": "AI and Humanity's Deepest Problems: Love and Compassion",
+        "relationship": "aligned",
+        "summary": "Asks whether AI can help with compassion, love, forgiveness, and human flourishing.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+        "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+        "relationship": "informed",
+        "summary": "Discusses AGI, conflict-of-interest risks, and the need for AI systems aligned with human survival.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+        "title": "Human-Centered AI: A Critical Perspective",
+        "relationship": "informed",
+        "summary": "Critiques \u201chuman-centered AI\u201d and argues caring AI must protect people rather than exploit them.",
+        "confidence": "high"
+      }
+    ],
+    "DP12": [
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "aligned",
+        "summary": "Mentions community oversight and governance of AI usage.",
+        "confidence": "medium"
+      }
+    ],
+    "DP13": [
+      {
+        "pci_id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+        "title": "Anticipating PCEs and Meta-Layer Alignment",
+        "relationship": "aligned",
+        "summary": "Describes PCEs as personal guardrails shielding users from harms in AI-driven systems.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+        "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+        "relationship": "informed",
+        "summary": "Argues that the metaframework must address AGI-level minefield decision problems and information-flow restrictions.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+        "title": "Customizable Software Agents for Security and Privacy",
+        "relationship": "aligned",
+        "summary": "Positions agents as filters and containment boundaries for external interactions.",
+        "confidence": "medium"
+      }
+    ],
+    "DP14": [
+      {
+        "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+        "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+        "relationship": "informed",
+        "summary": "Requires trustworthy shared truth: what one participant sees, all participants see, with auditable effects.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+        "title": "Digital Cognitive Pathways and Metaweb Evolution",
+        "relationship": "informed",
+        "summary": "Requires AI-agent interactions to be logged on-chain in human-readable form for trust and accountability.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+        "title": "Recognizing and Rewarding Contributions in the Metaweb",
+        "relationship": "aligned",
+        "summary": "Emphasizes transparent decentralized attribution for valuable insights.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+        "title": "Human-Centered AI: A Critical Perspective",
+        "relationship": "aligned",
+        "summary": "Warns that AI language can obscure exploitative behavior unless transparency is required.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+        "title": "Legal Liabilities in the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Links trust to transparent understanding of legal accountability in machine-mediated systems.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "informed",
+        "summary": "Calls for trust, transparency, and information integrity in decentralized systems.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+        "title": "Ensuring Balance and Preventing Weaponization of Principles",
+        "relationship": "aligned",
+        "summary": "Warns that principles require balance and cannot be treated as absolutes.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+        "title": "Preserving Real History and Strengthening Cybersecurity",
+        "relationship": "aligned",
+        "summary": "Links transparency and trustworthy records to resisting fake history.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+        "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+        "relationship": "informed",
+        "summary": "Frames balanced transparency and trust as protection against weaponized principles.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+        "title": "Incorporating Security and Privacy in the Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Balances trust, identity, anonymity, and transparency in secure systems.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+        "title": "Preserving Open Letters with Bitcoin Ordinals",
+        "relationship": "aligned",
+        "summary": "Supports transparency and posterity without necessarily promoting Bitcoin as ideology.",
+        "confidence": "medium"
+      }
+    ],
+    "DP15": [
+      {
+        "pci_id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+        "title": "Digital Cognitive Pathways and Metaweb Evolution",
+        "relationship": "informed",
+        "summary": "Proposes hashing terrains and artifacts so annotations remain consistent and traceable across mediums.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+        "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+        "relationship": "aligned",
+        "summary": "Raises cybersecurity and sensitive information-flow restrictions as survival issues.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+        "title": "Preserving Real History and Strengthening Cybersecurity",
+        "relationship": "informed",
+        "summary": "Emphasizes cybersecurity and secure historical records as survival needs.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+        "title": "Incorporating Security and Privacy in the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Argues security must be designed into the meta-layer and IoT ecosystem from the start.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+        "title": "Customizable Software Agents for Security and Privacy",
+        "relationship": "informed",
+        "summary": "Frames agents as security guardrails between users, internal systems, apps, and external systems.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+        "title": "Preserving Open Letters with Bitcoin Ordinals",
+        "relationship": "informed",
+        "summary": "Treats ordinals as immutable provenance and backup for important public records.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+        "title": "Security and Privacy as Pillars of the Meta-Layer",
+        "relationship": "informed",
+        "summary": "Extends security-first design to IoT, devices, authentication, and trusted networks.",
+        "confidence": "high"
+      }
+    ],
+    "DP16": [
+      {
+        "pci_id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+        "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+        "relationship": "aligned",
+        "summary": "Calls for minefield-aware strategy and future-risk planning.",
+        "confidence": "medium"
+      }
+    ],
+    "DP18": [
+      {
+        "pci_id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+        "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+        "relationship": "aligned",
+        "summary": "Relates to feedback mechanisms for emergent collaboration and crowd judgment.",
+        "confidence": "low"
+      },
+      {
+        "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+        "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+        "relationship": "informed",
+        "summary": "Describes synthesis, moderation, and feedback processes for proposals emerging from multiple groups.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+        "title": "Acknowledging Contributions in Collaborative Spaces",
+        "relationship": "aligned",
+        "summary": "Relates contribution recognition to reputation and feedback mechanisms.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+        "title": "Recognizing and Rewarding Contributions in the Metaweb",
+        "relationship": "informed",
+        "summary": "Calls for contribution tracking and reputation-like attribution mechanisms.",
+        "confidence": "high"
+      }
+    ],
+    "DP19": [
+      {
+        "pci_id": "bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+        "title": "Call for Ideas: Help Shape the Future of the Web",
+        "relationship": "informed",
+        "summary": "Invites the PCI community into the Call for Ideas and movement-building around the Meta-Layer.",
+        "confidence": "high"
+      }
+    ],
+    "DP20": [
+      {
+        "pci_id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+        "title": "The Overweb: Building a Decentralized Meta-Layer",
+        "relationship": "aligned",
+        "summary": "Rejects centralized platform control and points toward shared infrastructure outside government or Big Tech ownership.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+        "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+        "relationship": "aligned",
+        "summary": "Points to shared information ecosystems and community participation in substrate design.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+        "title": "Strategic Opportunity for Internet Reform with New Leadership",
+        "relationship": "informed",
+        "summary": "Frames decentralized information infrastructure as community-controlled digital commons.",
+        "confidence": "high"
+      }
+    ],
+    "DP21": [
+      {
+        "pci_id": "205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+        "title": "Future of Interaction: Moving Beyond Webpages",
+        "relationship": "informed",
+        "summary": "Challenges the webpage-centric model and calls for support across video, audio, voice, text, and body language.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+        "title": "Digital Cognitive Pathways and Metaweb Evolution",
+        "relationship": "informed",
+        "summary": "Introduces Digital Cognitive Pathways across webpages, VR, AR, audio, video, and AI-driven interfaces.",
+        "confidence": "high"
+      }
+    ],
+    "DP22": [
+      {
+        "pci_id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+        "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+        "relationship": "aligned",
+        "summary": "Describes a shared information ecology connecting content snippets through explicit relationships.",
+        "confidence": "medium"
+      },
+      {
+        "pci_id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+        "title": "Preserving Real History and Strengthening Cybersecurity",
+        "relationship": "informed",
+        "summary": "Calls for archives of what has really happened and preservation of real history.",
+        "confidence": "high"
+      },
+      {
+        "pci_id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+        "title": "Preserving Open Letters with Bitcoin Ordinals",
+        "relationship": "aligned",
+        "summary": "Uses Bitcoin Ordinals as durable civic memory for preserving open letters and cultural artifacts.",
+        "confidence": "medium"
+      }
+    ]
+  }
+}

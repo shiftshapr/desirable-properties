@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/db';
 import { publicSubmitterNames } from '@/lib/publicSubmitter';
-
-const prisma = new PrismaClient();
 
 // Types for submissions data from database
 interface Submission {
@@ -42,24 +40,42 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const dp = searchParams.get('dp'); // Filter by specific DP
     
-    // Fetch submissions from database with vote counts
+    // Avoid loading every Vote row (can hang the server at scale). Aggregate in one query.
     const submissions = await prisma.submission.findMany({
       include: {
         submitter: true,
         directlyAddressedDPs: true,
         clarificationsExtensions: true,
-        votes: true, // Include votes
       },
       orderBy: {
         createdAt: 'desc'
       }
     });
-    
+
+    const submissionIds = submissions.map((s) => s.id);
+    const voteAgg =
+      submissionIds.length === 0
+        ? []
+        : await prisma.vote.groupBy({
+            by: ['submissionId', 'type'],
+            where: { submissionId: { in: submissionIds } },
+            _count: true,
+          });
+
+    const voteTotals = new Map<string, { upvotes: number; downvotes: number }>();
+    for (const row of voteAgg) {
+      if (!row.submissionId) continue;
+      const cur = voteTotals.get(row.submissionId) ?? { upvotes: 0, downvotes: 0 };
+      if (row.type === 'UP') cur.upvotes = row._count;
+      else if (row.type === 'DOWN') cur.downvotes = row._count;
+      voteTotals.set(row.submissionId, cur);
+    }
+
     // Transform to match expected format with vote counts
     const transformedSubmissions = submissions.map(sub => {
-      // Calculate vote counts
-      const upvotes = sub.votes.filter(vote => vote.type === 'UP').length;
-      const downvotes = sub.votes.filter(vote => vote.type === 'DOWN').length;
+      const counts = voteTotals.get(sub.id) ?? { upvotes: 0, downvotes: 0 };
+      const upvotes = counts.upvotes;
+      const downvotes = counts.downvotes;
       
       return {
         id: sub.id,

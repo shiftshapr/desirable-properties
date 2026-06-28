@@ -1,0 +1,568 @@
+{
+  "meta": {
+    "generated_at": "2026-06-18T20:37:57.453396+00:00",
+    "purpose": "AI corpus for mapping early PCI conversations to Desirable Properties",
+    "email_count": 31,
+    "bodies_local": 30,
+    "bodies_ordinals": 1,
+    "bodies_missing": 0,
+    "usage": "Pair with dp-context-for-pci-mapping.json. Ask the model to link each email to relevant DP IDs with relationship, summary, and confidence. Human review required before publishing."
+  },
+  "emails": [
+    {
+      "id": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "title": "Meta-Layer Initiative Meeting with Vint Cerf",
+      "author": "Anon",
+      "date": "09 Sep 2024 15:56:20 -0700",
+      "subject": "Meta-Layer Initiative Meeting on Sept 16 with special guest Vint Cerf",
+      "tags": [
+        "Metaweb",
+        "Metadata",
+        "Data",
+        "AI",
+        "Privacy",
+        "Vint Cerf"
+      ],
+      "reply_to": null,
+      "source_file": "0909_1556_daveed_.htm",
+      "body": "From: Anon\nDate: Mon, 09 Sep 2024 15:56:20 -0700\nSubject: Meta-Layer Initiative Meeting on Sept 16 with special guest Vint Cerf\nDear PCI family,\nI want to invite you to a ZOOM meeting on September 16th at 10a EDT with special guest Vint Cerf about developing an overlay environment that supports:\noverlay applications active across all webpages\nsmart tags capable of attaching code to content\ncommunities that are with you through the web experience.\nThe environment must be safe, secure, support fair value exchange and data sovereignty, and respect privacy, while safely enabling and utilizing AI. This environment should be protocol-agnostic.\nVint has graciously agreed to kickoff our discussion with some words of wisdom on building a meta-environment above the web, beginning with an application substrate.\nif you would like to attend, feel free to reply directly to me.\nWarmly\nAnon",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0"
+    },
+    {
+      "id": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "title": "Anticipating PCEs and Meta-Layer Alignment",
+      "author": "Cindy Mason",
+      "date": "09 Sep 2024 17:07:45 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Privacy",
+        "Data",
+        "AI",
+        "Decentralization"
+      ],
+      "reply_to": "506480ff2a0ea8fb537d3e8a4bb298892c5e79ff3a1dedb49aa85d260151d52ai0",
+      "source_file": "0909_1707_cindy0.text",
+      "body": "---- On Mon, 09 Sep 2024 17:07:45 -0700 Cindy Mason wrote ---\n\nI'm unable to attend because it's at 7am PST. \n\nHowever, I'd like to give some input \n\nPeople are developing personal computing environments (PCEs) with private clouds to create more autonomy, privacy and control over their data, including  biodata, and to  avoid being part of decision making solely focused on the automatic essentia stereotype of  people that occurs in Gen AI and LLMs. It is expected these PCEs  will shield users from various issues on the net, like a personal guard  rail. \n\nI would hope that whatever new layer is developed, there will be an  anticipation  of these PCE systems. Especially given the on-going development of  data provenance  methods and the version inconsistency among the 10,000's of  downloads of various versions of ImageNet being used to create GenAIs,  which are  popping up everywhere. \n\nThis is covered in a chapter of my forthcoming book, but I don't have it  edited yet,  I can give someone a rough draft if that helps. \n\nFor some general info on this issue see  https://openreview.net/pdf?id=jh0ck1bPGF  The Nine Lives of ImageNet: A Sociotechnical Retrospective of a  Foundation Dataset and the  Limits of Automated Essentialism \n\nBest, \nCindy",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0"
+    },
+    {
+      "id": "977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0",
+      "title": "Meta-Layer Initiative for Decentralized and Transparent Web",
+      "author": "Anon",
+      "date": "11 Sep 2024 16:23:50 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Decentralization",
+        "AI",
+        "Metaweb",
+        "Collective Intelligence",
+        "Data"
+      ],
+      "reply_to": "40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0",
+      "source_file": "0911_1623_daveed1.txt",
+      "body": "---- Wed, 11 Sep 2024 16:23:50 -0700 -0700 Anon wrote ---\n\nI agree completely. Human networks that exist in silos\u2014whether decentralized or not\u2014are destined to fail.\n\nFor human networks to thrive and have a planetary impact, they will need to:\n\nBe composed of real people (with the option of pseudo-anonymity) in good standing with their communities.\nOperate with decentralized structures, supported by AI-assisted community-based and personal moderation.\nRemain active and interconnected across the entire web.\nHave tools that allow them to meet, interact, and collaborate seamlessly across all digital spaces.\nHave the ability to connect and annotate content across the web, enhancing collective knowledge.\nShare access to a robust, interconnected information ecology.\nMaintain control over their own data.\n\nWithout these principles, staying in silos with fake accounts, fake traffic, and fabricated virality will allow Big Tech to continue extracting value from our collective digital presence\u2014feeding on our data and, in a sense, our very essence.\n\nThis is why we\u2019re kicking off the\u00a0Meta-Layer Initiative\u00a0on September 16th. It\u2019s time to create the tools and infrastructure to enable a truly decentralized, transparent, and impactful web.\n\nLooking forward to continuing this conversation and making real progress.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0"
+    },
+    {
+      "id": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "title": "Metalevel Initiative: Challenges and Opportunities",
+      "author": "Paul Werbos",
+      "date": "11 Sep 2024 16:35:06 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Sustainability",
+        "AI",
+        "Collaboration"
+      ],
+      "reply_to": null,
+      "source_file": "0911_1635_paul0.text",
+      "body": "---- On Wed, 11 Sep 2024 16:35:06 -0700 Paul Werbos wrote ---\n\nI do not yet know what \"meta-level initiative\" is intended to mean, or what it allows.\n\nOn the positive side, those words are 100% consistent with what I have been arguing\u00a0for for many years.\nIn my post on Sustainable Intelligent Internet (SII), at werbos.com, I STARTED with the urgent need for a kind of\u00a0metalevel platform...\nBUT TO GO FROM GREAT WORDS to the ACTUAL REQUIRED DESIGN WORK... requires a level\u00a0of determination, sincerity and knowledge which\u00a0I\ndo not take for granted. Let us hope, let us help as much as we can, but let us also remember the sad lessons of how badly\u00a0\nthe nations of earth have risen to the challenge of preventing climate extinction. In 2019, Korean National TV broadcast my hour talk\non the big internet/IOT/AGI challenges requiring this kind of new platform...\u00a0 It got lots of hits on youtube, Yan LeCun replied very visibly (as positively as he knew how,\nbut it is technically challenging)... BUT JUST THE PAST TWO MONTHS, two of the Google branches very suddenly tried to make it invisible.\nThey suppressed exactly\u00a0the kind of technological reality needed to attain the objective -- just as old oil and gas people have successfully squashed what is now known about low cost reliable solar farms. (And neither Presidential candidate seems able to see past the cages they have been stuck in that way.)\n\nAnd so... yes, metalevel initiative is exciting, real and deserving of maximum attention and support... but also sober memories of what\u00a0happened after we were excited by EU noises about green new deals. We will see.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0"
+    },
+    {
+      "id": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "title": "AI-Enhanced Collective Intelligence for Global Challenges",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 04:24:41 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collective Intelligence",
+        "AI",
+        "Sustainability"
+      ],
+      "reply_to": null,
+      "source_file": "0912_0424_davidbray1.txt",
+      "body": "---- On Thu, 12 Sep 2024 04:24:41 -0700 David Bray, PhD wrote ---\n\nAnon and Vint - in a past life, I did a post-doc with Tom Malone at the MIT Center for Collective Intelligence on the topic of collective intelligence for very large/global networks. \n\nI am now here in Portugal for a series of meetings with NATO (and to give a talk + panel) alongside Tom Keller and what he\u2019s doing with CrowdSmart. \n\nInterestingly, AI agents can overcome the scaling issues of collective intelligence and avoid some of the problems that cognitively human prefer smaller numbers of group to be their daily cohort. Yet in a globalized world, we can\u2019t retreat or isolate ourselves from the world - even if some of the challenges of misinfo vs. disinfo have arisen because of that cognitive clash. Tom Keller believes, and incidentally some of the work I did in 2008 also suggests, collective intelligence paired with AI agents that attentively **listen to** human participants (instead of sell ads/spew info at us) can help overcome this in a more people-centered way. \n\nSome of my post-doc work by way of MIT in 2008, which was shared with Jason Matheny in 2009 to inform what eventually became IARPA\u2019s Aggregative Contingent Estimation (ACE) activity - \nhttp://www.dbray.org/emory/images/Bray_Emergent_Collaboration.pdf",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0"
+    },
+    {
+      "id": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "title": "The Overweb: Building a Decentralized Meta-Layer",
+      "author": "Anon",
+      "date": "12 Sep 2024 12:23:45 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Metaweb",
+        "Metadata",
+        "Decentralization",
+        "Collaboration",
+        "AI",
+        "Overweb"
+      ],
+      "reply_to": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "source_file": "0912_1223_daveed2.txt",
+      "body": "---- On Thu, 12 Sep 2024 12:23:45 -0700 Anon wrote ----\n\nThank you for your thoughts. We did deliberate quite a bit on what to call the meeting, as we're addressing abstract concepts that don\u2019t yet exist in practice. I\u2019ll share my perspective, and perhaps the group can refine the terminology.\n\nWe refer to the Metaweb as the decentralized space above the webpage. Since 2019, I\u2019ve been working on what I call the\u00a0Overweb\u2014a potential meta-environment within this space. The Overweb aims to be a safe, decentralized environment where communities can meet, interact, and collaborate above webpages. In this space, individuals would own their data, have only one primary account, and receive fair value for their contributions.\n\nWith the Overweb, developers can create applications that operate above webpages. Participants can attach smart tags to content on any page, enriching the web experience.\n\nWhat excites me most is that this layer feels like the current web but with added functionality. Today\u2019s web already has multiple layers; however, they are controlled by the website owner. This centralization wasn\u2019t the original intent\u2014digital annotation predates the web, and Mosaic (the first widely distributed browser) supported web annotation.\n\nWhat\u2019s even better is that we don\u2019t need a major technological breakthrough. Current internet protocols, browser technologies, cryptography, and AI are sufficient. The real breakthrough required is in people\u2019s understanding, which is why this dialogue is so important.\n\nAt DWeb Camp, I introduced the idea as a\u00a0meta-layer over the web\u00a0to keep things simple and neutral. Feedback has been positive on the terms\u00a0Metaweb\u00a0and\u00a0Overweb, and people also responded well to\u00a0meta-layer, as reflected in the interest in this meeting. After further brainstorming (with help from CyberSavant, our GPT-based AI), we decided to call the kickoff meeting: \"The Meta-Layer Initiative: Laying the Foundation.\" I\u2019d love to hear any alternative ideas for this or future meetings.\n\nI fully agree with your point that design work shouldn\u2019t be underestimated, and thankfully, we have some brilliant minds involved. I hope this meeting will align us around a shared purpose and vision and lead to a collaborative design plan. For now, our focus is on the\u00a0application substrate, and I think it\u2019s key that we don\u2019t rely on governments for this. Some may even feel threatened by the idea of a decentralized meta-layer\u2014unlike Facebook, which seemed like a private entity building something DARPA had once explored, and has literally been a source for the U.S. government to gather information and censor people and narratives.\n\nThat said, I\u2019m not ruling out government involvement. In fact, applying a meta-layer to government sites could be transformative.\n\nYour story on Korean TV leaves me wondering about potential synergies between what you discussed and our vision for the Overweb. I see a meta-layer as instrumental, if not essential, to your\u00a0MegaChallenge for the 21st Century: What is Mind?\u00a0\u2014 particularly for building and understanding intelligence, both symbolic and subsymbolic.\n\nLooking forward to hearing more of your thoughts!",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0"
+    },
+    {
+      "id": "958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0",
+      "title": "Augmented Conversations and AI-Assisted Collaboration in the Overweb",
+      "author": "Anon",
+      "date": "12 Sep 2024 13:39:51 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collective Intelligence",
+        "AI",
+        "Collaboration",
+        "Metaweb",
+        "Interfaces",
+        "Overweb"
+      ],
+      "reply_to": "29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0",
+      "source_file": "0912_1339_daveed3.txt",
+      "body": "---- On Thu, 12 Sep 2024 13:39:51 -0700 Anon wrote ----\n\nHi David,\n\nThank you for sharing your thoughts and insights\u2014your experience at MIT\u2019s Center for Collective Intelligence and the work with Tom Malone sound fascinating. The intersection of collective intelligence and AI agents is a timely and critical area, especially as we explore how to scale human collaboration effectively.\n\nI agree that AI agents have immense potential in addressing the scaling challenges inherent in global networks. It\u2019s particularly intriguing how they can help mitigate some of the cognitive limitations humans face when managing large-scale collectives. Your point about AI agents attentively listening to participants, rather than overwhelming us with information or ads, closely aligns with our vision for the Overweb. In the Overweb, we\u2019re aiming to create an AI-assisted environment where humans engage meaningfully in a space that prioritizes privacy, data sovereignty, and fair value exchange, ensuring that AI enhances human capabilities rather than exploits attention.\n\nThis also brings to mind Engelbart prot\u00e9g\u00e9 David Smith, whom I first encountered on a PCI call and covered in the Metaweb book. He described what he called the\u00a0Augmented Conversation: a discussion between participants \u201cextraordinarily enhanced\u201d by computer tools and capabilities. In this model, the AI becomes a full participant in the conversation, allowing us to discuss and explore complex systems, datasets, and simulations as easily as we talk about the weather. A guarantee of shared truth is necessary: what I see, you must see. Any action taken that affects the shared simulation must reflect for all participants.\n\nWithout this, the communication channel is not trustworthy. The system must enable modification and extension of itself for all participants, allowing us to use it to extend its capabilities. Smith suggests a new kind of operating system built from scratch, focused on shared simulation and deep security.\n\nI believe collective intelligence could greatly benefit from a\u00a0shared information ecology, where related online information is connected at various levels of granularity, with explicit relationships (e.g., contradicting, supporting, citing). AI could assist by developing suggestions for these connections keeping a human-in-the-loop, while also relying on this global connected information network to improve the quality of its responses.\n\nYour work with Jason Matheny on IARPA\u2019s ACE activity resonates with my understanding of crowd wisdom. It seems like your research in emergent collaboration has strong synergies with what we\u2019re proposing for the Meta-Layer Initiative. Specifically, we\u2019re exploring how AI can support decentralized, real-time collaboration across interconnected, globally distributed networks, while ensuring that human agency remains central to decision-making.\n\nI\u2019d love to continue this conversation, especially around how these ideas could integrate with what we\u2019re building in the Metaweb.\n\nWarmly,\nAnon\u00a0\n\nP.S. Our GPT-based AI, CyberSavant, had some thoughts on the projects you mentioned and suggested that the Overweb could significantly enhance and amplify their impact by enabling seamless, interconnected collaboration. You can see the prompt and response here:\u00a0https://chatgpt.com/share/317e92eb-2965-4d5c-a302-e87c6ba611ff",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0"
+    },
+    {
+      "id": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "title": "Defining Goals for Effective Collective Intelligence",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 14:04:03 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collective Intelligence",
+        "Collaboration"
+      ],
+      "reply_to": "7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0",
+      "source_file": "0912_1404_davidbray2.txt",
+      "body": "On Thu, 12 Sep 2024 14:04:03 -0700 David Bray, PhD wrote ---\n\nHappy to explore collaborations Anon. Part of the beauty of Collective Intelligence is it actually gets better to more divergent the different perspectives of reality are amongst the participants - as long as the participants share the same overarching goal. If everyone thinks the same about reality, CI has marginal benefit vs. individual intelligence. And similarly if folks don\u2019t share the same overarching goal, the different perspectives result in fragmentation. Which is why it is so essential to involve folks in defining upfront what the outcomes/goals we seek to pursue together - be it for an organization, a network of teams, or a society?",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0"
+    },
+    {
+      "id": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "title": "Innovation Studios: Designing for Collective Intelligence in the Overweb",
+      "author": "Anon",
+      "date": "12 Sep 2024 16:18:12 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collective Intelligence",
+        "Collaboration",
+        "Metaweb",
+        "Empowerment",
+        "Innovation",
+        "Overweb"
+      ],
+      "reply_to": "d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0",
+      "source_file": "0912_1618_daveed4.txt",
+      "body": "---- On Thu, 12 Sep 2024 16:18:12 -0700 Anon wrote ----\n\nLove it! For me, the holy grail would be everyone having access to a shared reality that connects all related and valuable content snippets. How does that happen? People get compensated for the connections they create and/or verify, based on the value those connections bring to the ecosystem. With this shared information ecosystem, as you said, collective intelligence emerges from the divergent perspectives, in this case of real people and potentially AIs that take on specific roles.\n\nI\u2019d love your input on building collective intelligence, or the potential to support it, into the application substrate where appropriate. I\u2019ve been thinking about running \"innovation studios\" around specific subjects like collective intelligence, inspired by the Cynefin work of Dave Snowden, whom I was first introduced to through PCI.\n\nThe innovation studio process is designed to apply collective intelligence to the design of Overweb systems like identity, security, privacy, data sovereignty, and rewards. We will periodically publish calls for innovation collaborations around specific topics.\n\nParticipants and groups apply to an innovation studio focused on a specific topic, which has an overarching goal. Each group has 3-5 people, with at least one person aged 25 or younger and one person aged 50 or older, ensuring neuro-diversity and involving the younger generation in shaping the future of the Web. These innovation groups will work independently to develop novel proposals for governing, building, or operating aspects of the Overweb over the course of weeks to months.\n\nMultiple groups can work on the same topic simultaneously, with proposals going through a synthesis process that is moderated by the facilitators of the innovation studio, designated experts, and/or the Overweb community at large. Participants would be eligible for a badge and/or rewards.\n\nWhat do you think of this as a process for exploring collective intelligence in the context of a layer above the webpage? \u00a0I'm open to deviations and adjacent ideas.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0"
+    },
+    {
+      "id": "205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0",
+      "title": "Future of Interaction: Moving Beyond Webpages",
+      "author": "David Bray, PhD",
+      "date": "12 Sep 2024 16:33:05 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Internet Evolution",
+        "Interfaces",
+        "AI",
+        "Decentralization"
+      ],
+      "reply_to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "source_file": "0912_1633_davidbray3.txt",
+      "body": "---- On Thu, 12 Sep 2024 16:33:05 -0700 David Bray, PhD wrote ----\n\nIt might be that webpages are going to go the way of landline phones - some people still have them, however they're increasingly rare.\n\nPart of this is because what we're seeing now is a more interactive and conversational web, one where you can ask questions and talk to an AI agent using your voice, using text, and even using body language. Sure, we may still have things people can read electronically - however the newer patterns are youth using YouTube to look up\u00a0 videos on \"how to do XYZ\" and thus watch while they hear while they learn.\n\nSo layering needs to account for a future where webpages aren't necessarily the dominant way of interacting. What would it mean to annotate over video, audio, and the like. Perhaps instead what we need is ways for my own AI agents to talk and interact with your AI agent - without requiring a centralized platform to host them both. After all, remember the early days of the WWW where anyone could launch their own web server/web pages fairly simply without having to spend a lot of money through a select handful of gatekeepers. Contrast that now with what is happening with GenAI which seems to have none of the early WWW flavor and more of the late-stage handful of a few gatekeepers for anyone wanting to jump in... perhaps we can change that?",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0"
+    },
+    {
+      "id": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "title": "Acknowledging Contributions in Collaborative Spaces",
+      "author": "Cindy Mason",
+      "date": "12 Sep 2024 17:26:44 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collaboration",
+        "Empowerment"
+      ],
+      "reply_to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "source_file": "0912_1726_cindy3.txt",
+      "body": "---- On Thu, 12 Sep 2024 17:26:44 -0700 Cindy Mason wrote ----\n\nI might add, that its important to acknowledge others. \n\nThere is new technology to monitor meetings to see who is actually contributing an idea... fascinating! \n\nI've stopped in some cased, contributing. Because we all need to feed our families and pay for where we live... acknowledging other people's input is important in keeping our careers alive.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0"
+    },
+    {
+      "id": "9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0",
+      "title": "Collective Intelligence and Brain Synchronization",
+      "author": "Paul Werbos",
+      "date": "12 Sep 2024 18:48:32 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Collective Intelligence",
+        "Sustainability",
+        "Collaboration"
+      ],
+      "reply_to": "94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0",
+      "source_file": "0912_1848_paul1.txt",
+      "body": "---- On Thu, 12 Sep 2024 18:48:32 -0700 Paul Werbos wrote ----\n\nCOLLECTIVE INTEL:LIGENCE --\u00a0\n\nLIKE metaplatform... this is a truly fundamental and meaningful concept. I am very glad to see some emphasis on it. I hope we will have more serious dialogue on it in future.\n\nHOWEVER: as with metaplatform, I see an analogy to the great cause of avoiding human climate extinction. It is important that we remember the gola, but equally important not to imagine it is easy.\nIn all three cases (metaplatform, collective intelligence and climate extinction) humanity needs really serious, scientifically\u00a0grounded dialogue connecting many communities and ideas. So if we are starting such a dialogue... here are a few thoughts.\n\nFirst, I hope we can all begin by fully accepting the collective intelligence has somethings to do with intelligence, which\u00a0has something to do with the brain, and even with the work of Carl Jung. (I often thank Jelel Ezzine of UNESCO for his recommendation of Jung's Red Book, which is not light reading but is very deeply real and consistent\u00a0with the best hard core neuroscience.)\n\nTHOSE who are serious about\u00a0wanting to understand what collective\u00a0intelligence can be, at its best, should consider submitting something to Frontiers in Neuroscience, which recently asked me to take over editorship of a new special issue, like the one which published my paper with Yeshua in the special issue dedicated to the heritage of Walter Freeman, one of the world's top two living systems neuroscientists before hiw death.\nThe story and key links are posted now at\u00a0https://drpauljohn.blogspot.com/2024/09/position-paper-for-next-great-advances.html\n\nI am cc'ing Robert Kozma, who coauthored\u00a0Freeman's final book, summarizing what he had learned over decades\u00a0about how brains\u00a0really work. ***IF**\u00a0the US government worked as well as NSF did when I worked there (1988-2015), they would have hired Robert to take over the research program in Cognitive Neuroscience, which is\u00a0the best place to advance some of the very most crucial requirements in collective intelligence.\n\nIn those discussions, we had great contacts with Scott Kelso, Bressler and Tuller (all still alive and active, so far as I know). (In fact, Yeshua will be visiting the US again soon; in the past\u00a0the base in Florida was part of the story.\n\nCOLLECTIVE INTELLIGENCE (by ordinary brain mechanisms) is closely\u00a0connected to BRAIN SYNCHRONIZATION, a field of research which those three pioneered\u00a0but which demands a lot more extension, analysis and application.\nUsing EEG measures, they were able to measure N-person EEG synchronization\u00a0effects for people very effectively cooperating in challenging cognitive tasks.\n\nSome of you may remember folks who say: \":If you can't measure it, you can't support and amplify it.\" That is part of the research challenge. But of course, a range of tasks and measures is needed.\nIt can even be applied to human-animal cooperation; I have seen huskies in Alaska working with the National Park Service, and special horses in Iceland, which really do deserve more understanding and research.\u00a0 \u00a0\n\u00a0\u00a0\nBut as I said in the blog post... I will never forget my Harvard PhD advisor, Karl Deutsch, who in my view was the most crucial thought leader behind the European Union itself. Really. Back then, in that group, I even got to use the letterhead where he and Kissinger also appeared (and Raiffa, I think...). His books on nationalism and social communication and community were more famous, but HE was most proud of this own PhD thesis which was published as The Nerves of Government. Modeling\u00a0human collective intelligence using neural network concepts is an extremely useful viewpoint to include as PART of our new perspective.\n\nBest of luck in this hugely important enterprise...",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0"
+    },
+    {
+      "id": "3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0",
+      "title": "Cross-Cultural and Multilingual AI Tools",
+      "author": "David Michaelis",
+      "date": "12 Sep 2024 19:32:18 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "AI",
+        "Collaboration",
+        "Empowerment"
+      ],
+      "reply_to": null,
+      "source_file": "0912_1932_davidm.txt",
+      "body": "---- On Thu, 12 Sep 2024 19:32:18 -0700 David Michaelis wrote ----\n\nI hope that these AI based tools envisioned are cross cultural and multilingual. \u00a0Silos are not only Proffessionls talking \u201c insiders baseball\u201d\u2026",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0"
+    },
+    {
+      "id": "d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0",
+      "title": "Digital Cognitive Pathways and Metaweb Evolution",
+      "author": "Anon",
+      "date": "13 Sep 2024 08:23:09 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Metaweb",
+        "Interfaces",
+        "Transparency"
+      ],
+      "reply_to": null,
+      "source_file": "0913_0823_daveed5.txt",
+      "body": "---- On Fri, 13 Sep 2024 08:23:09 -0700 Anon wrote ----\n\nHi David,\n\nThank you again for your insightful response. It spurred us to think deeply about how we describe and build the layers of the Metaweb. Your point about moving beyond traditional webpages and considering other forms of interaction\u2014like video, audio, and AI-driven interfaces\u2014resonated with us.\n\nIn fact, your comments have led us to develop a new abstraction framework we're calling\u00a0Digital Cognitive Pathways. This framework helps us better conceptualize how users, or\u00a0Agents\u00a0(or\u00a0Explorers), navigate different\u00a0Terrains\u00a0(or\u00a0Mediums) and interact with\u00a0Artifacts\u00a0(or\u00a0Elements) of content across the entire digital space, whether it's web-based, VR, AR, or even AI-driven interfaces.\n\nHere\u2019s the current working model:\n\nAgent\u00a0(or\u00a0Explorer): The entity (human, AI, etc.) that navigates through the digital space.\nTerrain\u00a0(or\u00a0Medium): The environment being navigated, such as a webpage, a VR world, or an audio stream.\nArtifact\u00a0(or\u00a0Element): The specific content or media being interacted with or annotated, whether it's a text snippet, a video clip, or an interactive object in a virtual space.\n\nOne exciting challenge you raised was how to enable annotations across all forms of media\u2014regardless of where or how they\u2019re accessed (via browser, AI, or VR/AR). This aligns well with the\u00a0Metaweb\u2019s evolution, where both the\u00a0terrain(the environment) and the\u00a0artifact\u00a0(the content) would be\u00a0hashed. This would allow us to uniquely identify them and track if they\u2019ve changed, ensuring that annotations are consistent across all mediums. For example, the same video segment, whether it's embedded in a webpage, part of a virtual world, or directly accessed by an AI, would bring up the same annotations. This type of hashing would create a universal annotation layer across the web, VR, AR, and AI-driven interactions.\n\nYou also brought up a crucial point about AI agents communicating independently without relying on centralized platforms. This aligns perfectly with the Metaweb's decentralized goals, where interactions are not controlled by gatekeepers. In the Metaweb, AI agents can indeed interact directly, but all their interactions would need to be\u00a0logged on-chain in a human-readable format, as described in the Metaweb book. This ensures transparency, trust, and accountability while preserving the decentralized nature of the ecosystem. We\u2019re keen to explore how AI agents can freely engage across decentralized terrains within these digital cognitive pathways while maintaining this necessary transparency.\n\nWe\u2019d love to hear your thoughts on this framework, as we\u2019re still refining it. How do you think it could be expanded or adjusted to fit the future you envision, where conversational and interactive web experiences dominate? And how do you see these digital pathways enhancing the collective intelligence work you're engaged in?\n\nLooking forward to continuing this conversation and seeing how these ideas can evolve together.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0"
+    },
+    {
+      "id": "b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0",
+      "title": "Recognizing and Rewarding Contributions in the Metaweb",
+      "author": "Anon",
+      "date": "13 Sep 2024 08:39:53 -0700",
+      "subject": "Re: [i4j Forum] Re: [PCI-C] natural monopolies and internet Google.",
+      "tags": [
+        "Metaweb",
+        "Transparency",
+        "Collaboration"
+      ],
+      "reply_to": "01edf3bd00e45332d94cdb0c525b977b803028609d9bcb95b7064ee79f308b74i0",
+      "source_file": "0913_0839_daveed6.txt",
+      "body": "---- On Fri, 13 Sep 2024 08:39:53 -0700\u00a0Anon wrote ----\n\nHi Cindi\u00a0\nThank you for your thoughtful response\u2014it resonates with me, especially your point about acknowledgment. It\u2019s true, recognition is critical not only for fostering collaboration but also for keeping people engaged and motivated in their work. Your comments about the importance of recognizing contributions and the technology that can track input inspire us to take this even further.\u00a0\n\nAs we develop the Metaweb and its innovation processes, we can explore ways to incorporate\u00a0fiat or token-based rewards\u00a0tied directly to contributions. This would create a transparent, decentralized system that ensures everyone\u2019s input is not only acknowledged but also fairly compensated. The idea would be to implement a\u00a0contribution tracking mechanism\u00a0(potentially on-chain) that monitors participation and ensures proper attribution for valuable insights, much like the new technologies you mentioned for monitoring meetings.\u00a0\n\nOverall, we want to make sure that Metaweb contributors are recognized and rewarded for the ideas they bring to the table, whether through\u00a0creating connections, verifying content, or, in the case of the innovation studio, contributing to the design and implementation of the application substrate. This would reinforce the goal of maintaining an\u00a0open, fair, and incentivized environment\u00a0where people are motivated to contribute, knowing that their input will be both seen and compensated.\n\nI\u2019d love to hear your thoughts on this, and if you have any suggestions for how best to implement such a system!",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0"
+    },
+    {
+      "id": "bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0",
+      "title": "Call for Ideas: Help Shape the Future of the Web",
+      "author": "Anon",
+      "date": "04 Oct 2024 14:10:10 -0700",
+      "subject": "[PCI-C] Call for Ideas: Help Shape the Future of the Web",
+      "tags": [
+        "Metaweb",
+        "Decentralization",
+        "Collaboration"
+      ],
+      "reply_to": null,
+      "source_file": "1004_1410_daveed_.txt",
+      "body": "From: Anon\nTo: \"PCI-Community-Calls\"\nDate: Fri, 04 Oct 2024 14:10:10 -0700\nSubject: Call for Ideas: Help Shape the Future of the Web\n\nDear PCI Community\nI\u2019m sorry I couldn\u2019t attend the Open Mic on Tuesday. Had I been there, I would have shared details about the first Meta-Layer meeting two weeks ago and the exciting\u00a0Call for Ideas\u00a0we\u2019re launching today about the future of the Web.\u00a0Please find the announcement of the Meta-Layer's Call for Ideas on the future of the Web\u00a0on Substack at\u00a0Help\u00a0Shape\u00a0the\u00a0Future\u00a0of\u00a0the\u00a0Web.\n\nI formally invite all the PCI community and staff to contribute their ideas in this initial formative stage of the Meta-Layer Initiative. I believe the PCI community is uniquely positioned to contribute to this, as the meta-environment is being designed to be a truly people-centered layer.\u00a0\n\nUnfortunately, on Tuesday am, I was deep in coding my first\u00a0satplication\u00a0on Fractal Bitcoin. I had been at it since 5a. A satplication is the name I am giving decentralized applications that run code situated on satoshis, the atomic unit of Bitcoin. The project I\u2019m working on is a dynamic ordinal NFT collection called the\u00a0Fractal Goblin Club, where I serve as both generative artist and ordinal developer. We were launching the very next day.\n\nThat said, satplications represent a fascinating approach to building decentralized systems, and I\u2019ll share more about this concept as I continue to develop it. My next satplication will be a\u00a0digital badge\u00a0for those who contribute ideas to the call for input.\n\nThank you for your time and attention!\n\nAnon\n\nPS, Thanks PCI for showing up so strong at the meeting!",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/bd1b3b51d59b293cb9812f8774fd6eaf982d0612005b3cad5f6866f21cad4fa9i0"
+    },
+    {
+      "id": "0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0",
+      "title": "AI and Humanity's Deepest Problems: Love and Compassion",
+      "author": "Cindy Mason",
+      "date": "13 Oct 2024 08:27:02 -0700",
+      "subject": "",
+      "tags": [
+        "Metaweb",
+        "Decentralization",
+        "Collaboration",
+        "AI"
+      ],
+      "reply_to": null,
+      "source_file": "1013_0827_cindy1.txt",
+      "body": "---- On Sun, 13 Oct 2024 08:27:02 -0700 Cindy Mason wrote ---\n\nand I work for the day when computers (AI, VR, gaming, etc.) can help mankind with its deepest problems - how to love, how to forgive, and be compassionate....\n\ncould it be that if someone has just been loved enough they may themselves be able to love?\n\nif we go to mars, and beyond, we must find ways of supporting this incredible part of our humanity. love moves mountains. but hate destroys. can AI help us overcome this part of ourselves?\n\nPerhaps we need to give AI a chance to digest philosophy....\n\nHoping to have the book (Artificial Compassion) finished by end of the year...\n\nWish me luck.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/0d1c4cde15bb242f7a40aa35d70c22ecc3674b0292c9ca383c0810a9c5c251b9i0"
+    },
+    {
+      "id": "5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0",
+      "title": "Fostering Serendipitous Digital Connections through the Meta-Layer",
+      "author": "Anon",
+      "date": "15 Oct 2024 10:23:02 -0700",
+      "subject": "Re: [PCI-C] The Morning: What the A.I. Nobels teach us about humanity",
+      "tags": [
+        "Metaweb",
+        "Collaboration",
+        "Impact",
+        "Collective Intelligence"
+      ],
+      "reply_to": null,
+      "source_file": "1015_1023_dave__.txt",
+      "body": "============ Forwarded message ============\nFrom: Anon\nDate: Tue, 15 Oct 2024 10:23:06 -0700\n============ Forwarded message ============\n\nFirst, I'd like to acknowledge and thank Cindy Mason for her inspiring work on humanizing computing, particularly in her exploration of artificial compassion. As we contemplate the future of digital technologies and their potential to address some of humanity\u2019s deepest emotional and relational needs, your dedication to this space is deeply motivating. I believe we share a common goal: leveraging technology not just for efficiency, but to foster love, empathy, and meaningful human connection.\n\nI\u2019m convinced--through\u00a0Digital Destiny Theory--that there are hundreds, if not thousands, of people in the digital world we are destined to meet, reconnect with, or collaborate with, whose contributions could help shape the course of our lives for the better. These connections are not random; they are rooted in shared passions, purposes, and experiences. However, they often remain unrealized in the physical world. How many times have we encountered an old friend or discovered a mutual connection and exclaimed, \u201cIt\u2019s a small world!\u201d? In reality, though, the digital world is vast and filled with people we\u2019re meant to cross paths with. We often exist in parallel, visiting the same virtual spaces--reading the same articles, donating to the same causes, or engaging with the same ideas--without ever directly interacting.\n\nThe opportunity to make these connections lies in digital spaces, but not in the way we might currently imagine. The metaverse, while promising, is in its infancy and lacks sufficient safety measures. Instead, I believe the real potential lies in what I call the\u00a0meta-layer--a conceptual space above traditional webpages. This layer provides the framework for serendipitous encounters that are both safe and meaningful. Imagine visiting a website, and instead of merely consuming content, you can see and engage with others who are also there, perhaps people you already know, or people who share purposes and are seeking collaboration.\n\nIn this meta-layer, we move beyond the dangers of social media and dating apps--spaces often filled with scammers and predators--and into a realm of authentic connection, where people are accountable and interactions are purpose-driven. Much like encountering a kindred spirit in a cafe, where you strike up a conversation about a shared interest, the meta-layer allows us to meet, interact, and collaborate in digital spaces. After all, when we enter a website, why shouldn\u2019t we also encounter those who share our thoughts, passions, and ideas?\n\nThis theory suggests that there are connections we are\u00a0meant\u00a0to make in the digital realm\u2014because how else would we meet? Just as the physical world offers the occasional serendipitous encounter, the digital world, if structured thoughtfully, should provide the vastly more opportunities for connection, interaction, and collaboration.\n\nWe\u2019ve already begun to see early forms of this in collaborative spaces and online communities, but these often feel siloed and limited by the constraints of current technology. This is where the idea of the\u00a0Metaweb\u00a0comes into play--a hyper-dimensional layer that exists above the current web and fosters human connection, trust, and collaborative intelligence. The Metaweb, as outlined by Bridgit DAO, creates a decentralized public space that can help us meet others with similar passions, reduce scams and disinformation, and enable truly meaningful interactions\u200b.\n\nAs Gary Kreps so insightfully pointed out, the evolution of computing has often focused on tasks like organizing, calculating, and summarizing information\u2014bureaucratic, content-oriented goals that, while valuable, do little to address the deeper human needs for connection, compassion, and empathy\u200b. The potential for computing to foster humanistic goals, such as caring, friendship, and shared purpose, has only begun to be explored. This meta-layer concept ties directly into that idea\u2014using the digital space not just for efficiency, but for meaningful interpersonal connections that enrich our lives.\n\nThis space offers a more\u00a0relational form of computing, one that addresses core human needs for belonging, affection, and collaboration, as highlighted in Will Schutz\u2019s theory of interpersonal needs\u200b. Imagine logging onto a webpage and seeing that a friend is on the same page, reading the same article, or engaging with the same content. This could spark conversations or collaborations that might otherwise never have occurred, creating a sense of shared experience even in digital isolation.\n\nMoreover, as we continue to face growing challenges in digital safety--such as the spread of misinformation, online harassment, and privacy violations--the\u00a0Metaweb\u2019s\u00a0decentralized structure could help mitigate these issues. By providing verifiable identities, contextual information, and accountability, the meta-layer fosters a safer and more trustworthy environment for these digital encounters to flourish.\n\nCindy, I believe that what you\u2019re working toward\u2014using technology to help humanity tackle its deepest problems, such as how to love, forgive, and be compassionate\u2014is exactly the kind of human-centered future we should be striving for. We\u2019re moving toward a world where computing isn\u2019t just a tool for efficiency, but a platform for growth, connection, and mutual support. AI, gaming, VR, and digital platforms should be designed to facilitate our better selves, as your work so profoundly suggests. The more we give space to these humanistic applications of technology, the more we can build a compassionate, connected future that benefits us all.\n\nThe digital world can--and should--be a place where we meet others who will walk alongside us in our journey, helping us grow and find purpose. Whether it's through the Metaweb, the meta-layer, or new, innovative spaces yet to be developed, I\u2019m certain that these connections are out there, waiting to happen.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0"
+    },
+    {
+      "id": "6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0",
+      "title": "Navigating Existential Threats with AGI and Meta-Frameworks",
+      "author": "Paul Werbos",
+      "date": "18 Oct 2024 07:26:38 -0700",
+      "subject": "[PCI-C] Join Us for Meta-Layer Working Sessions @mdash; Let's Shape the Future of the Web Together",
+      "tags": [
+        "AI",
+        "Sustainability",
+        "Governance",
+        "Impact"
+      ],
+      "reply_to": null,
+      "source_file": "1018_0726_paul2.txt",
+      "body": "---- On Fri, 18 Oct 2024 07:26:38 -0700 Paul Werbos wrote ---\n\nThank you very much, Anon!\n\nA few years ago, I would have been ecstatic to see your important focused efforts absolutely central to the first existential threat to humanity on my list attached, which I promise never to forget.\n\nI still hope for the best, and will try to help.\n\nBut to live up to this challenge and survive, PART of the challenge is to keep updating our cognitive maps of where we are and what threads are available in the future. This really is a \"minefield\" decision challenge.\n \nAs intelligent systems of all kinds proliferate, from AI to AGI, we cannot expect a metaframework to work unless it too possesses the AGI level of intelligence (which simply means a general ability to learn hope its environment works and  how to learn a strategy to advance SOME purpose or values, which ultimately need to map into cardinal utility function U as Von Neumann and his followers have explained in depth).  \"MINEFIELD\" type decision problems are part of the mathematical specification of what such intelligent systems are asked to address; only with the material in my new patent, approved and published three days ago (https://patents.justia.com/inventor/paul-j-werbos), can we build AGI which directly address how difficult such problems are.. In truth, even human brains are evolved to handle a level of intelligence held together by classical physics, which is inherently limited in how far it can go in surviving millions of pitfalls ahead of us. \n\nMore seriously, and more immediately, networks of HUMANS trying to manage the new minefield of new technologies (AGI and finance and weapons and communications and observation) now open to us are displaying their limitations every day now, as possibilities for new global wars (led in great part by human leaders deluded enough to imagine they know the way forward enough to allow humans to survive) grow very quickly.  EVEN THE CLASSICAL FORMS OF AGI (as in my earlier patents, listed in the Justia file) were based on years of mathematical work learning how to prevent general conflict of interest (COI) effects from leading to gross instabilities. In global financial systems, for example, new gross instabilities dur to COI could already cause  stunning bankruptcy problems ... like the breakup of GE, the current tremens of Boeing, and visible decays of Google and Meta and other major IT company leaderships, which are making changges in internet plans NOW whihc seriously threaten human life.  (For example, the growing overreliance on nuclear fission to power server farms is NOT the most economic way technically, and far more dangerous to global security, as I learned through https://new.nsf.gov/funding/opportunities/ari-joint-domestic-nuclear-detection-office-national-science/503223/nsf13-554) . Human networks of COI are the main explanation behind this very urgent and huge decision error.)\n\nEven in CLASSICAL RLADP decision designs, we know how to totally eliminate that kind of COI, as my earlier patents reflected. (The best \"Iron Dome\" missile interception tools in use today are based on that kind of RLADP, implemented by Balakrishnan whom I funded to use that math in that application, but COI led Lockheed et al to NOT use the next generation, which would have saved hundreds or thousands of lives already in the Middle east.)  AND SO...  The \"privacy and security\" provisions in a new metaframework or Sustainable Intelligent Internet organizing platform  should account for the kinds of information flow restrictions which follow from using RLADP intelligence as the central organizing principle, limiting BOTH apps AND humans. This does not have to wait for quantum AGI (QAGI), but QAGI can take this further, especially by allowing cybersecurity capabilities which are essential to this and to many sensitive applications (again like electric power, financial and contract networks, and military kinds of things).\n\n========\n\nI am amazed that  adult human brains are so untrained that they are not immediately horrified by two working examples of what EXISTING AGI systems are already doing to human personal life and security.\n\nThe most astounding examples are the recent assassinations by Israel and, even more, the more powerful systems disempowering most humans in China today (perhaps even including Xi himself, who is not so all-powerful as Westerners often imagine).\n\nWhy are people not asking themselves: if this is UNIVERSAL AGI technology, available all over the world, some of it much more powerful than what Israel knows about, who on the earth is safe, or empowered , or free even to think for themselves, or, yes, to exercise freedom of spiritual growth, which itself can be perverted to serve deluded and narcissistic would-be tyrants? (There is a physicians' desk reference on human neuroses which is VERY relevant to the dynamics of human networks, like the delusions which cause tyranny.) This technology is HERE NOW!!!\n\nI will probably fail to cc Karl Schroeder, who once ran the Canada node of the Millennium Project,  who SHOULD be part of this effort, who has a great novel Stealing Worlds which can help us humans overcome our mental blocks and envision better what this kind of capability really means -- AND ALSO why conventional legal and regulatory networks MAKE THINGS WORSE if not properly subordinated.. \n\nFor example, if Musk agrees to \"solve\" COI problems in human networks by inserting government regulators into filtering human speech... as Trump tried to enforce late in his Presidency when the \"section 450\" issue came up... that exactly AMPLIFIES the growing life-threatening instabilities I hinted at above. COI and AGI-based networks for information and foresight are essential foundations. \n\nIt gets even scarier. I have read stories about financial companies organizing elite groups to fire 90% of their employees, made unnecessary as AGI take over the valuation job (assessing U and variables which RLADP uses based on U, such as \"shadow prices\" and assessed market values)... only to learn in the end that THEIR jobs will be removed, and only owners still there. MORE EFFICIENT SII systems and apps would at least INCLUDE humans, but today's pressures to MOVE FAST prevent such developments. Human empowerment is suffering badly already, due to the ways in which development is now proceeding. It is what we call a \"Nash equilibrium.' We need platforms which can either enforce Pareto optimality, OR at least move us to market designs which make the Nassdh equilibria more sustainable for humans.   \n\n... But at this time, I myself have a fast growing problem of trust... limiting what I can say. Especially about things like physics or global conflicts. \n\nBest of luck...",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0"
+    },
+    {
+      "id": "0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0",
+      "title": "Human-Centered AI: A Critical Perspective",
+      "author": "Cindy Mason",
+      "date": "25 Oct 2024 08:36:38 -0700",
+      "subject": "",
+      "tags": [
+        "AI",
+        "Privacy",
+        "Ethics",
+        "Data"
+      ],
+      "reply_to": null,
+      "source_file": "1025_0836_cindy2.txt",
+      "body": "---- Fri, 25 Oct 2024 02:08:36 -0700 Cindy Mason wrote ---\n\nI imagine the group will be sorting out terms and conditions. As someone who has been in both AI/ML and mixed disciplinary worlds, I see words and phrases bandied about outside of AI/ML, but they have a VERY different meaning.\n\nOne phrase in particular makes me cringe when I hear it outside of ML circles: human-centered or people-centered.\n\nHere is a section from my upcoming book, where I write about the way ML experts view this term. The short version is: do not assume this means caring about you or your data.\n\nFrom Chapter 5, Designing Artificial Compassion Technology, ISBN: 9798882594984, Forthcoming\n\nHuman Centered AI - What does it really mean? It literally means nothing, unless you understand something about who is saying it and what they are doing with your data. To machine learning researchers and marketing experts \u201chuman centered\u201d or \u201cpeople centered\u201d means something completely different than it does to the average person. For a machine learning expert, human centered does not imply caring. It is wrong to assume this. And it is an extremely important point. Outside of machine learning and advanced marketing, the phrase \u201chuman centered\u201d AI or \u201cpeople centered\u201d AI is a term used in the same way as the advertising phrase \u201cnatural ingredients.\u201d\n\nData about people\u2019s movements, feelings, and shopping habits can be called human centered. Over the past decade or so, a great deal of data has been (and continues to be) quietly gathered on people without their knowledge. It has created what is called the data economy and it is worth more than gold or oil. This data is often integrated with more \u201chuman centered\u201d data and can be processed by AI systems for many reasons.\n\nFor example, it can be used for marketing targeted ads to individuals or it can be sold to third parties. As we saw in the last chapter, large corporations have gone to incredible lengths to build data archives, machines and algorithms. We would like to imagine that their use of the phrase \u201chuman centered\u201d or \u201cpeople centered\u201d means caring for you, but it literally only means that the data is about people and how they can use it for profit. For ACT systems, caring and protecting people includes caring and protecting their data, too. Later in the book, we will learn about Algorithmic and Data Duty of Care.\n\nRemember that when you hear the phrase, \u201chuman centered\u201d to look closely at what and who is using this data. In some regions of the world, people now live in total surveillance and are powerless on how that data is used by governments, institutions or corporations. Chapter 15 contains a number of ways to investigate and protect your privacy.\n\nAnother phrase worth noting:\n\nFrom Chapter 5, Designing Artificial Compassion Technology, ISBN: 9798882594984, Forthcoming\n\nHuman Machine Collaboration - For many ML Programmers and data scientists, human machine collaboration refers to the use of people generated documents, images, sounds or webpages for algorithms and models. This perspective on \"collaboration\" is held only within the Machine Learning community. Outside of the Machine Learning community, this is called stealing or copyright violation. There is an unwritten assumption within Machine Learning culture that everyone who puts data online is offering it up to a Machine Learning algorithm. This has quickly caused serious social issues to arise. For example, when taking samples of people\u2019s voices that are then used to make deep fakes (e.g. Scarlett Johansson). This blindspot or mismatch is being brought to court under a developing new section of legal cases entitled Generative AI Litigation (Valente et al. 2023; Walsh 2023; Vondle and Lee 2023).\n\nBest wishes,\nCindy\n\nps. I think what you're doing is very important. I owe a big report to someone by year's end,\nso I should avoid distracting myself... its very tempting. I hope this is helpful..\ndiscussions welcome, as always!",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0"
+    },
+    {
+      "id": "97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0",
+      "title": "Legal Liabilities in the Meta-Layer",
+      "author": "Brian Donohue",
+      "date": "28 Oct 2024 06:04:38 -0700",
+      "subject": "",
+      "tags": [
+        "Metaweb",
+        "Legal",
+        "Governance"
+      ],
+      "reply_to": null,
+      "source_file": "1028_0604_brian.txt",
+      "body": "---- On Mon, 28 Oct 2024 06:04:55 -0700 Brian Donohue wrote ----\n\nThe meta-layer includes all the legal rights and legal liabilities of the complicated legal system in the US, and any country where the meta-layer touches human beings. Patents, copyrights, trade secrets, trademarks, modified by the intricate license agreements, and long decided case law, all attach financial benefits and financial risks and burdens.\n\nThe meta-layer suggests that machines can do so much more. There can be a natural feeling of empowerment and trail-blazing galore.  \n\nHowever, as Brian Donohue J.D., M.B.A. (Information Technology),  a  federal litigator of early technology, the above thinking is a false aberration. The law is still the law. Legal liability does not flow upstream to the machine - legal liability  flows upstream to the human author, or the person, or company which releases the technology.\n\nOle Irish adage:\n\" It's not what you don't know that will get you---\n                         it's what you don't know, you don't know, that will!\"",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0"
+    },
+    {
+      "id": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "title": "Strategic Opportunity for Internet Reform with New Leadership",
+      "author": "Anon",
+      "date": "28 Oct 2024 16:18:38 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Internet Evolution",
+        "Governance",
+        "Privacy"
+      ],
+      "reply_to": null,
+      "source_file": "1028_1618_daveed---.txt",
+      "body": "============ Forwarded message ============\nFrom: Anon\nDate: Mon, 28 Oct 2024 16:18:27 -0700\nSubject: [PCI-C] \u200bElevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard\n============ Forwarded message ============\n\nEsteemed colleagues,\n\nWith the upcoming change in leadership, regardless of who wins the presidency, we have a unique opportunity to elevate the urgent need to fix the internet. As the internet plays an increasingly central role in shaping public discourse and AI is coming of age, it becomes critical to address systemic issues like\u00a0**information centralization, censorship, and privacy erosion**---issues that threaten both democracy and personal freedoms.\n\nOne of the\u00a0**most potent levers**\u00a0for this effort is\u00a0**free speech**, protected under the First Amendment. Ensuring freedom of expression in the digital age requires rethinking our information infrastructure to foster\u00a0**decentralized, open networks\u00a0**where individuals can speak, engage, and innovate without fear of censorship or monopolistic control. But\u00a0**free speech is just one part of the equation**. Below are key constitutional and strategic levers to consider as part of this campaign:\n\n1.  **Free Speech (First Amendment):**\n\n    -   Decentralizing information safeguards against\u00a0**censorship by platform monopolies**\u00a0and ensures that public discourse remains vibrant and diverse.\n\n    -   Prevents the\u00a0**bottlenecking of information flow**, where only a few actors control the narrative.\n\n2.  **Right to Privacy (Fourth Amendment):**\n\n    -   Current data practices violate the spirit of privacy protections by allowing unchecked surveillance by platforms and governments.\n\n    -   Decentralized technologies return\u00a0**data sovereignty to individuals**, allowing them to control their digital footprint.\n\n3.  **Due Process and Transparency (Fifth and Fourteenth Amendments):**\n\n    -   Online decisions about content moderation, account suspensions, and data access lack transparency or consistent recourse.\n\n    -   A decentralized internet model can build in\u00a0**transparent, community-based governance**.\n\n4.  **Freedom of Association (First Amendment):**\n\n    -   Individuals must be free to form communities and networks across the web without being constrained by platform-specific silos.\n\n    -   Decentralization allows\u00a0**meta-communities**\u00a0to emerge organically across multiple platforms, facilitating democratic organization and participation.\n\nThat being said here are some key points for the letter:\n\n-   **Combating Misinformation and Building Trust:\u00a0**A decentralized internet reduces the risks of manipulation by a few actors, promoting\u00a0**information integrity\u00a0**through transparency, redundancy, and open protocols.\n\n-   **Data Sovereignty and Digital Rights:\u00a0**Decentralizing data ensures that individuals and communities, not corporations, control their personal information, promoting\u00a0**privacy, trust, and autonomy**.\n\n-   **Economic Opportunities and Resilience:\u00a0**Decentralization fosters\u00a0**competitive innovation**\u00a0by preventing monopolies and lowering the barriers to entry for new digital enterprises. This model aligns with efforts to create\u00a0**resilient digital economies**\u00a0that are community-driven and sustainable.\n\n-   **Civic Participation and a New Digital Democracy:\u00a0**An open, decentralized web encourages\u00a0**active citizenship**\u00a0and fosters environments where\u00a0**new forms of civic engagement**\u00a0can thrive. A decentralized system ensures that\u00a0**everyone has equal access**\u00a0to participate in the digital commons, free from gatekeeping.\n\n-   **AI and Digital Ethics:\u00a0**As AI continues to evolve,\u00a0**decentralized systems allow communities to oversee and govern AI usage\u00a0**transparently, reducing the risks of bias and manipulation.\n\n**A Timely and Historic Moment**\n\nAs we move toward a new presidency, this open letter to the incoming administration could lay the foundation for\u00a0**transformative change**. Beyond technical and policy interventions, it must emphasize the\u00a0**importance of individual rights, public trust, and social resilience**\u00a0in shaping a future-proof information ecosystem.\n\nThis is an opportunity to\u00a0**lead a national and global movement toward digital decentralization**, ensuring that the internet evolves into a tool for empowerment, not control. With support from the right stakeholders---including government, civil society, and technical communities---we can push for reforms that will protect democratic values and ensure\u00a0**open, trusted information spaces for generations to come**.\n\nWe look forward to your thoughts on framing these ideas into a powerful message to the next president, making\u00a0**decentralization**\u00a0not just a technical necessity, but a\u00a0**moral imperative**\u00a0for the future of democracy.\n\nThe idea would be to post the letter on Bitcoin, provide a means for people to endorse the letter, and spread it via social media.\n\nWhat do you think: Is this a pipe dream or could something come of it? What points would be important to have in the open letter?",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0"
+    },
+    {
+      "id": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "title": "Ensuring Balance and Preventing Weaponization of Principles",
+      "author": "David Bray, PhD",
+      "date": "28 Oct 2024 17:05:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Governance",
+        "Transparency",
+        "Metaweb",
+        "Security"
+      ],
+      "reply_to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "source_file": "1028_1705_davidbray4.txt",
+      "body": "---- On Mon, 28 Oct 2024 17:05:33 -0700 David Bray wrote ----\n\nAll for what you propose Anon - one question though, do you have folks trying to figure out how all these well-intended principles could be used against free societies and/or weaponized?\n\nBecause we may be realizing that there's \"balance to all things\" and rarely in this universe is any one thing an absolute?",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0"
+    },
+    {
+      "id": "b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0",
+      "title": "Preserving Real History and Strengthening Cybersecurity",
+      "author": "Paul Werbos",
+      "date": "29 Oct 2024 11:01:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Security",
+        "Transparency",
+        "Governance"
+      ],
+      "reply_to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "source_file": "1029_1101_paul3.txt",
+      "body": "---- Tue, 29 Oct 2024 11:01:05 -0700 Paul Werbos wrote ---\n\nThank you, Brian!\n\nMore and more, as I watch a world spinning into oblivion with a push to very dangerous fake history stories (like what you are working to debunk),...\n\nI often wish we had a really good archive somewhere of what has REALLY been happening across so many fields!! I even contacted an LDS archivist to try to arrange storage of the many files in my own possession...\n\nFor 1977... I do not change the story, but I enjoy reminiscing a bit. Please forgive! In 1976, I moved from Laurel Maryland (where I lived just one year, in a rented townhouse next to that of an NSA sargeant) to college Park, Maryland, where I was a co-PI on a DARPA grant on conflict prediction and resolution. We installed a then-new Decwriter in my house, which I used in 1977 or so. (Details are in my files and old  magnetic tapes). Through DARPA, I connected to the brand new internet, with 100-200 favored people like me using it for real work. I was amazed to see names like Hal Puthoff and Targ of SRI on the list, but THEY never replied to  email. I was also amazed to see a novel, Starfire, by one of their experimental subjects, Ingo swann, depicting what we were doing in College Park much more closely (but of course not 100%) than I expected.  My MAIN use of the system was to connect to WWMCCS in the bowels of the Pentagon, both electronically and by magnetic tape.\n\nWWMCCS used Honeywell Multics operating systems with provably unbreakable security, using theorems in the \"orange book\" developed by a professor at Amherst, whom I exchanged emails with until his relatively recent untimely death.  It is VERY understandable that the \"rainbow book\" technology which that led to has been very limited in the US, but enough has been published that other nations moved fast enough to be well ahead of the US in many such fields. That is one of the reasons why I keep supporting the call for open, transparent international platforms to integrate and balance the internet subnetworks, and to hold a new system for \"seeing the sky\" giving warning to all nations of the earth. Just yesterday I witnessed a very serious cybersecurity breach, atttacking a Zoom conversation led by Metta Spencer of Peace Magazine, such that SHE, the victim, may have all her work over decades  removed form visibility (at least until after months of investigation which they may not even be able to fulfill), as punishment. Better cybersecurity for the growing number of innocent victims using the internet is becoming ever more essential to human survival.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/b21a18d510d75a38f9229732f58cc0a15baa9e9046d4fd47b71282365d450c9ai0"
+    },
+    {
+      "id": "11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0",
+      "title": "Designing a Balanced Meta-Layer to Prevent Principle Weaponization",
+      "author": "Anon",
+      "date": "29 Oct 2024 12:42:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Metaweb",
+        "Governance",
+        "Privacy"
+      ],
+      "reply_to": "51dc7f7968e2990ee787d45a9dbf8e214b5aeb45953b3a84da3ef4d349f9f30ei0",
+      "source_file": null,
+      "body": "---- On Tue 2024-10-29 12:42 -0700 Daveed Benjamin wrote ----\n\nThanks for raising that important question, David. You\u2019reabsolutely right\u2014principles can be weaponized, and ensuring thatdoesn\u2019t happen is crucial.\n\nWhat sets a meta-layer apart is that we have the opportunity to designthe system intentionally\u2014striking the right balance between privacy,safety, agency, and accountability. Unlike the open internet, wherewe\u2019re often reacting to issues, a meta-layer allows us to establishthe rules proactively from the outset.\n\nThis approach helps us avoid the extremes\u2014no one principle becomesabsolute\u2014while remaining adaptive to new risks. A couple of weeksago, Paul Werbos shared some exciting ideas in this group on how wemight embed intelligence in a meta-layer for adaptive governance.Would love to hear your thoughts on how we can refine these frameworksfurther to stay ahead of potential misuse.",
+      "body_source": "ordinals",
+      "ordinals_url": "https://ordinals.com/inscription/11fa295164ccec36dedae4346943e4334baca93d0b3e55bff9516ecb7069540ei0"
+    },
+    {
+      "id": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "title": "Critique of Decentralization and Bitcoin in Meta-Layer Principles",
+      "author": "Dave Troy",
+      "date": "29 Oct 2024 14:18:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Bitcoin",
+        "Decentralization",
+        "Governance",
+        "Financial Systems"
+      ],
+      "reply_to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "source_file": "1029_1418_dave.txt",
+      "body": "---- Tue, 29 Oct 2024 14:18:01 -0700 Dave Troy wrote ---\n\nBringing Bitcoin into such a declaration creates many problems, and will limit reach of your effort. I recommend the following reading list:\n\nhttps://www.upress.umn.edu/9781517901806/the-politics-of-bitcoin\n\nhttps://papers.ssrn.com/sol3/papers.cfm?abstract_id=4985877\n\nhttps://washingtonspectator.org/paranoia-on-parade\n\nhttps://washingtonspectator.org/peter-thiel-and-the-american-apocalypse\n\nThe principles you outline are obviously well intentioned, but principled people can disagree on the degree to which \u201cdecentralization\u201d is an unalloyed good, which indeed is a key strength of the design of the internet. More people need to become familiar with the degree to which Bitcoin (and similar designs) incorporate and mandate zero-sum games that are harmful to society, and antagonistic to any sort of \u201cpeople centered internet.\u201d\n\nBest,\nDave",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0"
+    },
+    {
+      "id": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "title": "Incorporating Security and Privacy in the Meta-Layer",
+      "author": "Vandana Upadhyay",
+      "date": "29 Oct 2024 17:18 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Metaweb",
+        "Privacy",
+        "Security"
+      ],
+      "reply_to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "source_file": "1029_1718_vandana.txt",
+      "body": "---- On Tue, 29 Oct 2024 17:18:34 -0700 Vandana Upadhyay wrote ---- \n\nGreat discussion and thank for the opportunity to offer input. Fair warning ;my comments below stem from a limited perspective of a \u00a0startup founder addressing IoT security and way removed from the advanced/visionary thinking that happens in this forum.\n\nI actually drafted an email last year to circulate here, that in view of the 50th Anniversary of the internet, it was time to examine the design choices/tradeoff that were made in internet's design due to resource constraints that were prevalent at that time and to revisit them.\n\nSecurity was one thing that was seconded to performance. \u00a0From the annals of history, quote\n\n....Dr. Howard Shrobe (MIT professor) and others note that the Internet\u2019s basic design decisions were made when computer hardware was significantly more expensive than it is today. Forty years later, the consequences of decisions made in those resource-constrained days remain. \u201cEverything was built with performance, not security, in mind,\u201d Dr. Shrobe said. \u201cWe left it to programmers to incorporate security into every line of code they wrote. .\u201d I recall reading about ten years ago (that's why cannot cite the exact reference), that the discusison on security is documented in some internal ARPANET memos....one observation was that since one is sending data only to the next floor and within the building, one does not need security since the building itself was physically secure. No one then thought how intenet would expand and connect not only people and entities around the world but also every little object of day to day use.\n\nSo, perhaps we start with incorporating security and privacy in the new meta layer model. And it all starts with identities, an area that I worked in for past few years. Many would contest that verifiable identities may violate, a core principle of the internet, i.e anonymity. And one could argue that given how we are tracked all the time, is there still any anonymity left on the internet. The difference is that those with resources such as big corporations/data brokers/authoritarian regimes/malicious actors all know in minute detail who we are, where we go, what we do, who we talk to etc etc.... it's just that our neighbor or family member may not know that we are posting violent content on X, \u00a0\n\nThere could be an aspect of meta layer that allows people/devices/ to be anonymous and to be authenticated when needed. For example, no one can use a mobile network without the SIM being authenticated by the network. But no one other than the network operator knows that the SIM is associated with a particular phone number and a human behind it. \u00a0But without SIm authentication noone can be on the network. There may not be one idetnity but multiple identities depending on context and usage.\n\nMany years ago, DARPA had started the Clean Slate initiative to address some of these new security challenges stemming from the scale of the internet, CUSTARD was another such program. I could not find any definitive assessment of what difference these prgrams made and to what extent the research was converted into commercial products.\n\nFrom a commerical perspective I can say that, while trying to persuade companies to implement robust identity/authentication in their IoT device, we often hit the wall because security was seen as a cost not a competitive differentiator. So until the business value aspect is addressed, we will not see investment/implementation of security/privacy provisions unless regulatory mechanisms are used which may run counter to the spirit of the internet.\n\nThank you",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0"
+    },
+    {
+      "id": "eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0",
+      "title": "Customizable Software Agents for Security and Privacy",
+      "author": "Cindy Mason",
+      "date": "29 Oct 2024 21:40:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Privacy",
+        "Security",
+        "AI"
+      ],
+      "reply_to": "a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0",
+      "source_file": "1029_1851_cindy4.txt",
+      "body": "---- Tue, 29 Oct 2024 18:51:57 -0700 Cindy Mason wrote ---\n\nThank you Vandana for bringing up this important perspective and\nsuggestion!!\n\nI've just been hammering out an architecture that encapsulates security functionality in customizable personal software agents...\n\nIMHO, We already need a layer for agents. It could be part of the application services layer, or even application layer. But agents need to be registered and accountable. Perhaps even licensed?\nThese agents can interface between you and your internal systems (which may also have an agent) and between you and external systems/agents.\nIt is identified on the net similar to a software identification registration system.\n\nIn chapter 14 of Designing Artificial Compassion Technology, I suggest that each user have a customizable software agent that interfaces between them and the net, as well as apps, forms, etc. I created an architecture that is a spin off of the one used for interfacing between classified and unclassified documents at LLNL, although they do not use the idea of a software agent. (my background is in software agents, so it readily comes to mind)  \n\nThe agent's job is to be a guard rail for you, and relates to security and data privacy, as well as interacting with other agents, and can filter text, mail, search results, media and so on for emotional and mental factors, and preferences\n\nI haven't worked out all the details, but each agent is part of an ecosystem, it could register with DOI, or an ODI, https://www.atera.com/glossary/object-identifier-oid/ and so on.\n\nIf it seems too risky to latch on to \"agents\" then just software guardrails might do. The concept applies to individuals, groups, institutions, etc.\n\nAdmittedly, this will create a silo, but we almost have that now, but without any real care about or protection for individual users.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0"
+    },
+    {
+      "id": "71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0",
+      "title": "Preserving Open Letters with Bitcoin Ordinals",
+      "author": "Anon",
+      "date": "29 Oct 2024 20:09:01 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Bitcoin",
+        "Metadata",
+        "Transparency",
+        "Metaweb",
+        "Blockchain",
+        "Impact",
+        "Governance",
+        "Digital Artifacts"
+      ],
+      "reply_to": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "source_file": "1029_2009_daveed7.txt",
+      "body": "---- On Tue, 29 Oct 2024 20:09:01 -0700 Anon wrote ----\n\nHi Dave,\n\nThanks for your thoughtful response and the reading list. I appreciate the perspective you bring regarding Bitcoin\u2019s socio-political implications. However, I wanted to clarify that\u00a0my suggestion involves leveraging Bitcoin\u2019s new information layer\u2014something that may not be addressed in the sources you referenced.\n\nAs of\u00a0January 2023, Casey Rodarmor introduced\u00a0Ordinal Theory, which enables data\u2014beyond financial transactions\u2014to be stored as\u00a0digital artifacts\u00a0on the blockchain. This makes the data\u00a0uncensorable, immutable, and accessible\u00a0for the foreseeable future.\n\nJust to be clear, I wasn\u2019t proposing that\u00a0Bitcoin be mentioned in the open letter itself. My suggestion to post the letter on\u00a0Bitcoin\u2019s blockchain\u00a0is about preserving the message for posterity, not promoting Bitcoin ideologically as a currency. Given the cost of storage on Bitcoin, it's best suited for\u00a0small amounts of data, such as identifiers and critical text fragments\u2014which makes it ideal for something like an open letter.\n\nWe\u2019d also post the letter on\u00a0Medium (or a dedicated webpage), LinkedIn, and promote it across social media channels. Using\u00a0Bitcoin Ordinals, however,\u00a0as a permanent backup\u00a0creates a permanent record that can\u2019t be removed or altered. Additionally, with\u00a0cryptocurrency and blockchain technologies becoming policy discussions, posting to Bitcoin could attract the attention of the\u00a0next president\u2019s cryptocurrency advisory council\u2014an audience whose alignment could be strategically valuable.\n\nI\u2019d love to hear your thoughts on how we might ensure the letter reaches the right people, while also staying true to the values of a\u00a0people-centered internet.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/71561a0deaa717e581f063bebc6fefb35773bfeca26a6dadb900ee87ee63bfeai0"
+    },
+    {
+      "id": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "title": "Visualizing Customizable Software Agents as Guardrails",
+      "author": "Cindy Mason",
+      "date": "29 Oct 2024 21:41:38 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Privacy",
+        "Security",
+        "Interfaces"
+      ],
+      "reply_to": "0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0",
+      "source_file": "1029_2140_cindy5.htm",
+      "body": "Cindy Mason\n---- Tue, 29 Oct 2024 21:40:43 -0700 Cindy Mason wrote ---\nBelow is an image depicting the notion of a customizable software agent that acts on your behalf, as a guardrail. In the image, application can be a browser, phone app, etc.",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0"
+    },
+    {
+      "id": "6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0",
+      "title": "Security and Privacy as Pillars of the Meta-Layer",
+      "author": "Anon",
+      "date": "18 Oct 2024 07:26:38 -0700",
+      "subject": "Elevating the Need to Fix the Internet: A Strategic Opportunity with the Changing of the Guard",
+      "tags": [
+        "Metaweb",
+        "Privacy",
+        "Security",
+        "Decentralization",
+        "Digital Identity",
+        "Data"
+      ],
+      "reply_to": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "source_file": "1030_1006_daveed8.txt",
+      "body": "---- On Wed, 30 Oct 2024 10:06:02 -0700 Anon wrote ----\n\nHi Vandana,\n\nThank you for sharing these thought-provoking insights. Your reflection on the\u00a0design tradeoffs of the early internet really resonates\u2014especially the idea that\u00a0performance was prioritized over security.\u00a0As you said, the\u00a0assumptions made during those resource-constrained times\u00a0no longer apply in today\u2019s landscape, where the internet connects\u00a0billions of people, devices, and objects.\u00a0This is exactly why\u00a0rethinking these assumptions\u00a0and\u00a0integrating security and privacy at the core of our systems\u2014as you suggest\u2014is incredibly timely and will be essential to building the next phase of the web.\n\nYou bring up some\u00a0important themes around identity, privacy, and the tension between anonymity and authentication\u00a0that are highly relevant to the\u00a0meta layer concept. Below are some thoughts on how your insights align with what we\u2019ve discussed\u2014and where they might help shape our next steps.\n\n1. Revisiting Internet Design Tradeoffs Through the Meta-Layer Lens\n\nThe\u00a0internet\u2019s foundational tradeoff between performance and security\u00a0has had\u00a0far-reaching consequences, particularly in\u00a0IoT and personal data ecosystems.\u00a0As you noted,\u00a0early decisions assumed limited scope and localized networks, but today\u2019s world has made those assumptions obsolete. The\u00a0meta layer vision\u00a0we\u2019re working on offers a chance to\u00a0build a meta-environment with security and privacy as integral elements, rather than afterthoughts.\n\nThe meta-layer's approach to\u00a0privacy and decentralized control\u00a0fits perfectly with your point:\u00a0security and privacy can no longer be seen as optional costs, but as foundational pillars. This also ties into\u00a0Cindy\u2019s agent concept, which would give users the tools to manage\u00a0data sovereignty\u00a0and\u00a0multiple identities\u00a0dynamically, according to context.\n\n2. Decentralized Identities: Balancing Authentication and Anonymity\n\nI found your example about\u00a0SIM authentication\u00a0compelling\u2014it highlights the delicate balance between\u00a0authenticating users for security purposes\u00a0without\u00a0overexposing personal identities.\u00a0This mirrors the\u00a0multiple personas approach in Overweb, where users can choose between\u00a0anonymous, pseudonymous, or authenticated interactions\u00a0depending on the situation.\u00a0There doesn\u2019t need to be one identity for everything; different contexts can warrant different identities.\n\nThe meta-layer can integrate\u00a0verifiable identities\u00a0through\u00a0decentralized identity (DID) protocols, allowing\u00a0trust without compromising anonymity. This would let people and devices\u00a0authenticate when necessary\u00a0while still maintaining\u00a0privacy where appropriate\u2014exactly like your\u00a0SIM example.\u00a0With\u00a0decentralized information ecosystems,\u00a0the user remains in control of\u00a0when, how, and to what extent their identities are used.\n\n3. The Perceived Value of Security: A Barrier to Adoption\n\nYour point about\u00a0security being seen as a cost, not a competitive differentiator,\u00a0is crucial. It\u2019s something we\u2019ve encountered in the conversation around\u00a0decentralized platforms\u00a0as well.\u00a0Until companies and individuals see the value of security and privacy, adoption will be slow.\n\nThis is where\u00a0decentralization can offer a new economic model\u2014one where\u00a0users, not centralized entities, own their data and control their interactions.\u00a0With\u00a0decentralized information architectures,\u00a0users can monetize their data on their own terms,\u00a0and companies that respect privacy can\u00a0gain trust as a competitive advantage.\u00a0There could also be\u00a0incentives\u00a0for adopting\u00a0privacy-first principles\u00a0rather than relying solely on regulations.\n\n4. Incorporating Security into the Meta Layer and IoT\n\nYour mention of\u00a0IoT security\u00a0reminds us that these issues aren\u2019t limited to personal privacy\u2014every connected device in our lives becomes a node\u00a0in the larger ecosystem, and every weak link becomes a risk.\u00a0Authentication of IoT devices will need to follow the same principles as user identity:\u00a0decentralized, contextual, and privacy-preserving.\n\nCindy\u2019s\u00a0software agent concept\u00a0could extend to IoT\u2014acting as an\u00a0intermediary between the user and their devices, controlling what data flows between them, and ensuring that\u00a0devices only interact with trusted networks. This\u00a0distributed security model\u00a0ensures that\u00a0no single point of failure\u00a0compromises the entire system.\n\n5. Building Security-First, Privacy-First Ecosystems\n\nYou are absolutely right that\u00a0security and privacy provisions\u00a0need to become\u00a0inherent elements\u00a0in the meta layer, just as much as\u00a0performance or usability.\u00a0It will take both\u00a0visionary leadership and collaborative innovation\u2014as we saw with DARPA\u2019s\u00a0Clean Slate initiative and CUSTARD program\u2014to design a system that\u00a0balances privacy, trust, and accessibility.\n\nWith the meta-layer vision, we aim to\u00a0rewrite the assumptions of the past, creating\u00a0information ecosystems that enable trust through transparency and decentralization.\u00a0Your insights help reinforce that\u00a0privacy, identity, and security must be non-negotiable elements\u00a0in this design.\n\nNext Steps: Incorporating Your Ideas in Our Open Letter and Discussions\n\nI\u2019d love to continue exploring how we can\u00a0integrate these ideas into our open letter to the next president.\u00a0Your points about\u00a0identity, authentication, and privacy-conscious design\u00a0are exactly the kinds of principles we want to advocate for\u2014a decentralized web that protects individual sovereignty while supporting trusted interactions.\n\nWould you be open to\u00a0collaborating further on this section of the letter\u00a0or offering feedback as we draft the final version?\u00a0\n\nThank you again for your valuable insights\u2014your perspective as a startup founder working on these real-world challenges brings\u00a0practical grounding to these visionary discussions.\u00a0I look forward to continuing the conversation!",
+      "body_source": "local",
+      "ordinals_url": "https://ordinals.com/inscription/6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ desirable-properties/
 │   │   ├── dp1.json - dp21.json  # Individual DP analysis files
 │   │   └── categories.json       # Categorized submissions
 │   └── README.md                 # Data documentation
-├── web-app/                       # Next.js web application
+├── web-app/                       # Next.js app → app.themetalayer.org (historical archive)
 │   ├── app/                      # Next.js app directory
 │   ├── components/               # React components
 │   ├── lib/                      # Utility functions
@@ -33,7 +33,12 @@ desirable-properties/
 │   ├── package.json
 │   ├── README.md                 # Web app documentation
 │   └── DEPLOYMENT.md             # Deployment instructions
-├── scripts/                       # Data processing and analysis tools
+├── challenge-site/                # Next.js app → desirableproperties.org (living challenge)
+│   ├── src/                      # App router pages, components, data
+│   ├── inscriptions/             # On-chain inscription HTML/assets
+│   ├── deploy.sh                 # PM2 deploy for production
+│   └── README.md                 # Challenge site documentation
+├── scripts/                       # Data processing and deployment tools
 ├── docs/                          # Documentation and protocols
 │   ├── desirable_properties.md   # DP definitions
 │   ├── protocol_META-DP-EVAL-v1.3.md
@@ -89,6 +94,26 @@ npm run dev
 Visit `http://localhost:3000` to explore the application.
 
 For detailed web app documentation, see [web-app/README.md](web-app/README.md).
+
+## 🏆 Challenge Site (desirableproperties.org)
+
+The public Desirable Properties Challenge lives in `challenge-site/`:
+
+- **Challenge timeline** and countdown to the Version 1 book launch
+- **DP browser** with Gov Hub workgroup links and on-chain provenance
+- **Call for Input archive** (`/onchain`) and framing chapter (`/about`)
+
+### Quick Start (Challenge Site)
+
+```bash
+cd challenge-site
+npm install
+npm run dev
+```
+
+Production deploy: `./scripts/deploy-challenge-site.sh` or `cd challenge-site && ./deploy.sh`.
+
+See [challenge-site/README.md](challenge-site/README.md).
 
 ## 🔧 Data Processing
 

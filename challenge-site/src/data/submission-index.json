@@ -1,0 +1,380 @@
+{
+  "meta": {
+    "generated_at": "2025-07-14T23:36:09.890020",
+    "total_submissions": 46,
+    "source_directory": "/Users/daveed/Public/meta/src/metaweb/desirable-properties/submissions/structured",
+    "failed_files": [],
+    "format_version": "1.0",
+    "description": "Compiled Meta-Layer submissions in standardized JSON format"
+  },
+  "submissions": [
+    {
+      "source_file": "1.json",
+      "file_number": 1,
+      "title": "Gamified 4D Interaction Layer for Digital-Physical Quests",
+      "author": "Javier",
+      "email": "Jamagax@gmail.com",
+      "dp_count": 7
+    },
+    {
+      "source_file": "2.json",
+      "file_number": 2,
+      "title": "Shared Tray Protocol for Coordinated Overlay Interfaces",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 6
+    },
+    {
+      "source_file": "3.json",
+      "file_number": 3,
+      "title": "UMi\u2019s Contribution to the Meta-Layer Initiative: Sector-Specific Integration of DP4",
+      "author": "Phahsa Ras",
+      "email": "Phahsa@protonmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "4.json",
+      "file_number": 4,
+      "title": "Vicariance as a Desirable Meta-Layer Property",
+      "author": "Chris Santos-Lang",
+      "email": "langchri@gmail.com",
+      "dp_count": 3
+    },
+    {
+      "source_file": "5.json",
+      "file_number": 5,
+      "title": "Secure, Organic Community Formation on the Meta-layer",
+      "author": "Liz Sweigart",
+      "email": "lizsweig@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "6.json",
+      "file_number": 6,
+      "title": "Bridges, Synaptic Web, and Universal Maps: Toward a Cognitive Meta-layer",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 9
+    },
+    {
+      "source_file": "7.json",
+      "file_number": 7,
+      "title": "Algorithmic Kabbalah: A Mystical Framework for Ethical AGI",
+      "author": "Paul Carpenter",
+      "email": "mentallyhyp2012@gmail.com",
+      "dp_count": 3
+    },
+    {
+      "source_file": "8.json",
+      "file_number": 8,
+      "title": "Cultivating Trust in AI-Assisted Online Conversations",
+      "author": "Christopher C Santos-Lang",
+      "email": "langchri@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "9.json",
+      "file_number": 9,
+      "title": "Navigator User Interfaces (NUI) as a Coordination Layer for a Post-Search, Post-Feed Web",
+      "author": "Chris Santos-Lang",
+      "email": "langchri@gmail.com",
+      "dp_count": 12
+    },
+    {
+      "source_file": "10.json",
+      "file_number": 10,
+      "title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
+      "author": "Ruben Diaz",
+      "email": "rubenraul75@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "11.json",
+      "file_number": 11,
+      "title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 9
+    },
+    {
+      "source_file": "12.json",
+      "file_number": 12,
+      "title": "Save As to Web3: A UX Gateway to Decentralized Storage",
+      "author": "Stephanie Hervey",
+      "email": "webbie@theartisanhub.org",
+      "dp_count": 5
+    },
+    {
+      "source_file": "13.json",
+      "file_number": 13,
+      "title": "Security Protocols and Ethical Safeguards in the Lyra System",
+      "author": "Alex Nassarius",
+      "email": "alex.nassarius@gmail.com",
+      "dp_count": 9
+    },
+    {
+      "source_file": "14.json",
+      "file_number": 14,
+      "title": "A Trusted Annotation Layer for Shakespeare's Plays",
+      "author": "Michael Witmore",
+      "email": "michaelwitmore@gmail.com",
+      "dp_count": 4
+    },
+    {
+      "source_file": "15.json",
+      "file_number": 15,
+      "title": "Ethical Products for the Global South",
+      "author": "Scott Frankum",
+      "email": "scottfrankum@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "16.json",
+      "file_number": 16,
+      "title": "Enhancing Whistleblower Protection within the Meta-Layer",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 5
+    },
+    {
+      "source_file": "17.json",
+      "file_number": 17,
+      "title": "Can Directories Rise Again?",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 6
+    },
+    {
+      "source_file": "18.json",
+      "file_number": 18,
+      "title": "DiCAMS: Dynamic Intelligent Context-Aware Memory System",
+      "author": "Patrick Hoagland",
+      "email": "sfghoagland@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "19.json",
+      "file_number": 19,
+      "title": "Forensic Transparency and 'The Creed': A Dual Framework for Ethical Digital Presence",
+      "author": "Aa Ho",
+      "email": "Taiconan@gmail.com",
+      "dp_count": 4
+    },
+    {
+      "source_file": "20.json",
+      "file_number": 20,
+      "title": "Sixteen Axioms for Cognitive Infrastructure",
+      "author": "Aa Ho",
+      "email": "Taiconan@gmail.com",
+      "dp_count": 5
+    },
+    {
+      "source_file": "21.json",
+      "file_number": 21,
+      "title": "Name Chain\u2013Anchored Digital Artifacts with Interoperable Authentication Marks",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 4
+    },
+    {
+      "source_file": "22.json",
+      "file_number": 22,
+      "title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 12
+    },
+    {
+      "source_file": "23.json",
+      "file_number": 23,
+      "title": "The Engineer's Ledger and the People-Centered Paraidox",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 11
+    },
+    {
+      "source_file": "24.json",
+      "file_number": 24,
+      "title": "Governance for Advanced Non-Human Agents and AI Systems",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 17
+    },
+    {
+      "source_file": "25.json",
+      "file_number": 25,
+      "title": "Integrating Multi-Modal Systems into the Meta-Layer Framework",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 1
+    },
+    {
+      "source_file": "26.json",
+      "file_number": 26,
+      "title": "Mandatory Metadata for AI-Generated Artifacts",
+      "author": "Ruben Diaz",
+      "email": "rubenraul75@gmail.com",
+      "dp_count": 3
+    },
+    {
+      "source_file": "27.json",
+      "file_number": 27,
+      "title": "AI-Augmented Data Visibility for Safer Web Experiences",
+      "author": "Wojak K",
+      "email": "wojakk3336@gmail.com",
+      "dp_count": 4
+    },
+    {
+      "source_file": "28.json",
+      "file_number": 28,
+      "title": "Layered Transparency and Co-Presence for Metaweb Navigation",
+      "author": "Wojak K",
+      "email": "wojakk3336@gmail.com",
+      "dp_count": 6
+    },
+    {
+      "source_file": "29.json",
+      "file_number": 29,
+      "title": "IETF-Inspired Governance Framework for the Meta-Layer Initiative",
+      "author": "Brad deGraf",
+      "email": "bdegraf@gmail.com",
+      "dp_count": 4
+    },
+    {
+      "source_file": "30.json",
+      "file_number": 30,
+      "title": "The Engineer's Ledger and the People-Centered Paraidox",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 11
+    },
+    {
+      "source_file": "31.json",
+      "file_number": 31,
+      "title": "Global Recognition of Prior Learning via Meta-Layer Credentials",
+      "author": "Sandeep Chakravartty",
+      "email": "sandeepchakravartty@gmail.com",
+      "dp_count": 4
+    },
+    {
+      "source_file": "32.json",
+      "file_number": 32,
+      "title": "Levelling the Digital Playing Field: A Meta-Layer for a Post-Capitalist Web",
+      "author": "Lindsay Jane",
+      "email": "lindsayjanecontent@proton.me",
+      "dp_count": 3
+    },
+    {
+      "source_file": "33.json",
+      "file_number": 33,
+      "title": "Chromium Reputation Provider Framework: A Decentralized Reputation Layer for the Web",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 11
+    },
+    {
+      "source_file": "34.json",
+      "file_number": 34,
+      "title": "Rebranding the Metaweb to Overweb",
+      "author": "Eric Schneider",
+      "email": "eric@jpberlin.de",
+      "dp_count": 2
+    },
+    {
+      "source_file": "35.json",
+      "file_number": 35,
+      "title": "Seeding Generational Familiarity with the Meta-Layer Through Purpose-Driven Educational Use",
+      "author": "Eric Schneider",
+      "email": "eric@jpberlin.de",
+      "dp_count": 7
+    },
+    {
+      "source_file": "36.json",
+      "file_number": 36,
+      "title": "Seeding Generational Familiarity with the Meta-Layer Through Purpose-Driven Educational Use and Scandinavian Journalism Partnerships",
+      "author": "Eric Schneider",
+      "email": "eric@jpberlin.de",
+      "dp_count": 8
+    },
+    {
+      "source_file": "37.json",
+      "file_number": 37,
+      "title": "Family-Centered Introduction of the Meta-Layer for Safer, Co-Creative Internet Engagement",
+      "author": "Eric Schneider",
+      "email": "eric@jpberlin.de",
+      "dp_count": 7
+    },
+    {
+      "source_file": "38.json",
+      "file_number": 38,
+      "title": "Platform Harms to LGBTQ+ Communities and the Need for Inclusive Meta-Layer Design",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 8
+    },
+    {
+      "source_file": "39.json",
+      "file_number": 39,
+      "title": "Meta-Layer as Municipal Infrastructure: European Cities as Pioneering Use Case",
+      "author": "Eric Schneider",
+      "email": "eric@jpberlin.de",
+      "dp_count": 10
+    },
+    {
+      "source_file": "40.json",
+      "file_number": 40,
+      "title": "Enabling Machine-Readable Meaning through the Semantic Web",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 10
+    },
+    {
+      "source_file": "41.json",
+      "file_number": 41,
+      "title": "Humane Design Patterns for Ethical Tech Platforms",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 8
+    },
+    {
+      "source_file": "42.json",
+      "file_number": 42,
+      "title": "AI as the Ultimate Safety Layer",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 5
+    },
+    {
+      "source_file": "43.json",
+      "file_number": 43,
+      "title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 8
+    },
+    {
+      "source_file": "44.json",
+      "file_number": 44,
+      "title": "MetaBridge: An AI Powered, Privacy Respecting Bridge Between Platforms for Civic Collaboration",
+      "author": "Michelle Thuo",
+      "email": "thuomichelle2020@gmail.com",
+      "dp_count": 7
+    },
+    {
+      "source_file": "45.json",
+      "file_number": 45,
+      "title": "Default Decentralized Privacy VPN for the Meta-Layer",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 6
+    },
+    {
+      "source_file": "46.json",
+      "file_number": 46,
+      "title": "Substrate-Level A/B Testing Framework for Meta-Layer and Ecosystem Modules",
+      "author": "Anon",
+      "email": "noreply@themetalayer.org",
+      "dp_count": 5
+    }
+  ]
+}

@@ -11,6 +11,12 @@ import CommentSection from './components/CommentSection';
 import ChatModal from './components/ChatModal';
 import { UnifiedElement, SubmissionElement, CommentElement, ReactionElement } from './components/UnifiedElement';
 
+const LIVING_DP_SITE = 'https://desirableproperties.org';
+
+function goToLivingDp(dp: { id: string }) {
+  window.location.href = `${LIVING_DP_SITE}/dp/${dp.id.toLowerCase()}`;
+}
+
 interface DesirableProperty {
   id: string;
   name: string;
@@ -94,7 +100,6 @@ export default function DesirablePropertiesApp() {
   const [expandedProperties, setExpandedProperties] = useState<Set<string>>(new Set());
   const [expandedSubmissions, setExpandedSubmissions] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<TabType>('summary');
-  const [dpDetail, setDpDetail] = useState<DesirableProperty | null>(null);
   const [submissionDetail, setSubmissionDetail] = useState<Submission | null>(null);
   const [visibleComments, setVisibleComments] = useState<Set<string>>(new Set());
   const [searchResults, setSearchResults] = useState<any>(null);
@@ -223,9 +228,8 @@ export default function DesirablePropertiesApp() {
         
         const dp = getDPByIdOrName(dpId);
         if (dp) {
-          // console.log('Opening DP modal from hash:', dp.name);
-          setDpDetail(dp);
-          setSubmissionDetail(null);
+          goToLivingDp(dp);
+          return;
         } else {
           // console.log('DP not found for hash:', dpId);
         }
@@ -239,9 +243,8 @@ export default function DesirablePropertiesApp() {
         
         const dp = getDPByIdOrName(dpId);
         if (dp) {
-          // console.log('Opening DP modal from URL param:', dp.name);
-          setDpDetail(dp);
-          setSubmissionDetail(null);
+          goToLivingDp(dp);
+          return;
         } else {
           // console.log('DP not found for URL param:', dpId);
         }
@@ -287,11 +290,6 @@ export default function DesirablePropertiesApp() {
       history.replaceState = originalReplaceState;
     };
   }, [data]); // Re-run when data loads
-
-  // Debug useEffect for modal states
-  useEffect(() => {
-    // console.log('dpDetail state changed:', dpDetail?.name || 'null');
-  }, [dpDetail]);
 
   useEffect(() => {
     // console.log('submissionDetail state changed:', submissionDetail?.title || 'null');
@@ -721,7 +719,6 @@ export default function DesirablePropertiesApp() {
                     // console.log('Submission clarificationsExtensions:', sub.clarificationsExtensions);
                     // console.log('Opening submission detail for:', sub.title);
                     openSubmissionDetail(sub);
-                    setDpDetail(null);
                   }}
                 >
                                       {sub.title}
@@ -1267,7 +1264,7 @@ export default function DesirablePropertiesApp() {
                     <div key={index} className="border-l-4 border-blue-500 pl-4">
                       <button 
                         onClick={() => {
-                          setDpDetail(result.item);
+                          goToLivingDp(result.item);
                           setSearchResults(null);
                           setSearchTerm('');
                         }}
@@ -1556,8 +1553,7 @@ export default function DesirablePropertiesApp() {
                       <div className="flex items-center gap-3 mb-2">
                         <button 
                           onClick={() => {
-                            // console.log('DP title clicked:', property.name);
-                            setDpDetail(property);
+                            goToLivingDp(property);
                           }}
                           className="text-xl font-semibold text-white hover:text-blue-400 transition-colors text-left"
                         >
@@ -1672,8 +1668,7 @@ export default function DesirablePropertiesApp() {
                                         // console.log('DP reference clicked in submission:', dp.dp);
                                         const dpObj = getDPByIdOrName(dp.dp);
                                         if (dpObj) {
-                                          setDpDetail(dpObj);
-                                          setSubmissionDetail(null);
+                                          goToLivingDp(dpObj);
                                         }
                                       }}
                                       className="font-medium text-blue-900 mb-1 hover:text-blue-700 transition-colors text-left"
@@ -1731,8 +1726,7 @@ export default function DesirablePropertiesApp() {
                                           // console.log('DP reference clicked in clarification:', item.dp);
                                           const dpObj = getDPByIdOrName(item.dp);
                                           if (dpObj) {
-                                            setDpDetail(dpObj);
-                                            setSubmissionDetail(null);
+                                            goToLivingDp(dpObj);
                                           }
                                         }}
                                         className="text-sm text-blue-600 hover:text-blue-800 underline"
@@ -1843,8 +1837,7 @@ export default function DesirablePropertiesApp() {
                               </span>
                               <button 
                                 onClick={() => {
-                                  // console.log('DP title clicked from category:', property.name);
-                                  setDpDetail(property);
+                                  goToLivingDp(property);
                                 }}
                                 className="font-medium text-white hover:text-blue-400 transition-colors text-left"
                               >
@@ -1944,23 +1937,7 @@ export default function DesirablePropertiesApp() {
         </div>
       </footer>
 
-      {/* Modals */}
-      <Modal open={!!dpDetail} onClose={() => {
-        // console.log('Closing DP detail modal');
-        setDpDetail(null);
-        // Clear hash and URL parameters when closing modal
-        if (window.location.hash.startsWith('#dp')) {
-          window.history.replaceState(null, '', window.location.pathname + window.location.search);
-        }
-        if (window.location.search.includes('dp=') || window.location.search.includes('DP=')) {
-          const url = new URL(window.location.href);
-          url.searchParams.delete('dp');
-          url.searchParams.delete('DP');
-          window.history.replaceState(null, '', url.pathname + url.search);
-        }
-      }}>
-        {dpDetail && renderDPDetail(dpDetail)}
-      </Modal>
+      {/* Submission detail modal — DP pages live on desirableproperties.org */}
       <Modal open={!!submissionDetail} onClose={() => {
         // console.log('Closing submission detail modal');
         setSubmissionDetail(null);
