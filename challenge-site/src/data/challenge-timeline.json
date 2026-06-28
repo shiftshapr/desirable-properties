@@ -2,7 +2,7 @@
   "meta": {
     "current_draft_version": "0.77",
     "target_version": "1.0",
-    "book_launch_date": "2026-09-18T12:00:00-07:00",
+    "book_launch_date": "2026-09-18T09:00:00-07:00",
     "book_launch_title": "Desirable Properties book & Ordinal edition"
   },
   "milestones": [
@@ -23,7 +23,7 @@
       "endDate": "2024-12-31",
       "title": "First Call for Input",
       "description": "Communities through People Centered Internet, Bridgit.io, and aligned partners submitted ideas, concerns, and aspirations for the future of the Internet.",
-      "href": "/onchain",
+      "href": "/onchain#early-pci-conversations",
       "linkLabel": "Browse PCI archive"
     },
     {
@@ -53,7 +53,7 @@
       "endDate": "2025-08-31",
       "title": "Second Call for Input",
       "description": "A broader public call gathered submissions from around the world. Contributions were preserved as Bitcoin Ordinal inscriptions—a permanent record of community thinking.",
-      "href": "/onchain",
+      "href": "/onchain#second-call-submissions",
       "linkLabel": "View on-chain submissions"
     },
     {
@@ -73,7 +73,7 @@
       "endDate": "2026-07-15",
       "title": "Workgroup formation",
       "description": "Formation of workgroups for each Desirable Property—recruiting leads, co-leads, and contributors to steward individual chapters through the next phase.",
-      "href": "https://govhub.live/layers/the-metaweb/",
+      "href": "https://govhub.live/workgroups/",
       "linkLabel": "Join on Gov Hub"
     },
     {
@@ -83,7 +83,7 @@
       "endDate": "2026-08-30",
       "title": "Community review & patches",
       "description": "Workgroups gather commentary, propose patches, and explore implementations that strengthen the coherence of the emerging framework.",
-      "href": "https://govhub.live/layers/the-metaweb/",
+      "href": "https://govhub.live/dp-challenge/",
       "linkLabel": "Participate in review"
     },
     {
@@ -98,13 +98,23 @@
     },
     {
       "id": "book-launch",
-      "dateLabel": "September 18, 2026",
+      "dateLabel": "September 18, 2026 · 9:00 AM Pacific",
       "startDate": "2026-09-18",
       "endDate": "2026-09-18",
-      "title": "Digital Monument launch",
+      "title": "Desirable Properties Book & Monument launch",
       "description": "Launch of the online Desirable Properties book and permanent Ordinal edition—preserving the first mature community-developed version as part of the Digital Monument.",
       "href": "/onchain",
       "linkLabel": "Explore the monument"
+    },
+    {
+      "id": "meta-layer-summit",
+      "dateLabel": "September 18, 2026",
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-18",
+      "title": "Meta-Layer Summit",
+      "description": "Join everyone committed to building a more trustworthy Internet, including system thinkers, community organizers, civic innovators, researchers, and prosocial technologists. Explore the ideas, technologies, and collaborations shaping the Meta-Layer, a new civic infrastructure for trust, context, and human agency in the age of AI. Help shape the future of the Internet with people working across technology, governance, and civil society.",
+      "href": "https://luma.com/wfi1z9lv",
+      "linkLabel": "RSVP"
     }
   ]
 }
