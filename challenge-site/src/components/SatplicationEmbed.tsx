@@ -42,13 +42,19 @@ export default function SatplicationEmbed() {
         </div>
       </div>
       <div className="relative bg-white">
-        <iframe
-          title="Desirable Properties book satplication"
-          src={SATPLICATION_VIEWER_URL}
-          className="block h-[min(78vh,900px)] w-full border-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+        <div
+          className="w-full overflow-y-auto"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          <iframe
+            title="Desirable Properties book satplication"
+            src={SATPLICATION_VIEWER_URL}
+            scrolling="yes"
+            className="block h-[1800px] w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
       </div>
     </section>
   );
