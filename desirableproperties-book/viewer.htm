@@ -961,13 +961,8 @@
       const r = RAILS[idx];
       const total = RAILS.length;
       const cur = idx + 1;
-      const isIntro = rail === 'ml-draft-026';
-      const titleText = (r.label || '').replace(
-        isIntro ? /^Introduction\s*[–-]\s*/i : /^DP\d+\s*[–-]\s*/i,
-        ''
-      );
       el.innerHTML =
-        escapeHtml(titleText) +
+        escapeHtml(r.label) +
         ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
     }
 
@@ -1014,10 +1009,32 @@
 
         if (/^---+\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
 
-        const h = line.match(/^(#{1,6})\s+(.*)$/);
+        // Headings — also accept backslash-escaped periods (## **1\. Foo**) which
+        // ordinals use to suppress list interpretation. Up to 3 leading spaces
+        // are tolerated per the GFM spec.
+        const HEADING_RE = /^(?: {0,3})(#{1,6})\s+(.*)$/;
+        // Strip a leading "**"/"__" (bold), then a "N.", "N\.", "N.N", "N.N.N"
+        // style numeric prefix and the space that follows. Then re-prepend the
+        // bold marker so the rest of the heading renders cleanly.
+        // e.g. "**1\. Problem" -> "**Problem"
+        //      "**1.1 The Limits" -> "**The Limits"
+        const HEADING_BOLD_PREFIX_RE = /^(\*\*|__)(.*)$/;
+        const HEADING_NUM_STRIP_RE = /^(?:\d+(?:\\.|\.))+\d*\s+/;
+        const h = line.match(HEADING_RE);
         if (h) {
           const level = h[1].length;
-          out.push('<h' + level + '>' + renderInlineMd(h[2]) + '</h' + level + '>');
+          // Strip leading "1\. " or "1. " inside the heading body so it does
+          // not render as raw escaped text. Handle bold-prefixed headings
+          // (e.g. "**1\. Problem**") by pulling off the leading **/__ first,
+          // stripping the numeric marker, then re-prepending it.
+          let body = h[2];
+          const bp = body.match(HEADING_BOLD_PREFIX_RE);
+          if (bp) {
+            body = bp[1] + bp[2].replace(HEADING_NUM_STRIP_RE, '');
+          } else {
+            body = body.replace(HEADING_NUM_STRIP_RE, '');
+          }
+          out.push('<h' + level + '>' + renderInlineMd(body) + '</h' + level + '>');
           i++; continue;
         }
 
@@ -1031,10 +1048,12 @@
           continue;
         }
 
-        if (/^[-*]\s+/.test(line)) {
+        // Unordered list — also accept up to 3 leading spaces (GFM spec).
+        const UL_RE = /^(?: {0,3})[-*]\s+/;
+        if (UL_RE.test(line)) {
           const items = [];
-          while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
-            items.push('<li>' + renderInlineMd(lines[i].replace(/^[-*]\s+/, '')) + '</li>');
+          while (i < lines.length && UL_RE.test(lines[i])) {
+            items.push('<li>' + renderInlineMd(lines[i].replace(/^(?: {0,3})[-*]\s+/, '')) + '</li>');
             i++;
           }
           out.push('<ul>' + items.join('') + '</ul>');
@@ -1043,8 +1062,9 @@
 
         // Ordered list — also accept backslash-escaped periods (1\. Foo)
         // which ordinals use to suppress list interpretation. Strip the marker.
-        const OL_RE = /^(?:\d+\\\.|\d+\.)\s+/;
-        const OL_STRIP_RE = /^(?:\d+\\\.|\d+\.)\s*/;
+        // Up to 3 leading spaces are tolerated (GFM spec).
+        const OL_RE = /^(?: {0,3})(?:\d+\\.|\d+\.)\s+/;
+        const OL_STRIP_RE = /^(?: {0,3})(?:\d+\\.|\d+\.)\s*/;
         if (OL_RE.test(line)) {
           const items = [];
           while (i < lines.length && OL_RE.test(lines[i])) {
@@ -1059,9 +1079,9 @@
         // paragraph: consume until blank line or block-level break
         const para = [];
         while (i < lines.length && lines[i].trim()
-               && !/^(#{1,6})\s+/.test(lines[i])
+               && !HEADING_RE.test(lines[i])
                && !/^---+\s*$/.test(lines[i])
-               && !/^[-*]\s+/.test(lines[i])
+               && !UL_RE.test(lines[i])
                && !OL_RE.test(lines[i])
                && !/^>\s+/.test(lines[i])) {
           para.push(lines[i]);
