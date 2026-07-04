@@ -8,7 +8,7 @@
   const AUTH_STORAGE_KEY = 'dp-viewer-auth';
   const THEME_KEY = 'dp-viewer-theme';
   const PROFILE_ICON = '/assets/profile-icon.svg';
-  const SITE_TITLE = 'The Desirable Properties of a Meta-Layer';
+  const SITE_TITLE = 'Desirable Properties';
 
   let options = {};
 
