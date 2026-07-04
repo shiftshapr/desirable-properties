@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="dp-viewer-build" content="dp-viewer-initial-20260703">
-  <title>Desirable Properties — A Book of the Meta-Layer</title>
+  <title>The Desirable Properties of a Meta-Layer</title>
   <meta name="description" content="Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP22.">
   <meta name="theme-color" content="#0d1117">
   <meta name="color-scheme" content="dark light">
@@ -12,13 +12,13 @@
   <link rel="alternate icon" href="/assets/profile-icon.svg">
 
   <meta property="og:type" content="book">
-  <meta property="og:title" content="Desirable Properties — A Book of the Meta-Layer">
+  <meta property="og:title" content="The Desirable Properties of a Meta-Layer">
   <meta property="og:description" content="Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. DP1–DP22 inscribed on Bitcoin.">
   <meta property="og:url" content="https://desirableproperties.org/viewer/intro">
   <meta property="og:site_name" content="Desirable Properties">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Desirable Properties — A Book of the Meta-Layer">
+  <meta name="twitter:title" content="The Desirable Properties of a Meta-Layer">
   <meta name="twitter:description" content="Twenty-two Desirable Properties for the Meta-Layer — inscribed on Bitcoin.">
 
   <link rel="stylesheet" href="/assets/dp-site.css" />
@@ -331,10 +331,10 @@
     }
     .sidebar a.dp-toc-link.active {
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
       border-left-color: var(--accent);
       padding-left: 15px;
-      background: var(--accent-soft);
+      background: var(--accent-soft-2);
     }
     .sidebar a.dp-toc-link .dp-toc-title {
       display: block;
@@ -816,13 +816,12 @@
       <h1>
         <a class="header-title-link" href="/viewer/intro">
           Desirable Properties
-          <span class="header-subtitle">A Book of the Meta-Layer · DP1–DP22</span>
         </a>
       </h1>
       <div class="header-tools">
         <div class="mode-toggle" role="group" aria-label="Source mode">
-          <button type="button" id="modeLocal" class="active" title="Read from local data files">Local</button>
-          <button type="button" id="modeInscribed" title="Read from on-chain ordinals inscriptions">Inscribed</button>
+          <button type="button" id="modeLive" class="active" title="Read from local working copy (latest edits, may be ahead of inscribed)">Live</button>
+          <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs (frozen at inscription time)">Onchain</button>
         </div>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
       </div>
@@ -834,8 +833,8 @@
 
   <div class="inscribed-banner" id="inscribedBanner">
     <div class="inscribed-banner-inner dp-container dp-container-wide">
-      <span>📜 Inscribed mode — chapters stream from ordinals.com via inscription IDs.</span>
-      <span>Switch to <button type="button" id="inscribedSwitchLocal" style="border:none;background:transparent;color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;padding:0">Local</button> for offline reading.</span>
+      <span>🔗 Onchain mode — chapters stream from ordinals.com via inscription IDs (frozen at inscription time).</span>
+      <span>Switch to <button type="button" id="onchainSwitchLive" style="border:none;background:transparent;color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;padding:0">Live</button> for the local working copy.</span>
     </div>
   </div>
 
@@ -896,7 +895,7 @@
           <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
           <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
           <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-          <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 — DP22</text>
+          <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP22</text>
           <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
           <g transform="translate(210, 460)">
             <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
@@ -961,8 +960,8 @@
     let COVER_INSCRIPTION = '';
     /** Index of the currently-open chapter (0-based). */
     let currentIndex = 0;
-    /** local | inscribed */
-    let currentMode = 'local';
+    /** live | onchain */
+    let currentMode = 'live';
 
     /** Pre-fetched top-level book data (desirable-properties.json). */
     let bookData = null;
@@ -1472,24 +1471,24 @@
       if (btn) btn.addEventListener('click', goReader);
     }
 
-    /* ---------- Mode toggle (Local / Inscribed) ---------- */
+    /* ---------- Mode toggle (Live / Onchain) ---------- */
 
     function setMode(mode) {
-      currentMode = mode === 'inscribed' ? 'inscribed' : 'local';
+      currentMode = mode === 'live' ? 'live' : 'onchain';
       try { localStorage.setItem(STORAGE_MODE, currentMode); } catch (e) { /* ignore */ }
 
-      const localBtn = document.getElementById('modeLocal');
-      const inscribedBtn = document.getElementById('modeInscribed');
-      if (localBtn) localBtn.classList.toggle('active', currentMode === 'local');
-      if (inscribedBtn) inscribedBtn.classList.toggle('active', currentMode === 'inscribed');
+      const liveBtn = document.getElementById('modeLive');
+      const onchainBtn = document.getElementById('modeOnchain');
+      if (liveBtn) liveBtn.classList.toggle('active', currentMode === 'live');
+      if (onchainBtn) onchainBtn.classList.toggle('active', currentMode === 'onchain');
 
       const banner = document.getElementById('inscribedBanner');
-      if (banner) banner.classList.toggle('is-visible', currentMode === 'inscribed');
+      if (banner) banner.classList.toggle('is-visible', currentMode === 'onchain');
 
-      // Inscribed mode is currently a UI hint — chapters still resolve from local data,
+      // Onchain mode is currently a UI hint — chapters still resolve from local data,
       // but the inscription rail at end of chapter surfaces the on-chain reference.
-      if (currentMode === 'inscribed') {
-        showToast('Inscribed mode active — showing ordinals IDs at each chapter.', { variant: 'warn', ms: 4000 });
+      if (currentMode === 'onchain') {
+        showToast('Onchain mode active — chapters stream from ordinals.com (frozen at inscription time).', { variant: 'warn', ms: 4000 });
       }
     }
 
@@ -1508,12 +1507,12 @@
 
       bindCover();
 
-      const localBtn = document.getElementById('modeLocal');
-      const inscribedBtn = document.getElementById('modeInscribed');
-      if (localBtn) localBtn.addEventListener('click', function () { setMode('local'); });
-      if (inscribedBtn) inscribedBtn.addEventListener('click', function () { setMode('inscribed'); });
-      const switchBtn = document.getElementById('inscribedSwitchLocal');
-      if (switchBtn) switchBtn.addEventListener('click', function () { setMode('local'); });
+      const liveBtn = document.getElementById('modeLive');
+      const onchainBtn = document.getElementById('modeOnchain');
+      if (liveBtn) liveBtn.addEventListener('click', function () { setMode('live'); });
+      if (onchainBtn) onchainBtn.addEventListener('click', function () { setMode('onchain'); });
+      const switchBtn = document.getElementById('onchainSwitchLive');
+      if (switchBtn) switchBtn.addEventListener('click', function () { setMode('live'); });
 
       const closeBtn = document.getElementById('dpToastClose');
       if (closeBtn) closeBtn.addEventListener('click', function () {
@@ -1558,9 +1557,13 @@
         console.warn('[dp-viewer] init data load failed', err);
       }
 
-      // Mode from storage.
-      let savedMode = 'local';
-      try { savedMode = localStorage.getItem(STORAGE_MODE) || 'local'; } catch (e) { /* ignore */ }
+      // Mode from storage (migrate legacy 'local' / 'inscribed' values to 'live').
+      let savedMode = 'live';
+      try {
+        const stored = localStorage.getItem(STORAGE_MODE);
+        if (stored === 'onchain') savedMode = 'onchain';
+        // Legacy values ('local', 'inscribed') fall through to 'live'.
+      } catch (e) { /* ignore */ }
       setMode(savedMode);
 
       // Build TOC.
