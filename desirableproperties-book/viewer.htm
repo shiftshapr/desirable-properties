@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="dp-viewer-build" content="dp-viewer-initial-20260703">
+  <meta name="dp-viewer-build" content="dp-viewer-manifest-20260704">
   <title>The Desirable Properties of a Meta-Layer</title>
   <meta name="description" content="Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP22.">
   <meta name="theme-color" content="#0d1117">
@@ -22,14 +22,10 @@
   <meta name="twitter:description" content="Twenty-two Desirable Properties for the Meta-Layer — inscribed on Bitcoin.">
 
   <link rel="stylesheet" href="/assets/dp-site.css" />
-  <link rel="stylesheet" href="/assets/dp-site-nav.css" />
-  <link rel="preload" href="/json/desirableproperties-book-manifest.json" as="fetch" crossorigin="anonymous" />
-  <link rel="preload" href="/assets/data/desirable-properties.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js"></script>
-  <script src="/assets/dp-dropdown-position.js"></script>
-  <script src="/assets/dp-site-nav.js"></script>
-  <script src="/assets/format-markdown.js"></script>
+  <script src="/assets/marked.js"></script>
 
   <script type="application/ld+json">
   {
@@ -107,7 +103,7 @@
       padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
     }
 
-    /* Header — slim band above the sticky site header from dp-site-nav */
+    /* Single sticky header (no bottom duplicate) */
     .header {
       position: sticky;
       top: 0;
@@ -154,7 +150,7 @@
       letter-spacing: 0.02em;
     }
 
-    /* Mode toggle: Local (file drafts) vs Inscribed (on-chain ordinals) */
+    /* Mode toggle: Live (local override) vs Onchain (ordinals.com) */
     .mode-toggle {
       display: inline-flex;
       gap: 4px;
@@ -234,10 +230,10 @@
       display: flex;
       flex-direction: column;
       position: sticky;
-      top: var(--dp-header-stack, 96px);
+      top: 96px;
       align-self: flex-start;
-      max-height: calc(100vh - var(--dp-header-stack, 96px));
-      max-height: calc(100dvh - var(--dp-header-stack, 96px));
+      max-height: calc(100vh - 96px);
+      max-height: calc(100dvh - 96px);
     }
     .sidebar.hidden {
       transform: translateX(-100%);
@@ -454,38 +450,6 @@
       border-top: 1px solid var(--book-rule);
       margin: 2em 0;
     }
-    .book-content .dp-landing-block {
-      margin: 0 0 1.6em;
-      padding: 16px 18px;
-      border-left: 3px solid var(--accent);
-      background: rgba(212, 175, 55, 0.06);
-      border-radius: 4px;
-    }
-    .book-content .dp-landing-block .dp-landing-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin: 0 0 4px;
-    }
-    .book-content .dp-landing-block h2.dp-landing-title {
-      margin: 0 0 6px;
-      font-size: 1.35rem;
-      border: none;
-      padding: 0;
-    }
-    .book-content .dp-landing-block p.dp-landing-subtitle {
-      margin: 0 0 6px;
-      font-size: 0.95rem;
-      color: #59636e;
-      font-style: italic;
-    }
-    .book-content .dp-landing-block p.dp-landing-text {
-      margin: 0;
-      font-size: 0.98rem;
-      color: #1f2328;
-    }
 
     /* Intro / preface landing */
     .book-content .dp-intro {
@@ -498,173 +462,59 @@
       border-bottom: 2px solid var(--accent);
       padding-bottom: 0.3em;
     }
-    .book-content .dp-intro .dp-intro-eyebrow {
-      margin: 0 0 1.2em;
-      font-size: 0.9rem;
-      color: #59636e;
+    .book-content .dp-intro-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
       letter-spacing: 0.06em;
-      font-style: italic;
-    }
-    .book-content .dp-intro .dp-intro-welcome {
-      margin: 0 0 1.6em;
+      margin: 0 0 1.2em;
+      text-transform: uppercase;
     }
     .book-content .dp-intro-actions {
       display: flex;
+      gap: 14px;
       flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin: 1.6em 0 0;
-      padding-top: 1.4em;
-      border-top: 1px solid var(--book-rule);
+      margin: 1.4em 0 0.5em;
     }
-    .book-content a.dp-intro-start {
+    .book-content .dp-intro-start {
       display: inline-block;
-      padding: 12px 28px;
-      border: 1px solid var(--accent);
+      padding: 10px 22px;
       background: var(--accent);
       color: #0d1117;
+      border-radius: 6px;
+      text-decoration: none;
       font-weight: 600;
       font-size: 14px;
-      border-radius: 6px;
       letter-spacing: 0.04em;
-      text-decoration: none;
     }
-    .book-content a.dp-intro-start:hover { filter: brightness(1.10); }
-    .book-content a.dp-intro-back {
+    .book-content .dp-intro-start:hover {
+      background: var(--accent-hover);
+    }
+    .book-content .dp-intro-back {
       display: inline-block;
-      padding: 11px 22px;
+      padding: 10px 22px;
       border: 1px solid var(--book-rule);
       color: #1f2328;
+      border-radius: 6px;
+      text-decoration: none;
       font-weight: 500;
-      font-size: 13px;
-      border-radius: 6px;
-      text-decoration: none;
-      background: transparent;
+      font-size: 14px;
     }
-    .book-content a.dp-intro-back:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
-    .book-content .dp-elements {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1.5em;
-      display: grid;
-      gap: 12px;
-    }
-    .book-content .dp-elements > li {
-      padding: 12px 14px;
-      background: rgba(176, 141, 32, 0.05);
-      border: 1px solid var(--book-rule);
-      border-radius: 6px;
-    }
-    .book-content .dp-elements > li > strong {
-      display: block;
-      font-size: 0.92rem;
-      color: #5a4710;
-      margin-bottom: 4px;
-    }
-    .book-content .dp-elements > li > p {
-      margin: 0;
-      font-size: 0.94rem;
-      color: #1f2328;
-    }
-    .book-content .dp-alignments,
-    .book-content .dp-clarifications,
-    .book-content .dp-extensions {
-      margin: 1.5em 0;
-    }
-    .book-content .dp-alignments h3,
-    .book-content .dp-clarifications h3,
-    .book-content .dp-extensions h3 {
-      font-size: 1rem;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.6em;
-    }
-    .book-content .dp-card {
-      padding: 12px 14px;
-      background: #ffffff;
-      border: 1px solid var(--book-rule);
-      border-radius: 6px;
-      margin: 0 0 12px;
-    }
-    .book-content .dp-card .dp-card-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #1f2328;
-      margin: 0 0 4px;
-    }
-    .book-content .dp-card .dp-card-submitter {
-      font-size: 12px;
-      color: #59636e;
-      margin: 0 0 6px;
-    }
-    .book-content .dp-card .dp-card-submitter a {
-      color: inherit;
-      text-decoration: underline;
-    }
-    .book-content .dp-card .dp-card-summary {
-      font-size: 0.92rem;
-      margin: 0;
-      color: #1f2328;
-    }
-
-    .ordinal-meta {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 16px auto 0;
-      max-width: 680px;
-      padding: 0 36px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .ordinal-meta a {
-      color: var(--accent);
-      text-decoration: none;
-      font-family: ui-monospace, "SF Mono", Menlo, monospace;
-      font-size: 11px;
-    }
-    .ordinal-meta a:hover { text-decoration: underline; }
-
-    .inscribed-banner {
-      display: none;
-      background: var(--accent-soft);
-      border-bottom: 1px solid var(--accent);
-      padding: 10px 0;
-      font-size: 13px;
-      color: var(--accent);
-    }
-    .inscribed-banner.is-visible {
-      display: block;
-    }
-    .inscribed-banner-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px 14px;
-    }
-    .inscribed-banner code {
-      background: rgba(0, 0, 0, 0.30);
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: var(--accent);
+    .book-content .dp-intro-back:hover {
+      background: rgba(212, 175, 55, 0.06);
     }
 
     .nav-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       margin: 24px auto 0;
       max-width: 680px;
-      padding-top: 20px;
-      border-top: 1px solid var(--nav-border);
+      padding: 12px 0;
     }
     .nav-bar button {
-      padding: 10px 20px;
+      padding: 10px 16px;
       border: 1px solid var(--accent);
       background: transparent;
       color: var(--accent);
@@ -672,162 +522,71 @@
       font-size: 14px;
       font-weight: 600;
       border-radius: 6px;
-      transition: all 0.2s;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, color 0.2s;
     }
-    .nav-bar button:hover:not(:disabled) {
-      background: var(--accent-soft-2);
+    .nav-bar button:not(:disabled):hover {
+      background: var(--accent);
+      color: #0d1117;
     }
     .nav-bar button:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
     .nav-bar #chapterLabel {
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
-      flex: 1;
-      min-width: 0;
-    }
-    .nav-bar #chapterLabel strong {
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .loading, .error {
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--muted);
-    }
-    .error {
-      color: #e55;
-    }
-
-    .dp-toast {
-      display: none;
-      position: fixed;
-      z-index: 125;
-      left: 50%;
-      bottom: max(24px, env(safe-area-inset-bottom, 0px));
-      transform: translateX(-50%);
-      max-width: min(520px, calc(100vw - 32px));
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      line-height: 1.45;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text);
-      background: var(--surface, #161b22);
-    }
-    .dp-toast.is-visible {
-      display: flex;
-    }
-    .dp-toast.is-success { border-color: rgba(120, 200, 150, 0.45); }
-    .dp-toast.is-warn { border-color: var(--accent); }
-    .dp-toast #dpToastText { flex: 1; min-width: 0; }
-    .dp-toast #dpToastClose {
-      flex-shrink: 0;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 1.25rem;
-      line-height: 1;
-      cursor: pointer;
-      padding: 0 4px;
-    }
-
-    /* Cover landing mode (when ?ch=cover or path=/book) */
-    .cover-stage {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow-y: auto;
-      padding: 28px 16px;
-    }
-    /* Ensure [hidden] actually hides the cover-stage on reader pages.
-       The rule above sets display:flex which would otherwise override the
-       HTML hidden attribute due to selector specificity. */
-    .cover-stage[hidden] { display: none !important; }
-    .cover-stage-inner {
-      width: 100%;
-      max-width: 720px;
-      text-align: center;
-    }
-    .cover-hit {
-      width: 100%;
-      cursor: pointer;
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-      border-radius: 12px;
-      padding: 24px;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212, 175, 55, 0.10), transparent 60%),
-        transparent;
-      transition: filter 0.2s, transform 0.2s;
-    }
-    .cover-hit:hover,
-    .cover-hit:focus-visible {
-      filter: brightness(1.06);
-      transform: translateY(-2px);
-      outline: 2px solid var(--accent);
-      outline-offset: 6px;
-    }
-    .cover-hit svg.cover-art {
-      width: 100%;
-      max-width: 420px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      border-radius: 8px;
-      box-shadow: 0 8px 36px rgba(212, 175, 55, 0.16);
-    }
-    .cover-stage-inner .cover-tagline {
-      margin: 18px auto 0;
-      max-width: 520px;
-      font-size: 0.95rem;
-      line-height: 1.55;
-      color: var(--muted);
-    }
-    .cover-stage-inner .cover-start {
-      display: inline-block;
-      margin: 22px auto 0;
-      padding: 12px 28px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #0d1117;
-      font-weight: 600;
-      font-size: 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-    }
-    .cover-stage-inner .cover-start:hover {
-      filter: brightness(1.10);
-    }
-    .cover-stage-inner .cover-meta {
-      margin: 24px auto 0;
       font-size: 12px;
       color: var(--muted);
       letter-spacing: 0.04em;
+      text-align: center;
+      flex: 1;
     }
-    .cover-stage-inner .cover-meta a {
+    .nav-bar #chapterLabel strong {
+      color: var(--accent);
+    }
+
+    .ordinal-meta {
+      max-width: 680px;
+      margin: 14px auto 0;
+      padding: 0 4px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .ordinal-meta a {
       color: var(--accent);
       text-decoration: none;
     }
-    .cover-stage-inner .cover-meta a:hover { text-decoration: underline; }
+    .ordinal-meta a:hover {
+      text-decoration: underline;
+    }
 
-    /* When in cover mode, hide the reader layout */
-    body.cover-mode .header,
-    body.cover-mode .main,
-    body.cover-mode .inscribed-banner,
-    body.cover-mode .nav-bar,
-    body.cover-mode .ordinal-meta,
-    body.cover-mode .dp-progress {
-      display: none !important;
+    /* Loading state from dp-loading.js */
+    .dp-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 240px;
+    }
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--accent-soft);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: dp-spin 0.9s linear infinite;
+    }
+    @keyframes dp-spin { to { transform: rotate(360deg); } }
+
+    .error {
+      max-width: 680px;
+      margin: 30px auto;
+      padding: 16px 18px;
+      border: 1px solid rgba(255, 80, 80, 0.4);
+      border-left: 3px solid #ff6b6b;
+      background: rgba(255, 80, 80, 0.08);
+      border-radius: 4px;
+      color: #ffb4b4;
+      font-size: 13px;
     }
 
     /* Mobile responsive */
@@ -884,8 +643,8 @@
       </h1>
       <div class="header-tools">
         <div class="mode-toggle" role="group" aria-label="Source mode">
-          <button type="button" id="modeLive" class="active" title="Read from local working copy (latest edits, may be ahead of inscribed)">Live</button>
-          <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs (frozen at inscription time)">Onchain</button>
+          <button type="button" id="modeLive" class="active" title="Read from local working copy (when an override exists)">Live</button>
+          <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs">Onchain</button>
         </div>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
       </div>
@@ -895,23 +654,12 @@
     </div>
   </div>
 
-  <div class="inscribed-banner" id="inscribedBanner">
-    <div class="inscribed-banner-inner dp-container dp-container-wide">
-      <span>🔗 Onchain mode — chapters stream from ordinals.com via inscription IDs (frozen at inscription time).</span>
-      <span>Switch to <button type="button" id="onchainSwitchLive" style="border:none;background:transparent;color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;padding:0">Live</button> for the local working copy.</span>
-    </div>
-  </div>
-
-  <div class="dp-progress" id="readerProgress" aria-hidden="true">
-    <div class="dp-progress-bar" id="readerProgressBar"></div>
-  </div>
-
   <main class="main dp-container dp-container-wide">
     <nav class="sidebar" id="sidebar" aria-label="Table of contents">
       <div class="sidebar-head">
         <h2 class="sidebar-title">
           Contents
-          <span class="sidebar-title-meta" id="sidebarTitleMeta">— DP1–DP22</span>
+          <span class="sidebar-title-meta" id="sidebarTitleMeta">— 23 chapters</span>
         </h2>
         <button type="button" class="sidebar-close" id="btnSidebarClose" aria-label="Hide table of contents" title="Hide table of contents">×</button>
       </div>
@@ -933,54 +681,6 @@
     </div>
   </main>
 
-  <!-- Cover stage (shown only when ?ch=cover or path=/book).
-       Moved OUT of <main> so it is not a flex column on reader pages.
-       The [hidden] attribute is honored via .cover-stage[hidden]{display:none !important;}. -->
-  <div class="cover-stage" id="coverStage" hidden>
-    <div class="cover-stage-inner">
-      <div class="cover-hit" id="coverHit" role="button" tabindex="0" aria-label="Open the book reader at the first chapter">
-        <svg class="cover-art" viewBox="0 0 420 600" xmlns="http://www.w3.org/2000/svg" aria-label="Desirable Properties book cover">
-          <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f7e6a0"/>
-              <stop offset="50%" stop-color="#d4af37"/>
-              <stop offset="100%" stop-color="#9c7a1a"/>
-            </linearGradient>
-            <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#161b22"/>
-              <stop offset="100%" stop-color="#0d1117"/>
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="420" height="600" fill="url(#bgGrad)"/>
-          <rect x="6" y="6" width="408" height="588" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
-          <rect x="14" y="14" width="392" height="572" fill="none" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.6"/>
-          <text x="210" y="120" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="0.4em" fill="#d4af37" font-weight="700">META-LAYER</text>
-          <line x1="80" y1="138" x2="340" y2="138" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-          <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
-          <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
-          <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-          <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP22</text>
-          <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
-          <g transform="translate(210, 460)">
-            <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
-            <circle cx="0" cy="0" r="22" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.5"/>
-            <text x="0" y="6" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#d4af37">DP</text>
-          </g>
-          <text x="210" y="552" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" letter-spacing="0.3em" fill="#8b949e">INSCRIBED ON BITCOIN</text>
-        </svg>
-      </div>
-      <p class="cover-tagline">Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
-      <button type="button" class="cover-start" id="coverStartBtn">Open reader →</button>
-      <p class="cover-meta">
-        <a href="/viewer/dp-1">Start at DP1</a> ·
-        <a href="/viewer/dp-22">DP22 — Memory Stewardship</a> ·
-        <a href="/json/desirableproperties-book-manifest.json" target="_blank" rel="noopener">Manifest</a>
-      </p>
-    </div>
-  </div>
-
-  <div id="dp-site-nav"></div>
-
   <div id="dpToast" class="dp-toast" role="status" aria-live="polite">
     <span id="dpToastText"></span>
     <button type="button" id="dpToastClose" aria-label="Dismiss notification">×</button>
@@ -988,49 +688,42 @@
 
   <script>
   /* ============================================================
-   * Desirable Properties book viewer — DP1–DP22
-   * Patterned after metaweb-book/viewer.htm; branded for DP with gold accent.
+   * Desirable Properties book viewer — manifest-driven (sources-sat)
+   *
+   * Pattern: fetch /json/sources-sat.json at init → TOC built from
+   * manifest.sources filtered by manifest.articleRails order.
+   * URL routing: /viewer/<railKey> (intro, dp01..dp22).
+   * Mode toggle: Live (default; uses src.localOverride if present)
+   *              Onchain (fetches /content/<inscriptionId> from ordinals.com
+   *              proxy at /content/, so it works on book.desirableproperties.org).
+   * Single header at top — no duplicate site-nav at the bottom.
    * ============================================================ */
 
   (function () {
     'use strict';
 
-    const DP = window.DPFormat;
     const LS = window.DPLoading;
+    const markedLib = (window.marked && typeof window.marked.parse === 'function')
+      ? window.marked
+      : null;
 
     const STORAGE_LAST_CHAPTER = 'dp-viewer-last-chapter';
     const STORAGE_TOC_OPEN = 'dp-viewer-toc-open';
     const STORAGE_MODE = 'dp-viewer-mode';
 
-    const SITE_TITLE = 'Desirable Properties';
-    const ORDINALS_BASE = 'https://ordinals.com';
-    const MANIFEST_URL = '/json/desirableproperties-book-manifest.json';
-    const BOOK_SOURCE_URL = '/assets/data/desirable-properties.json';
-    const CHAPTER_SOURCE_PATTERN = '/assets/data/dp{n}.json';
+    const SITE_TITLE = 'The Desirable Properties of a Meta-Layer';
+    const MANIFEST_URL = '/json/sources-sat.json';
 
-    /* ---------- State ---------- */
-
-    /** Resolved chapters (DP1..DP22) in reading order. */
-    let CHAPTERS = [];
-    /** Manifest of seven parts. */
-    let PARTS = [];
-    /** { dpIdUppercase: chapter } for DP tag lookups. */
-    let CHAPTER_BY_DP = {};
-    /** { partKey: number } for part-by-chapter lookups. */
-    let PART_BY_DP = {};
-    /** Inscription IDs by DP key. */
-    let CHAPTER_INSCRIPTIONS = {};
-    /** Cover inscription id (from manifest.inscriptions.cover). */
-    let COVER_INSCRIPTION = '';
-    /** Index of the currently-open chapter (0-based). */
-    let currentIndex = 0;
-    /** live | onchain */
+    /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
+    let MANIFEST = null;
+    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp22). */
+    let RAILS = [];
+    /** RailKey → index in RAILS. */
+    let RAIL_INDEX = {};
+    /** Currently-displayed railKey (one of the RAILS keys; 'ml-draft-026' for intro). */
+    let currentRail = null;
+    /** 'live' | 'onchain' */
     let currentMode = 'live';
-
-    /** Pre-fetched top-level book data (desirable-properties.json). */
-    let bookData = null;
-    /** Per-DP detailed provenance { dpNumber: dpJson }. */
-    let dpProvenanceCache = {};
 
     /* ---------- Utilities ---------- */
 
@@ -1088,536 +781,350 @@
 
     /* ---------- Manifest loading ---------- */
 
-    async function fetchJson(url) {
-      const r = await fetch(url, { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
-      if (!r.ok) throw new Error('Fetch ' + url + ' → ' + r.status);
-      return r.json();
-    }
-
     async function loadManifest() {
-      try {
-        const manifest = await fetchJson(MANIFEST_URL);
-        PARTS = Array.isArray(manifest.parts) ? manifest.parts : [];
-        CHAPTER_INSCRIPTIONS = manifest.chapterIds || {};
-        COVER_INSCRIPTION = (manifest.inscriptions && manifest.inscriptions.cover) || '';
-
-        // Build chapters list by walking parts.
-        const chapters = [];
-        PARTS.forEach((part) => {
-          (part.dpIds || []).forEach((dpIdRaw) => {
-            const dpId = String(dpIdRaw).toUpperCase();
-            const key = 'dp-' + dpId.replace(/^DP/i, '');
-            const inscriptionId = CHAPTER_INSCRIPTIONS[dpId] || '';
-            chapters.push({
-              key: key,
-              dpId: dpId,
-              partKey: part.key,
-              partNumber: part.number,
-              partTitle: part.title,
-              title: null, // filled in after bookData loads
-              shortTitle: null,
-              inscriptionId: inscriptionId,
-            });
-            PART_BY_DP[dpId] = part;
-          });
-        });
-        CHAPTERS = chapters;
-        CHAPTERS.forEach((c) => { CHAPTER_BY_DP[c.dpId] = c; });
-        return true;
-      } catch (err) {
-        console.warn('[dp-viewer] Manifest load failed, using fallback.', err);
-        // Fallback: 22 chapters with no part info.
-        PARTS = [];
-        CHAPTERS = [];
-        for (let i = 1; i <= 22; i++) {
-          const dpId = 'DP' + i;
-          CHAPTERS.push({
-            key: 'dp-' + i,
-            dpId: dpId,
-            partKey: '',
-            partNumber: '',
-            partTitle: '',
-            title: null,
-            shortTitle: null,
-            inscriptionId: '',
-          });
-          CHAPTER_BY_DP[dpId] = CHAPTERS[CHAPTERS.length - 1];
-        }
-        return false;
+      const r = await fetch(MANIFEST_URL, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('Failed to load ' + MANIFEST_URL + ' → ' + r.status);
+      const m = await r.json();
+      if (!m || !Array.isArray(m.sources) || !Array.isArray(m.articleRails)) {
+        throw new Error('Invalid sources-sat.json: missing sources/articleRails');
       }
+      MANIFEST = m;
+
+      // Build RAILS in articleRails order, dropping book_cover (cover is index.html).
+      const byKey = Object.fromEntries(m.sources.map(s => [s.railKey, s]));
+      RAILS = m.articleRails
+        .map(k => byKey[k])
+        .filter(Boolean)
+        .filter(s => s.railKey !== 'book_cover')
+        .map(s => ({
+          railKey: s.railKey,
+          label: s.label || s.railKey,
+          dp: s.dp || null,
+          mlNumber: s.mlNumber || null,
+          inscriptionId: s.inscriptionId || null,
+          block: s.block || null,
+          timestamp: s.timestamp || null,
+          status: s.status || null,
+          reinscribable: !!s.reinscribable,
+          localOverride: s.localOverride || null,
+        }));
+      RAIL_INDEX = Object.fromEntries(RAILS.map((r, i) => [r.railKey, i]));
+      return true;
     }
 
-    async function loadBookData() {
-      try {
-        const data = await fetchJson(BOOK_SOURCE_URL);
-        bookData = data;
-        // Hydrate chapter titles from desirable_properties.
-        const dps = (data && data.desirable_properties) || [];
-        dps.forEach((dp) => {
-          const id = String(dp.id || '').toUpperCase();
-          const ch = CHAPTER_BY_DP[id];
-          if (ch) {
-            ch.title = dp.name || ch.dpId;
-            ch.shortTitle = dp.name || ch.dpId;
-            ch.landingTitle = dp.landing_title || null;
-            ch.landingSubtitle = dp.landing_subtitle || null;
-            ch.landingText = dp.landing_text || null;
-            ch.elements = Array.isArray(dp.elements) ? dp.elements : [];
-            ch.category = dp.category || null;
-          }
-        });
-        return true;
-      } catch (err) {
-        console.warn('[dp-viewer] Book data load failed.', err);
-        // Title fallback: use DP id only.
-        CHAPTERS.forEach((ch) => { if (!ch.title) ch.title = ch.dpId; });
-        return false;
-      }
+    function currentModeIsLive() {
+      return currentMode === 'live';
     }
 
-    async function loadDpProvenance(dpNum) {
-      if (dpProvenanceCache[dpNum]) return dpProvenanceCache[dpNum];
-      const url = CHAPTER_SOURCE_PATTERN.replace('{n}', String(dpNum));
-      try {
-        const j = await fetchJson(url);
-        dpProvenanceCache[dpNum] = j;
-        return j;
-      } catch (err) {
-        dpProvenanceCache[dpNum] = { meta: null, alignments: [], clarifications: [], extensions: [] };
-        return dpProvenanceCache[dpNum];
-      }
+    function dpNumberFromRail(rail) {
+      if (!rail) return null;
+      if (rail === 'ml-draft-026') return null; // intro
+      const m = String(rail).match(/^dp(\d{1,2})$/);
+      return m ? parseInt(m[1], 10) : null;
     }
 
-    /* ---------- Rendering ---------- */
-
-    function getChapterIndexFromKey(key) {
-      return CHAPTERS.findIndex(function (c) { return c.key === key; });
+    function dpIdFromRail(rail) {
+      const n = dpNumberFromRail(rail);
+      return n != null ? 'DP' + n : null;
     }
-
-    /** Sentinel returned for "explicit cover" requests. */
-    const COVER_INDEX = -2;
-    /** Sentinel returned for "fall through to default landing" requests. */
-    const LANDING_INDEX = -3;
-    /** Sentinel returned for the intro/preface page (`/viewer/intro`). */
-    const INTRO_INDEX = -4;
 
     /**
-     * Resolve the requested chapter index from the URL.
-     * Supports path-based routing (`/viewer/intro`), hash (`#ch=dp-1`),
-     * and query (`?ch=dp-1`). Unknown keys fall through to the first
-     * chapter; the canonical `/viewer/intro` URL renders the intro page.
+     * Resolve the requested rail key from the URL.
+     * /viewer/intro     → 'ml-draft-026'
+     * /viewer/dp01      → 'dp01'
+     * /viewer/dp-1      → 'dp01'  (legacy: accept hyphenated form)
+     * /viewer/dp1       → 'dp01'
      */
-    function getChapterIndexFromHash() {
-      // 1. Path-based: /viewer/<chapter-key>
-      const pathMatch = (window.location.pathname || '').match(/\/viewer\/([^/?#]+)/i);
-      if (pathMatch) {
-        const key = String(pathMatch[1]).toLowerCase();
-        if (key === 'cover') return COVER_INDEX;
-        if (key === 'intro') return INTRO_INDEX;
-        const idx = getChapterIndexFromKey(key);
-        if (idx >= 0) return idx;
-        // Unknown chapter key → land on first chapter.
-        return LANDING_INDEX;
+    function getRailKeyFromLocation() {
+      const path = window.location.pathname || '';
+      const m = path.match(/^\/viewer\/?([^?#]*)/i);
+      if (!m) return null;
+      let seg = decodeURIComponent(m[1] || '').toLowerCase();
+      if (!seg) return null;
+      if (seg === 'intro') return 'ml-draft-026';
+      let m2 = seg.match(/^dp-?(\d{1,2})$/);
+      if (m2) {
+        const n = parseInt(m2[1], 10);
+        if (n >= 1 && n <= 22) return 'dp' + String(n).padStart(2, '0');
       }
-      // 2. Hash-based: #ch=dp-1
-      const h = window.location.hash || '';
-      const hm = h.match(/ch=([a-z0-9-]+)/i);
-      if (hm) {
-        const idx = getChapterIndexFromKey(hm[1].toLowerCase());
-        if (idx >= 0) return idx;
-      }
-      // 3. Query-based: ?ch=dp-1
-      const p = new URLSearchParams(window.location.search);
-      const q = p.get('ch');
-      if (q) {
-        const norm = String(q).toLowerCase();
-        const idx = getChapterIndexFromKey(norm);
-        if (idx >= 0) return idx;
-        if (norm === 'cover') return COVER_INDEX;
-        // Unknown ?ch value → land on first chapter.
-        return LANDING_INDEX;
-      }
-      return -1;
+      return seg;
     }
 
-    function updateHeaderProgress(idx) {
-      const el = document.getElementById('headerPartLine');
-      if (!el) return;
-      if (idx < 0 || !CHAPTERS[idx]) {
-        el.innerHTML = 'Tap the cover or pick a chapter.';
-        return;
-      }
-      const ch = CHAPTERS[idx];
-      const total = CHAPTERS.length;
-      const cur = idx + 1;
-      const partLabel = ch.partNumber
-        ? 'Part ' + ch.partNumber + ' · ' + escapeHtml(ch.partTitle) + ' · '
-        : '';
-      el.innerHTML =
-        partLabel +
-        '<strong>' + escapeHtml(ch.dpId) + '</strong> · ' +
-        escapeHtml(ch.title || ch.dpId) +
-        ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
-    }
-
-    function updateProgressBar(idx) {
-      const bar = document.getElementById('readerProgressBar');
-      if (!bar || !CHAPTERS.length) return;
-      const pct = CHAPTERS.length <= 1
-        ? 100
-        : Math.round(((idx + 1) / CHAPTERS.length) * 100);
-      bar.style.width = pct + '%';
-    }
+    /* ---------- TOC rendering ---------- */
 
     function buildToc() {
       const ul = document.getElementById('toc');
       if (!ul) return;
-      // Walk parts in order; emit a part header + DP entries per part.
-      const html = [];
-      // Pre-part: Introduction entry.
-      html.push(
-        '<li><a href="/viewer/intro" class="dp-toc-link" data-key="intro">' +
-        '<span class="dp-toc-row">' +
-        '<span class="dp-toc-id">·</span>' +
-        '<span class="dp-toc-title">Introduction</span>' +
-        '</span></a></li>'
-      );
-      PARTS.forEach(function (part) {
-        html.push(
-          '<li class="dp-part-head"><span class="dp-part-num">' +
-          escapeHtml(part.number || '·') + '</span>' +
-          escapeHtml(part.title || '') +
-          (part.subtitle ? '<span class="dp-toc-part-title">' + escapeHtml(part.subtitle) + '</span>' : '') +
+      const items = RAILS.map((r, i) => {
+        const dp = r.dp || '';
+        const isIntro = r.railKey === 'ml-draft-026';
+        const idLabel = isIntro ? 'Intro' : dp;
+        return (
+          '<li>' +
+            '<a href="/viewer/' + escapeHtml(r.railKey) + '" data-rail="' + escapeHtml(r.railKey) + '" class="dp-toc-link">' +
+              '<span class="dp-toc-row">' +
+                '<span class="dp-toc-id">' + escapeHtml(idLabel) + '</span>' +
+                '<span class="dp-toc-title">' + escapeHtml(r.label) + '</span>' +
+              '</span>' +
+            '</a>' +
           '</li>'
         );
-        (part.dpIds || []).forEach(function (dpIdRaw) {
-          const dpId = String(dpIdRaw).toUpperCase();
-          const ch = CHAPTER_BY_DP[dpId];
-          if (!ch) return;
-          html.push(
-            '<li><a href="#ch=' + escapeHtml(ch.key) + '" class="dp-toc-link" data-index="' +
-            CHAPTERS.indexOf(ch) + '">' +
-            '<span class="dp-toc-row">' +
-            '<span class="dp-toc-id">' + escapeHtml(dpId) + '</span>' +
-            '<span class="dp-toc-title">' + escapeHtml(ch.title || dpId) + '</span>' +
-            '</span></a></li>'
-          );
-        });
       });
-      ul.innerHTML = html.join('');
+      ul.innerHTML = items.join('');
 
       ul.addEventListener('click', function (e) {
-        const a = e.target.closest('a.dp-toc-link');
+        const a = e.target.closest && e.target.closest('a.dp-toc-link[data-rail]');
         if (!a) return;
         e.preventDefault();
-        // Intro link → render the preface page.
-        if (a.getAttribute('data-key') === 'intro') {
-          hideCover();
-          loadIntro();
-          try {
-            history.replaceState({ idx: INTRO_INDEX, key: 'intro' }, document.title, '/viewer/intro');
-          } catch (err) { /* ignore */ }
-          return;
-        }
-        const idx = parseInt(a.getAttribute('data-index'), 10);
-        if (isNaN(idx) || idx < 0) return;
-        currentIndex = idx;
-        loadChapter(currentIndex);
-        // Keep the sidebar open after click; user can close via X button if desired.
+        const rail = a.getAttribute('data-rail');
+        if (!rail || !(rail in RAIL_INDEX)) return;
+        navigateToRail(rail);
+        // Round-3 fix: do NOT close the sidebar on click; user closes via X button.
       });
     }
 
-    function setActiveToc(idx) {
+    function setActiveToc(rail) {
       document.querySelectorAll('#toc a.dp-toc-link').forEach(function (a) {
-        const i = parseInt(a.getAttribute('data-index'), 10);
-        a.classList.toggle('active', i === idx && a.getAttribute('data-key') !== 'intro');
+        a.classList.toggle('active', a.getAttribute('data-rail') === rail);
       });
     }
 
-    /**
-     * Render the intro / preface page shown at `/viewer/intro`.
-     * Lives in place of a DP chapter before the first chapter.
-     */
-    function renderIntroContent() {
-      const parts = [];
-      parts.push(
-        '<div class="dp-intro">' +
-          '<h1>The Desirable Properties of a Meta-Layer</h1>' +
-          '<p class="dp-intro-eyebrow">A Book of the Meta-Layer · 22 Properties, 7 Parts</p>' +
-          '<div class="dp-landing-block dp-intro-welcome">' +
-            '<div class="dp-landing-eyebrow">Welcome</div>' +
-            '<h2 class="dp-landing-title">Twenty-two Desirable Properties for the Meta-Layer</h2>' +
-            '<p class="dp-landing-text">This book collects twenty-two community-defined Desirable Properties for the Meta-Layer — the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge, were inscribed on Bitcoin, and are now grouped here into seven thematic parts: Trust &amp; Agency; Sovereignty &amp; Privacy; Interoperability &amp; Communities; Learning &amp; Multi-Modal Experience; AI Governance &amp; Safety; Trust, Sustainability &amp; Feedback; and Memory Stewardship.</p>' +
-            '<p class="dp-landing-text" style="margin-top:0.8em">Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own — but they are strongest when seen together.</p>' +
-          '</div>' +
-          '<div class="dp-intro-actions">' +
-            '<a class="dp-intro-start" href="/viewer/dp-1">Start at DP1 →</a>' +
-            '<a class="dp-intro-back" href="/">Back to cover</a>' +
-          '</div>' +
-        '</div>'
-      );
-      return parts.join('\n');
-    }
-
-    function renderDpContent(chapter) {
-      // Build the chapter HTML from bookData.desirable_properties[dpId].
-      const dpId = chapter.dpId;
-      const dpNum = parseInt(dpId.replace(/^DP/i, ''), 10);
-
-      const dpData = (bookData && bookData.desirable_properties || []).find(function (d) {
-        return String(d.id || '').toUpperCase() === dpId;
-      });
-
-      const parts = [];
-      parts.push('<h1>' + escapeHtml(dpId + ' — ' + (chapter.title || '')) + '</h1>');
-
-      // Landing block (if present).
-      if (chapter.landingTitle || chapter.landingSubtitle || chapter.landingText) {
-        parts.push('<div class="dp-landing-block">');
-        parts.push('<div class="dp-landing-eyebrow">' + escapeHtml(chapter.category || 'Meta-Layer property') + '</div>');
-        if (chapter.landingTitle) {
-          parts.push('<h2 class="dp-landing-title">' + escapeHtml(chapter.landingTitle) + '</h2>');
-        }
-        if (chapter.landingSubtitle) {
-          parts.push('<p class="dp-landing-subtitle">' + escapeHtml(chapter.landingSubtitle) + '</p>');
-        }
-        if (chapter.landingText) {
-          parts.push('<p class="dp-landing-text">' + escapeHtml(chapter.landingText) + '</p>');
-        }
-        parts.push('</div>');
-      }
-
-      // Description (the canonical DP statement).
-      const descText = dpData && dpData.description
-        ? '# About ' + dpId + '\n\n' + dpData.description
-        : '';
-      if (descText) {
-        parts.push(DP.renderContent(descText, DP.buildChapterIndex(CHAPTERS)));
-      }
-
-      // Elements.
-      if (chapter.elements && chapter.elements.length) {
-        const elementsMd = '# Elements\n\n' +
-          chapter.elements.map(function (el) {
-            return '### ' + (el.name || 'Element') + '\n\n' + (el.description || '');
-          }).join('\n\n');
-        parts.push(DP.renderContent(elementsMd, DP.buildChapterIndex(CHAPTERS)));
-      }
-
-      return parts.join('\n');
-    }
-
-    async function renderProvenance(idx, chapter) {
-      const dpNum = parseInt(chapter.dpId.replace(/^DP/i, ''), 10);
-      const prov = await loadDpProvenance(dpNum);
-      if (!prov || (!prov.alignments && !prov.clarifications && !prov.extensions)) return '';
-
-      const idxFor = DP.buildChapterIndex(CHAPTERS);
-      const sections = [];
-
-      if (prov.alignments && prov.alignments.length) {
-        sections.push('<div class="dp-alignments"><h3>Alignments (' + prov.alignments.length + ')</h3>');
-        prov.alignments.slice(0, 12).forEach(function (a) {
-          sections.push(
-            '<div class="dp-card">' +
-            '<p class="dp-card-title">' + escapeHtml(a.submission_title || 'Untitled submission') + '</p>' +
-            '<p class="dp-card-submitter">— ' + escapeHtml(a.submitter_name || 'Anon') + '</p>' +
-            '<p class="dp-card-summary">' + escapeHtml(a.summary || '') + '</p>' +
-            '</div>'
-          );
-        });
-        sections.push('</div>');
-      }
-      if (prov.clarifications && prov.clarifications.length) {
-        sections.push('<div class="dp-clarifications"><h3>Clarifications (' + prov.clarifications.length + ')</h3>');
-        prov.clarifications.slice(0, 8).forEach(function (c) {
-          sections.push(
-            '<div class="dp-card">' +
-            '<p class="dp-card-title">' + escapeHtml(c.title || 'Clarification') + '</p>' +
-            '<p class="dp-card-summary">' + escapeHtml(c.clarification || '') + '</p>' +
-            '</div>'
-          );
-        });
-        sections.push('</div>');
-      }
-      if (prov.extensions && prov.extensions.length) {
-        sections.push('<div class="dp-extensions"><h3>Extensions (' + prov.extensions.length + ')</h3>');
-        prov.extensions.slice(0, 8).forEach(function (x) {
-          sections.push(
-            '<div class="dp-card">' +
-            '<p class="dp-card-title">' + escapeHtml(x.title || 'Extension') + '</p>' +
-            '<p class="dp-card-summary">' + escapeHtml(x.extension || '') + '</p>' +
-            '</div>'
-          );
-        });
-        sections.push('</div>');
-      }
-      // Run DP tag linkification across each card body.
-      return DP.linkifyDpTags(sections.join(''), idxFor);
-    }
-
-    /**
-     * Render the intro / preface and update chrome (TOC, nav-bar, header).
-     * Used by `init()` and the hashchange handler when the intro sentinel
-     * is resolved. Hides the prev/next nav (the intro is the first page).
-     */
-    function loadIntro() {
-      const contentEl = document.getElementById('content');
-      const navBar = document.getElementById('navBar');
-      const wrap = document.createElement('div');
-      wrap.className = 'book-content';
-      wrap.setAttribute('data-dp-content-root', '1');
-      wrap.innerHTML = renderIntroContent();
-      contentEl.innerHTML = '';
-      contentEl.appendChild(wrap);
-      if (navBar) navBar.style.display = 'none';
-
-      // Highlight the intro link in the TOC.
-      document.querySelectorAll('#toc a.dp-toc-link').forEach(function (a) {
-        const key = a.getAttribute('data-key');
-        a.classList.toggle('active', key === 'intro');
-      });
-
-      // Update the header progress line.
-      const el = document.getElementById('headerPartLine');
-      if (el) {
-        el.innerHTML =
-          '<strong>Introduction</strong> · ' +
-          'Welcome to the book ' +
-          '<span style="opacity:0.65">· preface</span>';
-      }
-      // Reset progress bar (intro precedes chapter 1).
-      const bar = document.getElementById('readerProgressBar');
-      if (bar) bar.style.width = '0%';
-    }
-
-    async function loadChapter(idx) {
-      const chapter = CHAPTERS[idx];
-      if (!chapter) return;
-      currentIndex = idx;
-      const contentEl = document.getElementById('content');
-      const navBar = document.getElementById('navBar');
-      if (contentEl) contentEl.innerHTML = LS.html('loading');
-      if (navBar) navBar.style.display = 'none';
-
+    function syncUrlToRail(rail) {
       try {
-        // Render DP content (synchronous; uses already-loaded bookData).
-        const mainHtml = renderDpContent(chapter);
-        // Render provenance (async).
-        const provenanceHtml = await renderProvenance(idx, chapter);
-
-        const wrap = document.createElement('div');
-        wrap.className = 'book-content';
-        wrap.setAttribute('data-dp-content-root', '1');
-        wrap.innerHTML = mainHtml + provenanceHtml;
-        contentEl.innerHTML = '';
-        contentEl.appendChild(wrap);
-
-        // Inscription rail at end of reader area.
-        if (chapter.inscriptionId) {
-          const meta = document.createElement('div');
-          meta.className = 'ordinal-meta';
-          meta.appendChild(document.createTextNode('Inscription: '));
-          const insA = document.createElement('a');
-          insA.href = ORDINALS_BASE + '/inscription/' + chapter.inscriptionId;
-          insA.target = '_blank';
-          insA.rel = 'noopener';
-          insA.textContent = chapter.inscriptionId.slice(0, 14) + '…' + chapter.inscriptionId.slice(-4);
-          meta.appendChild(insA);
-          const rail = document.createElement('div');
-          rail.className = 'dp-rail';
-          rail.innerHTML =
-            '<div class="dp-rail-label">On-chain inscription</div>' +
-            '<div class="dp-rail-id"><a href="' + ORDINALS_BASE + '/inscription/' + chapter.inscriptionId +
-            '" target="_blank" rel="noopener">' + escapeHtml(chapter.inscriptionId) + '</a></div>';
-          contentEl.appendChild(meta);
-          contentEl.appendChild(rail);
-        }
-
-        if (navBar) {
-          navBar.style.display = 'flex';
-          const label = document.getElementById('chapterLabel');
-          if (label) {
-            const partLabel = chapter.partNumber
-              ? '<span style="opacity:0.7">Part ' + escapeHtml(chapter.partNumber) + ' · </span>'
-              : '';
-            label.innerHTML =
-              partLabel +
-              '<strong>' + escapeHtml(chapter.dpId) + '</strong> · ' +
-              'page ' + (idx + 1) + ' of ' + CHAPTERS.length;
-          }
-          const prev = document.getElementById('btnPrev');
-          const next = document.getElementById('btnNext');
-          if (prev) prev.disabled = idx <= 0;
-          if (next) next.disabled = idx >= CHAPTERS.length - 1;
-        }
-
-        setActiveToc(idx);
-        updateHeaderProgress(idx);
-        updateProgressBar(idx);
-
-        try {
-          localStorage.setItem(STORAGE_LAST_CHAPTER, String(idx));
-        } catch (e) { /* ignore */ }
-        syncChapterUrl(idx, chapter);
-      } catch (err) {
-        const msg = (err && err.message ? err.message : String(err))
-          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
-        contentEl.innerHTML = '<div class="error">' + msg + '</div>';
-      }
-    }
-
-    function syncChapterUrl(idx, chapter) {
-      try {
-        const target = '/viewer/' + chapter.key;
-        const current = window.location.pathname + window.location.search + window.location.hash;
-        if (target !== current) {
-          history.replaceState({ idx: idx, key: chapter.key }, document.title, target);
+        const target = '/viewer/' + rail;
+        if (window.location.pathname !== target) {
+          history.pushState({ rail: rail }, document.title, target);
         }
       } catch (e) { /* ignore */ }
     }
 
-    /* ---------- Cover mode ---------- */
+    /* ---------- Header progress ---------- */
 
-    function showCover() {
-      document.body.classList.add('cover-mode');
-      const cover = document.getElementById('coverStage');
-      const reader = document.getElementById('reader');
-      if (cover) cover.hidden = false;
-      if (reader) reader.hidden = true;
-    }
-
-    function hideCover() {
-      document.body.classList.remove('cover-mode');
-      const cover = document.getElementById('coverStage');
-      const reader = document.getElementById('reader');
-      if (cover) cover.hidden = true;
-      if (reader) reader.hidden = false;
-    }
-
-    function bindCover() {
-      const goReader = function () {
-        // Default opening: first chapter via path-based URL.
-        window.location.href = '/viewer/intro';
-      };
-      const hit = document.getElementById('coverHit');
-      const btn = document.getElementById('coverStartBtn');
-      if (hit) {
-        hit.addEventListener('click', goReader);
-        hit.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            goReader();
-          }
-        });
+    function updateHeaderProgress(rail) {
+      const el = document.getElementById('headerPartLine');
+      if (!el) return;
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) {
+        el.innerHTML = 'Tap the cover or pick a chapter.';
+        return;
       }
-      if (btn) btn.addEventListener('click', goReader);
+      const r = RAILS[idx];
+      const total = RAILS.length;
+      const cur = idx + 1;
+      const dp = r.dp;
+      const idLabel = rail === 'ml-draft-026' ? 'Introduction' : (dp || 'DP');
+      el.innerHTML =
+        '<strong>' + escapeHtml(idLabel) + '</strong> · ' +
+        escapeHtml(r.label) +
+        ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
+    }
+
+    /* ---------- Markdown rendering ---------- */
+
+    /**
+     * Minimal DOM sanitizer for ordinals content: strip <script>, <style>, and any
+     * on* event attributes. DP ordinals are community-written markdown, so basic
+     * safety is enough — do not go overboard.
+     */
+    function sanitizeRenderedHtml(root) {
+      // Remove dangerous elements.
+      const danger = root.querySelectorAll('script, style, iframe, object, embed');
+      danger.forEach((el) => el.parentNode && el.parentNode.removeChild(el));
+      // Strip on* event handlers + javascript: URLs.
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+      let n = walker.currentNode;
+      while (n) {
+        if (n.attributes) {
+          for (let i = n.attributes.length - 1; i >= 0; i--) {
+            const a = n.attributes[i];
+            if (/^on/i.test(a.name)) n.removeAttribute(a.name);
+            else if ((a.name === 'href' || a.name === 'src') && /^\s*javascript:/i.test(a.value)) {
+              n.removeAttribute(a.name);
+            }
+          }
+        }
+        n = walker.nextNode();
+      }
+    }
+
+    function renderChapterMarkdown(md) {
+      if (!markedLib) {
+        return '<pre style="white-space:pre-wrap">' + escapeHtml(md) + '</pre>';
+      }
+      let html;
+      try {
+        html = markedLib.parse(md);
+      } catch (e) {
+        return '<pre style="white-space:pre-wrap">' + escapeHtml(md) + '</pre>';
+      }
+      const tpl = document.createElement('template');
+      tpl.innerHTML = html;
+      sanitizeRenderedHtml(tpl.content);
+      return tpl.innerHTML;
+    }
+
+    function renderIntroLanding() {
+      return (
+        '<div class="book-content dp-intro" data-dp-content-root="1">' +
+          '<h1>The Desirable Properties of a Meta-Layer</h1>' +
+          '<p class="dp-intro-eyebrow">A Book of the Meta-Layer · 22 Properties, inscribed on Bitcoin</p>' +
+          '<p>This book collects twenty-two community-defined Desirable Properties for the Meta-Layer — the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge, were inscribed on Bitcoin, and are now available to read here in the order they were inscribed.</p>' +
+          '<p>Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own — but they are strongest when seen together.</p>' +
+          '<div class="dp-intro-actions">' +
+            '<a class="dp-intro-start" href="/viewer/dp01">Start at DP1 →</a>' +
+            '<a class="dp-intro-back" href="/">Back to cover</a>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    /* ---------- Chapter loading ---------- */
+
+    async function fetchOnchainMarkdown(inscriptionId) {
+      // Prefer the local /content/ proxy (same nginx server, faster + avoids CORS).
+      const url = '/content/' + inscriptionId;
+      const r = await fetch(url, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('Onchain fetch failed (' + r.status + '): ' + inscriptionId);
+      return await r.text();
+    }
+
+    async function fetchLocalOverride(overridePath) {
+      const r = await fetch(overridePath, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('Local override fetch failed (' + r.status + '): ' + overridePath);
+      return await r.text();
+    }
+
+    async function loadChapterBody(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) throw new Error('Unknown rail: ' + rail);
+      const r = RAILS[idx];
+
+      if (currentModeIsLive() && r.localOverride) {
+        const md = await fetchLocalOverride(r.localOverride);
+        return { html: renderChapterMarkdown(md), source: 'local' };
+      }
+      // Onchain: always fetch (Live w/o override falls through to onchain).
+      if (!r.inscriptionId) {
+        throw new Error('No inscriptionId for rail: ' + rail);
+      }
+      const md = await fetchOnchainMarkdown(r.inscriptionId);
+      return { html: renderChapterMarkdown(md), source: 'onchain' };
+    }
+
+    function getNeighborRails(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) return { prev: null, next: null };
+      return {
+        prev: idx > 0 ? RAILS[idx - 1].railKey : null,
+        next: idx < RAILS.length - 1 ? RAILS[idx + 1].railKey : null,
+      };
+    }
+
+    function buildInscriptionRailHtml(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) return '';
+      const r = RAILS[idx];
+      if (!r.inscriptionId) return '';
+      const insId = r.inscriptionId;
+      const ordinalsHref = 'https://ordinals.com/inscription/' + insId;
+      const shortId = insId.length > 18 ? insId.slice(0, 14) + '…' + insId.slice(-4) : insId;
+      return (
+        '<div class="ordinal-meta">' +
+          'Inscription: ' +
+          '<a href="' + ordinalsHref + '" target="_blank" rel="noopener">' + escapeHtml(shortId) + '</a>' +
+          (r.mlNumber ? ' · ' + escapeHtml(r.mlNumber) : '') +
+          (r.block ? ' · block ' + r.block : '') +
+        '</div>'
+      );
+    }
+
+    function buildNavBarHtml(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) return '';
+      const r = RAILS[idx];
+      const { prev, next } = getNeighborRails(rail);
+      const prevLabel = prev === 'ml-draft-026' ? 'Introduction' : (prev ? (RAILS[RAIL_INDEX[prev]].dp || 'Prev') : '');
+      const nextLabel = next ? (RAILS[RAIL_INDEX[next]].dp || 'Next') : '';
+      return (
+        '<div class="nav-bar" id="navBar">' +
+          (prev
+            ? '<button type="button" id="btnPrev" data-rail="' + escapeHtml(prev) + '" aria-label="Previous chapter">← ' + escapeHtml(prevLabel) + '</button>'
+            : '<button type="button" id="btnPrev" disabled aria-label="Previous chapter">← Previous</button>'
+          ) +
+          '<span id="chapterLabel">' +
+            (r.dp ? '<strong>' + escapeHtml(r.dp) + '</strong> · ' : '') +
+            'page ' + (idx + 1) + ' of ' + RAILS.length +
+          '</span>' +
+          (next
+            ? '<button type="button" id="btnNext" data-rail="' + escapeHtml(next) + '" aria-label="Next chapter">' + escapeHtml(nextLabel) + ' →</button>'
+            : '<button type="button" id="btnNext" disabled aria-label="Next chapter">Next →</button>'
+          ) +
+        '</div>'
+      );
+    }
+
+    async function loadChapter(rail, opts) {
+      const o = opts || {};
+      if (!(rail in RAIL_INDEX)) {
+        // Unknown rail → fall through to intro.
+        rail = 'ml-draft-026';
+      }
+      currentRail = rail;
+
+      const contentEl = document.getElementById('content');
+      if (contentEl) contentEl.innerHTML = LS ? LS.html('loading') :
+        '<div class="dp-loading"><div class="loading-spinner"></div></div>';
+
+      try {
+        let bodyHtml;
+        if (rail === 'ml-draft-026') {
+          // Intro is a static landing page; do not fetch inscription for it.
+          bodyHtml = renderIntroLanding();
+        } else {
+          const result = await loadChapterBody(rail);
+          bodyHtml = '<div class="book-content" data-dp-content-root="1">' + result.html + '</div>';
+        }
+        const navHtml = buildNavBarHtml(rail);
+        const metaHtml = buildInscriptionRailHtml(rail);
+
+        contentEl.innerHTML = bodyHtml + navHtml + metaHtml;
+
+        // Wire up prev/next buttons.
+        const prevBtn = document.getElementById('btnPrev');
+        const nextBtn = document.getElementById('btnNext');
+        if (prevBtn && !prevBtn.disabled) {
+          prevBtn.addEventListener('click', function () {
+            const r = prevBtn.getAttribute('data-rail');
+            if (r) navigateToRail(r);
+          });
+        }
+        if (nextBtn && !nextBtn.disabled) {
+          nextBtn.addEventListener('click', function () {
+            const r = nextBtn.getAttribute('data-rail');
+            if (r) navigateToRail(r);
+          });
+        }
+
+        setActiveToc(rail);
+        updateHeaderProgress(rail);
+        try { localStorage.setItem(STORAGE_LAST_CHAPTER, rail); } catch (e) { /* ignore */ }
+        if (!o.skipUrl) syncUrlToRail(rail);
+      } catch (err) {
+        const msg = (err && err.message ? err.message : String(err))
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+        contentEl.innerHTML = '<div class="error">Failed to load chapter: ' + msg + '</div>';
+      }
+    }
+
+    async function navigateToRail(rail) {
+      if (!(rail in RAIL_INDEX)) return;
+      await loadChapter(rail);
     }
 
     /* ---------- Mode toggle (Live / Onchain) ---------- */
 
     function setMode(mode) {
-      currentMode = mode === 'live' ? 'live' : 'onchain';
+      currentMode = mode === 'onchain' ? 'onchain' : 'live';
       try { localStorage.setItem(STORAGE_MODE, currentMode); } catch (e) { /* ignore */ }
 
       const liveBtn = document.getElementById('modeLive');
@@ -1625,42 +1132,14 @@
       if (liveBtn) liveBtn.classList.toggle('active', currentMode === 'live');
       if (onchainBtn) onchainBtn.classList.toggle('active', currentMode === 'onchain');
 
-      const banner = document.getElementById('inscribedBanner');
-      if (banner) banner.classList.toggle('is-visible', currentMode === 'onchain');
-
-      // Onchain mode is currently a UI hint — chapters still resolve from local data,
-      // but the inscription rail at end of chapter surfaces the on-chain reference.
-      if (currentMode === 'onchain') {
-        showToast('Onchain mode active — chapters stream from ordinals.com (frozen at inscription time).', { variant: 'warn', ms: 4000 });
+      if (currentMode === 'onchain' && currentRail) {
+        loadChapter(currentRail, { skipUrl: true });
       }
     }
 
     /* ---------- Init ---------- */
 
     async function init() {
-      // Init site nav first so the brand header shows immediately.
-      if (window.DPSiteNav) {
-        window.DPSiteNav.init({
-          page: 'reader',
-          showToc: true,
-          onTocClick: function () { setSidebarOpen(true); },
-        });
-      }
-
-      bindCover();
-
-      const liveBtn = document.getElementById('modeLive');
-      const onchainBtn = document.getElementById('modeOnchain');
-      if (liveBtn) liveBtn.addEventListener('click', function () { setMode('live'); });
-      if (onchainBtn) onchainBtn.addEventListener('click', function () { setMode('onchain'); });
-      const switchBtn = document.getElementById('onchainSwitchLive');
-      if (switchBtn) switchBtn.addEventListener('click', function () { setMode('live'); });
-
-      const closeBtn = document.getElementById('dpToastClose');
-      if (closeBtn) closeBtn.addEventListener('click', function () {
-        document.getElementById('dpToast').className = 'dp-toast';
-      });
-
       // Sidebar open / close.
       const openBtn = document.getElementById('btnTocOpen');
       const closeBtnSide = document.getElementById('btnSidebarClose');
@@ -1669,49 +1148,64 @@
       if (closeBtnSide) closeBtnSide.addEventListener('click', function () { setSidebarOpen(false); });
       if (backdrop) backdrop.addEventListener('click', function () { setSidebarOpen(false); });
 
-      // Nav bar prev/next.
-      const prev = document.getElementById('btnPrev');
-      const next = document.getElementById('btnNext');
-      if (prev) prev.addEventListener('click', function () {
-        if (currentIndex > 0) loadChapter(currentIndex - 1);
+      // Toast close.
+      const toastClose = document.getElementById('dpToastClose');
+      if (toastClose) toastClose.addEventListener('click', function () {
+        const t = document.getElementById('dpToast');
+        if (t) t.className = 'dp-toast';
       });
-      if (next) next.addEventListener('click', function () {
-        if (currentIndex < CHAPTERS.length - 1) loadChapter(currentIndex + 1);
-      });
+
+      // Mode toggle.
+      const liveBtn = document.getElementById('modeLive');
+      const onchainBtn = document.getElementById('modeOnchain');
+      if (liveBtn) liveBtn.addEventListener('click', function () { setMode('live'); });
+      if (onchainBtn) onchainBtn.addEventListener('click', function () { setMode('onchain'); });
 
       // Keyboard nav.
       document.addEventListener('keydown', function (e) {
-        // Don't intercept typing in form fields.
         const tag = (e.target && e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea') return;
-        // From the intro page, ArrowRight jumps to DP1; ArrowLeft is a no-op.
-        if (window.location.pathname.indexOf('/viewer/intro') >= 0) {
-          if (e.key === 'ArrowRight' && CHAPTERS.length > 0) {
-            loadChapter(0);
+        if (currentRail === 'ml-draft-026') {
+          if (e.key === 'ArrowRight' && RAIL_INDEX['dp01'] != null) {
+            navigateToRail('dp01');
           }
           return;
         }
-        if (e.key === 'ArrowLeft' && currentIndex > 0) {
-          loadChapter(currentIndex - 1);
-        } else if (e.key === 'ArrowRight' && currentIndex < CHAPTERS.length - 1) {
-          loadChapter(currentIndex + 1);
+        if (e.key === 'ArrowLeft' && currentRail) {
+          const idx = RAIL_INDEX[currentRail];
+          if (idx > 0) navigateToRail(RAILS[idx - 1].railKey);
+        } else if (e.key === 'ArrowRight' && currentRail) {
+          const idx = RAIL_INDEX[currentRail];
+          if (idx < RAILS.length - 1) navigateToRail(RAILS[idx + 1].railKey);
         }
       });
 
-      // Load data.
+      // Load manifest.
       try {
         await loadManifest();
-        await loadBookData();
       } catch (err) {
-        console.warn('[dp-viewer] init data load failed', err);
+        const contentEl = document.getElementById('content');
+        if (contentEl) {
+          contentEl.innerHTML =
+            '<div class="error">Failed to load <code>' + escapeHtml(MANIFEST_URL) + '</code>: ' +
+            escapeHtml(err && err.message || String(err)) + '</div>';
+        }
+        return;
       }
 
-      // Mode from storage (migrate legacy 'local' / 'inscribed' values to 'live').
+      // Update sidebar meta.
+      const meta = document.getElementById('sidebarTitleMeta');
+      if (meta) {
+        const introCount = RAILS.some(r => r.railKey === 'ml-draft-026') ? 1 : 0;
+        const dpCount = RAILS.length - introCount;
+        meta.textContent = '— ' + (introCount + dpCount) + ' chapters';
+      }
+
+      // Mode from storage.
       let savedMode = 'live';
       try {
         const stored = localStorage.getItem(STORAGE_MODE);
         if (stored === 'onchain') savedMode = 'onchain';
-        // Legacy values ('local', 'inscribed') fall through to 'live'.
       } catch (e) { /* ignore */ }
       setMode(savedMode);
 
@@ -1722,55 +1216,25 @@
       setSidebarOpen(readTocOpenPreference());
 
       // Decide which chapter to show.
-      let startIdx = getChapterIndexFromHash();
-      if (startIdx === COVER_INDEX) {
-        // Explicit cover request.
-        showCover();
-        updateHeaderProgress(-1);
-        return;
+      let rail = getRailKeyFromLocation();
+      if (!rail || !(rail in RAIL_INDEX)) {
+        // Try last-read from storage, else intro.
+        let saved = null;
+        try { saved = localStorage.getItem(STORAGE_LAST_CHAPTER); } catch (e) { /* ignore */ }
+        if (saved && saved in RAIL_INDEX) {
+          rail = saved;
+        } else {
+          rail = 'ml-draft-026';
+        }
       }
-      if (startIdx === INTRO_INDEX) {
-        // /viewer/intro → render the preface page.
-        hideCover();
-        loadIntro();
-        return;
-      }
-      if (startIdx === LANDING_INDEX || startIdx < 0) {
-        // Unknown chapter key or no chapter specified → land on first chapter.
-        startIdx = 0;
-      }
-      hideCover();
-      loadChapter(startIdx);
+      await loadChapter(rail, { skipUrl: true });
     }
 
-    // Hash-change handler (back/forward buttons).
-    window.addEventListener('hashchange', function () {
-      const idx = getChapterIndexFromHash();
-      if (idx >= 0) {
-        hideCover();
-        loadChapter(idx);
-      } else if (idx === COVER_INDEX) {
-        showCover();
-        updateHeaderProgress(-1);
-      } else if (idx === INTRO_INDEX) {
-        hideCover();
-        loadIntro();
-      } else if (idx === LANDING_INDEX) {
-        hideCover();
-        loadChapter(0);
-      }
-    });
-
-    // Delegate DP tag clicks inside content area.
-    document.addEventListener('click', function (e) {
-      const a = e.target.closest && e.target.closest('a.dp-tag[data-dp-link]');
-      if (!a) return;
-      e.preventDefault();
-      const dpId = a.getAttribute('data-dp-link');
-      const target = CHAPTER_BY_DP[dpId];
-      if (target) {
-        const idx = CHAPTERS.indexOf(target);
-        if (idx >= 0) loadChapter(idx);
+    // History popstate (back/forward) — load chapter from URL.
+    window.addEventListener('popstate', function () {
+      const rail = getRailKeyFromLocation();
+      if (rail && rail in RAIL_INDEX) {
+        loadChapter(rail, { skipUrl: true });
       }
     });
 
