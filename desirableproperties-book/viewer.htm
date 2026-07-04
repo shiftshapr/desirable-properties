@@ -152,10 +152,17 @@
     /* Mode toggle: Live (local override) vs Onchain (ordinals.com) */
     .mode-toggle {
       display: inline-flex;
+      align-items: stretch;
       gap: 4px;
       background: rgba(212, 175, 55, 0.06);
       padding: 4px;
+      border: 1px solid var(--nav-border, rgba(255,255,255,0.18));
       border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+    [data-theme="light"] .mode-toggle {
+      border-color: rgba(0, 0, 0, 0.18);
     }
     .mode-toggle button {
       padding: 6px 12px;
@@ -896,12 +903,18 @@
         const dp = r.dp || '';
         const isIntro = r.railKey === 'ml-draft-026';
         const idLabel = isIntro ? 'Intro' : dp;
+        // Strip the leading "DP1 – " or "DP1 - " prefix from the label so it
+        // doesn't repeat the .dp-toc-id chip.
+        const titleText = (r.label || '').replace(
+          isIntro ? /^Introduction\s*[–-]\s*/i : /^DP\d+\s*[–-]\s*/i,
+          ''
+        );
         return (
           '<li>' +
             '<a href="/viewer/' + escapeHtml(r.railKey) + '" data-rail="' + escapeHtml(r.railKey) + '" class="dp-toc-link">' +
               '<span class="dp-toc-row">' +
                 '<span class="dp-toc-id">' + escapeHtml(idLabel) + '</span>' +
-                '<span class="dp-toc-title">' + escapeHtml(r.label) + '</span>' +
+                '<span class="dp-toc-title">' + escapeHtml(titleText) + '</span>' +
               '</span>' +
             '</a>' +
           '</li>'
@@ -948,8 +961,13 @@
       const r = RAILS[idx];
       const total = RAILS.length;
       const cur = idx + 1;
+      const isIntro = rail === 'ml-draft-026';
+      const titleText = (r.label || '').replace(
+        isIntro ? /^Introduction\s*[–-]\s*/i : /^DP\d+\s*[–-]\s*/i,
+        ''
+      );
       el.innerHTML =
-        escapeHtml(r.label) +
+        escapeHtml(titleText) +
         ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
     }
 
@@ -1023,13 +1041,14 @@
           continue;
         }
 
-        // Ordered list — also accept backslash-escaped periods (1\. Foo) which
-        // ordinals use to suppress list interpretation. Strip the backslash
-        // from the rendered text.
-        if (/^\d+\\.?\s+/.test(line) || /^\d+\.\s+/.test(line)) {
+        // Ordered list — also accept backslash-escaped periods (1\. Foo)
+        // which ordinals use to suppress list interpretation. Strip the marker.
+        const OL_RE = /^(?:\d+\\\.|\d+\.)\s+/;
+        const OL_STRIP_RE = /^(?:\d+\\\.|\d+\.)\s*/;
+        if (OL_RE.test(line)) {
           const items = [];
-          while (i < lines.length && (/^\d+\\.?\s+/.test(lines[i]) || /^\d+\.\s+/.test(lines[i]))) {
-            const txt = lines[i].replace(/^\d+\.\\?\s+/, '');
+          while (i < lines.length && OL_RE.test(lines[i])) {
+            const txt = lines[i].replace(OL_STRIP_RE, '');
             items.push('<li>' + renderInlineMd(txt) + '</li>');
             i++;
           }
@@ -1043,8 +1062,7 @@
                && !/^(#{1,6})\s+/.test(lines[i])
                && !/^---+\s*$/.test(lines[i])
                && !/^[-*]\s+/.test(lines[i])
-               && !/^\d+\.\\?\s+/.test(lines[i])
-               && !/^\d+\.\s+/.test(lines[i])
+               && !OL_RE.test(lines[i])
                && !/^>\s+/.test(lines[i])) {
           para.push(lines[i]);
           i++;
