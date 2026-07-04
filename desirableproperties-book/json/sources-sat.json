@@ -62,7 +62,8 @@
             "timestamp": 1780081453,
             "status": "active",
             "reinscribable": true,
-            "reason": "DP chapter from the Desirable Properties satplication"
+            "reason": "DP chapter from the Desirable Properties satplication",
+            "localOverride": "/content/local/dp01.md"
         },
         {
             "railKey": "dp02",

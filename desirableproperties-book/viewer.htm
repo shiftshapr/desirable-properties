@@ -153,40 +153,43 @@
     .mode-toggle {
       display: inline-flex;
       align-items: stretch;
-      gap: 0;                       /* no gap so the divider is the separator */
-      background: rgba(0,0,0,0.35); /* dark recessed track */
-      padding: 3px;
-      border: 1px solid var(--nav-border, rgba(255,255,255,0.18));
-      border-radius: 9px;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+      border: 1px solid var(--nav-border, rgba(255,255,255,0.22));
+      border-radius: 999px;        /* fully rounded — single pill */
+      background: rgba(0,0,0,0.40); /* dark recessed track */
+      padding: 2px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.35);
       overflow: hidden;
+      position: relative;
     }
     [data-theme="light"] .mode-toggle {
-      background: rgba(0,0,0,0.06);
-      border-color: rgba(0, 0, 0, 0.22);
+      background: rgba(0,0,0,0.07);
+      border-color: rgba(0,0,0,0.22);
     }
     .mode-toggle button {
-      padding: 6px 14px;
+      padding: 7px 16px;
       border: 0;
       background: transparent;
       color: var(--muted);
       cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      border-radius: 999px;
       transition: background 0.15s, color 0.15s, box-shadow 0.15s;
       position: relative;
+      z-index: 1;
     }
-    /* vertical divider between the two buttons */
+    /* divider between the two buttons — sits inside the dark track */
     .mode-toggle button + button::before {
       content: "";
       position: absolute;
       left: 0;
-      top: 18%;
-      bottom: 18%;
+      top: 22%;
+      bottom: 22%;
       width: 1px;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.20);
+      z-index: 0;
     }
     [data-theme="light"] .mode-toggle button + button::before {
       background: rgba(0,0,0,0.18);
@@ -194,14 +197,10 @@
     .mode-toggle button.active {
       background: var(--accent);
       color: #0d1117;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.30), inset 0 0 0 1px rgba(0,0,0,0.08);
     }
     .mode-toggle button:not(.active):hover {
       color: var(--text);
-      background: rgba(255,255,255,0.06);
-    }
-    [data-theme="light"] .mode-toggle button:not(.active):hover {
-      background: rgba(0,0,0,0.05);
     }
 
     .toc-open-btn {
@@ -373,6 +372,13 @@
       opacity: 1;
       font-weight: 600;
       letter-spacing: 0.04em;
+      min-width: 44px;
+      display: inline-block;
+    }
+    /* When the row has no id chip (Intro), give the title the same left
+       indent so "Introduction" lines up with the other titles. */
+    .sidebar a.dp-toc-link .dp-toc-row > .dp-toc-title:only-child {
+      margin-left: 52px; /* 44px chip min-width + 8px row gap */
     }
     .sidebar a.dp-toc-link:hover {
       color: var(--accent);
@@ -922,18 +928,21 @@
       const items = RAILS.map((r, i) => {
         const dp = r.dp || '';
         const isIntro = r.railKey === 'ml-draft-026';
-        const idLabel = isIntro ? 'Intro' : dp;
-        // Strip the leading "DP1 – " or "DP1 - " prefix from the label so it
-        // doesn't repeat the .dp-toc-id chip.
-        const titleText = (r.label || '').replace(
-          isIntro ? /^Introduction\s*[–-]\s*/i : /^DP\d+\s*[–-]\s*/i,
-          ''
-        );
+        let idLabel, titleText;
+        if (isIntro) {
+          idLabel = '';                       // no "Intro" chip
+          titleText = 'Introduction';         // full title, aligned with the others
+        } else {
+          idLabel = dp;
+          // Strip the leading "DP1 – " or "DP1 - " prefix from the label so it
+          // doesn't repeat the .dp-toc-id chip.
+          titleText = (r.label || '').replace(/^DP\d+\s*[–-]\s*/i, '');
+        }
         return (
           '<li>' +
             '<a href="/viewer/' + escapeHtml(r.railKey) + '" data-rail="' + escapeHtml(r.railKey) + '" class="dp-toc-link">' +
               '<span class="dp-toc-row">' +
-                '<span class="dp-toc-id">' + escapeHtml(idLabel) + '</span>' +
+                (idLabel ? '<span class="dp-toc-id">' + escapeHtml(idLabel) + '</span>' : '') +
                 '<span class="dp-toc-title">' + escapeHtml(titleText) + '</span>' +
               '</span>' +
             '</a>' +
