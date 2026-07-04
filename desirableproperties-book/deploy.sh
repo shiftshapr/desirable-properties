@@ -59,4 +59,4 @@ fi
 echo "OK: /var/www/desirableproperties-book deployed"
 echo "Cover:   /book or /index.html"
 echo "Reader:  /viewer/intro or /viewer.htm?ch=dp-1"
-echo "Ordinal: /preview.html or /logic.htm?localSources=1&localFiles=1"
+echo "Ordinal (advanced): /logic.htm?localSources=1&localFiles=1"
