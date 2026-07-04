@@ -382,6 +382,10 @@
     .sidebar-backdrop:not(.hidden) {
       display: block;
     }
+    /* Desktop: backdrop must never intercept clicks over the always-visible sidebar. */
+    @media (min-width: 881px) {
+      .sidebar-backdrop { display: none !important; }
+    }
 
     .reader {
       flex: 1;
@@ -667,15 +671,15 @@
         </a>
       </h1>
       <div class="header-tools">
-        <div class="mode-toggle" role="group" aria-label="Source mode">
-          <button type="button" id="modeLive" class="active" title="Read from local working copy (when an override exists)">Live</button>
-          <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs">Onchain</button>
-        </div>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
         <button type="button" id="btnThemeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light theme" aria-pressed="false">
           <span class="theme-icon-dark" aria-hidden="true">☾</span>
           <span class="theme-icon-light" aria-hidden="true">☀</span>
         </button>
+        <div class="mode-toggle" role="group" aria-label="Source mode">
+          <button type="button" id="modeLive" class="active" title="Read from local working copy (when an override exists)">Live</button>
+          <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs">Onchain</button>
+        </div>
       </div>
       <div class="header-progress" id="headerProgress">
         <span id="headerPartLine">Loading the book…</span>
@@ -793,9 +797,15 @@
     function setSidebarOpen(open) {
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('sidebarBackdrop');
-      if (!sidebar || !backdrop) return;
+      if (!sidebar) return;
       sidebar.classList.toggle('hidden', !open);
-      backdrop.classList.toggle('hidden', !open);
+      if (backdrop) {
+        if (isMobileReader()) {
+          backdrop.classList.toggle('hidden', !open);
+        } else {
+          backdrop.classList.add('hidden');
+        }
+      }
       if (open && isMobileReader()) {
         document.body.classList.add('sidebar-open-mobile');
       } else {
@@ -938,10 +948,7 @@
       const r = RAILS[idx];
       const total = RAILS.length;
       const cur = idx + 1;
-      const dp = r.dp;
-      const idLabel = rail === 'ml-draft-026' ? 'Introduction' : (dp || 'DP');
       el.innerHTML =
-        '<strong>' + escapeHtml(idLabel) + '</strong> · ' +
         escapeHtml(r.label) +
         ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
     }
@@ -1016,10 +1023,14 @@
           continue;
         }
 
-        if (/^\d+\.\s+/.test(line)) {
+        // Ordered list — also accept backslash-escaped periods (1\. Foo) which
+        // ordinals use to suppress list interpretation. Strip the backslash
+        // from the rendered text.
+        if (/^\d+\\.?\s+/.test(line) || /^\d+\.\s+/.test(line)) {
           const items = [];
-          while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
-            items.push('<li>' + renderInlineMd(lines[i].replace(/^\d+\.\s+/, '')) + '</li>');
+          while (i < lines.length && (/^\d+\\.?\s+/.test(lines[i]) || /^\d+\.\s+/.test(lines[i]))) {
+            const txt = lines[i].replace(/^\d+\.\\?\s+/, '');
+            items.push('<li>' + renderInlineMd(txt) + '</li>');
             i++;
           }
           out.push('<ol>' + items.join('') + '</ol>');
@@ -1032,6 +1043,7 @@
                && !/^(#{1,6})\s+/.test(lines[i])
                && !/^---+\s*$/.test(lines[i])
                && !/^[-*]\s+/.test(lines[i])
+               && !/^\d+\.\\?\s+/.test(lines[i])
                && !/^\d+\.\s+/.test(lines[i])
                && !/^>\s+/.test(lines[i])) {
           para.push(lines[i]);
@@ -1280,7 +1292,9 @@
       const backdrop = document.getElementById('sidebarBackdrop');
       if (openBtn) openBtn.addEventListener('click', function () { setSidebarOpen(true); });
       if (closeBtnSide) closeBtnSide.addEventListener('click', function () { setSidebarOpen(false); });
-      if (backdrop) backdrop.addEventListener('click', function () { setSidebarOpen(false); });
+      if (backdrop) backdrop.addEventListener('click', function () {
+        if (isMobileReader()) setSidebarOpen(false);
+      });
 
       // Toast close.
       const toastClose = document.getElementById('dpToastClose');
