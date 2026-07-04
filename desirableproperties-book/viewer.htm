@@ -25,7 +25,6 @@
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js"></script>
-  <script src="/assets/marked.js"></script>
 
   <script type="application/ld+json">
   {
@@ -179,7 +178,7 @@
     }
 
     .toc-open-btn {
-      display: none;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
@@ -201,6 +200,33 @@
     .toc-open-btn:hover {
       background: var(--accent-soft-2);
     }
+
+    /* Theme toggle: dark (default) / light */
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: var(--header-control-h);
+      min-height: var(--header-control-h);
+      border: 1px solid var(--nav-border, rgba(255,255,255,0.18));
+      background: transparent;
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0;
+      margin-left: 6px;
+    }
+    .theme-toggle-btn:hover {
+      background: rgba(255,255,255,0.06);
+    }
+    [data-theme="light"] .theme-toggle-btn:hover {
+      background: rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"]  .theme-icon-light { display: none; }
+    [data-theme="light"] .theme-icon-dark  { display: none; }
 
     .header-progress {
       flex: 1 1 100%;
@@ -610,7 +636,6 @@
         max-width: 320px;
         min-width: 0;
       }
-      .toc-open-btn { display: inline-flex; }
       .header h1 { font-size: 0.98rem; }
       .header-tools { gap: 6px; }
       .mode-toggle button { padding: 6px 10px; font-size: 11px; }
@@ -647,6 +672,10 @@
           <button type="button" id="modeOnchain" title="Read from on-chain ordinals via inscription IDs">Onchain</button>
         </div>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
+        <button type="button" id="btnThemeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light theme" aria-pressed="false">
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+          <span class="theme-icon-light" aria-hidden="true">☀</span>
+        </button>
       </div>
       <div class="header-progress" id="headerProgress">
         <span id="headerPartLine">Loading the book…</span>
@@ -703,13 +732,11 @@
     'use strict';
 
     const LS = window.DPLoading;
-    const markedLib = (window.marked && typeof window.marked.parse === 'function')
-      ? window.marked
-      : null;
 
     const STORAGE_LAST_CHAPTER = 'dp-viewer-last-chapter';
     const STORAGE_TOC_OPEN = 'dp-viewer-toc-open';
     const STORAGE_MODE = 'dp-viewer-mode';
+    const STORAGE_THEME = 'dp-viewer-theme';
 
     const SITE_TITLE = 'The Desirable Properties of a Meta-Layer';
     const MANIFEST_URL = '/json/sources-sat.json';
@@ -919,7 +946,101 @@
         ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
     }
 
-    /* ---------- Markdown rendering ---------- */
+    /* ---------- Markdown rendering ----------
+     * Inline renderer (replaces marked.js): handles headings, bold/italic,
+     * inline code, links, ordered/unordered lists, blockquotes, horizontal
+     * rules, and paragraphs. Output is HTML-escaped first, then run through
+     * the inline pass — the post-render sanitizer strips on* handlers.
+     */
+
+    function renderInlineMd(s) {
+      // Replace inline code FIRST with placeholders so the bold/italic
+      // passes do not touch content inside backticks. Restore at the end.
+      const codeStash = [];
+      let out = escapeHtml(s);
+      out = out.replace(/`([^`]+)`/g, (_, code) => {
+        codeStash.push(code);
+        return '\u0001CODE' + (codeStash.length - 1) + '\u0001';
+      });
+      // bold **...** or __...__
+      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      // italic *...* or _..._ (avoid the middle of **/__ already consumed)
+      out = out.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      out = out.replace(/(^|[^_\w])_([^_\n]+)_/g, '$1<em>$2</em>');
+      // links [text](url)
+      out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, text, href) =>
+        '<a href="' + escapeHtml(href) + '" rel="noopener">' + text + '</a>');
+      // restore inline code (its content was escapeHtml'd by the leading pass
+      // before stashing — so the inner literal text is already safe)
+      out = out.replace(/\u0001CODE(\d+)\u0001/g, (_, i) => '<code>' + codeStash[+i] + '</code>');
+      return out;
+    }
+
+    function renderMarkdown(md) {
+      if (md == null || md === '') return '';
+      const lines = String(md).replace(/\r\n/g, '\n').split('\n');
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i];
+
+        if (!line.trim()) { i++; continue; }
+
+        if (/^---+\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
+
+        const h = line.match(/^(#{1,6})\s+(.*)$/);
+        if (h) {
+          const level = h[1].length;
+          out.push('<h' + level + '>' + renderInlineMd(h[2]) + '</h' + level + '>');
+          i++; continue;
+        }
+
+        if (/^>\s+/.test(line)) {
+          const bq = [];
+          while (i < lines.length && /^>\s+/.test(lines[i])) {
+            bq.push(lines[i].replace(/^>\s+/, ''));
+            i++;
+          }
+          out.push('<blockquote>' + renderInlineMd(bq.join(' ')) + '</blockquote>');
+          continue;
+        }
+
+        if (/^[-*]\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
+            items.push('<li>' + renderInlineMd(lines[i].replace(/^[-*]\s+/, '')) + '</li>');
+            i++;
+          }
+          out.push('<ul>' + items.join('') + '</ul>');
+          continue;
+        }
+
+        if (/^\d+\.\s+/.test(line)) {
+          const items = [];
+          while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
+            items.push('<li>' + renderInlineMd(lines[i].replace(/^\d+\.\s+/, '')) + '</li>');
+            i++;
+          }
+          out.push('<ol>' + items.join('') + '</ol>');
+          continue;
+        }
+
+        // paragraph: consume until blank line or block-level break
+        const para = [];
+        while (i < lines.length && lines[i].trim()
+               && !/^(#{1,6})\s+/.test(lines[i])
+               && !/^---+\s*$/.test(lines[i])
+               && !/^[-*]\s+/.test(lines[i])
+               && !/^\d+\.\s+/.test(lines[i])
+               && !/^>\s+/.test(lines[i])) {
+          para.push(lines[i]);
+          i++;
+        }
+        out.push('<p>' + renderInlineMd(para.join(' ')) + '</p>');
+      }
+      return out.join('\n');
+    }
 
     /**
      * Minimal DOM sanitizer for ordinals content: strip <script>, <style>, and any
@@ -948,17 +1069,8 @@
     }
 
     function renderChapterMarkdown(md) {
-      if (!markedLib) {
-        return '<pre style="white-space:pre-wrap">' + escapeHtml(md) + '</pre>';
-      }
-      let html;
-      try {
-        html = markedLib.parse(md);
-      } catch (e) {
-        return '<pre style="white-space:pre-wrap">' + escapeHtml(md) + '</pre>';
-      }
       const tpl = document.createElement('template');
-      tpl.innerHTML = html;
+      tpl.innerHTML = renderMarkdown(md);
       sanitizeRenderedHtml(tpl.content);
       return tpl.innerHTML;
     }
@@ -1136,6 +1248,28 @@
         loadChapter(currentRail, { skipUrl: true });
       }
     }
+
+    /* ---------- Theme toggle (dark/light) ---------- */
+
+    (function initThemeToggle() {
+      const root = document.documentElement;
+      function applyTheme(t) {
+        root.setAttribute('data-theme', t);
+        const btn = document.getElementById('btnThemeToggle');
+        if (btn) btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
+      }
+      let saved = null;
+      try { saved = localStorage.getItem(STORAGE_THEME); } catch (_) { /* ignore */ }
+      applyTheme(saved === 'light' ? 'light' : 'dark');
+      const btn = document.getElementById('btnThemeToggle');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          try { localStorage.setItem(STORAGE_THEME, next); } catch (_) { /* ignore */ }
+          applyTheme(next);
+        });
+      }
+    })();
 
     /* ---------- Init ---------- */
 
