@@ -1,0 +1,242 @@
+/**
+ * Desirable Properties book site — layout primitives (header, container, spinner).
+ * Brand: gold (#d4af37) on deep navy/charcoal (#0d1117).
+ */
+:root {
+  --dp-content-max: 960px;
+  --dp-content-max-wide: 1080px;
+  --dp-gutter-x: 1.25rem;
+  --dp-gutter-x-sm: 0.75rem;
+  --dp-radius: 8px;
+}
+
+.dp-container,
+.dp-site-inset {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--dp-content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--dp-gutter-x-sm), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--dp-gutter-x-sm), env(safe-area-inset-right, 0px));
+}
+
+@media (min-width: 768px) {
+  .dp-container,
+  .dp-site-inset {
+    padding-left: max(var(--dp-gutter-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--dp-gutter-x), env(safe-area-inset-right, 0px));
+  }
+}
+
+.dp-container-wide,
+.dp-site-inset-wide {
+  max-width: var(--dp-content-max-wide);
+}
+
+.dp-container-narrow {
+  max-width: 640px;
+}
+
+.dp-container-medium {
+  max-width: 720px;
+}
+
+/* Loading spinner — shared across the reader + cover */
+.dp-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.dp-loading .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--accent, #d4af37);
+  border-radius: 50%;
+  animation: dp-loading-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes dp-loading-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Reader progress bar at top of header */
+.dp-progress {
+  position: relative;
+  height: 3px;
+  background: rgba(212, 175, 55, 0.12);
+  flex-shrink: 0;
+}
+
+.dp-progress .dp-progress-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: var(--accent, #d4af37);
+  transition: width 0.18s ease-out;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.45);
+}
+
+/* Part dividers in TOC */
+.dp-part-head {
+  margin: 14px 18px 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--nav-border, rgba(255, 255, 255, 0.08));
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted, #8b949e);
+}
+
+.dp-part-head:first-child {
+  border-top: none;
+  margin-top: 6px;
+  padding-top: 0;
+}
+
+.dp-part-head .dp-part-num {
+  color: var(--accent, #d4af37);
+  margin-right: 8px;
+}
+
+.dp-toc-part-title {
+  display: block;
+  font-size: 10px;
+  color: var(--muted, #8b949e);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* Subtle scrollbar in reader */
+.dp-reader-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.dp-reader-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dp-reader-scroll::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 999px;
+}
+
+.dp-reader-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.45);
+}
+
+/* Visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* DP smart tag — clickable inline reference */
+.dp-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 2px;
+  font-size: 0.86em;
+  font-weight: 600;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--accent, #d4af37);
+  background: rgba(212, 175, 55, 0.10);
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.dp-tag:hover,
+.dp-tag:focus-visible {
+  background: rgba(212, 175, 55, 0.22);
+  color: var(--accent-hover, #e8c468);
+  border-color: var(--accent, #d4af37);
+  outline: none;
+}
+
+/* Inscription rail at end of each chapter */
+.dp-rail {
+  margin: 32px 0 8px;
+  padding: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: var(--dp-radius);
+  background: rgba(212, 175, 55, 0.04);
+}
+
+.dp-rail .dp-rail-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted, #8b949e);
+  margin: 0 0 6px;
+}
+
+.dp-rail .dp-rail-id {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  word-break: break-all;
+  color: var(--accent, #d4af37);
+}
+
+.dp-rail .dp-rail-id a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dp-rail .dp-rail-id a:hover {
+  text-decoration: underline;
+}
+
+/* Part banner shown when reading the first DP of a new part */
+.dp-part-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 24px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent, #d4af37);
+  background: rgba(212, 175, 55, 0.06);
+  border-radius: 4px;
+}
+
+.dp-part-banner .dp-part-banner-num {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent, #d4af37);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.dp-part-banner .dp-part-banner-text {
+  font-size: 13px;
+  color: var(--text, #e6edf3);
+  line-height: 1.45;
+}
+
+.dp-part-banner .dp-part-banner-text strong {
+  display: block;
+  color: var(--accent, #d4af37);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}

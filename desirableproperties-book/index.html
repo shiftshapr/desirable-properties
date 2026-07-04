@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Desirable Properties — A Book of the Meta-Layer. Twenty-two community-defined properties for decentralized digital infrastructure, inscribed on Bitcoin.">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:type" content="book">
+  <meta property="og:title" content="Desirable Properties — A Book of the Meta-Layer">
+  <meta property="og:description" content="DP1–DP22 inscribed on Bitcoin. Twenty-two community-defined properties for decentralized digital infrastructure.">
+  <meta property="og:url" content="https://desirableproperties.org/book">
+  <meta property="og:site_name" content="Desirable Properties">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Desirable Properties — A Book of the Meta-Layer</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/profile-icon.svg">
+  <link rel="stylesheet" href="/assets/dp-site.css" />
+  <style>
+    :root, [data-theme="dark"] {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #d4af37;
+      --accent-hover: #e8c468;
+      --accent-soft: rgba(212, 175, 55, 0.10);
+      --accent-soft-2: rgba(212, 175, 55, 0.18);
+    }
+    [data-theme="light"] {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --text: #1f2328;
+      --muted: #59636e;
+      --accent: #b08d20;
+      --accent-hover: #d4af37;
+    }
+    * { box-sizing: border-box; }
+    html { height: 100%; }
+    html, body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212, 175, 55, 0.08), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+    }
+    .wrap {
+      width: 100%;
+      text-align: center;
+      flex-shrink: 0;
+      padding: 1rem 0;
+    }
+    .cover-hit {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      cursor: pointer;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 12px;
+      padding: 16px;
+      transition: filter 0.2s, transform 0.2s;
+    }
+    .cover-hit:hover,
+    .cover-hit:focus-visible {
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+      outline: 2px solid var(--accent);
+      outline-offset: 6px;
+    }
+    .cover-art {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 36px rgba(212, 175, 55, 0.16);
+    }
+    .tagline {
+      margin: 22px auto 0;
+      max-width: 520px;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .start {
+      display: inline-block;
+      margin: 24px auto 0;
+      padding: 12px 28px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+    .start:hover { filter: brightness(1.10); }
+    .meta {
+      margin: 24px auto 0;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .meta a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .meta a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap dp-container dp-container-narrow">
+    <div class="cover-hit" id="coverHit" role="button" tabindex="0" aria-label="Open the book reader">
+      <svg class="cover-art" viewBox="0 0 420 600" xmlns="http://www.w3.org/2000/svg" aria-label="Desirable Properties book cover">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f7e6a0"/>
+            <stop offset="50%" stop-color="#d4af37"/>
+            <stop offset="100%" stop-color="#9c7a1a"/>
+          </linearGradient>
+          <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#161b22"/>
+            <stop offset="100%" stop-color="#0d1117"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="420" height="600" fill="url(#bgGrad)"/>
+        <rect x="6" y="6" width="408" height="588" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
+        <rect x="14" y="14" width="392" height="572" fill="none" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.6"/>
+        <text x="210" y="120" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="0.4em" fill="#d4af37" font-weight="700">META-LAYER</text>
+        <line x1="80" y1="138" x2="340" y2="138" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+        <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
+        <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
+        <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+        <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 — DP22</text>
+        <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
+        <g transform="translate(210, 460)">
+          <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
+          <circle cx="0" cy="0" r="22" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.5"/>
+          <text x="0" y="6" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#d4af37">DP</text>
+        </g>
+        <text x="210" y="552" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" letter-spacing="0.3em" fill="#8b949e">INSCRIBED ON BITCOIN</text>
+      </svg>
+    </div>
+    <p class="tagline">Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
+    <a class="start" id="startReader" href="/viewer/intro">Open reader →</a>
+    <p class="meta">
+      <a href="/viewer/intro">Start at DP1</a> ·
+      <a href="/viewer/dp-22">DP22 — Memory Stewardship</a> ·
+      <a href="/json/desirableproperties-book-manifest.json" target="_blank" rel="noopener">Manifest</a>
+    </p>
+  </div>
+  <script>
+    (function () {
+      function goReader() {
+        window.location.href = '/viewer/intro';
+      }
+      var hit = document.getElementById('coverHit');
+      if (hit) {
+        hit.addEventListener('click', goReader);
+        hit.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goReader();
+          }
+        });
+      }
+      var btn = document.getElementById('startReader');
+      if (btn) btn.addEventListener('click', function (e) {
+        // Allow default anchor navigation.
+      });
+    })();
+  </script>
+</body>
+</html>

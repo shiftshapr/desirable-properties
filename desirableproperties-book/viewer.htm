@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en" class="dp-header-above">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="dp-viewer-build" content="dp-viewer-initial-20260703">
+  <title>Desirable Properties — A Book of the Meta-Layer</title>
+  <meta name="description" content="Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP22.">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" href="/assets/profile-icon.svg">
+
+  <meta property="og:type" content="book">
+  <meta property="og:title" content="Desirable Properties — A Book of the Meta-Layer">
+  <meta property="og:description" content="Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. DP1–DP22 inscribed on Bitcoin.">
+  <meta property="og:url" content="https://desirableproperties.org/viewer/intro">
+  <meta property="og:site_name" content="Desirable Properties">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Desirable Properties — A Book of the Meta-Layer">
+  <meta name="twitter:description" content="Twenty-two Desirable Properties for the Meta-Layer — inscribed on Bitcoin.">
+
+  <link rel="stylesheet" href="/assets/dp-site.css" />
+  <link rel="stylesheet" href="/assets/dp-site-nav.css" />
+  <link rel="preload" href="/json/desirableproperties-book-manifest.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="/assets/data/desirable-properties.json" as="fetch" crossorigin="anonymous" />
+
+  <script src="/assets/dp-loading.js"></script>
+  <script src="/assets/dp-dropdown-position.js"></script>
+  <script src="/assets/dp-site-nav.js"></script>
+  <script src="/assets/format-markdown.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Desirable Properties",
+    "alternateName": "Meta-Layer Desirable Properties",
+    "description": "Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure.",
+    "bookFormat": "https://schema.org/EBook",
+    "inLanguage": "en",
+    "url": "https://desirableproperties.org/viewer/intro",
+    "image": "https://book.desirableproperties.org/assets/cover.svg",
+    "author": {
+      "@type": "Organization",
+      "name": "MetaLayer Community",
+      "url": "https://www.desirableproperties.org"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "MetaLayer Community",
+      "url": "https://www.desirableproperties.org"
+    },
+    "isbn": "",
+    "numberOfPages": 22,
+    "workExample": {
+      "@type": "Book",
+      "bookFormat": "https://schema.org/EBook",
+      "datePublished": "2026",
+      "inLanguage": "en"
+    }
+  }
+  </script>
+
+  <style>
+    :root, [data-theme="dark"] {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #d4af37;
+      --accent-hover: #e8c468;
+      --accent-soft: rgba(212, 175, 55, 0.10);
+      --accent-soft-2: rgba(212, 175, 55, 0.18);
+      --nav-border: rgba(255, 255, 255, 0.08);
+      --book-bg: #f6f8fa;
+      --book-text: #1f2328;
+      --book-rule: #d0d7de;
+    }
+    [data-theme="light"] {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --text: #1f2328;
+      --muted: #59636e;
+      --accent: #b08d20;
+      --accent-hover: #d4af37;
+      --accent-soft: rgba(176, 141, 32, 0.10);
+      --accent-soft-2: rgba(176, 141, 32, 0.18);
+      --nav-border: rgba(0, 0, 0, 0.10);
+      --book-bg: #ffffff;
+      --book-text: #1f2328;
+      --book-rule: #d0d7de;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; height: 100%; }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    }
+    body.sidebar-open-mobile {
+      overflow: hidden;
+    }
+
+    /* Header — slim band above the sticky site header from dp-site-nav */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 400;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--nav-border);
+      padding: 12px 0;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+    }
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      --header-control-h: 34px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .header h1 a.header-title-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .header h1 a.header-title-link:hover {
+      color: var(--accent-hover);
+    }
+    .header h1 .header-subtitle {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Mode toggle: Local (file drafts) vs Inscribed (on-chain ordinals) */
+    .mode-toggle {
+      display: inline-flex;
+      gap: 4px;
+      background: rgba(212, 175, 55, 0.06);
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .mode-toggle button {
+      padding: 6px 12px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .mode-toggle button.active {
+      background: var(--accent);
+      color: #0d1117;
+    }
+    .mode-toggle button:not(.active):hover {
+      color: var(--text);
+    }
+
+    .toc-open-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-sizing: border-box;
+      height: var(--header-control-h);
+      min-height: var(--header-control-h);
+      padding: 0 14px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+      border-radius: 6px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .toc-open-btn:hover {
+      background: var(--accent-soft-2);
+    }
+
+    .header-progress {
+      flex: 1 1 100%;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+    .header-progress strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .main {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 280px;
+      min-width: 280px;
+      min-height: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--nav-border);
+      overflow: hidden;
+      transition: transform 0.2s, width 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar.hidden {
+      transform: translateX(-100%);
+      width: 0;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .sidebar-head {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--nav-border);
+    }
+    .sidebar-title {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .sidebar-title .sidebar-title-meta {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 1px;
+      letter-spacing: 0.02em;
+    }
+    .sidebar-close {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-close:hover {
+      color: var(--text);
+      background: rgba(128, 128, 128, 0.15);
+    }
+    .sidebar #toc {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+    .sidebar ul {
+      list-style: none;
+      margin: 0;
+      padding: 8px 0 16px;
+    }
+    .sidebar li {
+      margin: 0;
+    }
+    .sidebar a.dp-toc-link {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 8px 18px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: color 0.2s, background 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .sidebar a.dp-toc-link .dp-toc-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .sidebar a.dp-toc-link .dp-toc-id {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      color: var(--muted);
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .sidebar a.dp-toc-link:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .sidebar a.dp-toc-link.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      padding-left: 15px;
+      background: var(--accent-soft);
+    }
+    .sidebar a.dp-toc-link .dp-toc-title {
+      display: block;
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 240;
+      background: rgba(0, 0, 0, 0.55);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sidebar-backdrop:not(.hidden) {
+      display: block;
+    }
+
+    .reader {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 28px 24px;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .reader::-webkit-scrollbar {
+      width: 10px;
+    }
+    .reader::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .reader::-webkit-scrollbar-thumb {
+      background: var(--accent-soft-2);
+      border-radius: 999px;
+    }
+
+    .book-content {
+      background: var(--book-bg);
+      color: var(--book-text);
+      padding: 36px 36px 28px;
+      border-radius: 8px;
+      max-width: 680px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+      line-height: 1.6;
+    }
+    [data-theme="dark"] .book-content {
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+      background: #f6f8fa;
+    }
+
+    .book-content h1,
+    .book-content h2,
+    .book-content h3 {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      line-height: 1.25;
+      margin-top: 1.6em;
+      margin-bottom: 0.5em;
+    }
+    .book-content h1 {
+      font-size: 1.65rem;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.3em;
+      margin-top: 0.4em;
+    }
+    .book-content h2 {
+      font-size: 1.3rem;
+      color: #1f2328;
+      border-bottom: 1px solid var(--book-rule);
+      padding-bottom: 0.3em;
+    }
+    .book-content h3 {
+      font-size: 1.1rem;
+      color: #1f2328;
+    }
+    .book-content p {
+      margin: 0 0 1em;
+      font-size: 1rem;
+    }
+    .book-content a {
+      color: #8a6d10;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .book-content a:hover {
+      color: #5a4710;
+    }
+    .book-content ul,
+    .book-content ol {
+      margin: 0 0 1em;
+      padding-left: 1.6em;
+    }
+    .book-content li {
+      margin: 0.25em 0;
+    }
+    .book-content code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.92em;
+      padding: 1px 5px;
+      background: rgba(212, 175, 55, 0.08);
+      border-radius: 3px;
+      color: #5a4710;
+    }
+    .book-content hr {
+      border: none;
+      border-top: 1px solid var(--book-rule);
+      margin: 2em 0;
+    }
+    .book-content .dp-landing-block {
+      margin: 0 0 1.6em;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      background: rgba(212, 175, 55, 0.06);
+      border-radius: 4px;
+    }
+    .book-content .dp-landing-block .dp-landing-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 4px;
+    }
+    .book-content .dp-landing-block h2.dp-landing-title {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+      border: none;
+      padding: 0;
+    }
+    .book-content .dp-landing-block p.dp-landing-subtitle {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      color: #59636e;
+      font-style: italic;
+    }
+    .book-content .dp-landing-block p.dp-landing-text {
+      margin: 0;
+      font-size: 0.98rem;
+      color: #1f2328;
+    }
+    .book-content .dp-elements {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5em;
+      display: grid;
+      gap: 12px;
+    }
+    .book-content .dp-elements > li {
+      padding: 12px 14px;
+      background: rgba(176, 141, 32, 0.05);
+      border: 1px solid var(--book-rule);
+      border-radius: 6px;
+    }
+    .book-content .dp-elements > li > strong {
+      display: block;
+      font-size: 0.92rem;
+      color: #5a4710;
+      margin-bottom: 4px;
+    }
+    .book-content .dp-elements > li > p {
+      margin: 0;
+      font-size: 0.94rem;
+      color: #1f2328;
+    }
+    .book-content .dp-alignments,
+    .book-content .dp-clarifications,
+    .book-content .dp-extensions {
+      margin: 1.5em 0;
+    }
+    .book-content .dp-alignments h3,
+    .book-content .dp-clarifications h3,
+    .book-content .dp-extensions h3 {
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6em;
+    }
+    .book-content .dp-card {
+      padding: 12px 14px;
+      background: #ffffff;
+      border: 1px solid var(--book-rule);
+      border-radius: 6px;
+      margin: 0 0 12px;
+    }
+    .book-content .dp-card .dp-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1f2328;
+      margin: 0 0 4px;
+    }
+    .book-content .dp-card .dp-card-submitter {
+      font-size: 12px;
+      color: #59636e;
+      margin: 0 0 6px;
+    }
+    .book-content .dp-card .dp-card-submitter a {
+      color: inherit;
+      text-decoration: underline;
+    }
+    .book-content .dp-card .dp-card-summary {
+      font-size: 0.92rem;
+      margin: 0;
+      color: #1f2328;
+    }
+
+    .ordinal-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 16px auto 0;
+      max-width: 680px;
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .ordinal-meta a {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 11px;
+    }
+    .ordinal-meta a:hover { text-decoration: underline; }
+
+    .inscribed-banner {
+      display: none;
+      background: var(--accent-soft);
+      border-bottom: 1px solid var(--accent);
+      padding: 10px 0;
+      font-size: 13px;
+      color: var(--accent);
+    }
+    .inscribed-banner.is-visible {
+      display: block;
+    }
+    .inscribed-banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+    .inscribed-banner code {
+      background: rgba(0, 0, 0, 0.30);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 24px auto 0;
+      max-width: 680px;
+      padding-top: 20px;
+      border-top: 1px solid var(--nav-border);
+    }
+    .nav-bar button {
+      padding: 10px 20px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav-bar button:hover:not(:disabled) {
+      background: var(--accent-soft-2);
+    }
+    .nav-bar button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .nav-bar #chapterLabel {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+    .nav-bar #chapterLabel strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .loading, .error {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+    }
+    .error {
+      color: #e55;
+    }
+
+    .dp-toast {
+      display: none;
+      position: fixed;
+      z-index: 125;
+      left: 50%;
+      bottom: max(24px, env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      max-width: min(520px, calc(100vw - 32px));
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.45;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      background: var(--surface, #161b22);
+    }
+    .dp-toast.is-visible {
+      display: flex;
+    }
+    .dp-toast.is-success { border-color: rgba(120, 200, 150, 0.45); }
+    .dp-toast.is-warn { border-color: var(--accent); }
+    .dp-toast #dpToastText { flex: 1; min-width: 0; }
+    .dp-toast #dpToastClose {
+      flex-shrink: 0;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.25rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    /* Cover landing mode (when ?ch=cover or path=/book) */
+    .cover-stage {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 28px 16px;
+    }
+    .cover-stage-inner {
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+    }
+    .cover-hit {
+      width: 100%;
+      cursor: pointer;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 12px;
+      padding: 24px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212, 175, 55, 0.10), transparent 60%),
+        transparent;
+      transition: filter 0.2s, transform 0.2s;
+    }
+    .cover-hit:hover,
+    .cover-hit:focus-visible {
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+      outline: 2px solid var(--accent);
+      outline-offset: 6px;
+    }
+    .cover-hit svg.cover-art {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 36px rgba(212, 175, 55, 0.16);
+    }
+    .cover-stage-inner .cover-tagline {
+      margin: 18px auto 0;
+      max-width: 520px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .cover-stage-inner .cover-start {
+      display: inline-block;
+      margin: 22px auto 0;
+      padding: 12px 28px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+    .cover-stage-inner .cover-start:hover {
+      filter: brightness(1.10);
+    }
+    .cover-stage-inner .cover-meta {
+      margin: 24px auto 0;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .cover-stage-inner .cover-meta a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .cover-stage-inner .cover-meta a:hover { text-decoration: underline; }
+
+    /* When in cover mode, hide the reader layout */
+    body.cover-mode .header,
+    body.cover-mode .main,
+    body.cover-mode .inscribed-banner,
+    body.cover-mode .nav-bar,
+    body.cover-mode .ordinal-meta,
+    body.cover-mode .dp-progress {
+      display: none !important;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 880px) {
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        height: 100dvh;
+        z-index: 250;
+        width: 80%;
+        max-width: 320px;
+        transform: translateX(-100%);
+        transition: transform 0.22s ease-out;
+        box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
+      }
+      .sidebar:not(.hidden) {
+        transform: translateX(0);
+        width: 80%;
+        max-width: 320px;
+        min-width: 0;
+      }
+      .toc-open-btn { display: inline-flex; }
+      .header h1 { font-size: 0.98rem; }
+      .header-tools { gap: 6px; }
+      .mode-toggle button { padding: 6px 10px; font-size: 11px; }
+      .reader { padding: 18px 14px; }
+      .book-content { padding: 22px 18px; }
+      .ordinal-meta { padding: 0 18px; }
+      .nav-bar button { padding: 10px 14px; font-size: 13px; }
+    }
+    @media (max-width: 480px) {
+      .header h1 { font-size: 0.85rem; }
+      .header h1 .header-subtitle { font-size: 0.72rem; }
+      .toc-open-btn, .mode-toggle button { font-size: 11px; padding: 6px 10px; }
+      .book-content h1 { font-size: 1.4rem; }
+      .book-content h2 { font-size: 1.15rem; }
+      .book-content h3 { font-size: 1rem; }
+      .nav-bar { flex-wrap: wrap; }
+      .nav-bar button { flex: 1 1 0; min-width: 96px; }
+      .nav-bar #chapterLabel { flex: 1 1 100%; order: 3; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header dp-container dp-container-wide" id="pageHeader">
+    <div class="header-inner">
+      <h1>
+        <a class="header-title-link" href="/viewer/intro">
+          Desirable Properties
+          <span class="header-subtitle">A Book of the Meta-Layer · DP1–DP22</span>
+        </a>
+      </h1>
+      <div class="header-tools">
+        <div class="mode-toggle" role="group" aria-label="Source mode">
+          <button type="button" id="modeLocal" class="active" title="Read from local data files">Local</button>
+          <button type="button" id="modeInscribed" title="Read from on-chain ordinals inscriptions">Inscribed</button>
+        </div>
+        <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
+      </div>
+      <div class="header-progress" id="headerProgress">
+        <span id="headerPartLine">Loading the book…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="inscribed-banner" id="inscribedBanner">
+    <div class="inscribed-banner-inner dp-container dp-container-wide">
+      <span>📜 Inscribed mode — chapters stream from ordinals.com via inscription IDs.</span>
+      <span>Switch to <button type="button" id="inscribedSwitchLocal" style="border:none;background:transparent;color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;padding:0">Local</button> for offline reading.</span>
+    </div>
+  </div>
+
+  <div class="dp-progress" id="readerProgress" aria-hidden="true">
+    <div class="dp-progress-bar" id="readerProgressBar"></div>
+  </div>
+
+  <main class="main dp-container dp-container-wide">
+    <nav class="sidebar" id="sidebar" aria-label="Table of contents">
+      <div class="sidebar-head">
+        <h2 class="sidebar-title">
+          Contents
+          <span class="sidebar-title-meta" id="sidebarTitleMeta">— DP1–DP22</span>
+        </h2>
+        <button type="button" class="sidebar-close" id="btnSidebarClose" aria-label="Hide table of contents" title="Hide table of contents">×</button>
+      </div>
+      <ul id="toc" role="list"></ul>
+    </nav>
+    <div class="sidebar-backdrop hidden" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <div class="reader dp-reader-scroll" id="reader">
+      <div id="content">
+        <div class="dp-loading loading" role="status" aria-label="Loading">
+          <div class="loading-spinner" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="nav-bar" id="navBar" style="display:none">
+        <button type="button" id="btnPrev" aria-label="Previous chapter">← Previous</button>
+        <span id="chapterLabel"></span>
+        <button type="button" id="btnNext" aria-label="Next chapter">Next →</button>
+      </div>
+    </div>
+
+    <!-- Cover stage (shown only when ?ch=cover or path=/book) -->
+    <div class="cover-stage" id="coverStage" hidden>
+      <div class="cover-stage-inner">
+        <div class="cover-hit" id="coverHit" role="button" tabindex="0" aria-label="Open the book reader at the first chapter">
+          <svg class="cover-art" viewBox="0 0 420 600" xmlns="http://www.w3.org/2000/svg" aria-label="Desirable Properties book cover">
+            <defs>
+              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f7e6a0"/>
+                <stop offset="50%" stop-color="#d4af37"/>
+                <stop offset="100%" stop-color="#9c7a1a"/>
+              </linearGradient>
+              <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#161b22"/>
+                <stop offset="100%" stop-color="#0d1117"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="420" height="600" fill="url(#bgGrad)"/>
+            <rect x="6" y="6" width="408" height="588" fill="none" stroke="url(#goldGrad)" stroke-width="2"/>
+            <rect x="14" y="14" width="392" height="572" fill="none" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.6"/>
+            <text x="210" y="120" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="0.4em" fill="#d4af37" font-weight="700">META-LAYER</text>
+            <line x1="80" y1="138" x2="340" y2="138" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
+            <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
+            <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+            <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 — DP22</text>
+            <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
+            <g transform="translate(210, 460)">
+              <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
+              <circle cx="0" cy="0" r="22" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.5"/>
+              <text x="0" y="6" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#d4af37">DP</text>
+            </g>
+            <text x="210" y="552" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" letter-spacing="0.3em" fill="#8b949e">INSCRIBED ON BITCOIN</text>
+          </svg>
+        </div>
+        <p class="cover-tagline">Twenty-two Desirable Properties for the Meta-Layer — community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
+        <button type="button" class="cover-start" id="coverStartBtn">Open reader →</button>
+        <p class="cover-meta">
+          <a href="/viewer/dp-1">Start at DP1</a> ·
+          <a href="/viewer/dp-22">DP22 — Memory Stewardship</a> ·
+          <a href="/json/desirableproperties-book-manifest.json" target="_blank" rel="noopener">Manifest</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <div id="dp-site-nav"></div>
+
+  <div id="dpToast" class="dp-toast" role="status" aria-live="polite">
+    <span id="dpToastText"></span>
+    <button type="button" id="dpToastClose" aria-label="Dismiss notification">×</button>
+  </div>
+
+  <script>
+  /* ============================================================
+   * Desirable Properties book viewer — DP1–DP22
+   * Patterned after metaweb-book/viewer.htm; branded for DP with gold accent.
+   * ============================================================ */
+
+  (function () {
+    'use strict';
+
+    const DP = window.DPFormat;
+    const LS = window.DPLoading;
+
+    const STORAGE_LAST_CHAPTER = 'dp-viewer-last-chapter';
+    const STORAGE_TOC_OPEN = 'dp-viewer-toc-open';
+    const STORAGE_MODE = 'dp-viewer-mode';
+
+    const SITE_TITLE = 'Desirable Properties';
+    const ORDINALS_BASE = 'https://ordinals.com';
+    const MANIFEST_URL = '/json/desirableproperties-book-manifest.json';
+    const BOOK_SOURCE_URL = '/assets/data/desirable-properties.json';
+    const CHAPTER_SOURCE_PATTERN = '/assets/data/dp{n}.json';
+
+    /* ---------- State ---------- */
+
+    /** Resolved chapters (DP1..DP22) in reading order. */
+    let CHAPTERS = [];
+    /** Manifest of seven parts. */
+    let PARTS = [];
+    /** { dpIdUppercase: chapter } for DP tag lookups. */
+    let CHAPTER_BY_DP = {};
+    /** { partKey: number } for part-by-chapter lookups. */
+    let PART_BY_DP = {};
+    /** Inscription IDs by DP key. */
+    let CHAPTER_INSCRIPTIONS = {};
+    /** Cover inscription id (from manifest.inscriptions.cover). */
+    let COVER_INSCRIPTION = '';
+    /** Index of the currently-open chapter (0-based). */
+    let currentIndex = 0;
+    /** local | inscribed */
+    let currentMode = 'local';
+
+    /** Pre-fetched top-level book data (desirable-properties.json). */
+    let bookData = null;
+    /** Per-DP detailed provenance { dpNumber: dpJson }. */
+    let dpProvenanceCache = {};
+
+    /* ---------- Utilities ---------- */
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showToast(text, opts) {
+      const o = opts || {};
+      const variant = o.variant || 'info';
+      const ms = o.ms != null ? o.ms : 6000;
+      const el = document.getElementById('dpToast');
+      const txtEl = document.getElementById('dpToastText');
+      if (!el || !txtEl) return;
+      txtEl.textContent = text;
+      el.className = 'dp-toast is-visible is-' + variant;
+      if (showToast._t) clearTimeout(showToast._t);
+      showToast._t = setTimeout(function () {
+        el.className = 'dp-toast';
+      }, ms);
+    }
+
+    function isMobileReader() {
+      return window.matchMedia('(max-width: 880px)').matches;
+    }
+
+    function readTocOpenPreference() {
+      try {
+        const v = localStorage.getItem(STORAGE_TOC_OPEN);
+        if (v === '1' || v === 'true') return true;
+        if (v === '0' || v === 'false') return false;
+      } catch (e) { /* ignore */ }
+      return !isMobileReader();
+    }
+
+    function setSidebarOpen(open) {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (!sidebar || !backdrop) return;
+      sidebar.classList.toggle('hidden', !open);
+      backdrop.classList.toggle('hidden', !open);
+      if (open && isMobileReader()) {
+        document.body.classList.add('sidebar-open-mobile');
+      } else {
+        document.body.classList.remove('sidebar-open-mobile');
+      }
+      try {
+        localStorage.setItem(STORAGE_TOC_OPEN, open ? '1' : '0');
+      } catch (e) { /* ignore */ }
+    }
+
+    /* ---------- Manifest loading ---------- */
+
+    async function fetchJson(url) {
+      const r = await fetch(url, { headers: { Accept: 'application/json' }, credentials: 'same-origin' });
+      if (!r.ok) throw new Error('Fetch ' + url + ' → ' + r.status);
+      return r.json();
+    }
+
+    async function loadManifest() {
+      try {
+        const manifest = await fetchJson(MANIFEST_URL);
+        PARTS = Array.isArray(manifest.parts) ? manifest.parts : [];
+        CHAPTER_INSCRIPTIONS = manifest.chapterIds || {};
+        COVER_INSCRIPTION = (manifest.inscriptions && manifest.inscriptions.cover) || '';
+
+        // Build chapters list by walking parts.
+        const chapters = [];
+        PARTS.forEach((part) => {
+          (part.dpIds || []).forEach((dpIdRaw) => {
+            const dpId = String(dpIdRaw).toUpperCase();
+            const key = 'dp-' + dpId.replace(/^DP/i, '');
+            const inscriptionId = CHAPTER_INSCRIPTIONS[dpId] || '';
+            chapters.push({
+              key: key,
+              dpId: dpId,
+              partKey: part.key,
+              partNumber: part.number,
+              partTitle: part.title,
+              title: null, // filled in after bookData loads
+              shortTitle: null,
+              inscriptionId: inscriptionId,
+            });
+            PART_BY_DP[dpId] = part;
+          });
+        });
+        CHAPTERS = chapters;
+        CHAPTERS.forEach((c) => { CHAPTER_BY_DP[c.dpId] = c; });
+        return true;
+      } catch (err) {
+        console.warn('[dp-viewer] Manifest load failed, using fallback.', err);
+        // Fallback: 22 chapters with no part info.
+        PARTS = [];
+        CHAPTERS = [];
+        for (let i = 1; i <= 22; i++) {
+          const dpId = 'DP' + i;
+          CHAPTERS.push({
+            key: 'dp-' + i,
+            dpId: dpId,
+            partKey: '',
+            partNumber: '',
+            partTitle: '',
+            title: null,
+            shortTitle: null,
+            inscriptionId: '',
+          });
+          CHAPTER_BY_DP[dpId] = CHAPTERS[CHAPTERS.length - 1];
+        }
+        return false;
+      }
+    }
+
+    async function loadBookData() {
+      try {
+        const data = await fetchJson(BOOK_SOURCE_URL);
+        bookData = data;
+        // Hydrate chapter titles from desirable_properties.
+        const dps = (data && data.desirable_properties) || [];
+        dps.forEach((dp) => {
+          const id = String(dp.id || '').toUpperCase();
+          const ch = CHAPTER_BY_DP[id];
+          if (ch) {
+            ch.title = dp.name || ch.dpId;
+            ch.shortTitle = dp.name || ch.dpId;
+            ch.landingTitle = dp.landing_title || null;
+            ch.landingSubtitle = dp.landing_subtitle || null;
+            ch.landingText = dp.landing_text || null;
+            ch.elements = Array.isArray(dp.elements) ? dp.elements : [];
+            ch.category = dp.category || null;
+          }
+        });
+        return true;
+      } catch (err) {
+        console.warn('[dp-viewer] Book data load failed.', err);
+        // Title fallback: use DP id only.
+        CHAPTERS.forEach((ch) => { if (!ch.title) ch.title = ch.dpId; });
+        return false;
+      }
+    }
+
+    async function loadDpProvenance(dpNum) {
+      if (dpProvenanceCache[dpNum]) return dpProvenanceCache[dpNum];
+      const url = CHAPTER_SOURCE_PATTERN.replace('{n}', String(dpNum));
+      try {
+        const j = await fetchJson(url);
+        dpProvenanceCache[dpNum] = j;
+        return j;
+      } catch (err) {
+        dpProvenanceCache[dpNum] = { meta: null, alignments: [], clarifications: [], extensions: [] };
+        return dpProvenanceCache[dpNum];
+      }
+    }
+
+    /* ---------- Rendering ---------- */
+
+    function getChapterIndexFromKey(key) {
+      return CHAPTERS.findIndex(function (c) { return c.key === key; });
+    }
+
+    /** Sentinel returned for "explicit cover" requests. */
+    const COVER_INDEX = -2;
+    /** Sentinel returned for "fall through to default landing" requests. */
+    const LANDING_INDEX = -3;
+
+    /**
+     * Resolve the requested chapter index from the URL.
+     * Supports path-based routing (`/viewer/intro`), hash (`#ch=dp-1`),
+     * and query (`?ch=dp-1`). Unknown keys (e.g. `intro`) fall through to
+     * the first chapter so the canonical `/viewer/intro` URL always opens
+     * the book at DP1.
+     */
+    function getChapterIndexFromHash() {
+      // 1. Path-based: /viewer/<chapter-key>
+      const pathMatch = (window.location.pathname || '').match(/\/viewer\/([^/?#]+)/i);
+      if (pathMatch) {
+        const key = String(pathMatch[1]).toLowerCase();
+        if (key === 'cover') return COVER_INDEX;
+        const idx = getChapterIndexFromKey(key);
+        if (idx >= 0) return idx;
+        // Unknown chapter key (e.g. "intro") → land on first chapter.
+        return LANDING_INDEX;
+      }
+      // 2. Hash-based: #ch=dp-1
+      const h = window.location.hash || '';
+      const hm = h.match(/ch=([a-z0-9-]+)/i);
+      if (hm) {
+        const idx = getChapterIndexFromKey(hm[1].toLowerCase());
+        if (idx >= 0) return idx;
+      }
+      // 3. Query-based: ?ch=dp-1
+      const p = new URLSearchParams(window.location.search);
+      const q = p.get('ch');
+      if (q) {
+        const norm = String(q).toLowerCase();
+        const idx = getChapterIndexFromKey(norm);
+        if (idx >= 0) return idx;
+        if (norm === 'cover') return COVER_INDEX;
+        // Unknown ?ch value → land on first chapter.
+        return LANDING_INDEX;
+      }
+      return -1;
+    }
+
+    function updateHeaderProgress(idx) {
+      const el = document.getElementById('headerPartLine');
+      if (!el) return;
+      if (idx < 0 || !CHAPTERS[idx]) {
+        el.innerHTML = 'Tap the cover or pick a chapter.';
+        return;
+      }
+      const ch = CHAPTERS[idx];
+      const total = CHAPTERS.length;
+      const cur = idx + 1;
+      const partLabel = ch.partNumber
+        ? 'Part ' + ch.partNumber + ' · ' + escapeHtml(ch.partTitle) + ' · '
+        : '';
+      el.innerHTML =
+        partLabel +
+        '<strong>' + escapeHtml(ch.dpId) + '</strong> · ' +
+        escapeHtml(ch.title || ch.dpId) +
+        ' <span style="opacity:0.65">· page ' + cur + ' of ' + total + '</span>';
+    }
+
+    function updateProgressBar(idx) {
+      const bar = document.getElementById('readerProgressBar');
+      if (!bar || !CHAPTERS.length) return;
+      const pct = CHAPTERS.length <= 1
+        ? 100
+        : Math.round(((idx + 1) / CHAPTERS.length) * 100);
+      bar.style.width = pct + '%';
+    }
+
+    function buildToc() {
+      const ul = document.getElementById('toc');
+      if (!ul) return;
+      // Walk parts in order; emit a part header + DP entries per part.
+      const html = [];
+      PARTS.forEach(function (part) {
+        html.push(
+          '<li class="dp-part-head"><span class="dp-part-num">' +
+          escapeHtml(part.number || '·') + '</span>' +
+          escapeHtml(part.title || '') +
+          (part.subtitle ? '<span class="dp-toc-part-title">' + escapeHtml(part.subtitle) + '</span>' : '') +
+          '</li>'
+        );
+        (part.dpIds || []).forEach(function (dpIdRaw) {
+          const dpId = String(dpIdRaw).toUpperCase();
+          const ch = CHAPTER_BY_DP[dpId];
+          if (!ch) return;
+          html.push(
+            '<li><a href="#ch=' + escapeHtml(ch.key) + '" class="dp-toc-link" data-index="' +
+            CHAPTERS.indexOf(ch) + '">' +
+            '<span class="dp-toc-row">' +
+            '<span class="dp-toc-id">' + escapeHtml(dpId) + '</span>' +
+            '<span class="dp-toc-title">' + escapeHtml(ch.title || dpId) + '</span>' +
+            '</span></a></li>'
+          );
+        });
+      });
+      ul.innerHTML = html.join('');
+
+      ul.addEventListener('click', function (e) {
+        const a = e.target.closest('a[data-index]');
+        if (!a) return;
+        e.preventDefault();
+        const idx = parseInt(a.getAttribute('data-index'), 10);
+        if (isNaN(idx) || idx < 0) return;
+        currentIndex = idx;
+        loadChapter(currentIndex);
+        if (isMobileReader()) setSidebarOpen(false);
+      });
+    }
+
+    function setActiveToc(idx) {
+      document.querySelectorAll('#toc a.dp-toc-link').forEach(function (a) {
+        const i = parseInt(a.getAttribute('data-index'), 10);
+        a.classList.toggle('active', i === idx);
+      });
+    }
+
+    function renderDpContent(chapter) {
+      // Build the chapter HTML from bookData.desirable_properties[dpId].
+      const dpId = chapter.dpId;
+      const dpNum = parseInt(dpId.replace(/^DP/i, ''), 10);
+
+      const dpData = (bookData && bookData.desirable_properties || []).find(function (d) {
+        return String(d.id || '').toUpperCase() === dpId;
+      });
+
+      const parts = [];
+      parts.push('<h1>' + escapeHtml(dpId + ' — ' + (chapter.title || '')) + '</h1>');
+
+      // Landing block (if present).
+      if (chapter.landingTitle || chapter.landingSubtitle || chapter.landingText) {
+        parts.push('<div class="dp-landing-block">');
+        parts.push('<div class="dp-landing-eyebrow">' + escapeHtml(chapter.category || 'Meta-Layer property') + '</div>');
+        if (chapter.landingTitle) {
+          parts.push('<h2 class="dp-landing-title">' + escapeHtml(chapter.landingTitle) + '</h2>');
+        }
+        if (chapter.landingSubtitle) {
+          parts.push('<p class="dp-landing-subtitle">' + escapeHtml(chapter.landingSubtitle) + '</p>');
+        }
+        if (chapter.landingText) {
+          parts.push('<p class="dp-landing-text">' + escapeHtml(chapter.landingText) + '</p>');
+        }
+        parts.push('</div>');
+      }
+
+      // Description (the canonical DP statement).
+      const descText = dpData && dpData.description
+        ? '# About ' + dpId + '\n\n' + dpData.description
+        : '';
+      if (descText) {
+        parts.push(DP.renderContent(descText, DP.buildChapterIndex(CHAPTERS)));
+      }
+
+      // Elements.
+      if (chapter.elements && chapter.elements.length) {
+        const elementsMd = '# Elements\n\n' +
+          chapter.elements.map(function (el) {
+            return '### ' + (el.name || 'Element') + '\n\n' + (el.description || '');
+          }).join('\n\n');
+        parts.push(DP.renderContent(elementsMd, DP.buildChapterIndex(CHAPTERS)));
+      }
+
+      return parts.join('\n');
+    }
+
+    async function renderProvenance(idx, chapter) {
+      const dpNum = parseInt(chapter.dpId.replace(/^DP/i, ''), 10);
+      const prov = await loadDpProvenance(dpNum);
+      if (!prov || (!prov.alignments && !prov.clarifications && !prov.extensions)) return '';
+
+      const idxFor = DP.buildChapterIndex(CHAPTERS);
+      const sections = [];
+
+      if (prov.alignments && prov.alignments.length) {
+        sections.push('<div class="dp-alignments"><h3>Alignments (' + prov.alignments.length + ')</h3>');
+        prov.alignments.slice(0, 12).forEach(function (a) {
+          sections.push(
+            '<div class="dp-card">' +
+            '<p class="dp-card-title">' + escapeHtml(a.submission_title || 'Untitled submission') + '</p>' +
+            '<p class="dp-card-submitter">— ' + escapeHtml(a.submitter_name || 'Anon') + '</p>' +
+            '<p class="dp-card-summary">' + escapeHtml(a.summary || '') + '</p>' +
+            '</div>'
+          );
+        });
+        sections.push('</div>');
+      }
+      if (prov.clarifications && prov.clarifications.length) {
+        sections.push('<div class="dp-clarifications"><h3>Clarifications (' + prov.clarifications.length + ')</h3>');
+        prov.clarifications.slice(0, 8).forEach(function (c) {
+          sections.push(
+            '<div class="dp-card">' +
+            '<p class="dp-card-title">' + escapeHtml(c.title || 'Clarification') + '</p>' +
+            '<p class="dp-card-summary">' + escapeHtml(c.clarification || '') + '</p>' +
+            '</div>'
+          );
+        });
+        sections.push('</div>');
+      }
+      if (prov.extensions && prov.extensions.length) {
+        sections.push('<div class="dp-extensions"><h3>Extensions (' + prov.extensions.length + ')</h3>');
+        prov.extensions.slice(0, 8).forEach(function (x) {
+          sections.push(
+            '<div class="dp-card">' +
+            '<p class="dp-card-title">' + escapeHtml(x.title || 'Extension') + '</p>' +
+            '<p class="dp-card-summary">' + escapeHtml(x.extension || '') + '</p>' +
+            '</div>'
+          );
+        });
+        sections.push('</div>');
+      }
+      // Run DP tag linkification across each card body.
+      return DP.linkifyDpTags(sections.join(''), idxFor);
+    }
+
+    async function loadChapter(idx) {
+      const chapter = CHAPTERS[idx];
+      if (!chapter) return;
+      currentIndex = idx;
+      const contentEl = document.getElementById('content');
+      const navBar = document.getElementById('navBar');
+      if (contentEl) contentEl.innerHTML = LS.html('loading');
+      if (navBar) navBar.style.display = 'none';
+
+      try {
+        // Render DP content (synchronous; uses already-loaded bookData).
+        const mainHtml = renderDpContent(chapter);
+        // Render provenance (async).
+        const provenanceHtml = await renderProvenance(idx, chapter);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'book-content';
+        wrap.setAttribute('data-dp-content-root', '1');
+        wrap.innerHTML = mainHtml + provenanceHtml;
+        contentEl.innerHTML = '';
+        contentEl.appendChild(wrap);
+
+        // Inscription rail at end of reader area.
+        if (chapter.inscriptionId) {
+          const meta = document.createElement('div');
+          meta.className = 'ordinal-meta';
+          meta.appendChild(document.createTextNode('Inscription: '));
+          const insA = document.createElement('a');
+          insA.href = ORDINALS_BASE + '/inscription/' + chapter.inscriptionId;
+          insA.target = '_blank';
+          insA.rel = 'noopener';
+          insA.textContent = chapter.inscriptionId.slice(0, 14) + '…' + chapter.inscriptionId.slice(-4);
+          meta.appendChild(insA);
+          const rail = document.createElement('div');
+          rail.className = 'dp-rail';
+          rail.innerHTML =
+            '<div class="dp-rail-label">On-chain inscription</div>' +
+            '<div class="dp-rail-id"><a href="' + ORDINALS_BASE + '/inscription/' + chapter.inscriptionId +
+            '" target="_blank" rel="noopener">' + escapeHtml(chapter.inscriptionId) + '</a></div>';
+          contentEl.appendChild(meta);
+          contentEl.appendChild(rail);
+        }
+
+        if (navBar) {
+          navBar.style.display = 'flex';
+          const label = document.getElementById('chapterLabel');
+          if (label) {
+            const partLabel = chapter.partNumber
+              ? '<span style="opacity:0.7">Part ' + escapeHtml(chapter.partNumber) + ' · </span>'
+              : '';
+            label.innerHTML =
+              partLabel +
+              '<strong>' + escapeHtml(chapter.dpId) + '</strong> · ' +
+              'page ' + (idx + 1) + ' of ' + CHAPTERS.length;
+          }
+          const prev = document.getElementById('btnPrev');
+          const next = document.getElementById('btnNext');
+          if (prev) prev.disabled = idx <= 0;
+          if (next) next.disabled = idx >= CHAPTERS.length - 1;
+        }
+
+        setActiveToc(idx);
+        updateHeaderProgress(idx);
+        updateProgressBar(idx);
+
+        try {
+          localStorage.setItem(STORAGE_LAST_CHAPTER, String(idx));
+        } catch (e) { /* ignore */ }
+        syncChapterUrl(idx, chapter);
+      } catch (err) {
+        const msg = (err && err.message ? err.message : String(err))
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+        contentEl.innerHTML = '<div class="error">' + msg + '</div>';
+      }
+    }
+
+    function syncChapterUrl(idx, chapter) {
+      try {
+        const target = '/viewer/' + chapter.key;
+        const current = window.location.pathname + window.location.search + window.location.hash;
+        if (target !== current) {
+          history.replaceState({ idx: idx, key: chapter.key }, document.title, target);
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    /* ---------- Cover mode ---------- */
+
+    function showCover() {
+      document.body.classList.add('cover-mode');
+      const cover = document.getElementById('coverStage');
+      const reader = document.getElementById('reader');
+      if (cover) cover.hidden = false;
+      if (reader) reader.hidden = true;
+    }
+
+    function hideCover() {
+      document.body.classList.remove('cover-mode');
+      const cover = document.getElementById('coverStage');
+      const reader = document.getElementById('reader');
+      if (cover) cover.hidden = true;
+      if (reader) reader.hidden = false;
+    }
+
+    function bindCover() {
+      const goReader = function () {
+        // Default opening: first chapter via path-based URL.
+        window.location.href = '/viewer/intro';
+      };
+      const hit = document.getElementById('coverHit');
+      const btn = document.getElementById('coverStartBtn');
+      if (hit) {
+        hit.addEventListener('click', goReader);
+        hit.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goReader();
+          }
+        });
+      }
+      if (btn) btn.addEventListener('click', goReader);
+    }
+
+    /* ---------- Mode toggle (Local / Inscribed) ---------- */
+
+    function setMode(mode) {
+      currentMode = mode === 'inscribed' ? 'inscribed' : 'local';
+      try { localStorage.setItem(STORAGE_MODE, currentMode); } catch (e) { /* ignore */ }
+
+      const localBtn = document.getElementById('modeLocal');
+      const inscribedBtn = document.getElementById('modeInscribed');
+      if (localBtn) localBtn.classList.toggle('active', currentMode === 'local');
+      if (inscribedBtn) inscribedBtn.classList.toggle('active', currentMode === 'inscribed');
+
+      const banner = document.getElementById('inscribedBanner');
+      if (banner) banner.classList.toggle('is-visible', currentMode === 'inscribed');
+
+      // Inscribed mode is currently a UI hint — chapters still resolve from local data,
+      // but the inscription rail at end of chapter surfaces the on-chain reference.
+      if (currentMode === 'inscribed') {
+        showToast('Inscribed mode active — showing ordinals IDs at each chapter.', { variant: 'warn', ms: 4000 });
+      }
+    }
+
+    /* ---------- Init ---------- */
+
+    async function init() {
+      // Init site nav first so the brand header shows immediately.
+      if (window.DPSiteNav) {
+        window.DPSiteNav.init({
+          page: 'reader',
+          showToc: true,
+          pageTitle: 'Reader · DP1–DP22',
+          onTocClick: function () { setSidebarOpen(true); },
+        });
+      }
+
+      bindCover();
+
+      const localBtn = document.getElementById('modeLocal');
+      const inscribedBtn = document.getElementById('modeInscribed');
+      if (localBtn) localBtn.addEventListener('click', function () { setMode('local'); });
+      if (inscribedBtn) inscribedBtn.addEventListener('click', function () { setMode('inscribed'); });
+      const switchBtn = document.getElementById('inscribedSwitchLocal');
+      if (switchBtn) switchBtn.addEventListener('click', function () { setMode('local'); });
+
+      const closeBtn = document.getElementById('dpToastClose');
+      if (closeBtn) closeBtn.addEventListener('click', function () {
+        document.getElementById('dpToast').className = 'dp-toast';
+      });
+
+      // Sidebar open / close.
+      const openBtn = document.getElementById('btnTocOpen');
+      const closeBtnSide = document.getElementById('btnSidebarClose');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (openBtn) openBtn.addEventListener('click', function () { setSidebarOpen(true); });
+      if (closeBtnSide) closeBtnSide.addEventListener('click', function () { setSidebarOpen(false); });
+      if (backdrop) backdrop.addEventListener('click', function () { setSidebarOpen(false); });
+
+      // Nav bar prev/next.
+      const prev = document.getElementById('btnPrev');
+      const next = document.getElementById('btnNext');
+      if (prev) prev.addEventListener('click', function () {
+        if (currentIndex > 0) loadChapter(currentIndex - 1);
+      });
+      if (next) next.addEventListener('click', function () {
+        if (currentIndex < CHAPTERS.length - 1) loadChapter(currentIndex + 1);
+      });
+
+      // Keyboard nav.
+      document.addEventListener('keydown', function (e) {
+        // Don't intercept typing in form fields.
+        const tag = (e.target && e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea') return;
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          loadChapter(currentIndex - 1);
+        } else if (e.key === 'ArrowRight' && currentIndex < CHAPTERS.length - 1) {
+          loadChapter(currentIndex + 1);
+        }
+      });
+
+      // Load data.
+      try {
+        await loadManifest();
+        await loadBookData();
+      } catch (err) {
+        console.warn('[dp-viewer] init data load failed', err);
+      }
+
+      // Mode from storage.
+      let savedMode = 'local';
+      try { savedMode = localStorage.getItem(STORAGE_MODE) || 'local'; } catch (e) { /* ignore */ }
+      setMode(savedMode);
+
+      // Build TOC.
+      buildToc();
+
+      // Sidebar default.
+      setSidebarOpen(readTocOpenPreference());
+
+      // Decide which chapter to show.
+      let startIdx = getChapterIndexFromHash();
+      if (startIdx === COVER_INDEX) {
+        // Explicit cover request.
+        showCover();
+        updateHeaderProgress(-1);
+        return;
+      }
+      if (startIdx === LANDING_INDEX || startIdx < 0) {
+        // Unknown /intro or no chapter specified → land on first chapter.
+        startIdx = 0;
+      }
+      hideCover();
+      loadChapter(startIdx);
+    }
+
+    // Hash-change handler (back/forward buttons).
+    window.addEventListener('hashchange', function () {
+      const idx = getChapterIndexFromHash();
+      if (idx >= 0) {
+        hideCover();
+        loadChapter(idx);
+      } else if (idx === COVER_INDEX) {
+        showCover();
+        updateHeaderProgress(-1);
+      } else if (idx === LANDING_INDEX) {
+        hideCover();
+        loadChapter(0);
+      }
+    });
+
+    // Delegate DP tag clicks inside content area.
+    document.addEventListener('click', function (e) {
+      const a = e.target.closest && e.target.closest('a.dp-tag[data-dp-link]');
+      if (!a) return;
+      e.preventDefault();
+      const dpId = a.getAttribute('data-dp-link');
+      const target = CHAPTER_BY_DP[dpId];
+      if (target) {
+        const idx = CHAPTERS.indexOf(target);
+        if (idx >= 0) loadChapter(idx);
+      }
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -1,11 +1,19 @@
 const GOVHUB_BASE = process.env.GOVHUB_BASE_URL ?? 'https://govhub.live';
 
-/** ML-Draft-026 — opening chapter framing the Desirable Properties Challenge */
+/** ML-Draft-026 – opening chapter framing the Desirable Properties Challenge */
 export const FRAMING_CHAPTER_URL =
   'https://govhub.live/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F';
 export const FRAMING_CHAPTER_TITLE =
   'The Desirable Properties of a Meta-Layer';
 export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
+
+/** Open-access BRC333 book reader (markdown ordinals).
+ * Points at the cover page on the main domain so the in-header Book link
+ * opens the cover; the cover click then routes into the viewer SPA at
+ * /viewer/<chapter>. The legacy subdomain (book.desirableproperties.org)
+ * still serves the BRC333 ordinal preview. */
+export const DESIRABLE_PROPERTIES_BOOK_URL =
+  'https://desirableproperties.org/book';
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 

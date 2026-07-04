@@ -1,0 +1,103 @@
+{
+  "project": "desirableproperties-book",
+  "source": "Desirable Properties for the Meta-Layer",
+  "authors": ["MetaLayer Community"],
+  "url": "https://book.desirableproperties.org",
+  "brc333": {
+    "workId": "desirableproperties-book",
+    "snapshotUrl": "",
+    "snapshotPath": "/json/graph-snapshot.json"
+  },
+  "inscriptions": {
+    "cover": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
+    "mlDraft": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0"
+  },
+  "theme": {
+    "brand": "Desirable Properties",
+    "accent": "#d4af37",
+    "accentHover": "#e8c468",
+    "bg": "#0d1117",
+    "surface": "#161b22",
+    "text": "#e6edf3"
+  },
+  "parts": [
+    {
+      "key": "part-1",
+      "number": "I",
+      "title": "Trust & Agency",
+      "subtitle": "Identity, accountability, and the foundations of participant empowerment",
+      "dpIds": ["DP1", "DP2", "DP3"]
+    },
+    {
+      "key": "part-2",
+      "number": "II",
+      "title": "Sovereignty & Privacy",
+      "subtitle": "Data control, decentralized namespaces, and fair commerce",
+      "dpIds": ["DP4", "DP5", "DP6"]
+    },
+    {
+      "key": "part-3",
+      "number": "III",
+      "title": "Interoperability & Communities",
+      "subtitle": "Simplicity, meta-communities, and developer incentives",
+      "dpIds": ["DP7", "DP8", "DP9"]
+    },
+    {
+      "key": "part-4",
+      "number": "IV",
+      "title": "Learning & Multi-Modal Experience",
+      "subtitle": "Education across the web, multi-modal interfaces, and lifelong learning",
+      "dpIds": ["DP10", "DP21"]
+    },
+    {
+      "key": "part-5",
+      "number": "V",
+      "title": "AI Governance & Safety",
+      "subtitle": "Safe, ethical, and community-governed AI",
+      "dpIds": ["DP11", "DP12", "DP13"]
+    },
+    {
+      "key": "part-6",
+      "number": "VI",
+      "title": "Trust, Sustainability & Feedback",
+      "subtitle": "Trust, security, milestones, sustainability, and feedback loops",
+      "dpIds": ["DP14", "DP15", "DP16", "DP17", "DP18", "DP19", "DP20"]
+    },
+    {
+      "key": "part-7",
+      "number": "VII",
+      "title": "Memory Stewardship",
+      "subtitle": "Civic memory and epistemic continuity",
+      "dpIds": ["DP22"]
+    }
+  ],
+  "chapterIds": {
+    "DP1": "5d5a1f3edf39f2b3afc2c906f282853ff090eff6dfa1036e9d50d3275d1bb26ci0",
+    "DP2": "da09d16fcd1141acb402ceda6e2ca096fe827300fda916e62255cdca5bf6cc92i0",
+    "DP3": "d4359711a1e0e8eb0cbafc2744b344886208e1667d4813d7904f1ad83d3f5fa0i0",
+    "DP4": "e70ce13751a422852c542df97254b9baf58f0bb0086577dba995984d2e9ab8e5i0",
+    "DP5": "394e733026f82832e7cad6a32b52d50cc2bf91bcd98c392f7fcd3cb67e14b0edi0",
+    "DP6": "aedadfe464f78de3ffdae19ee556f34ae613dc01063c93c16626225927eb1162i0",
+    "DP7": "b3f88c58e299c287d2cddd230a070d6651cc09820b5b8eb060365b2aec1a7a87i0",
+    "DP8": "6d8824d7b5c5cbc5a9e0c17a601f0453bdc7f095c7006ee3d9b3791c4d354e43i0",
+    "DP9": "0cf5a634cd506f0541a57c1523577d68f27f1ab81c3e471ebbb5f7323cf564aci0",
+    "DP10": "b24272bf7eaeb383037ececa1448c28700cbcc21c16e19471b592dd470f31ffci0",
+    "DP11": "da4ec87fc5448c0ccb98243480233af60f484bc7b553c5254b0ab239b0bfc4cci0",
+    "DP12": "82d55f26eaabcfb16289a7fafc48b68286892718a6a2529ef92d2eb02576b361i0",
+    "DP13": "e8738f646bc22112ff7681ac8aba99cb5206f5d153286a8fa337b65c57cc4205i0",
+    "DP14": "5002641bacb834131cde04a0182749f10ae7c8af37434f79e4b29aa775e38ef1i0",
+    "DP15": "9ebc47bd65347f1a56344145fcf329b90da195341c652ec54fa6cb3aaddce12ei0",
+    "DP16": "99e7276eb138d77992f757041bf2c9019eda2801971834239b24f2d25b53be83i0",
+    "DP17": "8674ea750cf0022d3678ac1d2fc13a52ac73c46022fd5585e7e9ec2c099c8fb6i0",
+    "DP18": "c3bace8a87d3281bc33920d606c56b7406d75d7d589901d8405eb913dd832e86i0",
+    "DP19": "b7184d2145fbf9099e15948656fa36ac7b6d3e85469ba235018d1e09b8aef49ci0",
+    "DP20": "9daa9b44cf42b0bee0806a465109c3331551517a24e374f9c59e66b17af393c0i0",
+    "DP21": "72b12b873c331237e89ba798d613e0c3d5230a5ba4d9426ae243c66c6a613fbci0",
+    "DP22": "a802c08792193bf5bfc56ef20eaa57e706a830ebd55decb597f0b1ae5506f5b1i0"
+  },
+  "data": {
+    "bookSource": "/assets/data/desirable-properties.json",
+    "chapterSources": "/assets/data/dp{n}.json"
+  },
+  "versions": {}
+}

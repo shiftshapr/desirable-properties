@@ -12,7 +12,7 @@
       "startDate": "2024-09-18",
       "endDate": "2024-09-18",
       "title": "Challenge kickoff",
-      "description": "Internet pioneer Vint Cerf asked what desirable properties a new Coordination Layer above today's Web should possess—launching the Meta-Layer Initiative's global inquiry.",
+      "description": "Internet pioneer Vint Cerf asked what desirable properties a new Coordination Layer above today's Web should possess–launching the Meta-Layer Initiative's global inquiry.",
       "href": "/about#challenge",
       "linkLabel": "Read the origin story"
     },
@@ -32,7 +32,7 @@
       "startDate": "2024-10-01",
       "endDate": "2025-04-30",
       "title": "The Metaweb book",
-      "description": "Publication of The Metaweb—a foundational narrative on the layered Web, collective intelligence, and the path toward a community-governed coordination layer.",
+      "description": "Publication of The Metaweb–a foundational narrative on the layered Web, collective intelligence, and the path toward a community-governed coordination layer.",
       "href": "https://app.metawebbook.com/ml_2.htm",
       "linkLabel": "Explore The Metaweb"
     },
@@ -52,7 +52,7 @@
       "startDate": "2025-05-01",
       "endDate": "2025-08-31",
       "title": "Second Call for Input",
-      "description": "A broader public call gathered submissions from around the world. Contributions were preserved as Bitcoin Ordinal inscriptions—a permanent record of community thinking.",
+      "description": "A broader public call gathered submissions from around the world. Contributions were preserved as Bitcoin Ordinal inscriptions–a permanent record of community thinking.",
       "href": "/onchain#second-call-submissions",
       "linkLabel": "View on-chain submissions"
     },
@@ -62,7 +62,7 @@
       "startDate": "2026-06-01",
       "endDate": "2026-06-30",
       "title": "Version 0.77 public review",
-      "description": "The current working draft—Desirable Properties of a Meta-Layer v0.77—is open for public review, informed by two calls for input and AI-assisted synthesis under community stewardship.",
+      "description": "The current working draft–Desirable Properties of a Meta-Layer v0.77–is open for public review, informed by two calls for input and AI-assisted synthesis under community stewardship.",
       "href": "/#dps",
       "linkLabel": "Browse the DPs"
     },
@@ -72,7 +72,7 @@
       "startDate": "2026-07-01",
       "endDate": "2026-07-15",
       "title": "Workgroup formation",
-      "description": "Formation of workgroups for each Desirable Property—recruiting leads, co-leads, and contributors to steward individual chapters through the next phase.",
+      "description": "Formation of workgroups for each Desirable Property–recruiting leads, co-leads, and contributors to steward individual chapters through the next phase.",
       "href": "https://govhub.live/workgroups/",
       "linkLabel": "Join on Gov Hub"
     },
@@ -91,10 +91,10 @@
       "dateLabel": "September 1–15, 2026",
       "startDate": "2026-09-01",
       "endDate": "2026-09-15",
-      "title": "Version 1 publication",
-      "description": "Publication of Version 1 of the Desirable Properties of a Meta-Layer—the first mature community-developed edition advancing toward rough consensus.",
-      "href": "/challenge",
-      "linkLabel": "Follow the challenge"
+      "title": "Version 1 synthesis",
+      "description": "Synthesis of Version 1 of the Desirable Properties of a Meta-Layer–the first mature community-developed edition advancing toward rough consensus.",
+      "href": "https://govhub.live/workgroups/",
+      "linkLabel": "Join a Workgroup"
     },
     {
       "id": "book-launch",
@@ -102,9 +102,9 @@
       "startDate": "2026-09-18",
       "endDate": "2026-09-18",
       "title": "Desirable Properties Book & Monument launch",
-      "description": "Launch of the online Desirable Properties book and permanent Ordinal edition—preserving the first mature community-developed version as part of the Digital Monument.",
-      "href": "/onchain",
-      "linkLabel": "Explore the monument"
+      "description": "Launch of the online Desirable Properties book and permanent Ordinal edition–preserving the first mature community-developed version as part of the Digital Monument.",
+      "href": "https://desirableproperties.org/book",
+      "linkLabel": "Read the book"
     },
     {
       "id": "meta-layer-summit",
