@@ -94,21 +94,17 @@
     }
 
     * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; height: 100%; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      height: 100%;
-      min-height: 0;
-      overflow: hidden;
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
-    }
-    body.sidebar-open-mobile {
-      overflow: hidden;
     }
 
     /* Header — slim band above the sticky site header from dp-site-nav */
@@ -223,10 +219,9 @@
     }
 
     .main {
-      flex: 1;
-      min-height: 0;
+      flex: 1 1 auto;
+      min-height: 600px;
       display: flex;
-      overflow: hidden;
       width: 100%;
     }
 
@@ -240,6 +235,11 @@
       transition: transform 0.2s, width 0.2s;
       display: flex;
       flex-direction: column;
+      position: sticky;
+      top: var(--dp-header-stack, 96px);
+      align-self: flex-start;
+      max-height: calc(100vh - var(--dp-header-stack, 96px));
+      max-height: calc(100dvh - var(--dp-header-stack, 96px));
     }
     .sidebar.hidden {
       transform: translateX(-100%);
@@ -307,7 +307,7 @@
       flex-direction: column;
       gap: 1px;
       padding: 8px 18px;
-      color: var(--muted);
+      color: rgba(232, 244, 255, 0.7);
       text-decoration: none;
       font-size: 13.5px;
       transition: color 0.2s, background 0.2s;
@@ -321,9 +321,11 @@
     .sidebar a.dp-toc-link .dp-toc-id {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 11px;
-      color: var(--muted);
+      color: rgba(232, 244, 255, 0.85);
       flex-shrink: 0;
-      opacity: 0.85;
+      opacity: 1;
+      font-weight: 600;
+      letter-spacing: 0.04em;
     }
     .sidebar a.dp-toc-link:hover {
       color: var(--accent);
@@ -332,9 +334,16 @@
     .sidebar a.dp-toc-link.active {
       color: var(--accent);
       font-weight: 700;
-      border-left-color: var(--accent);
-      padding-left: 15px;
       background: var(--accent-soft-2);
+      border-left: 3px solid var(--accent);
+      padding-left: 14px;
+    }
+    .sidebar a.dp-toc-link.active .dp-toc-id {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .sidebar a.dp-toc-link.active .dp-toc-title {
+      color: var(--text);
     }
     .sidebar a.dp-toc-link .dp-toc-title {
       display: block;
@@ -357,7 +366,7 @@
     .reader {
       flex: 1;
       min-height: 0;
-      overflow-y: auto;
+      overflow-y: visible;
       padding: 28px 24px;
       max-width: 760px;
       margin: 0 auto;
@@ -479,6 +488,64 @@
       margin: 0;
       font-size: 0.98rem;
       color: #1f2328;
+    }
+
+    /* Intro / preface landing */
+    .book-content .dp-intro {
+      text-align: left;
+    }
+    .book-content .dp-intro h1 {
+      font-size: 1.85rem;
+      line-height: 1.2;
+      margin: 0 0 0.2em;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.3em;
+    }
+    .book-content .dp-intro .dp-intro-eyebrow {
+      margin: 0 0 1.2em;
+      font-size: 0.9rem;
+      color: #59636e;
+      letter-spacing: 0.06em;
+      font-style: italic;
+    }
+    .book-content .dp-intro .dp-intro-welcome {
+      margin: 0 0 1.6em;
+    }
+    .book-content .dp-intro-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin: 1.6em 0 0;
+      padding-top: 1.4em;
+      border-top: 1px solid var(--book-rule);
+    }
+    .book-content a.dp-intro-start {
+      display: inline-block;
+      padding: 12px 28px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+    .book-content a.dp-intro-start:hover { filter: brightness(1.10); }
+    .book-content a.dp-intro-back {
+      display: inline-block;
+      padding: 11px 22px;
+      border: 1px solid var(--book-rule);
+      color: #1f2328;
+      font-weight: 500;
+      font-size: 13px;
+      border-radius: 6px;
+      text-decoration: none;
+      background: transparent;
+    }
+    .book-content a.dp-intro-back:hover {
+      background: rgba(0, 0, 0, 0.04);
     }
     .book-content .dp-elements {
       list-style: none;
@@ -811,11 +878,13 @@
 </head>
 <body>
 
+  <div id="dp-site-nav"></div>
+
   <div class="header dp-container dp-container-wide" id="pageHeader">
     <div class="header-inner">
       <h1>
         <a class="header-title-link" href="/viewer/intro">
-          Desirable Properties
+          The Desirable Properties of a Meta-Layer
         </a>
       </h1>
       <div class="header-tools">
@@ -915,8 +984,6 @@
     </div>
   </div>
 
-  <div id="dp-site-nav"></div>
-
   <div id="dpToast" class="dp-toast" role="status" aria-live="polite">
     <span id="dpToastText"></span>
     <button type="button" id="dpToastClose" aria-label="Dismiss notification">×</button>
@@ -938,7 +1005,7 @@
     const STORAGE_TOC_OPEN = 'dp-viewer-toc-open';
     const STORAGE_MODE = 'dp-viewer-mode';
 
-    const SITE_TITLE = 'Desirable Properties';
+    const SITE_TITLE = 'The Desirable Properties of a Meta-Layer';
     const ORDINALS_BASE = 'https://ordinals.com';
     const MANIFEST_URL = '/json/desirableproperties-book-manifest.json';
     const BOOK_SOURCE_URL = '/assets/data/desirable-properties.json';
@@ -1134,13 +1201,14 @@
     const COVER_INDEX = -2;
     /** Sentinel returned for "fall through to default landing" requests. */
     const LANDING_INDEX = -3;
+    /** Sentinel returned for the intro/preface page (`/viewer/intro`). */
+    const INTRO_INDEX = -4;
 
     /**
      * Resolve the requested chapter index from the URL.
      * Supports path-based routing (`/viewer/intro`), hash (`#ch=dp-1`),
-     * and query (`?ch=dp-1`). Unknown keys (e.g. `intro`) fall through to
-     * the first chapter so the canonical `/viewer/intro` URL always opens
-     * the book at DP1.
+     * and query (`?ch=dp-1`). Unknown keys fall through to the first
+     * chapter; the canonical `/viewer/intro` URL renders the intro page.
      */
     function getChapterIndexFromHash() {
       // 1. Path-based: /viewer/<chapter-key>
@@ -1148,9 +1216,10 @@
       if (pathMatch) {
         const key = String(pathMatch[1]).toLowerCase();
         if (key === 'cover') return COVER_INDEX;
+        if (key === 'intro') return INTRO_INDEX;
         const idx = getChapterIndexFromKey(key);
         if (idx >= 0) return idx;
-        // Unknown chapter key (e.g. "intro") → land on first chapter.
+        // Unknown chapter key → land on first chapter.
         return LANDING_INDEX;
       }
       // 2. Hash-based: #ch=dp-1
@@ -1208,6 +1277,14 @@
       if (!ul) return;
       // Walk parts in order; emit a part header + DP entries per part.
       const html = [];
+      // Pre-part: Introduction entry.
+      html.push(
+        '<li><a href="/viewer/intro" class="dp-toc-link" data-key="intro">' +
+        '<span class="dp-toc-row">' +
+        '<span class="dp-toc-id">·</span>' +
+        '<span class="dp-toc-title">Introduction</span>' +
+        '</span></a></li>'
+      );
       PARTS.forEach(function (part) {
         html.push(
           '<li class="dp-part-head"><span class="dp-part-num">' +
@@ -1233,22 +1310,56 @@
       ul.innerHTML = html.join('');
 
       ul.addEventListener('click', function (e) {
-        const a = e.target.closest('a[data-index]');
+        const a = e.target.closest('a.dp-toc-link');
         if (!a) return;
         e.preventDefault();
+        // Intro link → render the preface page.
+        if (a.getAttribute('data-key') === 'intro') {
+          hideCover();
+          loadIntro();
+          try {
+            history.replaceState({ idx: INTRO_INDEX, key: 'intro' }, document.title, '/viewer/intro');
+          } catch (err) { /* ignore */ }
+          return;
+        }
         const idx = parseInt(a.getAttribute('data-index'), 10);
         if (isNaN(idx) || idx < 0) return;
         currentIndex = idx;
         loadChapter(currentIndex);
-        if (isMobileReader()) setSidebarOpen(false);
+        // Keep the sidebar open after click; user can close via X button if desired.
       });
     }
 
     function setActiveToc(idx) {
       document.querySelectorAll('#toc a.dp-toc-link').forEach(function (a) {
         const i = parseInt(a.getAttribute('data-index'), 10);
-        a.classList.toggle('active', i === idx);
+        a.classList.toggle('active', i === idx && a.getAttribute('data-key') !== 'intro');
       });
+    }
+
+    /**
+     * Render the intro / preface page shown at `/viewer/intro`.
+     * Lives in place of a DP chapter before the first chapter.
+     */
+    function renderIntroContent() {
+      const parts = [];
+      parts.push(
+        '<div class="dp-intro">' +
+          '<h1>The Desirable Properties of a Meta-Layer</h1>' +
+          '<p class="dp-intro-eyebrow">A Book of the Meta-Layer · 22 Properties, 7 Parts</p>' +
+          '<div class="dp-landing-block dp-intro-welcome">' +
+            '<div class="dp-landing-eyebrow">Welcome</div>' +
+            '<h2 class="dp-landing-title">Twenty-two Desirable Properties for the Meta-Layer</h2>' +
+            '<p class="dp-landing-text">This book collects twenty-two community-defined Desirable Properties for the Meta-Layer — the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge, were inscribed on Bitcoin, and are now grouped here into seven thematic parts: Trust &amp; Agency; Sovereignty &amp; Privacy; Interoperability &amp; Communities; Learning &amp; Multi-Modal Experience; AI Governance &amp; Safety; Trust, Sustainability &amp; Feedback; and Memory Stewardship.</p>' +
+            '<p class="dp-landing-text" style="margin-top:0.8em">Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own — but they are strongest when seen together.</p>' +
+          '</div>' +
+          '<div class="dp-intro-actions">' +
+            '<a class="dp-intro-start" href="/viewer/dp-1">Start at DP1 →</a>' +
+            '<a class="dp-intro-back" href="/">Back to cover</a>' +
+          '</div>' +
+        '</div>'
+      );
+      return parts.join('\n');
     }
 
     function renderDpContent(chapter) {
@@ -1346,6 +1457,41 @@
       }
       // Run DP tag linkification across each card body.
       return DP.linkifyDpTags(sections.join(''), idxFor);
+    }
+
+    /**
+     * Render the intro / preface and update chrome (TOC, nav-bar, header).
+     * Used by `init()` and the hashchange handler when the intro sentinel
+     * is resolved. Hides the prev/next nav (the intro is the first page).
+     */
+    function loadIntro() {
+      const contentEl = document.getElementById('content');
+      const navBar = document.getElementById('navBar');
+      const wrap = document.createElement('div');
+      wrap.className = 'book-content';
+      wrap.setAttribute('data-dp-content-root', '1');
+      wrap.innerHTML = renderIntroContent();
+      contentEl.innerHTML = '';
+      contentEl.appendChild(wrap);
+      if (navBar) navBar.style.display = 'none';
+
+      // Highlight the intro link in the TOC.
+      document.querySelectorAll('#toc a.dp-toc-link').forEach(function (a) {
+        const key = a.getAttribute('data-key');
+        a.classList.toggle('active', key === 'intro');
+      });
+
+      // Update the header progress line.
+      const el = document.getElementById('headerPartLine');
+      if (el) {
+        el.innerHTML =
+          '<strong>Introduction</strong> · ' +
+          'Welcome to the book ' +
+          '<span style="opacity:0.65">· preface</span>';
+      }
+      // Reset progress bar (intro precedes chapter 1).
+      const bar = document.getElementById('readerProgressBar');
+      if (bar) bar.style.width = '0%';
     }
 
     async function loadChapter(idx) {
@@ -1542,6 +1688,13 @@
         // Don't intercept typing in form fields.
         const tag = (e.target && e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea') return;
+        // From the intro page, ArrowRight jumps to DP1; ArrowLeft is a no-op.
+        if (window.location.pathname.indexOf('/viewer/intro') >= 0) {
+          if (e.key === 'ArrowRight' && CHAPTERS.length > 0) {
+            loadChapter(0);
+          }
+          return;
+        }
         if (e.key === 'ArrowLeft' && currentIndex > 0) {
           loadChapter(currentIndex - 1);
         } else if (e.key === 'ArrowRight' && currentIndex < CHAPTERS.length - 1) {
@@ -1580,8 +1733,14 @@
         updateHeaderProgress(-1);
         return;
       }
+      if (startIdx === INTRO_INDEX) {
+        // /viewer/intro → render the preface page.
+        hideCover();
+        loadIntro();
+        return;
+      }
       if (startIdx === LANDING_INDEX || startIdx < 0) {
-        // Unknown /intro or no chapter specified → land on first chapter.
+        // Unknown chapter key or no chapter specified → land on first chapter.
         startIdx = 0;
       }
       hideCover();
@@ -1597,6 +1756,9 @@
       } else if (idx === COVER_INDEX) {
         showCover();
         updateHeaderProgress(-1);
+      } else if (idx === INTRO_INDEX) {
+        hideCover();
+        loadIntro();
       } else if (idx === LANDING_INDEX) {
         hideCover();
         loadChapter(0);
