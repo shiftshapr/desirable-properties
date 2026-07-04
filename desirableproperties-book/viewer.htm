@@ -1130,6 +1130,26 @@
       }
     }
 
+    /**
+     * Normalize ordinal markdown before rendering.
+     * Ordinals escape certain markdown markers with a backslash to prevent
+     * unintended interpretation (e.g. "1\. " so the line is not treated as
+     * an ordered list). We strip those backslashes so the rendered output
+     * reads naturally while still letting the renderer do the right thing.
+     */
+    function normalizeOrdinalMarkdown(md) {
+      return md
+        // Strip backslash escapes from "N\. " or "N\.N\. " style markers.
+        // This matches the GFM escaped-period pattern: "\." → ".".
+        .replace(/(\d+)\\\./g, '$1.')
+        // Also handle other common ordinal backslash escapes that just look ugly:
+        .replace(/\\\*/g, '*')      // "\*" → "*" (escaped italic/list)
+        .replace(/\\_/g, '_')       // "\_" → "_" (escaped bold/underline)
+        .replace(/\\\[/g, '[')      // "\[" → "[" (escaped link start)
+        .replace(/\\\]/g, ']')      // "\]" → "]" (escaped link end)
+        .replace(/\\`/g, '`');      // "\`" → "`" (escaped code)
+    }
+
     function renderChapterMarkdown(md) {
       const tpl = document.createElement('template');
       tpl.innerHTML = renderMarkdown(md);
@@ -1159,13 +1179,13 @@
       const url = '/content/' + inscriptionId;
       const r = await fetch(url, { cache: 'no-cache' });
       if (!r.ok) throw new Error('Onchain fetch failed (' + r.status + '): ' + inscriptionId);
-      return await r.text();
+      return normalizeOrdinalMarkdown(await r.text());
     }
 
     async function fetchLocalOverride(overridePath) {
       const r = await fetch(overridePath, { cache: 'no-cache' });
       if (!r.ok) throw new Error('Local override fetch failed (' + r.status + '): ' + overridePath);
-      return await r.text();
+      return normalizeOrdinalMarkdown(await r.text());
     }
 
     async function loadChapterBody(rail) {
