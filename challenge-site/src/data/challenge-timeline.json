@@ -68,9 +68,9 @@
     },
     {
       "id": "workgroup-formation",
-      "dateLabel": "July 1–15, 2026",
+      "dateLabel": "July 1–20, 2026",
       "startDate": "2026-07-01",
-      "endDate": "2026-07-15",
+      "endDate": "2026-07-20",
       "title": "Workgroup formation",
       "description": "Formation of workgroups for each Desirable Property–recruiting leads, co-leads, and contributors to steward individual chapters through the next phase.",
       "href": "https://govhub.live/workgroups/",
@@ -78,8 +78,8 @@
     },
     {
       "id": "community-review",
-      "dateLabel": "July 16–August 30, 2026",
-      "startDate": "2026-07-16",
+      "dateLabel": "July 21–August 30, 2026",
+      "startDate": "2026-07-21",
       "endDate": "2026-08-30",
       "title": "Community review & patches",
       "description": "Workgroups gather commentary, propose patches, and explore implementations that strengthen the coherence of the emerging framework.",
