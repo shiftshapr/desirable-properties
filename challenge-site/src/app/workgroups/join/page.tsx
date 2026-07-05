@@ -181,7 +181,101 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="workgroups" className="border-b border-slate-800">
+      <section id="about" className="border-b border-slate-800">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-3xl font-bold text-white">What is a DP workgroup</h2>
+          <p className="mt-3 max-w-3xl text-slate-400">
+            A Desirable Properties workgroup is a small, focused team that moves a single
+            Desirable Property from concept to working draft. Each workgroup has a charter,
+            a coordinator, and a flexible roster of members who contribute as their time
+            allows — most collaboration is async, with synchronous time reserved for moments
+            that need it.
+          </p>
+          <p className="mt-3 max-w-3xl text-slate-400">
+            There is no requirement to attend every meeting or write every line. Join for the
+            parts of the work you care about, and step back when life gets busy.
+          </p>
+        </div>
+      </section>
+
+      <section id="join-vs-nominate" className="border-b border-slate-800 bg-slate-900/40">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
+          <p className="mt-3 max-w-3xl text-slate-400">
+            Two ways to get involved with a workgroup: join it as a member, or nominate
+            someone (including yourself) for a coordinator or contributor role.
+          </p>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-6">
+              <h3 className="text-lg font-semibold text-white">Join as a member</h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                Joining is low-commitment and reversible. As a member you can read drafts,
+                comment on proposals, and contribute wherever your time and interest align —
+                there is no obligation to attend meetings or write code.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                Most workgroups welcome additional members at any point. Use the
+                <span className="mx-1 inline-block rounded-md border border-cyan-900/60 bg-cyan-950/30 px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-cyan-200">
+                  Join as member
+                </span>
+                button on any card below to get started.
+              </p>
+            </div>
+
+            <div className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-6">
+              <h3 className="text-lg font-semibold text-white">
+                Nominate a coordinator (or yourself)
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                Nominating puts someone forward for a named role — Coordinator, Editor,
+                Presenter, or another contributor position. You can nominate yourself or
+                someone else in the community.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                The nominee reviews the nomination first and must accept it before the layer
+                admin reviews and approves. Use the
+                <span className="mx-1 inline-block rounded-md border border-slate-700 px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-slate-200">
+                  Nominate
+                </span>
+                button on any card below — it opens the workgroup page with the form ready.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="roles" className="border-b border-slate-800">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
+          <p className="mt-3 max-w-3xl text-slate-400">
+            Every workgroup is staffed by a small set of contributors. Roles are flexible —
+            contribute where you have time and interest.
+          </p>
+
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {ROLES.map((role) => (
+              <li
+                key={role.key}
+                className="rounded-xl border border-slate-800 bg-slate-900/40 p-5"
+              >
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-900/40 text-xl text-violet-200"
+                  aria-hidden
+                >
+                  {role.glyph}
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-white">{role.label}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  {role.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="workgroups" className="border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">The 22 workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -202,7 +296,7 @@ export default async function JoinWorkgroupPage() {
               return (
                 <li
                   key={dpId}
-                  className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/40 p-5 transition-colors hover:border-violet-700/60"
+                  className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-5 transition-colors hover:border-violet-700/60"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <span className="rounded-md border border-cyan-900/60 bg-cyan-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-cyan-200">
@@ -238,36 +332,6 @@ export default async function JoinWorkgroupPage() {
                 </li>
               );
             })}
-          </ul>
-        </div>
-      </section>
-
-      <section id="roles" className="border-b border-slate-800 bg-slate-900/40">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
-          <p className="mt-3 max-w-3xl text-slate-400">
-            Every workgroup is staffed by a small set of contributors. Roles are flexible —
-            contribute where you have time and interest.
-          </p>
-
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {ROLES.map((role) => (
-              <li
-                key={role.key}
-                className="rounded-xl border border-slate-800 bg-slate-950/60 p-5"
-              >
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-900/40 text-xl text-violet-200"
-                  aria-hidden
-                >
-                  {role.glyph}
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-white">{role.label}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                  {role.description}
-                </p>
-              </li>
-            ))}
           </ul>
         </div>
       </section>
