@@ -1,10 +1,6 @@
 import localData from '@/data/desirable-properties.json';
 import Link from 'next/link';
-import {
-  fetchChallengeWorkgroups,
-  govhubUrl,
-  type GovHubWorkgroup,
-} from '@/lib/govhub';
+import { govhubUrl } from '@/lib/govhub';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -98,27 +94,18 @@ function shortDescription(dp: { description?: string; landing_subtitle?: string 
   return best.length > 220 ? `${best.slice(0, 217).trimEnd()}…` : best;
 }
 
-function fallbackSlug(dpId: string, name: string): string {
-  const num = dpId.replace(/^DP/i, '').toLowerCase();
-  const slug = name
+function deriveSlug(dp: { id: string; name?: string }): string {
+  const n = String(dp.id).replace(/^DP/i, '').toLowerCase();
+  const nameSlug = String(dp.name || '')
     .toLowerCase()
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-  return `dp${num}-${slug}`;
+  return `dp${n}-${nameSlug || 'workgroup'}`;
 }
 
 export default async function JoinWorkgroupPage() {
   const dps = localData.desirable_properties;
-  const workgroups = (await fetchChallengeWorkgroups()) ?? [];
-
-  const liveSlugByDpId = new Map<string, string>();
-  for (const wg of workgroups) {
-    const m = wg.name.match(/^DP(\d+)\b/i);
-    if (m) {
-      liveSlugByDpId.set(`DP${m[1]}`, wg.slug);
-    }
-  }
 
   return (
     <main className="border-b border-slate-800">
@@ -165,8 +152,7 @@ export default async function JoinWorkgroupPage() {
             {dps.map((dp) => {
               const dpId = dp.id as string;
               const name = dp.name as string;
-              const liveSlug = liveSlugByDpId.get(dpId);
-              const slug = liveSlug ?? fallbackSlug(dpId, name);
+              const slug = deriveSlug(dp);
               const wgHref = govhubUrl(`/workgroups/${slug}/`);
               const nominateHref = `${wgHref}?action=nominate`;
               const summary = shortDescription(dp);
