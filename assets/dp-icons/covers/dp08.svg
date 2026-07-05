@@ -1,33 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP8 — Collaborative Environment and Meta-Communities</title>
-  <!-- background -->
+  <title id="t">DP8 — Cm — Collaborative Environment and Meta-Communities</title>
+  <!-- white background -->
   <rect width="1200" height="630" fill="#ffffff"/>
   <!-- gold border -->
   <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- title strip background, family color at 12% -->
-  <rect x="600" y="4" width="596" height="622" fill="#d97706" fill-opacity="0.10"/>
-  <!-- divider line -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#d97706" stroke-width="2" stroke-opacity="0.5"/>
+  <!-- family-color wash on right strip -->
+  <rect x="600" y="4" width="596" height="622" fill="#d946ef" fill-opacity="0.08"/>
+  <!-- gold divider line between halves -->
+  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
   <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#f5e9c8" fill-opacity="0.06" stroke="#b8860b" stroke-width="1.5"/>
-  <circle cx="20" cy="20" r="1.4" fill="#d97706" stroke="none"/>
-    <circle cx="12" cy="12" r="2.5" stroke="currentColor" fill="none"/>
-<circle cx="18.06" cy="15.5" r="0.9" fill="#d97706" stroke="none"/>
-<circle cx="12.0" cy="19.0" r="0.9" fill="#d97706" stroke="none"/>
-<circle cx="5.94" cy="15.5" r="0.9" fill="#d97706" stroke="none"/>
-<circle cx="5.94" cy="8.5" r="0.9" fill="#d97706" stroke="none"/>
-<circle cx="12.0" cy="5.0" r="0.9" fill="#d97706" stroke="none"/>
-<circle cx="18.06" cy="8.5" r="0.9" fill="#d97706" stroke="none"/>
+  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
+    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
+  <circle cx="12" cy="12" r="2.4" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="12.00" y2="4.50" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="12.0" cy="4.5" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="18.50" y2="8.25" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="18.5" cy="8.25" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="18.50" y2="15.75" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="18.5" cy="15.75" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="12.00" y2="19.50" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="12.0" cy="19.5" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="5.50" y2="15.75" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="5.5" cy="15.75" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="5.50" y2="8.25" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="5.5" cy="8.25" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
   </svg>
-  <!-- DPnn big label, above title -->
-  <text x="640" y="120" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="32" font-weight="700" fill="#d97706" letter-spacing="3">DP08</text>
+  <!-- DPnn, gold -->
+  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP08</text>
+  <!-- 2-letter code, family color, larger -->
+  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#d946ef" letter-spacing="2">Cm</text>
+  <!-- group label, small caps, gold -->
+  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">INTEROPERABILITY &amp; PARTICIPANT EXPERIENCE</text>
+  <!-- divider under header -->
+  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
   <!-- title text lines -->
-  <text x="640" y="220" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#1f1b0e">Collaborative</text>
-  <text x="640" y="300" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#1f1b0e">Environment and</text>
-  <text x="640" y="380" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#1f1b0e">Meta-Communities</text>
+  <text x="650" y="264" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Collaborative</text>
+  <text x="650" y="320" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Environment and</text>
+  <text x="650" y="376" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Meta-Communities</text>
   <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP08 · GOVERNANCE</text>
-  <!-- family-color corner dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#d97706"/>
+  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP08 · Cm · INTEROP</text>
+  <!-- gold accent dot bottom-right -->
+  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
 </svg>

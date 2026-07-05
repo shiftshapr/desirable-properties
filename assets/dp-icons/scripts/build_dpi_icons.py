@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
-"""Build the DP icon system: 22 source SVGs, 22 badge SVGs, 22 cover SVGs.
+"""Build the DP icon system v2 — recognizable metaphors on gold-framed badges.
 
-Run from anywhere. Writes to:
-  - assets/dp-icons/{source,badges,covers}/dp{NN}.svg
-  - gov-hub-dev/static/images/dp-icons/{source,badges,covers}/dp{NN}.svg
-  - gov-hub-prod/static/images/dp-icons/{source,badges,covers}/dp{NN}.svg
+Design rationale (see assets/dp-icons/SPEC.md):
+  * Recognizability is the lead principle. Every glyph must read in 1
+    second to a stranger at 96x96.
+  * Six thematic groups (per the user's reference image).
+  * Gold brand is non-negotiable: outer frame + DPnn label are gold.
+  * Group color is the *thematic accent*, applied to the glyph and the
+    2-letter code.
+  * Each glyph is a literal-but-elevated metaphor (fingerprint, brain,
+    megaphone, etc.) — not an abstract five-primitive composition.
+  * White background inside the gold frame.
 
-This is a build script, not runtime code. It encodes the design system
-defined in assets/dp-icons/SPEC.md.
+Outputs (per repo):
+  - source/dp{NN}.svg    : 24x24 source glyph
+  - badges/dp{NN}.svg    : 600x600 white badge with gold frame + glyph + labels
+  - covers/dp{NN}.svg    : 1200x630 cover (badge left + title strip right)
+
+Mirrored to:
+  - /home/ubuntu/desirable-properties/assets/dp-icons/
+  - /home/ubuntu/gov-hub-dev/static/images/dp-icons/
+  - /home/ubuntu/gov-hub-prod/static/images/dp-icons/
 """
 from __future__ import annotations
 
@@ -23,57 +36,85 @@ REPO_DEV = Path("/home/ubuntu/gov-hub-dev")
 REPO_PROD = Path("/home/ubuntu/gov-hub-prod")
 DESIRABLE_ASSET_ROOT = REPO_DESIRABLE / "assets" / "dp-icons"
 
-DP_JSON = REPO_DESIRABLE / "challenge-site" / "src" / "data" / "desirable-properties.json"
+DP_JSON = REPO_DESIRABLE / "web-app" / "data" / "desirable-properties.json"
 
 # --------------------------------------------------------------------------- #
-# Design system tokens                                                        #
+# Brand & palette tokens                                                       #
 # --------------------------------------------------------------------------- #
-GOLD_BORDER = "#b8860b"
-GOLD_WASH = "#f5e9c8"
-GOLD_CHIP = "#facc15"
-INK = "#1f2937"
-CAPTION = "#6b7280"
-DARK_TEXT = "#1f1b0e"
+# Brand
+GOLD_BORDER = "#b8860b"        # darkgoldenrod — outer frame (brand)
+GOLD_WASH = "#f5e9c8"          # cream wash inside the frame (4% opacity)
 
-FAMILIES = {
-    "Trust": "#1e3a8a",
-    "Governance": "#d97706",
-    "Data": "#0f766e",
-    "Experience": "#ef1d18",
-    "Resilience": "#92400e",
+# Neutrals
+WHITE = "#ffffff"
+INK = "#1f2937"                # neutral charcoal (used sparingly)
+CAPTION = "#6b7280"            # neutral gray for full titles in badges
+DARK_TEXT = "#1f1b0e"          # warm near-black for cover title text
+
+# Six thematic groups (per the user's reference image).
+# Group colors are tuned for legibility at 96x96 on a white background
+# inside a gold frame.
+GROUPS = {
+    "Auth":        "#06b6d4",  # cyan      — Authentication, Agency & Accountability
+    "Sovereignty": "#10b981",  # green     — Sovereignty & Privacy
+    "Interop":     "#d946ef",  # magenta   — Interoperability & Participant Experience
+    "AI":          "#7c3aed",  # deep purple — AI Governance & Safety
+    "Security":    "#ef4444",  # red       — Security, Transparency & Trust
+    "Community":   "#f59e0b",  # amber     — Community Participation & Feedback
 }
 
-# DP number → (name, family) per the reference infographic.
+# Group display names (used in the comparison sheet and cover).
+GROUP_LABEL = {
+    "Auth":        "Authentication, Agency & Accountability",
+    "Sovereignty": "Sovereignty & Privacy",
+    "Interop":     "Interoperability & Participant Experience",
+    "AI":          "AI Governance & Safety",
+    "Security":    "Security, Transparency & Trust",
+    "Community":   "Community Participation & Feedback",
+}
+
+# DP number → (full title, 2-letter code, group, glyph_id, short_title)
+# Title comes from desirable-properties.json where possible; DP22 is
+# overridden to "Epistemic Continuity & Digital Artifacts" per the user's
+# reference image (the JSON still says "Civic Memory & Epistemic
+# Continuity"; the reference image rename is what we ship).
 DP_TABLE = [
-    (1,  "Federated Authentication & Accountability", "Trust"),
-    (2,  "Participant Agency & Empowerment", "Trust"),
-    (3,  "Adaptive Governance Supporting an Exponentially Growing Community", "Trust"),
-    (4,  "Data Sovereignty & Privacy", "Trust"),
-    (5,  "Decentralized Namespace", "Trust"),
-    (6,  "Commerce", "Trust"),
-    (7,  "Simplicity and Interoperability", "Trust"),
-    (8,  "Collaborative Environment and Meta-Communities", "Governance"),
-    (9,  "Developer and Community Incentives", "Governance"),
-    (10, "Education", "Governance"),
-    (11, "Safe and Ethical AI", "Governance"),
-    (12, "Community-based AI Governance", "Governance"),
-    (13, "AI Containment", "Governance"),
-    (14, "Trust and Transparency", "Governance"),
-    (15, "Security and Provenance", "Data"),
-    (16, "Roadmap and Milestones", "Data"),
-    (17, "Financial Sustainability", "Data"),
-    (18, "Feedback Loops and Reputation", "Data"),
-    (19, "Amplifying Presence and Community Engagement", "Data"),
-    (20, "Community Ownership", "Data"),
-    (21, "Multi-modal", "Data"),
-    (22, "Civic Memory and Epistemic Continuity", "Resilience"),
+    (1,  "Federated Authentication & Accountability",                        "Au", "Auth",       "fingerprint",  "Federated Auth"),
+    (2,  "Participant Agency & Empowerment",                                  "Ag", "Auth",       "person",       "Participant Agency"),
+    (3,  "Adaptive Governance Supporting an Exponentially Growing Community", "Go", "Auth",       "gears",        "Adaptive Governance"),
+    (4,  "Data Sovereignty & Privacy",                                        "So", "Sovereignty","shield_keyhole","Data Sovereignty"),
+    (5,  "Decentralized Namespace",                                           "Ns", "Sovereignty","dharma_wheel", "Decentralized Namespace"),
+    (6,  "Commerce",                                                          "Co", "Sovereignty","cart",         "Commerce"),
+    (7,  "Simplicity & Interoperability",                                     "Si", "Interop",    "puzzle",       "Simplicity"),
+    (8,  "Collaborative Environment & Meta-Communities",                      "Cm", "Interop",    "network",      "Collaboration"),
+    (9,  "Developer & Community Incentives",                                  "In", "Interop",    "rocket",       "Incentives"),
+    (10, "Education",                                                         "Ed", "Interop",    "book_bulb",    "Education"),
+    (11, "Safe & Ethical AI",                                                 "Ai", "AI",         "brain",        "Safe AI"),
+    (12, "Community-Based AI Governance",                                     "Cg", "AI",         "community_graph","AI Governance"),
+    (13, "AI Containment",                                                    "Ac", "AI",         "padlock",      "AI Containment"),
+    (14, "Trust & Transparency",                                              "Tt", "Security",   "handshake",    "Trust"),
+    (15, "Security & Provenance",                                             "Sp", "Security",   "shield_check", "Security"),
+    (16, "Roadmap & Milestones",                                              "Rm", "Security",   "roadmap",      "Roadmap"),
+    (17, "Financial Sustainability",                                          "Fs", "Security",   "dollar_circle","Sustainability"),
+    (18, "Feedback Loops & Reputation",                                       "Fr", "Community",  "message_loop", "Feedback"),
+    (19, "Amplifying Presence & Community Engagement",                        "Ap", "Community",  "megaphone",    "Amplifying Presence"),
+    (20, "Community Ownership",                                               "Ow", "Community",  "globe_people", "Community Ownership"),
+    (21, "Multi-modal",                                                       "Mm", "Interop",    "waveform",     "Multi-modal"),
+    (22, "Epistemic Continuity & Digital Artifacts",                          "Ep", "Community",  "scroll",       "Epistemic Continuity"),
 ]
+
+DP22_OVERRIDE_TITLE = "Epistemic Continuity & Digital Artifacts"
 
 FONT_STACK = 'Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif'
 
+# Stroke widths in the 24x24 viewBox.
+GLYPH_STROKE = 2.2
+GLYPH_FINE_STROKE = 1.4
+FRAME_STROKE = 0.18  # gold frame stroke at source viewBox scale
+
 
 # --------------------------------------------------------------------------- #
-# DP titles                                                                   #
+# Title loading                                                                #
 # --------------------------------------------------------------------------- #
 def load_dp_titles() -> dict[int, str]:
     titles: dict[int, str] = {}
@@ -84,442 +125,625 @@ def load_dp_titles() -> dict[int, str]:
             m = re.match(r"DP(\d+)", entry["id"])
             if m:
                 titles[int(m.group(1))] = entry["name"]
-    # Fallbacks (JSON uses "Civic Memory & Epistemic Continuity" — keep).
-    for n, name, _fam in DP_TABLE:
+    # Apply DP22 override (per reference image) + DP_TABLE fallbacks.
+    titles[22] = DP22_OVERRIDE_TITLE
+    for n, name, _code, _group, _glyph, _short in DP_TABLE:
         titles.setdefault(n, name)
     return titles
 
 
 # --------------------------------------------------------------------------- #
-# Container shape per family                                                  #
+# Frame                                                                       #
 # --------------------------------------------------------------------------- #
-def container_svg(family: str, family_color: str) -> str:
-    """Return the SVG fragment for the family container at 24x24 viewBox.
+def frame_svg() -> str:
+    """Return the SVG fragment for the badge frame at 24x24 viewBox.
 
-    Gold outer frame + 6% cream wash + bottom-right family-color corner dot.
+    Single rounded square. Gold outer frame, cream wash inside. Identical
+    across all 22 badges — family color appears only on the glyph and
+    2-letter code.
     """
-    if family == "Trust":
-        # rounded square with double inner stroke (shield-seal feel)
-        body = (
-            '<rect x="1.5" y="1.5" width="21" height="21" rx="3" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
-            '<rect x="3" y="3" width="18" height="18" rx="2" '
-            'fill="none" stroke="currentColor" stroke-width="0.6" '
-            'stroke-opacity="0.55"/>'
-        )
-    elif family == "Governance":
-        # rounded square, single bold stroke (codex feel)
-        body = (
-            '<rect x="1.5" y="1.5" width="21" height="21" rx="3" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1.5"/>'
-        )
-    elif family == "Data":
-        # rounded square, top-right corner clipped at 45° (data-cube feel)
-        # Use a path: start at top-left, go right but clip at corner.
-        body = (
-            '<path d="M 4.5 1.5 '
-            'L 19.5 1.5 '
-            'L 22.5 4.5 '
-            'L 22.5 19.5 '
-            'Q 22.5 22.5 19.5 22.5 '
-            'L 4.5 22.5 '
-            'Q 1.5 22.5 1.5 19.5 '
-            'L 1.5 4.5 '
-            'Q 1.5 1.5 4.5 1.5 Z" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
-        )
-    elif family == "Experience":
-        # rounded square with all four corners clipped (architectural)
-        body = (
-            '<path d="M 4.5 1.5 '
-            'L 19.5 1.5 '
-            'L 22.5 4.5 '
-            'L 22.5 19.5 '
-            'L 19.5 22.5 '
-            'L 4.5 22.5 '
-            'L 1.5 19.5 '
-            'L 1.5 4.5 Z" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
-        )
-    elif family == "Resilience":
-        # Same container treatment as Experience (DP22 moved Experience →
-        # Resilience; container shape preserved, only the accent color changes).
-        body = (
-            '<path d="M 4.5 1.5 '
-            'L 19.5 1.5 '
-            'L 22.5 4.5 '
-            'L 22.5 19.5 '
-            'L 19.5 22.5 '
-            'L 4.5 22.5 '
-            'L 1.5 19.5 '
-            'L 1.5 4.5 Z" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
-        )
-    else:
-        # Fallback rounded square
-        body = (
-            '<rect x="1.5" y="1.5" width="21" height="21" rx="3" '
-            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
-            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
-        )
-
-    # Bottom-right family-color corner dot.
-    corner_dot = (
-        f'<circle cx="20" cy="20" r="1.4" fill="{family_color}" stroke="none"/>'
+    return (
+        f'<rect x="1.0" y="1.0" width="22" height="22" rx="2.4" '
+        f'fill="{GOLD_WASH}" fill-opacity="0.04" '
+        f'stroke="{GOLD_BORDER}" stroke-width="{FRAME_STROKE}"/>'
     )
-
-    return body + "\n  " + corner_dot
 
 
 # --------------------------------------------------------------------------- #
 # Glyph compositions (24x24 viewBox)                                          #
 # --------------------------------------------------------------------------- #
-def glyph_svg(dp_num: int, family: str, family_color: str) -> str:
-    """Return the SVG fragment for the DP-specific glyph (no container)."""
-    a = family_color  # accent
-    c = "currentColor"  # neutral charcoal
-    # Helper: small filled dot in accent color
-    def dot(cx, cy, r=0.6, color=None):
-        col = color or a
-        return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{col}" stroke="none"/>'
+def glyph_svg(glyph_id: str, family_color: str) -> str:
+    """Return the SVG fragment for the named glyph in `family_color`."""
+    a = family_color
+    sw = GLYPH_STROKE
+    sw2 = GLYPH_FINE_STROKE
 
-    if dp_num == 1:
-        # 4 circles at cardinal points + central diamond
+    def path(d, fill="none", stroke=a, stroke_width=sw,
+             stroke_opacity=1.0, linejoin="round", linecap="round",
+             stroke_dasharray=None):
+        da = f' stroke-dasharray="{stroke_dasharray}"' if stroke_dasharray else ""
         return (
-            f'<circle cx="12" cy="5" r="2" stroke="{c}" fill="none"/>'
-            f'<circle cx="19" cy="12" r="2" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="19" r="2" stroke="{c}" fill="none"/>'
-            f'<circle cx="5" cy="12" r="2" stroke="{c}" fill="none"/>'
-            # central diamond (accountability core)
-            f'<path d="M12 9 L15 12 L12 15 L9 12 Z" stroke="{a}" fill="none"/>'
+            f'<path d="{d}" fill="{fill}" stroke="{stroke}" '
+            f'stroke-width="{stroke_width}" stroke-opacity="{stroke_opacity}" '
+            f'stroke-linejoin="{linejoin}" stroke-linecap="{linecap}"{da}/>'
         )
-    if dp_num == 2:
-        # Central circle with 4 outward arcs
+
+    def circle(cx, cy, r, fill="none", stroke="none", stroke_width=sw,
+               stroke_opacity=1.0):
         return (
-            f'<circle cx="12" cy="12" r="3" stroke="{c}" fill="none"/>'
-            # 4 outward arcs (top, right, bottom, left)
-            f'<path d="M12 5 A4 4 0 0 1 16 8" stroke="{a}" fill="none"/>'
-            f'<path d="M19 12 A4 4 0 0 1 16 16" stroke="{a}" fill="none"/>'
-            f'<path d="M12 19 A4 4 0 0 1 8 16" stroke="{a}" fill="none"/>'
-            f'<path d="M5 12 A4 4 0 0 1 8 8" stroke="{a}" fill="none"/>'
+            f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fill}" '
+            f'stroke="{stroke}" stroke-width="{stroke_width}" '
+            f'stroke-opacity="{stroke_opacity}"/>'
         )
-    if dp_num == 3:
-        # 3 nested squares + central triangle
-        return (
-            f'<rect x="4" y="4" width="16" height="16" rx="1" stroke="{c}" fill="none" stroke-opacity="0.5"/>'
-            f'<rect x="6.5" y="6.5" width="11" height="11" rx="0.8" stroke="{c}" fill="none" stroke-opacity="0.7"/>'
-            f'<path d="M12 9.5 L15 14 L9 14 Z" stroke="{a}" fill="none"/>'
-            f'{dot(4, 4)}{dot(20, 4)}{dot(4, 20)}{dot(20, 20)}'
-        )
-    if dp_num == 4:
-        # Square with 4 corner triangles + central dot (vault)
-        return (
-            f'<rect x="4.5" y="4.5" width="15" height="15" rx="1.5" stroke="{c}" fill="none"/>'
-            # corner triangles (vault reinforcements)
-            f'<path d="M4.5 4.5 L8 4.5 L4.5 8 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M19.5 4.5 L16 4.5 L19.5 8 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M4.5 19.5 L8 19.5 L4.5 16 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M19.5 19.5 L16 19.5 L19.5 16 Z" stroke="{a}" fill="none"/>'
-            f'{dot(12, 12, r=1.2)}'
-        )
-    if dp_num == 5:
-        # 3 concentric arcs (quarter rotation each) around a central dot
-        return (
-            f'<circle cx="12" cy="12" r="1.2" stroke="none" fill="{a}"/>'
-            f'<path d="M12 6 A6 6 0 0 1 18 12" stroke="{c}" fill="none"/>'
-            f'<path d="M18 12 A6 6 0 0 1 12 18" stroke="{a}" fill="none"/>'
-            f'<path d="M12 18 A6 6 0 0 1 6 12" stroke="{c}" fill="none"/>'
-            f'<path d="M6 12 A6 6 0 0 1 12 6" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 6:
-        # 2 circles connected by an arc with 3 event dots between
-        return (
-            f'<circle cx="6" cy="12" r="2.5" stroke="{c}" fill="none"/>'
-            f'<circle cx="18" cy="12" r="2.5" stroke="{c}" fill="none"/>'
-            # connecting arc above
-            f'<path d="M6 12 Q12 5 18 12" stroke="{a}" fill="none"/>'
-            f'{dot(9, 7)}{dot(12, 5.4)}{dot(15, 7)}'
-        )
-    if dp_num == 7:
-        # 2 overlapping squares + central dot
-        return (
-            f'<rect x="3.5" y="6.5" width="11" height="11" rx="1" stroke="{c}" fill="none"/>'
-            f'<rect x="9.5" y="6.5" width="11" height="11" rx="1" stroke="{a}" fill="none"/>'
-            f'{dot(12, 12, r=1.4)}'
-        )
-    if dp_num == 8:
-        # Hexagonal ring of 6 dots + central circle
+
+    # ----------------------------------------------------------------- #
+    if glyph_id == "fingerprint":
+        # Concentric arcs forming a fingerprint (open at the bottom).
+        return "".join([
+            # Outer ridge
+            path("M 5 10 Q 5 4 12 4 Q 19 4 19 11", stroke=a, stroke_width=sw),
+            # Mid ridge
+            path("M 7 13 Q 7 7 12 7 Q 17 7 17 13", stroke=a, stroke_width=sw),
+            # Inner ridge
+            path("M 9 15 Q 9 10 12 10 Q 15 10 15 14", stroke=a, stroke_width=sw),
+            # Lower arc
+            path("M 6 17 Q 8 19 12 19 Q 16 19 18 17", stroke=a, stroke_width=sw),
+            # Core dot
+            circle(12, 13, 1.0, fill=a, stroke="none"),
+        ])
+
+    if glyph_id == "person":
+        # Single figure with arms outstretched — agency/empowerment.
+        return "".join([
+            # Head
+            circle(12, 5, 2.4, fill=a, stroke="none"),
+            # Body (rounded shoulders)
+            path(
+                "M 7 21 L 7 16 Q 7 12 12 12 Q 17 12 17 16 L 17 21",
+                fill="none", stroke=a, stroke_width=sw,
+            ),
+            # Outstretched arms
+            path("M 7 14 L 3 11", fill="none", stroke=a, stroke_width=sw),
+            path("M 17 14 L 21 11", fill="none", stroke=a, stroke_width=sw),
+        ])
+
+    if glyph_id == "gears":
+        # Two interlocking gears — simple cog outlines.
+        return "".join([
+            # Large gear (top-left): cog with 6 visible teeth
+            '<path d="M 9 4.0 L 10.2 4.0 L 10.5 6.0 '
+            'A 3.6 3.6 0 0 1 12.0 6.5 '
+            'L 13.4 5.0 L 14.3 5.9 L 13.0 7.4 '
+            'A 3.6 3.6 0 0 1 13.6 8.9 '
+            'L 15.5 9.2 L 15.5 10.4 L 13.6 10.7 '
+            'A 3.6 3.6 0 0 1 13.0 12.2 '
+            'L 14.3 13.7 L 13.4 14.6 L 12.0 13.1 '
+            'A 3.6 3.6 0 0 1 10.5 13.6 '
+            'L 10.2 15.6 L 9.0 15.6 L 8.7 13.6 '
+            'A 3.6 3.6 0 0 1 7.2 13.1 '
+            'L 5.8 14.6 L 4.9 13.7 L 6.2 12.2 '
+            'A 3.6 3.6 0 0 1 5.6 10.7 '
+            'L 3.7 10.4 L 3.7 9.2 L 5.6 8.9 '
+            'A 3.6 3.6 0 0 1 6.2 7.4 '
+            'L 4.9 5.9 L 5.8 5.0 L 7.2 6.5 '
+            'A 3.6 3.6 0 0 1 8.7 6.0 '
+            'L 9.0 4.0 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Inner hole of large gear
+            circle(9.6, 9.8, 1.2, fill=a, stroke="none"),
+            # Small gear (bottom-right): smaller cog with 4 visible teeth
+            '<path d="M 16 13.5 L 16.9 13.5 L 17.1 14.7 '
+            'A 2.4 2.4 0 0 1 18.1 15.1 '
+            'L 19.0 14.4 L 19.6 15.0 L 19.0 16.0 '
+            'A 2.4 2.4 0 0 1 19.3 17.0 '
+            'L 20.5 17.2 L 20.5 18.1 L 19.3 18.3 '
+            'A 2.4 2.4 0 0 1 19.0 19.3 '
+            'L 19.6 20.3 L 19.0 20.9 L 18.1 20.2 '
+            'A 2.4 2.4 0 0 1 17.1 20.6 '
+            'L 16.9 21.8 L 16.0 21.8 L 15.8 20.6 '
+            'A 2.4 2.4 0 0 1 14.8 20.2 '
+            'L 13.9 20.9 L 13.3 20.3 L 13.9 19.3 '
+            'A 2.4 2.4 0 0 1 13.6 18.3 '
+            'L 12.4 18.1 L 12.4 17.2 L 13.6 17.0 '
+            'A 2.4 2.4 0 0 1 13.9 16.0 '
+            'L 13.3 15.0 L 13.9 14.4 L 14.8 15.1 '
+            'A 2.4 2.4 0 0 1 15.8 14.7 '
+            'L 16 13.5 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Inner hole of small gear
+            circle(16.45, 17.65, 0.8, fill=a, stroke="none"),
+        ])
+
+    if glyph_id == "shield_keyhole":
+        # Shield outline with keyhole inside (data sovereignty).
+        return "".join([
+            '<path d="M 12 3 L 19 6 L 19 12 Q 19 17 12 21 Q 5 17 5 12 L 5 6 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" stroke-linejoin="round"/>',
+            # Keyhole circle
+            circle(12, 11, 1.6, fill=a, stroke="none"),
+            # Keyhole stem
+            path("M 11 12 L 10.2 16 L 13.8 16 L 13 12 Z",
+                 fill=a, stroke="none"),
+        ])
+
+    if glyph_id == "dharma_wheel":
+        # Decentralized namespace as a dharma-wheel / orbit:
+        # outer ring + inner ring + 8 spokes + central hub + 8 outer nodes.
         import math
-        parts = [f'<circle cx="12" cy="12" r="2.5" stroke="{c}" fill="none"/>']
+        parts = [
+            circle(12, 12, 8.5, fill="none", stroke=a, stroke_width=sw),
+            circle(12, 12, 5.5, fill="none", stroke=a, stroke_width=sw2,
+                   stroke_opacity=0.6),
+            circle(12, 12, 1.4, fill=a, stroke="none"),
+        ]
+        # 8 spokes + 8 outer nodes
+        for i in range(8):
+            ang = i * (math.pi / 4)
+            x1 = 12 + 5.5 * math.cos(ang)
+            y1 = 12 + 5.5 * math.sin(ang)
+            x2 = 12 + 8.5 * math.cos(ang)
+            y2 = 12 + 8.5 * math.sin(ang)
+            parts.append(
+                f'<line x1="{x1:.2f}" y1="{y1:.2f}" x2="{x2:.2f}" y2="{y2:.2f}" '
+                f'stroke="{a}" stroke-width="{sw2}" stroke-linecap="round"/>'
+            )
+            parts.append(circle(round(x2, 2), round(y2, 2), 1.0,
+                                fill=a, stroke="none"))
+        return "".join(parts)
+
+    if glyph_id == "cart":
+        # Shopping cart — commerce.
+        return "".join([
+            '<path d="M 4 6 L 6 6 L 7.5 14 L 18 14 L 20 8 L 8 8" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>',
+            # Handle
+            path("M 4 6 L 3 4", fill="none", stroke=a, stroke_width=sw),
+            # Wheels
+            circle(9, 18, 1.4, fill="none", stroke=a, stroke_width=sw),
+            circle(17, 18, 1.4, fill="none", stroke=a, stroke_width=sw),
+        ])
+
+    if glyph_id == "puzzle":
+        # Single puzzle piece — interoperability.
+        return "".join([
+            '<path d="M 4.5 6 L 10 6 L 10 8 Q 10 10 12 10 Q 14 10 14 8 L 14 6 '
+            'L 19.5 6 L 19.5 11 Q 21 11 21 13 Q 21 15 19.5 15 L 19.5 20 '
+            'L 4.5 20 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>',
+        ])
+
+    if glyph_id == "network":
+        # Network of 6 nodes connected to a central node.
+        import math
+        parts = [circle(12, 12, 2.4, fill="none", stroke=a, stroke_width=sw)]
         for i in range(6):
-            ang = math.pi / 6 + i * (math.pi / 3)
-            cx = 12 + 7 * math.cos(ang)
-            cy = 12 + 7 * math.sin(ang)
-            parts.append(dot(round(cx, 2), round(cy, 2), r=0.9))
-        return "\n".join(parts)
-    if dp_num == 9:
-        # Triangle with 3 ascending dots inside (incentive ladder)
-        return (
-            f'<path d="M12 5 L19 18 L5 18 Z" stroke="{c}" fill="none"/>'
-            f'{dot(12, 14, r=0.9, color=c)}'
-            f'{dot(12, 11, r=0.9, color=a)}'
-            f'{dot(12, 8, r=0.9, color=a)}'
-        )
-    if dp_num == 10:
-        # 2 nested circles with internal arcs flowing outward
-        return (
-            f'<circle cx="12" cy="12" r="3" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="12" r="7" stroke="{c}" fill="none" stroke-opacity="0.5"/>'
-            # 4 outward arcs from inner to outer
-            f'<path d="M12 9 A3 3 0 0 1 15 12" stroke="{a}" fill="none"/>'
-            f'<path d="M15 12 A3 3 0 0 1 12 15" stroke="{a}" fill="none"/>'
-            f'<path d="M12 15 A3 3 0 0 1 9 12" stroke="{a}" fill="none"/>'
-            f'<path d="M9 12 A3 3 0 0 1 12 9" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 11:
-        # Central circle + 1 solid arc + 1 dashed arc
-        return (
-            f'<circle cx="12" cy="12" r="2.5" stroke="{c}" fill="none"/>'
-            f'<path d="M12 4 A8 8 0 0 1 20 12" stroke="{a}" fill="none"/>'
-            f'<path d="M12 20 A8 8 0 0 1 4 12" stroke="{a}" fill="none" '
-            'stroke-dasharray="2 2"/>'
-        )
-    if dp_num == 12:
-        # Triangle inscribed in circle + 3 dots at vertices
-        return (
-            f'<circle cx="12" cy="12" r="7" stroke="{c}" fill="none" stroke-opacity="0.5"/>'
-            f'<path d="M12 6 L18 17 L6 17 Z" stroke="{a}" fill="none"/>'
-            f'{dot(12, 6, r=1.0)}{dot(18, 17, r=1.0)}{dot(6, 17, r=1.0)}'
-        )
-    if dp_num == 13:
-        # Square frame + central triangle + 4 corner arcs (containment)
-        return (
-            f'<rect x="3.5" y="3.5" width="17" height="17" rx="1" stroke="{c}" fill="none"/>'
-            f'<path d="M12 9 L16 16 L8 16 Z" stroke="{a}" fill="none"/>'
-            # 4 corner arcs
-            f'<path d="M3.5 6 A2.5 2.5 0 0 1 6 3.5" stroke="{a}" fill="none"/>'
-            f'<path d="M18 3.5 A2.5 2.5 0 0 1 20.5 6" stroke="{a}" fill="none"/>'
-            f'<path d="M20.5 18 A2.5 2.5 0 0 1 18 20.5" stroke="{a}" fill="none"/>'
-            f'<path d="M6 20.5 A2.5 2.5 0 0 1 3.5 18" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 14:
-        # Central circle with 4 triangles at cardinal points
-        return (
-            f'<circle cx="12" cy="12" r="2.5" stroke="{c}" fill="none"/>'
-            # top triangle (pointing up, tip away from center)
-            f'<path d="M12 5 L10 8.5 L14 8.5 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M19 12 L15.5 10 L15.5 14 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M12 19 L14 15.5 L10 15.5 Z" stroke="{a}" fill="none"/>'
-            f'<path d="M5 12 L8.5 14 L8.5 10 Z" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 15:
-        # 3 circles connected by an arc (provenance chain)
-        return (
-            f'<circle cx="5" cy="12" r="2" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="7" r="2" stroke="{c}" fill="none"/>'
-            f'<circle cx="19" cy="12" r="2" stroke="{a}" fill="none"/>'
-            # arc connecting
-            f'<path d="M5 12 Q12 4 19 12" stroke="{a}" fill="none"/>'
-            f'<path d="M5 12 Q12 20 19 12" stroke="{c}" fill="none" stroke-opacity="0.5"/>'
-        )
-    if dp_num == 16:
-        # 4 dots connected by a single rising arc
-        return (
-            f'{dot(4.5, 19, r=1.0, color=c)}'
-            f'{dot(9, 14, r=1.0, color=c)}'
-            f'{dot(14, 9, r=1.0, color=a)}'
-            f'{dot(19, 4.5, r=1.2, color=a)}'
-            f'<path d="M4.5 19 Q11.5 7 19 4.5" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 17:
-        # Triangle + inscribed circle + 3 dots along base (foundation)
-        return (
-            f'<path d="M12 4 L20 19 L4 19 Z" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="14" r="4" stroke="{a}" fill="none"/>'
-            f'{dot(7, 19, r=0.9, color=a)}'
-            f'{dot(12, 19, r=0.9, color=a)}'
-            f'{dot(17, 19, r=0.9, color=a)}'
-        )
-    if dp_num == 18:
-        # 3/4 circular arrow + 3 dots along the arrow
-        return (
-            f'<path d="M18.5 8 A7 7 0 1 0 19 14" stroke="{a}" fill="none"/>'
-            # arrowhead
-            f'<path d="M18.5 8 L21 8 L18.5 11" stroke="{a}" fill="none"/>'
-            f'{dot(7, 7.5, r=0.9)}'
-            f'{dot(5.5, 12, r=0.9)}'
-            f'{dot(7.5, 16.5, r=0.9)}'
-        )
-    if dp_num == 19:
-        # Central triangle with 4 radiating arcs (broadcast)
-        return (
-            f'<path d="M12 9 L15.5 14 L8.5 14 Z" stroke="{c}" fill="none"/>'
-            f'<path d="M12 9 A4 4 0 0 1 15.5 14" stroke="{a}" fill="none"/>'
-            f'<path d="M15.5 14 A4 4 0 0 1 8.5 14" stroke="{a}" fill="none"/>'
-            f'<path d="M8.5 14 A4 4 0 0 1 12 9" stroke="{a}" fill="none"/>'
-            # outer radiating arcs
-            f'<path d="M19 5 A3 3 0 0 1 19 19" stroke="{a}" fill="none" stroke-opacity="0.6"/>'
-            f'<path d="M5 5 A3 3 0 0 0 5 19" stroke="{a}" fill="none" stroke-opacity="0.6"/>'
-        )
-    if dp_num == 20:
-        # 4 squares at corners + central circle + connecting arcs
-        return (
-            f'<rect x="3" y="3" width="5" height="5" rx="0.5" stroke="{c}" fill="none"/>'
-            f'<rect x="16" y="3" width="5" height="5" rx="0.5" stroke="{c}" fill="none"/>'
-            f'<rect x="3" y="16" width="5" height="5" rx="0.5" stroke="{c}" fill="none"/>'
-            f'<rect x="16" y="16" width="5" height="5" rx="0.5" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="12" r="2.5" stroke="{a}" fill="none"/>'
-            # connecting arcs from each corner toward center
-            f'<path d="M8 5.5 Q10 9 10 10" stroke="{a}" fill="none"/>'
-            f'<path d="M16 5.5 Q14 9 14 10" stroke="{a}" fill="none"/>'
-            f'<path d="M5.5 16 Q9 14 10 14" stroke="{a}" fill="none"/>'
-            f'<path d="M18.5 16 Q15 14 14 14" stroke="{a}" fill="none"/>'
-        )
-    if dp_num == 21:
-        # 3 concentric circles with varying stroke weights
-        return (
-            f'<circle cx="12" cy="12" r="3" stroke="{a}" fill="none"/>'
-            f'<circle cx="12" cy="12" r="6" stroke="{c}" fill="none" stroke-width="1.5"/>'
-            f'<circle cx="12" cy="12" r="9" stroke="{c}" fill="none" stroke-width="1" stroke-opacity="0.5"/>'
-        )
-    if dp_num == 22:
-        # Infinity loop passing through 3 nested circles
-        return (
-            f'<circle cx="6" cy="12" r="3" stroke="{c}" fill="none"/>'
-            f'<circle cx="12" cy="12" r="3" stroke="{c}" fill="none"/>'
-            f'<circle cx="18" cy="12" r="3" stroke="{a}" fill="none"/>'
-            f'<path d="M6 12 C6 8 9 8 12 12 C15 16 18 16 18 12 C18 8 15 8 12 12 C9 16 6 16 6 12 Z" '
-            f'stroke="{a}" fill="none" stroke-opacity="0.7"/>'
-        )
-    raise ValueError(f"No glyph for DP{dp_num}")
+            ang = -math.pi / 2 + i * (math.pi / 3)
+            cx = 12 + 7.5 * math.cos(ang)
+            cy = 12 + 7.5 * math.sin(ang)
+            parts.append(
+                f'<line x1="12" y1="12" x2="{cx:.2f}" y2="{cy:.2f}" '
+                f'stroke="{a}" stroke-width="{sw2}" stroke-opacity="0.7"/>'
+            )
+            parts.append(circle(round(cx, 2), round(cy, 2), 1.4,
+                                fill=a, stroke="none"))
+        return "".join(parts)
+
+    if glyph_id == "rocket":
+        # Rocket — developer & community incentives (launch).
+        return "".join([
+            '<path d="M 12 3 Q 15 5 15 9 L 15 16 L 9 16 L 9 9 Q 9 5 12 3 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Window
+            circle(12, 9, 1.5, fill="none", stroke=a, stroke_width=sw2),
+            # Left fin
+            '<path d="M 9 12 L 5 16 L 5 19 L 9 17 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Right fin
+            '<path d="M 15 12 L 19 16 L 19 19 L 15 17 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Flame
+            '<path d="M 10 16 Q 12 20 14 16 L 13.5 18 L 12 21 L 10.5 18 Z" '
+            f'fill="{a}" stroke="none"/>',
+        ])
+
+    if glyph_id == "book_bulb":
+        # Open book with a lightbulb above — education.
+        return "".join([
+            # Lightbulb (top)
+            circle(12, 7, 2.6, fill="none", stroke=a, stroke_width=sw),
+            # Bulb base lines
+            path("M 10.5 9 L 13.5 9", fill="none", stroke=a,
+                 stroke_width=sw2),
+            path("M 11 10.5 L 13 10.5", fill="none", stroke=a,
+                 stroke_width=sw2),
+            # Open book (bottom) — two pages
+            '<path d="M 3 14 Q 7.5 12.5 12 14 Q 16.5 12.5 21 14 L 21 20 '
+            'Q 16.5 18.5 12 20 Q 7.5 18.5 3 20 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Center spine of the book
+            path("M 12 14 L 12 20", fill="none", stroke=a, stroke_width=sw2),
+        ])
+
+    if glyph_id == "brain":
+        # Brain — safe & ethical AI. Two hemispheres with central fissure.
+        return "".join([
+            # Outer brain outline
+            '<path d="M 8 4 Q 4 4 4 8 Q 2 9 3 12 Q 2 15 4 16 Q 4 20 8 20 '
+            'L 12 20 L 12 4 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            '<path d="M 16 4 Q 20 4 20 8 Q 22 9 21 12 Q 22 15 20 16 '
+            'Q 20 20 16 20 L 12 20 L 12 4 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Fissure lines (left hemisphere)
+            path("M 6 8 Q 8 9 6 11", fill="none", stroke=a, stroke_width=sw2),
+            path("M 5 13 Q 8 14 6 16", fill="none", stroke=a, stroke_width=sw2),
+            # Fissure lines (right hemisphere)
+            path("M 18 8 Q 16 9 18 11", fill="none", stroke=a, stroke_width=sw2),
+            path("M 19 13 Q 16 14 18 16", fill="none", stroke=a, stroke_width=sw2),
+            # Central fissure
+            path("M 12 4 L 12 20", fill="none", stroke=a, stroke_width=sw),
+        ])
+
+    if glyph_id == "community_graph":
+        # Triangle with 3 dots at vertices + central AI node.
+        return "".join([
+            # Outer triangle
+            '<path d="M 12 4 L 20 18 L 4 18 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Central node (the AI being governed)
+            circle(12, 13, 1.5, fill=a, stroke="none"),
+            # Vertex nodes
+            circle(12, 4, 1.6, fill=a, stroke="none"),
+            circle(20, 18, 1.6, fill=a, stroke="none"),
+            circle(4, 18, 1.6, fill=a, stroke="none"),
+        ])
+
+    if glyph_id == "padlock":
+        # Padlock with shackle — AI containment.
+        return "".join([
+            # Shackle
+            '<path d="M 8 11 L 8 8 Q 8 4 12 4 Q 16 4 16 8 L 16 11" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>',
+            # Body
+            '<rect x="5" y="11" width="14" height="10" rx="1.5" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Keyhole
+            circle(12, 15, 1.0, fill=a, stroke="none"),
+            path("M 12 15.8 L 12 18", fill="none", stroke=a, stroke_width=sw),
+        ])
+
+    if glyph_id == "handshake":
+        # Two hands clasping — trust & transparency.
+        # Stylized handshake silhouette: two arms meeting at the center,
+        # each with a thumb wrapping over the clasp.
+        return "".join([
+            # Left arm/sleeve (lower-left to center, slight angle)
+            '<path d="M 3 18 L 7 18 L 9 14 L 11 14" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>',
+            # Right arm/sleeve (lower-right to center)
+            '<path d="M 21 18 L 17 18 L 15 14 L 13 14" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round" stroke-linecap="round"/>',
+            # Left hand (palm) — rounded shape wrapping around center
+            '<path d="M 7 14 Q 7 11 10 11 L 12 11 Q 13 11 13 12 L 13 14 '
+            'Q 13 15 12 15 L 10 15 Q 8 15 8 14 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Right hand (palm) — wraps over the left
+            '<path d="M 17 14 Q 17 11 14 11 L 12 11 Q 11 11 11 12 L 11 14 '
+            'Q 11 15 12 15 L 14 15 Q 16 15 16 14 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Thumb-up at center (the meeting point)
+            path("M 11 11 L 12 9 L 13 11", fill="none", stroke=a,
+                 stroke_width=sw),
+        ])
+
+    if glyph_id == "shield_check":
+        # Shield with a checkmark — security & provenance.
+        return "".join([
+            '<path d="M 12 3 L 19 6 L 19 12 Q 19 17 12 21 Q 5 17 5 12 L 5 6 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Checkmark
+            path("M 8 12 L 11 15 L 16 9", fill="none", stroke=a,
+                 stroke_width=sw),
+        ])
+
+    if glyph_id == "roadmap":
+        # Winding path with a flag at the end — roadmap & milestones.
+        return "".join([
+            # Dashed path
+            path(
+                "M 4 19 Q 6 14 9 13 Q 13 12 13 8 Q 13 5 17 4",
+                fill="none", stroke=a, stroke_width=sw,
+                stroke_dasharray="2.0 1.6",
+            ),
+            # Milestone dots
+            circle(4, 19, 1.0, fill=a, stroke="none"),
+            circle(9, 13, 1.0, fill=a, stroke="none"),
+            circle(13, 8, 1.0, fill=a, stroke="none"),
+            # Flag pole
+            path("M 17 4 L 17 12", fill="none", stroke=a, stroke_width=sw),
+            # Flag triangle
+            '<path d="M 17 4 L 21 5.5 L 17 7 Z" '
+            f'fill="{a}" stroke="{a}" stroke-width="{sw2}" '
+            f'stroke-linejoin="round"/>',
+        ])
+
+    if glyph_id == "dollar_circle":
+        # Dollar sign inside a circle — financial sustainability.
+        return "".join([
+            circle(12, 12, 8.5, fill="none", stroke=a, stroke_width=sw),
+            # Vertical bar
+            path("M 12 7 L 12 17", fill="none", stroke=a, stroke_width=sw2),
+            # S-curve
+            '<path d="M 15 9 Q 15 7 12 7 L 11 7 Q 9 7 9 9 Q 9 11 11 11 '
+            'L 13 11 Q 15 11 15 13 Q 15 15 13 15 L 11 15 Q 9 15 9 13" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linecap="round" stroke-linejoin="round"/>',
+        ])
+
+    if glyph_id == "message_loop":
+        # Speech bubble with three dots — feedback loops.
+        return "".join([
+            '<path d="M 4 5 L 20 5 Q 21 5 21 6 L 21 15 Q 21 16 20 16 L 12 16 '
+            'L 8 20 L 8 16 L 4 16 Q 3 16 3 15 L 3 6 Q 3 5 4 5 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Three dots inside
+            circle(8, 10.5, 0.9, fill=a, stroke="none"),
+            circle(12, 10.5, 0.9, fill=a, stroke="none"),
+            circle(16, 10.5, 0.9, fill=a, stroke="none"),
+        ])
+
+    if glyph_id == "megaphone":
+        # Megaphone — amplifying presence & community engagement.
+        return "".join([
+            '<path d="M 4 10 L 4 14 L 12 16 L 20 18 L 20 6 L 12 8 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Handle
+            '<rect x="3" y="10.5" width="2" height="3" rx="0.4" '
+            f'fill="{a}" stroke="none"/>',
+            # Sound waves
+            path("M 21 9 Q 22.5 12 21 15", fill="none", stroke=a,
+                 stroke_width=sw2),
+            path("M 19 10.5 Q 20 12 19 13.5", fill="none", stroke=a,
+                 stroke_width=sw2, stroke_opacity=0.7),
+        ])
+
+    if glyph_id == "globe_people":
+        # Globe with 4 small person heads around it — community ownership.
+        return "".join([
+            # Globe circle
+            circle(12, 12, 5.5, fill="none", stroke=a, stroke_width=sw),
+            # Latitude line
+            path("M 6.5 12 L 17.5 12", fill="none", stroke=a,
+                 stroke_width=sw2, stroke_opacity=0.6),
+            # Longitude curves
+            path("M 12 6.5 Q 8 12 12 17.5", fill="none", stroke=a,
+                 stroke_width=sw2, stroke_opacity=0.6),
+            path("M 12 6.5 Q 16 12 12 17.5", fill="none", stroke=a,
+                 stroke_width=sw2, stroke_opacity=0.6),
+            # 4 person figures around the globe (head + small body curve)
+            # Top-left
+            circle(3, 4, 1.1, fill=a, stroke="none"),
+            path("M 1.5 8 Q 3 7 4.5 8", fill="none", stroke=a, stroke_width=sw2),
+            # Top-right
+            circle(21, 4, 1.1, fill=a, stroke="none"),
+            path("M 19.5 8 Q 21 7 22.5 8", fill="none", stroke=a, stroke_width=sw2),
+            # Bottom-left
+            circle(3, 20, 1.1, fill=a, stroke="none"),
+            path("M 1.5 22 Q 3 23 4.5 22", fill="none", stroke=a, stroke_width=sw2),
+            # Bottom-right
+            circle(21, 20, 1.1, fill=a, stroke="none"),
+            path("M 19.5 22 Q 21 23 22.5 22", fill="none", stroke=a, stroke_width=sw2),
+        ])
+
+    if glyph_id == "waveform":
+        # Audio waveform — multi-modal interfaces.
+        return "".join([
+            f'<rect x="3"  y="10" width="2" height="4" rx="1" fill="{a}" stroke="none"/>',
+            f'<rect x="6"  y="7"  width="2" height="10" rx="1" fill="{a}" stroke="none"/>',
+            f'<rect x="9"  y="4"  width="2" height="16" rx="1" fill="{a}" stroke="none"/>',
+            f'<rect x="12" y="6"  width="2" height="12" rx="1" fill="{a}" stroke="none"/>',
+            f'<rect x="15" y="9"  width="2" height="6" rx="1" fill="{a}" stroke="none"/>',
+            f'<rect x="18" y="11" width="2" height="2" rx="1" fill="{a}" stroke="none"/>',
+        ])
+
+    if glyph_id == "scroll":
+        # Open scroll — epistemic continuity & digital artifacts.
+        return "".join([
+            '<path d="M 5 6 Q 5 4 7 4 L 17 4 Q 19 4 19 6 L 19 18 Q 19 20 17 20 '
+            'L 7 20 Q 5 20 5 18 Z" '
+            f'fill="none" stroke="{a}" stroke-width="{sw}" '
+            f'stroke-linejoin="round"/>',
+            # Lines of text on the scroll
+            path("M 8 9 L 16 9", fill="none", stroke=a, stroke_width=sw2),
+            path("M 8 12 L 16 12", fill="none", stroke=a, stroke_width=sw2),
+            path("M 8 15 L 14 15", fill="none", stroke=a, stroke_width=sw2),
+            # Curl accents
+            circle(5, 6, 0.7, fill=a, stroke="none"),
+            circle(19, 6, 0.7, fill=a, stroke="none"),
+            circle(5, 18, 0.7, fill=a, stroke="none"),
+            circle(19, 18, 0.7, fill=a, stroke="none"),
+        ])
+
+    raise ValueError(f"Unknown glyph_id: {glyph_id}")
 
 
 # --------------------------------------------------------------------------- #
 # Build source SVG (24x24)                                                    #
 # --------------------------------------------------------------------------- #
-def build_source(dp_num: int, name: str, family: str) -> str:
-    family_color = FAMILIES[family]
-    container = container_svg(family, family_color)
-    glyph = glyph_svg(dp_num, family, family_color)
+def build_source(dp_num: int, name: str, code: str, group: str,
+                 glyph_id: str) -> str:
+    family_color = GROUPS[group]
+    frame = frame_svg()
+    glyph = glyph_svg(glyph_id, family_color)
     title = name.replace("&", "&amp;")
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="{INK}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
-  <title id="t">DP{dp_num} — {title}</title>
-  {container}
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="t">
+  <title id="t">DP{dp_num} — {code} — {title}</title>
+  {frame}
   {glyph}
 </svg>
 """
 
 
+def build_source_inner_only(dp_num: int, code: str, group: str,
+                            glyph_id: str) -> str:
+    """Like build_source but returns only the frame + glyph fragments (no
+    <svg> wrapper) for embedding inside another viewBox."""
+    family_color = GROUPS[group]
+    return frame_svg() + "\n  " + glyph_svg(glyph_id, family_color)
+
+
 # --------------------------------------------------------------------------- #
 # Build badge SVG (600x600)                                                   #
 # --------------------------------------------------------------------------- #
-def build_badge(dp_num: int, name: str, family: str) -> str:
-    family_color = FAMILIES[family]
-    # The 24x24 source gets scaled to 540x540 inside the 600x600 frame
-    # (30 px gold margin on each side).
-    # We re-emit the source's strokes via a nested <svg> with the same
-    # viewBox so we get free scale.
-    inner = build_source_inner_only(dp_num, family, family_color)
+def build_badge(dp_num: int, name: str, code: str, group: str,
+                glyph_id: str, short_title: str) -> str:
+    family_color = GROUPS[group]
+    inner = build_source_inner_only(dp_num, code, group, glyph_id)
     title = name.replace("&", "&amp;")
+
+    # Title may be long; wrap to 1-2 lines at 22 px font.
+    title_lines = _wrap_title(name, max_chars_per_line=34)
+    if len(title_lines) == 1:
+        # Push down a little so it sits below the group label
+        title_lines = [title_lines[0]]
+    line_y_start = 538
+    line_height = 26
+    title_svg_parts = []
+    for i, line in enumerate(title_lines):
+        safe = line.replace("&", "&amp;")
+        title_svg_parts.append(
+            f'<text x="300" y="{line_y_start + i * line_height}" '
+            f'font-family=\'{FONT_STACK}\' font-size="22" font-weight="500" '
+            f'fill="{CAPTION}" text-anchor="middle">{safe}</text>'
+        )
+    title_svg = "\n  ".join(title_svg_parts)
+
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP{dp_num} — {title}</title>
-  <!-- background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame -->
-  <rect x="6" y="6" width="588" height="588" rx="18" fill="none" stroke="{GOLD_BORDER}" stroke-width="6"/>
-  <!-- corner gold accent chip (top-left, behind DPnn label) -->
-  <rect x="0" y="0" width="120" height="80" fill="{GOLD_CHIP}" fill-opacity="0.18"/>
-  <!-- DPnn label, top-left -->
-  <text x="36" y="68" font-family='{FONT_STACK}' font-size="64" font-weight="700" fill="{family_color}" letter-spacing="-1">DP{dp_num:02d}</text>
-  <!-- family name, top-right -->
-  <text x="564" y="68" font-family='{FONT_STACK}' font-size="22" font-weight="500" fill="{CAPTION}" text-anchor="end" letter-spacing="1.5">{family.upper()}</text>
-  <!-- icon at 30,90 → 570,510 (540x540) -->
-  <svg x="30" y="90" width="540" height="540" viewBox="0 0 24 24" fill="none" stroke="{INK}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <title id="t">DP{dp_num} — {code} — {title}</title>
+  <!-- white background -->
+  <rect width="600" height="600" fill="{WHITE}"/>
+  <!-- gold outer frame (brand) -->
+  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="{GOLD_BORDER}" stroke-width="6"/>
+  <!-- subtle inner gold border for depth -->
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="{GOLD_BORDER}" stroke-width="1.5" stroke-opacity="0.35"/>
+  <!-- DPnn label, top-left, gold (brand) -->
+  <text x="56" y="100" font-family='{FONT_STACK}' font-size="64" font-weight="700" fill="{GOLD_BORDER}" letter-spacing="-1">DP{dp_num:02d}</text>
+  <!-- 2-letter code, top-right, family color -->
+  <text x="544" y="100" font-family='{FONT_STACK}' font-size="48" font-weight="700" fill="{family_color}" text-anchor="end" letter-spacing="2">{code}</text>
+  <!-- icon at 60,150 → 540,490 (480x480) -->
+  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
     {inner}
   </svg>
+  <!-- short title, bottom, neutral gray -->
+  {title_svg}
+  <!-- group label, small caps, gold -->
+  <text x="300" y="510" font-family='{FONT_STACK}' font-size="13" font-weight="600" fill="{GOLD_BORDER}" text-anchor="middle" letter-spacing="2.5">{x(group.upper())}</text>
 </svg>
 """
 
 
-def build_source_inner_only(dp_num: int, family: str, family_color: str) -> str:
-    """Like build_source but returns only the container + glyph fragments
-    (no <svg> wrapper) for embedding inside another viewBox."""
-    return container_svg(family, family_color) + "\n    " + glyph_svg(dp_num, family, family_color)
+def x(s: str) -> str:
+    """Escape & for safe inclusion in SVG text."""
+    return s.replace("&", "&amp;")
 
 
 # --------------------------------------------------------------------------- #
 # Build cover SVG (1200x630)                                                  #
 # --------------------------------------------------------------------------- #
-def build_cover(dp_num: int, name: str, family: str) -> str:
-    family_color = FAMILIES[family]
+def build_cover(dp_num: int, name: str, code: str, group: str,
+                glyph_id: str, short_title: str) -> str:
+    family_color = GROUPS[group]
     title = name.replace("&", "&amp;")
-    # Word-wrap the title for the right strip. Title strip is at x=600,
-    # width=600. We split the title manually into ~3 lines at 64px font.
-    lines = _wrap_title(name, max_chars=22)
-
-    # Icon at left half: 480x480 centered in 0→600.
-    inner = build_source_inner_only(dp_num, family, family_color)
-
-    # Build title strip lines as <text> elements.
-    line_y_start = 220
-    line_height = 80
+    # Right strip: up to 3 lines of full title at 44 px bold.
+    # We wrap to ≤16 chars/line so 3 lines comfortably fit.
+    title_lines = _wrap_title(name, max_chars_per_line=18)
+    title_lines = title_lines[:3]
+    # Compute vertical placement: start lower if fewer lines, higher if more
+    n_lines = len(title_lines)
+    line_height = 56
+    block_height = line_height * (n_lines - 1)
+    line_y_start = 320 - block_height // 2
     text_lines = []
-    for i, line in enumerate(lines):
+    for i, line in enumerate(title_lines):
         safe = line.replace("&", "&amp;")
         text_lines.append(
-            f'<text x="640" y="{line_y_start + i * line_height}" '
-            f'font-family=\'{FONT_STACK}\' font-size="64" font-weight="700" '
+            f'<text x="650" y="{line_y_start + i * line_height}" '
+            f'font-family=\'{FONT_STACK}\' font-size="46" font-weight="700" '
             f'fill="{DARK_TEXT}">{safe}</text>'
         )
     lines_svg = "\n  ".join(text_lines)
 
+    inner = build_source_inner_only(dp_num, code, group, glyph_id)
+    group_label = GROUP_LABEL[group]
+
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP{dp_num} — {title}</title>
-  <!-- background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
+  <title id="t">DP{dp_num} — {code} — {title}</title>
+  <!-- white background -->
+  <rect width="1200" height="630" fill="{WHITE}"/>
   <!-- gold border -->
   <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="{GOLD_BORDER}" stroke-width="4"/>
-  <!-- title strip background, family color at 12% -->
-  <rect x="600" y="4" width="596" height="622" fill="{family_color}" fill-opacity="0.10"/>
-  <!-- divider line -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="{family_color}" stroke-width="2" stroke-opacity="0.5"/>
+  <!-- family-color wash on right strip -->
+  <rect x="600" y="4" width="596" height="622" fill="{family_color}" fill-opacity="0.08"/>
+  <!-- gold divider line between halves -->
+  <line x1="600" y1="4" x2="600" y2="626" stroke="{GOLD_BORDER}" stroke-width="2" stroke-opacity="0.7"/>
   <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none" stroke="{INK}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
     {inner}
   </svg>
-  <!-- DPnn big label, above title -->
-  <text x="640" y="120" font-family='{FONT_STACK}' font-size="32" font-weight="700" fill="{family_color}" letter-spacing="3">DP{dp_num:02d}</text>
+  <!-- DPnn, gold -->
+  <text x="650" y="110" font-family='{FONT_STACK}' font-size="36" font-weight="700" fill="{GOLD_BORDER}" letter-spacing="2">DP{dp_num:02d}</text>
+  <!-- 2-letter code, family color, larger -->
+  <text x="650" y="180" font-family='{FONT_STACK}' font-size="64" font-weight="700" fill="{family_color}" letter-spacing="2">{code}</text>
+  <!-- group label, small caps, gold -->
+  <text x="650" y="215" font-family='{FONT_STACK}' font-size="14" font-weight="600" fill="{GOLD_BORDER}" letter-spacing="3">{x(group_label.upper())}</text>
+  <!-- divider under header -->
+  <line x1="650" y1="240" x2="1140" y2="240" stroke="{GOLD_BORDER}" stroke-width="1" stroke-opacity="0.45"/>
   <!-- title text lines -->
   {lines_svg}
   <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='{FONT_STACK}' font-size="22" font-weight="500" fill="{CAPTION}" letter-spacing="1.5">DP{dp_num:02d} · {family.upper()}</text>
-  <!-- family-color corner dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="{family_color}"/>
+  <text x="32" y="600" font-family='{FONT_STACK}' font-size="20" font-weight="500" fill="{CAPTION}" letter-spacing="1.5">DP{dp_num:02d} · {code} · {x(group.upper())}</text>
+  <!-- gold accent dot bottom-right -->
+  <circle cx="1170" cy="600" r="10" fill="{GOLD_BORDER}"/>
 </svg>
 """
 
 
-def _wrap_title(title: str, max_chars: int) -> list[str]:
-    """Naive word-wrap. Targets max_chars per line for 64 px sans-serif."""
+def _wrap_title(title: str, max_chars_per_line: int) -> list[str]:
+    """Naive word-wrap. Targets max_chars_per_line for the given font size."""
     words = title.split()
     lines: list[str] = []
     cur = ""
     for w in words:
         if not cur:
             cur = w
-        elif len(cur) + 1 + len(w) <= max_chars:
+        elif len(cur) + 1 + len(w) <= max_chars_per_line:
             cur += " " + w
         else:
             lines.append(cur)
             cur = w
     if cur:
         lines.append(cur)
-    return lines[:3]  # at most 3 lines
+    return lines
 
 
 # --------------------------------------------------------------------------- #
@@ -528,13 +752,12 @@ def _wrap_title(title: str, max_chars: int) -> list[str]:
 def main() -> int:
     titles = load_dp_titles()
 
-    # Source / Badges / Covers for desirable-properties
-    targets = [
+    source_targets = [
         DESIRABLE_ASSET_ROOT / "source",
         REPO_DEV / "static" / "images" / "dp-icons" / "source",
         REPO_PROD / "static" / "images" / "dp-icons" / "source",
     ]
-    for t in targets:
+    for t in source_targets:
         t.mkdir(parents=True, exist_ok=True)
 
     badge_targets = [
@@ -553,13 +776,13 @@ def main() -> int:
     for t in cover_targets:
         t.mkdir(parents=True, exist_ok=True)
 
-    for dp_num, name, family in DP_TABLE:
+    for dp_num, name, code, group, glyph_id, short_title in DP_TABLE:
         title_name = titles.get(dp_num, name)
-        src = build_source(dp_num, title_name, family)
-        bdg = build_badge(dp_num, title_name, family)
-        cov = build_cover(dp_num, title_name, family)
+        src = build_source(dp_num, title_name, code, group, glyph_id)
+        bdg = build_badge(dp_num, title_name, code, group, glyph_id, short_title)
+        cov = build_cover(dp_num, title_name, code, group, glyph_id, short_title)
 
-        for d in targets:
+        for d in source_targets:
             (d / f"dp{dp_num:02d}.svg").write_text(src)
         for d in badge_targets:
             (d / f"dp{dp_num:02d}.svg").write_text(bdg)

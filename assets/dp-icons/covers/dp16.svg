@@ -1,25 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP16 — Roadmap and Milestones</title>
-  <!-- background -->
+  <title id="t">DP16 — Rm — Roadmap and Milestones</title>
+  <!-- white background -->
   <rect width="1200" height="630" fill="#ffffff"/>
   <!-- gold border -->
   <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- title strip background, family color at 12% -->
-  <rect x="600" y="4" width="596" height="622" fill="#0f766e" fill-opacity="0.10"/>
-  <!-- divider line -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#0f766e" stroke-width="2" stroke-opacity="0.5"/>
+  <!-- family-color wash on right strip -->
+  <rect x="600" y="4" width="596" height="622" fill="#ef4444" fill-opacity="0.08"/>
+  <!-- gold divider line between halves -->
+  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
   <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M 4.5 1.5 L 19.5 1.5 L 22.5 4.5 L 22.5 19.5 Q 22.5 22.5 19.5 22.5 L 4.5 22.5 Q 1.5 22.5 1.5 19.5 L 1.5 4.5 Q 1.5 1.5 4.5 1.5 Z" fill="#f5e9c8" fill-opacity="0.06" stroke="#b8860b" stroke-width="1"/>
-  <circle cx="20" cy="20" r="1.4" fill="#0f766e" stroke="none"/>
-    <circle cx="4.5" cy="19" r="1.0" fill="currentColor" stroke="none"/><circle cx="9" cy="14" r="1.0" fill="currentColor" stroke="none"/><circle cx="14" cy="9" r="1.0" fill="#0f766e" stroke="none"/><circle cx="19" cy="4.5" r="1.2" fill="#0f766e" stroke="none"/><path d="M4.5 19 Q11.5 7 19 4.5" stroke="#0f766e" fill="none"/>
+  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
+    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
+  <path d="M 4 19 Q 6 14 9 13 Q 13 12 13 8 Q 13 5 17 4" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2.0 1.6"/><circle cx="4" cy="19" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="9" cy="13" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="13" cy="8" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 17 4 L 17 12" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 17 4 L 21 5.5 L 17 7 Z" fill="#ef4444" stroke="#ef4444" stroke-width="1.4" stroke-linejoin="round"/>
   </svg>
-  <!-- DPnn big label, above title -->
-  <text x="640" y="120" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="32" font-weight="700" fill="#0f766e" letter-spacing="3">DP16</text>
+  <!-- DPnn, gold -->
+  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP16</text>
+  <!-- 2-letter code, family color, larger -->
+  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#ef4444" letter-spacing="2">Rm</text>
+  <!-- group label, small caps, gold -->
+  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">SECURITY, TRANSPARENCY &amp; TRUST</text>
+  <!-- divider under header -->
+  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
   <!-- title text lines -->
-  <text x="640" y="220" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#1f1b0e">Roadmap and Milestones</text>
+  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Roadmap and</text>
+  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Milestones</text>
   <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP16 · DATA</text>
-  <!-- family-color corner dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#0f766e"/>
+  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP16 · Rm · SECURITY</text>
+  <!-- gold accent dot bottom-right -->
+  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
 </svg>

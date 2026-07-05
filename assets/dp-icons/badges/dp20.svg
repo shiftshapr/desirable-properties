@@ -1,19 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP20 — Community Ownership</title>
-  <!-- background -->
+  <title id="t">DP20 — Ow — Community Ownership</title>
+  <!-- white background -->
   <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame -->
-  <rect x="6" y="6" width="588" height="588" rx="18" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- corner gold accent chip (top-left, behind DPnn label) -->
-  <rect x="0" y="0" width="120" height="80" fill="#facc15" fill-opacity="0.18"/>
-  <!-- DPnn label, top-left -->
-  <text x="36" y="68" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#0f766e" letter-spacing="-1">DP20</text>
-  <!-- family name, top-right -->
-  <text x="564" y="68" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="end" letter-spacing="1.5">DATA</text>
-  <!-- icon at 30,90 → 570,510 (540x540) -->
-  <svg x="30" y="90" width="540" height="540" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M 4.5 1.5 L 19.5 1.5 L 22.5 4.5 L 22.5 19.5 Q 22.5 22.5 19.5 22.5 L 4.5 22.5 Q 1.5 22.5 1.5 19.5 L 1.5 4.5 Q 1.5 1.5 4.5 1.5 Z" fill="#f5e9c8" fill-opacity="0.06" stroke="#b8860b" stroke-width="1"/>
-  <circle cx="20" cy="20" r="1.4" fill="#0f766e" stroke="none"/>
-    <rect x="3" y="3" width="5" height="5" rx="0.5" stroke="currentColor" fill="none"/><rect x="16" y="3" width="5" height="5" rx="0.5" stroke="currentColor" fill="none"/><rect x="3" y="16" width="5" height="5" rx="0.5" stroke="currentColor" fill="none"/><rect x="16" y="16" width="5" height="5" rx="0.5" stroke="currentColor" fill="none"/><circle cx="12" cy="12" r="2.5" stroke="#0f766e" fill="none"/><path d="M8 5.5 Q10 9 10 10" stroke="#0f766e" fill="none"/><path d="M16 5.5 Q14 9 14 10" stroke="#0f766e" fill="none"/><path d="M5.5 16 Q9 14 10 14" stroke="#0f766e" fill="none"/><path d="M18.5 16 Q15 14 14 14" stroke="#0f766e" fill="none"/>
+  <!-- gold outer frame (brand) -->
+  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <!-- subtle inner gold border for depth -->
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
+  <!-- DPnn label, top-left, gold (brand) -->
+  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP20</text>
+  <!-- 2-letter code, top-right, family color -->
+  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#f59e0b" text-anchor="end" letter-spacing="2">Ow</text>
+  <!-- icon at 60,150 → 540,490 (480x480) -->
+  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
+    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
+  <circle cx="12" cy="12" r="5.5" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 6.5 12 L 17.5 12" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 12 6.5 Q 8 12 12 17.5" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 12 6.5 Q 16 12 12 17.5" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="3" cy="4" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 1.5 8 Q 3 7 4.5 8" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="21" cy="4" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 19.5 8 Q 21 7 22.5 8" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="3" cy="20" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 1.5 22 Q 3 23 4.5 22" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="21" cy="20" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 19.5 22 Q 21 23 22.5 22" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
   </svg>
+  <!-- short title, bottom, neutral gray -->
+  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Community Ownership</text>
+  <!-- group label, small caps, gold -->
+  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">COMMUNITY</text>
 </svg>
