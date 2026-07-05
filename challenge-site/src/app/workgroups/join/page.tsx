@@ -124,7 +124,7 @@ const DP_WORKGROUP_SLUGS: Record<string, string> = {
   DP19: 'dp19-community-engagement',
   DP20: 'dp20-community-ownership',
   DP21: 'dp21-multi-modal',
-  DP22: 'dp22---epistemic-continuity-digital-artifacts',
+  DP22: 'dp22-civic-memory-epistemic-continuity',
 };
 
 function deriveSlug(dp: { id: string; name?: string }): string {
