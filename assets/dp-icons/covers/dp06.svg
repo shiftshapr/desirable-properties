@@ -1,30 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP6 — Co — Commerce</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#10b981" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 4 6 L 6 6 L 7.5 14 L 18 14 L 20 8 L 8 8" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M 4 6 L 3 4" fill="none" stroke="#10b981" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="9" cy="18" r="1.4" fill="none" stroke="#10b981" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="17" cy="18" r="1.4" fill="none" stroke="#10b981" stroke-width="2.2" stroke-opacity="1.0"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP06</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#10b981" letter-spacing="2">Co</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">SOVEREIGNTY &amp; PRIVACY</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="320" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Commerce</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP06 · Co · SOVEREIGNTY</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP06 — Commerce</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="214.1" cy="148.0" r="0.41" fill="#e8b923" fill-opacity="0.53"/>
+  <circle cx="389.2" cy="449.0" r="1.12" fill="#e8b923" fill-opacity="0.51"/>
+  <circle cx="375.4" cy="348.2" r="0.72" fill="#ffffff" fill-opacity="0.21"/>
+  <circle cx="172.8" cy="571.0" r="0.99" fill="#a0c8ff" fill-opacity="0.47"/>
+  <circle cx="25.1" cy="166.6" r="0.63" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="72.4" cy="236.0" r="0.41" fill="#e8b923" fill-opacity="0.36"/>
+  <circle cx="218.7" cy="245.9" r="0.82" fill="#a0c8ff" fill-opacity="0.34"/>
+  <circle cx="336.9" cy="123.8" r="0.95" fill="#e8b923" fill-opacity="0.54"/>
+  <circle cx="326.9" cy="311.9" r="1.2" fill="#a0c8ff" fill-opacity="0.49"/>
+  <circle cx="56.4" cy="525.1" r="1.05" fill="#ffffff" fill-opacity="0.27"/>
+  <circle cx="221.8" cy="65.3" r="1.07" fill="#ffffff" fill-opacity="0.54"/>
+  <circle cx="301.7" cy="304.9" r="1.14" fill="#e8b923" fill-opacity="0.32"/>
+  <circle cx="100.1" cy="525.5" r="0.71" fill="#e8b923" fill-opacity="0.22"/>
+  <circle cx="521.3" cy="475.9" r="0.65" fill="#e8b923" fill-opacity="0.22"/>
+  <circle cx="572.0" cy="281.0" r="0.4" fill="#a0c8ff" fill-opacity="0.36"/>
+  <circle cx="144.5" cy="335.5" r="0.45" fill="#a0c8ff" fill-opacity="0.37"/>
+  <circle cx="493.9" cy="278.7" r="0.57" fill="#a0c8ff" fill-opacity="0.54"/>
+  <circle cx="372.9" cy="92.9" r="0.61" fill="#a0c8ff" fill-opacity="0.23"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#10b981" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP06</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#10b981" letter-spacing="6">Co</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="end">SOVEREIGNTY &amp; PRIVACY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#10b981">
+      <path d="M3 6 L5.5 6 L7.5 14 L17 14 L18.5 8 L7 8" stroke="#10b981" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/><circle cx="9" cy="18" r="1.6" stroke="#10b981" stroke-width="1.8" fill="none"/><circle cx="15" cy="18" r="1.6" stroke="#10b981" stroke-width="1.8" fill="none"/><circle cx="13" cy="4.5" r="2.4" fill="#10b981"/><path d="M13 3 L13 6 M11.8 4 L13 2.6 L14.2 4" stroke="#0a0e1a" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Commerce</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#10b981" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="middle">SOVEREIGNTY &amp; PRIVACY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#10b981" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#10b981" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP06</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#10b981" letter-spacing="6">Co</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Commerce</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#10b981" letter-spacing="3">SOVEREIGNTY &amp; PRIVACY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#10b981"/>
 </svg>

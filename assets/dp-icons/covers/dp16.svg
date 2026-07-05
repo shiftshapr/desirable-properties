@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP16 — Rm — Roadmap and Milestones</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#ef4444" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 4 19 Q 6 14 9 13 Q 13 12 13 8 Q 13 5 17 4" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2.0 1.6"/><circle cx="4" cy="19" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="9" cy="13" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="13" cy="8" r="1.0" fill="#ef4444" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 17 4 L 17 12" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 17 4 L 21 5.5 L 17 7 Z" fill="#ef4444" stroke="#ef4444" stroke-width="1.4" stroke-linejoin="round"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP16</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#ef4444" letter-spacing="2">Rm</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">SECURITY, TRANSPARENCY &amp; TRUST</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Roadmap and</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Milestones</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP16 · Rm · SECURITY</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP16 — Roadmap &amp; Milestones</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="224.3" cy="238.7" r="0.68" fill="#a0c8ff" fill-opacity="0.4"/>
+  <circle cx="389.3" cy="55.8" r="1.11" fill="#a0c8ff" fill-opacity="0.21"/>
+  <circle cx="528.5" cy="287.3" r="0.81" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="299.6" cy="77.7" r="0.61" fill="#e8b923" fill-opacity="0.32"/>
+  <circle cx="512.6" cy="206.1" r="0.63" fill="#e8b923" fill-opacity="0.42"/>
+  <circle cx="435.9" cy="381.0" r="0.55" fill="#a0c8ff" fill-opacity="0.28"/>
+  <circle cx="211.8" cy="228.3" r="0.81" fill="#e8b923" fill-opacity="0.31"/>
+  <circle cx="474.5" cy="230.8" r="1.09" fill="#e8b923" fill-opacity="0.39"/>
+  <circle cx="347.1" cy="446.5" r="0.56" fill="#ffffff" fill-opacity="0.4"/>
+  <circle cx="515.9" cy="187.1" r="1.03" fill="#e8b923" fill-opacity="0.33"/>
+  <circle cx="264.1" cy="111.1" r="0.54" fill="#a0c8ff" fill-opacity="0.26"/>
+  <circle cx="241.1" cy="381.6" r="0.96" fill="#ffffff" fill-opacity="0.28"/>
+  <circle cx="288.0" cy="471.9" r="0.47" fill="#e8b923" fill-opacity="0.36"/>
+  <circle cx="285.7" cy="548.6" r="0.44" fill="#e8b923" fill-opacity="0.35"/>
+  <circle cx="295.3" cy="547.0" r="1.1" fill="#ffffff" fill-opacity="0.45"/>
+  <circle cx="286.2" cy="303.3" r="0.57" fill="#e8b923" fill-opacity="0.31"/>
+  <circle cx="46.2" cy="405.3" r="1.16" fill="#ffffff" fill-opacity="0.42"/>
+  <circle cx="95.0" cy="306.8" r="0.88" fill="#ffffff" fill-opacity="0.43"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#ef4444" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP16</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#ef4444" letter-spacing="6">Rm</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="end">SECURITY, TRUST</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#ef4444" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#ef4444">
+      <path d="M3 19 L11 6 L19 19 Z" stroke="#ef4444" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M14 19 L11 12" stroke="#ef4444" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.6"/><line x1="11" y1="6" x2="11" y2="2" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/><path d="M11 2 L17 3.6 L11 5.4 Z" fill="#ef4444"/><circle cx="6" cy="14.5" r="0.8" fill="#ef4444" fill-opacity="0.7"/><circle cx="8" cy="11.5" r="0.8" fill="#ef4444" fill-opacity="0.85"/><circle cx="9.5" cy="8.5" r="0.8" fill="#ef4444"/><line x1="2" y1="20" x2="22" y2="20" stroke="#ef4444" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.6"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Roadmap</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#ef4444" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="middle">SECURITY, TRUST</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#ef4444" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#ef4444" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP16</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#ef4444" letter-spacing="6">Rm</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Roadmap</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#ef4444" letter-spacing="3">SECURITY, TRUST</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#ef4444"/>
 </svg>

@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP5 — Ns — Decentralized Namespace</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#10b981" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <circle cx="12" cy="12" r="8.5" fill="none" stroke="#10b981" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="12" cy="12" r="5.5" fill="none" stroke="#10b981" stroke-width="1.4" stroke-opacity="0.6"/><circle cx="12" cy="12" r="1.4" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="17.50" y1="12.00" x2="20.50" y2="12.00" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="20.5" cy="12.0" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="15.89" y1="15.89" x2="18.01" y2="18.01" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="18.01" cy="18.01" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12.00" y1="17.50" x2="12.00" y2="20.50" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="12.0" cy="20.5" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="8.11" y1="15.89" x2="5.99" y2="18.01" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="5.99" cy="18.01" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="6.50" y1="12.00" x2="3.50" y2="12.00" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="3.5" cy="12.0" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="8.11" y1="8.11" x2="5.99" y2="5.99" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="5.99" cy="5.99" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12.00" y1="6.50" x2="12.00" y2="3.50" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="12.0" cy="3.5" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="15.89" y1="8.11" x2="18.01" y2="5.99" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/><circle cx="18.01" cy="5.99" r="1.0" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP05</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#10b981" letter-spacing="2">Ns</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">SOVEREIGNTY &amp; PRIVACY</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Decentralized</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Namespace</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP05 · Ns · SOVEREIGNTY</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP05 — Decentralized Namespace</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="290.5" cy="525.2" r="0.83" fill="#a0c8ff" fill-opacity="0.51"/>
+  <circle cx="377.1" cy="188.2" r="0.84" fill="#ffffff" fill-opacity="0.26"/>
+  <circle cx="340.7" cy="201.4" r="1.05" fill="#a0c8ff" fill-opacity="0.48"/>
+  <circle cx="395.7" cy="464.8" r="0.64" fill="#e8b923" fill-opacity="0.22"/>
+  <circle cx="73.2" cy="150.0" r="0.64" fill="#e8b923" fill-opacity="0.24"/>
+  <circle cx="134.5" cy="441.0" r="1.11" fill="#a0c8ff" fill-opacity="0.54"/>
+  <circle cx="520.2" cy="46.4" r="1.03" fill="#e8b923" fill-opacity="0.44"/>
+  <circle cx="495.0" cy="173.6" r="0.88" fill="#e8b923" fill-opacity="0.36"/>
+  <circle cx="304.6" cy="178.5" r="0.48" fill="#ffffff" fill-opacity="0.5"/>
+  <circle cx="228.3" cy="243.0" r="0.84" fill="#a0c8ff" fill-opacity="0.33"/>
+  <circle cx="126.1" cy="538.1" r="0.83" fill="#a0c8ff" fill-opacity="0.49"/>
+  <circle cx="503.3" cy="39.2" r="0.41" fill="#ffffff" fill-opacity="0.21"/>
+  <circle cx="90.5" cy="56.9" r="1.12" fill="#ffffff" fill-opacity="0.37"/>
+  <circle cx="559.6" cy="110.4" r="0.53" fill="#a0c8ff" fill-opacity="0.43"/>
+  <circle cx="277.6" cy="288.5" r="1.17" fill="#e8b923" fill-opacity="0.21"/>
+  <circle cx="319.7" cy="60.6" r="0.77" fill="#a0c8ff" fill-opacity="0.32"/>
+  <circle cx="134.9" cy="355.6" r="0.94" fill="#e8b923" fill-opacity="0.53"/>
+  <circle cx="130.6" cy="542.6" r="0.93" fill="#a0c8ff" fill-opacity="0.42"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#10b981" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP05</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#10b981" letter-spacing="6">Ns</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="end">SOVEREIGNTY &amp; PRIVACY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#10b981">
+      <circle cx="12" cy="12" r="9.5" stroke="#10b981" stroke-width="2" fill="none"/><line x1="12" y1="12" x2="21.50" y2="12.00" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="18.72" y2="18.72" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="12.00" y2="21.50" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="5.28" y2="18.72" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="2.50" y2="12.00" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="5.28" y2="5.28" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="12.00" y2="2.50" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="12" x2="18.72" y2="5.28" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><circle cx="21.50" cy="12.00" r="1.1" fill="#10b981"/><circle cx="18.72" cy="18.72" r="1.1" fill="#10b981"/><circle cx="12.00" cy="21.50" r="1.1" fill="#10b981"/><circle cx="5.28" cy="18.72" r="1.1" fill="#10b981"/><circle cx="2.50" cy="12.00" r="1.1" fill="#10b981"/><circle cx="5.28" cy="5.28" r="1.1" fill="#10b981"/><circle cx="12.00" cy="2.50" r="1.1" fill="#10b981"/><circle cx="18.72" cy="5.28" r="1.1" fill="#10b981"/><circle cx="12" cy="12" r="2.4" fill="#10b981"/><circle cx="12" cy="12" r="1.1" fill="#0a0e1a"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Decentralized NS</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#10b981" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="middle">SOVEREIGNTY &amp; PRIVACY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#10b981" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#10b981" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP05</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#10b981" letter-spacing="6">Ns</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Decentralized NS</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#10b981" letter-spacing="3">SOVEREIGNTY &amp; PRIVACY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#10b981"/>
 </svg>

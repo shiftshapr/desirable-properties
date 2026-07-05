@@ -1,22 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP4 — So — Data Sovereignty and Privacy</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP04</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#10b981" text-anchor="end" letter-spacing="2">So</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 12 3 L 19 6 L 19 12 Q 19 17 12 21 Q 5 17 5 12 L 5 6 Z" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="11" r="1.6" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 11 12 L 10.2 16 L 13.8 16 L 13 12 Z" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
+  <title id="t">DP04 — Data Sovereignty &amp; Privacy</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="152.2" cy="77.8" r="0.72" fill="#ffffff" fill-opacity="0.25"/>
+  <circle cx="31.1" cy="327.7" r="0.63" fill="#ffffff" fill-opacity="0.55"/>
+  <circle cx="144.3" cy="320.5" r="0.62" fill="#ffffff" fill-opacity="0.26"/>
+  <circle cx="166.6" cy="548.1" r="0.42" fill="#e8b923" fill-opacity="0.42"/>
+  <circle cx="468.3" cy="128.3" r="0.65" fill="#a0c8ff" fill-opacity="0.42"/>
+  <circle cx="558.1" cy="495.2" r="0.7" fill="#e8b923" fill-opacity="0.5"/>
+  <circle cx="396.2" cy="303.3" r="0.54" fill="#ffffff" fill-opacity="0.37"/>
+  <circle cx="549.0" cy="478.0" r="1.15" fill="#ffffff" fill-opacity="0.49"/>
+  <circle cx="529.0" cy="340.5" r="1.11" fill="#a0c8ff" fill-opacity="0.5"/>
+  <circle cx="129.3" cy="257.3" r="0.63" fill="#ffffff" fill-opacity="0.36"/>
+  <circle cx="190.9" cy="475.1" r="0.43" fill="#a0c8ff" fill-opacity="0.22"/>
+  <circle cx="578.6" cy="310.6" r="0.92" fill="#ffffff" fill-opacity="0.45"/>
+  <circle cx="578.5" cy="129.5" r="0.73" fill="#a0c8ff" fill-opacity="0.27"/>
+  <circle cx="267.0" cy="122.9" r="0.75" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="332.8" cy="526.4" r="0.48" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="175.4" cy="346.0" r="1.09" fill="#ffffff" fill-opacity="0.24"/>
+  <circle cx="182.9" cy="34.4" r="0.69" fill="#e8b923" fill-opacity="0.23"/>
+  <circle cx="431.5" cy="557.5" r="0.41" fill="#ffffff" fill-opacity="0.3"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#10b981" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP04</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#10b981" letter-spacing="6">So</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="end">SOVEREIGNTY &amp; PRIVACY</text>
+  
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#10b981"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#10b981">
+    <path d="M12 3 L19 6 L19 12 Q19 17 12 21 Q5 17 5 12 L5 6 Z" stroke="#10b981" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="12" cy="11" r="1.7" fill="#10b981"/><path d="M12 12.3 L11 16 L13 16 Z" fill="#10b981"/><circle cx="8.5" cy="11" r="0.8" fill="#10b981" fill-opacity="0.7"/><circle cx="15.5" cy="11" r="0.8" fill="#10b981" fill-opacity="0.7"/><circle cx="8.5" cy="14" r="0.8" fill="#10b981" fill-opacity="0.5"/><circle cx="15.5" cy="14" r="0.8" fill="#10b981" fill-opacity="0.5"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Data Sovereignty and Privacy</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">SOVEREIGNTY</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Data Sovereignty</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">SOVEREIGNTY &amp; PRIVACY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#10b981" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#10b981" letter-spacing="3" text-anchor="middle">SOVEREIGNTY &amp; PRIVACY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#10b981"/>
 </svg>

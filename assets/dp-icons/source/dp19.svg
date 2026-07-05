@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="t">
-  <title id="t">DP19 — Ap — Amplifying Presence and Community Engagement</title>
-  <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 4 10 L 4 14 L 12 16 L 20 18 L 20 6 L 12 8 Z" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linejoin="round"/><rect x="3" y="10.5" width="2" height="3" rx="0.4" fill="#f59e0b" stroke="none"/><path d="M 21 9 Q 22.5 12 21 15" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 19 10.5 Q 20 12 19 13.5" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.7" stroke-linejoin="round" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">DP19 — Amplifying Presence</title>
+  <g stroke="#f59e0b" fill="none">
+    <path d="M4 10 L4 14 L13 17 L13 7 Z" stroke="#f59e0b" stroke-width="2" fill="#f59e0b" fill-opacity="0.85" stroke-linejoin="round"/><rect x="13" y="9.5" width="3" height="5" stroke="#f59e0b" stroke-width="1.8" fill="none" rx="0.5"/><path d="M17 9 Q19 12 17 15" stroke="#f59e0b" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M19.5 8 Q22 12 19.5 16" stroke="#f59e0b" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-opacity="0.75"/>
+  </g>
 </svg>

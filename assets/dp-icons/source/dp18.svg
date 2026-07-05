@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="t">
-  <title id="t">DP18 — Fr — Feedback Loops and Reputation</title>
-  <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 4 5 L 20 5 Q 21 5 21 6 L 21 15 Q 21 16 20 16 L 12 16 L 8 20 L 8 16 L 4 16 Q 3 16 3 15 L 3 6 Q 3 5 4 5 Z" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="8" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="12" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="16" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">DP18 — Feedback Loops &amp; Reputation</title>
+  <g stroke="#f59e0b" fill="none">
+    <path d="M19 8 A7 7 0 1 0 18 16" stroke="#f59e0b" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M19 8 L22 8 L19 11 Z" fill="#f59e0b"/><rect x="7" y="9.5" width="10" height="6.5" rx="1.5" stroke="#f59e0b" stroke-width="1.6" fill="none"/><path d="M9 16 L8 18 L11 16 Z" fill="#f59e0b"/><circle cx="9.5" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="12" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="14.5" cy="12.7" r="0.7" fill="#f59e0b"/>
+  </g>
 </svg>

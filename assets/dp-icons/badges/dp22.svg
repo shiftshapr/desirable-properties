@@ -1,23 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP22 — Ep — Epistemic Continuity &amp; Digital Artifacts</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP22</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#f59e0b" text-anchor="end" letter-spacing="2">Ep</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 5 6 Q 5 4 7 4 L 17 4 Q 19 4 19 6 L 19 18 Q 19 20 17 20 L 7 20 Q 5 20 5 18 Z" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linejoin="round"/><path d="M 8 9 L 16 9" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 8 12 L 16 12" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 8 15 L 14 15" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="6" r="0.7" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="19" cy="6" r="0.7" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="5" cy="18" r="0.7" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="19" cy="18" r="0.7" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
+  <title id="t">DP22 — Epistemic Continuity</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="556.6" cy="98.6" r="0.42" fill="#ffffff" fill-opacity="0.55"/>
+  <circle cx="413.1" cy="434.2" r="1.1" fill="#ffffff" fill-opacity="0.48"/>
+  <circle cx="149.8" cy="557.3" r="0.66" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="403.7" cy="537.4" r="0.97" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="350.2" cy="194.0" r="0.55" fill="#a0c8ff" fill-opacity="0.5"/>
+  <circle cx="317.3" cy="428.2" r="1.19" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="411.1" cy="362.9" r="0.61" fill="#e8b923" fill-opacity="0.53"/>
+  <circle cx="524.4" cy="507.6" r="1.16" fill="#e8b923" fill-opacity="0.38"/>
+  <circle cx="482.1" cy="393.8" r="0.55" fill="#a0c8ff" fill-opacity="0.22"/>
+  <circle cx="524.7" cy="254.9" r="0.6" fill="#e8b923" fill-opacity="0.3"/>
+  <circle cx="242.5" cy="537.7" r="0.55" fill="#e8b923" fill-opacity="0.4"/>
+  <circle cx="346.3" cy="186.5" r="0.88" fill="#e8b923" fill-opacity="0.39"/>
+  <circle cx="444.2" cy="523.6" r="0.74" fill="#e8b923" fill-opacity="0.23"/>
+  <circle cx="219.2" cy="261.8" r="0.72" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="306.7" cy="244.4" r="0.48" fill="#ffffff" fill-opacity="0.51"/>
+  <circle cx="36.9" cy="230.7" r="0.54" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="127.1" cy="40.7" r="0.83" fill="#a0c8ff" fill-opacity="0.48"/>
+  <circle cx="433.9" cy="387.1" r="0.48" fill="#ffffff" fill-opacity="0.27"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#f59e0b" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP22</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#f59e0b" letter-spacing="6">Ep</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="end">COMMUNITY PARTICIPATION&amp;</text>
+  <text x="554" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="end">FEEDBACK</text>
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#f59e0b"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#f59e0b">
+    <path d="M12 3 Q6 6 12 9 Q18 12 12 15 Q6 18 12 21" stroke="#f59e0b" stroke-width="2.1" fill="none" stroke-linecap="round"/><path d="M12 3 Q18 6 12 9 Q6 12 12 15 Q18 18 12 21" stroke="#f59e0b" stroke-width="2.1" fill="none" stroke-linecap="round"/><line x1="9" y1="6" x2="15" y2="6" stroke="#f59e0b" stroke-width="1.4" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="12" stroke="#f59e0b" stroke-width="1.4" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="18" stroke="#f59e0b" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="3" r="1.1" fill="#f59e0b"/><circle cx="12" cy="21" r="1.1" fill="#f59e0b"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Epistemic Continuity &amp; Digital</text>
-  <text x="300" y="564" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Artifacts</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">COMMUNITY</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Epistemic Continuity</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">COMMUNITY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="middle">COMMUNITY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#f59e0b"/>
 </svg>

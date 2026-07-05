@@ -1,22 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP20 — Ow — Community Ownership</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP20</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#f59e0b" text-anchor="end" letter-spacing="2">Ow</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <circle cx="12" cy="12" r="5.5" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 6.5 12 L 17.5 12" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 12 6.5 Q 8 12 12 17.5" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 12 6.5 Q 16 12 12 17.5" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="0.6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="3" cy="4" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 1.5 8 Q 3 7 4.5 8" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="21" cy="4" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 19.5 8 Q 21 7 22.5 8" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="3" cy="20" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 1.5 22 Q 3 23 4.5 22" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><circle cx="21" cy="20" r="1.1" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 19.5 22 Q 21 23 22.5 22" fill="none" stroke="#f59e0b" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
+  <title id="t">DP20 — Community Ownership</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="527.2" cy="404.3" r="1.01" fill="#e8b923" fill-opacity="0.52"/>
+  <circle cx="397.4" cy="495.6" r="0.48" fill="#ffffff" fill-opacity="0.31"/>
+  <circle cx="35.1" cy="247.8" r="0.46" fill="#e8b923" fill-opacity="0.24"/>
+  <circle cx="552.0" cy="271.7" r="0.57" fill="#a0c8ff" fill-opacity="0.31"/>
+  <circle cx="207.9" cy="259.3" r="0.9" fill="#e8b923" fill-opacity="0.48"/>
+  <circle cx="246.8" cy="135.6" r="0.59" fill="#ffffff" fill-opacity="0.27"/>
+  <circle cx="126.6" cy="408.3" r="0.63" fill="#ffffff" fill-opacity="0.44"/>
+  <circle cx="369.4" cy="527.2" r="0.61" fill="#ffffff" fill-opacity="0.28"/>
+  <circle cx="341.4" cy="51.4" r="1.04" fill="#e8b923" fill-opacity="0.42"/>
+  <circle cx="96.6" cy="382.2" r="0.88" fill="#ffffff" fill-opacity="0.36"/>
+  <circle cx="536.6" cy="173.3" r="1.07" fill="#e8b923" fill-opacity="0.25"/>
+  <circle cx="540.1" cy="503.4" r="0.95" fill="#a0c8ff" fill-opacity="0.55"/>
+  <circle cx="260.0" cy="145.5" r="1.13" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="264.4" cy="575.9" r="1.07" fill="#e8b923" fill-opacity="0.24"/>
+  <circle cx="21.1" cy="384.8" r="0.65" fill="#e8b923" fill-opacity="0.46"/>
+  <circle cx="317.0" cy="447.2" r="0.44" fill="#ffffff" fill-opacity="0.43"/>
+  <circle cx="545.3" cy="332.1" r="0.41" fill="#ffffff" fill-opacity="0.4"/>
+  <circle cx="72.2" cy="164.1" r="0.47" fill="#e8b923" fill-opacity="0.43"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#f59e0b" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP20</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#f59e0b" letter-spacing="6">Ow</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="end">COMMUNITY PARTICIPATION&amp;</text>
+  <text x="554" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="end">FEEDBACK</text>
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#f59e0b"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#f59e0b">
+    <circle cx="12" cy="11" r="6.5" stroke="#f59e0b" stroke-width="2.2" fill="none"/><ellipse cx="12" cy="11" rx="6.5" ry="2.3" stroke="#f59e0b" stroke-width="1.3" fill="none" stroke-opacity="0.75"/><ellipse cx="12" cy="11" rx="2.3" ry="6.5" stroke="#f59e0b" stroke-width="1.3" fill="none" stroke-opacity="0.75"/><path d="M5 14.5 Q4 16 5 19 L7 19 Q8 19 8 18 Q8 16 9 16" stroke="#f59e0b" stroke-width="1.6" fill="#f59e0b" fill-opacity="0.55" stroke-linejoin="round"/><path d="M19 14.5 Q20 16 19 19 L17 19 Q16 19 16 18 Q16 16 15 16" stroke="#f59e0b" stroke-width="1.6" fill="#f59e0b" fill-opacity="0.55" stroke-linejoin="round"/><circle cx="10" cy="11" r="0.7" fill="#f59e0b"/><circle cx="12" cy="9.5" r="0.7" fill="#f59e0b"/><circle cx="14" cy="11" r="0.7" fill="#f59e0b"/><circle cx="12" cy="13" r="0.7" fill="#f59e0b"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Community Ownership</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">COMMUNITY</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Community Ownership</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">COMMUNITY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="middle">COMMUNITY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#f59e0b"/>
 </svg>

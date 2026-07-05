@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="t">
-  <title id="t">DP4 — So — Data Sovereignty and Privacy</title>
-  <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 12 3 L 19 6 L 19 12 Q 19 17 12 21 Q 5 17 5 12 L 5 6 Z" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="11" r="1.6" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 11 12 L 10.2 16 L 13.8 16 L 13 12 Z" fill="#10b981" stroke="none" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
+  <title id="t">DP4 — Data Sovereignty &amp; Privacy</title>
+  <g stroke="#10b981" fill="none">
+    <path d="M12 3 L19 6 L19 12 Q19 17 12 21 Q5 17 5 12 L5 6 Z" stroke="#10b981" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="12" cy="11" r="1.7" fill="#10b981"/><path d="M12 12.3 L11 16 L13 16 Z" fill="#10b981"/><circle cx="8.5" cy="11" r="0.8" fill="#10b981" fill-opacity="0.7"/><circle cx="15.5" cy="11" r="0.8" fill="#10b981" fill-opacity="0.7"/><circle cx="8.5" cy="14" r="0.8" fill="#10b981" fill-opacity="0.5"/><circle cx="15.5" cy="14" r="0.8" fill="#10b981" fill-opacity="0.5"/>
+  </g>
 </svg>

@@ -1,32 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP9 — In — Developer and Community Incentives</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#d946ef" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 12 3 Q 15 5 15 9 L 15 16 L 9 16 L 9 9 Q 9 5 12 3 Z" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="9" r="1.5" fill="none" stroke="#d946ef" stroke-width="1.4" stroke-opacity="1.0"/><path d="M 9 12 L 5 16 L 5 19 L 9 17 Z" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-linejoin="round"/><path d="M 15 12 L 19 16 L 19 19 L 15 17 Z" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-linejoin="round"/><path d="M 10 16 Q 12 20 14 16 L 13.5 18 L 12 21 L 10.5 18 Z" fill="#d946ef" stroke="none"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP09</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#d946ef" letter-spacing="2">In</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">INTEROPERABILITY &amp; PARTICIPANT EXPERIENCE</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="264" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Developer and</text>
-  <text x="650" y="320" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Community</text>
-  <text x="650" y="376" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Incentives</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP09 · In · INTEROP</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP09 — Developer &amp; Community Incentives</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="120.9" cy="292.9" r="0.46" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="301.7" cy="477.0" r="1.04" fill="#ffffff" fill-opacity="0.27"/>
+  <circle cx="37.7" cy="129.9" r="0.46" fill="#a0c8ff" fill-opacity="0.37"/>
+  <circle cx="438.0" cy="339.6" r="0.77" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="504.3" cy="218.1" r="0.9" fill="#a0c8ff" fill-opacity="0.25"/>
+  <circle cx="276.0" cy="455.2" r="0.74" fill="#e8b923" fill-opacity="0.48"/>
+  <circle cx="276.6" cy="190.5" r="0.57" fill="#e8b923" fill-opacity="0.33"/>
+  <circle cx="209.8" cy="268.6" r="0.61" fill="#ffffff" fill-opacity="0.27"/>
+  <circle cx="92.4" cy="325.6" r="0.95" fill="#a0c8ff" fill-opacity="0.31"/>
+  <circle cx="556.4" cy="57.0" r="1.2" fill="#ffffff" fill-opacity="0.51"/>
+  <circle cx="522.1" cy="258.0" r="0.64" fill="#a0c8ff" fill-opacity="0.27"/>
+  <circle cx="579.2" cy="173.2" r="0.82" fill="#e8b923" fill-opacity="0.5"/>
+  <circle cx="99.8" cy="530.5" r="0.83" fill="#e8b923" fill-opacity="0.35"/>
+  <circle cx="445.4" cy="515.7" r="0.51" fill="#e8b923" fill-opacity="0.45"/>
+  <circle cx="565.9" cy="444.9" r="0.88" fill="#ffffff" fill-opacity="0.34"/>
+  <circle cx="168.6" cy="571.3" r="0.62" fill="#ffffff" fill-opacity="0.25"/>
+  <circle cx="293.8" cy="564.0" r="0.78" fill="#a0c8ff" fill-opacity="0.49"/>
+  <circle cx="322.3" cy="558.7" r="0.76" fill="#e8b923" fill-opacity="0.37"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#d946ef" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP09</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#d946ef" letter-spacing="6">In</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">INTEROPERABILITY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#d946ef" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#d946ef">
+      <path d="M12 3 Q15 6 15 12 L15 16 L9 16 L9 12 Q9 6 12 3 Z" stroke="#d946ef" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="12" cy="8.5" r="1.6" stroke="#d946ef" stroke-width="1.5" fill="none"/><path d="M9 13 L6.5 16 L9 16 Z" stroke="#d946ef" stroke-width="1.6" fill="#d946ef" fill-opacity="0.6"/><path d="M15 13 L17.5 16 L15 16 Z" stroke="#d946ef" stroke-width="1.6" fill="#d946ef" fill-opacity="0.6"/><path d="M12 18 L12 21.5 M10.5 20 L12 21.5 L13.5 20" stroke="#d946ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Incentives</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#d946ef" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="middle">INTEROPERABILITY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#d946ef" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#d946ef" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP09</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#d946ef" letter-spacing="6">In</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Incentives</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#d946ef" letter-spacing="3">INTEROPERABILITY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#d946ef"/>
 </svg>

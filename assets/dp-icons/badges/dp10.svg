@@ -1,22 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP10 — Ed — Education</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP10</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#d946ef" text-anchor="end" letter-spacing="2">Ed</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <circle cx="12" cy="7" r="2.6" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 10.5 9 L 13.5 9" fill="none" stroke="#d946ef" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 11 10.5 L 13 10.5" fill="none" stroke="#d946ef" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 3 14 Q 7.5 12.5 12 14 Q 16.5 12.5 21 14 L 21 20 Q 16.5 18.5 12 20 Q 7.5 18.5 3 20 Z" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-linejoin="round"/><path d="M 12 14 L 12 20" fill="none" stroke="#d946ef" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
+  <title id="t">DP10 — Education</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="340.0" cy="260.2" r="0.86" fill="#e8b923" fill-opacity="0.27"/>
+  <circle cx="481.2" cy="385.9" r="0.53" fill="#e8b923" fill-opacity="0.38"/>
+  <circle cx="62.6" cy="553.3" r="1.0" fill="#e8b923" fill-opacity="0.33"/>
+  <circle cx="501.7" cy="357.8" r="0.71" fill="#a0c8ff" fill-opacity="0.3"/>
+  <circle cx="166.9" cy="117.8" r="0.64" fill="#e8b923" fill-opacity="0.33"/>
+  <circle cx="450.0" cy="570.2" r="1.18" fill="#ffffff" fill-opacity="0.41"/>
+  <circle cx="346.4" cy="152.0" r="0.56" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="225.0" cy="523.0" r="0.65" fill="#e8b923" fill-opacity="0.39"/>
+  <circle cx="283.2" cy="385.7" r="0.66" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="563.1" cy="153.5" r="0.43" fill="#a0c8ff" fill-opacity="0.31"/>
+  <circle cx="388.4" cy="318.8" r="1.08" fill="#a0c8ff" fill-opacity="0.25"/>
+  <circle cx="549.5" cy="531.3" r="0.52" fill="#ffffff" fill-opacity="0.54"/>
+  <circle cx="267.3" cy="569.9" r="0.55" fill="#e8b923" fill-opacity="0.32"/>
+  <circle cx="269.5" cy="401.2" r="0.51" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="169.5" cy="189.4" r="0.93" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="455.4" cy="288.9" r="0.68" fill="#ffffff" fill-opacity="0.35"/>
+  <circle cx="325.1" cy="44.5" r="1.12" fill="#e8b923" fill-opacity="0.28"/>
+  <circle cx="270.9" cy="346.4" r="0.71" fill="#a0c8ff" fill-opacity="0.5"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#d946ef" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP10</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#d946ef" letter-spacing="6">Ed</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">INTEROPERABILITY&amp;</text>
+  <text x="554" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">PARTICIPANT EXPERIENCE</text>
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#d946ef" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#d946ef"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#d946ef">
+    <circle cx="12" cy="4.5" r="1.7" fill="#d946ef"/><line x1="12" y1="1.5" x2="12" y2="0.5" stroke="#d946ef" stroke-width="1.4" stroke-linecap="round"/><line x1="9.3" y1="2.3" x2="8.5" y2="1.5" stroke="#d946ef" stroke-width="1.4" stroke-linecap="round"/><line x1="14.7" y1="2.3" x2="15.5" y2="1.5" stroke="#d946ef" stroke-width="1.4" stroke-linecap="round"/><line x1="9.3" y1="6.7" x2="8.5" y2="7.5" stroke="#d946ef" stroke-width="1.4" stroke-linecap="round"/><line x1="14.7" y1="6.7" x2="15.5" y2="7.5" stroke="#d946ef" stroke-width="1.4" stroke-linecap="round"/><path d="M4 10 Q8 8 12 10 Q16 8 20 10 L20 19 Q16 17 12 19 Q8 17 4 19 Z" stroke="#d946ef" stroke-width="2" fill="none" stroke-linejoin="round"/><line x1="12" y1="10" x2="12" y2="19" stroke="#d946ef" stroke-width="1.5"/><line x1="6" y1="13" x2="10" y2="12.4" stroke="#d946ef" stroke-width="1" stroke-opacity="0.6"/><line x1="6" y1="15.5" x2="10" y2="14.9" stroke="#d946ef" stroke-width="1" stroke-opacity="0.6"/><line x1="14" y1="12.4" x2="18" y2="13" stroke="#d946ef" stroke-width="1" stroke-opacity="0.6"/><line x1="14" y1="14.9" x2="18" y2="15.5" stroke="#d946ef" stroke-width="1" stroke-opacity="0.6"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Education</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">INTEROP</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Education</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">INTEROPERABILITY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#d946ef" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="middle">INTEROPERABILITY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#d946ef"/>
 </svg>

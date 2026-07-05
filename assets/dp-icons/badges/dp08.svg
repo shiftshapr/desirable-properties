@@ -1,23 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP8 — Cm — Collaborative Environment and Meta-Communities</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP08</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#d946ef" text-anchor="end" letter-spacing="2">Cm</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <circle cx="12" cy="12" r="2.4" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="12.00" y2="4.50" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="12.0" cy="4.5" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="18.50" y2="8.25" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="18.5" cy="8.25" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="18.50" y2="15.75" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="18.5" cy="15.75" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="12.00" y2="19.50" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="12.0" cy="19.5" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="5.50" y2="15.75" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="5.5" cy="15.75" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><line x1="12" y1="12" x2="5.50" y2="8.25" stroke="#d946ef" stroke-width="1.4" stroke-opacity="0.7"/><circle cx="5.5" cy="8.25" r="1.4" fill="#d946ef" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
+  <title id="t">DP08 — Collaborative Environment</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="147.0" cy="558.9" r="0.5" fill="#ffffff" fill-opacity="0.45"/>
+  <circle cx="96.6" cy="474.3" r="0.81" fill="#ffffff" fill-opacity="0.34"/>
+  <circle cx="277.1" cy="273.8" r="0.8" fill="#e8b923" fill-opacity="0.27"/>
+  <circle cx="70.2" cy="151.1" r="0.42" fill="#e8b923" fill-opacity="0.29"/>
+  <circle cx="285.6" cy="530.2" r="0.98" fill="#ffffff" fill-opacity="0.43"/>
+  <circle cx="575.3" cy="55.3" r="0.9" fill="#a0c8ff" fill-opacity="0.33"/>
+  <circle cx="52.5" cy="151.3" r="0.47" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="524.8" cy="345.7" r="0.51" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="293.7" cy="128.6" r="1.16" fill="#a0c8ff" fill-opacity="0.4"/>
+  <circle cx="347.2" cy="269.3" r="0.85" fill="#e8b923" fill-opacity="0.5"/>
+  <circle cx="95.6" cy="448.0" r="0.48" fill="#a0c8ff" fill-opacity="0.44"/>
+  <circle cx="219.9" cy="380.6" r="0.8" fill="#e8b923" fill-opacity="0.42"/>
+  <circle cx="104.1" cy="316.1" r="0.81" fill="#a0c8ff" fill-opacity="0.22"/>
+  <circle cx="531.3" cy="325.2" r="0.68" fill="#e8b923" fill-opacity="0.52"/>
+  <circle cx="212.2" cy="169.4" r="0.74" fill="#a0c8ff" fill-opacity="0.33"/>
+  <circle cx="519.2" cy="118.1" r="0.72" fill="#a0c8ff" fill-opacity="0.26"/>
+  <circle cx="497.2" cy="34.4" r="1.18" fill="#ffffff" fill-opacity="0.26"/>
+  <circle cx="27.4" cy="448.0" r="0.67" fill="#e8b923" fill-opacity="0.26"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#d946ef" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP08</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#d946ef" letter-spacing="6">Cm</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">INTEROPERABILITY&amp;</text>
+  <text x="554" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">PARTICIPANT EXPERIENCE</text>
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#d946ef" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#d946ef"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#d946ef">
+    <path d="M12 5 L19.5 17 L4.5 17 Z" stroke="#d946ef" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="12" cy="5" r="2.4" fill="#d946ef"/><circle cx="19.5" cy="17" r="2.4" fill="#d946ef"/><circle cx="4.5" cy="17" r="2.4" fill="#d946ef"/><circle cx="12" cy="13" r="1.4" fill="#d946ef" fill-opacity="0.55"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Collaborative Environment and</text>
-  <text x="300" y="564" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Meta-Communities</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">INTEROP</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Collaboration</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">INTEROPERABILITY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#d946ef" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="middle">INTEROPERABILITY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#d946ef"/>
 </svg>

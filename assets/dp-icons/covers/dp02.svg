@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP2 — Ag — Participant Agency and Empowerment</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#06b6d4" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <circle cx="12" cy="5" r="2.4" fill="#06b6d4" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 7 21 L 7 16 Q 7 12 12 12 Q 17 12 17 16 L 17 21" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 7 14 L 3 11" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 17 14 L 21 11" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP02</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#06b6d4" letter-spacing="2">Ag</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">AUTHENTICATION, AGENCY &amp; ACCOUNTABILITY</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Participant Agency</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">and Empowerment</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP02 · Ag · AUTH</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP02 — Participant Agency &amp; Empowerment</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="311.7" cy="255.9" r="0.58" fill="#e8b923" fill-opacity="0.25"/>
+  <circle cx="91.1" cy="346.7" r="0.47" fill="#a0c8ff" fill-opacity="0.55"/>
+  <circle cx="46.9" cy="146.3" r="1.03" fill="#a0c8ff" fill-opacity="0.35"/>
+  <circle cx="331.5" cy="92.6" r="0.87" fill="#a0c8ff" fill-opacity="0.31"/>
+  <circle cx="458.0" cy="383.6" r="0.46" fill="#a0c8ff" fill-opacity="0.5"/>
+  <circle cx="545.3" cy="386.5" r="0.95" fill="#a0c8ff" fill-opacity="0.42"/>
+  <circle cx="466.5" cy="76.7" r="0.97" fill="#e8b923" fill-opacity="0.43"/>
+  <circle cx="195.4" cy="472.9" r="1.17" fill="#ffffff" fill-opacity="0.41"/>
+  <circle cx="554.4" cy="67.7" r="1.05" fill="#ffffff" fill-opacity="0.39"/>
+  <circle cx="535.9" cy="67.0" r="0.74" fill="#e8b923" fill-opacity="0.37"/>
+  <circle cx="170.8" cy="34.5" r="0.57" fill="#ffffff" fill-opacity="0.45"/>
+  <circle cx="479.3" cy="551.0" r="0.47" fill="#ffffff" fill-opacity="0.49"/>
+  <circle cx="152.7" cy="47.8" r="0.8" fill="#e8b923" fill-opacity="0.31"/>
+  <circle cx="284.5" cy="107.9" r="1.11" fill="#ffffff" fill-opacity="0.34"/>
+  <circle cx="357.5" cy="104.0" r="0.47" fill="#a0c8ff" fill-opacity="0.4"/>
+  <circle cx="208.2" cy="45.7" r="0.7" fill="#a0c8ff" fill-opacity="0.45"/>
+  <circle cx="532.1" cy="39.8" r="0.68" fill="#ffffff" fill-opacity="0.49"/>
+  <circle cx="256.9" cy="354.7" r="0.48" fill="#a0c8ff" fill-opacity="0.5"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#06b6d4" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP02</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#06b6d4" letter-spacing="6">Ag</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#06b6d4" letter-spacing="3" text-anchor="end">AUTHENTICATION, AGENCY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#06b6d4" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#06b6d4">
+      <circle cx="4" cy="9" r="1.6" fill="#06b6d4" fill-opacity="0.7"/><path d="M1 18 Q1 12.5 4 12.5 Q7 12.5 7 18 Z" stroke="#06b6d4" stroke-width="1.5" fill="#06b6d4" fill-opacity="0.55"/><circle cx="20" cy="9" r="1.6" fill="#06b6d4" fill-opacity="0.7"/><path d="M17 18 Q17 12.5 20 12.5 Q23 12.5 23 18 Z" stroke="#06b6d4" stroke-width="1.5" fill="#06b6d4" fill-opacity="0.55"/><circle cx="12" cy="6" r="2.8" fill="#06b6d4"/><path d="M7 18 Q7 11 12 11 Q17 11 17 18" stroke="#06b6d4" stroke-width="2.6" fill="none" stroke-linecap="round"/><line x1="9" y1="12.5" x2="3" y2="13.5" stroke="#06b6d4" stroke-width="2.4" stroke-linecap="round"/><line x1="15" y1="12.5" x2="21" y2="13.5" stroke="#06b6d4" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="6" r="0.9" fill="#ffffff" fill-opacity="0.65"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Participant Agency</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#06b6d4" letter-spacing="3" text-anchor="middle">AUTHENTICATION, AGENCY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#06b6d4" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#06b6d4" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP02</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#06b6d4" letter-spacing="6">Ag</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Participant Agency</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#06b6d4" letter-spacing="3">AUTHENTICATION, AGENCY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#06b6d4"/>
 </svg>

@@ -1,30 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP21 — Mm — Multi-modal</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#d946ef" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <rect x="3"  y="10" width="2" height="4" rx="1" fill="#d946ef" stroke="none"/><rect x="6"  y="7"  width="2" height="10" rx="1" fill="#d946ef" stroke="none"/><rect x="9"  y="4"  width="2" height="16" rx="1" fill="#d946ef" stroke="none"/><rect x="12" y="6"  width="2" height="12" rx="1" fill="#d946ef" stroke="none"/><rect x="15" y="9"  width="2" height="6" rx="1" fill="#d946ef" stroke="none"/><rect x="18" y="11" width="2" height="2" rx="1" fill="#d946ef" stroke="none"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP21</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#d946ef" letter-spacing="2">Mm</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">INTEROPERABILITY &amp; PARTICIPANT EXPERIENCE</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="320" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Multi-modal</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP21 · Mm · INTEROP</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP21 — Multi-modal</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="317.4" cy="119.8" r="0.6" fill="#e8b923" fill-opacity="0.29"/>
+  <circle cx="356.0" cy="401.7" r="0.67" fill="#e8b923" fill-opacity="0.24"/>
+  <circle cx="164.2" cy="257.2" r="0.97" fill="#ffffff" fill-opacity="0.52"/>
+  <circle cx="199.9" cy="23.2" r="1.18" fill="#e8b923" fill-opacity="0.37"/>
+  <circle cx="74.5" cy="218.1" r="0.71" fill="#e8b923" fill-opacity="0.51"/>
+  <circle cx="36.9" cy="523.6" r="1.19" fill="#a0c8ff" fill-opacity="0.39"/>
+  <circle cx="80.9" cy="308.3" r="0.62" fill="#ffffff" fill-opacity="0.49"/>
+  <circle cx="478.5" cy="559.3" r="0.96" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="278.3" cy="319.9" r="0.83" fill="#e8b923" fill-opacity="0.4"/>
+  <circle cx="395.3" cy="71.5" r="0.65" fill="#ffffff" fill-opacity="0.51"/>
+  <circle cx="391.9" cy="251.3" r="0.42" fill="#ffffff" fill-opacity="0.52"/>
+  <circle cx="466.7" cy="211.3" r="0.72" fill="#e8b923" fill-opacity="0.38"/>
+  <circle cx="491.6" cy="322.2" r="0.5" fill="#a0c8ff" fill-opacity="0.39"/>
+  <circle cx="35.3" cy="134.7" r="0.88" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="104.8" cy="388.5" r="1.12" fill="#e8b923" fill-opacity="0.55"/>
+  <circle cx="321.2" cy="76.6" r="0.73" fill="#ffffff" fill-opacity="0.46"/>
+  <circle cx="219.0" cy="336.6" r="0.83" fill="#ffffff" fill-opacity="0.43"/>
+  <circle cx="417.0" cy="113.8" r="0.47" fill="#ffffff" fill-opacity="0.21"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#d946ef" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP21</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#d946ef" letter-spacing="6">Mm</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="end">INTEROPERABILITY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#d946ef" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#d946ef">
+      <path d="M2 7 Q4 3 6 7 T10 7 T14 7 T18 7 T22 7" stroke="#d946ef" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M2 12 Q5 8 8 12 T14 12 T20 12 Q21.5 12 22 11.5" stroke="#d946ef" stroke-width="2" fill="none" stroke-linecap="round" stroke-opacity="0.9"/><path d="M2 16 Q4 14 6 16 T10 16 T14 16 T18 16 T22 16" stroke="#d946ef" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-opacity="0.7"/><path d="M2 19.5 Q3.5 18 5 19.5 T9 19.5 T13 19.5 T17 19.5 T22 19.5" stroke="#d946ef" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-opacity="0.55"/><circle cx="3" cy="7" r="0.8" fill="#d946ef"/><rect x="20.5" y="15.4" width="1.6" height="1.6" fill="#d946ef" fill-opacity="0.85"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Multi-modal</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#d946ef" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#d946ef" letter-spacing="3" text-anchor="middle">INTEROPERABILITY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#d946ef" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#d946ef" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP21</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#d946ef" letter-spacing="6">Mm</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Multi-modal</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#d946ef" letter-spacing="3">INTEROPERABILITY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#d946ef"/>
 </svg>

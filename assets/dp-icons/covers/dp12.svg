@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP12 — Cg — Community-based AI Governance</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#7c3aed" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 12 4 L 20 18 L 4 18 Z" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="13" r="1.5" fill="#7c3aed" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="12" cy="4" r="1.6" fill="#7c3aed" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="20" cy="18" r="1.6" fill="#7c3aed" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="4" cy="18" r="1.6" fill="#7c3aed" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP12</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#7c3aed" letter-spacing="2">Cg</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">AI GOVERNANCE &amp; SAFETY</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Community-based AI</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Governance</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP12 · Cg · AI</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP12 — Community-based AI Governance</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="209.5" cy="101.1" r="0.57" fill="#e8b923" fill-opacity="0.21"/>
+  <circle cx="384.4" cy="261.7" r="0.87" fill="#e8b923" fill-opacity="0.43"/>
+  <circle cx="252.7" cy="243.7" r="1.14" fill="#ffffff" fill-opacity="0.37"/>
+  <circle cx="555.8" cy="291.1" r="0.69" fill="#a0c8ff" fill-opacity="0.26"/>
+  <circle cx="238.0" cy="476.8" r="1.13" fill="#a0c8ff" fill-opacity="0.37"/>
+  <circle cx="180.1" cy="80.5" r="0.54" fill="#e8b923" fill-opacity="0.2"/>
+  <circle cx="524.6" cy="529.5" r="0.81" fill="#a0c8ff" fill-opacity="0.28"/>
+  <circle cx="117.6" cy="454.9" r="0.58" fill="#ffffff" fill-opacity="0.47"/>
+  <circle cx="448.5" cy="459.9" r="0.8" fill="#a0c8ff" fill-opacity="0.5"/>
+  <circle cx="152.4" cy="306.3" r="1.08" fill="#e8b923" fill-opacity="0.54"/>
+  <circle cx="323.7" cy="321.8" r="0.91" fill="#a0c8ff" fill-opacity="0.32"/>
+  <circle cx="368.6" cy="105.5" r="1.04" fill="#ffffff" fill-opacity="0.45"/>
+  <circle cx="128.5" cy="159.2" r="0.52" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="492.0" cy="39.1" r="1.12" fill="#e8b923" fill-opacity="0.39"/>
+  <circle cx="367.3" cy="428.2" r="0.97" fill="#a0c8ff" fill-opacity="0.54"/>
+  <circle cx="244.3" cy="76.4" r="0.71" fill="#e8b923" fill-opacity="0.3"/>
+  <circle cx="240.4" cy="90.4" r="0.63" fill="#e8b923" fill-opacity="0.26"/>
+  <circle cx="125.7" cy="117.0" r="0.8" fill="#e8b923" fill-opacity="0.3"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#7c3aed" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP12</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#7c3aed" letter-spacing="6">Cg</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#7c3aed" letter-spacing="3" text-anchor="end">AI GOVERNANCE</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#7c3aed">
+      <circle cx="12" cy="12" r="3.2" stroke="#7c3aed" stroke-width="2" fill="none"/><path d="M12 9 L15 12 L12 15 L9 12 Z" fill="#7c3aed"/><line x1="5.0" y1="5.5" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="5.0" cy="5.5" r="1.5" fill="#7c3aed"/><line x1="19.0" y1="5.5" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="19.0" cy="5.5" r="1.5" fill="#7c3aed"/><line x1="21.5" y1="12.0" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="21.5" cy="12.0" r="1.5" fill="#7c3aed"/><line x1="19.0" y1="18.5" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="19.0" cy="18.5" r="1.5" fill="#7c3aed"/><line x1="5.0" y1="18.5" x2="12" y2="12" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="5.0" cy="18.5" r="1.5" fill="#7c3aed"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">AI Governance</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#7c3aed" letter-spacing="3" text-anchor="middle">AI GOVERNANCE</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#7c3aed" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#7c3aed" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP12</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#7c3aed" letter-spacing="6">Cg</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">AI Governance</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#7c3aed" letter-spacing="3">AI GOVERNANCE</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#7c3aed"/>
 </svg>

@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP15 — Sp — Security and Provenance</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#ef4444" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 12 3 L 19 6 L 19 12 Q 19 17 12 21 Q 5 17 5 12 L 5 6 Z" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linejoin="round"/><path d="M 8 12 L 11 15 L 16 9" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP15</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#ef4444" letter-spacing="2">Sp</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">SECURITY, TRANSPARENCY &amp; TRUST</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Security and</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Provenance</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP15 · Sp · SECURITY</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP15 — Security &amp; Provenance</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="78.1" cy="188.5" r="1.15" fill="#a0c8ff" fill-opacity="0.37"/>
+  <circle cx="470.9" cy="397.9" r="0.62" fill="#e8b923" fill-opacity="0.41"/>
+  <circle cx="287.7" cy="521.4" r="1.02" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="81.5" cy="250.9" r="0.8" fill="#e8b923" fill-opacity="0.34"/>
+  <circle cx="371.9" cy="438.7" r="0.97" fill="#ffffff" fill-opacity="0.31"/>
+  <circle cx="362.2" cy="541.5" r="0.87" fill="#e8b923" fill-opacity="0.22"/>
+  <circle cx="177.6" cy="268.1" r="0.84" fill="#a0c8ff" fill-opacity="0.29"/>
+  <circle cx="134.8" cy="548.8" r="0.49" fill="#a0c8ff" fill-opacity="0.26"/>
+  <circle cx="513.0" cy="23.0" r="0.72" fill="#ffffff" fill-opacity="0.23"/>
+  <circle cx="158.3" cy="465.2" r="1.02" fill="#ffffff" fill-opacity="0.52"/>
+  <circle cx="282.9" cy="233.9" r="0.71" fill="#e8b923" fill-opacity="0.48"/>
+  <circle cx="91.4" cy="513.5" r="0.82" fill="#a0c8ff" fill-opacity="0.21"/>
+  <circle cx="323.6" cy="149.0" r="0.44" fill="#a0c8ff" fill-opacity="0.21"/>
+  <circle cx="100.0" cy="380.9" r="1.0" fill="#a0c8ff" fill-opacity="0.35"/>
+  <circle cx="42.8" cy="93.4" r="0.54" fill="#e8b923" fill-opacity="0.29"/>
+  <circle cx="26.4" cy="206.6" r="0.93" fill="#ffffff" fill-opacity="0.27"/>
+  <circle cx="436.7" cy="372.9" r="1.12" fill="#a0c8ff" fill-opacity="0.47"/>
+  <circle cx="350.4" cy="203.7" r="0.75" fill="#e8b923" fill-opacity="0.37"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#ef4444" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP15</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#ef4444" letter-spacing="6">Sp</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="end">SECURITY, TRUST</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#ef4444" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#ef4444">
+      <path d="M12 3 L19 6 L19 12 Q19 17 12 21 Q5 17 5 12 L5 6 Z" stroke="#ef4444" stroke-width="2.4" fill="none" stroke-linejoin="round"/><rect x="6.5" y="9.5" width="8" height="5" rx="2.5" stroke="#ef4444" stroke-width="1.8" fill="none"/><rect x="9.5" y="9.5" width="8" height="5" rx="2.5" stroke="#ef4444" stroke-width="1.8" fill="none" fill-opacity="0.2"/><rect x="10.8" y="16.3" width="2.4" height="2" rx="0.3" stroke="#ef4444" stroke-width="0.8" fill="#ef4444"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Security</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#ef4444" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="middle">SECURITY, TRUST</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#ef4444" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#ef4444" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP15</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#ef4444" letter-spacing="6">Sp</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Security</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#ef4444" letter-spacing="3">SECURITY, TRUST</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#ef4444"/>
 </svg>

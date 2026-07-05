@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP11 — Ai — Safe and Ethical AI</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#7c3aed" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 8 4 Q 4 4 4 8 Q 2 9 3 12 Q 2 15 4 16 Q 4 20 8 20 L 12 20 L 12 4 Z" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linejoin="round"/><path d="M 16 4 Q 20 4 20 8 Q 22 9 21 12 Q 22 15 20 16 Q 20 20 16 20 L 12 20 L 12 4 Z" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-linejoin="round"/><path d="M 6 8 Q 8 9 6 11" fill="none" stroke="#7c3aed" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 5 13 Q 8 14 6 16" fill="none" stroke="#7c3aed" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 18 8 Q 16 9 18 11" fill="none" stroke="#7c3aed" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 19 13 Q 16 14 18 16" fill="none" stroke="#7c3aed" stroke-width="1.4" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/><path d="M 12 4 L 12 20" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP11</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#7c3aed" letter-spacing="2">Ai</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">AI GOVERNANCE &amp; SAFETY</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Safe and Ethical</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">AI</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP11 · Ai · AI</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP11 — Safe &amp; Ethical AI</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="225.5" cy="37.2" r="0.54" fill="#a0c8ff" fill-opacity="0.35"/>
+  <circle cx="267.9" cy="303.0" r="0.54" fill="#e8b923" fill-opacity="0.36"/>
+  <circle cx="477.5" cy="436.7" r="1.14" fill="#e8b923" fill-opacity="0.55"/>
+  <circle cx="138.7" cy="260.8" r="0.86" fill="#ffffff" fill-opacity="0.37"/>
+  <circle cx="286.8" cy="492.1" r="0.53" fill="#e8b923" fill-opacity="0.2"/>
+  <circle cx="316.9" cy="112.6" r="0.97" fill="#e8b923" fill-opacity="0.23"/>
+  <circle cx="151.0" cy="505.9" r="1.17" fill="#a0c8ff" fill-opacity="0.25"/>
+  <circle cx="424.0" cy="103.5" r="0.56" fill="#ffffff" fill-opacity="0.31"/>
+  <circle cx="307.0" cy="497.9" r="0.78" fill="#ffffff" fill-opacity="0.22"/>
+  <circle cx="224.8" cy="90.4" r="0.69" fill="#e8b923" fill-opacity="0.22"/>
+  <circle cx="316.6" cy="164.8" r="0.55" fill="#ffffff" fill-opacity="0.51"/>
+  <circle cx="164.7" cy="543.6" r="0.58" fill="#ffffff" fill-opacity="0.46"/>
+  <circle cx="96.1" cy="292.0" r="0.75" fill="#e8b923" fill-opacity="0.31"/>
+  <circle cx="100.7" cy="529.7" r="0.42" fill="#a0c8ff" fill-opacity="0.37"/>
+  <circle cx="567.8" cy="452.4" r="0.9" fill="#ffffff" fill-opacity="0.23"/>
+  <circle cx="172.6" cy="427.7" r="0.81" fill="#a0c8ff" fill-opacity="0.4"/>
+  <circle cx="250.2" cy="315.2" r="1.03" fill="#e8b923" fill-opacity="0.28"/>
+  <circle cx="430.9" cy="544.1" r="0.92" fill="#a0c8ff" fill-opacity="0.49"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#7c3aed" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP11</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#7c3aed" letter-spacing="6">Ai</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#7c3aed" letter-spacing="3" text-anchor="end">AI GOVERNANCE</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#7c3aed">
+      <path d="M12 4.5 Q7 4.5 7 8 Q4.5 9 4.5 12 Q4.5 15 7 16 Q7 19 10.5 19 Q12 20.5 13.5 19 Q17 19 17 16 Q19.5 15 19.5 12 Q19.5 9 17 8 Q17 4.5 12 4.5 Z" stroke="#7c3aed" stroke-width="2.2" fill="none" stroke-linejoin="round"/><path d="M12 5.5 Q11.2 9 12 12 Q12.8 15 12 18.5" stroke="#7c3aed" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-opacity="0.85"/><circle cx="9" cy="10" r="0.95" fill="#7c3aed"/><circle cx="15" cy="10" r="0.95" fill="#7c3aed"/><circle cx="9" cy="14" r="0.95" fill="#7c3aed"/><circle cx="15" cy="14" r="0.95" fill="#7c3aed"/><line x1="9.95" y1="10" x2="14.05" y2="10" stroke="#7c3aed" stroke-width="1.1" stroke-opacity="0.75"/><line x1="9.95" y1="14" x2="14.05" y2="14" stroke="#7c3aed" stroke-width="1.1" stroke-opacity="0.75"/><circle cx="12" cy="12" r="1.3" fill="#7c3aed"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Safe AI</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#7c3aed" letter-spacing="3" text-anchor="middle">AI GOVERNANCE</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#7c3aed" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#7c3aed" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP11</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#7c3aed" letter-spacing="6">Ai</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Safe AI</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#7c3aed" letter-spacing="3">AI GOVERNANCE</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#7c3aed"/>
 </svg>

@@ -1,31 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP18 — Fr — Feedback Loops and Reputation</title>
-  <!-- white background -->
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <!-- gold border -->
-  <rect x="4" y="4" width="1192" height="622" rx="6" fill="none" stroke="#b8860b" stroke-width="4"/>
-  <!-- family-color wash on right strip -->
-  <rect x="600" y="4" width="596" height="622" fill="#f59e0b" fill-opacity="0.08"/>
-  <!-- gold divider line between halves -->
-  <line x1="600" y1="4" x2="600" y2="626" stroke="#b8860b" stroke-width="2" stroke-opacity="0.7"/>
-  <!-- icon at left half: 480x480 centered -->
-  <svg x="60" y="75" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 4 5 L 20 5 Q 21 5 21 6 L 21 15 Q 21 16 20 16 L 12 16 L 8 20 L 8 16 L 4 16 Q 3 16 3 15 L 3 6 Q 3 5 4 5 Z" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="8" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="12" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><circle cx="16" cy="10.5" r="0.9" fill="#f59e0b" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
-  </svg>
-  <!-- DPnn, gold -->
-  <text x="650" y="110" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="36" font-weight="700" fill="#b8860b" letter-spacing="2">DP18</text>
-  <!-- 2-letter code, family color, larger -->
-  <text x="650" y="180" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#f59e0b" letter-spacing="2">Fr</text>
-  <!-- group label, small caps, gold -->
-  <text x="650" y="215" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="14" font-weight="600" fill="#b8860b" letter-spacing="3">COMMUNITY PARTICIPATION &amp; FEEDBACK</text>
-  <!-- divider under header -->
-  <line x1="650" y1="240" x2="1140" y2="240" stroke="#b8860b" stroke-width="1" stroke-opacity="0.45"/>
-  <!-- title text lines -->
-  <text x="650" y="292" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Feedback Loops and</text>
-  <text x="650" y="348" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="46" font-weight="700" fill="#1f1b0e">Reputation</text>
-  <!-- caption bottom-left -->
-  <text x="32" y="600" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="20" font-weight="500" fill="#6b7280" letter-spacing="1.5">DP18 · Fr · COMMUNITY</text>
-  <!-- gold accent dot bottom-right -->
-  <circle cx="1170" cy="600" r="10" fill="#b8860b"/>
+  <title id="t">DP18 — Feedback Loops &amp; Reputation</title>
+  <rect width="1200" height="630" fill="#0a0e1a"/>
+  <circle cx="240.6" cy="451.8" r="0.97" fill="#a0c8ff" fill-opacity="0.44"/>
+  <circle cx="197.5" cy="432.6" r="0.55" fill="#a0c8ff" fill-opacity="0.38"/>
+  <circle cx="250.2" cy="467.9" r="1.05" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="463.6" cy="454.8" r="0.94" fill="#e8b923" fill-opacity="0.25"/>
+  <circle cx="49.0" cy="522.4" r="0.74" fill="#a0c8ff" fill-opacity="0.25"/>
+  <circle cx="237.0" cy="570.1" r="0.49" fill="#a0c8ff" fill-opacity="0.22"/>
+  <circle cx="548.7" cy="291.6" r="0.61" fill="#ffffff" fill-opacity="0.52"/>
+  <circle cx="522.3" cy="530.0" r="0.5" fill="#a0c8ff" fill-opacity="0.47"/>
+  <circle cx="259.9" cy="126.1" r="0.45" fill="#ffffff" fill-opacity="0.38"/>
+  <circle cx="244.9" cy="34.8" r="0.64" fill="#e8b923" fill-opacity="0.28"/>
+  <circle cx="133.6" cy="336.5" r="1.05" fill="#e8b923" fill-opacity="0.37"/>
+  <circle cx="524.7" cy="30.2" r="1.15" fill="#e8b923" fill-opacity="0.46"/>
+  <circle cx="84.1" cy="52.3" r="0.99" fill="#e8b923" fill-opacity="0.54"/>
+  <circle cx="139.2" cy="519.7" r="1.11" fill="#e8b923" fill-opacity="0.31"/>
+  <circle cx="223.5" cy="560.6" r="0.81" fill="#ffffff" fill-opacity="0.32"/>
+  <circle cx="58.0" cy="161.4" r="0.63" fill="#e8b923" fill-opacity="0.51"/>
+  <circle cx="444.0" cy="515.5" r="0.46" fill="#ffffff" fill-opacity="0.23"/>
+  <circle cx="462.7" cy="232.3" r="0.8" fill="#a0c8ff" fill-opacity="0.21"/>
+  <rect x="6" y="6" width="1188" height="618" rx="10" fill="none" stroke="#b8860b" stroke-width="4"/>
+  <g transform="translate(70 15)">
+    <rect x="6" y="6" width="588" height="588" rx="10" fill="none" stroke="#f59e0b" stroke-width="3" stroke-opacity="0.85"/>
+    <text x="40" y="98" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP18</text>
+    <text x="42" y="146" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#f59e0b" letter-spacing="6">Fr</text>
+    <text x="588" y="62" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="12" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="end">COMMUNITY</text>
+    <line x1="500" y1="74" x2="588" y2="74" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.7"/>
+    <svg x="170" y="170" width="260" height="260" viewBox="0 0 24 24" fill="none" stroke="#f59e0b">
+      <path d="M19 8 A7 7 0 1 0 18 16" stroke="#f59e0b" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M19 8 L22 8 L19 11 Z" fill="#f59e0b"/><rect x="7" y="9.5" width="10" height="6.5" rx="1.5" stroke="#f59e0b" stroke-width="1.6" fill="none"/><path d="M9 16 L8 18 L11 16 Z" fill="#f59e0b"/><circle cx="9.5" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="12" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="14.5" cy="12.7" r="0.7" fill="#f59e0b"/>
+    </svg>
+    <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Feedback</text>
+    <line x1="200" y1="544" x2="400" y2="544" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.45"/>
+    <text x="300" y="572" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#f59e0b" letter-spacing="3" text-anchor="middle">COMMUNITY</text>
+  </g>
+  <rect x="690" y="6" width="504" height="618" fill="#f59e0b" fill-opacity="0.07"/>
+  <line x1="690" y1="6" x2="690" y2="624" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.6"/>
+  <text x="720" y="120" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="800" fill="#facc15" letter-spacing="2">DP18</text>
+  <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#f59e0b" letter-spacing="6">Fr</text>
+  <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Feedback</text>
+  <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#f59e0b" letter-spacing="3">COMMUNITY</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <circle cx="32" cy="598" r="5" fill="#facc15"/>
+  <circle cx="1168" cy="598" r="5" fill="#f59e0b"/>
 </svg>

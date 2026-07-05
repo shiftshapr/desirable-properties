@@ -1,22 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP14 — Tt — Trust and Transparency</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP14</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#ef4444" text-anchor="end" letter-spacing="2">Tt</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 3 18 L 7 18 L 9 14 L 11 14" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M 21 18 L 17 18 L 15 14 L 13 14" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><path d="M 7 14 Q 7 11 10 11 L 12 11 Q 13 11 13 12 L 13 14 Q 13 15 12 15 L 10 15 Q 8 15 8 14 Z" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linejoin="round"/><path d="M 17 14 Q 17 11 14 11 L 12 11 Q 11 11 11 12 L 11 14 Q 11 15 12 15 L 14 15 Q 16 15 16 14 Z" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linejoin="round"/><path d="M 11 11 L 12 9 L 13 11" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-opacity="1.0" stroke-linejoin="round" stroke-linecap="round"/>
+  <title id="t">DP14 — Trust &amp; Transparency</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="79.8" cy="413.4" r="0.92" fill="#e8b923" fill-opacity="0.53"/>
+  <circle cx="431.7" cy="183.0" r="0.46" fill="#e8b923" fill-opacity="0.36"/>
+  <circle cx="403.2" cy="242.1" r="1.02" fill="#ffffff" fill-opacity="0.24"/>
+  <circle cx="507.7" cy="196.8" r="1.05" fill="#a0c8ff" fill-opacity="0.33"/>
+  <circle cx="373.7" cy="103.8" r="0.84" fill="#ffffff" fill-opacity="0.43"/>
+  <circle cx="25.9" cy="59.2" r="0.88" fill="#e8b923" fill-opacity="0.21"/>
+  <circle cx="134.5" cy="567.7" r="0.72" fill="#e8b923" fill-opacity="0.55"/>
+  <circle cx="522.0" cy="72.9" r="0.91" fill="#a0c8ff" fill-opacity="0.51"/>
+  <circle cx="349.9" cy="374.9" r="0.54" fill="#e8b923" fill-opacity="0.23"/>
+  <circle cx="307.7" cy="128.5" r="0.76" fill="#e8b923" fill-opacity="0.28"/>
+  <circle cx="300.3" cy="77.4" r="1.05" fill="#e8b923" fill-opacity="0.23"/>
+  <circle cx="86.2" cy="110.6" r="0.73" fill="#a0c8ff" fill-opacity="0.44"/>
+  <circle cx="72.1" cy="289.0" r="0.95" fill="#e8b923" fill-opacity="0.39"/>
+  <circle cx="193.3" cy="277.5" r="0.73" fill="#e8b923" fill-opacity="0.49"/>
+  <circle cx="285.7" cy="152.3" r="1.09" fill="#ffffff" fill-opacity="0.53"/>
+  <circle cx="338.7" cy="293.9" r="0.61" fill="#a0c8ff" fill-opacity="0.35"/>
+  <circle cx="247.2" cy="572.9" r="0.42" fill="#e8b923" fill-opacity="0.45"/>
+  <circle cx="545.9" cy="167.6" r="0.64" fill="#a0c8ff" fill-opacity="0.27"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#ef4444" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP14</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#ef4444" letter-spacing="6">Tt</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="end">SECURITY, TRANSPARENCY &amp; TRUST</text>
+  
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#ef4444" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#ef4444"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#ef4444">
+    <path d="M3 12 Q12 5 21 12 Q12 19 3 12 Z" stroke="#ef4444" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="12" cy="12" r="4.4" stroke="#ef4444" stroke-width="2.2" fill="none"/><circle cx="12" cy="12" r="2" fill="#ef4444"/><circle cx="13.2" cy="10.8" r="0.9" fill="#ffffff"/><line x1="6" y1="4.5" x2="11" y2="6" stroke="#ef4444" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.7"/><line x1="13" y1="6" x2="18" y2="4.5" stroke="#ef4444" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.7"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Trust and Transparency</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">SECURITY</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Trust</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">SECURITY, TRUST</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#ef4444" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#ef4444" letter-spacing="3" text-anchor="middle">SECURITY, TRUST</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#ef4444"/>
 </svg>

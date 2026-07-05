@@ -1,23 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t">
-  <title id="t">DP3 — Go — Adaptive Governance Supporting an Exponentially Growing Community</title>
-  <!-- white background -->
-  <rect width="600" height="600" fill="#ffffff"/>
-  <!-- gold outer frame (brand) -->
-  <rect x="8" y="8" width="584" height="584" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
-  <!-- subtle inner gold border for depth -->
-  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#b8860b" stroke-width="1.5" stroke-opacity="0.35"/>
-  <!-- DPnn label, top-left, gold (brand) -->
-  <text x="56" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#b8860b" letter-spacing="-1">DP03</text>
-  <!-- 2-letter code, top-right, family color -->
-  <text x="544" y="100" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="48" font-weight="700" fill="#06b6d4" text-anchor="end" letter-spacing="2">Go</text>
-  <!-- icon at 60,150 → 540,490 (480x480) -->
-  <svg x="60" y="150" width="480" height="480" viewBox="0 0 24 24" fill="none">
-    <rect x="1.0" y="1.0" width="22" height="22" rx="2.4" fill="#f5e9c8" fill-opacity="0.04" stroke="#b8860b" stroke-width="0.18"/>
-  <path d="M 9 4.0 L 10.2 4.0 L 10.5 6.0 A 3.6 3.6 0 0 1 12.0 6.5 L 13.4 5.0 L 14.3 5.9 L 13.0 7.4 A 3.6 3.6 0 0 1 13.6 8.9 L 15.5 9.2 L 15.5 10.4 L 13.6 10.7 A 3.6 3.6 0 0 1 13.0 12.2 L 14.3 13.7 L 13.4 14.6 L 12.0 13.1 A 3.6 3.6 0 0 1 10.5 13.6 L 10.2 15.6 L 9.0 15.6 L 8.7 13.6 A 3.6 3.6 0 0 1 7.2 13.1 L 5.8 14.6 L 4.9 13.7 L 6.2 12.2 A 3.6 3.6 0 0 1 5.6 10.7 L 3.7 10.4 L 3.7 9.2 L 5.6 8.9 A 3.6 3.6 0 0 1 6.2 7.4 L 4.9 5.9 L 5.8 5.0 L 7.2 6.5 A 3.6 3.6 0 0 1 8.7 6.0 L 9.0 4.0 Z" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linejoin="round"/><circle cx="9.6" cy="9.8" r="1.2" fill="#06b6d4" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/><path d="M 16 13.5 L 16.9 13.5 L 17.1 14.7 A 2.4 2.4 0 0 1 18.1 15.1 L 19.0 14.4 L 19.6 15.0 L 19.0 16.0 A 2.4 2.4 0 0 1 19.3 17.0 L 20.5 17.2 L 20.5 18.1 L 19.3 18.3 A 2.4 2.4 0 0 1 19.0 19.3 L 19.6 20.3 L 19.0 20.9 L 18.1 20.2 A 2.4 2.4 0 0 1 17.1 20.6 L 16.9 21.8 L 16.0 21.8 L 15.8 20.6 A 2.4 2.4 0 0 1 14.8 20.2 L 13.9 20.9 L 13.3 20.3 L 13.9 19.3 A 2.4 2.4 0 0 1 13.6 18.3 L 12.4 18.1 L 12.4 17.2 L 13.6 17.0 A 2.4 2.4 0 0 1 13.9 16.0 L 13.3 15.0 L 13.9 14.4 L 14.8 15.1 A 2.4 2.4 0 0 1 15.8 14.7 L 16 13.5 Z" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16.45" cy="17.65" r="0.8" fill="#06b6d4" stroke="none" stroke-width="2.2" stroke-opacity="1.0"/>
+  <title id="t">DP03 — Adaptive Governance</title>
+  <rect width="600" height="600" fill="#0a0e1a"/>
+  <circle cx="153.3" cy="324.8" r="0.7" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="345.3" cy="359.1" r="1.13" fill="#a0c8ff" fill-opacity="0.36"/>
+  <circle cx="151.2" cy="577.6" r="0.78" fill="#e8b923" fill-opacity="0.49"/>
+  <circle cx="242.4" cy="502.2" r="0.59" fill="#a0c8ff" fill-opacity="0.25"/>
+  <circle cx="238.4" cy="28.5" r="1.02" fill="#a0c8ff" fill-opacity="0.26"/>
+  <circle cx="44.0" cy="456.8" r="1.06" fill="#a0c8ff" fill-opacity="0.29"/>
+  <circle cx="422.5" cy="512.1" r="0.97" fill="#e8b923" fill-opacity="0.52"/>
+  <circle cx="427.8" cy="343.1" r="1.17" fill="#e8b923" fill-opacity="0.25"/>
+  <circle cx="74.6" cy="96.1" r="0.57" fill="#e8b923" fill-opacity="0.54"/>
+  <circle cx="456.2" cy="498.9" r="0.74" fill="#a0c8ff" fill-opacity="0.49"/>
+  <circle cx="216.5" cy="347.6" r="0.87" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="532.8" cy="36.0" r="0.62" fill="#a0c8ff" fill-opacity="0.41"/>
+  <circle cx="111.3" cy="502.0" r="1.17" fill="#a0c8ff" fill-opacity="0.52"/>
+  <circle cx="78.3" cy="387.1" r="0.91" fill="#e8b923" fill-opacity="0.55"/>
+  <circle cx="179.6" cy="55.5" r="1.08" fill="#ffffff" fill-opacity="0.55"/>
+  <circle cx="212.7" cy="57.3" r="1.12" fill="#e8b923" fill-opacity="0.21"/>
+  <circle cx="450.5" cy="508.7" r="0.44" fill="#ffffff" fill-opacity="0.42"/>
+  <circle cx="231.6" cy="348.4" r="0.84" fill="#e8b923" fill-opacity="0.52"/>
+  <rect x="6" y="6" width="588" height="588" rx="14" fill="none" stroke="#b8860b" stroke-width="6"/>
+  <rect x="22" y="22" width="556" height="556" rx="8" fill="none" stroke="#06b6d4" stroke-width="3" stroke-opacity="0.9"/>
+  <text x="46" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="62" font-weight="800" fill="#facc15" letter-spacing="-1.5">DP03</text>
+  <text x="48" y="148" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="40" font-weight="700" fill="#06b6d4" letter-spacing="6">Go</text>
+  <text x="554" y="80" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#06b6d4" letter-spacing="3" text-anchor="end">AUTHENTICATION, AGENCY&amp;</text>
+  <text x="554" y="100" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="13" font-weight="700" fill="#06b6d4" letter-spacing="3" text-anchor="end">ACCOUNTABILITY</text>
+  <line x1="430" y1="115" x2="554" y2="115" stroke="#06b6d4" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="554" cy="115" r="2.5" fill="#06b6d4"/>
+  <circle cx="40" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <line x1="40" y1="240" x2="40" y2="262" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <line x1="40" y1="318" x2="40" y2="340" stroke="#facc15" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="560" cy="290" r="3" fill="#facc15" fill-opacity="0.85"/>
+  <svg x="165" y="170" width="270" height="270" viewBox="0 0 24 24" fill="none" stroke="#06b6d4">
+    <line x1="20.50" y1="12.00" x2="23.00" y2="12.00" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="18.01" y1="18.01" x2="19.78" y2="19.78" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="12.00" y1="20.50" x2="12.00" y2="23.00" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="5.99" y1="18.01" x2="4.22" y2="19.78" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="3.50" y1="12.00" x2="1.00" y2="12.00" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="5.99" y1="5.99" x2="4.22" y2="4.22" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="12.00" y1="3.50" x2="12.00" y2="1.00" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><line x1="18.01" y1="5.99" x2="19.78" y2="4.22" stroke="#06b6d4" stroke-width="3.2" stroke-linecap="round"/><circle cx="12" cy="12" r="7.5" stroke="#06b6d4" stroke-width="2.2" fill="none"/><circle cx="12" cy="12" r="5" stroke="#06b6d4" stroke-width="1.4" fill="none" stroke-opacity="0.75"/><circle cx="12" cy="12" r="2.8" fill="#06b6d4"/><path d="M12 9.5 L12 14.5 M10.5 12.5 L12 14.5 L13.5 12.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   </svg>
-  <!-- short title, bottom, neutral gray -->
-  <text x="300" y="538" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Adaptive Governance Supporting an</text>
-  <text x="300" y="564" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="middle">Exponentially Growing Community</text>
-  <!-- group label, small caps, gold -->
-  <text x="300" y="510" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="13" font-weight="600" fill="#b8860b" text-anchor="middle" letter-spacing="2.5">AUTH</text>
+  <text x="300" y="510" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.3">Adaptive Governance</text>
+  <text x="300" y="540" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8" text-anchor="middle" letter-spacing="0.5">AUTHENTICATION, AGENCY</text>
+  <line x1="200" y1="562" x2="400" y2="562" stroke="#06b6d4" stroke-width="1" stroke-opacity="0.45"/>
+  <text x="300" y="582" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="11" font-weight="700" fill="#06b6d4" letter-spacing="3" text-anchor="middle">AUTHENTICATION, AGENCY</text>
+  <circle cx="32" cy="568" r="5" fill="#facc15"/>
+  <circle cx="568" cy="568" r="5" fill="#06b6d4"/>
 </svg>
