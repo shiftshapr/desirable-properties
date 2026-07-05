@@ -39,6 +39,7 @@ export type GovHubWorkgroup = {
   description: string;
   document_href: string | null;
   document_label: string | null;
+  document_draft_ref: string | null;
 };
 
 export type ChallengeActivityItem = {
@@ -172,6 +173,18 @@ export async function fetchChallengeWorkgroups(): Promise<GovHubWorkgroup[]> {
   const workgroups = data?.workgroups ?? [];
   return workgroups
     .filter((wg) => extractDpId(wg.name))
+    .map((wg) => ({
+      id: wg.id,
+      name: wg.name,
+      slug: wg.slug,
+      status: wg.status,
+      state: wg.state,
+      description: wg.description,
+      document_href: wg.document_href,
+      document_label: wg.document_label,
+      document_draft_ref:
+        (wg as unknown as { document_draft_ref?: string | null }).document_draft_ref ?? null,
+    }))
     .sort((a, b) => {
       const aNum = Number(extractDpId(a.name)?.replace('DP', '') ?? 0);
       const bNum = Number(extractDpId(b.name)?.replace('DP', '') ?? 0);

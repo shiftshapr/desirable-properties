@@ -107,37 +107,54 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
         <section className="mt-10 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
             <h2 className="text-xl font-bold">Current Draft</h2>
-            <p className="mt-3 text-slate-400">
-              {workgroup?.document_label ||
-                'Review the latest draft, open issues, and pending proposals on Gov Hub.'}
-            </p>
-            <div className="mt-4 flex flex-col items-start gap-2">
-              {draftHref ? (
-                <a
-                  href={draftHref}
-                  className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                >
-                  View draft on Gov Hub
-                </a>
-              ) : (
-                <a
-                  href={govhubUrl('/doc/all/')}
-                  className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
-                >
-                  Browse drafts on Gov Hub
-                </a>
-              )}
-              {onchainDraftHref && (
-                <a
-                  href={onchainDraftHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
-                >
-                  View on-chain inscription →
-                </a>
-              )}
-            </div>
+            {(() => {
+              const rawLabel = workgroup?.document_label || '';
+              const match = rawLabel.match(/^(.*?)\s*\((ML-Draft-\d+)\)\s*$/);
+              const draftTitle = match ? match[1].trim() : rawLabel || null;
+              const draftRef = match ? match[2] : null;
+              const readHref = draftHref ? `${draftHref}read/` : null;
+              return (
+                <div className="mt-3 flex flex-col items-start gap-2 text-sm">
+                  {draftTitle && (
+                    <p className="text-slate-300">{draftTitle}</p>
+                  )}
+                  {draftHref && draftRef && (
+                    <a
+                      href={draftHref}
+                      className="font-mono text-cyan-300 hover:text-cyan-200"
+                    >
+                      {draftRef}
+                    </a>
+                  )}
+                  {readHref && (
+                    <a
+                      href={readHref}
+                      className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                    >
+                      Read on Gov Hub
+                    </a>
+                  )}
+                  {!draftHref && (
+                    <a
+                      href={govhubUrl('/doc/all/')}
+                      className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
+                    >
+                      Browse drafts on Gov Hub
+                    </a>
+                  )}
+                  {onchainDraftHref && (
+                    <a
+                      href={onchainDraftHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
+                    >
+                      View on-chain inscription →
+                    </a>
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
