@@ -147,16 +147,16 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                 'Join the active workgroup stewarding this property and participate in its evolution.'}
             </p>
             {workgroupHref ? (
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="mt-4 grid grid-cols-2 gap-2">
                 <a
                   href={workgroupHref}
-                  className="inline-flex w-full items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                  className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
                 >
                   Join WG
                 </a>
                 <a
                   href={`${workgroupHref}?action=nominate`}
-                  className="inline-flex w-full items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+                  className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
                 >
                   Nominate to WG
                 </a>
