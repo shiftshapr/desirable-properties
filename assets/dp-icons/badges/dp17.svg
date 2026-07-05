@@ -7,13 +7,13 @@
   <!-- corner gold accent chip (top-left, behind DPnn label) -->
   <rect x="0" y="0" width="120" height="80" fill="#facc15" fill-opacity="0.18"/>
   <!-- DPnn label, top-left -->
-  <text x="36" y="68" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#0d9488" letter-spacing="-1">DP17</text>
+  <text x="36" y="68" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="64" font-weight="700" fill="#0f766e" letter-spacing="-1">DP17</text>
   <!-- family name, top-right -->
   <text x="564" y="68" font-family='Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif' font-size="22" font-weight="500" fill="#6b7280" text-anchor="end" letter-spacing="1.5">DATA</text>
   <!-- icon at 30,90 → 570,510 (540x540) -->
   <svg x="30" y="90" width="540" height="540" viewBox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M 4.5 1.5 L 19.5 1.5 L 22.5 4.5 L 22.5 19.5 Q 22.5 22.5 19.5 22.5 L 4.5 22.5 Q 1.5 22.5 1.5 19.5 L 1.5 4.5 Q 1.5 1.5 4.5 1.5 Z" fill="#f5e9c8" fill-opacity="0.06" stroke="#b8860b" stroke-width="1"/>
-  <circle cx="20" cy="20" r="1.4" fill="#0d9488" stroke="none"/>
-    <path d="M12 4 L20 19 L4 19 Z" stroke="currentColor" fill="none"/><circle cx="12" cy="14" r="4" stroke="#0d9488" fill="none"/><circle cx="7" cy="19" r="0.9" fill="#0d9488" stroke="none"/><circle cx="12" cy="19" r="0.9" fill="#0d9488" stroke="none"/><circle cx="17" cy="19" r="0.9" fill="#0d9488" stroke="none"/>
+  <circle cx="20" cy="20" r="1.4" fill="#0f766e" stroke="none"/>
+    <path d="M12 4 L20 19 L4 19 Z" stroke="currentColor" fill="none"/><circle cx="12" cy="14" r="4" stroke="#0f766e" fill="none"/><circle cx="7" cy="19" r="0.9" fill="#0f766e" stroke="none"/><circle cx="12" cy="19" r="0.9" fill="#0f766e" stroke="none"/><circle cx="17" cy="19" r="0.9" fill="#0f766e" stroke="none"/>
   </svg>
 </svg>

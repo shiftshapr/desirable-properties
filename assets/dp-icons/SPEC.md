@@ -30,12 +30,26 @@ corner chip, and the title strip on the cover variant.
 
 | Family        | Hex       | Use             | DPs            |
 |---------------|-----------|-----------------|----------------|
-| Trust         | `#1d4ed8` | blue            | DP1 – DP7      |
+| Trust         | `#1e3a8a` | deeper navy     | DP1 – DP7      |
 | Governance    | `#d97706` | orange          | DP8 – DP14     |
-| Data          | `#0d9488` | teal            | DP15 – DP21    |
-| Experience    | `#ef1d18` | red             | DP22           |
+| Data          | `#0f766e` | deeper teal     | DP15 – DP21    |
+| Experience    | `#ef1d18` | red             | *(reserved)*   |
 | Intelligence  | `#7c3aed` | purple          | *(reserved DP23+)* |
-| Resilience    | `#475569` | slate           | *(reserved DP23+)* |
+| Resilience    | `#92400e` | warm brown      | DP22           |
+
+**Palette revisions (post-ship review):**
+
+- **Trust** moved from `#1d4ed8` → `#1e3a8a` (deeper navy) to widen the hue gap
+  against Data so adjacent workgroup cards don't visually merge.
+- **Data** moved from `#0d9488` → `#0f766e` (deeper teal) for the same reason;
+  the previous `#0d9488` was perceptually too close to `#1d4ed8` at thumbnail size.
+- **Resilience** moved from `#475569` (slate gray, which failed the scan test
+  because it read as a neutral/inactive state) to `#92400e` (warm brown), which
+  better matches "Civic Memory & Systemic Continuity" semantically.
+- **DP22** ("Civic Memory & Epistemic Continuity") was reassigned from
+  Experience to Resilience as part of this change. The Experience family stays
+  defined in the palette for any future DP that genuinely belongs to that
+  family.
 
 > Note on the JSON ↔ image-spec mapping: the reference infographic defines
 > the 4 used families by DP range. JSON `category` fields are 6 broader
@@ -79,7 +93,7 @@ Every source SVG must follow these hard rules:
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
      fill="none" stroke="currentColor" stroke-width="2"
      stroke-linecap="round" stroke-linejoin="round"
-     style="--accent:#1d4ed8;color:#1f2937">
+     style="--accent:#1e3a8a;color:#1f2937">
   <title>DP1 — Federated Authentication &amp; Accountability</title>
   <!-- container (gold) -->
   <rect x="1.5" y="1.5" width="21" height="21" rx="3"
@@ -116,7 +130,7 @@ A rounded square (radius 3) where the **top-right corner is clipped at 45°**
 across 3 px. Reads as a data-cube / folder-tab — appropriate for storage,
 provenance, and pipelines.
 
-### Experience (DP22) — all four corners clipped
+### Resilience (DP22) — all four corners clipped
 
 A rounded square with **all four corners clipped at 45°** (2 px). Reads as
 an architectural plan or altar — appropriate for civic memory and continuity.

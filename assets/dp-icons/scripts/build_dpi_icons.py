@@ -36,10 +36,11 @@ CAPTION = "#6b7280"
 DARK_TEXT = "#1f1b0e"
 
 FAMILIES = {
-    "Trust": "#1d4ed8",
+    "Trust": "#1e3a8a",
     "Governance": "#d97706",
-    "Data": "#0d9488",
+    "Data": "#0f766e",
     "Experience": "#ef1d18",
+    "Resilience": "#92400e",
 }
 
 # DP number → (name, family) per the reference infographic.
@@ -65,7 +66,7 @@ DP_TABLE = [
     (19, "Amplifying Presence and Community Engagement", "Data"),
     (20, "Community Ownership", "Data"),
     (21, "Multi-modal", "Data"),
-    (22, "Civic Memory and Epistemic Continuity", "Experience"),
+    (22, "Civic Memory and Epistemic Continuity", "Resilience"),
 ]
 
 FONT_STACK = 'Inter, "SF Pro Text", "Segoe UI", system-ui, sans-serif'
@@ -132,6 +133,21 @@ def container_svg(family: str, family_color: str) -> str:
         )
     elif family == "Experience":
         # rounded square with all four corners clipped (architectural)
+        body = (
+            '<path d="M 4.5 1.5 '
+            'L 19.5 1.5 '
+            'L 22.5 4.5 '
+            'L 22.5 19.5 '
+            'L 19.5 22.5 '
+            'L 4.5 22.5 '
+            'L 1.5 19.5 '
+            'L 1.5 4.5 Z" '
+            f'fill="{GOLD_WASH}" fill-opacity="0.06" '
+            f'stroke="{GOLD_BORDER}" stroke-width="1"/>'
+        )
+    elif family == "Resilience":
+        # Same container treatment as Experience (DP22 moved Experience →
+        # Resilience; container shape preserved, only the accent color changes).
         body = (
             '<path d="M 4.5 1.5 '
             'L 19.5 1.5 '
