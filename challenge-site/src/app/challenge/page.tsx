@@ -102,15 +102,13 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            The open{' '}
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_URL}
+            Workgroups form July 1–20; the Desirable Properties book launches September 16, 2026.{' '}
+            <Link
+              href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"
             >
-              Desirable Properties book
-            </a>{' '}
-            (BRC333 ordinal edition) is available now–ML-Draft-026 and all twenty-two DPs in seven
-            parts.
+              View full timeline →
+            </Link>
           </p>
         </section>
 
@@ -128,7 +126,7 @@ export default async function ChallengePage() {
         </section>
 
         {/* Timeline */}
-        <section>
+        <section id="timeline" className="scroll-mt-24">
           <h2 className="text-2xl font-bold text-white">Timeline</h2>
           <p className="mt-3 text-slate-400">
             Follow the challenge from its origins through the launch of Version{' '}

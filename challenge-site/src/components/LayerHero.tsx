@@ -217,7 +217,7 @@ export default function LayerHero({ workgroupHref }: Props) {
               Explore the DPs →
             </a>
             <Link
-              href="/challenge"
+              href="/challenge#timeline"
               className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
             >
               Challenge timeline

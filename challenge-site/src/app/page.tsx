@@ -76,9 +76,8 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl font-bold text-white">Current DP Challenge</h2>
                 <p className="mt-3 max-w-2xl text-slate-400">
-                  Version 0.77 is open for review. Workgroups form July 1–15; the Desirable
-                  Properties book launches September 18, 2026.{' '}
-                  <Link href="/challenge" className="text-cyan-300 hover:text-cyan-200">
+                  Workgroups form July 1–20; the Desirable Properties book launches September 16, 2026.{' '}
+                  <Link href="/challenge#timeline" className="text-cyan-300 hover:text-cyan-200">
                     View full timeline →
                   </Link>
                 </p>
