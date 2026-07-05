@@ -111,31 +111,33 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
               {workgroup?.document_label ||
                 'Review the latest draft, open issues, and pending proposals on Gov Hub.'}
             </p>
-            {draftHref ? (
-              <a
-                href={draftHref}
-                className="mt-4 inline-block rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-              >
-                View draft on Gov Hub
-              </a>
-            ) : (
-              <a
-                href={govhubUrl('/doc/all/')}
-                className="mt-4 inline-block rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
-              >
-                Browse drafts on Gov Hub
-              </a>
-            )}
-            {onchainDraftHref && (
-              <a
-                href={onchainDraftHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-block text-sm text-cyan-300 hover:text-cyan-200"
-              >
-                View on-chain inscription →
-              </a>
-            )}
+            <div className="mt-4 flex flex-col gap-2">
+              {draftHref ? (
+                <a
+                  href={draftHref}
+                  className="inline-flex w-full items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                >
+                  View draft on Gov Hub
+                </a>
+              ) : (
+                <a
+                  href={govhubUrl('/doc/all/')}
+                  className="inline-flex w-full items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
+                >
+                  Browse drafts on Gov Hub
+                </a>
+              )}
+              {onchainDraftHref && (
+                <a
+                  href={onchainDraftHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center text-sm text-cyan-300 hover:text-cyan-200"
+                >
+                  View on-chain inscription →
+                </a>
+              )}
+            </div>
           </div>
 
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
@@ -145,16 +147,24 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                 'Join the active workgroup stewarding this property and participate in its evolution.'}
             </p>
             {workgroupHref ? (
-              <a
-                href={workgroupHref}
-                className="mt-4 inline-block rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-              >
-                Join workgroup
-              </a>
+              <div className="mt-4 flex flex-col gap-2">
+                <a
+                  href={workgroupHref}
+                  className="inline-flex w-full items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                >
+                  Join WG
+                </a>
+                <a
+                  href={`${workgroupHref}?action=nominate`}
+                  className="inline-flex w-full items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+                >
+                  Nominate to WG
+                </a>
+              </div>
             ) : (
               <a
                 href={govhubUrl('/layers/the-metaweb/')}
-                className="mt-4 inline-block rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
               >
                 View workgroups on Gov Hub
               </a>
