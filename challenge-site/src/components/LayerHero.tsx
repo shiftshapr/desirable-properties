@@ -116,7 +116,14 @@ export default function LayerHero({ workgroupHref }: Props) {
   return (
     <section
       className="relative h-[88vh] min-h-[640px] w-full overflow-hidden border-b border-slate-800"
-      style={{ '--crossfade-ms': `${CROSSFADE_MS}ms` } as React.CSSProperties}
+      style={
+        {
+          '--crossfade-ms': `${CROSSFADE_MS}ms`,
+          // Keep hero images contained if CSS fails to load (avoids full-viewport overlay).
+          position: 'relative',
+          overflow: 'hidden',
+        } as React.CSSProperties
+      }
     >
       {/* Full-panel image stack */}
       <div className="absolute inset-0 bg-black">
@@ -186,8 +193,11 @@ export default function LayerHero({ workgroupHref }: Props) {
         </div>
       </div>
 
-      {/* Copy — fixed position so image crossfades never shift layout */}
-      <div className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-4 pt-[14vh] sm:px-6 sm:pt-[16vh]">
+      {/* Copy – fixed position so image crossfades never shift layout */}
+      <div
+        className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-4 pt-[14vh] sm:px-6 sm:pt-[16vh]"
+        style={{ position: 'absolute', zIndex: 10, left: 0, right: 0, top: 0 }}
+      >
         <div className="max-w-xl lg:max-w-2xl">
           <h1 className="text-4xl font-bold leading-tight text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
             The Desirable Properties Challenge
@@ -217,12 +227,6 @@ export default function LayerHero({ workgroupHref }: Props) {
               className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
             >
               Join a Workgroup
-            </a>
-            <a
-              href={workgroupHref}
-              className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
-            >
-              Participate in Governance
             </a>
           </div>
           <p
