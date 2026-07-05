@@ -198,6 +198,36 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
+      <section id="roles" className="border-b border-slate-800">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
+          <p className="mt-3 max-w-3xl text-slate-400">
+            Every workgroup is staffed by a small set of contributors. Roles are flexible —
+            contribute where you have time and interest.
+          </p>
+
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {ROLES.map((role) => (
+              <li
+                key={role.key}
+                className="rounded-xl border border-slate-800 bg-slate-900/40 p-5"
+              >
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-900/40 text-xl text-violet-200"
+                  aria-hidden
+                >
+                  {role.glyph}
+                </div>
+                <h3 className="mt-4 text-base font-semibold text-white">{role.label}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  {role.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section id="join-vs-nominate" className="border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
@@ -242,36 +272,6 @@ export default async function JoinWorkgroupPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section id="roles" className="border-b border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
-          <p className="mt-3 max-w-3xl text-slate-400">
-            Every workgroup is staffed by a small set of contributors. Roles are flexible —
-            contribute where you have time and interest.
-          </p>
-
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {ROLES.map((role) => (
-              <li
-                key={role.key}
-                className="rounded-xl border border-slate-800 bg-slate-900/40 p-5"
-              >
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-lg bg-violet-900/40 text-xl text-violet-200"
-                  aria-hidden
-                >
-                  {role.glyph}
-                </div>
-                <h3 className="mt-4 text-base font-semibold text-white">{role.label}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                  {role.description}
-                </p>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
