@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
-  <title id="t">DP15 — Security &amp; Provenance</title>
+  <title id="t">DP15 – Security &amp; Provenance</title>
   <g stroke="#ef4444" fill="none">
     <path d="M12 3 L19 6 L19 12 Q19 17 12 21 Q5 17 5 12 L5 6 Z" stroke="#ef4444" stroke-width="2.4" fill="none" stroke-linejoin="round"/><rect x="6.5" y="9.5" width="8" height="5" rx="2.5" stroke="#ef4444" stroke-width="1.8" fill="none"/><rect x="9.5" y="9.5" width="8" height="5" rx="2.5" stroke="#ef4444" stroke-width="1.8" fill="none" fill-opacity="0.2"/><rect x="10.8" y="16.3" width="2.4" height="2" rx="0.3" stroke="#ef4444" stroke-width="0.8" fill="#ef4444"/>
   </g>

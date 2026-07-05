@@ -3,10 +3,10 @@
 
 Produces two PNGs in `assets/dp-icons/`:
 
-1. `comparison-sheet-v2.png`             — full badges (600×600) on a
+1. `comparison-sheet-v2.png`             – full badges (600×600) on a
    dark background, grouped by the six v2 thematic groups, with
    gold family dividers and 2-letter codes visible on each badge.
-2. `comparison-sheet-v2-source-only.png` — the bare 24×24 source
+2. `comparison-sheet-v2-source-only.png` – the bare 24×24 source
    glyphs rasterized at 128×128 each (the "recognizable metaphors" view).
 
 The dark background lets the gold frame pop while still letting the
@@ -33,7 +33,7 @@ BADGES_DIR = ROOT / "badges"
 SOURCE_DIR = ROOT / "source"
 OUTPUT_DIR = ROOT
 
-# Dark canvas background — deep space that lets the gold frame pop.
+# Dark canvas background – deep space that lets the gold frame pop.
 BG_COLOR = (10, 14, 26)  # #0a0e1a
 
 # v2 six-group palette (RGB tuples for PIL).
@@ -46,7 +46,7 @@ G_COMM = (245, 158, 11)         # #f59e0b  amber
 
 # Brand gold (matches the build script).
 GOLD = (184, 134, 11)           # #b8860b
-GOLD_BRIGHT = (250, 204, 21)    # #facc15 — accent gold for DPnn text
+GOLD_BRIGHT = (250, 204, 21)    # #facc15 – accent gold for DPnn text
 
 # Neutral text colors.
 WHITE = (240, 240, 240)
@@ -230,7 +230,7 @@ def build_sheet(*, use_badges: bool) -> tuple[Image.Image, tuple[int, int]]:
 
     # ---- Title block -------------------------------------------------------
     title_font = load_font(28, bold=True)
-    title_text = "DP ICON SYSTEM v2 — RECOGNIZABLE METAPHORS"
+    title_text = "DP ICON SYSTEM v2 – RECOGNIZABLE METAPHORS"
     draw_centered_text(draw, title_text, canvas_w // 2, 44, title_font,
                        WHITE)
 

@@ -74,7 +74,7 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   },
   {
     q: "What if I don't have time for ongoing commitments?",
-    a: 'Some roles are flexible and low-touch. Roles like Recorder or Liaison can be episodic — contribute when you have capacity.',
+    a: 'Some roles are flexible and low-touch. Roles like Recorder or Liaison can be episodic – contribute when you have capacity.',
   },
   {
     q: 'Can I be a member of more than one workgroup?',
@@ -188,7 +188,7 @@ export default async function JoinWorkgroupPage() {
             A Desirable Properties workgroup is a small, focused team that moves a single
             Desirable Property from concept to working draft. Each workgroup has a charter,
             a coordinator, and a flexible roster of members who contribute as their time
-            allows — most collaboration is async, with synchronous time reserved for moments
+            allows – most collaboration is async, with synchronous time reserved for moments
             that need it.
           </p>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -202,7 +202,7 @@ export default async function JoinWorkgroupPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Every workgroup is staffed by a small set of contributors. Roles are flexible —
+            Every workgroup is staffed by a small set of contributors. Roles are flexible –
             contribute where you have time and interest.
           </p>
 
@@ -241,7 +241,7 @@ export default async function JoinWorkgroupPage() {
               <h3 className="text-lg font-semibold text-white">Join as a member</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 Joining is low-commitment and reversible. As a member you can read drafts,
-                comment on proposals, and contribute wherever your time and interest align —
+                comment on proposals, and contribute wherever your time and interest align –
                 there is no obligation to attend meetings or write code.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
@@ -258,7 +258,7 @@ export default async function JoinWorkgroupPage() {
                 Nominate a coordinator (or yourself)
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                Nominating puts someone forward for a named role — Coordinator, Editor,
+                Nominating puts someone forward for a named role – Coordinator, Editor,
                 Presenter, or another contributor position. You can nominate yourself or
                 someone else in the community.
               </p>
@@ -268,7 +268,7 @@ export default async function JoinWorkgroupPage() {
                 <span className="mx-1 inline-block rounded-md border border-slate-700 px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-slate-200">
                   Nominate
                 </span>
-                button on any card below — it opens the workgroup page with the form ready.
+                button on any card below – it opens the workgroup page with the form ready.
               </p>
             </div>
           </div>
@@ -279,7 +279,7 @@ export default async function JoinWorkgroupPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">The 22 workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Each workgroup stewards one Desirable Property — drafting the canonical text,
+            Each workgroup stewards one Desirable Property – drafting the canonical text,
             reviewing contributions, and proposing updates. Click through to Gov Hub to join
             as a member or nominate a coordinator.
           </p>

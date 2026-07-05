@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP14 — Trust &amp; Transparency</title>
+  <title id="t">DP14 – Trust &amp; Transparency</title>
   <rect width="1200" height="630" fill="#0a0e1a"/>
   <circle cx="308.7" cy="154.0" r="0.43" fill="#a0c8ff" fill-opacity="0.35"/>
   <circle cx="368.3" cy="281.4" r="0.81" fill="#a0c8ff" fill-opacity="0.29"/>
@@ -39,7 +39,7 @@
   <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#ef4444" letter-spacing="6">Tt</text>
   <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Trust</text>
   <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#ef4444" letter-spacing="3">SECURITY, TRUST</text>
-  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties – Meta-Layer</text>
   <circle cx="32" cy="598" r="5" fill="#facc15"/>
   <circle cx="1168" cy="598" r="5" fill="#ef4444"/>
 </svg>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
-  <title id="t">DP8 — Collaborative Environment</title>
+  <title id="t">DP8 – Collaborative Environment</title>
   <g stroke="#d946ef" fill="none">
     <path d="M12 5 L19.5 17 L4.5 17 Z" stroke="#d946ef" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="12" cy="5" r="2.4" fill="#d946ef"/><circle cx="19.5" cy="17" r="2.4" fill="#d946ef"/><circle cx="4.5" cy="17" r="2.4" fill="#d946ef"/><circle cx="12" cy="13" r="1.4" fill="#d946ef" fill-opacity="0.55"/>
   </g>

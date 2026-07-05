@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP19 — Amplifying Presence</title>
+  <title id="t">DP19 – Amplifying Presence</title>
   <rect width="1200" height="630" fill="#0a0e1a"/>
   <circle cx="39.2" cy="139.9" r="1.02" fill="#a0c8ff" fill-opacity="0.36"/>
   <circle cx="575.7" cy="147.8" r="1.03" fill="#e8b923" fill-opacity="0.3"/>
@@ -39,7 +39,7 @@
   <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#f59e0b" letter-spacing="6">Ap</text>
   <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Amplifying Presence</text>
   <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#f59e0b" letter-spacing="3">COMMUNITY</text>
-  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties – Meta-Layer</text>
   <circle cx="32" cy="598" r="5" fill="#facc15"/>
   <circle cx="1168" cy="598" r="5" fill="#f59e0b"/>
 </svg>

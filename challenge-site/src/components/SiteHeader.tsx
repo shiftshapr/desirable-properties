@@ -4,6 +4,7 @@ import { DESIRABLE_PROPERTIES_BOOK_URL, FRAMING_CHAPTER_URL } from '@/lib/govhub
 const NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/challenge', label: 'Challenge' },
+  { href: '/workgroups/join', label: 'Workgroups' },
   { href: '/#dps', label: 'Browse DPs' },
   { href: '/onchain', label: 'On-Chain' },
   { href: DESIRABLE_PROPERTIES_BOOK_URL, label: 'Book', external: true },

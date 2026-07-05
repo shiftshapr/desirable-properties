@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the DP icon system v2 — recognizable metaphors on DARK backgrounds
+"""Build the DP icon system v2 – recognizable metaphors on DARK backgrounds
 (gold outer frame + group-color inner frame, marketing polish).
 
 This is the canonical design specified by the user: dark navy canvas,
@@ -36,7 +36,7 @@ DP_JSON = REPO_DESIRABLE / "challenge-site" / "src" / "data" / "desirable-proper
 # v2 Design tokens                                                            #
 # --------------------------------------------------------------------------- #
 # Brand
-GOLD_BORDER = "#b8860b"        # darkgoldenrod — outer 6px frame on 600
+GOLD_BORDER = "#b8860b"        # darkgoldenrod – outer 6px frame on 600
 GOLD_HIGHLIGHT = "#facc15"     # saturated gold for DPnn label
 GOLD_WARM = "#e8b923"          # warm gold accent
 
@@ -105,7 +105,7 @@ def x(s: str) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# Glyphs — built to be recognizable metaphors at 24x24                        #
+# Glyphs – built to be recognizable metaphors at 24x24                        #
 # --------------------------------------------------------------------------- #
 def glyph_svg(dp_num: int, accent: str) -> str:
     A = accent
@@ -435,7 +435,7 @@ _GLYPHS = {
 
 
 # --------------------------------------------------------------------------- #
-# Source SVG (24x24) — bare glyph, no background                               #
+# Source SVG (24x24) – bare glyph, no background                               #
 # --------------------------------------------------------------------------- #
 def build_source(dp_num: int, name: str, group_key: str) -> str:
     accent = group_color(group_key)

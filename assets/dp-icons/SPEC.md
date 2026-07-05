@@ -1,4 +1,4 @@
-# Desirable Properties Icon System — Design Spec (v2)
+# Desirable Properties Icon System – Design Spec (v2)
 
 The v2 DP icon system is designed to **match the visual quality of the
 reference infographic**: a dark navy (deep space) canvas, gold outer
@@ -7,7 +7,7 @@ typography with strict consistency across all 22 DPs.
 
 > **Major change vs v1:** v1 used abstract primitive compositions (circles,
 > arcs, squares, etc. arranged as glyphs). V2 uses **recognizable metaphors**
-> — fingerprint, dharma wheel, brain, megaphone, globe, etc. — drawn as bold
+> – fingerprint, dharma wheel, brain, megaphone, globe, etc. – drawn as bold
 > line-art with selective fills. A stranger should recognize each glyph in
 > under a second.
 
@@ -15,11 +15,11 @@ typography with strict consistency across all 22 DPs.
 
 ## 1. Brand & palette
 
-### 1.1 Brand color — gold
+### 1.1 Brand color – gold
 
 | Role                | Hex       | Notes                                       |
 |---------------------|-----------|---------------------------------------------|
-| Container border    | `#b8860b` | `darkgoldenrod` — outer 6 px frame on 600   |
+| Container border    | `#b8860b` | `darkgoldenrod` – outer 6 px frame on 600   |
 | DPnn label color    | `#facc15` | saturated gold for `DP01–DP22` badge header  |
 | Starfield accents   | `#e8b923` | warm gold dot highlights                    |
 
@@ -43,7 +43,7 @@ of gold.
 | Community Participation & Feedback          | `#f59e0b` | DP18, DP19, DP20, DP22    | Fr, Ap, Ow, Ep  |
 
 All group colors were sampled from the reference infographic and verified
-on dark backgrounds — they remain saturated and distinct at thumbnail
+on dark backgrounds – they remain saturated and distinct at thumbnail
 size, with hex gaps between adjacent families of ≥ 20 RGB units so
 neighboring badges never blend visually.
 
@@ -66,13 +66,13 @@ Every source SVG must follow these hard rules:
 2. **Stroke-only or stroke + small filled accent.** Strokes use `stroke="accent"` (group color) and `stroke-width="2"` (sometimes `1.4–1.6` for inner detail). `stroke-linecap="round"` and `stroke-linejoin="round"` for organic feel.
 3. **No visible text** in the source.
 4. **Padding 1–2 px.** Glyphs sit inside the box `(2, 2) → (22, 22)` with comfortable edge breathing room.
-5. **Recognizable metaphor.** Each glyph must look like the thing it represents at 96×96 — see §5.
+5. **Recognizable metaphor.** Each glyph must look like the thing it represents at 96×96 – see §5.
 6. **Silhouette uniqueness.** All 22 glyphs have distinct silhouettes at 32×32 (test in §6).
 
 ```html
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
      fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <title>DP1 — Federated Authentication &amp; Accountability</title>
+  <title>DP1 – Federated Authentication &amp; Accountability</title>
   <g stroke="{accent}" fill="none">
     <!-- glyph paths here -->
   </g>
@@ -86,7 +86,7 @@ be reused on light, dark, or themed surfaces.
 
 ## 3. Badge variant (600×600)
 
-The badge is the centerpiece of v2 — the artifact the user judges. Each
+The badge is the centerpiece of v2 – the artifact the user judges. Each
 `badges/dpNN.svg` renders the icon on a dark space background with the
 following layered composition:
 
@@ -95,12 +95,12 @@ following layered composition:
 │  ┌─ 3 px GROUP-COLOR INNER FRAME ─┐ │
 │  │                                 │ │
 │  │  DPnn (gold) + 2-letter code   │ │
-│  │  (group color) — top-left       │ │
+│  │  (group color) – top-left       │ │
 │  │                                 │ │
 │  │            [GLYPH]              │ │
 │  │     centered, 50–60% area       │ │
 │  │                                 │ │
-│  │  WHITE TITLE — bottom           │ │
+│  │  WHITE TITLE – bottom           │ │
 │  │  ─── (accent underline) ───     │ │
 │  │  GROUP CAPTION (accent, upper)  │ │
 │  └─────────────────────────────────┘ │
@@ -135,14 +135,14 @@ The cover (`covers/dpNN.svg`) is the OG-aspect workgroup card:
 
 - Same dark space canvas + gold outer border
 - **Left half (0 → 600):** 580-px nested badge variant with all the same elements as §3, slightly compressed
-- **Right half (600 → 1200):** title strip — a vertical strip tinted with the group color at 7% opacity, divided from the left by a 2 px group-color vertical line. Strip contains:
+- **Right half (600 → 1200):** title strip – a vertical strip tinted with the group color at 7% opacity, divided from the left by a 2 px group-color vertical line. Strip contains:
   - DPnn label (gold, 32 px) and 2-letter code (group color, 32 px)
   - Title in 2-3 word-wrapped lines (white, 56 px bold)
   - Group short label (ALL CAPS, group color)
-  - Subtitle: "Desirable Properties — Meta-Layer" (muted ink)
+  - Subtitle: "Desirable Properties – Meta-Layer" (muted ink)
 - Brand corner marks: gold dot bottom-left, group color dot bottom-right
 
-OG aspect is 1200×630 — must remain legible when auto-cropped to ~400×210
+OG aspect is 1200×630 – must remain legible when auto-cropped to ~400×210
 in social previews.
 
 ---
@@ -155,7 +155,7 @@ as abstract symbols. Each one has a unique silhouette at 96×96.
 | DP  | Name                                   | Code | Glyph metaphor                                                              | Rationale |
 |-----|----------------------------------------|------|------------------------------------------------------------------------------|-----------|
 | 1   | Federated Authentication & Accountability | Au | Stylized fingerprint ridges with a small accent dot at the center          | Fingerprint = the universal symbol of identity verification |
-| 2   | Participant Agency & Empowerment       | Ag   | Three figures: one large center with arms outstretched, two smaller flanks | Agency radiating — the central figure is empowered outward |
+| 2   | Participant Agency & Empowerment       | Ag   | Three figures: one large center with arms outstretched, two smaller flanks | Agency radiating – the central figure is empowered outward |
 | 3   | Adaptive Governance                    | Go   | Gear with prominent teeth and an upward arrow at the hub                   | Gear = governance mechanism; arrow = adaptation/growth |
 | 4   | Data Sovereignty & Privacy             | So   | Shield with keyhole + small data dots inside                                | Shield = protection; keyhole = private access; dots = data |
 | 5   | Decentralized Namespace                | Ns   | Dharma-wheel / 8-spoke radial hub with 8 outer nodes                        | Wheel = the canonical namespace-resolution symbol across cultures |
@@ -200,7 +200,7 @@ v2 currently passes with **22 / 22 unique silhouettes**.
 - Font stack: `'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif`
 - Per-element sizes:
   - **DPnn label:** 62 px, weight 800, letter-spacing -1.5 (tight, because it's large and we want it to feel like a code)
-  - **2-letter code:** 40 px, weight 700, letter-spacing 6 (wide tracking — premium feel)
+  - **2-letter code:** 40 px, weight 700, letter-spacing 6 (wide tracking – premium feel)
   - **Group label top-right:** 13 px, weight 700, letter-spacing 3, ALL CAPS
   - **Title:** 26 px, weight 700, white, no all-caps
   - **Group caption (bottom):** 11 px, weight 700, letter-spacing 3, ALL CAPS, accent

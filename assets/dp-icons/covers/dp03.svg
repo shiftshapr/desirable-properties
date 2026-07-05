@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP03 — Adaptive Governance</title>
+  <title id="t">DP03 – Adaptive Governance</title>
   <rect width="1200" height="630" fill="#0a0e1a"/>
   <circle cx="298.5" cy="221.6" r="0.98" fill="#e8b923" fill-opacity="0.36"/>
   <circle cx="246.3" cy="405.9" r="0.45" fill="#a0c8ff" fill-opacity="0.38"/>
@@ -39,7 +39,7 @@
   <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#06b6d4" letter-spacing="6">Go</text>
   <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Adaptive Governance</text>
   <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#06b6d4" letter-spacing="3">AUTHENTICATION, AGENCY</text>
-  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties – Meta-Layer</text>
   <circle cx="32" cy="598" r="5" fill="#facc15"/>
   <circle cx="1168" cy="598" r="5" fill="#06b6d4"/>
 </svg>

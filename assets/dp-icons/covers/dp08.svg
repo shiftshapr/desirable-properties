@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP08 — Collaborative Environment</title>
+  <title id="t">DP08 – Collaborative Environment</title>
   <rect width="1200" height="630" fill="#0a0e1a"/>
   <circle cx="311.1" cy="556.7" r="0.67" fill="#ffffff" fill-opacity="0.45"/>
   <circle cx="48.2" cy="390.3" r="1.06" fill="#a0c8ff" fill-opacity="0.51"/>
@@ -39,7 +39,7 @@
   <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#d946ef" letter-spacing="6">Cm</text>
   <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Collaboration</text>
   <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#d946ef" letter-spacing="3">INTEROPERABILITY</text>
-  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties – Meta-Layer</text>
   <circle cx="32" cy="598" r="5" fill="#facc15"/>
   <circle cx="1168" cy="598" r="5" fill="#d946ef"/>
 </svg>

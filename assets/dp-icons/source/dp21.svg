@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
-  <title id="t">DP21 — Multi-modal</title>
+  <title id="t">DP21 – Multi-modal</title>
   <g stroke="#d946ef" fill="none">
     <path d="M2 7 Q4 3 6 7 T10 7 T14 7 T18 7 T22 7" stroke="#d946ef" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M2 12 Q5 8 8 12 T14 12 T20 12 Q21.5 12 22 11.5" stroke="#d946ef" stroke-width="2" fill="none" stroke-linecap="round" stroke-opacity="0.9"/><path d="M2 16 Q4 14 6 16 T10 16 T14 16 T18 16 T22 16" stroke="#d946ef" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-opacity="0.7"/><path d="M2 19.5 Q3.5 18 5 19.5 T9 19.5 T13 19.5 T17 19.5 T22 19.5" stroke="#d946ef" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-opacity="0.55"/><circle cx="3" cy="7" r="0.8" fill="#d946ef"/><rect x="20.5" y="15.4" width="1.6" height="1.6" fill="#d946ef" fill-opacity="0.85"/>
   </g>

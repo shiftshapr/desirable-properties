@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t">
-  <title id="t">DP05 — Decentralized Namespace</title>
+  <title id="t">DP05 – Decentralized Namespace</title>
   <rect width="1200" height="630" fill="#0a0e1a"/>
   <circle cx="290.5" cy="525.2" r="0.83" fill="#a0c8ff" fill-opacity="0.51"/>
   <circle cx="377.1" cy="188.2" r="0.84" fill="#ffffff" fill-opacity="0.26"/>
@@ -39,7 +39,7 @@
   <text x="720" y="170" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="32" font-weight="700" fill="#10b981" letter-spacing="6">Ns</text>
   <text x="640" y="240" font-family=''Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif' font-size="56" font-weight="700" fill="#ffffff">Decentralized NS</text>
   <text x="720" y="500" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="700" fill="#10b981" letter-spacing="3">SOVEREIGNTY &amp; PRIVACY</text>
-  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties — Meta-Layer</text>
+  <text x="720" y="555" font-family="'Inter','SF Pro Display','Segoe UI','Liberation Sans','DejaVu Sans',system-ui,sans-serif" font-size="14" font-weight="500" fill="#a0a0a8">Desirable Properties – Meta-Layer</text>
   <circle cx="32" cy="598" r="5" fill="#facc15"/>
   <circle cx="1168" cy="598" r="5" fill="#10b981"/>
 </svg>

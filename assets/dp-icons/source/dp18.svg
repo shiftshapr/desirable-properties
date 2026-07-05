@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="t">
-  <title id="t">DP18 — Feedback Loops &amp; Reputation</title>
+  <title id="t">DP18 – Feedback Loops &amp; Reputation</title>
   <g stroke="#f59e0b" fill="none">
     <path d="M19 8 A7 7 0 1 0 18 16" stroke="#f59e0b" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M19 8 L22 8 L19 11 Z" fill="#f59e0b"/><rect x="7" y="9.5" width="10" height="6.5" rx="1.5" stroke="#f59e0b" stroke-width="1.6" fill="none"/><path d="M9 16 L8 18 L11 16 Z" fill="#f59e0b"/><circle cx="9.5" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="12" cy="12.7" r="0.7" fill="#f59e0b"/><circle cx="14.5" cy="12.7" r="0.7" fill="#f59e0b"/>
   </g>
