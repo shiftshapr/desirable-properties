@@ -150,7 +150,7 @@ export default async function Home() {
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href={govhubUrl('/layers/the-metaweb/')}
+                href={govhubUrl('/submit/?layer=the-metaweb')}
                 className="rounded-lg bg-cyan-700 px-5 py-3 text-sm font-medium text-white hover:bg-cyan-600"
               >
                 Submit Candidate DP
@@ -171,7 +171,7 @@ export default async function Home() {
             <h2 className="text-3xl font-bold text-white">Get Involved</h2>
             <ul className="mt-8 space-y-3">
               <li>
-                <Link href="/challenge" className="text-lg text-cyan-300 hover:text-cyan-200">
+                <Link href="/challenge#timeline" className="text-lg text-cyan-300 hover:text-cyan-200">
                   Challenge timeline
                 </Link>
                 <p className="text-sm text-slate-500">
@@ -192,29 +192,17 @@ export default async function Home() {
               </li>
               <li>
                 <Link href="/onchain" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  Meta-Layer Call for Input
+                  The DP Challenge on-chain
                 </Link>
                 <p className="text-sm text-slate-500">
                   On-chain provenance: PCI conversations, submissions, and inscriptions
                 </p>
               </li>
               <li>
-                <a
-                  href={govhubUrl('/layers/the-metaweb/')}
-                  className="text-lg text-cyan-300 hover:text-cyan-200"
-                >
+                <Link href="/workgroups/join" className="text-lg text-cyan-300 hover:text-cyan-200">
                   Workgroups
-                </a>
+                </Link>
                 <p className="text-sm text-slate-500">Join stewardship groups for each DP</p>
-              </li>
-              <li>
-                <a
-                  href={govhubUrl('/layers/the-metaweb/')}
-                  className="text-lg text-cyan-300 hover:text-cyan-200"
-                >
-                  Governance discussions
-                </a>
-                <p className="text-sm text-slate-500">Votes, comments, and proposals on The Metaweb layer</p>
               </li>
             </ul>
           </div>
