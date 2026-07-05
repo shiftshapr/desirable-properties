@@ -45,7 +45,7 @@ export default async function Home() {
           <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
         </div>
 
-        <LayerHero workgroupHref={govhubUrl('/layers/the-metaweb/')} />
+        <LayerHero workgroupHref="/workgroups/join" />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
