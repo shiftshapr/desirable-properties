@@ -12,6 +12,7 @@ import {
   isWorkgroupFormationPhase,
 } from '@/lib/challengeTimeline';
 import {
+  DESIRABLE_PROPERTIES_BOOK_URL,
   fetchChallengeActivity,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
@@ -19,9 +20,9 @@ import {
 } from '@/lib/govhub';
 
 export const metadata = {
-  title: 'The Challenge — Desirable Properties',
+  title: 'The Challenge – Desirable Properties',
   description:
-    'Timeline, milestones, and participation guide for the Desirable Properties Challenge—refining Version 0.77 toward Version 1 and the Digital Monument launch.',
+    'Timeline, milestones, and participation guide for the Desirable Properties Challenge–refining Version 0.77 toward Version 1 and the Digital Monument launch.',
 };
 
 export const revalidate = 300;
@@ -72,9 +73,10 @@ export default async function ChallengePage() {
           </p>
           <p>
             The Desirable Properties Challenge is a global effort to explore what qualities a new{' '}
-            <strong className="font-semibold text-white">Coordination Layer</strong> should possess
-            before it becomes part of everyday digital life—the Meta-Layer that supports trust,
-            context, presence, and governance above today&apos;s Web.
+            <strong className="font-semibold text-white">Coordination Layer</strong>
+            {' '}
+            should possess before it becomes part of everyday digital life–the Meta-Layer that
+            supports trust, context, presence, and governance above today&apos;s Web.
           </p>
           <p>
             The challenge began in September 2024 when Internet pioneer Vint Cerf asked a
@@ -91,7 +93,7 @@ export default async function ChallengePage() {
             <strong className="font-semibold text-white">
               Version {challengeMeta.current_draft_version}
             </strong>{' '}
-            of the <em>Desirable Properties of a Meta-Layer</em>—the current working draft developed
+            of the <em>Desirable Properties of a Meta-Layer</em>–the current working draft developed
             through AI-assisted synthesis and community stewardship.
           </p>
         </section>
@@ -99,6 +101,17 @@ export default async function ChallengePage() {
         {/* Countdown */}
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
+          <p className="mt-4 text-center text-sm text-slate-400">
+            The open{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_URL}
+              className="font-medium text-cyan-300 hover:text-cyan-200"
+            >
+              Desirable Properties book
+            </a>{' '}
+            (BRC333 ordinal edition) is available now–ML-Draft-026 and all twenty-two DPs in seven
+            parts.
+          </p>
         </section>
 
         {/* New phase */}
@@ -134,12 +147,12 @@ export default async function ChallengePage() {
         )}
 
         {/* Workspace + Archive */}
-        <section className="grid gap-6 sm:grid-cols-2">
+        <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
             <h3 className="text-lg font-semibold text-white">Living workspace</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
               Review drafts, join workgroups, propose patches, and participate in governance on Gov
-              Hub—the active environment where the challenge evolves.
+              Hub–the active environment where the challenge evolves.
             </p>
             <a
               href={govhubUrl('/layers/the-metaweb/')}
@@ -160,6 +173,19 @@ export default async function ChallengePage() {
             >
               Explore on-chain provenance →
             </Link>
+          </div>
+          <div className="rounded-xl border border-violet-900/50 bg-violet-950/20 p-6">
+            <h3 className="text-lg font-semibold text-white">Desirable Properties book</h3>
+            <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              Read the v1.0 open edition–framing chapter plus twenty-two inscribed DPs organized in
+              seven parts. Same markdown ordinals as the Digital Monument.
+            </p>
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_URL}
+              className="mt-4 inline-block text-sm font-medium text-violet-300 hover:text-violet-200"
+            >
+              Open the book →
+            </a>
           </div>
         </section>
 
@@ -188,10 +214,10 @@ export default async function ChallengePage() {
               Browse Version {challengeMeta.current_draft_version} DPs
             </Link>
             <a
-              href={FRAMING_CHAPTER_URL}
-              className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+              href={DESIRABLE_PROPERTIES_BOOK_URL}
+              className="rounded-lg border border-violet-700/60 bg-violet-950/30 px-4 py-2 text-sm text-violet-200 hover:border-violet-500"
             >
-              Read ML-Draft-026
+              Read the book
             </a>
             <Link
               href="/about"

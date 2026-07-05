@@ -6,7 +6,7 @@
   },
   "submission": {
     "title": "Integrating Multi-Modal Systems into the Meta-Layer Framework",
-    "overview": "This submission introduces a new Desirable Property (DP21) to the Meta-Layer framework, emphasizing the necessity for systems capable of overlaying and integrating conceptual, spatial, and virtual information across physical, digital, and emerging AGI domains. Drawing from Dr. Paul Werbos's vision of a 'New Jerusalem'—a global, multi-layered sensor and intelligence network—we highlight the importance of multi-modal integration for enhanced situational awareness, governance, and collaborative intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 Based on: https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
+    "overview": "This submission introduces a new Desirable Property (DP21) to the Meta-Layer framework, emphasizing the necessity for systems capable of overlaying and integrating conceptual, spatial, and virtual information across physical, digital, and emerging AGI domains. Drawing from Dr. Paul Werbos's vision of a 'New Jerusalem'–a global, multi-layered sensor and intelligence network–we highlight the importance of multi-modal integration for enhanced situational awareness, governance, and collaborative intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 Based on: https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
     "source_link": "https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
     "raw_content": null
   },
@@ -21,7 +21,7 @@
       "dp": "DP21 – Multi-Modal Integration",
       "type": "Extension",
       "title": "Enabling Seamless Cross-Domain Intelligence",
-      "extension": "The Meta-Layer should support systems that can process and overlay diverse data types—textual, visual, spatial, and conceptual—across physical infrastructures, digital platforms, and AGI systems. This includes the development of interfaces and protocols that allow for real-time fusion of data from various sources, facilitating comprehensive situational awareness and decision-making.",
+      "extension": "The Meta-Layer should support systems that can process and overlay diverse data types–textual, visual, spatial, and conceptual–across physical infrastructures, digital platforms, and AGI systems. This includes the development of interfaces and protocols that allow for real-time fusion of data from various sources, facilitating comprehensive situational awareness and decision-making.",
       "why_it_matters": "Such multi-modal capabilities are essential for addressing global security challenges and fostering collaborative intelligence, as emphasized in Dr. Werbos's vision."
     },
     {

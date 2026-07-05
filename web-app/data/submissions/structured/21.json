@@ -6,7 +6,7 @@
   },
   "submission": {
     "title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
-    "overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+    "overview": "This pattern enables any digital object–text, credential, file, token–to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
     "source_link": null,
     "raw_content": null
   },

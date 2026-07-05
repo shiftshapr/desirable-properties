@@ -54,7 +54,7 @@
       "type": "Extension",
       "title": "Contextual Verifiability via Bridges",
       "extension": "Bridges link claims to evidence and alternative views, making trust-building a structural property of web knowledge.",
-      "why_it_matters": "Information can no longer stand alone — verifiability emerges through relational framing and traceable provenance."
+      "why_it_matters": "Information can no longer stand alone – verifiability emerges through relational framing and traceable provenance."
     },
     {
       "dp": "DP7 – Simplicity and Interoperability",
@@ -67,7 +67,7 @@
       "dp": "DP20 – Community Ownership",
       "type": "Extension",
       "title": "Commons Curation via Synaptic Participation",
-      "extension": "Bridge graphs are built and maintained by usage, trust, and local context — aligning stewardship with presence and perspective.",
+      "extension": "Bridge graphs are built and maintained by usage, trust, and local context – aligning stewardship with presence and perspective.",
       "why_it_matters": "This empowers communities to shape their own epistemic landscapes rather than consume top-down narratives."
     },
     {
@@ -109,7 +109,7 @@
       "dp": "DP19 – Amplifying Presence and Community Engagement",
       "type": "Extension",
       "title": "Maps as Gathering Grounds",
-      "extension": "Shared knowledge maps are not just informational — they are spaces of alignment, co-presence, and engagement.",
+      "extension": "Shared knowledge maps are not just informational – they are spaces of alignment, co-presence, and engagement.",
       "why_it_matters": "Contextual communities emerge around shared meaning, not just shared platforms."
     }
   ]

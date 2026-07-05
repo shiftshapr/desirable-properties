@@ -95,7 +95,7 @@ def write_submission_file(submission, filename):
     output_path = os.path.join(OUTPUT_DIR, f"{base_name}.json")
     with open(output_path, 'w') as out:
         json.dump(submission, out, indent=2)
-    print(f"✔ Parsed: {base_name} — {submission['submission']['title']}")
+    print(f"✔ Parsed: {base_name} – {submission['submission']['title']}")
 
 def copy_to_manual(filename, path):
     shutil.copy(path, os.path.join(MANUAL_DIR, filename))

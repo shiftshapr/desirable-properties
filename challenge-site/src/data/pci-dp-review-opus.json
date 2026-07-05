@@ -21,7 +21,7 @@
       "original_confidence": "medium",
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "The email says 'safely enabling and utilizing AI' as one item in a requirements list. It does not articulate explainability, ethical constraints, bias mitigation, or any specific safe-AI design requirement — it merely names AI as something that should be safe."
+      "reason": "The email says 'safely enabling and utilizing AI' as one item in a requirements list. It does not articulate explainability, ethical constraints, bias mitigation, or any specific safe-AI design requirement – it merely names AI as something that should be safe."
     },
     {
       "action": "remove",
@@ -54,7 +54,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email discusses AI training dataset provenance (ImageNet version inconsistency), not content provenance within the meta-layer. DP15 is about tracing origins and modifications of content in the ecosystem — a different concept from ML dataset versioning."
+      "reason": "The email discusses AI training dataset provenance (ImageNet version inconsistency), not content provenance within the meta-layer. DP15 is about tracing origins and modifications of content in the ecosystem – a different concept from ML dataset versioning."
     },
     {
       "action": "remove",
@@ -76,7 +76,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email expresses doubt about institutional follow-through by analogy to climate policy. It does not contribute governance concepts, requirements, or design ideas — it merely warns that such efforts are hard."
+      "reason": "The email expresses doubt about institutional follow-through by analogy to climate policy. It does not contribute governance concepts, requirements, or design ideas – it merely warns that such efforts are hard."
     },
     {
       "action": "remove",
@@ -98,7 +98,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email discusses using AI agents for collective intelligence, not communities governing AI systems. DP12 is about community oversight of AI behavior and ethics. David Bray describes AI as a tool for CI — that's DP8/DP11 territory, not DP12."
+      "reason": "The email discusses using AI agents for collective intelligence, not communities governing AI systems. DP12 is about community oversight of AI behavior and ethics. David Bray describes AI as a tool for CI – that's DP8/DP11 territory, not DP12."
     },
     {
       "action": "downgrade",
@@ -142,7 +142,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email discusses AI agents communicating with each other and the gatekeeping problem of GenAI platforms. It does not discuss AI safety, ethics, explainability, or bias — mentioning 'AI agents' is shared vocabulary, not substantive overlap with DP11."
+      "reason": "The email discusses AI agents communicating with each other and the gatekeeping problem of GenAI platforms. It does not discuss AI safety, ethics, explainability, or bias – mentioning 'AI agents' is shared vocabulary, not substantive overlap with DP11."
     },
     {
       "action": "remove",
@@ -153,7 +153,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email discusses AI agents communicating freely without centralized platforms. It does not discuss constraints, containment, or governance of AI agents — in fact it argues for less constraint (no centralized hosting). This is the opposite of DP13's containment framework."
+      "reason": "The email discusses AI agents communicating freely without centralized platforms. It does not discuss constraints, containment, or governance of AI agents – in fact it argues for less constraint (no centralized hosting). This is the opposite of DP13's containment framework."
     },
     {
       "action": "downgrade",
@@ -164,7 +164,7 @@
       "original_confidence": "high",
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "Paul discusses CI theory through neuroscience (brain synchronization, EEG, Karl Deutsch) — this is academic background about how CI works in brains, not design requirements for meta-communities or collaborative environments. The connection to DP8 is thematic resonance, not a direct contribution."
+      "reason": "Paul discusses CI theory through neuroscience (brain synchronization, EEG, Karl Deutsch) – this is academic background about how CI works in brains, not design requirements for meta-communities or collaborative environments. The connection to DP8 is thematic resonance, not a direct contribution."
     },
     {
       "action": "remove",
@@ -186,7 +186,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The summary claims 'serious dialogue connecting communities and ideas over time' maps to civic memory. DP22 is about transformation-sensitive memory, accountable summarization, and plural sensemaking. Paul's call for serious dialogue is aspirational — it doesn't articulate requirements for preserving civic memory or epistemic continuity."
+      "reason": "The summary claims 'serious dialogue connecting communities and ideas over time' maps to civic memory. DP22 is about transformation-sensitive memory, accountable summarization, and plural sensemaking. Paul's call for serious dialogue is aspirational – it doesn't articulate requirements for preserving civic memory or epistemic continuity."
     },
     {
       "action": "remove",
@@ -208,7 +208,7 @@
       "original_confidence": "high",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email is a single sentence hoping tools are 'cross cultural and multilingual.' DP10 is about education (onboarding, lifelong learning, AI learning assistants, PEARL badges). The email does not discuss education at all — multilingual tool design maps to DP7 (interoperability) if anywhere."
+      "reason": "The email is a single sentence hoping tools are 'cross cultural and multilingual.' DP10 is about education (onboarding, lifelong learning, AI learning assistants, PEARL badges). The email does not discuss education at all – multilingual tool design maps to DP7 (interoperability) if anywhere."
     },
     {
       "action": "remove",
@@ -241,7 +241,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email does not discuss participant agency, control over digital identities, reputation systems, or empowerment. Hoping tools are multilingual is not about participant empowerment — it's a single sentence about accessibility."
+      "reason": "The email does not discuss participant agency, control over digital identities, reputation systems, or empowerment. Hoping tools are multilingual is not about participant empowerment – it's a single sentence about accessibility."
     },
     {
       "action": "remove",
@@ -263,7 +263,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email invites PCI to contribute ideas (DP19 community engagement, already mapped). Describing PCI as 'people-centered' does not contribute to or substantively align with DP8's collaborative environment design — it's movement-building language, not collaboration architecture."
+      "reason": "The email invites PCI to contribute ideas (DP19 community engagement, already mapped). Describing PCI as 'people-centered' does not contribute to or substantively align with DP8's collaborative environment design – it's movement-building language, not collaboration architecture."
     },
     {
       "action": "remove",
@@ -274,7 +274,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email mentions Bitcoin satplications and digital badges for contributors. This is about recognition/incentives (DP9, already mapped), not civic memory. DP22 is about transformation-sensitive memory and accountable summarization — contributor badges don't constitute civic memory infrastructure."
+      "reason": "The email mentions Bitcoin satplications and digital badges for contributors. This is about recognition/incentives (DP9, already mapped), not civic memory. DP22 is about transformation-sensitive memory and accountable summarization – contributor badges don't constitute civic memory infrastructure."
     },
     {
       "action": "downgrade",
@@ -296,7 +296,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email is about whether AI can help with love and compassion. It does not discuss community governance of AI systems, ethical oversight, or participatory AI design. 'Community values and care' is not what DP12 means — DP12 is about governance structures."
+      "reason": "The email is about whether AI can help with love and compassion. It does not discuss community governance of AI systems, ethical oversight, or participatory AI design. 'Community values and care' is not what DP12 means – DP12 is about governance structures."
     },
     {
       "action": "remove",
@@ -351,7 +351,7 @@
       "original_confidence": "high",
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "Brian warns that legal liability flows to human authors, not machines. This is a cautionary observation about liability, not a governance design contribution. He doesn't propose governance structures, roles, or decision-making processes — he warns that legal reality must be acknowledged."
+      "reason": "Brian warns that legal liability flows to human authors, not machines. This is a cautionary observation about liability, not a governance design contribution. He doesn't propose governance structures, roles, or decision-making processes – he warns that legal reality must be acknowledged."
     },
     {
       "action": "remove",
@@ -373,7 +373,7 @@
       "original_confidence": "low",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "A general warning about legal complexity does not constitute roadmap context. The email provides no milestones, phasing, or implementation guidance — just a caution about unknown unknowns."
+      "reason": "A general warning about legal complexity does not constitute roadmap context. The email provides no milestones, phasing, or implementation guidance – just a caution about unknown unknowns."
     },
     {
       "action": "downgrade",
@@ -384,7 +384,7 @@
       "original_confidence": "high",
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "David Bray asks a one-sentence question about weaponization of principles. This raises an important concern but does not articulate a governance requirement, design principle, or structural proposal. A question is not an informed contribution — it's a prompt for further work."
+      "reason": "David Bray asks a one-sentence question about weaponization of principles. This raises an important concern but does not articulate a governance requirement, design principle, or structural proposal. A question is not an informed contribution – it's a prompt for further work."
     },
     {
       "action": "downgrade",
@@ -494,7 +494,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "The email mentions agents working across 'browser, phone app, etc.' — this lists platforms where agents operate, not multi-modal interface support (visual, auditory, tactile). DP21 is about interaction modalities, not about which apps an agent runs on."
+      "reason": "The email mentions agents working across 'browser, phone app, etc.' – this lists platforms where agents operate, not multi-modal interface support (visual, auditory, tactile). DP21 is about interaction modalities, not about which apps an agent runs on."
     },
     {
       "action": "downgrade",
@@ -505,7 +505,7 @@
       "original_confidence": "high",
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "The email proposes Bitcoin Ordinals as immutable storage for an open letter. DP22 is about transformation-sensitive memory, accountable summarization, and plural sensemaking — not just permanent archiving. Immutable storage is a preservation mechanism (closer to DP15's 'Archive of Content') that supports but doesn't directly articulate DP22's epistemic continuity requirements."
+      "reason": "The email proposes Bitcoin Ordinals as immutable storage for an open letter. DP22 is about transformation-sensitive memory, accountable summarization, and plural sensemaking – not just permanent archiving. Immutable storage is a preservation mechanism (closer to DP15's 'Archive of Content') that supports but doesn't directly articulate DP22's epistemic continuity requirements."
     },
     {
       "action": "remove",
@@ -571,7 +571,7 @@
       "original_confidence": "medium",
       "proposed_relationship": null,
       "proposed_confidence": null,
-      "reason": "DP17 is about funding models (DAOs, grants, token ecosystems, monetization). The email discusses security's business value challenge and adoption barriers — this is about the economics of security adoption, not meta-layer financial sustainability."
+      "reason": "DP17 is about funding models (DAOs, grants, token ecosystems, monetization). The email discusses security's business value challenge and adoption barriers – this is about the economics of security adoption, not meta-layer financial sustainability."
     },
     {
       "action": "add",
@@ -582,7 +582,7 @@
       "original_confidence": null,
       "proposed_relationship": "aligned",
       "proposed_confidence": "medium",
-      "reason": "Vandana explicitly discusses context-dependent multiple identities: 'There may not be one identity but multiple identities depending on context and usage.' She uses the SIM authentication analogy. This directly resonates with DP5's decentralized namespace and personal identifiers — notably absent from the draft."
+      "reason": "Vandana explicitly discusses context-dependent multiple identities: 'There may not be one identity but multiple identities depending on context and usage.' She uses the SIM authentication analogy. This directly resonates with DP5's decentralized namespace and personal identifiers – notably absent from the draft."
     }
   ]
 }

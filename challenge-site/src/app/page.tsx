@@ -2,6 +2,7 @@ import Link from 'next/link';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import DPCardGrid from '@/components/DPCardGrid';
 import LayerHero from '@/components/LayerHero';
+import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import {
   fetchChallengeActivity,
   fetchChallengeWorkgroups,
@@ -28,6 +29,7 @@ const MISSING_ITEMS = [
 ];
 
 export default async function Home() {
+  const now = new Date();
   const [activity, workgroups] = await Promise.all([
     fetchChallengeActivity(12),
     fetchChallengeWorkgroups(),
@@ -38,6 +40,11 @@ export default async function Home() {
 
   return (
     <main>
+        {/* TODO: remove `hidden` and place overlay in hero or challenge section when ready */}
+        <div className="hidden" aria-hidden="true">
+          <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
+        </div>
+
         <LayerHero workgroupHref={govhubUrl('/layers/the-metaweb/')} />
 
         {/* What Are Desirable Properties? */}

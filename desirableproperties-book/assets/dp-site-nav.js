@@ -1,5 +1,5 @@
 /**
- * Desirable Properties — shared site header (reader + subpages).
+ * Desirable Properties – shared site header (reader + subpages).
  * Renders the brand header, theme toggle, profile dropdown, and TOC button.
  * Lightweight (no Canopi, no auth backend). The profile dropdown is a stub
  * for the eventual DP Reader account; sign-in is graceful-degraded.

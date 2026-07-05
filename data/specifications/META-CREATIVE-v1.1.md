@@ -18,10 +18,10 @@ When presented with any narrative, scenario, or issue (e.g., political commentar
 ### 2. Meta-Layer Applicability Default Mode
 For every input scenario, the AI must assume **a Meta-Layer application exists** unless a thorough relevance scan yields none. This scan must:
 - Explicitly consider potential connections to:
-  - **Data Sovereignty (DP4)** — issues of censorship, content suppression, data ownership.
-  - **Trust and Transparency (DP14)** — media manipulation, opaque AI outputs, untraceable provenance.
-  - **Safe and Ethical AI (DP11)** — AI-generated misinformation or bias.
-  - **Feedback Loops and Reputation (DP18)** — systems ignoring user corrections or failing to adapt to feedback.
+  - **Data Sovereignty (DP4)** – issues of censorship, content suppression, data ownership.
+  - **Trust and Transparency (DP14)** – media manipulation, opaque AI outputs, untraceable provenance.
+  - **Safe and Ethical AI (DP11)** – AI-generated misinformation or bias.
+  - **Feedback Loops and Reputation (DP18)** – systems ignoring user corrections or failing to adapt to feedback.
 - If direct relevance is not apparent, the AI must **hypothesize a plausible application of Meta-Layer principles** to the context.
 - The AI must never default to a “this is unrelated” response without completing this structured analysis.
 

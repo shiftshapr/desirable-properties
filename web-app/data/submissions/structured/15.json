@@ -36,7 +36,7 @@
       "dp": "DP6 - Commerce",
       "type": "Clarification",
       "title": "Affordability as a Prerequisite for Inclusion",
-      "clarification": "Ethical commerce requires that Web3 products be usable without imposing financial burden—especially for informal economies and vulnerable communities.",
+      "clarification": "Ethical commerce requires that Web3 products be usable without imposing financial burden–especially for informal economies and vulnerable communities.",
       "why_it_matters": "If systems are only accessible to the affluent, they replicate existing exclusions and undermine the decentralization premise of the Meta-layer."
     },
     {
@@ -50,7 +50,7 @@
       "dp": "DP4 - Data Sovereignty and Privacy",
       "type": "Clarification",
       "title": "Cultural Sovereignty Embedded in Interface Design",
-      "clarification": "UI/UX must be co-developed with communities to reflect local languages, practices, and values—avoiding external imposition.",
+      "clarification": "UI/UX must be co-developed with communities to reflect local languages, practices, and values–avoiding external imposition.",
       "why_it_matters": "Forced UI paradigms can feel like colonial imposition and disempower users, regardless of the underlying technical ethics."
     }
   ]

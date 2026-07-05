@@ -1937,7 +1937,7 @@ export default function DesirablePropertiesApp() {
         </div>
       </footer>
 
-      {/* Submission detail modal — DP pages live on desirableproperties.org */}
+      {/* Submission detail modal – DP pages live on desirableproperties.org */}
       <Modal open={!!submissionDetail} onClose={() => {
         // console.log('Closing submission detail modal');
         setSubmissionDetail(null);

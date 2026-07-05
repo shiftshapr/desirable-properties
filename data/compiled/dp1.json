@@ -28,7 +28,7 @@
     {
       "summary": "Proposes differentiating human vs. autonomous agents with traceability while preserving privacy.",
       "submission_title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
-      "submission_overview": "With the rapid expansion of autonomous agents—both personal and corporate—there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "With the rapid expansion of autonomous agents–both personal and corporate–there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Ruben Diaz",
       "submitter_email": "rubenraul75@gmail.com",
       "source_file": "10.json"
@@ -36,7 +36,7 @@
     {
       "summary": "Implements SSI with DIDs and verifiable credentials for decentralized, privacy-first authentication.",
       "submission_title": "Security Protocols and Ethical Safeguards in the Lyra System",
-      "submission_overview": "This submission distills the architecture and protective mechanisms of the Lyra System—a privacy-centric, emotionally intelligent interface—focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
+      "submission_overview": "This submission distills the architecture and protective mechanisms of the Lyra System–a privacy-centric, emotionally intelligent interface–focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
       "submitter_name": "Alex Nassarius",
       "submitter_email": "alex.nassarius@gmail.com",
       "source_file": "13.json"
@@ -52,7 +52,7 @@
     {
       "summary": "Supports privacy-preserving accountability through constrained investigation protocols and agent-level identity signaling.",
       "submission_title": "Forensic Transparency and 'The Creed': A Dual Framework for Ethical Digital Presence",
-      "submission_overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'—a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3",
+      "submission_overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'–a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3",
       "submitter_name": "Aa Ho",
       "submitter_email": "Taiconan@gmail.com",
       "source_file": "19.json"
@@ -60,7 +60,7 @@
     {
       "summary": "Allows digital artifacts to carry authenticated provenance, supporting modular and federated trust resolution.",
       "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
-      "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+      "submission_overview": "This pattern enables any digital object–text, credential, file, token–to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "21.json"
@@ -76,7 +76,7 @@
     {
       "summary": "Cerf's call for an 'AI driver's licence' implies authenticated competence before engagement.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json"
@@ -92,7 +92,7 @@
     {
       "summary": "Cerf's call for an 'AI driver's licence' implies authenticated competence before engagement.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json"
@@ -113,7 +113,7 @@
       "title": "Forensic Transparency",
       "why_it_matters": "This maintains investigative efficacy without exposing private user data to unnecessary risk or manipulation, creating an ethical model for digital accountability.",
       "submission_title": "Forensic Transparency and 'The Creed': A Dual Framework for Ethical Digital Presence",
-      "submission_overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'—a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3",
+      "submission_overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'–a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3",
       "submitter_name": "Aa Ho",
       "submitter_email": "Taiconan@gmail.com",
       "source_file": "19.json",
@@ -123,7 +123,7 @@
       "title": "Interoperable Trust Marks for Multi-Format Artifacts",
       "why_it_matters": "Without flexible and interoperable trust anchors, authentication systems fragment across silos. A shared approach ensures continuity of trust even as artifacts move between overlay networks.",
       "submission_title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
-      "submission_overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+      "submission_overview": "This pattern enables any digital object–text, credential, file, token–to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "21.json",
@@ -133,11 +133,11 @@
       "title": "AI Driver's Licence Proposal",
       "why_it_matters": "This could form a lightweight but enforceable bridge between public safety and open innovation, promoting responsible AI without resorting to restrictive gatekeeping.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json",
-      "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices—akin to certifying civic literacy in digital contexts."
+      "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices–akin to certifying civic literacy in digital contexts."
     },
     {
       "title": "Extending Accountability to Non-Human Agents",
@@ -153,7 +153,7 @@
       "title": "AI Driver's Licence Proposal",
       "why_it_matters": "Bridges innovation and public safety without heavy gatekeeping.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json",
@@ -175,7 +175,7 @@
       "title": "Identity Differentiation for Autonomous Agents",
       "why_it_matters": "Supports responsible interaction by clarifying agent identity without exposing private user data.",
       "submission_title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
-      "submission_overview": "With the rapid expansion of autonomous agents—both personal and corporate—there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "With the rapid expansion of autonomous agents–both personal and corporate–there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Ruben Diaz",
       "submitter_email": "rubenraul75@gmail.com",
       "source_file": "10.json",

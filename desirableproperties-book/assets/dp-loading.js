@@ -1,5 +1,5 @@
 /**
- * Desirable Properties — shared loading spinner.
+ * Desirable Properties – shared loading spinner.
  * Matches the Metaweb loading API for cross-familiar use.
  */
 (function (global) {

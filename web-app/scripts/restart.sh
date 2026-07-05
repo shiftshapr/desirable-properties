@@ -46,7 +46,7 @@ if [[ "${SKIP_BUILD:-0}" != "1" ]]; then
   echo "==> npm run build"
   npm run build
 else
-  echo "==> SKIP_BUILD=1 — skipping build"
+  echo "==> SKIP_BUILD=1 – skipping build"
 fi
 
 mkdir -p "${ROOT}/logs"

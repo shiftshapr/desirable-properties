@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import {
   challengeMeta,
-  formatCountdownParts,
   getBookLaunchDate,
-  getCountdownTarget,
 } from '@/lib/challengeTimeline';
+import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
 
 type Props = {
   /** ISO string from server render so first paint matches */
@@ -14,27 +12,7 @@ type Props = {
 };
 
 export default function ChallengeCountdown({ initialNow }: Props) {
-  const [parts, setParts] = useState<ReturnType<typeof formatCountdownParts> | null>(() => {
-    const now = initialNow ? new Date(initialNow) : new Date();
-    const target = getCountdownTarget(now);
-    if (!target) return null;
-    return formatCountdownParts(target, now);
-  });
-
-  useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      const target = getCountdownTarget(now);
-      if (!target) {
-        setParts(null);
-        return;
-      }
-      setParts(formatCountdownParts(target, now));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
+  const parts = useChallengeCountdown(initialNow, 1000);
 
   if (!parts) {
     return (
@@ -55,6 +33,14 @@ export default function ChallengeCountdown({ initialNow }: Props) {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'America/Los_Angeles',
+  });
+
+  const launchTime = launch.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+    timeZone: 'America/Los_Angeles',
   });
 
   const units = [
@@ -72,7 +58,9 @@ export default function ChallengeCountdown({ initialNow }: Props) {
       <p className="mt-2 text-center text-lg font-semibold text-white">
         {challengeMeta.book_launch_title}
       </p>
-      <p className="mt-1 text-center text-sm text-slate-400">{launchLabel}</p>
+      <p className="mt-1 text-center text-sm text-slate-400">
+        {launchLabel} · {launchTime}
+      </p>
       <div className="mt-6 grid grid-cols-4 gap-3">
         {units.map(({ value, label }) => (
           <div

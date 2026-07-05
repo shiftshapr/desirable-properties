@@ -97,14 +97,12 @@ export default function ChallengeTimeline({ activeAndUpcoming, past }: Props) {
 
   return (
     <div>
-      <ul className="relative">
-        {activeAndUpcoming.map((m) => (
-          <MilestoneItem key={m.id} milestone={m} />
-        ))}
-      </ul>
-
       {past.length > 0 && (
-        <div className="mt-6 border-t border-slate-800 pt-6">
+        <div
+          className={
+            activeAndUpcoming.length > 0 ? 'mb-6 border-b border-slate-800 pb-6' : undefined
+          }
+        >
           <button
             type="button"
             onClick={() => setShowPast((v) => !v)}
@@ -131,6 +129,12 @@ export default function ChallengeTimeline({ activeAndUpcoming, past }: Props) {
           )}
         </div>
       )}
+
+      <ul className="relative">
+        {activeAndUpcoming.map((m) => (
+          <MilestoneItem key={m.id} milestone={m} />
+        ))}
+      </ul>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import {
 } from '@/lib/govhub';
 
 export const metadata = {
-  title: 'About — Desirable Properties Challenge',
+  title: 'About – Desirable Properties Challenge',
   description:
     'Framing chapter for the Desirable Properties of a Meta-Layer: collective intelligence, the DP Challenge, and why properties precede protocols.',
 };
@@ -89,7 +89,7 @@ export default function AboutPage() {
             </p>
             <p>
               In December 1968, the &ldquo;Mother of All Demos&rdquo; revealed an integrated system
-              for augmenting human intellect—tools, interfaces, language, and shared context
+              for augmenting human intellect–tools, interfaces, language, and shared context
               combining to expand what groups could do together. The thinking required for building
               the Meta-Layer is similar: rather than offering a finished system, we model concrete
               interactions and connective possibilities so people can grasp what becomes achievable
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <p>
               Engelbart focused on augmentation rather than automation. The goal was not to replace
               human judgment, but to amplify it. The Meta-Layer extends this vision to the scale and
-              conditions of the contemporary internet—persistent context, shared memory, accountable
+              conditions of the contemporary internet–persistent context, shared memory, accountable
               participation, and coordinated action as prerequisites for collective intelligence.
             </p>
           </Section>
@@ -112,14 +112,14 @@ export default function AboutPage() {
             </p>
             <p>
               Desirable Properties articulate what must be true without prescribing how it must be
-              built. They describe conditions that shape what becomes possible—allowing multiple
+              built. They describe conditions that shape what becomes possible–allowing multiple
               implementations, governance models, and technical approaches to coexist while
               remaining aligned around shared outcomes.
             </p>
             <p>
               On September 16, 2024, Cerf challenged the Meta-Layer Initiative to write an essay
               identifying the <em>desirable properties</em> of such a layer before locking in
-              technical decisions—mirroring how the early Internet benefited from guiding principles
+              technical decisions–mirroring how the early Internet benefited from guiding principles
               long before formal protocols stabilized. He suggested{' '}
               <strong>Federated Strong Authentication</strong> as an initial property, emphasizing
               federation over centralization. The Desirable Properties effort emerged directly from
@@ -130,7 +130,7 @@ export default function AboutPage() {
           <Section id="calls-for-input" title="Two Calls for Input">
             <p>
               During the first year following Cerf&apos;s challenge, the work was shaped through two
-              coordinated calls for input—surfacing both lived experience and forward-looking
+              coordinated calls for input–surfacing both lived experience and forward-looking
               concerns.
             </p>
             <p>
@@ -159,19 +159,19 @@ export default function AboutPage() {
               The Web is often treated as a flat surface of pages and links, but it is better
               understood as a layered environment. Today&apos;s Web largely operates at the surface
               layer. The Meta-Layer is a shared digital atmosphere that sustains context, presence,
-              memory, and meaning—an extension of the digital noosphere, surrounding existing
+              memory, and meaning–an extension of the digital noosphere, surrounding existing
               content without replacing it.
             </p>
             <p>
               The most underappreciated limitation of today&apos;s Web is structural
               contextlessness: each interaction largely resets, identity fragments across platforms,
               and governance decisions are made without shared memory. The Meta-Layer introduces
-              context as infrastructure—allowing shared context to persist above individual pages and
+              context as infrastructure–allowing shared context to persist above individual pages and
               platforms so trust, learning, and continuity can accumulate.
             </p>
             <p>
               When context persists, governance moves closer to where participation actually
-              occurs—at the interface level, where people encounter rules, constraints, signals, and
+              occurs–at the interface level, where people encounter rules, constraints, signals, and
               affordances directly.
             </p>
           </Section>
@@ -184,7 +184,7 @@ export default function AboutPage() {
             </p>
             <p>
               The Meta-Layer represents a shift from low-coordination environments to coordination
-              through complexity—introducing durable context, visible relationships, and
+              through complexity–introducing durable context, visible relationships, and
               interface-level governance so actors can carry identity and accountability across
               contexts and coordinate over longer time horizons.
             </p>
@@ -197,7 +197,7 @@ export default function AboutPage() {
               conditions.
             </p>
             <p>
-              In the Meta-Layer, AI systems are treated as cognitive amplifiers—extending perception
+              In the Meta-Layer, AI systems are treated as cognitive amplifiers–extending perception
               and pattern recognition without displacing human judgment. AI participation is
               differentiated from human participation, subject to asymmetric constraints, and embedded
               within interface-level governance.
@@ -208,7 +208,7 @@ export default function AboutPage() {
             <p>
               Each Desirable Property focuses on a single condition required for the Meta-Layer to
               function as intended. The DP chapters are not specifications or compliance
-              checklists—they describe conditions that must plausibly hold for higher-order
+              checklists–they describe conditions that must plausibly hold for higher-order
               coordination to emerge.
             </p>
             <p>
@@ -218,7 +218,7 @@ export default function AboutPage() {
               actually support this condition?
             </p>
             <p>
-              The chapters are published as ML-Drafts—works in progress meant to evolve through
+              The chapters are published as ML-Drafts–works in progress meant to evolve through
               critique, experimentation, and lived experience.
             </p>
           </Section>
@@ -227,11 +227,11 @@ export default function AboutPage() {
             <p>
               Trust is the condition upon which all other forms of coordination depend. Without it,
               higher-order properties cannot function. DP1 addresses identity, accountability, and
-              legitimacy directly—creating the substrate upon which other properties operate.
+              legitimacy directly–creating the substrate upon which other properties operate.
             </p>
             <p>
               Trust is not an outcome to be achieved after coordination succeeds. It is a
-              freedom-enabling condition that expands the space of possible actions—allowing actors
+              freedom-enabling condition that expands the space of possible actions–allowing actors
               to take risks, delegate responsibility, and coordinate over longer time horizons.
             </p>
           </Section>

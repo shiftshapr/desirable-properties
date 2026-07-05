@@ -33,13 +33,13 @@ Every interaction is tied to specific content fragments via their URI. Scoped zo
 ## **🔹 CORE TECHNOLOGIES & STANDARDS**
 
 ### **1. Meta-Layer Coordination Protocol (MLCP)**
-Every participant—human or agent—operates within a **trust envelope** enforced by MLCP, a civic coordination substrate that runs **above the page**. This envelope defines:
+Every participant–human or agent–operates within a **trust envelope** enforced by MLCP, a civic coordination substrate that runs **above the page**. This envelope defines:
 
 * **Role-based interaction contracts** (e.g., annotator, bridge-builder, moderator)
 * **Scoped activation zones** tied to URIs or content fragments
 * **Consent-driven invocation and revocation** with intent signals and delegation rights
 * **Coordination signals** enabling multi-agent workflows and cooperative overlays
-* **Transparent trust & behavior logs**—logged actions, anchored evidence, and audit trails where applicable
+* **Transparent trust & behavior logs**–logged actions, anchored evidence, and audit trails where applicable
 
 MLCP ensures overlays can remain modular yet composable, and enforces ethical, legible, and real-time interactions in trust-critical zones.
 
@@ -134,10 +134,10 @@ Shifts emphasis from algorithmic determinism to community-based meaning-making b
 
 Use Metaweb principles to transform flows and interfaces by:
 
-* Looking for web pages where trust, coordination, or consent is weak — apply overlays.
-* Spotting recurring decision points in communities — insert smart tags and bridges.
-* Mapping high-friction collaborations — activate presence-aware overlays and observatories.
-* Identifying misaligned incentives or siloed knowledge — deploy meta-domains with policy logic and bridges.
+* Looking for web pages where trust, coordination, or consent is weak – apply overlays.
+* Spotting recurring decision points in communities – insert smart tags and bridges.
+* Mapping high-friction collaborations – activate presence-aware overlays and observatories.
+* Identifying misaligned incentives or siloed knowledge – deploy meta-domains with policy logic and bridges.
 
 Meta-layer interventions should:
 
@@ -202,7 +202,7 @@ Why it matters: [Your text]
 ### **DP21 – Full Canonical Description**
 **DP21 – Multi-Modal Interactions and Experiences**
 
-The Meta-Layer supports multi-modal interactions, devices, and interfaces, enabling users to interact with the system in a way that is natural and intuitive for them. Users should be able to engage with the Meta-Layer through a variety of modes—visual, auditory, tactile, and beyond—across different devices and contexts. This flexibility ensures accessibility, inclusivity, and a seamless experience tailored to individual preferences and needs.
+The Meta-Layer supports multi-modal interactions, devices, and interfaces, enabling users to interact with the system in a way that is natural and intuitive for them. Users should be able to engage with the Meta-Layer through a variety of modes–visual, auditory, tactile, and beyond–across different devices and contexts. This flexibility ensures accessibility, inclusivity, and a seamless experience tailored to individual preferences and needs.
 
 ---
 

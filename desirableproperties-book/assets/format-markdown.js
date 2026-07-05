@@ -26,7 +26,7 @@
   function linkifyDpTags(html, chapterIndex) {
     if (!chapterIndex) return html;
     // Replace DP<number> tokens that are not already inside an <a> or <code>.
-    // We do a coarse pass: escape-aware — since we already have escaped text from the markdown step,
+    // We do a coarse pass: escape-aware – since we already have escaped text from the markdown step,
     // look for tokens like DP1, DP12 (1-2 digits) followed by a word boundary.
     return html.replace(/DP(\d{1,2})\b/g, (match, num) => {
       const dpId = 'DP' + num;

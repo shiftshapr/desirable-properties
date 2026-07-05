@@ -1,5 +1,5 @@
 import type { PciDpLink } from '@/lib/dpProvenance';
-import { inscriptionUrl } from '@/lib/dpProvenance';
+import { inscriptionUrl } from '@/lib/ordinalLinks';
 
 type Props = {
   links: PciDpLink[];

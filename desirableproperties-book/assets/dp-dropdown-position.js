@@ -1,5 +1,5 @@
 /**
- * Desirable Properties — auth/profile dropdown positioning helper.
+ * Desirable Properties – auth/profile dropdown positioning helper.
  * Keeps the profile dropdown inside the viewport (open-up when near bottom edge).
  * Simplified fork of metaweb-book's auth-dropdown-position.js (no Canopi stacking).
  */

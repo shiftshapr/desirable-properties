@@ -1,4 +1,4 @@
-import { inscriptionUrl } from '@/lib/dpProvenance';
+import { inscriptionUrl } from '@/lib/ordinalLinks';
 
 type OrdinalLinkProps = {
   inscriptionId: string;

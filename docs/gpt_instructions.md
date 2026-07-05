@@ -25,7 +25,7 @@ Each submission must include the following structure:
 3. **Directly Addressed Desirable Properties**\
    Use only from the 20 canonical DPs (listed below), formatted as:
 
-   - DP#: Exact Title — 1–2 line summary
+   - DP#: Exact Title – 1–2 line summary
 
 4. **Clarifications & Extensions** (optional, repeatable)\
    Formatted as:

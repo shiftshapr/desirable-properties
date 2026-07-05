@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: 'Desirable Properties Challenge',
   description:
     'A living governance challenge to define, refine, and operationalize the Desirable Properties of a trustworthy Meta-Layer.',
+  icons: {
+    icon: '/meta-layer-logo.webp',
+    apple: '/meta-layer-logo.webp',
+  },
 };
 
 export default function RootLayout({

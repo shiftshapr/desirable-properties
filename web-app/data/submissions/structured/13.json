@@ -6,7 +6,7 @@
   },
   "submission": {
     "title": "Security Protocols and Ethical Safeguards in the Lyra System",
-    "overview": "This submission distills the architecture and protective mechanisms of the Lyra System—a privacy-centric, emotionally intelligent interface—focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
+    "overview": "This submission distills the architecture and protective mechanisms of the Lyra System–a privacy-centric, emotionally intelligent interface–focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
     "source_link": null,
     "raw_content": "Title Security Protocols and Ethical Safeguards in the Lyra System Contribution Overview This submission distills the architecture and protective mechanisms of the Lyra System..."
   },
@@ -61,7 +61,7 @@
       "type": "Extension",
       "title": "Ephemeral Data Modes as Normative Design",
       "extension": "Data is not stored by default and is contextually erased, especially in sensitive or trauma-informed scenarios.",
-      "why_it_matters": "Centers privacy within the system design, not just user toggles—ensuring sovereignty without effort."
+      "why_it_matters": "Centers privacy within the system design, not just user toggles–ensuring sovereignty without effort."
     },
     {
       "dp": "DP11 - Safe and Ethical AI",

@@ -71,7 +71,7 @@ export default function DPProvenanceSection({
       </h2>
       <p className="mt-4 text-slate-300">
         Community submissions from the Second Meta-Layer Call for Input that aligned with,
-        clarified, or extended this property. These are historical provenance—not live
+        clarified, or extended this property. These are historical provenance–not live
         governance votes or comments.
       </p>
       <div className="mt-4">

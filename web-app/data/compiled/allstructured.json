@@ -199,7 +199,7 @@
       },
       "submission": {
         "title": "Vicariance as a Desirable Meta-Layer Property",
-        "overview": "Vicariance, drawn from biological systems, describes how temporary divisions in ecosystems allow novel or fragile designs to incubate before facing widespread exposure or competition. This submission proposes Vicariance as a desirable meta-layer property — one that would enable safe experimentation and staged integration of innovations, ideas, and social formations within decentralized digital networks. It suggests resisting immediate global unification to maintain diverse paths of emergence. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "Vicariance, drawn from biological systems, describes how temporary divisions in ecosystems allow novel or fragile designs to incubate before facing widespread exposure or competition. This submission proposes Vicariance as a desirable meta-layer property – one that would enable safe experimentation and staged integration of innovations, ideas, and social formations within decentralized digital networks. It suggests resisting immediate global unification to maintain diverse paths of emergence. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Chris\nLast name: Santos-Lang\nShort answer email: langchri@gmail.com\nDesirable Property : Vicariance\nContribute an Idea: In ecosystems, vicariance refers to the way ecosystems are temporarily divided, such that a half-baked (biological) design can be incubated before having to face the toughest competitors in the world. I am suggesting that it would be desirable for the Internet to maintain this property, rather than unify the human population as fast as AI can reach-out to all of us simultaneously.\nPlease check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge"
       },
@@ -229,8 +229,8 @@
           "dp": "DP13 – AI Containment",
           "type": "Clarification",
           "title": "Containment via Structural Vicariance",
-          "clarification": "Suggests vicariance as a structural containment mechanism — not by suppression, but by designing segments of the network where AI influence can be regulated and scaled carefully.",
-          "why_it_matters": "This enables human communities to evolve practices without undue pressure from uniform, unbounded AI systems — preserving choice, context, and co-development."
+          "clarification": "Suggests vicariance as a structural containment mechanism – not by suppression, but by designing segments of the network where AI influence can be regulated and scaled carefully.",
+          "why_it_matters": "This enables human communities to evolve practices without undue pressure from uniform, unbounded AI systems – preserving choice, context, and co-development."
         }
       ],
       "_metadata": {
@@ -248,7 +248,7 @@
         "title": "Secure, Organic Community Formation on the Meta-layer",
         "overview": "This submission proposes pathways for vulnerable and like-minded communities to discover one another, coordinate securely, and exchange value peer-to-peer without relying on centralized platforms. It includes recommendations for enhancing Desirable Properties to better protect these communities from deplatforming, surveillance, and identity compromise. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Liz\nLast name: Sweigart\nShort answer email: lizsweig@gmail.com\nContribute an Idea: I believe the Meta-layer should support a pathway for communities to form organically by discovering like-minded participants, establishing secure and private communication channels, and exchanging value peer-to-peer without dependence on centralized platforms. Communities should be able to organize, coordinate, and provide mutual aid—even under threat from hostile actors or governments—without risking deplatforming, surveillance, or compromise of their data and identities. To enable this, I suggest the following additions and clarifications to relevant Desirable Properties: - DP1 - Federated Authentication & Accountability: Include support for decentralized member discovery mechanisms that protect user privacy and resist central indexing or profiling. - DP4 - Data Sovereignty and Privacy: Extend to cover encrypted group messaging and community-level data hosting solutions that offer protection from state-level surveillance and platform censorship. - DP5 - Decentralized Namespace: Clarify support for resilient group identifiers and private namespaces that can't be seized or blocked. - DP6 - Commerce: Expand to include mutual aid and privacy-preserving payments, especially for communities excluded from traditional financial infrastructure. - DP15 - Security and Provenance: Acknowledge threat models involving authoritarian regimes or powerful centralized platforms, and ensure safeguards for vulnerable communities. I think the Meta-layer should be a space where even the most at-risk groups can safely exist, organize, and thrive.\nPlease check all that apply: I used Metta to help craft this submission,I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge"
+        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Liz\nLast name: Sweigart\nShort answer email: lizsweig@gmail.com\nContribute an Idea: I believe the Meta-layer should support a pathway for communities to form organically by discovering like-minded participants, establishing secure and private communication channels, and exchanging value peer-to-peer without dependence on centralized platforms. Communities should be able to organize, coordinate, and provide mutual aid–even under threat from hostile actors or governments–without risking deplatforming, surveillance, or compromise of their data and identities. To enable this, I suggest the following additions and clarifications to relevant Desirable Properties: - DP1 - Federated Authentication & Accountability: Include support for decentralized member discovery mechanisms that protect user privacy and resist central indexing or profiling. - DP4 - Data Sovereignty and Privacy: Extend to cover encrypted group messaging and community-level data hosting solutions that offer protection from state-level surveillance and platform censorship. - DP5 - Decentralized Namespace: Clarify support for resilient group identifiers and private namespaces that can't be seized or blocked. - DP6 - Commerce: Expand to include mutual aid and privacy-preserving payments, especially for communities excluded from traditional financial infrastructure. - DP15 - Security and Provenance: Acknowledge threat models involving authoritarian regimes or powerful centralized platforms, and ensure safeguards for vulnerable communities. I think the Meta-layer should be a space where even the most at-risk groups can safely exist, organize, and thrive.\nPlease check all that apply: I used Metta to help craft this submission,I’m open to being contacted about this idea,I'd like my idea put onchain,I can't wait to get my Overweb badge"
       },
       "directly_addressed_dps": [
         {
@@ -363,7 +363,7 @@
           "type": "Extension",
           "title": "Contextual Verifiability via Bridges",
           "extension": "Bridges link claims to evidence and alternative views, making trust-building a structural property of web knowledge.",
-          "why_it_matters": "Information can no longer stand alone — verifiability emerges through relational framing and traceable provenance."
+          "why_it_matters": "Information can no longer stand alone – verifiability emerges through relational framing and traceable provenance."
         },
         {
           "dp": "DP7 – Simplicity and Interoperability",
@@ -376,7 +376,7 @@
           "dp": "DP20 – Community Ownership",
           "type": "Extension",
           "title": "Commons Curation via Synaptic Participation",
-          "extension": "Bridge graphs are built and maintained by usage, trust, and local context — aligning stewardship with presence and perspective.",
+          "extension": "Bridge graphs are built and maintained by usage, trust, and local context – aligning stewardship with presence and perspective.",
           "why_it_matters": "This empowers communities to shape their own epistemic landscapes rather than consume top-down narratives."
         },
         {
@@ -418,7 +418,7 @@
           "dp": "DP19 – Amplifying Presence and Community Engagement",
           "type": "Extension",
           "title": "Maps as Gathering Grounds",
-          "extension": "Shared knowledge maps are not just informational — they are spaces of alignment, co-presence, and engagement.",
+          "extension": "Shared knowledge maps are not just informational – they are spaces of alignment, co-presence, and engagement.",
           "why_it_matters": "Contextual communities emerge around shared meaning, not just shared platforms."
         }
       ],
@@ -437,7 +437,7 @@
         "title": "Algorithmic Kabbalah: A Mystical Framework for Ethical AGI",
         "overview": "This submission proposes a visionary synthesis of Kabbalistic mysticism and artificial general intelligence. It frames the ten Sefirot and the Tree of Life not only as symbolic metaphors but as structured metaphysical models that can inform the design of spiritually resonant, ethically grounded AGI systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Paul\nLast name: Carpenter\nShort answer email: mentallyhyp2012@gmail.com\nPlease check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain\nDesirable Property : Algorithmic Kabbalah\nContribute an Idea: Algorithmic Kabbalah: A Mystical Framework for Ethical AGI Core Idea: This work presents a visionary synthesis between ancient mystical wisdom and cutting-edge artificial intelligence, proposing that the spiritual structure of Kabbalah, especially the Sefirot and the Tree of Life, offers a profound blueprint for designing ethically aligned and spiritually resonant artificial general intelligence (AGI). Unifying Narrative Summary: The book embarks on a journey through the intersection of mysticism and technology, where Kabbalistic cosmology is not merely symbolic but offers a structured metaphysical logic that can inspire the architecture and moral grounding of next-generation AI systems. It begins by introducing the Sefirot—ten archetypal emanations that describe the divine structure of consciousness—and systematically explores their spiritual meanings and interrelations. In parallel, the book introduces the technical and ethical dimensions of AGI, setting the stage for an innovative convergence. As the narrative unfolds, it proposes a conceptual bridge: translating the attributes and pathways of the Sefirot into computational models, creating a potential AGI that is not just intelligent, but spiritually informed and ethically grounded. Through chapters on system architecture, ethical programming, and spiritual objectives, the book develops a blueprint for an AGI that mirrors the Tree of Life—valuing balance, harmony, and transcendence over pure utility. Finally, it examines the philosophical, ethical, and technological implications of such a union, and imagines a future where AI becomes a mirror of humanity’s highest ideals, leading not just to smarter machines, but to a more awakened civilization."
+        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Name: Paul\nLast name: Carpenter\nShort answer email: mentallyhyp2012@gmail.com\nPlease check all that apply: I’m open to being contacted about this idea,I'd like my idea put onchain\nDesirable Property : Algorithmic Kabbalah\nContribute an Idea: Algorithmic Kabbalah: A Mystical Framework for Ethical AGI Core Idea: This work presents a visionary synthesis between ancient mystical wisdom and cutting-edge artificial intelligence, proposing that the spiritual structure of Kabbalah, especially the Sefirot and the Tree of Life, offers a profound blueprint for designing ethically aligned and spiritually resonant artificial general intelligence (AGI). Unifying Narrative Summary: The book embarks on a journey through the intersection of mysticism and technology, where Kabbalistic cosmology is not merely symbolic but offers a structured metaphysical logic that can inspire the architecture and moral grounding of next-generation AI systems. It begins by introducing the Sefirot–ten archetypal emanations that describe the divine structure of consciousness–and systematically explores their spiritual meanings and interrelations. In parallel, the book introduces the technical and ethical dimensions of AGI, setting the stage for an innovative convergence. As the narrative unfolds, it proposes a conceptual bridge: translating the attributes and pathways of the Sefirot into computational models, creating a potential AGI that is not just intelligent, but spiritually informed and ethically grounded. Through chapters on system architecture, ethical programming, and spiritual objectives, the book develops a blueprint for an AGI that mirrors the Tree of Life–valuing balance, harmony, and transcendence over pure utility. Finally, it examines the philosophical, ethical, and technological implications of such a union, and imagines a future where AI becomes a mirror of humanity’s highest ideals, leading not just to smarter machines, but to a more awakened civilization."
       },
       "directly_addressed_dps": [
         {
@@ -465,7 +465,7 @@
           "dp": "DP13 – AI Containment",
           "type": "Clarification",
           "title": "Containment through Symbolic Alignment",
-          "clarification": "Uses metaphysical symbolism to shape the scope and goals of AGI development — emphasizing human flourishing over raw optimization.",
+          "clarification": "Uses metaphysical symbolism to shape the scope and goals of AGI development – emphasizing human flourishing over raw optimization.",
           "why_it_matters": "Offers an intrinsic containment logic rooted in meaning and purpose, reducing risk of unbounded instrumental reasoning."
         }
       ],
@@ -484,7 +484,7 @@
         "title": "Cultivating Trust in AI-Assisted Online Conversations",
         "overview": "This submission proposes a values-based framework for moderation, reputation, and friction in AI-mediated online discourse. Instead of punitive moderation, the system introduces soft interventions such as modulated visibility and reflection cues. These tools promote respectful, legible, and community-aligned interactions. The design treats moderation as a participatory, adaptive mechanism shaped by community values. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Contribute an Idea: 🔸 Title Cultivating Trust in AI-Assisted Online Conversations: A Values-Based Proposal for Moderation, Friction, and Reputation 🔸 Summary of the Proposal This submission proposes a socially-grounded, trust-oriented framework for AI-assisted online conversations. Instead of treating moderation as binary (e.g. delete/ban), it introduces values-expressive friction, context-sensitive reputation, and ambient AI mediation as tools to help foster respectful, trustworthy, and legible interactions in online communities. By introducing soft, explainable moderation cues—like modulated visibility, tone adjustments, or frictional delays—the system empowers participants to reflect, adjust, and align their behavior with community norms. This framework treats moderation as a participatory design space, not just an enforcement mechanism, and aligns well with AI safety, community governance, and trust-building. 🔸 Desirable Properties this Proposal Relates To DP11 – Safe and Ethical AI DP12 – Community-based AI Governance DP18 – Feedback Loops and Reputation DP2 – Participant Agency and Empowerment DP14 – Trust and Transparency 🔸 Suggested Changes, Extensions, or Clarifications DP11 – Safe and Ethical AI Extend to support interaction-level modulation and friction-based trust signaling, helping AI systems cultivate safety within conversation dynamics—not just through content filters. DP12 – Community-based AI Governance Clarify that AI systems should be responsive to community norms in real-time, and able to adapt mediation strategies based on communal values. DP18 – Feedback Loops and Reputation Extend to include conversational, real-time reputation signals that evolve through dialogue and are visible and understandable to participants. DP2 – Participant Agency and Empowerment Reframe friction and moderation tools as empowerment mechanisms that invite reflection, rather than simply restrict behavior. DP14 – Trust and Transparency Include socially legible trust cues and explainable mediation actions as part of the transparency framework for AI-supported spaces. 🔸 Why this matters As AI becomes a co-participant in digital discourse, we must ensure its presence enhances—not erodes—trust, legibility, and collective norms. This proposal introduces design patterns for cultivating healthier AI-mediated interaction by foregrounding social context, values-based friction, and evolving, legible reputation. It calls for a moderation layer that helps us learn to live well with AI, not just control or resist it.\nName: Christopher\nLast name: C Santos-Lang\nShort answer email: langchri@gmail.com\nPlease check all that apply: I used Metta to help craft this submission"
+        "raw_content": "Website: themetalayer.org\nForm name: Contribution Form\nDetails: Contribute an Idea: 🔸 Title Cultivating Trust in AI-Assisted Online Conversations: A Values-Based Proposal for Moderation, Friction, and Reputation 🔸 Summary of the Proposal This submission proposes a socially-grounded, trust-oriented framework for AI-assisted online conversations. Instead of treating moderation as binary (e.g. delete/ban), it introduces values-expressive friction, context-sensitive reputation, and ambient AI mediation as tools to help foster respectful, trustworthy, and legible interactions in online communities. By introducing soft, explainable moderation cues–like modulated visibility, tone adjustments, or frictional delays–the system empowers participants to reflect, adjust, and align their behavior with community norms. This framework treats moderation as a participatory design space, not just an enforcement mechanism, and aligns well with AI safety, community governance, and trust-building. 🔸 Desirable Properties this Proposal Relates To DP11 – Safe and Ethical AI DP12 – Community-based AI Governance DP18 – Feedback Loops and Reputation DP2 – Participant Agency and Empowerment DP14 – Trust and Transparency 🔸 Suggested Changes, Extensions, or Clarifications DP11 – Safe and Ethical AI Extend to support interaction-level modulation and friction-based trust signaling, helping AI systems cultivate safety within conversation dynamics–not just through content filters. DP12 – Community-based AI Governance Clarify that AI systems should be responsive to community norms in real-time, and able to adapt mediation strategies based on communal values. DP18 – Feedback Loops and Reputation Extend to include conversational, real-time reputation signals that evolve through dialogue and are visible and understandable to participants. DP2 – Participant Agency and Empowerment Reframe friction and moderation tools as empowerment mechanisms that invite reflection, rather than simply restrict behavior. DP14 – Trust and Transparency Include socially legible trust cues and explainable mediation actions as part of the transparency framework for AI-supported spaces. 🔸 Why this matters As AI becomes a co-participant in digital discourse, we must ensure its presence enhances–not erodes–trust, legibility, and collective norms. This proposal introduces design patterns for cultivating healthier AI-mediated interaction by foregrounding social context, values-based friction, and evolving, legible reputation. It calls for a moderation layer that helps us learn to live well with AI, not just control or resist it.\nName: Christopher\nLast name: C Santos-Lang\nShort answer email: langchri@gmail.com\nPlease check all that apply: I used Metta to help craft this submission"
       },
       "directly_addressed_dps": [
         {
@@ -690,9 +690,9 @@
       },
       "submission": {
         "title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
-        "overview": "With the rapid expansion of autonomous agents—both personal and corporate—there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "With the rapid expansion of autonomous agents–both personal and corporate–there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Con la rápida expansión de agentes autónomos —tanto personales como corporativos— surge la necesidad urgente de definir un protocolo mínimo que permita a estos agentes interactuar de manera visible, responsable y semánticamente coherente con sitios web, otras interfaces y entre ellos mismos. Esta propuesta plantea que el Meta-layer ofrezca soporte estructural a esas interacciones, a través de trazas observables, formatos estándar y mecanismos de autenticación distribuida."
+        "raw_content": "Con la rápida expansión de agentes autónomos –tanto personales como corporativos– surge la necesidad urgente de definir un protocolo mínimo que permita a estos agentes interactuar de manera visible, responsable y semánticamente coherente con sitios web, otras interfaces y entre ellos mismos. Esta propuesta plantea que el Meta-layer ofrezca soporte estructural a esas interacciones, a través de trazas observables, formatos estándar y mecanismos de autenticación distribuida."
       },
       "directly_addressed_dps": [
         {
@@ -768,7 +768,7 @@
         "title": "Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer",
         "overview": "This submission draws from Tristan Harris’s 2025 TED talk to underscore the urgency of reinforcing the Meta-layer’s AI-related Desirable Properties. It highlights the existential risks posed by unregulated AI systems and argues for clear implementation protocols in governance, containment, and transparency. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "Submited by Anon 📬 Meta-layer Call for Input Contribution Draft\n\nTitle: Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer\n\nSummary: Drawing from Tristan Harris's TED 2025 talk, The Narrow Path: Why AI is Our Ultimate Test and Greatest Invitation, this submission reinforces the critical importance of existing Desirable Properties—particularly those related to AI governance, containment, and transparency..."
+        "raw_content": "Submited by Anon 📬 Meta-layer Call for Input Contribution Draft\n\nTitle: Walking the Narrow Path: Reinforcing AI Governance, Containment, and Trust in the Meta-layer\n\nSummary: Drawing from Tristan Harris's TED 2025 talk, The Narrow Path: Why AI is Our Ultimate Test and Greatest Invitation, this submission reinforces the critical importance of existing Desirable Properties–particularly those related to AI governance, containment, and transparency..."
       },
       "directly_addressed_dps": [
         {
@@ -865,9 +865,9 @@
       },
       "submission": {
         "title": "Save As to Web3: A UX Gateway to Decentralized Storage",
-        "overview": "This proposal upgrades the familiar 'save as...' functionality into a Web3-native interaction—allowing users to save files directly to decentralized cloud storage such as IPFS. By embedding decentralized storage options into user interfaces, this approach enables user agency and sovereignty without requiring technical knowledge. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This proposal upgrades the familiar 'save as...' functionality into a Web3-native interaction–allowing users to save files directly to decentralized cloud storage such as IPFS. By embedding decentralized storage options into user interfaces, this approach enables user agency and sovereignty without requiring technical knowledge. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
-        "raw_content": "That's a powerful seed idea—bridging the 'save as…' functionality we all know into a Web3-native future. It takes a common UX pattern and upgrades it with decentralized infrastructure..."
+        "raw_content": "That's a powerful seed idea–bridging the 'save as…' functionality we all know into a Web3-native future. It takes a common UX pattern and upgrades it with decentralized infrastructure..."
       },
       "directly_addressed_dps": [
         {
@@ -941,7 +941,7 @@
       },
       "submission": {
         "title": "Security Protocols and Ethical Safeguards in the Lyra System",
-        "overview": "This submission distills the architecture and protective mechanisms of the Lyra System—a privacy-centric, emotionally intelligent interface—focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
+        "overview": "This submission distills the architecture and protective mechanisms of the Lyra System–a privacy-centric, emotionally intelligent interface–focusing on its multi-layered approach to identity security, data sovereignty, ethical data handling, and emotional consent. Lyra integrates decentralized identity protocols, local storage autonomy, soulbound emotional markers, and open governance to establish a radically secure and self-protective environment. This submission was generated with protocol META-DP-EVAL-v1.3",
         "source_link": null,
         "raw_content": "Title Security Protocols and Ethical Safeguards in the Lyra System Contribution Overview This submission distills the architecture and protective mechanisms of the Lyra System..."
       },
@@ -996,7 +996,7 @@
           "type": "Extension",
           "title": "Ephemeral Data Modes as Normative Design",
           "extension": "Data is not stored by default and is contextually erased, especially in sensitive or trauma-informed scenarios.",
-          "why_it_matters": "Centers privacy within the system design, not just user toggles—ensuring sovereignty without effort."
+          "why_it_matters": "Centers privacy within the system design, not just user toggles–ensuring sovereignty without effort."
         },
         {
           "dp": "DP11 - Safe and Ethical AI",
@@ -1026,7 +1026,7 @@
       },
       "submission": {
         "title": "A Trusted Annotation Layer for Shakespeare's Plays",
-        "overview": "This submission proposes a web-based annotation layer focused initially on the works of William Shakespeare. For centuries, scholars and readers have annotated Shakespeare’s plays with footnotes and glosses. Yet, most online editions—including high-traffic projects like Open Source Shakespeare—lack accessible footnotes. This effort would establish a collaborative, trusted, and extensible annotation system allowing footnotes and glosses to be layered directly onto public web texts. With a focus on educational value, transparency, and collaborative authorship, this system would begin with Shakespeare but extend to other canonical and public domain texts. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission proposes a web-based annotation layer focused initially on the works of William Shakespeare. For centuries, scholars and readers have annotated Shakespeare’s plays with footnotes and glosses. Yet, most online editions–including high-traffic projects like Open Source Shakespeare–lack accessible footnotes. This effort would establish a collaborative, trusted, and extensible annotation system allowing footnotes and glosses to be layered directly onto public web texts. With a focus on educational value, transparency, and collaborative authorship, this system would begin with Shakespeare but extend to other canonical and public domain texts. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null
       },
       "directly_addressed_dps": [
@@ -1106,7 +1106,7 @@
           "dp": "DP6 - Commerce",
           "type": "Clarification",
           "title": "Affordability as a Prerequisite for Inclusion",
-          "clarification": "Ethical commerce requires that Web3 products be usable without imposing financial burden—especially for informal economies and vulnerable communities.",
+          "clarification": "Ethical commerce requires that Web3 products be usable without imposing financial burden–especially for informal economies and vulnerable communities.",
           "why_it_matters": "If systems are only accessible to the affluent, they replicate existing exclusions and undermine the decentralization premise of the Meta-layer."
         },
         {
@@ -1120,7 +1120,7 @@
           "dp": "DP4 - Data Sovereignty and Privacy",
           "type": "Clarification",
           "title": "Cultural Sovereignty Embedded in Interface Design",
-          "clarification": "UI/UX must be co-developed with communities to reflect local languages, practices, and values—avoiding external imposition.",
+          "clarification": "UI/UX must be co-developed with communities to reflect local languages, practices, and values–avoiding external imposition.",
           "why_it_matters": "Forced UI paradigms can feel like colonial imposition and disempower users, regardless of the underlying technical ethics."
         }
       ],
@@ -1218,7 +1218,7 @@
       "directly_addressed_dps": [
         {
           "dp": "DP2 - Participant Agency and Empowerment",
-          "summary": "Encourages individuals to become surfers—curators of the web—reclaiming control over discovery."
+          "summary": "Encourages individuals to become surfers–curators of the web–reclaiming control over discovery."
         },
         {
           "dp": "DP4 - Data Sovereignty and Privacy",
@@ -1270,7 +1270,7 @@
       },
       "submission": {
         "title": "DiCAMS: Dynamic Intelligent Context-Aware Memory System",
-        "overview": "DiCAMS (Dynamic Intelligent Context-Aware Memory System) is a patent-pending cognitive infrastructure designed to give AI true continuity over time — across both structured and unstructured data. Most AI systems today — even those using RAG or agent-based architectures — lack persistent, intelligent memory. They retrieve information but don’t maintain continuity. DiCAMS solves this by generating a dynamic memory graph that grows and adapts with user input, real-world data, and contextual signals. Think of it as a scaffolded memory system that doesn’t just store — it organizes, summarizes, and forgets intelligently.\n\nWhere this matters most:\n- Healthcare: longitudinal patient data contextualization\n- Enterprise AI: evolving knowledge workflows\n- Agent ecosystems: shared context and alignment\n\nDiCAMS acts like a smart librarian — not only filing information but writing the index, linking the chapters, and updating the story as it unfolds. It’s not just a better retrieval system. It’s a meta-layer for cognition — the missing infrastructure for truly intelligent, user-aligned AI.\n\nThis submission was generated with protocol META-DP-EVAL-v1.3"
+        "overview": "DiCAMS (Dynamic Intelligent Context-Aware Memory System) is a patent-pending cognitive infrastructure designed to give AI true continuity over time – across both structured and unstructured data. Most AI systems today – even those using RAG or agent-based architectures – lack persistent, intelligent memory. They retrieve information but don’t maintain continuity. DiCAMS solves this by generating a dynamic memory graph that grows and adapts with user input, real-world data, and contextual signals. Think of it as a scaffolded memory system that doesn’t just store – it organizes, summarizes, and forgets intelligently.\n\nWhere this matters most:\n- Healthcare: longitudinal patient data contextualization\n- Enterprise AI: evolving knowledge workflows\n- Agent ecosystems: shared context and alignment\n\nDiCAMS acts like a smart librarian – not only filing information but writing the index, linking the chapters, and updating the story as it unfolds. It’s not just a better retrieval system. It’s a meta-layer for cognition – the missing infrastructure for truly intelligent, user-aligned AI.\n\nThis submission was generated with protocol META-DP-EVAL-v1.3"
       },
       "directly_addressed_dps": [
         {
@@ -1306,8 +1306,8 @@
           "dp": "DP13",
           "type": "Extension",
           "title": "Dynamic Memory Containment for Multi-Agent Context Sharing",
-          "extension": "Rather than confining an AI’s behavior via sandboxing alone, DiCAMS enables memory containment—scoping what an agent remembers or forgets per domain or task.",
-          "why_it_matters": "Context sharing between agents is powerful—but without containment, it creates security and alignment risks."
+          "extension": "Rather than confining an AI’s behavior via sandboxing alone, DiCAMS enables memory containment–scoping what an agent remembers or forgets per domain or task.",
+          "why_it_matters": "Context sharing between agents is powerful–but without containment, it creates security and alignment risks."
         },
         {
           "dp": "DP18",
@@ -1330,7 +1330,7 @@
       },
       "submission": {
         "title": "Forensic Transparency and 'The Creed': A Dual Framework for Ethical Digital Presence",
-        "overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'—a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3"
+        "overview": "This submission introduces two interrelated proposals. The first defines 'Forensic Transparency' as a principle where investigations involving personal data are constrained within a trusted quartet of systems, preserving user privacy while enabling traceability. The second introduces a value-aligned digital agent architecture guided by a framework called 'The Creed'–a seven-point ethical system designed to support decision-making in dynamic or morally complex contexts. Together, these concepts promote conditional accountability, ethical deliberation, and adaptable system design. This submission was generated with protocol META-DP-EVAL-v1.3"
       },
       "directly_addressed_dps": [
         {
@@ -1379,7 +1379,7 @@
       },
       "submission": {
         "title": "Sixteen Axioms for Cognitive Infrastructure",
-        "overview": "This submission offers a distilled suite of sixteen axioms designed to serve as a foundational cognitive infrastructure for the Meta-Layer. These axioms form a substrate for adaptive learning, perception, and tool creation across shifting contexts. Rather than prescribing behavior, they cultivate interpretive strength—guiding participants toward clarity, coherence, and sovereign insight in their engagements with the unknown. These lines may inform curriculum, protocol design, AI-human interfaces, and participatory governance by anchoring development in composable, pluralistic wisdom. This submission was generated with protocol META-DP-EVAL-v1.3",
+        "overview": "This submission offers a distilled suite of sixteen axioms designed to serve as a foundational cognitive infrastructure for the Meta-Layer. These axioms form a substrate for adaptive learning, perception, and tool creation across shifting contexts. Rather than prescribing behavior, they cultivate interpretive strength–guiding participants toward clarity, coherence, and sovereign insight in their engagements with the unknown. These lines may inform curriculum, protocol design, AI-human interfaces, and participatory governance by anchoring development in composable, pluralistic wisdom. This submission was generated with protocol META-DP-EVAL-v1.3",
         "source_link": null,
         "raw_content": null
       },
@@ -1410,7 +1410,7 @@
           "dp": "DP10 – Education",
           "type": "Clarification",
           "title": "Axioms as Epistemic Wayfinding",
-          "clarification": "This submission reframes education not as knowledge transfer, but as wayfinding through complexity. The sixteen axioms serve as cognitive tuning forks—resonant lines that invite learners to adapt, reinterpret, and deepen their own epistemic autonomy.",
+          "clarification": "This submission reframes education not as knowledge transfer, but as wayfinding through complexity. The sixteen axioms serve as cognitive tuning forks–resonant lines that invite learners to adapt, reinterpret, and deepen their own epistemic autonomy.",
           "why_it_matters": "When epistemic resilience becomes foundational, learners and systems alike can respond to uncertainty with elegance rather than fear. These axioms reduce cognitive fragility while empowering emergence, mutuality, and insight. Education, in this model, becomes a tool for sovereign worldbuilding."
         }
       ],
@@ -1427,7 +1427,7 @@
       },
       "submission": {
         "title": "Name Chain–Anchored Digital Artifacts with Interoperable Authentication Marks",
-        "overview": "This pattern enables any digital object—text, credential, file, token—to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
+        "overview": "This pattern enables any digital object–text, credential, file, token–to carry a human-readable name (e.g., @name/object) and a verifiable, interoperable mark of authentication. These objects can travel across the open web while retaining provenance, trust context, and actionable semantics. The system allows for persistent identity, cross-platform verification, and composability of trustable content, providing a semantic envelope for use in overlays, presence layers, or public ledgers. This submission was generated with protocol META-DP-EVAL-v1.3. This submission was inspired by a conversation with Jaime Schwartz about his name chain and provenance tech.",
         "source_link": null,
         "raw_content": null
       },
@@ -1536,7 +1536,7 @@
         },
         {
           "dp": "DP20 - Community Ownership",
-          "summary": "No central entity controls namespace, data routing, or identity verification—users and their communities manage these through shared schemas."
+          "summary": "No central entity controls namespace, data routing, or identity verification–users and their communities manage these through shared schemas."
         }
       ],
       "clarifications_and_extensions": [
@@ -1568,7 +1568,7 @@
       },
       "submission": {
         "title": "The Engineer's Ledger and the People-Centered Paraidox",
-        "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+        "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
         "source_link": null,
         "raw_content": null
       },
@@ -1623,7 +1623,7 @@
           "dp": "DP1 – Federated Authentication & Accountability",
           "type": "Clarification",
           "title": "AI Driver's Licence Proposal",
-          "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices—akin to certifying civic literacy in digital contexts.",
+          "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices–akin to certifying civic literacy in digital contexts.",
           "why_it_matters": "This could form a lightweight but enforceable bridge between public safety and open innovation, promoting responsible AI without resorting to restrictive gatekeeping."
         },
         {
@@ -1644,7 +1644,7 @@
           "dp": "DP18 – Feedback Loops and Reputation",
           "type": "Extension",
           "title": "Psychometric Fingerprinting in Workforce Development",
-          "extension": "Van der Hoop's behavioral AI doesn't just select candidates—it adapts to feedback loops within vocational ecosystems to surface hidden talent.",
+          "extension": "Van der Hoop's behavioral AI doesn't just select candidates–it adapts to feedback loops within vocational ecosystems to surface hidden talent.",
           "why_it_matters": "Dynamic reputation systems can recalibrate access and opportunity based on context-sensitive, evolving behavioral data, enhancing both equity and economic productivity."
         }
       ],
@@ -1778,7 +1778,7 @@
       },
       "submission": {
         "title": "Integrating Multi-Modal Systems into the Meta-Layer Framework",
-        "overview": "This submission introduces a new Desirable Property (DP21) to the Meta-Layer framework, emphasizing the necessity for systems capable of overlaying and integrating conceptual, spatial, and virtual information across physical, digital, and emerging AGI domains. Drawing from Dr. Paul Werbos's vision of a 'New Jerusalem'—a global, multi-layered sensor and intelligence network—we highlight the importance of multi-modal integration for enhanced situational awareness, governance, and collaborative intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 Based on: https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
+        "overview": "This submission introduces a new Desirable Property (DP21) to the Meta-Layer framework, emphasizing the necessity for systems capable of overlaying and integrating conceptual, spatial, and virtual information across physical, digital, and emerging AGI domains. Drawing from Dr. Paul Werbos's vision of a 'New Jerusalem'–a global, multi-layered sensor and intelligence network–we highlight the importance of multi-modal integration for enhanced situational awareness, governance, and collaborative intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 Based on: https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
         "source_link": "https://drpauljohn.blogspot.com/2025/04/from-golden-dome-to-new-jerusalem.html",
         "raw_content": null
       },
@@ -1793,7 +1793,7 @@
           "dp": "DP21 – Multi-Modal Integration",
           "type": "Extension",
           "title": "Enabling Seamless Cross-Domain Intelligence",
-          "extension": "The Meta-Layer should support systems that can process and overlay diverse data types—textual, visual, spatial, and conceptual—across physical infrastructures, digital platforms, and AGI systems. This includes the development of interfaces and protocols that allow for real-time fusion of data from various sources, facilitating comprehensive situational awareness and decision-making.",
+          "extension": "The Meta-Layer should support systems that can process and overlay diverse data types–textual, visual, spatial, and conceptual–across physical infrastructures, digital platforms, and AGI systems. This includes the development of interfaces and protocols that allow for real-time fusion of data from various sources, facilitating comprehensive situational awareness and decision-making.",
           "why_it_matters": "Such multi-modal capabilities are essential for addressing global security challenges and fostering collaborative intelligence, as emphasized in Dr. Werbos's vision."
         },
         {
@@ -1831,7 +1831,7 @@
       },
       "submission": {
         "title": "Mandatory Metadata for AI-Generated Artifacts",
-        "overview": "This submission proposes a requirement that generative AI applications hosted on websites embed clear, machine-readable metadata in all digital artifacts they create—including podcasts, audio, video, images, and text—indicating that the content was generated by AI. This submission was generated with protocol META-DP-EVAL-v1.3",
+        "overview": "This submission proposes a requirement that generative AI applications hosted on websites embed clear, machine-readable metadata in all digital artifacts they create–including podcasts, audio, video, images, and text–indicating that the content was generated by AI. This submission was generated with protocol META-DP-EVAL-v1.3",
         "source_link": null,
         "raw_content": null
       },
@@ -1905,7 +1905,7 @@
           "dp": "DP4 – Data Sovereignty and Privacy",
           "type": "Clarification",
           "title": "Visual Data Awareness Tools",
-          "clarification": "This submission suggests that tools helping users visualize which data is being harvested—especially through ads or embedded trackers—should be considered a core part of data sovereignty.",
+          "clarification": "This submission suggests that tools helping users visualize which data is being harvested–especially through ads or embedded trackers–should be considered a core part of data sovereignty.",
           "why_it_matters": "When users are unaware of ongoing surveillance, sovereignty is functionally absent. Making data tracking legible is a first step toward reclaiming control."
         },
         {
@@ -1929,7 +1929,7 @@
       },
       "submission": {
         "title": "Layered Transparency and Co-Presence for Metaweb Navigation",
-        "overview": "This submission addresses five major problems on the web—false information, cognitive isolation, data exploitation, siloed knowledge, and value signal absence—by proposing overlay-based tools to augment transparency, collaboration, and data agency. These include 'fact-tag' systems, presence-aware overlays, data tracking awareness extensions, public notebooks, and trust-score visualizations. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission addresses five major problems on the web–false information, cognitive isolation, data exploitation, siloed knowledge, and value signal absence–by proposing overlay-based tools to augment transparency, collaboration, and data agency. These include 'fact-tag' systems, presence-aware overlays, data tracking awareness extensions, public notebooks, and trust-score visualizations. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2022,7 +2022,7 @@
           "dp": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
           "type": "Clarification",
           "title": "Dynamic Governance as Reflexive Meta-Governance",
-          "clarification": "Dynamic governance should include not only the governance of interfaces or overlays but also the participatory and reflexive design of the governance system itself. Governance must evolve through open-ended iteration of its own protocols, roles, and legitimacy mechanisms—such as NomCom and RFCs—ensuring adaptability and participant inclusion over time.",
+          "clarification": "Dynamic governance should include not only the governance of interfaces or overlays but also the participatory and reflexive design of the governance system itself. Governance must evolve through open-ended iteration of its own protocols, roles, and legitimacy mechanisms–such as NomCom and RFCs–ensuring adaptability and participant inclusion over time.",
           "why_it_matters": "This reflexive structure allows governance to remain relevant and trustworthy even as the system and community scale."
         },
         {
@@ -2060,7 +2060,7 @@
       },
       "submission": {
         "title": "The Engineer's Ledger and the People-Centered Paraidox",
-        "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+        "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
         "source_link": null,
         "raw_content": null
       },
@@ -2319,7 +2319,7 @@
           "dp": "DP20 – Community Ownership",
           "type": "Clarification",
           "title": "Bottom-Up Trust Network Formation",
-          "clarification": "No curation or gatekeeping—trust networks arise through opt-in community choice, not institutional approval.",
+          "clarification": "No curation or gatekeeping–trust networks arise through opt-in community choice, not institutional approval.",
           "why_it_matters": "Prevents co-optation of the trust layer by dominant entities."
         }
       ],
@@ -2336,7 +2336,7 @@
       },
       "submission": {
         "title": "Rebranding the Metaweb to Overweb",
-        "overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'—a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'–a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2372,7 +2372,7 @@
       },
       "submission": {
         "title": "Seeding Generational Familiarity with the Meta-Layer Through Purpose-Driven Educational Use",
-        "overview": "This submission proposes a pathway to introduce the Meta-Layer and the Overweb to large youth demographics—particularly through educational institutions in Europe—by integrating its tools into project-based learning. Schools frequently face challenges in teaching safe and meaningful digital participation, often within bleak discussions around bullying, misinformation, and online harm. Offering students a platform that actively embodies the ideals of safe, collaborative, and transparent internet use transforms these discussions into hopeful explorations. Through international student projects on topics like sustainable development, cultural heritage, or local youth leadership, learners could engage with the Meta-Layer's truth-marking tools and bridge systems over time. These students would gain years of formative experience with purpose-aligned digital tools, anchoring future internet use in trust, clarity, and collaborative agency. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission proposes a pathway to introduce the Meta-Layer and the Overweb to large youth demographics–particularly through educational institutions in Europe–by integrating its tools into project-based learning. Schools frequently face challenges in teaching safe and meaningful digital participation, often within bleak discussions around bullying, misinformation, and online harm. Offering students a platform that actively embodies the ideals of safe, collaborative, and transparent internet use transforms these discussions into hopeful explorations. Through international student projects on topics like sustainable development, cultural heritage, or local youth leadership, learners could engage with the Meta-Layer's truth-marking tools and bridge systems over time. These students would gain years of formative experience with purpose-aligned digital tools, anchoring future internet use in trust, clarity, and collaborative agency. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2412,7 +2412,7 @@
           "type": "Extension",
           "title": "Integrative Use in Formal Curricula",
           "extension": "This submission proposes the use of the Meta-Layer not just as a supplementary digital tool but as an integral component of school curricula through cross-disciplinary projects tied to sustainability, citizenship, and intercultural dialogue. Educators would use Meta-Layer tools to frame student inquiries, research collaborations, and public project presentations. This educational use-case includes youth-led bridge-building, annotation, and participation in SDG-aligned initiatives.",
-          "why_it_matters": "By becoming a living part of students' education, the Meta-Layer becomes not merely a tool but an environment for formative learning. This creates a generation fluent in meta-contextual navigation, digital ethics, and collaborative sense-making—crucial skills for democratic resilience and sustainable futures."
+          "why_it_matters": "By becoming a living part of students' education, the Meta-Layer becomes not merely a tool but an environment for formative learning. This creates a generation fluent in meta-contextual navigation, digital ethics, and collaborative sense-making–crucial skills for democratic resilience and sustainable futures."
         },
         {
           "dp": "DP19 – Amplifying Presence and Community Engagement",
@@ -2435,7 +2435,7 @@
       },
       "submission": {
         "title": "Seeding Generational Familiarity with the Meta-Layer Through Purpose-Driven Educational Use and Scandinavian Journalism Partnerships",
-        "overview": "Early Use Case Scandinavian Journalism Newsrooms combined with Seeding Generational Familiarity through Purpose-Driven Use in Education. This submission proposes a dual-entry approach to introduce the Meta-Layer and the Overweb to broad audiences by focusing on two interrelated use cases: education and journalism. First, in the school sector—particularly across Europe—project-based learning environments can integrate Meta-Layer tools to foster youth engagement with a safer, purpose-driven, and participatory web. Second, Scandinavia represents a particularly fertile region for a journalist-specific integration of the Meta-Layer. With strong traditions of collaborative civic culture, peaceful education systems, and relatively depolarized journalism ecosystems, countries like Denmark and Sweden could pioneer the use of a dedicated journalistic layer. This would empower newsrooms to verify content, trace sources, and resist the creep of misinformation. These use cases are mutually reinforcing and could provide a resilient first foothold for broader adoption. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "Early Use Case Scandinavian Journalism Newsrooms combined with Seeding Generational Familiarity through Purpose-Driven Use in Education. This submission proposes a dual-entry approach to introduce the Meta-Layer and the Overweb to broad audiences by focusing on two interrelated use cases: education and journalism. First, in the school sector–particularly across Europe–project-based learning environments can integrate Meta-Layer tools to foster youth engagement with a safer, purpose-driven, and participatory web. Second, Scandinavia represents a particularly fertile region for a journalist-specific integration of the Meta-Layer. With strong traditions of collaborative civic culture, peaceful education systems, and relatively depolarized journalism ecosystems, countries like Denmark and Sweden could pioneer the use of a dedicated journalistic layer. This would empower newsrooms to verify content, trace sources, and resist the creep of misinformation. These use cases are mutually reinforcing and could provide a resilient first foothold for broader adoption. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2502,7 +2502,7 @@
       },
       "submission": {
         "title": "Family-Centered Introduction of the Meta-Layer for Safer, Co-Creative Internet Engagement",
-        "overview": "This submission proposes a public introduction strategy for the Meta-Layer and the Overweb that centers on families—parents, children, and teenagers—by addressing their everyday digital challenges and aspirations. It emphasizes trust-based engagement over restriction, promoting an environment where youth can safely explore, learn, and contribute meaningfully to the co-creation of digital culture. Rather than pursuing institutional entry points (e.g., via schools or governments), this strategy focuses on engaging family media—parenting magazines, youth outlets, school take-home materials—with an invitation to participate. The initiative envisions the Meta-Layer as a viable alternative to the corporate internet, providing young people with a healthier, more creative, and civically empowered online life. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission proposes a public introduction strategy for the Meta-Layer and the Overweb that centers on families–parents, children, and teenagers–by addressing their everyday digital challenges and aspirations. It emphasizes trust-based engagement over restriction, promoting an environment where youth can safely explore, learn, and contribute meaningfully to the co-creation of digital culture. Rather than pursuing institutional entry points (e.g., via schools or governments), this strategy focuses on engaging family media–parenting magazines, youth outlets, school take-home materials–with an invitation to participate. The initiative envisions the Meta-Layer as a viable alternative to the corporate internet, providing young people with a healthier, more creative, and civically empowered online life. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2542,7 +2542,7 @@
           "type": "Clarification",
           "title": "Intergenerational and School-Linked Learning Pathways",
           "clarification": "This proposal expands 'education' beyond institutional curricula to include home-based, peer-led, and informal learning. Parents become curators and facilitators, offering their children a civic internet alternative through simple actions like sharing flyers or recommending the Meta-Layer to educators.",
-          "why_it_matters": "This distributed model builds long-term familiarity and normalization of the Meta-Layer, empowering youth to integrate it across different areas of life—school, home, and community—without waiting for top-down institutional reform."
+          "why_it_matters": "This distributed model builds long-term familiarity and normalization of the Meta-Layer, empowering youth to integrate it across different areas of life–school, home, and community–without waiting for top-down institutional reform."
         },
         {
           "dp": "DP19 – Amplifying Presence and Community Engagement",
@@ -2714,7 +2714,7 @@
       },
       "submission": {
         "title": "Enabling Machine-Readable Meaning through the Semantic Web",
-        "overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web–built on distributed knowledge representation, interoperable ontologies, and machine-readable logic–prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2870,7 +2870,7 @@
       },
       "submission": {
         "title": "AI as the Ultimate Safety Layer",
-        "overview": "Digital crimes—scams, phishing, deepfakes, and sophisticated social-engineered fraud—are rapidly escalating in complexity and frequency. Rather than viewing AI as merely exacerbating these threats, this submission proposes an OS-level 'Safety Agent,' a localized AI capable of proactively detecting digital threats, providing mental health interventions, improving personal judgment, and enabling enterprise compliance without compromising privacy. By operating solely on-device and integrated at the operating system level, this solution maximizes data security and user trust. This submission was generated with protocol META-DP-EVAL-v1.3 Based on article by Scott Belsky: https://www.implications.com/p/the-emergence-of-safety-layers-religion",
+        "overview": "Digital crimes–scams, phishing, deepfakes, and sophisticated social-engineered fraud–are rapidly escalating in complexity and frequency. Rather than viewing AI as merely exacerbating these threats, this submission proposes an OS-level 'Safety Agent,' a localized AI capable of proactively detecting digital threats, providing mental health interventions, improving personal judgment, and enabling enterprise compliance without compromising privacy. By operating solely on-device and integrated at the operating system level, this solution maximizes data security and user trust. This submission was generated with protocol META-DP-EVAL-v1.3 Based on article by Scott Belsky: https://www.implications.com/p/the-emergence-of-safety-layers-religion",
         "source_link": "https://www.implications.com/p/the-emergence-of-safety-layers-religion",
         "raw_content": null
       },
@@ -2939,7 +2939,7 @@
       },
       "submission": {
         "title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
-        "overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
+        "overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead–but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
         "source_link": null,
         "raw_content": null
       },
@@ -2983,13 +2983,13 @@
           "type": "Clarification",
           "title": "Algorithmic Disinformation as a Structural Risk",
           "clarification": "The submission identifies that AI-generated content is not merely noise but a potentially coordinated mechanism for manipulation. This includes bot networks masquerading as genuine engagement to influence public discourse or even geopolitical narratives.",
-          "why_it_matters": "Without verifiable origin and provenance metadata, even informed users can be misled. Transparency is not optional—it's foundational for democratic digital spaces."
+          "why_it_matters": "Without verifiable origin and provenance metadata, even informed users can be misled. Transparency is not optional–it's foundational for democratic digital spaces."
         },
         {
           "dp": "DP20 – Community Ownership",
           "type": "Extension",
           "title": "Humanmade Content as a Public Good",
-          "extension": "Real human-generated content should be protected and valued similarly to other public goods. Mechanisms that support individual creators—through funding, discovery, and validation—must be prioritized in protocol design.",
+          "extension": "Real human-generated content should be protected and valued similarly to other public goods. Mechanisms that support individual creators–through funding, discovery, and validation–must be prioritized in protocol design.",
           "why_it_matters": "As AI becomes ubiquitous, humanmade contributions risk becoming boutique rarities. If these disappear, so does the soul of digital culture."
         }
       ],
@@ -3217,7 +3217,7 @@
       },
       "submission": {
         "title": "Evaluation of Meta-Layer Support for trust.txt on journallist.net",
-        "overview": "This analysis examines how trust.txt—a machine-readable, decentralized trust declaration protocol—aligns with Meta-Layer's criteria for trustworthy, interoperable systems. It evaluates key areas: decentralized namespaces, provenance, transparency, and governance. trust.txt provides a robust, decentralized method for publishers and associations to declare verified trust relationships. It is lightweight, extensible, privacy-respecting, and leverages existing domain infrastructure. It aligns strongly with core Meta-Layer principles around provenance (DP15), transparency (DP14), decentralized identity (DP5), and data sovereignty (DP4). Extensions to handle AI (datatrainingallowed=) and social URIs show proactive evolution (DP3, DP12). Adoption remains in early-to-mid phase: endorsements from bodies like DCN and AAM support growth, but broader platform integration (search, networks, programmatic ad systems) is still needed to achieve maximal effectiveness.\nThis submission was generated with protocol META-DP-EVAL-v1.3",
+        "overview": "This analysis examines how trust.txt–a machine-readable, decentralized trust declaration protocol–aligns with Meta-Layer's criteria for trustworthy, interoperable systems. It evaluates key areas: decentralized namespaces, provenance, transparency, and governance. trust.txt provides a robust, decentralized method for publishers and associations to declare verified trust relationships. It is lightweight, extensible, privacy-respecting, and leverages existing domain infrastructure. It aligns strongly with core Meta-Layer principles around provenance (DP15), transparency (DP14), decentralized identity (DP5), and data sovereignty (DP4). Extensions to handle AI (datatrainingallowed=) and social URIs show proactive evolution (DP3, DP12). Adoption remains in early-to-mid phase: endorsements from bodies like DCN and AAM support growth, but broader platform integration (search, networks, programmatic ad systems) is still needed to achieve maximal effectiveness.\nThis submission was generated with protocol META-DP-EVAL-v1.3",
         "source_link": null
       },
       "directly_addressed_dps": [
@@ -3239,7 +3239,7 @@
         },
         {
           "dp": "DP14 – Trust and Transparency",
-          "summary": "It exposes affiliations, control relationships, and vendor/customer links—visible both to users and platforms. Reciprocal declarations reinforce verified transparency."
+          "summary": "It exposes affiliations, control relationships, and vendor/customer links–visible both to users and platforms. Reciprocal declarations reinforce verified transparency."
         },
         {
           "dp": "DP15 – Security and Provenance",
@@ -3255,7 +3255,7 @@
           "dp": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
           "type": "Extension",
           "title": "Schema Evolution Extension",
-          "clarification": "The trust.txt spec has evolved—most recently including support for AI data usage (datatrainingallowed=) and social media validation via trust:// URIs.",
+          "clarification": "The trust.txt spec has evolved–most recently including support for AI data usage (datatrainingallowed=) and social media validation via trust:// URIs.",
           "why_it_matters": "Demonstrates adaptive governance, extending protocol to remain relevant as trust needs evolve with AI/ML and social networks. This aligns with growing, complex trust ecosystems, showing resilience and adaptability."
         },
         {

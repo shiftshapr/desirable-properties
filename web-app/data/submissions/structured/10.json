@@ -6,9 +6,9 @@
   },
   "submission": {
     "title": "Minimum Protocol for Responsible Interaction Between Autonomous Agents",
-    "overview": "With the rapid expansion of autonomous agents—both personal and corporate—there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "overview": "With the rapid expansion of autonomous agents–both personal and corporate–there is an urgent need for a minimal protocol that enables these agents to interact visibly, responsibly, and semantically coherently with websites, interfaces, and each other. This submission proposes structural Meta-layer support for these interactions via observable traces, standard formats, and distributed authentication mechanisms. This submission was generated with protocol META-DP-EVAL-v1.3.",
     "source_link": null,
-    "raw_content": "Con la rápida expansión de agentes autónomos —tanto personales como corporativos— surge la necesidad urgente de definir un protocolo mínimo que permita a estos agentes interactuar de manera visible, responsable y semánticamente coherente con sitios web, otras interfaces y entre ellos mismos. Esta propuesta plantea que el Meta-layer ofrezca soporte estructural a esas interacciones, a través de trazas observables, formatos estándar y mecanismos de autenticación distribuida."
+    "raw_content": "Con la rápida expansión de agentes autónomos –tanto personales como corporativos– surge la necesidad urgente de definir un protocolo mínimo que permita a estos agentes interactuar de manera visible, responsable y semánticamente coherente con sitios web, otras interfaces y entre ellos mismos. Esta propuesta plantea que el Meta-layer ofrezca soporte estructural a esas interacciones, a través de trazas observables, formatos estándar y mecanismos de autenticación distribuida."
   },
   "directly_addressed_dps": [
     {

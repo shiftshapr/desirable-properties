@@ -1,5 +1,5 @@
 /**
- * Desirable Properties book site — layout primitives (header, container, spinner).
+ * Desirable Properties book site – layout primitives (header, container, spinner).
  * Brand: gold (#d4af37) on deep navy/charcoal (#0d1117).
  */
 :root {
@@ -42,7 +42,7 @@
   max-width: 720px;
 }
 
-/* Loading spinner — shared across the reader + cover */
+/* Loading spinner – shared across the reader + cover */
 .dp-loading {
   display: flex;
   align-items: center;
@@ -146,7 +146,7 @@
   border: 0;
 }
 
-/* DP smart tag — clickable inline reference */
+/* DP smart tag – clickable inline reference */
 .dp-tag {
   display: inline-block;
   padding: 1px 6px;

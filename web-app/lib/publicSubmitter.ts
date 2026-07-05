@@ -27,7 +27,7 @@ export function publicSubmitterNames(
   return { firstName: firstName ?? null, lastName: lastName ?? null };
 }
 
-/** Detail endpoint includes optional email — anonymize when legacy. */
+/** Detail endpoint includes optional email – anonymize when legacy. */
 export function publicSubmitterWithEmail(sub: {
   firstName: string | null;
   lastName: string | null;

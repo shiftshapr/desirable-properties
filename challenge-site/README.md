@@ -1,6 +1,6 @@
 # Desirable Properties Challenge Site
 
-Next.js application for **[desirableproperties.org](https://desirableproperties.org)** — the public home of the Desirable Properties Challenge.
+Next.js application for **[desirableproperties.org](https://desirableproperties.org)** – the public home of the Desirable Properties Challenge.
 
 ## What this app is
 

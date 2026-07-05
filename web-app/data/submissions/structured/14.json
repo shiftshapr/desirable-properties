@@ -6,7 +6,7 @@
   },
   "submission": {
     "title": "A Trusted Annotation Layer for Shakespeare's Plays",
-    "overview": "This submission proposes a web-based annotation layer focused initially on the works of William Shakespeare. For centuries, scholars and readers have annotated Shakespeare’s plays with footnotes and glosses. Yet, most online editions—including high-traffic projects like Open Source Shakespeare—lack accessible footnotes. This effort would establish a collaborative, trusted, and extensible annotation system allowing footnotes and glosses to be layered directly onto public web texts. With a focus on educational value, transparency, and collaborative authorship, this system would begin with Shakespeare but extend to other canonical and public domain texts. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "overview": "This submission proposes a web-based annotation layer focused initially on the works of William Shakespeare. For centuries, scholars and readers have annotated Shakespeare’s plays with footnotes and glosses. Yet, most online editions–including high-traffic projects like Open Source Shakespeare–lack accessible footnotes. This effort would establish a collaborative, trusted, and extensible annotation system allowing footnotes and glosses to be layered directly onto public web texts. With a focus on educational value, transparency, and collaborative authorship, this system would begin with Shakespeare but extend to other canonical and public domain texts. This submission was generated with protocol META-DP-EVAL-v1.3.",
     "source_link": null
   },
   "directly_addressed_dps": [

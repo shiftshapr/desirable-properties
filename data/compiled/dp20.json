@@ -50,7 +50,7 @@
       "source_file": "11.json"
     },
     {
-      "summary": "No central entity controls namespace, data routing, or identity verification—users and their communities manage these through shared schemas.",
+      "summary": "No central entity controls namespace, data routing, or identity verification–users and their communities manage these through shared schemas.",
       "submission_title": "Towards Decentralized Applications: Rethinking Control Power and Data Exchange in Named-Data Networking",
       "submission_overview": "This submission presents a comprehensive framework and prototype for decentralized applications built on Named-Data Networking (NDN), aimed at resolving centralization in control power over user data, identity, and communications. Through the design, implementation, and evaluation of \"NDN Workspace,\" the work demonstrates how semantic naming, data-centric security, and distributed data synchronization can enable direct, secure, and serverless peer-to-peer collaboration. The study also contributes critical insights into naming schemes, trust schema enforcement, and the broader ecosystem architecture required to support real-time collaborative applications outside the cloud paradigm. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Anon",
@@ -60,7 +60,7 @@
     {
       "summary": "The reframed social contract insists on individual ownership of data selves, with institutional access gated by service.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "23.json"
@@ -84,7 +84,7 @@
     {
       "summary": "Affirms data self-sovereignty as a core social contract principle.",
       "submission_title": "The Engineer's Ledger and the People-Centered Paraidox",
-      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+      "submission_overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "30.json"
@@ -108,7 +108,7 @@
     {
       "summary": "Advocates for a name that reflects grassroots identity and shared authorship rather than co-opted corporate branding.",
       "submission_title": "Rebranding the Metaweb to Overweb",
-      "submission_overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'—a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "This submission addresses a significant brand perception issue: the public confusion between the Metaweb and the Metaverse. The Metaverse, associated with corporate overreach and dystopian imagery, negatively colors first impressions of the Metaweb. This proposal suggests rebranding to a term like 'Overweb'–a name that feels assertive, memorable, and true to the vision of an interoperable, human-centered web infrastructure. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Eric Schneider",
       "submitter_email": "eric@jpberlin.de",
       "source_file": "34.json"
@@ -124,7 +124,7 @@
     {
       "summary": "Advocates for supporting human creators directly through tools like Patreon and community-backed initiatives.",
       "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
-      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead–but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "43.json"
@@ -149,7 +149,7 @@
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "33.json",
-      "clarification": "No curation or gatekeeping—trust networks arise through opt-in community choice, not institutional approval."
+      "clarification": "No curation or gatekeeping–trust networks arise through opt-in community choice, not institutional approval."
     }
   ],
   "extensions": [
@@ -161,7 +161,7 @@
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "6.json",
-      "extension": "Bridge graphs are built and maintained by usage, trust, and local context — aligning stewardship with presence and perspective."
+      "extension": "Bridge graphs are built and maintained by usage, trust, and local context – aligning stewardship with presence and perspective."
     },
     {
       "title": "Community-maintained Navigational Infrastructure",
@@ -177,7 +177,7 @@
       "title": "Participatory Semantics through Ontology Crafting",
       "why_it_matters": "Fosters semantic sovereignty and localized knowledge representation in a decentralized framework.",
       "submission_title": "Enabling Machine-Readable Meaning through the Semantic Web",
-      "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web—built on distributed knowledge representation, interoperable ontologies, and machine-readable logic—prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "This submission revisits the seminal 2001 vision of the Semantic Web, proposing its relevance and expanded applicability to modern decentralized meta-systems. It explores how the foundational architecture of the Semantic Web–built on distributed knowledge representation, interoperable ontologies, and machine-readable logic–prefigures the infrastructure needed for scalable, composable, and user-aligned digital environments. The submission identifies alignment with multiple Desirable Properties, especially regarding knowledge portability, participatory governance, and ethical agentic systems. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "40.json",
@@ -187,11 +187,11 @@
       "title": "Humanmade Content as a Public Good",
       "why_it_matters": "As AI becomes ubiquitous, humanmade contributions risk becoming boutique rarities. If these disappear, so does the soul of digital culture.",
       "submission_title": "The Algorithmic Collapse: Reclaiming Humanity in the Age of AI Slop",
-      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead—but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
+      "submission_overview": "This submission critiques the current trajectory of internet culture, shaped by a deluge of AI-generated content that mimics human creativity without its soul. It raises alarms about the degradation of trust, the erosion of digital authenticity, and the weaponization of engagement algorithms. It also highlights the need for systemic reevaluation: how we value creative labor, what constitutes \"real\" content, and the risks of unchecked AI proliferation in social, artistic, and journalistic domains. The human internet is not dead–but it's under siege. This submission was generated with protocol META-DP-EVAL-v1.3.",
       "submitter_name": "Anon",
       "submitter_email": "noreply@themetalayer.org",
       "source_file": "43.json",
-      "extension": "Real human-generated content should be protected and valued similarly to other public goods. Mechanisms that support individual creators—through funding, discovery, and validation—must be prioritized in protocol design."
+      "extension": "Real human-generated content should be protected and valued similarly to other public goods. Mechanisms that support individual creators–through funding, discovery, and validation–must be prioritized in protocol design."
     }
   ]
 }

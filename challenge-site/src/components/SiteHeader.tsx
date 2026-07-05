@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { FRAMING_CHAPTER_URL } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_URL, FRAMING_CHAPTER_URL } from '@/lib/govhub';
 
 const NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/challenge', label: 'Challenge' },
   { href: '/#dps', label: 'Browse DPs' },
   { href: '/onchain', label: 'On-Chain' },
+  { href: DESIRABLE_PROPERTIES_BOOK_URL, label: 'Book', external: true },
 ] as const;
 
 export default function SiteHeader() {
@@ -17,16 +18,22 @@ export default function SiteHeader() {
             Desirable Properties Challenge
           </Link>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-300">
-            {NAV_LINKS.map(({ href, label }) => (
-              <Link key={href} href={href} className="hover:text-white">
-                {label}
-              </Link>
-            ))}
+            {NAV_LINKS.map(({ href, label, ...rest }) =>
+              'external' in rest && rest.external ? (
+                <a key={href} href={href} className="hover:text-white">
+                  {label}
+                </a>
+              ) : (
+                <Link key={href} href={href} className="hover:text-white">
+                  {label}
+                </Link>
+              ),
+            )}
             <a
               href={FRAMING_CHAPTER_URL}
               className="hidden hover:text-white md:inline"
             >
-              Read ML-Draft-026
+              Read Intro
             </a>
             <a
               href="https://govhub.live/layers/the-metaweb/"

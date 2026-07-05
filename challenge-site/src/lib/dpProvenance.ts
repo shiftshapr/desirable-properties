@@ -1,5 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import {
+  archiveSubmissionUrl,
+  inscriptionUrl,
+  submissionLink as submissionLinkFromMap,
+} from '@/lib/ordinalLinks';
+
+export { inscriptionUrl, archiveSubmissionUrl };
 
 export type DpProvenanceMeta = {
   dp_number: number;
@@ -69,11 +76,6 @@ export function loadDpProvenance(dpId: string): DpProvenance | null {
   return loadJson<DpProvenance>(`dp${num}.json`);
 }
 
-export function inscriptionUrl(inscriptionId: string | null | undefined): string | null {
-  if (!inscriptionId) return null;
-  return `https://ordinals.com/inscription/${inscriptionId}`;
-}
-
 export function submissionInscriptionUrl(sourceFile: string | null | undefined): string | null {
   if (!sourceFile) return null;
   const id = inscriptionData?.by_source_file?.[sourceFile];
@@ -91,25 +93,10 @@ export function loadAllDpInscriptions(): Record<string, string> {
   return dpInscriptionData?.by_dp_id ?? {};
 }
 
-export function archiveSubmissionUrl(sourceFile: string | null | undefined): string | null {
-  if (!sourceFile) return null;
-  const num = sourceFile.replace(/\.json$/, '');
-  if (!num) return null;
-  return `https://app.themetalayer.org?submission=${num}`;
-}
-
 export function submissionLink(
   sourceFile: string | null | undefined,
 ): { href: string; label: string; kind: 'inscription' | 'archive' } | null {
-  const onchain = submissionInscriptionUrl(sourceFile);
-  if (onchain) {
-    return { href: onchain, label: 'View on-chain inscription', kind: 'inscription' };
-  }
-  const archive = archiveSubmissionUrl(sourceFile);
-  if (archive) {
-    return { href: archive, label: 'View in archive', kind: 'archive' };
-  }
-  return null;
+  return submissionLinkFromMap(sourceFile, inscriptionData?.by_source_file ?? {});
 }
 
 export type PciDpLink = {

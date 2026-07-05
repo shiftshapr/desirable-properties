@@ -6,9 +6,9 @@
   },
   "submission": {
     "title": "Save As to Web3: A UX Gateway to Decentralized Storage",
-    "overview": "This proposal upgrades the familiar 'save as...' functionality into a Web3-native interaction—allowing users to save files directly to decentralized cloud storage such as IPFS. By embedding decentralized storage options into user interfaces, this approach enables user agency and sovereignty without requiring technical knowledge. This submission was generated with protocol META-DP-EVAL-v1.3.",
+    "overview": "This proposal upgrades the familiar 'save as...' functionality into a Web3-native interaction–allowing users to save files directly to decentralized cloud storage such as IPFS. By embedding decentralized storage options into user interfaces, this approach enables user agency and sovereignty without requiring technical knowledge. This submission was generated with protocol META-DP-EVAL-v1.3.",
     "source_link": null,
-    "raw_content": "That's a powerful seed idea—bridging the 'save as…' functionality we all know into a Web3-native future. It takes a common UX pattern and upgrades it with decentralized infrastructure..."
+    "raw_content": "That's a powerful seed idea–bridging the 'save as…' functionality we all know into a Web3-native future. It takes a common UX pattern and upgrades it with decentralized infrastructure..."
   },
   "directly_addressed_dps": [
     {

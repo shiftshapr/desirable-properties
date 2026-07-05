@@ -6,6 +6,57 @@ type Props = {
   workgroups: GovHubWorkgroup[];
 };
 
+type Row = {
+  dp: (typeof localData.desirable_properties)[number];
+  wg: GovHubWorkgroup | undefined;
+  active: boolean;
+};
+
+function WorkgroupCard({ dp, wg, active }: Row) {
+  return (
+    <div
+      className={`flex items-center justify-between rounded-lg border px-3 py-2 text-sm ${
+        active
+          ? 'border-emerald-900/50 bg-emerald-950/20'
+          : 'border-amber-900/40 bg-amber-950/10'
+      }`}
+    >
+      <span className="font-medium text-slate-200">
+        <span className="mr-2 text-xs text-slate-500">{dp.id}</span>
+        {dp.name.length > 32 ? `${dp.name.slice(0, 30)}…` : dp.name}
+      </span>
+      <span className="ml-2 flex shrink-0 flex-col items-end gap-1">
+        {active && wg ? (
+          <>
+            <a
+              href={govhubUrl(`/workgroups/${wg.slug}/`)}
+              className="text-xs text-cyan-300 hover:text-cyan-200"
+            >
+              Join
+            </a>
+            <a
+              href={govhubUrl(`/workgroups/${wg.slug}/`)}
+              className="text-xs text-cyan-300 hover:text-cyan-200"
+            >
+              Nominate
+            </a>
+          </>
+        ) : (
+          <>
+            <span className="text-xs text-amber-400/90">Needs group</span>
+            <a
+              href={govhubUrl('/layers/the-metaweb/#workgroups')}
+              className="text-xs text-cyan-300 hover:text-cyan-200"
+            >
+              Nominate
+            </a>
+          </>
+        )}
+      </span>
+    </div>
+  );
+}
+
 export default function WorkgroupFormationStatus({ workgroups }: Props) {
   const dpWorkgroups = new Map<string, GovHubWorkgroup>();
   for (const wg of workgroups) {
@@ -13,7 +64,7 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
     if (dpId) dpWorkgroups.set(dpId, wg);
   }
 
-  const rows = localData.desirable_properties.map((dp) => {
+  const rows: Row[] = localData.desirable_properties.map((dp) => {
     const wg = dpWorkgroups.get(dp.id);
     const active = wg?.status === 'active';
     return { dp, wg, active };
@@ -39,33 +90,11 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
         </p>
       </div>
 
-      <ul className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {rows.map(({ dp, wg, active }) => (
-          <li
-            key={dp.id}
-            className={`flex items-center justify-between rounded-lg border px-3 py-2 text-sm ${
-              active
-                ? 'border-emerald-900/50 bg-emerald-950/20'
-                : 'border-amber-900/40 bg-amber-950/10'
-            }`}
-          >
-            <span className="font-medium text-slate-200">
-              <span className="mr-2 text-xs text-slate-500">{dp.id}</span>
-              {dp.name.length > 32 ? `${dp.name.slice(0, 30)}…` : dp.name}
-            </span>
-            {active && wg ? (
-              <a
-                href={govhubUrl(`/workgroups/${wg.slug}/`)}
-                className="ml-2 shrink-0 text-xs text-cyan-300 hover:text-cyan-200"
-              >
-                Join
-              </a>
-            ) : (
-              <span className="ml-2 shrink-0 text-xs text-amber-400/90">Needs group</span>
-            )}
-          </li>
+      <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {rows.map((row) => (
+          <WorkgroupCard key={row.dp.id} {...row} />
         ))}
-      </ul>
+      </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
         <a
@@ -73,6 +102,12 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
           className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
         >
           Join or lead a workgroup
+        </a>
+        <a
+          href={govhubUrl('/layers/the-metaweb/#workgroups')}
+          className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+        >
+          Nominate
         </a>
         <Link
           href="/#dps"

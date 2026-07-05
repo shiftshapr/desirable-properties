@@ -6,7 +6,7 @@
   },
   "submission": {
     "title": "The Engineer's Ledger and the People-Centered Paraidox",
-    "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors—tech, policy, education, and entertainment—suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
+    "overview": "This submission presents a multifaceted synthesis of perspectives from an i4j town hall that explored how AI can serve human flourishing through pragmatic design, data dignity, and civic accountability. From Vint Cerf's empirical assessments to David Nordfors's VeMe concept, and from creative industry safeguards to behavioral science in HR, the discussion mapped the contours of a people-centered AI paradigm. The convergence across sectors–tech, policy, education, and entertainment–suggests a reframing of the so-called Paraidox: embracing AI to enhance, not replace, human intelligence. This submission was generated with protocol META-DP-EVAL-v1.3 and is based on the i4j town hall 'Harnessing AI for Productivity and Meaningful Work.'",
     "source_link": null,
     "raw_content": null
   },
@@ -61,7 +61,7 @@
       "dp": "DP1 – Federated Authentication & Accountability",
       "type": "Clarification",
       "title": "AI Driver's Licence Proposal",
-      "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices—akin to certifying civic literacy in digital contexts.",
+      "clarification": "Vint Cerf's metaphorical 'AI driver's licence' implies not just user education but a federated validation system to ensure safe AI practices–akin to certifying civic literacy in digital contexts.",
       "why_it_matters": "This could form a lightweight but enforceable bridge between public safety and open innovation, promoting responsible AI without resorting to restrictive gatekeeping."
     },
     {
@@ -82,7 +82,7 @@
       "dp": "DP18 – Feedback Loops and Reputation",
       "type": "Extension",
       "title": "Psychometric Fingerprinting in Workforce Development",
-      "extension": "Van der Hoop's behavioral AI doesn't just select candidates—it adapts to feedback loops within vocational ecosystems to surface hidden talent.",
+      "extension": "Van der Hoop's behavioral AI doesn't just select candidates–it adapts to feedback loops within vocational ecosystems to surface hidden talent.",
       "why_it_matters": "Dynamic reputation systems can recalibrate access and opportunity based on context-sensitive, evolving behavioral data, enhancing both equity and economic productivity."
     }
   ]
