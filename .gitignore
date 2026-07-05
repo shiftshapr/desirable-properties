@@ -75,3 +75,5 @@ temp/
 
 # Local development
 .local/ 
+# DP icon raster outputs (regenerable from SVG via rasterize-dp-icons.sh)
+assets/dp-icons/raster/
