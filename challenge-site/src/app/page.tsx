@@ -156,7 +156,7 @@ export default async function Home() {
                 Submit Candidate DP
               </a>
               <a
-                href={govhubUrl('/layers/the-metaweb/')}
+                href={govhubUrl('/workgroups/dp-discovery/')}
                 className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
               >
                 Join DP Discovery Workgroup
