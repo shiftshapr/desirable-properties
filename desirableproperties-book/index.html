@@ -80,14 +80,14 @@
       outline-offset: 6px;
     }
     .cover-art {
-      width: 100%;
-      max-width: 480px;
+      width: 600px;
+      max-width: min(600px, calc(100vw - 48px));
       height: auto;
       aspect-ratio: 1 / 1;
       display: block;
       margin: 0 auto;
-      border-radius: 8px;
-      box-shadow: 0 8px 36px rgba(212, 175, 55, 0.16);
+      border-radius: 10px;
+      box-shadow: 0 10px 44px rgba(212, 175, 55, 0.22);
       object-fit: contain;
     }
     .tagline {
