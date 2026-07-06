@@ -21,7 +21,7 @@ export default function SiteHeader() {
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-300">
             {NAV_LINKS.map(({ href, label, ...rest }) =>
               'external' in rest && rest.external ? (
-                <a key={href} href={href} className="hover:text-white">
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="hover:text-white">
                   {label}
                 </a>
               ) : (
