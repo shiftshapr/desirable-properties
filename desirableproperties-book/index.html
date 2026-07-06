@@ -179,7 +179,68 @@
     }
     .prereg-modal-btn:hover { filter: brightness(1.08); }
     .prereg-modal-btn:active { transform: translateY(1px); }
+    .prereg-modal-btn[disabled] { opacity: 0.6; cursor: progress; }
+    .prereg-modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+    .prereg-modal-input {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      font: inherit;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .prereg-modal-input:focus {
+      outline: none;
+      border-color: var(--accent-hover);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    }
+    .prereg-modal-input[aria-invalid="true"] {
+      border-color: #ff6b6b;
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.18);
+    }
+    .prereg-modal-error {
+      color: #ff8a8a;
+      font-size: 13px;
+      min-height: 1em;
+      margin: 0;
+    }
+    .prereg-modal-success {
+      color: #7ee6a8;
+      font-size: 14px;
+      margin: 0 0 16px;
+    }
     body.prereg-modal-locked { overflow: hidden; }
+    .prereg-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 32px;
+      transform: translate(-50%, 24px);
+      background: rgba(15, 17, 21, 0.96);
+      color: #f5f5f5;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 14px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 1100;
+      max-width: min(420px, calc(100vw - 32px));
+    }
+    .prereg-toast.is-shown {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
     .meta {
       margin: 24px auto 0;
       font-size: 12px;
@@ -216,9 +277,14 @@
       <p id="preregBody">
         The DP Challenge opens on Tuesday, July 21st at 9a PT. Earn one or more of the 22 desirable property badges that will be awarded for meaningful contributions to a desirable property. In the meantime, we invite you to join a workgroup and nominate yourself or someone else as coordinator.
       </p>
+      <form class="prereg-modal-form" id="preregForm" novalidate>
+        <label class="prereg-modal-label" for="preregEmail" style="font-size:13px;color:var(--accent);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">Get notified</label>
+        <input class="prereg-modal-input" type="email" id="preregEmail" name="email" placeholder="you@example.com" autocomplete="email" required />
+        <p class="prereg-modal-error" id="preregError" role="alert" aria-live="polite"></p>
+      </form>
       <div class="prereg-modal-actions">
         <button type="button" class="prereg-modal-btn cancel" id="preregDismiss">Cancel</button>
-        <a class="prereg-modal-btn primary" id="preregJoin" href="https://govhub.live/waitlists/4060df95-6ffc-414e-921f-9ac5eeac6b2e/" target="_blank" rel="noopener noreferrer">Join Notify List</a>
+        <button type="submit" form="preregForm" class="prereg-modal-btn primary" id="preregJoin">Notify Me</button>
       </div>
     </div>
   </div>
@@ -245,13 +311,17 @@
     })();
 
     // Pre-launch notify modal: shown on first visit between now and
-    // Tuesday July 21 9:00 PT. Dismissed via Cancel OR clicking
-    // Join Notify List (which opens the workgroups page in a new tab)
-    // OR pressing Escape. State stored in localStorage so it appears
-    // only once per browser.
+    // Tuesday July 21 9:00 PT. User enters their email and clicks
+    // "Notify Me" to be programmatically added to the waitlist on
+    // govhub.live (no auth required). Dismissed via Cancel or Escape.
+    // Once submitted or dismissed, state is stored in localStorage so
+    // it appears only once per browser.
     (function () {
       var STORAGE_KEY = 'dp-book-pre-challenge-modal-seen-v1';
       var CUTOFF_PT = '2026-07-21T09:00:00-07:00';
+      var WAITLIST_ID = '4060df95-6ffc-414e-921f-9ac5eeac6b2e';
+      var WAITLIST_API = 'https://govhub.live/api/waitlists/' + WAITLIST_ID + '/join-email/';
+
       var NOW = new Date();
       var CUTOFF = new Date(CUTOFF_PT);
       if (NOW >= CUTOFF) return; // window has closed; never show.
@@ -263,9 +333,30 @@
       var modal = document.getElementById('preregModal');
       var dismiss = document.getElementById('preregDismiss');
       var join = document.getElementById('preregJoin');
+      var form = document.getElementById('preregForm');
+      var email = document.getElementById('preregEmail');
+      var errEl = document.getElementById('preregError');
       if (!modal) return;
 
       var lastFocus = null;
+      var submitting = false;
+
+      function showToast(message) {
+        var existing = document.getElementById('preregToast');
+        if (existing) existing.remove();
+        var t = document.createElement('div');
+        t.id = 'preregToast';
+        t.className = 'prereg-toast';
+        t.setAttribute('role', 'status');
+        t.setAttribute('aria-live', 'polite');
+        t.textContent = message;
+        document.body.appendChild(t);
+        requestAnimationFrame(function () { t.classList.add('is-shown'); });
+        setTimeout(function () {
+          t.classList.remove('is-shown');
+          setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 300);
+        }, 4500);
+      }
 
       function closeAndRemember(reason) {
         modal.classList.remove('is-open');
@@ -282,16 +373,93 @@
         modal.removeAttribute('hidden');
         modal.classList.add('is-open');
         document.body.classList.add('prereg-modal-locked');
-        if (dismiss) {
-          try { dismiss.focus(); } catch (_e) {}
+        if (email) {
+          try { email.focus(); } catch (_e) {}
         }
       }
 
-      if (dismiss) dismiss.addEventListener('click', function () { closeAndRemember('cancel'); });
-      if (join) join.addEventListener('click', function () {
-        // Open the link in a new tab, then dismiss + remember on this page.
-        closeAndRemember('join');
+      function setError(msg) {
+        if (!errEl) return;
+        if (!msg) {
+          errEl.textContent = '';
+          if (email) email.removeAttribute('aria-invalid');
+          return;
+        }
+        errEl.textContent = msg;
+        if (email) email.setAttribute('aria-invalid', 'true');
+      }
+
+      function isValidEmail(value) {
+        if (!value) return false;
+        var v = String(value).trim();
+        var at = v.indexOf('@');
+        if (at < 1) return false;
+        var dot = v.indexOf('.', at);
+        if (dot < at + 2) return false;
+        if (dot === v.length - 1) return false;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+
+      function submitWaitlist(value) {
+        if (submitting) return Promise.resolve(false);
+        submitting = true;
+        if (join) join.setAttribute('disabled', '');
+        setError('');
+        var payload = {
+          email: value,
+          source: 'book-desirableproperties-pre-challenge-modal',
+          source_url: window.location.href,
+        };
+        return fetch(WAITLIST_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).then(function (resp) {
+          return resp.json().then(function (data) {
+            return { ok: resp.ok, status: resp.status, data: data };
+          }, function () {
+            return { ok: resp.ok, status: resp.status, data: null };
+          });
+        }).then(function (result) {
+          submitting = false;
+          if (join) join.removeAttribute('disabled');
+          if (result.ok) {
+            closeAndRemember('submitted');
+            showToast('Got it! Check your inbox to confirm your spot.');
+            return true;
+          }
+          var apiErr = (result.data && result.data.error) ? result.data.error : null;
+          if (result.status === 400 && apiErr) {
+            setError(apiErr);
+          } else if (result.status === 0 || result.status >= 500) {
+            setError('Could not reach the notify list. Please try again in a moment.');
+          } else {
+            setError(apiErr || ('Request failed (' + result.status + ').'));
+          }
+          return false;
+        }).catch(function () {
+          submitting = false;
+          if (join) join.removeAttribute('disabled');
+          setError('Network error. Please check your connection and try again.');
+          return false;
+        });
+      }
+
+      if (dismiss) dismiss.addEventListener('click', function () {
+        closeAndRemember('cancel');
       });
+      if (form) form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!email) return;
+        var value = (email.value || '').trim();
+        if (!isValidEmail(value)) {
+          setError('Please enter a valid email address.');
+          try { email.focus(); } catch (_e) {}
+          return;
+        }
+        submitWaitlist(value);
+      });
+      if (email) email.addEventListener('input', function () { setError(''); });
       document.addEventListener('keydown', function (e) {
         if (!modal.classList.contains('is-open')) return;
         if (e.key === 'Escape') {
