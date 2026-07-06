@@ -192,7 +192,7 @@ export default async function Home() {
               </li>
               <li>
                 <Link href="/onchain" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  The DP Challenge on-chain
+                  The Desirable Properties on-chain
                 </Link>
                 <p className="text-sm text-slate-500">
                   On-chain provenance: PCI conversations, submissions, and inscriptions
