@@ -81,9 +81,9 @@
     }
     .cover-art {
       width: 100%;
-      max-width: 420px;
+      max-width: 480px;
       height: auto;
-      aspect-ratio: 420 / 600;
+      aspect-ratio: 1 / 1;
       display: block;
       margin: 0 auto;
       border-radius: 8px;
@@ -128,7 +128,10 @@
 <body>
   <div class="wrap dp-container dp-container-narrow">
     <div class="cover-hit" id="coverHit" role="button" tabindex="0" aria-label="Open the book reader">
-      <img class="cover-art" src="/assets/cover.png" srcset="/assets/cover.png 1x, /assets/cover@2x.png 2x" alt="Desirable Properties book cover" />
+      <picture>
+        <source type="image/webp" srcset="/assets/cover.webp 1x, /assets/cover@2x.webp 2x" />
+        <img class="cover-art" src="/assets/cover.png" srcset="/assets/cover.png 1x, /assets/cover@2x.png 2x" alt="Desirable Properties book cover" />
+      </picture>
     </div>
     <p class="tagline">Twenty-two Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
     <a class="start" id="startReader" href="/viewer/intro">Open reader →</a>
