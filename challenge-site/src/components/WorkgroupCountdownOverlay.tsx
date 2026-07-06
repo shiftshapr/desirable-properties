@@ -137,7 +137,7 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
                 Join the waitlist
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                {challengeMeta.book_launch_title} · September 18, 2026
+                {challengeMeta.book_launch_title} · September 16, 2026
               </p>
             </div>
 

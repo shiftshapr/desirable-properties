@@ -130,7 +130,7 @@ export default async function ChallengePage() {
           <h2 className="text-2xl font-bold text-white">Timeline</h2>
           <p className="mt-3 text-slate-400">
             Follow the challenge from its origins through the launch of Version{' '}
-            {challengeMeta.target_version} and the Digital Monument on September 18, 2026.
+            {challengeMeta.target_version} and the Digital Monument on September 16, 2026.
           </p>
           <div className="mt-8">
             <ChallengeTimeline activeAndUpcoming={activeAndUpcoming} past={past} />

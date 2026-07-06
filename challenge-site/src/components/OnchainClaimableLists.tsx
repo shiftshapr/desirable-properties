@@ -111,7 +111,7 @@ export default function OnchainClaimableLists({
         <p className="mt-4 text-slate-300">
           The Meta-Layer Initiative inscribed the PCI emails and Second Call submissions for the
           Digital Monument. If an inscription was created for your contribution, you can claim it
-          here before <strong className="text-white">September 18, 2026</strong>. A confirmation
+          here before <strong className="text-white">September 16, 2026</strong>. A confirmation
           email will be sent to each person who completes a claim. For valid claims, we will deliver
           the inscription by the end of September 2026.
         </p>

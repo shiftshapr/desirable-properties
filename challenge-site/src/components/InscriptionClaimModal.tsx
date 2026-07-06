@@ -18,7 +18,7 @@ type Props = {
   onClose: () => void;
 };
 
-const CLAIM_DEADLINE = 'September 18, 2026';
+const CLAIM_DEADLINE = 'September 16, 2026';
 
 export default function InscriptionClaimModal({ target, onClose }: Props) {
   const [inscriptionId, setInscriptionId] = useState('');
