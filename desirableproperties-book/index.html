@@ -62,22 +62,19 @@
       padding: 1rem 0;
     }
     .cover-hit {
-      width: 100%;
-      max-width: 420px;
+      display: inline-block;
       margin: 0 auto;
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
       border-radius: 12px;
-      padding: 16px;
+      padding: 0;
       transition: filter 0.2s, transform 0.2s;
     }
     .cover-hit:hover,
     .cover-hit:focus-visible {
-      filter: brightness(1.06);
+      filter: brightness(1.06) drop-shadow(0 0 18px rgba(212, 175, 55, 0.35));
       transform: translateY(-2px);
-      outline: 2px solid var(--accent);
-      outline-offset: 6px;
     }
     .cover-art {
       width: 600px;
