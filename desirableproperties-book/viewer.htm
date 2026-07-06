@@ -1271,13 +1271,8 @@
 
       try {
         let bodyHtml;
-        if (rail === 'ml-draft-026') {
-          // Intro is a static landing page; do not fetch inscription for it.
-          bodyHtml = renderIntroLanding();
-        } else {
-          const result = await loadChapterBody(rail);
-          bodyHtml = '<div class="book-content" data-dp-content-root="1">' + result.html + '</div>';
-        }
+        const result = await loadChapterBody(rail);
+        bodyHtml = '<div class="book-content" data-dp-content-root="1">' + result.html + '</div>';
         const navHtml = buildNavBarHtml(rail);
         const metaHtml = buildInscriptionRailHtml(rail);
 
