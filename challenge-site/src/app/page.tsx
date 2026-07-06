@@ -10,7 +10,7 @@ import {
 } from '@/lib/govhub';
 import localData from '../data/desirable-properties.json';
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 const PARTICIPATE_ITEMS = [
   'Review drafts',
