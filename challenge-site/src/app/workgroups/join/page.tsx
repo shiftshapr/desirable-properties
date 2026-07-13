@@ -67,7 +67,14 @@ const ROLES: Role[] = [
   },
 ];
 
-const FAQ_ITEMS: Array<{ q: string; a: string }> = [
+type FaqItem = {
+  q: string;
+  a: string;
+  steps?: string[];
+  footer?: string;
+};
+
+const FAQ_ITEMS: FaqItem[] = [
   {
     q: 'How do I know which workgroup is right for me?',
     a: "Read each DP's short description and pick the one whose purpose resonates with your interests and skills. You can always join a different workgroup later.",
@@ -83,6 +90,20 @@ const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   {
     q: 'How are Coordinators chosen?',
     a: 'Coordinators can be nominated by anyone in the community, or you can nominate yourself. The layer admin reviews and approves each nomination.',
+  },
+  {
+    q: "Can't open Gov Hub? (connection or security error)",
+    a: 'Join and Nominate take you to govhub.live. If you see “This site can’t provide a secure connection” or ERR_SSL_PROTOCOL_ERROR, the link is usually fine – something on your network is interfering with HTTPS. If it works on cellular but not Wi‑Fi, the problem is your home router or ISP, not Gov Hub.',
+    steps: [
+      'Quick check: on the same device, turn off Wi‑Fi and try again on cellular. If that works, focus on your home network (steps below).',
+      'Confirm the address bar shows https://govhub.live/... (not the raw IP address).',
+      'Change your router or device DNS to 1.1.1.1 or 8.8.8.8 (some ISP or filter DNS returns bad answers that break HTTPS).',
+      'Check for Pi-hole, AdGuard Home, NextDNS, or router “security” / parental controls that may block or rewrite govhub.live.',
+      'Reboot your modem and router, then flush DNS (Windows: ipconfig /flushdns; Chrome: chrome://net-internals/#dns → Clear host cache).',
+      'If it still fails only on Wi‑Fi, try another browser or disable VPN and antivirus HTTPS scanning – then contact your ISP if nothing else helps.',
+    ],
+    footer:
+      'Cellular works but home Wi‑Fi does not? Tell us your ISP and router model – that pattern almost always means DNS or filtering on the home network.',
   },
 ];
 
@@ -357,6 +378,16 @@ export default async function JoinWorkgroupPage() {
                 </summary>
                 <div className="px-5 pb-5 text-slate-300">
                   <p className="leading-relaxed">{item.a}</p>
+                  {item.steps && item.steps.length > 0 && (
+                    <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed">
+                      {item.steps.map((step) => (
+                        <li key={step}>{step}</li>
+                      ))}
+                    </ol>
+                  )}
+                  {item.footer && (
+                    <p className="mt-4 text-sm leading-relaxed text-slate-400">{item.footer}</p>
+                  )}
                 </div>
               </details>
             ))}
