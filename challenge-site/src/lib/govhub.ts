@@ -1,8 +1,11 @@
-const GOVHUB_BASE = process.env.GOVHUB_BASE_URL ?? 'https://govhub.live';
+/** Public Gov Hub URL (hub.themetalayer.org avoids networks that block "gov" in hostnames). */
+export const GOVHUB_PUBLIC_BASE_URL =
+  process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
+const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
 
 /** ML-Draft-026 – opening chapter framing the Desirable Properties Challenge */
 export const FRAMING_CHAPTER_URL =
-  'https://govhub.live/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F';
+  `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F`;
 export const FRAMING_CHAPTER_TITLE =
   'The Desirable Properties of a Meta-Layer';
 export const FRAMING_CHAPTER_REF = 'ML-Draft-026';

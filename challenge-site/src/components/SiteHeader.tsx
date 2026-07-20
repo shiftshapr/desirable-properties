@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { DESIRABLE_PROPERTIES_BOOK_URL, FRAMING_CHAPTER_URL } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_URL, FRAMING_CHAPTER_URL, govhubUrl } from '@/lib/govhub';
 
 const NAV_LINKS = [
   { href: '/about', label: 'About' },
@@ -37,7 +37,7 @@ export default function SiteHeader() {
               Read Intro
             </a>
             <a
-              href="https://govhub.live/layers/the-metaweb/"
+              href={govhubUrl('/layers/the-metaweb/')}
               className="rounded-md bg-cyan-700 px-3 py-1.5 font-medium text-white hover:bg-cyan-600"
             >
               Join on Gov Hub

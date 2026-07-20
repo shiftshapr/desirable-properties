@@ -780,7 +780,7 @@ export default function CommentSection({ elementId, elementType, submissionId, o
       <div className="mb-3 p-3 bg-gray-800 border border-gray-700 rounded text-center">
         <p className="text-sm text-gray-400">
           The legacy commenting system is frozen to prevent governance fragmentation. 
-          Please visit <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline">desirableproperties.org</a> or <a href="https://govhub.live" className="text-cyan-400 hover:underline">Gov Hub</a> for active discussions.
+          Please visit <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline">desirableproperties.org</a> or <a href="https://hub.themetalayer.org" className="text-cyan-400 hover:underline">Gov Hub</a> for active discussions.
         </p>
       </div>
 

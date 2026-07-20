@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { govhubUrl } from '@/lib/govhub';
 
 export default function SiteFooter() {
   return (
@@ -19,7 +20,7 @@ export default function SiteFooter() {
             Call for Input
           </Link>
           <a
-            href="https://govhub.live/layers/the-metaweb/"
+            href={govhubUrl('/layers/the-metaweb/')}
             className="text-slate-400 hover:text-slate-200"
           >
             Gov Hub

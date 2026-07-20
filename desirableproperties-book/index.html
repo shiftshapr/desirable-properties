@@ -313,14 +313,14 @@
     // Pre-launch notify modal: shown on first visit between now and
     // Tuesday July 21 9:00 PT. User enters their email and clicks
     // "Notify Me" to be programmatically added to the waitlist on
-    // govhub.live (no auth required). Dismissed via Cancel or Escape.
+    // hub.themetalayer.org (no auth required). Dismissed via Cancel or Escape.
     // Once submitted or dismissed, state is stored in localStorage so
     // it appears only once per browser.
     (function () {
       var STORAGE_KEY = 'dp-book-pre-challenge-modal-seen-v1';
       var CUTOFF_PT = '2026-07-21T09:00:00-07:00';
       var WAITLIST_ID = '4060df95-6ffc-414e-921f-9ac5eeac6b2e';
-      var WAITLIST_API = 'https://govhub.live/api/waitlists/' + WAITLIST_ID + '/join-email/';
+      var WAITLIST_API = 'https://hub.themetalayer.org/api/waitlists/' + WAITLIST_ID + '/join-email/';
 
       var NOW = new Date();
       var CUTOFF = new Date(CUTOFF_PT);

@@ -40,7 +40,7 @@ Runs on port **3005** via PM2 process `desirableproperties`.
 
 | Variable | Default |
 |----------|---------|
-| `GOVHUB_BASE_URL` | `https://govhub.live` |
+| `GOVHUB_BASE_URL` | `https://hub.themetalayer.org` |
 | `GOVHUB_METAWEB_LAYER_ID` | The Metaweb layer UUID |
 
 Set in `ecosystem.config.js` for PM2.

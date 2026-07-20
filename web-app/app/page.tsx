@@ -1181,7 +1181,7 @@ export default function DesirablePropertiesApp() {
         <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4 text-left">
           <p className="text-blue-200">
             <strong>Notice:</strong> This site preserves and organizes community contributions from the Second Meta-Layer Call for Input. 
-            Current Desirable Property development, stewardship, and governance now occur through the <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline font-semibold">Desirable Properties Challenge</a> and <a href="https://govhub.live" className="text-cyan-400 hover:underline font-semibold">Gov Hub</a>.
+            Current Desirable Property development, stewardship, and governance now occur through the <a href="https://desirableproperties.org" className="text-cyan-400 hover:underline font-semibold">Desirable Properties Challenge</a> and <a href="https://hub.themetalayer.org" className="text-cyan-400 hover:underline font-semibold">Gov Hub</a>.
           </p>
         </div>
       </div>

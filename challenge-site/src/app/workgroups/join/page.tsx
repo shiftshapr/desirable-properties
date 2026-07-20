@@ -93,12 +93,12 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Can't open Gov Hub? (connection or security error)",
-    a: 'Join and Nominate take you to govhub.live. If you see “This site can’t provide a secure connection” or ERR_SSL_PROTOCOL_ERROR, the link is usually fine – something on your network is interfering with HTTPS. If it works on cellular but not Wi‑Fi, the problem is your home router or ISP, not Gov Hub.',
+    a: 'Join and Nominate take you to hub.themetalayer.org (Gov Hub). If you see “This site can’t provide a secure connection” or ERR_SSL_PROTOCOL_ERROR, the link is usually fine – something on your network is interfering with HTTPS. If it works on cellular but not Wi‑Fi, the problem is your home router or ISP, not Gov Hub.',
     steps: [
       'Quick check: on the same device, turn off Wi‑Fi and try again on cellular. If that works, focus on your home network (steps below).',
-      'Confirm the address bar shows https://govhub.live/... (not the raw IP address).',
+      'Confirm the address bar shows https://hub.themetalayer.org/... (not the raw IP address).',
       'Change your router or device DNS to 1.1.1.1 or 8.8.8.8 (some ISP or filter DNS returns bad answers that break HTTPS).',
-      'Check for Pi-hole, AdGuard Home, NextDNS, or router “security” / parental controls that may block or rewrite govhub.live.',
+      'Check for Pi-hole, AdGuard Home, NextDNS, or router “security” / parental controls that may block or rewrite Gov Hub hostnames.',
       'Reboot your modem and router, then flush DNS (Windows: ipconfig /flushdns; Chrome: chrome://net-internals/#dns → Clear host cache).',
       'If it still fails only on Wi‑Fi, try another browser or disable VPN and antivirus HTTPS scanning – then contact your ISP if nothing else helps.',
     ],
