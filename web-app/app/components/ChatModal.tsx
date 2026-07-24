@@ -1,7 +1,14 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle, Copy, Check } from 'lucide-react';
+import { X, Send, MessageCircle, Copy, Check, Paperclip } from 'lucide-react';
+import {
+  HERMES_DOC_ACCEPT,
+  HERMES_DOC_MAX_COUNT,
+  type PendingHermesDocument,
+  readHermesDocument,
+  toDocumentPayload,
+} from '../../lib/hermesDocuments';
 
 interface ChatMessage {
   id: string;
@@ -9,6 +16,7 @@ interface ChatMessage {
   sender: 'user' | 'assistant';
   timestamp: Date;
   submissionData?: ParsedSubmissionData;
+  attachments?: string[];
 }
 
 interface ParsedSubmissionData {
@@ -140,15 +148,18 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to Gov Hub proposals, and helping shape stronger contributions. What would you like to explore?",
+      text: "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to Gov Hub proposals, and helping shape stronger contributions. You can upload .txt, .md, .pdf, or .docx files for review. What would you like to explore?",
       sender: 'assistant',
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
+  const [attachments, setAttachments] = useState<PendingHermesDocument[]>([]);
+  const [attachError, setAttachError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -158,18 +169,44 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
     scrollToBottom();
   }, [messages]);
 
+  const onFilesSelected = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setAttachError(null);
+    const next = [...attachments];
+    for (const file of Array.from(files)) {
+      if (next.length >= HERMES_DOC_MAX_COUNT) {
+        setAttachError(`Maximum ${HERMES_DOC_MAX_COUNT} documents per message`);
+        break;
+      }
+      try {
+        next.push(await readHermesDocument(file));
+      } catch (err) {
+        setAttachError(err instanceof Error ? err.message : 'Could not read file');
+      }
+    }
+    setAttachments(next);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+    const text = inputMessage.trim();
+    if ((!text && attachments.length === 0) || isLoading) return;
+
+    const attachmentNames = attachments.map((doc) => doc.name);
+    const displayText = text || `Uploaded ${attachmentNames.join(', ')} for review`;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      text: inputMessage,
+      text: displayText,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      attachments: attachmentNames.length ? attachmentNames : undefined,
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
+    const docsToSend = attachments;
+    setAttachments([]);
     setIsLoading(true);
 
     try {
@@ -179,7 +216,8 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: inputMessage,
+          message: text,
+          documents: toDocumentPayload(docsToSend),
           history: Array.isArray(messages) ? messages.map(msg => ({
             text: msg.text,
             sender: msg.sender
@@ -208,7 +246,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
       } else {
         const errorMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
-          text: 'Sorry, I encountered an error. Please try again.',
+          text: data.error || 'Sorry, I encountered an error. Please try again.',
           sender: 'assistant',
           timestamp: new Date()
         };
@@ -279,6 +317,11 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
                 }`}
               >
                 <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                {message.attachments?.length ? (
+                  <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
+                    Attached: {message.attachments.join(', ')}
+                  </p>
+                ) : null}
                 <p className={`text-xs mt-1 ${
                   message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
                 }`}>
@@ -324,19 +367,54 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
 
         {/* Input */}
         <div className="p-4 border-t">
+          {attachments.length > 0 && (
+            <ul className="mb-2 flex flex-wrap gap-2">
+              {attachments.map((doc) => (
+                <li key={doc.id} className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
+                  <span className="max-w-[180px] truncate">{doc.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => setAttachments((prev) => prev.filter((d) => d.id !== doc.id))}
+                    className="text-gray-400 hover:text-gray-700"
+                    aria-label={`Remove ${doc.name}`}
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {attachError ? <p className="mb-2 text-xs text-red-600">{attachError}</p> : null}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={HERMES_DOC_ACCEPT}
+            multiple
+            className="hidden"
+            onChange={(e) => onFilesSelected(e.target.files)}
+          />
           <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+              title="Upload .txt, .md, .pdf, or .docx"
+            >
+              <Paperclip className="h-4 w-4" />
+            </button>
             <textarea
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask Hermes about Desirable Properties, tensions between DPs, or strengthening a proposal…"
+              placeholder="Ask Hermes about Desirable Properties, tensions between DPs, or upload a draft for review…"
               className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               rows={2}
               disabled={isLoading}
             />
             <button
               onClick={sendMessage}
-              disabled={!inputMessage.trim() || isLoading}
+              disabled={(!inputMessage.trim() && attachments.length === 0) || isLoading}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <Send className="h-4 w-4" />

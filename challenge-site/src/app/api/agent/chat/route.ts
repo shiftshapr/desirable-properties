@@ -21,6 +21,7 @@ export async function POST(request: Request) {
         dpFocus: body.dpFocus ?? null,
         surface: body.surface || 'desirableproperties.org/agent',
         sessionId: body.sessionId || null,
+        documents: body.documents || [],
       }),
       signal: AbortSignal.timeout(95000),
     });
