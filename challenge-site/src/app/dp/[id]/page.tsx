@@ -7,7 +7,12 @@ import {
   fetchChallengeWorkgroups,
   govhubUrl,
 } from '@/lib/govhub';
-import { loadDpProvenance, dpInscriptionUrl, loadPciProvenanceForDp } from '@/lib/dpProvenance';
+import {
+  loadDpProvenance,
+  dpInscriptionUrl,
+  dpPdfDownloadUrl,
+  loadPciProvenanceForDp,
+} from '@/lib/dpProvenance';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 300;
@@ -38,6 +43,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
   const draftHref = workgroup?.document_href ? govhubUrl(workgroup.document_href) : null;
   const workgroupHref = workgroup?.slug ? govhubUrl(`/workgroups/${workgroup.slug}/`) : null;
   const onchainDraftHref = dpInscriptionUrl(dp.id);
+  const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -126,15 +132,35 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                       {draftRef}
                     </a>
                   )}
-                  {readHref && (
-                    <a
-                      href={readHref}
-                      className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Read on Gov Hub
-                    </a>
+                  {(readHref || pdfDownloadHref) && (
+                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                      {readHref ? (
+                        <a
+                          href={readHref}
+                          className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                        >
+                          Read on Gov Hub
+                        </a>
+                      ) : (
+                        <a
+                          href={govhubUrl('/doc/all/')}
+                          className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+                        >
+                          Browse drafts on Gov Hub
+                        </a>
+                      )}
+                      {pdfDownloadHref && (
+                        <a
+                          href={pdfDownloadHref}
+                          download
+                          className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+                        >
+                          Download ML-Draft PDF
+                        </a>
+                      )}
+                    </div>
                   )}
-                  {!draftHref && (
+                  {!readHref && !pdfDownloadHref && !draftHref && (
                     <a
                       href={govhubUrl('/doc/all/')}
                       className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"

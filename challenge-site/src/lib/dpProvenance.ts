@@ -89,6 +89,14 @@ export function dpInscriptionUrl(dpId: string | null | undefined): string | null
   return inscriptionUrl(id);
 }
 
+/** Public ML-Draft PDF download for a DP (served from /public/downloads/dp/). */
+export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
+  if (!dpId) return null;
+  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
+  if (!/^DP\d+$/.test(normalized)) return null;
+  return `/downloads/dp/${normalized.toLowerCase()}.pdf`;
+}
+
 export function loadAllDpInscriptions(): Record<string, string> {
   return dpInscriptionData?.by_dp_id ?? {};
 }
