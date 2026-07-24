@@ -13,10 +13,12 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         PORT: 3000,
+        HERMES_CHAT_URL: "http://127.0.0.1:8790",
       },
       env_production: {
         NODE_ENV: "production",
         PORT: 3000,
+        HERMES_CHAT_URL: "http://127.0.0.1:8790",
       },
       instances: 1,
       exec_mode: "fork",

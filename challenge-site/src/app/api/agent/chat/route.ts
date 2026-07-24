@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         message: body.message,
         history: body.history || [],
         dpFocus: body.dpFocus ?? null,
-        surface: body.surface || 'app.themetalayer.org',
+        surface: body.surface || 'desirableproperties.org/agent',
         sessionId: body.sessionId || null,
       }),
       signal: AbortSignal.timeout(95000),
@@ -33,11 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({
-      response: data.response,
-      source: data.source || 'hermes',
-      agent: 'hermes',
-    });
+    return NextResponse.json(data);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Chat request failed';
     return NextResponse.json({ error: message }, { status: 500 });

@@ -140,7 +140,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: "Hello! I'm here to help you with your Meta-Layer submission. I can assist with understanding Desirable Properties, writing your submission, and answering questions about the Meta-Layer Initiative. What would you like help with?",
+      text: "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to Gov Hub proposals, and helping shape stronger contributions. What would you like to explore?",
       sender: 'assistant',
       timestamp: new Date()
     }
@@ -253,7 +253,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
           <div className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-blue-600" />
             <h2 className="text-lg font-semibold text-gray-900">
-              Meta-Layer Assistant
+              Hermes — Desirable Properties
             </h2>
           </div>
           <button
@@ -329,7 +329,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask me about Desirable Properties, submission guidelines, or anything Meta-Layer related..."
+              placeholder="Ask Hermes about Desirable Properties, tensions between DPs, or strengthening a proposal…"
               className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               rows={2}
               disabled={isLoading}
