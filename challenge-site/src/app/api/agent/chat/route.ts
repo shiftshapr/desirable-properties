@@ -1,18 +1,15 @@
 import { NextResponse } from 'next/server';
-
-const HERMES_CHAT_URL = (process.env.HERMES_CHAT_URL || 'http://127.0.0.1:8790').replace(/\/$/, '');
-const HERMES_CHAT_SECRET = process.env.HERMES_CHAT_SECRET || process.env.METAWEB_OPS_SECRET || '';
+import { readSession } from '@/lib/auth-session';
+import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
+import { getHermesChatUrl } from '@/lib/web3auth-config';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const session = await readSession();
 
-    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (HERMES_CHAT_SECRET) {
-      headers['X-Hermes-Chat-Secret'] = HERMES_CHAT_SECRET;
-    }
-
-    const upstream = await fetch(`${HERMES_CHAT_URL}/api/dp/chat`, {
+    const headers = hermesUpstreamHeaders();
+    const upstream = await fetch(`${getHermesChatUrl()}/api/dp/chat`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -21,6 +18,10 @@ export async function POST(request: Request) {
         dpFocus: body.dpFocus ?? null,
         surface: body.surface || 'desirableproperties.org/agent',
         sessionId: body.sessionId || null,
+        threadId: body.threadId || null,
+        verifierId: session?.verifierId || null,
+        displayName: session?.displayName || null,
+        govHubUserId: session?.userId || null,
         documents: body.documents || [],
       }),
       signal: AbortSignal.timeout(95000),
