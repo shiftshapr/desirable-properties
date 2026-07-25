@@ -2,15 +2,15 @@
   "meta": {
     "current_draft_version": "0.77",
     "target_version": "1.0",
-    "book_launch_date": "2026-09-18T09:00:00-07:00",
+    "book_launch_date": "2026-09-16T09:00:00-07:00",
     "book_launch_title": "Desirable Properties book & Ordinal edition"
   },
   "milestones": [
     {
       "id": "kickoff-2024",
       "dateLabel": "September 16, 2024",
-      "startDate": "2024-09-18",
-      "endDate": "2024-09-18",
+      "startDate": "2024-09-16",
+      "endDate": "2024-09-16",
       "title": "Challenge kickoff",
       "description": "Internet pioneer Vint Cerf asked what desirable properties a new Coordination Layer above today's Web should possess–launching the Meta-Layer Initiative's global inquiry.",
       "href": "/about#challenge",
@@ -99,8 +99,8 @@
     {
       "id": "book-launch",
       "dateLabel": "September 16, 2026 · 9:00 AM Pacific",
-      "startDate": "2026-09-18",
-      "endDate": "2026-09-18",
+      "startDate": "2026-09-16",
+      "endDate": "2026-09-16",
       "title": "Desirable Properties Book & Monument launch",
       "description": "Launch of the online Desirable Properties book and permanent Ordinal edition–preserving the first mature community-developed version as part of the Digital Monument.",
       "href": "https://desirableproperties.org/book",
@@ -109,8 +109,8 @@
     {
       "id": "meta-layer-summit",
       "dateLabel": "September 16, 2026",
-      "startDate": "2026-09-18",
-      "endDate": "2026-09-18",
+      "startDate": "2026-09-16",
+      "endDate": "2026-09-16",
       "title": "Meta-Layer Summit",
       "description": "Join everyone committed to building a more trustworthy Internet, including system thinkers, community organizers, civic innovators, researchers, and prosocial technologists. Explore the ideas, technologies, and collaborations shaping the Meta-Layer, a new civic infrastructure for trust, context, and human agency in the age of AI. Help shape the future of the Internet with people working across technology, governance, and civil society.",
       "href": "https://luma.com/wfi1z9lv",

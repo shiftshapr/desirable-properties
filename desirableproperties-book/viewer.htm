@@ -623,6 +623,49 @@
       text-decoration: underline;
     }
 
+    .chapter-downloads {
+      max-width: 680px;
+      margin: 22px auto 0;
+      padding: 14px 16px;
+      border: 1px solid var(--border, rgba(212, 175, 55, 0.22));
+      border-radius: 8px;
+      background: var(--accent-soft, rgba(212, 175, 55, 0.08));
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 16px;
+    }
+    .chapter-downloads .dl-copy {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      flex: 1 1 220px;
+    }
+    .chapter-downloads .dl-copy strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .chapter-downloads a.dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .chapter-downloads a.dl-btn:hover {
+      background: var(--accent);
+      color: #0d1117;
+    }
+
     /* Loading state from dp-loading.js */
     .dp-loading {
       display: flex;
@@ -934,9 +977,9 @@
           titleText = 'Introduction';         // full title, aligned with the others
         } else {
           idLabel = dp;
-          // Strip the leading "DP1 – " or "DP1 - " prefix from the label so it
-          // doesn't repeat the .dp-toc-id chip.
-          titleText = (r.label || '').replace(/^DP\d+\s*[–-]\s*/i, '');
+          // Strip the leading "DP1 – " / "DP1 - " / "DP1: " prefix from the
+          // label so it doesn't repeat the .dp-toc-id chip.
+          titleText = (r.label || '').replace(/^DP\d+\s*[–\-:]\s*/i, '');
         }
         return (
           '<li>' +
@@ -1061,10 +1104,13 @@
         }
 
         // Unordered list – also accept up to 3 leading spaces (GFM spec).
+        // Blank lines between items are tolerated (common in ordinal exports).
         const UL_RE = /^(?: {0,3})[-*]\s+/;
         if (UL_RE.test(line)) {
           const items = [];
-          while (i < lines.length && UL_RE.test(lines[i])) {
+          while (i < lines.length) {
+            while (i < lines.length && !lines[i].trim()) i++;
+            if (i >= lines.length || !UL_RE.test(lines[i])) break;
             items.push('<li>' + renderInlineMd(lines[i].replace(/^(?: {0,3})[-*]\s+/, '')) + '</li>');
             i++;
           }
@@ -1074,12 +1120,14 @@
 
         // Ordered list – also accept backslash-escaped periods (1\. Foo)
         // which ordinals use to suppress list interpretation. Strip the marker.
-        // Up to 3 leading spaces are tolerated (GFM spec).
+        // Up to 3 leading spaces are tolerated (GFM spec). Blank lines OK.
         const OL_RE = /^(?: {0,3})(?:\d+\\.|\d+\.)\s+/;
         const OL_STRIP_RE = /^(?: {0,3})(?:\d+\\.|\d+\.)\s*/;
         if (OL_RE.test(line)) {
           const items = [];
-          while (i < lines.length && OL_RE.test(lines[i])) {
+          while (i < lines.length) {
+            while (i < lines.length && !lines[i].trim()) i++;
+            if (i >= lines.length || !OL_RE.test(lines[i])) break;
             const txt = lines[i].replace(OL_STRIP_RE, '');
             items.push('<li>' + renderInlineMd(txt) + '</li>');
             i++;
@@ -1138,16 +1186,30 @@
      * reads naturally while still letting the renderer do the right thing.
      */
     function normalizeOrdinalMarkdown(md) {
-      return md
-        // Strip backslash escapes from "N\. " or "N\.N\. " style markers.
-        // This matches the GFM escaped-period pattern: "\." → ".".
-        .replace(/(\d+)\\\./g, '$1.')
-        // Also handle other common ordinal backslash escapes that just look ugly:
-        .replace(/\\\*/g, '*')      // "\*" → "*" (escaped italic/list)
-        .replace(/\\_/g, '_')       // "\_" → "_" (escaped bold/underline)
-        .replace(/\\\[/g, '[')      // "\[" → "[" (escaped link start)
-        .replace(/\\\]/g, ']')      // "\]" → "]" (escaped link end)
-        .replace(/\\`/g, '`');      // "\`" → "`" (escaped code)
+      if (md == null || md === '') return md;
+      // Ordinal / export pipelines often backslash-escape markdown markers
+      // (\\-, \\##, \\*\\*, 1\\.) so they render as literal text. Undo those
+      // first so headings and lists parse. Line-oriented for list/heading
+      // markers; then a light pass for remaining inline escapes.
+      const lines = String(md).replace(/\r\n/g, '\n').split('\n');
+      const out = lines.map(function (line) {
+        let ln = line;
+        ln = ln.replace(/^\\+(#{1,6})\s*/, '$1 ');
+        ln = ln.replace(/^\\+-\s+/, '- ');
+        ln = ln.replace(/^\\+\*\s+/, '* ');
+        ln = ln.replace(/^(\d+)\\\.\s+/, '$1. ');
+        ln = ln.replace(/\\\*\\\*/g, '**');
+        ln = ln.replace(/\\\*([^*\n]+?)\\\*/g, '*$1*');
+        ln = ln.replace(/\\_/g, '_');
+        ln = ln.replace(/\\\[/g, '[').replace(/\\\]/g, ']');
+        ln = ln.replace(/\\`/g, '`');
+        ln = ln.replace(/\\-/g, '-');
+        ln = ln.replace(/\\#/g, '#');
+        return ln;
+      });
+      return out.join('\n')
+        // Remaining "N\. " mid-line (e.g. nested "1.1\.")
+        .replace(/(\d+)\\\./g, '$1.');
     }
 
     function renderChapterMarkdown(md) {
@@ -1214,6 +1276,38 @@
       };
     }
 
+    /** Working composite draft version used in download filenames (ordinal + local). */
+    const COMPOSITE_VERSION = '0.77X';
+
+    function compositePdfFilename(r) {
+      const dp = (r && r.dp) ? String(r.dp).toUpperCase() : '';
+      if (!/^DP\d+$/.test(dp)) return null;
+      return dp + '-' + COMPOSITE_VERSION + '.pdf';
+    }
+
+    function buildChapterDownloadHtml(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) return '';
+      const r = RAILS[idx];
+      const fname = compositePdfFilename(r);
+      if (!fname) return '';
+      const href = '/downloads/dp/' + fname;
+      const sourceNote = r.localOverride
+        ? 'Composite PDF (on-chain ordinal + local updates)'
+        : 'Chapter PDF (current working draft)';
+      return (
+        '<div class="chapter-downloads" data-rail="' + escapeHtml(r.railKey) + '">' +
+          '<div class="dl-copy">' +
+            '<strong>' + escapeHtml(fname) + '</strong><br>' +
+            escapeHtml(sourceNote) + ' · version ' + escapeHtml(COMPOSITE_VERSION) +
+          '</div>' +
+          '<a class="dl-btn" href="' + escapeHtml(href) + '" download="' + escapeHtml(fname) + '">' +
+            'Download PDF' +
+          '</a>' +
+        '</div>'
+      );
+    }
+
     function buildInscriptionRailHtml(rail) {
       const idx = RAIL_INDEX[rail];
       if (idx == null) return '';
@@ -1274,9 +1368,10 @@
         const result = await loadChapterBody(rail);
         bodyHtml = '<div class="book-content" data-dp-content-root="1">' + result.html + '</div>';
         const navHtml = buildNavBarHtml(rail);
+        const downloadHtml = buildChapterDownloadHtml(rail);
         const metaHtml = buildInscriptionRailHtml(rail);
 
-        contentEl.innerHTML = bodyHtml + navHtml + metaHtml;
+        contentEl.innerHTML = bodyHtml + downloadHtml + navHtml + metaHtml;
 
         // Wire up prev/next buttons.
         const prevBtn = document.getElementById('btnPrev');

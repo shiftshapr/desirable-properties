@@ -29,6 +29,26 @@ if [ -d "$PAGES_SRC/json" ]; then
   # Copy the book-pages manifest if newer; do not clobber ordinal-only files.
   cp -u "$PAGES_SRC/json/"*.json "$DEST/json/" 2>/dev/null || true
 fi
+# Local chapter rails (Live-mode overrides) + composite PDF downloads.
+if [ -d "$PAGES_SRC/content" ]; then
+  mkdir -p "$DEST/content"
+  rsync -a "$PAGES_SRC/content/" "$DEST/content/"
+fi
+if [ -d "$SRC/content" ]; then
+  mkdir -p "$DEST/content"
+  rsync -a "$SRC/content/" "$DEST/content/"
+fi
+if [ -d "$PAGES_SRC/downloads" ]; then
+  mkdir -p "$DEST/downloads"
+  rsync -a "$PAGES_SRC/downloads/" "$DEST/downloads/"
+fi
+# Prefer freshly generated composites when the generator is available.
+if [ -x "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" ] || [ -f "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" ]; then
+  python3 "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" || echo "NOTE: composite PDF generation skipped/failed"
+  if [ -d "$PAGES_SRC/downloads" ]; then
+    rsync -a "$PAGES_SRC/downloads/" "$DEST/downloads/"
+  fi
+fi
 
 if command -v nginx >/dev/null; then
   if sudo -n true 2>/dev/null; then

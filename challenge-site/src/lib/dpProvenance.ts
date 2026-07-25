@@ -89,12 +89,24 @@ export function dpInscriptionUrl(dpId: string | null | undefined): string | null
   return inscriptionUrl(id);
 }
 
-/** Public ML-Draft PDF download for a DP (served from /public/downloads/dp/). */
+/** Composite working-draft version stamped into downloadable PDF filenames. */
+export const DP_COMPOSITE_PDF_VERSION = '0.77X';
+
+/** Public composite PDF download for a DP (served from /public/downloads/dp/). */
 export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
   if (!dpId) return null;
   const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
   if (!/^DP\d+$/.test(normalized)) return null;
-  return `/downloads/dp/${normalized.toLowerCase()}.pdf`;
+  // Versioned composite (ordinal + local updates), e.g. DP13-0.77X.pdf
+  return `/downloads/dp/${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
+}
+
+/** Suggested download filename for the composite DP PDF. */
+export function dpPdfDownloadFilename(dpId: string | null | undefined): string | null {
+  if (!dpId) return null;
+  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
+  if (!/^DP\d+$/.test(normalized)) return null;
+  return `${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
 }
 
 export function loadAllDpInscriptions(): Record<string, string> {

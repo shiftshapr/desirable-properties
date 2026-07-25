@@ -198,15 +198,16 @@
         },
         {
             "railKey": "dp13",
-            "label": "DP13 – AI Containment",
+            "label": "DP13: AI Containment",
             "dp": "DP13",
             "mlNumber": "ML-Draft-004",
             "inscriptionId": "e8738f646bc22112ff7681ac8aba99cb5206f5d153286a8fa337b65c57cc4205i0",
+            "localOverride": "/content/local/dp13.md",
             "block": 954019,
             "timestamp": 1780081453,
             "status": "active",
             "reinscribable": true,
-            "reason": "DP chapter from the Desirable Properties satplication"
+            "reason": "DP chapter from the Desirable Properties satplication – local rail adds DP13: title + cleaned markdown"
         },
         {
             "railKey": "dp14",
