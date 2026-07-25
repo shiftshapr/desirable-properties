@@ -5,6 +5,7 @@ import { X, Send, MessageCircle, Copy, Check, Paperclip } from 'lucide-react';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
+  HERMES_DOC_TYPES_LABEL,
   type PendingHermesDocument,
   readHermesDocument,
   toDocumentPayload,
@@ -148,7 +149,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to Gov Hub proposals, and helping shape stronger contributions. You can upload .txt, .md, .pdf, or .docx files for review. What would you like to explore?",
+      text: "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to Gov Hub proposals, and helping shape stronger contributions. You can upload text, markdown, HTML, PDF, or DOCX files for review. What would you like to explore?",
       sender: 'assistant',
       timestamp: new Date()
     }
@@ -399,7 +400,7 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT}
               className="border border-gray-300 rounded-lg px-3 py-2 text-gray-600 hover:bg-gray-50 disabled:opacity-50"
-              title="Upload .txt, .md, .pdf, or .docx"
+              title={`Upload ${HERMES_DOC_TYPES_LABEL}`}
             >
               <Paperclip className="h-4 w-4" />
             </button>

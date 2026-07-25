@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
+  HERMES_DOC_TYPES_LABEL,
   type PendingHermesDocument,
   readHermesDocument,
   toDocumentPayload,
@@ -25,7 +26,7 @@ interface HermesChatProps {
 }
 
 const INTRO =
-  "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to open Gov Hub proposals, and helping shape stronger contributions. You can also upload .txt, .md, .pdf, or .docx files for review. What DP or governance question is on your mind?";
+  "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to open Gov Hub proposals, and helping shape stronger contributions. You can upload text, markdown, HTML, PDF, or DOCX files for review. What DP or governance question is on your mind?";
 
 export default function HermesChat({
   apiPath = '/api/agent/chat',
@@ -251,7 +252,7 @@ export default function HermesChat({
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT}
               className="rounded-xl border border-slate-700 px-4 py-3 text-sm text-slate-200 hover:border-cyan-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
-              title="Upload .txt, .md, .pdf, or .docx"
+              title={`Upload ${HERMES_DOC_TYPES_LABEL}`}
             >
               Attach
             </button>

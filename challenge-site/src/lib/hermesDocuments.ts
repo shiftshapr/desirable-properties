@@ -1,4 +1,16 @@
-export const HERMES_DOC_ACCEPT = '.txt,.md,.markdown,.pdf,.docx';
+export const HERMES_DOC_EXTENSIONS = [
+  '.txt',
+  '.text',
+  '.md',
+  '.markdown',
+  '.html',
+  '.htm',
+  '.pdf',
+  '.docx',
+] as const;
+
+export const HERMES_DOC_ACCEPT = HERMES_DOC_EXTENSIONS.join(',');
+export const HERMES_DOC_TYPES_LABEL = 'text, markdown, HTML, PDF, or DOCX';
 export const HERMES_DOC_MAX_BYTES = 2 * 1024 * 1024;
 export const HERMES_DOC_MAX_COUNT = 3;
 
@@ -19,9 +31,8 @@ export async function readHermesDocument(file: File): Promise<PendingHermesDocum
   }
 
   const ext = file.name.toLowerCase().match(/(\.[a-z0-9]+)$/)?.[1] || '';
-  const allowed = ['.txt', '.md', '.markdown', '.pdf', '.docx'];
-  if (!allowed.includes(ext)) {
-    throw new Error(`${file.name}: use .txt, .md, .pdf, or .docx`);
+  if (!HERMES_DOC_EXTENSIONS.includes(ext as (typeof HERMES_DOC_EXTENSIONS)[number])) {
+    throw new Error(`${file.name}: use ${HERMES_DOC_TYPES_LABEL}`);
   }
 
   const buffer = await file.arrayBuffer();
