@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import HermesMarkdown from '@/components/HermesMarkdown';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -187,7 +188,11 @@ export default function HermesChat({
                     : 'border border-slate-800 bg-slate-900 text-slate-100'
                 }`}
               >
-                <p className="whitespace-pre-wrap">{message.text}</p>
+                {message.sender === 'assistant' ? (
+                  <HermesMarkdown text={message.text} variant="dark" />
+                ) : (
+                  <p className="whitespace-pre-wrap">{message.text}</p>
+                )}
                 {message.attachments?.length ? (
                   <p className="mt-2 text-[11px] opacity-80">
                     Attached: {message.attachments.join(', ')}

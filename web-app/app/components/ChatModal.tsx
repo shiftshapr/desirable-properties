@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { X, Send, MessageCircle, Copy, Check, Paperclip } from 'lucide-react';
+import HermesMarkdown from './HermesMarkdown';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -317,7 +318,11 @@ export default function ChatModal({ isOpen, onClose, onCopySubmission }: ChatMod
                     : 'bg-gray-100 text-gray-900'
                 }`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                {message.sender === 'assistant' ? (
+                  <HermesMarkdown text={message.text} variant="light" />
+                ) : (
+                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                )}
                 {message.attachments?.length ? (
                   <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
                     Attached: {message.attachments.join(', ')}
