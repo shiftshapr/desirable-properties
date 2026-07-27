@@ -630,6 +630,55 @@
       text-decoration: underline;
     }
 
+    .not-onchain-notice {
+      max-width: 680px;
+      margin: 48px auto;
+      padding: 28px 24px;
+      border: 1px solid var(--accent, rgba(212, 175, 55, 0.35));
+      border-radius: 10px;
+      background: var(--accent-soft, rgba(212, 175, 55, 0.08));
+      text-align: center;
+    }
+    .not-onchain-notice h2 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+    .not-onchain-notice p {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .not-onchain-notice .not-onchain-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .not-onchain-notice .not-onchain-btn:hover {
+      background: var(--accent-soft, rgba(212, 175, 55, 0.12));
+    }
+    .not-onchain-notice a.govhub-link {
+      display: inline-block;
+      margin-left: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .not-onchain-notice a.govhub-link:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
     .chapter-downloads {
       max-width: 680px;
       margin: 22px auto 0;
@@ -1287,6 +1336,30 @@
       return normalizeOrdinalMarkdown(await r.text());
     }
 
+    function railIsDraftOnly(r) {
+      return !!(r && !r.inscriptionId && r.localOverride);
+    }
+
+    function buildNotOnchainYetHtml(rail) {
+      const idx = RAIL_INDEX[rail];
+      if (idx == null) return '<div class="not-onchain-notice"><h2>Not onchain yet</h2></div>';
+      const r = RAILS[idx];
+      const label = escapeHtml(r.dp || r.label || rail);
+      const ml = r.mlNumber ? escapeHtml(r.mlNumber) : 'working draft';
+      const govhubHref = 'https://hub.themetalayer.org/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
+      return (
+        '<div class="not-onchain-notice" role="status">' +
+          '<h2>Not onchain yet</h2>' +
+          '<p>' +
+            label + ' is a draft-only chapter (' + ml + ') and has not been inscribed on Bitcoin yet. ' +
+            'Switch to <strong>Live</strong> mode to read the working draft, or view it on Gov Hub.' +
+          '</p>' +
+          '<button type="button" id="btnSwitchLive" class="not-onchain-btn">Switch to Live mode</button>' +
+          '<a class="govhub-link" href="' + govhubHref + '" target="_blank" rel="noopener">Gov Hub draft →</a>' +
+        '</div>'
+      );
+    }
+
     async function loadChapterBody(rail) {
       const idx = RAIL_INDEX[rail];
       if (idx == null) throw new Error('Unknown rail: ' + rail);
@@ -1296,12 +1369,18 @@
         const md = await fetchLocalOverride(r.localOverride);
         return { html: renderChapterMarkdown(md), source: 'local' };
       }
-      // Onchain: always fetch (Live w/o override falls through to onchain).
-      if (!r.inscriptionId) {
-        throw new Error('No inscriptionId for rail: ' + rail);
+
+      if (r.inscriptionId) {
+        const md = await fetchOnchainMarkdown(r.inscriptionId);
+        return { html: renderChapterMarkdown(md), source: 'onchain' };
       }
-      const md = await fetchOnchainMarkdown(r.inscriptionId);
-      return { html: renderChapterMarkdown(md), source: 'onchain' };
+
+      // Onchain mode: no inscription — show notice instead of error or local fallback.
+      if (!currentModeIsLive()) {
+        return { html: buildNotOnchainYetHtml(rail), source: 'not-onchain' };
+      }
+
+      throw new Error('No inscriptionId for rail: ' + rail);
     }
 
     function getNeighborRails(rail) {
@@ -1349,18 +1428,29 @@
       const idx = RAIL_INDEX[rail];
       if (idx == null) return '';
       const r = RAILS[idx];
-      if (!r.inscriptionId) return '';
-      const insId = r.inscriptionId;
-      const ordinalsHref = 'https://ordinals.com/inscription/' + insId;
-      const shortId = insId.length > 18 ? insId.slice(0, 14) + '…' + insId.slice(-4) : insId;
-      return (
-        '<div class="ordinal-meta">' +
-          'Inscription: ' +
-          '<a href="' + ordinalsHref + '" target="_blank" rel="noopener">' + escapeHtml(shortId) + '</a>' +
-          (r.mlNumber ? ' · ' + escapeHtml(r.mlNumber) : '') +
-          (r.block ? ' · block ' + r.block : '') +
-        '</div>'
-      );
+      if (r.inscriptionId) {
+        const insId = r.inscriptionId;
+        const ordinalsHref = 'https://ordinals.com/inscription/' + insId;
+        const shortId = insId.length > 18 ? insId.slice(0, 14) + '…' + insId.slice(-4) : insId;
+        return (
+          '<div class="ordinal-meta">' +
+            'Inscription: ' +
+            '<a href="' + ordinalsHref + '" target="_blank" rel="noopener">' + escapeHtml(shortId) + '</a>' +
+            (r.mlNumber ? ' · ' + escapeHtml(r.mlNumber) : '') +
+            (r.block ? ' · block ' + r.block : '') +
+          '</div>'
+        );
+      }
+      if (railIsDraftOnly(r)) {
+        const govhubHref = 'https://hub.themetalayer.org/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
+        return (
+          '<div class="ordinal-meta">' +
+            'Not inscribed · ' + escapeHtml(r.mlNumber || 'draft') +
+            ' · <a href="' + govhubHref + '" target="_blank" rel="noopener">Gov Hub draft</a>' +
+          '</div>'
+        );
+      }
+      return '';
     }
 
     function buildNavBarHtml(rail) {
@@ -1403,9 +1493,13 @@
       try {
         let bodyHtml;
         const result = await loadChapterBody(rail);
-        bodyHtml = '<div class="book-content" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
+        if (result.source === 'not-onchain') {
+          bodyHtml = result.html;
+        } else {
+          bodyHtml = '<div class="book-content" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
+        }
         const navHtml = buildNavBarHtml(rail);
-        const downloadHtml = buildChapterDownloadHtml(rail);
+        const downloadHtml = result.source === 'not-onchain' ? '' : buildChapterDownloadHtml(rail);
         const metaHtml = buildInscriptionRailHtml(rail);
 
         contentEl.innerHTML = bodyHtml + downloadHtml + navHtml + metaHtml;
@@ -1424,6 +1518,10 @@
             const r = nextBtn.getAttribute('data-rail');
             if (r) navigateToRail(r);
           });
+        }
+        const switchLiveBtn = document.getElementById('btnSwitchLive');
+        if (switchLiveBtn) {
+          switchLiveBtn.addEventListener('click', function () { setMode('live'); });
         }
 
         setActiveToc(rail);
@@ -1453,7 +1551,7 @@
       if (liveBtn) liveBtn.classList.toggle('active', currentMode === 'live');
       if (onchainBtn) onchainBtn.classList.toggle('active', currentMode === 'onchain');
 
-      if (currentMode === 'onchain' && currentRail) {
+      if (currentRail) {
         loadChapter(currentRail, { skipUrl: true });
       }
     }
@@ -1546,13 +1644,12 @@
         meta.textContent = '– ' + (introCount + dpCount) + ' chapters';
       }
 
-      // Mode from storage.
+      // Mode from storage (applied after rail is known — see below).
       let savedMode = 'live';
       try {
         const stored = localStorage.getItem(STORAGE_MODE);
         if (stored === 'onchain') savedMode = 'onchain';
       } catch (e) { /* ignore */ }
-      setMode(savedMode);
 
       // Build TOC.
       buildToc();
@@ -1572,6 +1669,14 @@
           rail = 'ml-draft-026';
         }
       }
+
+      // Draft-only chapters (no inscription yet) default to Live mode on first open.
+      const openRail = RAILS[RAIL_INDEX[rail]];
+      if (openRail && railIsDraftOnly(openRail) && savedMode === 'onchain') {
+        savedMode = 'live';
+      }
+      setMode(savedMode);
+
       await loadChapter(rail, { skipUrl: true });
     }
 

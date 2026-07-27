@@ -13739,3 +13739,1649 @@ The Meta-Layer should not merely preserve information.
 It should preserve humanity’s capacity to remain historically intelligible to itself.
 
 ---
+
+<!-- DP23 | Universal Participation & Linguistic Interoperability | draft-only (no inscription) | https://hub.themetalayer.org/doc/draft/ML-Draft-030/ -->
+
+# DP23 – Universal Participation & Linguistic Interoperability
+
+*The Conditions for Shared Global Sensemaking*
+
+## Purpose of This Draft
+This ML-Draft articulates **Desirable Property 23 (DP23)** as a foundational condition for universal participation in the Meta-Layer.
+
+It expands multilingual support beyond interface localization and machine translation to encompass:
+
+- linguistic inclusion
+- cross-language semantic interoperability
+- cultural and contextual integrity
+- community stewardship of language systems
+- equitable participation in global issues
+- traceable multilingual collective sensemaking
+- visible feedback between public contribution and institutional response
+
+DP23 responds to several overlapping needs:
+
+- The need for people to participate without first adopting a dominant language
+- The need for participants to understand contributions made across linguistic boundaries
+- The need to preserve meaning, ambiguity, tone, cultural context, and local knowledge during translation
+- The need to prevent dominant-language communities from disproportionately shaping shared understanding
+- The need for AI systems to reason across languages without treating translation into English or another dominant language as the only path to comprehension
+- The need for communities to inspect, challenge, correct, and govern multilingual AI outputs
+- The need for participants to see how their contributions influenced collective understanding, recommendations, decisions, and action
+
+This draft is intended to guide implementation, governance design, evaluation, community stewardship, and future ML-RFC development.
+
+---
+
+## 1. Problem Statement: Why Translation Alone Is Not Enough
+For most of the Web’s history, language inclusion has been treated as a content-delivery problem.
+
+A page is written in one language. A translation system converts it into another. If the translated text is readable, the problem is assumed to have been solved.
+
+This assumption no longer holds.
+
+Translation can increase access to words while still distorting meaning, flattening cultural context, suppressing minority interpretations, and reinforcing the dominance of languages with the strongest technical and commercial support.
+
+A person may technically be able to read translated content while remaining unable to participate equitably in the process that interprets, organizes, summarizes, and acts upon it.
+
+DP23 begins from a different premise:
+
+> Linguistic access is not achieved when words are merely translated. It is achieved when people can participate, be understood, inspect interpretation, challenge distortion, and influence shared outcomes without surrendering their language or cultural context.
+
+Language is therefore not an optional accessibility feature of the Meta-Layer.
+
+It is part of the participation boundary.
+
+If language determines whose ideas are legible, searchable, classifiable, summarized, or acted upon, language also determines whose knowledge counts.
+
+---
+
+### 1.1 The Limits of Translation-Centric Inclusion
+Translation-centric systems answer a narrow question:
+
+> How can this text be rendered in another language?
+
+They do not adequately address:
+
+- whether the translation preserves the intended meaning
+- whether uncertainty and ambiguity remain visible
+- whether culturally specific concepts have equivalents
+- whether dominant terminology has displaced local framing
+- whether translated contributions remain connected to their originals
+- whether people can challenge machine interpretations
+- whether low-resource languages receive comparable system quality
+- whether multilingual contributions affect summaries and decisions equitably
+- whether readers know when meaning has been inferred rather than translated
+- whether contributors can see what happened after they participated
+
+A fluent translation can still be epistemically misleading.
+
+A grammatically correct summary can still erase disagreement.
+
+A multilingual interface can still reproduce linguistic hierarchy if the underlying reasoning, clustering, moderation, and governance systems privilege a dominant language.
+
+---
+
+### 1.2 Structural Failure Modes in Today’s Web
+Several structural conditions prevent meaningful global participation:
+
+- **Language silos:** Conversations about the same issue remain separated across linguistic communities.
+- **Dominant-language mediation:** Contributions are translated into a dominant language before they become searchable, classifiable, or institutionally visible.
+- **Semantic flattening:** Terms with cultural, legal, spiritual, ecological, historical, or political significance are reduced to approximate equivalents.
+- **Unequal model quality:** High-resource languages receive better translation, moderation, retrieval, and summarization than underrepresented languages.
+- **Invisible uncertainty:** Machine-generated translations appear authoritative even when multiple interpretations are plausible.
+- **Lost provenance:** Readers see translated or summarized claims without an inspectable connection to the original contribution.
+- **Extractive participation:** Institutions collect public input without showing contributors how it was grouped, interpreted, used, or acted upon.
+- **Majority-language amplification:** Views expressed in widely supported languages are easier to search, quote, summarize, and elevate.
+- **Cultural decontextualization:** Local knowledge is separated from the practices, histories, relationships, and worldviews that give it meaning.
+- **Classification bias:** Categories developed in one linguistic or cultural setting are applied globally as if they were neutral.
+- **Synthetic consensus:** AI systems combine multilingual disagreement into a smooth summary that suggests greater agreement than the corpus supports.
+- **Missing constituency blindness:** Systems summarize the people who participated without identifying who was absent, excluded, or unable to participate.
+
+These are not isolated translation errors.
+
+They are systemic properties of digital environments that treat language as a formatting problem rather than a condition of civic agency.
+
+---
+
+### 1.3 DP23 as a Shift in Framing
+DP23 reframes multilingual participation along several axes:
+
+- From **translation** to **linguistic interoperability**
+- From **access to text** to **access to participation**
+- From **dominant-language normalization** to **language-plural reasoning**
+- From **machine authority** to **community-governed interpretation**
+- From **content localization** to **cultural and contextual integrity**
+- From **consultation** to **traceable influence**
+- From **international audiences** to **shared global issue participation**
+- From **one-way communication** to **multilingual collective sensemaking**
+
+Rather than asking only whether content can be translated, DP23 asks:
+
+- Under what conditions can participation remain equitable across languages?
+- How is meaning preserved across linguistic and cultural contexts?
+- Who can challenge interpretations?
+- How are multilingual contributions compared and synthesized?
+- How are missing perspectives made visible?
+- How can contributors trace their influence on collective outcomes?
+
+---
+
+## 2. Threat and Risk Context (Non-Exhaustive)
+DP23 is not defined in opposition to any particular language, institution, country, or technology.
+
+It responds to recurring failure modes that emerge whenever linguistic asymmetry intersects with governance, AI mediation, knowledge production, and large-scale participation.
+
+---
+
+### 2.1 Linguistic Exclusion
+People may be unable to participate because:
+
+- the interface is unavailable in their language
+- contribution rules require a dominant language
+- moderation does not support their language
+- translation quality is too poor for meaningful use
+- required terminology has no agreed equivalent
+- their writing system is not rendered correctly
+- voice, literacy, disability, or device constraints prevent text-based participation
+- institutional staff cannot review their contributions
+
+DP23 treats these conditions as participation failures, not merely incomplete localization.
+
+---
+
+### 2.2 Meaning Distortion
+Translations may change:
+
+- certainty into speculation
+- speculation into certainty
+- criticism into aggression
+- formality into informality
+- sacred language into ordinary terminology
+- collective responsibility into individual responsibility
+- relational concepts into transactional concepts
+- culturally specific identities into externally imposed categories
+
+Distortion may occur without malicious intent.
+
+Machine systems often select a plausible equivalent where the source carries several possible meanings.
+
+DP23 therefore requires ambiguity, uncertainty, and contested terminology to remain visible rather than being silently resolved.
+
+---
+
+### 2.3 Linguistic and Cultural Capture
+A multilingual system can appear inclusive while remaining controlled by:
+
+- dominant-language taxonomies
+- centralized translation providers
+- institutional glossaries
+- commercially supported model languages
+- professional experts disconnected from affected communities
+- political actors able to define preferred terminology
+- platform owners who determine which interpretations are visible
+
+DP23 counters capture by requiring plural terminology, community participation, contestability, version history, and visible governance authority.
+
+---
+
+### 2.4 Epistemic Extraction
+Participants may be invited to contribute experiences, knowledge, and cultural insight without receiving:
+
+- attribution
+- acknowledgment
+- compensation where appropriate
+- visibility into how their contribution was used
+- access to resulting analysis
+- a response from responsible institutions
+- an opportunity to correct interpretation
+- meaningful influence over outcomes
+
+In such cases, multilingual participation becomes a mechanism for extracting knowledge rather than distributing civic power.
+
+DP23 requires visible feedback loops between contribution, synthesis, recommendation, responsibility, response, and action.
+
+---
+
+### 2.5 Automated Misclassification
+AI systems may incorrectly classify a contribution because:
+
+- sarcasm is culturally specific
+- political terminology is context-dependent
+- a local idiom is translated literally
+- categories do not map cleanly between cultures
+- code-switching is mistaken for incoherence
+- dialect is treated as error
+- Indigenous or oral knowledge is forced into institutional categories
+- disagreement with a summary is classified as hostility
+
+Misclassification can affect moderation, visibility, reputation, clustering, and inclusion in summaries.
+
+Participants must therefore be able to correct classifications and inspect their consequences.
+
+---
+
+### 2.6 Synthetic Global Consensus
+Large multilingual corpora create pressure to produce concise summaries.
+
+This can cause systems to:
+
+- collapse differences into shared themes
+- treat repetition as representativeness
+- omit low-frequency perspectives
+- hide unresolved contradictions
+- merge culturally distinct proposals
+- overstate agreement
+- mistake absence of participation for absence of concern
+
+DP23 does not prohibit synthesis.
+
+It requires synthesis to remain traceable, plural, contestable, and explicit about missing participation.
+
+---
+
+### 2.7 Cross-Language Manipulation
+Bad actors may exploit multilingual systems through:
+
+- coordinated messaging across languages
+- translation poisoning
+- strategic mistranslation
+- false claims of cultural authority
+- glossary capture
+- fabricated constituency representation
+- AI-generated submissions at synthetic scale
+- inconsistent narratives targeted at separate language communities
+- deliberate exploitation of weak moderation languages
+
+DP23 works alongside DP1, DP11, DP12, DP13, DP14, DP15, and DP18 to make such behavior attributable, visible, challengeable, and governable.
+
+---
+
+## 3. Core Principles and Scope
+Language is not merely descriptive at the interface layer.
+
+It shapes:
+
+- access
+- discoverability
+- comprehension
+- classification
+- credibility
+- participation
+- representation
+- collective memory
+- institutional responsiveness
+
+Language is therefore a core dimension of civic infrastructure.
+
+If meaning cannot move across linguistic contexts without losing provenance, uncertainty, and contestability, global participation collapses into selective interpretation.
+
+---
+
+## 3.1 Core Principle of DP23
+DP23 establishes universal participation and linguistic interoperability as foundational conditions for shared collective sensemaking in the Meta-Layer.
+
+> Every person should be able to contribute in a language they can meaningfully use, understand the relevant corpus in a language they can meaningfully understand, inspect how interpretation occurred, challenge errors or omissions, and trace how their participation affected collective outcomes.
+
+This principle has several direct implications.
+
+### Language choice is an expression of agency
+Participants should not be required to adopt a dominant language to be considered legible, credible, or relevant.
+
+### Original expression remains canonical
+Translations, classifications, embeddings, clusters, summaries, and recommendations are derived representations.
+
+They must never silently replace the source contribution.
+
+### Translation is contextual, not merely lexical
+Meaning depends on issue, community, culture, history, speaker intent, and situational context.
+
+Translation systems must be able to use issue-specific and community-governed terminology.
+
+### Multilingual AI remains uncertain and contestable
+AI must not conceal ambiguity behind fluent output.
+
+Participants and language stewards must be able to challenge translations, classifications, clusters, and summaries.
+
+### Shared understanding does not require linguistic uniformity
+Participants may inhabit the same issue space while contributing and reading in different languages.
+
+The Meta-Layer should support convergence of attention without forcing convergence of language.
+
+### Participation includes a right to trace influence
+People should be able to see whether their contribution was included, grouped, cited, challenged, incorporated into a recommendation, or left without documented influence.
+
+### Global participation remains issue-specific
+DP23 does not assume every issue requires participation from every person.
+
+It enables appropriately scoped global participation where an issue crosses jurisdictions, populations, ecosystems, generations, or shared human interests.
+
+### Absence must remain visible
+A multilingual corpus cannot be treated as globally representative merely because it includes several languages.
+
+Missing linguistic, cultural, geographic, professional, generational, and affected constituencies must be surfaced.
+
+---
+
+## 4. Linguistic Access as an Entry Condition
+The Meta-Layer should provide the technical and governance conditions required for people to enter an issue space without being excluded by language.
+
+Linguistic access is an entry condition.
+
+It is not a guarantee that participation will be equitable, understood correctly, or acted upon.
+
+Those outcomes require downstream semantic integrity, community oversight, representation analysis, and feedback.
+
+---
+
+### 4.1 Interface Language, Contribution Language, and Reading Language
+DP23 distinguishes at least three language settings:
+
+- **Interface language:** The language used for navigation, controls, instructions, consent, and governance information
+- **Contribution language:** The language or languages used by the participant to express their input
+- **Reading language:** The language or languages in which the participant prefers to review contributions and synthesis
+
+These settings must not be conflated.
+
+A participant may:
+
+- navigate in one language
+- contribute in another
+- read translations in a third
+- review originals in multiple languages
+
+The system should support this plurality without requiring a single global language preference.
+
+---
+
+### 4.2 Unicode and Script Integrity
+The Meta-Layer must preserve:
+
+- writing systems
+- diacritics
+- bidirectional text
+- punctuation
+- line structure
+- non-Latin scripts
+- mixed-language contributions
+- transliteration where participant-selected
+- names and terms that should not be translated
+
+Text normalization must not silently alter identity, meaning, or authorship.
+
+---
+
+### 4.3 Language Detection with Participant Override
+Automated language detection may support usability, indexing, and translation.
+
+It must not be treated as unquestionable.
+
+Participants should be able to:
+
+- confirm detected language
+- correct detection
+- identify mixed-language content
+- specify dialect or regional form where relevant
+- indicate that a contribution should not be translated automatically
+- identify words or names that must remain in the original form
+
+Low-confidence detection must not block participation.
+
+---
+
+### 4.4 Multimodal Linguistic Participation
+DP23 operates in conjunction with DP21.
+
+Participation should not be limited to typed text.
+
+Where feasible, issue spaces should support:
+
+- speech
+- transcription
+- sign-language video
+- image-based contribution
+- captioning
+- audio description
+- transliteration
+- screen-reader compatibility
+- low-bandwidth participation
+- asynchronous voice contribution
+- community-assisted transcription
+
+Multimodality is especially important where literacy, disability, script support, oral tradition, device access, or connectivity would otherwise exclude participation.
+
+---
+
+## 5. Original-Language Integrity and Translation Provenance
+Original contributions are the canonical civic record.
+
+Every derived representation must remain connected to:
+
+- the original contribution
+- the original language
+- the relevant revision
+- the actor who submitted it
+- the translation system or reviewer
+- the model and version used
+- the glossary version applied
+- uncertainty notes
+- corrections and challenges
+- creation and modification timestamps
+
+---
+
+### 5.1 Original and Translation as Paired Views
+Participants should be able to view:
+
+- original only
+- translation only, with clear labeling
+- original and translation side by side
+- translation history
+- alternative translations
+- cultural annotations
+- contested terminology
+
+A translation should never visually masquerade as the original.
+
+---
+
+### 5.2 Translation Confidence and Uncertainty
+Where confidence measures are available, they should be presented carefully and not treated as mathematical truth.
+
+More importantly, systems must expose qualitative uncertainty such as:
+
+- ambiguous term
+- missing cultural equivalent
+- uncertain speaker intent
+- contested political terminology
+- idiomatic phrase
+- region-specific meaning
+- multiple plausible translations
+- glossary conflict
+- untranslatable or intentionally untranslated term
+
+Uncertainty is not a system defect to be hidden.
+
+It is contextual information required for trustworthy interpretation.
+
+---
+
+### 5.3 Translation Versioning
+Translations must be versioned.
+
+A new translation should be created when:
+
+- the original contribution changes
+- the glossary changes materially
+- a challenge is accepted
+- a model or translation provider changes
+- a human-reviewed version supersedes an automated version
+- cultural context changes the preferred interpretation
+
+Historical versions should remain inspectable according to the issue’s governance and privacy rules.
+
+---
+
+### 5.4 Provenance Across Derived Representations
+Provenance must continue beyond translation.
+
+A participant should be able to navigate from:
+
+```text
+Original contribution
+        ↓
+Translation
+        ↓
+Classification
+        ↓
+Semantic cluster
+        ↓
+Summary statement
+        ↓
+Recommendation
+        ↓
+Decision
+        ↓
+Assigned responsibility
+        ↓
+Response or action
+```
+
+Each transition must be attributable, inspectable, and challengeable.
+
+---
+
+## 6. Issue-Specific Multilingual Glossaries
+General-purpose translation is insufficient for many civic, scientific, cultural, political, legal, ecological, technical, and spiritual issues.
+
+DP23 therefore establishes issue-specific multilingual glossaries as shared semantic infrastructure.
+
+---
+
+### 6.1 Purpose of an Issue Glossary
+An issue glossary helps participants and AI systems understand:
+
+- how key concepts are defined
+- which translations are preferred
+- which translations are acceptable
+- which terms are contested
+- which terms are deprecated
+- which concepts lack direct equivalents
+- how meaning varies by region or community
+- when terms should remain untranslated
+- what historical or political context affects interpretation
+
+A glossary does not impose universal linguistic conformity.
+
+It makes semantic choices visible and governable.
+
+---
+
+### 6.2 Plural and Contested Terminology
+A glossary may contain multiple translations for the same concept.
+
+Terms may be marked as:
+
+- preferred
+- acceptable
+- contested
+- community-specific
+- institutionally used
+- historical
+- deprecated
+- harmful in certain contexts
+- lacking an equivalent
+- intentionally untranslated
+
+No single institution should be assumed to possess final authority over meaning.
+
+---
+
+### 6.3 Glossary Governance
+Communities should be able to:
+
+- propose terms
+- propose translations
+- annotate cultural nuance
+- provide examples
+- challenge preferred terminology
+- identify harmful framing
+- document minority usage
+- review AI-generated suggestions
+- approve or reject changes
+- fork glossaries when genuine semantic disagreement cannot be reconciled
+
+Glossary governance should identify:
+
+- who may propose changes
+- who may review changes
+- who may approve changes
+- how conflicts are resolved
+- how affected communities are represented
+- when external expertise is appropriate
+- how emergency corrections are made
+- how prior versions remain accessible
+
+---
+
+### 6.4 Glossary Capture as a Failure Mode
+Glossaries can become instruments of power.
+
+A glossary may be captured when:
+
+- an institution defines the only valid terminology
+- dominant-language speakers approve all translations
+- political terminology is normalized without disclosure
+- an affected community is excluded from review
+- a preferred translation suppresses disagreement
+- AI-generated terms are accepted without competent review
+
+DP23 requires glossary authority, conflicts of interest, revision history, and contested status to be visible.
+
+---
+
+## 7. Community Stewardship, Contestability, and Due Process
+Multilingual systems cannot be governed only by model providers, developers, or professional translators.
+
+Affected communities must have meaningful mechanisms to participate in interpretation.
+
+DP23 treats contestability as core linguistic infrastructure.
+
+Participants must be able to:
+
+- challenge translations
+- annotate cultural nuance
+- correct classifications
+- identify missing constituencies
+- contest summaries
+- audit the process
+
+---
+
+### 7.1 Translation Challenges
+A participant may challenge a translation on grounds including:
+
+- incorrect meaning
+- omitted meaning
+- added meaning
+- tone distortion
+- cultural distortion
+- political bias
+- harmful terminology
+- incorrect identity terminology
+- false certainty
+- glossary misuse
+- mistranslated name or place
+- failure to preserve ambiguity
+
+Challenges should allow:
+
+- explanation
+- proposed correction
+- cultural or regional context
+- supporting sources
+- alternative translations
+- affected-community testimony
+
+---
+
+### 7.2 Cultural Annotations
+Not every interpretive problem can be solved by replacing words.
+
+Participants should be able to attach contextual annotations such as:
+
+- “This phrase is respectful in one region but insulting in another.”
+- “This term carries a historical meaning not preserved in the translation.”
+- “There is no direct equivalent in the target language.”
+- “The speaker is using irony.”
+- “This term refers to a relationship rather than an individual category.”
+- “This concept should remain untranslated.”
+
+Annotations should remain distinguishable from corrections.
+
+---
+
+### 7.3 Classification Challenges
+Participants should be able to contest how a contribution has been classified, including whether it is treated as:
+
+- evidence
+- opinion
+- testimony
+- proposal
+- concern
+- question
+- objection
+- minority view
+- harmful content
+- irrelevant content
+- duplicate content
+- consensus-supporting content
+
+Classification changes must retain an audit trail.
+
+---
+
+### 7.4 Summary Challenges
+Participants should be able to challenge summaries that:
+
+- misrepresent their contribution
+- omit a significant perspective
+- falsely imply consensus
+- merge incompatible positions
+- rely excessively on one language
+- ignore relevant cultural context
+- overrepresent repeated or coordinated submissions
+- fail to identify missing constituencies
+- mistranslate cited evidence
+- obscure uncertainty
+
+Significant challenges should receive human or community review.
+
+---
+
+### 7.5 Linguistic Due Process
+Decisions affecting participation, visibility, classification, reputation, or influence must be understandable in a language the affected participant can meaningfully use.
+
+Appeal mechanisms must not exist only in the platform’s dominant language.
+
+Due process includes:
+
+- understandable notice
+- access to relevant evidence
+- explanation of automated involvement
+- ability to respond in the participant’s language
+- competent review
+- visible resolution
+- correction of downstream effects where feasible
+
+---
+
+## 8. Cross-Language Semantic Interoperability
+DP23 requires the Meta-Layer to support discovery and reasoning across languages.
+
+A contribution should not become invisible merely because it uses a different language from the search query, moderator, facilitator, or summarization system.
+
+---
+
+### 8.1 Search Across Languages
+Participants should be able to:
+
+- search in one language
+- retrieve relevant contributions in other languages
+- inspect why a result was considered relevant
+- request translation on demand
+- open the original
+- filter by source language
+- identify machine-expanded search terms
+- challenge irrelevant semantic matches
+
+Search should not require every contribution to be translated in advance.
+
+---
+
+### 8.2 Language-Plural Semantic Representations
+The long-term architecture should support semantic representations capable of relating contributions across languages without treating one dominant language as the permanent internal truth layer.
+
+English or another language may be used as an early operational bridge.
+
+It must not become an irreversible architectural dependency.
+
+Language-plural reasoning should preserve:
+
+- concepts
+- relationships
+- uncertainty
+- contradictions
+- culturally specific categories
+- source-language provenance
+- alternative interpretations
+
+---
+
+### 8.3 Semantic Drift Across Languages
+Concepts may appear equivalent while functioning differently across communities.
+
+Systems must guard against semantic drift in which:
+
+- the same translated term carries different assumptions
+- legal categories are treated as internationally uniform
+- political identities are mapped incorrectly
+- local ecological knowledge is forced into scientific taxonomies
+- spiritual or kinship concepts are reduced to Western individualist categories
+- institutional vocabulary overrides lived terminology
+
+Where semantic alignment is uncertain, the system should preserve distinction rather than manufacture equivalence.
+
+---
+
+## 9. Global Issue Participation
+Some issues affect people across borders, languages, jurisdictions, ecosystems, and generations.
+
+DP23 establishes the conditions under which an issue may become a shared global participation space.
+
+---
+
+### 9.1 Definition
+Global issue participation is the capacity for people affected by, knowledgeable about, or meaningfully concerned with an issue to:
+
+- contribute in languages they can meaningfully use
+- understand relevant contributions in languages they can meaningfully understand
+- examine the evidence and positions in the corpus
+- identify missing perspectives
+- participate in interpretation and synthesis
+- challenge AI-generated representations
+- propose responses
+- trace institutional responsibility
+- follow subsequent decisions and action
+
+Global issue participation does not require universal agreement.
+
+It provides shared infrastructure for informed plurality.
+
+---
+
+### 9.2 Issue Scope and Participation Boundaries
+Not every issue is global.
+
+Issue stewards should define:
+
+- who is affected
+- who has relevant knowledge
+- which jurisdictions are implicated
+- which communities require representation
+- which languages require active support
+- whether participation is open, invited, delegated, sampled, or hybrid
+- how local and global authority interact
+- what decisions the process can influence
+- what decisions remain outside its scope
+
+These boundaries must be visible and contestable.
+
+---
+
+### 9.3 Participation Is Not Representation by Default
+A person contributing in a language does not automatically represent all speakers of that language.
+
+A participant should not be presented as representing:
+
+- a country
+- an ethnic group
+- a linguistic community
+- an Indigenous nation
+- a profession
+- an age group
+- a religious group
+- an affected population
+
+unless an explicit and legitimate representative relationship exists.
+
+DP23 distinguishes individual voice, community membership, expertise, testimony, delegation, and formal representation.
+
+---
+
+### 9.4 Global Ambassadors and Language Stewards
+The Meta-Layer may support distributed networks of:
+
+- language stewards
+- cultural stewards
+- issue ambassadors
+- regional facilitators
+- community translators
+- glossary reviewers
+- accessibility contributors
+- constituency liaisons
+
+These roles should not be reduced to promotion.
+
+Their civic responsibilities may include:
+
+- explaining an issue locally
+- recruiting underrepresented participants
+- improving terminology
+- reviewing translations
+- identifying cultural distortion
+- surfacing regional priorities
+- connecting local discussions to the global corpus
+- communicating results back to communities
+- identifying participation barriers
+- monitoring whether institutions respond
+
+Steward authority must remain scoped, transparent, accountable, and revocable.
+
+---
+
+## 10. Multilingual AI as Advisory Infrastructure
+DP23 anticipates extensive use of AI for:
+
+- translation
+- transcription
+- semantic search
+- clustering
+- classification
+- summarization
+- question detection
+- constituency-gap detection
+- recommendation synthesis
+- trace generation
+- moderation support
+
+AI may support multilingual participation.
+
+It may not become an invisible authority over meaning.
+
+---
+
+### 10.1 In-Language Evaluation
+Multilingual systems must not be evaluated only by:
+
+- translating output back into English
+- measuring surface fluency
+- using dominant-language reviewers
+- applying one universal benchmark
+- checking whether the output “sounds natural”
+
+Evaluation should include, where feasible:
+
+- fluent or native reviewers
+- affected-community review
+- issue-specific terminology
+- regional language variation
+- ambiguity tests
+- cultural-context tests
+- political and historical terminology
+- preservation of tone and uncertainty
+- low-resource language performance
+- downstream classification and summary effects
+
+---
+
+### 10.2 Contextual Reasoning
+AI systems should reason with relevant context, including:
+
+- issue glossary
+- community terminology
+- source language
+- contribution history
+- cultural annotations
+- speaker-selected identity terms
+- relevant jurisdiction
+- corpus disagreements
+- known ambiguity
+
+Context must not be invented when absent.
+
+---
+
+### 10.3 Uncertainty Handling
+AI should be able to state:
+
+- “Multiple translations are plausible.”
+- “This concept has no direct equivalent.”
+- “The interpretation depends on regional context.”
+- “The source phrase may be ironic.”
+- “The glossary contains a contested term.”
+- “The classification confidence is low.”
+- “The corpus does not contain enough participation from this constituency.”
+- “This summary should not be treated as representative.”
+
+Uncertainty must not automatically suppress content.
+
+It should trigger review, annotation, or cautious presentation.
+
+---
+
+### 10.4 Community Participation
+Communities should participate in:
+
+- evaluation-set creation
+- glossary development
+- translation review
+- classification review
+- summary review
+- error reporting
+- model comparison
+- harm assessment
+- release decisions
+- ongoing monitoring
+
+AI developers alone cannot determine culturally appropriate system behavior.
+
+---
+
+### 10.5 Human Ratification
+AI systems may propose:
+
+- translations
+- classifications
+- clusters
+- summaries
+- participation gaps
+- recommendations
+- terminology
+
+For high-impact issue processes, humans or legitimate community governance bodies should ratify material outputs before they are treated as authoritative.
+
+AI proposes.
+
+Communities interpret, challenge, and decide.
+
+---
+
+## 11. Traceable Collective Sensemaking
+Participation becomes meaningful when contributors can see how their input moved through the process.
+
+DP23 requires visible participation traces.
+
+A contributor should be able to determine:
+
+- where their input went
+- how it was grouped
+- what was learned
+- which recommendations changed
+- who is responsible for responding
+- what happens next
+
+---
+
+### 11.1 Contribution-Level Trace
+For each contribution, the system should show, where applicable:
+
+- original submission
+- translations
+- glossary terms applied
+- classifications
+- clusters
+- summaries citing or relating to it
+- challenges
+- recommendation links
+- decision links
+- action links
+- documented institutional responses
+
+---
+
+### 11.2 Influence Labels
+Systems must not overstate causal influence.
+
+Permitted labels may include:
+
+- included in corpus
+- translated
+- classified as
+- grouped under
+- directly cited
+- supporting evidence
+- contradicting evidence
+- minority perspective
+- considered during synthesis
+- contributed to revision
+- referenced in recommendation
+- no documented influence yet
+
+The system should distinguish direct citation from semantic similarity.
+
+---
+
+### 11.3 Recommendation and Decision Traceability
+Recommendations should identify:
+
+- source clusters
+- supporting contributions
+- contradicting contributions
+- languages represented
+- missing constituencies
+- challenge status
+- revision history
+- responsible party
+- response deadline where applicable
+- implementation status
+
+Changes should explain:
+
+- what changed
+- why it changed
+- which evidence or participation affected the revision
+- who authorized the change
+
+---
+
+### 11.4 Responsibility and Response
+Participation processes should identify:
+
+- who is responsible for reviewing input
+- who may make decisions
+- who must respond
+- whether response is mandatory
+- expected timing
+- escalation pathways
+- what happens if no action is taken
+
+A participation system without responsibility mapping risks becoming performative consultation.
+
+---
+
+## 12. Representation, Missing Constituencies, and Epistemic Balance
+The existence of a multilingual corpus does not establish representativeness.
+
+DP23 requires systems to distinguish between:
+
+- contribution volume
+- language diversity
+- geographic diversity
+- constituency diversity
+- affected-community participation
+- expertise diversity
+- representativeness
+- legitimacy
+
+---
+
+### 12.1 Missing Constituency Detection
+Participants and facilitators should be able to identify missing constituencies, including:
+
+- affected communities
+- language communities
+- geographic regions
+- future generations
+- professional groups
+- local knowledge holders
+- Indigenous peoples
+- youth
+- elders
+- displaced populations
+- people with disabilities
+- low-connectivity communities
+- nonparticipants directly affected by outcomes
+
+AI may help surface likely gaps.
+
+It must not infer sensitive identity or claim complete constituency knowledge without appropriate evidence and consent.
+
+---
+
+### 12.2 Visibility Without Tokenization
+Minority and underrepresented perspectives should remain visible without being reduced to symbolic inclusion.
+
+Systems should avoid:
+
+- presenting one participant as the voice of a community
+- creating a single “minority view”
+- ranking perspectives solely by volume
+- using language count as a proxy for inclusion
+- treating translation availability as evidence of participation
+- displaying underrepresented views without protecting vulnerable contributors
+
+---
+
+### 12.3 Weighting and Aggregation
+DP23 does not prescribe one global method for weighting contributions.
+
+Issue communities may choose among:
+
+- one-person-one-contribution approaches
+- deliberative sampling
+- constituency weighting
+- expertise weighting
+- affectedness weighting
+- random selection
+- delegated participation
+- reputation-informed review
+- unweighted open corpora
+- hybrid approaches
+
+Any weighting system must make its assumptions, authority, and consequences visible.
+
+---
+
+## 13. Sociotechnical Zones for Multilingual Participation
+Multilingual participation should be configurable through sociotechnical zones.
+
+A zone may define:
+
+- supported interface languages
+- supported contribution modes
+- translation providers
+- glossary governance
+- steward roles
+- confidentiality conditions
+- review requirements
+- AI usage
+- publication rules
+- representation requirements
+- response obligations
+- data residency
+- cultural protocols
+- jurisdictional requirements
+
+---
+
+### 13.1 Example Zone Types
+**Open Multilingual Zone**
+
+- Public participation
+- Machine translation on demand
+- Community challenges
+- Public corpus
+- Lightweight glossary governance
+
+**Affected-Community Zone**
+
+- Participation prioritized for directly affected groups
+- Community-approved terminology
+- Strong cultural protocols
+- Controlled data access
+- Human-reviewed synthesis
+
+**High-Stakes Deliberation Zone**
+
+- Verified participation roles
+- Professional interpretation
+- AI-assisted but human-ratified summaries
+- Formal appeals
+- Full provenance and audit
+- Institutional response obligations
+
+**Indigenous Knowledge Zone**
+
+- Community-defined access
+- Restrictions on translation or reuse
+- Community-controlled terminology
+- Traditional knowledge protections
+- Explicit consent for AI processing
+- Local governance authority
+
+**Youth Participation Zone**
+
+- Age-appropriate interfaces
+- safeguarding
+- accessible language
+- guardian or institutional protocols where necessary
+- youth governance roles
+- protection from extractive data use
+
+---
+
+### 13.2 Cross-Zone Semantic Compatibility
+A term, identity, reputation signal, or governance decision may not carry the same meaning across zones.
+
+Systems must signal when:
+
+- glossary definitions differ
+- translation policies differ
+- participation standards differ
+- confidentiality conditions differ
+- AI use differs
+- representative authority differs
+- cultural restrictions apply
+
+Cross-zone interoperability requires semantic signaling, not forced uniformity.
+
+---
+
+## 14. Foresight and Minefield Thinking
+DP23 treats multilingual inclusion as an adversarial and governance-sensitive design problem.
+
+Systems should anticipate how language infrastructure may be captured, manipulated, degraded, or used to create false legitimacy.
+
+---
+
+### 14.1 Governance Pre-Mortems
+Communities should periodically ask:
+
+- How could dominant-language actors capture the process?
+- How could AI-generated multilingual submissions overwhelm human voices?
+- Which languages are receiving lower-quality service?
+- How could translation challenges be brigaded?
+- How could glossary terms be politically manipulated?
+- How could cultural stewards become unaccountable gatekeepers?
+- How could institutions claim global legitimacy from a narrow participant pool?
+- How could summaries conceal unresolved disagreement?
+- How could a vulnerable community’s knowledge be extracted or exposed?
+- How could participation traces reveal sensitive information?
+- How could a model-provider change alter historical interpretation?
+- What happens when a translation provider becomes unavailable?
+
+---
+
+### 14.2 Preventative Friction
+Appropriate safeguards may include:
+
+- rate limits
+- proof-of-humanity for influence-sensitive actions
+- steward review
+- glossary-change waiting periods
+- constituency review
+- translation quality thresholds
+- human approval for high-stakes summaries
+- disclosure of coordinated campaigns
+- restrictions on bulk AI-generated submissions
+- culturally governed access controls
+- delayed publication
+- consent renewal
+- provenance requirements
+
+Preventative friction should be proportional to risk.
+
+---
+
+### 14.3 Exit, Fork, and Refusal
+Communities and participants should be able to:
+
+- decline machine translation
+- decline AI summarization
+- restrict reuse
+- withdraw from an active process where governance permits
+- preserve an original while retracting a public translation
+- fork a glossary
+- fork a summary
+- establish a separate cultural interpretation
+- leave a zone without losing access to their contribution history
+- request that certain knowledge remain local or untranslated
+
+Refusal is part of linguistic agency.
+
+---
+
+### 14.4 Emergency Mechanisms
+High-impact systems should support mechanisms to:
+
+- pause faulty translations
+- withdraw a harmful glossary version
+- suspend an unreliable model
+- stop publication of a misleading summary
+- flag a corpus as nonrepresentative
+- freeze downstream recommendations
+- notify affected contributors
+- restore prior validated versions
+- initiate independent review
+
+---
+
+## 15. Relationship to Other Desirable Properties
+DP23 is a distinct property, but it depends on and strengthens other DPs.
+
+### DP1 – Federated Authentication & Accountability
+Ensures participants, language stewards, AI systems, and institutions can be accountable without requiring universal real-name identity.
+
+### DP2 – Participant Agency and Empowerment
+Establishes language choice, correction, refusal, contestation, and influence traceability as expressions of agency.
+
+### DP3 – Adaptive Governance
+Supports multilingual governance participation and adaptation as communities, languages, and issue contexts evolve.
+
+### DP4 – Data Sovereignty and Privacy
+Protects contributions, translations, cultural knowledge, identity information, and consent across jurisdictions and language services.
+
+### DP7 – Simplicity and Interoperability
+Provides technical and semantic interoperability across languages, interfaces, tools, and communities.
+
+### DP8 – Collaborative Environment and Meta-Communities
+Enables meta-communities to collaborate across linguistic boundaries while maintaining local identity and governance.
+
+### DP10 – Education
+Supports learning, explanation, literacy, and access to knowledge across languages and modalities.
+
+### DP11 – Safe and Ethical AI
+Requires multilingual AI to remain transparent, evaluated in-language, context-aware, uncertain where appropriate, and accountable.
+
+### DP12 – Community-Based AI Governance
+Provides the governance basis for translation challenges, cultural annotations, classification corrections, glossary stewardship, and summary review.
+
+### DP13 – AI Containment
+Constrains multilingual AI to approved roles, data boundaries, models, glossaries, and governance rules.
+
+### DP14 – Trust and Transparency
+Makes language mediation, AI involvement, uncertainty, governance authority, and interpretive decisions visible.
+
+### DP15 – Security and Provenance
+Preserves original-language records and the lineage of translations, classifications, summaries, recommendations, and actions.
+
+### DP18 – Feedback Loops and Reputation
+Supports correction loops, steward reputation, translation improvement, and visible institutional response.
+
+### DP20 – Community Ownership
+Supports community ownership of glossaries, language resources, semantic models, cultural annotations, and issue corpora.
+
+### DP21 – Multi-Modal
+Extends participation beyond written text through voice, sign, image, transcription, and accessible interfaces.
+
+### DP22 – Civic Memory & Epistemic Continuity
+Preserves multilingual civic memory across time without collapsing original expressions into one normalized language.
+
+DP23 should not be absorbed into any single one of these properties.
+
+Its unique role is to establish **universal linguistic participation as a condition of legitimate collective sensemaking**.
+
+---
+
+## 16. Community Signals Informing DP23
+DP23 should remain open to refinement through multilingual community input.
+
+Early signals to validate include:
+
+- People want to contribute in the language in which they can express themselves most precisely.
+- Participants want access to translations without losing access to original wording.
+- Communities do not want AI systems to silently decide culturally sensitive terminology.
+- Participants want mechanisms to correct translation and classification errors.
+- Low-resource language communities want involvement in evaluation, not merely access to finished products.
+- Contributors want to know whether their input affected a summary, recommendation, or decision.
+- Communities want missing voices identified rather than hidden behind claims of global participation.
+- Institutions need multilingual synthesis, but participants require traceability and meaningful response.
+- Language stewards want recognition, authority boundaries, support, and accountability.
+- Participants want systems to preserve disagreement rather than manufacture consensus.
+
+These signals should be tested through workshops, pilots, calls for input, and language-specific consultations.
+
+DP23 should not be declared complete based only on English-language deliberation about multilingual inclusion.
+
+---
+
+## 17. Non-Goals and Explicit Boundaries
+DP23 does not attempt to:
+
+### Create one universal language
+The goal is interoperability without linguistic homogenization.
+
+### Guarantee perfect translation
+No translation system can fully preserve every cultural, emotional, historical, and contextual dimension.
+
+DP23 requires uncertainty, correction, and provenance rather than claims of perfection.
+
+### Force every contribution to be translated
+Communities and participants may restrict translation for privacy, safety, cultural, legal, or sovereignty reasons.
+
+### Treat AI as the final authority on meaning
+AI supports interpretation.
+
+It does not possess exclusive authority to determine meaning, representation, consensus, or legitimacy.
+
+### Eliminate all linguistic disagreement
+Some disagreement is irreducible and should remain visible.
+
+### Make every issue globally open
+Participation scope remains issue-specific and governed.
+
+### Claim global representativeness from language diversity alone
+A corpus containing many languages may still exclude affected constituencies or reproduce unequal power.
+
+### Replace professional interpreters, translators, facilitators, or cultural mediators
+AI may augment these roles but should not erase the need for human competence and accountable judgment.
+
+### Extract protected or sacred knowledge
+Communities retain authority over whether knowledge may be translated, indexed, summarized, or shared.
+
+### Impose one global glossary
+Terminology may remain plural, contested, local, and forkable.
+
+### Equate participation with decision authority
+A person’s ability to contribute does not automatically determine the legal or institutional authority of the resulting process.
+
+By naming these boundaries explicitly, DP23 remains ambitious without becoming universalizing or extractive.
+
+---
+
+## 18. Minimum DP23 Alignment (Non-Normative)
+Minimum alignment is not a checklist of translation features.
+
+It is the threshold at which a system can reasonably claim to support multilingual participation without making original expression subordinate to machine-generated interpretation.
+
+A minimally aligned system should:
+
+### Preserve Originals
+- Store and display original contributions
+- Preserve source language and revision history
+- Never silently replace originals with translations
+
+### Support Participant Language Choice
+- Allow contribution in multiple languages
+- Allow participant correction of language detection
+- Separate interface, contribution, and reading language
+
+### Provide Translation Provenance
+- Identify machine-generated translations
+- Record source revision, target language, provider, model, and timestamp
+- Display uncertainty or limitations where known
+
+### Enable Contestability
+- Allow participants to challenge translations
+- Allow cultural annotations
+- Allow correction of material classification errors
+- Maintain visible resolution history
+
+### Support Issue Context
+- Allow issue-specific terminology or glossary support
+- Record which glossary version affected a translation
+- Permit contested terminology
+
+### Preserve Traceability
+- Link summaries and classifications to source contributions
+- Avoid uncited published synthesis
+- Provide at least a basic indication of where contributions were used
+
+### Avoid False Claims of Representation
+- Do not describe a multilingual corpus as globally representative without evidence
+- Identify important participation gaps where known
+- Distinguish individual contribution from community representation
+
+### Maintain Human Oversight
+- Require competent review for high-impact multilingual outputs
+- Ensure AI-generated interpretations remain challengeable
+- Prevent autonomous AI from issuing final claims of consensus or representation
+
+A system that offers automatic translation but does not preserve originals, expose provenance, permit correction, or show downstream influence may be multilingual in appearance, but it is not aligned with DP23.
+
+---
+
+## 19. Strong DP23 Alignment
+A strongly aligned implementation would additionally provide:
+
+- multilingual semantic search
+- language-plural embeddings or equivalent semantic infrastructure
+- issue-specific multilingual glossaries
+- community language stewards
+- cultural annotation systems
+- translation and summary versioning
+- multilingual due process
+- in-language quality evaluation
+- constituency-gap detection
+- minority-view preservation
+- cross-language clustering
+- traceable summaries
+- recommendation provenance
+- institutional responsibility mapping
+- participant-facing influence traces
+- multimodal participation
+- community control over sensitive knowledge
+- privacy-preserving translation workflows
+- auditable AI models and prompts
+- transparent correction metrics by language
+- explicit mechanisms for glossary and governance forks
+
+---
+
+## 20. Failure Conditions
+A system should not claim DP23 alignment when:
+
+- original contributions are discarded after translation
+- all reasoning is invisibly routed through one dominant language
+- translations are presented as authoritative originals
+- participants cannot challenge material errors
+- low-resource languages consistently receive unusable quality without disclosure
+- summaries have no traceable sources
+- AI-generated consensus is presented without representation analysis
+- institutions collect input without identifying responsibility or next steps
+- cultural knowledge is translated or reused against community rules
+- language stewards have unbounded or invisible authority
+- glossary changes have no history
+- participants cannot understand enforcement or appeals in a usable language
+- multilingual participation is used to claim legitimacy while affected constituencies remain absent
+
+---
+
+## 21. Evaluation and Ongoing Review
+DP23 requires continuous evaluation across languages and issue contexts.
+
+Evaluation should measure:
+
+- meaning preservation
+- omission and addition rates
+- terminology accuracy
+- tone preservation
+- uncertainty preservation
+- cultural-context integrity
+- quality differences between languages
+- challenge rates
+- correction acceptance rates
+- review times
+- classification disparities
+- search visibility across languages
+- summary citation rates by language
+- minority-view preservation
+- representation gaps
+- contribution trace completeness
+- participant understanding
+- institutional response rates
+- participant perception of meaningful influence
+
+Aggregate quality scores must not conceal poor performance in specific languages.
+
+Communities should be able to inspect:
+
+- which languages perform well
+- which languages perform poorly
+- what review capacity exists
+- what errors recur
+- what changes have been made
+- which systems or providers are responsible
+
+---
+
+## 22. Initial Implementation Path
+DP23 may be developed in phases.
+
+### Phase 1 – Linguistic Access
+- Unicode-safe contribution storage
+- language detection with participant override
+- reading-language preferences
+- on-demand translation
+- original and bilingual views
+- translation provenance
+- translation caching
+- basic challenges
+
+### Phase 2 – Community Stewardship
+- cultural annotations
+- correction proposals
+- language steward roles
+- issue-specific multilingual glossaries
+- contested terminology
+- version history
+- multilingual review workflows
+
+### Phase 3 – Cross-Language Sensemaking
+- multilingual semantic search
+- cross-language clustering
+- evidence and position mapping
+- traceable summaries
+- minority-view preservation
+- participation-gap analysis
+- summary challenges
+
+### Phase 4 – Global Issue Participation
+- constituency mapping
+- global and regional ambassador networks
+- structured issue participation zones
+- multilingual deliberation
+- recommendation provenance
+- responsibility assignment
+- response tracking
+- contribution influence traces
+
+### Phase 5 – Federated Public Infrastructure
+- interoperable glossary protocols
+- portable linguistic preferences
+- federated language stewardship
+- shared evaluation resources
+- multilingual civic-memory standards
+- cross-platform issue corpora
+- institution-facing response interfaces
+- decentralized governance of language infrastructure
+
+---
+
+## 23. Proposed Constitutional Statement
+> No person’s ability to participate in collective sensemaking should depend on the language they speak. The Meta-Layer must preserve original expression, enable understanding across languages, make machine interpretation visible and contestable, protect cultural and contextual integrity, and show how participation influences shared understanding and action.
+
+---
+
+## 24. Closing Principle
+DP23 is not a requirement that everyone speak the same language, adopt the same categories, or reach the same conclusion.
+
+It establishes the conditions under which people can inhabit the same civic and epistemic space while preserving linguistic and cultural difference.
+
+The Meta-Layer should not achieve global participation by translating humanity into one voice.
+
+It should enable humanity’s many voices to become mutually legible, collectively navigable, and meaningfully connected to responsibility and action.
+</user_query>
+
+---
