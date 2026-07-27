@@ -66,6 +66,7 @@
       '          <div class="dp-badge-status" id="dpNavAuthStatus"></div>' +
       '          <a href="/viewer/intro" class="dp-menu-link" data-nav-page="reader">Reader</a>' +
       '          <a href="/book" class="dp-menu-link" data-nav-page="cover">Cover</a>' +
+      '          <a href="https://www.desirableproperties.org/support" class="dp-menu-link" target="_blank" rel="noopener">Support</a>' +
       '          <a href="https://www.desirableproperties.org" class="dp-menu-link" target="_blank" rel="noopener">DP community site</a>' +
       '          <a href="https://book.desirableproperties.org" class="dp-menu-link" target="_blank" rel="noopener">Book site</a>' +
       '          <button type="button" class="dp-menu-link" id="dpNavSignOut" hidden>Sign out</button>' +

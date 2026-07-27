@@ -30,7 +30,8 @@
         "dp19",
         "dp20",
         "dp21",
-        "dp22"
+        "dp22",
+        "dp23"
     ],
     "sources": [
         {
@@ -316,6 +317,16 @@
             "status": "active",
             "reinscribable": true,
             "reason": "DP chapter from the Desirable Properties satplication"
+        },
+        {
+            "railKey": "dp23",
+            "label": "DP23 – Universal Participation & Linguistic Interoperability",
+            "dp": "DP23",
+            "mlNumber": "ML-Draft-030",
+            "localOverride": "/content/local/dp23.md",
+            "status": "draft",
+            "reinscribable": true,
+            "reason": "Local rail – DP23 draft ahead of inscription"
         }
     ]
 }

@@ -8,7 +8,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
   description:
-    'Browse the 22 workgroups stewarding each Desirable Property and pick the one you want to join or nominate into.',
+    'Browse the 23 workgroups stewarding each Desirable Property and pick the one you want to join or nominate into.',
 };
 
 type Role = {
@@ -115,7 +115,7 @@ function shortDescription(dp: { description?: string; landing_subtitle?: string 
   return best.length > 220 ? `${best.slice(0, 217).trimEnd()}…` : best;
 }
 
-// Canonical Gov Hub slugs for each of the 22 Desirable Properties workgroups.
+// Canonical Gov Hub slugs for each of the 23 Desirable Properties workgroups.
 // These mirror the `working_group.slug` column in the gov-hub-prod database
 // (see `working_group` table, layer_id=22d90c89-...-220dca505402, "The Metaweb").
 // The slugs are *not* a naive slugify of the DP `name` – they are curated
@@ -146,6 +146,7 @@ const DP_WORKGROUP_SLUGS: Record<string, string> = {
   DP20: 'dp20-community-ownership',
   DP21: 'dp21-multi-modal',
   DP22: 'dp22-civic-memory-epistemic-continuity',
+  DP23: 'dp23-universal-participation-linguistic-interoperability',
 };
 
 function deriveSlug(dp: { id: string; name?: string }): string {
@@ -181,7 +182,7 @@ export default async function JoinWorkgroupPage() {
             Join a DP Workgroup
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            Each of the 22 Desirable Properties is stewarded by a dedicated workgroup on Gov Hub.
+            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup on Gov Hub.
             Pick the property whose purpose resonates with you, join as a member, or nominate
             yourself (or someone else) for a coordinator or contributor role.
           </p>
@@ -190,7 +191,7 @@ export default async function JoinWorkgroupPage() {
               href="#workgroups"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Browse all 22 workgroups →
+              Browse all 23 workgroups →
             </a>
             <a
               href="#faq"
@@ -298,7 +299,7 @@ export default async function JoinWorkgroupPage() {
 
       <section id="workgroups" className="border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">The 22 workgroups</h2>
+          <h2 className="text-3xl font-bold text-white">The 23 workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Each workgroup stewards one Desirable Property – drafting the canonical text,
             reviewing contributions, and proposing updates. Click through to Gov Hub to join
@@ -400,14 +401,14 @@ export default async function JoinWorkgroupPage() {
           <h2 className="text-3xl font-bold text-white">Ready to participate?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
             Pick a workgroup above, or go straight to the Metaweb layer on Gov Hub to
-            discover drafts and discussions across all 22 properties.
+            discover drafts and discussions across all 23 properties.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
               href="#workgroups"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Browse the 22 workgroups →
+              Browse the 23 workgroups →
             </a>
             <a
               href={govhubUrl('/layers/the-metaweb/')}

@@ -4,7 +4,7 @@ Open-access BRC333 book satplication – same pattern as `BRC333/projects/metawe
 
 ## Reader & cover
 
-- **`viewer.htm`** – full book reader: 22 chapters (DP1–DP22) across 7 parts,
+- **`viewer.htm`** – full book reader: 23 chapters (DP1–DP23) across 8 parts,
   mobile-responsive sidebar TOC, dark/light theme, Local/Inscribed mode toggle,
   smart-tag DP references (`DP1` inline becomes a clickable link), keyboard nav,
   bookmark via `#ch=dp-N`, JSON-LD book schema, and an inscription rail at the
@@ -31,8 +31,10 @@ from `assets/data/desirable-properties.json` (top-level) and `assets/data/dp{n}.
 | `assets/profile-icon.svg` | Default profile avatar |
 | `assets/favicon.svg` | Gold DP-mark favicon |
 | `assets/data/desirable-properties.json` | Top-level book data (chapter titles, descriptions, elements) |
-| `assets/data/dp1.json` … `dp22.json` | Per-DP provenance (alignments / clarifications / extensions) |
-| `json/desirableproperties-book-manifest.json` | Web manifest (7 parts, 22 chapters, inscription IDs) |
+| `assets/data/dp1.json` … `dp23.json` | Per-DP provenance (alignments / clarifications / extensions) |
+| `json/desirableproperties-book-manifest.json` | Web manifest (8 parts, 23 chapters, inscription IDs) |
+| `json/canopi-embed.json` | Canopi web-embed instance ID + whitelisted domains |
+| `assets/dp-canopi-bridge.js` | Canopi sidebar bridge (header layering + auth events) |
 | `json/graph-snapshot.json` | BRC333 §6.2 graph snapshot (placeholder – see BRC333 project) |
 | `nginx/book.desirableproperties.org.conf` | nginx vhost (port 80/443, ordinals proxy, asset caching) |
 | `deploy.sh` | Deploy script (rsync to `/var/www/desirableproperties-book/`) |
@@ -70,8 +72,15 @@ banner hint that the canonical reference is the on-chain inscription.
 - **Dark + light themes** – `data-theme` attribute with CSS variables; persisted in `localStorage`.
 - **Mobile-safe-area padding** (`env(safe-area-inset-*)`).
 - **JSON-LD Book schema** for SEO.
+- **Canopi web embed** – one sidebar instance for all `/viewer/*` chapters (see `json/canopi-embed.json`).
 
-## Preview (BRC333 hub)
+## Canopi embed
+
+Apply `canopi/migrations/023_dp_book_embed.sql` on the Canopi API database, then deploy
+`viewer.htm`. The embed ID is `7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c`. Whitelist
+`book.desirableproperties.org`, `book.themetalayer.org`, and `desirableproperties.org`.
+
+Support requests: https://www.desirableproperties.org/support
 
 ```text
 https://app.brc333.xyz/preview.html?path=/projects/desirableproperties-book-ordinal/preview.html

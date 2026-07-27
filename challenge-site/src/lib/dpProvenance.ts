@@ -55,6 +55,15 @@ type SubmissionInscriptions = {
 
 type DpInscriptions = {
   by_dp_id: Record<string, string>;
+  draft_only?: Record<
+    string,
+    {
+      ml_number?: string;
+      govhub_url?: string;
+      local_override?: string;
+      status?: string;
+    }
+  >;
 };
 
 const inscriptionData = loadJson<SubmissionInscriptions>('submission-inscriptions.json');
@@ -87,6 +96,13 @@ export function dpInscriptionUrl(dpId: string | null | undefined): string | null
   const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
   const id = dpInscriptionData?.by_dp_id?.[normalized];
   return inscriptionUrl(id);
+}
+
+/** Gov Hub ML-Draft URL when a DP is draft-only (not yet inscribed). */
+export function dpGovHubDraftUrl(dpId: string | null | undefined): string | null {
+  if (!dpId) return null;
+  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
+  return dpInscriptionData?.draft_only?.[normalized]?.govhub_url ?? null;
 }
 
 /** Composite working-draft version stamped into downloadable PDF filenames. */

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="dp-header-above">
+<html lang="en" class="dp-header-above dp-header-above-canopi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="dp-viewer-build" content="dp-viewer-manifest-20260704">
   <title>The Desirable Properties of a Meta-Layer</title>
-  <meta name="description" content="Twenty-two Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP22.">
+  <meta name="description" content="Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP23.">
   <meta name="theme-color" content="#0d1117">
   <meta name="color-scheme" content="dark light">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -13,18 +13,25 @@
 
   <meta property="og:type" content="book">
   <meta property="og:title" content="The Desirable Properties of a Meta-Layer">
-  <meta property="og:description" content="Twenty-two Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. DP1–DP22 inscribed on Bitcoin.">
+  <meta property="og:description" content="Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. DP1–DP23 inscribed on Bitcoin.">
   <meta property="og:url" content="https://desirableproperties.org/viewer/intro">
   <meta property="og:site_name" content="Desirable Properties">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Desirable Properties of a Meta-Layer">
-  <meta name="twitter:description" content="Twenty-two Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
+  <meta name="twitter:description" content="Twenty-three Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
 
   <link rel="stylesheet" href="/assets/dp-site.css" />
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js"></script>
+  <script src="/assets/dp-canopi-bridge.js"></script>
+  <!-- Canopi sidebar – one embed for all /viewer/* chapters. Whitelist domains on api.canopi.live. -->
+  <script
+    src="https://api.canopi.live/embed/v1.js"
+    data-canopi-id="7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c"
+    async
+  ></script>
 
   <script type="application/ld+json">
   {
@@ -32,7 +39,7 @@
     "@type": "Book",
     "name": "Desirable Properties",
     "alternateName": "Meta-Layer Desirable Properties",
-    "description": "Twenty-two Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure.",
+    "description": "Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure.",
     "bookFormat": "https://schema.org/EBook",
     "inLanguage": "en",
     "url": "https://desirableproperties.org/viewer/intro",
@@ -724,6 +731,29 @@
       .ordinal-meta { padding: 0 18px; }
       .nav-bar button { padding: 10px 14px; font-size: 13px; }
     }
+    html.dp-header-above-canopi .header {
+      position: relative;
+      z-index: 2147483000;
+    }
+    html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+    }
+    .header-support-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 6px 10px;
+      border: 1px solid var(--accent-soft-2);
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .header-support-link:hover {
+      color: var(--accent-hover);
+      border-color: var(--accent);
+    }
     @media (max-width: 480px) {
       .header h1 { font-size: 0.85rem; }
       .header h1 .header-subtitle { font-size: 0.72rem; }
@@ -747,6 +777,13 @@
         </a>
       </h1>
       <div class="header-tools">
+        <a
+          class="header-support-link"
+          href="https://www.desirableproperties.org/support"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Questions about the challenge, workgroups, or this book"
+        >Support</a>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
         <button type="button" id="btnThemeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light theme" aria-pressed="false">
           <span class="theme-icon-dark" aria-hidden="true">☾</span>
@@ -801,7 +838,7 @@
    *
    * Pattern: fetch /json/sources-sat.json at init → TOC built from
    * manifest.sources filtered by manifest.articleRails order.
-   * URL routing: /viewer/<railKey> (intro, dp01..dp22).
+   * URL routing: /viewer/<railKey> (intro, dp01..dp23).
    * Mode toggle: Live (default; uses src.localOverride if present)
    *              Onchain (fetches /content/<inscriptionId> from ordinals.com
    *              proxy at /content/, so it works on book.desirableproperties.org).
@@ -823,7 +860,7 @@
 
     /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
     let MANIFEST = null;
-    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp22). */
+    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp23). */
     let RAILS = [];
     /** RailKey → index in RAILS. */
     let RAIL_INDEX = {};
@@ -958,7 +995,7 @@
       let m2 = seg.match(/^dp-?(\d{1,2})$/);
       if (m2) {
         const n = parseInt(m2[1], 10);
-        if (n >= 1 && n <= 22) return 'dp' + String(n).padStart(2, '0');
+        if (n >= 1 && n <= 23) return 'dp' + String(n).padStart(2, '0');
       }
       return seg;
     }
@@ -1221,10 +1258,10 @@
 
     function renderIntroLanding() {
       return (
-        '<div class="book-content dp-intro" data-dp-content-root="1">' +
+        '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1">' +
           '<h1>The Desirable Properties of a Meta-Layer</h1>' +
           '<p class="dp-intro-eyebrow">A Book of the Meta-Layer · 22 Properties, inscribed on Bitcoin</p>' +
-          '<p>This book collects twenty-two community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge, were inscribed on Bitcoin, and are now available to read here in the order they were inscribed.</p>' +
+          '<p>This book collects twenty-three community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
           '<p>Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own – but they are strongest when seen together.</p>' +
           '<div class="dp-intro-actions">' +
             '<a class="dp-intro-start" href="/viewer/dp01">Start at DP1 →</a>' +
@@ -1366,7 +1403,7 @@
       try {
         let bodyHtml;
         const result = await loadChapterBody(rail);
-        bodyHtml = '<div class="book-content" data-dp-content-root="1">' + result.html + '</div>';
+        bodyHtml = '<div class="book-content" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
         const navHtml = buildNavBarHtml(rail);
         const downloadHtml = buildChapterDownloadHtml(rail);
         const metaHtml = buildInscriptionRailHtml(rail);

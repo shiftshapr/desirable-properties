@@ -18,6 +18,9 @@ export default function SiteFooter() {
           <Link href="/#dps" className="text-slate-400 hover:text-slate-200">
             Browse DPs
           </Link>
+          <Link href="/support" className="text-slate-400 hover:text-slate-200">
+            Support
+          </Link>
           <Link href="/onchain" className="text-slate-400 hover:text-slate-200">
             Onchain
           </Link>

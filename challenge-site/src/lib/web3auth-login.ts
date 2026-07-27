@@ -4,6 +4,11 @@ import type { AuthUser } from '@/lib/auth-types';
 
 declare global {
   interface Window {
+    __WEB3AUTH_PUBLIC_CONFIG__?: {
+      clientId: string;
+      web3AuthNetwork: string;
+      googleVerifier: string;
+    };
     Modal?: {
       Web3Auth: new (config: Record<string, unknown>) => Web3AuthInstance;
       WALLET_CONNECTORS?: { AUTH: string; METAMASK?: string; WALLET_CONNECT?: string; WALLET_CONNECT_V2?: string };
@@ -27,9 +32,55 @@ type Web3AuthInstance = {
 
 export type Web3AuthLoginMode = 'google' | 'email' | 'default';
 
+type Web3AuthPublicConfig = {
+  clientId: string;
+  web3AuthNetwork: string;
+  googleVerifier: string;
+};
+
 let web3auth: Web3AuthInstance | null = null;
 let web3authInitPromise: Promise<Web3AuthInstance> | null = null;
 let loginInProgress = false;
+
+function clearWeb3AuthStorage() {
+  if (typeof window === 'undefined') return;
+  try {
+    for (const key of Object.keys(localStorage)) {
+      if (/web3auth|openlogin|torus|w3a/i.test(key)) {
+        localStorage.removeItem(key);
+      }
+    }
+  } catch {
+    // ignore
+  }
+}
+
+function validatePublicConfig(cfg: Partial<Web3AuthPublicConfig>): Web3AuthPublicConfig {
+  const clientId = String(cfg.clientId || '').trim();
+  const web3AuthNetwork = String(cfg.web3AuthNetwork || '').trim();
+  const googleVerifier = String(cfg.googleVerifier || '').trim();
+  if (!clientId) {
+    throw new Error('Web3Auth clientId is not configured');
+  }
+  if (!web3AuthNetwork) {
+    throw new Error('Web3Auth network is not configured');
+  }
+  if (!googleVerifier) {
+    throw new Error('Web3Auth Google verifier is not configured');
+  }
+  return { clientId, web3AuthNetwork, googleVerifier };
+}
+
+async function loadPublicConfig(): Promise<Web3AuthPublicConfig> {
+  if (typeof window !== 'undefined' && window.__WEB3AUTH_PUBLIC_CONFIG__) {
+    return validatePublicConfig(window.__WEB3AUTH_PUBLIC_CONFIG__);
+  }
+
+  const cfgRes = await fetch('/api/auth/web3auth/config');
+  if (!cfgRes.ok) throw new Error('Web3Auth config unavailable');
+  const cfg = await cfgRes.json();
+  return validatePublicConfig(cfg);
+}
 
 function loadScript(src: string) {
   return new Promise<void>((resolve, reject) => {
@@ -103,60 +154,73 @@ export function dismissWeb3AuthModal(instance?: Web3AuthInstance | null) {
   document.documentElement.style.overflow = '';
 }
 
+async function createWeb3AuthInstance(cfg: Web3AuthPublicConfig) {
+  await loadScript('https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js');
+  await loadScript('https://unpkg.com/@web3auth/modal@10.13.1/dist/modal.umd.min.js');
+
+  await new Promise<void>((resolve, reject) => {
+    const start = Date.now();
+    const tick = () => {
+      if (window.Modal?.Web3Auth) resolve();
+      else if (Date.now() - start > 10000) reject(new Error('Web3Auth load timeout'));
+      else setTimeout(tick, 100);
+    };
+    tick();
+  });
+
+  const Web3Auth = window.Modal!.Web3Auth;
+  const instance = new Web3Auth({
+    clientId: cfg.clientId,
+    web3AuthNetwork: cfg.web3AuthNetwork,
+    chainConfig: {
+      chainNamespace: 'eip155',
+      chainId: '0x1',
+      rpcTarget: 'https://rpc.ankr.com/eth',
+      displayName: 'Ethereum Mainnet',
+      blockExplorerUrl: 'https://etherscan.io',
+      ticker: 'ETH',
+      tickerName: 'Ethereum',
+    },
+    uiConfig: {
+      mode: 'dark',
+      theme: { primary: '#1d9bf0' },
+      loginMethodsOrder: loginMethodsOrder(),
+      defaultLanguage: 'en',
+    },
+    loginConfig: {
+      google: {
+        verifier: cfg.googleVerifier,
+        typeOfLogin: 'google',
+        clientId: cfg.clientId,
+        extraLoginOptions: { prompt: 'login select_account', access_type: 'offline' },
+        queryParameters: { prompt: 'login select_account', access_type: 'offline' },
+      },
+    },
+    modalConfig: modalConfig(),
+  });
+
+  await instance.init();
+  return instance;
+}
+
 async function initWeb3Auth() {
   if (web3auth) return web3auth;
   if (web3authInitPromise) return web3authInitPromise;
 
   web3authInitPromise = (async () => {
-    const cfgRes = await fetch('/api/auth/web3auth/config');
-    if (!cfgRes.ok) throw new Error('Web3Auth config unavailable');
-    const cfg = await cfgRes.json();
-
-    await loadScript('https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js');
-    await loadScript('https://unpkg.com/@web3auth/modal@10.13.1/dist/modal.umd.min.js');
-
-    await new Promise<void>((resolve, reject) => {
-      const start = Date.now();
-      const tick = () => {
-        if (window.Modal?.Web3Auth) resolve();
-        else if (Date.now() - start > 10000) reject(new Error('Web3Auth load timeout'));
-        else setTimeout(tick, 100);
-      };
-      tick();
-    });
-
-    const Web3Auth = window.Modal!.Web3Auth;
-    const instance = new Web3Auth({
-      clientId: cfg.clientId,
-      web3AuthNetwork: cfg.web3AuthNetwork,
-      chainConfig: {
-        chainNamespace: 'eip155',
-        chainId: '0x1',
-        rpcTarget: 'https://rpc.ankr.com/eth',
-        displayName: 'Ethereum Mainnet',
-        blockExplorerUrl: 'https://etherscan.io',
-        ticker: 'ETH',
-        tickerName: 'Ethereum',
-      },
-      uiConfig: {
-        mode: 'dark',
-        theme: { primary: '#1d9bf0' },
-        loginMethodsOrder: loginMethodsOrder(),
-        defaultLanguage: 'en',
-      },
-      loginConfig: {
-        google: {
-          verifier: cfg.googleVerifier,
-          typeOfLogin: 'google',
-          clientId: cfg.clientId,
-          extraLoginOptions: { prompt: 'login select_account', access_type: 'offline' },
-          queryParameters: { prompt: 'login select_account', access_type: 'offline' },
-        },
-      },
-      modalConfig: modalConfig(),
-    });
-
-    await instance.init();
+    const cfg = await loadPublicConfig();
+    let instance: Web3AuthInstance;
+    try {
+      instance = await createWeb3AuthInstance(cfg);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!/clientId|web3authNetwork|project configurations/i.test(message)) {
+        throw error;
+      }
+      clearWeb3AuthStorage();
+      web3auth = null;
+      instance = await createWeb3AuthInstance(cfg);
+    }
 
     try {
       const meRes = await fetch('/api/auth/me', { credentials: 'include' });
@@ -225,6 +289,32 @@ async function connectWeb3AuthProvider(
   }
 
   return instance.connect();
+}
+
+async function connectWeb3AuthProviderWithRetry(
+  instance: Web3AuthInstance,
+  mode: Web3AuthLoginMode,
+  emailHint?: string,
+) {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      if (attempt > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 350 * attempt));
+      }
+      return await connectWeb3AuthProvider(instance, mode, emailHint);
+    } catch (error) {
+      lastError = error;
+      const message = error instanceof Error ? error.message : String(error);
+      if (/user closed|closed popup|user rejected/i.test(message)) {
+        throw error;
+      }
+      if (!/not ready|connector is not ready|clientId|project configurations/i.test(message)) {
+        throw error;
+      }
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error('Web3Auth connect failed');
 }
 
 async function resolveEvmAddress(provider: unknown): Promise<string> {
@@ -297,7 +387,7 @@ export async function loginWithWeb3Auth(mode: Web3AuthLoginMode = 'google'): Pro
   let instance: Web3AuthInstance | null = null;
   try {
     instance = await initWeb3Auth();
-    const provider = await connectWeb3AuthProvider(instance, mode);
+    const provider = await connectWeb3AuthProviderWithRetry(instance, mode);
     dismissWeb3AuthModal(instance);
 
     const idToken = await resolveIdentityToken(instance);
@@ -335,7 +425,7 @@ export function loginWithEmail(email: string) {
     let instance: Web3AuthInstance | null = null;
     try {
       instance = await initWeb3Auth();
-      const provider = await connectWeb3AuthProvider(instance, 'email', email);
+      const provider = await connectWeb3AuthProviderWithRetry(instance, 'email', email);
       dismissWeb3AuthModal(instance);
       const idToken = await resolveIdentityToken(instance);
       if (!idToken) throw new Error('Sign-in verification failed: no identity token');

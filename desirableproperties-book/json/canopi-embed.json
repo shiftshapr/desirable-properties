@@ -1,0 +1,13 @@
+{
+  "canopiId": "7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c",
+  "embedScript": "https://api.canopi.live/embed/v1.js",
+  "communityId": "c0f30bc5-de17-4328-80d9-ff8f364907da",
+  "pageRules": ["/viewer/*", "/viewer.htm"],
+  "domains": [
+    "book.desirableproperties.org",
+    "book.themetalayer.org",
+    "desirableproperties.org",
+    "www.desirableproperties.org"
+  ],
+  "supportUrl": "https://www.desirableproperties.org/support"
+}

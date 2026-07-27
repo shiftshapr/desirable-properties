@@ -47,10 +47,23 @@
     "dp_3_adaptive_governance.txt": "d4359711a1e0e8eb0cbafc2744b344886208e1667d4813d7904f1ad83d3f5fa0i0",
     "dp_22_civic_memory_and_sensemaking_continuity_revised_ml_draft.txt": "a802c08792193bf5bfc56ef20eaa57e706a830ebd55decb597f0b1ae5506f5b1i0"
   },
+  "draft_only": {
+    "DP23": {
+      "ml_number": "ML-Draft-030",
+      "govhub_submission_id": "393b54c8-e08b-4675-a88f-32bb0c493914",
+      "govhub_draft_name": "yfyf67tc",
+      "govhub_url": "https://hub.themetalayer.org/doc/draft/ML-Draft-030/",
+      "local_override": "/content/local/dp23.md",
+      "source_filename": "dp_23_universal_participation_linguistic_interoperability_ml_draft.md",
+      "status": "draft",
+      "note": "Working copy on Gov Hub and book local rail; not yet inscribed on Bitcoin."
+    }
+  },
   "meta": {
-    "updated_at": "2026-06-18",
+    "updated_at": "2026-07-27",
     "source_file": "dp_ordinals_batch.csv",
     "mapped_count": 22,
-    "note": "On-chain inscriptions for Gov Hub ML-Draft DP text files."
+    "draft_only_count": 1,
+    "note": "by_dp_id / by_filename map on-chain inscriptions. draft_only holds ML-Drafts not yet inscribed."
   }
 }

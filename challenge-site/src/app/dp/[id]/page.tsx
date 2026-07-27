@@ -10,6 +10,7 @@ import {
 import {
   loadDpProvenance,
   dpInscriptionUrl,
+  dpGovHubDraftUrl,
   dpPdfDownloadUrl,
   dpPdfDownloadFilename,
   loadPciProvenanceForDp,
@@ -44,6 +45,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
   const draftHref = workgroup?.document_href ? govhubUrl(workgroup.document_href) : null;
   const workgroupHref = workgroup?.slug ? govhubUrl(`/workgroups/${workgroup.slug}/`) : null;
   const onchainDraftHref = dpInscriptionUrl(dp.id);
+  const govhubDraftHref = dpGovHubDraftUrl(dp.id);
   const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
   const pdfDownloadName = dpPdfDownloadFilename(dp.id);
 
@@ -178,6 +180,16 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                       className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
                     >
                       View on-chain inscription →
+                    </a>
+                  )}
+                  {!onchainDraftHref && govhubDraftHref && (
+                    <a
+                      href={govhubDraftHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
+                    >
+                      Read ML-Draft on Gov Hub →
                     </a>
                   )}
                 </div>

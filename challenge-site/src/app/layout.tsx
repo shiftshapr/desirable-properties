@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import SiteShell from '@/components/SiteShell';
+import Web3AuthConfigScript from '@/components/Web3AuthConfigScript';
 import './globals.css';
 
 const geistSans = Geist({
@@ -27,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
+      <head>
+        <Web3AuthConfigScript />
+      </head>
       <body className="flex min-h-dvh flex-col bg-slate-950 text-slate-100 antialiased">
         <SiteShell>{children}</SiteShell>
       </body>

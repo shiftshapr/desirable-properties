@@ -69,6 +69,13 @@
       "title": "Memory Stewardship",
       "subtitle": "Civic memory and epistemic continuity",
       "dpIds": ["DP22"]
+    },
+    {
+      "key": "part-8",
+      "number": "VIII",
+      "title": "Universal Participation",
+      "subtitle": "Linguistic interoperability and shared global sensemaking",
+      "dpIds": ["DP23"]
     }
   ],
   "chapterIds": {

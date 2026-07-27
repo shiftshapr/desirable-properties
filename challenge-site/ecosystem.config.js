@@ -44,6 +44,9 @@ module.exports = {
         HERMES_CHAT_SECRET: localEnv.HERMES_CHAT_SECRET || localEnv.METAWEB_OPS_SECRET || '',
         METAWEB_OPS_SECRET: localEnv.METAWEB_OPS_SECRET || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
+        WEB3AUTH_CLIENT_ID_DEVNET:
+          localEnv.WEB3AUTH_CLIENT_ID_DEVNET
+          || 'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk',
       },
       max_memory_restart: '512M',
     },

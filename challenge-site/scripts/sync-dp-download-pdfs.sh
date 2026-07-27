@@ -16,7 +16,7 @@ fi
 
 # Fallback: copy any remaining legacy docs/dp-pdfs into aliases if composites missing.
 SRC_DOCS="$REPO/docs"
-for i in $(seq 1 22); do
+for i in $(seq 1 23); do
   alias="$DEST/dp/dp${i}.pdf"
   versioned="$(ls "$DEST/dp/DP${i}-"*.pdf 2>/dev/null | head -1 || true)"
   if [[ -n "$versioned" && ! -f "$alias" ]]; then

@@ -175,7 +175,7 @@ export default async function ChallengePage() {
           <div className="rounded-xl border border-violet-900/50 bg-violet-950/20 p-6">
             <h3 className="text-lg font-semibold text-white">Desirable Properties book</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Read the v1.0 open edition–framing chapter plus twenty-two inscribed DPs organized in
+              Read the v1.0 open edition–framing chapter plus twenty-three Desirable Properties organized in
               seven parts. Same markdown ordinals as the Digital Monument.
             </p>
             <a

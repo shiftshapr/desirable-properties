@@ -625,6 +625,30 @@
         }
       ],
       "markdown": "# DP22 – Civic Memory & Epistemic Continuity\n\n*Civic meaning must survive artifacts, AI transformation, and time.*\n\n## Overview\n\nThe Meta-Layer should preserve civic memory and collective sensemaking through transformation–maintaining traceable pathways from claim to evidence to interpretation–without turning memory into surveillance, summary into authority, or plurality into synthetic consensus.\n\n## Why It Matters\n\nDP22 defines the conditions under which communities can reconstruct how understanding evolved: what context must persist, how summarization remains accountable, and how plural sensemaking stays contestable across time.\n\n## Key Elements\n\n### Transformation-sensitive memory\n\nPreserve not only civic artifacts but the transformation paths through which civic understanding evolves–claims, evidence, interpretation, dissent, and synthesis.\n\n### Accountable summarization\n\nTreat summarization, retrieval, indexing, ranking, and contextualization as civic memory operations requiring provenance and accountability.\n\n### Plural sensemaking without capture\n\nEnable traceable, navigable, and contestable collective memory without establishing a single truth authority or collapsing disagreement into synthetic consensus.\n"
+    },
+    {
+      "id": "DP23",
+      "name": "Universal Participation & Linguistic Interoperability",
+      "category": "Universal Participation and Linguistic Interoperability",
+      "description": "The Meta-Layer should enable universal participation and linguistic interoperability–preserving original expression, enabling understanding across languages, making machine interpretation visible and contestable, and showing how participation influences shared understanding and action.",
+      "landing_title": "Participation Without Linguistic Surrender",
+      "landing_subtitle": "The Conditions for Shared Global Sensemaking",
+      "landing_text": "DP23 establishes universal participation and linguistic interoperability as foundational conditions for shared collective sensemaking–so people can contribute, be understood, inspect interpretation, and trace influence without surrendering their language or cultural context.",
+      "elements": [
+        {
+          "name": "Original-language integrity",
+          "description": "Preserve original contributions as the canonical civic record, with translation provenance, uncertainty visibility, and paired original/translation views."
+        },
+        {
+          "name": "Community-governed interpretation",
+          "description": "Enable translation challenges, cultural annotations, glossary stewardship, and multilingual due process so affected communities govern meaning–not only model providers."
+        },
+        {
+          "name": "Traceable collective sensemaking",
+          "description": "Link contributions through classification, clustering, summaries, recommendations, and institutional response so participants can see how their input influenced outcomes."
+        }
+      ],
+      "markdown": "# DP23 – Universal Participation & Linguistic Interoperability\n\n*The Conditions for Shared Global Sensemaking*\n\n## Overview\n\nThe Meta-Layer should enable universal participation and linguistic interoperability–preserving original expression, enabling understanding across languages, making machine interpretation visible and contestable, and showing how participation influences shared understanding and action.\n\n## Why It Matters\n\nDP23 establishes the conditions under which people can inhabit the same civic and epistemic space while preserving linguistic and cultural difference–without dominant-language mediation, semantic flattening, or extractive consultation.\n\n## Key Elements\n\n### Original-language integrity\n\nPreserve original contributions as the canonical civic record, with translation provenance, uncertainty visibility, and paired original/translation views.\n\n### Community-governed interpretation\n\nEnable translation challenges, cultural annotations, glossary stewardship, and multilingual due process so affected communities govern meaning–not only model providers.\n\n### Traceable collective sensemaking\n\nLink contributions through classification, clustering, summaries, recommendations, and institutional response so participants can see how their input influenced outcomes.\n"
     }
   ]
 }

@@ -429,6 +429,24 @@
         "clarifications": 0,
         "extensions": 0
       }
+    },
+    {
+      "id": "DP23",
+      "name": "Universal Participation & Linguistic Interoperability",
+      "category": "Universal Participation and Linguistic Interoperability",
+      "description": "The Meta-Layer should enable universal participation and linguistic interoperability\u2014preserving original expression, enabling understanding across languages, making machine interpretation visible and contestable, and showing how participation influences shared understanding and action.",
+      "landing_subtitle": "The Conditions for Shared Global Sensemaking",
+      "landing_text": "DP23 establishes universal participation and linguistic interoperability as foundational conditions for shared collective sensemaking\u2014so people can contribute, be understood, inspect interpretation, and trace influence without surrendering their language or cultural context.",
+      "key_elements": [
+        "Original-language integrity",
+        "Community-governed interpretation",
+        "Traceable collective sensemaking"
+      ],
+      "second_call_provenance": {
+        "alignments": 0,
+        "clarifications": 0,
+        "extensions": 0
+      }
     }
   ]
 }

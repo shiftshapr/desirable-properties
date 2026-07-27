@@ -1,8 +1,8 @@
 # Meta-Layer Desirable Properties — On-Chain Inscriptions
 
-Consolidated ML-Draft text for all 22 Desirable Properties, fetched from Bitcoin Ordinal inscriptions.
+Consolidated ML-Draft text for Desirable Properties DP1–DP22 (on-chain) plus DP23 (Gov Hub / local working copy, not yet inscribed).
 
-Source mapping: `challenge-site/src/data/dp-inscriptions.json` (updated 2026-06-18).
+Source mapping: `challenge-site/src/data/dp-inscriptions.json` (updated 2026-07-27).
 
 ---
 
