@@ -64,6 +64,6 @@
     "source_file": "dp_ordinals_batch.csv",
     "mapped_count": 22,
     "draft_only_count": 1,
-    "note": "by_dp_id / by_filename map on-chain inscriptions. draft_only holds ML-Drafts not yet inscribed."
+    "note": "by_dp_id / by_filename map inscriptions. draft_only holds DP23 (local working copy)."
   }
 }
