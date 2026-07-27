@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AgentPage() {
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950">
+    <div className="flex min-h-0 w-full flex-1 flex-col bg-slate-950">
       <HermesChat surface="desirableproperties.org/agent" />
     </div>
   );

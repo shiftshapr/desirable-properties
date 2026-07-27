@@ -45,6 +45,7 @@ jobs:
           git pull origin main
           cd challenge-site
           npm ci
+          pm2 stop desirableproperties 2>/dev/null || true
           npm run build
           pm2 delete desirableproperties 2>/dev/null || true
           pm2 start ecosystem.config.js

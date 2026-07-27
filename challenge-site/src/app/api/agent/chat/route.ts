@@ -5,8 +5,12 @@ import { getHermesChatUrl } from '@/lib/web3auth-config';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
     const session = await readSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Sign in required to send messages' }, { status: 401 });
+    }
+
+    const body = await request.json();
 
     const headers = hermesUpstreamHeaders();
     const upstream = await fetch(`${getHermesChatUrl()}/api/dp/chat`, {
@@ -19,9 +23,9 @@ export async function POST(request: Request) {
         surface: body.surface || 'desirableproperties.org/agent',
         sessionId: body.sessionId || null,
         threadId: body.threadId || null,
-        verifierId: session?.verifierId || null,
-        displayName: session?.displayName || null,
-        govHubUserId: session?.userId || null,
+        verifierId: session.verifierId,
+        displayName: session.displayName || null,
+        govHubUserId: session.userId,
         documents: body.documents || [],
       }),
       signal: AbortSignal.timeout(95000),

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { govhubUrl } from '@/lib/govhub';
 
 export default function SiteFooter() {
   return (
@@ -10,6 +9,9 @@ export default function SiteFooter() {
           <Link href="/about" className="text-cyan-300 hover:text-cyan-200">
             About
           </Link>
+          <Link href="/participate" className="text-slate-400 hover:text-slate-200">
+            Participate
+          </Link>
           <Link href="/challenge" className="text-slate-400 hover:text-slate-200">
             Challenge
           </Link>
@@ -17,13 +19,15 @@ export default function SiteFooter() {
             Browse DPs
           </Link>
           <Link href="/onchain" className="text-slate-400 hover:text-slate-200">
-            Call for Input
+            Onchain
           </Link>
           <a
-            href={govhubUrl('/layers/the-metaweb/')}
+            href="/agent"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-slate-400 hover:text-slate-200"
           >
-            Gov Hub
+            Agent
           </a>
         </nav>
       </div>

@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import HermesContributionPanel, { type ContributionDraft } from '@/components/HermesContributionPanel';
+import HermesContributionCTA from '@/components/HermesContributionCTA';
+import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
-import Web3AuthLogin, { type AuthUser } from '@/components/Web3AuthLogin';
+import type { ContributionDraft, ContributionHint, ContributionScope } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -13,6 +14,7 @@ import {
   readHermesDocument,
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
+import { useAuth } from '@/lib/auth-context';
 
 interface Message {
   id: string;
@@ -20,6 +22,7 @@ interface Message {
   sender: 'user' | 'assistant';
   timestamp: Date;
   attachments?: string[];
+  contributionHint?: ContributionHint | null;
 }
 
 interface HermesChatProps {
@@ -38,8 +41,7 @@ export default function HermesChat({
   dpFocus = null,
   compact = false,
 }: HermesChatProps) {
-  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-  const [authChecked, setAuthChecked] = useState(false);
+  const { user: authUser, login, loginBusy } = useAuth();
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
@@ -57,6 +59,8 @@ export default function HermesChat({
   const [isLoading, setIsLoading] = useState(false);
   const [contributionDraft, setContributionDraft] = useState<ContributionDraft | null>(null);
   const [contributionBusy, setContributionBusy] = useState(false);
+  const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sessionId] = useState(() =>
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID()
@@ -113,15 +117,6 @@ export default function HermesChat({
   }, []);
 
   useEffect(() => {
-    fetch('/api/auth/me')
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.authenticated && data.user) setAuthUser(data.user);
-      })
-      .finally(() => setAuthChecked(true));
-  }, []);
-
-  useEffect(() => {
     if (authUser) loadThreads();
   }, [authUser, loadThreads]);
 
@@ -129,17 +124,10 @@ export default function HermesChat({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading, contributionDraft]);
 
-  const onAuthenticated = (user: AuthUser) => {
-    setAuthUser(user);
-    loadThreads();
-  };
-
-  const logout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    setAuthUser(null);
-    setThreads([]);
-    setActiveThreadId(null);
-    setContributionDraft(null);
+  const promptSignIn = () => {
+    void login().then(() => loadThreads()).catch(() => {
+      // Web3Auth modal closed or failed
+    });
   };
 
   const createThread = async () => {
@@ -160,6 +148,10 @@ export default function HermesChat({
 
   const onFilesSelected = async (files: FileList | null) => {
     if (!files?.length) return;
+    if (!authUser) {
+      promptSignIn();
+      return;
+    }
     setAttachError(null);
 
     const next = [...attachments];
@@ -185,6 +177,11 @@ export default function HermesChat({
   const sendMessage = async () => {
     const text = inputText.trim();
     if ((!text && attachments.length === 0) || isLoading) return;
+
+    if (!authUser) {
+      promptSignIn();
+      return;
+    }
 
     const attachmentNames = attachments.map((doc) => doc.name);
     const displayText = text
@@ -222,6 +219,9 @@ export default function HermesChat({
 
       const data = await response.json();
       if (!response.ok) {
+        if (response.status === 401) {
+          promptSignIn();
+        }
         throw new Error(data.error || 'Request failed');
       }
 
@@ -232,6 +232,7 @@ export default function HermesChat({
           text: data.response,
           sender: 'assistant',
           timestamp: new Date(),
+          contributionHint: data.contributionHint || null,
         },
       ]);
 
@@ -253,18 +254,44 @@ export default function HermesChat({
     }
   };
 
-  const draftContribution = async () => {
-    if (!authUser) return;
-    const lastUser = [...messages].reverse().find((m) => m.sender === 'user');
-    const prompt = lastUser?.text || inputText.trim();
-    if (!prompt) return;
+  const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
+    if (!authUser) {
+      promptSignIn();
+      return;
+    }
+
+    const assistantIdx = messages.findIndex((m) => m.id === assistantMessageId);
+    if (assistantIdx < 0) return;
+
+    const assistantMessage = messages[assistantIdx];
+    const userMessage = [...messages.slice(0, assistantIdx)]
+      .reverse()
+      .find((m) => m.sender === 'user');
+    if (!userMessage?.text) return;
+
+    const history = messages
+      .slice(0, assistantIdx)
+      .filter((m) => m.id !== 'intro' && m.id !== userMessage.id)
+      .slice(-10)
+      .map((m) => ({ text: m.text, sender: m.sender }));
+
+    const hint = assistantMessage.contributionHint;
 
     setContributionBusy(true);
+    setDraftingMessageId(assistantMessageId);
     try {
       const res = await fetch('/api/agent/contributions/draft', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: prompt, dpFocus }),
+        body: JSON.stringify({
+          scope,
+          message: userMessage.text,
+          assistantReply: assistantMessage.text,
+          history,
+          dpFocus,
+          kind: hint?.suggestedKind || undefined,
+          draftRef: hint?.draftRefHint || undefined,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not draft contribution');
@@ -281,6 +308,7 @@ export default function HermesChat({
       ]);
     } finally {
       setContributionBusy(false);
+      setDraftingMessageId(null);
     }
   };
 
@@ -333,61 +361,73 @@ export default function HermesChat({
   };
 
   const shellClass = compact
-    ? 'flex h-full min-h-[420px] flex-col rounded-xl border border-slate-800 bg-slate-950'
-    : 'flex h-full min-h-0 flex-col bg-slate-950';
+    ? 'relative flex h-full min-h-[420px] w-full flex-col bg-slate-950'
+    : 'relative flex h-full min-h-0 w-full flex-1 flex-col bg-slate-950 md:pl-[260px] lg:pl-[280px]';
+
+  const sidebar = (
+    <HermesThreadSidebar
+      threads={threads}
+      activeThreadId={activeThreadId}
+      loading={threadsLoading}
+      signedIn={Boolean(authUser)}
+      onSelect={loadThread}
+      onCreate={createThread}
+      onSignIn={promptSignIn}
+      onClose={() => setSidebarOpen(false)}
+    />
+  );
 
   return (
-    <div className={`${shellClass} md:flex-row`}>
-      {authUser ? (
-        <HermesThreadSidebar
-          threads={threads}
-          activeThreadId={activeThreadId}
-          loading={threadsLoading}
-          onSelect={loadThread}
-          onCreate={createThread}
-        />
+    <div className={shellClass}>
+      {/* Desktop sidebar — fixed to viewport left, full height below site header */}
+      <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
+        <div className="pointer-events-auto flex h-full flex-col">
+          {sidebar}
+        </div>
+      </div>
+
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen ? (
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-40 bg-black/60 md:hidden"
+            aria-label="Close sidebar"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div className="fixed inset-y-0 left-0 z-50 flex w-[min(100%,280px)] md:hidden">
+            <div className="flex h-full w-full flex-col">{sidebar}</div>
+          </div>
+        </>
       ) : null}
 
-      <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3 sm:px-6">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.15em] text-cyan-400">Hermes</p>
-            <h1 className="text-lg font-semibold text-white sm:text-xl">
-              Desirable Properties community agent
-            </h1>
-          </div>
-          <div className="text-right">
-            {authChecked && authUser ? (
-              <div className="space-y-1">
-                <p className="text-xs text-slate-300">
-                  {authUser.displayName || authUser.username}
-                </p>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="text-[11px] text-slate-400 hover:text-white"
-                >
-                  Sign out
-                </button>
-              </div>
-            ) : authChecked ? (
-              <Web3AuthLogin onAuthenticated={onAuthenticated} compact />
-            ) : null}
-          </div>
+      <div className="flex h-full min-h-0 w-full flex-1 flex-col">
+        <div className="flex shrink-0 items-center gap-3 border-b border-slate-800 px-4 py-2.5 md:hidden">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="rounded-lg border border-slate-700 p-2 text-slate-300 hover:bg-slate-900"
+            aria-label="Open conversations"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <p className="text-sm font-medium text-white">Hermes</p>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
-          <div className="mx-auto flex max-w-3xl flex-col gap-4">
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex w-full ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
                     message.sender === 'user'
                       ? 'bg-cyan-700 text-white'
-                      : 'border border-slate-800 bg-slate-900 text-slate-100'
+                      : 'text-slate-100'
                   }`}
                 >
                   {message.sender === 'assistant' ? (
@@ -395,14 +435,21 @@ export default function HermesChat({
                   ) : (
                     <p className="whitespace-pre-wrap">{message.text}</p>
                   )}
+                  {message.sender === 'assistant'
+                    && message.contributionHint?.contributionReady ? (
+                    <HermesContributionCTA
+                      hint={message.contributionHint}
+                      busy={contributionBusy && draftingMessageId === message.id}
+                      signedIn={Boolean(authUser)}
+                      onDraft={(scope) => draftContribution(scope, message.id)}
+                      onSignIn={promptSignIn}
+                    />
+                  ) : null}
                   {message.attachments?.length ? (
                     <p className="mt-2 text-[11px] opacity-80">
                       Attached: {message.attachments.join(', ')}
                     </p>
                   ) : null}
-                  <p className="mt-2 text-[11px] opacity-60">
-                    {message.timestamp.toLocaleTimeString()}
-                  </p>
                 </div>
               </div>
             ))}
@@ -418,7 +465,7 @@ export default function HermesChat({
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-slate-300">
+                <div className="rounded-2xl px-4 py-3 text-slate-300">
                   <span className="inline-flex gap-1">
                     <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-400" />
                     <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-400 [animation-delay:0.1s]" />
@@ -431,20 +478,9 @@ export default function HermesChat({
           </div>
         </div>
 
-        <div className="border-t border-slate-800 px-4 py-4 sm:px-6">
-          <div className="mx-auto max-w-3xl space-y-3">
-            {authUser ? (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={draftContribution}
-                  disabled={contributionBusy || isLoading}
-                  className="rounded-lg border border-amber-700/60 px-3 py-1.5 text-xs text-amber-200 hover:border-amber-500 disabled:opacity-50"
-                >
-                  Draft Gov Hub contribution
-                </button>
-              </div>
-            ) : null}
+        <div className="shrink-0 border-t border-slate-800 bg-slate-950">
+          <div className="mx-auto w-full max-w-3xl px-4 py-3 sm:px-6">
+            <div className="space-y-2">
             {attachments.length > 0 && (
               <ul className="flex flex-wrap gap-2">
                 {attachments.map((doc) => (
@@ -466,7 +502,7 @@ export default function HermesChat({
               </ul>
             )}
             {attachError ? <p className="text-xs text-rose-300">{attachError}</p> : null}
-            <div className="flex gap-3">
+            <div className="flex items-end gap-2 rounded-2xl border border-slate-700 bg-slate-900/80 p-2 shadow-lg shadow-black/20">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -479,28 +515,47 @@ export default function HermesChat({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT}
-                className="rounded-xl border border-slate-700 px-4 py-3 text-sm text-slate-200 hover:border-cyan-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 shrink-0 items-center justify-center rounded-lg px-2 text-slate-400 hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                 title={`Upload ${HERMES_DOC_TYPES_LABEL}`}
+                aria-label="Attach file"
               >
-                Attach
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
               </button>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={onKeyDown}
-                placeholder="Ask about a DP, upload a draft for review, or describe a governance tension…"
-                className="min-h-[52px] flex-1 resize-none rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-cyan-600 focus:outline-none focus:ring-1 focus:ring-cyan-600"
-                rows={2}
+                placeholder={
+                  authUser
+                    ? 'Message Hermes…'
+                    : 'Sign in to send a message…'
+                }
+                className="max-h-40 min-h-10 flex-1 resize-none bg-transparent px-1 py-2.5 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
+                rows={1}
                 disabled={isLoading}
               />
               <button
                 type="button"
-                onClick={sendMessage}
-                disabled={(!inputText.trim() && attachments.length === 0) || isLoading}
-                className="rounded-xl bg-cyan-700 px-5 py-3 text-sm font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700"
+                onClick={authUser ? sendMessage : promptSignIn}
+                disabled={
+                  (!authUser && loginBusy)
+                  || (authUser && !inputText.trim() && attachments.length === 0)
+                  || isLoading
+                }
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+                aria-label={authUser ? 'Send message' : 'Sign in'}
               >
-                Send
+                {authUser ? (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                ) : (
+                  <span className="text-[10px] font-medium">In</span>
+                )}
               </button>
+            </div>
             </div>
           </div>
         </div>

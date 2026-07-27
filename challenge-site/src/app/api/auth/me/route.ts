@@ -12,6 +12,7 @@ export async function GET() {
       id: session.userId,
       username: session.username,
       displayName: session.displayName,
+      profileImage: session.profileImage ?? null,
       verifierId: session.verifierId,
     },
   });

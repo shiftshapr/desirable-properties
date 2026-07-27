@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { EncryptJWT, jwtDecrypt } from 'jose';
 import { cookies } from 'next/headers';
 
@@ -9,16 +10,21 @@ export interface HermesSession {
   userId: string;
   username: string;
   displayName: string | null;
+  profileImage?: string | null;
   idToken: string;
   email?: string | null;
 }
 
-function sessionSecret() {
+function sessionSecretKey() {
   const secret = process.env.AUTH_SESSION_SECRET || process.env.HERMES_SESSION_SECRET || '';
   if (!secret || secret.length < 16) {
     throw new Error('AUTH_SESSION_SECRET must be set (min 16 chars)');
   }
-  return new TextEncoder().encode(secret);
+  // jose A256GCM requires exactly 256 bits; hex secrets are decoded, others are hashed.
+  if (/^[0-9a-f]{64}$/i.test(secret)) {
+    return Buffer.from(secret, 'hex');
+  }
+  return createHash('sha256').update(secret).digest();
 }
 
 export async function createSessionCookie(payload: HermesSession) {
@@ -26,7 +32,7 @@ export async function createSessionCookie(payload: HermesSession) {
     .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE_SEC}s`)
-    .encrypt(sessionSecret());
+    .encrypt(sessionSecretKey());
 
   return {
     name: SESSION_COOKIE,
@@ -44,7 +50,7 @@ export async function readSession(): Promise<HermesSession | null> {
     const store = await cookies();
     const raw = store.get(SESSION_COOKIE)?.value;
     if (!raw) return null;
-    const { payload } = await jwtDecrypt(raw, sessionSecret());
+    const { payload } = await jwtDecrypt(raw, sessionSecretKey());
     const verifierId = String(payload.verifierId || '');
     const userId = String(payload.userId || '');
     const idToken = String(payload.idToken || '');
@@ -54,6 +60,7 @@ export async function readSession(): Promise<HermesSession | null> {
       userId,
       username: String(payload.username || ''),
       displayName: payload.displayName ? String(payload.displayName) : null,
+      profileImage: payload.profileImage ? String(payload.profileImage) : null,
       idToken,
       email: payload.email ? String(payload.email) : null,
     };

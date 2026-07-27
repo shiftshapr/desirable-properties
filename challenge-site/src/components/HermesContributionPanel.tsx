@@ -1,14 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-export interface ContributionDraft {
-  kind: 'comment' | 'patch';
-  draftRef: string;
-  title: string;
-  summary: string;
-  payload: Record<string, unknown>;
-}
+import type { ContributionDraft } from '@/lib/hermesContribution';
 
 interface HermesContributionPanelProps {
   draft: ContributionDraft | null;
@@ -32,12 +25,15 @@ export default function HermesContributionPanel({
       ? String(draft.payload.text || '')
       : `${String(draft.payload.original_text || '')}\n→ ${String(draft.payload.proposed_text || '')}`;
 
+  const scopeLabel =
+    draft.scope === 'thread' ? 'from full thread' : 'from latest message';
+
   return (
     <div className="rounded-xl border border-amber-700/50 bg-amber-950/30 p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-300">
-            Gov Hub {draft.kind === 'patch' ? 'patch' : 'comment'} draft
+            Gov Hub {draft.kind === 'patch' ? 'patch' : 'comment'} draft ({scopeLabel})
           </p>
           <p className="mt-1 text-sm font-medium text-white">{draft.title}</p>
           <p className="mt-1 text-xs text-slate-300">{draft.summary}</p>
