@@ -233,6 +233,9 @@
     .toc-open-btn:hover {
       background: var(--accent-soft-2);
     }
+    .toc-open-btn.is-hidden {
+      display: none !important;
+    }
 
     /* Theme toggle: dark (default) / light */
     .theme-toggle-btn {
@@ -780,6 +783,28 @@
       .ordinal-meta { padding: 0 18px; }
       .nav-bar button { padding: 10px 14px; font-size: 13px; }
     }
+    /* Canopi embed (v1.js): cap trigger + welcome banner so host layout stays usable */
+    #canopi-overlay-root .canopi-trigger--bouncing-icon,
+    #canopi-overlay-root .canopi-trigger--corner-tab {
+      z-index: 2147483644 !important;
+    }
+    #canopi-overlay-root .canopi-trigger__icon,
+    #canopi-overlay-root .canopi-trigger__icon-img {
+      width: 60% !important;
+      height: 60% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: contain !important;
+    }
+    #canopi-overlay-root .canopi-welcome-banner {
+      position: fixed !important;
+      left: 16px !important;
+      right: 16px !important;
+      bottom: 16px !important;
+      max-width: 420px !important;
+      z-index: 2147483647 !important;
+      pointer-events: auto !important;
+    }
     html.dp-header-above-canopi .header {
       position: relative;
       z-index: 2147483000;
@@ -788,6 +813,7 @@
       top: 0;
       height: 100vh;
       height: 100dvh;
+      z-index: 2147483645 !important;
     }
     .header-support-link {
       font-size: 12px;
@@ -828,7 +854,7 @@
       <div class="header-tools">
         <a
           class="header-support-link"
-          href="https://www.desirableproperties.org/support"
+          href="https://desirableproperties.org/support"
           target="_blank"
           rel="noopener noreferrer"
           title="Questions about the challenge, workgroups, or this book"
@@ -959,8 +985,10 @@
     function setSidebarOpen(open) {
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('sidebarBackdrop');
+      const openBtn = document.getElementById('btnTocOpen');
       if (!sidebar) return;
       sidebar.classList.toggle('hidden', !open);
+      if (openBtn) openBtn.classList.toggle('is-hidden', !!open);
       if (backdrop) {
         if (isMobileReader()) {
           backdrop.classList.toggle('hidden', !open);

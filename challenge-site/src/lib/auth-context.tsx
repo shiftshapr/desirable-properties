@@ -8,6 +8,7 @@ type AuthContextValue = {
   user: AuthUser | null;
   checked: boolean;
   loginBusy: boolean;
+  loginError: string | null;
   setUser: (user: AuthUser | null) => void;
   login: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -20,6 +21,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [checked, setChecked] = useState(false);
   const [loginBusy, setLoginBusy] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -62,9 +64,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async () => {
     if (loginBusy) return;
     setLoginBusy(true);
+    setLoginError(null);
     try {
       const nextUser = await loginWithGoogle();
       setUser(nextUser);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Sign-in failed';
+      if (!/user closed|closed popup|user rejected/i.test(message)) {
+        setLoginError(message);
+      }
+      throw error;
     } finally {
       setLoginBusy(false);
     }
@@ -76,8 +85,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, checked, loginBusy, setUser, login, refresh, logout }),
-    [user, checked, loginBusy, login, refresh, logout],
+    () => ({ user, checked, loginBusy, loginError, setUser, login, refresh, logout }),
+    [user, checked, loginBusy, loginError, login, refresh, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -6,7 +6,7 @@ import { resolveAvatarUrl } from '@/lib/avatar';
 import { govhubUrl } from '@/lib/govhub';
 
 export default function SiteAuthNav() {
-  const { user, checked, login, loginBusy, logout } = useAuth();
+  const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -42,18 +42,26 @@ export default function SiteAuthNav() {
 
   if (!user) {
     return (
-      <button
-        type="button"
-        onClick={() => {
-          void login().catch(() => {
-            // Web3Auth modal closed or failed — no inline panel
-          });
-        }}
-        disabled={loginBusy}
-        className="shrink-0 text-sm text-slate-300 hover:text-white disabled:opacity-60"
-      >
-        {loginBusy ? 'Signing in…' : 'Sign In'}
-      </button>
+      <div className="flex flex-col items-end gap-1">
+        <button
+          type="button"
+          onClick={() => {
+            void login().catch(() => {
+              // loginError is set in auth context
+            });
+          }}
+          disabled={loginBusy}
+          className="shrink-0 text-sm text-slate-300 hover:text-white disabled:opacity-60"
+          title="Sign in with Web3Auth"
+        >
+          {loginBusy ? 'Signing in…' : 'Sign In'}
+        </button>
+        {loginError ? (
+          <span className="max-w-[220px] text-right text-xs text-red-300" role="alert">
+            {loginError}
+          </span>
+        ) : null}
+      </div>
     );
   }
 

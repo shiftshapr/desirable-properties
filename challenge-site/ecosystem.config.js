@@ -26,6 +26,25 @@ function loadEnvLocal() {
 
 const localEnv = loadEnvLocal();
 
+/** Resend keys for support ack/reply emails — prefer challenge-site .env.local. */
+function loadResendEnv() {
+  const out = {};
+  const stripeEnvPath = '/home/ubuntu/metaweb-book/stripe-server/.env';
+  if (!fs.existsSync(stripeEnvPath)) return out;
+  for (const line of fs.readFileSync(stripeEnvPath, 'utf8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const idx = trimmed.indexOf('=');
+    if (idx <= 0) continue;
+    const key = trimmed.slice(0, idx).trim();
+    if (!key.startsWith('RESEND_')) continue;
+    out[key] = trimmed.slice(idx + 1).trim();
+  }
+  return out;
+}
+
+const resendEnv = loadResendEnv();
+
 module.exports = {
   apps: [
     {
@@ -38,12 +57,21 @@ module.exports = {
         PORT: '3005',
         GOVHUB_BASE_URL: 'https://hub.themetalayer.org',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
-        ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com',
+        ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',
         HERMES_CHAT_URL: 'http://127.0.0.1:8790',
         AUTH_SESSION_SECRET: localEnv.AUTH_SESSION_SECRET || '',
         HERMES_CHAT_SECRET: localEnv.HERMES_CHAT_SECRET || localEnv.METAWEB_OPS_SECRET || '',
         METAWEB_OPS_SECRET: localEnv.METAWEB_OPS_SECRET || '',
+        DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || localEnv.METAWEB_OPS_SECRET || '',
+        DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || localEnv.METAWEB_OPS_SECRET || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
+        RESEND_API_KEY: localEnv.RESEND_API_KEY || resendEnv.RESEND_API_KEY || '',
+        DP_SUPPORT_FROM:
+          localEnv.DP_SUPPORT_FROM
+          || localEnv.RESEND_FROM
+          || resendEnv.RESEND_FROM
+          || 'Desirable Properties <noreply@desirableproperties.org>',
+        DP_PUBLIC_BASE: localEnv.DP_PUBLIC_BASE || 'https://desirableproperties.org',
         WEB3AUTH_CLIENT_ID_DEVNET:
           localEnv.WEB3AUTH_CLIENT_ID_DEVNET
           || 'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk',

@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-28T00:00:00.000Z",
+  "runbooks": [
+    {
+      "id": "dp-sign-in",
+      "title": "Sign-in fails on desirableproperties.org",
+      "category": "technical_support",
+      "symptoms": ["sign in", "web3auth", "google", "login failed", "popup blocked", "whitelist"],
+      "steps": [
+        "Confirm user is on https://desirableproperties.org (not www or :3005).",
+        "Ask for browser and whether popups are blocked.",
+        "If Web3Auth whitelist error, note domain must be desirableproperties.org apex.",
+        "Escalate to human if sign-in works on Gov Hub but not DP site."
+      ]
+    },
+    {
+      "id": "dp-canopi-book",
+      "title": "Canopi / Go Meta on book viewer",
+      "category": "technical_support",
+      "symptoms": ["canopi", "go meta", "book viewer", "overlay", "contents", "sidebar"],
+      "steps": [
+        "Confirm chapter URL on book.desirableproperties.org or desirableproperties.org/viewer.",
+        "Request full-window screenshot including browser address bar.",
+        "Check whether Go Meta tab appears; note Canopi embed id if missing.",
+        "Escalate if embed returns 404 from api.canopi.live."
+      ]
+    },
+    {
+      "id": "dp-workgroup",
+      "title": "Workgroup join or Gov Hub link",
+      "category": "workgroup_help",
+      "symptoms": ["workgroup", "gov hub", "join", "hub.themetalayer.org", "ssl"],
+      "steps": [
+        "Point user to workgroups/join page for canonical DP slugs.",
+        "If SSL/network error on Gov Hub, explain home router/DNS blocking is common.",
+        "Do not change Gov Hub membership via support — direct to workgroup lead."
+      ]
+    },
+    {
+      "id": "dp-content",
+      "title": "DP draft content clarification",
+      "category": "content_clarification",
+      "symptoms": ["dp", "desirable property", "draft", "wording", "revision", "patch"],
+      "steps": [
+        "Ask for DP number and suggested revision text.",
+        "Direct substantive edits to Gov Hub workgroup discussion or patches.",
+        "Support can clarify process, not approve canonical text alone."
+      ]
+    }
+  ],
+  "faq": {
+    "where_submit": "https://desirableproperties.org/support",
+    "book": "https://book.desirableproperties.org/",
+    "govhub": "https://hub.themetalayer.org/"
+  },
+  "escalationRules": [
+    { "when": "urgency critical or blocking", "action": "escalate_human" },
+    { "when": "technical_support without screenshots", "action": "request_screenshot" },
+    { "when": "category content_clarification with DP patch text", "action": "route_workgroup" }
+  ]
+}

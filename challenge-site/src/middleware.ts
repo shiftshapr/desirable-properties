@@ -2,9 +2,25 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 
-const PROTECTED_PREFIXES = ['/onchain/admin', '/api/onchain/admin'];
+const PROTECTED_PREFIXES = ['/onchain/admin', '/api/onchain/admin', '/support/admin', '/api/support/admin'];
+
+/** Public apex redirect — must not leak internal port 3005 from proxy_pass. */
+function apexRedirect(request: NextRequest) {
+  const host = (request.headers.get('host') || '').split(':')[0];
+  if (host !== 'www.desirableproperties.org') return null;
+
+  const proto = request.headers.get('x-forwarded-proto') || 'https';
+  const path = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+  const response = NextResponse.redirect(`${proto}://desirableproperties.org${path}`, 302);
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  return response;
+}
 
 export async function middleware(request: NextRequest) {
+  const apex = apexRedirect(request);
+  if (apex) return apex;
+
   const { pathname } = request.nextUrl;
 
   if (pathname === '/onchain/admin/login' || pathname === '/api/onchain/admin/login') {
@@ -32,5 +48,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/onchain/admin/:path*', '/api/onchain/admin/:path*'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

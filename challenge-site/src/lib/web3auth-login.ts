@@ -101,6 +101,14 @@ function useSocialLoginOnly() {
   return true;
 }
 
+function ensureApexDomain() {
+  if (typeof window === 'undefined') return;
+  if (window.location.hostname !== 'www.desirableproperties.org') return;
+  window.location.replace(
+    `https://desirableproperties.org${window.location.pathname}${window.location.search}${window.location.hash}`,
+  );
+}
+
 function modalConfig() {
   const WC = window.Modal?.WALLET_CONNECTORS;
   if (!WC) return { hideWalletDiscovery: true };
@@ -204,6 +212,7 @@ async function createWeb3AuthInstance(cfg: Web3AuthPublicConfig) {
 }
 
 async function initWeb3Auth() {
+  ensureApexDomain();
   if (web3auth) return web3auth;
   if (web3authInitPromise) return web3authInitPromise;
 
@@ -251,7 +260,7 @@ async function initWeb3Auth() {
   return web3authInitPromise;
 }
 
-/** Pre-load Web3Auth on page load (matches Gov Hub bootWeb3Auth). */
+/** Pre-load Web3Auth on page load. */
 export function warmupWeb3Auth() {
   if (typeof window === 'undefined') return;
   void initWeb3Auth().catch(() => {

@@ -43,7 +43,7 @@ async function readFilesAsBase64(files: File[]) {
 }
 
 export default function SupportPageClient() {
-  const { user, checked, login, loginBusy } = useAuth();
+  const { user, checked, login, loginBusy, loginError } = useAuth();
   const [tickets, setTickets] = useState<TicketSummary[]>([]);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -153,10 +153,21 @@ export default function SupportPageClient() {
         <p className="mt-8 text-slate-400">Loading sign-in status…</p>
       ) : !user ? (
         <div className="mt-8 rounded-xl border border-slate-700 bg-slate-900/60 p-6">
-          <p className="text-slate-300">Sign in to submit and track support requests.</p>
+          <p className="text-slate-300">
+            Sign in to submit and track support requests.
+          </p>
+          {loginError ? (
+            <p className="mt-4 rounded-lg border border-red-700/50 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+              {loginError}
+            </p>
+          ) : null}
           <button
             type="button"
-            onClick={() => void login()}
+            onClick={() => {
+              void login().catch(() => {
+                // loginError set in auth context
+              });
+            }}
             disabled={loginBusy}
             className="mt-4 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500 disabled:opacity-60"
           >
@@ -177,9 +188,10 @@ export default function SupportPageClient() {
           ) : null}
 
           <form onSubmit={(e) => void onSubmit(e)} className="mt-8 space-y-4">
+            <p className="text-xs text-slate-500">Fields marked * are required.</p>
             <div>
               <label htmlFor="support-subject" className="mb-1 block text-sm text-slate-300">
-                Subject
+                Subject <span className="text-amber-300">*</span>
               </label>
               <input
                 id="support-subject"
@@ -228,7 +240,7 @@ export default function SupportPageClient() {
 
             <div>
               <label htmlFor="support-body" className="mb-1 block text-sm text-slate-300">
-                Message
+                Message <span className="text-amber-300">*</span>
               </label>
               <textarea
                 id="support-body"
@@ -242,60 +254,64 @@ export default function SupportPageClient() {
               />
             </div>
 
-            <div>
-              <label htmlFor="support-steps" className="mb-1 block text-sm text-slate-300">
-                Steps to reproduce (optional)
-              </label>
-              <textarea
-                id="support-steps"
-                maxLength={4000}
-                rows={3}
-                value={steps}
-                onChange={(e) => setSteps(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-              />
-            </div>
+            {isTechnical ? (
+              <>
+                <div>
+                  <label htmlFor="support-steps" className="mb-1 block text-sm text-slate-300">
+                    Steps to reproduce <span className="text-slate-500">(optional)</span>
+                  </label>
+                  <textarea
+                    id="support-steps"
+                    maxLength={4000}
+                    rows={3}
+                    value={steps}
+                    onChange={(e) => setSteps(e.target.value)}
+                    className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                  />
+                </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="support-expected" className="mb-1 block text-sm text-slate-300">
-                  Expected behavior
-                </label>
-                <input
-                  id="support-expected"
-                  maxLength={1000}
-                  value={expected}
-                  onChange={(e) => setExpected(e.target.value)}
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-                />
-              </div>
-              <div>
-                <label htmlFor="support-actual" className="mb-1 block text-sm text-slate-300">
-                  Actual behavior
-                </label>
-                <input
-                  id="support-actual"
-                  maxLength={1000}
-                  value={actual}
-                  onChange={(e) => setActual(e.target.value)}
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-                />
-              </div>
-            </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="support-expected" className="mb-1 block text-sm text-slate-300">
+                      Expected behavior <span className="text-slate-500">(optional)</span>
+                    </label>
+                    <input
+                      id="support-expected"
+                      maxLength={1000}
+                      value={expected}
+                      onChange={(e) => setExpected(e.target.value)}
+                      className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="support-actual" className="mb-1 block text-sm text-slate-300">
+                      Actual behavior <span className="text-slate-500">(optional)</span>
+                    </label>
+                    <input
+                      id="support-actual"
+                      maxLength={1000}
+                      value={actual}
+                      onChange={(e) => setActual(e.target.value)}
+                      className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                    />
+                  </div>
+                </div>
 
-            <div>
-              <label htmlFor="support-tried" className="mb-1 block text-sm text-slate-300">
-                What I already tried
-              </label>
-              <textarea
-                id="support-tried"
-                maxLength={4000}
-                rows={2}
-                value={tried}
-                onChange={(e) => setTried(e.target.value)}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-              />
-            </div>
+                <div>
+                  <label htmlFor="support-tried" className="mb-1 block text-sm text-slate-300">
+                    What I already tried <span className="text-slate-500">(optional)</span>
+                  </label>
+                  <textarea
+                    id="support-tried"
+                    maxLength={4000}
+                    rows={2}
+                    value={tried}
+                    onChange={(e) => setTried(e.target.value)}
+                    className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                  />
+                </div>
+              </>
+            ) : null}
 
             <label className="flex items-start gap-2 text-sm text-slate-300">
               <input
@@ -308,17 +324,68 @@ export default function SupportPageClient() {
             </label>
 
             <div>
-              <label htmlFor="support-screenshots" className="mb-1 block text-sm text-slate-300">
-                Screenshots (optional, up to 5)
-              </label>
+              <p className="mb-1 block text-sm text-slate-300">
+                Screenshots <span className="text-slate-500">(optional, up to 5)</span>
+              </p>
               <input
                 id="support-screenshots"
                 type="file"
                 accept="image/png,image/jpeg,image/webp,image/gif"
                 multiple
-                onChange={(e) => setScreenshots(Array.from(e.target.files || []).slice(0, 5))}
-                className="block w-full text-sm text-slate-400"
+                onChange={(e) => {
+                  const added = Array.from(e.target.files || []);
+                  setScreenshots((prev) => {
+                    const merged = [...prev];
+                    for (const file of added) {
+                      if (merged.length >= 5) break;
+                      const dup = merged.some(
+                        (f) =>
+                          f.name === file.name
+                          && f.size === file.size
+                          && f.lastModified === file.lastModified,
+                      );
+                      if (!dup) merged.push(file);
+                    }
+                    return merged;
+                  });
+                  e.target.value = '';
+                }}
+                className="sr-only"
               />
+              <div className="flex flex-wrap items-center gap-3">
+                <label
+                  htmlFor="support-screenshots"
+                  className={`inline-flex cursor-pointer rounded-lg border px-4 py-2 text-sm font-semibold ${
+                    screenshots.length >= 5
+                      ? 'cursor-not-allowed border-slate-700 text-slate-500'
+                      : 'border-slate-600 text-slate-100 hover:border-slate-500'
+                  }`}
+                  aria-disabled={screenshots.length >= 5}
+                >
+                  {screenshots.length >= 5 ? 'Maximum reached' : 'Add screenshots'}
+                </label>
+                <span className="text-sm text-slate-400">
+                  {screenshots.length === 0
+                    ? 'No screenshots attached'
+                    : `${screenshots.length} screenshot${screenshots.length === 1 ? '' : 's'} attached`}
+                </span>
+              </div>
+              {screenshots.length > 0 ? (
+                <ul className="mt-2 space-y-1 text-sm text-slate-400">
+                  {screenshots.map((file, i) => (
+                    <li key={`${file.name}-${file.lastModified}-${i}`} className="flex items-center gap-2">
+                      <span className="truncate">{file.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setScreenshots((prev) => prev.filter((_, idx) => idx !== i))}
+                        className="shrink-0 text-red-300 hover:text-red-200"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
 
             {needsTechAck ? (
@@ -328,8 +395,10 @@ export default function SupportPageClient() {
                   checked={techAck}
                   onChange={(e) => setTechAck(e.target.checked)}
                   className="mt-1"
+                  required
                 />
-                I understand that if I do not provide screenshots, I may be asked to provide them.
+                I understand that if I do not provide screenshots, I may be asked to provide them.{' '}
+                <span className="text-amber-300">*</span>
               </label>
             ) : null}
 

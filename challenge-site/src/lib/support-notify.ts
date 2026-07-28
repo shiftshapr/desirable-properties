@@ -85,6 +85,7 @@ function buildAttachments(dataDir: string, ticket: SupportTicket) {
 
 export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTicket) {
   const to = alertEmailForTicket(ticket);
+  const adminBase = String(process.env.DP_PUBLIC_BASE || 'https://desirableproperties.org').replace(/\/$/, '');
   const subject = `[DP Support · ${ticket.urgency}] ${ticket.subject}`;
   const html = `
     <h2>New Desirable Properties support request</h2>
@@ -93,6 +94,7 @@ export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTic
     <p><strong>Urgency:</strong> ${ticket.urgency}</p>
     <p><strong>From:</strong> ${ticket.handle || ticket.email || ticket.userId || 'unknown'}</p>
     <p><strong>Page:</strong> ${ticket.pageUrl || '—'}</p>
+    <p><strong>Admin:</strong> <a href="${adminBase}/support/admin">${adminBase}/support/admin</a></p>
     <hr />
     <pre style="white-space:pre-wrap;font-family:system-ui,sans-serif">${ticket.body}</pre>
   `;
@@ -102,5 +104,62 @@ export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTic
     subject,
     html,
     attachments: buildAttachments(dataDir, ticket),
+  });
+}
+
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+export async function sendSupportTicketAck(ticket: SupportTicket) {
+  const to = String(ticket.email || '').trim().toLowerCase();
+  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    return { ok: false as const, error: 'ticket_missing_email' };
+  }
+
+  const base = String(process.env.DP_PUBLIC_BASE || 'https://desirableproperties.org').replace(/\/$/, '');
+  const subject = `We received your support request: ${ticket.subject}`;
+
+  const html = `<!DOCTYPE html><html><body style="font-family:Georgia,serif;line-height:1.6;color:#111;">
+<p>Hello,</p>
+<p>We received your support request (reference <code>${escapeHtml(ticket.id)}</code>).</p>
+<p><strong>${escapeHtml(ticket.subject)}</strong></p>
+<p>Our team will review it and follow up soon. When signed in, track status at <a href="${escapeHtml(`${base}/support`)}">${escapeHtml(`${base}/support`)}</a>.</p>
+<p style="margin-top:2em;font-size:12px;color:#666;">Desirable Properties support</p>
+</body></html>`;
+
+  return sendViaResend({ to, subject, html });
+}
+
+export async function sendSupportReplyEmail(
+  ticket: SupportTicket,
+  args: { subject?: string; body?: string } = {},
+) {
+  const to = String(ticket.email || '').trim().toLowerCase();
+  if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+    return { ok: false as const, error: 'ticket_missing_email' };
+  }
+
+  const subject =
+    String(args.subject || ticket.draftReply?.subject || '').trim()
+    || `Re: ${String(ticket.subject || 'Desirable Properties support').trim()}`;
+  const body = String(args.body || ticket.draftReply?.body || '').trim();
+  if (!body) return { ok: false as const, error: 'reply_body_required' };
+
+  const ticketRef = ticket.id ? `\n\n—\nTicket reference: ${ticket.id}` : '';
+  const htmlBody = escapeHtml(body).replace(/\n/g, '<br>\n');
+  const html = `<!DOCTYPE html><html><body style="font-family:Georgia,serif;line-height:1.6;color:#111;">
+${htmlBody}
+<p style="margin-top:2em;font-size:12px;color:#666;">Desirable Properties support${ticket.id ? ` · ref ${escapeHtml(ticket.id)}` : ''}</p>
+</body></html>`;
+
+  return sendViaResend({
+    to,
+    subject,
+    html: html,
   });
 }

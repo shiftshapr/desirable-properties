@@ -16,7 +16,7 @@
 
   global.DP_CANOPI = {
     id: CANOPI_ID,
-    supportUrl: 'https://www.desirableproperties.org/support',
+    supportUrl: 'https://desirableproperties.org/support',
   };
 
   function persistAuthPayload(payload) {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
-import { sendSupportTicketAlert } from '@/lib/support-notify';
+import { sendSupportTicketAck, sendSupportTicketAlert } from '@/lib/support-notify';
 import {
   createTicket,
   publicTicketSummary,
@@ -91,6 +91,12 @@ export async function POST(request: Request) {
     await sendSupportTicketAlert(dataDir, result.ticket);
   } catch (err) {
     console.warn('[dp-support] alert failed', err);
+  }
+
+  try {
+    await sendSupportTicketAck(result.ticket);
+  } catch (err) {
+    console.warn('[dp-support] ack failed', err);
   }
 
   return NextResponse.json({

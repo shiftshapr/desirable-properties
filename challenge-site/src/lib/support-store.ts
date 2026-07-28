@@ -13,6 +13,24 @@ export const SUPPORT_CATEGORIES = [
 export type SupportCategory = (typeof SUPPORT_CATEGORIES)[number];
 export type SupportUrgency = 'critical' | 'blocking' | 'non_blocking';
 export type SupportStatus = 'open' | 'triaged' | 'closed';
+export type SupportNoteKind = 'investigation' | 'draft_reply' | 'system' | 'reply_sent';
+
+export interface SupportAgentNote {
+  id: string;
+  at: string;
+  author: string;
+  kind: SupportNoteKind;
+  text: string;
+}
+
+export interface SupportDraftReply {
+  subject: string;
+  body: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+  sentAt: string | null;
+  sentBy: string | null;
+}
 
 export interface SupportScreenshotInput {
   filename?: string;
@@ -52,16 +70,35 @@ export interface SupportTicket {
   hasScreenshots: boolean;
   relatedTicketIds: string[];
   source: 'dp_challenge';
+  agentNotes: SupportAgentNote[];
+  draftReply: SupportDraftReply;
+  proposedResolution: string | null;
+  resolution: string | null;
+  escalatedToHuman: boolean;
 }
 
 const VALID_URGENCY = new Set<SupportUrgency>(['critical', 'blocking', 'non_blocking']);
 const VALID_CATEGORY = new Set<SupportCategory>(SUPPORT_CATEGORIES);
+const VALID_NOTE_KIND = new Set<SupportNoteKind>(['investigation', 'draft_reply', 'system', 'reply_sent']);
 const VALID_STATUS = new Set<SupportStatus>(['open', 'triaged', 'closed']);
 const URGENCY_RANK: Record<SupportUrgency, number> = {
   critical: 0,
   blocking: 1,
   non_blocking: 2,
 };
+
+function emptyDraftReply(): SupportDraftReply {
+  return { subject: '', body: '', createdAt: null, updatedAt: null, sentAt: null, sentBy: null };
+}
+
+function normalizeTicket(ticket: SupportTicket): SupportTicket {
+  if (!ticket.agentNotes) ticket.agentNotes = [];
+  if (!ticket.draftReply) ticket.draftReply = emptyDraftReply();
+  if (ticket.escalatedToHuman == null) ticket.escalatedToHuman = ticket.urgency === 'critical';
+  if (ticket.proposedResolution == null) ticket.proposedResolution = null;
+  if (ticket.resolution == null) ticket.resolution = null;
+  return ticket;
+}
 
 function normStr(value: unknown, max = 8000) {
   return String(value ?? '').trim().slice(0, max);
@@ -104,11 +141,13 @@ function readTicket(dataDir: string, id: string): SupportTicket | null {
   const fp = ticketPath(dataDir, id);
   if (!fs.existsSync(fp)) return null;
   try {
-    return JSON.parse(fs.readFileSync(fp, 'utf8')) as SupportTicket;
+    return normalizeTicket(JSON.parse(fs.readFileSync(fp, 'utf8')) as SupportTicket);
   } catch {
     return null;
   }
 }
+
+export { readTicket };
 
 function writeTicket(dataDir: string, ticket: SupportTicket) {
   ensureDirs(dataDir);
@@ -241,7 +280,7 @@ export function createTicket(dataDir: string, input: CreateTicketInput) {
   const userId = normStr(input.userId, 128) || null;
   const duplicates = findRecentDuplicates(dataDir, userId, subject);
 
-  const ticket: SupportTicket = {
+  const ticket = normalizeTicket({
     id,
     createdAt: now,
     updatedAt: now,
@@ -270,11 +309,12 @@ export function createTicket(dataDir: string, input: CreateTicketInput) {
     hasScreenshots,
     relatedTicketIds: duplicates.filter((tid) => tid !== id),
     source: 'dp_challenge',
-  };
-
-  if (urgency === 'critical') {
-    ticket.status = 'open';
-  }
+    agentNotes: [],
+    draftReply: emptyDraftReply(),
+    proposedResolution: null,
+    resolution: null,
+    escalatedToHuman: urgency === 'critical',
+  });
 
   writeTicket(dataDir, ticket);
   return { ok: true as const, ticket };
@@ -345,4 +385,124 @@ export function attachmentAbsPath(dataDir: string, ticketId: string, filename: s
   const att = ticket.attachments.find((a) => a.filename === safe);
   if (!att) return null;
   return path.join(ticketsDir(dataDir), att.path);
+}
+
+export function dpPublicBase() {
+  return String(process.env.DP_PUBLIC_BASE || 'https://desirableproperties.org').replace(/\/$/, '');
+}
+
+export function attachmentUrls(ticket: SupportTicket) {
+  const base = dpPublicBase();
+  if (!ticket.attachments.length) return [];
+  return ticket.attachments.map((a) => ({
+    filename: a.filename,
+    mimeType: a.mimeType,
+    size: a.size,
+    url: `${base}/api/support/hermes/tickets/${encodeURIComponent(ticket.id)}/attachments/${encodeURIComponent(a.filename)}`,
+  }));
+}
+
+export function publicTicketSummaryExtended(ticket: SupportTicket, opts: { includeBody?: boolean } = {}) {
+  const summary = {
+    ...publicTicketSummary(ticket),
+    email: ticket.email,
+    handle: ticket.handle,
+    userId: ticket.userId,
+    escalatedToHuman: ticket.escalatedToHuman,
+    bodyPreview: String(ticket.body || '').slice(0, 280),
+  } as Record<string, unknown>;
+  if (opts.includeBody) {
+    summary.body = ticket.body;
+    summary.stepsToReproduce = ticket.stepsToReproduce;
+    summary.expectedBehavior = ticket.expectedBehavior;
+    summary.actualBehavior = ticket.actualBehavior;
+    summary.triedAlready = ticket.triedAlready;
+    summary.agentNotes = ticket.agentNotes;
+    summary.draftReply = ticket.draftReply;
+    summary.proposedResolution = ticket.proposedResolution;
+    summary.resolution = ticket.resolution;
+    summary.diagnosticBundle = ticket.diagnosticBundle;
+    summary.browser = ticket.browser;
+    summary.os = ticket.os;
+    summary.attachments = ticket.attachments;
+  }
+  summary.attachmentUrls = attachmentUrls(ticket);
+  return summary;
+}
+
+export function ticketForHermes(ticket: SupportTicket) {
+  return publicTicketSummaryExtended(ticket, { includeBody: true });
+}
+
+export function patchTicket(
+  dataDir: string,
+  id: string,
+  patch: {
+    status?: string;
+    proposedResolution?: string | null;
+    resolution?: string | null;
+    escalatedToHuman?: boolean;
+    draftReply?: { subject?: string; body?: string };
+    note?: { kind?: SupportNoteKind; text?: string; author?: string };
+  },
+) {
+  const ticket = readTicket(dataDir, id);
+  if (!ticket) return { ok: false as const, error: 'not_found' };
+
+  if (patch.status != null) {
+    const next = normStr(patch.status, 32).toLowerCase() as SupportStatus;
+    if (!VALID_STATUS.has(next)) return { ok: false as const, error: 'invalid_status' };
+    ticket.status = next;
+  }
+  if (patch.proposedResolution != null) {
+    ticket.proposedResolution = normStr(patch.proposedResolution, 4000) || null;
+  }
+  if (patch.resolution != null) {
+    ticket.resolution = normStr(patch.resolution, 4000) || null;
+  }
+  if (patch.escalatedToHuman != null) {
+    ticket.escalatedToHuman = Boolean(patch.escalatedToHuman);
+  }
+  if (patch.draftReply && typeof patch.draftReply === 'object') {
+    const now = new Date().toISOString();
+    if (patch.draftReply.subject != null) {
+      ticket.draftReply.subject = normStr(patch.draftReply.subject, 200);
+    }
+    if (patch.draftReply.body != null) {
+      ticket.draftReply.body = normStr(patch.draftReply.body, 8000);
+    }
+    ticket.draftReply.updatedAt = now;
+    if (!ticket.draftReply.createdAt) ticket.draftReply.createdAt = now;
+  }
+  if (patch.note) {
+    const kind = patch.note.kind && VALID_NOTE_KIND.has(patch.note.kind) ? patch.note.kind : 'investigation';
+    const text = normStr(patch.note.text, 8000);
+    if (!text) return { ok: false as const, error: 'note_text_required' };
+    ticket.agentNotes.push({
+      id: crypto.randomUUID(),
+      at: new Date().toISOString(),
+      author: normStr(patch.note.author, 80) || 'hermes',
+      kind,
+      text,
+    });
+  }
+
+  return { ok: true as const, ticket: writeTicket(dataDir, ticket) };
+}
+
+export function markDraftReplySent(dataDir: string, id: string, sentBy: string) {
+  const ticket = readTicket(dataDir, id);
+  if (!ticket) return { ok: false as const, error: 'not_found' };
+  const now = new Date().toISOString();
+  ticket.draftReply.sentAt = now;
+  ticket.draftReply.sentBy = normStr(sentBy, 80) || 'admin';
+  ticket.agentNotes.push({
+    id: crypto.randomUUID(),
+    at: now,
+    author: normStr(sentBy, 80) || 'admin',
+    kind: 'reply_sent',
+    text: `Reply sent to ${ticket.email || 'unknown'}: ${ticket.draftReply.subject}`,
+  });
+  if (ticket.status === 'open') ticket.status = 'triaged';
+  return { ok: true as const, ticket: writeTicket(dataDir, ticket) };
 }
