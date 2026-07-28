@@ -61,6 +61,7 @@ export default function HermesChat({
   const [isLoading, setIsLoading] = useState(false);
   const [contributionDraft, setContributionDraft] = useState<ContributionDraft | null>(null);
   const [contributionBusy, setContributionBusy] = useState(false);
+  const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sessionId] = useState(() =>
