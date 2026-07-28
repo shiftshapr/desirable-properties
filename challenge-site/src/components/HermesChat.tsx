@@ -35,6 +35,8 @@ interface HermesChatProps {
 const INTRO =
   "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to open Gov Hub proposals, and helping shape stronger contributions. Sign in to save threads and submit Gov Hub comments or patches (with your confirmation). You can upload text, markdown, HTML, PDF, or DOCX files for review. What DP or governance question is on your mind?";
 
+const ACTIVE_THREAD_KEY = 'hermes-active-thread';
+
 export default function HermesChat({
   apiPath = '/api/agent/chat',
   surface = 'desirableproperties.org',
@@ -69,13 +71,22 @@ export default function HermesChat({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const loadThreads = useCallback(async () => {
+  const persistActiveThread = useCallback((threadId: string | null) => {
+    setActiveThreadId(threadId);
+    if (typeof sessionStorage === 'undefined') return;
+    if (threadId) sessionStorage.setItem(ACTIVE_THREAD_KEY, threadId);
+    else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
+  }, []);
+
+  const loadThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
     setThreadsLoading(true);
     try {
       const res = await fetch('/api/agent/threads');
-      if (!res.ok) return;
+      if (!res.ok) return [];
       const data = await res.json();
-      setThreads(data.threads || []);
+      const threadList: HermesThreadSummary[] = data.threads || [];
+      setThreads(threadList);
+      return threadList;
     } finally {
       setThreadsLoading(false);
     }
@@ -113,12 +124,22 @@ export default function HermesChat({
       }
     }
     setMessages(restored);
-    setActiveThreadId(threadId);
-  }, []);
+    persistActiveThread(threadId);
+  }, [persistActiveThread]);
 
   useEffect(() => {
-    if (authUser) loadThreads();
-  }, [authUser, loadThreads]);
+    if (!authUser) return;
+    void (async () => {
+      const threadList = await loadThreads();
+      const saved =
+        typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem(ACTIVE_THREAD_KEY)
+          : null;
+      if (saved && threadList.some((thread) => thread.id === saved)) {
+        await loadThread(saved);
+      }
+    })();
+  }, [authUser, loadThreads, loadThread]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -140,7 +161,7 @@ export default function HermesChat({
     if (!res.ok) return;
     const thread = data.thread;
     setThreads((prev) => [thread, ...prev]);
-    setActiveThreadId(thread.id);
+    persistActiveThread(thread.id);
     setMessages([
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
@@ -235,6 +256,10 @@ export default function HermesChat({
           contributionHint: data.contributionHint || null,
         },
       ]);
+
+      if (data.threadId) {
+        persistActiveThread(data.threadId);
+      }
 
       if (authUser) loadThreads();
     } catch (err) {
