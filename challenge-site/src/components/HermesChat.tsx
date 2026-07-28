@@ -61,7 +61,7 @@ export default function HermesChat({
   const [isLoading, setIsLoading] = useState(false);
   const [contributionDraft, setContributionDraft] = useState<ContributionDraft | null>(null);
   const [contributionBusy, setContributionBusy] = useState(false);
-  const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
+  const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sessionId] = useState(() =>
     typeof crypto !== 'undefined' && crypto.randomUUID
@@ -279,6 +279,56 @@ export default function HermesChat({
     }
   };
 
+  const saveAsCorrection = async (assistantMessageId: string) => {
+    if (!authUser) {
+      promptSignIn();
+      return;
+    }
+
+    const assistantIdx = messages.findIndex((m) => m.id === assistantMessageId);
+    if (assistantIdx < 0) return;
+
+    const userMessage = [...messages.slice(0, assistantIdx)]
+      .reverse()
+      .find((m) => m.sender === 'user');
+    const assistantMessage = messages[assistantIdx];
+    const text = userMessage?.text
+      ? `Correction re: "${userMessage.text.slice(0, 120)}" — Hermes replied: "${assistantMessage.text.slice(0, 200)}"`
+      : `Correction: Hermes should not have said: "${assistantMessage.text.slice(0, 240)}"`;
+
+    setCorrectionBusyId(assistantMessageId);
+    try {
+      const res = await fetch('/api/agent/community-notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, threadId: activeThreadId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not save correction');
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}-cn`,
+          text: 'Saved as a community correction. Hermes will prefer this on future turns.',
+          sender: 'assistant',
+          timestamp: new Date(),
+        },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}-cne`,
+          text: err instanceof Error ? err.message : 'Could not save correction',
+          sender: 'assistant',
+          timestamp: new Date(),
+        },
+      ]);
+    } finally {
+      setCorrectionBusyId(null);
+    }
+  };
+
   const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
     if (!authUser) {
       promptSignIn();
@@ -460,6 +510,19 @@ export default function HermesChat({
                   ) : (
                     <p className="whitespace-pre-wrap">{message.text}</p>
                   )}
+                  {message.sender === 'assistant'
+                    && message.id !== 'intro' ? (
+                    <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
+                      <button
+                        type="button"
+                        disabled={correctionBusyId === message.id}
+                        onClick={() => saveAsCorrection(message.id)}
+                        className="rounded-md border border-amber-700/60 px-2 py-1 text-[11px] text-amber-200 hover:bg-amber-950/40 disabled:opacity-50"
+                      >
+                        {correctionBusyId === message.id ? 'Saving…' : 'Save as correction'}
+                      </button>
+                    </div>
+                  ) : null}
                   {message.sender === 'assistant'
                     && message.contributionHint?.contributionReady ? (
                     <HermesContributionCTA
