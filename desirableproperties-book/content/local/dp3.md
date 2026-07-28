@@ -102,7 +102,6 @@ Participants disengage due to complexity or lack of impact.
 
 ### Cross-system governance divergence
 
-<!-- generated: threats-and-failure-modes -->
 The same rule is enforced differently, or not at all, depending on which tool, integration, or environment a participant is using.
 
 **Example:** A zone prohibits automated amplification, but an integrated client applies no such constraint, so the rule holds only where participants happen to be looking.
@@ -304,7 +303,6 @@ A failure mode is structural exclusion, where governance participation is limite
 
 ## Scalable Governance Patterns
 
-<!-- generated: scalable-governance-patterns -->
 The mechanisms above describe what adaptive governance requires. This section describes recurring structural patterns through which those requirements are met in practice, and the scale conditions under which each pattern begins to fail. DP3 does not mandate any single pattern; it requires that whichever pattern a community adopts remain visible, contestable, and bounded as the community grows.
 
 Scale does not degrade governance gradually. It degrades governance at thresholds, where a structure that worked at one order of magnitude stops working at the next. The patterns below are organized around those thresholds.
@@ -480,7 +478,6 @@ DP3 operates as the structural backbone for governance across the meta-layer.
 - DP17 ensures governance has sustained resources
 - DP20 defines who ultimately owns and can fork governance systems
 
-<!-- generated: relationship-to-other-desirable-properties -->
 Two of these couplings deserve emphasis, because DP3 fails first at their boundaries.
 
 The first is **DP17**. Capacity-aware governance is not a procedural nicety; it is an economic dependency. Moderation, appeals, translation, and review are staffed activities, and a governance system that scales its rules faster than its funded capacity produces the capacity illusion described above. DP3's requirement to provision for enforcement is therefore a claim on DP17's sustainability mechanisms.
@@ -500,7 +497,6 @@ DP3 does not:
 - replace legal governance systems or jurisdictional requirements
 - mandate a specific voting, DAO, or constitutional model
 
-<!-- generated: non-goals-and-explicit-boundaries -->
 DP3 also does not:
 
 - require that every participant participate in every decision; delegation and sampling are legitimate responses to scale, provided they remain revocable and visible
@@ -527,7 +523,6 @@ A DP3-aligned system should, at minimum:
 - provide appeal and contestation pathways with defined timelines
 - plan for governance capacity (moderation, review, translation) proportional to scale
 
-<!-- generated: minimum-dp3-alignment -->
 It should further:
 
 - preserve governance memory linking decisions to triggering events, dissent, and observed outcomes
@@ -551,8 +546,7 @@ Key open questions for adaptive governance include:
 - how to measure governance health beyond participation counts (e.g., decision latency, reversal rates, appeal outcomes)
 - how to support forking and recomposition of governance systems without loss of continuity
 
-<!-- generated: open-questions-and-future-work -->
-Additional open questions include:
+Further questions concern the maintenance of a governance system over time, where accretion, underfunding, and illegibility accumulate faster than any single decision:
 
 - how to retire governance structures that have outlived their purpose, given that accretion is easier than simplification and complexity favors incumbents
 - how to fund capacity counter-cyclically, so that appeals and moderation scale with incident volume rather than with revenue

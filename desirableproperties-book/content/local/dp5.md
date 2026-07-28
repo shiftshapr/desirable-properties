@@ -98,7 +98,6 @@ AI agents, organizations, bots, and autonomous systems operate without clear nam
 
 **Failure mode:** non-human actors become hard to distinguish, govern, or hold accountable.
 
-<!-- generated: threats-and-failure-modes -->
 These eight patterns are elaborated in operational detail under *Namespace Attack Taxonomy*, which adds resolver capture, ownership laundering, registry amnesia, and namespace flooding as concrete attack surfaces with required responses. The distinction is one of altitude rather than kind: this section names the structural failures a namespace must be designed against; the taxonomy names how those failures are actually attempted.
 
 ---
@@ -124,7 +123,6 @@ A DP5-aligned namespace must therefore support:
 
 ## Primary Mechanisms and Structural Conditions
 
-<!-- generated: primary-mechanisms-and-structural-conditions -->
 DP5 is enacted through mechanism families that together turn a name from a label into an accountable, resolvable, governed object. Each family addresses a distinct question that a namespace must be able to answer, and a namespace that answers some but not others will exhibit the failure modes named above.
 
 - **Namespace objects** define *what can be named*: meta-domains for spaces, personal identifiers for participants and personas, artifact identifiers for objects, name chains for structured composition, and well-known URI anchors for publisher-controlled trust data.
@@ -136,8 +134,6 @@ DP5 is enacted through mechanism families that together turn a name from a label
 - **Tradeability with bounded trust** defines *how a name may change hands* without laundering its history, through transfer receipts, provenance preservation, and visible dispute state.
 
 The structural condition uniting these is that **a name must never assert more trust than it can demonstrate**. Every mechanism in this draft exists to close a gap between what a name appears to mean and what can actually be verified about it. Where verification is unavailable, the mechanism's obligation is to signal uncertainty rather than to default to trust — which is why explicit state, resolver provenance, and visible degradation recur throughout.
-
-The sections that follow define each family in depth.
 
 ---
 
@@ -693,7 +689,6 @@ Failure mode: governance only enforced off-screen.
 
 ## Incentives and Power Analysis
 
-<!-- generated: incentives-and-power-analysis -->
 Namespaces concentrate value at three points, and each attracts a distinct form of capture. Understanding where the money and leverage sit explains why DP5's structural requirements — multi-source resolution, visible state, transfer receipts, registry snapshots — are economic interventions rather than technical preferences.
 
 **Registration is where scarcity is manufactured.** Names are a positional good: `@jaime` has value precisely because no one else can hold it. Any registry therefore issues a monopoly with every name, and holds the power to define what may be issued, reserved, priced, or refused. Squatting is the market's rational response to unpriced scarcity, and anti-squatting mechanisms — staking, renewal, decay, community challenge — are attempts to price holding without pricing out legitimate participants. The tension is unresolved and named as such under *Open Questions and Future Work*: mechanisms that deter hoarding also burden the communities and individuals least able to pay.
@@ -734,7 +729,6 @@ These signals indicate that DP5 is not only about naming people. It is about nam
 
 ## Foresight and Failure Design
 
-<!-- generated: foresight-and-failure-design -->
 Namespaces fail slowly and then all at once. For long periods a naming system appears healthy — names resolve, transfers settle, disputes are rare — while the conditions for its capture accumulate beneath the surface. By the time failure is visible, the namespace is usually load-bearing for identity, commerce, and provenance across many systems, which makes correction expensive and migration nearly impossible.
 
 Predictable degradation paths include:
@@ -765,7 +759,7 @@ DP5 therefore requires safeguards designed in advance:
 - **Fork drills**, in which a community exercises the ability to fork namespace rules and carry its records, so that the exit option is known to work before it is needed
 - **Public postmortems** for namespace incidents — a successful spoof, a laundered transfer, a resolution override — linked to the specific layer that failed
 
-Failure is expected. Undetectable failure is not. A DP5-aligned namespace is one where the concentration of resolution power, the erosion of state visibility, and the loss of registry memory are all observable while they are still reversible.
+Failure is expected. Failure that becomes visible only after the namespace is load-bearing is not. A DP5-aligned namespace is one where the concentration of resolution power, the erosion of state visibility, and the loss of registry memory are all observable while they are still reversible.
 
 ---
 
@@ -783,7 +777,6 @@ DP5 is foundational and interdependent.
 - **DP14–DP15** depend on provenance and transparency for names, artifacts, and registry changes
 - **DP18–DP20** depend on community and ownership identifiers that persist across governance and migration
 
-<!-- generated: relationship-to-other-desirable-properties -->
 Two couplings deserve emphasis, because DP5 is where they become concrete rather than aspirational.
 
 **DP3** governs the namespace itself. Reserved sets, dispute procedures, quarantine thresholds, fork legitimacy, and canonicality rules are all governance artifacts, subject to DP3's requirements for tiered decisions, receipts, visible diffs, bounded emergency authority, and memory. A registry that changes its reserved set or ordering rules without a traceable, contestable process has made a governance decision outside governance.
@@ -806,7 +799,6 @@ DP5 does not:
 - require real-name identity
 - collapse human, AI, organizational, and artifact namespaces into one undifferentiated model
 
-<!-- generated: non-goals-and-explicit-boundaries -->
 DP5 further does not:
 
 - prescribe a pricing, staking, or renewal model; it requires that whichever model is adopted be visible and governed
@@ -934,7 +926,6 @@ How do we support multilingual naming without increasing spoofing risk?
 
 What pricing, staking, or decay mechanisms prevent hoarding while preserving ownership?
 
-<!-- generated: open-questions-and-future-work -->
 ### Resolution concentration
 
 What measures of resolver diversity are meaningful, and what interventions are available when resolution traffic concentrates without any formal change in authority?

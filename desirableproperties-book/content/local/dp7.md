@@ -311,8 +311,6 @@ DP7 treats these signals as requirements for preserving meaning, not just moving
 
 ## Evaluation Criteria
 
-<!-- generated: evaluation-criteria -->
-
 DP7 alignment cannot be assessed by inspecting an API surface. It must be evaluated by moving real objects across real boundaries and measuring what survives.
 
 The following criteria are diagnostic rather than exhaustive. Each is written so that a negative answer identifies a specific structural defect rather than a general complaint.
@@ -371,8 +369,6 @@ The following criteria are diagnostic rather than exhaustive. Each is written so
 
 ## Implementation Patterns
 
-<!-- generated: implementation-patterns -->
-
 These patterns translate DP7 into design moves that can be adopted incrementally. None of them require a global standards body, and each can be evaluated against the criteria above.
 
 ### Public conformance suites
@@ -381,7 +377,7 @@ Publish versioned, executable test suites for every shared interface. Any implem
 
 ### Object envelopes with declared intent
 
-Wrap every portable object in an envelope carrying schema version, intended use, trust assumptions, consent scope, and signature. Receiving systems enforce constraints from the envelope rather than inferring them.
+Wrap every portable object in an envelope carrying schema version, intended use, trust assumptions, consent scope, and signature. Receiving systems enforce constraints from the envelope rather than inferring them, so that purpose binding survives the crossing rather than resetting at it (DP4, DP12).
 
 ### Lossiness manifests
 
@@ -389,15 +385,15 @@ Ship every mapping with a machine-readable statement of what is preserved, trans
 
 ### Receipt logs for transfers
 
-Emit a signed receipt for every import and export, linked to the policy version applied and the mediating party. Receipts are queryable by the participant, the origin community, and the destination community.
+Emit a signed receipt for every import and export, linked to the policy version applied and the mediating party (DP15). Receipts are queryable by the participant, the origin community, and the destination community.
 
 ### Probation tiers for new integrations
 
-Admit third-party tools at reduced privilege and visibility. Increase capability as audits pass and non-abusive usage accumulates. Demote automatically on policy violation, with a public receipt explaining why.
+Admit third-party tools at reduced privilege and visibility, with containment tiers and rate limits enforcing the reduction rather than a review promise (DP13). Increase capability as audits pass and non-abusive usage accumulates. Demote automatically on policy violation, with a public receipt explaining why.
 
 ### Bridge attestation and risk tiers
 
-Treat bridges and translators as accountable actors with published operators, audit history, and risk tiers. Apply circuit breakers, volume caps, and anomaly detection proportional to tier.
+Treat bridges and translators as accountable actors with published operators, audit history, and risk tiers, bound to a responsible entity rather than operating as anonymous infrastructure (DP1). Apply circuit breakers, volume caps, and anomaly detection proportional to tier.
 
 ### Dual-write migration windows
 
@@ -409,7 +405,7 @@ Periodically perform and publish a full export-and-reimport of a representative 
 
 ### Federated discovery with reputation weighting
 
-Distribute indexing and discovery across multiple operators, weight surfacing by reputation and audit status, and rate-limit new entrants to resist flooding without gatekeeping participation.
+Distribute indexing and discovery across multiple operators, weight surfacing by reputation and audit status, and rate-limit new entrants to resist flooding without gatekeeping participation. Discovery is an incentive surface, and concentration of it reproduces platform leverage under another name (DP9).
 
 ### Degradation-aware interfaces
 

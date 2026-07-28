@@ -55,7 +55,6 @@ A system lacking any one of these is not empowering, regardless of interface pol
 
 ## Threats and Failure Modes
 
-<!-- generated: threats-and-failure-modes -->
 Agency fails in patterned ways. The failure modes below are named throughout this draft as consequences of specific mechanism gaps; collected here, they form the adversarial model against which a DP2 implementation should be tested. None of them requires a malicious operator. Most emerge from ordinary optimization pressure, interface convenience, or the accumulation of integrations over time.
 
 ### Agency theater
@@ -157,7 +156,6 @@ Implications:
 
 ## Primary Mechanisms and Structural Conditions
 
-<!-- generated: primary-mechanisms-and-structural-conditions -->
 DP2 is enacted through mechanism families that together convert stated control into enforceable control. Each addresses a distinct point at which agency is typically lost.
 
 - **Presence and visibility controls** treat identity plurality and reach as configurable objects rather than fixed profile properties, so that pseudonymous participation is not defeated by accidental correlation or unsolicited amplification.
@@ -170,8 +168,6 @@ DP2 is enacted through mechanism families that together convert stated control i
 The structural condition uniting these is *enforceability under movement and scale*. A control that holds in a single interface but fails on delegation, integration, or migration is not an agency mechanism; it is a display. DP2 therefore requires that every control either persist across a boundary or signal, at the boundary, that it no longer holds.
 
 Three tensions are inherent to this design and are addressed rather than resolved: usability against configurability, automation against control, and safety against paternalism. These are treated first, because every mechanism that follows is a position taken within them.
-
-The sections that follow define each family in depth.
 
 ---
 
@@ -408,7 +404,6 @@ Failure modes:
 
 ## Governance, Accountability, and Agency Surfaces
 
-<!-- generated: governance-accountability-and-agency-surfaces -->
 DP2 is unusual among the Desirable Properties in that agency surfaces are not a supporting requirement but the property itself. A backend that faithfully enforces scoped delegation while exposing no way to see or change that scope has satisfied nothing. The condition DP2 imposes is therefore that the levers exist, that they are reachable without specialized expertise, and that pulling them demonstrably changes system behavior.
 
 Participants must be able to:
@@ -437,7 +432,6 @@ Without these surfaces, the failure mode is **agency by assertion**, where a sys
 
 ## Incentives and Power Analysis
 
-<!-- generated: incentives-and-power-analysis -->
 Agency is expensive to provide and profitable to withhold. Most agency failures are not the product of hostile design decisions but of ordinary optimization: the default that converts better ships, the export that no one is measured on degrades, the delegation scope that reduces friction expands.
 
 The recurring pressures are:
@@ -471,7 +465,6 @@ These signals reveal a core contradiction: participants want **power without ove
 
 ## Foresight and Failure Design
 
-<!-- generated: foresight-and-failure-design -->
 DP2 assumes that agency will erode rather than break. Systems rarely remove controls; they let controls fall out of correspondence with behavior as pipelines are added, agents gain capability, and integrations multiply. The characteristic DP2 failure is a system whose settings page is accurate on the day it shipped and increasingly fictional thereafter.
 
 Predictable degradation paths include:
@@ -508,7 +501,6 @@ Failure is expected. Silent drift is not. A DP2-aligned system is one where the 
 - **DP14–DP17** make power auditable and sustainable.
 - **DP18–DP20** turn agency into shared evolution of the stack.
 
-<!-- generated: relationship-to-other-desirable-properties -->
 Several of these couplings are load-bearing rather than thematic:
 
 - **DP4** and DP2 share the consent stack. DP4 governs what may be collected, inferred, and retained; DP2 governs whether the participant can actually change those terms and observe the change. Purpose-limited processing is a DP4 mechanism exercised through a DP2 surface.
@@ -620,8 +612,7 @@ Partial implementations that omit outcome control, delegation integrity, consent
 - Cross-zone identity correlation: separation vs. pressure for unified reputation
 - Economic agency: tipping, subscriptions, and paid reach as agency-bearing surfaces (touchpoint DP6)
 
-<!-- generated: open-questions-and-future-work -->
-Additional open questions include:
+Further questions concern how agency is expressed, timed, and measured at the edges of a system:
 
 - how to express delegation scope in terms participants can evaluate, given that capability boundaries are natural to engineers and opaque to nearly everyone else
 - what revocation latency is acceptable for which action classes, and how that latency should be stated rather than left implicit

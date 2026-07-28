@@ -41,8 +41,6 @@ DP8 addresses this by enabling communities to define **zone-specific governance 
 
 DP8 assumes adversaries will combine **identity (DP1), agency (DP2), data flows (DP4), governance (DP8), and incentives (DP9)**. Systems MUST be robust to **multi-vector, cross-zone attacks** and degrade safely.
 
-<!-- generated: threats-failure-mode-index -->
-
 ### 3.0 Security and Adversarial Failure Modes (Index)
 
 DP8 names its failure modes inline throughout the sections that follow, because each mechanism fails in a specific way. The list below indexes that vocabulary so it can be tested, monitored, and referenced as a set.
@@ -193,8 +191,6 @@ Failure conditions (non-exhaustive):
 
 ## Primary Mechanisms and Structural Conditions
 
-<!-- generated: primary-mechanisms-and-structural-conditions -->
-
 DP8 differs structurally from most Desirable Properties: its mechanisms are specified as an architecture rather than a flat list of conditions. The sections that follow this one carry that specification in depth. This section states the structural conditions that must hold regardless of how the architecture is implemented, and points to where each is elaborated.
 
 ### Enforcement must occur at the point of interaction
@@ -235,8 +231,6 @@ Governance stacks are versioned, forkable, and migratable, with explicit signali
 
 ## Governance, Accountability, and Agency Surfaces
 
-<!-- generated: governance-accountability-and-agency-surfaces -->
-
 Governance in DP8 is the subject matter of the property, not an adjacent concern. What this section adds is the requirement that the governance system itself be governed: that participants and communities can see how rules were made, act on them, and hold their operators accountable.
 
 A zone can enforce rules perfectly and still be illegitimate if the participants subject to those rules cannot inspect, influence, or leave them.
@@ -269,8 +263,6 @@ Stewards must be accountable in the same terms as participants. Moderation, adju
 
 ## Incentives and Power Analysis
 
-<!-- generated: incentives-and-power-analysis -->
-
 Governance competes with incentives. Where the two diverge, incentives usually win, because they operate continuously while governance operates episodically.
 
 DP8 therefore treats amplification, visibility, and reputation as economic surfaces, not neutral mechanics. Whoever controls what becomes visible controls what becomes true in practice, and that control has value that others will pay to acquire.
@@ -297,8 +289,6 @@ DP8 therefore expects:
 ---
 
 ## Community Signals Informing DP8
-
-<!-- generated: community-signals-informing-dp8 -->
 
 Community input across the Meta-Layer submission process, moderation research, and platform governance experience converges on a consistent set of signals. They are not requests for more moderation. They are reports that governance is not real where it matters.
 
@@ -673,8 +663,6 @@ Failure mode: **semantic mismatch**, where signals are misinterpreted across sys
 
 ## Relationship to Other Desirable Properties
 
-<!-- generated: relationship-to-other-desirable-properties -->
-
 DP8 is the layer at which the other properties become locally binding. It supplies the context — the zone — in which identity, agency, data, incentives, and automation are constrained in ways a specific community can define and defend.
 
 - **DP1** supplies the identity and attribution guarantees that make tiers, roles, and governance actions accountable; without it, participation integrity and capture resistance cannot hold
@@ -696,8 +684,6 @@ A failure in any of these layers surfaces inside DP8 as illegitimate governance:
 ---
 
 ## Non-Goals and Explicit Boundaries
-
-<!-- generated: non-goals-and-explicit-boundaries -->
 
 DP8 does not:
 

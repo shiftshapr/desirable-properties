@@ -428,8 +428,6 @@ DP9 treats these signals as design inputs, not complaints.
 
 ## Implementation Patterns
 
-<!-- generated: implementation-patterns -->
-
 These patterns turn DP9 from a set of legitimacy conditions into operational choices a program can adopt now. Each is compatible with multiple funding models and none require a token.
 
 ### Published incentive constitution
@@ -513,8 +511,6 @@ Failure is expected. Invisible or unaccounted failure is not.
 
 ## Developer Reach
 
-<!-- generated: developer-reach -->
-
 DP9 pairs incentives with reach, because compensation without distribution is a grant program rather than an ecosystem. A developer who can be paid but cannot be found, installed, or trusted has no durable position in the Meta-Layer.
 
 Reach in the meta-layer means that a tool built once can operate across contexts, be discovered on merit, and accumulate reputation that its author keeps. In today's web, distribution is the primary lever platforms use to extract terms after dependency forms: rankings change, APIs close, and the cost of the switch falls entirely on the builder.
@@ -552,8 +548,6 @@ Facilitation, moderation, curation, translation, and education produce reach in 
 ---
 
 ## Incentive Mechanisms
-
-<!-- generated: incentive-mechanisms -->
 
 The structural conditions above define what makes an incentive system legitimate. This section catalogs the concrete instruments that satisfy them, and the specific way each fails. No single instrument is sufficient; healthy ecosystems run several with different time horizons and risk profiles.
 

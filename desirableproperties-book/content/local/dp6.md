@@ -140,7 +140,6 @@ Commerce terms, attribution, or protections change or become exploitable when tr
 
 ### Community economic capture
 
-<!-- generated: threats-and-failure-modes -->
 A community's economic surface is controlled by a subset of its participants, or by the operator hosting it, such that surcharges, treasury allocation, or vendor admission serve narrow rather than collective interests.
 
 **Example:** A community treasury funded by transaction surcharges is directed by a small group of long-tenured members toward projects they benefit from, with no rotation, disclosure, or contestation pathway.
@@ -358,7 +357,6 @@ Systems must ensure that delegation does not reduce accountability. Agent-mediat
 
 ## Meta-Community Economies
 
-<!-- generated: meta-community-economies -->
 The mechanisms above describe fairness conditions at the level of a transaction. This section describes what becomes possible when communities themselves hold economic surfaces: the ability to fund what they depend on, to set terms for economic activity that relies on their trust, and to retain value that would otherwise flow entirely outward.
 
 A **meta-community economy** is the economic layer of a community zone. It exists because communities generate the conditions that make commerce trustworthy — moderation, reputation, curation, norms, dispute resolution, and the social relationships within which exchange feels safe — and because in current systems that contribution is uncompensated by default. Marketplaces leverage forums; recommendation systems harvest curation; platforms monetize trust they did not build. *Community extraction without reciprocity* is not a marginal harm; it is the normal operating condition.
@@ -530,7 +528,6 @@ In agent-mediated environments, additional failure modes emerge:
 - delegated decision-making that exceeds user intent or understanding
 - rapid transaction loops that bypass human oversight entirely
 
-<!-- generated: foresight-and-failure-design -->
 Community economies introduce a further set of failure paths that DP6 must anticipate:
 
 - **surcharge accretion**, where each individually modest community fee is defensible and the aggregate burden on participants transacting across many zones is not
@@ -560,7 +557,6 @@ DP6 connects commerce to the full meta-layer system:
 - DP17 ensures commerce contributes to sustainable infrastructure
 - DP20 defines how surplus and value flows are owned and governed
 
-<!-- generated: relationship-to-other-desirable-properties -->
 Two additional couplings are load-bearing for the community economy described above.
 
 **DP1** is what makes agent-mediated and community commerce accountable. Anti-replay and sybil resistance matter most where value moves: without them, the same identity collects twice from a treasury, a single actor manufactures the appearance of vendor diversity, and contribution accounting becomes a payout exploit rather than a record.
@@ -580,7 +576,6 @@ DP6 does not:
 - replace financial regulation or tax law
 - guarantee equal economic outcomes
 
-<!-- generated: non-goals-and-explicit-boundaries -->
 DP6 also does not:
 
 - require that communities operate an economy; economic surfaces are a capability, not an obligation
@@ -609,7 +604,6 @@ A DP6-aligned commerce system should, at minimum:
 - maintain receipt and transaction continuity across tools (DP7)
 - prevent hidden fee introduction or policy resets during cross-system flows
 
-<!-- generated: minimum-dp6-alignment -->
 Where community economic surfaces are operated, a DP6-aligned system should further:
 
 - enumerate community surcharges as distinct, attributable line items at the point of commitment
@@ -633,8 +627,7 @@ Key open questions include:
 - how to fund public goods through commerce without creating new forms of extraction
 - how to assign liability when AI agents mediate transactions (DP11–DP13)
 
-<!-- generated: open-questions-and-future-work -->
-Additional open questions include:
+Community economic surfaces raise a further set of unresolved questions:
 
 - how to bound cumulative surcharge burden when a participant transacts across many zones, each with a defensible individual claim
 - how to measure a community's economic contribution well enough to ground proportional claims without turning contribution accounting into a gameable scoring system

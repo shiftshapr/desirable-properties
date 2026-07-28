@@ -119,7 +119,6 @@ Defaults optimized for adult engagement expose minors and vulnerable users to da
 
 ### Persona collapse
 
-<!-- generated: threats-and-failure-modes -->
 Separate contexts a participant deliberately kept apart are merged, either through shared infrastructure, an integration that resolves both to one account, or a vault whose contents are exposed as a single undifferentiated store.
 
 **Example:** A participant maintains distinct personas for professional and health-support contexts. A newly added recommendation service reads across both because it was granted account-level rather than persona-level access.
@@ -318,7 +317,6 @@ This layer does not require centralization. It requires **coherence under moveme
 
 ## Data Vaults and Personas
 
-<!-- generated: data-vaults-and-personas -->
 The mechanisms above define the conditions data must satisfy. This section defines the two structures through which participants actually hold and partition it: the **vault**, which is where data rests under participant control, and the **persona**, which is the boundary across which data is permitted to be seen.
 
 Both structures are necessary because they solve different problems. A vault without personas produces a single well-governed store that nonetheless collapses every context a participant inhabits into one legible profile. Personas without a vault produce contextual separation that any sufficiently integrated processor can defeat, because the underlying data was never held anywhere the participant controlled.
@@ -427,7 +425,6 @@ DP4 responds to that gap by making data conditions inspectable, debatable, and g
 
 ## Foresight and Failure Design
 
-<!-- generated: foresight-and-failure-design -->
 DP4 assumes that data sovereignty degrades by accumulation rather than by breach. The characteristic failure is not an incident but a slow divergence between what a system's privacy surface describes and what its pipelines actually do, produced by ordinary engineering: a new processor added, a schema migrated, a model retrained, an integration shipped.
 
 Predictable degradation paths include:
@@ -499,7 +496,6 @@ For example, some communities may require stronger identity assurance to support
 
 Likewise, some inference may be necessary for accessibility, fraud prevention, or urgent safety intervention. DP4 does not deny that. It requires those pathways to be governed explicitly rather than smuggled in under vague necessity claims.
 
-<!-- generated: non-goals-and-explicit-boundaries -->
 DP4 further does not:
 
 - mandate a specific vault topology; self-hosted, community-hosted, and provider-hosted custody are all permissible where custody is disclosed and exit is real
@@ -576,7 +572,6 @@ Failure mode: **interop deception**.
 
 ### Context separation
 
-<!-- generated: minimum-dp4-alignment -->
 - Permission grants MUST be scoped to a persona or context rather than to a participant in the aggregate
 - Correlation across contexts MUST require an explicit participant act, not arise as a side effect of shared infrastructure
 - Derived signals MUST inherit the context boundary of their source
@@ -606,8 +601,7 @@ DP4 surfaces unresolved design challenges that require further work:
 - how to audit third-party SDK ecosystems without reproducing surveillance in the name of governance
 - how to preserve interoperability while allowing communities to adopt materially stricter norms
 
-<!-- generated: open-questions-and-future-work -->
-Additional open questions include:
+The vault and persona structures raise a further set of unresolved questions:
 
 - how vaults should interoperate, so that a participant can move custody without re-establishing every grant, lineage record, and retention clock from scratch
 - how to make persona separation usable rather than merely available, given that maintaining boundaries is cognitively expensive and mistakes are irreversible
@@ -630,7 +624,6 @@ Progression from draft to RFC-grade maturity would require:
 - better treatment of partial deletion, inference correction, and training exclusions
 - alignment with privacy law and privacy-enhancing technologies without waiting for legal perfection before improving defaults
 
-<!-- generated: path-toward-ml-rfc -->
 Graduation criteria SHOULD additionally include:
 
 - reference schemas for vault records, persona scopes, consent stacks, retention clocks, and propagation receipts

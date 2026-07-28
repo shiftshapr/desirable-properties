@@ -71,8 +71,7 @@ Rather than asking only who someone is, DP1 asks under what conditions participa
 
 DP1 is not defined in opposition to any single class of actor. Instead, it responds to recurring failure modes that reliably emerge in large-scale, low-friction digital systems.
 
-<!-- generated: threats-and-failure-modes -->
-This section covers two related surfaces. The first is the **adversarial surface**: classes of actor whose behavior reliably degrades trust when identity is cheap and accountability is discontinuous. The second is the **structural surface**: pressures that erode trust even where no actor intends harm, described under *Other Drivers* below and in the structural failure modes named in the Problem Statement. DP1 treats both as design inputs, because a trust system that defends only against deliberate attackers will still fail under ordinary growth logic.
+Two surfaces are in scope. The first is **adversarial**: classes of actor whose behavior reliably degrades trust wherever identity is cheap and accountability is discontinuous. The second is **structural**: the pressures catalogued under *Other Drivers* below, which erode trust even where no actor intends harm. DP1 treats both as design inputs, because a trust system that defends only against deliberate attackers will still fail under ordinary growth logic.
 
 ### Scammers
 
@@ -108,7 +107,6 @@ These pressures are structural rather than incidental. They interact and compoun
 
 ### Identity-Layer Failure Modes
 
-<!-- generated: threats-and-failure-modes -->
 The mechanisms defined later in this draft each guard against a named failure mode. Collected here, they form the adversarial checklist against which a DP1 implementation should be evaluated:
 
 - **Identity fragmentation**: the same participant appears as unrelated actors across systems, breaking incentives, governance, and trust
@@ -147,7 +145,6 @@ DP1 does not promise perfect safety or universal trust. Instead, it defines the 
 
 ## Primary Mechanisms and Structural Conditions
 
-<!-- generated: primary-mechanisms-and-structural-conditions -->
 DP1 is enacted through a small number of composable mechanism families. None of them is sufficient alone; trust emerges from their combination, and a system that implements some while omitting others will exhibit the failure modes named above.
 
 The mechanism families are:
@@ -540,7 +537,6 @@ By constraining adaptive intelligence within transparent, ratified loops, DP1 en
 
 ## Governance, Accountability, and Agency Surfaces
 
-<!-- generated: governance-accountability-and-agency-surfaces -->
 DP1 is not satisfied by identity architecture alone. The conditions for trust must be *experienced* as navigable surfaces, or they remain private properties of a backend that participants are asked to take on faith. A system can bind every action to an accountable agent and still fail DP1 if participants cannot see the binding, cannot tell which zone rules apply to them, and cannot challenge a decision that changes their standing.
 
 Participants must be able to:
@@ -569,7 +565,6 @@ Without these surfaces, accountability becomes indistinguishable from arbitrary 
 
 ## Incentives and Power Analysis
 
-<!-- generated: incentives-and-power-analysis -->
 Identity systems are never neutral infrastructure. Whoever controls issuance, verification, revocation, or resolution of identity holds structural power over participation itself, and that power is valuable enough that it will be sought whether or not the formal rules permit it.
 
 DP1 therefore treats incentive structure as part of the trust surface, not as context outside it.
@@ -671,7 +666,6 @@ Communities define:
 
 This containment prevents cascading harm while preserving the ability to respond proportionally to serious or systemic abuse.
 
-<!-- generated: foresight-and-failure-design -->
 Failure is expected. Silent failure is not. A DP1-aligned system is one in which the degradation of trust conditions — a broken lineage, an unratified adaptation, an unresolved appeal backlog, a zone quietly loosening its proof requirements — is observable while it is still correctable.
 
 ---
@@ -687,7 +681,6 @@ In particular:
 - **Properties addressing AI participation, automation, and alignment** require clear agent differentiation, asymmetric constraints, and binding accountability to prevent synthetic scale from overwhelming human judgment or distorting collective outcomes. DP1 establishes the conditions under which AI systems can participate without eroding trust or legitimacy.
 - **Properties focused on collective intelligence, coordination, or governance** assume the existence of trustworthy participation, legible authority, and adaptive learning loops. Collective sensemaking and coordination cannot emerge where participants doubt who is acting, how decisions are made, or whether systems can learn from failure without capture.
 
-<!-- generated: relationship-to-other-desirable-properties -->
 More specifically:
 
 - **DP2** supplies the levers that accountable actors hold. DP1 without DP2 produces accountability without agency, which is surveillance; DP2 without DP1 produces agency without attribution, which is impunity.
@@ -715,7 +708,6 @@ DP1 does **not** attempt to:
 - **Centralize identity, moderation, or governance.** DP1 is incompatible with architectures that concentrate authority in a single platform, provider, or enforcement body. Trust is treated as a plural, zone-scoped property rather than a global control mechanism.
 - **Replace legal systems or law enforcement.** DP1 operates at the interface and governance layer. It does not supersede legal processes, nor does it attempt to adjudicate crimes or enforce jurisdictional law.
 
-<!-- generated: non-goals-and-explicit-boundaries -->
 DP1 also does not:
 
 - **Mandate a single proof-of-humanity mechanism.** The capability must be available system-wide; the mechanism remains a community choice, and multiple mechanisms may coexist or be superseded.
@@ -820,8 +812,7 @@ DP1 establishes foundational conditions for trust, but it does not resolve all q
 - **Thresholds for escalation across zones.** Communities will need shared patterns for deciding when local failures warrant broader response. This includes defining proportional thresholds, evidentiary standards, and governance processes for cross-zone escalation without undermining local autonomy.
 - **Meta-Layer coordination mechanisms.** DP1 implies the need for shared coordination mechanisms capable of maintaining coherent context across human participants, AI agents, content objects, and communities. Such mechanisms would support converging profiles, scoped capabilities, and durable accountability without requiring centralized control. Emerging approaches to structured context exchange and agent coordination, such as Model Context Protocols (MCP), may offer useful design patterns for this layer when generalized beyond model runtime to sociotechnical actors. The design of any such Meta-Layer coordination protocol remains an open area of research and standardization.
 
-<!-- generated: open-questions-and-future-work -->
-Additional open questions include:
+Further questions concern how a trust system is measured and how its guarantees behave under pressure:
 
 - how to measure trust-system health beyond enforcement counts, for example appeal reversal rates, time-to-resolution, and the frequency of unratified adaptive changes
 - how to represent identity continuity degradation in interfaces that ordinary participants can interpret at the moment it matters
@@ -845,7 +836,6 @@ Key steps toward ML-RFC status include:
 - **Separating exploratory elements from normative commitments.** Concepts such as coordination protocols or adaptive intelligence should mature through dedicated drafts before being incorporated normatively.
 - **Promoting stable elements to ML-RFC status.** Once sufficient consensus and operational understanding exist, portions of DP1 may be advanced as ML-RFCs to serve as durable reference points for the Meta-Layer ecosystem.
 
-<!-- generated: path-toward-ml-rfc -->
 Graduation criteria SHOULD include demonstrable evidence, not description alone:
 
 - conformance tests for each condition under *Minimum DP1 Alignment*, including adversarial scenarios for replay, sybil saturation, and lineage loss
@@ -860,7 +850,6 @@ This progression reflects the Meta-Layer's commitment to transparency, accountab
 
 ## Closing Orientation
 
-<!-- generated: closing-orientation -->
 DP1 is the claim that trust can be built without requiring people to surrender who they are.
 
 It refuses the two familiar bargains of the current web. The first offers safety in exchange for identification, and delivers surveillance. The second offers freedom in exchange for accountability, and delivers impunity. DP1 asserts that neither trade is necessary: identity can be plural and pseudonymous while actions remain durably attributable, and communities can enforce their own conditions without a central authority defining who counts.
