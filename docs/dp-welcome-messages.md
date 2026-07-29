@@ -1,6 +1,6 @@
 # Desirable Properties Challenge — Welcome Messages
 
-Use when someone **joins a DP workgroup directly** (Message A) or **accepts a workgroup lead nomination** (Message B).
+Use when someone **joins a DP workgroup directly** (Message A only) or is **approved as workgroup lead by administrators** (Message A + Message B combined in one welcome).
 
 **Context:** Participants are in **Step 1** of the four-step arc—defining *what* the Meta-Layer must enable before requirements, ADRs, and implementation (including the Overweb).
 
@@ -53,22 +53,22 @@ Welcome to the challenge.
 
 ---
 
-## Message B — Workgroup lead (nomination accepted)
+## Message B — Workgroup lead (admin approved)
 
 **Subject:** Welcome to the Desirable Properties Challenge — Workgroup lead
 
-Send **Message A** in full, then add this block:
+Send **Message A** in full, then add this block (one combined welcome — not two separate messages):
 
 ---
 
 **As workgroup lead**
 
+You're approved as workgroup lead. In addition to the member duties above:
+
 - Coordinate **at least one workgroup sync** during the review window (late July–August). Rooms in Canopi or another tool your group prefers is fine.
 - Facilitate discussion so every proposal gets consideration.
 - Maintain the shared working document and help the group reach rough consensus on recommended revisions.
 - Prepare synthesis drafts for the editorial process by **September 1, 2026**.
-
-Accepting a nomination means you are willing to serve if administrators approve—it does not appoint you immediately.
 
 ---
 
@@ -103,4 +103,4 @@ Accepting a nomination means you are willing to serve if administrators approve�
 
 1. **Sept 1 vs Sept 16** — Sept 1 opens the v1 synthesis window; Sept 16 is book/monument launch. Member deadline for synthesis work: **Sept 1**.
 2. **Overweb framing** — Step 4 can read “Build the Meta-Layer (Overweb)” if you prefer that wording.
-3. **Nomination vs join** — Same mission text (Message A) for both; leads get Message B’s extra coordination block.
+3. **Nomination vs join** — Same mission text (Message A) for both; leads get Message B's extra coordination block in **one combined** welcome after admin approval (not at nominee accept, and not as two separate messages).

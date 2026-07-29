@@ -312,6 +312,7 @@ export default async function JoinWorkgroupPage() {
               const name = dp.name as string;
               const slug = deriveSlug(dp);
               const wgHref = govhubUrl(`/workgroups/${slug}/`);
+              const joinHref = `${wgHref}?action=join`;
               const nominateHref = `${wgHref}?action=nominate`;
               const summary = shortDescription(dp);
 
@@ -338,7 +339,7 @@ export default async function JoinWorkgroupPage() {
                   )}
                   <div className="mt-auto flex flex-wrap gap-2 pt-5">
                     <a
-                      href={wgHref}
+                      href={joinHref}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                     >
                       Join as member

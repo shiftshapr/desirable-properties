@@ -5,10 +5,41 @@ import { useAuth } from '@/lib/auth-context';
 import { resolveAvatarUrl } from '@/lib/avatar';
 import { govhubUrl } from '@/lib/govhub';
 
+type DpWelcomeLink = {
+  id: string;
+  title: string;
+  link_url: string;
+  variant: 'member' | 'lead';
+};
+
 export default function SiteAuthNav() {
   const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [welcomeLinks, setWelcomeLinks] = useState<DpWelcomeLink[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setWelcomeLinks([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/me/dp-welcome', { credentials: 'include' });
+        if (!res.ok || cancelled) return;
+        const data = (await res.json()) as { welcomes?: DpWelcomeLink[] };
+        if (!cancelled) {
+          setWelcomeLinks(Array.isArray(data.welcomes) ? data.welcomes.slice(0, 5) : []);
+        }
+      } catch {
+        if (!cancelled) setWelcomeLinks([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -120,6 +151,24 @@ export default function SiteAuthNav() {
               Profile
             </a>
           </li>
+          {welcomeLinks.length > 0 ? (
+            <li role="none" className="border-t border-slate-800">
+              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Workgroup welcome
+              </p>
+              {welcomeLinks.map((welcome) => (
+                <a
+                  key={welcome.id}
+                  role="menuitem"
+                  href={welcome.link_url}
+                  className="block px-4 py-2 text-sm text-cyan-200 hover:bg-slate-800 hover:text-cyan-100"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {welcome.title}
+                </a>
+              ))}
+            </li>
+          ) : null}
           <li role="none">
             <a
               role="menuitem"
