@@ -2,7 +2,14 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 
-const PROTECTED_PREFIXES = ['/onchain/admin', '/api/onchain/admin', '/support/admin', '/api/support/admin'];
+const PROTECTED_PREFIXES = [
+  '/onchain/admin',
+  '/api/onchain/admin',
+  '/support/admin',
+  '/api/support/admin',
+  '/agent/admin',
+  '/api/agent/admin',
+];
 
 /** Public apex redirect — must not leak internal port 3005 from proxy_pass. */
 function apexRedirect(request: NextRequest) {

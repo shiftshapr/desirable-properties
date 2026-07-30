@@ -1,9 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
+import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import type { ContributionDraft, ContributionHint, ContributionScope } from '@/lib/hermesContribution';
 import {
@@ -23,7 +25,13 @@ interface Message {
   timestamp: Date;
   attachments?: string[];
   contributionHint?: ContributionHint | null;
+  citedDps?: number[];
 }
+
+type SystemNotice = {
+  text: string;
+  variant: 'success' | 'error' | 'info';
+};
 
 interface HermesChatProps {
   apiPath?: string;
@@ -33,7 +41,26 @@ interface HermesChatProps {
 }
 
 const INTRO =
-  "I'm Hermes. I work with the community to make the Desirable Properties as coherent and impactful as possible — clarifying tensions, connecting ideas to open Gov Hub proposals, and helping shape stronger contributions. Sign in to save threads and submit Gov Hub comments or patches (with your confirmation). You can upload text, markdown, HTML, PDF, or DOCX files for review. What DP or governance question is on your mind?";
+  "I'm Hermes. I help this community improve the 22 inscribed Desirable Properties and active drafts like DP23 — clarifying what they mean, surfacing tensions, and turning good arguments into Gov Hub contributions. Sign in (free, via Web3Auth) to chat. Your conversations are saved in the sidebar.";
+
+const STARTER_PROMPTS = [
+  'What does DP7 mean by bridge?',
+  'Where do DP22 and DP23 overlap?',
+  'What open proposals exist on DP4?',
+];
+
+function userFacingError(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err);
+  if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted/i.test(msg)) {
+    return "Hermes couldn't respond right now. Your message wasn't lost — try sending again.";
+  }
+  return msg;
+}
+
+function dpChipLabel(dpNum: number): string {
+  if (dpNum >= 1 && dpNum <= 22) return 'inscribed';
+  return 'draft';
+}
 
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 
@@ -63,9 +90,15 @@ export default function HermesChat({
   const [contributionBusy, setContributionBusy] = useState(false);
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
+  const [teachOpen, setTeachOpen] = useState(false);
+  const [teachTargetId, setTeachTargetId] = useState<string | null>(null);
+  const [teachText, setTeachText] = useState('');
+  const [teachUserQuestion, setTeachUserQuestion] = useState<string | undefined>();
+  const [teachWrongReply, setTeachWrongReply] = useState<string | undefined>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [threadLoadError, setThreadLoadError] = useState<string | null>(null);
   const [threadLoadingId, setThreadLoadingId] = useState<string | null>(null);
+  const [systemNotice, setSystemNotice] = useState<SystemNotice | null>(null);
   const [sessionId] = useState(() =>
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID()
@@ -135,6 +168,9 @@ export default function HermesChat({
         }
       }
       setMessages(restored);
+      setContributionDraft(null);
+      setAttachments([]);
+      setAttachError(null);
       persistActiveThread(threadId);
     } finally {
       setThreadLoadingId(null);
@@ -165,17 +201,12 @@ export default function HermesChat({
     });
   };
 
-  const createThread = async () => {
-    const res = await fetch('/api/agent/threads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ surface: `${surface}/agent`, title: 'New conversation' }),
-    });
-    const data = await res.json();
-    if (!res.ok) return;
-    const thread = data.thread;
-    setThreads((prev) => [thread, ...prev]);
-    persistActiveThread(thread.id);
+  const startNewConversation = () => {
+    persistActiveThread(null);
+    setContributionDraft(null);
+    setAttachments([]);
+    setAttachError(null);
+    setSystemNotice(null);
     setMessages([
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
@@ -262,7 +293,10 @@ export default function HermesChat({
         body: JSON.stringify({
           message: text,
           documents: toDocumentPayload(docsToSend),
-          history: messages.slice(-10).map((m) => ({ text: m.text, sender: m.sender })),
+          history: messages
+            .filter((m) => m.id !== 'intro')
+            .slice(-10)
+            .map((m) => ({ text: m.text, sender: m.sender })),
           surface,
           sessionId,
           threadId: threadIdToSend,
@@ -286,8 +320,14 @@ export default function HermesChat({
           sender: 'assistant',
           timestamp: new Date(),
           contributionHint: data.contributionHint || null,
+          citedDps: Array.isArray(data.citedDps) && data.citedDps.length
+            ? data.citedDps
+            : Array.isArray(data.mentionedDps)
+              ? data.mentionedDps
+              : [],
         },
       ]);
+      setSystemNotice(null);
 
       if (data.threadId) {
         persistActiveThread(data.threadId);
@@ -295,23 +335,16 @@ export default function HermesChat({
 
       if (authUser) loadThreads();
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-e`,
-          text: err instanceof Error
-            ? err.message
-            : "Hermes couldn't connect right now. Please try again in a moment.",
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const saveAsCorrection = async (assistantMessageId: string) => {
+  const openTeachModal = (assistantMessageId: string) => {
     if (!authUser) {
       promptSignIn();
       return;
@@ -324,38 +357,54 @@ export default function HermesChat({
       .reverse()
       .find((m) => m.sender === 'user');
     const assistantMessage = messages[assistantIdx];
-    const text = userMessage?.text
-      ? `Correction re: "${userMessage.text.slice(0, 120)}" — Hermes replied: "${assistantMessage.text.slice(0, 200)}"`
-      : `Correction: Hermes should not have said: "${assistantMessage.text.slice(0, 240)}"`;
 
-    setCorrectionBusyId(assistantMessageId);
+    setTeachTargetId(assistantMessageId);
+    setTeachUserQuestion(userMessage?.text);
+    setTeachWrongReply(assistantMessage.text);
+    setTeachText('');
+    setTeachOpen(true);
+  };
+
+  const closeTeachModal = () => {
+    setTeachOpen(false);
+    setTeachTargetId(null);
+    setTeachText('');
+    setTeachUserQuestion(undefined);
+    setTeachWrongReply(undefined);
+  };
+
+  const saveTeaching = async () => {
+    if (!authUser || !teachTargetId || !teachText.trim()) return;
+
+    setCorrectionBusyId(teachTargetId);
     try {
       const res = await fetch('/api/agent/community-notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, threadId: activeThreadId }),
+        body: JSON.stringify({
+          correctedText: teachText.trim(),
+          wrongReply: teachWrongReply || null,
+          userQuestion: teachUserQuestion || null,
+          threadId: activeThreadId,
+          dpIds: dpFocus ? [`DP${dpFocus}`] : [],
+        }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Could not save correction');
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-cn`,
-          text: 'Saved as a community correction. Hermes will prefer this on future turns.',
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      if (!res.ok) throw new Error(data.error || 'Could not save teaching');
+
+      closeTeachModal();
+      const noteStatus = data.note?.status;
+      setSystemNotice({
+        variant: 'success',
+        text: noteStatus === 'verified'
+          ? 'Teaching saved and active — Hermes will use this on future turns about the same DPs.'
+          : 'Suggestion saved for layer admin review. Hermes will only use it after approval.',
+      });
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-cne`,
-          text: err instanceof Error ? err.message : 'Could not save correction',
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
     } finally {
       setCorrectionBusyId(null);
     }
@@ -403,16 +452,12 @@ export default function HermesChat({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not draft contribution');
       setContributionDraft(data.draft);
+      setSystemNotice(null);
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-cd`,
-          text: err instanceof Error ? err.message : 'Contribution draft failed',
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
     } finally {
       setContributionBusy(false);
       setDraftingMessageId(null);
@@ -435,26 +480,17 @@ export default function HermesChat({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submit failed');
+      const submitted = contributionDraft;
       setContributionDraft(null);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-sub`,
-          text: `Submitted to Gov Hub as a ${contributionDraft.kind}. It will appear on ${contributionDraft.draftRef} after review.`,
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      setSystemNotice({
+        variant: 'success',
+        text: `Submitted to Gov Hub as a ${submitted.kind} on ${submitted.draftRef}.`,
+      });
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}-se`,
-          text: err instanceof Error ? err.message : 'Gov Hub submit failed',
-          sender: 'assistant',
-          timestamp: new Date(),
-        },
-      ]);
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
     } finally {
       setContributionBusy(false);
     }
@@ -478,7 +514,7 @@ export default function HermesChat({
       loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={Boolean(authUser)}
       onSelect={loadThread}
-      onCreate={createThread}
+      onCreate={startNewConversation}
       onSignIn={promptSignIn}
       onClose={() => setSidebarOpen(false)}
     />
@@ -530,6 +566,19 @@ export default function HermesChat({
                 {threadLoadError}
               </p>
             ) : null}
+            {systemNotice ? (
+              <p
+                className={`rounded-lg border px-3 py-2 text-sm ${
+                  systemNotice.variant === 'error'
+                    ? 'border-rose-800/60 bg-rose-950/30 text-rose-200'
+                    : systemNotice.variant === 'success'
+                      ? 'border-emerald-800/60 bg-emerald-950/30 text-emerald-200'
+                      : 'border-slate-700 bg-slate-900/80 text-slate-200'
+                }`}
+              >
+                {systemNotice.text}
+              </p>
+            ) : null}
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -548,15 +597,49 @@ export default function HermesChat({
                     <p className="whitespace-pre-wrap">{message.text}</p>
                   )}
                   {message.sender === 'assistant'
+                    && message.id === 'intro'
+                    && !authUser ? (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {STARTER_PROMPTS.map((prompt) => (
+                        <button
+                          key={prompt}
+                          type="button"
+                          onClick={promptSignIn}
+                          className="rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-left text-[11px] text-slate-300 hover:border-cyan-700 hover:text-cyan-100"
+                        >
+                          {prompt}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                  {message.sender === 'assistant'
+                    && message.citedDps?.length ? (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {message.citedDps.slice(0, 6).map((dpNum) => (
+                        <Link
+                          key={`${message.id}-dp-${dpNum}`}
+                          href={`/dp/dp${dpNum}`}
+                          className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                            dpNum >= 1 && dpNum <= 22
+                              ? 'border-slate-600 bg-slate-900 text-slate-200'
+                              : 'border-amber-700/70 bg-amber-950/40 text-amber-200'
+                          }`}
+                        >
+                          DP{dpNum} · {dpChipLabel(dpNum)}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                  {message.sender === 'assistant'
                     && message.id !== 'intro' ? (
                     <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
                       <button
                         type="button"
                         disabled={correctionBusyId === message.id}
-                        onClick={() => saveAsCorrection(message.id)}
-                        className="rounded-md border border-amber-700/60 px-2 py-1 text-[11px] text-amber-200 hover:bg-amber-950/40 disabled:opacity-50"
+                        onClick={() => openTeachModal(message.id)}
+                        className="rounded-md border border-cyan-700/60 px-2 py-1 text-[11px] text-cyan-200 hover:bg-cyan-950/40 disabled:opacity-50"
                       >
-                        {correctionBusyId === message.id ? 'Saving…' : 'Save as correction'}
+                        {correctionBusyId === message.id ? 'Saving…' : 'Teach Hermes'}
                       </button>
                     </div>
                   ) : null}
@@ -585,6 +668,7 @@ export default function HermesChat({
                 busy={contributionBusy}
                 onConfirm={submitContribution}
                 onCancel={() => setContributionDraft(null)}
+                onDraftChange={setContributionDraft}
               />
             ) : null}
 
@@ -669,15 +753,19 @@ export default function HermesChat({
                   || (authUser && !inputText.trim() && attachments.length === 0)
                   || isLoading
                 }
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
-                aria-label={authUser ? 'Send message' : 'Sign in'}
+                className={
+                  authUser
+                    ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
+                    : 'flex h-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 px-3 text-xs font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
+                }
+                aria-label={authUser ? 'Send message' : 'Sign in to chat'}
               >
                 {authUser ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 ) : (
-                  <span className="text-[10px] font-medium">In</span>
+                  'Sign in'
                 )}
               </button>
             </div>
@@ -685,6 +773,17 @@ export default function HermesChat({
           </div>
         </div>
       </div>
+
+      <HermesTeachModal
+        open={teachOpen}
+        busy={Boolean(correctionBusyId)}
+        userQuestion={teachUserQuestion}
+        wrongReply={teachWrongReply}
+        value={teachText}
+        onChange={setTeachText}
+        onCancel={closeTeachModal}
+        onSave={saveTeaching}
+      />
     </div>
   );
 }
