@@ -64,6 +64,8 @@ export default function HermesChat({
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [threadLoadError, setThreadLoadError] = useState<string | null>(null);
+  const [threadLoadingId, setThreadLoadingId] = useState<string | null>(null);
   const [sessionId] = useState(() =>
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID()
@@ -96,38 +98,47 @@ export default function HermesChat({
   }, []);
 
   const loadThread = useCallback(async (threadId: string) => {
-    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    const turns = data.thread?.turns || [];
-    const restored: Message[] = [
-      {
-        id: 'intro',
-        text: INTRO,
-        sender: 'assistant',
-        timestamp: new Date(),
-      },
-    ];
-    for (const turn of turns) {
-      if (turn.user) {
-        restored.push({
-          id: `${turn.id}-u`,
-          text: turn.user,
-          sender: 'user',
-          timestamp: new Date(),
-        });
+    setThreadLoadError(null);
+    setThreadLoadingId(threadId);
+    try {
+      const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setThreadLoadError(data.error || 'Could not load this conversation');
+        return;
       }
-      if (turn.assistant) {
-        restored.push({
-          id: `${turn.id}-a`,
-          text: turn.assistant,
+      const turns = data.thread?.turns || [];
+      const restored: Message[] = [
+        {
+          id: 'intro',
+          text: INTRO,
           sender: 'assistant',
           timestamp: new Date(),
-        });
+        },
+      ];
+      for (const turn of turns) {
+        if (turn.user) {
+          restored.push({
+            id: `${turn.id}-u`,
+            text: turn.user,
+            sender: 'user',
+            timestamp: new Date(),
+          });
+        }
+        if (turn.assistant) {
+          restored.push({
+            id: `${turn.id}-a`,
+            text: turn.assistant,
+            sender: 'assistant',
+            timestamp: new Date(),
+          });
+        }
       }
+      setMessages(restored);
+      persistActiveThread(threadId);
+    } finally {
+      setThreadLoadingId(null);
     }
-    setMessages(restored);
-    persistActiveThread(threadId);
   }, [persistActiveThread]);
 
   useEffect(() => {
@@ -464,7 +475,7 @@ export default function HermesChat({
     <HermesThreadSidebar
       threads={threads}
       activeThreadId={activeThreadId}
-      loading={threadsLoading}
+      loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={Boolean(authUser)}
       onSelect={loadThread}
       onCreate={createThread}
@@ -514,6 +525,11 @@ export default function HermesChat({
 
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">
+            {threadLoadError ? (
+              <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+                {threadLoadError}
+              </p>
+            ) : null}
             {messages.map((message) => (
               <div
                 key={message.id}
