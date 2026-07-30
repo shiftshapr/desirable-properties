@@ -71,8 +71,10 @@ export default function HermesChat({
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const activeThreadIdRef = useRef<string | null>(null);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
+    activeThreadIdRef.current = threadId;
     setActiveThreadId(threadId);
     if (typeof sessionStorage === 'undefined') return;
     if (threadId) sessionStorage.setItem(ACTIVE_THREAD_KEY, threadId);
@@ -225,6 +227,24 @@ export default function HermesChat({
     setIsLoading(true);
 
     try {
+      let threadIdToSend = activeThreadIdRef.current;
+      if (!threadIdToSend) {
+        const createRes = await fetch('/api/agent/threads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            surface: `${surface}/agent`,
+            title: displayText.slice(0, 120) || 'New conversation',
+          }),
+        });
+        const createData = await createRes.json();
+        if (createRes.ok && createData.thread?.id) {
+          threadIdToSend = createData.thread.id;
+          persistActiveThread(threadIdToSend);
+          setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
+        }
+      }
+
       const response = await fetch(apiPath, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -234,7 +254,7 @@ export default function HermesChat({
           history: messages.slice(-10).map((m) => ({ text: m.text, sender: m.sender })),
           surface,
           sessionId,
-          threadId: activeThreadId,
+          threadId: threadIdToSend,
           dpFocus,
         }),
       });
