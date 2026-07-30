@@ -41,12 +41,31 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd /home/ubuntu/desirable-properties
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          REPO="/home/ubuntu/desirable-properties"
+          APP_DIR="${REPO}/challenge-site"
+
+          cd "$REPO"
           git pull origin main
-          cd challenge-site
+
+          # npm ci must run as the SSH user — root-owned node_modules causes EACCES
+          if [[ -e "${APP_DIR}/node_modules" ]] && [[ "$(stat -c '%U' "${APP_DIR}/node_modules")" != "${USER}" ]]; then
+            if sudo -n chown -R "${USER}:${USER}" "$APP_DIR" 2>/dev/null; then
+              echo "Fixed ownership under ${APP_DIR}"
+            else
+              echo "ERROR: ${APP_DIR}/node_modules is not owned by ${USER}; run: sudo chown -R ${USER}:${USER} ${APP_DIR}" >&2
+              exit 1
+            fi
+          fi
+
+          cd "$APP_DIR"
           npm ci
-          pm2 stop desirableproperties 2>/dev/null || true
           npm run build
+          test -f .next/BUILD_ID
+
+          # Only restart PM2 after a successful build (keep serving on build failure)
           pm2 delete desirableproperties 2>/dev/null || true
           pm2 start ecosystem.config.js
           pm2 save
