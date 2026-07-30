@@ -5,6 +5,12 @@ type WorkgroupLookup = {
   slug: string;
 };
 
+export function getRequestedWorkgroupSlug(value: string | string[] | undefined): string | null {
+  if (typeof value !== 'string') return null;
+  const slug = value.trim();
+  return /^[A-Za-z0-9_-]{1,120}$/.test(slug) ? slug : null;
+}
+
 export async function fetchWorkgroupBySlug(slug: string): Promise<WorkgroupLookup | null> {
   const normalized = slug.trim();
   if (!normalized) return null;

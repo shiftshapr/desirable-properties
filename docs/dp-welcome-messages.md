@@ -2,6 +2,8 @@
 
 Use when someone **joins a DP workgroup directly** (Message A only) or is **approved as workgroup lead by administrators** (Message A + Message B combined in one welcome).
 
+This document is the canonical source for welcome-page copy. After editing Message A or Message B, run `npm run generate:dp-welcome` in `challenge-site`; `npm run test:dp-welcome` verifies the generated page content has not drifted.
+
 **Context:** Participants are in **Step 1** of the four-step arc—defining *what* the Meta-Layer must enable before requirements, ADRs, and implementation (including the Overweb).
 
 ```

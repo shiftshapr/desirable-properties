@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "generate:dp-welcome": "node scripts/generate-dp-welcome-content.mjs",
+    "prebuild": "npm run generate:dp-welcome",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs"
   },
   "dependencies": {
     "jose": "^6.2.4",

@@ -1,0 +1,138 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const docsPath = resolve(scriptDir, '../../docs/dp-welcome-messages.md');
+const outputPath = resolve(scriptDir, '../src/lib/dp-welcome-content.generated.ts');
+
+function fail(message) {
+  throw new Error(`Unable to generate DP welcome content: ${message}`);
+}
+
+function cleanMarkdown(value) {
+  return value
+    .trim()
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/\[(.*?)\]\([^)]*\)/g, '$1')
+    .replace(/\s+/g, ' ');
+}
+
+function capture(source, expression, label) {
+  const match = source.match(expression);
+  if (!match?.[1]) fail(`missing ${label}`);
+  return cleanMarkdown(match[1]);
+}
+
+function captureItems(source, expression, label) {
+  const match = source.match(expression);
+  if (!match?.[1]) fail(`missing ${label}`);
+  const items = match[1]
+    .split('\n')
+    .filter((line) => line.startsWith('- '))
+    .map((line) => cleanMarkdown(line.slice(2)));
+  if (!items.length) fail(`no items in ${label}`);
+  return items;
+}
+
+export function parseWelcomeContent(markdown) {
+  const messageA = capture(
+    markdown,
+    /## Message A[\s\S]*?\*\*Subject:\*\*\s*(.+?)\n/,
+    'Message A subject',
+  );
+  const messageB = capture(
+    markdown,
+    /## Message B[\s\S]*?\*\*Subject:\*\*\s*(.+?)\n/,
+    'Message B subject',
+  );
+  const supportMatch = markdown.match(
+    /\*\*Questions\?\*\*\s*(Submit a support request at) \[([^\]]+)\]\(([^)]+)\) or \[([^\]]+)\]\(([^)]+)\)\./,
+  );
+  if (!supportMatch) fail('support links');
+
+  return {
+    memberSubject: messageA,
+    leadSubject: messageB,
+    messageA: {
+      missionTitle: capture(markdown, /\*\*(Your mission)\*\*\n/, 'mission title'),
+      missionBody: capture(
+        markdown,
+        /\*\*Your mission\*\*\n\n(.+?)\n\n/,
+        'mission body',
+      ),
+      missionDetail: capture(
+        markdown,
+        /\*\*Your mission\*\*\n\n.+?\n\n(.+?)\n\n\*\*What we ask of you\*\*/,
+        'mission detail',
+      ),
+      askTitle: capture(markdown, /\*\*(What we ask of you)\*\*/, 'ask title'),
+      askItems: captureItems(
+        markdown,
+        /\*\*What we ask of you\*\*\n\n([\s\S]*?)\n\n\*\*Time & deadline\*\*/,
+        'ask items',
+      ),
+      timeTitle: capture(markdown, /\*\*(Time & deadline)\*\*/, 'time title'),
+      timeItems: captureItems(
+        markdown,
+        /\*\*Time & deadline\*\*\n\n([\s\S]*?)\n\n\*\*Why this matters/,
+        'time items',
+      ),
+      whyTitle: capture(
+        markdown,
+        /\*\*(Why this matters \(the bigger picture\))\*\*/,
+        'why title',
+      ),
+      whyBody: capture(
+        markdown,
+        /\*\*Why this matters \(the bigger picture\)\*\*\n\n(.+?)\n\n```/,
+        'why body',
+      ),
+      arc: capture(markdown, /```\n(.+?)\n```/, 'challenge arc'),
+      support: {
+        prefix: supportMatch[1],
+        site: { label: supportMatch[2], href: supportMatch[3] },
+        hub: { label: supportMatch[4], href: supportMatch[5] },
+      },
+      closing: capture(
+        markdown,
+        /\*\*Questions\?\*\*[\s\S]*?\n\n(.+?)\n\n---\n\n## Message B/,
+        'Message A closing',
+      ),
+    },
+    lead: {
+      title: capture(markdown, /\*\*(As workgroup lead)\*\*/, 'lead title'),
+      intro: capture(
+        markdown,
+        /\*\*As workgroup lead\*\*\n\n(.+?)\n\n-/,
+        'lead introduction',
+      ),
+      items: captureItems(
+        markdown,
+        /\*\*As workgroup lead\*\*\n\n.+?\n\n([\s\S]*?)\n\n---\n\n## Short onboarding/,
+        'lead items',
+      ),
+    },
+  };
+}
+
+export function renderWelcomeContent(content) {
+  return `// This file is generated from docs/dp-welcome-messages.md. Do not edit manually.\n\n` +
+    `export const DP_WELCOME_SUBJECT_MEMBER = ${JSON.stringify(content.memberSubject)};\n` +
+    `export const DP_WELCOME_SUBJECT_LEAD = ${JSON.stringify(content.leadSubject)};\n\n` +
+    `export const MESSAGE_A_SECTIONS = ${JSON.stringify(content.messageA, null, 2)} as const;\n\n` +
+    `export const MESSAGE_B_LEAD = ${JSON.stringify(content.lead, null, 2)} as const;\n\n` +
+    `export type DpWelcomeVariant = 'member' | 'lead';\n`;
+}
+
+export async function generateWelcomeContent() {
+  const markdown = await readFile(docsPath, 'utf8');
+  const output = renderWelcomeContent(parseWelcomeContent(markdown));
+  await writeFile(outputPath, output);
+  return output;
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  await generateWelcomeContent();
+}

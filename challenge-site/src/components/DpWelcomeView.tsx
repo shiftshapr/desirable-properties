@@ -54,6 +54,25 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
         <p>{a.whyBody}</p>
         <p className="font-mono text-sm text-cyan-200">{a.arc}</p>
 
+        <p className="mt-8 text-slate-300">
+          <strong className="text-white">Questions?</strong> {a.support.prefix}{' '}
+          <a href={a.support.site.href} className="text-cyan-300 hover:text-cyan-200">
+            {a.support.site.label}
+          </a>{' '}
+          or{' '}
+          <a
+            href={a.support.hub.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-300 hover:text-cyan-200"
+          >
+            {a.support.hub.label}
+          </a>
+          .
+        </p>
+
+        <p className="mt-6 text-lg font-medium text-white">{a.closing}</p>
+
         {variant === 'lead' ? (
           <section className="mt-10 rounded-xl border border-cyan-900/50 bg-cyan-950/20 p-6">
             <h2 className="mt-0 text-xl font-semibold text-cyan-100">{MESSAGE_B_LEAD.title}</h2>
@@ -65,25 +84,6 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
             </ul>
           </section>
         ) : null}
-
-        <p className="mt-8 text-slate-300">
-          <strong className="text-white">Questions?</strong> Submit a support request at{' '}
-          <Link href="/support" className="text-cyan-300 hover:text-cyan-200">
-            desirableproperties.org/support
-          </Link>{' '}
-          or{' '}
-          <a
-            href={govhubUrl('/support/')}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-cyan-300 hover:text-cyan-200"
-          >
-            hub.themetalayer.org/support
-          </a>
-          .
-        </p>
-
-        <p className="mt-6 text-lg font-medium text-white">{a.closing}</p>
       </section>
 
       <footer className="mt-12 flex flex-wrap gap-3 border-t border-slate-800 pt-8">

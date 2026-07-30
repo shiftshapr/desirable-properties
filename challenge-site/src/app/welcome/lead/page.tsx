@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import DpWelcomeView from '@/components/DpWelcomeView';
-import { fetchWorkgroupBySlug } from '@/lib/dp-welcome-workgroup';
+import { fetchWorkgroupBySlug, getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 
 export const metadata: Metadata = {
   title: 'Welcome – Workgroup lead – Desirable Properties Challenge',
@@ -8,18 +8,18 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ wg?: string }>;
+  searchParams: Promise<{ wg?: string | string[] }>;
 };
 
 export default async function WelcomeLeadPage({ searchParams }: Props) {
   const params = await searchParams;
-  const slug = (params.wg || '').trim();
+  const slug = getRequestedWorkgroupSlug(params.wg);
   const workgroup = slug ? await fetchWorkgroupBySlug(slug) : null;
 
   return (
     <DpWelcomeView
       variant="lead"
-      workgroupSlug={slug || null}
+      workgroupSlug={workgroup?.slug ?? null}
       workgroupName={workgroup?.name ?? null}
     />
   );

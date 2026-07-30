@@ -12,34 +12,54 @@ type DpWelcomeLink = {
   variant: 'member' | 'lead';
 };
 
+type WelcomeState = {
+  userId: string | null;
+  links: DpWelcomeLink[];
+  status: 'idle' | 'ready' | 'unavailable';
+};
+
 export default function SiteAuthNav() {
   const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [welcomeLinks, setWelcomeLinks] = useState<DpWelcomeLink[]>([]);
+  const [welcomeState, setWelcomeState] = useState<WelcomeState>({
+    userId: null,
+    links: [],
+    status: 'idle',
+  });
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!user) {
-      setWelcomeLinks([]);
-      return;
-    }
-    let cancelled = false;
+    if (!user?.id) return;
+    const controller = new AbortController();
+    const userId = user.id;
+
     (async () => {
       try {
-        const res = await fetch('/api/me/dp-welcome', { credentials: 'include' });
-        if (!res.ok || cancelled) return;
-        const data = (await res.json()) as { welcomes?: DpWelcomeLink[] };
-        if (!cancelled) {
-          setWelcomeLinks(Array.isArray(data.welcomes) ? data.welcomes.slice(0, 5) : []);
+        const res = await fetch('/api/me/dp-welcome', {
+          credentials: 'include',
+          signal: controller.signal,
+        });
+        const data = (await res.json()) as { status?: string; welcomes?: DpWelcomeLink[] };
+        if (!res.ok || data.status !== 'ok') {
+          setWelcomeState({ userId, links: [], status: 'unavailable' });
+          return;
         }
+        setWelcomeState({
+          userId,
+          links: Array.isArray(data.welcomes) ? data.welcomes.slice(0, 5) : [],
+          status: 'ready',
+        });
       } catch {
-        if (!cancelled) setWelcomeLinks([]);
+        if (!controller.signal.aborted) {
+          setWelcomeState({ userId, links: [], status: 'unavailable' });
+        }
       }
     })();
+
     return () => {
-      cancelled = true;
+      controller.abort();
     };
-  }, [user]);
+  }, [user?.id]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -99,6 +119,9 @@ export default function SiteAuthNav() {
   const displayName = user.displayName || user.username;
   const avatarSrc = resolveAvatarUrl(user.profileImage, 40);
   const profileHref = govhubUrl(`/profile/${encodeURIComponent(user.username)}/`);
+  const welcomeLinks = welcomeState.userId === user.id ? welcomeState.links : [];
+  const welcomeUnavailable =
+    welcomeState.userId === user.id && welcomeState.status === 'unavailable';
 
   return (
     <div ref={menuRef} className="relative shrink-0">
@@ -157,16 +180,22 @@ export default function SiteAuthNav() {
                 Workgroup welcome
               </p>
               {welcomeLinks.map((welcome) => (
-                <a
-                  key={welcome.id}
-                  role="menuitem"
-                  href={welcome.link_url}
-                  className="block px-4 py-2 text-sm text-cyan-200 hover:bg-slate-800 hover:text-cyan-100"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {welcome.title}
-                </a>
+                <li key={welcome.id} role="none">
+                  <a
+                    role="menuitem"
+                    href={welcome.link_url}
+                    className="block px-4 py-2 text-sm text-cyan-200 hover:bg-slate-800 hover:text-cyan-100"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {welcome.title}
+                  </a>
+                </li>
               ))}
+            </li>
+          ) : null}
+          {welcomeUnavailable ? (
+            <li role="none" className="border-t border-slate-800 px-4 py-2 text-xs text-slate-400">
+              Workgroup welcomes are temporarily unavailable.
             </li>
           ) : null}
           <li role="none">
