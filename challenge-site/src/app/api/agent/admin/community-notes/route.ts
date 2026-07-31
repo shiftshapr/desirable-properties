@@ -3,11 +3,13 @@ import { cookies } from 'next/headers';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
+import { readSession } from '@/lib/auth-session';
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
   const email = await parseAdminSession(cookieStore.get(ADMIN_COOKIE)?.value);
-  if (!email) {
+  const session = await readSession();
+  if (!email || !session?.idToken) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -22,6 +24,7 @@ export async function GET(request: Request) {
         headers: {
           ...hermesUpstreamHeaders(),
           'X-Hermes-Admin-Email': email,
+          'X-Hermes-Id-Token': session.idToken,
         },
         signal: AbortSignal.timeout(30000),
       },
