@@ -1,26 +1,13 @@
-import type { Metadata } from 'next';
-import DpWelcomeView from '@/components/DpWelcomeView';
-import { fetchWorkgroupBySlug, getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
-
-export const metadata: Metadata = {
-  title: 'Welcome – Workgroup lead – Desirable Properties Challenge',
-  description: 'Combined member + lead welcome for approved Desirable Properties workgroup leads.',
-};
+import { permanentRedirect } from 'next/navigation';
+import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 
 type Props = {
   searchParams: Promise<{ wg?: string | string[] }>;
 };
 
+/** Legacy route: welcome emails sent before the coordinator rename link here. */
 export default async function WelcomeLeadPage({ searchParams }: Props) {
   const params = await searchParams;
   const slug = getRequestedWorkgroupSlug(params.wg);
-  const workgroup = slug ? await fetchWorkgroupBySlug(slug) : null;
-
-  return (
-    <DpWelcomeView
-      variant="lead"
-      workgroupSlug={workgroup?.slug ?? null}
-      workgroupName={workgroup?.name ?? null}
-    />
-  );
+  permanentRedirect(slug ? `/welcome/coordinator?wg=${encodeURIComponent(slug)}` : '/welcome/coordinator');
 }

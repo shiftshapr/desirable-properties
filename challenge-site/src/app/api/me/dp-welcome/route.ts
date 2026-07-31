@@ -9,7 +9,13 @@ type UpstreamWelcome = {
   variant?: unknown;
 };
 
-const WELCOME_VARIANTS = new Set(['member', 'lead']);
+/** `lead` is the pre-rename spelling of `coordinator`; Gov Hub may still send it. */
+const WELCOME_VARIANTS = new Set(['member', 'coordinator', 'lead']);
+const WELCOME_PATHS = new Set(['/welcome/member', '/welcome/coordinator', '/welcome/lead']);
+
+function normalizeVariant(variant: string): 'member' | 'coordinator' {
+  return variant === 'member' ? 'member' : 'coordinator';
+}
 
 function isSafeWelcomeLink(value: unknown, request: Request): value is string {
   if (typeof value !== 'string') return false;
@@ -20,10 +26,7 @@ function isSafeWelcomeLink(value: unknown, request: Request): value is string {
       'https://desirableproperties.org',
       'https://www.desirableproperties.org',
     ]);
-    return (
-      allowedOrigins.has(url.origin) &&
-      (url.pathname === '/welcome/member' || url.pathname === '/welcome/lead')
-    );
+    return allowedOrigins.has(url.origin) && WELCOME_PATHS.has(url.pathname);
   } catch {
     return false;
   }
@@ -53,7 +56,7 @@ function validWelcomes(data: unknown, request: Request) {
     id: welcome.id as string,
     title: welcome.title as string,
     link_url: welcome.link_url as string,
-    variant: welcome.variant as 'member' | 'lead',
+    variant: normalizeVariant(welcome.variant as string),
   }));
 }
 

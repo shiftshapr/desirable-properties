@@ -52,10 +52,22 @@ export function parseWelcomeContent(markdown) {
   );
   if (!supportMatch) fail('support links');
 
+  const arcImageMatch = markdown.match(/## Message A[\s\S]*?\n!\[([^\]]+)\]\(([^)]+)\)/);
+  if (!arcImageMatch) fail('challenge arc image');
+
   return {
     memberSubject: messageA,
-    leadSubject: messageB,
+    coordinatorSubject: messageB,
     messageA: {
+      arcIntro: capture(
+        markdown,
+        /## Message A[\s\S]*?\n---\n\n(The properties you help refine[\s\S]*?)\n\n!\[/,
+        'challenge arc introduction',
+      ),
+      arcImage: {
+        alt: arcImageMatch[1].trim(),
+        src: arcImageMatch[2].trim(),
+      },
       missionTitle: capture(markdown, /\*\*(Your mission)\*\*\n/, 'mission title'),
       missionBody: capture(
         markdown,
@@ -76,20 +88,9 @@ export function parseWelcomeContent(markdown) {
       timeTitle: capture(markdown, /\*\*(Time & deadline)\*\*/, 'time title'),
       timeItems: captureItems(
         markdown,
-        /\*\*Time & deadline\*\*\n\n([\s\S]*?)\n\n\*\*Why this matters/,
+        /\*\*Time & deadline\*\*\n\n([\s\S]*?)\n\n\*\*Questions\?\*\*/,
         'time items',
       ),
-      whyTitle: capture(
-        markdown,
-        /\*\*(Why this matters \(the bigger picture\))\*\*/,
-        'why title',
-      ),
-      whyBody: capture(
-        markdown,
-        /\*\*Why this matters \(the bigger picture\)\*\*\n\n(.+?)\n\n```/,
-        'why body',
-      ),
-      arc: capture(markdown, /```\n(.+?)\n```/, 'challenge arc'),
       support: {
         prefix: supportMatch[1],
         site: { label: supportMatch[2], href: supportMatch[3] },
@@ -101,17 +102,17 @@ export function parseWelcomeContent(markdown) {
         'Message A closing',
       ),
     },
-    lead: {
-      title: capture(markdown, /\*\*(As workgroup lead)\*\*/, 'lead title'),
+    coordinator: {
+      title: capture(markdown, /\*\*(As workgroup coordinator)\*\*/, 'coordinator title'),
       intro: capture(
         markdown,
-        /\*\*As workgroup lead\*\*\n\n(.+?)\n\n-/,
-        'lead introduction',
+        /\*\*As workgroup coordinator\*\*\n\n(.+?)\n\n-/,
+        'coordinator introduction',
       ),
       items: captureItems(
         markdown,
-        /\*\*As workgroup lead\*\*\n\n.+?\n\n([\s\S]*?)\n\n---\n\n## Short onboarding/,
-        'lead items',
+        /\*\*As workgroup coordinator\*\*\n\n.+?\n\n([\s\S]*?)\n\n---\n\n## Short onboarding/,
+        'coordinator items',
       ),
     },
   };
@@ -120,10 +121,10 @@ export function parseWelcomeContent(markdown) {
 export function renderWelcomeContent(content) {
   return `// This file is generated from docs/dp-welcome-messages.md. Do not edit manually.\n\n` +
     `export const DP_WELCOME_SUBJECT_MEMBER = ${JSON.stringify(content.memberSubject)};\n` +
-    `export const DP_WELCOME_SUBJECT_LEAD = ${JSON.stringify(content.leadSubject)};\n\n` +
+    `export const DP_WELCOME_SUBJECT_COORDINATOR = ${JSON.stringify(content.coordinatorSubject)};\n\n` +
     `export const MESSAGE_A_SECTIONS = ${JSON.stringify(content.messageA, null, 2)} as const;\n\n` +
-    `export const MESSAGE_B_LEAD = ${JSON.stringify(content.lead, null, 2)} as const;\n\n` +
-    `export type DpWelcomeVariant = 'member' | 'lead';\n`;
+    `export const MESSAGE_B_COORDINATOR = ${JSON.stringify(content.coordinator, null, 2)} as const;\n\n` +
+    `export type DpWelcomeVariant = 'member' | 'coordinator';\n`;
 }
 
 export async function generateWelcomeContent() {

@@ -45,7 +45,7 @@ export default async function Home() {
           <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
         </div>
 
-        <LayerHero workgroupHref="/workgroups/join" />
+        <LayerHero workgroupHref="/workgroups/join#workgroups" />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
@@ -199,7 +199,7 @@ export default async function Home() {
                 </p>
               </li>
               <li>
-                <Link href="/workgroups/join" className="text-lg text-cyan-300 hover:text-cyan-200">
+                <Link href="/workgroups/join#workgroups" className="text-lg text-cyan-300 hover:text-cyan-200">
                   Workgroups
                 </Link>
                 <p className="text-sm text-slate-500">Join stewardship groups for each DP</p>

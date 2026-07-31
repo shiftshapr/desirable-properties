@@ -1,17 +1,14 @@
 # Desirable Properties Challenge — Welcome Messages
 
-Use when someone **joins a DP workgroup directly** (Message A only) or is **approved as workgroup lead by administrators** (Message A + Message B combined in one welcome).
+Use when someone **joins a DP workgroup directly** (Message A only) or is **approved as workgroup coordinator by administrators** (Message A + Message B combined in one welcome).
 
 This document is the canonical source for welcome-page copy. After editing Message A or Message B, run `npm run generate:dp-welcome` in `challenge-site`; `npm run test:dp-welcome` verifies the generated page content has not drifted.
 
 **Context:** Participants are in **Step 1** of the four-step arc—defining *what* the Meta-Layer must enable before requirements, ADRs, and implementation (including the Overweb).
 
-```
-Desirable Properties → Requirements → ADRs → Build Overweb
-```
-
 **Key dates**
 
+- Community review begins: **July 16, 2026**
 - Workgroup synthesis target: **September 1, 2026** (v1.0 editorial window)
 - Book and monument launch: **September 16, 2026**
 
@@ -22,6 +19,10 @@ Desirable Properties → Requirements → ADRs → Build Overweb
 **Subject:** Welcome to the Desirable Properties Challenge
 
 ---
+
+The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:
+
+![Desirable Properties → Requirements → ADRs → Build Overweb](/images/challenge-arc-placeholder.svg)
 
 **Your mission**
 
@@ -38,16 +39,9 @@ Your workgroup is helping refine one or more **Desirable Properties**—the comm
 
 **Time & deadline**
 
-- Plan **1–3 hours per Desirable Property** for a thorough review.
-- Workgroup synthesis targets **September 1, 2026** (v1.0 editorial window); the book and monument launch follow on **September 16, 2026**.
-
-**Why this matters (the bigger picture)**
-
-The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:
-
-```
-Desirable Properties → Requirements → ADRs → Build Overweb
-```
+- **July 16, 2026** — Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
+- **September 1, 2026** — Workgroup synthesis (v1.0 editorial window).
+- **September 16, 2026** — The book and monument launch.
 
 **Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [hub.themetalayer.org/support](https://hub.themetalayer.org/support).
 
@@ -55,17 +49,17 @@ Welcome to the challenge.
 
 ---
 
-## Message B — Workgroup lead (admin approved)
+## Message B — Workgroup coordinator (admin approved)
 
-**Subject:** Welcome to the Desirable Properties Challenge — Workgroup lead
+**Subject:** Welcome to the Desirable Properties Challenge — Workgroup coordinator
 
 Send **Message A** in full, then add this block (one combined welcome — not two separate messages):
 
 ---
 
-**As workgroup lead**
+**As workgroup coordinator**
 
-You're approved as workgroup lead. In addition to the member duties above:
+You're approved as workgroup coordinator. In addition to the member duties above:
 
 - Coordinate **at least one workgroup sync** during the review window (late July–August). Rooms in Canopi or another tool your group prefers is fine.
 - Facilitate discussion so every proposal gets consideration.
@@ -105,4 +99,6 @@ You're approved as workgroup lead. In addition to the member duties above:
 
 1. **Sept 1 vs Sept 16** — Sept 1 opens the v1 synthesis window; Sept 16 is book/monument launch. Member deadline for synthesis work: **Sept 1**.
 2. **Overweb framing** — Step 4 can read “Build the Meta-Layer (Overweb)” if you prefer that wording.
-3. **Nomination vs join** — Same mission text (Message A) for both; leads get Message B's extra coordination block in **one combined** welcome after admin approval (not at nominee accept, and not as two separate messages).
+3. **Nomination vs join** — Same mission text (Message A) for both; coordinators get Message B's extra coordination block in **one combined** welcome after admin approval (not at nominee accept, and not as two separate messages).
+4. **Arc image** — `challenge-site/public/images/challenge-arc-placeholder.svg` is a placeholder for the four-step arc graphic. Drop the final artwork in at the same path (or update the image path in Message A) and no code changes are needed.
+5. **Role naming** — The workgroup role is **coordinator** (never "lead" or "chair"); **co-lead** keeps its name.

@@ -9,7 +9,7 @@ type DpWelcomeLink = {
   id: string;
   title: string;
   link_url: string;
-  variant: 'member' | 'lead';
+  variant: 'member' | 'coordinator';
 };
 
 type WelcomeState = {

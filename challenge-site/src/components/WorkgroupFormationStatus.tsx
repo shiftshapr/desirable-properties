@@ -79,8 +79,8 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
         <div>
           <h3 className="text-lg font-semibold text-white">Workgroup formation</h3>
           <p className="mt-2 max-w-2xl text-sm text-slate-400">
-            Each Desirable Property needs a workgroup with leads and contributors. Join an existing
-            group or help stand one up before July 15.
+            Each Desirable Property needs a workgroup with coordinators and contributors. Join an
+            existing group or help stand one up before July 15.
           </p>
         </div>
         <p className="shrink-0 text-sm text-slate-400">
@@ -101,7 +101,7 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
           href={govhubUrl('/layers/the-metaweb/')}
           className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
         >
-          Join or lead a workgroup
+          Join or coordinate a workgroup
         </a>
         <a
           href={govhubUrl('/layers/the-metaweb/#workgroups')}

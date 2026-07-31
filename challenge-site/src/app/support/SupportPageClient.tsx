@@ -145,7 +145,7 @@ export default function SupportPageClient() {
       <h1 className="mt-2 text-3xl font-bold text-white">Desirable Properties support</h1>
       <p className="mt-4 text-slate-300">
         Questions about the challenge, workgroups, the book, or Canopi on chapter pages? Submit a
-        support request here. Workgroup leads and contributors should include the DP number and any
+        support request here. Workgroup coordinators and contributors should include the DP number and any
         suggested text revisions when asking about content.
       </p>
 

@@ -1,10 +1,11 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { govhubUrl } from '@/lib/govhub';
 import {
-  DP_WELCOME_SUBJECT_LEAD,
+  DP_WELCOME_SUBJECT_COORDINATOR,
   DP_WELCOME_SUBJECT_MEMBER,
   MESSAGE_A_SECTIONS,
-  MESSAGE_B_LEAD,
+  MESSAGE_B_COORDINATOR,
   type DpWelcomeVariant,
 } from '@/lib/dp-welcome-content';
 
@@ -14,8 +15,13 @@ type Props = {
   workgroupSlug?: string | null;
 };
 
+const HEADING = 'mt-10 text-xl font-semibold text-white';
+const BODY = 'mt-4 text-slate-300';
+const LIST = 'mt-4 list-disc space-y-2 pl-6 marker:text-cyan-400';
+const LIST_ITEM = 'pl-1 text-slate-300';
+
 export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }: Props) {
-  const subject = variant === 'lead' ? DP_WELCOME_SUBJECT_LEAD : DP_WELCOME_SUBJECT_MEMBER;
+  const subject = variant === 'coordinator' ? DP_WELCOME_SUBJECT_COORDINATOR : DP_WELCOME_SUBJECT_MEMBER;
   const wgHref = workgroupSlug ? govhubUrl(`/workgroups/${workgroupSlug}/`) : null;
   const a = MESSAGE_A_SECTIONS;
 
@@ -31,30 +37,41 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
         ) : null}
       </header>
 
-      <section className="prose prose-invert max-w-none prose-p:text-slate-300 prose-li:text-slate-300">
-        <h2 className="text-xl font-semibold text-white">{a.missionTitle}</h2>
-        <p>{a.missionBody}</p>
-        <p>{a.missionDetail}</p>
+      <section>
+        <p className="text-slate-300">{a.arcIntro}</p>
+        <Image
+          src={a.arcImage.src}
+          alt={a.arcImage.alt}
+          width={960}
+          height={210}
+          unoptimized
+          priority
+          className="mt-5 h-auto w-full rounded-xl border border-slate-800"
+        />
 
-        <h2 className="mt-8 text-xl font-semibold text-white">{a.askTitle}</h2>
-        <ul>
+        <h2 className={HEADING}>{a.missionTitle}</h2>
+        <p className={BODY}>{a.missionBody}</p>
+        <p className={BODY}>{a.missionDetail}</p>
+
+        <h2 className={HEADING}>{a.askTitle}</h2>
+        <ul className={LIST}>
           {a.askItems.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item} className={LIST_ITEM}>
+              {item}
+            </li>
           ))}
         </ul>
 
-        <h2 className="mt-8 text-xl font-semibold text-white">{a.timeTitle}</h2>
-        <ul>
+        <h2 className={HEADING}>{a.timeTitle}</h2>
+        <ul className={LIST}>
           {a.timeItems.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item} className={LIST_ITEM}>
+              {item}
+            </li>
           ))}
         </ul>
 
-        <h2 className="mt-8 text-xl font-semibold text-white">{a.whyTitle}</h2>
-        <p>{a.whyBody}</p>
-        <p className="font-mono text-sm text-cyan-200">{a.arc}</p>
-
-        <p className="mt-8 text-slate-300">
+        <p className="mt-10 text-slate-300">
           <strong className="text-white">Questions?</strong> {a.support.prefix}{' '}
           <a href={a.support.site.href} className="text-cyan-300 hover:text-cyan-200">
             {a.support.site.label}
@@ -73,13 +90,15 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
 
         <p className="mt-6 text-lg font-medium text-white">{a.closing}</p>
 
-        {variant === 'lead' ? (
+        {variant === 'coordinator' ? (
           <section className="mt-10 rounded-xl border border-cyan-900/50 bg-cyan-950/20 p-6">
-            <h2 className="mt-0 text-xl font-semibold text-cyan-100">{MESSAGE_B_LEAD.title}</h2>
-            <p>{MESSAGE_B_LEAD.intro}</p>
-            <ul>
-              {MESSAGE_B_LEAD.items.map((item) => (
-                <li key={item}>{item}</li>
+            <h2 className="text-xl font-semibold text-cyan-100">{MESSAGE_B_COORDINATOR.title}</h2>
+            <p className={BODY}>{MESSAGE_B_COORDINATOR.intro}</p>
+            <ul className={LIST}>
+              {MESSAGE_B_COORDINATOR.items.map((item) => (
+                <li key={item} className={LIST_ITEM}>
+                  {item}
+                </li>
               ))}
             </ul>
           </section>
@@ -98,7 +117,7 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
           </a>
         ) : null}
         <Link
-          href="/workgroups/join"
+          href="/workgroups/join#workgroups"
           className="rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-semibold text-slate-200 hover:border-slate-500 hover:text-white"
         >
           Browse workgroups

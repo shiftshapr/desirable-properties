@@ -22,14 +22,14 @@ const ROLES: Role[] = [
   {
     key: 'coordinator',
     label: 'Coordinator',
-    description: 'Leads the workgroup, sets agenda, and coordinates contributors.',
+    description: 'Coordinates the workgroup, sets agenda, and supports contributors.',
     glyph: '★',
   },
   {
     key: 'co_lead',
     label: 'Co-lead',
     description:
-      'Shares recruitment, member approvals, and contributor coordination with the lead.',
+      'Shares recruitment, member approvals, and contributor coordination with the coordinator.',
     glyph: '◫',
   },
   {
@@ -203,7 +203,7 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="about" className="border-b border-slate-800">
+      <section id="about" className="scroll-mt-20 border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">What is a DP workgroup</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -220,7 +220,7 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="roles" className="border-b border-slate-800">
+      <section id="roles" className="scroll-mt-20 border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Workgroup roles</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -250,7 +250,7 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="join-vs-nominate" className="border-b border-slate-800 bg-slate-900/40">
+      <section id="join-vs-nominate" className="scroll-mt-20 border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -297,7 +297,7 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="workgroups" className="border-b border-slate-800 bg-slate-900/40">
+      <section id="workgroups" className="scroll-mt-20 border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">The 23 workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
@@ -359,7 +359,7 @@ export default async function JoinWorkgroupPage() {
         </div>
       </section>
 
-      <section id="faq" className="border-b border-slate-800">
+      <section id="faq" className="scroll-mt-20 border-b border-slate-800">
         <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Frequently asked questions</h2>
           <div className="mt-10 space-y-4">

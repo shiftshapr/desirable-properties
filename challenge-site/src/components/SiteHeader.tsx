@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/participate', label: 'Participate' },
   { href: '/challenge', label: 'Challenge' },
-  { href: '/workgroups/join', label: 'Workgroups' },
+  { href: '/workgroups/join#workgroups', label: 'Workgroups' },
   { href: '/#dps', label: 'Browse DPs' },
   { href: '/onchain', label: 'On-Chain' },
   { href: DESIRABLE_PROPERTIES_BOOK_URL, label: 'Book', external: true },

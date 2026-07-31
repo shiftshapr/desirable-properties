@@ -129,10 +129,10 @@ const CONTRIBUTE_CARDS = [
         </p>
       </>
     ),
-    cta: { href: '/workgroups/join', label: 'Join a Workgroup', primary: true },
+    cta: { href: '/workgroups/join#workgroups', label: 'Join a Workgroup', primary: true },
     secondaryCta: {
       href: '/workgroups/join#join-vs-nominate',
-      label: 'Nominate a Workgroup Lead',
+      label: 'Nominate a Workgroup Coordinator',
     },
   },
 ] as const;
@@ -149,7 +149,7 @@ const MEMBER_ACTIVITIES = [
   'participating in consensus discussions',
 ];
 
-const LEAD_ACTIVITIES = [
+const COORDINATOR_ACTIVITIES = [
   'organize meetings',
   'facilitate productive discussions',
   'maintain the shared working document',
@@ -190,7 +190,7 @@ const BADGE_SECTIONS = [
         <p>Badges can include overlays that recognize how you contributed. Examples include:</p>
         <ul className="mt-3 list-disc space-y-1 pl-5">
           <li>Member</li>
-          <li>Workgroup Lead</li>
+          <li>Workgroup Coordinator</li>
           <li>Co-Lead</li>
           <li>Reviewer</li>
           <li>Patch Contributor</li>
@@ -265,12 +265,12 @@ const FINAL_CTAS = [
     emoji: '🤝',
     title: 'Join a Workgroup',
     description: 'Help synthesize community feedback into Version 1.0.',
-    href: '/workgroups/join',
+    href: '/workgroups/join#workgroups',
     primary: false,
   },
   {
     emoji: '🌟',
-    title: 'Nominate a Workgroup Lead',
+    title: 'Nominate a Workgroup Coordinator',
     description: 'Help coordinate one of the collaborative synthesis teams.',
     href: '/workgroups/join#join-vs-nominate',
     primary: false,
@@ -464,22 +464,22 @@ export default function ParticipatePage() {
               </p>
             </Section>
 
-            <Section title="What Workgroup Leads Do">
+            <Section title="What Workgroup Coordinators Do">
               <p>
-                Workgroup Leads and Co-Leads are facilitators. They do{' '}
+                Workgroup Coordinators and Co-Leads are facilitators. They do{' '}
                 <strong className="font-semibold text-white">not</strong> own the Desirable
                 Properties and they do <strong className="font-semibold text-white">not</strong> make
                 unilateral decisions. Instead, they help:
               </p>
               <ul className="list-disc space-y-2 pl-5">
-                {LEAD_ACTIVITIES.map((item) => (
+                {COORDINATOR_ACTIVITIES.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
               <p>
-                You don&apos;t need to be the world&apos;s leading expert. If you&apos;re organized,
+                You don&apos;t need to be the world&apos;s foremost expert. If you&apos;re organized,
                 collaborative, and enjoy helping groups work effectively together, you can be a great
-                lead.
+                coordinator.
               </p>
             </Section>
           </div>
