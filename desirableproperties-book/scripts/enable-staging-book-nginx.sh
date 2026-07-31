@@ -17,20 +17,37 @@ echo "==> Test and reload nginx"
 sudo nginx -t
 sudo systemctl reload nginx
 
+smoke_http() {
+  local path="$1"
+  local code
+  code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 -H "Host: ${CONF_NAME}" "http://127.0.0.1${path}")"
+  if [[ "${code}" != "200" ]]; then
+    echo "Smoke failed: HTTP ${code} for ${path} (need Host: ${CONF_NAME}; without it nginx default vhost returns 404)" >&2
+    exit 1
+  fi
+}
+
 echo "==> Smoke HTTP (direct Host header)"
-curl -fsSL --max-time 10 -H "Host: ${CONF_NAME}" "http://127.0.0.1/viewer/intro" | grep -Eo '<title>[^<]+</title>' || true
+smoke_http /viewer.htm
+smoke_http /viewer/intro
+curl -fsSL --max-time 10 -H "Host: ${CONF_NAME}" "http://127.0.0.1/viewer/intro" \
+  | grep -Eo '<title>[^<]+</title>'
 
 if command -v certbot >/dev/null 2>&1; then
   echo "==> Request TLS certificate"
-  sudo certbot --nginx -d "${CONF_NAME}" --non-interactive --agree-tos --redirect || {
-    echo "Certbot failed. Run manually: sudo certbot --nginx -d ${CONF_NAME}" >&2
-    exit 1
-  }
-  sudo nginx -t
-  sudo systemctl reload nginx
+  if sudo certbot --nginx -d "${CONF_NAME}" --non-interactive --agree-tos --redirect; then
+    sudo nginx -t
+    sudo systemctl reload nginx
+    echo "==> Smoke HTTPS"
+    curl -fsSL --max-time 15 "https://${CONF_NAME}/viewer/intro" \
+      | grep -Eo '<title>[^<]+</title>'
+    echo "Done. Open https://${CONF_NAME}/viewer/intro"
+  else
+    echo "Certbot failed (usually DNS). After A record propagation, run:" >&2
+    echo "  sudo certbot --nginx -d ${CONF_NAME}" >&2
+    echo "Done (HTTP only). Test: curl -H \"Host: ${CONF_NAME}\" http://127.0.0.1/viewer/intro"
+    exit 0
+  fi
+else
+  echo "Done. Open http://${CONF_NAME}/viewer/intro (certbot not installed)"
 fi
-
-echo "==> Smoke HTTPS"
-curl -fsSL --max-time 15 "https://${CONF_NAME}/viewer/intro" | grep -Eo '<title>[^<]+</title>' || true
-
-echo "Done. Open https://${CONF_NAME}/viewer/intro"
