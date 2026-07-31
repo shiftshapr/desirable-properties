@@ -25,13 +25,18 @@
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js"></script>
+  <!-- Canopi sidebar – one embed for all /viewer/* chapters. Staging host mirrors prod API + pageUrlOrigin. -->
   <script src="/assets/dp-canopi-bridge.js"></script>
-  <!-- Canopi sidebar – one embed for all /viewer/* chapters. Whitelist domains on api.canopi.live. -->
-  <script
-    src="https://api.canopi.live/embed/v1.js"
-    data-canopi-id="7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c"
-    async
-  ></script>
+  <script>
+  (function () {
+    var cfg = window.DP_CANOPI_CONFIG || { apiBase: 'https://api.canopi.live', embedId: '7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c' };
+    var s = document.createElement('script');
+    s.src = cfg.apiBase.replace(/\/$/, '') + '/embed/v1.js';
+    s.setAttribute('data-canopi-id', cfg.embedId);
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+  </script>
 
   <script type="application/ld+json">
   {

@@ -99,6 +99,11 @@ https://app.brc333.xyz/projects/desirableproperties-book-ordinal/logic.htm?local
 sudo certbot --nginx -d book.desirableproperties.org   # first time only
 ```
 
+## Staging
+
+See **[STAGING.md](./STAGING.md)** — `staging.book.desirableproperties.org` static tree at
+`/home/ubuntu/desirableproperties-book-staging` (does not touch prod deploy paths).
+
 ## Brand
 
 - **Accent:** gold (`#d4af37`, hover `#e8c468`) – per the corrected brand palette.
