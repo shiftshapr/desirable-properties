@@ -9,13 +9,16 @@ import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 // journeys it summarizes — join a workgroup, read & discuss the book, and
 // patch a draft on Gov Hub — are also linked directly afterward so returning
 // visitors who already know what they want can skip straight there.
+// "About" (the framing-chapter essay) is intentionally left out of the header —
+// it's not an action journey, and it's already one click away from Home,
+// Participate, and Challenge. It still lives in the footer for anyone hunting
+// for background context.
 const NAV_LINKS = [
   { href: '/participate', label: 'Participate' },
   { href: WORKGROUPS_LIST_HREF, label: 'Workgroups' },
   { href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, label: 'Read & Discuss', external: true },
   { href: govhubUrl('/doc/all/'), label: 'Patch', external: true },
   { href: '/challenge', label: 'Challenge' },
-  { href: '/about', label: 'About' },
   { href: '/onchain', label: 'On-Chain' },
 ] as const;
 
@@ -28,7 +31,7 @@ export default function SiteHeader() {
             href="/"
             className="shrink-0 text-sm font-semibold tracking-wide text-cyan-300"
           >
-            Desirable Properties Challenge
+            DP Challenge
           </Link>
           <div className="flex min-w-0 flex-1 items-center justify-end gap-5 lg:gap-8">
             <nav className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1.5 text-sm text-slate-300 sm:gap-x-5 lg:gap-x-6">

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import ChallengeActivity from '@/components/ChallengeActivity';
 import ChallengeCountdown from '@/components/ChallengeCountdown';
 import ChallengeTimeline from '@/components/ChallengeTimeline';
 import WorkgroupFormationStatus from '@/components/WorkgroupFormationStatus';
@@ -13,7 +12,6 @@ import {
 } from '@/lib/challengeTimeline';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
-  fetchChallengeActivity,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
   govhubUrl,
@@ -29,10 +27,7 @@ export const revalidate = 300;
 
 export default async function ChallengePage() {
   const now = new Date();
-  const [activity, workgroups] = await Promise.all([
-    fetchChallengeActivity(8),
-    fetchChallengeWorkgroups(),
-  ]);
+  const workgroups = await fetchChallengeWorkgroups();
 
   const current = getCurrentMilestone(now);
   const activeAndUpcoming = getActiveAndUpcoming(now);
@@ -61,40 +56,28 @@ export default async function ChallengePage() {
       </header>
 
       <div className="mt-10 space-y-14">
-        {/* Overview narrative */}
+        {/* Overview narrative — kept short: the timeline below covers the origin
+            story as dated milestones, and /about tells it in full as an essay. */}
         <section className="space-y-4 text-lg leading-relaxed text-slate-300">
-          <p>The Internet is entering a new era.</p>
           <p>
-            For more than thirty years, the Web has connected people through pages, platforms, and
-            applications. Yet many of the challenges we now face are no longer problems of
-            connectivity alone. They are problems of trust, context, governance, identity, and our
-            ability to coordinate across communities, institutions, and increasingly, intelligent
-            agents.
+            The Desirable Properties Challenge is a global effort, launched by Vint Cerf&apos;s
+            September 2024 question, to define what qualities a new{' '}
+            <strong className="font-semibold text-white">Coordination Layer</strong> should possess
+            before it becomes part of everyday digital life–the Meta-Layer that supports trust,
+            context, presence, and governance above today&apos;s Web.{' '}
+            <Link href="/about" className="text-cyan-300 hover:text-cyan-200">
+              Read the full origin story on About
+            </Link>
+            .
           </p>
           <p>
-            The Desirable Properties Challenge is a global effort to explore what qualities a new{' '}
-            <strong className="font-semibold text-white">Coordination Layer</strong>
-            {' '}
-            should possess before it becomes part of everyday digital life–the Meta-Layer that
-            supports trust, context, presence, and governance above today&apos;s Web.
-          </p>
-          <p>
-            The challenge began in September 2024 when Internet pioneer Vint Cerf asked a
-            deceptively simple question: if we are building a new layer above today&apos;s Web,
-            what desirable properties should define it? Rather than beginning with protocols or
-            technical standards, he encouraged us to begin with the conditions that would make such
-            a layer trustworthy, resilient, and beneficial for humanity.
-          </p>
-          <p>
-            That question launched two international Calls for Input. Contributors from around the
-            world submitted ideas, concerns, use cases, and aspirations for the future of the
-            Internet. Those contributions were preserved as Bitcoin Ordinal inscriptions, creating a
-            permanent public record of the community&apos;s thinking. They also informed{' '}
+            That question and two international Calls for Input informed{' '}
             <strong className="font-semibold text-white">
               Version {challengeMeta.current_draft_version}
             </strong>{' '}
             of the <em>Desirable Properties of a Meta-Layer</em>–the current working draft developed
-            through AI-assisted synthesis and community stewardship.
+            through AI-assisted synthesis and community stewardship. The milestones below trace how
+            we got here and what&apos;s next.
           </p>
         </section>
 
@@ -202,14 +185,6 @@ export default async function ChallengePage() {
           </div>
         </section>
 
-        {/* Recent activity */}
-        <section>
-          <h2 className="text-2xl font-bold text-white">Recent activity</h2>
-          <div className="mt-4">
-            <ChallengeActivity items={activity} />
-          </div>
-        </section>
-
         {/* Closing */}
         <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6 text-slate-300">
           <p className="leading-relaxed">
@@ -237,6 +212,12 @@ export default async function ChallengePage() {
               className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
             >
               About the challenge
+            </Link>
+            <Link
+              href="/#challenge"
+              className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+            >
+              See recent activity →
             </Link>
           </div>
         </section>
