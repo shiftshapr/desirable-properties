@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import SiteAuthNav from '@/components/SiteAuthNav';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 // "Participate" leads because it's the front door — a single overview of every
@@ -17,7 +17,7 @@ const NAV_LINKS = [
   { href: '/participate', label: 'Participate' },
   { href: WORKGROUPS_LIST_HREF, label: 'Workgroups' },
   { href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, label: 'Read & Discuss', external: true },
-  { href: govhubUrl('/doc/all/'), label: 'Patch', external: true },
+  { href: GOVHUB_DP_PATCHES_URL, label: 'Patch', external: true },
   { href: '/challenge', label: 'Challenge' },
   { href: '/onchain', label: 'On-Chain' },
 ] as const;

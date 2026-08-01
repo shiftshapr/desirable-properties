@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 
 type Frame = 'today' | 'wip' | 'coordination';
 
@@ -223,7 +223,7 @@ export default function LayerHero({ workgroupHref }: Props) {
               Read & Discuss the Book
             </a>
             <a
-              href={govhubUrl('/doc/all/')}
+              href={GOVHUB_DP_PATCHES_URL}
               className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
             >
               Patch on Gov Hub

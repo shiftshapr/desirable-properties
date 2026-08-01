@@ -14,6 +14,7 @@ import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
+  GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
 
@@ -144,7 +145,7 @@ export default async function ChallengePage() {
               and participate in governance—the active environment where the challenge evolves.
             </p>
             <a
-              href={govhubUrl('/layers/the-metaweb/')}
+              href={GOVHUB_DP_PATCHES_URL}
               className="mt-4 inline-block text-sm font-medium text-cyan-300 hover:text-cyan-200"
             >
               Open Gov Hub →

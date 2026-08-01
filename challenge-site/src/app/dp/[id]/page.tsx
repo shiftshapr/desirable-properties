@@ -6,6 +6,7 @@ import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   extractDpId,
   fetchChallengeWorkgroups,
+  GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
 import {
@@ -156,7 +157,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                         </a>
                       ) : (
                         <a
-                          href={govhubUrl('/doc/all/')}
+                          href={GOVHUB_DP_PATCHES_URL}
                           className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                         >
                           Patch on Gov Hub
@@ -175,7 +176,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                   )}
                   {!readHref && !pdfDownloadHref && !draftHref && (
                     <a
-                      href={govhubUrl('/doc/all/')}
+                      href={GOVHUB_DP_PATCHES_URL}
                       className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200"
                     >
                       Browse drafts on Gov Hub

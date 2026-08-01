@@ -87,6 +87,9 @@ export function govhubUrl(path: string): string {
   return `${GOVHUB_BASE}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+/** Gov Hub document list filtered to Desirable Properties drafts (patch entry point). */
+export const GOVHUB_DP_PATCHES_URL = govhubUrl('/doc/all/?collection=desirable-properties');
+
 export function extractDpId(name: string): string | null {
   const match = name.match(/^DP(\d+)\b/i);
   return match ? `DP${match[1]}` : null;

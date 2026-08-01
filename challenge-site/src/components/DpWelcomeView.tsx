@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
 import {
@@ -129,7 +130,7 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
           </a>
         ) : (
           <a
-            href={govhubUrl('/doc/all/')}
+            href={GOVHUB_DP_PATCHES_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"

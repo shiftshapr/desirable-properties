@@ -8,6 +8,7 @@ import {
   fetchChallengeWorkgroups,
   govhubUrl,
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import localData from '../data/desirable-properties.json';
@@ -196,7 +197,7 @@ export default async function Home() {
                   Select a passage in any DP draft and submit a specific text revision today.
                 </p>
                 <a
-                  href={govhubUrl('/layers/the-metaweb/')}
+                  href={GOVHUB_DP_PATCHES_URL}
                   className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
                   Open Gov Hub →

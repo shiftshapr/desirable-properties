@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 export default function SiteFooter() {
@@ -20,7 +20,7 @@ export default function SiteFooter() {
             Read & Discuss
           </a>
           <a
-            href={govhubUrl('/doc/all/')}
+            href={GOVHUB_DP_PATCHES_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-cyan-300 hover:text-cyan-200"

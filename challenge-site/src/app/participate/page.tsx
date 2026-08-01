@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
@@ -97,7 +98,7 @@ const CONTRIBUTE_CARDS = [
           <li>
             <strong className="font-semibold text-white">Patch on Gov Hub</strong> — open a draft,
             select a passage, and submit a specific text revision on{' '}
-            <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
+            <a href={GOVHUB_DP_PATCHES_URL} className="text-cyan-300 hover:text-cyan-200">
               Gov Hub
             </a>
             .
@@ -112,7 +113,7 @@ const CONTRIBUTE_CARDS = [
       primary: true,
     },
     secondaryCta: {
-      href: govhubUrl('/doc/all/'),
+      href: GOVHUB_DP_PATCHES_URL,
       label: 'Patch a draft on Gov Hub',
     },
   },
