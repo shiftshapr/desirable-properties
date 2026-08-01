@@ -26,8 +26,11 @@ if [ -d "$PAGES_SRC/assets" ]; then
   rsync -a "$PAGES_SRC/assets/" "$DEST/assets/"
 fi
 if [ -d "$PAGES_SRC/json" ]; then
-  # Copy the book-pages manifest if newer; do not clobber ordinal-only files.
-  cp -u "$PAGES_SRC/json/"*.json "$DEST/json/" 2>/dev/null || true
+  # Always prefer the book-pages manifest over the ordinal rsync copy.
+  cp -f "$PAGES_SRC/json/"*.json "$DEST/json/" 2>/dev/null || true
+  if [ -f "$PAGES_SRC/json/sources-sat.json" ]; then
+    cp -f "$PAGES_SRC/json/sources-sat.json" "$DEST/sources-sat.json"
+  fi
 fi
 # Local chapter rails (Live-mode overrides) + composite PDF downloads.
 if [ -d "$PAGES_SRC/content" ]; then

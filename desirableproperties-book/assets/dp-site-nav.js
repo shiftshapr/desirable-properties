@@ -8,7 +8,9 @@
   const AUTH_STORAGE_KEY = 'dp-viewer-auth';
   const THEME_KEY = 'dp-viewer-theme';
   const PROFILE_ICON = '/assets/profile-icon.svg';
-  const SITE_TITLE = 'The Layered Web: The Desirable Properties of a Meta-Layer';
+  const SITE_TITLE = 'The Layered Web';
+  const SITE_SUBTITLE = 'The Desirable Properties of a Meta-Layer';
+  const SITE_TITLE_FULL = SITE_TITLE + ': ' + SITE_SUBTITLE;
 
   let options = {};
 
@@ -53,7 +55,8 @@
       '<header class="dp-site-header">' +
       '  <div class="dp-site-header-inner dp-container dp-container-wide">' +
       '    <div class="dp-site-header-brand">' +
-      '      <h1><a href="/" class="header-title-link" id="dpBrandLink">' + SITE_TITLE + '</a></h1>' +
+      '      <h1><a href="/" class="header-title-link" id="dpBrandLink">' + SITE_TITLE +
+      '<span class="dp-site-header-subtitle">' + SITE_SUBTITLE + '</span></a></h1>' +
       '      <p class="dp-site-page-title" id="dpSitePageTitle" hidden></p>' +
       '    </div>' +
       '    <div class="dp-site-header-tools">' +

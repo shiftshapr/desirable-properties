@@ -77,6 +77,15 @@ body.dp-app-page {
   color: var(--dp-nav-accent-hover);
 }
 
+.dp-site-header-subtitle {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted, var(--dp-nav-muted));
+  letter-spacing: 0.02em;
+}
+
 .dp-site-page-title {
   margin: 4px 0 0;
   font-size: 0.82rem;

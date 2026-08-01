@@ -21,10 +21,10 @@
   <meta name="twitter:title" content="The Layered Web: The Desirable Properties of a Meta-Layer">
   <meta name="twitter:description" content="Twenty-three Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
 
-  <link rel="stylesheet" href="/assets/dp-site.css" />
+  <link rel="stylesheet" href="/assets/dp-site.css?v=20260801" />
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
-  <script src="/assets/dp-loading.js"></script>
+  <script src="/assets/dp-loading.js?v=20260801"></script>
   <!-- Canopi sidebar – one embed for all /viewer/* chapters. Staging host mirrors prod API + pageUrlOrigin. -->
   <script src="/assets/dp-canopi-bridge.js"></script>
   <script>
@@ -540,6 +540,14 @@
       border-bottom: 2px solid var(--accent);
       padding-bottom: 0.3em;
     }
+    .book-content .dp-intro h1 .header-subtitle {
+      display: block;
+      margin-top: 0.35em;
+      font-size: 0.62em;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
     .book-content .dp-intro-eyebrow {
       font-size: 12px;
       font-weight: 600;
@@ -853,7 +861,8 @@
     <div class="header-inner">
       <h1>
         <a class="header-title-link" href="/viewer/intro">
-          The Layered Web: The Desirable Properties of a Meta-Layer
+          The Layered Web
+          <span class="header-subtitle">The Desirable Properties of a Meta-Layer</span>
         </a>
       </h1>
       <div class="header-tools">
@@ -935,7 +944,9 @@
     const STORAGE_MODE = 'dp-viewer-mode';
     const STORAGE_THEME = 'dp-viewer-theme';
 
-    const SITE_TITLE = 'The Layered Web: The Desirable Properties of a Meta-Layer';
+    const SITE_TITLE = 'The Layered Web';
+    const SITE_SUBTITLE = 'The Desirable Properties of a Meta-Layer';
+    const SITE_TITLE_FULL = SITE_TITLE + ': ' + SITE_SUBTITLE;
     const MANIFEST_URL = '/json/sources-sat.json';
 
     /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
@@ -1341,7 +1352,7 @@
     function renderIntroLanding() {
       return (
         '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1">' +
-          '<h1>The Layered Web: The Desirable Properties of a Meta-Layer</h1>' +
+          '<h1>The Layered Web<span class="header-subtitle">The Desirable Properties of a Meta-Layer</span></h1>' +
           '<p class="dp-intro-eyebrow">A Book of the Meta-Layer · 22 Properties, inscribed on Bitcoin</p>' +
           '<p>This book collects twenty-three community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
           '<p>Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own – but they are strongest when seen together.</p>' +

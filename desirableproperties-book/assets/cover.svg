@@ -15,12 +15,14 @@
   <rect x="14" y="14" width="392" height="572" fill="none" stroke="url(#goldGrad)" stroke-width="0.5" opacity="0.6"/>
   <text x="210" y="120" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="0.4em" fill="#d4af37" font-weight="700">META-LAYER</text>
   <line x1="80" y1="138" x2="340" y2="138" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-  <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
-  <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
-  <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-  <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP22</text>
-  <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
-  <g transform="translate(210, 460)">
+  <text x="210" y="210" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="url(#goldGrad)">THE LAYERED</text>
+  <text x="210" y="252" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="url(#goldGrad)">WEB</text>
+  <line x1="100" y1="278" x2="320" y2="278" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
+  <text x="210" y="318" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" letter-spacing="0.08em" fill="#e6edf3" opacity="0.88">THE DESIRABLE PROPERTIES</text>
+  <text x="210" y="344" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" letter-spacing="0.08em" fill="#e6edf3" opacity="0.88">OF A META-LAYER</text>
+  <text x="210" y="382" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP23</text>
+  <text x="210" y="410" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
+  <g transform="translate(210, 478)">
     <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
     <circle cx="0" cy="0" r="22" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.5"/>
     <text x="0" y="6" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#d4af37">DP</text>

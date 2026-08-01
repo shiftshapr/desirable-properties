@@ -15,7 +15,7 @@
   <title>The Layered Web: The Desirable Properties of a Meta-Layer</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="alternate icon" href="/assets/profile-icon.svg">
-  <link rel="stylesheet" href="/assets/dp-site.css" />
+  <link rel="stylesheet" href="/assets/dp-site.css?v=20260801" />
   <style>
     :root, [data-theme="dark"] {
       --bg: #0d1117;
@@ -54,6 +54,24 @@
       align-items: stretch;
       justify-content: center;
       padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+    }
+    .book-heading {
+      margin: 0 auto 18px;
+      max-width: 640px;
+    }
+    .book-heading h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      line-height: 1.15;
+    }
+    .book-heading p {
+      margin: 8px 0 0;
+      font-size: clamp(0.95rem, 2.4vw, 1.05rem);
+      color: var(--muted);
+      line-height: 1.45;
     }
     .wrap {
       width: 100%;
@@ -256,6 +274,10 @@
 </head>
 <body>
   <div class="wrap dp-container dp-container-narrow">
+    <div class="book-heading">
+      <h1>The Layered Web</h1>
+      <p>The Desirable Properties of a Meta-Layer</p>
+    </div>
     <div class="cover-hit" id="coverHit" role="button" tabindex="0" aria-label="Open the book reader">
       <picture>
         <source type="image/webp" srcset="/assets/cover.webp 1x, /assets/cover@2x.webp 2x" />
