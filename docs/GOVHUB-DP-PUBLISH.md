@@ -113,11 +113,21 @@ PY
 `content_hash` is **not** a plain `sha256` of the file — Gov Hub hashes normalized extracted text
 via `services.submission_dedup.compute_content_hash_for_file`. Use that function to re-verify.
 
-### Known reader quirk
+### Which body a read URL serves
 
-`/doc/draft/<revision_draft_name>/read/` correctly serves the newest approved revision.
-`/doc/draft/<ml_number>/read/` still serves the **parent** body. Link readers to the revision
-`draft_name`, and treat the ML-number route as a Gov Hub bug to fix separately.
+An ML number names the **document**, so it serves the newest approved revision. A `draft_name`
+or submission id names **one stored row**, so it serves exactly that body.
+
+| URL | Body served |
+| --- | --- |
+| `/doc/draft/<ml_number>/read/` | Newest approved revision in the family |
+| `/doc/draft/<revision_draft_name>/read/` | That revision |
+| `/doc/draft/<parent_draft_name>/read/` | Rev 00, the original |
+
+The reader toolbar names the revision on screen and links to `/doc/draft/<ref>/revisions/`.
+
+Earlier builds served the Rev 00 parent body for the ML-number URL, so notes written before
+2026-08-01 may still say to link readers to the revision `draft_name`. Either link works now.
 
 ## Patch applicability audit
 
@@ -143,6 +153,30 @@ Note that the DEV `dp_proposal` table accumulates fixtures every time the Gov Hu
 (`test_dp_proposals.py` creates real rows). Filter them out when reading the matrix — they are
 recognizable by a `proposed_text` that just appends `Revised.` to the anchor.
 
+### Applicability inside Gov Hub
+
+Gov Hub now computes the same verdict itself and shows it in the UI, so the audit script is a
+cross-check rather than the only view:
+
+| Gov Hub label | `classify_proposal_location` | Meaning |
+| --- | --- | --- |
+| Applies to this text | `current` | Anchor is in the revision being served |
+| Needs re-anchoring | `superseded` | Anchor only exists in an earlier revision |
+| (hidden) | `bogus` | Anchor exists in no revision; dropped from lists |
+
+Where it shows up:
+
+- `/doc/draft/<ref>/patches/` — a per-patch chip, a per-passage chip, and a tally at the top.
+- `/doc/draft/<ref>/read/` — an **N unmatched** toolbar dropdown listing passages that are not in
+  the revision on screen, since those patches have no text to highlight.
+- `/doc/draft/<ref>/revisions/` — per-revision counts of patches written against that revision.
+- `GET /api/doc/draft/<ref>/proposals/` — `applicability`, `applicability_label`,
+  `created_on_revision_label` per patch, plus `counts_by_applicability`.
+
+Patches and comments are scoped to the **document family**, not to one revision. A patch is
+attributed to the revision whose `content_hash` matches its `content_hash_at_create`, falling back
+to the newest revision that existed at `created_at`.
+
 ## Promoting to PROD
 
 1. Re-run the publish script with `--flask-env production` and `--dry-run`, confirming the parent
@@ -150,4 +184,5 @@ recognizable by a `proposed_text` that just appends `Revised.` to the anchor.
 2. Back up `instance/datatracker.db`.
 3. Publish. Prefer omitting `--approve` so a human approves in the UI.
 4. Re-run the patch audit against PROD and re-anchor `needs-review` patches.
-5. Sanity-check a few `…/doc/draft/<draft_name>/read/` URLs.
+5. Sanity-check a few `…/doc/draft/<draft_name>/read/` and `…/doc/draft/<ml_number>/read/` URLs;
+   both should show the newest revision in the toolbar chip.
