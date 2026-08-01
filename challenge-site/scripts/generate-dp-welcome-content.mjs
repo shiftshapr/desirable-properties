@@ -36,6 +36,45 @@ function captureItems(source, expression, label) {
   return items;
 }
 
+const KEY_DATE_ISO = {
+  'Community review begins': '2026-07-16',
+  'Workgroup synthesis target': '2026-09-01',
+  'Book and monument launch': '2026-09-16',
+};
+
+const KEY_DATE_IDS = {
+  'Community review begins': 'communityReviewBegins',
+  'Workgroup synthesis target': 'workgroupSynthesis',
+  'Book and monument launch': 'bookLaunch',
+};
+
+function captureKeyDates(markdown) {
+  const match = markdown.match(/\*\*Key dates\*\*\n\n([\s\S]*?)\n\n---/);
+  if (!match?.[1]) fail('key dates section');
+
+  const dates = {};
+  for (const line of match[1].split('\n').filter((entry) => entry.startsWith('- '))) {
+    const parsed = line.match(/^- (.+?): \*\*(.+?)\*\*(?: \((.+?)\))?\.?$/);
+    if (!parsed) fail(`key date line: ${line.trim()}`);
+    const title = parsed[1].trim();
+    const id = KEY_DATE_IDS[title];
+    const iso = KEY_DATE_ISO[title];
+    if (!id || !iso) fail(`unknown key date title: ${title}`);
+    dates[id] = {
+      title,
+      label: parsed[2].trim(),
+      iso,
+      note: parsed[3]?.trim() ?? null,
+    };
+  }
+
+  if (Object.keys(dates).length !== Object.keys(KEY_DATE_ISO).length) {
+    fail('incomplete key dates');
+  }
+
+  return dates;
+}
+
 export function parseWelcomeContent(markdown) {
   const messageA = capture(
     markdown,
@@ -58,6 +97,7 @@ export function parseWelcomeContent(markdown) {
   return {
     memberSubject: messageA,
     coordinatorSubject: messageB,
+    keyDates: captureKeyDates(markdown),
     messageA: {
       arcIntro: capture(
         markdown,
@@ -122,6 +162,7 @@ export function renderWelcomeContent(content) {
   return `// This file is generated from docs/dp-welcome-messages.md. Do not edit manually.\n\n` +
     `export const DP_WELCOME_SUBJECT_MEMBER = ${JSON.stringify(content.memberSubject)};\n` +
     `export const DP_WELCOME_SUBJECT_COORDINATOR = ${JSON.stringify(content.coordinatorSubject)};\n\n` +
+    `export const CHALLENGE_KEY_DATES = ${JSON.stringify(content.keyDates, null, 2)} as const;\n\n` +
     `export const MESSAGE_A_SECTIONS = ${JSON.stringify(content.messageA, null, 2)} as const;\n\n` +
     `export const MESSAGE_B_COORDINATOR = ${JSON.stringify(content.coordinator, null, 2)} as const;\n\n` +
     `export type DpWelcomeVariant = 'member' | 'coordinator';\n`;

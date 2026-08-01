@@ -13,10 +13,14 @@ export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 /** Open-access BRC333 book reader (markdown ordinals).
  * Points at the cover page on the main domain so the in-header Book link
  * opens the cover; the cover click then routes into the viewer SPA at
- * /viewer/<chapter>. The legacy subdomain (book.desirableproperties.org)
- * still serves the BRC333 ordinal preview. */
+ * /viewer/<chapter>. */
 export const DESIRABLE_PROPERTIES_BOOK_URL =
   'https://desirableproperties.org/book';
+
+/** Live book reader with chapter comments (Canopi) — discuss on each chapter today.
+ * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
+export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL =
+  'https://book.desirableproperties.org/';
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 

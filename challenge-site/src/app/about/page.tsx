@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import {
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   FRAMING_CHAPTER_REF,
   FRAMING_CHAPTER_TITLE,
   FRAMING_CHAPTER_URL,
@@ -239,15 +240,27 @@ export default function AboutPage() {
 
         <footer className="mt-16 rounded-xl border border-slate-800 bg-slate-900/60 p-6">
           <p className="text-slate-300">
-            This page summarizes the opening chapter. The authoritative, commentable draft lives on
-            Gov Hub.
+            This page summarizes the opening chapter. Read and discuss chapters on{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="text-cyan-300 hover:text-cyan-200"
+            >
+              book.desirableproperties.org
+            </a>{' '}
+            (comments live). Submit text patches on Gov Hub.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"
+            >
+              Read & discuss on the book
+            </a>
             <a
               href={FRAMING_CHAPTER_URL}
               className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
             >
-              Read {FRAMING_CHAPTER_REF} on Gov Hub
+              Patch {FRAMING_CHAPTER_REF} on Gov Hub
             </a>
             <Link
               href="/#dps"

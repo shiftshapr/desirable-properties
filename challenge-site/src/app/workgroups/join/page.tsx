@@ -1,6 +1,7 @@
 import localData from '@/data/desirable-properties.json';
+import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
 import Link from 'next/link';
-import { govhubUrl } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -20,17 +21,16 @@ type Role = {
 
 const ROLES: Role[] = [
   {
-    key: 'coordinator',
-    label: 'Coordinator',
-    description: 'Coordinates the workgroup, sets agenda, and supports contributors.',
-    glyph: '★',
+    key: COORDINATOR_ROLE.key,
+    label: COORDINATOR_ROLE.label,
+    description: COORDINATOR_ROLE.description,
+    glyph: COORDINATOR_ROLE.glyph!,
   },
   {
-    key: 'co_lead',
-    label: 'Co-lead',
-    description:
-      'Shares recruitment, member approvals, and contributor coordination with the coordinator.',
-    glyph: '◫',
+    key: CO_LEAD_ROLE.key,
+    label: CO_LEAD_ROLE.label,
+    description: CO_LEAD_ROLE.description,
+    glyph: CO_LEAD_ROLE.glyph!,
   },
   {
     key: 'editor',
@@ -200,6 +200,24 @@ export default async function JoinWorkgroupPage() {
               FAQ
             </a>
           </div>
+          <p className="mt-6 text-sm text-slate-400">
+            Not ready to join a workgroup yet? You can also{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="text-cyan-300 hover:text-cyan-200"
+            >
+              comment on chapters at book.desirableproperties.org
+            </a>{' '}
+            or{' '}
+            <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
+              patch drafts directly on Gov Hub
+            </a>
+            . See{' '}
+            <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
+              all the ways to contribute
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
@@ -263,8 +281,8 @@ export default async function JoinWorkgroupPage() {
               <h3 className="text-lg font-semibold text-white">Join as a member</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 Joining is low-commitment and reversible. As a member you can read drafts,
-                comment on proposals, and contribute wherever your time and interest align –
-                there is no obligation to attend meetings or write code.
+                discuss on the book, patch on Gov Hub, and contribute wherever your time and
+                interest align – there is no obligation to attend meetings or write code.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 Most workgroups welcome additional members at any point. Use the
@@ -315,6 +333,7 @@ export default async function JoinWorkgroupPage() {
               const joinHref = `${wgHref}?action=join`;
               const nominateHref = `${wgHref}?action=nominate`;
               const summary = shortDescription(dp);
+              const dpDetailHref = `/dp/${dpId.toLowerCase()}`;
 
               return (
                 <li
@@ -322,9 +341,12 @@ export default async function JoinWorkgroupPage() {
                   className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-5 transition-colors hover:border-violet-700/60"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <span className="rounded-md border border-cyan-900/60 bg-cyan-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-cyan-200">
+                    <Link
+                      href={dpDetailHref}
+                      className="rounded-md border border-cyan-900/60 bg-cyan-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-cyan-200 hover:border-cyan-600/70 hover:text-cyan-100"
+                    >
                       {dpId}
-                    </span>
+                    </Link>
                     <span className="rounded-md border border-emerald-900/50 bg-emerald-950/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-300">
                       Open for members
                     </span>
@@ -351,6 +373,13 @@ export default async function JoinWorkgroupPage() {
                     >
                       Nominate
                     </a>
+                    <Link
+                      href={dpDetailHref}
+                      className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-200"
+                    >
+                      View DP detail
+                      <span aria-hidden>→</span>
+                    </Link>
                   </div>
                 </li>
               );

@@ -3,6 +3,27 @@
 export const DP_WELCOME_SUBJECT_MEMBER = "Welcome to the Desirable Properties Challenge";
 export const DP_WELCOME_SUBJECT_COORDINATOR = "Welcome to the Desirable Properties Challenge — Workgroup coordinator";
 
+export const CHALLENGE_KEY_DATES = {
+  "communityReviewBegins": {
+    "title": "Community review begins",
+    "label": "July 16, 2026",
+    "iso": "2026-07-16",
+    "note": null
+  },
+  "workgroupSynthesis": {
+    "title": "Workgroup synthesis target",
+    "label": "September 1, 2026",
+    "iso": "2026-09-01",
+    "note": "v1.0 editorial window"
+  },
+  "bookLaunch": {
+    "title": "Book and monument launch",
+    "label": "September 16, 2026",
+    "iso": "2026-09-16",
+    "note": null
+  }
+} as const;
+
 export const MESSAGE_A_SECTIONS = {
   "arcIntro": "The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:",
   "arcImage": {
@@ -14,10 +35,11 @@ export const MESSAGE_A_SECTIONS = {
   "missionDetail": "Your workgroup is helping refine one or more Desirable Properties—the community-defined qualities a trustworthy Meta-Layer must possess before we lock in protocols. Getting the “what” right is the community’s first and most important architectural decision.",
   "askTitle": "What we ask of you",
   "askItems": [
-    "Read your assigned Desirable Property chapter(s) in the current v0.77 draft.",
+    "Read your assigned Desirable Property chapter(s) on the book (book.desirableproperties.org).",
     "Review for clarity, context, and completeness.",
-    "Submit specific suggested text revisions—not just general feedback. Show what clearer wording would look like.",
-    "Participate in workgroup discussion as community patches and comments arrive."
+    "Discuss on the book—chapter comments are live now (Canopi on each chapter).",
+    "Patch on Gov Hub—select a passage in the draft and submit specific suggested text revisions, not just general feedback. (Passage-level patching on the book is coming; use Gov Hub for patches today.)",
+    "Participate in workgroup discussion as community feedback arrives from the book and Gov Hub."
   ],
   "timeTitle": "Time & deadline",
   "timeItems": [

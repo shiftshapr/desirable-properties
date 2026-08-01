@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { govhubUrl } from '@/lib/govhub';
+import {
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  govhubUrl,
+} from '@/lib/govhub';
 import {
   DP_WELCOME_SUBJECT_COORDINATOR,
   DP_WELCOME_SUBJECT_MEMBER,
@@ -8,6 +11,7 @@ import {
   MESSAGE_B_COORDINATOR,
   type DpWelcomeVariant,
 } from '@/lib/dp-welcome-content';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 type Props = {
   variant: DpWelcomeVariant;
@@ -106,6 +110,14 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
       </section>
 
       <footer className="mt-12 flex flex-wrap gap-3 border-t border-slate-800 pt-8">
+        <a
+          href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-lg bg-violet-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-600"
+        >
+          Read & discuss on the book
+        </a>
         {wgHref ? (
           <a
             href={wgHref}
@@ -113,11 +125,20 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
             rel="noopener noreferrer"
             className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
           >
-            Open workgroup on Gov Hub
+            Patch drafts on Gov Hub
           </a>
-        ) : null}
+        ) : (
+          <a
+            href={govhubUrl('/doc/all/')}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
+          >
+            Patch drafts on Gov Hub
+          </a>
+        )}
         <Link
-          href="/workgroups/join#workgroups"
+          href={WORKGROUPS_LIST_HREF}
           className="rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-semibold text-slate-200 hover:border-slate-500 hover:text-white"
         >
           Browse workgroups

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL } from '@/lib/govhub';
 import { useAuth } from '@/lib/auth-context';
 
 type TicketSummary = {
@@ -144,9 +145,16 @@ export default function SupportPageClient() {
       <p className="text-sm font-semibold uppercase tracking-wide text-amber-300/90">Support</p>
       <h1 className="mt-2 text-3xl font-bold text-white">Desirable Properties support</h1>
       <p className="mt-4 text-slate-300">
-        Questions about the challenge, workgroups, the book, or Canopi on chapter pages? Submit a
-        support request here. Workgroup coordinators and contributors should include the DP number and any
-        suggested text revisions when asking about content.
+        Questions about the challenge, workgroups, or the book? Submit a support request here.
+        Chapter comments are live on{' '}
+        <a
+          href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+          className="text-cyan-300 hover:text-cyan-200"
+        >
+          book.desirableproperties.org
+        </a>
+        . Workgroup coordinators and contributors should include the DP number and any suggested
+        text revisions when asking about content.
       </p>
 
       {!checked ? (
@@ -435,7 +443,14 @@ export default function SupportPageClient() {
       )}
 
       <p className="mt-10 text-sm text-slate-500">
-        Reading the book? Use Canopi on each chapter to discuss with the community, or open{' '}
+        Reading the book? Comments are live on{' '}
+        <a
+          href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+          className="text-cyan-300 hover:text-cyan-200"
+        >
+          book.desirableproperties.org
+        </a>
+        . To patch draft text, use Gov Hub. Or open{' '}
         <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
           Participate
         </Link>{' '}

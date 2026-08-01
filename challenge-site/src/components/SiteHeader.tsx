@@ -1,15 +1,22 @@
 import Link from 'next/link';
 import SiteAuthNav from '@/components/SiteAuthNav';
-import { DESIRABLE_PROPERTIES_BOOK_URL, FRAMING_CHAPTER_URL } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
+// "Participate" leads because it's the front door — a single overview of every
+// way to engage (DP Community AI, book, Gov Hub, workgroups) for a first-time
+// visitor who doesn't yet know which path fits them. The three primary
+// journeys it summarizes — join a workgroup, read & discuss the book, and
+// patch a draft on Gov Hub — are also linked directly afterward so returning
+// visitors who already know what they want can skip straight there.
 const NAV_LINKS = [
-  { href: '/about', label: 'About' },
   { href: '/participate', label: 'Participate' },
+  { href: WORKGROUPS_LIST_HREF, label: 'Workgroups' },
+  { href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, label: 'Read & Discuss', external: true },
+  { href: govhubUrl('/doc/all/'), label: 'Patch', external: true },
   { href: '/challenge', label: 'Challenge' },
-  { href: '/workgroups/join#workgroups', label: 'Workgroups' },
-  { href: '/#dps', label: 'Browse DPs' },
+  { href: '/about', label: 'About' },
   { href: '/onchain', label: 'On-Chain' },
-  { href: DESIRABLE_PROPERTIES_BOOK_URL, label: 'Book', external: true },
 ] as const;
 
 export default function SiteHeader() {
@@ -42,12 +49,6 @@ export default function SiteHeader() {
                   </Link>
                 ),
               )}
-              <a
-                href={FRAMING_CHAPTER_URL}
-                className="hidden whitespace-nowrap hover:text-white lg:inline"
-              >
-                Read Intro
-              </a>
               <a
                 href="/agent"
                 target="_blank"

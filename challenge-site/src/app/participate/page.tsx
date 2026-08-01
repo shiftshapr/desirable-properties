@@ -1,5 +1,9 @@
 import Link from 'next/link';
-import { govhubUrl } from '@/lib/govhub';
+import {
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  govhubUrl,
+} from '@/lib/govhub';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
@@ -12,7 +16,7 @@ function PageLink({
   className: string;
   children: ReactNode;
 }) {
-  if (href === '/agent') {
+  if (href === '/agent' || href.startsWith('http://') || href.startsWith('https://')) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         {children}
@@ -75,27 +79,42 @@ const CONTRIBUTE_CARDS = [
     time: '≈1–3 hours',
     body: (
       <>
-        <p>Read through the current draft and help improve it. You can:</p>
+        <p>Read the current draft and help improve it two ways:</p>
         <ul className="mt-3 list-disc space-y-2 pl-5">
-          <li>propose wording improvements</li>
-          <li>submit specific patches</li>
-          <li>leave comments</li>
-          <li>identify missing concepts</li>
-          <li>suggest examples</li>
-          <li>improve clarity and consistency</li>
-          <li>challenge assumptions</li>
-          <li>recommend new Desirable Properties</li>
+          <li>
+            <strong className="font-semibold text-white">Discuss on the book</strong> — read chapters
+            and comment with the community on{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="text-cyan-300 hover:text-cyan-200"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              book.desirableproperties.org
+            </a>{' '}
+            (comments are live now). Passage-level patching on the book is coming.
+          </li>
+          <li>
+            <strong className="font-semibold text-white">Patch on Gov Hub</strong> — open a draft,
+            select a passage, and submit a specific text revision on{' '}
+            <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
+              Gov Hub
+            </a>
+            .
+          </li>
         </ul>
-        <p className="mt-4">
-          Reviews can be submitted through the Desirable Properties website, Canopi, or{' '}
-          <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
-            Gov Hub
-          </a>
-          . Every thoughtful review strengthens Version 1.0.
-        </p>
+        <p className="mt-4">You can also identify missing concepts, suggest examples, challenge assumptions, and recommend new Desirable Properties. Every thoughtful review strengthens Version 1.0.</p>
       </>
     ),
-    cta: { href: '/#dps', label: 'Review the Desirable Properties →', primary: true },
+    cta: {
+      href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+      label: 'Read & discuss on the book →',
+      primary: true,
+    },
+    secondaryCta: {
+      href: govhubUrl('/doc/all/'),
+      label: 'Patch a draft on Gov Hub',
+    },
   },
   {
     id: 'workgroup',
@@ -129,46 +148,13 @@ const CONTRIBUTE_CARDS = [
         </p>
       </>
     ),
-    cta: { href: '/workgroups/join#workgroups', label: 'Join a Workgroup', primary: true },
+    cta: { href: WORKGROUPS_LIST_HREF, label: 'Join a Workgroup', primary: true },
     secondaryCta: {
       href: '/workgroups/join#join-vs-nominate',
       label: 'Nominate a Workgroup Coordinator',
     },
   },
 ] as const;
-
-const MEMBER_ACTIVITIES = [
-  'reviewing community submissions',
-  'discussing proposals',
-  'suggesting improvements',
-  'identifying missing ideas',
-  'proposing examples',
-  'helping resolve ambiguities',
-  'reviewing AI-generated synthesis',
-  'contributing patches',
-  'participating in consensus discussions',
-];
-
-const COORDINATOR_ACTIVITIES = [
-  'organize meetings',
-  'facilitate productive discussions',
-  'maintain the shared working document',
-  'encourage broad participation',
-  'ensure every proposal receives consideration',
-  'coordinate with the DP Community AI',
-  'identify areas of rough consensus',
-  'document unresolved questions',
-  'prepare recommended revisions for the editorial team',
-];
-
-const WORKING_SPACE_ACTIVITIES = [
-  'edit together',
-  'comment on proposals',
-  'compare alternative wording',
-  'document rationale',
-  'track open questions',
-  'develop synthesis drafts',
-];
 
 const BADGE_SECTIONS = [
   {
@@ -257,15 +243,15 @@ const FINAL_CTAS = [
   {
     emoji: '📝',
     title: 'Review the Desirable Properties',
-    description: 'Read the current draft and submit patches or comments.',
-    href: '/#dps',
+    description: 'Read and discuss on the book (comments live). Patch drafts on Gov Hub.',
+    href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
     primary: false,
   },
   {
     emoji: '🤝',
     title: 'Join a Workgroup',
     description: 'Help synthesize community feedback into Version 1.0.',
-    href: '/workgroups/join#workgroups',
+    href: WORKGROUPS_LIST_HREF,
     primary: false,
   },
   {
@@ -429,78 +415,37 @@ export default function ParticipatePage() {
         </div>
       </section>
 
-      {/* Workgroups */}
+      {/* Workgroups, in brief — full roles, duties, and the join-vs-nominate breakdown live on the join page */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <Section title="About the Workgroups">
+          <Section title="Workgroups, in Brief">
             <p>
               Workgroups exist for one purpose:{' '}
               <strong className="font-semibold text-white">
                 to help develop and refine the Desirable Properties into Version 1.0.
-              </strong>
+              </strong>{' '}
+              It&apos;s a bounded commitment, not a permanent committee — after Version 1.0
+              publishes, participants decide whether and how they&apos;d like to keep contributing.
             </p>
             <p>
-              This is a <strong className="font-semibold text-white">bounded commitment</strong>{' '}
-              focused on completing the Version 1.0 synthesis. The workgroups are not permanent
-              committees. After Version 1.0 is published, participants can decide whether and how
-              they&apos;d like to continue contributing.
+              Members read drafts, discuss on the book, patch on Gov Hub, and join workgroup
+              discussion at their own pace — no obligation to attend every meeting. Coordinators
+              and Co-Leads facilitate; they don&apos;t own a property or make unilateral calls.
             </p>
-          </Section>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-800 bg-slate-900/40">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <Section title="What Workgroup Members Do">
-              <p>Members help improve one or more Desirable Properties by:</p>
-              <ul className="list-disc space-y-2 pl-5">
-                {MEMBER_ACTIVITIES.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <p>
-                Members are encouraged to contribute as much or as little as their schedules allow.
-              </p>
-            </Section>
-
-            <Section title="What Workgroup Coordinators Do">
-              <p>
-                Workgroup Coordinators and Co-Leads are facilitators. They do{' '}
-                <strong className="font-semibold text-white">not</strong> own the Desirable
-                Properties and they do <strong className="font-semibold text-white">not</strong> make
-                unilateral decisions. Instead, they help:
-              </p>
-              <ul className="list-disc space-y-2 pl-5">
-                {COORDINATOR_ACTIVITIES.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <p>
-                You don&apos;t need to be the world&apos;s foremost expert. If you&apos;re organized,
-                collaborative, and enjoy helping groups work effectively together, you can be a great
-                coordinator.
-              </p>
-            </Section>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <Section title="Shared Working Spaces">
             <p>
-              Each workgroup collaborates in a shared, co-editable working document. These living
-              documents allow contributors to:
-            </p>
-            <ul className="list-disc space-y-2 pl-5">
-              {WORKING_SPACE_ACTIVITIES.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p>
-              The working documents become the collaborative space where community knowledge is
-              transformed into Version 1.0.
+              <Link
+                href="/workgroups/join#roles"
+                className="font-medium text-cyan-300 hover:text-cyan-200"
+              >
+                See all workgroup roles →
+              </Link>{' '}
+              or{' '}
+              <Link
+                href={WORKGROUPS_LIST_HREF}
+                className="font-medium text-cyan-300 hover:text-cyan-200"
+              >
+                browse the 23 workgroups →
+              </Link>
             </p>
           </Section>
         </div>

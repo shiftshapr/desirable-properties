@@ -1,4 +1,5 @@
 import timelineData from '@/data/challenge-timeline.json';
+import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 
 export type MilestoneStatus = 'past' | 'current' | 'upcoming';
 
@@ -72,7 +73,7 @@ export function getActiveAndUpcoming(now: Date = new Date()): EnrichedMilestone[
 }
 
 export function getBookLaunchDate(): Date {
-  return new Date(challengeMeta.book_launch_date);
+  return new Date(`${CHALLENGE_KEY_DATES.bookLaunch.iso}T09:00:00-07:00`);
 }
 
 export function getCountdownTarget(now: Date = new Date()): Date | null {

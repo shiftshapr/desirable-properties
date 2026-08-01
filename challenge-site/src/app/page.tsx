@@ -7,19 +7,12 @@ import {
   fetchChallengeActivity,
   fetchChallengeWorkgroups,
   govhubUrl,
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
 } from '@/lib/govhub';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import localData from '../data/desirable-properties.json';
 
 export const revalidate = 0;
-
-const PARTICIPATE_ITEMS = [
-  'Review drafts',
-  'Suggest improvements',
-  'Join workgroups',
-  'Surface implementation ideas',
-  'Propose new DPs',
-  'Test properties through applications such as Canopi',
-];
 
 const MISSING_ITEMS = [
   'Candidate DPs',
@@ -45,7 +38,7 @@ export default async function Home() {
           <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
         </div>
 
-        <LayerHero workgroupHref="/workgroups/join#workgroups" />
+        <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
@@ -76,7 +69,7 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl font-bold text-white">Current DP Challenge</h2>
                 <p className="mt-3 max-w-2xl text-slate-400">
-                  Workgroups form July 1–20; the Desirable Properties book launches September 16, 2026.{' '}
+                  Version 0.77 is open for review.{' '}
                   <Link href="/challenge#timeline" className="text-cyan-300 hover:text-cyan-200">
                     View full timeline →
                   </Link>
@@ -93,16 +86,6 @@ export default async function Home() {
                 </p>
               </div>
             </div>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {PARTICIPATE_ITEMS.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-lg border border-slate-800 bg-slate-900/50 px-4 py-3 text-slate-300"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
             <div className="mt-10">
               <h3 className="text-lg font-semibold text-white">Recent activity</h3>
               <div className="mt-4">
@@ -165,46 +148,76 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Get Involved */}
+        {/* Three ways to get involved — maps directly to the three primary journeys */}
         <section>
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">Get Involved</h2>
-            <ul className="mt-8 space-y-3">
-              <li>
-                <Link href="/challenge#timeline" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  Challenge timeline
-                </Link>
-                <p className="text-sm text-slate-500">
-                  Milestones, countdown to the book launch, and how to participate
+            <h2 className="text-3xl font-bold text-white">Three Ways to Get Involved</h2>
+            <p className="mt-3 max-w-2xl text-slate-400">
+              Pick a path — or do all three.
+            </p>
+            <ul className="mt-10 grid gap-5 sm:grid-cols-3">
+              <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+                <span className="text-2xl" aria-hidden>
+                  🤝
+                </span>
+                <h3 className="mt-3 text-lg font-semibold text-white">Join a Workgroup</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
+                  Help steward one or more Desirable Properties toward Version 1.0.
                 </p>
-              </li>
-              <li>
-                <Link href="/about" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  About the Challenge
+                <Link
+                  href={WORKGROUPS_LIST_HREF}
+                  className="mt-5 inline-flex w-fit items-center rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
+                >
+                  Browse the 23 workgroups →
                 </Link>
-                <p className="text-sm text-slate-500">Framing, origins, and why properties precede protocols</p>
               </li>
-              <li>
-                <a href={govhubUrl('/')} className="text-lg text-cyan-300 hover:text-cyan-200">
-                  Gov Hub
+              <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+                <span className="text-2xl" aria-hidden>
+                  💬
+                </span>
+                <h3 className="mt-3 text-lg font-semibold text-white">Read & Discuss the Book</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
+                  Chapter comments are live on book.desirableproperties.org. Passage-level patching
+                  on the book is coming soon.
+                </p>
+                <a
+                  href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+                  className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
+                >
+                  Open the book →
                 </a>
-                <p className="text-sm text-slate-500">Drafts, proposals, and layer governance</p>
               </li>
-              <li>
-                <Link href="/onchain" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  The Desirable Properties on-chain
-                </Link>
-                <p className="text-sm text-slate-500">
-                  On-chain provenance: PCI conversations, submissions, and inscriptions
+              <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+                <span className="text-2xl" aria-hidden>
+                  ✎
+                </span>
+                <h3 className="mt-3 text-lg font-semibold text-white">Patch a Draft on Gov Hub</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
+                  Select a passage in any DP draft and submit a specific text revision today.
                 </p>
-              </li>
-              <li>
-                <Link href="/workgroups/join#workgroups" className="text-lg text-cyan-300 hover:text-cyan-200">
-                  Workgroups
-                </Link>
-                <p className="text-sm text-slate-500">Join stewardship groups for each DP</p>
+                <a
+                  href={govhubUrl('/layers/the-metaweb/')}
+                  className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
+                >
+                  Open Gov Hub →
+                </a>
               </li>
             </ul>
+
+            <p className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500">
+              <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
+                More ways to contribute
+              </Link>
+              <Link href="/challenge#timeline" className="hover:text-slate-300">
+                Challenge timeline
+              </Link>
+              <Link href="/about" className="hover:text-slate-300">
+                About the Challenge
+              </Link>
+              <Link href="/onchain" className="hover:text-slate-300">
+                On-chain provenance
+              </Link>
+            </p>
           </div>
         </section>
       </main>

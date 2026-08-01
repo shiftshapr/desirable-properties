@@ -52,6 +52,24 @@ test('welcome copy uses coordinator rather than lead or chair', async () => {
   assert.doesNotMatch(messageBody, /(?<!co-)\bleads?\b/i);
 });
 
+test('key dates align with welcome timeline bullets and book launch', async () => {
+  const markdown = await readFile(resolve(repositoryRoot, 'docs/dp-welcome-messages.md'), 'utf8');
+  const content = parseWelcomeContent(markdown);
+
+  for (const date of Object.values(content.keyDates)) {
+    assert.match(
+      content.messageA.timeItems.join('\n'),
+      new RegExp(date.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+      `${date.title} appears in Message A time items`,
+    );
+  }
+
+  const timeline = JSON.parse(
+    await readFile(resolve(challengeRoot, 'src/data/challenge-timeline.json'), 'utf8'),
+  );
+  assert.equal(timeline.meta.book_launch_date.startsWith(content.keyDates.bookLaunch.iso), true);
+});
+
 test('workgroup cards retain their direct-join continuation parameter', async () => {
   const joinPage = await readFile(
     resolve(challengeRoot, 'src/app/workgroups/join/page.tsx'),

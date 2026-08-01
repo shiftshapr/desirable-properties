@@ -5,7 +5,10 @@ type Props = {
   searchParams: Promise<{ wg?: string | string[] }>;
 };
 
-/** Legacy route: welcome emails sent before the coordinator rename link here. */
+/**
+ * Legacy route: welcome emails sent before the coordinator rename link here.
+ * Redirect kept for backward compat; target removal after Sept 2026 launch.
+ */
 export default async function WelcomeLeadPage({ searchParams }: Props) {
   const params = await searchParams;
   const slug = getRequestedWorkgroupSlug(params.wg);

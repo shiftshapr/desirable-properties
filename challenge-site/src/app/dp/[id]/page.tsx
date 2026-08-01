@@ -3,6 +3,7 @@ import DPProvenanceSection from '@/components/DPProvenanceSection';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
 import localData from '../../../data/desirable-properties.json';
 import {
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   extractDpId,
   fetchChallengeWorkgroups,
   govhubUrl,
@@ -138,19 +139,27 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                   )}
                   {(readHref || pdfDownloadHref) && (
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                      <a
+                        href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"
+                      >
+                        Read & discuss on the book
+                      </a>
                       {readHref ? (
                         <a
                           href={readHref}
                           className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                         >
-                          Read on Gov Hub
+                          Patch on Gov Hub
                         </a>
                       ) : (
                         <a
                           href={govhubUrl('/doc/all/')}
-                          className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+                          className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                         >
-                          Browse drafts on Gov Hub
+                          Patch on Gov Hub
                         </a>
                       )}
                       {pdfDownloadHref && (

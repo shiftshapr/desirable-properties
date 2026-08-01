@@ -12,7 +12,7 @@ import {
   isWorkgroupFormationPhase,
 } from '@/lib/challengeTimeline';
 import {
-  DESIRABLE_PROPERTIES_BOOK_URL,
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   fetchChallengeActivity,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
@@ -118,8 +118,16 @@ export default async function ChallengePage() {
           <p>
             Today the project enters a new phase. The Desirable Properties Challenge invites people
             everywhere to refine, debate, test, and improve these living drafts using Meta-Layer
-            tools. Over the coming months, workgroups will gather commentary, propose patches, and
-            explore implementations that strengthen the overall coherence of the emerging
+            tools. Read and discuss chapters on{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="text-cyan-300 hover:text-cyan-200"
+            >
+              book.desirableproperties.org
+            </a>{' '}
+            (chapter comments are live now). Patch draft text on Gov Hub—select a passage and submit
+            a revision. Over the coming months, workgroups will gather commentary, propose patches,
+            and explore implementations that strengthen the overall coherence of the emerging
             framework. Every improvement helps move the work from exploration toward rough consensus
             while preserving a transparent history of how the ideas evolved.
           </p>
@@ -149,8 +157,8 @@ export default async function ChallengePage() {
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
             <h3 className="text-lg font-semibold text-white">Living workspace</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Review drafts, join workgroups, propose patches, and participate in governance on Gov
-              Hub–the active environment where the challenge evolves.
+              Patch drafts on Gov Hub—select a passage and submit a text revision. Join workgroups
+              and participate in governance—the active environment where the challenge evolves.
             </p>
             <a
               href={govhubUrl('/layers/the-metaweb/')}
@@ -175,14 +183,21 @@ export default async function ChallengePage() {
           <div className="rounded-xl border border-violet-900/50 bg-violet-950/20 p-6">
             <h3 className="text-lg font-semibold text-white">Desirable Properties book</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Read the v1.0 open edition–framing chapter plus twenty-three Desirable Properties organized in
-              seven parts. Same markdown ordinals as the Digital Monument.
+              Read and discuss chapters on{' '}
+              <a
+                href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+                className="text-violet-300 hover:text-violet-200"
+              >
+                book.desirableproperties.org
+              </a>
+              —chapter comments are live now. Passage-level patching on the book is coming; patch
+              drafts on Gov Hub today.
             </p>
             <a
-              href={DESIRABLE_PROPERTIES_BOOK_URL}
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="mt-4 inline-block text-sm font-medium text-violet-300 hover:text-violet-200"
             >
-              Open the book →
+              Read & discuss on the book →
             </a>
           </div>
         </section>
@@ -212,10 +227,10 @@ export default async function ChallengePage() {
               Browse Version {challengeMeta.current_draft_version} DPs
             </Link>
             <a
-              href={DESIRABLE_PROPERTIES_BOOK_URL}
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="rounded-lg border border-violet-700/60 bg-violet-950/30 px-4 py-2 text-sm text-violet-200 hover:border-violet-500"
             >
-              Read the book
+              Read & discuss on the book
             </a>
             <Link
               href="/about"

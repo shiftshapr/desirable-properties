@@ -12,6 +12,14 @@ This document is the canonical source for welcome-page copy. After editing Messa
 - Workgroup synthesis target: **September 1, 2026** (v1.0 editorial window)
 - Book and monument launch: **September 16, 2026**
 
+These dates are exported as `CHALLENGE_KEY_DATES` by `npm run generate:dp-welcome` and consumed by the challenge timeline (book launch countdown).
+
+---
+
+## Legacy routes
+
+- `/welcome/lead` — kept as a permanent redirect to `/welcome/coordinator` for welcome emails sent before the coordinator rename. Target removal after the **September 16, 2026** launch.
+
 ---
 
 ## Message A — Workgroup member (join directly)
@@ -32,10 +40,11 @@ Your workgroup is helping refine one or more **Desirable Properties**—the comm
 
 **What we ask of you**
 
-- Read your assigned Desirable Property chapter(s) in the current v0.77 draft.
+- Read your assigned Desirable Property chapter(s) on the book ([book.desirableproperties.org](https://book.desirableproperties.org/)).
 - Review for **clarity**, **context**, and **completeness**.
-- Submit **specific suggested text revisions**—not just general feedback. Show what clearer wording would look like.
-- Participate in workgroup discussion as community patches and comments arrive.
+- **Discuss** on the book—chapter comments are live now (Canopi on each chapter).
+- **Patch** on Gov Hub—select a passage in the draft and submit specific suggested text revisions, not just general feedback. (Passage-level patching on the book is coming; use Gov Hub for patches today.)
+- Participate in workgroup discussion as community feedback arrives from the book and Gov Hub.
 
 **Time & deadline**
 

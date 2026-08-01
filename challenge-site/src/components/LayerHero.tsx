@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
 
 type Frame = 'today' | 'wip' | 'coordination';
 
@@ -211,22 +211,22 @@ export default function LayerHero({ workgroupHref }: Props) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
-              href="#dps"
+              href={workgroupHref}
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Explore the DPs →
+              Join a Workgroup →
             </a>
-            <Link
-              href="/challenge#timeline"
-              className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
-            >
-              Challenge timeline
-            </Link>
             <a
-              href={workgroupHref}
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
             >
-              Join a Workgroup
+              Read & Discuss the Book
+            </a>
+            <a
+              href={govhubUrl('/doc/all/')}
+              className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
+            >
+              Patch on Gov Hub
             </a>
           </div>
           <p
