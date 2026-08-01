@@ -89,7 +89,11 @@ start_pm2_processes() {
     # Create log directory if it doesn't exist
     sudo mkdir -p /var/log/pm2
     
-    # Start using ecosystem config
+    # Start using ecosystem config.
+    # These run under root's pm2 daemon (/root/.pm2/dump.pm2), which is a
+    # separate dump from the ubuntu one that pm2-safe-save protects. Left
+    # unguarded deliberately: the guard reads ubuntu's live state, so applying
+    # it here would compare the wrong estate against the wrong dump.
     sudo pm2 start ecosystem.config.js --env production
     sudo pm2 save
     

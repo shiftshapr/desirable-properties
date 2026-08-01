@@ -111,7 +111,18 @@ pm2 delete app-themetalayer 2>/dev/null || true
 # Start the application
 print_status "Starting application with PM2..."
 pm2 start ecosystem.config.js
-pm2 save
+
+# Guarded, because this script is destructive if it is ever pointed at a box
+# that already runs other pm2 apps: a bare `pm2 save` would persist only what
+# is online at that moment and silently drop the rest from ~/.pm2/dump.pm2.
+# On a genuinely fresh box the guard is absent and this warns instead, which is
+# the right way round -- provisioning continues and you run `pm2 save` once by
+# hand, rather than a stray run here quietly amputating a live estate.
+if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
+  print_status "WARNING: pm2 boot dump not updated (see above)."
+  print_status "On a fresh box, run 'pm2 save' once by hand after verifying"
+  print_status "that everything expected is online."
+fi
 
 # Setup PM2 startup
 print_status "Setting up PM2 startup..."

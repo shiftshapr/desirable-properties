@@ -4,7 +4,7 @@
 # From web-app:        ./scripts/restart.sh
 #
 # SKIP_BUILD=1        skip `npm run build` (faster restarts)
-# NO_PM2_SAVE=1       skip `pm2 save`
+# NO_PM2_SAVE=1       skip updating the pm2 boot dump entirely
 
 set -euo pipefail
 
@@ -55,7 +55,14 @@ echo "==> Starting ${PM2_NAME} via ecosystem.config.js"
 pm2 start "${ROOT}/ecosystem.config.js"
 
 if [[ "${NO_PM2_SAVE:-0}" != "1" ]]; then
-  pm2 save
+  # Guarded: a bare `pm2 save` here persists only what is online, so restarting
+  # this app while an unrelated one is down deletes that one from
+  # ~/.pm2/dump.pm2 and it never returns from `pm2 resurrect`.
+  if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
+    echo "==> WARNING: pm2 boot dump NOT updated (reason above); ${PM2_NAME} is"
+    echo "    running regardless. Re-run /home/ubuntu/meta-console/bin/pm2-safe-save"
+    echo "    once the unhealthy app(s) are back."
+  fi
 fi
 
 pm2 status "${PM2_NAME}" || true

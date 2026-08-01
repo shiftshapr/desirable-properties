@@ -15,7 +15,23 @@ npm run build
 echo "[3/5] Starting PM2 process..."
 pm2 delete desirableproperties 2>/dev/null || true
 pm2 start ecosystem.config.js
-pm2 save
+
+# `pm2 save` records only what is online, so running it here while some
+# unrelated app happens to be down deletes that app from ~/.pm2/dump.pm2 and it
+# never comes back from `pm2 resurrect`. That is how this script took canopi-app
+# and desirableproperties offline for ~90 minutes on 2026-07-31.
+#
+# The guard refuses unless every app in meta-console/registry.yaml is online and
+# answering on its port. Do not "fix" a refusal by calling `pm2 save` directly:
+# a stale dump is recoverable, an amputated one is an outage.
+if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
+  echo
+  echo "WARNING: the pm2 boot dump was NOT updated (reason above)."
+  echo "         This deploy is fine and desirableproperties is running, but"
+  echo "         ~/.pm2/dump.pm2 still describes the previous state."
+  echo "         Fix the unhealthy app(s), then run:"
+  echo "           /home/ubuntu/meta-console/bin/pm2-safe-save"
+fi
 
 echo "[4/5] Installing nginx site (requires sudo)..."
 if [[ "$(id -u)" -eq 0 ]]; then
