@@ -1,4 +1,4 @@
-# Desirable Properties Book (`book.desirableproperties.org`)
+# The Layered Web (`book.desirableproperties.org`)
 
 Open-access BRC333 book satplication – same pattern as `BRC333/projects/metaweb-book-ordinal/`.
 

@@ -1,4 +1,4 @@
-// Canonical local preview of the Desirable Properties book reader
+// Canonical local preview of The Layered Web book reader
 // (served from app.brc333.xyz). The `localSources` + `localFiles`
 // query flags make the preview load sources-sat.json / config-sat.json
 // from the same origin instead of the project's on-chain sources sat.
@@ -17,8 +17,7 @@ export default function SatplicationEmbed() {
             BRC333 Satplication · work in progress
           </p>
           <p className="mt-1 text-sm text-slate-300">
-            <code className="text-cyan-300">desirableproperties-book</code> – the inscribed
-            Desirable Properties book, served as a local preview while we wire up the
+            <code className="text-cyan-300">desirableproperties-book</code> – <em>The Layered Web</em>, served as a local preview while we wire up the
             chapter index.
           </p>
         </div>
@@ -43,7 +42,7 @@ export default function SatplicationEmbed() {
       </div>
       <div className="relative flex items-center justify-center bg-slate-950">
         <iframe
-          title="Desirable Properties book satplication"
+          title="The Layered Web satplication"
           src={SATPLICATION_VIEWER_URL}
           className="block h-[600px] w-[600px] border-0"
           loading="lazy"

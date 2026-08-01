@@ -50,7 +50,7 @@ Your workgroup is helping refine one or more **Desirable Properties**—the comm
 
 - **July 16, 2026** — Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
 - **September 1, 2026** — Workgroup synthesis (v1.0 editorial window).
-- **September 16, 2026** — The book and monument launch.
+- **September 16, 2026** — The Layered Web and monument launch.
 
 **Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [hub.themetalayer.org/support](https://hub.themetalayer.org/support).
 

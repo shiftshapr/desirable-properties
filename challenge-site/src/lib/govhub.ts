@@ -7,7 +7,11 @@ const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
 export const FRAMING_CHAPTER_URL =
   `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F`;
 export const FRAMING_CHAPTER_TITLE =
-  'The Desirable Properties of a Meta-Layer';
+  'The Layered Web: The Desirable Properties of a Meta-Layer';
+
+/** Formal title of the Desirable Properties book (book.desirableproperties.org). */
+export const DESIRABLE_PROPERTIES_BOOK_TITLE =
+  'The Layered Web: The Desirable Properties of a Meta-Layer';
 export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 
 /** Open-access BRC333 book reader (markdown ordinals).

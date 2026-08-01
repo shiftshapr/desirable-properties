@@ -76,7 +76,7 @@ export default async function ChallengePage() {
             <strong className="font-semibold text-white">
               Version {challengeMeta.current_draft_version}
             </strong>{' '}
-            of the <em>Desirable Properties of a Meta-Layer</em>–the current working draft developed
+            of <em>The Layered Web: The Desirable Properties of a Meta-Layer</em>–the current working draft developed
             through AI-assisted synthesis and community stewardship. The milestones below trace how
             we got here and what&apos;s next.
           </p>
@@ -86,7 +86,7 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            Workgroups form July 1–20; the Desirable Properties book launches September 16, 2026.{' '}
+            Workgroups form July 1–20; The Layered Web launches September 16, 2026.{' '}
             <Link
               href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"
@@ -165,7 +165,7 @@ export default async function ChallengePage() {
             </Link>
           </div>
           <div className="rounded-xl border border-violet-900/50 bg-violet-950/20 p-6">
-            <h3 className="text-lg font-semibold text-white">Desirable Properties book</h3>
+            <h3 className="text-lg font-semibold text-white">The Layered Web</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
               Read and discuss chapters on{' '}
               <a

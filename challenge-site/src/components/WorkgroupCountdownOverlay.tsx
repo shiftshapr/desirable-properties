@@ -143,7 +143,7 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
 
             <div className="space-y-4 px-6 py-5">
               <p className="text-sm leading-relaxed text-slate-300">
-                Be first to know when the Desirable Properties book and Digital Monument launch,
+                Be first to know when The Layered Web and Digital Monument launch,
                 and reserve your spot at the Meta-Layer Summit on launch day.
               </p>
 

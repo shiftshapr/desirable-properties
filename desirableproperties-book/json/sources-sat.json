@@ -4,8 +4,8 @@
     "project": "desirableproperties-book-ordinal",
     "schemaVersion": 1,
     "workId": "desirableproperties-book",
-    "title": "Desirable Properties of a Meta-Layer",
-    "summary": "Sources sat for the Desirable Properties book. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
+    "title": "The Layered Web: The Desirable Properties of a Meta-Layer",
+    "summary": "Sources sat for The Layered Web. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
     "bookCoverInscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
     "articleRails": [
         "ml-draft-026",
@@ -40,7 +40,7 @@
             "inscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
             "status": "active",
             "reinscribable": false,
-            "reason": "Cover ordinal for Desirable Properties book monument"
+            "reason": "Cover ordinal for The Layered Web monument"
         },
         {
             "railKey": "ml-draft-026",

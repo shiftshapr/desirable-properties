@@ -45,7 +45,7 @@ export const MESSAGE_A_SECTIONS = {
   "timeItems": [
     "July 16, 2026 — Community review begins. Plan 1–3 hours per Desirable Property for a thorough review.",
     "September 1, 2026 — Workgroup synthesis (v1.0 editorial window).",
-    "September 16, 2026 — The book and monument launch."
+    "September 16, 2026 — The Layered Web and monument launch."
   ],
   "support": {
     "prefix": "Submit a support request at",

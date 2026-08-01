@@ -38,10 +38,10 @@ export default async function OnchainPage() {
             Memory Layer · On-Chain
           </p>
           <h1 className="mt-4 text-4xl font-bold text-white">
-            Desirable Properties of a Meta-Layer
+            The Layered Web
           </h1>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">
-            The <em>Desirable Properties</em> satplication is a BRC333 book inscribed on
+            <em>The Layered Web: The Desirable Properties of a Meta-Layer</em> is a BRC333 book inscribed on
             Bitcoin Ordinals. Browse the live monument below, then use the index for PCI
             emails, community submissions, and inscribed DP drafts.
           </p>
@@ -86,7 +86,7 @@ export default async function OnchainPage() {
             The original <em>Meta-Layer Call for Input</em> satplication (
             <code className="text-cyan-300">meta-layer-call-for-input</code>) is preserved as
             a sibling artifact on Bitcoin Ordinals. The iframe above renders the new
-            Desirable Properties book satplication; the references below point at the
+            The Layered Web satplication; the references below point at the
             historical Call for Input and the <em>how-to-inscribe</em> guidance.
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">

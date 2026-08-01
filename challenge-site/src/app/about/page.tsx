@@ -10,7 +10,7 @@ import {
 export const metadata = {
   title: 'About – Desirable Properties Challenge',
   description:
-    'Framing chapter for the Desirable Properties of a Meta-Layer: collective intelligence, the DP Challenge, and why properties precede protocols.',
+    'Framing chapter for The Layered Web: The Desirable Properties of a Meta-Layer — collective intelligence, the DP Challenge, and why properties precede protocols.',
 };
 
 function Section({
