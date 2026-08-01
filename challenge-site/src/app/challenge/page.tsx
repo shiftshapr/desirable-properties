@@ -66,7 +66,7 @@ export default async function ChallengePage() {
             before it becomes part of everyday digital life–the Meta-Layer that supports trust,
             context, presence, and governance above today&apos;s Web.{' '}
             <Link href="/about" className="text-cyan-300 hover:text-cyan-200">
-              Read the full origin story on About
+              Read the full framing on About
             </Link>
             .
           </p>
