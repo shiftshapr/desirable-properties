@@ -42,10 +42,10 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
         <Image
           src={a.arcImage.src}
           alt={a.arcImage.alt}
-          width={960}
-          height={210}
-          unoptimized
+          width={1024}
+          height={479}
           priority
+          sizes="(min-width: 768px) 48rem, 100vw"
           className="mt-5 h-auto w-full rounded-xl border border-slate-800"
         />
 

@@ -22,7 +22,7 @@ This document is the canonical source for welcome-page copy. After editing Messa
 
 The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:
 
-![Desirable Properties → Requirements → ADRs → Build Overweb](/images/challenge-arc-placeholder.svg)
+![We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/images/dp-challenge-arc.jpg)
 
 **Your mission**
 
@@ -100,5 +100,5 @@ You're approved as workgroup coordinator. In addition to the member duties above
 1. **Sept 1 vs Sept 16** — Sept 1 opens the v1 synthesis window; Sept 16 is book/monument launch. Member deadline for synthesis work: **Sept 1**.
 2. **Overweb framing** — Step 4 can read “Build the Meta-Layer (Overweb)” if you prefer that wording.
 3. **Nomination vs join** — Same mission text (Message A) for both; coordinators get Message B's extra coordination block in **one combined** welcome after admin approval (not at nominee accept, and not as two separate messages).
-4. **Arc image** — `challenge-site/public/images/challenge-arc-placeholder.svg` is a placeholder for the four-step arc graphic. Drop the final artwork in at the same path (or update the image path in Message A) and no code changes are needed.
+4. **Arc image** — `challenge-site/public/images/dp-challenge-arc.jpg` (1024×479). To swap the artwork, replace that file or change the image path in Message A and re-run `npm run generate:dp-welcome`; the width/height in `DpWelcomeView` set the intrinsic aspect ratio and should match the new file.
 5. **Role naming** — The workgroup role is **coordinator** (never "lead" or "chair"); **co-lead** keeps its name.

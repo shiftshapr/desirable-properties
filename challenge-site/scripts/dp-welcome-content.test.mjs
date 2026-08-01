@@ -31,7 +31,7 @@ test('coordinator welcome renders complete Message A before Message B', async ()
   );
 });
 
-test('the challenge arc leads Message A and its placeholder image exists', async () => {
+test('the challenge arc leads Message A and its image exists', async () => {
   const view = await readFile(resolve(challengeRoot, 'src/components/DpWelcomeView.tsx'), 'utf8');
   const arc = view.indexOf('{a.arcIntro}');
   const mission = view.indexOf('{a.missionTitle}');

@@ -6,8 +6,8 @@ export const DP_WELCOME_SUBJECT_COORDINATOR = "Welcome to the Desirable Properti
 export const MESSAGE_A_SECTIONS = {
   "arcIntro": "The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:",
   "arcImage": {
-    "alt": "Desirable Properties → Requirements → ADRs → Build Overweb",
-    "src": "/images/challenge-arc-placeholder.svg"
+    "alt": "We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb",
+    "src": "/images/dp-challenge-arc.jpg"
   },
   "missionTitle": "Your mission",
   "missionBody": "We are glad you are here. You bring experience and a critical lens that this challenge needs.",
