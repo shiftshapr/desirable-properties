@@ -51,7 +51,9 @@ module.exports = {
       name: 'desirableproperties',
       cwd: '/home/ubuntu/desirable-properties/challenge-site',
       script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3005',
+      // Bound to loopback: nginx fronts this site, so binding 0.0.0.0 would
+      // also expose it directly on the public IP without TLS or auth.
+      args: 'start -p 3005 -H 127.0.0.1',
       env: {
         NODE_ENV: 'production',
         PORT: '3005',
