@@ -129,6 +129,26 @@ The reader toolbar names the revision on screen and links to `/doc/draft/<ref>/r
 Earlier builds served the Rev 00 parent body for the ML-number URL, so notes written before
 2026-08-01 may still say to link readers to the revision `draft_name`. Either link works now.
 
+> The fix ships in the app code, not the database, so a DEV or PROD box only picks it up after
+> `systemctl --user restart datatracker-dev.service` (or `datatracker.service`). A box still
+> serving Rev 00 for an ML number is running a pre-restart process.
+
+### Comparing two revisions
+
+`/doc/draft/<ref>/revisions/` opens on a diff of the two newest revisions and carries a
+**Compare from … to …** picker for any other pair, plus a **Compare with Revision NN** button on
+each revision card. Deep links look like
+`/doc/draft/<ref>/revisions/?from=<submission_id>&to=<submission_id>#revision-diff`.
+
+The diff aligns the two bodies paragraph by paragraph and labels each change **Added**,
+**Removed** or **Rewritten**; rewritten paragraphs get a word-level diff inside them. Long runs
+of untouched text collapse to a `N unchanged paragraphs` marker. Markdown rules (`---`) are
+ignored so a restyled chapter does not read as hundreds of changes.
+
+It diffs the stored upload, so it shows the markdown source rather than the rendered page. Rev 00
+rows that are ordinal-backed have no upload; those fall back to the flattened rendered body and
+diff as one long paragraph.
+
 ## Patch applicability audit
 
 ```bash
@@ -161,8 +181,10 @@ cross-check rather than the only view:
 | Gov Hub label | `classify_proposal_location` | Meaning |
 | --- | --- | --- |
 | Applies to this text | `current` | Anchor is in the revision being served |
-| Needs re-anchoring | `superseded` | Anchor only exists in an earlier revision |
-| (hidden) | `bogus` | Anchor exists in no revision; dropped from lists |
+| Needs re-anchoring | `superseded`, patch still open | Anchor only exists in an earlier revision |
+| Obsolete | `bogus`, or `superseded` on a closed patch | Cannot be merged; shown but not actionable |
+
+Obsolete patches are listed rather than hidden, and their Merge button is suppressed.
 
 Where it shows up:
 
