@@ -13,12 +13,12 @@ export async function GET(request: Request, context: RouteContext) {
 
   const { id, filename } = await context.params;
   const dataDir = supportDataDir();
-  const abs = attachmentAbsPath(dataDir, id, filename);
+  const abs = await attachmentAbsPath(dataDir, id, filename);
   if (!abs || !fs.existsSync(abs)) {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
   }
 
-  const ticket = readTicket(dataDir, id);
+  const ticket = await readTicket(dataDir, id);
   const att = ticket?.attachments.find((a) => a.filename === filename);
   const buf = fs.readFileSync(abs);
   return new NextResponse(buf, {

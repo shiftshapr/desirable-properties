@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
+import { enrichBroadcastAudienceEmails } from '@/lib/dp-broadcast-email';
 import { fetchWorkgroupSignups, type WorkgroupSignupPerson } from '@/lib/workgroup-signups';
 
 export type BroadcastAudienceRow = {
@@ -69,7 +70,7 @@ export async function buildBroadcastAudience(opts: {
     joinedAt: person.workgroups[0]?.joined_at ?? null,
   }));
 
-  return rows.filter((row) => {
+  const filtered = rows.filter((row) => {
     if (workgroupFilter) {
       const match = row.workgroups.some((wg) => wg.toLowerCase().includes(workgroupFilter));
       if (!match) return false;
@@ -78,6 +79,9 @@ export async function buildBroadcastAudience(opts: {
     const hay = [row.userName, row.userId, ...row.workgroups].filter(Boolean).join(' ').toLowerCase();
     return hay.includes(q);
   });
+
+  const { rows: enriched } = await enrichBroadcastAudienceEmails(filtered);
+  return enriched;
 }
 
 function applyMergeTags(template: string, row: BroadcastAudienceRow) {
@@ -236,6 +240,13 @@ export async function sendBroadcast(input: {
     successCount,
     failureCount,
     testMode,
+    emailEnrichment: testMode
+      ? undefined
+      : {
+          attempted: audience.length,
+          withEmail: audience.filter((r) => r.email).length,
+          missingEmail: audience.filter((r) => !r.email).length,
+        },
   };
 }
 

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import BlueberriesWidget from '@/components/BlueberriesWidget';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   GOVHUB_DP_PATCHES_URL,
@@ -415,6 +416,8 @@ export default function ParticipatePage() {
           </ul>
         </div>
       </section>
+
+      <BlueberriesWidget />
 
       {/* Workgroups, in brief — full roles, duties, and the join-vs-nominate breakdown live on the join page */}
       <section className="border-b border-slate-800">

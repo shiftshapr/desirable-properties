@@ -27,7 +27,7 @@ export async function GET() {
   }
 
   const dataDir = supportDataDir();
-  const result = searchTickets(dataDir, { userId: session.userId, limit: 50 });
+  const result = await searchTickets(dataDir, { userId: session.userId, limit: 50 });
   return NextResponse.json({
     ok: true,
     tickets: result.tickets.map(publicTicketSummary),
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   }
 
   const dataDir = supportDataDir();
-  const result = createTicket(dataDir, {
+  const result = await createTicket(dataDir, {
     subject: String(body.subject || ''),
     body: String(body.body || ''),
     urgency: String(body.urgency || 'non_blocking'),

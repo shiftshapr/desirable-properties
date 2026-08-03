@@ -109,11 +109,126 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_log (
 );
 
 CREATE INDEX IF NOT EXISTS dp_broadcast_log_sent ON dp_broadcast_log (sent_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_support_ticket (
+  id UUID PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  status TEXT NOT NULL DEFAULT 'open',
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL DEFAULT '',
+  urgency TEXT NOT NULL DEFAULT 'non_blocking',
+  category TEXT NOT NULL DEFAULT 'general',
+  screenshot_acknowledged BOOLEAN NOT NULL DEFAULT false,
+  user_id TEXT,
+  email TEXT,
+  handle TEXT,
+  page_url TEXT,
+  browser TEXT,
+  os TEXT,
+  canopi_mode TEXT,
+  steps_to_reproduce TEXT,
+  expected_behavior TEXT,
+  actual_behavior TEXT,
+  tried_already TEXT,
+  diagnostic_bundle JSONB,
+  attachments JSONB NOT NULL DEFAULT '[]'::jsonb,
+  has_screenshots BOOLEAN NOT NULL DEFAULT false,
+  related_ticket_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+  source TEXT NOT NULL DEFAULT 'dp_challenge',
+  agent_notes JSONB NOT NULL DEFAULT '[]'::jsonb,
+  draft_reply JSONB NOT NULL DEFAULT '{}'::jsonb,
+  proposed_resolution TEXT,
+  resolution TEXT,
+  escalated_to_human BOOLEAN NOT NULL DEFAULT false
+);
+
+CREATE INDEX IF NOT EXISTS dp_support_ticket_queue ON dp_support_ticket (status, urgency, created_at ASC);
+CREATE INDEX IF NOT EXISTS dp_support_ticket_user ON dp_support_ticket (user_id);
+CREATE INDEX IF NOT EXISTS dp_support_ticket_updated ON dp_support_ticket (updated_at DESC);
 `;
+
+async function importSupportTickets(pool, dataDir) {
+  const dir = path.join(dataDir, 'support-tickets');
+  if (!fs.existsSync(dir)) return { imported: 0, skipped: 0 };
+
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
+  let imported = 0;
+  let skipped = 0;
+
+  for (const file of files) {
+    const fp = path.join(dir, file);
+    let ticket;
+    try {
+      ticket = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    } catch {
+      skipped += 1;
+      continue;
+    }
+
+    const exists = await pool.query('SELECT id FROM dp_support_ticket WHERE id = $1', [ticket.id]);
+    if (exists.rowCount) {
+      skipped += 1;
+      continue;
+    }
+
+    await pool.query(
+      `INSERT INTO dp_support_ticket (
+         id, created_at, updated_at, status, subject, body, urgency, category,
+         screenshot_acknowledged, user_id, email, handle, page_url, browser, os,
+         canopi_mode, steps_to_reproduce, expected_behavior, actual_behavior,
+         tried_already, diagnostic_bundle, attachments, has_screenshots,
+         related_ticket_ids, source, agent_notes, draft_reply, proposed_resolution,
+         resolution, escalated_to_human
+       ) VALUES (
+         $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,
+         $21::jsonb,$22::jsonb,$23,$24::jsonb,$25,$26::jsonb,$27::jsonb,$28,$29,$30
+       )`,
+      [
+        ticket.id,
+        ticket.createdAt,
+        ticket.updatedAt,
+        ticket.status || 'open',
+        ticket.subject || '',
+        ticket.body || '',
+        ticket.urgency || 'non_blocking',
+        ticket.category || 'general',
+        Boolean(ticket.screenshotAcknowledged),
+        ticket.userId || null,
+        ticket.email || null,
+        ticket.handle || null,
+        ticket.pageUrl || null,
+        ticket.browser || null,
+        ticket.os || null,
+        ticket.canopiMode || null,
+        ticket.stepsToReproduce || null,
+        ticket.expectedBehavior || null,
+        ticket.actualBehavior || null,
+        ticket.triedAlready || null,
+        ticket.diagnosticBundle ? JSON.stringify(ticket.diagnosticBundle) : null,
+        JSON.stringify(ticket.attachments || []),
+        Boolean(ticket.hasScreenshots),
+        JSON.stringify(ticket.relatedTicketIds || []),
+        ticket.source || 'dp_challenge',
+        JSON.stringify(ticket.agentNotes || []),
+        JSON.stringify(ticket.draftReply || {}),
+        ticket.proposedResolution || null,
+        ticket.resolution || null,
+        ticket.escalatedToHuman != null ? Boolean(ticket.escalatedToHuman) : ticket.urgency === 'critical',
+      ],
+    );
+    imported += 1;
+  }
+
+  return { imported, skipped };
+}
 
 async function main() {
   const pool = new pg.Pool({ connectionString });
   await pool.query(SCHEMA_SQL);
+
+  const dataDir = path.join(__dirname, '..', 'data');
+  const ticketImport = await importSupportTickets(pool, dataDir);
 
   const counts = {};
   for (const table of [
@@ -121,12 +236,16 @@ async function main() {
     'dp_site_modal',
     'dp_blueberry',
     'dp_broadcast_log',
+    'dp_support_ticket',
   ]) {
     const r = await pool.query(`SELECT COUNT(*)::int AS n FROM ${table}`);
     counts[table] = r.rows[0]?.n ?? 0;
   }
 
   console.log('[migrate-dp-db] schema applied', counts);
+  if (ticketImport.imported || ticketImport.skipped) {
+    console.log('[migrate-dp-db] support ticket import', ticketImport);
+  }
   await pool.end();
 }
 

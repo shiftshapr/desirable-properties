@@ -18,7 +18,7 @@ export async function POST(request: Request, context: RouteContext) {
 
   const { id } = await context.params;
   const dataDir = supportDataDir();
-  const ticket = readTicket(dataDir, id);
+  const ticket = await readTicket(dataDir, id);
   if (!ticket) {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
   }
@@ -31,12 +31,12 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   if (body.draftReply && typeof body.draftReply === 'object') {
-    patchTicket(dataDir, id, {
+    await patchTicket(dataDir, id, {
       draftReply: body.draftReply as { subject?: string; body?: string },
     });
   }
 
-  const fresh = readTicket(dataDir, id)!;
+  const fresh = (await readTicket(dataDir, id))!;
   const emailResult = await sendSupportReplyEmail(fresh, {
     subject: body.subject != null ? String(body.subject) : undefined,
     body: body.body != null ? String(body.body) : undefined,
@@ -49,7 +49,7 @@ export async function POST(request: Request, context: RouteContext) {
     );
   }
 
-  const updated = markDraftReplySent(dataDir, id, 'hermes');
+  const updated = await markDraftReplySent(dataDir, id, 'hermes');
   return NextResponse.json({
     ok: true,
     emailId: emailResult.id,

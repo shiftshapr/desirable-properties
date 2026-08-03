@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const dataDir = supportDataDir();
-  const result = searchTickets(dataDir, {
+  const result = await searchTickets(dataDir, {
     q: url.searchParams.get('q') || undefined,
     urgency: url.searchParams.get('urgency') || undefined,
     category: url.searchParams.get('category') || undefined,

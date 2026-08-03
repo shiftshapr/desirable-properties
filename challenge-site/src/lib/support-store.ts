@@ -1,6 +1,14 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import {
+  pgCreateTicket,
+  pgEnabled,
+  pgMarkDraftReplySent,
+  pgPatchTicket,
+  pgReadTicket,
+  pgSearchTickets,
+} from '@/lib/dp-support-store';
 
 export const SUPPORT_CATEGORIES = [
   'challenge_question',
@@ -137,7 +145,7 @@ function listTicketIds(dataDir: string) {
     .map((f) => f.replace(/\.json$/, ''));
 }
 
-function readTicket(dataDir: string, id: string): SupportTicket | null {
+function readTicketFile(dataDir: string, id: string): SupportTicket | null {
   const fp = ticketPath(dataDir, id);
   if (!fs.existsSync(fp)) return null;
   try {
@@ -147,7 +155,10 @@ function readTicket(dataDir: string, id: string): SupportTicket | null {
   }
 }
 
-export { readTicket };
+export async function readTicket(dataDir: string, id: string): Promise<SupportTicket | null> {
+  if (pgEnabled()) return pgReadTicket(dataDir, id);
+  return readTicketFile(dataDir, id);
+}
 
 function writeTicket(dataDir: string, ticket: SupportTicket) {
   ensureDirs(dataDir);
@@ -200,21 +211,27 @@ function findRecentDuplicates(dataDir: string, userId: string | null, subject: s
   if (!userId) return [] as string[];
   const cutoff = Date.now() - hours * 3600 * 1000;
   const subj = normStr(subject, 200).toLowerCase();
-  return listTickets(dataDir)
+  return listTicketIds(dataDir)
+    .map((id) => readTicketFile(dataDir, id))
+    .filter(Boolean)
     .filter((t) => {
-      if (t.userId !== userId) return false;
-      const created = new Date(t.createdAt).getTime();
+      if (t!.userId !== userId) return false;
+      const created = new Date(t!.createdAt).getTime();
       if (!Number.isFinite(created) || created < cutoff) return false;
-      const other = normStr(t.subject, 200).toLowerCase();
+      const other = normStr(t!.subject, 200).toLowerCase();
       return other === subj || other.includes(subj) || subj.includes(other);
     })
-    .map((t) => t.id);
+    .map((t) => t!.id);
 }
 
-export function listTickets(dataDir: string) {
+export async function listTickets(dataDir: string) {
+  if (pgEnabled()) {
+    const { pgListTickets } = await import('@/lib/dp-support-store');
+    return pgListTickets(dataDir);
+  }
   return sortTickets(
     listTicketIds(dataDir)
-      .map((id) => readTicket(dataDir, id))
+      .map((id) => readTicketFile(dataDir, id))
       .filter(Boolean) as SupportTicket[],
   );
 }
@@ -234,6 +251,7 @@ export function publicTicketSummary(ticket: SupportTicket) {
 }
 
 export interface CreateTicketInput {
+  ticketId?: string;
   subject?: string;
   body?: string;
   urgency?: string;
@@ -254,7 +272,7 @@ export interface CreateTicketInput {
   diagnosticBundle?: Record<string, unknown> | null;
 }
 
-export function createTicket(dataDir: string, input: CreateTicketInput) {
+export async function createTicket(dataDir: string, input: CreateTicketInput) {
   const urgency = normStr(input.urgency, 32).toLowerCase() as SupportUrgency;
   const category = normStr(input.category, 64).toLowerCase() as SupportCategory;
   if (!VALID_URGENCY.has(urgency)) return { ok: false as const, error: 'invalid_urgency' };
@@ -266,7 +284,6 @@ export function createTicket(dataDir: string, input: CreateTicketInput) {
   if (!body) return { ok: false as const, error: 'body_required' };
 
   const id = crypto.randomUUID();
-  const now = new Date().toISOString();
   const attachments = saveAttachments(dataDir, id, input.screenshots || []);
   const hasScreenshots = attachments.length > 0;
   if (
@@ -277,6 +294,11 @@ export function createTicket(dataDir: string, input: CreateTicketInput) {
     return { ok: false as const, error: 'screenshot_ack_required' };
   }
 
+  if (pgEnabled()) {
+    return pgCreateTicket(dataDir, { ...input, ticketId: id }, attachments, hasScreenshots);
+  }
+
+  const now = new Date().toISOString();
   const userId = normStr(input.userId, 128) || null;
   const duplicates = findRecentDuplicates(dataDir, userId, subject);
 
@@ -320,7 +342,7 @@ export function createTicket(dataDir: string, input: CreateTicketInput) {
   return { ok: true as const, ticket };
 }
 
-export function searchTickets(
+export async function searchTickets(
   dataDir: string,
   filters: {
     q?: string;
@@ -332,6 +354,8 @@ export function searchTickets(
     offset?: number;
   } = {},
 ) {
+  if (pgEnabled()) return pgSearchTickets(dataDir, filters);
+
   const q = normStr(filters.q, 200).toLowerCase();
   const urgency = normStr(filters.urgency, 32).toLowerCase() as SupportUrgency;
   const category = normStr(filters.category, 64).toLowerCase() as SupportCategory;
@@ -340,7 +364,7 @@ export function searchTickets(
   const limit = Math.min(100, Math.max(1, Number(filters.limit) || 50));
   const offset = Math.max(0, Number(filters.offset) || 0);
 
-  let rows = listTickets(dataDir);
+  let rows = await listTickets(dataDir);
   if (urgency && VALID_URGENCY.has(urgency)) rows = rows.filter((t) => t.urgency === urgency);
   if (category && VALID_CATEGORY.has(category)) rows = rows.filter((t) => t.category === category);
   if (status && VALID_STATUS.has(status)) rows = rows.filter((t) => t.status === status);
@@ -377,10 +401,10 @@ export function supportDataDir() {
   return path.join(process.cwd(), 'data');
 }
 
-export function attachmentAbsPath(dataDir: string, ticketId: string, filename: string) {
+export async function attachmentAbsPath(dataDir: string, ticketId: string, filename: string) {
   const safe = path.basename(String(filename || ''));
   if (!safe || safe !== filename) return null;
-  const ticket = readTicket(dataDir, ticketId);
+  const ticket = await readTicket(dataDir, ticketId);
   if (!ticket) return null;
   const att = ticket.attachments.find((a) => a.filename === safe);
   if (!att) return null;
@@ -434,7 +458,7 @@ export function ticketForHermes(ticket: SupportTicket) {
   return publicTicketSummaryExtended(ticket, { includeBody: true });
 }
 
-export function patchTicket(
+export async function patchTicket(
   dataDir: string,
   id: string,
   patch: {
@@ -446,7 +470,9 @@ export function patchTicket(
     note?: { kind?: SupportNoteKind; text?: string; author?: string };
   },
 ) {
-  const ticket = readTicket(dataDir, id);
+  if (pgEnabled()) return pgPatchTicket(dataDir, id, patch);
+
+  const ticket = readTicketFile(dataDir, id);
   if (!ticket) return { ok: false as const, error: 'not_found' };
 
   if (patch.status != null) {
@@ -490,8 +516,10 @@ export function patchTicket(
   return { ok: true as const, ticket: writeTicket(dataDir, ticket) };
 }
 
-export function markDraftReplySent(dataDir: string, id: string, sentBy: string) {
-  const ticket = readTicket(dataDir, id);
+export async function markDraftReplySent(dataDir: string, id: string, sentBy: string) {
+  if (pgEnabled()) return pgMarkDraftReplySent(dataDir, id, sentBy);
+
+  const ticket = readTicketFile(dataDir, id);
   if (!ticket) return { ok: false as const, error: 'not_found' };
   const now = new Date().toISOString();
   ticket.draftReply.sentAt = now;

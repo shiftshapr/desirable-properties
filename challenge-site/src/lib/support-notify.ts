@@ -66,11 +66,11 @@ async function sendViaResend(payload: {
   return { ok: true as const, id: data.id as string | undefined };
 }
 
-function buildAttachments(dataDir: string, ticket: SupportTicket) {
+async function buildAttachments(dataDir: string, ticket: SupportTicket) {
   if (!ticket.hasScreenshots || !ticket.attachments.length) return [];
   const out: Array<{ filename: string; content: string }> = [];
   for (const att of ticket.attachments) {
-    const abs = attachmentAbsPath(dataDir, ticket.id, att.filename);
+    const abs = await attachmentAbsPath(dataDir, ticket.id, att.filename);
     if (!abs || !fs.existsSync(abs)) continue;
     try {
       const buf = fs.readFileSync(abs);
@@ -103,7 +103,7 @@ export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTic
     to,
     subject,
     html,
-    attachments: buildAttachments(dataDir, ticket),
+    attachments: await buildAttachments(dataDir, ticket),
   });
 }
 

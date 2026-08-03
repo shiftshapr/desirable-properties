@@ -76,6 +76,43 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_log (
 );
 
 CREATE INDEX IF NOT EXISTS dp_broadcast_log_sent ON dp_broadcast_log (sent_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_support_ticket (
+  id UUID PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  status TEXT NOT NULL DEFAULT 'open',
+  subject TEXT NOT NULL,
+  body TEXT NOT NULL DEFAULT '',
+  urgency TEXT NOT NULL DEFAULT 'non_blocking',
+  category TEXT NOT NULL DEFAULT 'general',
+  screenshot_acknowledged BOOLEAN NOT NULL DEFAULT false,
+  user_id TEXT,
+  email TEXT,
+  handle TEXT,
+  page_url TEXT,
+  browser TEXT,
+  os TEXT,
+  canopi_mode TEXT,
+  steps_to_reproduce TEXT,
+  expected_behavior TEXT,
+  actual_behavior TEXT,
+  tried_already TEXT,
+  diagnostic_bundle JSONB,
+  attachments JSONB NOT NULL DEFAULT '[]'::jsonb,
+  has_screenshots BOOLEAN NOT NULL DEFAULT false,
+  related_ticket_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+  source TEXT NOT NULL DEFAULT 'dp_challenge',
+  agent_notes JSONB NOT NULL DEFAULT '[]'::jsonb,
+  draft_reply JSONB NOT NULL DEFAULT '{}'::jsonb,
+  proposed_resolution TEXT,
+  resolution TEXT,
+  escalated_to_human BOOLEAN NOT NULL DEFAULT false
+);
+
+CREATE INDEX IF NOT EXISTS dp_support_ticket_queue ON dp_support_ticket (status, urgency, created_at ASC);
+CREATE INDEX IF NOT EXISTS dp_support_ticket_user ON dp_support_ticket (user_id);
+CREATE INDEX IF NOT EXISTS dp_support_ticket_updated ON dp_support_ticket (updated_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

@@ -14,7 +14,7 @@ export async function GET(request: Request, context: RouteContext) {
     return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
   }
   const { id } = await context.params;
-  const ticket = readTicket(supportDataDir(), id);
+  const ticket = await readTicket(supportDataDir(), id);
   if (!ticket) {
     return NextResponse.json({ ok: false, error: 'not_found' }, { status: 404 });
   }
@@ -33,7 +33,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     return NextResponse.json({ ok: false, error: 'invalid_json' }, { status: 400 });
   }
 
-  const result = patchTicket(supportDataDir(), id, {
+  const result = await patchTicket(supportDataDir(), id, {
     status: body.status != null ? String(body.status) : undefined,
     proposedResolution: body.proposedResolution as string | null | undefined,
     resolution: body.resolution as string | null | undefined,

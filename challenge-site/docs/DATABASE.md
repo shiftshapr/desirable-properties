@@ -11,6 +11,7 @@ Postgres stores admin config and operational data for **desirableproperties.org*
 | `dp_blueberry_settings` | Global blueberries intro + availability |
 | `dp_blueberry` | Participation activity definitions |
 | `dp_broadcast_log` | Email broadcast send history |
+| `dp_support_ticket` | Support tickets (migrated from JSON; attachments stay on disk) |
 
 Schema is applied automatically on first API request, or manually via migration script.
 
@@ -24,6 +25,11 @@ DP_DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@127.0.0.1:5432/desirable_pro
 
 # Fallback (also used by web-app Prisma)
 # DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@127.0.0.1:5432/desirable_properties
+
+# Broadcast email enrichment (Canopi internal API)
+METAWEB_OPS_SECRET=...
+# Optional override:
+# CANOPI_API_BASE=https://api.canopi.live
 ```
 
 Existing admin auth env vars (unchanged):
@@ -65,13 +71,18 @@ pm2 restart desirableproperties --update-env
 
 ## What stays outside Postgres
 
-- **Support tickets** – file-based under `data/support-tickets/` (working; migrate later if needed)
+- **Support ticket attachments** – binary files under `data/support-tickets/attachments/`
 - **Workgroup signups** – Gov Hub API (`/api/layers/.../workgroup-signups/`) with client fallback
 - **On-chain admin login** – still env cookie auth via `ONCHAIN_ADMIN_EMAILS`
 
 ## Broadcast audience note
 
-Audience rows are built from Gov Hub workgroup signups. Most members currently have **no email** in that payload; use **test mode** until email enrichment is added (Canopi profile or signup capture).
+Audience rows are built from Gov Hub workgroup signups (names/workgroups only). Production sends enrich emails via:
+
+1. **Canopi internal API** – `POST /v1/internal/metaweb/user-email` with `METAWEB_OPS_SECRET` (UUID user IDs only)
+2. **Support ticket capture** – emails stored when users submit support requests
+
+Members without a Canopi account or prior support contact may still lack email. Use **test mode** to verify templates before live sends.
 
 ## Troubleshooting
 
@@ -79,5 +90,6 @@ Audience rows are built from Gov Hub workgroup signups. Most members currently h
 |---------|--------|
 | Admin tabs empty / 503 | `DP_DATABASE_URL` unset or wrong credentials |
 | Broadcast fails | `RESEND_API_KEY` in `.env.local` / PM2 env |
+| Broadcast missing emails | `METAWEB_OPS_SECRET` set; user IDs are Canopi UUIDs |
 | Schema missing | Run `node scripts/migrate-dp-db.mjs` |
 | Env admins can't be removed in UI | Expected – edit `ONCHAIN_ADMIN_EMAILS` on server |
