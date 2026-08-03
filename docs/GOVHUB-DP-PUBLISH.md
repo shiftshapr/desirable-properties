@@ -13,10 +13,10 @@ Scripts live in `scripts/`:
 
 ## Environments
 
-| | Host | Port | Flask env | SQLite |
-| --- | --- | --- | --- | --- |
-| DEV | `dev.hub.themetalayer.org` | 8001 | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
-| PROD | `hub.themetalayer.org` | 8000 | `production` | `gov-hub-dev/instance/datatracker.db` |
+| | Host | Port | Git branch | Flask env | SQLite |
+| --- | --- | --- | --- | --- | --- |
+| DEV | `dev.hub.themetalayer.org` | 8001 | `development` | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
+| LIVE | `hub.themetalayer.org` | 8000 | **`main`** (production) | `production` | `gov-hub-prod/instance/datatracker.db` |
 
 Both run as user systemd units: `datatracker-dev.service` and `datatracker.service`.
 
@@ -199,12 +199,12 @@ Patches and comments are scoped to the **document family**, not to one revision.
 attributed to the revision whose `content_hash` matches its `content_hash_at_create`, falling back
 to the newest revision that existed at `created_at`.
 
-## Promoting to PROD
+## Promoting to live (main)
 
-1. Re-run the publish script with `--flask-env production` and `--dry-run`, confirming the parent
+1. Re-run the publish script against `~/gov-hub-prod` with `--flask-env production` and `--dry-run`, confirming the parent
    and next revision number resolved per DP.
-2. Back up `instance/datatracker.db`.
+2. Back up `gov-hub-prod/instance/datatracker.db`.
 3. Publish. Prefer omitting `--approve` so a human approves in the UI.
-4. Re-run the patch audit against PROD and re-anchor `needs-review` patches.
+4. Re-run the patch audit against live and re-anchor `needs-review` patches.
 5. Sanity-check a few `…/doc/draft/<draft_name>/read/` and `…/doc/draft/<ml_number>/read/` URLs;
    both should show the newest revision in the toolbar chip.
