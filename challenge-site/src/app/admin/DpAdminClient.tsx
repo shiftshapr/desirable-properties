@@ -3,63 +3,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SupportAdminClient from '@/app/support/admin/SupportAdminClient';
+import BlueberriesAdminPanel from '@/app/admin/BlueberriesAdminPanel';
+import BroadcastAdminPanel from '@/app/admin/BroadcastAdminPanel';
+import SiteMessagesAdminPanel from '@/app/admin/SiteMessagesAdminPanel';
+import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
 import {
   DP_ADMIN_TABS,
   normalizeDpAdminTab,
   type DpAdminTabKey,
 } from '@/lib/dp-admin-tabs';
 
-function AdminPlaceholder({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
-      <h2 className="text-xl font-semibold text-white">{title}</h2>
-      <p className="mt-3 max-w-3xl text-slate-300">{description}</p>
-      <p className="mt-4 text-sm text-slate-500">
-        This tab mirrors the metaweb-book admin layout. Backend wiring for DP-specific data stores
-        is not connected yet.
-      </p>
-    </section>
-  );
-}
-
-function SiteAdminPanel({ adminEmails }: { adminEmails: string[] }) {
-  return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
-      <h2 className="text-xl font-semibold text-white">Site admin</h2>
-      <p className="mt-3 max-w-3xl text-slate-300">
-        Authorized administrators for desirableproperties.org. Sign-in uses the same admin session
-        as on-chain claims and support admin.
-      </p>
-      <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">
-        Admin users
-      </h3>
-      <ul className="mt-3 divide-y divide-slate-800 rounded-lg border border-slate-800">
-        {adminEmails.map((email) => (
-          <li key={email} className="px-4 py-3 text-sm text-white">
-            {email}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-4 text-sm text-slate-500">
-        Managed via the <code className="text-slate-300">ONCHAIN_ADMIN_EMAILS</code> environment
-        variable.
-      </p>
-    </section>
-  );
-}
-
 export default function DpAdminClient() {
   const searchParams = useSearchParams();
   const [tab, setTab] = useState<DpAdminTabKey>(() =>
     normalizeDpAdminTab(searchParams.get('tab')),
   );
-  const [adminEmails, setAdminEmails] = useState<string[]>([]);
   const [flash, setFlash] = useState<string | null>(null);
 
   const loadAdmin = useCallback(async () => {
@@ -70,7 +28,6 @@ export default function DpAdminClient() {
         window.location.href = `/onchain/admin/login?next=${encodeURIComponent('/admin')}`;
         return;
       }
-      setAdminEmails(Array.isArray(data.adminEmails) ? data.adminEmails : []);
     } catch {
       setFlash('Could not verify admin session.');
     }
@@ -125,34 +82,15 @@ export default function DpAdminClient() {
         ))}
       </nav>
 
-      {tab === 'blueberries' ? (
-        <AdminPlaceholder
-          title="Blueberries"
-          description="Configure challenge participation activities, Gov Hub action blueberries, and availability windows for the DP site."
-        />
-      ) : null}
-
+      {tab === 'blueberries' ? <BlueberriesAdminPanel /> : null}
       {tab === 'support' ? (
         <div className="-mx-4 sm:mx-0">
           <SupportAdminClient />
         </div>
       ) : null}
-
-      {tab === 'broadcast' ? (
-        <AdminPlaceholder
-          title="Broadcast"
-          description="Compose and send email broadcasts to challenge participants, with audience filters and delivery logs."
-        />
-      ) : null}
-
-      {tab === 'messages' ? (
-        <AdminPlaceholder
-          title="Site messages"
-          description="Schedule modals and announcements across desirableproperties.org pages for specific audiences."
-        />
-      ) : null}
-
-      {tab === 'site' ? <SiteAdminPanel adminEmails={adminEmails} /> : null}
+      {tab === 'broadcast' ? <BroadcastAdminPanel /> : null}
+      {tab === 'messages' ? <SiteMessagesAdminPanel /> : null}
+      {tab === 'site' ? <SiteAdminPanel /> : null}
     </div>
   );
 }

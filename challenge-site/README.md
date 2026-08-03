@@ -43,6 +43,9 @@ Runs on port **3005** via PM2 process `desirableproperties`.
 |----------|---------|
 | `GOVHUB_BASE_URL` | `https://hub.themetalayer.org` |
 | `GOVHUB_METAWEB_LAYER_ID` | The Metaweb layer UUID |
+| `DP_DATABASE_URL` | Postgres for admin config (see [docs/DATABASE.md](docs/DATABASE.md)) |
+| `ONCHAIN_ADMIN_EMAILS` | Admin login allowlist |
+| `RESEND_API_KEY` | Support + broadcast email |
 
 Set in `ecosystem.config.js` for PM2.
 

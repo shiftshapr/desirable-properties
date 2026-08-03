@@ -1,0 +1,301 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+
+type Blueberry = {
+  id: string;
+  label: string;
+  description: string;
+  kind: string;
+  govhubMessageId: string | null;
+  govhubUrl: string | null;
+  dpIds: string[];
+  sortOrder: number;
+  requiresAcceptance: boolean;
+  active: boolean;
+  availableFrom: string | null;
+  availableUntil: string | null;
+};
+
+type Settings = {
+  introText: string;
+  available: boolean;
+  unavailableMessage: string;
+};
+
+const KINDS = [
+  { value: 'challenge', label: 'Challenge activity' },
+  { value: 'govhub_action', label: 'Gov Hub action' },
+  { value: 'custom', label: 'Custom' },
+];
+
+export default function BlueberriesAdminPanel() {
+  const [settings, setSettings] = useState<Settings>({
+    introText: '',
+    available: true,
+    unavailableMessage: '',
+  });
+  const [blueberries, setBlueberries] = useState<Blueberry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [flash, setFlash] = useState<string | null>(null);
+  const [draft, setDraft] = useState({
+    label: '',
+    description: '',
+    kind: 'challenge',
+    dpIds: '',
+    govhubUrl: '',
+    requiresAcceptance: false,
+  });
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/blueberries', { credentials: 'include' });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.message || data.error || 'Load failed');
+      setSettings(data.settings);
+      setBlueberries(data.blueberries || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not load blueberries');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  async function saveSettings() {
+    setBusy(true);
+    setFlash(null);
+    try {
+      const res = await fetch('/api/admin/blueberries', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save_settings', settings }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.message || 'Save failed');
+      setSettings(data.settings);
+      setFlash('Settings saved.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function addBlueberry() {
+    if (!draft.label.trim()) return;
+    setBusy(true);
+    setFlash(null);
+    try {
+      const res = await fetch('/api/admin/blueberries', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...draft,
+          dpIds: draft.dpIds.split(/[\s,]+/).filter(Boolean),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.message || 'Create failed');
+      setDraft({ label: '', description: '', kind: 'challenge', dpIds: '', govhubUrl: '', requiresAcceptance: false });
+      await load();
+      setFlash('Blueberry added.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Create failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function toggleActive(item: Blueberry) {
+    setBusy(true);
+    try {
+      await fetch(`/api/admin/blueberries/${encodeURIComponent(item.id)}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ active: !item.active }),
+      });
+      await load();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function removeBlueberry(id: string) {
+    if (!window.confirm('Remove this blueberry?')) return;
+    setBusy(true);
+    try {
+      await fetch(`/api/admin/blueberries/${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      await load();
+      setFlash('Blueberry removed.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {flash ? (
+        <p className="rounded-md border border-emerald-700/50 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-200">{flash}</p>
+      ) : null}
+      {error ? (
+        <p className="rounded-md border border-rose-700/50 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">{error}</p>
+      ) : null}
+
+      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <h2 className="text-xl font-semibold text-white">Blueberries</h2>
+        <p className="mt-2 max-w-3xl text-sm text-slate-400">
+          Configure challenge participation activities and Gov Hub action links shown to participants.
+        </p>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          <label className="block text-sm">
+            <span className="text-slate-300">Intro text</span>
+            <textarea
+              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+              rows={3}
+              value={settings.introText}
+              onChange={(e) => setSettings((s) => ({ ...s, introText: e.target.value }))}
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="text-slate-300">Unavailable message</span>
+            <textarea
+              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+              rows={3}
+              value={settings.unavailableMessage}
+              onChange={(e) => setSettings((s) => ({ ...s, unavailableMessage: e.target.value }))}
+            />
+          </label>
+        </div>
+
+        <label className="mt-4 flex items-center gap-2 text-sm text-slate-300">
+          <input
+            type="checkbox"
+            checked={settings.available}
+            onChange={(e) => setSettings((s) => ({ ...s, available: e.target.checked }))}
+          />
+          Blueberries section available to participants
+        </label>
+
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => void saveSettings()}
+          className="mt-4 rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+        >
+          Save settings
+        </button>
+      </section>
+
+      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <h3 className="text-lg font-semibold text-white">Add blueberry</h3>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            placeholder="Label"
+            value={draft.label}
+            onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))}
+          />
+          <select
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            value={draft.kind}
+            onChange={(e) => setDraft((d) => ({ ...d, kind: e.target.value }))}
+          >
+            {KINDS.map((k) => (
+              <option key={k.value} value={k.value}>{k.label}</option>
+            ))}
+          </select>
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white md:col-span-2"
+            placeholder="Description"
+            value={draft.description}
+            onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
+          />
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            placeholder="DP ids (e.g. DP1, DP3)"
+            value={draft.dpIds}
+            onChange={(e) => setDraft((d) => ({ ...d, dpIds: e.target.value }))}
+          />
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            placeholder="Gov Hub URL (optional)"
+            value={draft.govhubUrl}
+            onChange={(e) => setDraft((d) => ({ ...d, govhubUrl: e.target.value }))}
+          />
+        </div>
+        <label className="mt-3 flex items-center gap-2 text-sm text-slate-300">
+          <input
+            type="checkbox"
+            checked={draft.requiresAcceptance}
+            onChange={(e) => setDraft((d) => ({ ...d, requiresAcceptance: e.target.checked }))}
+          />
+          Requires acceptance
+        </label>
+        <button
+          type="button"
+          disabled={busy || !draft.label.trim()}
+          onClick={() => void addBlueberry()}
+          className="mt-4 rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+        >
+          Add blueberry
+        </button>
+      </section>
+
+      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <h3 className="text-lg font-semibold text-white">Configured blueberries</h3>
+        {loading ? (
+          <p className="mt-4 text-sm text-slate-400">Loading…</p>
+        ) : blueberries.length === 0 ? (
+          <p className="mt-4 text-sm text-slate-500">No blueberries yet.</p>
+        ) : (
+          <ul className="mt-4 divide-y divide-slate-800 rounded-lg border border-slate-800">
+            {blueberries.map((item) => (
+              <li key={item.id} className="flex flex-wrap items-start justify-between gap-3 px-4 py-3">
+                <div>
+                  <p className="font-medium text-white">{item.label}</p>
+                  <p className="text-sm text-slate-400">{item.description || '—'}</p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {item.kind}
+                    {item.dpIds.length ? ` · ${item.dpIds.join(', ')}` : ''}
+                    {item.requiresAcceptance ? ' · requires acceptance' : ''}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className="rounded border border-slate-700 px-2 py-1 text-xs text-slate-200"
+                    onClick={() => void toggleActive(item)}
+                  >
+                    {item.active ? 'Disable' : 'Enable'}
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded border border-rose-800 px-2 py-1 text-xs text-rose-200"
+                    onClick={() => void removeBlueberry(item.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+}

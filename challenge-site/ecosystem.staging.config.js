@@ -74,6 +74,9 @@ module.exports = {
         DP_PUBLIC_BASE:
           localEnv.DP_PUBLIC_BASE_STAGING
           || 'https://staging.desirableproperties.org',
+        DP_DATABASE_URL:
+          localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',
+        DATABASE_URL: localEnv.DATABASE_URL || localEnv.DP_DATABASE_URL || '',
         WEB3AUTH_CLIENT_ID_DEVNET:
           localEnv.WEB3AUTH_CLIENT_ID_DEVNET
           || 'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk',

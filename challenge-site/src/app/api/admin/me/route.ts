@@ -1,17 +1,16 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { adminEmails, parseAdminSession, ADMIN_COOKIE } from '@/lib/dp-admin-auth';
+import { allAdminEmails, requireDpAdmin } from '@/lib/dp-admin-api';
+import { isDpDatabaseConfigured } from '@/lib/dp-db';
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const email = await parseAdminSession(cookieStore.get(ADMIN_COOKIE)?.value);
-  if (!email) {
-    return NextResponse.json({ ok: false, isAdmin: false }, { status: 401 });
-  }
+  const auth = await requireDpAdmin();
+  if (!auth.ok) return auth.response;
+
   return NextResponse.json({
     ok: true,
     isAdmin: true,
-    email,
-    adminEmails: adminEmails(),
+    email: auth.email,
+    adminEmails: await allAdminEmails(),
+    databaseConfigured: isDpDatabaseConfigured(),
   });
 }
