@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
-import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
 
 export default function SiteFooter() {
   return (
@@ -10,6 +10,9 @@ export default function SiteFooter() {
         <nav className="flex flex-wrap gap-x-4 gap-y-2">
           <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
             Workgroups
+          </Link>
+          <Link href={WORKGROUPS_SIGNUPS_HREF} className="text-slate-400 hover:text-slate-200">
+            Signups
           </Link>
           <a
             href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}

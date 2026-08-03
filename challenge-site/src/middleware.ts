@@ -9,6 +9,8 @@ const PROTECTED_PREFIXES = [
   '/api/support/admin',
   '/agent/admin',
   '/api/agent/admin',
+  '/admin',
+  '/api/admin',
 ];
 
 /** Public apex redirect — must not leak internal port 3005 from proxy_pass. */

@@ -26,7 +26,24 @@ export default function SiteAuthNav() {
     links: [],
     status: 'idle',
   });
+  const [isSiteAdmin, setIsSiteAdmin] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/me', {
+          credentials: 'include',
+          signal: controller.signal,
+        });
+        setIsSiteAdmin(res.ok);
+      } catch {
+        if (!controller.signal.aborted) setIsSiteAdmin(false);
+      }
+    })();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -210,6 +227,18 @@ export default function SiteAuthNav() {
               DP Community AI
             </a>
           </li>
+          {isSiteAdmin ? (
+            <li role="none">
+              <a
+                role="menuitem"
+                href="/admin"
+                className="block px-4 py-2 text-sm text-cyan-200 hover:bg-slate-800 hover:text-cyan-100"
+                onClick={() => setMenuOpen(false)}
+              >
+                Admin
+              </a>
+            </li>
+          ) : null}
           <li role="none" className="border-t border-slate-800">
             <button
               type="button"
