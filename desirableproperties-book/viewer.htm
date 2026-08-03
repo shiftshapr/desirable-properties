@@ -487,8 +487,6 @@
     .book-content h2 {
       font-size: 1.3rem;
       color: #1f2328;
-      border-bottom: 1px solid var(--book-rule);
-      padding-bottom: 0.3em;
     }
     .book-content h3 {
       font-size: 1.1rem;
@@ -1317,9 +1315,8 @@
      */
     /**
      * Drop --- / *** / ___ lines immediately before or after headings.
-     * Standardized DP sources use hr markers as section separators in markdown,
-     * but h2 already carries a bottom rule in book CSS — keeping both yields
-     * double lines above and below every section title.
+     * Standardized DP sources use hr markers as section separators in markdown;
+     * adjacent hrs would stack extra rules above/below section titles.
      */
     function stripHrAdjacentToHeadings(text) {
       const lines = String(text).split('\n');

@@ -76,7 +76,7 @@
    * @param {string} s
    * @returns {string} safe HTML
    */
-  /** Drop hr markers immediately before/after headings (see viewer.htm). */
+  /** Drop hr markers immediately before/after headings (avoids stacked rules). */
   function stripHrAdjacentToHeadings(text) {
     const lines = String(text).split('\n');
     const HEADING_RE = /^(?: {0,3})#{1,6}\s+/;
