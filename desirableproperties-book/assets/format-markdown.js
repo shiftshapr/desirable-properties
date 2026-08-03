@@ -78,6 +78,8 @@
    */
   function formatMarkdown(s) {
     let text = String(s || '').replace(/\r\n/g, '\n').trim();
+    // Strip HTML comments (e.g. <!-- dp-local-version: ... -->) — internal metadata only.
+    text = text.replace(/<!--[\s\S]*?-->/g, '');
     if (!text) return '';
 
     // Force horizontal rules onto their own paragraphs.

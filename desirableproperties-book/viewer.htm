@@ -1317,6 +1317,8 @@
      */
     function normalizeOrdinalMarkdown(md) {
       if (md == null || md === '') return md;
+      // Strip HTML comments (e.g. <!-- dp-local-version: ... -->) — internal metadata only.
+      md = String(md).replace(/<!--[\s\S]*?-->/g, '');
       // Ordinal / export pipelines often backslash-escape markdown markers
       // (\\-, \\##, \\*\\*, 1\\.) so they render as literal text. Undo those
       // first so headings and lists parse. Line-oriented for list/heading
