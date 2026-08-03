@@ -1315,6 +1315,42 @@
      * an ordered list). We strip those backslashes so the rendered output
      * reads naturally while still letting the renderer do the right thing.
      */
+    /**
+     * Drop --- / *** / ___ lines immediately before or after headings.
+     * Standardized DP sources use hr markers as section separators in markdown,
+     * but h2 already carries a bottom rule in book CSS — keeping both yields
+     * double lines above and below every section title.
+     */
+    function stripHrAdjacentToHeadings(text) {
+      const lines = String(text).split('\n');
+      const HEADING_RE = /^(?: {0,3})#{1,6}\s+/;
+      const HR_RE = /^(?: {0,3})(?:-{3,}|_{3,}|\*{3,})\s*$/;
+
+      function prevNonEmpty(idx) {
+        for (let j = idx; j >= 0; j--) {
+          if (lines[j].trim()) return j;
+        }
+        return -1;
+      }
+      function nextNonEmpty(idx) {
+        for (let j = idx; j < lines.length; j++) {
+          if (lines[j].trim()) return j;
+        }
+        return -1;
+      }
+
+      const drop = new Array(lines.length).fill(false);
+      for (let i = 0; i < lines.length; i++) {
+        if (!HR_RE.test(lines[i])) continue;
+        const prev = prevNonEmpty(i - 1);
+        const next = nextNonEmpty(i + 1);
+        if ((prev >= 0 && HEADING_RE.test(lines[prev])) || (next >= 0 && HEADING_RE.test(lines[next]))) {
+          drop[i] = true;
+        }
+      }
+      return lines.filter(function (_, i) { return !drop[i]; }).join('\n');
+    }
+
     function normalizeOrdinalMarkdown(md) {
       if (md == null || md === '') return md;
       // Strip HTML comments (e.g. <!-- dp-local-version: ... -->) — internal metadata only.
@@ -1339,9 +1375,10 @@
         ln = ln.replace(/\\#/g, '#');
         return ln;
       });
-      return out.join('\n')
+      md = out.join('\n')
         // Remaining "N\. " mid-line (e.g. nested "1.1\.")
         .replace(/(\d+)\\\./g, '$1.');
+      return stripHrAdjacentToHeadings(md);
     }
 
     function renderChapterMarkdown(md) {

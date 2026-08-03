@@ -76,10 +76,38 @@
    * @param {string} s
    * @returns {string} safe HTML
    */
+  /** Drop hr markers immediately before/after headings (see viewer.htm). */
+  function stripHrAdjacentToHeadings(text) {
+    const lines = String(text).split('\n');
+    const HEADING_RE = /^(?: {0,3})#{1,6}\s+/;
+    const HR_RE = /^(?: {0,3})(?:-{3,}|_{3,}|\*{3,})\s*$/;
+
+    function prevNonEmpty(idx) {
+      for (let j = idx; j >= 0; j--) if (lines[j].trim()) return j;
+      return -1;
+    }
+    function nextNonEmpty(idx) {
+      for (let j = idx; j < lines.length; j++) if (lines[j].trim()) return j;
+      return -1;
+    }
+
+    const drop = new Array(lines.length).fill(false);
+    for (let i = 0; i < lines.length; i++) {
+      if (!HR_RE.test(lines[i])) continue;
+      const prev = prevNonEmpty(i - 1);
+      const next = nextNonEmpty(i + 1);
+      if ((prev >= 0 && HEADING_RE.test(lines[prev])) || (next >= 0 && HEADING_RE.test(lines[next]))) {
+        drop[i] = true;
+      }
+    }
+    return lines.filter((_, i) => !drop[i]).join('\n');
+  }
+
   function formatMarkdown(s) {
     let text = String(s || '').replace(/\r\n/g, '\n').trim();
     // Strip HTML comments (e.g. <!-- dp-local-version: ... -->) — internal metadata only.
     text = text.replace(/<!--[\s\S]*?-->/g, '');
+    text = stripHrAdjacentToHeadings(text);
     if (!text) return '';
 
     // Force horizontal rules onto their own paragraphs.
