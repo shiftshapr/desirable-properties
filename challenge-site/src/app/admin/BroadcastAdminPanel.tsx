@@ -119,6 +119,8 @@ export default function BroadcastAdminPanel() {
   const [flash, setFlash] = useState<{ kind: 'ok' | 'err'; message: string } | null>(null);
   const [previewHtml, setPreviewHtml] = useState('');
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
+  const [expandedWorkgroups, setExpandedWorkgroups] = useState<Set<string>>(new Set());
+  const [highlightMemberKey, setHighlightMemberKey] = useState<string | null>(null);
 
   const scheduleDraftSave = useCallback(() => {
     if (draftTimerRef.current) clearTimeout(draftTimerRef.current);
@@ -211,6 +213,15 @@ export default function BroadcastAdminPanel() {
     return map;
   }, [workgroups]);
 
+  const workgroupIdByLabel = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const wg of workgroups) {
+      map.set(wg.name, wg.id);
+      if (wg.acronym) map.set(wg.acronym, wg.id);
+    }
+    return map;
+  }, [workgroups]);
+
   const workgroupDerivedKeys = useMemo(() => {
     const keys = new Set<string>();
     for (const wgId of selectedWorkgroups) {
@@ -286,6 +297,40 @@ export default function BroadcastAdminPanel() {
       else next.add(wgId);
       return next;
     });
+  }
+
+  function scrollToRecipient(id: string) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }, 50);
+    });
+  }
+
+  function navigateToMember(key: string, userName: string | null) {
+    setRecipientView('members');
+    setSelected((prev) => {
+      if (prev.has(key)) return prev;
+      const next = new Set(prev);
+      next.add(key);
+      return next;
+    });
+    setMemberSearch(userName?.trim() || '');
+    setHighlightMemberKey(key);
+    scrollToRecipient(`member-${key}`);
+    window.setTimeout(() => setHighlightMemberKey(null), 2000);
+  }
+
+  function navigateToWorkgroup(wgId: string) {
+    setRecipientView('workgroups');
+    setSelectedWorkgroups((prev) => {
+      if (prev.has(wgId)) return prev;
+      const next = new Set(prev);
+      next.add(wgId);
+      return next;
+    });
+    setExpandedWorkgroups((prev) => new Set(prev).add(wgId));
+    scrollToRecipient(`workgroup-${wgId}`);
   }
 
   function toggleAllVisibleMembers(checked: boolean) {
@@ -724,8 +769,20 @@ export default function BroadcastAdminPanel() {
             ) : (
               <ul className="mt-4 max-h-[28rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800">
                 {workgroups.map((wg) => (
-                  <li key={wg.id} className="text-sm">
-                    <details className="group">
+                  <li key={wg.id} id={`workgroup-${wg.id}`} className="text-sm">
+                    <details
+                      className="group"
+                      open={expandedWorkgroups.has(wg.id)}
+                      onToggle={(e) => {
+                        const open = (e.currentTarget as HTMLDetailsElement).open;
+                        setExpandedWorkgroups((prev) => {
+                          const next = new Set(prev);
+                          if (open) next.add(wg.id);
+                          else next.delete(wg.id);
+                          return next;
+                        });
+                      }}
+                    >
                       <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 marker:content-none [&::-webkit-details-marker]:hidden">
                         <input
                           type="checkbox"
@@ -746,7 +803,13 @@ export default function BroadcastAdminPanel() {
                         <ul className="space-y-1 border-t border-slate-800/80 px-4 py-2 pb-3 pl-11">
                           {wg.members.map((member) => (
                             <li key={member.key} className="text-xs text-slate-400">
-                              {member.userName || member.key}
+                              <button
+                                type="button"
+                                onClick={() => navigateToMember(member.key, member.userName)}
+                                className="text-left text-slate-400 hover:text-cyan-300 hover:underline"
+                              >
+                                {member.userName || member.key}
+                              </button>
                             </li>
                           ))}
                         </ul>
@@ -784,7 +847,13 @@ export default function BroadcastAdminPanel() {
               </label>
               <ul className="mt-2 max-h-[24rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800">
                 {filteredMembers.map((row) => (
-                  <li key={row.key} className="flex items-center gap-3 px-4 py-2 text-sm">
+                  <li
+                    key={row.key}
+                    id={`member-${row.key}`}
+                    className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
+                      highlightMemberKey === row.key ? 'bg-cyan-950/40' : ''
+                    }`}
+                  >
                     <input
                       type="checkbox"
                       checked={selected.has(row.key)}
@@ -793,7 +862,29 @@ export default function BroadcastAdminPanel() {
                     <div>
                       <p className="text-white">{row.userName || row.userId || row.key}</p>
                       <p className="text-xs text-slate-500">
-                        {row.workgroups.join(', ') || 'No workgroups'}
+                        {row.workgroups.length ? (
+                          row.workgroups.map((wgName, i) => {
+                            const wgId = workgroupIdByLabel.get(wgName);
+                            return (
+                              <span key={`${row.key}-${wgName}`}>
+                                {i > 0 ? ', ' : null}
+                                {wgId ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => navigateToWorkgroup(wgId)}
+                                    className="text-slate-500 hover:text-cyan-300 hover:underline"
+                                  >
+                                    {wgName}
+                                  </button>
+                                ) : (
+                                  wgName
+                                )}
+                              </span>
+                            );
+                          })
+                        ) : (
+                          'No workgroups'
+                        )}
                         {row.email ? ` · ${row.email}` : ' · no email on file'}
                       </p>
                     </div>
