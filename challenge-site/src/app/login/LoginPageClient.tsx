@@ -41,6 +41,13 @@ export default function LoginPageClient() {
     }
   }, [checked, user, nextPath, router]);
 
+  useEffect(() => {
+    if (!isAdminLogin || !checked || user || loginBusy) return;
+    void login().catch(() => {
+      // loginError set in auth context
+    });
+  }, [isAdminLogin, checked, user, loginBusy, login]);
+
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
       <p className="text-sm font-semibold uppercase tracking-wide text-cyan-300/90">

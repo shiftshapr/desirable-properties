@@ -1,5 +1,5 @@
-import SupportAdminClient from './SupportAdminClient';
+import SupportAdminGate from './SupportAdminGate';
 
 export default function SupportAdminPage() {
-  return <SupportAdminClient />;
+  return <SupportAdminGate />;
 }

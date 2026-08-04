@@ -1,5 +1,5 @@
-import HermesTeachingAdminClient from './HermesTeachingAdminClient';
+import HermesTeachingAdminGate from './HermesTeachingAdminGate';
 
 export default function HermesTeachingAdminPage() {
-  return <HermesTeachingAdminClient />;
+  return <HermesTeachingAdminGate />;
 }

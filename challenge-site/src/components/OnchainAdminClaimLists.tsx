@@ -30,6 +30,7 @@ type Props = {
   submissions: Submission[];
   inscriptionBySource: Record<string, string>;
   initialStatuses: ClaimStatusStore;
+  onSignOut?: () => void;
 };
 
 const STATUS_STYLES: Record<ClaimStatus, string> = {
@@ -59,6 +60,7 @@ export default function OnchainAdminClaimLists({
   submissions,
   inscriptionBySource,
   initialStatuses,
+  onSignOut,
 }: Props) {
   const [statuses, setStatuses] = useState<ClaimStatusStore>(initialStatuses);
   const [savingKey, setSavingKey] = useState<string | null>(null);
@@ -95,7 +97,7 @@ export default function OnchainAdminClaimLists({
 
   async function handleLogout() {
     await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-    window.location.href = '/login?next=%2Fonchain%2Fadmin';
+    onSignOut?.();
   }
 
   return (

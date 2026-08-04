@@ -4,14 +4,11 @@ import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 
 const SESSION_COOKIE = 'hermes_session';
 
-const PROTECTED_PREFIXES = [
-  '/onchain/admin',
+/** Admin HTML routes are client-gated (Web3Auth popup on 401). APIs stay server-protected. */
+const PROTECTED_API_PREFIXES = [
   '/api/onchain/admin',
-  '/support/admin',
   '/api/support/admin',
-  '/agent/admin',
   '/api/agent/admin',
-  '/admin',
   '/api/admin',
 ];
 
@@ -28,12 +25,6 @@ function apexRedirect(request: NextRequest) {
   return response;
 }
 
-function loginRedirect(request: NextRequest, pathname: string) {
-  const loginUrl = new URL('/login', request.url);
-  loginUrl.searchParams.set('next', pathname);
-  return NextResponse.redirect(loginUrl);
-}
-
 async function hasSiteAuth(request: NextRequest): Promise<boolean> {
   const legacy = await parseAdminSession(request.cookies.get(ADMIN_COOKIE)?.value);
   if (legacy) return true;
@@ -46,24 +37,21 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  if (pathname === '/onchain/admin/login' || pathname === '/api/onchain/admin/login') {
-    const next = request.nextUrl.searchParams.get('next') || '/admin';
-    return loginRedirect(request, next);
+  if (pathname === '/onchain/admin/login') {
+    const next = request.nextUrl.searchParams.get('next') || '/onchain/admin';
+    return NextResponse.redirect(new URL(next, request.url));
   }
 
-  const isProtected = PROTECTED_PREFIXES.some(
+  const isProtectedApi = PROTECTED_API_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
-  if (!isProtected) {
+  if (!isProtectedApi) {
     return NextResponse.next();
   }
 
   const authed = await hasSiteAuth(request);
   if (!authed) {
-    if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    return loginRedirect(request, pathname);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   return NextResponse.next();
