@@ -121,6 +121,7 @@ export default function BroadcastAdminPanel() {
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
   const [expandedWorkgroups, setExpandedWorkgroups] = useState<Set<string>>(new Set());
   const [highlightMemberKey, setHighlightMemberKey] = useState<string | null>(null);
+  const [selectedLogId, setSelectedLogId] = useState<string | null>(null);
 
   const scheduleDraftSave = useCallback(() => {
     if (draftTimerRef.current) clearTimeout(draftTimerRef.current);
@@ -358,6 +359,64 @@ export default function BroadcastAdminPanel() {
     showToast(count ? 'ok' : 'info', msg);
   }
 
+  function applyBroadcastTemplate(entry: { subject: string; html: string; fontId?: string }, logId: string) {
+    setSubject(entry.subject || '');
+    setHtml(entry.html || DEFAULT_HTML);
+    if (entry.fontId) setFontId(entry.fontId);
+    setPreviewHtml('');
+    setSelectedLogId(logId);
+    showToast('ok', 'Template loaded.');
+    document.getElementById('broadcast-compose')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function fetchAndApplyBroadcastTemplate(id: string) {
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/admin/broadcast?id=${encodeURIComponent(id)}`, {
+        credentials: 'include',
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok || !data.entry) {
+        throw new Error(data.error || data.message || 'Broadcast not found');
+      }
+      const entry = data.entry as { subject?: string; html?: string; fontId?: string };
+      if (!String(entry.html || '').trim()) {
+        showToast('err', 'This send has no saved body template.');
+        return;
+      }
+      applyBroadcastTemplate(
+        {
+          subject: String(entry.subject || ''),
+          html: String(entry.html || ''),
+          fontId: entry.fontId ? String(entry.fontId) : undefined,
+        },
+        id,
+      );
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Could not load template';
+      showToast('err', msg);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function loadBroadcastAsTemplate(id: string) {
+    if (busy) return;
+    const hasContent = !isBroadcastDraftEmpty(subject, html);
+    if (!hasContent) {
+      void fetchAndApplyBroadcastTemplate(id);
+      return;
+    }
+    askConfirm({
+      title: 'Load template',
+      message: 'Replace the current subject and body with this broadcast?',
+      confirmLabel: 'Load template',
+      cancelLabel: 'Keep editing',
+      warning: true,
+      onConfirm: () => void fetchAndApplyBroadcastTemplate(id),
+    });
+  }
+
   function clearCompose() {
     const hasContent = !isBroadcastDraftEmpty(subject, html);
     const doClear = () => {
@@ -371,6 +430,7 @@ export default function BroadcastAdminPanel() {
       setSelectedWorkgroups(new Set());
       setPreviewHtml('');
       setFlash(null);
+      setSelectedLogId(null);
       clearBroadcastDraft();
       showToast('ok', 'Compose cleared.');
     };
@@ -559,7 +619,10 @@ export default function BroadcastAdminPanel() {
       )}
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
-        <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <section
+          id="broadcast-compose"
+          className="rounded-xl border border-slate-800 bg-slate-900/40 p-6"
+        >
           <h2 className="text-xl font-semibold text-white">Compose broadcast</h2>
           <p className="mt-2 text-sm text-slate-400">
             Rich email to workgroup participants. Merge tags: {'{name}'}, {'{userName}'},{' '}
@@ -903,14 +966,37 @@ export default function BroadcastAdminPanel() {
         ) : (
           <ul className="mt-4 divide-y divide-slate-800 rounded-lg border border-slate-800">
             {log.map((entry) => (
-              <li key={entry.id} className="px-4 py-3 text-sm">
-                <p className="font-medium text-white">{entry.subject}</p>
-                <p className="text-slate-400">
-                  {new Date(entry.sentAt).toLocaleString()} · {entry.successCount}/
-                  {entry.recipientCount} sent
-                  {entry.testMode ? ' · test' : ''}
-                  {entry.availableInArchive ? ' · archived' : ''}
-                </p>
+              <li
+                key={entry.id}
+                className={`px-4 py-3 text-sm transition-colors ${
+                  selectedLogId === entry.id ? 'bg-cyan-950/30' : 'hover:bg-slate-800/40'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => loadBroadcastAsTemplate(entry.id)}
+                    className="min-w-0 flex-1 rounded-md text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 disabled:opacity-50"
+                    aria-label={`Load ${entry.subject || 'broadcast'} as template`}
+                  >
+                    <p className="font-medium text-white">{entry.subject}</p>
+                    <p className="text-slate-400">
+                      {new Date(entry.sentAt).toLocaleString()} · {entry.successCount}/
+                      {entry.recipientCount} sent
+                      {entry.testMode ? ' · test' : ''}
+                      {entry.availableInArchive ? ' · archived' : ''}
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => loadBroadcastAsTemplate(entry.id)}
+                    className="shrink-0 rounded-md border border-slate-700 px-3 py-1 text-xs text-slate-200 hover:bg-slate-800 disabled:opacity-50"
+                  >
+                    Use as template
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
