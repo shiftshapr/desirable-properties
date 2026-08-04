@@ -23,12 +23,14 @@ export default function LoginPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, checked, login, loginBusy, loginError } = useAuth();
-  const nextPath = safeReturnPath(searchParams.get('next'));
+  const rawNext = safeReturnPath(searchParams.get('next'));
+  const nextPath = rawNext.startsWith('/support/admin') ? '/admin?tab=support' : rawNext;
   const isAdminLogin =
     nextPath === '/admin' ||
     nextPath.startsWith('/admin/') ||
+    nextPath.startsWith('/admin?') ||
     nextPath.startsWith('/onchain/admin') ||
-    nextPath.startsWith('/support/admin') ||
+    rawNext.startsWith('/support/admin') ||
     nextPath.startsWith('/agent/admin');
 
   useEffect(() => {

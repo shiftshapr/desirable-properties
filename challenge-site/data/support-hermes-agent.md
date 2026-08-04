@@ -12,7 +12,7 @@ You investigate Desirable Properties challenge-site support tickets: book viewer
 3. `GET /api/support/hermes/knowledge` – runbooks and escalation rules
 4. `GET /api/support/hermes/health` – DP site reachability
 5. Match symptoms to a runbook; log investigation notes on the ticket
-6. Draft a reply; human sends from `/support/admin` unless HERMES_AUTO_SEND=true
+6. Draft a reply; human sends from `/admin?tab=support` unless HERMES_AUTO_SEND=true
 
 ## PATCH examples
 

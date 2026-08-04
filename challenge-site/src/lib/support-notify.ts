@@ -94,7 +94,7 @@ export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTic
     <p><strong>Urgency:</strong> ${ticket.urgency}</p>
     <p><strong>From:</strong> ${ticket.handle || ticket.email || ticket.userId || 'unknown'}</p>
     <p><strong>Page:</strong> ${ticket.pageUrl || '—'}</p>
-    <p><strong>Admin:</strong> <a href="${adminBase}/support/admin">${adminBase}/support/admin</a></p>
+    <p><strong>Admin:</strong> <a href="${adminBase}/admin?tab=support">${adminBase}/admin?tab=support</a></p>
     <hr />
     <pre style="white-space:pre-wrap;font-family:system-ui,sans-serif">${ticket.body}</pre>
   `;

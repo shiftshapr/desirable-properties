@@ -191,6 +191,26 @@ export default function SiteAuthNav() {
               Profile
             </a>
           </li>
+          <li role="none">
+            <a
+              role="menuitem"
+              href="/support"
+              className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Support
+            </a>
+          </li>
+          <li role="none">
+            <a
+              role="menuitem"
+              href="/participate#blueberries"
+              className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Blueberries
+            </a>
+          </li>
           {welcomeLinks.length > 0 ? (
             <li role="none" className="border-t border-slate-800">
               <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">

@@ -1,5 +1,5 @@
-import SupportAdminGate from './SupportAdminGate';
+import { redirect } from 'next/navigation';
 
 export default function SupportAdminPage() {
-  return <SupportAdminGate />;
+  redirect('/admin?tab=support');
 }
