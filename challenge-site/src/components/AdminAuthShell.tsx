@@ -11,28 +11,34 @@ type Props = {
 };
 
 export default function AdminAuthShell({ authState, error, onRetry, children }: Props) {
-  if (authState === 'loading' || authState === 'signing-in') {
+  if (authState === 'loading' || authState === 'needs-sign-in' || authState === 'signing-in') {
+    const statusMessage =
+      authState === 'loading'
+        ? 'Verifying admin access…'
+        : authState === 'signing-in'
+          ? 'Complete sign-in to continue…'
+          : 'Sign in to access site admin.';
+
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <p className="text-xs uppercase tracking-wide text-slate-500">Desirable Properties</p>
         <h1 className="mt-2 text-2xl font-bold text-white">Site admin</h1>
-        <p className="mt-4 text-slate-400">
-          {authState === 'loading' ? 'Verifying admin access…' : 'Complete sign-in to continue…'}
-        </p>
+        <p className="mt-4 text-slate-400">{statusMessage}</p>
         {error ? (
           <p className="mt-4 rounded-md border border-red-700/50 bg-red-950/40 px-4 py-3 text-sm text-red-200">
             {error}
           </p>
         ) : null}
-        {authState === 'signing-in' && onRetry ? (
+        {authState !== 'loading' && onRetry ? (
           <button
             type="button"
+            disabled={authState === 'signing-in'}
             onClick={() => {
               void onRetry();
             }}
-            className="mt-6 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+            className="mt-6 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Sign in
+            {authState === 'signing-in' ? 'Signing in…' : 'Sign in'}
           </button>
         ) : null}
       </div>

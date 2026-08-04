@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { AuthUser } from '@/lib/auth-types';
+import { formatAuthError, isUserDismissedAuthError } from '@/lib/auth-errors';
 import { loginWithGoogle, logoutWeb3Auth, warmupWeb3Auth } from '@/lib/web3auth-login';
 
 type AuthContextValue = {
@@ -70,8 +71,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(nextUser);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Sign-in failed';
-      if (!/user closed|closed popup|user rejected/i.test(message)) {
-        setLoginError(message);
+      if (!isUserDismissedAuthError(message)) {
+        setLoginError(formatAuthError(message));
       }
       throw error;
     } finally {

@@ -1,9 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { formatAuthError, isUserDismissedAuthError } from '@/lib/auth-errors';
 
-export type AdminAuthState = 'loading' | 'signing-in' | 'ok' | 'forbidden';
+export type AdminAuthState =
+  | 'loading'
+  | 'needs-sign-in'
+  | 'signing-in'
+  | 'ok'
+  | 'forbidden';
 
 async function verifyAdminAccess(): Promise<'ok' | 'forbidden' | 'unauthorized'> {
   const res = await fetch('/api/admin/me', { credentials: 'include' });
@@ -13,12 +19,11 @@ async function verifyAdminAccess(): Promise<'ok' | 'forbidden' | 'unauthorized'>
   return 'ok';
 }
 
-/** Gate admin UI: 401 opens Web3Auth modal on-page (no /login redirect). */
+/** Gate admin UI: 401 shows sign-in prompt; login() only on explicit user click (Safari popup policy). */
 export function useAdminAuthGate() {
   const { checked, login, refresh } = useAuth();
   const [authState, setAuthState] = useState<AdminAuthState>('loading');
   const [error, setError] = useState<string | null>(null);
-  const promptRef = useRef(false);
 
   const promptSignIn = useCallback(async () => {
     setAuthState('signing-in');
@@ -35,13 +40,14 @@ export function useAdminAuthGate() {
         setAuthState('forbidden');
         return;
       }
-      setAuthState('signing-in');
+      setAuthState('needs-sign-in');
+      setError('Sign-in completed but admin access was not granted. Try another account.');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Sign-in failed';
-      if (!/user closed|closed popup|user rejected/i.test(message)) {
-        setError(message);
+      if (!isUserDismissedAuthError(message)) {
+        setError(formatAuthError(message));
       }
-      setAuthState('signing-in');
+      setAuthState('needs-sign-in');
     }
   }, [login, refresh]);
 
@@ -51,22 +57,18 @@ export function useAdminAuthGate() {
       const result = await verifyAdminAccess();
       if (result === 'ok') {
         setAuthState('ok');
-        promptRef.current = false;
         return;
       }
       if (result === 'forbidden') {
         setAuthState('forbidden');
         return;
       }
-      if (!promptRef.current) {
-        promptRef.current = true;
-        await promptSignIn();
-      }
+      setAuthState('needs-sign-in');
     } catch {
       setError('Could not verify admin session.');
-      setAuthState('signing-in');
+      setAuthState('needs-sign-in');
     }
-  }, [promptSignIn]);
+  }, []);
 
   useEffect(() => {
     if (!checked) return;
