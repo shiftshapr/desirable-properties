@@ -2,11 +2,13 @@ import { NextResponse } from 'next/server';
 import { requireDpAdmin, jsonError } from '@/lib/dp-admin-api';
 import {
   buildBroadcastAudience,
+  buildBroadcastWorkgroups,
   listBroadcastLog,
   sendBroadcast,
   getBroadcastLogEntry,
   previewBroadcastHtml,
 } from '@/lib/dp-broadcast-store';
+import { BROADCAST_FONT_OPTIONS } from '@/lib/dp-broadcast-send';
 
 export async function GET(request: Request) {
   const auth = await requireDpAdmin();
@@ -21,6 +23,11 @@ export async function GET(request: Request) {
       workgroup: searchParams.get('workgroup') || undefined,
     });
     return NextResponse.json({ ok: true, audience, count: audience.length });
+  }
+
+  if (view === 'workgroups') {
+    const workgroups = await buildBroadcastWorkgroups();
+    return NextResponse.json({ ok: true, workgroups, count: workgroups.length });
   }
 
   if (view === 'log') {
@@ -48,7 +55,12 @@ export async function POST(request: Request) {
 
   if (body.action === 'preview') {
     const html = String(body.html || '');
-    return NextResponse.json({ ok: true, html: previewBroadcastHtml(html) });
+    const fontId = String(body.fontId || body.font || 'default');
+    return NextResponse.json({
+      ok: true,
+      html: previewBroadcastHtml(html, undefined, fontId),
+      fontOptions: BROADCAST_FONT_OPTIONS,
+    });
   }
 
   const result = await sendBroadcast({
@@ -60,6 +72,8 @@ export async function POST(request: Request) {
     testEmail: body.testEmail,
     recipientKeys: Array.isArray(body.recipientKeys) ? body.recipientKeys : undefined,
     audienceFilter: body.audienceFilter,
+    fontId: body.fontId || body.font,
+    availableInArchive: Boolean(body.availableInArchive),
   });
 
   if (!result.ok) return jsonError('Broadcast failed.', 400, result.error);

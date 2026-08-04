@@ -3,11 +3,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
+import BroadcastArchivePanel from '@/components/BroadcastArchivePanel';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import type { ChallengeActivityItem } from '@/lib/govhub';
 
 const TABS = [
   { key: 'activity', label: 'Activity' },
+  { key: 'updates', label: 'Updates' },
   { key: 'blueberries', label: 'Blueberries' },
 ] as const;
 
@@ -21,12 +23,16 @@ export default function ActivityHubClient({ activityItems }: Props) {
   const searchParams = useSearchParams();
   const [tab, setTab] = useState<TabKey>(() => {
     const raw = searchParams.get('tab');
-    return raw === 'blueberries' ? 'blueberries' : 'activity';
+    if (raw === 'blueberries') return 'blueberries';
+    if (raw === 'updates') return 'updates';
+    return 'activity';
   });
 
   useEffect(() => {
     const raw = searchParams.get('tab');
-    setTab(raw === 'blueberries' ? 'blueberries' : 'activity');
+    if (raw === 'blueberries') setTab('blueberries');
+    else if (raw === 'updates') setTab('updates');
+    else setTab('activity');
   }, [searchParams]);
 
   const selectTab = useCallback((next: TabKey) => {
@@ -81,6 +87,8 @@ export default function ActivityHubClient({ activityItems }: Props) {
             </div>
           </section>
         ) : null}
+
+        {tab === 'updates' ? <BroadcastArchivePanel /> : null}
 
         {tab === 'blueberries' ? (
           <div className="-mx-4 sm:mx-0">

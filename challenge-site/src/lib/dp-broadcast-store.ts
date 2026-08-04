@@ -1,13 +1,22 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { enrichBroadcastAudienceEmails } from '@/lib/dp-broadcast-email';
-import { fetchWorkgroupSignups, type WorkgroupSignupPerson } from '@/lib/workgroup-signups';
+import {
+  sanitizeBroadcastHtml,
+  stripHtml,
+  wrapBroadcastBodyHtml,
+} from '@/lib/dp-broadcast-send';
 import {
   ensureUnsubscribeToken,
   indexUnsubscribeToken,
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
 import { isCanopiUserId } from '@/lib/dp-canopi-user';
+import {
+  fetchWorkgroupSignups,
+  type WorkgroupSignupGroup,
+  type WorkgroupSignupPerson,
+} from '@/lib/workgroup-signups';
 
 export type BroadcastAudienceRow = {
   key: string;
@@ -15,7 +24,17 @@ export type BroadcastAudienceRow = {
   userName: string | null;
   email: string | null;
   workgroups: string[];
+  workgroupIds: string[];
   joinedAt: string | null;
+};
+
+export type BroadcastWorkgroupRow = {
+  id: string;
+  name: string;
+  slug: string;
+  acronym: string;
+  memberCount: number;
+  memberKeys: string[];
 };
 
 export type BroadcastLogEntry = {
@@ -30,11 +49,23 @@ export type BroadcastLogEntry = {
   successCount: number;
   failureCount: number;
   testMode: boolean;
+  fontId: string;
+  availableInArchive: boolean;
   recipients: Array<Record<string, unknown>>;
+};
+
+export type BroadcastArchiveEntry = {
+  id: string;
+  subject: string;
+  sentAt: string;
 };
 
 function normStr(s: unknown, max = 8000) {
   return String(s ?? '').trim().slice(0, max);
+}
+
+function personKey(person: WorkgroupSignupPerson) {
+  return person.user_id || person.user_name || crypto.randomUUID();
 }
 
 function rowToLog(row: Record<string, unknown>): BroadcastLogEntry {
@@ -53,8 +84,39 @@ function rowToLog(row: Record<string, unknown>): BroadcastLogEntry {
     successCount: Number(row.success_count) || 0,
     failureCount: Number(row.failure_count) || 0,
     testMode: Boolean(row.test_mode),
+    fontId: String(row.font_id || 'default'),
+    availableInArchive: Boolean(row.available_in_archive),
     recipients: Array.isArray(row.recipients) ? (row.recipients as Array<Record<string, unknown>>) : [],
   };
+}
+
+function mapPersonToRow(person: WorkgroupSignupPerson): BroadcastAudienceRow {
+  return {
+    key: personKey(person),
+    userId: person.user_id,
+    userName: person.user_name,
+    email: null,
+    workgroups: person.workgroups.map((wg) => wg.name),
+    workgroupIds: person.workgroups.map((wg) => wg.id),
+    joinedAt: person.workgroups[0]?.joined_at ?? null,
+  };
+}
+
+export async function buildBroadcastWorkgroups(): Promise<BroadcastWorkgroupRow[]> {
+  const payload = await fetchWorkgroupSignups();
+  if (!payload) return [];
+
+  return payload.workgroups.map((wg: WorkgroupSignupGroup) => {
+    const memberKeys = wg.members.map((member) => member.user_id || member.user_name || member.id);
+    return {
+      id: wg.id,
+      name: wg.name,
+      slug: wg.slug,
+      acronym: wg.acronym,
+      memberCount: wg.member_count,
+      memberKeys: [...new Set(memberKeys.filter(Boolean))],
+    };
+  });
 }
 
 export async function buildBroadcastAudience(opts: {
@@ -67,14 +129,7 @@ export async function buildBroadcastAudience(opts: {
   const q = normStr(opts.q, 200).toLowerCase();
   const workgroupFilter = normStr(opts.workgroup, 120).toLowerCase();
 
-  const rows: BroadcastAudienceRow[] = payload.people.map((person: WorkgroupSignupPerson) => ({
-    key: person.user_id || person.user_name || crypto.randomUUID(),
-    userId: person.user_id,
-    userName: person.user_name,
-    email: null,
-    workgroups: person.workgroups.map((wg) => wg.name),
-    joinedAt: person.workgroups[0]?.joined_at ?? null,
-  }));
+  const rows: BroadcastAudienceRow[] = payload.people.map(mapPersonToRow);
 
   const filtered = rows.filter((row) => {
     if (workgroupFilter) {
@@ -88,6 +143,14 @@ export async function buildBroadcastAudience(opts: {
 
   const { rows: enriched } = await enrichBroadcastAudienceEmails(filtered);
   return enriched;
+}
+
+export async function isWorkgroupParticipant(userId: string | null | undefined) {
+  const id = String(userId || '').trim();
+  if (!id) return false;
+  const payload = await fetchWorkgroupSignups();
+  if (!payload) return false;
+  return payload.people.some((person) => person.user_id === id);
 }
 
 function applyMergeTags(template: string, row: BroadcastAudienceRow) {
@@ -118,7 +181,9 @@ function appendUnsubscribeFooter(html: string, text: string | undefined, unsubsc
   const footerHtml = `<p style="font-size:12px;color:#666;margin-top:2em;">You received this because you joined a Desirable Properties workgroup. <a href="${escapeHtml(unsubscribeUrl)}">Unsubscribe from challenge updates</a>.</p>`;
   const footerText = `\n\nYou received this because you joined a Desirable Properties workgroup. Unsubscribe: ${unsubscribeUrl}`;
   return {
-    html: html.includes('</body>') ? html.replace('</body>', `${footerHtml}</body>`) : `${html}${footerHtml}`,
+    html: html.includes('</body>')
+      ? html.replace('</body>', `${footerHtml}</body>`)
+      : `${html}${footerHtml}`,
     text: text ? `${text}${footerText}` : footerText.trim(),
   };
 }
@@ -178,14 +243,17 @@ export async function sendBroadcast(input: {
   testEmail?: string;
   recipientKeys?: string[];
   audienceFilter?: Record<string, unknown>;
+  fontId?: string;
+  availableInArchive?: boolean;
 }) {
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
 
   const subject = normStr(input.subject, 200);
-  const html = normStr(input.html, 50000);
+  const htmlRaw = sanitizeBroadcastHtml(normStr(input.html, 50000));
+  const fontId = normStr(input.fontId || 'default', 40).toLowerCase() || 'default';
   if (!subject) return { ok: false as const, error: 'subject_required' };
-  if (!html) return { ok: false as const, error: 'html_required' };
+  if (!htmlRaw) return { ok: false as const, error: 'html_required' };
 
   const audience = await buildBroadcastAudience();
   const keySet =
@@ -217,6 +285,7 @@ export async function sendBroadcast(input: {
         userName: 'Test recipient',
         email: testEmail,
         workgroups: [],
+        workgroupIds: [],
         joinedAt: null,
       },
     ];
@@ -227,6 +296,7 @@ export async function sendBroadcast(input: {
   let failureCount = 0;
   const broadcastId = crypto.randomUUID();
   const base = publicBase();
+  const wrappedTemplate = wrapBroadcastBodyHtml(htmlRaw, fontId);
 
   for (const row of targets) {
     const to = row.email;
@@ -250,9 +320,9 @@ export async function sendBroadcast(input: {
       }
     }
 
-    const personalizedHtml = applyMergeTags(html, row);
+    const personalizedHtml = applyMergeTags(wrappedTemplate, row);
     const personalizedSubject = applyMergeTags(subject, row);
-    const textBody = input.textBody ? applyMergeTags(input.textBody, row) : undefined;
+    const textBody = input.textBody ? applyMergeTags(input.textBody, row) : stripHtml(personalizedHtml);
     const withFooter = appendUnsubscribeFooter(personalizedHtml, textBody, unsubscribeUrl);
     const result = await sendViaResend({
       to,
@@ -281,17 +351,19 @@ export async function sendBroadcast(input: {
     }
   }
 
-  const id = broadcastId;
+  const availableInArchive = Boolean(input.availableInArchive) && successCount > 0 && !testMode;
+
   await pool.query(
     `INSERT INTO dp_broadcast_log (
        id, subject, html, text_body, sent_at, sent_by, audience_filter,
-       recipient_count, success_count, failure_count, test_mode, recipients
-     ) VALUES ($1,$2,$3,$4,now(),$5,$6::jsonb,$7,$8,$9,$10,$11::jsonb)`,
+       recipient_count, success_count, failure_count, test_mode, recipients,
+       font_id, available_in_archive
+     ) VALUES ($1,$2,$3,$4,now(),$5,$6::jsonb,$7,$8,$9,$10,$11::jsonb,$12,$13)`,
     [
-      id,
+      broadcastId,
       subject,
-      html,
-      normStr(input.textBody, 50000),
+      htmlRaw,
+      normStr(input.textBody || stripHtml(htmlRaw), 50000),
       normStr(input.sentBy, 120),
       JSON.stringify(input.audienceFilter || {}),
       targets.length,
@@ -299,16 +371,19 @@ export async function sendBroadcast(input: {
       failureCount,
       testMode,
       JSON.stringify(recipientResults),
+      fontId,
+      availableInArchive,
     ],
   );
 
   return {
     ok: true as const,
-    id,
+    id: broadcastId,
     recipientCount: targets.length,
     successCount,
     failureCount,
     testMode,
+    availableInArchive,
     emailEnrichment: testMode
       ? undefined
       : {
@@ -350,7 +425,52 @@ export async function getBroadcastLogEntry(id: string) {
   return res.rows[0] ? rowToLog(res.rows[0]) : null;
 }
 
-export function previewBroadcastHtml(html: string, row?: BroadcastAudienceRow) {
+export async function listBroadcastArchiveEntries() {
+  const pool = await ensureDpSchema();
+  if (!pool) return [] as BroadcastArchiveEntry[];
+
+  const res = await pool.query(
+    `SELECT id, subject, sent_at
+     FROM dp_broadcast_log
+     WHERE available_in_archive = true AND test_mode = false AND success_count > 0
+     ORDER BY sent_at DESC
+     LIMIT 100`,
+  );
+
+  return res.rows.map((row) => ({
+    id: String(row.id),
+    subject: String(row.subject || ''),
+    sentAt: new Date(String(row.sent_at)).toISOString(),
+  }));
+}
+
+export async function getBroadcastArchiveEntry(id: string) {
+  const pool = await ensureDpSchema();
+  if (!pool) return null;
+
+  const res = await pool.query(
+    `SELECT id, subject, html, font_id, sent_at
+     FROM dp_broadcast_log
+     WHERE id = $1 AND available_in_archive = true AND test_mode = false AND success_count > 0`,
+    [id],
+  );
+  if (!res.rows[0]) return null;
+
+  const row = res.rows[0];
+  return {
+    id: String(row.id),
+    subject: String(row.subject || ''),
+    html: String(row.html || ''),
+    fontId: String(row.font_id || 'default'),
+    sentAt: new Date(String(row.sent_at)).toISOString(),
+  };
+}
+
+export function previewBroadcastHtml(
+  html: string,
+  row?: BroadcastAudienceRow,
+  fontId?: string | null,
+) {
   const sample =
     row ||
     ({
@@ -359,7 +479,22 @@ export function previewBroadcastHtml(html: string, row?: BroadcastAudienceRow) {
       userName: 'Alex Example',
       email: 'alex@example.com',
       workgroups: ['DP1 Workgroup'],
+      workgroupIds: [],
       joinedAt: new Date().toISOString(),
     } satisfies BroadcastAudienceRow);
-  return applyMergeTags(html, sample);
+
+  const sanitized = sanitizeBroadcastHtml(html);
+  const wrapped = wrapBroadcastBodyHtml(applyMergeTags(sanitized, sample), fontId);
+  const base = publicBase();
+  const footer = `<p style="font-size:12px;color:#666;margin-top:2em;">You received this because you joined a Desirable Properties workgroup. <a href="${base}/api/broadcast/unsubscribe">Unsubscribe from challenge updates</a>.</p>`;
+  return wrapped.includes('</body>') ? wrapped.replace('</body>', `${footer}</body>`) : `${wrapped}${footer}`;
+}
+
+export function renderArchiveForViewer(
+  entry: { subject: string; html: string; fontId?: string | null },
+  viewer: BroadcastAudienceRow,
+) {
+  const subject = applyMergeTags(entry.subject, viewer);
+  const html = previewBroadcastHtml(entry.html, viewer, entry.fontId);
+  return { subject, html };
 }

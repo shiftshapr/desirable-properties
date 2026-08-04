@@ -110,6 +110,10 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_log (
 
 CREATE INDEX IF NOT EXISTS dp_broadcast_log_sent ON dp_broadcast_log (sent_at DESC);
 
+ALTER TABLE dp_broadcast_log ADD COLUMN IF NOT EXISTS font_id TEXT NOT NULL DEFAULT 'default';
+ALTER TABLE dp_broadcast_log ADD COLUMN IF NOT EXISTS available_in_archive BOOLEAN NOT NULL DEFAULT false;
+CREATE INDEX IF NOT EXISTS dp_broadcast_log_archive ON dp_broadcast_log (sent_at DESC) WHERE available_in_archive = true;
+
 CREATE TABLE IF NOT EXISTS dp_support_ticket (
   id UUID PRIMARY KEY,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
