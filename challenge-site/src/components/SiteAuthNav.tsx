@@ -11,6 +11,7 @@ type DpWelcomeLink = {
   body?: string;
   link_url: string;
   variant: 'member' | 'coordinator';
+  is_default?: boolean;
 };
 
 type WelcomeState = {
@@ -183,7 +184,7 @@ export default function SiteAuthNav() {
           {welcomeLinks.length > 0 ? (
             <li role="none" className="border-b border-slate-800 px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-cyan-400">
-                Workgroup welcome
+                {welcomeLinks.some((welcome) => !welcome.is_default) ? 'Workgroup welcome' : 'Welcome'}
               </p>
               {welcomeLinks.map((welcome) => (
                 <div key={welcome.id} className="mt-2">

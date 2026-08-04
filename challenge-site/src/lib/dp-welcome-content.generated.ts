@@ -72,4 +72,16 @@ export const MESSAGE_B_COORDINATOR = {
   ]
 } as const;
 
+export const PROFILE_WELCOME_MEMBER = {
+  "title": "Welcome to the Desirable Properties Challenge",
+  "body": "Help refine Desirable Properties v0.77 into v1.0 by reviewing for clarity, context, and completeness—and submitting suggested text revisions. Plan 1–3 hours per DP. Synthesis deadline: Sept 1, 2026. Your work defines what the Overweb must enable—before requirements, ADRs, and implementation. Questions? Submit a support request.",
+  "linkLabel": "Open your welcome guide"
+} as const;
+
+export const PROFILE_WELCOME_COORDINATOR = {
+  "title": "Welcome to the Desirable Properties Challenge — Workgroup coordinator",
+  "body": "You're approved as workgroup coordinator. In addition to the member duties above:",
+  "linkLabel": "Open your combined welcome guide"
+} as const;
+
 export type DpWelcomeVariant = 'member' | 'coordinator';

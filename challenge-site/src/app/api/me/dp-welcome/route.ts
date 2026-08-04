@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
+import {
+  buildDefaultProfileWelcome,
+  resolveDefaultWelcomeVariant,
+  type ProfileWelcomeLink,
+} from '@/lib/dp-welcome-default';
 import { getGovHubBaseUrl } from '@/lib/web3auth-config';
 
 type UpstreamWelcome = {
@@ -62,6 +67,16 @@ function validWelcomes(data: unknown, request: Request) {
   }));
 }
 
+function withDefaultWelcome(
+  welcomes: ProfileWelcomeLink[],
+  request: Request,
+  isCoordinator = false,
+): ProfileWelcomeLink[] {
+  if (welcomes.length > 0) return welcomes;
+  const variant = isCoordinator ? 'coordinator' : 'member';
+  return [buildDefaultProfileWelcome(request, variant)];
+}
+
 function errorResponse(status: number, code: string, authenticated: boolean) {
   return NextResponse.json(
     { authenticated, status: 'degraded', code, welcomes: [], count: 0 },
@@ -99,8 +114,13 @@ export async function GET(request: Request) {
       console.error('DP welcome upstream response was malformed');
       return errorResponse(502, 'UPSTREAM_MALFORMED_RESPONSE', true);
     }
+    const isCoordinator =
+      typeof (data as { is_coordinator?: unknown }).is_coordinator === 'boolean'
+        ? (data as { is_coordinator: boolean }).is_coordinator
+        : resolveDefaultWelcomeVariant(welcomes) === 'coordinator';
+    const resolved = withDefaultWelcome(welcomes, request, isCoordinator);
     return NextResponse.json(
-      { authenticated: true, status: 'ok', welcomes, count: welcomes.length },
+      { authenticated: true, status: 'ok', welcomes: resolved, count: resolved.length },
       { headers: { 'Cache-Control': 'no-store' } },
     );
   } catch (error) {

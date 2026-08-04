@@ -155,6 +155,49 @@ export function parseWelcomeContent(markdown) {
         'coordinator items',
       ),
     },
+    profileWelcome: parseProfileWelcome(markdown),
+  };
+}
+
+function parseProfileWelcome(markdown) {
+  const blockMatch = markdown.match(/## Short onboarding blurb[\s\S]*?\n\n((?:> .+\n?)+)/);
+  if (!blockMatch?.[1]) fail('short onboarding blurb');
+
+  const lines = blockMatch[1]
+    .split('\n')
+    .filter((line) => line.startsWith('> '))
+    .map((line) => cleanMarkdown(line.slice(2).trim()))
+    .filter(Boolean);
+
+  const memberBody = lines
+    .filter((line) => !/^You joined\b/i.test(line))
+    .join(' ')
+    .trim();
+  if (!memberBody) fail('member profile welcome body');
+
+  return {
+    member: {
+      title: capture(
+        markdown,
+        /## Message A[\s\S]*?\*\*Subject:\*\*\s*(.+?)\n/,
+        'member profile welcome title',
+      ),
+      body: memberBody,
+      linkLabel: 'Open your welcome guide',
+    },
+    coordinator: {
+      title: capture(
+        markdown,
+        /## Message B[\s\S]*?\*\*Subject:\*\*\s*(.+?)\n/,
+        'coordinator profile welcome title',
+      ),
+      body: capture(
+        markdown,
+        /\*\*As workgroup coordinator\*\*\n\n(.+?)\n\n-/,
+        'coordinator profile welcome body',
+      ),
+      linkLabel: 'Open your combined welcome guide',
+    },
   };
 }
 
@@ -165,6 +208,8 @@ export function renderWelcomeContent(content) {
     `export const CHALLENGE_KEY_DATES = ${JSON.stringify(content.keyDates, null, 2)} as const;\n\n` +
     `export const MESSAGE_A_SECTIONS = ${JSON.stringify(content.messageA, null, 2)} as const;\n\n` +
     `export const MESSAGE_B_COORDINATOR = ${JSON.stringify(content.coordinator, null, 2)} as const;\n\n` +
+    `export const PROFILE_WELCOME_MEMBER = ${JSON.stringify(content.profileWelcome.member, null, 2)} as const;\n\n` +
+    `export const PROFILE_WELCOME_COORDINATOR = ${JSON.stringify(content.profileWelcome.coordinator, null, 2)} as const;\n\n` +
     `export type DpWelcomeVariant = 'member' | 'coordinator';\n`;
 }
 
