@@ -211,8 +211,8 @@ export default function BroadcastAdminPanel() {
     return map;
   }, [workgroups]);
 
-  const effectiveSelected = useMemo(() => {
-    const keys = new Set(selected);
+  const workgroupDerivedKeys = useMemo(() => {
+    const keys = new Set<string>();
     for (const wgId of selectedWorkgroups) {
       const memberKeys = workgroupMemberKeys.get(wgId);
       if (memberKeys) {
@@ -220,30 +220,45 @@ export default function BroadcastAdminPanel() {
       }
     }
     return keys;
-  }, [selected, selectedWorkgroups, workgroupMemberKeys]);
+  }, [selectedWorkgroups, workgroupMemberKeys]);
+
+  const effectiveSelected = useMemo(() => {
+    const keys = new Set(selected);
+    for (const key of workgroupDerivedKeys) keys.add(key);
+    return keys;
+  }, [selected, workgroupDerivedKeys]);
 
   const selectionLabel = useMemo(() => {
     const count = effectiveSelected.size;
-    if (count === 0) return { text: 'No recipients selected.', warn: true };
+    const crossTabNote = ' Selections from both tabs are combined.';
+    if (count === 0) {
+      return { text: 'No recipients selected.', warn: true };
+    }
     const wgCount = selectedWorkgroups.size;
     const memberCount = selected.size;
+    const wgPeople = workgroupDerivedKeys.size;
     if (wgCount > 0 && memberCount > 0) {
       return {
-        text: `${count} recipient${count === 1 ? '' : 's'} (${wgCount} workgroup${wgCount === 1 ? '' : 's'}, ${memberCount} individual${memberCount === 1 ? '' : 's'})`,
+        text: `${count} recipient${count === 1 ? '' : 's'} total (${wgCount} workgroup${wgCount === 1 ? '' : 's'} · ${wgPeople} people, ${memberCount} individual${memberCount === 1 ? '' : 's'}).${crossTabNote}`,
         warn: false,
       };
     }
     if (wgCount > 0) {
       return {
-        text: `${count} recipient${count === 1 ? '' : 's'} from ${wgCount} workgroup${wgCount === 1 ? '' : 's'}`,
+        text: `${count} recipient${count === 1 ? '' : 's'} from ${wgCount} workgroup${wgCount === 1 ? '' : 's'}.${crossTabNote}`,
         warn: false,
       };
     }
     return {
-      text: `${count} recipient${count === 1 ? '' : 's'} selected`,
+      text: `${count} individual recipient${count === 1 ? '' : 's'} selected.${crossTabNote}`,
       warn: false,
     };
-  }, [effectiveSelected.size, selected.size, selectedWorkgroups.size]);
+  }, [
+    effectiveSelected.size,
+    selected.size,
+    selectedWorkgroups.size,
+    workgroupDerivedKeys.size,
+  ]);
 
   function askConfirm(opts: Omit<ConfirmState, 'onConfirm'> & { onConfirm: () => void | Promise<void> }) {
     setConfirm({
@@ -660,21 +675,43 @@ export default function BroadcastAdminPanel() {
             <div className="flex rounded-md border border-slate-700 p-0.5 text-sm">
               <button
                 type="button"
-                className={`rounded px-3 py-1.5 ${
+                className={`inline-flex items-center gap-1.5 rounded px-3 py-1.5 ${
                   recipientView === 'workgroups' ? 'bg-cyan-700 text-white' : 'text-slate-300'
                 }`}
                 onClick={() => setRecipientView('workgroups')}
               >
                 By workgroup
+                {selectedWorkgroups.size > 0 ? (
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-xs font-medium ${
+                      recipientView === 'workgroups'
+                        ? 'bg-cyan-900/60 text-cyan-100'
+                        : 'bg-slate-800 text-slate-200'
+                    }`}
+                  >
+                    {selectedWorkgroups.size} · {workgroupDerivedKeys.size} people
+                  </span>
+                ) : null}
               </button>
               <button
                 type="button"
-                className={`rounded px-3 py-1.5 ${
+                className={`inline-flex items-center gap-1.5 rounded px-3 py-1.5 ${
                   recipientView === 'members' ? 'bg-cyan-700 text-white' : 'text-slate-300'
                 }`}
                 onClick={() => setRecipientView('members')}
               >
                 By members
+                {selected.size > 0 ? (
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-xs font-medium ${
+                      recipientView === 'members'
+                        ? 'bg-cyan-900/60 text-cyan-100'
+                        : 'bg-slate-800 text-slate-200'
+                    }`}
+                  >
+                    {selected.size}
+                  </span>
+                ) : null}
               </button>
             </div>
           </div>
