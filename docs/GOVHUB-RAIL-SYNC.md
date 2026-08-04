@@ -173,22 +173,29 @@ POST /repos/shiftshapr/desirable-properties/dispatches
 
 ### Required secrets
 
-Set these in **shiftshapr/desirable-properties** (GitHub Actions) and on **production Gov Hub**
-(`.env`):
+**GitHub Actions** (`shiftshapr/desirable-properties`):
 
-| Secret / env var | Where | Purpose |
-| --- | --- | --- |
-| `HOST` | GitHub Actions | VPS hostname for SSH deploy (same as challenge-site deploy) |
-| `USERNAME` | GitHub Actions | SSH user (typically `ubuntu`) |
-| `SSH_KEY` | GitHub Actions | Private key for VPS SSH |
-| `GH_DISPATCH_TOKEN` | Gov Hub `.env` | PAT with `repo` scope on `shiftshapr/desirable-properties` |
-| `GITHUB_REPO` | Gov Hub `.env` | Target repo (default `shiftshapr/desirable-properties`) |
-| `GOVHUB_DP_RAIL_SYNC_DISPATCH` | Gov Hub `.env` | Set `true` to enable dispatch on approval |
-| `DP_RAIL_SYNC_ENV` | Gov Hub `.env` | Sync env sent in payload (default `main`) |
-| `DP_RAIL_SYNC_ML_NUMBERS` | Gov Hub `.env` | Extra ML numbers to watch (default includes `ML-Draft-026` intro) |
+| Secret | Purpose |
+| --- | --- |
+| `HOST` | VPS hostname for SSH deploy (same as challenge-site deploy) |
+| `USERNAME` | SSH user (typically `ubuntu`) |
+| `SSH_KEY` | Private key for VPS SSH |
 
-The workflow uses the built-in `GITHUB_TOKEN` for commit/push; the Gov Hub PAT is only for
-triggering `repository_dispatch`.
+**Gov Hub production** (`.env` + VPS `gh auth login`):
+
+| Env var | Purpose |
+| --- | --- |
+| `GOVHUB_DP_RAIL_SYNC_DISPATCH` | Set `true` to trigger sync on DP revision approval |
+| `GITHUB_REPO` | Target repo (default `shiftshapr/desirable-properties`) |
+| `DP_RAIL_SYNC_ENV` | Hub env for sync workflow (default `main`) |
+| `DP_RAIL_SYNC_ML_NUMBERS` | Extra ML numbers to watch (default includes `ML-Draft-026` intro) |
+
+**No PAT required.** Gov Hub calls `gh workflow run govhub-rail-sync.yml` using the VPS
+[`gh auth login`](https://cli.github.com/manual/gh_auth_login) session (`~/.config/gh/hosts.yml`).
+Ensure `gh auth status` works as the service user. Optional legacy: `GH_DISPATCH_TOKEN` if gh
+is unavailable.
+
+The workflow uses the built-in `GITHUB_TOKEN` for commit/push inside Actions.
 
 ## BRC333 project config
 
@@ -203,7 +210,7 @@ Other BRC333 projects omit the block or set `"enabled": false`.
 ```mermaid
 flowchart LR
   A[Gov Hub editor] --> B[Approve revision]
-  B --> C[repository_dispatch]
+  B --> C[gh workflow run]
   C --> D[govhub-rail-sync workflow]
   D --> E[content/local/dpN.md]
   E --> F[Book deploy staging + production]
