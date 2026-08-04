@@ -205,6 +205,14 @@ Per-project Gov Hub sync is configured in the BRC333 repo:
 
 Other BRC333 projects omit the block or set `"enabled": false`.
 
+## Monitoring (meta-console)
+
+Workflow health is monitored centrally by
+[meta-console](https://github.com/shiftshapr/meta-console) on the VPS (`gh run list`,
+not per-workflow notify jobs). Registry entry: `desirable-properties` →
+`govhub-rail-sync.yml`, `max_age_hours: 36`, branch `main`. See
+`meta-console/docs/GITHUB-ACTIONS-MONITORING.md`.
+
 ## Typical workflow
 
 ```mermaid
