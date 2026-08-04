@@ -11,6 +11,7 @@ import {
   indexUnsubscribeToken,
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
+import type { BroadcastRecipientResult } from '@/lib/dp-broadcast-result';
 import { isCanopiUserId } from '@/lib/dp-canopi-user';
 import {
   fetchWorkgroupSignups,
@@ -344,7 +345,7 @@ export async function sendBroadcast(input: {
     ];
   }
 
-  const recipientResults: Array<Record<string, unknown>> = [];
+  const recipientResults: BroadcastRecipientResult[] = [];
   let successCount = 0;
   let failureCount = 0;
   const broadcastId = crypto.randomUUID();
@@ -437,6 +438,7 @@ export async function sendBroadcast(input: {
     recipientCount: targets.length,
     successCount,
     failureCount,
+    failures: recipientResults.filter((r) => !r.ok),
     testMode,
     availableInArchive,
     emailEnrichment: testMode

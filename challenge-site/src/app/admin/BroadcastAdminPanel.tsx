@@ -12,6 +12,10 @@ import {
   writeBroadcastDraft,
 } from '@/lib/dp-broadcast-draft';
 import { BROADCAST_FONT_OPTIONS } from '@/lib/dp-broadcast-send';
+import {
+  formatBroadcastSendMessage,
+  type BroadcastRecipientResult,
+} from '@/lib/dp-broadcast-result';
 
 const BroadcastRichEditor = dynamic(() => import('@/components/BroadcastRichEditor'), {
   ssr: false,
@@ -116,7 +120,7 @@ export default function BroadcastAdminPanel() {
   const [memberSearch, setMemberSearch] = useState(initial.memberSearch);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [flash, setFlash] = useState<{ kind: 'ok' | 'err'; message: string } | null>(null);
+  const [flash, setFlash] = useState<{ kind: 'ok' | 'warn' | 'err'; message: string } | null>(null);
   const [previewHtml, setPreviewHtml] = useState('');
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
   const [expandedWorkgroups, setExpandedWorkgroups] = useState<Set<string>>(new Set());
@@ -240,35 +244,51 @@ export default function BroadcastAdminPanel() {
     return keys;
   }, [selected, workgroupDerivedKeys]);
 
+  const selectedAudienceRows = useMemo(
+    () => audience.filter((row) => effectiveSelected.has(row.key)),
+    [audience, effectiveSelected],
+  );
+
+  const selectedMissingEmailCount = useMemo(
+    () => selectedAudienceRows.filter((row) => !row.email).length,
+    [selectedAudienceRows],
+  );
+
   const selectionLabel = useMemo(() => {
     const count = effectiveSelected.size;
     const crossTabNote = ' Selections from both tabs are combined.';
     if (count === 0) {
       return { text: 'No recipients selected.', warn: true };
     }
+    const missingNote =
+      !testMode && selectedMissingEmailCount > 0
+        ? ` ${selectedMissingEmailCount} of ${count} selected have no email on file and will be skipped.`
+        : '';
     const wgCount = selectedWorkgroups.size;
     const memberCount = selected.size;
     const wgPeople = workgroupDerivedKeys.size;
     if (wgCount > 0 && memberCount > 0) {
       return {
-        text: `${count} recipient${count === 1 ? '' : 's'} total (${wgCount} workgroup${wgCount === 1 ? '' : 's'} · ${wgPeople} people, ${memberCount} individual${memberCount === 1 ? '' : 's'}).${crossTabNote}`,
-        warn: false,
+        text: `${count} recipient${count === 1 ? '' : 's'} total (${wgCount} workgroup${wgCount === 1 ? '' : 's'} · ${wgPeople} people, ${memberCount} individual${memberCount === 1 ? '' : 's'}).${crossTabNote}${missingNote}`,
+        warn: selectedMissingEmailCount > 0,
       };
     }
     if (wgCount > 0) {
       return {
-        text: `${count} recipient${count === 1 ? '' : 's'} from ${wgCount} workgroup${wgCount === 1 ? '' : 's'}.${crossTabNote}`,
-        warn: false,
+        text: `${count} recipient${count === 1 ? '' : 's'} from ${wgCount} workgroup${wgCount === 1 ? '' : 's'}.${crossTabNote}${missingNote}`,
+        warn: selectedMissingEmailCount > 0,
       };
     }
     return {
-      text: `${count} individual recipient${count === 1 ? '' : 's'} selected.${crossTabNote}`,
-      warn: false,
+      text: `${count} individual recipient${count === 1 ? '' : 's'} selected.${crossTabNote}${missingNote}`,
+      warn: selectedMissingEmailCount > 0,
     };
   }, [
     effectiveSelected.size,
     selected.size,
     selectedWorkgroups.size,
+    selectedMissingEmailCount,
+    testMode,
     workgroupDerivedKeys.size,
   ]);
 
@@ -505,13 +525,23 @@ export default function BroadcastAdminPanel() {
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');
 
-      const okMsg = testMode
-        ? `Test broadcast sent (${data.successCount}/${data.recipientCount}).`
-        : `Broadcast sent (${data.successCount}/${data.recipientCount} succeeded).${
-            data.availableInArchive ? ' Added to participant archive.' : ''
-          }`;
-      setFlash({ kind: 'ok', message: okMsg });
-      showToast('ok', okMsg);
+      const failures = (Array.isArray(data.failures) ? data.failures : []) as BroadcastRecipientResult[];
+      const okMsg = formatBroadcastSendMessage({
+        successCount: data.successCount,
+        recipientCount: data.recipientCount,
+        failureCount: data.failureCount,
+        failures,
+        testMode: data.testMode,
+        availableInArchive: data.availableInArchive,
+      });
+      const flashKind =
+        !data.testMode && data.failureCount > 0
+          ? data.successCount > 0
+            ? 'warn'
+            : 'err'
+          : 'ok';
+      setFlash({ kind: flashKind, message: okMsg });
+      showToast(flashKind === 'err' ? 'err' : flashKind === 'warn' ? 'info' : 'ok', okMsg);
       clearBroadcastDraft();
       if (!testMode) {
         setSelected(new Set());
@@ -563,6 +593,13 @@ export default function BroadcastAdminPanel() {
     if (testMode) {
       confirmMsg = `Test mode is ON – mail goes to ${testEmail.trim()} only (not to participants). Continue?`;
       confirmWarning = true;
+    } else if (selectedMissingEmailCount > 0) {
+      confirmMsg = `Send this broadcast to ${countLabel}? ${selectedMissingEmailCount} of ${count} selected have no email on file and will be skipped.${
+        availableInArchive
+          ? ' Successful sends will appear in Activity → Updates for workgroup participants.'
+          : ''
+      } This cannot be undone.`;
+      confirmWarning = true;
     } else if (availableInArchive) {
       confirmMsg = `Send this broadcast to ${countLabel}? It will also appear in Activity → Updates for workgroup participants. This cannot be undone.`;
     } else {
@@ -592,7 +629,9 @@ export default function BroadcastAdminPanel() {
           className={`rounded-md border px-4 py-3 text-sm ${
             flash.kind === 'ok'
               ? 'border-emerald-700/50 bg-emerald-950/40 text-emerald-200'
-              : 'border-rose-700/50 bg-rose-950/40 text-rose-200'
+              : flash.kind === 'warn'
+                ? 'border-amber-700/50 bg-amber-950/40 text-amber-100'
+                : 'border-rose-700/50 bg-rose-950/40 text-rose-200'
           }`}
           role="status"
         >
@@ -984,6 +1023,9 @@ export default function BroadcastAdminPanel() {
                     <p className="text-slate-400">
                       {new Date(entry.sentAt).toLocaleString()} · {entry.successCount}/
                       {entry.recipientCount} sent
+                      {entry.failureCount > 0
+                        ? ` · ${entry.failureCount} failed`
+                        : ''}
                       {entry.testMode ? ' · test' : ''}
                       {entry.availableInArchive ? ' · archived' : ''}
                     </p>

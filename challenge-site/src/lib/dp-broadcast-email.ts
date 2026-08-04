@@ -1,10 +1,12 @@
 import { ensureDpSchema } from '@/lib/dp-db';
 import { fetchCanopiUserEmails, isCanopiUserId } from '@/lib/dp-canopi-user';
+import { looksLikeEmail } from '@/lib/dp-broadcast-result';
 import type { BroadcastAudienceRow } from '@/lib/dp-broadcast-store';
 
 export type BroadcastEmailEnrichment = {
   canopi: number;
   supportTickets: number;
+  usernameEmail: number;
   totalWithEmail: number;
   missingEmail: number;
 };
@@ -57,6 +59,7 @@ export async function enrichBroadcastAudienceEmails(
 
   let canopi = 0;
   let supportTickets = 0;
+  let usernameEmail = 0;
   let totalWithEmail = 0;
 
   const enriched = rows.map((row) => {
@@ -65,15 +68,17 @@ export async function enrichBroadcastAudienceEmails(
       return row;
     }
     const userId = row.userId?.trim();
-    if (!userId) return row;
 
     let email: string | null = null;
-    if (canopiEmails.has(userId)) {
+    if (userId && canopiEmails.has(userId)) {
       email = canopiEmails.get(userId)!;
       canopi += 1;
-    } else if (ticketEmails.has(userId)) {
+    } else if (userId && ticketEmails.has(userId)) {
       email = ticketEmails.get(userId)!;
       supportTickets += 1;
+    } else {
+      email = looksLikeEmail(row.userName);
+      if (email) usernameEmail += 1;
     }
 
     if (email) {
@@ -88,6 +93,7 @@ export async function enrichBroadcastAudienceEmails(
     stats: {
       canopi,
       supportTickets,
+      usernameEmail,
       totalWithEmail,
       missingEmail: enriched.length - totalWithEmail,
     },
