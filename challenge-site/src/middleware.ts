@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 
+const SESSION_COOKIE = 'hermes_session';
+
 const PROTECTED_PREFIXES = [
   '/onchain/admin',
   '/api/onchain/admin',
@@ -26,6 +28,18 @@ function apexRedirect(request: NextRequest) {
   return response;
 }
 
+function loginRedirect(request: NextRequest, pathname: string) {
+  const loginUrl = new URL('/login', request.url);
+  loginUrl.searchParams.set('next', pathname);
+  return NextResponse.redirect(loginUrl);
+}
+
+async function hasSiteAuth(request: NextRequest): Promise<boolean> {
+  const legacy = await parseAdminSession(request.cookies.get(ADMIN_COOKIE)?.value);
+  if (legacy) return true;
+  return Boolean(request.cookies.get(SESSION_COOKIE)?.value);
+}
+
 export async function middleware(request: NextRequest) {
   const apex = apexRedirect(request);
   if (apex) return apex;
@@ -33,7 +47,8 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === '/onchain/admin/login' || pathname === '/api/onchain/admin/login') {
-    return NextResponse.next();
+    const next = request.nextUrl.searchParams.get('next') || '/admin';
+    return loginRedirect(request, next);
   }
 
   const isProtected = PROTECTED_PREFIXES.some(
@@ -43,14 +58,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const email = await parseAdminSession(request.cookies.get(ADMIN_COOKIE)?.value);
-  if (!email) {
+  const authed = await hasSiteAuth(request);
+  if (!authed) {
     if (pathname.startsWith('/api/')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const loginUrl = new URL('/onchain/admin/login', request.url);
-    loginUrl.searchParams.set('next', pathname);
-    return NextResponse.redirect(loginUrl);
+    return loginRedirect(request, pathname);
   }
 
   return NextResponse.next();

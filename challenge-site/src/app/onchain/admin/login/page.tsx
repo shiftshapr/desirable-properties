@@ -1,14 +1,11 @@
-import { Suspense } from 'react';
-import OnchainAdminLoginForm from './OnchainAdminLoginForm';
+import { redirect } from 'next/navigation';
 
-export default function OnchainAdminLoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="mx-auto max-w-md px-4 py-10 text-sm text-slate-400">Loading…</main>
-      }
-    >
-      <OnchainAdminLoginForm />
-    </Suspense>
-  );
+type Props = {
+  searchParams: Promise<{ next?: string }>;
+};
+
+export default async function OnchainAdminLoginPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const next = params.next || '/onchain/admin';
+  redirect(`/login?next=${encodeURIComponent(next)}`);
 }

@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { adminEmailFromRequest } from '@/lib/onchainAdminAuth';
+import { adminEmailFromRequest } from '@/lib/dp-admin-auth';
 import { isClaimStatus, type ClaimStatus } from '@/lib/onchainClaimStatus';
 import { readClaimStatuses, writeClaimStatuses } from '@/lib/onchainClaimStore';
 
 export async function GET(request: NextRequest) {
-  if (!(await adminEmailFromRequest(request))) {
+  if (!(await adminEmailFromRequest(request.cookies))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   const statuses = await readClaimStatuses();
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  if (!(await adminEmailFromRequest(request))) {
+  if (!(await adminEmailFromRequest(request.cookies))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

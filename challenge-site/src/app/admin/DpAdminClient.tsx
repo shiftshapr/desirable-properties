@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import SupportAdminClient from '@/app/support/admin/SupportAdminClient';
 import BlueberriesAdminPanel from '@/app/admin/BlueberriesAdminPanel';
@@ -19,17 +20,26 @@ export default function DpAdminClient() {
     normalizeDpAdminTab(searchParams.get('tab')),
   );
   const [flash, setFlash] = useState<string | null>(null);
+  const [authState, setAuthState] = useState<'loading' | 'ok' | 'unauthorized' | 'forbidden'>(
+    'loading',
+  );
 
   const loadAdmin = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/me', { credentials: 'include' });
       const data = await res.json();
-      if (!res.ok || !data.ok) {
-        window.location.href = `/onchain/admin/login?next=${encodeURIComponent('/admin')}`;
+      if (res.status === 401) {
+        window.location.href = `/login?next=${encodeURIComponent('/admin')}`;
         return;
       }
+      if (res.status === 403 || !res.ok || !data.ok) {
+        setAuthState('forbidden');
+        return;
+      }
+      setAuthState('ok');
     } catch {
       setFlash('Could not verify admin session.');
+      setAuthState('unauthorized');
     }
   }, []);
 
@@ -46,6 +56,39 @@ export default function DpAdminClient() {
     const url = new URL(window.location.href);
     url.searchParams.set('tab', next);
     window.history.replaceState(null, '', url.toString());
+  }
+
+  if (authState === 'loading') {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-16 text-slate-400 sm:px-6">Verifying admin access…</div>
+    );
+  }
+
+  if (authState === 'forbidden') {
+    return (
+      <div className="mx-auto max-w-lg px-4 py-16 sm:px-6">
+        <p className="text-xs uppercase tracking-wide text-slate-500">Desirable Properties</p>
+        <h1 className="mt-2 text-2xl font-bold text-white">Not authorized</h1>
+        <p className="mt-4 text-slate-300">
+          You are signed in, but this account is not on the site admin allowlist. Contact an
+          existing admin if you need access.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            href="/"
+            className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
+          >
+            Back to site
+          </Link>
+          <Link
+            href="/login?next=%2Fadmin"
+            className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+          >
+            Sign in with another account
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (

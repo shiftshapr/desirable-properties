@@ -24,6 +24,12 @@ export default function LoginPageClient() {
   const searchParams = useSearchParams();
   const { user, checked, login, loginBusy, loginError } = useAuth();
   const nextPath = safeReturnPath(searchParams.get('next'));
+  const isAdminLogin =
+    nextPath === '/admin' ||
+    nextPath.startsWith('/admin/') ||
+    nextPath.startsWith('/onchain/admin') ||
+    nextPath.startsWith('/support/admin') ||
+    nextPath.startsWith('/agent/admin');
 
   useEffect(() => {
     ensureApexDomain();
@@ -37,11 +43,14 @@ export default function LoginPageClient() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <p className="text-sm font-semibold uppercase tracking-wide text-cyan-300/90">Sign in</p>
+      <p className="text-sm font-semibold uppercase tracking-wide text-cyan-300/90">
+        {isAdminLogin ? 'Admin sign in' : 'Sign in'}
+      </p>
       <h1 className="mt-2 text-3xl font-bold text-white">Desirable Properties</h1>
       <p className="mt-4 text-slate-300">
-        Sign in to submit support requests, save agent threads, and track your
-        contributions.
+        {isAdminLogin
+          ? 'Sign in with the same Web3Auth account used across the site. Only allowlisted admin emails can access admin tools after sign-in.'
+          : 'Sign in to submit support requests, save agent threads, and track your contributions.'}
       </p>
 
       {loginError ? (

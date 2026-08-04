@@ -45,10 +45,10 @@ export async function createSessionCookie(payload: HermesSession) {
   };
 }
 
-export async function readSession(): Promise<HermesSession | null> {
+export async function readSessionFromCookieValue(
+  raw: string | undefined | null,
+): Promise<HermesSession | null> {
   try {
-    const store = await cookies();
-    const raw = store.get(SESSION_COOKIE)?.value;
     if (!raw) return null;
     const { payload } = await jwtDecrypt(raw, sessionSecretKey());
     const verifierId = String(payload.verifierId || '');
@@ -67,6 +67,11 @@ export async function readSession(): Promise<HermesSession | null> {
   } catch {
     return null;
   }
+}
+
+export async function readSession(): Promise<HermesSession | null> {
+  const store = await cookies();
+  return readSessionFromCookieValue(store.get(SESSION_COOKIE)?.value);
 }
 
 export async function clearSessionCookie() {

@@ -1,20 +1,14 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
+import { requireDpAdminWithSession } from '@/lib/dp-admin-api';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
-import { readSession } from '@/lib/auth-session';
 
 export async function PATCH(
   _request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  const cookieStore = await cookies();
-  const email = await parseAdminSession(cookieStore.get(ADMIN_COOKIE)?.value);
-  const session = await readSession();
-  if (!email || !session?.idToken) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await requireDpAdminWithSession();
+  if (!auth.ok) return auth.response;
 
   const { id } = await context.params;
   if (!id) {
@@ -28,9 +22,9 @@ export async function PATCH(
         method: 'PATCH',
         headers: hermesUpstreamHeaders(),
         body: JSON.stringify({
-          idToken: session.idToken,
-          verifierId: session.verifierId,
-          email: session.email || email,
+          idToken: auth.session.idToken,
+          verifierId: auth.session.verifierId,
+          email: auth.session.email || auth.email,
         }),
         signal: AbortSignal.timeout(30000),
       },
