@@ -94,3 +94,27 @@ test('Canopi lookup is last-resort fallback only', () => {
   assert.equal(stats.supportTickets, 1);
   assert.equal(stats.canopi, 0);
 });
+
+function govhubInternalApiSecret(env) {
+  return (
+    env.METAWEB_GOVHUB_INTERNAL_SECRET?.trim()
+    || env.DP_AUTH_HANDOFF_SECRET?.trim()
+    || env.METAWEB_OPS_SECRET?.trim()
+    || env.GOVHUB_HERMES_API_KEY?.trim()
+    || env.DP_HERMES_API_KEY?.trim()
+    || env.DP_SUPPORT_OPS_SECRET?.trim()
+    || ''
+  );
+}
+
+test('Gov Hub internal API prefers METAWEB_GOVHUB_INTERNAL_SECRET over DP_HERMES_API_KEY', () => {
+  const govhubSecret = '7829679125824246492652819342652893426528934265289342652893426528';
+  const hermesKey = '5503c1b0da50c562bbdaa84825d17baa947a0bf1803e4ddbb722bce81b8bc0f3';
+  assert.equal(
+    govhubInternalApiSecret({
+      DP_HERMES_API_KEY: hermesKey,
+      METAWEB_GOVHUB_INTERNAL_SECRET: govhubSecret,
+    }),
+    govhubSecret,
+  );
+});

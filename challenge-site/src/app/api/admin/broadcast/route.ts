@@ -22,7 +22,16 @@ export async function GET(request: Request) {
       q: searchParams.get('q') || undefined,
       workgroup: searchParams.get('workgroup') || undefined,
     });
-    return NextResponse.json({ ok: true, audience, count: audience.length });
+    const withEmail = audience.filter((row) => row.email).length;
+    return NextResponse.json({
+      ok: true,
+      audience,
+      count: audience.length,
+      emailEnrichment: {
+        withEmail,
+        missingEmail: audience.length - withEmail,
+      },
+    });
   }
 
   if (view === 'workgroups') {

@@ -1,6 +1,6 @@
 import { ensureDpSchema } from '@/lib/dp-db';
 import { fetchCanopiUserEmails, isCanopiUserId } from '@/lib/dp-canopi-user';
-import { fetchGovHubUserEmails } from '@/lib/dp-govhub-user';
+import { fetchGovHubUserEmails, isGovHubUserId } from '@/lib/dp-govhub-user';
 import { looksLikeEmail } from '@/lib/dp-broadcast-result';
 import type { BroadcastAudienceRow } from '@/lib/dp-broadcast-store';
 
@@ -53,7 +53,9 @@ async function supportTicketEmails(userIds: string[]): Promise<Map<string, strin
 export async function enrichBroadcastAudienceEmails(
   rows: BroadcastAudienceRow[],
 ): Promise<{ rows: BroadcastAudienceRow[]; stats: BroadcastEmailEnrichment }> {
-  const userIds = rows.map((r) => r.userId).filter((id): id is string => Boolean(id && isCanopiUserId(id)));
+  const userIds = rows
+    .map((r) => r.userId)
+    .filter((id): id is string => Boolean(id && (isGovHubUserId(id) || isCanopiUserId(id))));
 
   const [govhubEmails, ticketEmails, canopiEmails] = await Promise.all([
     fetchGovHubUserEmails(userIds),

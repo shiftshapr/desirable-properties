@@ -987,7 +987,7 @@ export default function BroadcastAdminPanel() {
                         ) : (
                           'No workgroups'
                         )}
-                        {row.email ? ` · ${row.email}` : ' · no email on file'}
+                        {row.email ? ' · Receives email' : ' · No email on file'}
                       </p>
                     </div>
                   </li>

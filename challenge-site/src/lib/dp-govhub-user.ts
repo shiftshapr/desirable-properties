@@ -1,5 +1,5 @@
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
-import { hermesApiSecret } from '@/lib/support-hermes-auth';
+import { govhubInternalApiSecret } from '@/lib/support-hermes-auth';
 
 const GOVHUB_USER_ID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -17,7 +17,7 @@ export async function fetchGovHubUserEmails(userIds: string[]): Promise<Map<stri
   const out = new Map<string, string>();
   if (!ids.length) return out;
 
-  const secret = hermesApiSecret();
+  const secret = govhubInternalApiSecret();
   if (!secret) return out;
 
   try {

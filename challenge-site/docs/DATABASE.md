@@ -79,7 +79,7 @@ pm2 restart desirableproperties --update-env
 
 Audience rows are built from Gov Hub workgroup signups (names/workgroups only). Production sends enrich emails via:
 
-1. **Gov Hub internal API** – `POST /api/internal/dp/broadcast-user-emails` with Hermes/ops secret (signup `user_id` is Gov Hub `User.id`)
+1. **Gov Hub internal API** – `POST /api/internal/dp/broadcast-user-emails` with `METAWEB_GOVHUB_INTERNAL_SECRET` or `DP_AUTH_HANDOFF_SECRET` (signup `user_id` is Gov Hub `User.id`). Do not use `DP_HERMES_API_KEY` alone — production Gov Hub may not accept the Canopi ops key.
 2. **Support ticket capture** – emails stored when users submit support requests
 3. **Email-shaped display names** – fallback when username is an address
 4. **Canopi internal API** – last-resort for true Canopi AppUser UUIDs only
