@@ -8,7 +8,6 @@ import { govhubUrl } from '@/lib/govhub';
 type DpWelcomeLink = {
   id: string;
   title: string;
-  body?: string;
   link_url: string;
   variant: 'member' | 'coordinator';
   is_default?: boolean;
@@ -139,8 +138,11 @@ export default function SiteAuthNav() {
   const avatarSrc = resolveAvatarUrl(user.profileImage, 40);
   const profileHref = govhubUrl(`/profile/${encodeURIComponent(user.username)}/`);
   const welcomeLinks = welcomeState.userId === user.id ? welcomeState.links : [];
-  const welcomeUnavailable =
-    welcomeState.userId === user.id && welcomeState.status === 'unavailable';
+  const welcomeHref =
+    welcomeLinks.find((welcome) => welcome.variant === 'coordinator' && !welcome.is_default)
+      ?.link_url ??
+    welcomeLinks[0]?.link_url ??
+    '/welcome/member';
 
   return (
     <div ref={menuRef} className="relative shrink-0">
@@ -181,33 +183,16 @@ export default function SiteAuthNav() {
             <p className="truncate text-sm font-medium text-white">{displayName}</p>
             <p className="truncate text-xs text-slate-400">@{user.username}</p>
           </li>
-          {welcomeLinks.length > 0 ? (
-            <li role="none" className="border-b border-slate-800 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-cyan-400">
-                {welcomeLinks.some((welcome) => !welcome.is_default) ? 'Workgroup welcome' : 'Welcome'}
-              </p>
-              {welcomeLinks.map((welcome) => (
-                <div key={welcome.id} className="mt-2">
-                  {welcome.body ? (
-                    <p className="text-xs leading-relaxed text-slate-300">{welcome.body}</p>
-                  ) : null}
-                  <a
-                    role="menuitem"
-                    href={welcome.link_url}
-                    className="mt-1 inline-block text-sm font-medium text-cyan-200 hover:text-cyan-100"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {welcome.title}
-                  </a>
-                </div>
-              ))}
-            </li>
-          ) : null}
-          {welcomeUnavailable ? (
-            <li role="none" className="border-b border-slate-800 px-4 py-2 text-xs text-slate-400">
-              Workgroup welcomes are temporarily unavailable.
-            </li>
-          ) : null}
+          <li role="none">
+            <a
+              role="menuitem"
+              href={welcomeHref}
+              className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Welcome
+            </a>
+          </li>
           <li role="none">
             <a
               role="menuitem"

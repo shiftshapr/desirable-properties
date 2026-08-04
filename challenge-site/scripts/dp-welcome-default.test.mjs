@@ -11,13 +11,12 @@ function welcomePath(variant) {
   return variant === 'member' ? '/welcome/member' : '/welcome/coordinator';
 }
 
-function buildDefaultProfileWelcome(origin, variant = 'member', copy) {
+function buildDefaultProfileWelcome(variant = 'member', copy) {
   const selected = variant === 'member' ? copy.member : copy.coordinator;
   return {
     id: `default-${variant}-welcome`,
     title: selected.linkLabel,
-    body: selected.body,
-    link_url: `${origin}${welcomePath(variant)}`,
+    link_url: welcomePath(variant),
     variant,
     is_default: true,
   };
@@ -52,19 +51,14 @@ test('default profile welcome uses contributor path unless coordinator', async (
     },
   };
 
-  const member = buildDefaultProfileWelcome('https://desirableproperties.org', 'member', copy);
+  const member = buildDefaultProfileWelcome('member', copy);
   assert.equal(member.variant, 'member');
-  assert.equal(member.link_url, 'https://desirableproperties.org/welcome/member');
-  assert.match(member.body, /Help refine Desirable Properties/i);
+  assert.equal(member.link_url, '/welcome/member');
   assert.equal(member.is_default, true);
 
-  const coordinator = buildDefaultProfileWelcome(
-    'https://desirableproperties.org',
-    'coordinator',
-    copy,
-  );
+  const coordinator = buildDefaultProfileWelcome('coordinator', copy);
   assert.equal(coordinator.variant, 'coordinator');
-  assert.equal(coordinator.link_url, 'https://desirableproperties.org/welcome/coordinator');
+  assert.equal(coordinator.link_url, '/welcome/coordinator');
 
   assert.equal(resolveDefaultWelcomeVariant([]), 'member');
   assert.equal(resolveDefaultWelcomeVariant([{ variant: 'coordinator' }]), 'coordinator');

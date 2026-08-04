@@ -19,16 +19,13 @@ function welcomePath(variant: DpWelcomeVariant) {
 
 /** Fallback welcome for signed-in users without a Gov Hub workgroup notification. */
 export function buildDefaultProfileWelcome(
-  request: Request,
   variant: DpWelcomeVariant = 'member',
 ): ProfileWelcomeLink {
   const copy = variant === 'member' ? PROFILE_WELCOME_MEMBER : PROFILE_WELCOME_COORDINATOR;
-  const origin = new URL(request.url).origin;
   return {
     id: `default-${variant}-welcome`,
     title: copy.linkLabel,
-    body: copy.body,
-    link_url: `${origin}${welcomePath(variant)}`,
+    link_url: welcomePath(variant),
     variant,
     is_default: true,
   };

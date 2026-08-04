@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
-import {
-  buildDefaultProfileWelcome,
-  resolveDefaultWelcomeVariant,
-  type ProfileWelcomeLink,
-} from '@/lib/dp-welcome-default';
+import { buildDefaultProfileWelcome, type ProfileWelcomeLink } from '@/lib/dp-welcome-default';
 import { getGovHubBaseUrl } from '@/lib/web3auth-config';
 
 type UpstreamWelcome = {
@@ -26,15 +22,35 @@ function normalizeVariant(variant: string): 'member' | 'coordinator' {
 function isSafeWelcomeLink(value: unknown, request: Request): value is string {
   if (typeof value !== 'string') return false;
   try {
-    const url = new URL(value, request.url);
+    const url = value.startsWith('/')
+      ? new URL(value, 'https://desirableproperties.org')
+      : new URL(value, request.url);
     const allowedOrigins = new Set([
       new URL(request.url).origin,
       'https://desirableproperties.org',
       'https://www.desirableproperties.org',
+      'http://127.0.0.1:3005',
+      'http://127.0.0.1:3006',
+      'http://localhost:3005',
+      'http://localhost:3006',
+      'https://localhost:3005',
+      'https://localhost:3006',
     ]);
     return allowedOrigins.has(url.origin) && WELCOME_PATHS.has(url.pathname);
   } catch {
     return false;
+  }
+}
+
+function toRelativeWelcomeUrl(linkUrl: string, request: Request): string {
+  try {
+    const url = linkUrl.startsWith('/')
+      ? new URL(linkUrl, 'https://desirableproperties.org')
+      : new URL(linkUrl, request.url);
+    if (!WELCOME_PATHS.has(url.pathname)) return '/welcome/member';
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return '/welcome/member';
   }
 }
 
@@ -61,20 +77,14 @@ function validWelcomes(data: unknown, request: Request) {
   return welcomes.map((welcome) => ({
     id: welcome.id as string,
     title: welcome.title as string,
-    body: typeof welcome.body === 'string' && welcome.body.trim() ? welcome.body.trim() : undefined,
-    link_url: welcome.link_url as string,
+    link_url: toRelativeWelcomeUrl(welcome.link_url as string, request),
     variant: normalizeVariant(welcome.variant as string),
   }));
 }
 
-function withDefaultWelcome(
-  welcomes: ProfileWelcomeLink[],
-  request: Request,
-  isCoordinator = false,
-): ProfileWelcomeLink[] {
+function withDefaultWelcome(welcomes: ProfileWelcomeLink[]): ProfileWelcomeLink[] {
   if (welcomes.length > 0) return welcomes;
-  const variant = isCoordinator ? 'coordinator' : 'member';
-  return [buildDefaultProfileWelcome(request, variant)];
+  return [buildDefaultProfileWelcome('member')];
 }
 
 function errorResponse(status: number, code: string, authenticated: boolean) {
@@ -114,11 +124,7 @@ export async function GET(request: Request) {
       console.error('DP welcome upstream response was malformed');
       return errorResponse(502, 'UPSTREAM_MALFORMED_RESPONSE', true);
     }
-    const isCoordinator =
-      typeof (data as { is_coordinator?: unknown }).is_coordinator === 'boolean'
-        ? (data as { is_coordinator: boolean }).is_coordinator
-        : resolveDefaultWelcomeVariant(welcomes) === 'coordinator';
-    const resolved = withDefaultWelcome(welcomes, request, isCoordinator);
+    const resolved = withDefaultWelcome(welcomes);
     return NextResponse.json(
       { authenticated: true, status: 'ok', welcomes: resolved, count: resolved.length },
       { headers: { 'Cache-Control': 'no-store' } },
