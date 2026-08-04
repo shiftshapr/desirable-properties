@@ -17,6 +17,8 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
   const onChangeRef = useRef(onChange);
   const onUploadErrorRef = useRef(onUploadError);
   const syncingRef = useRef(false);
+  /** HTML last emitted from Quill; skip prop sync when parent echoes it back. */
+  const lastEmittedHtmlRef = useRef<string | null>(null);
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -80,7 +82,9 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
 
     quill.on('text-change', () => {
       if (syncingRef.current) return;
-      onChangeRef.current(quill.root.innerHTML);
+      const html = quill.root.innerHTML;
+      lastEmittedHtmlRef.current = html;
+      onChangeRef.current(html);
     });
 
     if (value) {
@@ -100,11 +104,23 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
   useEffect(() => {
     const quill = quillRef.current;
     if (!quill) return;
+
+    // Parent is echoing our own edit — do not re-paste or cursor jumps.
+    if (value === lastEmittedHtmlRef.current) {
+      lastEmittedHtmlRef.current = null;
+      return;
+    }
+
     const current = quill.root.innerHTML;
-    if (value !== current) {
-      syncingRef.current = true;
-      quill.clipboard.dangerouslyPasteHTML(value || '');
-      syncingRef.current = false;
+    if (value === current) return;
+
+    const selection = quill.getSelection();
+    syncingRef.current = true;
+    quill.clipboard.dangerouslyPasteHTML(value || '');
+    syncingRef.current = false;
+    lastEmittedHtmlRef.current = null;
+    if (selection) {
+      quill.setSelection(selection.index, selection.length, 'silent');
     }
   }, [value]);
 
