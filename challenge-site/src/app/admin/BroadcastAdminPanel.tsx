@@ -35,6 +35,7 @@ type WorkgroupRow = {
   acronym: string;
   memberCount: number;
   memberKeys: string[];
+  members: Array<{ key: string; userName: string | null }>;
 };
 
 type LogEntry = {
@@ -502,7 +503,8 @@ export default function BroadcastAdminPanel() {
           <h2 className="text-xl font-semibold text-white">Compose broadcast</h2>
           <p className="mt-2 text-sm text-slate-400">
             Rich email to workgroup participants. Merge tags: {'{name}'}, {'{userName}'},{' '}
-            {'{workgroups}'}. Unsubscribe links are appended automatically.
+            {'{workgroups}'} (Oxford-comma list with Gov Hub links). Unsubscribe links are appended
+            automatically.
           </p>
 
           <div className="mt-4 grid gap-3">
@@ -534,21 +536,23 @@ export default function BroadcastAdminPanel() {
                 showToast('err', msg);
               }}
             />
-            <p className="text-xs text-slate-500">
-              Insert images with the toolbar image button (PNG, JPEG, or GIF, max 5 MB).
-            </p>
-            <div className="flex flex-wrap gap-2 text-xs text-slate-400">
-              <span>Merge tags:</span>
-              {['{name}', '{userName}', '{workgroups}'].map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => insertMergeTag(tag)}
-                  className="rounded border border-slate-700 px-2 py-0.5 font-mono text-cyan-300 hover:bg-slate-800"
-                >
-                  {tag}
-                </button>
-              ))}
+            <div className="space-y-2">
+              <p className="text-xs text-slate-500">
+                Insert images with the toolbar image button (PNG, JPEG, or GIF, max 5 MB).
+              </p>
+              <div className="flex flex-wrap gap-2 border-t border-slate-800 pt-2 text-xs text-slate-400">
+                <span>Merge tags:</span>
+                {['{name}', '{userName}', '{workgroups}'].map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => insertMergeTag(tag)}
+                    className="rounded border border-slate-700 px-2 py-0.5 font-mono text-cyan-300 hover:bg-slate-800"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -637,7 +641,7 @@ export default function BroadcastAdminPanel() {
 
           {previewHtml ? (
             <div
-              className="prose prose-invert mt-4 max-w-none rounded-md border border-slate-800 bg-slate-950 p-4 text-sm [&_img]:max-w-full"
+              className="broadcast-preview-frame mt-4 max-w-none rounded-md border border-slate-800 bg-white p-4 text-sm leading-relaxed text-[#111] [&_h1]:m-0 [&_h2]:m-0 [&_img]:block [&_img]:max-w-full [&_li]:m-0 [&_li]:p-0 [&_ol]:m-0 [&_ol]:pl-6 [&_p]:m-0 [&_p]:p-0 [&_ul]:m-0 [&_ul]:pl-6"
               dangerouslySetInnerHTML={{ __html: previewHtml }}
             />
           ) : null}
@@ -683,19 +687,38 @@ export default function BroadcastAdminPanel() {
             ) : (
               <ul className="mt-4 max-h-[28rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800">
                 {workgroups.map((wg) => (
-                  <li key={wg.id} className="flex items-center gap-3 px-4 py-3 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={selectedWorkgroups.has(wg.id)}
-                      onChange={() => toggleWorkgroup(wg.id)}
-                    />
-                    <div>
-                      <p className="font-medium text-white">{wg.name}</p>
-                      <p className="text-xs text-slate-500">
-                        {wg.memberCount} member{wg.memberCount === 1 ? '' : 's'}
-                        {wg.acronym ? ` · ${wg.acronym}` : ''}
-                      </p>
-                    </div>
+                  <li key={wg.id} className="text-sm">
+                    <details className="group">
+                      <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 marker:content-none [&::-webkit-details-marker]:hidden">
+                        <input
+                          type="checkbox"
+                          checked={selectedWorkgroups.has(wg.id)}
+                          onChange={() => toggleWorkgroup(wg.id)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-white">{wg.name}</p>
+                          <p className="text-xs text-slate-500">
+                            {wg.memberCount} member{wg.memberCount === 1 ? '' : 's'}
+                            {wg.acronym ? ` · ${wg.acronym}` : ''}
+                            {wg.members.length ? ' · click to expand' : ''}
+                          </p>
+                        </div>
+                      </summary>
+                      {wg.members.length ? (
+                        <ul className="space-y-1 border-t border-slate-800/80 px-4 py-2 pb-3 pl-11">
+                          {wg.members.map((member) => (
+                            <li key={member.key} className="text-xs text-slate-400">
+                              {member.userName || member.key}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="border-t border-slate-800/80 px-4 py-2 pl-11 text-xs text-slate-500">
+                          No members listed.
+                        </p>
+                      )}
+                    </details>
                   </li>
                 ))}
               </ul>

@@ -55,6 +55,24 @@ export function resolveBroadcastFontFamily(fontId: string | null | undefined) {
   return opt?.stack || BROADCAST_DEFAULT_BODY_FONT;
 }
 
+/** Match Quill editor spacing (margin:0 on block elements) so sent mail matches the composer. */
+function mergeInlineStyle(existing: string | undefined, extra: string) {
+  const style = String(existing || '').trim();
+  if (!style) return extra;
+  const parts = extra
+    .split(';')
+    .map((p) => p.trim())
+    .filter(Boolean);
+  let next = style;
+  for (const part of parts) {
+    const prop = part.split(':')[0]?.trim().toLowerCase();
+    if (prop && !next.toLowerCase().includes(`${prop}:`)) {
+      next = next.endsWith(';') ? `${next}${part};` : `${next};${part};`;
+    }
+  }
+  return next;
+}
+
 const sanitizeDefaults: sanitizeHtml.IOptions = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2']),
   allowedAttributes: {
@@ -65,6 +83,30 @@ const sanitizeDefaults: sanitizeHtml.IOptions = {
   allowedSchemes: ['http', 'https', 'mailto'],
   transformTags: {
     a: sanitizeHtml.simpleTransform('a', { rel: 'noopener noreferrer', target: '_blank' }),
+    p: (_tagName, attribs) => ({
+      tagName: 'p',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+    }),
+    h1: (_tagName, attribs) => ({
+      tagName: 'h1',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+    }),
+    h2: (_tagName, attribs) => ({
+      tagName: 'h2',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+    }),
+    ul: (_tagName, attribs) => ({
+      tagName: 'ul',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;') },
+    }),
+    ol: (_tagName, attribs) => ({
+      tagName: 'ol',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;') },
+    }),
+    li: (_tagName, attribs) => ({
+      tagName: 'li',
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+    }),
     img: (_tagName, attribs) => {
       const next = { ...attribs };
       const extra = 'max-width:100%;height:auto;display:block;';

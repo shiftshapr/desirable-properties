@@ -48,6 +48,7 @@ async function requireArchiveViewer() {
       email: session.email || null,
       workgroups: [],
       workgroupIds: [],
+      workgroupDetails: [],
       joinedAt: null,
     } as const);
 

@@ -17,6 +17,13 @@ import {
   type WorkgroupSignupGroup,
   type WorkgroupSignupPerson,
 } from '@/lib/workgroup-signups';
+import { govhubUrl } from '@/lib/govhub';
+
+export type BroadcastWorkgroupRef = {
+  id: string;
+  name: string;
+  slug: string;
+};
 
 export type BroadcastAudienceRow = {
   key: string;
@@ -25,7 +32,13 @@ export type BroadcastAudienceRow = {
   email: string | null;
   workgroups: string[];
   workgroupIds: string[];
+  workgroupDetails: BroadcastWorkgroupRef[];
   joinedAt: string | null;
+};
+
+export type BroadcastWorkgroupMember = {
+  key: string;
+  userName: string | null;
 };
 
 export type BroadcastWorkgroupRow = {
@@ -35,6 +48,7 @@ export type BroadcastWorkgroupRow = {
   acronym: string;
   memberCount: number;
   memberKeys: string[];
+  members: BroadcastWorkgroupMember[];
 };
 
 export type BroadcastLogEntry = {
@@ -98,6 +112,11 @@ function mapPersonToRow(person: WorkgroupSignupPerson): BroadcastAudienceRow {
     email: null,
     workgroups: person.workgroups.map((wg) => wg.name),
     workgroupIds: person.workgroups.map((wg) => wg.id),
+    workgroupDetails: person.workgroups.map((wg) => ({
+      id: wg.id,
+      name: wg.name,
+      slug: wg.slug,
+    })),
     joinedAt: person.workgroups[0]?.joined_at ?? null,
   };
 }
@@ -115,6 +134,10 @@ export async function buildBroadcastWorkgroups(): Promise<BroadcastWorkgroupRow[
       acronym: wg.acronym,
       memberCount: wg.member_count,
       memberKeys: [...new Set(memberKeys.filter(Boolean))],
+      members: wg.members.map((member) => ({
+        key: member.user_id || member.user_name || member.id,
+        userName: member.user_name,
+      })),
     };
   });
 }
@@ -153,12 +176,41 @@ export async function isWorkgroupParticipant(userId: string | null | undefined) 
   return payload.people.some((person) => person.user_id === id);
 }
 
-function applyMergeTags(template: string, row: BroadcastAudienceRow) {
+function formatWorkgroupsPlain(details: BroadcastWorkgroupRef[]) {
+  const names = details.map((wg) => wg.name).filter(Boolean);
+  if (names.length === 0) return '';
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`;
+}
+
+function formatWorkgroupsHtml(details: BroadcastWorkgroupRef[]) {
+  const items = details.filter((wg) => wg.name);
+  if (items.length === 0) return '';
+
+  const linkFor = (wg: BroadcastWorkgroupRef) => {
+    const href = wg.slug ? govhubUrl(`/workgroups/${wg.slug}/`) : '';
+    const label = escapeHtml(wg.name);
+    if (!href) return label;
+    return `<a href="${escapeHtml(href)}" rel="noopener noreferrer" target="_blank">${label}</a>`;
+  };
+
+  if (items.length === 1) return linkFor(items[0]);
+  if (items.length === 2) return `${linkFor(items[0])} and ${linkFor(items[1])}`;
+  const head = items.slice(0, -1).map(linkFor).join(', ');
+  return `${head}, and ${linkFor(items[items.length - 1])}`;
+}
+
+function applyMergeTags(template: string, row: BroadcastAudienceRow, format: 'html' | 'plain' = 'html') {
   const name = row.userName?.split(/\s+/)[0] || 'there';
+  const workgroupsValue =
+    format === 'plain'
+      ? formatWorkgroupsPlain(row.workgroupDetails)
+      : formatWorkgroupsHtml(row.workgroupDetails);
   return template
     .replace(/\{name\}/gi, name)
     .replace(/\{userName\}/gi, row.userName || '')
-    .replace(/\{workgroups\}/gi, row.workgroups.join(', '));
+    .replace(/\{workgroups?\}/gi, workgroupsValue);
 }
 
 function escapeHtml(s: string) {
@@ -286,6 +338,7 @@ export async function sendBroadcast(input: {
         email: testEmail,
         workgroups: [],
         workgroupIds: [],
+        workgroupDetails: [],
         joinedAt: null,
       },
     ];
@@ -320,9 +373,11 @@ export async function sendBroadcast(input: {
       }
     }
 
-    const personalizedHtml = applyMergeTags(wrappedTemplate, row);
-    const personalizedSubject = applyMergeTags(subject, row);
-    const textBody = input.textBody ? applyMergeTags(input.textBody, row) : stripHtml(personalizedHtml);
+    const personalizedHtml = applyMergeTags(wrappedTemplate, row, 'html');
+    const personalizedSubject = applyMergeTags(subject, row, 'plain');
+    const textBody = input.textBody
+      ? applyMergeTags(input.textBody, row, 'plain')
+      : stripHtml(personalizedHtml);
     const withFooter = appendUnsubscribeFooter(personalizedHtml, textBody, unsubscribeUrl);
     const result = await sendViaResend({
       to,
@@ -478,13 +533,17 @@ export function previewBroadcastHtml(
       userId: null,
       userName: 'Alex Example',
       email: 'alex@example.com',
-      workgroups: ['DP1 Workgroup'],
+      workgroups: ['DP1 Federated Auth', 'DP2 Discovery'],
       workgroupIds: [],
+      workgroupDetails: [
+        { id: 'wg1', name: 'DP1 Federated Auth', slug: 'dp1-federated-auth' },
+        { id: 'wg2', name: 'DP2 Discovery', slug: 'dp2-discovery' },
+      ],
       joinedAt: new Date().toISOString(),
     } satisfies BroadcastAudienceRow);
 
   const sanitized = sanitizeBroadcastHtml(html);
-  const wrapped = wrapBroadcastBodyHtml(applyMergeTags(sanitized, sample), fontId);
+  const wrapped = wrapBroadcastBodyHtml(applyMergeTags(sanitized, sample, 'html'), fontId);
   const base = publicBase();
   const footer = `<p style="font-size:12px;color:#666;margin-top:2em;">You received this because you joined a Desirable Properties workgroup. <a href="${base}/api/broadcast/unsubscribe">Unsubscribe from challenge updates</a>.</p>`;
   return wrapped.includes('</body>') ? wrapped.replace('</body>', `${footer}</body>`) : `${wrapped}${footer}`;
@@ -494,7 +553,7 @@ export function renderArchiveForViewer(
   entry: { subject: string; html: string; fontId?: string | null },
   viewer: BroadcastAudienceRow,
 ) {
-  const subject = applyMergeTags(entry.subject, viewer);
+  const subject = applyMergeTags(entry.subject, viewer, 'plain');
   const html = previewBroadcastHtml(entry.html, viewer, entry.fontId);
   return { subject, html };
 }

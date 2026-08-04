@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function BroadcastRichEditor({ value, onChange, disabled, onUploadError }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
   const onChangeRef = useRef(onChange);
   const onUploadErrorRef = useRef(onUploadError);
@@ -29,9 +29,10 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
   }, [onUploadError]);
 
   useEffect(() => {
-    if (!containerRef.current || quillRef.current) return;
+    const wrapper = wrapperRef.current;
+    if (!wrapper || quillRef.current) return;
 
-    const quill = new Quill(containerRef.current, {
+    const quill = new Quill(wrapper, {
       theme: 'snow',
       readOnly: Boolean(disabled),
       modules: {
@@ -97,9 +98,9 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
 
     return () => {
       quillRef.current = null;
-      if (containerRef.current) containerRef.current.innerHTML = '';
+      wrapper.innerHTML = '';
     };
-  }, [disabled]);
+  }, []);
 
   useEffect(() => {
     const quill = quillRef.current;
@@ -129,8 +130,8 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
   }, [disabled]);
 
   return (
-    <div className="broadcast-rich-editor rounded-md border border-slate-700 bg-slate-950 text-white [&_.ql-toolbar]:rounded-t-md [&_.ql-toolbar]:border-slate-700 [&_.ql-toolbar]:bg-slate-900 [&_.ql-container]:min-h-[180px] [&_.ql-container]:rounded-b-md [&_.ql-container]:border-slate-700 [&_.ql-editor]:min-h-[180px] [&_.ql-editor_img]:max-w-full">
-      <div ref={containerRef} />
+    <div className="broadcast-rich-editor overflow-hidden rounded-md border border-slate-700 bg-slate-950 text-white [&_.ql-container]:border-0 [&_.ql-container]:border-slate-700 [&_.ql-editor]:min-h-[180px] [&_.ql-editor_img]:my-2 [&_.ql-editor_img]:block [&_.ql-editor_img]:max-w-full [&_.ql-editor]:text-white [&_.ql-editor_p]:m-0 [&_.ql-editor_p]:p-0 [&_.ql-toolbar]:border-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-slate-700 [&_.ql-toolbar]:bg-slate-900">
+      <div ref={wrapperRef} />
     </div>
   );
 }
