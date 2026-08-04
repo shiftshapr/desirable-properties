@@ -8,17 +8,23 @@ type Props = {
   value: string;
   onChange: (html: string) => void;
   disabled?: boolean;
+  onUploadError?: (message: string) => void;
 };
 
-export default function BroadcastRichEditor({ value, onChange, disabled }: Props) {
+export default function BroadcastRichEditor({ value, onChange, disabled, onUploadError }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
   const onChangeRef = useRef(onChange);
+  const onUploadErrorRef = useRef(onUploadError);
   const syncingRef = useRef(false);
 
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
+
+  useEffect(() => {
+    onUploadErrorRef.current = onUploadError;
+  }, [onUploadError]);
 
   useEffect(() => {
     if (!containerRef.current || quillRef.current) return;
@@ -60,7 +66,9 @@ export default function BroadcastRichEditor({ value, onChange, disabled }: Props
                   quill.insertEmbed(index, 'image', data.url, 'user');
                   quill.setSelection(index + 1, 0, 'user');
                 } catch (err) {
-                  window.alert(err instanceof Error ? err.message : 'Image upload failed');
+                  const msg = err instanceof Error ? err.message : 'Image upload failed';
+                  if (onUploadErrorRef.current) onUploadErrorRef.current(msg);
+                  else window.alert(msg);
                 }
               };
               input.click();

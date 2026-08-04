@@ -7,6 +7,7 @@ import BlueberriesAdminPanel from '@/app/admin/BlueberriesAdminPanel';
 import BroadcastAdminPanel from '@/app/admin/BroadcastAdminPanel';
 import SiteMessagesAdminPanel from '@/app/admin/SiteMessagesAdminPanel';
 import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
+import { AdminToastProvider } from '@/components/AdminToastHost';
 import AdminAuthShell from '@/components/AdminAuthShell';
 import {
   DP_ADMIN_TABS,
@@ -35,7 +36,8 @@ export default function DpAdminClient() {
   }, []);
 
   return (
-    <AdminAuthShell authState={authState} error={error} onRetry={retry}>
+    <AdminToastProvider>
+      <AdminAuthShell authState={authState} error={error} onRetry={retry}>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <div className="mb-6">
           <p className="text-xs uppercase tracking-wide text-slate-500">Desirable Properties</p>
@@ -79,6 +81,7 @@ export default function DpAdminClient() {
         {tab === 'messages' ? <SiteMessagesAdminPanel /> : null}
         {tab === 'site' ? <SiteAdminPanel /> : null}
       </div>
-    </AdminAuthShell>
+      </AdminAuthShell>
+    </AdminToastProvider>
   );
 }
