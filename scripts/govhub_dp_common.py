@@ -16,6 +16,43 @@ HUB_URLS: dict[str, str] = {
     'main': 'https://hub.themetalayer.org',
 }
 
+# Canonical env keys shared by rail sync / publish scripts.
+ENV_ALIASES: dict[str, str] = {
+    'dev': 'dev',
+    'development': 'dev',
+    'main': 'main',
+    'production': 'main',
+}
+
+DEFAULT_GOVHUB_ROOTS: dict[str, Path] = {
+    'dev': Path('/home/ubuntu/gov-hub-dev'),
+    'main': Path('/home/ubuntu/gov-hub-prod'),
+}
+
+
+def canonical_env(env: str) -> str:
+    """Normalize --env to dev or main."""
+    key = (env or 'dev').strip().lower()
+    if key not in ENV_ALIASES:
+        allowed = ', '.join(sorted(ENV_ALIASES))
+        raise ValueError(f'unknown env {env!r}; use one of: {allowed}')
+    return ENV_ALIASES[key]
+
+
+def flask_env_for_env(env: str) -> str:
+    """Map --env to Gov Hub FLASK_ENV (development or production)."""
+    return 'development' if canonical_env(env) == 'dev' else 'production'
+
+
+def default_govhub_root(env: str) -> Path:
+    """Default Gov Hub checkout for --env."""
+    return DEFAULT_GOVHUB_ROOTS[canonical_env(env)]
+
+
+def hub_url_for_env(env: str) -> str:
+    """Public hub base URL for --env."""
+    return HUB_URLS[canonical_env(env)]
+
 _SYNC_LINE_RE = re.compile(
     r'<!--\s*govhub-sync:\s*([^>]*?)\s*-->',
     re.IGNORECASE,

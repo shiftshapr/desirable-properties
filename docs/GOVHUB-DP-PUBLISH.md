@@ -13,12 +13,15 @@ Scripts live in `scripts/`:
 
 ## Environments
 
-| | Host | Port | Git branch | Flask env | SQLite |
-| --- | --- | --- | --- | --- | --- |
-| DEV | `dev.hub.themetalayer.org` | 8001 | `development` | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
-| LIVE | `hub.themetalayer.org` | 8000 | **`main`** (production) | `production` | `gov-hub-prod/instance/datatracker.db` |
+| | Host | Port | Git branch | `--env` | Flask env | SQLite |
+| --- | --- | --- | --- | --- | --- | --- |
+| DEV | `dev.hub.themetalayer.org` | 8001 | `development` | `dev` or `development` | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
+| LIVE | `hub.themetalayer.org` | 8000 | **`main`** (production) | `main` or `production` | `production` | `gov-hub-prod/instance/datatracker.db` |
 
 Both run as user systemd units: `datatracker-dev.service` and `datatracker.service`.
+
+Use `--env dev` (default) or `--env main` on the publish script; it sets the Gov Hub checkout and
+`FLASK_ENV` together. Override with `--govhub-root` / `--flask-env` if needed.
 
 > The DEV service holds the SQLite file open in WAL mode. Never swap the `.db` file
 > underneath a running service — stop the unit first, remove `-wal`/`-shm`, restore, then start.
@@ -47,10 +50,7 @@ Dry run first — it prints the resolved parent and next revision number per DP 
 
 ```bash
 cd /home/ubuntu/desirable-properties
-python3 scripts/govhub_publish_dp_revisions.py \
-  --govhub-root /home/ubuntu/gov-hub-dev \
-  --flask-env development \
-  --dry-run
+python3 scripts/govhub_publish_dp_revisions.py --env dev --dry-run
 ```
 
 Then publish. `--approve` marks each new revision `approved` and carries the parent's `ml_number`
@@ -58,8 +58,7 @@ across, which is what makes it the served body:
 
 ```bash
 python3 scripts/govhub_publish_dp_revisions.py \
-  --govhub-root /home/ubuntu/gov-hub-dev \
-  --flask-env development \
+  --env dev \
   --what-changed "Refreshed from content/local (book working copy)" \
   --submitted-by "book-pipeline" \
   --approve
@@ -201,10 +200,23 @@ to the newest revision that existed at `created_at`.
 
 ## Promoting to live (main)
 
-1. Re-run the publish script against `~/gov-hub-prod` with `--flask-env production` and `--dry-run`, confirming the parent
+1. Re-run the publish script against production with `--env main --dry-run`, confirming the parent
    and next revision number resolved per DP.
 2. Back up `gov-hub-prod/instance/datatracker.db`.
 3. Publish. Prefer omitting `--approve` so a human approves in the UI.
 4. Re-run the patch audit against live and re-anchor `needs-review` patches.
 5. Sanity-check a few `…/doc/draft/<draft_name>/read/` and `…/doc/draft/<ml_number>/read/` URLs;
    both should show the newest revision in the toolbar chip.
+
+Production publish (submit to review queue):
+
+```bash
+python3 scripts/govhub_publish_dp_revisions.py --env main
+```
+
+Equivalent explicit form:
+
+```bash
+python3 scripts/govhub_publish_dp_revisions.py \
+  --govhub-root /home/ubuntu/gov-hub-prod --flask-env production
+```

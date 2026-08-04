@@ -32,10 +32,12 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 from govhub_dp_common import (
-    HUB_URLS,
+    default_govhub_root,
     fetch_body_via_api,
     fetch_body_via_db,
+    flask_env_for_env,
     format_sync_marker,
+    hub_url_for_env,
     load_dp_manifest,
     local_rail_path,
     strip_sync_marker,
@@ -45,7 +47,6 @@ from govhub_dp_common import (
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTENT_DIR = REPO_ROOT / 'desirableproperties-book' / 'content' / 'local'
 DEFAULT_SOURCES_SAT = REPO_ROOT / 'desirableproperties-book' / 'json' / 'sources-sat.json'
-DEFAULT_GOVHUB_ROOT = Path('/home/ubuntu/gov-hub-dev')
 
 
 def _normalize(text: str) -> str:
@@ -55,14 +56,15 @@ def _normalize(text: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--env', default='main', choices=['dev', 'main'],
-                        help='Gov Hub environment when using HTTP API (default: main)')
+    parser.add_argument('--env', default='main',
+                        choices=sorted({'dev', 'development', 'main', 'production'}),
+                        help='Gov Hub environment (default: main)')
     parser.add_argument('--hub-url', default='',
                         help='Override hub base URL (default: from --env)')
     parser.add_argument('--local-db', action='store_true',
                         help='Read from local Gov Hub SQLite instead of HTTP API')
-    parser.add_argument('--govhub-root', default=str(DEFAULT_GOVHUB_ROOT),
-                        help='Gov Hub checkout for --local-db (default: gov-hub-dev)')
+    parser.add_argument('--govhub-root', default='',
+                        help='Gov Hub checkout for --local-db (default: from --env)')
     parser.add_argument('--flask-env', default='',
                         choices=['', 'development', 'production'],
                         help='Flask env for --local-db (default: matches --env)')
@@ -85,9 +87,13 @@ def main() -> int:
             print(f'ERROR: missing {path}', file=sys.stderr)
             return 2
 
-    hub_url = (args.hub_url or HUB_URLS[args.env]).rstrip('/')
-    flask_env = args.flask_env or ('development' if args.env == 'dev' else 'production')
-    govhub_root = Path(args.govhub_root).resolve()
+    hub_url = (args.hub_url or hub_url_for_env(args.env)).rstrip('/')
+    flask_env = args.flask_env or flask_env_for_env(args.env)
+    govhub_root = (
+        Path(args.govhub_root).resolve()
+        if args.govhub_root
+        else default_govhub_root(args.env).resolve()
+    )
 
     rails = load_dp_manifest(sources_sat)
     wanted = {d.strip().upper() for d in args.only.split(',') if d.strip()}

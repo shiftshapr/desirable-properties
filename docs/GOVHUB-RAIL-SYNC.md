@@ -24,7 +24,9 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 | DEV | `https://dev.hub.themetalayer.org` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
 | LIVE (default) | `https://hub.themetalayer.org` | `gov-hub-prod/instance/datatracker.db` |
 
-Use `--env main` (default) or `--env dev`. Override with `--hub-url` if needed.
+Use `--env main` (default) or `--env dev` (`development` / `production` also accepted). Override
+with `--hub-url` if needed. With `--local-db`, `--env` also picks the default Gov Hub checkout and
+`FLASK_ENV` (same mapping as `govhub_publish_dp_revisions.py`).
 
 ## Syncing
 

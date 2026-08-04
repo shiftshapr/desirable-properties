@@ -34,6 +34,9 @@ Usage:
     python3 scripts/govhub_publish_dp_revisions.py --only DP22
 
     # production (submit only; approve via the Gov Hub admin queue)
+    python3 scripts/govhub_publish_dp_revisions.py --env main
+
+    # explicit checkout + flask env (same as --env main)
     python3 scripts/govhub_publish_dp_revisions.py \
         --govhub-root /home/ubuntu/gov-hub-prod --flask-env production
 
@@ -53,8 +56,17 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+SCRIPTS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+
+from govhub_dp_common import (  # noqa: E402
+    canonical_env,
+    default_govhub_root,
+    flask_env_for_env,
+    hub_url_for_env,
+)
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_GOVHUB_ROOT = Path('/home/ubuntu/gov-hub-dev')
 DEFAULT_CONTENT_DIR = REPO_ROOT / 'desirableproperties-book' / 'content' / 'local'
 DEFAULT_SOURCES_SAT = REPO_ROOT / 'desirableproperties-book' / 'json' / 'sources-sat.json'
 
@@ -96,11 +108,14 @@ def load_dp_manifest(sources_sat: Path) -> list[dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--govhub-root', default=str(DEFAULT_GOVHUB_ROOT),
-                        help='Gov Hub checkout to import and write to (default: gov-hub-dev)')
-    parser.add_argument('--flask-env', default='development',
-                        choices=['development', 'production'],
-                        help='Selects Gov Hub instance dir + DB (default: development)')
+    parser.add_argument('--env', default='dev',
+                        choices=sorted({'dev', 'development', 'main', 'production'}),
+                        help='Target hub: dev/development or main/production (default: dev)')
+    parser.add_argument('--govhub-root', default='',
+                        help='Gov Hub checkout (default: from --env)')
+    parser.add_argument('--flask-env', default='',
+                        choices=['', 'development', 'production'],
+                        help='Gov Hub FLASK_ENV / DB (default: from --env)')
     parser.add_argument('--content-dir', default=str(DEFAULT_CONTENT_DIR),
                         help='Directory holding dpN.md local chapters')
     parser.add_argument('--sources-sat', default=str(DEFAULT_SOURCES_SAT),
@@ -119,7 +134,19 @@ def main() -> int:
                         help='Write a JSON report of the run to this path')
     args = parser.parse_args()
 
-    govhub_root = Path(args.govhub_root).resolve()
+    try:
+        canonical_env(args.env)
+    except ValueError as exc:
+        print(f'ERROR: {exc}', file=sys.stderr)
+        return 2
+
+    flask_env = args.flask_env or flask_env_for_env(args.env)
+    govhub_root = (
+        Path(args.govhub_root).resolve()
+        if args.govhub_root
+        else default_govhub_root(args.env).resolve()
+    )
+    hub_url = hub_url_for_env(args.env)
     if not (govhub_root / 'app.py').is_file():
         print(f'ERROR: {govhub_root} does not look like a Gov Hub checkout', file=sys.stderr)
         return 2
@@ -132,7 +159,7 @@ def main() -> int:
             return 2
 
     # Gov Hub reads FLASK_ENV at config import time to pick instance dir + DB.
-    os.environ['FLASK_ENV'] = args.flask_env
+    os.environ['FLASK_ENV'] = flask_env
     sys.path.insert(0, str(govhub_root))
     os.chdir(govhub_root)
 
@@ -152,8 +179,9 @@ def main() -> int:
     if wanted:
         rails = [r for r in rails if r['dp'].upper() in wanted]
 
+    print(f'Env          : {args.env} ({hub_url})')
     print(f'Gov Hub root : {govhub_root}')
-    print(f'FLASK_ENV    : {args.flask_env}')
+    print(f'FLASK_ENV    : {flask_env}')
     print(f'Database     : {DB_PATH}')
     print(f'Content dir  : {content_dir}')
     print(f'DPs targeted : {len(rails)}')
@@ -340,7 +368,9 @@ def main() -> int:
         report_path.write_text(json.dumps({
             'generated_at': datetime.utcnow().isoformat() + 'Z',
             'govhub_root': str(govhub_root),
-            'flask_env': args.flask_env,
+            'env': args.env,
+            'hub_url': hub_url,
+            'flask_env': flask_env,
             'dry_run': args.dry_run,
             'approved': bool(args.approve),
             'results': results,
