@@ -1,0 +1,30 @@
+---
+description: Desirable Properties book rails sync from Gov Hub only
+globs:
+  - desirableproperties-book/content/local/dp*.md
+  - scripts/govhub_sync_rails_from_hub.py
+  - scripts/govhub_dp_common.py
+---
+
+# DP book rails — Gov Hub source of truth
+
+The files `desirableproperties-book/content/local/dp1.md` … `dp23.md` are **synced from Gov Hub**.
+Do not edit them directly in this repo.
+
+## Correct workflow
+
+1. Edit the chapter on Gov Hub and get the revision approved.
+2. Run `python3 scripts/govhub_sync_rails_from_hub.py` (use `--dry-run` first).
+3. Commit with `[rail-sync]` in the message.
+
+See `docs/GOVHUB-RAIL-SYNC.md` and `desirableproperties-book/content/local/README.md`.
+
+## Publishing the other direction
+
+`scripts/govhub_publish_dp_revisions.py` pushes local rails **to** Gov Hub. That is the legacy
+direction; prefer Gov Hub → sync for ongoing editorial work on the DP book.
+
+## Overrides
+
+- `ALLOW_RAIL_EDIT=1` — allow a one-off local commit without `[rail-sync]`
+- PR label `rail-sync` — CI accepts rail diffs

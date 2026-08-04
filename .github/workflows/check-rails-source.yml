@@ -1,0 +1,17 @@
+name: Check rail source protection
+
+on:
+  pull_request:
+    paths:
+      - 'desirableproperties-book/content/local/dp*.md'
+
+jobs:
+  check-rails:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify rail edits are authorized
+        run: bash scripts/check-rails-protected.sh --ci
