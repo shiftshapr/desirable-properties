@@ -15,6 +15,7 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 | `scripts/govhub_dp_common.py` | Shared mapping + fetch helpers |
 | `scripts/check-rails-protected.sh` | Block unauthorized direct edits to `dp*.md` |
 | `scripts/test_govhub_sync_rails.py` | Unit tests (mapping, sync marker helpers) |
+| `.github/workflows/govhub-rail-sync.yml` | Scheduled + manual auto-sync from Gov Hub DEV |
 
 ## Environments
 
@@ -116,6 +117,44 @@ python3 scripts/test_govhub_sync_rails.py
 python3 scripts/govhub_sync_rails_from_hub.py --dry-run
 ```
 
+## Automatic sync (GitHub Actions)
+
+A scheduled workflow keeps local rails in sync with Gov Hub DEV without manual runs.
+
+| | |
+| --- | --- |
+| Workflow | `.github/workflows/govhub-rail-sync.yml` |
+| Schedule | Every 6 hours (`0 */6 * * *` UTC) |
+| Source | Gov Hub DEV API (`--env dev`, default) |
+| Commit tag | `[rail-sync]` (passes rail edit protection) |
+
+### Manual trigger
+
+**Actions tab:** open **Gov Hub rail sync** → **Run workflow**. Optional inputs:
+
+- **env** — `dev` (default) or `main`
+- **dry_run** — preview only; no file writes or commits
+
+**GitHub CLI:**
+
+```bash
+gh workflow run govhub-rail-sync.yml --repo shiftshapr/desirable-properties
+gh workflow run govhub-rail-sync.yml --repo shiftshapr/desirable-properties -f env=dev -f dry_run=true
+```
+
+### Optional push trigger (future)
+
+The workflow also listens for `repository_dispatch` event type `govhub-rail-sync`. A Gov Hub
+hook on revision approval could POST to the GitHub API to run sync immediately instead of
+waiting for the schedule. No Gov Hub code ships this yet; the schedule is the supported path.
+
+Example payload (requires a repo secret PAT with `actions:write`, not wired up today):
+
+```json
+POST /repos/shiftshapr/desirable-properties/dispatches
+{ "event_type": "govhub-rail-sync", "client_payload": { "env": "dev" } }
+```
+
 ## BRC333 project config
 
 Per-project Gov Hub sync is configured in the BRC333 repo:
@@ -135,7 +174,7 @@ flowchart LR
 ```
 
 1. Edit and approve on Gov Hub.
-2. Run sync script → commit with `[rail-sync]`.
+2. Automatic sync (every 6 h) or manual `workflow_dispatch` / sync script → commit with `[rail-sync]`.
 3. Book preview reads updated rails via `localOverride`.
 
 Do **not** run `govhub_publish_dp_revisions.py` unless intentionally pushing local edits back
