@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 
-const VALID_KINDS = new Set(['challenge', 'govhub_action', 'custom']);
+const VALID_KINDS = new Set(['challenge', 'govhub_action', 'reply', 'custom']);
 
 export type DpBlueberry = {
   id: string;

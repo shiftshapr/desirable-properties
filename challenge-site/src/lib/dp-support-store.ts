@@ -98,6 +98,10 @@ function rowToTicket(row: Record<string, unknown>): SupportTicket {
     proposedResolution: row.proposed_resolution ? String(row.proposed_resolution) : null,
     resolution: row.resolution ? String(row.resolution) : null,
     escalatedToHuman: Boolean(row.escalated_to_human),
+    blueberryAward:
+      row.blueberry_award && typeof row.blueberry_award === 'object'
+        ? (row.blueberry_award as SupportTicket['blueberryAward'])
+        : null,
   });
 }
 

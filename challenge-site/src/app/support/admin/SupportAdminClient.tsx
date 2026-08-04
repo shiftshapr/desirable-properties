@@ -18,6 +18,7 @@ type TicketRow = {
 
 type TicketDetail = TicketRow & {
   body?: string;
+  userId?: string | null;
   stepsToReproduce?: string | null;
   expectedBehavior?: string | null;
   actualBehavior?: string | null;
@@ -29,6 +30,7 @@ type TicketDetail = TicketRow & {
   draftReply?: { subject: string; body: string; sentAt?: string | null };
   attachmentUrls?: Array<{ filename: string; url: string }>;
   diagnosticBundle?: Record<string, unknown> | null;
+  blueberryAward?: { blueberryId: string; awardedAt: string; awardedBy: string } | null;
 };
 
 const STATUSES = ['open', 'triaged', 'closed'] as const;
@@ -139,6 +141,35 @@ export default function SupportAdminClient() {
 
   async function saveDraft() {
     await patchTicket({ draftReply: { subject: draftSubject, body: draftBody } });
+  }
+
+  async function awardBlueberry() {
+    if (!selectedId) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/support/admin/tickets/${encodeURIComponent(selectedId)}/award-blueberry`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}',
+        },
+      );
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setError(data.message || data.error || 'Award failed');
+        return;
+      }
+      setDetail(data.ticket);
+      setFlash('Bug Hunter blueberry awarded');
+      await loadQueue();
+    } catch {
+      setError('Award failed');
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function sendReply() {
@@ -296,6 +327,23 @@ export default function SupportAdminClient() {
                 >
                   {detail.escalatedToHuman ? 'Clear escalation' : 'Escalate to human'}
                 </button>
+                {detail.category === 'technical_support' ? (
+                  detail.blueberryAward?.awardedAt ? (
+                    <span className="rounded-md border border-violet-700/50 bg-violet-950/40 px-3 py-1 text-xs text-violet-200">
+                      Bug Hunter awarded {new Date(detail.blueberryAward.awardedAt).toLocaleDateString()}
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={busy || !detail.userId}
+                      title={detail.userId ? 'Award public Bug Hunter blueberry' : 'Ticket has no signed-in user'}
+                      onClick={() => void awardBlueberry()}
+                      className="rounded-md border border-violet-700/50 px-3 py-1 text-xs text-violet-200 hover:bg-violet-950/40 disabled:opacity-50"
+                    >
+                      Award Bug Hunter 🫐
+                    </button>
+                  )
+                ) : null}
               </div>
 
               <div>

@@ -113,6 +113,27 @@ CREATE TABLE IF NOT EXISTS dp_support_ticket (
 CREATE INDEX IF NOT EXISTS dp_support_ticket_queue ON dp_support_ticket (status, urgency, created_at ASC);
 CREATE INDEX IF NOT EXISTS dp_support_ticket_user ON dp_support_ticket (user_id);
 CREATE INDEX IF NOT EXISTS dp_support_ticket_updated ON dp_support_ticket (updated_at DESC);
+
+ALTER TABLE dp_support_ticket ADD COLUMN IF NOT EXISTS blueberry_award JSONB;
+
+CREATE TABLE IF NOT EXISTS dp_broadcast_preference (
+  user_id TEXT PRIMARY KEY,
+  email TEXT,
+  do_not_send BOOLEAN NOT NULL DEFAULT false,
+  unsubscribe_token TEXT UNIQUE,
+  unsubscribed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS dp_broadcast_preference_token ON dp_broadcast_preference (unsubscribe_token);
+
+CREATE TABLE IF NOT EXISTS dp_broadcast_unsubscribe (
+  token TEXT PRIMARY KEY,
+  user_id TEXT,
+  email TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 `;
 
 let pool: pg.Pool | null = null;

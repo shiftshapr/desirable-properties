@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState, type DragEvent } from 'react';
+import { DP_CANOPI_CHAPTERS } from '@/lib/dp-canopi-chapters';
 
 type Blueberry = {
   id: string;
@@ -25,9 +26,18 @@ type Settings = {
 
 const KINDS = [
   { value: 'challenge', label: 'Challenge activity' },
+  { value: 'reply', label: 'Reply (Canopi post)' },
   { value: 'govhub_action', label: 'Gov Hub action' },
   { value: 'custom', label: 'Custom' },
 ];
+
+type CanopiPost = {
+  id: string;
+  content: string;
+  pageId: string | null;
+  authorName: string | null;
+  createdAt: string | null;
+};
 
 function toDatetimeLocal(iso: string | null): string {
   if (!iso) return '';
@@ -68,6 +78,12 @@ export default function BlueberriesAdminPanel() {
   const [availabilityDraft, setAvailabilityDraft] = useState<
     Record<string, { availableFrom: string; availableUntil: string }>
   >({});
+  const [canopiPageId, setCanopiPageId] = useState('');
+  const [canopiQuery, setCanopiQuery] = useState('');
+  const [canopiAuthor, setCanopiAuthor] = useState('');
+  const [canopiPosts, setCanopiPosts] = useState<CanopiPost[]>([]);
+  const [canopiSearching, setCanopiSearching] = useState(false);
+  const [canopiError, setCanopiError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -219,6 +235,59 @@ export default function BlueberriesAdminPanel() {
     void reorderBlueberries(dragIndex, index);
   }
 
+  async function searchCanopiPosts() {
+    setCanopiSearching(true);
+    setCanopiError(null);
+    try {
+      const res = await fetch('/api/admin/blueberries/search-posts', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pageId: canopiPageId || undefined,
+          q: canopiQuery || undefined,
+          authorName: canopiAuthor || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || data.message || 'Search failed');
+      setCanopiPosts(data.posts || []);
+    } catch (err) {
+      setCanopiError(err instanceof Error ? err.message : 'Search failed');
+      setCanopiPosts([]);
+    } finally {
+      setCanopiSearching(false);
+    }
+  }
+
+  async function addFromCanopiPost(post: CanopiPost) {
+    setBusy(true);
+    setFlash(null);
+    try {
+      const label = post.content.slice(0, 80) || `Post ${post.id.slice(0, 8)}…`;
+      const res = await fetch('/api/admin/blueberries', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          label,
+          description: post.content.slice(0, 400),
+          kind: 'reply',
+          govhubMessageId: post.id,
+          requiresAcceptance: true,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.message || 'Create failed');
+      await load();
+      setFlash('Reply blueberry added from Canopi post.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Create failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function saveAvailability(item: Blueberry) {
     const draft = availabilityDraft[item.id];
     if (!draft) return;
@@ -310,6 +379,74 @@ export default function BlueberriesAdminPanel() {
         >
           Save settings
         </button>
+      </section>
+
+      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <h3 className="text-lg font-semibold text-white">Canopi post search</h3>
+        <p className="mt-2 text-sm text-slate-400">
+          Search Canopi posts on the DP book reader and add reply blueberries. Pick a chapter, search,
+          then click Add on a post.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <select
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            value={canopiPageId}
+            onChange={(e) => setCanopiPageId(e.target.value)}
+          >
+            {DP_CANOPI_CHAPTERS.map((c) => (
+              <option key={c.value || 'all'} value={c.value}>{c.label}</option>
+            ))}
+          </select>
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            placeholder="Search text"
+            value={canopiQuery}
+            onChange={(e) => setCanopiQuery(e.target.value)}
+          />
+          <input
+            className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            placeholder="Author name"
+            value={canopiAuthor}
+            onChange={(e) => setCanopiAuthor(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          disabled={canopiSearching}
+          onClick={() => void searchCanopiPosts()}
+          className="mt-4 rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+        >
+          {canopiSearching ? 'Searching…' : 'Search posts'}
+        </button>
+        {canopiError ? (
+          <p className="mt-3 text-sm text-rose-300">{canopiError}</p>
+        ) : null}
+        {canopiPosts.length > 0 ? (
+          <ul className="mt-4 divide-y divide-slate-800 rounded-lg border border-slate-800">
+            {canopiPosts.map((post) => (
+              <li key={post.id} className="flex flex-wrap items-start justify-between gap-3 px-4 py-3 text-sm">
+                <div className="min-w-0 flex-1">
+                  <p className="text-white">{post.content.slice(0, 200)}{post.content.length > 200 ? '…' : ''}</p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {post.authorName || 'Unknown author'}
+                    {post.pageId ? ` · ${post.pageId}` : ''}
+                    {post.createdAt ? ` · ${new Date(post.createdAt).toLocaleString()}` : ''}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void addFromCanopiPost(post)}
+                  className="shrink-0 rounded border border-cyan-700 px-3 py-1 text-xs text-cyan-200 hover:bg-cyan-950/40 disabled:opacity-50"
+                >
+                  Add
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : canopiSearching ? null : (
+          <p className="mt-4 text-sm text-slate-500">Search results appear here.</p>
+        )}
       </section>
 
       <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">

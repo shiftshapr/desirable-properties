@@ -131,7 +131,8 @@ export default function BroadcastAdminPanel() {
       <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
         <h2 className="text-xl font-semibold text-white">Broadcast</h2>
         <p className="mt-2 text-sm text-slate-400">
-          Email workgroup participants. Merge tags: {'{name}'}, {'{userName}'}, {'{workgroups}'}.
+          Email workgroup participants. Merge tags: {'{name}'}, {'{userName}'}, {'{workgroups}'}. Unsubscribe
+          links are appended automatically.
         </p>
 
         <div className="mt-4 grid gap-3">

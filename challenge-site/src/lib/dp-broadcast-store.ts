@@ -2,6 +2,12 @@ import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { enrichBroadcastAudienceEmails } from '@/lib/dp-broadcast-email';
 import { fetchWorkgroupSignups, type WorkgroupSignupPerson } from '@/lib/workgroup-signups';
+import {
+  ensureUnsubscribeToken,
+  indexUnsubscribeToken,
+  isUserOptedOut,
+} from '@/lib/dp-broadcast-preferences-store';
+import { isCanopiUserId } from '@/lib/dp-canopi-user';
 
 export type BroadcastAudienceRow = {
   key: string;
@@ -92,11 +98,38 @@ function applyMergeTags(template: string, row: BroadcastAudienceRow) {
     .replace(/\{workgroups\}/gi, row.workgroups.join(', '));
 }
 
+function escapeHtml(s: string) {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function publicBase() {
+  return (
+    process.env.DP_PUBLIC_BASE?.trim() ||
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    'https://desirableproperties.org'
+  ).replace(/\/$/, '');
+}
+
+function appendUnsubscribeFooter(html: string, text: string | undefined, unsubscribeUrl: string) {
+  const footerHtml = `<p style="font-size:12px;color:#666;margin-top:2em;">You received this because you joined a Desirable Properties workgroup. <a href="${escapeHtml(unsubscribeUrl)}">Unsubscribe from challenge updates</a>.</p>`;
+  const footerText = `\n\nYou received this because you joined a Desirable Properties workgroup. Unsubscribe: ${unsubscribeUrl}`;
+  return {
+    html: html.includes('</body>') ? html.replace('</body>', `${footerHtml}</body>`) : `${html}${footerHtml}`,
+    text: text ? `${text}${footerText}` : footerText.trim(),
+  };
+}
+
 async function sendViaResend(payload: {
   to: string;
   subject: string;
   html: string;
   text?: string;
+  unsubscribeUrl?: string;
+  tags?: Array<{ name: string; value: string }>;
 }) {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) return { ok: false as const, error: 'resend_not_configured' };
@@ -106,6 +139,12 @@ async function sendViaResend(payload: {
     process.env.DP_SUPPORT_FROM?.trim() ||
     process.env.RESEND_FROM?.trim() ||
     'Desirable Properties <noreply@desirableproperties.org>';
+
+  const headers: Record<string, string> = {};
+  if (payload.unsubscribeUrl) {
+    headers['List-Unsubscribe'] = `<${payload.unsubscribeUrl}>`;
+    headers['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
+  }
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -119,6 +158,8 @@ async function sendViaResend(payload: {
       subject: payload.subject,
       html: payload.html,
       text: payload.text,
+      headers: Object.keys(headers).length ? headers : undefined,
+      tags: payload.tags,
     }),
     signal: AbortSignal.timeout(20000),
   });
@@ -156,6 +197,17 @@ export async function sendBroadcast(input: {
   const testMode = Boolean(input.testMode);
   const testEmail = normStr(input.testEmail, 200).toLowerCase();
 
+  if (!testMode) {
+    const filtered: BroadcastAudienceRow[] = [];
+    for (const row of targets) {
+      if (row.userId && isCanopiUserId(row.userId) && (await isUserOptedOut(row.userId))) {
+        continue;
+      }
+      filtered.push(row);
+    }
+    targets = filtered;
+  }
+
   if (testMode) {
     if (!testEmail) return { ok: false as const, error: 'test_email_required' };
     targets = [
@@ -173,6 +225,8 @@ export async function sendBroadcast(input: {
   const recipientResults: Array<Record<string, unknown>> = [];
   let successCount = 0;
   let failureCount = 0;
+  const broadcastId = crypto.randomUUID();
+  const base = publicBase();
 
   for (const row of targets) {
     const to = row.email;
@@ -187,14 +241,29 @@ export async function sendBroadcast(input: {
       continue;
     }
 
+    let unsubscribeUrl = `${base}/api/broadcast/unsubscribe`;
+    if (row.userId && isCanopiUserId(row.userId)) {
+      const tokenResult = await ensureUnsubscribeToken(row.userId, to);
+      if (tokenResult.ok && tokenResult.token) {
+        await indexUnsubscribeToken({ token: tokenResult.token, userId: row.userId, email: to });
+        unsubscribeUrl = `${base}/api/broadcast/unsubscribe?token=${encodeURIComponent(tokenResult.token)}`;
+      }
+    }
+
     const personalizedHtml = applyMergeTags(html, row);
     const personalizedSubject = applyMergeTags(subject, row);
     const textBody = input.textBody ? applyMergeTags(input.textBody, row) : undefined;
+    const withFooter = appendUnsubscribeFooter(personalizedHtml, textBody, unsubscribeUrl);
     const result = await sendViaResend({
       to,
       subject: personalizedSubject,
-      html: personalizedHtml,
-      text: textBody,
+      html: withFooter.html,
+      text: withFooter.text,
+      unsubscribeUrl,
+      tags: [
+        { name: 'broadcast_id', value: broadcastId },
+        ...(row.userId ? [{ name: 'canopi_user_id', value: row.userId }] : []),
+      ],
     });
 
     if (result.ok) {
@@ -212,7 +281,7 @@ export async function sendBroadcast(input: {
     }
   }
 
-  const id = crypto.randomUUID();
+  const id = broadcastId;
   await pool.query(
     `INSERT INTO dp_broadcast_log (
        id, subject, html, text_body, sent_at, sent_by, audience_filter,

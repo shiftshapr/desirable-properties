@@ -204,11 +204,21 @@ export default function SiteAuthNav() {
           <li role="none">
             <a
               role="menuitem"
-              href="/participate#blueberries"
+              href="/activity?tab=blueberries"
               className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
               onClick={() => setMenuOpen(false)}
             >
               Blueberries
+            </a>
+          </li>
+          <li role="none">
+            <a
+              role="menuitem"
+              href="/activity"
+              className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Activity
             </a>
           </li>
           {welcomeLinks.length > 0 ? (

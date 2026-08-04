@@ -23,10 +23,11 @@ type BlueberriesPayload = {
 const KIND_LABELS: Record<string, string> = {
   challenge: 'Challenge',
   govhub_action: 'Gov Hub',
+  reply: 'Canopi reply',
   custom: 'Activity',
 };
 
-export default function BlueberriesWidget() {
+export default function BlueberriesWidget({ embedded = false }: { embedded?: boolean }) {
   const [payload, setPayload] = useState<BlueberriesPayload | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -57,8 +58,8 @@ export default function BlueberriesWidget() {
 
   if (loading) {
     return (
-      <section className="border-b border-slate-800 bg-slate-900/40">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <section className={embedded ? '' : 'border-b border-slate-800 bg-slate-900/40'}>
+        <div className={embedded ? '' : 'mx-auto max-w-6xl px-4 py-12 sm:px-6'}>
           <div className="h-32 animate-pulse rounded-xl border border-slate-800 bg-slate-950/40" />
         </div>
       </section>
@@ -70,8 +71,8 @@ export default function BlueberriesWidget() {
   const showItems = payload.available && payload.items.length > 0;
 
   return (
-    <section id="blueberries" className="border-b border-slate-800 bg-slate-900/40">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <section id="blueberries" className={embedded ? '' : 'border-b border-slate-800 bg-slate-900/40'}>
+      <div className={embedded ? '' : 'mx-auto max-w-6xl px-4 py-16 sm:px-6'}>
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-2xl" aria-hidden>
             🫐

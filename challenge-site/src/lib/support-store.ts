@@ -83,6 +83,11 @@ export interface SupportTicket {
   proposedResolution: string | null;
   resolution: string | null;
   escalatedToHuman: boolean;
+  blueberryAward?: {
+    blueberryId: string;
+    awardedAt: string;
+    awardedBy: string;
+  } | null;
 }
 
 const VALID_URGENCY = new Set<SupportUrgency>(['critical', 'blocking', 'non_blocking']);
@@ -449,6 +454,7 @@ export function publicTicketSummaryExtended(ticket: SupportTicket, opts: { inclu
     summary.browser = ticket.browser;
     summary.os = ticket.os;
     summary.attachments = ticket.attachments;
+    summary.blueberryAward = ticket.blueberryAward || null;
   }
   summary.attachmentUrls = attachmentUrls(ticket);
   return summary;
