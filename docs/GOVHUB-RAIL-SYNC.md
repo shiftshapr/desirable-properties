@@ -15,16 +15,16 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 | `scripts/govhub_dp_common.py` | Shared mapping + fetch helpers |
 | `scripts/check-rails-protected.sh` | Block unauthorized direct edits to `dp*.md` |
 | `scripts/test_govhub_sync_rails.py` | Unit tests (mapping, sync marker helpers) |
-| `.github/workflows/govhub-rail-sync.yml` | Scheduled + manual auto-sync from Gov Hub DEV |
+| `.github/workflows/govhub-rail-sync.yml` | Event-driven + scheduled auto-sync from production Gov Hub |
 
 ## Environments
 
 | | Hub URL | Local DB (optional) |
 | --- | --- | --- |
 | DEV | `https://dev.hub.themetalayer.org` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
-| LIVE | `https://hub.themetalayer.org` | `gov-hub-prod/instance/datatracker.db` |
+| LIVE (default) | `https://hub.themetalayer.org` | `gov-hub-prod/instance/datatracker.db` |
 
-Use `--env dev` (default) or `--env main`. Override with `--hub-url` if needed.
+Use `--env main` (default) or `--env dev`. Override with `--hub-url` if needed.
 
 ## Syncing
 
@@ -35,12 +35,12 @@ cd /home/ubuntu/desirable-properties
 python3 scripts/govhub_sync_rails_from_hub.py --dry-run
 ```
 
-Write all chapters from DEV hub API:
+Write all chapters from production hub API:
 
 ```bash
 python3 scripts/govhub_sync_rails_from_hub.py
 git add desirableproperties-book/content/local/dp*.md
-git commit -m "sync: pull DP rails from Gov Hub DEV [rail-sync]"
+git commit -m "sync: pull DP rails from Gov Hub main [rail-sync]"
 ```
 
 Useful flags:
@@ -119,41 +119,74 @@ python3 scripts/govhub_sync_rails_from_hub.py --dry-run
 
 ## Automatic sync (GitHub Actions)
 
-A scheduled workflow keeps local rails in sync with Gov Hub DEV without manual runs.
+The **Gov Hub rail sync** workflow pulls from production Gov Hub and, when rails change, deploys
+the book to the VPS (staging first, then production).
 
 | | |
 | --- | --- |
 | Workflow | `.github/workflows/govhub-rail-sync.yml` |
-| Schedule | Every 6 hours (`0 */6 * * *` UTC) |
-| Source | Gov Hub DEV API (`--env dev`, default) |
+| Primary trigger | `repository_dispatch` event `govhub-rail-sync` (Gov Hub revision approval) |
+| Fallback schedule | Daily at 06:00 UTC (`0 6 * * *`) |
+| Source | Production Gov Hub API (`--env main`, default) |
+| Deploy | SSH to VPS → `deploy-staging-book.sh` → `deploy.sh` (only when rails changed) |
 | Commit tag | `[rail-sync]` (passes rail edit protection) |
 
 ### Manual trigger
 
 **Actions tab:** open **Gov Hub rail sync** → **Run workflow**. Optional inputs:
 
-- **env** — `dev` (default) or `main`
-- **dry_run** — preview only; no file writes or commits
+- **env** — `main` (default) or `dev`
+- **dry_run** — preview only; no file writes, commits, or deploy
 
 **GitHub CLI:**
 
 ```bash
 gh workflow run govhub-rail-sync.yml --repo shiftshapr/desirable-properties
-gh workflow run govhub-rail-sync.yml --repo shiftshapr/desirable-properties -f env=dev -f dry_run=true
+gh workflow run govhub-rail-sync.yml --repo shiftshapr/desirable-properties -f env=main -f dry_run=true
 ```
 
-### Optional push trigger (future)
+### Gov Hub webhook (primary path)
 
-The workflow also listens for `repository_dispatch` event type `govhub-rail-sync`. A Gov Hub
-hook on revision approval could POST to the GitHub API to run sync immediately instead of
-waiting for the schedule. No Gov Hub code ships this yet; the schedule is the supported path.
+When a DP book **revision** is approved on production Gov Hub, Gov Hub POSTs a GitHub
+`repository_dispatch` to this repo (event type `govhub-rail-sync`). That runs sync immediately
+instead of waiting for the daily fallback schedule.
 
-Example payload (requires a repo secret PAT with `actions:write`, not wired up today):
+Gov Hub hook location: `services/dp_rail_sync_dispatch.py`, called from
+`routes/submissions.py` after revision approval.
+
+Example payload:
 
 ```json
 POST /repos/shiftshapr/desirable-properties/dispatches
-{ "event_type": "govhub-rail-sync", "client_payload": { "env": "dev" } }
+{
+  "event_type": "govhub-rail-sync",
+  "client_payload": {
+    "env": "main",
+    "ml_number": "ML-Draft-008",
+    "revision_number": "02",
+    "submission_id": "<uuid>"
+  }
+}
 ```
+
+### Required secrets
+
+Set these in **shiftshapr/desirable-properties** (GitHub Actions) and on **production Gov Hub**
+(`.env`):
+
+| Secret / env var | Where | Purpose |
+| --- | --- | --- |
+| `HOST` | GitHub Actions | VPS hostname for SSH deploy (same as challenge-site deploy) |
+| `USERNAME` | GitHub Actions | SSH user (typically `ubuntu`) |
+| `SSH_KEY` | GitHub Actions | Private key for VPS SSH |
+| `GH_DISPATCH_TOKEN` | Gov Hub `.env` | PAT with `repo` scope on `shiftshapr/desirable-properties` |
+| `GITHUB_REPO` | Gov Hub `.env` | Target repo (default `shiftshapr/desirable-properties`) |
+| `GOVHUB_DP_RAIL_SYNC_DISPATCH` | Gov Hub `.env` | Set `true` to enable dispatch on approval |
+| `DP_RAIL_SYNC_ENV` | Gov Hub `.env` | Sync env sent in payload (default `main`) |
+| `DP_RAIL_SYNC_ML_NUMBERS` | Gov Hub `.env` | Extra ML numbers to watch (default includes `ML-Draft-026` intro) |
+
+The workflow uses the built-in `GITHUB_TOKEN` for commit/push; the Gov Hub PAT is only for
+triggering `repository_dispatch`.
 
 ## BRC333 project config
 
@@ -168,14 +201,16 @@ Other BRC333 projects omit the block or set `"enabled": false`.
 ```mermaid
 flowchart LR
   A[Gov Hub editor] --> B[Approve revision]
-  B --> C[govhub_sync_rails_from_hub.py]
-  C --> D[content/local/dpN.md]
-  D --> E[BRC333 book preview / deploy]
+  B --> C[repository_dispatch]
+  C --> D[govhub-rail-sync workflow]
+  D --> E[content/local/dpN.md]
+  E --> F[Book deploy staging + production]
 ```
 
-1. Edit and approve on Gov Hub.
-2. Automatic sync (every 6 h) or manual `workflow_dispatch` / sync script → commit with `[rail-sync]`.
-3. Book preview reads updated rails via `localOverride`.
+1. Edit and approve a DP revision on production Gov Hub (`https://hub.themetalayer.org`).
+2. Gov Hub dispatches → workflow syncs rails → commits with `[rail-sync]` → deploys book if changed.
+3. Daily cron catches anything missed by the webhook.
+4. Book preview reads updated rails via `localOverride`.
 
 Do **not** run `govhub_publish_dp_revisions.py` unless intentionally pushing local edits back
 to Gov Hub (legacy / migration path).

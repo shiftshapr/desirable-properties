@@ -4,15 +4,15 @@ name: Gov Hub rail sync
 
 on:
   schedule:
-    # Every 6 hours (UTC)
-    - cron: '0 */6 * * *'
+    # Daily fallback if Gov Hub dispatch webhook missed (06:00 UTC)
+    - cron: '0 6 * * *'
 
   workflow_dispatch:
     inputs:
       env:
         description: Gov Hub environment
         required: false
-        default: dev
+        default: main
         type: choice
         options:
           - dev
@@ -36,6 +36,9 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    outputs:
+      rails_changed: ${{ steps.commit.outputs.rails_changed }}
+      dry_run: ${{ steps.cfg.outputs.dry_run }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +49,7 @@ jobs:
           INPUT_ENV: ${{ inputs.env }}
           DISPATCH_ENV: ${{ github.event.client_payload.env }}
         run: |
-          env_name="dev"
+          env_name="main"
           if [ -n "${INPUT_ENV}" ]; then
             env_name="${INPUT_ENV}"
           elif [ -n "${DISPATCH_ENV}" ]; then
@@ -66,6 +69,7 @@ jobs:
           python3 scripts/govhub_sync_rails_from_hub.py "${args[@]}"
 
       - name: Commit and push rail updates
+        id: commit
         if: steps.cfg.outputs.dry_run != 'true'
         run: |
           set -euo pipefail
@@ -77,15 +81,40 @@ jobs:
           files=($rails)
           if [ ${#files[@]} -eq 0 ]; then
             echo "No rail files found; nothing to commit."
+            echo "rails_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           git add "${files[@]}"
           if git diff --staged --quiet; then
             echo "Rails already up to date with Gov Hub."
+            echo "rails_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           env_label="${{ steps.cfg.outputs.env }}"
           git commit -m "sync: pull DP rails from Gov Hub ${env_label} [rail-sync]"
           git push
+          echo "rails_changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: sync
+    if: needs.sync.outputs.rails_changed == 'true' && needs.sync.outputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy book to VPS (staging then production)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            #!/usr/bin/env bash
+            set -euo pipefail
+
+            REPO="/home/ubuntu/desirable-properties"
+            cd "$REPO"
+            git pull origin main
+
+            bash desirableproperties-book/scripts/deploy-staging-book.sh
+            bash desirableproperties-book/deploy.sh

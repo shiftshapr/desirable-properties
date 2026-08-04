@@ -6,10 +6,10 @@ This is the inverse of govhub_publish_dp_revisions.py: Gov Hub is the editorial
 source of truth; the local rails are a synced working copy for the BRC333 book.
 
 Usage:
-    # dry run against DEV hub API (default)
+    # dry run against production hub API (default)
     python3 scripts/govhub_sync_rails_from_hub.py --dry-run
 
-    # write rails from DEV hub API
+    # write rails from production hub API
     python3 scripts/govhub_sync_rails_from_hub.py
 
     # sync from local Gov Hub SQLite (automation / no network)
@@ -55,8 +55,8 @@ def _normalize(text: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--env', default='dev', choices=['dev', 'main'],
-                        help='Gov Hub environment when using HTTP API (default: dev)')
+    parser.add_argument('--env', default='main', choices=['dev', 'main'],
+                        help='Gov Hub environment when using HTTP API (default: main)')
     parser.add_argument('--hub-url', default='',
                         help='Override hub base URL (default: from --env)')
     parser.add_argument('--local-db', action='store_true',
