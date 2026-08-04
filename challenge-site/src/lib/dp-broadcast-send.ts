@@ -73,39 +73,54 @@ function mergeInlineStyle(existing: string | undefined, extra: string) {
   return next;
 }
 
+const BLOCK_SPACING_STYLE = 'margin:0;padding:0;line-height:1.6;';
+
 const sanitizeDefaults: sanitizeHtml.IOptions = {
   allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2']),
   allowedAttributes: {
     ...sanitizeHtml.defaults.allowedAttributes,
     a: ['href', 'name', 'target', 'rel'],
     img: ['src', 'alt', 'width', 'height', 'style'],
+    // transformTags injects inline spacing styles — must allow style or sanitize-html strips them.
+    p: ['style'],
+    h1: ['style'],
+    h2: ['style'],
+    ul: ['style'],
+    ol: ['style'],
+    li: ['style'],
   },
   allowedSchemes: ['http', 'https', 'mailto'],
   transformTags: {
     a: sanitizeHtml.simpleTransform('a', { rel: 'noopener noreferrer', target: '_blank' }),
     p: (_tagName, attribs) => ({
       tagName: 'p',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, BLOCK_SPACING_STYLE) },
     }),
     h1: (_tagName, attribs) => ({
       tagName: 'h1',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, BLOCK_SPACING_STYLE) },
     }),
     h2: (_tagName, attribs) => ({
       tagName: 'h2',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, BLOCK_SPACING_STYLE) },
     }),
     ul: (_tagName, attribs) => ({
       tagName: 'ul',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;') },
+      attribs: {
+        ...attribs,
+        style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;line-height:1.6;'),
+      },
     }),
     ol: (_tagName, attribs) => ({
       tagName: 'ol',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;') },
+      attribs: {
+        ...attribs,
+        style: mergeInlineStyle(attribs.style, 'margin:0;padding:0 0 0 1.5em;line-height:1.6;'),
+      },
     }),
     li: (_tagName, attribs) => ({
       tagName: 'li',
-      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;') },
+      attribs: { ...attribs, style: mergeInlineStyle(attribs.style, 'margin:0;padding:0;line-height:1.6;') },
     }),
     img: (_tagName, attribs) => {
       const next = { ...attribs };
