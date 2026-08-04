@@ -3,6 +3,8 @@ export function hermesApiSecret() {
     process.env.DP_HERMES_API_KEY?.trim()
     || process.env.DP_SUPPORT_OPS_SECRET?.trim()
     || process.env.METAWEB_OPS_SECRET?.trim()
+    || process.env.METAWEB_GOVHUB_INTERNAL_SECRET?.trim()
+    || process.env.DP_AUTH_HANDOFF_SECRET?.trim()
     || ''
   );
 }

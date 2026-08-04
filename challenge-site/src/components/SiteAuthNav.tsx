@@ -8,6 +8,7 @@ import { govhubUrl } from '@/lib/govhub';
 type DpWelcomeLink = {
   id: string;
   title: string;
+  body?: string;
   link_url: string;
   variant: 'member' | 'coordinator';
 };
@@ -179,6 +180,33 @@ export default function SiteAuthNav() {
             <p className="truncate text-sm font-medium text-white">{displayName}</p>
             <p className="truncate text-xs text-slate-400">@{user.username}</p>
           </li>
+          {welcomeLinks.length > 0 ? (
+            <li role="none" className="border-b border-slate-800 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-cyan-400">
+                Workgroup welcome
+              </p>
+              {welcomeLinks.map((welcome) => (
+                <div key={welcome.id} className="mt-2">
+                  {welcome.body ? (
+                    <p className="text-xs leading-relaxed text-slate-300">{welcome.body}</p>
+                  ) : null}
+                  <a
+                    role="menuitem"
+                    href={welcome.link_url}
+                    className="mt-1 inline-block text-sm font-medium text-cyan-200 hover:text-cyan-100"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {welcome.title}
+                  </a>
+                </div>
+              ))}
+            </li>
+          ) : null}
+          {welcomeUnavailable ? (
+            <li role="none" className="border-b border-slate-800 px-4 py-2 text-xs text-slate-400">
+              Workgroup welcomes are temporarily unavailable.
+            </li>
+          ) : null}
           <li role="none">
             <a
               role="menuitem"
@@ -221,30 +249,6 @@ export default function SiteAuthNav() {
               Activity
             </a>
           </li>
-          {welcomeLinks.length > 0 ? (
-            <li role="none" className="border-t border-slate-800">
-              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Workgroup welcome
-              </p>
-              {welcomeLinks.map((welcome) => (
-                <li key={welcome.id} role="none">
-                  <a
-                    role="menuitem"
-                    href={welcome.link_url}
-                    className="block px-4 py-2 text-sm text-cyan-200 hover:bg-slate-800 hover:text-cyan-100"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {welcome.title}
-                  </a>
-                </li>
-              ))}
-            </li>
-          ) : null}
-          {welcomeUnavailable ? (
-            <li role="none" className="border-t border-slate-800 px-4 py-2 text-xs text-slate-400">
-              Workgroup welcomes are temporarily unavailable.
-            </li>
-          ) : null}
           <li role="none">
             <a
               role="menuitem"

@@ -12,8 +12,9 @@ export function isCanopiUserId(userId: string | null | undefined) {
 }
 
 /**
- * Resolve a Canopi user's email server-to-server (METAWEB_OPS_SECRET).
- * Same pattern as metaweb-book – requires Canopi `/v1/internal/metaweb/user-email`.
+ * Resolve a Canopi AppUser email server-to-server (METAWEB_OPS_SECRET).
+ * Use only when the ID is known to be a Canopi AppUser UUID. Workgroup signup
+ * audience rows store Gov Hub User.id — use fetchGovHubUserEmails instead.
  */
 export async function fetchCanopiUserEmail(userId: string): Promise<string | null> {
   const id = String(userId || '').trim();

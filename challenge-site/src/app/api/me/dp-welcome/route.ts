@@ -5,6 +5,7 @@ import { getGovHubBaseUrl } from '@/lib/web3auth-config';
 type UpstreamWelcome = {
   id?: unknown;
   title?: unknown;
+  body?: unknown;
   link_url?: unknown;
   variant?: unknown;
 };
@@ -55,6 +56,7 @@ function validWelcomes(data: unknown, request: Request) {
   return welcomes.map((welcome) => ({
     id: welcome.id as string,
     title: welcome.title as string,
+    body: typeof welcome.body === 'string' && welcome.body.trim() ? welcome.body.trim() : undefined,
     link_url: welcome.link_url as string,
     variant: normalizeVariant(welcome.variant as string),
   }));

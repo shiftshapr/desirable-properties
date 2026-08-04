@@ -1,9 +1,11 @@
 import { ensureDpSchema } from '@/lib/dp-db';
 import { fetchCanopiUserEmails, isCanopiUserId } from '@/lib/dp-canopi-user';
+import { fetchGovHubUserEmails } from '@/lib/dp-govhub-user';
 import { looksLikeEmail } from '@/lib/dp-broadcast-result';
 import type { BroadcastAudienceRow } from '@/lib/dp-broadcast-store';
 
 export type BroadcastEmailEnrichment = {
+  govhub: number;
   canopi: number;
   supportTickets: number;
   usernameEmail: number;
@@ -45,18 +47,21 @@ async function supportTicketEmails(userIds: string[]): Promise<Map<string, strin
 
 /**
  * Enrich broadcast audience rows with recipient emails where possible.
- * Sources (in order): Canopi internal API, support ticket capture.
+ * Sources (in order): Gov Hub account email, support ticket capture,
+ * email-shaped display name, Canopi internal API (legacy / non-Gov Hub IDs).
  */
 export async function enrichBroadcastAudienceEmails(
   rows: BroadcastAudienceRow[],
 ): Promise<{ rows: BroadcastAudienceRow[]; stats: BroadcastEmailEnrichment }> {
   const userIds = rows.map((r) => r.userId).filter((id): id is string => Boolean(id && isCanopiUserId(id)));
 
-  const [canopiEmails, ticketEmails] = await Promise.all([
-    fetchCanopiUserEmails(userIds),
+  const [govhubEmails, ticketEmails, canopiEmails] = await Promise.all([
+    fetchGovHubUserEmails(userIds),
     supportTicketEmails(userIds),
+    fetchCanopiUserEmails(userIds),
   ]);
 
+  let govhub = 0;
   let canopi = 0;
   let supportTickets = 0;
   let usernameEmail = 0;
@@ -70,15 +75,19 @@ export async function enrichBroadcastAudienceEmails(
     const userId = row.userId?.trim();
 
     let email: string | null = null;
-    if (userId && canopiEmails.has(userId)) {
-      email = canopiEmails.get(userId)!;
-      canopi += 1;
+    if (userId && govhubEmails.has(userId)) {
+      email = govhubEmails.get(userId)!;
+      govhub += 1;
     } else if (userId && ticketEmails.has(userId)) {
       email = ticketEmails.get(userId)!;
       supportTickets += 1;
     } else {
       email = looksLikeEmail(row.userName);
       if (email) usernameEmail += 1;
+    }
+    if (!email && userId && canopiEmails.has(userId)) {
+      email = canopiEmails.get(userId)!;
+      canopi += 1;
     }
 
     if (email) {
@@ -91,6 +100,7 @@ export async function enrichBroadcastAudienceEmails(
   return {
     rows: enriched,
     stats: {
+      govhub,
       canopi,
       supportTickets,
       usernameEmail,

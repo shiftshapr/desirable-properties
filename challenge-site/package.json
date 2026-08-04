@@ -9,7 +9,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs"
+    "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs",
+    "test:dp-broadcast-email": "node --test scripts/dp-broadcast-email.test.mjs"
   },
   "dependencies": {
     "jose": "^6.2.4",
