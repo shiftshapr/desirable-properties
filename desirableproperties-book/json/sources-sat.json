@@ -49,7 +49,7 @@
             "label": "About This Digital Monument",
             "mlNumber": "ML-Draft-031",
             "localOverride": "/content/local/about.md",
-            "status": "draft",
+            "status": "active",
             "reinscribable": true,
             "reason": "Front matter – Gov Hub synced local rail"
         },
@@ -58,7 +58,7 @@
             "label": "Acknowledgements",
             "mlNumber": "ML-Draft-032",
             "localOverride": "/content/local/acknowledgements.md",
-            "status": "draft",
+            "status": "active",
             "reinscribable": true,
             "reason": "Front matter – Gov Hub synced local rail"
         },
