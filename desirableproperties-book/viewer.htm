@@ -296,11 +296,7 @@
       transition: transform 0.2s, width 0.2s;
       display: flex;
       flex-direction: column;
-      position: sticky;
-      top: 96px;
-      align-self: flex-start;
-      max-height: calc(100vh - 96px);
-      max-height: calc(100dvh - 96px);
+      align-self: stretch;
     }
     .sidebar.hidden {
       transform: translateX(-100%);
@@ -352,8 +348,6 @@
     }
     .sidebar #toc {
       flex: 1;
-      min-height: 0;
-      overflow-y: auto;
     }
     .sidebar ul {
       list-style: none;
