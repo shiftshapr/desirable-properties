@@ -7,6 +7,16 @@
   },
   "milestones": [
     {
+      "id": "metaweb-book",
+      "dateLabel": "November 2023",
+      "startDate": "2023-11-01",
+      "endDate": "2023-11-30",
+      "title": "The Metaweb book",
+      "description": "Publication of The Metaweb–a foundational narrative on the layered Web, collective intelligence, and the path toward a community-governed coordination layer.",
+      "href": "https://app.metawebbook.com/ml_2.htm",
+      "linkLabel": "Explore The Metaweb"
+    },
+    {
       "id": "kickoff-2024",
       "dateLabel": "September 16, 2024",
       "startDate": "2024-09-16",
@@ -25,16 +35,6 @@
       "description": "Communities through People Centered Internet, Bridgit.io, and aligned partners submitted ideas, concerns, and aspirations for the future of the Internet.",
       "href": "/onchain#early-pci-conversations",
       "linkLabel": "Browse PCI archive"
-    },
-    {
-      "id": "metaweb-book",
-      "dateLabel": "2024–2025",
-      "startDate": "2024-10-01",
-      "endDate": "2025-04-30",
-      "title": "The Metaweb book",
-      "description": "Publication of The Metaweb–a foundational narrative on the layered Web, collective intelligence, and the path toward a community-governed coordination layer.",
-      "href": "https://app.metawebbook.com/ml_2.htm",
-      "linkLabel": "Explore The Metaweb"
     },
     {
       "id": "mli-website",
@@ -68,9 +68,9 @@
     },
     {
       "id": "workgroup-formation",
-      "dateLabel": "July 1–20, 2026",
-      "startDate": "2026-07-01",
-      "endDate": "2026-07-20",
+      "dateLabel": "July 21–August 30, 2026",
+      "startDate": "2026-07-21",
+      "endDate": "2026-08-30",
       "title": "Workgroup formation",
       "description": "Formation of workgroups for each Desirable Property–recruiting coordinators, co-leads, and contributors to steward individual chapters through the next phase.",
       "href": "https://hub.themetalayer.org/workgroups/",
@@ -78,8 +78,8 @@
     },
     {
       "id": "community-review",
-      "dateLabel": "July 21–August 30, 2026",
-      "startDate": "2026-07-21",
+      "dateLabel": "August 10–August 30, 2026",
+      "startDate": "2026-08-10",
       "endDate": "2026-08-30",
       "title": "Community review & patches",
       "description": "Discuss chapters on the book (comments live). Patch drafts on Gov Hub. Workgroups gather commentary, propose patches, and explore implementations that strengthen the coherence of the emerging framework.",

@@ -86,7 +86,7 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            Workgroups form July 1–20; The Layered Web launches September 16, 2026.{' '}
+            Workgroups form July 21–August 30; The Layered Web launches September 16, 2026.{' '}
             <Link
               href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"

@@ -80,7 +80,7 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
           <h3 className="text-lg font-semibold text-white">Workgroup formation</h3>
           <p className="mt-2 max-w-2xl text-sm text-slate-400">
             Each Desirable Property needs a workgroup with coordinators and contributors. Join an
-            existing group or help stand one up before July 15.
+            existing group or help stand one up before August 30.
           </p>
         </div>
         <p className="shrink-0 text-sm text-slate-400">
