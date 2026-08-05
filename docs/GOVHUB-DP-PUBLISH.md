@@ -44,6 +44,33 @@ Uploads accept `.txt`, `.pdf`, `.xml`, `.doc`, `.docx` — not `.md`. The publis
 chapter to a uniquely-named `.txt`. Gov Hub's text extractor detects markdown in `.txt` and
 renders it correctly, so the payload stays byte-identical to the source `.md`.
 
+## Numbered section headings (review phase)
+
+During collaborative review, DP chapters use **numbered headings** in the markdown source
+(`## N.`, `### N.M`, `#### N.M.K`) so contributors can cite sections precisely (e.g. “DP1 §8.3”).
+Numbers may differ from on-chain ordinal versions; Gov Hub is the editorial source of truth.
+
+| Tool | Purpose |
+| --- | --- |
+| `scripts/renumber_dp_section_headings.py` | Add or refresh section numbers in local `dpN.md` (idempotent) |
+| `scripts/govhub_publish_dp_revisions.py` | Push numbered rails **to** Gov Hub as new revisions |
+| `scripts/govhub_sync_rails_from_hub.py` | Pull approved Gov Hub body **into** book rails |
+
+**Staging test pipeline (DEV hub → staging book):**
+
+```bash
+python3 scripts/renumber_dp_section_headings.py --only dp1-dp12 --write
+python3 scripts/govhub_publish_dp_revisions.py --env dev --approve \
+  --only DP1,DP2,... --what-changed "Add numbered section headings for review"
+python3 scripts/govhub_sync_rails_from_hub.py --env dev --local-db --only DP1,...
+bash desirableproperties-book/scripts/deploy-staging-book.sh
+```
+
+**Production:** repeat publish with `--env main` (omit `--approve` if you want the admin queue),
+then sync with `--env main` and run `desirableproperties-book/deploy.sh`.
+
+See also [GOVHUB-RAIL-SYNC.md](./GOVHUB-RAIL-SYNC.md).
+
 ## Publishing
 
 Dry run first — it prints the resolved parent and next revision number per DP without writing:
@@ -67,6 +94,16 @@ python3 scripts/govhub_publish_dp_revisions.py \
 Useful flags: `--only dp13,dp22` to scope to specific DPs, `--content-dir` / `--sources-sat` to
 point at a different working copy. DP→ML-Draft mapping is read from `sources-sat.json`
 (`railKey` → `mlNumber`); the script never invents ML numbers.
+
+### One publish batch per chapter per day
+
+To avoid duplicate revisions with identical content (e.g. Rev 03 and Rev 04 on the same UTC
+day), the publish script blocks a chapter when its ML-Draft family **already has an approved
+revision whose `approved_at` falls on today's UTC date**. Run at most **one publish batch per
+chapter per UTC day**; batch all intended changes into that single run.
+
+If you truly need a second publish the same day (hotfix), pass `--force`. The guard applies
+to dry runs as well so you can see the block before writing.
 
 Without `--approve`, revisions land as `submitted` and need admin approval in the Gov Hub UI.
 

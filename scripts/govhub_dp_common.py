@@ -5,7 +5,7 @@ import json
 import re
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -55,6 +55,59 @@ def default_govhub_root(env: str) -> Path:
 def hub_url_for_env(env: str) -> str:
     """Public hub base URL for --env."""
     return HUB_URLS[canonical_env(env)]
+
+
+def utc_date_from_timestamp(value: datetime | str | None) -> date | None:
+    """Extract the UTC calendar date from a Gov Hub timestamp."""
+    if value is None:
+        return None
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        if text.endswith('Z'):
+            text = text[:-1] + '+00:00'
+        value = datetime.fromisoformat(text)
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc).date()
+
+
+def find_same_day_approved_revision(
+    revisions: list[dict[str, Any]],
+    *,
+    reference_date: date | None = None,
+) -> dict[str, Any] | None:
+    """
+    Return a revision dict if the family already has an approved revision
+    on reference_date (UTC). Each revision dict needs status and approved_at.
+    """
+    ref = reference_date or datetime.now(timezone.utc).date()
+    for row in revisions:
+        if (row.get('status') or '') not in ('approved', 'published'):
+            continue
+        approved_on = utc_date_from_timestamp(row.get('approved_at'))
+        if approved_on == ref:
+            return row
+    return None
+
+
+def same_day_publish_block_message(
+    *,
+    ml_number: str,
+    display_key: str,
+    revision_number: str,
+    approved_date: date,
+) -> str:
+    """Human-readable reason a same-day publish was blocked."""
+    label = display_key or ml_number or 'chapter'
+    ml_part = f' ({ml_number})' if ml_number else ''
+    return (
+        f'{label}{ml_part} already has approved revision {revision_number} '
+        f'from today ({approved_date.isoformat()} UTC). '
+        'Publish at most one revision batch per chapter per UTC day, '
+        'or pass --force to override.'
+    )
 
 _SYNC_LINE_RE = re.compile(
     r'<!--\s*govhub-sync:\s*([^>]*?)\s*-->',

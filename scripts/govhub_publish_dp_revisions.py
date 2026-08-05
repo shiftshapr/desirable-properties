@@ -63,11 +63,14 @@ from govhub_dp_common import (  # noqa: E402
     canonical_env,
     default_govhub_root,
     filter_rails_by_only,
+    find_same_day_approved_revision,
     flask_env_for_env,
     hub_url_for_env,
     load_sync_rails_manifest,
     local_rail_filename,
     local_rail_path,
+    same_day_publish_block_message,
+    utc_date_from_timestamp,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -111,6 +114,9 @@ def main() -> int:
                         help='Also approve each revision so it becomes the current body')
     parser.add_argument('--dry-run', action='store_true',
                         help='Report what would happen without writing anything')
+    parser.add_argument('--force', action='store_true',
+                        help='Allow publishing even if this chapter already has '
+                             'an approved revision from today (UTC)')
     parser.add_argument('--report', default='',
                         help='Write a JSON report of the run to this path')
     args = parser.parse_args()
@@ -256,6 +262,30 @@ def main() -> int:
             new_rev = f'{next_num:02d}'
             entry['revision_number'] = new_rev
             entry['previous_revisions'] = sorted(existing)
+
+            if not args.force:
+                family_rows = [
+                    {
+                        'status': row.status,
+                        'approved_at': row.approved_at,
+                        'revision_number': row.revision_number,
+                    }
+                    for row in family
+                ]
+                same_day = find_same_day_approved_revision(family_rows)
+                if same_day is not None:
+                    approved_date = utc_date_from_timestamp(same_day.get('approved_at'))
+                    assert approved_date is not None
+                    msg = same_day_publish_block_message(
+                        ml_number=ml,
+                        display_key=display,
+                        revision_number=str(same_day.get('revision_number') or '?'),
+                        approved_date=approved_date,
+                    )
+                    entry.update(status='blocked', error=msg)
+                    results.append(entry)
+                    print(f'{display:<18} BLOCK {msg}')
+                    continue
 
             submission_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
             slug_token = slugify(rail.get('label') or rail.get('railKey') or display)

@@ -6,68 +6,74 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 {Why this DP exists; what gap it fills; relationship to adjacent DPs.}
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 {Current failures in today's web/systems that this DP addresses.}
 
+### 2.1 {Optional subsection}
+
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
 {Predictable adversarial patterns, misuse, and structural failures.}
 
+### 3.1 {Threat or failure mode}
+
 ---
 
-## Core Principle
+## 4. Core Principle
 
 {One enforceable principle statement for this DP.}
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 {Concrete mechanisms, requirements, and structural conditions.}
 
 {DP-specific subsections live here or as Tier-4 sections immediately following.}
 
+### 5.1 {Mechanism or condition}
+
 ---
 
 <!-- Tier 3: include when useful for this DP -->
 
-## Governance, Accountability, and Agency Surfaces
+## 6. Governance, Accountability, and Agency Surfaces
 
-## Incentives and Power Analysis
+## 7. Incentives and Power Analysis
 
-## Community Signals Informing DP{N}
+## 8. Community Signals Informing DP{N}
 
-## Evaluation Criteria
+## 9. Evaluation Criteria
 
-## Implementation Patterns
+## 10. Implementation Patterns
 
-## Foresight and Failure Design
+## 11. Foresight and Failure Design
 
 <!-- Tier 4: DP-specific sections (examples) -->
 
-## {Domain-Specific Section Name}
+## 12. {Domain-Specific Section Name}
 
 ---
 
 <!-- Tier 2: standard extensions — required for every DP -->
 
-## Relationship to Other Desirable Properties
+## N. Relationship to Other Desirable Properties
 
-## Non-Goals and Explicit Boundaries
+## N. Non-Goals and Explicit Boundaries
 
-## Minimum DP{N} Alignment (Non-Normative)
+## N. Minimum DP{N} Alignment (Non-Normative)
 
-## Open Questions and Future Work
+## N. Open Questions and Future Work
 
-## Path Toward ML-RFC
+## N. Path Toward ML-RFC
 
-## Closing Orientation
+## N. Closing Orientation
