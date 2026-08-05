@@ -2,14 +2,17 @@
 description: Desirable Properties book rails sync from Gov Hub only
 globs:
   - desirableproperties-book/content/local/dp*.md
+  - desirableproperties-book/content/local/about.md
+  - desirableproperties-book/content/local/acknowledgements.md
   - scripts/govhub_sync_rails_from_hub.py
+  - scripts/govhub_bootstrap_front_matter.py
   - scripts/govhub_dp_common.py
 ---
 
 # DP book rails — Gov Hub source of truth
 
-The files `desirableproperties-book/content/local/dp1.md` … `dp23.md` are **synced from Gov Hub**.
-Do not edit them directly in this repo.
+The files `desirableproperties-book/content/local/dp1.md` … `dp23.md`, `about.md`, and
+`acknowledgements.md` are **synced from Gov Hub**. Do not edit them directly in this repo.
 
 ## Correct workflow
 

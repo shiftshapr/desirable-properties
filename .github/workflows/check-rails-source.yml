@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'desirableproperties-book/content/local/dp*.md'
+      - 'desirableproperties-book/content/local/about.md'
+      - 'desirableproperties-book/content/local/acknowledgements.md'
 
 jobs:
   check-rails:

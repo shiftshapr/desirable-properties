@@ -62,8 +62,12 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 from govhub_dp_common import (  # noqa: E402
     canonical_env,
     default_govhub_root,
+    filter_rails_by_only,
     flask_env_for_env,
     hub_url_for_env,
+    load_sync_rails_manifest,
+    local_rail_filename,
+    local_rail_path,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -82,29 +86,6 @@ def slugify(value: str) -> str:
     """Filename-safe token for the stored upload name."""
     value = re.sub(r'[^a-z0-9]+', '_', (value or '').lower())
     return value.strip('_') or 'draft'
-
-
-def load_dp_manifest(sources_sat: Path) -> list[dict]:
-    """DP rails from sources-sat.json, in chapter order."""
-    data = json.loads(sources_sat.read_text(encoding='utf-8'))
-    rails = []
-    for src in data.get('sources', []):
-        rail = src.get('railKey') or ''
-        if not re.fullmatch(r'dp\d{2}', rail):
-            continue
-        rails.append({
-            'railKey': rail,
-            'dp': src.get('dp') or f"DP{int(rail[2:])}",
-            'dp_number': int(rail[2:]),
-            'label': src.get('label') or '',
-            'ml_number': src.get('mlNumber') or '',
-            'local_override': src.get('localOverride') or '',
-            'status': src.get('status') or '',
-        })
-    rails.sort(key=lambda r: r['dp_number'])
-    return rails
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -121,7 +102,7 @@ def main() -> int:
     parser.add_argument('--sources-sat', default=str(DEFAULT_SOURCES_SAT),
                         help='sources-sat.json providing the DP -> ML-Draft mapping')
     parser.add_argument('--only', default='',
-                        help='Comma-separated DP ids to publish (e.g. DP1,DP13,DP22)')
+                        help='Comma-separated rails to publish (about, acknowledgements, DP1, …)')
     parser.add_argument('--what-changed', default=DEFAULT_WHAT_CHANGED,
                         help='Revision notes recorded on each new revision')
     parser.add_argument('--submitted-by', default='',
@@ -174,17 +155,15 @@ def main() -> int:
         find_submission_conflict,
     )
 
-    rails = load_dp_manifest(sources_sat)
-    wanted = {d.strip().upper() for d in args.only.split(',') if d.strip()}
-    if wanted:
-        rails = [r for r in rails if r['dp'].upper() in wanted]
+    rails = load_sync_rails_manifest(sources_sat)
+    rails = filter_rails_by_only(rails, args.only)
 
     print(f'Env          : {args.env} ({hub_url})')
     print(f'Gov Hub root : {govhub_root}')
     print(f'FLASK_ENV    : {flask_env}')
     print(f'Database     : {DB_PATH}')
     print(f'Content dir  : {content_dir}')
-    print(f'DPs targeted : {len(rails)}')
+    print(f'Rails target : {len(rails)}')
     print(f'Mode         : {"DRY RUN" if args.dry_run else "WRITE"}'
           f'{" + APPROVE" if args.approve and not args.dry_run else ""}')
     print()
@@ -197,21 +176,23 @@ def main() -> int:
         os.makedirs(upload_folder, exist_ok=True)
 
         for rail in rails:
-            dp = rail['dp']
+            display = rail.get('display_key') or rail.get('railKey') or ''
             ml = rail['ml_number']
             entry: dict = {
-                'dp': dp,
+                'display_key': display,
                 'ml_number': ml,
                 'rail_key': rail['railKey'],
                 'status': 'pending',
             }
+            if rail.get('dp'):
+                entry['dp'] = rail['dp']
 
-            local_name = f"dp{rail['dp_number']}.md"
-            local_path = content_dir / local_name
+            local_name = local_rail_filename(rail)
+            local_path = local_rail_path(content_dir, rail)
             if not local_path.is_file():
                 entry.update(status='error', error=f'local chapter missing: {local_name}')
                 results.append(entry)
-                print(f'{dp:<5} SKIP  local chapter missing ({local_name})')
+                print(f'{display:<18} SKIP  local chapter missing ({local_name})')
                 continue
 
             # Resolve the draft family: prefer the approved root row for the ML
@@ -243,7 +224,7 @@ def main() -> int:
                     error=f'no Gov Hub draft found for {ml or "(no ML number)"} in this environment',
                 )
                 results.append(entry)
-                print(f'{dp:<5} BLOCK no draft for {ml or "(none)"} on this Gov Hub')
+                print(f'{display:<18} BLOCK no draft for {ml or "(none)"} on this Gov Hub')
                 continue
 
             parent_ref = (parent.draft_name or parent.id or '').strip()
@@ -256,7 +237,7 @@ def main() -> int:
                              error=f'parent draft status is {parent.status!r}; revisions '
                                    'require an approved parent')
                 results.append(entry)
-                print(f'{dp:<5} BLOCK parent {parent_ref} status={parent.status}')
+                print(f'{display:<18} BLOCK parent {parent_ref} status={parent.status}')
                 continue
 
             # Next revision number across the whole family (matches approve_submission
@@ -277,14 +258,15 @@ def main() -> int:
             entry['previous_revisions'] = sorted(existing)
 
             submission_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-            stored_name = f'{submission_id}-dp_{rail["dp_number"]}_{slugify(rail["label"])}.txt'
+            slug_token = slugify(rail.get('label') or rail.get('railKey') or display)
+            stored_name = f'{submission_id}-{rail["railKey"]}_{slug_token}.txt'
             file_path = os.path.join(upload_folder, stored_name)
             entry['filename'] = stored_name
 
             if args.dry_run:
                 entry.update(status='dry-run')
                 results.append(entry)
-                print(f'{dp:<5} DRY   {ml} rev {new_rev} <- {local_name} '
+                print(f'{display:<18} DRY   {ml} rev {new_rev} <- {local_name} '
                       f'(parent {parent_ref})')
                 continue
 
@@ -294,7 +276,7 @@ def main() -> int:
             entry.update(pages=pages, words=words, content_hash=content_hash)
 
             conflict = find_submission_conflict(
-                title=parent.title or dp,
+                title=parent.title or display,
                 content_hash=content_hash,
                 exclude_family_parent_id=parent_ref,
             )
@@ -302,7 +284,7 @@ def main() -> int:
                 os.remove(file_path)
                 entry.update(status='skipped', error=conflict_message(conflict[0], conflict[1]))
                 results.append(entry)
-                print(f'{dp:<5} SKIP  {entry["error"]}')
+                print(f'{display:<18} SKIP  {entry["error"]}')
                 continue
 
             revision = Submission(
@@ -348,7 +330,7 @@ def main() -> int:
                 revisions_url=f'/doc/draft/{parent_ref}/revisions/',
             )
             results.append(entry)
-            print(f'{dp:<5} OK    {ml} rev {new_rev} -> {revision.draft_name} '
+            print(f'{display:<18} OK    {ml} rev {new_rev} -> {revision.draft_name} '
                   f'({entry["status"]}, {words} words)')
 
     ok = [r for r in results if r['status'] in ('submitted', 'approved', 'dry-run')]
@@ -358,7 +340,8 @@ def main() -> int:
     if bad:
         print('Not published:')
         for row in bad:
-            print(f'  {row["dp"]}: {row["status"]} – {row.get("error", "")}')
+            label = row.get('display_key') or row.get('dp') or row.get('rail_key') or '?'
+            print(f'  {label}: {row["status"]} – {row.get("error", "")}')
 
     if args.report:
         report_path = Path(args.report)

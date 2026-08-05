@@ -11,6 +11,9 @@ from typing import Any
 
 GOVHUB_SYNC_MARKER = 'govhub-sync:'
 
+FRONT_MATTER_RAIL_KEYS = frozenset({'about', 'acknowledgements'})
+FRONT_MATTER_ORDER = ('about', 'acknowledgements')
+
 HUB_URLS: dict[str, str] = {
     'dev': 'https://dev.hub.themetalayer.org',
     'main': 'https://hub.themetalayer.org',
@@ -59,6 +62,34 @@ _SYNC_LINE_RE = re.compile(
 )
 
 
+def _parse_rail_entry(src: dict[str, Any]) -> dict[str, Any]:
+    """Normalize a sources-sat.json entry into a rail dict."""
+    rail = src.get('railKey') or ''
+    entry: dict[str, Any] = {
+        'railKey': rail,
+        'label': src.get('label') or '',
+        'ml_number': src.get('mlNumber') or '',
+        'local_override': src.get('localOverride') or '',
+        'status': src.get('status') or '',
+    }
+    if re.fullmatch(r'dp\d{2}', rail):
+        dp = src.get('dp') or f"DP{int(rail[2:])}"
+        entry.update({
+            'kind': 'dp',
+            'dp': dp,
+            'dp_number': int(rail[2:]),
+            'display_key': dp,
+        })
+    elif rail in FRONT_MATTER_RAIL_KEYS:
+        entry.update({
+            'kind': 'front_matter',
+            'display_key': rail,
+        })
+    else:
+        entry['kind'] = 'other'
+    return entry
+
+
 def load_dp_manifest(sources_sat: Path) -> list[dict[str, Any]]:
     """DP rails from sources-sat.json, in chapter order."""
     data = json.loads(sources_sat.read_text(encoding='utf-8'))
@@ -67,26 +98,56 @@ def load_dp_manifest(sources_sat: Path) -> list[dict[str, Any]]:
         rail = src.get('railKey') or ''
         if not re.fullmatch(r'dp\d{2}', rail):
             continue
-        rails.append({
-            'railKey': rail,
-            'dp': src.get('dp') or f"DP{int(rail[2:])}",
-            'dp_number': int(rail[2:]),
-            'label': src.get('label') or '',
-            'ml_number': src.get('mlNumber') or '',
-            'local_override': src.get('localOverride') or '',
-            'status': src.get('status') or '',
-        })
+        rails.append(_parse_rail_entry(src))
     rails.sort(key=lambda r: r['dp_number'])
     return rails
 
 
+def load_front_matter_manifest(sources_sat: Path) -> list[dict[str, Any]]:
+    """Front matter rails (about, acknowledgements) from sources-sat.json."""
+    data = json.loads(sources_sat.read_text(encoding='utf-8'))
+    order = {key: idx for idx, key in enumerate(FRONT_MATTER_ORDER)}
+    rails: list[dict[str, Any]] = []
+    for src in data.get('sources', []):
+        rail = src.get('railKey') or ''
+        if rail not in FRONT_MATTER_RAIL_KEYS:
+            continue
+        rails.append(_parse_rail_entry(src))
+    rails.sort(key=lambda r: order.get(r['railKey'], 99))
+    return rails
+
+
+def load_sync_rails_manifest(sources_sat: Path) -> list[dict[str, Any]]:
+    """All synced rails: front matter first, then DP chapters."""
+    return load_front_matter_manifest(sources_sat) + load_dp_manifest(sources_sat)
+
+
+def filter_rails_by_only(rails: list[dict[str, Any]], only: str) -> list[dict[str, Any]]:
+    """Filter rails by --only tokens (about, acknowledgements, DP1, …)."""
+    wanted = {token.strip().casefold() for token in only.split(',') if token.strip()}
+    if not wanted:
+        return rails
+    filtered: list[dict[str, Any]] = []
+    for rail in rails:
+        keys = {
+            (rail.get('display_key') or '').casefold(),
+            (rail.get('railKey') or '').casefold(),
+            (rail.get('dp') or '').casefold(),
+        }
+        if wanted & keys:
+            filtered.append(rail)
+    return filtered
+
+
 def local_rail_filename(rail: dict[str, Any]) -> str:
-    """Basename for the on-disk rail file (dp1.md … dp23.md)."""
+    """Basename for the on-disk rail file (about.md, dp1.md, …)."""
     override = (rail.get('local_override') or '').strip()
     if override:
         name = Path(override.lstrip('/')).name
         if name:
             return name
+    if rail.get('kind') == 'front_matter':
+        return f"{rail['railKey']}.md"
     return f"dp{rail['dp_number']}.md"
 
 

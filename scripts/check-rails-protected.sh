@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fail when protected DP rail files (dp*.md) change without authorization.
+# Fail when protected book rail files change without authorization.
 #
 # Authorized when any of:
 #   ALLOW_RAIL_EDIT=1
@@ -13,7 +13,11 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-RAILS_GLOB='desirableproperties-book/content/local/dp*.md'
+RAIL_PATHS=(
+  'desirableproperties-book/content/local/dp*.md'
+  'desirableproperties-book/content/local/about.md'
+  'desirableproperties-book/content/local/acknowledgements.md'
+)
 MODE="${1:-}"
 
 if [[ "${ALLOW_RAIL_EDIT:-}" == "1" ]]; then
@@ -30,9 +34,13 @@ collect_changed() {
   if [[ "$MODE" == "--ci" ]]; then
     BASE="${GITHUB_BASE_REF:-main}"
     git -C "$REPO_ROOT" fetch origin "$BASE" --depth=1 >/dev/null 2>&1 || true
-    git -C "$REPO_ROOT" diff --name-only "origin/${BASE}...HEAD" -- $RAILS_GLOB 2>/dev/null || true
+    for pattern in "${RAIL_PATHS[@]}"; do
+      git -C "$REPO_ROOT" diff --name-only "origin/${BASE}...HEAD" -- $pattern 2>/dev/null || true
+    done
   else
-    git -C "$REPO_ROOT" diff --cached --name-only -- $RAILS_GLOB 2>/dev/null || true
+    for pattern in "${RAIL_PATHS[@]}"; do
+      git -C "$REPO_ROOT" diff --cached --name-only -- $pattern 2>/dev/null || true
+    done
   fi
 }
 

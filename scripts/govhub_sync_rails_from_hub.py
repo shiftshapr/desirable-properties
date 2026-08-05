@@ -35,10 +35,11 @@ from govhub_dp_common import (
     default_govhub_root,
     fetch_body_via_api,
     fetch_body_via_db,
+    filter_rails_by_only,
     flask_env_for_env,
     format_sync_marker,
     hub_url_for_env,
-    load_dp_manifest,
+    load_sync_rails_manifest,
     local_rail_path,
     strip_sync_marker,
     upsert_sync_marker,
@@ -73,7 +74,7 @@ def main() -> int:
     parser.add_argument('--sources-sat', default=str(DEFAULT_SOURCES_SAT),
                         help='sources-sat.json providing the DP -> ML-Draft mapping')
     parser.add_argument('--only', default='',
-                        help='Comma-separated DP ids to sync (e.g. DP1,DP13,DP22)')
+                        help='Comma-separated rails to sync (about, acknowledgements, DP1, …)')
     parser.add_argument('--dry-run', action='store_true',
                         help='Report what would change without writing files')
     parser.add_argument('--report', default='',
@@ -95,15 +96,13 @@ def main() -> int:
         else default_govhub_root(args.env).resolve()
     )
 
-    rails = load_dp_manifest(sources_sat)
-    wanted = {d.strip().upper() for d in args.only.split(',') if d.strip()}
-    if wanted:
-        rails = [r for r in rails if r['dp'].upper() in wanted]
+    rails = load_sync_rails_manifest(sources_sat)
+    rails = filter_rails_by_only(rails, args.only)
 
     mode = 'local-db' if args.local_db else 'api'
     print(f'Content dir  : {content_dir}')
     print(f'Sources sat  : {sources_sat}')
-    print(f'DPs targeted : {len(rails)}')
+    print(f'Rails target : {len(rails)}')
     print(f'Source mode  : {mode}')
     if args.local_db:
         print(f'Gov Hub root : {govhub_root}')
@@ -117,21 +116,23 @@ def main() -> int:
     results: list[dict] = []
 
     for rail in rails:
-        dp = rail['dp']
+        display = rail.get('display_key') or rail.get('railKey') or ''
         ml = rail['ml_number']
         local_path = local_rail_path(content_dir, rail)
         entry: dict = {
-            'dp': dp,
+            'display_key': display,
             'ml_number': ml,
             'rail_key': rail['railKey'],
             'local_path': str(local_path),
             'status': 'pending',
         }
+        if rail.get('dp'):
+            entry['dp'] = rail['dp']
 
         if not ml:
             entry.update(status='error', error='missing mlNumber in sources-sat.json')
             results.append(entry)
-            print(f'{dp:<5} SKIP  no ML number in sources-sat.json')
+            print(f'{display:<18} SKIP  no ML number in sources-sat.json')
             continue
 
         try:
@@ -142,7 +143,7 @@ def main() -> int:
         except RuntimeError as exc:
             entry.update(status='error', error=str(exc))
             results.append(entry)
-            print(f'{dp:<5} ERR   {exc}')
+            print(f'{display:<18} ERR   {exc}')
             continue
 
         revision = info.get('revision_number') or '00'
@@ -169,19 +170,19 @@ def main() -> int:
         if not changed:
             entry['status'] = 'unchanged'
             results.append(entry)
-            print(f'{dp:<5} OK    {ml} rev {revision} unchanged')
+            print(f'{display:<18} OK    {ml} rev {revision} unchanged')
             continue
 
         if args.dry_run:
             entry['status'] = 'dry-run'
             results.append(entry)
-            print(f'{dp:<5} DRY   {ml} rev {revision} would update {local_path.name}')
+            print(f'{display:<18} DRY   {ml} rev {revision} would update {local_path.name}')
             continue
 
         local_path.write_text(new_text, encoding='utf-8')
         entry['status'] = 'written'
         results.append(entry)
-        print(f'{dp:<5} OK    {ml} rev {revision} -> {local_path.name}')
+        print(f'{display:<18} OK    {ml} rev {revision} -> {local_path.name}')
 
     changed_rows = [r for r in results if r.get('changed')]
     errors = [r for r in results if r['status'] == 'error']
@@ -190,7 +191,8 @@ def main() -> int:
     if errors:
         print('Errors:')
         for row in errors:
-            print(f'  {row["dp"]}: {row.get("error", "")}')
+            label = row.get('display_key') or row.get('dp') or row.get('rail_key') or '?'
+            print(f'  {label}: {row.get("error", "")}')
 
     if args.report:
         report_path = Path(args.report)

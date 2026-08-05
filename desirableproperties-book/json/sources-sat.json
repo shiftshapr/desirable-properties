@@ -8,6 +8,8 @@
     "summary": "Sources sat for The Layered Web. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
     "bookCoverInscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
     "articleRails": [
+        "about",
+        "acknowledgements",
         "ml-draft-026",
         "dp01",
         "dp02",
@@ -41,6 +43,24 @@
             "status": "active",
             "reinscribable": false,
             "reason": "Cover ordinal for The Layered Web monument"
+        },
+        {
+            "railKey": "about",
+            "label": "About This Digital Monument",
+            "mlNumber": "ML-Draft-031",
+            "localOverride": "/content/local/about.md",
+            "status": "draft",
+            "reinscribable": true,
+            "reason": "Front matter – Gov Hub synced local rail"
+        },
+        {
+            "railKey": "acknowledgements",
+            "label": "Acknowledgements",
+            "mlNumber": "ML-Draft-032",
+            "localOverride": "/content/local/acknowledgements.md",
+            "status": "draft",
+            "reinscribable": true,
+            "reason": "Front matter – Gov Hub synced local rail"
         },
         {
             "railKey": "ml-draft-026",

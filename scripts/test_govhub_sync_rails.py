@@ -14,6 +14,8 @@ sys.path.insert(0, str(SCRIPTS))
 from govhub_dp_common import (  # noqa: E402
     format_sync_marker,
     load_dp_manifest,
+    load_front_matter_manifest,
+    load_sync_rails_manifest,
     local_rail_filename,
     local_rail_path,
     parse_sync_marker,
@@ -40,6 +42,37 @@ class GovhubSyncCommonTests(unittest.TestCase):
         self.assertEqual([r['dp'] for r in rails], ['DP1', 'DP2'])
         self.assertEqual(rails[0]['ml_number'], 'ML-Draft-008')
 
+    def test_load_front_matter_manifest(self):
+        payload = {
+            'sources': [
+                {'railKey': 'acknowledgements', 'label': 'Acknowledgements',
+                 'mlNumber': 'ML-Draft-032', 'localOverride': '/content/local/acknowledgements.md'},
+                {'railKey': 'about', 'label': 'About This Digital Monument',
+                 'mlNumber': 'ML-Draft-031', 'localOverride': '/content/local/about.md'},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'sources-sat.json'
+            path.write_text(json.dumps(payload), encoding='utf-8')
+            rails = load_front_matter_manifest(path)
+        self.assertEqual([r['railKey'] for r in rails], ['about', 'acknowledgements'])
+        self.assertEqual(rails[0]['ml_number'], 'ML-Draft-031')
+
+    def test_load_sync_rails_manifest_orders_front_matter_first(self):
+        payload = {
+            'sources': [
+                {'railKey': 'dp01', 'dp': 'DP1', 'mlNumber': 'ML-Draft-008',
+                 'localOverride': '/content/local/dp1.md'},
+                {'railKey': 'about', 'label': 'About This Digital Monument',
+                 'mlNumber': 'ML-Draft-031', 'localOverride': '/content/local/about.md'},
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'sources-sat.json'
+            path.write_text(json.dumps(payload), encoding='utf-8')
+            rails = load_sync_rails_manifest(path)
+        self.assertEqual([r['railKey'] for r in rails], ['about', 'dp01'])
+
     def test_local_rail_path_resolution(self):
         rail = {
             'dp_number': 13,
@@ -50,6 +83,14 @@ class GovhubSyncCommonTests(unittest.TestCase):
             local_rail_path(Path('/book/content/local'), rail),
             Path('/book/content/local/dp13.md'),
         )
+
+    def test_local_rail_filename_front_matter(self):
+        rail = {
+            'kind': 'front_matter',
+            'railKey': 'about',
+            'local_override': '/content/local/about.md',
+        }
+        self.assertEqual(local_rail_filename(rail), 'about.md')
 
     def test_sync_marker_roundtrip(self):
         marker = format_sync_marker(

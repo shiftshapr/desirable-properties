@@ -76,9 +76,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-          rails='desirableproperties-book/content/local/dp*.md'
+          rails=(
+            desirableproperties-book/content/local/dp*.md
+            desirableproperties-book/content/local/about.md
+            desirableproperties-book/content/local/acknowledgements.md
+          )
           shopt -s nullglob
-          files=($rails)
+          files=("${rails[@]}")
           if [ ${#files[@]} -eq 0 ]; then
             echo "No rail files found; nothing to commit."
             echo "rails_changed=false" >> "$GITHUB_OUTPUT"
@@ -93,7 +97,7 @@ jobs:
           fi
 
           env_label="${{ steps.cfg.outputs.env }}"
-          git commit -m "sync: pull DP rails from Gov Hub ${env_label} [rail-sync]"
+          git commit -m "sync: pull book rails from Gov Hub ${env_label} [rail-sync]"
           git push
           echo "rails_changed=true" >> "$GITHUB_OUTPUT"
 
