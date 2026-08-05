@@ -32,14 +32,14 @@ if [ -d "$PAGES_SRC/json" ]; then
     cp -f "$PAGES_SRC/json/sources-sat.json" "$DEST/sources-sat.json"
   fi
 fi
-# Local chapter rails (Live-mode overrides) + composite PDF downloads.
-if [ -d "$PAGES_SRC/content" ]; then
-  mkdir -p "$DEST/content"
-  rsync -a "$PAGES_SRC/content/" "$DEST/content/"
-fi
+# Ordinal preview content first; local chapter rails (Live-mode overrides) must win.
 if [ -d "$SRC/content" ]; then
   mkdir -p "$DEST/content"
   rsync -a "$SRC/content/" "$DEST/content/"
+fi
+if [ -d "$PAGES_SRC/content" ]; then
+  mkdir -p "$DEST/content"
+  rsync -a "$PAGES_SRC/content/" "$DEST/content/"
 fi
 if [ -d "$PAGES_SRC/downloads" ]; then
   mkdir -p "$DEST/downloads"
