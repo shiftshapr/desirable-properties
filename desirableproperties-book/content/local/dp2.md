@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This ML-Draft articulates Desirable Property 2 (DP2) as the Meta-Layer's commitment that participants can meaningfully steer their digital lives. Beyond authentication (DP1) and governance (DP3), DP2 establishes that people and accountable agents hold real, usable power over presence, data flows, automation, and the conditions under which they are seen, acted upon, and counted.
 
@@ -21,7 +21,7 @@ This draft guides implementation, governance design, and future ML-RFC developme
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 *Why "control" without capability fails.*
 
@@ -29,7 +29,7 @@ For decades, platforms have described participants as "in control" while reservi
 
 DP2 begins from a different premise: **agency is not a feeling; it is a property of systems**. A Meta-Layer earns the label human-first only if participants can **observe, redirect, and withdraw** from the forces that shape their experience—within the same zones where accountability (DP1) is enforced.
 
-### Agency vs. Authorization
+### 2.1 Agency vs. Authorization
 
 Authorization answers what a token allows. Agency answers whether a participant can **shape outcomes**: defaults, reach, automation, data use, and the rules that allocate visibility and risk.
 
@@ -41,7 +41,7 @@ Systems that conflate "logged in" with "empowered" routinely:
 
 DP2 separates authentication and authorization (DP1) from **participant-directed configuration of the lived interface**.
 
-### Empowerment as Distributed Capability
+### 2.2 Empowerment as Distributed Capability
 
 Empowerment is **capability + legibility + recourse**:
 
@@ -53,11 +53,11 @@ A system lacking any one of these is not empowering, regardless of interface pol
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
 Agency fails in patterned ways. The failure modes below are named throughout this draft as consequences of specific mechanism gaps; collected here, they form the adversarial model against which a DP2 implementation should be tested. None of them requires a malicious operator. Most emerge from ordinary optimization pressure, interface convenience, or the accumulation of integrations over time.
 
-### Agency theater
+### 3.1 Agency theater
 
 Interfaces expose settings that do not alter execution. The participant experiences choice; the system behaves identically.
 
@@ -65,7 +65,7 @@ Interfaces expose settings that do not alter execution. The participant experien
 
 **Why this matters:** Simulated control is worse than absent control, because it suppresses the demand for real control.
 
-### Delegation drift
+### 3.2 Delegation drift
 
 Agents act beyond the scope they were granted, either by accumulating permissions incrementally or by interpreting a mandate expansively.
 
@@ -73,7 +73,7 @@ Agents act beyond the scope they were granted, either by accumulating permission
 
 **Why this matters:** Scope that is not continuously enforced is not scope; it is a suggestion.
 
-### Consent decay
+### 3.3 Consent decay
 
 Permissions persist beyond the participant's awareness, becoming "zombie consent" that no one remembers granting and no interface surfaces.
 
@@ -81,7 +81,7 @@ Permissions persist beyond the participant's awareness, becoming "zombie consent
 
 **Why this matters:** Consent that cannot be recalled cannot be revoked in any meaningful sense.
 
-### Coercive configuration
+### 3.4 Coercive configuration
 
 Defaults, flow design, and asymmetric friction steer participants toward choices that disadvantage them.
 
@@ -89,7 +89,7 @@ Defaults, flow design, and asymmetric friction steer participants toward choices
 
 **Why this matters:** Where entry and exit have unequal friction, the system has taken a position against the participant.
 
-### Automation overrun
+### 3.5 Automation overrun
 
 Agent activity exceeds human capacity to observe, intervene, or revoke, nullifying agency without ever formally removing it.
 
@@ -97,7 +97,7 @@ Agent activity exceeds human capacity to observe, intervene, or revoke, nullifyi
 
 **Why this matters:** Oversight that cannot keep pace with execution is not oversight.
 
-### Exit obstruction and degraded export
+### 3.6 Exit obstruction and degraded export
 
 Leaving is technically permitted but practically infeasible, or the exported artifact is unusable elsewhere.
 
@@ -105,7 +105,7 @@ Leaving is technically permitted but practically infeasible, or the exported art
 
 **Why this matters:** Exit is the backstop for every other agency guarantee. When it fails, all remaining controls are granted at the operator's discretion.
 
-### Interop deception
+### 3.7 Interop deception
 
 Portability or integration is advertised, but core agency properties are silently lost in transit.
 
@@ -113,7 +113,7 @@ Portability or integration is advertised, but core agency properties are silentl
 
 **Why this matters:** Undisclosed degradation is indistinguishable from misrepresentation.
 
-### Agency fragmentation and semantic drift
+### 3.8 Agency fragmentation and semantic drift
 
 Participant choices do not persist across systems, or the same permission is interpreted differently in a new context.
 
@@ -121,7 +121,7 @@ Participant choices do not persist across systems, or the same permission is int
 
 **Why this matters:** Agency that stops at a system boundary is agency the participant cannot rely on.
 
-### Agency opacity
+### 3.9 Agency opacity
 
 Participants cannot reconstruct what was done on their behalf, when, or under what authority.
 
@@ -129,7 +129,7 @@ Participants cannot reconstruct what was done on their behalf, when, or under wh
 
 **Why this matters:** Without auditability there is no recourse, and without recourse there is no agency.
 
-### Capture and collective overreach
+### 3.10 Capture and collective overreach
 
 Community-level mechanisms either concentrate power in a small group or suppress legitimate individual choices without pathways for challenge.
 
@@ -139,7 +139,7 @@ Community-level mechanisms either concentrate power in a small group or suppress
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 Agency is the ability to change outcomes, not merely configure preferences. Systems that do not preserve participant intent across automation, delegation, and scale do not provide agency.
 
@@ -154,7 +154,7 @@ Implications:
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 DP2 is enacted through mechanism families that together convert stated control into enforceable control. Each addresses a distinct point at which agency is typically lost.
 
@@ -171,13 +171,13 @@ Three tensions are inherent to this design and are addressed rather than resolve
 
 ---
 
-## Tensions and Tradeoffs
+## 6. Tensions and Tradeoffs
 
-### Usability vs. Complexity
+### 6.1 Usability vs. Complexity
 
 Agency introduces configuration surfaces that can overwhelm. Hiding them removes control. DP2 requires **graduated disclosure**: simple defaults that are safe, with deeper controls accessible without specialized expertise.
 
-### Automation vs. Control
+### 6.2 Automation vs. Control
 
 Automation reduces effort but can displace agency. Participants must be able to answer:
 
@@ -187,53 +187,53 @@ Automation reduces effort but can displace agency. Participants must be able to 
 
 DP2 requires **visible delegation scopes, renewal, and revocation** aligned with accountable binding (DP1).
 
-### Power-Law Attention Markets
+### 6.3 Power-Law Attention Markets
 
 Even fair rules can reproduce inequality when attention is the currency. DP2 does not promise equal outcomes; it guarantees **equal access to the levers** that govern one's participation and visibility within a zone, and **transparent disclosure** when algorithmic allocation is in play (touchpoint DP14).
 
-### Safety vs. Patronizing Lockdown
+### 6.4 Safety vs. Patronizing Lockdown
 
 Safety work can slide into infantilizing participants. DP2 pairs with DP1 to require that constraints be **proportionate, explainable, and contestable**, with pathways for competent self-determination inside high-trust zones.
 
 ---
 
-## Presence, Identity Plurality, and the Right to Shape Visibility
+## 7. Presence, Identity Plurality, and the Right to Shape Visibility
 
 DP2 treats presence as something participants **sculpt**, not merely a profile object.
 
-### Plural Identities, Singular Accountability
+### 7.1 Plural Identities, Singular Accountability
 
 Participants may present differently across zones (DP1). Agency requires **per-zone controls** for visibility, linkage, and discoverability so pseudonymous participation is not undermined by accidental correlation.
 
-### Reach and Amplification as Explicit Objects
+### 7.2 Reach and Amplification as Explicit Objects
 
 When systems can amplify (boost, recommend, cross-post), amplification settings are **agency-bearing surfaces**: who may amplify me, under what proofs, with what caps? This is where DP2 meets DP1's asymmetric constraints for AI scale.
 
 ---
 
-## Defaults, Friction, and "Reasonable Participant" Design
+## 8. Defaults, Friction, and "Reasonable Participant" Design
 
-### Dangerous Defaults Are a Governance Bug
+### 8.1 Dangerous Defaults Are a Governance Bug
 
 DP2 assigns normative weight to default selection: the burden of proof lies on whoever proposes a default that increases extraction, surveillance, or irreversible commitment.
 
-### Friction as Protection, Not Punishment
+### 8.2 Friction as Protection, Not Punishment
 
 Strategic friction (confirmations, cooling-off periods for irreversible acts) protects agency when stakes are high. DP2 distinguishes **protective friction** from **hostile friction** designed to prevent exit or understanding.
 
-### Progressive Disclosure Without Burial
+### 8.3 Progressive Disclosure Without Burial
 
 Advanced controls may be layered, but never removed from accountability: search, assistive onboarding, and machine-readable policy summaries are part of agency infrastructure.
 
 ---
 
-## Agency System Layer: Continuity, Delegation Integrity, and Enforceable Consent
+## 9. Agency System Layer: Continuity, Delegation Integrity, and Enforceable Consent
 
 Beyond interface controls and defaults, DP2 requires a coherent agency system layer that persists across environments, interactions, and time. This layer ensures that participant intent, consent, and control remain enforceable under scale, automation, and interoperability.
 
 Agency is not simply the presence of controls. It is the ability to reliably change outcomes across systems without loss of intent, visibility, or recourse.
 
-### Agency Continuity Across Systems
+### 9.1 Agency Continuity Across Systems
 
 Participant choices must persist across tools, zones, and integrations.
 
@@ -245,7 +245,7 @@ This requires:
 
 A failure mode is **agency fragmentation**, where participant control is lost when moving across systems.
 
-### Delegation Integrity and Scope Enforcement
+### 9.2 Delegation Integrity and Scope Enforcement
 
 Delegation must remain bounded, legible, and enforceable.
 
@@ -260,7 +260,7 @@ Systems must prevent delegated agents from expanding scope beyond granted author
 
 A failure mode is **delegation drift**, where agents act beyond intended scope without detection.
 
-### Consent Durability and Revocability
+### 9.3 Consent Durability and Revocability
 
 Consent must persist long enough to be meaningful, but remain revocable at all times.
 
@@ -272,7 +272,7 @@ This requires:
 
 A failure mode is **consent decay**, where participants lose track of what they have authorized.
 
-### Anti-Coercion and Default Integrity
+### 9.4 Anti-Coercion and Default Integrity
 
 Defaults must not be used to extract consent or steer behavior against participant interests.
 
@@ -284,7 +284,7 @@ Systems must:
 
 A failure mode is **coercive configuration**, where participants are nudged into decisions that undermine agency.
 
-### Cross-System Agency Semantics
+### 9.5 Cross-System Agency Semantics
 
 Agency signals do not carry identical meaning across all systems.
 
@@ -296,7 +296,7 @@ Systems must:
 
 A failure mode is **semantic drift**, where participant intent is misapplied across systems.
 
-### Agency Memory and Auditability
+### 9.6 Agency Memory and Auditability
 
 Participants must be able to reconstruct what they authorized, when, and why.
 
@@ -312,13 +312,13 @@ This agency system layer ensures that participant control is not an illusion cre
 
 ---
 
-## Data, Automation, and Delegation: Agency Substrates
+## 10. Data, Automation, and Delegation: Agency Substrates
 
-### Purpose-Limited Processing
+### 10.1 Purpose-Limited Processing
 
 Collection and use are tied to **stated purposes with granular switches**, not monolithic "privacy" toggles (deep coupling to DP4).
 
-### Agent Delegation Graph
+### 10.2 Agent Delegation Graph
 
 For any automated or AI-mediated actor operating with participant intent, the system exposes:
 
@@ -327,7 +327,7 @@ For any automated or AI-mediated actor operating with participant intent, the sy
 - **Attribution** to a responsible entity (see DP1, *Binding AI Outputs to Responsible Entities*)
 - A **kill switch** reachable from the primary interface layer
 
-### Human-in-the-Loop Gradients
+### 10.3 Human-in-the-Loop Gradients
 
 Not every action needs a click, but **material actions** (payments, legal commitments, public attributions, irreversible posts) require explicit human confirmation unless a community zone defines a higher-automation norm with informed opt-in.
 
@@ -337,11 +337,11 @@ A failure mode is **automation overrun**, where agent activity exceeds human cap
 
 ---
 
-## Portability, Exit, and Interoperability as Agency Guarantees
+## 11. Portability, Exit, and Interoperability as Agency Guarantees
 
 Agency must survive movement. If a participant's control disappears at boundaries, the system is coercive by design.
 
-### Practical Exit
+### 11.1 Practical Exit
 
 Exit must be feasible in **human time** (hours or days for standard data classes). Stalling tactics, hidden dependencies, or degrading exports constitute agency violations.
 
@@ -356,7 +356,7 @@ Failure modes:
 - **Exit obstruction**: artificial friction prevents leaving
 - **Degraded export**: data is technically exported but unusable
 
-### Forking and Continuity
+### 11.2 Forking and Continuity
 
 Where communities fork norms or stacks (see DP1, *Exit, Fork, and Kill Switches*), participants retain identity continuity and portable artifacts where technically honest, avoiding punishment for disagreement.
 
@@ -367,7 +367,7 @@ Systems SHOULD support:
 
 Failure mode: **fork penalty**, where dissent results in loss of history or access.
 
-### Interoperability Honesty
+### 11.3 Interoperability Honesty
 
 Interoperability claims MUST be truthful. If a system advertises portability or integration, it MUST specify:
 
@@ -379,7 +379,7 @@ Failure mode: **interop deception**, where portability is claimed but core agenc
 
 ---
 
-## Collective Agency and Community Tools
+## 12. Collective Agency and Community Tools
 
 Individuals act within communities. DP2 requires that collective mechanisms enhance, rather than erase, individual agency.
 
@@ -402,7 +402,7 @@ Failure modes:
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 13. Governance, Accountability, and Agency Surfaces
 
 DP2 is unusual among the Desirable Properties in that agency surfaces are not a supporting requirement but the property itself. A backend that faithfully enforces scoped delegation while exposing no way to see or change that scope has satisfied nothing. The condition DP2 imposes is therefore that the levers exist, that they are reachable without specialized expertise, and that pulling them demonstrably changes system behavior.
 
@@ -430,7 +430,7 @@ Without these surfaces, the failure mode is **agency by assertion**, where a sys
 
 ---
 
-## Incentives and Power Analysis
+## 14. Incentives and Power Analysis
 
 Agency is expensive to provide and profitable to withhold. Most agency failures are not the product of hostile design decisions but of ordinary optimization: the default that converts better ships, the export that no one is measured on degrades, the delegation scope that reduces friction expands.
 
@@ -449,7 +449,7 @@ The recurring pressures are:
 
 ---
 
-## Community Signals Informing DP2
+## 15. Community Signals Informing DP2
 
 Recurring themes from public discourse (non-exhaustive) include both desires and tensions:
 
@@ -463,7 +463,7 @@ These signals reveal a core contradiction: participants want **power without ove
 
 ---
 
-## Foresight and Failure Design
+## 16. Foresight and Failure Design
 
 DP2 assumes that agency will erode rather than break. Systems rarely remove controls; they let controls fall out of correspondence with behavior as pipelines are added, agents gain capability, and integrations multiply. The characteristic DP2 failure is a system whose settings page is accurate on the day it shipped and increasingly fictional thereafter.
 
@@ -491,7 +491,7 @@ Failure is expected. Silent drift is not. A DP2-aligned system is one where the 
 
 ---
 
-## Relationship to Other Desirable Properties
+## 17. Relationship to Other Desirable Properties
 
 - **DP1** supplies accountable actors; **DP2** supplies the levers those actors hold. Without DP1, agency collapses into anonymity games; without DP2, accountability becomes surveillance.
 - **DP3** scales governance; DP2 ensures scale does not erase participatory steering.
@@ -512,7 +512,7 @@ Several of these couplings are load-bearing rather than thematic:
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 18. Non-Goals and Explicit Boundaries
 
 DP2 defines the conditions for agency; it does not promise universal outcomes.
 
@@ -532,7 +532,7 @@ Failure mode: **overreach**, where DP2 is interpreted to justify unsafe or unacc
 
 ---
 
-## Minimum DP2 Alignment (Non-Normative)
+## 19. Minimum DP2 Alignment (Non-Normative)
 
 Minimum alignment is not a UX checklist. It is the threshold at which participant agency is **real, enforceable, and resistant to coercion, drift, and automation capture**.
 
@@ -540,7 +540,7 @@ A system that does not meet these conditions may expose controls, but it does no
 
 At minimum, a system claiming DP2 alignment MUST satisfy the following **irreducible conditions**:
 
-### Outcome-Level Control (Not Preference Simulation)
+### 19.1 Outcome-Level Control (Not Preference Simulation)
 
 - Participants MUST be able to change meaningful outcomes, not only surface preferences
 - Core levers (visibility, data use, automation authority, exit) MUST directly affect system behavior
@@ -548,7 +548,7 @@ At minimum, a system claiming DP2 alignment MUST satisfy the following **irreduc
 
 Failure mode: **agency theater**, where interfaces imply control without changing outcomes.
 
-### Delegation Visibility and Revocation
+### 19.2 Delegation Visibility and Revocation
 
 - All automated or AI-mediated actions MUST be attributable and visible to the participant
 - Delegation MUST include scope, duration, and authority limits
@@ -556,7 +556,7 @@ Failure mode: **agency theater**, where interfaces imply control without changin
 
 Failure mode: **delegation opacity**, where systems act without legible authority or revocation.
 
-### Consent Binding and Enforcement
+### 19.3 Consent Binding and Enforcement
 
 - Consent MUST be explicitly tied to system behavior
 - Systems MUST enforce consent boundaries consistently across components and integrations
@@ -564,7 +564,7 @@ Failure mode: **delegation opacity**, where systems act without legible authorit
 
 Failure mode: **consent bypass**, where downstream systems ignore or reinterpret user intent.
 
-### Anti-Coercion Defaults
+### 19.4 Anti-Coercion Defaults
 
 - Defaults MUST NOT materially disadvantage participants without explicit opt-in
 - High-impact actions MUST require clear confirmation
@@ -572,7 +572,7 @@ Failure mode: **consent bypass**, where downstream systems ignore or reinterpret
 
 Failure mode: **coerced consent**, where participants are steered into decisions against their interest.
 
-### Practical Exit and Portability
+### 19.5 Practical Exit and Portability
 
 - Participants MUST be able to export their data and exit systems in reasonable human time
 - Exit MUST NOT result in silent loss of identity continuity without explicit signaling (DP1)
@@ -580,7 +580,7 @@ Failure mode: **coerced consent**, where participants are steered into decisions
 
 Failure mode: **exit obstruction**, where users are technically allowed but practically unable to leave.
 
-### Cross-System Agency Integrity
+### 19.6 Cross-System Agency Integrity
 
 - Participant choices MUST persist across integrations where technically feasible
 - Systems MUST signal when agency guarantees degrade across contexts
@@ -588,7 +588,7 @@ Failure mode: **exit obstruction**, where users are technically allowed but prac
 
 Failure mode: **agency fragmentation**, where control is lost across system boundaries.
 
-### Auditability of System Behavior
+### 19.7 Auditability of System Behavior
 
 - Participants MUST be able to inspect what actions were taken on their behalf
 - Systems MUST provide logs or summaries of automated decisions and their effects
@@ -604,7 +604,7 @@ Partial implementations that omit outcome control, delegation integrity, consent
 
 ---
 
-## Open Questions and Future Work
+## 20. Open Questions and Future Work
 
 - Portability vs. abuse: preventing weaponized export while honoring exit (interfaces with DP1 memory models)
 - Legibility budgets: how much system behavior can be made comprehensible without overload; role of machine summaries vs. audits (DP14–DP15)
@@ -623,7 +623,7 @@ Further questions concern how agency is expressed, timed, and measured at the ed
 
 ---
 
-## Path Toward ML-RFC
+## 21. Path Toward ML-RFC
 
 Advancement from ML-Draft to ML-RFC should demonstrate that agency is not only described but **operationally verified**.
 
@@ -643,7 +643,7 @@ Graduation criteria SHOULD include:
 
 ---
 
-## Closing Orientation
+## 22. Closing Orientation
 
 DP2 asserts that participants are not merely subjects of systems, but operators within them.
 

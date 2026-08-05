@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This draft articulates Desirable Property 8 (DP8) as the condition under which communities can **define, enforce, and evolve participation and governance at the interface layer of the Meta-Layer**.
 
@@ -16,7 +16,7 @@ DP8 is not moderation. It is the **system-level design of environments in which 
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 On today’s web, participation and governance are platform-defined:
 
@@ -37,11 +37,11 @@ DP8 addresses this by enabling communities to define **zone-specific governance 
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
 DP8 assumes adversaries will combine **identity (DP1), agency (DP2), data flows (DP4), governance (DP8), and incentives (DP9)**. Systems MUST be robust to **multi-vector, cross-zone attacks** and degrade safely.
 
-### 3.0 Security and Adversarial Failure Modes (Index)
+### 3.1 Security and Adversarial Failure Modes (Index)
 
 DP8 names its failure modes inline throughout the sections that follow, because each mechanism fails in a specific way. The list below indexes that vocabulary so it can be tested, monitored, and referenced as a set.
 
@@ -91,7 +91,7 @@ DP8 names its failure modes inline throughout the sections that follow, because 
 
 ---
 
-### **3.1 Threat Classes (Extended)**
+### 3.2 Threat Classes (Extended)
 
 - **Sybil Attacks**: many identities controlled by few actors
 - **Brigading**: coordinated surges to influence outcomes
@@ -100,7 +100,7 @@ DP8 names its failure modes inline throughout the sections that follow, because 
 - **AI Amplification**: automated agents scaling influence beyond constraints
 - **Cross-Zone Escalation**: importing status or signals to bypass local rules
 
-### **3.2 Composed (Multi-Vector) Attacks**
+### 3.3 Composed (Multi-Vector) Attacks
 
 Adversaries may combine:
 - AI agents + human click-farms
@@ -112,7 +112,7 @@ Systems MUST detect **correlated anomalies** across time, topology, and identity
 
 Failure mode: **composed attack success**, where individually mitigated vectors succeed in combination.
 
-### **3.3 Detection Signals and Telemetry**
+### 3.4 Detection Signals and Telemetry
 
 - **Temporal**: burstiness, synchronized actions, unusual cadence
 - **Topological**: tightly clustered interactions, graph anomalies
@@ -121,7 +121,7 @@ Failure mode: **composed attack success**, where individually mitigated vectors 
 
 Systems SHOULD fuse signals into risk scores with **explainable summaries**.
 
-### **3.4 Response Playbooks**
+### 3.5 Response Playbooks
 
 - **Progressive friction**: rate limits, proof escalation, cooldowns
 - **Containment**: quarantine zones, shadow reduction of amplification
@@ -130,7 +130,7 @@ Systems SHOULD fuse signals into risk scores with **explainable summaries**.
 
 Failure mode: **delayed or blunt response** causing collateral damage or missed containment.
 
-### **3.5 Transparency vs. Gaming**
+### 3.6 Transparency vs. Gaming
 
 - Provide participant-legible explanations and audit summaries
 - Protect sensitive thresholds and heuristics
@@ -139,7 +139,7 @@ Failure modes:
 - **gaming via overexposure**
 - **opacity via underexposure**
 
-### **3.6 Cross-Zone Containment and Signal Sharing**
+### 3.7 Cross-Zone Containment and Signal Sharing
 
 - Attacks are **zone-scoped by default**; sharing of sanctions/signals MUST be deliberate and thresholded
 - Systems SHOULD support **signed, scoped advisories** between zones
@@ -147,14 +147,14 @@ Failure modes:
 Failure modes:
 - **cascading harm** (over-sharing) or **blindness** (under-sharing)
 
-### **3.7 Incentive Alignment (DP9 Link)**
+### 3.8 Incentive Alignment (DP9 Link)
 
 - Systems MUST minimize rewards for abusive behavior (no easy profit from spam/brigades)
 - Rewards SHOULD be tied to **verified, sustained contribution**
 
 Failure mode: **perverse incentives** that fund attacks
 
-### **3.8 Resilience and Safe Degradation**
+### 3.9 Resilience and Safe Degradation
 
 - Under uncertainty, systems SHOULD degrade to **safer defaults** (reduced amplification, higher proof requirements)
 - Maintain service continuity while limiting harm
@@ -163,7 +163,7 @@ Failure mode: **fail-open amplification** under stress
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 **Communities must be able to define and enforce the conditions under which participation, influence, and intelligence operate. If governance cannot be enforced under scale, coordination, and adversarial pressure, trust collapses.**
 
@@ -189,47 +189,47 @@ Failure conditions (non-exhaustive):
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 DP8 differs structurally from most Desirable Properties: its mechanisms are specified as an architecture rather than a flat list of conditions. The sections that follow this one carry that specification in depth. This section states the structural conditions that must hold regardless of how the architecture is implemented, and points to where each is elaborated.
 
-### Enforcement must occur at the point of interaction
+### 5.1 Enforcement must occur at the point of interaction
 
-Governance rules bind before actions propagate, at the interface layer, not in a platform backend that reviews outcomes afterward. Overlays, extensions, and native integrations are the execution surface. Elaborated in **System Architecture** (overlay-based governance, 5.1–5.2) and **Governance Composition** (composition constraints, 8.2).
+Governance rules bind before actions propagate, at the interface layer, not in a platform backend that reviews outcomes afterward. Overlays, extensions, and native integrations are the execution surface. Elaborated in **System Architecture** (overlay-based governance, 10.1–10.2) and **Governance Composition** (composition constraints, 13.2).
 
-### Policy must be attached to context, not to platforms
+### 5.2 Policy must be attached to context, not to platforms
 
-Zones are the unit of governance: composable, overlapping, portable policy containers that declare participation thresholds, governance rules, AI permissions, and trust signals. Rules do not leak silently across zone boundaries, and boundary transitions signal changes in guarantees. Elaborated in **System Architecture** (5.3, 5.4.1–5.4.4).
+Zones are the unit of governance: composable, overlapping, portable policy containers that declare participation thresholds, governance rules, AI permissions, and trust signals. Rules do not leak silently across zone boundaries, and boundary transitions signal changes in guarantees. Elaborated in **System Architecture** (10.3, 10.4.1–10.4.4).
 
-### Capability must be tiered, stateful, and revocable
+### 5.3 Capability must be tiered, stateful, and revocable
 
 Participation maps to enforced tiers with entry conditions, verifiable progression, and decay. Capability cannot be acquired out of band, and high-impact actions require proofs proportional to their reach. Elaborated in **Participation Model**.
 
-### Automation must be a governed actor class
+### 5.4 Automation must be a governed actor class
 
 AI agents hold verifiable identity, bounded scope with expiry, disclosure at the interface, and revocation pathways. Agents are subordinate to zone policy at runtime, not to policy documents. Elaborated in **AI Governance (DP12 Link)**.
 
-### Governance must be composable without becoming bypassable
+### 5.5 Governance must be composable without becoming bypassable
 
 Voting, moderation, reputation, access control, and dispute resolution operate as modules with typed and scoped outputs, declared precedence, and bounded feedback cycles. Elaborated in **Governance Composition**.
 
-### Every governance action must produce reconstructable evidence
+### 5.6 Every governance action must produce reconstructable evidence
 
-Attribution, authority, applied rules, outcome impact, and appeal traces are recorded so that decisions can be audited and contested. Elaborated in **Minimum DP8 Alignment** (10.7) and the auditability requirements of **Path Toward ML-RFC** (12.4).
+Attribution, authority, applied rules, outcome impact, and appeal traces are recorded so that decisions can be audited and contested. Elaborated in **Minimum DP8 Alignment** (16.7) and the auditability requirements of **Path Toward ML-RFC** (18.4).
 
-### Degradation must be safe and visible
+### 5.7 Degradation must be safe and visible
 
-Under load, uncertainty, or attack, systems move toward stricter defaults — reduced amplification, higher proof requirements, narrower scopes — and disclose that they have done so. Elaborated in **Core Principles (Normative and Enforceable)** (4.9) and **Threats and Failure Modes**.
+Under load, uncertainty, or attack, systems move toward stricter defaults — reduced amplification, higher proof requirements, narrower scopes — and disclose that they have done so. Elaborated in **Core Principles (Normative and Enforceable)** (9.9) and **Threats and Failure Modes**.
 
-### Communities must be able to evolve and fork
+### 5.8 Communities must be able to evolve and fork
 
-Governance stacks are versioned, forkable, and migratable, with explicit signaling to participants when rules change. Continuity of governance does not mean permanence of a single configuration. Elaborated in **System Architecture** (5.4.8) and **Governance Composition** (8.4).
+Governance stacks are versioned, forkable, and migratable, with explicit signaling to participants when rules change. Continuity of governance does not mean permanence of a single configuration. Elaborated in **System Architecture** (5.4.8) and **Governance Composition** (13.4).
 
 **Failure mode:** **architecture without conditions**, where a system implements zones, overlays, and modules as features while leaving enforcement, continuity, attribution, or degradation unspecified.
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 6. Governance, Accountability, and Agency Surfaces
 
 Governance in DP8 is the subject matter of the property, not an adjacent concern. What this section adds is the requirement that the governance system itself be governed: that participants and communities can see how rules were made, act on them, and hold their operators accountable.
 
@@ -261,7 +261,7 @@ Stewards must be accountable in the same terms as participants. Moderation, adju
 
 ---
 
-## Incentives and Power Analysis
+## 7. Incentives and Power Analysis
 
 Governance competes with incentives. Where the two diverge, incentives usually win, because they operate continuously while governance operates episodically.
 
@@ -288,7 +288,7 @@ DP8 therefore expects:
 
 ---
 
-## Community Signals Informing DP8
+## 8. Community Signals Informing DP8
 
 Community input across the Meta-Layer submission process, moderation research, and platform governance experience converges on a consistent set of signals. They are not requests for more moderation. They are reports that governance is not real where it matters.
 
@@ -310,11 +310,11 @@ DP8 treats them as design requirements. A zone that cannot answer "which rule, a
 
 ---
 
-## Core Principles (Normative and Enforceable)
+## 9. Core Principles (Normative and Enforceable)
 
 DP8 principles are **normative and enforceable**, and interlock with **DP1 (Identity)**, **DP2 (Agency)**, **DP4 (Data)**, and **DP12 (AI)**.
 
-### **4.1 Self-Determination (Enforceable; DP2)**
+### 9.1 Self-Determination (Enforceable; DP2)
 Communities MUST be able to define participation and governance rules that **bind execution**.
 
 - Rules MUST be machine-enforceable at the interface layer.
@@ -322,7 +322,7 @@ Communities MUST be able to define participation and governance rules that **bin
 
 Failure mode: **declarative governance**.
 
-### **4.2 Contextual Governance (Zone-Bounded; DP1, DP4)**
+### 9.2 Contextual Governance (Zone-Bounded; DP1, DP4)
 Rules MUST adapt to domain, risk, and norms, and be **scoped to zones**.
 
 - Systems MUST prevent silent carryover of rules across zones.
@@ -330,7 +330,7 @@ Rules MUST adapt to domain, risk, and norms, and be **scoped to zones**.
 
 Failure mode: **context collapse**.
 
-### **4.3 Graduated Participation (Stateful; DP2)**
+### 9.3 Graduated Participation (Stateful; DP2)
 Participation MUST be tiered with **stateful progression and decay**.
 
 - Capabilities MUST map to tiers and be enforced.
@@ -338,51 +338,51 @@ Participation MUST be tiered with **stateful progression and decay**.
 
 Failure mode: **tier gaming** / **privilege ossification**.
 
-### **4.4 Human-Centric Trust Anchoring (Proof-Gated; DP1)**
+### 9.4 Human-Centric Trust Anchoring (Proof-Gated; DP1)
 High-impact actions SHOULD require **proofs tied to unique humans**.
 
 - Amplification and governance votes MUST resist sybil and automation dominance.
 
 Failure mode: **amplification spoofing**.
 
-### **4.5 Interoperability (Truthful and Bounded; DP1, DP4, DP7)**
+### 9.5 Interoperability (Truthful and Bounded; DP1, DP4, DP7)
 Communities MUST persist across platforms with **honest signaling of what is preserved or degraded**.
 
 - Identity, agency, and governance state MUST travel or explicitly degrade.
 
 Failure mode: **interop deception**.
 
-### **4.6 AI Situatability (Runtime-Bound; DP12)**
+### 9.6 AI Situatability (Runtime-Bound; DP12)
 AI MUST operate within **zone-defined constraints** with attribution, scope, and revocation.
 
 Failure mode: **AI governance bypass**.
 
-### **4.7 Precedence and Conflict Resolution (Deterministic)**
+### 9.7 Precedence and Conflict Resolution (Deterministic)
 Overlapping rules MUST resolve deterministically.
 
 - Systems MUST declare precedence models.
 
 Failure mode: **zone conflict ambiguity**.
 
-### **4.8 Auditability and Recourse (First-Class; DP1)**
+### 9.8 Auditability and Recourse (First-Class; DP1)
 Governance actions MUST be reconstructable and contestable.
 
 Failure mode: **governance opacity**.
 
-### **4.9 Safe Degradation (Fail-Safe Defaults; DP2, DP4)**
+### 9.9 Safe Degradation (Fail-Safe Defaults; DP2, DP4)
 Under uncertainty or attack, systems SHOULD degrade to **safer defaults**.
 
 Failure mode: **fail-open under stress**.
 
 ---
 
-## System Architecture
+## 10. System Architecture
 
-### **5.1 Overlay-Based Governance**
+### 10.1 Overlay-Based Governance
 
 Governance operates at the interface layer through overlays (browser extensions, native integrations, or overlay apps), not within platform silos.
 
-### **5.2 Core Primitives**
+### 10.2 Core Primitives
 
 - Identity (DP1)
 - Agency (DP2)
@@ -390,7 +390,7 @@ Governance operates at the interface layer through overlays (browser extensions,
 - Zones
 - Governance Modules
 
-### **5.3 Zone Model (DP1 Integration)**
+### 10.3 Zone Model (DP1 Integration)
 
 Zones are:
 
@@ -405,13 +405,13 @@ Each zone defines:
 - AI permissions
 - trust signals
 
-### **5.4 Governance System Layer: Continuity, Enforcement, and Capture Resistance**
+### 10.4 Governance System Layer: Continuity, Enforcement, and Capture Resistance
 
 Beyond participation models and governance modules, DP8 requires a coherent governance system layer that ensures community-defined rules remain **enforceable, portable, and resilient under scale and adversarial pressure**.
 
 Governance is not simply declared. It must persist across contexts, resist manipulation, and remain legible and contestable over time.
 
-#### **5.4.1 Governance Continuity Across Zones**
+#### 10.4.1 Governance Continuity Across Zones
 
 Governance rules must persist as participants move across:
 
@@ -428,7 +428,7 @@ This requires:
 
 Failure mode: **governance fragmentation**
 
-#### **5.4.2 Enforcement at the Interface Layer**
+#### 10.4.2 Enforcement at the Interface Layer
 
 Governance must be enforced where interaction occurs.
 
@@ -440,7 +440,7 @@ Systems MUST ensure:
 
 Failure mode: **phantom governance**
 
-#### **5.4.3 Cross-Zone Conflict Resolution**
+#### 10.4.3 Cross-Zone Conflict Resolution
 
 Systems MUST define:
 
@@ -450,13 +450,13 @@ Systems MUST define:
 
 Failure mode: **zone conflict ambiguity**
 
-#### **5.4.4 Governance Propagation**
+#### 10.4.4 Governance Propagation
 
 Rules must propagate with content, participants, and interactions.
 
 Failure mode: **governance stripping**
 
-#### **5.4.5 Capture Resistance**
+#### 10.4.5 Capture Resistance
 
 Systems MUST mitigate:
 
@@ -466,19 +466,19 @@ Systems MUST mitigate:
 
 Failure mode: **governance capture**
 
-#### **5.4.6 Anti-Brigading**
+#### 10.4.6 Anti-Brigading
 
 Systems MUST detect and limit coordinated behavior.
 
 Failure mode: **brigading**
 
-#### **5.4.7 Governance Memory and Auditability**
+#### 10.4.7 Governance Memory and Auditability
 
 Governance decisions MUST be reconstructable and contestable.
 
 Failure mode: **governance opacity**
 
-#### **5.4.8 Governance Evolution and Forkability**
+#### 10.4.8 Governance Evolution and Forkability
 
 Communities MUST be able to evolve and fork governance models.
 
@@ -486,11 +486,11 @@ Failure mode: **governance rigidity**
 
 ---
 
-## Participation Model
+## 11. Participation Model
 
-DP8 defines participation as a **tiered, stateful system** where capability, influence, and accountability increase with demonstrated behavior and verified identity properties (DP1), under enforceable governance (Section 5.4).
+DP8 defines participation as a **tiered, stateful system** where capability, influence, and accountability increase with demonstrated behavior and verified identity properties (DP1), under enforceable governance (Section 10.4).
 
-### **6.1 Tiered Participation (Capabilities Matrix)**
+### 11.1 Tiered Participation (Capabilities Matrix)
 
 Participation tiers SHOULD be explicit and machine-enforceable:
 
@@ -503,7 +503,7 @@ Participation tiers SHOULD be explicit and machine-enforceable:
 
 Systems MUST bind capabilities to tier and prevent out-of-band escalation.
 
-### **6.2 Entry, Progression, and Decay**
+### 11.2 Entry, Progression, and Decay
 
 - Entry requirements MAY include consent, identity level, and basic behavior thresholds.
 - Progression MUST require **verifiable contribution over time** (continuity, not bursts).
@@ -513,7 +513,7 @@ Failure modes:
 - **fast-track escalation** (gaming entry to gain influence)
 - **privilege ossification** (roles never decay)
 
-### **6.3 Virality and Reputation Controls**
+### 11.3 Virality and Reputation Controls
 
 High-impact amplification SHOULD require unique human verification.
 
@@ -528,7 +528,7 @@ Failure modes:
 - **amplification spoofing**
 - **reputation laundering**
 
-### **6.4 Cross-Zone Participation Semantics**
+### 11.4 Cross-Zone Participation Semantics
 
 - Participation status is **zone-scoped by default**.
 - Systems MUST signal when a participant’s tier in one zone does not transfer to another.
@@ -536,7 +536,7 @@ Failure modes:
 
 Failure mode: **cross-zone escalation**, where status in one zone illegitimately confers power in another.
 
-### **6.5 Rate, Scope, and Safety Guards**
+### 11.5 Rate, Scope, and Safety Guards
 
 - Systems MUST enforce rate limits and scope constraints proportional to tier.
 - High-risk actions (mass messaging, mass tagging, bulk edits) require stricter proofs and/or stewards.
@@ -545,21 +545,21 @@ Failure mode: **throughput abuse**, where volume substitutes for trust.
 
 ---
 
-## AI Governance (DP12 Link)
+## 12. AI Governance (DP12 Link)
 
 DP8 requires that AI participation be **governed as a first-class actor class** within zones, with enforceable constraints at runtime and clear attribution aligned with DP1 and DP2.
 
-### **7.1 AI Identity, Attribution, and Disclosure**
+### 12.1 AI Identity, Attribution, and Disclosure
 
 - All AI agents MUST present a verifiable identity (issuer, operator, model class) and remain attributable for actions.
 - AI-originated content and actions MUST be clearly labeled at the interface layer.
-- Delegated agents MUST bind to a sponsoring human or organization (DP1 §8.3 equivalent), with visible responsibility.
+- Delegated agents MUST bind to a sponsoring human or organization (DP1 §11.3 equivalent), with visible responsibility.
 
 Failure modes:
 - **identity masking** (AI indistinguishable from humans)
 - **attribution gaps** (no accountable party)
 
-### **7.2 Scope-Limited Delegation and Control**
+### 12.2 Scope-Limited Delegation and Control
 
 - AI agents MUST operate within **explicit scopes** (read/write domains, amplification limits, interaction types) with TTL and renewal.
 - Zones MUST define allowed capabilities per tier (e.g., no autonomous amplification without quorum).
@@ -569,7 +569,7 @@ Failure modes:
 - **scope creep** (agent expands authority)
 - **irrevocable delegation**
 
-### **7.3 Amplification and Participation Constraints**
+### 12.3 Amplification and Participation Constraints
 
 - AI MUST NOT directly trigger high-impact amplification without **human-backed quorum or proofs**.
 - Systems SHOULD cap AI-originated throughput and require stronger proofs for bulk actions.
@@ -579,7 +579,7 @@ Failure modes:
 - **AI amplification bypass**
 - **throughput dominance**
 
-### **7.4 Interaction Safety and Interruptibility**
+### 12.4 Interaction Safety and Interruptibility
 
 - AI actions MUST be **interruptible, reversible (where feasible), and auditable**.
 - High-risk actions (payments, legal commitments, public attributions) require **human-in-the-loop confirmation** unless explicitly authorized by zone policy.
@@ -588,7 +588,7 @@ Failure modes:
 - **automation overrun**
 - **irreversible AI actions without consent**
 
-### **7.5 Data and Inference Boundaries (DP4 Link)**
+### 12.5 Data and Inference Boundaries (DP4 Link)
 
 - AI MUST honor data purpose binding and consent propagation (DP4 §5.11).
 - Inferences generated by AI are **first-class artifacts** with lineage, scope, and revocation/attenuation pathways.
@@ -597,7 +597,7 @@ Failure modes:
 - **inference misuse**
 - **consent bypass via pipelines**
 
-### **7.6 Cross-Zone Behavior and Containment**
+### 12.6 Cross-Zone Behavior and Containment
 
 - AI permissions are **zone-scoped by default**; cross-zone operation requires explicit reauthorization.
 - Systems MUST signal when AI constraints change across zones.
@@ -605,7 +605,7 @@ Failure modes:
 Failure modes:
 - **cross-zone privilege leakage**
 
-### **7.7 Observability and Audits**
+### 12.7 Observability and Audits
 
 - Systems MUST provide logs of AI actions (who, what, when, scope) and summaries understandable to participants.
 - Zones SHOULD publish **policy manifests** for AI (allowed actions, caps, escalation paths).
@@ -615,11 +615,11 @@ Failure modes:
 
 ---
 
-## Governance Composition
+## 13. Governance Composition
 
-DP8 treats governance as a **composable system of modules** that MUST interoperate without bypassing enforcement (Section 5.4).
+DP8 treats governance as a **composable system of modules** that MUST interoperate without bypassing enforcement (Section 10.4).
 
-### **8.1 Module Types**
+### 13.1 Module Types
 
 Common modules include:
 - **Voting** (quorum rules, weighting)
@@ -628,7 +628,7 @@ Common modules include:
 - **Access Control** (roles, permissions)
 - **Dispute Resolution** (appeals, juries)
 
-### **8.2 Composition Constraints (Required)**
+### 13.2 Composition Constraints (Required)
 
 - Modules MUST NOT bypass the governance system layer (no direct amplification without checks).
 - Outputs of one module MUST be **typed and scoped** before feeding another (e.g., a vote signal cannot directly amplify content without validation).
@@ -638,21 +638,21 @@ Failure modes:
 - **module bypass** (side-channel influence)
 - **feedback loops** (runaway amplification)
 
-### **8.3 Precedence and Policy Graph**
+### 13.3 Precedence and Policy Graph
 
 - Systems SHOULD maintain a **policy graph** where modules declare inputs, outputs, and precedence.
 - Conflicts between modules MUST resolve via declared precedence (or fall back to stricter rule wins).
 
 Failure mode: **composition ambiguity**, where multiple modules conflict without resolution.
 
-### **8.4 Forkability and Versioning**
+### 13.4 Forkability and Versioning
 
 - Governance stacks MUST be forkable with clear version identifiers.
 - Changes MUST be **versioned and auditable**, with migration paths for participants.
 
 Failure mode: **silent rule drift**, where behavior changes without visibility.
 
-### **8.5 Interoperability of Modules**
+### 13.5 Interoperability of Modules
 
 - Modules SHOULD expose standard interfaces for signals (e.g., vote, trust, flag) to enable cross-community reuse.
 - Interop MUST preserve context (zone, scope, guarantees) or explicitly degrade it.
@@ -661,7 +661,7 @@ Failure mode: **semantic mismatch**, where signals are misinterpreted across sys
 
 ---
 
-## Relationship to Other Desirable Properties
+## 14. Relationship to Other Desirable Properties
 
 DP8 is the layer at which the other properties become locally binding. It supplies the context — the zone — in which identity, agency, data, incentives, and automation are constrained in ways a specific community can define and defend.
 
@@ -683,7 +683,7 @@ A failure in any of these layers surfaces inside DP8 as illegitimate governance:
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 15. Non-Goals and Explicit Boundaries
 
 DP8 does not:
 
@@ -700,7 +700,7 @@ DP8 defines the conditions under which community-defined governance is enforceab
 
 ---
 
-## Minimum DP8 Alignment (Non-Normative)
+## 16. Minimum DP8 Alignment (Non-Normative)
 
 Minimum alignment is not a feature checklist. It is the threshold at which governance is **enforceable, portable, and resistant to manipulation, capture, and coordination attacks**.
 
@@ -708,7 +708,7 @@ A system that does not meet these conditions may expose governance features, but
 
 At minimum, a system claiming DP8 alignment MUST satisfy the following **irreducible conditions**:
 
-### **10.1 Zone-Based Enforcement**
+### 16.1 Zone-Based Enforcement
 
 - Governance rules MUST be enforced at the interface layer within defined zones
 - Rules MUST apply before actions (visibility, amplification, moderation) propagate
@@ -716,7 +716,7 @@ At minimum, a system claiming DP8 alignment MUST satisfy the following **irreduc
 
 Failure mode: **phantom governance**
 
-### **10.2 Participation Integrity**
+### 16.2 Participation Integrity
 
 - Participation tiers MUST map to real differences in capability and influence
 - High-impact actions (e.g., virality, reputation boosts) MUST require stronger identity guarantees (e.g., unique human verification where appropriate)
@@ -724,42 +724,42 @@ Failure mode: **phantom governance**
 
 Failure mode: **participation gaming**
 
-### **10.3 Governance Continuity**
+### 16.3 Governance Continuity
 
 - Governance state (roles, permissions, reputation) MUST persist across pages, sessions, and supported systems
 - Systems MUST signal when continuity breaks
 
 Failure mode: **governance fragmentation**
 
-### **10.4 Capture Resistance**
+### 16.4 Capture Resistance
 
 - Systems MUST include mechanisms to detect and mitigate coordinated influence, role entrenchment, and opaque decision concentration
 - Governance actions MUST be attributable and reviewable
 
 Failure mode: **governance capture**
 
-### **10.5 Anti-Brigading Protections**
+### 16.5 Anti-Brigading Protections
 
 - Systems MUST detect anomalous participation patterns and coordinated behavior
 - Influence spikes MUST be rate-limited or require stronger proofs
 
 Failure mode: **brigading**
 
-### **10.6 Governance Propagation and Boundary Signaling**
+### 16.6 Governance Propagation and Boundary Signaling
 
 - Governance context MUST travel with content, participants, and interactions where technically feasible
 - Systems MUST signal when governance constraints are lost or degraded across boundaries
 
 Failure mode: **governance stripping**
 
-### **10.7 Auditability and Contestability**
+### 16.7 Auditability and Contestability
 
 - Participants MUST be able to inspect governance decisions and their effects
 - Systems MUST provide mechanisms to challenge or appeal decisions
 
 Failure mode: **governance opacity**
 
-### **10.8 AI Governance Enforcement**
+### 16.8 AI Governance Enforcement
 
 - AI actions MUST adhere to community-defined constraints
 - Systems MUST visibly distinguish AI participation and enforce scope limits
@@ -774,41 +774,41 @@ Partial implementations that omit enforcement, continuity, or capture resistance
 
 ---
 
-## Open Questions and Future Work
+## 17. Open Questions and Future Work
 
 Open questions focus on cross-DP integration and operationalization:
 
-### **11.1 Cross-Zone Conflict Models (DP1, DP4)**
+### 17.1 Cross-Zone Conflict Models (DP1, DP4)
 - What precedence models are most legible and safe (stricter-wins vs user-selected vs negotiated)?
 - How should conflicts be surfaced without overload?
 
-### **11.2 Reputation Portability vs Context (DP2, DP8)**
+### 17.2 Reputation Portability vs Context (DP2, DP8)
 - What minimal signals can travel without enabling laundering?
 - How should decay and re-qualification work across zones?
 
-### **11.3 AI Policy Manifests (DP12)**
+### 17.3 AI Policy Manifests (DP12)
 - What is the minimal, machine-readable schema for zone AI policies?
 - How are capabilities negotiated across zones?
 
-### **11.4 Governance Module Standards (DP7)**
+### 17.4 Governance Module Standards (DP7)
 - Which module interfaces should be standardized for interoperability?
 - How to prevent semantic drift across implementations?
 
-### **11.5 Data–Governance Coupling (DP4)**
+### 17.5 Data–Governance Coupling (DP4)
 - How should consent and purpose binding propagate with governance actions (e.g., moderation, ranking)?
 
-### **11.6 Incentive Alignment (DP9)**
+### 17.6 Incentive Alignment (DP9)
 - What reward models avoid funding abuse while sustaining participation?
 
 ---
 
-## Path Toward ML-RFC
+## 18. Path Toward ML-RFC
 
 Advancement from ML-Draft to ML-RFC for DP8 requires **demonstrated, adversarially-tested governance systems operating across identity (DP1), agency (DP2), data (DP4), and AI constraints (DP12)**.
 
 This is not a documentation milestone. It is an **operational validation threshold**.
 
-### **12.1 Reference Implementations (End-to-End Zones)**
+### 18.1 Reference Implementations (End-to-End Zones)
 
 At least one fully functional governance zone MUST be implemented with:
 
@@ -821,7 +821,7 @@ The implementation MUST demonstrate that governance rules **change outcomes in r
 
 ---
 
-### **12.2 Adversarial Conformance Testing**
+### 18.2 Adversarial Conformance Testing
 
 Systems MUST pass structured tests simulating real attack conditions:
 
@@ -835,7 +835,7 @@ Results MUST be documented and reproducible.
 
 ---
 
-### **12.3 Interoperability Proofs (DP7 Alignment)**
+### 18.3 Interoperability Proofs (DP7 Alignment)
 
 Governance systems MUST demonstrate:
 
@@ -847,7 +847,7 @@ This ensures governance is not platform-bound.
 
 ---
 
-### **12.4 Auditability and Evidence Artifacts**
+### 18.4 Auditability and Evidence Artifacts
 
 Systems MUST produce auditable artifacts demonstrating:
 
@@ -863,7 +863,7 @@ Artifacts SHOULD include:
 
 ---
 
-### **12.5 Governance Evolution and Forking Evidence**
+### 18.5 Governance Evolution and Forking Evidence
 
 Communities MUST demonstrate the ability to:
 
@@ -875,7 +875,7 @@ This proves governance is **adaptive rather than brittle**.
 
 ---
 
-### **12.6 Multi-Community Adoption**
+### 18.6 Multi-Community Adoption
 
 At least two or more independent communities MUST:
 
@@ -887,7 +887,7 @@ This ensures DP8 is not optimized for a single use case.
 
 ---
 
-### **12.7 Criteria for Promotion to ML-RFC**
+### 18.7 Criteria for Promotion to ML-RFC
 
 DP8 may be promoted when:
 
@@ -899,7 +899,7 @@ DP8 may be promoted when:
 
 ---
 
-## Closing Orientation
+## 19. Closing Orientation
 
 DP8 defines the conditions under which communities become **sovereign coordination environments** rather than passive audiences.
 

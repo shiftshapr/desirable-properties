@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This draft articulates Desirable Property 4 (DP4) as the condition under which participants and communities can meaningfully govern data about themselves and their activity in the meta-layer.
 
@@ -22,7 +22,7 @@ DP4 does not resolve all legal, jurisdictional, or sector-specific privacy quest
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 In today's web, privacy is often presented as disclosure without control.
 
@@ -43,9 +43,9 @@ DP4 addresses this by defining data sovereignty as an operational condition. Pri
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
-### Consent theater
+### 3.1 Consent theater
 
 Interfaces bundle unrelated processing into a single act of acceptance.
 
@@ -53,7 +53,7 @@ Interfaces bundle unrelated processing into a single act of acceptance.
 
 **Why this matters:** The system records consent, but the participant did not experience a meaningful choice. DP4 treats this as a sovereignty failure, not a paperwork issue.
 
-### Purpose creep and secondary use
+### 3.2 Purpose creep and secondary use
 
 Data collected for one function expands into new products, ranking systems, partner programs, or model behaviors without a fresh social contract.
 
@@ -61,7 +61,7 @@ Data collected for one function expands into new products, ranking systems, part
 
 **Why this matters:** The participant's mental model of risk becomes false. Trust erodes even where no obvious breach has occurred.
 
-### Illusory portability
+### 3.3 Illusory portability
 
 Export exists formally but fails functionally.
 
@@ -69,7 +69,7 @@ Export exists formally but fails functionally.
 
 **Why this matters:** Exit is made to look possible while dependency is preserved. DP4 requires portability that preserves usable structure, not only raw payloads.
 
-### Inference without accountability
+### 3.4 Inference without accountability
 
 Systems derive high-stakes conclusions from behavioral traces without clearly governing how those inferences are created, used, challenged, or removed.
 
@@ -77,7 +77,7 @@ Systems derive high-stakes conclusions from behavioral traces without clearly go
 
 **Why this matters:** The participant never explicitly submitted the sensitive category, yet is still acted upon as if they had.
 
-### Retention without sunset
+### 3.5 Retention without sunset
 
 Data persists because retention is cheap, deletion is operationally inconvenient, and analytics cultures prefer indefinite memory.
 
@@ -85,7 +85,7 @@ Data persists because retention is cheap, deletion is operationally inconvenient
 
 **Why this matters:** Sovereignty requires time bounds. Without them, institutions remember indefinitely while participants bear the burden of asymmetrical memory.
 
-### Cross-context correlation
+### 3.6 Cross-context correlation
 
 Identifiers, device graphs, and fingerprinting techniques merge activity across settings that participants experienced as distinct.
 
@@ -93,7 +93,7 @@ Identifiers, device graphs, and fingerprinting techniques merge activity across 
 
 **Why this matters:** Plural identity becomes decorative. Communities cannot sustain contextual integrity if correlation silently defeats boundaries.
 
-### False anonymity and weak de-identification
+### 3.7 False anonymity and weak de-identification
 
 Organizations describe datasets as anonymized even where re-identification remains plausible or contractually enabled downstream.
 
@@ -101,7 +101,7 @@ Organizations describe datasets as anonymized even where re-identification remai
 
 **Why this matters:** DP4 requires honesty about residual risk. "De-identified" cannot be treated as a magic word that dissolves responsibility.
 
-### Partner sprawl without propagation
+### 3.8 Partner sprawl without propagation
 
 Deletion, revocation, and correction stop at the first layer of control.
 
@@ -109,7 +109,7 @@ Deletion, revocation, and correction stop at the first layer of control.
 
 **Why this matters:** Sovereignty that fails at the first subcontractor boundary is not sovereignty.
 
-### Youth and vulnerable-context overexposure
+### 3.9 Youth and vulnerable-context overexposure
 
 Defaults optimized for adult engagement expose minors and vulnerable users to data-intensive patterns they are less equipped to assess or contest.
 
@@ -117,7 +117,7 @@ Defaults optimized for adult engagement expose minors and vulnerable users to da
 
 **Why this matters:** DP4 requires higher baselines where stakes are higher. Uniform defaults can produce unequal harm.
 
-### Persona collapse
+### 3.10 Persona collapse
 
 Separate contexts a participant deliberately kept apart are merged, either through shared infrastructure, an integration that resolves both to one account, or a vault whose contents are exposed as a single undifferentiated store.
 
@@ -127,7 +127,7 @@ Separate contexts a participant deliberately kept apart are merged, either throu
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 **Data must retain meaning, consent, and accountability as it moves across systems. If data loses its binding to purpose, provenance, or permissions under transformation, sovereignty collapses into simulation.**
 
@@ -155,9 +155,9 @@ The meta-layer reframes privacy as operational control at the point of interacti
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
-### Purpose binding
+### 5.1 Purpose binding
 
 Every collection and processing pathway must declare its purpose in terms legible to both participants and communities. Material changes in purpose require visible reauthorization, reclassification, or zone-level review.
 
@@ -165,7 +165,7 @@ Every collection and processing pathway must declare its purpose in terms legibl
 
 Without purpose binding, consent collapses into blanket exposure.
 
-### Data minimization by design
+### 5.2 Data minimization by design
 
 Systems must begin from the least collection, retention, and sharing compatible with the function being offered, and expand only through visible, justified choices.
 
@@ -173,7 +173,7 @@ Systems must begin from the least collection, retention, and sharing compatible 
 
 This is not anti-functionality. It is a refusal to make maximal collection the silent baseline.
 
-### Consent stack
+### 5.3 Consent stack
 
 Permission must be layered, granular, and revocable, with separate scopes for distinct categories of data use.
 
@@ -183,7 +183,7 @@ This draft uses **consent stack** as a mechanism-level abstraction: a structured
 
 The consent stack makes partial participation possible without forcing blanket surrender.
 
-### Meaningful portability
+### 5.4 Meaningful portability
 
 Portability must preserve enough structure to support continuity, not just compliance.
 
@@ -201,7 +201,7 @@ This includes, where technically honest and appropriate:
 
 Without this, "take your data with you" becomes formal rights without real exit.
 
-### Retention clocks and propagation discipline
+### 5.5 Retention clocks and propagation discipline
 
 Retention must be bounded by event-driven or purpose-bound clocks, not indefinite convenience. Deletion, correction, and revocation requests must propagate to known downstream systems with auditable outcomes.
 
@@ -211,7 +211,7 @@ This draft uses **retention clocks** as a mechanism-level abstraction: visible t
 
 DP4 does not require dishonest promises of perfect erasure. It requires propagation discipline and truthful accounting.
 
-### Sensitive inference governance
+### 5.6 Sensitive inference governance
 
 Derived data can be more consequential than submitted data. High-risk inferences therefore require stronger conditions than ordinary processing.
 
@@ -221,7 +221,7 @@ This includes inferences relating to health, finances, minors, politics, biometr
 
 Inference must be governable as first-class data, not treated as exempt because it was machine-generated.
 
-### Zone-scoped privacy profiles
+### 5.7 Zone-scoped privacy profiles
 
 Communities must be able to define stricter privacy norms within their zones while remaining interoperable with broader infrastructure.
 
@@ -239,7 +239,7 @@ A privacy profile may specify, for example:
 
 Without zone-scoped privacy profiles, communities may have values but not operational control.
 
-### Auditability and provenance of use
+### 5.8 Auditability and provenance of use
 
 Significant data access, transfer, and inference events must be inspectable in participant-legible and community-legible forms.
 
@@ -249,7 +249,7 @@ This does not require exposing every security detail publicly. It requires enoug
 
 Privacy claims that cannot be audited remain aspirational.
 
-### Training and model-use boundaries
+### 5.9 Training and model-use boundaries
 
 Where participant or community content could enter model training, fine-tuning, embedding pipelines, or retrieval systems, those pathways must be separately governed.
 
@@ -257,7 +257,7 @@ Where participant or community content could enter model training, fine-tuning, 
 
 This is a direct dependency between DP4 and later AI properties. Ethical AI claims are weak if model access to human data is structurally obscure.
 
-### Jurisdictional and transfer honesty
+### 5.10 Jurisdictional and transfer honesty
 
 Cross-border transfers and legal regime changes must be visible as part of the participant's risk surface.
 
@@ -265,46 +265,46 @@ Cross-border transfers and legal regime changes must be visible as part of the p
 
 Global systems do not excuse vague disclosure. They heighten the need for explicitness.
 
-### Data System Layer: Lineage, Transformation Integrity, and Consent Propagation
+### 5.11 Data System Layer: Lineage, Transformation Integrity, and Consent Propagation
 
 Beyond individual mechanisms, DP4 requires a coherent data system layer that preserves **lineage, semantics, and permissions** across pipelines, services, and time. This layer ensures that data remains trustworthy under transformation, scale, and adversarial use.
 
-#### Lineage continuity
+#### 5.11.1 Lineage continuity
 
 - Data MUST carry provenance linking it to source, purpose, and processing context
 - Derived artifacts (features, embeddings, summaries) MUST reference upstream lineage
 
 Failure mode: **lineage loss**, enabling untraceable reuse and accountability gaps.
 
-#### Transformation integrity
+#### 5.11.2 Transformation integrity
 
 - Transformations MUST be attributable to an actor (human/AI) and a declared purpose
 - Material transformations SHOULD be reversible or auditable where feasible
 
 Failure mode: **data laundering**, where meaning or risk is altered without trace.
 
-#### Consent propagation
+#### 5.11.3 Consent propagation
 
 - Permissions MUST travel with data across internal and external systems
 - Downstream processors MUST honor upstream constraints or declare degradation explicitly
 
 Failure mode: **consent bypass chains**, where integrations ignore or reinterpret permissions.
 
-#### Anti-replay and non-duplication
+#### 5.11.4 Anti-replay and non-duplication
 
 - Identity- or consent-bound artifacts MUST NOT be reused to gain additional value without attribution
 - Systems SHOULD detect duplicate extraction across pipelines
 
 Failure mode: **replay extraction**, where the same data yields multiple unaccounted benefits.
 
-#### Inference binding and governance
+#### 5.11.5 Inference binding and governance
 
 - Inferences MUST be treated as first-class data with lineage, purpose, and revocation pathways
 - High-risk inferences require stricter constraints and auditability
 
 Failure mode: **inference drift**, where derived signals are reused outside their declared context.
 
-#### Cross-system semantics
+#### 5.11.6 Cross-system semantics
 
 - Systems MUST signal when data meaning or guarantees change across contexts
 - Mappings between schemas MUST preserve or explicitly degrade semantics
@@ -315,13 +315,13 @@ This layer does not require centralization. It requires **coherence under moveme
 
 ---
 
-## Data Vaults and Personas
+## 6. Data Vaults and Personas
 
 The mechanisms above define the conditions data must satisfy. This section defines the two structures through which participants actually hold and partition it: the **vault**, which is where data rests under participant control, and the **persona**, which is the boundary across which data is permitted to be seen.
 
 Both structures are necessary because they solve different problems. A vault without personas produces a single well-governed store that nonetheless collapses every context a participant inhabits into one legible profile. Personas without a vault produce contextual separation that any sufficiently integrated processor can defeat, because the underlying data was never held anywhere the participant controlled.
 
-### The personal data vault
+### 6.1 The personal data vault
 
 A vault is a participant-controlled store in which data, credentials, and derived artifacts reside with their purpose bindings, retention clocks, and permission history attached. It is the operational answer to the question of where sovereignty physically lives.
 
@@ -336,7 +336,7 @@ A vault SHOULD provide:
 
 The characteristic failure mode is **vault theater**, where a store is described as participant-controlled while the operator retains parallel copies, unlogged access, or the practical ability to deny export. A vault that cannot be audited or exited is a storage location, not a sovereignty mechanism.
 
-### Personas as context boundaries
+### 6.2 Personas as context boundaries
 
 A persona is a bounded presentation of a participant within a context: what is visible, what is linkable, and what may be inferred. Personas are how *Cross-context correlation* is resisted structurally rather than by policy promise.
 
@@ -350,13 +350,13 @@ DP4 requires that:
 
 The characteristic failure mode is **persona collapse**, described above under threats. It deserves particular design caution because it is effectively irreversible: revocation stops future access but cannot unlink an inference already drawn.
 
-### Zone interaction
+### 6.3 Zone interaction
 
 Personas and zone-scoped privacy profiles compose. A persona determines what a participant exposes; a zone profile determines what the environment permits to be collected, inferred, or transferred from whatever is exposed. A participant entering a health-support zone under a dedicated persona is protected twice: by the boundary they set and by the rules the community enforces.
 
 Where the two conflict, the stricter constraint applies. A zone may impose limits beyond what a persona's grants allow, but a zone profile must not be usable to widen access beyond the persona's scope. Communities set floors, not ceilings, on participant protection.
 
-### Relationship to identity and naming
+### 6.4 Relationship to identity and naming
 
 Vaults and personas depend on DP1 and DP5. DP1 supplies the accountability binding that makes plural presentation safe rather than evasive: personas are distinct without being unattributable, because action-bound accountability persists beneath them. DP5 supplies identifiers that can remain uncorrelated at the naming layer, without which persona separation is defeated before any data mechanism engages.
 
@@ -364,7 +364,7 @@ This is the practical shape of sovereignty in DP4: data held where the participa
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 7. Governance, Accountability, and Agency Surfaces
 
 DP4 is not satisfied by backend architecture alone. Participants and communities need interfaces through which data conditions become governable.
 
@@ -390,7 +390,7 @@ Without these surfaces, privacy remains vendor-defined even when communities app
 
 ---
 
-## Incentives and Power Analysis
+## 8. Incentives and Power Analysis
 
 Commercial systems tend to treat data surplus as strategic advantage.
 
@@ -406,7 +406,7 @@ DP4 therefore treats incentive visibility as part of sovereignty. Participants s
 
 ---
 
-## Community Signals Informing DP4
+## 9. Community Signals Informing DP4
 
 Across contexts, similar signals recur:
 
@@ -423,7 +423,7 @@ DP4 responds to that gap by making data conditions inspectable, debatable, and g
 
 ---
 
-## Foresight and Failure Design
+## 10. Foresight and Failure Design
 
 DP4 assumes that data sovereignty degrades by accumulation rather than by breach. The characteristic failure is not an incident but a slow divergence between what a system's privacy surface describes and what its pipelines actually do, produced by ordinary engineering: a new processor added, a schema migrated, a model retrained, an integration shipped.
 
@@ -458,7 +458,7 @@ Failure is expected. Undetectable failure is not. A DP4-aligned system is one wh
 
 ---
 
-## Relationship to Other Desirable Properties
+## 11. Relationship to Other Desirable Properties
 
 DP4 is foundational and interdependent.
 
@@ -477,7 +477,7 @@ A failure in DP4 propagates upward. If data conditions are opaque, later governa
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 12. Non-Goals and Explicit Boundaries
 
 DP4 defines a minimum condition. It does not solve every problem associated with data, secrecy, or identity.
 
@@ -507,7 +507,7 @@ Failure mode: **privacy absolutism**, where DP4 is invoked to block accountabili
 
 ---
 
-## Minimum DP4 Alignment (Non-Normative)
+## 13. Minimum DP4 Alignment (Non-Normative)
 
 Minimum alignment is not a policy checklist. It is the threshold at which data sovereignty is **enforceable, portable, and resistant to laundering, drift, and silent reuse**.
 
@@ -515,62 +515,62 @@ A system that does not meet these conditions may disclose practices, but it does
 
 At minimum, a system claiming DP4 alignment MUST satisfy the following **irreducible conditions**:
 
-### Purpose binding and enforcement
+### 13.1 Purpose binding and enforcement
 
 - All collection and processing MUST declare purpose and enforce it in execution
 - Material purpose changes MUST require reauthorization or zone review
 
 Failure mode: **purpose creep**.
 
-### Consent propagation
+### 13.2 Consent propagation
 
 - Permissions MUST travel with data across pipelines and partners
 - Downstream systems MUST honor or explicitly degrade constraints
 
 Failure mode: **consent bypass chains**.
 
-### Lineage and provenance
+### 13.3 Lineage and provenance
 
 - Data and derivatives MUST carry reconstructable lineage
 - Significant transformations MUST be attributable
 
 Failure mode: **lineage loss / data laundering**.
 
-### Meaningful portability
+### 13.4 Meaningful portability
 
 - Exports MUST preserve structure needed for practical migration (schemas, relationships, permissions)
 - Systems MUST disclose omissions and degradation
 
 Failure mode: **illusory portability**.
 
-### Retention and propagation discipline
+### 13.5 Retention and propagation discipline
 
 - Retention MUST be time- or purpose-bound with visible clocks
 - Deletion/revocation MUST propagate with auditable receipts
 
 Failure mode: **retention without sunset / partner sprawl**.
 
-### Inference governance
+### 13.6 Inference governance
 
 - High-risk inferences MUST be disclosed, bounded, and contestable
 - Inferences MUST support correction or attenuation where applicable
 
 Failure mode: **inference without accountability**.
 
-### Auditability of use
+### 13.7 Auditability of use
 
 - Participants MUST be able to inspect significant access, transfer, and inference events
 - Systems MUST provide logs or summaries sufficient for contestation
 
 Failure mode: **opaque processing**.
 
-### Interoperability honesty
+### 13.8 Interoperability honesty
 
 - Systems MUST state what is preserved, degraded, or non-transferable across boundaries
 
 Failure mode: **interop deception**.
 
-### Context separation
+### 13.9 Context separation
 
 - Permission grants MUST be scoped to a persona or context rather than to a participant in the aggregate
 - Correlation across contexts MUST require an explicit participant act, not arise as a side effect of shared infrastructure
@@ -586,7 +586,7 @@ Partial implementations that omit purpose enforcement, consent propagation, line
 
 ---
 
-## Open Questions and Future Work
+## 14. Open Questions and Future Work
 
 DP4 surfaces unresolved design challenges that require further work:
 
@@ -613,7 +613,7 @@ These are not reasons to delay better defaults. They mark the frontier where DP4
 
 ---
 
-## Path Toward ML-RFC
+## 15. Path Toward ML-RFC
 
 Progression from draft to RFC-grade maturity would require:
 
@@ -635,7 +635,7 @@ The goal is not to freeze one final model of privacy. It is to establish durable
 
 ---
 
-## Closing Orientation
+## 16. Closing Orientation
 
 DP4 is where the meta-layer rejects the old bargain of convenience in exchange for invisibility.
 

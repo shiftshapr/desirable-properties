@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This ML-Draft articulates Desirable Property 5 (DP5) as the condition under which people, communities, agents, artifacts, and spaces can be named, addressed, discovered, traded, and governed across the Meta-Layer without dependency on a single platform or registry.
 
@@ -22,7 +22,7 @@ DP5 guides implementation, governance design, and future ML-RFC development for 
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 *Why namespaces matter.*
 
@@ -48,51 +48,51 @@ Without DP5, the Meta-Layer cannot reliably answer basic questions:
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
-### Platform-rented identity
+### 3.1 Platform-rented identity
 
 Participants build identity around handles or pages that can be revoked, hidden, renamed, or monetized by platform operators.
 
 **Failure mode:** identity continuity depends on platform permission.
 
-### Namespace capture
+### 3.2 Namespace capture
 
 Dominant registries or intermediaries control which names are valid, visible, or resolvable.
 
 **Failure mode:** decentralized naming becomes centralized gatekeeping.
 
-### Spoofing and impersonation
+### 3.3 Spoofing and impersonation
 
 Attackers create visually, semantically, or structurally similar names to mislead participants.
 
 **Failure mode:** names become attack surfaces for scams and trust abuse.
 
-### Squatting and speculative enclosure
+### 3.4 Squatting and speculative enclosure
 
 Valuable names are claimed not for use, but to extract rents from future participants or communities.
 
 **Failure mode:** addressability becomes enclosure before public value can form.
 
-### Semantic drift
+### 3.5 Semantic drift
 
 A name carries one meaning in one system and a different meaning elsewhere without signaling.
 
 **Failure mode:** identity, trust, or ownership claims are misinterpreted across contexts.
 
-### Registry fragmentation
+### 3.6 Registry fragmentation
 
 Multiple naming systems emerge without interoperability or conflict-resolution pathways.
 
 **Failure mode:** participants cannot know which namespace claims are authoritative, compatible, or contested.
 
-### Artifact ambiguity
+### 3.7 Artifact ambiguity
 
 Objects, tags, posts, paths, and digital artifacts cannot be reliably referenced across systems.
 
 **Failure mode:** knowledge, provenance, and ownership degrade because identifiers are not stable.
 
-### Non-human namespace ambiguity
+### 3.8 Non-human namespace ambiguity
 
 AI agents, organizations, bots, and autonomous systems operate without clear namespace rights or management structures.
 
@@ -102,7 +102,7 @@ These eight patterns are elaborated in operational detail under *Namespace Attac
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 **Names in the Meta-Layer must be portable, resolvable, governable, and resistant to capture. A namespace that cannot preserve identity, meaning, and control across systems becomes another platform dependency.**
 
@@ -121,7 +121,7 @@ A DP5-aligned namespace must therefore support:
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 DP5 is enacted through mechanism families that together turn a name from a label into an accountable, resolvable, governed object. Each family addresses a distinct question that a namespace must be able to answer, and a namespace that answers some but not others will exhibit the failure modes named above.
 
@@ -137,9 +137,9 @@ The structural condition uniting these is that **a name must never assert more t
 
 ---
 
-## Primary Namespace Objects
+## 6. Primary Namespace Objects
 
-### Meta-domains
+### 6.1 Meta-domains
 
 Meta-domains address virtual spaces within the Metaweb, similar to how traditional domains address web spaces.
 
@@ -161,7 +161,7 @@ Example forms include:
 
 Meta-domains can link seamlessly to the broader web while functioning within the Metaweb overlay framework.
 
-### Personal identifiers
+### 6.2 Personal identifiers
 
 Personal identifiers address participants and personas, similar to email addresses, handles, or DIDs, but portable across Meta-Layer contexts.
 
@@ -173,7 +173,7 @@ Example:
 
 Personal identifiers may be connected to decentralized identifiers (DIDs), credentials, proof-of-humanity mechanisms, or zone-specific identity contexts.
 
-### Digital artifact identifiers
+### 6.3 Digital artifact identifiers
 
 Digital artifacts may serve as identifiers, assets, or NFTs that can be bought, sold, transferred, authenticated, or referenced.
 
@@ -190,7 +190,7 @@ Artifacts may include:
 - assertions
 - credentials
 
-### Name chains
+### 6.4 Name chains
 
 Name chains provide structured, semantic identifiers such as:
 
@@ -200,7 +200,7 @@ Name chains provide structured, semantic identifiers such as:
 
 Name chains function as URI-like trust anchors, combining identity verification, object authentication, and conflict resolution pathways.
 
-### Decentralized URIs and well-known paths
+### 6.5 Decentralized URIs and well-known paths
 
 DP5 also recognizes publisher-controlled decentralized URI patterns, such as:
 
@@ -210,13 +210,13 @@ These allow trusted data to be anchored under existing publisher-controlled doma
 
 ---
 
-## Namespace System Layer: Resolution, Ownership, and Trust Semantics
+## 7. Namespace System Layer: Resolution, Ownership, and Trust Semantics
 
 This section defines DP5 as a **runtime-resolvable, multi-layer namespace system** rather than a static registry.
 
 A DP5-compliant namespace operates across coupled layers:
 
-### Naming Layer (Syntax)
+### 7.1 Naming Layer (Syntax)
 
 Defines canonical forms, label rules, and human-readable structure.
 
@@ -233,7 +233,7 @@ Requirement:
 
 Failure mode: syntactic ambiguity.
 
-### Resolution Layer (Mapping)
+### 7.2 Resolution Layer (Mapping)
 
 Maps names → entities (people, agents, artifacts, spaces).
 
@@ -254,7 +254,7 @@ Resolution states MUST be visible:
 
 Failure mode: invisible resolution override.
 
-### Control Layer (Authority)
+### 7.3 Control Layer (Authority)
 
 Defines who can act on a name.
 
@@ -273,7 +273,7 @@ Control MUST be:
 
 Failure mode: ghost control (no accountable owner).
 
-### Meaning Layer (Semantics)
+### 7.4 Meaning Layer (Semantics)
 
 Defines what the name *means* in context.
 
@@ -291,7 +291,7 @@ Meaning MUST:
 
 Failure mode: semantic drift.
 
-### Temporal Layer (History)
+### 7.5 Temporal Layer (History)
 
 Names are not static. They evolve.
 
@@ -308,7 +308,7 @@ These five layers together define a **full-stack namespace**. Most systems today
 
 ---
 
-## Name Resolution Protocol (Reference Model)
+## 8. Name Resolution Protocol (Reference Model)
 
 DP5 requires a shared resolution model so names can be interpreted consistently across tools, overlays, registries, and communities.
 
@@ -352,7 +352,7 @@ Failure mode: **opaque resolution**, where a name appears trustworthy but partic
 
 ---
 
-## Namespace State Machine
+## 9. Namespace State Machine
 
 DP5-aligned systems SHOULD expose name lifecycle states explicitly.
 
@@ -386,13 +386,13 @@ Failure mode: **state invisibility**, where participants cannot tell whether a n
 
 ---
 
-## Namespace Attack Taxonomy
+## 10. Namespace Attack Taxonomy
 
 DP5 treats names as attack surfaces. Naming systems concentrate trust, discovery, ownership, and memory, making them attractive targets for adversarial actors.
 
 Common attacks include:
 
-### Spoofing
+### 10.1 Spoofing
 
 Attackers register visually or semantically similar names to impersonate trusted entities.
 
@@ -404,43 +404,43 @@ Examples:
 
 Required response: similarity detection, warnings, and dispute pathways.
 
-### Squatting
+### 10.2 Squatting
 
 Actors claim names for speculative rent extraction rather than use.
 
 Required response: reservation rules, renewal logic, staking, decay, or community challenge mechanisms.
 
-### Resolver capture
+### 10.3 Resolver capture
 
 A resolver becomes a de facto authority by controlling defaults.
 
 Required response: multi-source resolution, resolver provenance, and fallback transparency.
 
-### Ownership laundering
+### 10.4 Ownership laundering
 
 A name is transferred repeatedly to obscure harmful history, evade sanctions, or reset trust.
 
 Required response: transfer receipts and visible lineage.
 
-### Semantic hijacking
+### 10.5 Semantic hijacking
 
 A name is used in a new context to imply trust or meaning it did not originally carry.
 
 Required response: semantic profiles and degradation signaling.
 
-### Agent impersonation
+### 10.6 Agent impersonation
 
 Automated or AI actors adopt names that imply human identity, authority, or community status.
 
 Required response: mandatory entity classification and controller binding.
 
-### Registry amnesia
+### 10.7 Registry amnesia
 
 A registry loses or suppresses prior state, disputes, or ownership transitions.
 
 Required response: append-only logs, snapshots, checksums, and independent archival.
 
-### Namespace flooding
+### 10.8 Namespace flooding
 
 Attackers create many names to overwhelm discovery, governance, or trust review.
 
@@ -448,35 +448,35 @@ Required response: rate limits, economic friction, proof thresholds, and anti-sp
 
 ---
 
-## Reference Patterns and Compatibility
+## 11. Reference Patterns and Compatibility
 
 DP5 does not replace existing naming systems. It defines how meta-layer naming can interoperate with them.
 
-### DNS-style names
+### 11.1 DNS-style names
 
 DNS provides global resolution and familiar domain semantics, but is vulnerable to centralized registrar control and does not natively express trust state, provenance, or community governance.
 
 DP5 can use DNS-linked anchors while adding overlay-level trust semantics.
 
-### DID-style identifiers
+### 11.2 DID-style identifiers
 
 DIDs support decentralized identity and controller binding, but may be difficult for ordinary participants to read or remember.
 
 DP5 can bind human-readable names to DID-backed controllers.
 
-### ENS / SNS-style naming
+### 11.3 ENS / SNS-style naming
 
 Blockchain naming systems support ownership and transfer, but often emphasize asset ownership more than contextual governance, dispute visibility, or semantic profiles.
 
 DP5 can learn from these systems while requiring visible state, provenance, and governance.
 
-### Ordinals / BRC333-style artifacts
+### 11.4 Ordinals / BRC333-style artifacts
 
 Ordinal inscriptions and BRC333-shaped artifacts can anchor durable metadata and namespace records.
 
 DP5 can use inscription ordering, registry snapshots, and graph facts to support canonicality and provenance.
 
-### Well-known URI anchors
+### 11.5 Well-known URI anchors
 
 Publisher-controlled paths such as `/.well-known/trust.txt` allow existing domain holders to publish trust-relevant metadata without centralized registry dependency.
 
@@ -486,7 +486,7 @@ The goal is not one namespace to rule them all. The goal is interoperable naming
 
 ---
 
-## Meta-Domain Registry Architecture
+## 12. Meta-Domain Registry Architecture
 
 A Meta-Domain Registry may operate as a public ingest and registry service for meta-domains, SNS-shaped JSON, BRC333-related ordinals, and related naming artifacts.
 
@@ -505,7 +505,7 @@ Such a registry SHOULD distinguish between:
 - trust assertions that require quarantine or policy review
 - local drafts that remain outside public canonical state
 
-### Candidate classes
+### 12.1 Candidate classes
 
 Candidate logs may include:
 
@@ -516,7 +516,7 @@ Candidate logs may include:
 - anchor records
 - name-chain references
 
-### Registry outputs
+### 12.2 Registry outputs
 
 A registry SHOULD provide:
 
@@ -527,11 +527,11 @@ A registry SHOULD provide:
 - dispute or quarantine markers
 - provenance for resolver decisions
 
-### Canonicality and ordering
+### 12.3 Canonicality and ordering
 
 Where ordinal inscriptions are used, canonicality SHOULD be determined by documented ordering rules, such as lowest qualifying inscription number where adopted, rather than arbitrary string ordering.
 
-### Pluggable indexers
+### 12.4 Pluggable indexers
 
 Registries SHOULD support pluggable indexers and resolution sources so that namespace infrastructure does not depend on a single data provider.
 
@@ -539,11 +539,11 @@ Failure mode: **indexer dependency**, where resolver integrity depends on one co
 
 ---
 
-## Registration Rules and Validation
+## 13. Registration Rules and Validation
 
 DP5 supports concrete registration rules for product-level namespaces.
 
-### Canonical form example
+### 13.1 Canonical form example
 
 A v1 product canonical form may be:
 
@@ -556,7 +556,7 @@ Where:
 - `<label>` is the registrant-chosen segment
 - `example.com.meta` is a configurable suffix or canonical parent
 
-### Label rules
+### 13.2 Label rules
 
 A valid label SHOULD satisfy:
 
@@ -567,7 +567,7 @@ A valid label SHOULD satisfy:
 - must not be an integer-only label
 - must not be reserved
 
-### Structural validation regex
+### 13.3 Structural validation regex
 
 Label-only validation:
 
@@ -583,7 +583,7 @@ Full-domain validation example:
 
 Regex alone is insufficient. Reserved-name and integer checks must be separate.
 
-### Recommended validation order
+### 13.4 Recommended validation order
 
 1. Parse `label` as the substring before the configured suffix.
 2. Reject if label fails length or charset validation.
@@ -592,7 +592,7 @@ Regex alone is insufficient. Reserved-name and integer checks must be separate.
 5. Reject if the normalized domain is already in use.
 6. Accept and register.
 
-### In-use rule
+### 13.5 In-use rule
 
 "In use" means that a record already exists with the same normalized domain string under the applicable active status rule.
 
@@ -600,7 +600,7 @@ Storage and comparison SHOULD normalize to lowercase.
 
 ---
 
-## Interoperability and Tradeability
+## 14. Interoperability and Tradeability
 
 Tradeable meta-assets allow participants to exchange digital spaces, objects, and names, fostering virtual commerce and community formation.
 
@@ -619,13 +619,13 @@ A name may be tradable, but the trust attached to the name cannot be treated as 
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 15. Governance, Accountability, and Agency Surfaces
 
 This section defines **interface-level namespace governance**, aligning with the Meta-Layer's overlay architecture.
 
 Namespaces are not governed only in registries. They are governed at the **point of interaction** via overlays, filters, and community rules.
 
-### Participant-facing surfaces
+### 15.1 Participant-facing surfaces
 
 Participants MUST be able to:
 
@@ -639,7 +639,7 @@ Participants MUST be able to:
 
 Failure mode: invisible governance.
 
-### Overlay-mediated governance
+### 15.2 Overlay-mediated governance
 
 Meta-layer overlays SHOULD expose:
 
@@ -653,7 +653,7 @@ This turns naming into a **live civic surface**, not a backend database.
 
 Failure mode: governance hidden behind APIs.
 
-### Community governance powers
+### 15.3 Community governance powers
 
 Communities MUST be able to:
 
@@ -666,7 +666,7 @@ Communities MUST be able to:
 
 Failure mode: centralized naming authority.
 
-### Dispute visibility
+### 15.4 Dispute visibility
 
 All conflicts MUST be visible as states, not silent overrides:
 
@@ -677,7 +677,7 @@ All conflicts MUST be visible as states, not silent overrides:
 
 Failure mode: silent winner-take-all resolution.
 
-### Interface as enforcement boundary
+### 15.5 Interface as enforcement boundary
 
 DP5 aligns with the principle that governance must live at the interface layer, where users experience identity and trust.
 
@@ -687,7 +687,7 @@ Failure mode: governance only enforced off-screen.
 
 ---
 
-## Incentives and Power Analysis
+## 16. Incentives and Power Analysis
 
 Namespaces concentrate value at three points, and each attracts a distinct form of capture. Understanding where the money and leverage sit explains why DP5's structural requirements — multi-source resolution, visible state, transfer receipts, registry snapshots — are economic interventions rather than technical preferences.
 
@@ -711,7 +711,7 @@ Several further pressures recur:
 
 ---
 
-## Community Signals Informing DP5
+## 17. Community Signals Informing DP5
 
 Community submissions and aligned work point to several recurring signals:
 
@@ -727,7 +727,7 @@ These signals indicate that DP5 is not only about naming people. It is about nam
 
 ---
 
-## Foresight and Failure Design
+## 18. Foresight and Failure Design
 
 Namespaces fail slowly and then all at once. For long periods a naming system appears healthy — names resolve, transfers settle, disputes are rare — while the conditions for its capture accumulate beneath the surface. By the time failure is visible, the namespace is usually load-bearing for identity, commerce, and provenance across many systems, which makes correction expensive and migration nearly impossible.
 
@@ -763,7 +763,7 @@ Failure is expected. Failure that becomes visible only after the namespace is lo
 
 ---
 
-## Relationship to Other Desirable Properties
+## 19. Relationship to Other Desirable Properties
 
 DP5 is foundational and interdependent.
 
@@ -787,7 +787,7 @@ A failure in DP5 propagates upward. If names cannot be trusted, ownership cannot
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 20. Non-Goals and Explicit Boundaries
 
 DP5 does not:
 
@@ -813,27 +813,27 @@ DP5 defines conditions under which naming remains interoperable, governable, and
 
 ---
 
-## Minimum DP5 Alignment (Non-Normative)
+## 21. Minimum DP5 Alignment (Non-Normative)
 
 This section states **testable compliance criteria** rather than descriptive aspirations.
 
 A system claiming DP5 alignment MUST pass the following checks:
 
-### Deterministic naming
+### 21.1 Deterministic naming
 
 - Canonical forms are defined and machine-verifiable
 - Validation produces identical results across implementations
 
 Test: same input → same validity result everywhere
 
-### Multi-source resolution
+### 21.2 Multi-source resolution
 
 - Names resolve via more than one possible source
 - Resolver provenance is exposed
 
 Test: user can inspect where resolution came from
 
-### Explicit state signaling
+### 21.3 Explicit state signaling
 
 Every name MUST expose state:
 
@@ -845,38 +845,38 @@ Every name MUST expose state:
 
 Test: UI or API returns state metadata
 
-### Ownership auditability
+### 21.4 Ownership auditability
 
 - Current controller is identifiable
 - Transfer history is preserved
 
 Test: ownership lineage query returns full chain
 
-### Portability
+### 21.5 Portability
 
 - Names function across at least 2 independent systems
 
 Test: same name resolves meaningfully in multiple contexts
 
-### Anti-spoofing safeguards
+### 21.6 Anti-spoofing safeguards
 
 - System detects or flags similarity-based impersonation
 
 Test: registering visually similar name triggers warning or constraint
 
-### Registry memory
+### 21.7 Registry memory
 
 - Historical snapshots exist with integrity proofs
 
 Test: past state can be reconstructed with checksum validation
 
-### Dispute mechanism
+### 21.8 Dispute mechanism
 
 - Users can initiate and observe disputes
 
 Test: dispute creates visible state transition
 
-### Non-human classification
+### 21.9 Non-human classification
 
 - Agents and automated systems are distinguishable from humans
 
@@ -890,47 +890,47 @@ These conditions define the minimum viable namespace layer of the Meta-Layer.
 
 ---
 
-## Open Questions and Future Work
+## 22. Open Questions and Future Work
 
 DP5 identifies key frontier problems:
 
-### Cross-namespace interoperability
+### 22.1 Cross-namespace interoperability
 
 How do independent naming systems interoperate without collapsing into monopoly or fragmentation?
 
-### Semantic portability
+### 22.2 Semantic portability
 
 How can meaning travel with names across cultural, linguistic, and technical contexts?
 
-### Anti-squatting mechanisms
+### 22.3 Anti-squatting mechanisms
 
 What mechanisms balance open access with protection against speculative enclosure?
 
-### AI-native identity
+### 22.4 AI-native identity
 
 How should agent identities evolve as they gain autonomy, persistence, and economic activity?
 
-### Namespace governance forks
+### 22.5 Namespace governance forks
 
 What legitimacy models determine when a community can fork naming rules?
 
-### Human-readable vs machine-secure naming
+### 22.6 Human-readable vs machine-secure naming
 
 How do we balance usability with cryptographic robustness?
 
-### Unicode and global inclusion
+### 22.7 Unicode and global inclusion
 
 How do we support multilingual naming without increasing spoofing risk?
 
-### Economic design
+### 22.8 Economic design
 
 What pricing, staking, or decay mechanisms prevent hoarding while preserving ownership?
 
-### Resolution concentration
+### 22.9 Resolution concentration
 
 What measures of resolver diversity are meaningful, and what interventions are available when resolution traffic concentrates without any formal change in authority?
 
-### Namespace succession
+### 22.10 Namespace succession
 
 What happens to names, artifacts, and communities when a registry, resolver, or community steward ceases to operate, and how is continuity established without a central custodian of last resort?
 
@@ -938,7 +938,7 @@ These questions define the path toward ML-RFC maturation.
 
 ---
 
-## Path Toward ML-RFC
+## 23. Path Toward ML-RFC
 
 Progression toward ML-RFC maturity should include:
 
@@ -955,7 +955,7 @@ Stable portions may be promoted first, especially canonical form rules, validati
 
 ---
 
-## Closing Orientation
+## 24. Closing Orientation
 
 DP5 is the claim that participants, communities, agents, and artifacts deserve names they can carry across the Meta-Layer.
 

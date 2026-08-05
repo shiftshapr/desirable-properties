@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This draft articulates Desirable Property 7 (DP7) as the condition under which participants, communities, and systems can move across tools, environments, and contexts without losing identity, history, value, or agency.
 
@@ -26,7 +26,7 @@ Interoperability is the primary boundary where power is contested in the meta-la
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 In today’s web, systems are technically connected but structurally discontinuous.
 
@@ -50,7 +50,7 @@ DP7 reframes interoperability as continuity under movement and participation. No
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
 ### 3.1 Interoperability theater
 Systems simulate openness while preserving control.
@@ -131,7 +131,7 @@ Systems restrict which technologies can integrate despite claiming openness.
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 Interoperability in the meta-layer means that identity, data, value, governance, and participation can move across systems without losing integrity, meaning, enforceability, or legitimacy.
 
@@ -148,7 +148,7 @@ It is not sufficient for objects to move. They must remain:
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 ### 5.1 Open schemas and standards
 
@@ -232,7 +232,7 @@ A failure mode is silent degradation, where participants believe continuity exis
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 6. Governance, Accountability, and Agency Surfaces
 
 Interoperability is not neutral infrastructure. It encodes decisions about what persists, what degrades, and who controls movement.
 
@@ -261,7 +261,7 @@ Without these surfaces, interoperability becomes performative: objects move, but
 
 ---
 
-## Incentives and Power Analysis
+## 7. Incentives and Power Analysis
 
 Interoperability is where platform power is defended or broken.
 
@@ -293,7 +293,7 @@ When incentives favor staying, ecosystems centralize. When incentives favor hone
 
 ---
 
-## Community Signals Informing DP7
+## 8. Community Signals Informing DP7
 
 Across ecosystems, recurring signals indicate interop failure at scale:
 
@@ -309,55 +309,55 @@ DP7 treats these signals as requirements for preserving meaning, not just moving
 
 ---
 
-## Evaluation Criteria
+## 9. Evaluation Criteria
 
 DP7 alignment cannot be assessed by inspecting an API surface. It must be evaluated by moving real objects across real boundaries and measuring what survives.
 
 The following criteria are diagnostic rather than exhaustive. Each is written so that a negative answer identifies a specific structural defect rather than a general complaint.
 
-### Continuity of meaning
+### 9.1 Continuity of meaning
 
 - After transfer, can objects still be interpreted without access to the origin system?
 - Do identity, reputation, and credential objects retain the context that made them meaningful (source, method, scope)?
 - Can a receiving system reconstruct lineage across multiple hops?
 
-### Symmetry of movement
+### 9.2 Symmetry of movement
 
 - Is export as capable, fast, and complete as import?
 - Are fees, rate limits, and friction comparable in both directions?
 - Are material asymmetries disclosed at the point of decision rather than in terms of service?
 
-### Enforceability after transfer
+### 9.3 Enforceability after transfer
 
 - Do governance rules continue to bind behavior in the receiving environment, or do they degrade to advisory text?
 - Are precedence rules declared when the origin and destination policies conflict?
 - Can a community refuse, quarantine, or probate an import under its own policy?
 
-### Integrity and verifiability
+### 9.4 Integrity and verifiability
 
 - Are signatures, authorship, and timestamps preserved and checkable?
 - Are broken lineage chains flagged as risk rather than treated as benign gaps?
 - Can a participant reject a degraded import without losing the rest of their history?
 
-### Disclosure of loss
+### 9.5 Disclosure of loss
 
 - Does the system state, before the transfer commits, what meaning will be lost and what guarantees will no longer apply?
 - Is degradation signaled in the interface at decision time, not only in logs?
 - Are transfers blocked or gated when degradation cannot be described?
 
-### Auditability
+### 9.6 Auditability
 
 - Does every cross-system transfer produce a receipt naming what moved, how it was transformed, and who mediated it?
 - Can aggregate interop flows be audited for capture and leakage without exposing individual participants?
 - Are disputes, reversals, and postmortems linked back to the schema, policy, or bridge change that caused them?
 
-### Anti-capture posture
+### 9.7 Anti-capture posture
 
 - Are indexes, relays, registries, and discovery surfaces controlled by more than one party?
 - Can a competing implementation pass a public conformance suite without privileged access?
 - Do discovery rankings resist paid or incumbent advantage for pluggable tools?
 
-### Participant experience of exit
+### 9.8 Participant experience of exit
 
 - Can a non-technical participant leave with their identity, history, balances, and rights intact?
 - How long does a complete exit take, and what is measurably lost?
@@ -367,53 +367,53 @@ The following criteria are diagnostic rather than exhaustive. Each is written so
 
 ---
 
-## Implementation Patterns
+## 10. Implementation Patterns
 
 These patterns translate DP7 into design moves that can be adopted incrementally. None of them require a global standards body, and each can be evaluated against the criteria above.
 
-### Public conformance suites
+### 10.1 Public conformance suites
 
 Publish versioned, executable test suites for every shared interface. Any implementation can run them, and results can be published as attestations. Conformance becomes evidence rather than assertion.
 
-### Object envelopes with declared intent
+### 10.2 Object envelopes with declared intent
 
 Wrap every portable object in an envelope carrying schema version, intended use, trust assumptions, consent scope, and signature. Receiving systems enforce constraints from the envelope rather than inferring them, so that purpose binding survives the crossing rather than resetting at it (DP4, DP12).
 
-### Lossiness manifests
+### 10.3 Lossiness manifests
 
 Ship every mapping with a machine-readable statement of what is preserved, transformed, and dropped. Interfaces render the manifest as a plain-language preview before a transfer commits.
 
-### Receipt logs for transfers
+### 10.4 Receipt logs for transfers
 
 Emit a signed receipt for every import and export, linked to the policy version applied and the mediating party (DP15). Receipts are queryable by the participant, the origin community, and the destination community.
 
-### Probation tiers for new integrations
+### 10.5 Probation tiers for new integrations
 
 Admit third-party tools at reduced privilege and visibility, with containment tiers and rate limits enforcing the reduction rather than a review promise (DP13). Increase capability as audits pass and non-abusive usage accumulates. Demote automatically on policy violation, with a public receipt explaining why.
 
-### Bridge attestation and risk tiers
+### 10.6 Bridge attestation and risk tiers
 
 Treat bridges and translators as accountable actors with published operators, audit history, and risk tiers, bound to a responsible entity rather than operating as anonymous infrastructure (DP1). Apply circuit breakers, volume caps, and anomaly detection proportional to tier.
 
-### Dual-write migration windows
+### 10.7 Dual-write migration windows
 
 During schema evolution, write both old and new representations for a bounded period, with explicit deprecation dates and migration guidance. Historical continuity is preserved rather than reconstructed later.
 
-### Scheduled exit drills
+### 10.8 Scheduled exit drills
 
 Periodically perform and publish a full export-and-reimport of a representative account into an independent implementation. Report duration, failures, and losses. Untested exit paths are assumed broken.
 
-### Federated discovery with reputation weighting
+### 10.9 Federated discovery with reputation weighting
 
 Distribute indexing and discovery across multiple operators, weight surfacing by reputation and audit status, and rate-limit new entrants to resist flooding without gatekeeping participation. Discovery is an incentive surface, and concentration of it reproduces platform leverage under another name (DP9).
 
-### Degradation-aware interfaces
+### 10.10 Degradation-aware interfaces
 
 Standardize visual and textual signals for reduced guarantees, so participants encounter the same vocabulary of degradation across tools rather than per-platform euphemisms.
 
 ---
 
-## Foresight and Failure Design
+## 11. Foresight and Failure Design
 
 Interoperability systems must assume adversarial pressure, economic incentives for capture, and rapid evolution of tools and agents.
 
@@ -448,11 +448,11 @@ Failure is expected. Silent or irreversible failure is not.
 
 ---
 
-## Interoperability System Layer: Continuity, Translation, and Power
+## 12. Interoperability System Layer: Continuity, Translation, and Power
 
 Interoperability requires more than shared formats. It requires a layer that preserves meaning, authority, and usability across boundaries where systems may have conflicting incentives.
 
-### Portable objects
+### 12.1 Portable objects
 
 All core system elements must be representable as portable, structured objects:
 
@@ -466,7 +466,7 @@ These objects must carry sufficient context to remain interpretable outside thei
 
 They should also declare their intended use and trust assumptions so receiving systems can enforce appropriate constraints. Without declared intent, objects may be misapplied in contexts that invalidate their meaning.
 
-### Semantic translation and mapping
+### 12.2 Semantic translation and mapping
 
 Systems must define how objects are interpreted across contexts:
 
@@ -478,7 +478,7 @@ Mappings must explicitly declare where information is preserved, transformed, or
 
 They should include machine-readable diffs of meaning so downstream systems can reason about equivalence. Absent explicit mapping, silent reinterpretation becomes a primary vector for drift and exploitation.
 
-### Integrity and lineage preservation
+### 12.3 Integrity and lineage preservation
 
 Objects must retain:
 
@@ -491,7 +491,7 @@ Without this, imported objects cannot be trusted or verified.
 
 Lineage should be queryable across hops to reconstruct full transformation chains. Breaks in lineage must be flagged as risk, not treated as benign gaps.
 
-### Permission and consent continuity
+### 12.4 Permission and consent continuity
 
 Access controls and consent conditions must persist across systems.
 
@@ -499,7 +499,7 @@ Participants must not lose control over their data or identity during transfer (
 
 Consent scopes should be renegotiable at boundaries with clear previews of changes. Implicit expansion of scope during transfer must be disallowed or explicitly surfaced.
 
-### Interoperability receipts
+### 12.5 Interoperability receipts
 
 All cross-system transfers generate verifiable records:
 
@@ -512,7 +512,7 @@ These receipts enable audit and dispute resolution (DP15).
 
 Receipts should be machine-verifiable and linkable to governance and commerce records. Missing or partial receipts must downgrade trust for the resulting state.
 
-### Conflict resolution under power asymmetry
+### 12.6 Conflict resolution under power asymmetry
 
 Systems must define how conflicts are resolved when:
 
@@ -524,7 +524,7 @@ Conflict resolution is not neutral. It must be visible, contestable, and governe
 
 Resolution pathways should declare precedence rules and appeal mechanisms. Opaque arbitration at boundaries is a primary route to capture.
 
-### Loss and degradation signaling
+### 12.7 Loss and degradation signaling
 
 All interoperability pathways must explicitly signal:
 
@@ -536,7 +536,7 @@ This prevents silent failure of continuity.
 
 Signals should be standardized and user-visible at decision time, not buried in logs. Systems that cannot signal degradation must restrict the transfer or require explicit override.
 
-### Interoperability memory
+### 12.8 Interoperability memory
 
 All transfers and mappings persist as a linked history:
 
@@ -548,7 +548,7 @@ This creates a system-level memory of how interoperability evolves over time.
 
 Memory should support querying for systemic patterns such as drift or repeated loss. Without analysis over memory, issues recur undetected.
 
-### Composable participation via governed interfaces
+### 12.9 Composable participation via governed interfaces
 
 The meta-layer must allow third-party tools, services, and extensions (e.g., smart tags, overlays, sidebars, core services) to plug into shared interfaces **without prior permission**, provided they conform to declared interfaces and governance constraints.
 
@@ -570,7 +570,7 @@ Interface contracts should be versioned and testable, with conformance suites av
 
 ---
 
-## Relationship to Other Desirable Properties
+## 13. Relationship to Other Desirable Properties
 
 DP7 is the continuity layer across the meta-layer stack:
 
@@ -588,7 +588,7 @@ DP7 binds these properties into a coherent, cross-system reality.
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 14. Non-Goals and Explicit Boundaries
 
 DP7 does not:
 
@@ -601,7 +601,7 @@ DP7 defines the conditions under which movement is legitimate, intelligible, and
 
 ---
 
-## Minimum DP7 Alignment (Non-Normative)
+## 15. Minimum DP7 Alignment (Non-Normative)
 
 A DP7-aligned system should, at minimum:
 
@@ -616,7 +616,7 @@ Partial compliance that omits integrity, consent, or auditability should not be 
 
 ---
 
-## Open Questions and Future Work
+## 16. Open Questions and Future Work
 
 Key open questions include:
 
@@ -631,7 +631,7 @@ These questions sit at the boundary of protocol design, governance, and law.
 
 ---
 
-## Path Toward ML-RFC
+## 17. Path Toward ML-RFC
 
 Advancing DP7 toward ML-RFC requires:
 
@@ -645,7 +645,7 @@ Progress should be demonstrated through live interop scenarios, not only specifi
 
 ---
 
-## Closing Orientation
+## 18. Closing Orientation
 
 DP7 is the condition under which the meta-layer remains a network rather than reverting to a set of silos.
 

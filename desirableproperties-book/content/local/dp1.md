@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose of This Draft
+## 1. Purpose of This Draft
 
 This ML-Draft articulates **Desirable Property 1 (DP1)** as a foundational condition for trust in the Meta-Layer. It expands DP1 beyond federated authentication to encompass accountability, adaptive intelligence integration, and foresight-driven governance.
 
@@ -21,7 +21,7 @@ This draft is intended to guide implementation, governance design, and future ML
 
 ---
 
-## Problem Statement
+## 2. Problem Statement
 
 *Why identity alone is not enough.*
 
@@ -31,7 +31,7 @@ At contemporary scale, identity has become cheap to generate, easy to discard, a
 
 DP1 begins from a different premise: **trust is not something identity produces on its own**. Trust emerges only when identity is paired with accountability, memory, and governance that operate coherently at the point of interaction.
 
-### The Limits of Login-Centric Trust
+### 2.1 The Limits of Login-Centric Trust
 
 Login-centric trust models focus on answering a narrow question: who is allowed to enter a system. They do not meaningfully address what happens after entry.
 
@@ -44,7 +44,7 @@ Across platforms and applications, this has produced a recurring pattern:
 
 Even strong authentication does not prevent abuse when actions are not durably bound to accountable actors. A verified account can still mislead, manipulate, impersonate, or cause harm if there is no persistent relationship between identity and responsibility.
 
-### Structural Failure Modes in Today's Web
+### 2.2 Structural Failure Modes in Today's Web
 
 Several structural conditions compound these weaknesses:
 
@@ -55,7 +55,7 @@ Several structural conditions compound these weaknesses:
 
 These are not edge cases. They are systemic properties of the current web. As documented in Meta-Layer research, even the largest platforms remove billions of fake or abusive accounts annually, without meaningfully reducing the underlying incentives or recurrence of abuse.
 
-### DP1 as a Shift in Framing
+### 2.3 DP1 as a Shift in Framing
 
 DP1 reframes the problem of trust along three axes:
 
@@ -67,13 +67,13 @@ Rather than asking only who someone is, DP1 asks under what conditions participa
 
 ---
 
-## Threats and Failure Modes
+## 3. Threats and Failure Modes
 
 DP1 is not defined in opposition to any single class of actor. Instead, it responds to recurring failure modes that reliably emerge in large-scale, low-friction digital systems.
 
 Two surfaces are in scope. The first is **adversarial**: classes of actor whose behavior reliably degrades trust wherever identity is cheap and accountability is discontinuous. The second is **structural**: the pressures catalogued under *Other Drivers* below, which erode trust even where no actor intends harm. DP1 treats both as design inputs, because a trust system that defends only against deliberate attackers will still fail under ordinary growth logic.
 
-### Scammers
+### 3.1 Scammers
 
 Scammers exploit environments where identity is inexpensive and disposable. Common characteristics include:
 
@@ -83,19 +83,19 @@ Scammers exploit environments where identity is inexpensive and disposable. Comm
 
 DP1 does not attempt to eliminate scams entirely. Instead, it raises their cost by binding actions to accountable agents, preserving memory across contexts, and enabling communities to escalate trust requirements where appropriate.
 
-### Serial Predators and Repeat Abusers
+### 3.2 Serial Predators and Repeat Abusers
 
 Serial abuse often persists not because it is invisible, but because it is fragmented. When identities reset after enforcement, harm becomes distributed across communities without a durable record.
 
 DP1 addresses this pattern by supporting persistent pseudonymous identity, zone-scoped accountability, and governance mechanisms that allow communities to respond to patterns of harm without resorting to exposure, vigilantism, or centralized surveillance.
 
-### Impersonators (Human and AI)
+### 3.3 Impersonators (Human and AI)
 
 Advances in generative systems have dramatically lowered the cost of impersonation. Voice, image, and text synthesis now allow both humans and AI systems to convincingly misrepresent identity and intent.
 
 DP1 counters impersonation by binding content and actions to verifiable agents, clearly differentiating between human and AI actors, and surfacing provenance signals directly at the interface layer.
 
-### Other Drivers (Equally Important)
+### 3.4 Other Drivers (Equally Important)
 
 In addition to explicit abuse, DP1 responds to broader systemic pressures that erode trust even in the absence of malicious intent:
 
@@ -105,7 +105,7 @@ In addition to explicit abuse, DP1 responds to broader systemic pressures that e
 
 These pressures are structural rather than incidental. They interact and compound one another, producing environments where abuse, manipulation, and trust erosion become predictable outcomes. DP1 is designed to address their combined effects by reshaping incentives, accountability, and governance conditions, rather than treating each pressure in isolation. Taken together, these pressures make clear that trust cannot be repaired solely through backend policy or platform moderation, but must be enacted visibly and continuously at the interface level, where participation, amplification, and accountability actually occur.
 
-### Identity-Layer Failure Modes
+### 3.5 Identity-Layer Failure Modes
 
 The mechanisms defined later in this draft each guard against a named failure mode. Collected here, they form the adversarial checklist against which a DP1 implementation should be evaluated:
 
@@ -122,7 +122,7 @@ Each of these is addressed in the sections that follow, and each reappears as a 
 
 ---
 
-## Core Principle
+## 4. Core Principle
 
 Identity is not merely descriptive at the interface layer; it is the basis for enforceability, continuity, and accountable participation across all Meta-Layer interactions.
 
@@ -143,7 +143,7 @@ DP1 does not promise perfect safety or universal trust. Instead, it defines the 
 
 ---
 
-## Primary Mechanisms and Structural Conditions
+## 5. Primary Mechanisms and Structural Conditions
 
 DP1 is enacted through a small number of composable mechanism families. None of them is sufficient alone; trust emerges from their combination, and a system that implements some while omitting others will exhibit the failure modes named above.
 
@@ -163,13 +163,13 @@ The sections that follow define each family in depth.
 
 ---
 
-## Federated Strong Authentication (Entry Condition)
+## 6. Federated Strong Authentication (Entry Condition)
 
 Federated strong authentication establishes the baseline condition for participation in the Meta-Layer. Its purpose is not to define trust, but to ensure that entry into shared spaces is not trivially exploitable or monopolized by a single identity authority.
 
 DP1 treats authentication as an **entry condition**, not as a guarantee of trustworthiness or good behavior. Strong authentication reduces frictionless abuse, but only when paired with downstream accountability, memory, and governance does it meaningfully contribute to trust.
 
-### Federation as a Baseline Requirement
+### 6.1 Federation as a Baseline Requirement
 
 The Meta-Layer supports federation across multiple identity and authentication systems, including traditional SSO providers, wallets, and emerging credential frameworks. This plural approach ensures:
 
@@ -179,7 +179,7 @@ The Meta-Layer supports federation across multiple identity and authentication s
 
 Federation is essential to resilience. Centralized identity systems concentrate power and risk, while federated systems distribute trust and reduce systemic failure modes.
 
-### User-Held Keys and Credentials
+### 6.2 User-Held Keys and Credentials
 
 Where possible, participants hold their own keys or retain meaningful control over credentials. In cases where custodial systems are used, consent and revocability remain core requirements.
 
@@ -189,7 +189,7 @@ User-held credentials support:
 - Reduced platform lock-in
 - Durable accountability across contexts
 
-### Authentication Is Not Authorization
+### 6.3 Authentication Is Not Authorization
 
 Authentication answers the question of *who may enter*. It does not determine *what that participant may do*, *what they may access*, or *how much trust they are afforded*.
 
@@ -197,13 +197,13 @@ All authorization, trust thresholds, and participation rules are defined at the 
 
 ---
 
-## Sociotechnical Zones as Trust Contexts
+## 7. Sociotechnical Zones as Trust Contexts
 
 Sociotechnical zones are the primary mechanism by which trust conditions are enacted at the interface level. Zones translate abstract governance principles into concrete participation rules that operate where interaction, amplification, and accountability actually occur.
 
 Rather than relying on backend policy enforcement or platform-level moderation alone, zones make trust visible, enforceable, and configurable within the lived experience of participants.
 
-### Definition of Sociotechnical Zones
+### 7.1 Definition of Sociotechnical Zones
 
 Zones combine technical requirements and social norms to define the conditions under which participation is permitted.
 
@@ -216,7 +216,7 @@ Each zone specifies:
 
 Communities and applications choose which zones they operate within, allowing trust conditions to vary without fragmenting the underlying Meta-Layer.
 
-### Zone-Specific Access Paradigms
+### 7.2 Zone-Specific Access Paradigms
 
 Zones represent **orthogonal and composable trust constraints**. Real-world environments typically operate under multiple zones simultaneously, reflecting layered social, legal, and safety requirements.
 
@@ -238,7 +238,7 @@ Zones represent **orthogonal and composable trust constraints**. Real-world envi
 
 By composing zones, communities can precisely calibrate participation conditions without defaulting to global restrictions.
 
-### Compatibility and Exclusion by Design
+### 7.3 Compatibility and Exclusion by Design
 
 Zones enforce explicit compatibility requirements. Participation is limited to actors who can meet the defined conditions, making boundaries legible rather than implicit.
 
@@ -248,7 +248,7 @@ This design:
 - Makes trust thresholds understandable and contestable
 - Allows communities to defend against abuse without universal surveillance
 
-### Proof of Humanity as a Zone-Scoped Basis for Participation
+### 7.4 Proof of Humanity as a Zone-Scoped Basis for Participation
 
 Proof of humanity refers to mechanisms that allow a participant to demonstrate that they are a **unique human actor**, without necessarily revealing their real-world identity.
 
@@ -269,13 +269,13 @@ By treating proof of humanity as an enduring and adaptable capability rather tha
 
 ---
 
-## Identity System Layer: Continuity, Integrity, and Adversarial Resilience
+## 8. Identity System Layer: Continuity, Integrity, and Adversarial Resilience
 
 Beyond authentication and zone-scoped participation, DP1 requires a coherent identity system layer that persists across environments, interactions, and time. This layer is the enforcement boundary of the Meta-Layer. If identity cannot maintain continuity under scale, delegation, and interoperability, trust collapses into simulation.
 
 The identity system layer ensures that actions, reputation, and accountability remain meaningfully bound to agents even as they move across zones, tools, and contexts.
 
-### Identity Continuity Across Systems
+### 8.1 Identity Continuity Across Systems
 
 Identity must persist across platforms, zones, and applications without fragmenting into unrelated entities.
 
@@ -287,7 +287,7 @@ Continuity requires:
 
 A failure mode is **identity fragmentation**, where the same participant appears as unrelated actors across systems, breaking incentives, governance, and trust.
 
-### Identity Integrity and Anti-Replay Guarantees
+### 8.2 Identity Integrity and Anti-Replay Guarantees
 
 Identity-bound actions must not be duplicable across systems without attribution.
 
@@ -299,7 +299,7 @@ This requires:
 
 A failure mode is **identity replay**, where actions or credentials are reused across systems to gain unearned trust, rewards, or access.
 
-### Identity Non-Transferability and Delegation Boundaries
+### 8.3 Identity Non-Transferability and Delegation Boundaries
 
 Identity must not be freely transferable in ways that detach responsibility from the original actor.
 
@@ -313,7 +313,7 @@ This ensures that actions taken by agents, tools, or collaborators remain tracea
 
 A failure mode is **identity laundering**, where responsibility is shifted across actors to evade accountability.
 
-### Resistance to Sybil and Coordinated Identity Attacks
+### 8.4 Resistance to Sybil and Coordinated Identity Attacks
 
 Identity systems must make large-scale duplication, coordination, or synthetic amplification detectable, constrained, or economically costly.
 
@@ -325,7 +325,7 @@ Mechanisms may include:
 
 A failure mode is **sybil saturation**, where large numbers of coordinated identities overwhelm governance, incentives, or visibility systems.
 
-### Cross-Zone Identity Semantics and Degradation
+### 8.5 Cross-Zone Identity Semantics and Degradation
 
 Identity does not carry identical meaning across all zones.
 
@@ -337,7 +337,7 @@ Systems must:
 
 A failure mode is **semantic drift**, where identity signals are incorrectly assumed to carry the same meaning across different contexts.
 
-### Identity Memory and Lineage
+### 8.6 Identity Memory and Lineage
 
 Identity must retain a reconstructable history of actions, credentials, and governance interactions over time.
 
@@ -355,13 +355,13 @@ This identity system layer does not require centralization or global identity un
 
 ---
 
-## Accountability as a First-Class Property
+## 9. Accountability as a First-Class Property
 
 Accountability is the core mechanism through which trust becomes durable in the Meta-Layer. While authentication governs entry, accountability governs behavior over time. Without it, trust signals decay, abuse repeats, and governance loses legitimacy.
 
 DP1 treats accountability as a first-class property that operates continuously at the interface level, binding actors to their actions in ways that are visible, attributable, and contestable, without requiring real-world identity disclosure.
 
-### Action-Bound Accountability
+### 9.1 Action-Bound Accountability
 
 In the Meta-Layer, accountability attaches to actions, not merely to identities. Every meaningful action, such as posting content, issuing judgments, triggering automation, or influencing visibility, is bound to an accountable agent identifier.
 
@@ -373,7 +373,7 @@ This ensures that:
 
 Action-bound accountability allows communities to reason about patterns of conduct without collapsing participation into real-name systems or centralized surveillance.
 
-### Pseudonymity with Responsibility
+### 9.2 Pseudonymity with Responsibility
 
 DP1 explicitly supports pseudonymous participation, recognizing its importance for safety, expression, and inclusion. Pseudonymity, however, does not imply anonymity from accountability.
 
@@ -385,7 +385,7 @@ Persistent pseudonymous identities allow participants to:
 
 Communities may permit multiple personas per participant, subject to local rules, provided that accountability requirements are met. This balances flexibility with responsibility, enabling participation without enabling evasion.
 
-### Sealed Memory and Editability Windows
+### 9.3 Sealed Memory and Editability Windows
 
 To balance forgiveness, accuracy, and integrity, DP1 supports time-bound editability followed by sealing.
 
@@ -399,7 +399,7 @@ Sealed memory:
 
 Communities may determine whether edit histories are retained, visible, or restricted, but the existence of durable memory is essential for trust to accumulate.
 
-### Trust Lifecycle, Revocation, and Recovery
+### 9.4 Trust Lifecycle, Revocation, and Recovery
 
 Trust in the Meta-Layer is not binary. It evolves.
 
@@ -414,7 +414,7 @@ Revocation is zone-scoped by default, avoiding unnecessary global punishment. Me
 
 ---
 
-## Contestability, Appeals, and Due Process
+## 10. Contestability, Appeals, and Due Process
 
 For accountability systems to be trusted, they must themselves be accountable. DP1 therefore treats contestability and due process as essential trust infrastructure, not optional governance overhead.
 
@@ -441,13 +441,13 @@ In summary:
 
 ---
 
-## Human and AI Agents Under DP1
+## 11. Human and AI Agents Under DP1
 
 DP1 treats both human and artificial agents as first-class participants in the Meta-Layer, while recognizing that they differ fundamentally in capacity, scale, intent, and risk profile. Trust cannot be sustained if these differences are ignored, obscured, or flattened.
 
 The goal of DP1 is not to exclude AI agents categorically, but to ensure that their participation is **legible, bounded, and accountable** in ways that preserve human agency and community governance.
 
-### Agent Classification and Visibility
+### 11.1 Agent Classification and Visibility
 
 An *agent* refers to any actor capable of taking actions that affect shared environments, visibility, reputation, or outcomes within the Meta-Layer.
 
@@ -459,7 +459,7 @@ DP1 requires clear classification between:
 
 This classification must be **visible at the interface level**, allowing participants to understand whether they are interacting with a human, an AI system, or a combination of both. Hidden or ambiguous agent identity erodes trust and enables manipulation.
 
-### Symmetric Accountability, Asymmetric Constraints
+### 11.2 Symmetric Accountability, Asymmetric Constraints
 
 DP1 applies accountability symmetrically: all agents are accountable for their actions. However, constraints are applied asymmetrically, reflecting differences in scale, speed, and potential impact.
 
@@ -471,7 +471,7 @@ For example:
 
 This approach avoids both extremes: granting AI agents unchecked parity with humans, or exempting them from accountability altogether.
 
-### Binding AI Outputs to Responsible Entities
+### 11.3 Binding AI Outputs to Responsible Entities
 
 AI agents do not operate independently of human or institutional responsibility. DP1 therefore requires that AI outputs be bound to a responsible entity, such as:
 
@@ -485,11 +485,11 @@ By binding AI behavior to accountable entities, DP1 prevents responsibility laun
 
 ---
 
-## Adaptive Intelligence Integration (RLADP)
+## 12. Adaptive Intelligence Integration (RLADP)
 
 Static trust and governance systems degrade over time. Incentives shift, adversaries adapt, and behaviors drift. DP1 therefore anticipates the need for adaptive intelligence to support, but not replace, human and community governance.
 
-### Why Static Governance Fails
+### 12.1 Why Static Governance Fails
 
 At scale, purely static rules and manual moderation encounter predictable limits:
 
@@ -499,7 +499,7 @@ At scale, purely static rules and manual moderation encounter predictable limits
 
 Without adaptation, governance systems either become overly permissive or increasingly brittle.
 
-### RLADP as Advisory Infrastructure
+### 12.2 RLADP as Advisory Infrastructure
 
 DP1 envisions adaptive intelligence, including reinforcement learning and approximate dynamic programming (RLADP), as **advisory infrastructure**.
 
@@ -515,7 +515,7 @@ They may not:
 - Impose sanctions without human ratification
 - Operate as opaque or unchallengeable authorities
 
-### Transparency and Auditability
+### 12.3 Transparency and Auditability
 
 All adaptive processes must be observable and auditable. Communities must be able to understand:
 
@@ -525,7 +525,7 @@ All adaptive processes must be observable and auditable. Communities must be abl
 
 This visibility is essential to preventing hidden governance drift and maintaining legitimacy.
 
-### Human and Community Ratification
+### 12.4 Human and Community Ratification
 
 Adaptive intelligence proposes; humans decide.
 
@@ -535,7 +535,7 @@ By constraining adaptive intelligence within transparent, ratified loops, DP1 en
 
 ---
 
-## Governance, Accountability, and Agency Surfaces
+## 13. Governance, Accountability, and Agency Surfaces
 
 DP1 is not satisfied by identity architecture alone. The conditions for trust must be *experienced* as navigable surfaces, or they remain private properties of a backend that participants are asked to take on faith. A system can bind every action to an accountable agent and still fail DP1 if participants cannot see the binding, cannot tell which zone rules apply to them, and cannot challenge a decision that changes their standing.
 
@@ -563,7 +563,7 @@ Without these surfaces, accountability becomes indistinguishable from arbitrary 
 
 ---
 
-## Incentives and Power Analysis
+## 14. Incentives and Power Analysis
 
 Identity systems are never neutral infrastructure. Whoever controls issuance, verification, revocation, or resolution of identity holds structural power over participation itself, and that power is valuable enough that it will be sought whether or not the formal rules permit it.
 
@@ -584,7 +584,7 @@ Several pressures recur:
 
 ---
 
-## Community Signals Informing DP1
+## 15. Community Signals Informing DP1
 
 DP1 reflects recurring themes from community submissions, workshops, and discussions across the Meta-Layer initiative.
 
@@ -600,13 +600,13 @@ These signals reinforce the core framing of DP1: trust must be designed as a set
 
 ---
 
-## Foresight and Failure Design
+## 16. Foresight and Failure Design
 
 DP1 treats foresight not as speculation, but as a core governance discipline. Large-scale sociotechnical systems fail in recognizable ways. When trust systems are designed only for normal operation, they become brittle under stress, capture, or adversarial pressure.
 
 Minefield thinking refers to the practice of deliberately anticipating where incentives, power, and scale are likely to produce failure, and designing safeguards in advance rather than reacting after harm has occurred.
 
-### Governance as Anticipatory Design
+### 16.1 Governance as Anticipatory Design
 
 Most trust failures are not surprises. They arise from known dynamics such as incentive misalignment, asymmetric power, scale effects, and adversarial learning.
 
@@ -618,7 +618,7 @@ DP1 therefore treats governance as an anticipatory design problem. Communities a
 
 This approach shifts governance from reactive moderation to continuous risk management.
 
-### Conflict of Interest (COI) Visibility
+### 16.2 Conflict of Interest (COI) Visibility
 
 Trust erodes when participants cannot see whose interests shape rules and enforcement. DP1 requires that material conflicts of interest be surfaced structurally rather than assumed away.
 
@@ -630,7 +630,7 @@ This includes visibility into:
 
 By making incentives legible, communities can better assess legitimacy, detect capture early, and sustain confidence in governance over time.
 
-### Governance Pre-Mortems
+### 16.3 Governance Pre-Mortems
 
 DP1 encourages communities to conduct periodic governance pre-mortems: structured exercises that ask how current rules or systems might fail under plausible future conditions.
 
@@ -642,7 +642,7 @@ Pre-mortems may examine:
 
 The goal is not prediction, but preparedness. Pre-mortems create shared awareness of fragility, normalize course correction, and reduce the social and political cost of adaptation.
 
-### Exit, Fork, and Kill Switches
+### 16.4 Exit, Fork, and Kill Switches
 
 No governance system should assume its own permanence. DP1 treats exit as a safety feature rather than a failure, recognizing that the ability to leave or disengage is essential to legitimacy.
 
@@ -654,7 +654,7 @@ Communities and participants should have:
 
 These safeguards limit the blast radius of governance failure, reduce incentives for capture, and make participation safer by design.
 
-### Cross-Zone Failure Containment
+### 16.5 Cross-Zone Failure Containment
 
 In a multi-zone environment, failures should be contained by default. DP1 assumes that trust loss, enforcement actions, and reputational signals are local unless explicitly propagated.
 
@@ -670,7 +670,7 @@ Failure is expected. Silent failure is not. A DP1-aligned system is one in which
 
 ---
 
-## Relationship to Other Desirable Properties
+## 17. Relationship to Other Desirable Properties
 
 DP1 is foundational and cross-cutting. Many other Desirable Properties depend directly on the conditions it establishes.
 
@@ -697,7 +697,7 @@ Weakness or ambiguity in DP1 propagates upward, undermining the effectiveness of
 
 ---
 
-## Non-Goals and Explicit Boundaries
+## 18. Non-Goals and Explicit Boundaries
 
 DP1 deliberately defines the *conditions* for trust rather than attempting to solve all problems associated with identity, abuse, or governance on the internet. Explicitly stating non-goals is essential to prevent scope creep, misinterpretation, and inappropriate application of this property.
 
@@ -722,7 +722,7 @@ By naming these boundaries explicitly, DP1 remains adaptable across cultures, le
 
 ---
 
-## Minimum DP1 Alignment (Non-Normative)
+## 19. Minimum DP1 Alignment (Non-Normative)
 
 Minimum alignment is not a feature checklist. It is the threshold at which an identity system can be considered **enforceable, portable, and resistant to trivial abuse**.
 
@@ -730,7 +730,7 @@ A system that does not meet these conditions may function, but it cannot reliabl
 
 At minimum, a system claiming alignment with DP1 must satisfy the following **irreducible conditions**:
 
-### Persistent Identity Continuity
+### 19.1 Persistent Identity Continuity
 
 - Actions MUST be bound to a persistent agent identifier that survives across sessions and contexts
 - Identity resets MUST be rate-limited, detectable, or carry loss of accumulated privileges
@@ -738,7 +738,7 @@ At minimum, a system claiming alignment with DP1 must satisfy the following **ir
 
 Failure mode: identity reset cycles that enable repeated exploitation of incentives and governance.
 
-### Verifiable Action Attribution
+### 19.2 Verifiable Action Attribution
 
 - All meaningful actions (content, transactions, moderation, automation) MUST be attributable to an agent
 - Attribution MUST include sufficient provenance to audit origin and context
@@ -746,7 +746,7 @@ Failure mode: identity reset cycles that enable repeated exploitation of incenti
 
 Failure mode: untraceable actions that erode accountability and enable manipulation.
 
-### Anti-Replay and Non-Duplication Guarantees
+### 19.3 Anti-Replay and Non-Duplication Guarantees
 
 - Identity-bound actions and credentials MUST NOT be reusable across systems without explicit lineage
 - Systems MUST detect or prevent replay of contributions, credentials, or proofs
@@ -754,7 +754,7 @@ Failure mode: untraceable actions that erode accountability and enable manipulat
 
 Failure mode: replay attacks that extract duplicate rewards, access, or influence.
 
-### Sybil Resistance Under Scale
+### 19.4 Sybil Resistance Under Scale
 
 - Systems MUST impose friction or constraints that make large-scale identity duplication costly or ineffective
 - Mechanisms MAY include proof-of-humanity, rate limits, staking, or reputation weighting
@@ -762,7 +762,7 @@ Failure mode: replay attacks that extract duplicate rewards, access, or influenc
 
 Failure mode: sybil saturation overwhelming incentives, governance, or visibility.
 
-### Zone-Scoped Enforcement and Revocation
+### 19.5 Zone-Scoped Enforcement and Revocation
 
 - Enforcement actions MUST be defined and executed within explicit zones
 - Revocation, restriction, and recovery pathways MUST be visible and rule-based
@@ -770,7 +770,7 @@ Failure mode: sybil saturation overwhelming incentives, governance, or visibilit
 
 Failure mode: arbitrary or centralized enforcement that undermines legitimacy.
 
-### Human and AI Agent Differentiation
+### 19.6 Human and AI Agent Differentiation
 
 - Systems MUST visibly distinguish between human, AI, and hybrid agents at the interface level
 - Automated agents MUST be subject to appropriate constraints (rate, scope, amplification)
@@ -778,7 +778,7 @@ Failure mode: arbitrary or centralized enforcement that undermines legitimacy.
 
 Failure mode: indistinguishable agents enabling manipulation, impersonation, and synthetic dominance.
 
-### Identity Lineage and Memory
+### 19.7 Identity Lineage and Memory
 
 - Systems MUST maintain reconstructable identity lineage for actions, credentials, and governance events
 - Breaks in lineage MUST be treated as risk signals, not neutral transitions
@@ -786,7 +786,7 @@ Failure mode: indistinguishable agents enabling manipulation, impersonation, and
 
 Failure mode: lineage loss enabling impersonation, laundering, or erasure of harmful behavior.
 
-### Contestability and Due Process Baseline
+### 19.8 Contestability and Due Process Baseline
 
 - Participants MUST have access to mechanisms for contesting enforcement actions
 - Appeals pathways MUST exist for decisions affecting access, visibility, or reputation
@@ -802,7 +802,7 @@ Partial implementations that omit continuity, attribution, anti-replay guarantee
 
 ---
 
-## Open Questions and Future Work
+## 20. Open Questions and Future Work
 
 DP1 establishes foundational conditions for trust, but it does not resolve all questions required for long-term interoperability, standardization, and global deployment. The following areas are intentionally left open for further research, experimentation, and community deliberation.
 
@@ -824,7 +824,7 @@ These questions are not gaps in DP1, but signals of where future ML-Drafts and M
 
 ---
 
-## Path Toward ML-RFC
+## 21. Path Toward ML-RFC
 
 This ML-Draft is intended as exploratory scaffolding rather than a finalized specification. Progression toward an ML-RFC should be guided by rough consensus, iterative refinement, and practical validation.
 
@@ -848,7 +848,7 @@ This progression reflects the Meta-Layer's commitment to transparency, accountab
 
 ---
 
-## Closing Orientation
+## 22. Closing Orientation
 
 DP1 is the claim that trust can be built without requiring people to surrender who they are.
 
