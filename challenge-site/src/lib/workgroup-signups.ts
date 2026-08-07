@@ -38,17 +38,20 @@ export type WorkgroupSignupsPayload = {
   total_people: number;
 };
 
-export async function fetchWorkgroupSignups(): Promise<WorkgroupSignupsPayload | null> {
-  const aggregated = await fetchSignupsAggregated();
+export async function fetchWorkgroupSignups(opts?: {
+  /** Bypass Next.js fetch cache (use when resolving live membership for a signed-in user). */
+  fresh?: boolean;
+}): Promise<WorkgroupSignupsPayload | null> {
+  const aggregated = await fetchSignupsAggregated(opts?.fresh);
   if (aggregated) return aggregated;
-  return fetchSignupsFromWorkgroups();
+  return fetchSignupsFromWorkgroups(opts?.fresh);
 }
 
-async function fetchSignupsAggregated(): Promise<WorkgroupSignupsPayload | null> {
+async function fetchSignupsAggregated(fresh?: boolean): Promise<WorkgroupSignupsPayload | null> {
   try {
     const res = await fetch(
       `${GOVHUB_PUBLIC_BASE_URL}/api/layers/${METAWEB_LAYER_ID}/workgroup-signups/`,
-      { next: { revalidate: 120 } },
+      fresh ? { cache: 'no-store' } : { next: { revalidate: 120 } },
     );
     if (!res.ok) return null;
     return (await res.json()) as WorkgroupSignupsPayload;
@@ -75,11 +78,12 @@ type MembersResponse = {
   }>;
 };
 
-async function fetchSignupsFromWorkgroups(): Promise<WorkgroupSignupsPayload | null> {
+async function fetchSignupsFromWorkgroups(fresh?: boolean): Promise<WorkgroupSignupsPayload | null> {
   try {
+    const fetchOpts = fresh ? { cache: 'no-store' as const } : { next: { revalidate: 120 } };
     const workgroupsRes = await fetch(
       `${GOVHUB_PUBLIC_BASE_URL}/api/layers/${METAWEB_LAYER_ID}/workgroups/`,
-      { next: { revalidate: 120 } },
+      fetchOpts,
     );
     if (!workgroupsRes.ok) return null;
     const workgroupsData = (await workgroupsRes.json()) as WorkgroupsResponse;
@@ -94,7 +98,7 @@ async function fetchSignupsFromWorkgroups(): Promise<WorkgroupSignupsPayload | n
       dpWorkgroups.map(async (wg) => {
         const membersRes = await fetch(
           `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(wg.id)}/members/`,
-          { next: { revalidate: 120 } },
+          fetchOpts,
         );
         const membersData = membersRes.ok
           ? ((await membersRes.json()) as MembersResponse)

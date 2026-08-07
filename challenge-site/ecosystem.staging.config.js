@@ -55,7 +55,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: '3006',
-        GOVHUB_BASE_URL: 'https://dev.hub.themetalayer.org',
+        GOVHUB_BASE_URL: 'https://hub.themetalayer.org',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
         ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',
         HERMES_CHAT_URL: 'http://127.0.0.1:8790',

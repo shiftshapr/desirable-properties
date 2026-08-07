@@ -14,7 +14,7 @@ export type WorkgroupMembershipSnapshot = {
 export async function fetchUserMemberWorkgroupIds(userId: string): Promise<Set<string>> {
   const id = String(userId || '').trim();
   if (!id) return new Set();
-  const signups = await fetchWorkgroupSignups();
+  const signups = await fetchWorkgroupSignups({ fresh: true });
   if (!signups) return new Set();
   const person = signups.people.find((p) => p.user_id === id);
   if (!person) return new Set();

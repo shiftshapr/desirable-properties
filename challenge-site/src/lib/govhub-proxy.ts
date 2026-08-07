@@ -47,7 +47,15 @@ export async function proxyGovHubJson(
       body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
       signal: AbortSignal.timeout(options.timeoutMs ?? 45000),
       cache: 'no-store',
+      redirect: 'manual',
     });
+
+    if (res.status >= 300 && res.status < 400) {
+      return NextResponse.json(
+        { error: 'Authentication required', code: 'AUTHENTICATION_REQUIRED' },
+        { status: 401, headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
 
     const text = await res.text();
     let data: unknown = null;
