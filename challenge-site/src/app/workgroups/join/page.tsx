@@ -9,6 +9,7 @@ import {
   govhubUrl,
 } from '@/lib/govhub';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import type { Metadata } from 'next';
 
@@ -182,6 +183,7 @@ export default async function JoinWorkgroupPage() {
   const collabEnabled = await isWorkgroupCollabEnabled();
   const liveWorkgroups = collabEnabled ? await fetchChallengeWorkgroups() : [];
   const idBySlug = new Map(liveWorkgroups.map((wg) => [wg.slug, wg.id]));
+  const memberWorkgroupIds = collabEnabled ? await readSessionMemberWorkgroupIds() : new Set<string>();
 
   return (
     <main className="border-b border-slate-800">
@@ -420,6 +422,7 @@ export default async function JoinWorkgroupPage() {
                         workgroupName={name}
                         joinFallbackHref={joinHref}
                         nominateFallbackHref={nominateHref}
+                        isMember={memberWorkgroupIds.has(idBySlug.get(slug)!)}
                       />
                     ) : null}
                   </div>

@@ -6,6 +6,7 @@ import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
+import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 export const revalidate = 60;
@@ -71,7 +72,11 @@ export default async function WorkgroupCollabPage({ params }: PageProps) {
   const workgroup = await fetchWorkgroup(slug);
   if (!workgroup) notFound();
 
-  const initialMessages = await fetchTeaserMessages(workgroup.id);
+  const teaserMessages = await fetchTeaserMessages(workgroup.id);
+  const membership = await fetchWorkgroupMembershipSnapshot(workgroup.id, {
+    teaserMessages,
+  });
+  const initialMessages = membership.messages;
   const joinHref = workgroupGovHubHref(workgroup.slug, 'join');
   const dpId = extractDpId(workgroup.name);
   const dpDetailHref = dpId ? `/dp/${dpId.toLowerCase()}` : null;
@@ -95,6 +100,8 @@ export default async function WorkgroupCollabPage({ params }: PageProps) {
           dpId={dpId}
           dpDetailHref={dpDetailHref}
           initialActivity={initialActivity}
+          initialIsMember={membership.isMember}
+          initialMembershipResolved={membership.membershipResolved}
         />
       </div>
     </main>

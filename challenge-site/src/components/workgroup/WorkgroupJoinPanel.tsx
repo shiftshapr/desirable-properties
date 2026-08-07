@@ -11,6 +11,8 @@ type Props = {
   fallbackHref?: string;
   onJoined?: () => void;
   className?: string;
+  /** When true (from server membership check), render member badge instead. */
+  isMember?: boolean;
 };
 
 export default function WorkgroupJoinPanel({
@@ -19,8 +21,19 @@ export default function WorkgroupJoinPanel({
   fallbackHref,
   onJoined,
   className = '',
+  isMember = false,
 }: Props) {
   const { user, checked } = useAuth();
+
+  if (isMember) {
+    return (
+      <span
+        className={`rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-sm text-emerald-200 ${className}`}
+      >
+        You are a member
+      </span>
+    );
+  }
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

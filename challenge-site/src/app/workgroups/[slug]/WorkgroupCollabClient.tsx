@@ -23,6 +23,8 @@ type Props = {
   dpId: string | null;
   dpDetailHref: string | null;
   initialActivity?: ActivityFeedItem[];
+  initialIsMember?: boolean;
+  initialMembershipResolved?: boolean;
 };
 
 export default function WorkgroupCollabClient({
@@ -32,13 +34,15 @@ export default function WorkgroupCollabClient({
   dpId,
   dpDetailHref,
   initialActivity = [],
+  initialIsMember = false,
+  initialMembershipResolved = false,
 }: Props) {
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
-  const [isMember, setIsMember] = useState(false);
+  const [isMember, setIsMember] = useState(initialIsMember);
   const [canInvite, setCanInvite] = useState(Boolean(workgroup.can_invite_members));
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
-  const [membershipChecked, setMembershipChecked] = useState(false);
+  const [membershipChecked, setMembershipChecked] = useState(initialMembershipResolved);
 
   async function refreshMembership() {
     try {
@@ -91,18 +95,18 @@ export default function WorkgroupCollabClient({
           <p className="mt-4 max-w-3xl text-slate-300">{workgroup.description}</p>
         ) : null}
         <div className="mt-5 flex flex-wrap items-start gap-3 text-sm">
-          {!isMember ? (
+          {membershipChecked && !isMember ? (
             <WorkgroupJoinPanel
               workgroupId={workgroup.id}
               workgroupName={workgroup.name}
               fallbackHref={joinHref}
               onJoined={() => void refreshMembership()}
             />
-          ) : (
+          ) : membershipChecked && isMember ? (
             <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
               You are a member
             </span>
-          )}
+          ) : null}
           <WorkgroupNominatePanel
             workgroupId={workgroup.id}
             fallbackHref={nominateFallback}
@@ -118,7 +122,7 @@ export default function WorkgroupCollabClient({
           <Link href="/workgroups/join" className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300">
             ← All workgroups
           </Link>
-          {isMember ? (
+          {membershipChecked && isMember ? (
             <WorkgroupLeavePanel
               workgroupId={workgroup.id}
               workgroupName={workgroup.name}
@@ -127,7 +131,7 @@ export default function WorkgroupCollabClient({
             />
           ) : null}
         </div>
-        {!checked || !membershipChecked ? (
+        {!membershipChecked ? (
           <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
         ) : null}
       </header>
