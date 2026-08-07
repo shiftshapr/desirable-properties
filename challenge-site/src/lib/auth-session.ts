@@ -1,6 +1,7 @@
 import { createHash } from 'crypto';
 import { EncryptJWT, jwtDecrypt } from 'jose';
 import { cookies } from 'next/headers';
+import type { AuthUser } from '@/lib/auth-types';
 
 export const SESSION_COOKIE = 'hermes_session';
 const MAX_AGE_SEC = 60 * 60 * 24;
@@ -72,6 +73,17 @@ export async function readSessionFromCookieValue(
 export async function readSession(): Promise<HermesSession | null> {
   const store = await cookies();
   return readSessionFromCookieValue(store.get(SESSION_COOKIE)?.value);
+}
+
+export function sessionToAuthUser(session: HermesSession | null): AuthUser | null {
+  if (!session) return null;
+  return {
+    id: session.userId,
+    username: session.username,
+    displayName: session.displayName,
+    profileImage: session.profileImage ?? null,
+    verifierId: session.verifierId,
+  };
 }
 
 export async function clearSessionCookie() {

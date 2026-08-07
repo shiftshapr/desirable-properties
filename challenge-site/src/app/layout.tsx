@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import SiteShell from '@/components/SiteShell';
 import CanonicalHostScript from '@/components/CanonicalHostScript';
 import Web3AuthConfigScript from '@/components/Web3AuthConfigScript';
+import { readSession, sessionToAuthUser } from '@/lib/auth-session';
 import './globals.css';
 
 const geistSans = Geist({
@@ -22,11 +23,14 @@ export const metadata: Metadata = {
   // icons resolved automatically from src/app/icon.svg (Desirable Properties book cover)
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await readSession();
+  const initialUser = sessionToAuthUser(session);
+
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
       <head>
@@ -34,7 +38,9 @@ export default function RootLayout({
         <Web3AuthConfigScript />
       </head>
       <body className="flex min-h-dvh flex-col bg-slate-950 text-slate-100 antialiased">
-        <SiteShell>{children}</SiteShell>
+        <SiteShell initialUser={initialUser} initialChecked>
+          {children}
+        </SiteShell>
       </body>
     </html>
   );

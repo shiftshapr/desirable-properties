@@ -18,9 +18,19 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [checked, setChecked] = useState(false);
+type AuthProviderProps = {
+  children: React.ReactNode;
+  initialUser?: AuthUser | null;
+  initialChecked?: boolean;
+};
+
+export function AuthProvider({
+  children,
+  initialUser = null,
+  initialChecked = false,
+}: AuthProviderProps) {
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
+  const [checked, setChecked] = useState(initialChecked);
   const [loginBusy, setLoginBusy] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 

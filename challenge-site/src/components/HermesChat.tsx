@@ -17,6 +17,7 @@ import {
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
 import { useAuth } from '@/lib/auth-context';
+import type { AuthUser } from '@/lib/auth-types';
 
 interface Message {
   id: string;
@@ -38,10 +39,12 @@ interface HermesChatProps {
   surface?: string;
   dpFocus?: number | null;
   compact?: boolean;
+  initialSignedIn?: boolean;
+  initialUser?: AuthUser | null;
 }
 
 const INTRO =
-  "I'm DP Hermes. I help this community improve the Desirable Properties of a layered web – clarifying what they mean, surfacing tensions, and turning good arguments into patches. Sign in to chat. Your conversations are saved in the sidebar for future reference and continuing dialog.";
+  "I'm Hermes, the DP Community AI. I help this community improve the Desirable Properties of a layered web – clarifying what they mean, surfacing tensions, and turning good arguments into patches. Sign in to chat. Your conversations are saved in the sidebar for future reference and continuing dialog.";
 
 const STARTER_PROMPTS = [
   'What does DP7 mean by bridge?',
@@ -69,8 +72,11 @@ export default function HermesChat({
   surface = 'desirableproperties.org',
   dpFocus = null,
   compact = false,
+  initialSignedIn = false,
+  initialUser = null,
 }: HermesChatProps) {
-  const { user: authUser, login, loginBusy } = useAuth();
+  const { user: authUser, checked, login, loginBusy } = useAuth();
+  const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
@@ -178,7 +184,7 @@ export default function HermesChat({
   }, [persistActiveThread]);
 
   useEffect(() => {
-    if (!authUser) return;
+    if (!signedIn) return;
     void (async () => {
       const threadList = await loadThreads();
       const saved =
@@ -189,7 +195,7 @@ export default function HermesChat({
         await loadThread(saved);
       }
     })();
-  }, [authUser, loadThreads, loadThread]);
+  }, [signedIn, loadThreads, loadThread]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -214,7 +220,7 @@ export default function HermesChat({
 
   const onFilesSelected = async (files: FileList | null) => {
     if (!files?.length) return;
-    if (!authUser) {
+    if (!signedIn) {
       promptSignIn();
       return;
     }
@@ -244,7 +250,7 @@ export default function HermesChat({
     const text = inputText.trim();
     if ((!text && attachments.length === 0) || isLoading) return;
 
-    if (!authUser) {
+    if (!signedIn) {
       promptSignIn();
       return;
     }
@@ -333,7 +339,7 @@ export default function HermesChat({
         persistActiveThread(data.threadId);
       }
 
-      if (authUser) loadThreads();
+      if (signedIn) loadThreads();
     } catch (err) {
       setSystemNotice({
         variant: 'error',
@@ -345,7 +351,7 @@ export default function HermesChat({
   };
 
   const openTeachModal = (assistantMessageId: string) => {
-    if (!authUser) {
+    if (!signedIn) {
       promptSignIn();
       return;
     }
@@ -374,7 +380,7 @@ export default function HermesChat({
   };
 
   const saveTeaching = async () => {
-    if (!authUser || !teachTargetId || !teachText.trim()) return;
+    if (!signedIn || !teachTargetId || !teachText.trim()) return;
 
     setCorrectionBusyId(teachTargetId);
     try {
@@ -411,7 +417,7 @@ export default function HermesChat({
   };
 
   const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
-    if (!authUser) {
+    if (!signedIn) {
       promptSignIn();
       return;
     }
@@ -465,7 +471,7 @@ export default function HermesChat({
   };
 
   const submitContribution = async () => {
-    if (!contributionDraft || !authUser) return;
+    if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     try {
       const res = await fetch('/api/agent/contributions/submit', {
@@ -512,7 +518,7 @@ export default function HermesChat({
       threads={threads}
       activeThreadId={activeThreadId}
       loading={threadsLoading || Boolean(threadLoadingId)}
-      signedIn={Boolean(authUser)}
+      signedIn={signedIn}
       onSelect={loadThread}
       onCreate={startNewConversation}
       onSignIn={promptSignIn}
@@ -598,7 +604,7 @@ export default function HermesChat({
                   )}
                   {message.sender === 'assistant'
                     && message.id === 'intro'
-                    && !authUser ? (
+                    && !signedIn ? (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {STARTER_PROMPTS.map((prompt) => (
                         <button
@@ -648,7 +654,7 @@ export default function HermesChat({
                     <HermesContributionCTA
                       hint={message.contributionHint}
                       busy={contributionBusy && draftingMessageId === message.id}
-                      signedIn={Boolean(authUser)}
+                      signedIn={signedIn}
                       onDraft={(scope) => draftContribution(scope, message.id)}
                       onSignIn={promptSignIn}
                     />
@@ -737,7 +743,7 @@ export default function HermesChat({
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder={
-                  authUser
+                  signedIn
                     ? 'Message Hermes…'
                     : 'Sign in to send a message…'
                 }
@@ -747,20 +753,20 @@ export default function HermesChat({
               />
               <button
                 type="button"
-                onClick={authUser ? sendMessage : promptSignIn}
+                onClick={signedIn ? sendMessage : promptSignIn}
                 disabled={
-                  (!authUser && loginBusy)
-                  || (authUser && !inputText.trim() && attachments.length === 0)
+                  (!signedIn && loginBusy)
+                  || (signedIn && !inputText.trim() && attachments.length === 0)
                   || isLoading
                 }
                 className={
-                  authUser
+                  signedIn
                     ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
                     : 'flex h-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 px-3 text-xs font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
                 }
-                aria-label={authUser ? 'Send message' : 'Sign in to chat'}
+                aria-label={signedIn ? 'Send message' : 'Sign in to chat'}
               >
-                {authUser ? (
+                {signedIn ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
