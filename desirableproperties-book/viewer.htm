@@ -1089,6 +1089,16 @@
       return n != null ? 'DP' + n : null;
     }
 
+    function railNavLabel(railKey) {
+      if (!railKey || !(railKey in RAIL_INDEX)) return '';
+      const r = RAILS[RAIL_INDEX[railKey]];
+      if (railKey === 'book_cover') return 'Cover';
+      if (railKey === 'about') return 'About';
+      if (railKey === 'acknowledgements') return 'Acknowledgements';
+      if (railKey === 'ml-draft-026') return 'Introduction';
+      return r.dp || r.label || railKey;
+    }
+
     /**
      * Resolve the requested rail key from the URL.
      * /viewer/book_cover → 'book_cover'
@@ -1123,10 +1133,18 @@
         const dp = r.dp || '';
         const isCover = r.railKey === 'book_cover';
         const isIntro = r.railKey === 'ml-draft-026';
+        const isAbout = r.railKey === 'about';
+        const isAck = r.railKey === 'acknowledgements';
         let idLabel, titleText;
         if (isCover) {
           idLabel = '';
           titleText = 'Cover';
+        } else if (isAbout) {
+          idLabel = '';
+          titleText = 'About This Digital Monument';
+        } else if (isAck) {
+          idLabel = '';
+          titleText = 'Acknowledgements';
         } else if (isIntro) {
           idLabel = '';                       // no "Intro" chip
           titleText = 'Introduction';         // full title, aligned with the others
@@ -1570,10 +1588,8 @@
       if (idx == null) return '';
       const r = RAILS[idx];
       const { prev, next } = getNeighborRails(rail);
-      const prevLabel = prev === 'book_cover'
-        ? 'Cover'
-        : (prev === 'ml-draft-026' ? 'Introduction' : (prev ? (RAILS[RAIL_INDEX[prev]].dp || 'Prev') : ''));
-      const nextLabel = next ? (RAILS[RAIL_INDEX[next]].dp || 'Next') : '';
+      const prevLabel = prev ? railNavLabel(prev) : '';
+      const nextLabel = next ? railNavLabel(next) : '';
       return (
         '<div class="nav-bar" id="navBar">' +
           (prev
