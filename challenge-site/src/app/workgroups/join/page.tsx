@@ -4,6 +4,7 @@ import Link from 'next/link';
 import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   fetchChallengeWorkgroups,
   govhubUrl,
 } from '@/lib/govhub';
@@ -217,7 +218,7 @@ export default async function JoinWorkgroupPage() {
               href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="text-cyan-300 hover:text-cyan-200"
             >
-              comment on chapters at book.desirableproperties.org
+              comment on chapters at {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
             or{' '}
             <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">

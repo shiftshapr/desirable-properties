@@ -12,6 +12,7 @@ import {
 } from '@/lib/challengeTimeline';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
   GOVHUB_DP_PATCHES_URL,
@@ -107,7 +108,7 @@ export default async function ChallengePage() {
               href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="text-cyan-300 hover:text-cyan-200"
             >
-              book.desirableproperties.org
+              {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
             (chapter comments are live now). Patch draft text on Gov Hub—select a passage and submit
             a revision. Over the coming months, workgroups will gather commentary, propose patches,
@@ -172,7 +173,7 @@ export default async function ChallengePage() {
                 href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
                 className="text-violet-300 hover:text-violet-200"
               >
-                book.desirableproperties.org
+                {DESIRABLE_PROPERTIES_BOOK_HOST}
               </a>
               —chapter comments are live now. Passage-level patching on the book is coming; patch
               drafts on Gov Hub today.

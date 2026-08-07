@@ -21,17 +21,55 @@ export const DESIRABLE_PROPERTIES_BOOK_TITLE =
   'The Layered Web: The Desirable Properties of a Meta-Layer';
 export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 
+const PROD_BOOK_ORIGIN = 'https://book.desirableproperties.org';
+const STAGING_BOOK_ORIGIN = 'https://staging.book.desirableproperties.org';
+
+/** User-facing book host — staging challenge-site links to staging.book. */
+function resolveBookOrigin(): string {
+  const explicit = process.env.DP_BOOK_BASE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  if (typeof window !== 'undefined') {
+    return window.location.hostname === 'staging.desirableproperties.org'
+      ? STAGING_BOOK_ORIGIN
+      : PROD_BOOK_ORIGIN;
+  }
+  const publicBase = process.env.DP_PUBLIC_BASE?.trim() || '';
+  if (publicBase.includes('staging.desirableproperties.org')) {
+    return STAGING_BOOK_ORIGIN;
+  }
+  return PROD_BOOK_ORIGIN;
+}
+
+export const DP_BOOK_ORIGIN = resolveBookOrigin();
+
+export const DESIRABLE_PROPERTIES_BOOK_HOST = new URL(DP_BOOK_ORIGIN).hostname;
+
 /** Open-access BRC333 book reader (markdown ordinals).
- * Points at the cover page on the main domain so the in-header Book link
+ * Points at the cover page on the challenge-site so the in-header Book link
  * opens the cover; the cover click then routes into the viewer SPA at
  * /viewer/<chapter>. */
-export const DESIRABLE_PROPERTIES_BOOK_URL =
-  'https://desirableproperties.org/book';
+export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.trim() || 'https://desirableproperties.org').replace(/\/$/, '')}/book`;
 
 /** Live book reader with chapter comments (Canopi) — discuss on each chapter today.
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
-export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL =
-  'https://book.desirableproperties.org/';
+export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;
+
+/** Book viewer URL for a DP chapter or Canopi page slug. */
+export function bookViewerHref(opts?: {
+  dpId?: string | null;
+  pageId?: string | null;
+}): string {
+  const pageId = String(opts?.pageId || '').trim();
+  if (pageId && /^dp\d{2}$/i.test(pageId)) {
+    return `${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`;
+  }
+  const dpId = String(opts?.dpId || '').trim();
+  if (dpId) {
+    const n = dpId.replace(/^DP/i, '').padStart(2, '0');
+    return `${DP_BOOK_ORIGIN}/viewer/dp${n}`;
+  }
+  return DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL;
+}
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 

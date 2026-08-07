@@ -1,7 +1,7 @@
 export const DP_CANOPI_COMMUNITY_ID = 'c0f30bc5-de17-4328-80d9-ff8f364907da';
 
-/** Canonical book host used when normalizing Canopi pageIds (matches embed pageUrl). */
-export const DP_BOOK_ORIGIN = 'https://book.desirableproperties.org';
+/** Prod book host for Canopi pageId hashing (staging book uses prod pageUrlOrigin). */
+export const DP_CANOPI_BOOK_ORIGIN = 'https://book.desirableproperties.org';
 
 export const DP_CANOPI_CHAPTERS = [
   { value: '', label: 'All chapters' },
@@ -34,7 +34,7 @@ export function canopiPageIdsForDp(dpId: string | null | undefined): string[] {
   if (!/^\d{1,2}$/.test(n)) return [];
   const padded = n.padStart(2, '0');
   const short = `dp${padded}`;
-  const hashed = canopiPageIdFromUrl(`${DP_BOOK_ORIGIN}/viewer/${short}`);
+  const hashed = canopiPageIdFromUrl(`${DP_CANOPI_BOOK_ORIGIN}/viewer/${short}`);
   const out = [hashed, short];
   if (Number(n) !== Number(padded)) out.push(`dp${Number(n)}`);
   return [...new Set(out)];

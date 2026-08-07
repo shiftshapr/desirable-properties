@@ -5,6 +5,7 @@ import {
   eventMatchesWorkgroup,
   fetchDraftProposals,
   fetchLayerActivityEvents,
+  bookViewerHref,
   fetchChallengeActivity,
   formatActivityEventPublic,
   govhubUrl,
@@ -121,8 +122,8 @@ async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[
       createdAt: p.createdAt as string,
       text: classified.text,
       href: p.pageId
-        ? `https://book.desirableproperties.org/viewer/${encodeURIComponent(p.pageId)}`
-        : 'https://book.desirableproperties.org/',
+        ? bookViewerHref({ pageId: p.pageId })
+        : bookViewerHref(),
       kind,
       badge: classified.badge,
       resolved: false,
@@ -171,18 +172,6 @@ function draftViewerHref(draftRef: string | null | undefined): string {
   if (!ref) return govhubUrl('/doc/all/?collection=desirable-properties');
   return govhubUrl(`/doc/draft/${encodeURIComponent(ref)}/read/`);
 }
-
-function bookViewerHref(dpId: string | null, pageId?: string | null): string {
-  if (pageId && /^dp\d{2}$/i.test(pageId)) {
-    return `https://book.desirableproperties.org/viewer/${pageId.toLowerCase()}`;
-  }
-  if (dpId) {
-    const n = dpId.replace(/^DP/i, '').padStart(2, '0');
-    return `https://book.desirableproperties.org/viewer/dp${n}`;
-  }
-  return 'https://book.desirableproperties.org/';
-}
-
 function proposalToFeedItem(
   proposal: GovHubDraftProposal,
   draftRef: string,
@@ -299,7 +288,7 @@ async function fetchCanopiItemsForDp(
       id: `canopi-${p.id}`,
       createdAt: p.createdAt || '',
       text: classified.text,
-      href: bookViewerHref(dpId, p.pageId),
+      href: bookViewerHref({ dpId, pageId: p.pageId }),
       kind,
       badge: classified.badge,
       // Canopi Discuss has no accept/decline workflow yet — patches stay open.

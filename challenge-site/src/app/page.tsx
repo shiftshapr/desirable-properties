@@ -10,6 +10,7 @@ import {
   fetchChallengeWorkgroups,
   govhubUrl,
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
@@ -181,7 +182,7 @@ export default async function Home() {
                 </span>
                 <h3 className="mt-3 text-lg font-semibold text-white">Discuss &amp; Patch</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
-                  Chapter comments are live on book.desirableproperties.org. Passage-level patching
+                  Chapter comments are live on {DESIRABLE_PROPERTIES_BOOK_HOST}. Passage-level patching
                   on the book is coming soon.
                 </p>
                 <DiscussPatchLink

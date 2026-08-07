@@ -77,6 +77,9 @@ module.exports = {
         DP_PUBLIC_BASE:
           localEnv.DP_PUBLIC_BASE_STAGING
           || 'https://staging.desirableproperties.org',
+        DP_BOOK_BASE_URL:
+          localEnv.DP_BOOK_BASE_URL_STAGING
+          || 'https://staging.book.desirableproperties.org',
         DP_COLLAB_ENABLED: 'true',
         DP_DATABASE_URL:
           localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',

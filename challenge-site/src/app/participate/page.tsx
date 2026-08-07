@@ -2,6 +2,7 @@ import Link from 'next/link';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
@@ -92,7 +93,7 @@ const CONTRIBUTE_CARDS = [
               target="_blank"
               rel="noopener noreferrer"
             >
-              book.desirableproperties.org
+              {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
             (comments are live now). Passage-level patching on the book is coming.
           </li>
