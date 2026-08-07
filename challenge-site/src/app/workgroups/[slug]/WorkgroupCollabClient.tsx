@@ -48,8 +48,9 @@ export default function WorkgroupCollabClient({
     Boolean(initialIsMember || justJoined || workgroup.can_invite_members),
   );
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
+  // Trust SSR for initial membership; re-check client-side without clearing on errors.
   const [membershipChecked, setMembershipChecked] = useState(
-    justJoined || (initialMembershipResolved && initialIsMember),
+    justJoined || initialMembershipResolved,
   );
 
   async function refreshMembership() {
@@ -59,7 +60,7 @@ export default function WorkgroupCollabClient({
       setCanInvite(Boolean(data.is_member) || Boolean(workgroup.can_invite_members));
       setTeaserMessages(data.messages || initialMessages);
     } catch {
-      setIsMember(false);
+      // Keep existing membership on transient API errors.
     } finally {
       setMembershipChecked(true);
     }
@@ -90,7 +91,7 @@ export default function WorkgroupCollabClient({
           }
         } catch {
           if (!cancelled && (!justJoined || attempt === maxAttempts - 1)) {
-            setIsMember(false);
+            // Do not clear membership on upstream errors — SSR/signups may already be correct.
             setMembershipChecked(true);
           }
           return;
