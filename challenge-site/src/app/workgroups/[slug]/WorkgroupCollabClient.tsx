@@ -7,6 +7,7 @@ import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
+import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import { useAuth } from '@/lib/auth-context';
 import { govhubUrl } from '@/lib/govhub';
@@ -94,9 +95,16 @@ export default function WorkgroupCollabClient({
               onJoined={() => void refreshMembership()}
             />
           ) : (
-            <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
-              You are a member
-            </span>
+            <>
+              <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
+                You are a member
+              </span>
+              <WorkgroupLeavePanel
+                workgroupId={workgroup.id}
+                workgroupName={workgroup.name}
+                onLeft={() => void refreshMembership()}
+              />
+            </>
           )}
           <WorkgroupNominatePanel
             workgroupId={workgroup.id}

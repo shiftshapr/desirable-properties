@@ -44,6 +44,8 @@ const CHALLENGE_ACTIVITY_TYPES = new Set([
   'workgroup_message_posted',
   'workgroup_invite_sent',
   'workgroup_invite_accepted',
+  'workgroup_member_joined',
+  'workgroup_member_left',
 ]);
 
 export type GovHubWorkgroup = {
@@ -199,6 +201,40 @@ function formatActivityEvent(
       const wgName = (payload.workgroup_name as string) || 'a workgroup';
       const slug = (payload.workgroup_slug as string) || '';
       text = `${who} accepted an invitation to ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_member_joined': {
+      const wgName =
+        (payload.name as string) ||
+        (payload.workgroup_name as string) ||
+        'a workgroup';
+      const slug =
+        (payload.slug as string) || (payload.workgroup_slug as string) || '';
+      const actor =
+        (payload.display_name as string) || who;
+      text = `${actor} joined ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_member_left': {
+      const wgName =
+        (payload.name as string) ||
+        (payload.workgroup_name as string) ||
+        'a workgroup';
+      const slug =
+        (payload.slug as string) || (payload.workgroup_slug as string) || '';
+      const actor =
+        (payload.display_name as string) || who;
+      text = `${actor} left ${wgName}`;
       return {
         id: event.id,
         createdAt: event.created_at,

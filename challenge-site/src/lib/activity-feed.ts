@@ -6,6 +6,7 @@ export type ActivityFeedKind =
   | 'govhub'
   | 'workgroup_message'
   | 'workgroup_invite'
+  | 'workgroup_member'
   | 'canopi'
   | 'canopi_patch'
   | 'canopi_insert';
@@ -24,6 +25,7 @@ function inferKind(text: string, href: string): ActivityFeedKind {
   if (href.startsWith('/workgroups/')) {
     if (text.includes('invited') || text.includes('invitation')) return 'workgroup_invite';
     if (text.includes('posted')) return 'workgroup_message';
+    if (/\bjoined\b|\bleft\b/.test(text)) return 'workgroup_member';
   }
   return 'govhub';
 }

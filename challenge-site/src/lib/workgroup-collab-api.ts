@@ -98,6 +98,23 @@ export async function joinWorkgroup(
   return parseJson(res);
 }
 
+export async function leaveWorkgroup(
+  workgroupId: string,
+): Promise<{
+  success?: boolean;
+  message?: string;
+  left?: boolean;
+  cancelled_request?: boolean;
+}> {
+  const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/leave`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}),
+  });
+  return parseJson(res);
+}
+
 export type NominatePayload = {
   position_key?: string;
   position?: string;
