@@ -99,6 +99,7 @@ export default function WorkgroupCollabClient({
             <WorkgroupJoinPanel
               workgroupId={workgroup.id}
               workgroupName={workgroup.name}
+              workgroupSlug={workgroup.slug}
               fallbackHref={joinHref}
               onJoined={() => void refreshMembership()}
             />

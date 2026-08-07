@@ -420,6 +420,7 @@ export default async function JoinWorkgroupPage() {
                       <WorkgroupJoinNominateActions
                         workgroupId={idBySlug.get(slug)!}
                         workgroupName={name}
+                        workgroupSlug={slug}
                         joinFallbackHref={joinHref}
                         nominateFallbackHref={nominateHref}
                         isMember={memberWorkgroupIds.has(idBySlug.get(slug)!)}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { joinWorkgroup } from '@/lib/workgroup-collab-api';
@@ -7,6 +8,8 @@ import { joinWorkgroup } from '@/lib/workgroup-collab-api';
 type Props = {
   workgroupId: string;
   workgroupName?: string;
+  /** Slug for post-join redirect to `/workgroups/{slug}`. */
+  workgroupSlug?: string;
   /** Fallback Gov Hub join URL when not signed in or collab proxy fails. */
   fallbackHref?: string;
   onJoined?: () => void;
@@ -15,14 +18,40 @@ type Props = {
   isMember?: boolean;
 };
 
+function normalizePath(path: string): string {
+  return path.replace(/\/$/, '') || '/';
+}
+
+/** Prefer API welcome_url when it targets the challenge-site collab page. */
+function resolvePostJoinHref(welcomeUrl: string | undefined, slug: string | undefined): string | null {
+  if (welcomeUrl) {
+    try {
+      const url = welcomeUrl.startsWith('http')
+        ? new URL(welcomeUrl)
+        : new URL(welcomeUrl, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+      if (/^\/workgroups\/[^/]+\/?$/.test(url.pathname)) {
+        return normalizePath(url.pathname);
+      }
+    } catch {
+      // ignore malformed welcome_url
+    }
+  }
+  if (slug) {
+    return `/workgroups/${encodeURIComponent(slug)}`;
+  }
+  return null;
+}
+
 export default function WorkgroupJoinPanel({
   workgroupId,
   workgroupName,
+  workgroupSlug,
   fallbackHref,
   onJoined,
   className = '',
   isMember = false,
 }: Props) {
+  const router = useRouter();
   const { user, checked } = useAuth();
 
   if (isMember) {
@@ -54,9 +83,16 @@ export default function WorkgroupJoinPanel({
         (res.pending_approval
           ? 'Membership requested; pending approval'
           : 'Successfully joined workgroup');
+      onJoined?.();
+
+      const collabHref = resolvePostJoinHref(res.welcome_url, workgroupSlug);
+      if (collabHref && normalizePath(window.location.pathname) !== normalizePath(collabHref)) {
+        router.push(collabHref);
+        return;
+      }
+
       setMessage(msg);
       setDone(true);
-      onJoined?.();
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Join failed');
     } finally {

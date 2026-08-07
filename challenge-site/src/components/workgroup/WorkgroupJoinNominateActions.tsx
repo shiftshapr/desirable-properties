@@ -6,6 +6,7 @@ import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePane
 type Props = {
   workgroupId: string;
   workgroupName?: string;
+  workgroupSlug?: string;
   joinFallbackHref?: string;
   nominateFallbackHref?: string;
   /** When true (from server membership check), hide the join control. */
@@ -16,6 +17,7 @@ type Props = {
 export default function WorkgroupJoinNominateActions({
   workgroupId,
   workgroupName,
+  workgroupSlug,
   joinFallbackHref,
   nominateFallbackHref,
   isMember = false,
@@ -30,6 +32,7 @@ export default function WorkgroupJoinNominateActions({
         <WorkgroupJoinPanel
           workgroupId={workgroupId}
           workgroupName={workgroupName}
+          workgroupSlug={workgroupSlug}
           fallbackHref={joinFallbackHref}
         />
       )}
