@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { MESSAGE_A_SECTIONS } from '@/lib/dp-welcome-content';
 import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
 
@@ -50,14 +51,12 @@ export default function WorkgroupGettingStarted({
         >
           Member welcome guide
         </Link>
-        <a
+        <DiscussPatchLink
           href={discussHref}
-          target="_blank"
-          rel="noopener noreferrer"
           className="rounded-lg bg-violet-800 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
         >
           Discuss &amp; patch this chapter →
-        </a>
+        </DiscussPatchLink>
         <a
           href={govHubHref}
           target="_blank"

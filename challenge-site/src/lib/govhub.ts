@@ -67,14 +67,32 @@ export type ChallengeActivityItem = {
   href: string;
 };
 
+export type LayerActivityEvent = {
+  id: string;
+  event_type: string;
+  actor_display_name?: string;
+  created_at: string;
+  payload?: Record<string, unknown>;
+  subject_type?: string | null;
+  subject_id?: string | null;
+};
+
 type LayerActivityResponse = {
-  events?: Array<{
-    id: string;
-    event_type: string;
-    actor_display_name?: string;
-    created_at: string;
-    payload?: Record<string, unknown>;
-  }>;
+  events?: LayerActivityEvent[];
+};
+
+export type GovHubDraftProposal = {
+  id: string;
+  status: string;
+  status_label?: string | null;
+  patch_mode?: string | null;
+  original_text?: string | null;
+  proposed_text?: string | null;
+  author_name?: string | null;
+  created_at?: string | null;
+  reviewed_at?: string | null;
+  rationale?: string | null;
+  submission_id?: string | null;
 };
 
 type WorkgroupsResponse = {
@@ -300,6 +318,81 @@ export async function fetchChallengeActivity(
   }
 
   return items;
+}
+
+/** Raw layer EventLog rows (optional event_type filter via repeated query params). */
+export async function fetchLayerActivityEvents(opts?: {
+  limit?: number;
+  eventTypes?: string[];
+}): Promise<LayerActivityEvent[]> {
+  const limit = Math.min(100, Math.max(1, opts?.limit ?? 50));
+  const params = new URLSearchParams();
+  params.set('limit', String(limit));
+  for (const t of opts?.eventTypes || []) {
+    if (t) params.append('event_type', t);
+  }
+  const data = await fetchGovHub<LayerActivityResponse>(
+    `/api/layers/${METAWEB_LAYER_ID}/activity/?${params.toString()}`,
+  );
+  return data?.events ?? [];
+}
+
+export async function fetchDraftProposals(
+  draftRef: string,
+): Promise<GovHubDraftProposal[]> {
+  const ref = String(draftRef || '').trim();
+  if (!ref) return [];
+  const data = await fetchGovHub<{ proposals?: GovHubDraftProposal[] }>(
+    `/api/doc/draft/${encodeURIComponent(ref)}/proposals/`,
+  );
+  return data?.proposals ?? [];
+}
+
+export function formatActivityEventPublic(
+  event: LayerActivityEvent,
+): ChallengeActivityItem | null {
+  return formatActivityEvent(event);
+}
+
+/** True when a layer event payload refers to this workgroup and/or its draft. */
+export function eventMatchesWorkgroup(
+  event: LayerActivityEvent,
+  opts: {
+    workgroupId?: string | null;
+    workgroupSlug?: string | null;
+    draftRefs?: string[];
+  },
+): boolean {
+  const payload = event.payload ?? {};
+  const wgId = (opts.workgroupId || '').trim();
+  const wgSlug = (opts.workgroupSlug || '').trim().toLowerCase();
+  const draftRefs = new Set(
+    (opts.draftRefs || []).map((r) => r.trim().toLowerCase()).filter(Boolean),
+  );
+
+  const payloadWgId = String(payload.workgroup_id || '').trim();
+  const payloadSlug = String(
+    payload.workgroup_slug || payload.slug || payload.acronym || '',
+  )
+    .trim()
+    .toLowerCase();
+
+  if (wgId && payloadWgId && payloadWgId === wgId) return true;
+  if (wgSlug && payloadSlug && payloadSlug === wgSlug) return true;
+
+  if (draftRefs.size) {
+    const candidates = [
+      payload.draft_name,
+      payload.ml_number,
+      payload.submission_id,
+      payload.draft_ref,
+    ]
+      .map((v) => String(v || '').trim().toLowerCase())
+      .filter(Boolean);
+    if (candidates.some((c) => draftRefs.has(c))) return true;
+  }
+
+  return false;
 }
 
 export function formatActivityDate(iso: string): string {

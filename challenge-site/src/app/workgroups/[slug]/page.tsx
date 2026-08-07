@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
+import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
@@ -74,6 +75,15 @@ export default async function WorkgroupCollabPage({ params }: PageProps) {
   const joinHref = workgroupGovHubHref(workgroup.slug, 'join');
   const dpId = extractDpId(workgroup.name);
   const dpDetailHref = dpId ? `/dp/${dpId.toLowerCase()}` : null;
+  const initialActivity = await fetchWorkgroupDpActivity({
+    workgroupId: workgroup.id,
+    workgroupSlug: workgroup.slug,
+    workgroupName: workgroup.name,
+    dpId,
+    draftRef: workgroup.document_draft_ref || null,
+    draftLabel: workgroup.document_label || null,
+    limit: 40,
+  });
 
   return (
     <main className="border-b border-slate-800">
@@ -84,6 +94,7 @@ export default async function WorkgroupCollabPage({ params }: PageProps) {
           joinHref={joinHref}
           dpId={dpId}
           dpDetailHref={dpDetailHref}
+          initialActivity={initialActivity}
         />
       </div>
     </main>

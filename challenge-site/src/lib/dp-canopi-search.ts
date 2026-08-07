@@ -87,18 +87,26 @@ export type CanopiSearchPost = {
 
 export async function searchCanopiPosts(opts: {
   pageId?: string;
+  /** Extra pageIds to fetch alongside pageId (e.g. hashed book URL slug + short dp01). */
+  pageIds?: string[];
   q?: string;
   authorName?: string;
   communityId?: string;
   limit?: number;
+  /** Max characters kept per post body (default 280). */
+  maxContentLength?: number;
 }) {
   const needle = String(opts.q || '').trim().toLowerCase();
   const chapterFilter = String(opts.pageId || '').trim();
   const authorNeedle = String(opts.authorName || '').trim().toLowerCase();
   const communityId = String(opts.communityId || DEFAULT_COMMUNITY_ID).trim();
   const limit = Math.min(50, Math.max(1, opts.limit || 40));
+  const maxContentLength = Math.min(4000, Math.max(80, opts.maxContentLength || 280));
 
-  const pageIdsToFetch = chapterFilter ? [chapterFilter] : DP_CANOPI_CHAPTERS.filter((c) => c.value).map((c) => c.value);
+  const extraIds = (opts.pageIds || []).map((p) => String(p || '').trim()).filter(Boolean);
+  const pageIdsToFetch = chapterFilter || extraIds.length
+    ? [...new Set([chapterFilter, ...extraIds].filter(Boolean))]
+    : DP_CANOPI_CHAPTERS.filter((c) => c.value).map((c) => c.value);
 
   const merged: ReturnType<typeof normalizeCanopiMessage>[] = [];
   let fetchError: string | null = null;
@@ -123,12 +131,24 @@ export async function searchCanopiPosts(opts: {
     return { ok: false as const, posts: [] as CanopiSearchPost[], error: fetchError };
   }
 
+  const allowedKeys = new Set(
+    pageIdsToFetch.flatMap((pid) => {
+      const key = chapterKey(pid);
+      return key ? [key, pid.toLowerCase()] : [pid.toLowerCase()];
+    }),
+  );
   const filterKey = chapterKey(chapterFilter || null);
   const posts: CanopiSearchPost[] = [];
 
   for (const m of merged) {
     if (!m.id) continue;
-    if (chapterFilter && chapterKey(m.pageId) !== filterKey && m.pageId !== chapterFilter) continue;
+    if (pageIdsToFetch.length) {
+      const mKey = chapterKey(m.pageId);
+      const mPid = (m.pageId || '').toLowerCase();
+      if (!allowedKeys.has(mPid) && !(mKey && allowedKeys.has(mKey))) continue;
+    } else if (chapterFilter && chapterKey(m.pageId) !== filterKey && m.pageId !== chapterFilter) {
+      continue;
+    }
     if (authorNeedle && !(m.authorName || '').toLowerCase().includes(authorNeedle)) continue;
     if (
       needle &&
@@ -140,7 +160,7 @@ export async function searchCanopiPosts(opts: {
     }
     posts.push({
       id: m.id,
-      content: m.content.slice(0, 280),
+      content: m.content.slice(0, maxContentLength),
       pageId: m.pageId,
       communityId: m.communityId,
       authorId: m.authorId,

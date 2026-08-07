@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
@@ -9,6 +10,7 @@ import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPane
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
+import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { govhubUrl } from '@/lib/govhub';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
@@ -20,6 +22,7 @@ type Props = {
   joinHref: string;
   dpId: string | null;
   dpDetailHref: string | null;
+  initialActivity?: ActivityFeedItem[];
 };
 
 export default function WorkgroupCollabClient({
@@ -28,6 +31,7 @@ export default function WorkgroupCollabClient({
   joinHref,
   dpId,
   dpDetailHref,
+  initialActivity = [],
 }: Props) {
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
@@ -95,16 +99,9 @@ export default function WorkgroupCollabClient({
               onJoined={() => void refreshMembership()}
             />
           ) : (
-            <>
-              <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
-                You are a member
-              </span>
-              <WorkgroupLeavePanel
-                workgroupId={workgroup.id}
-                workgroupName={workgroup.name}
-                onLeft={() => void refreshMembership()}
-              />
-            </>
+            <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
+              You are a member
+            </span>
           )}
           <WorkgroupNominatePanel
             workgroupId={workgroup.id}
@@ -121,6 +118,14 @@ export default function WorkgroupCollabClient({
           <Link href="/workgroups/join" className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300">
             ← All workgroups
           </Link>
+          {isMember ? (
+            <WorkgroupLeavePanel
+              workgroupId={workgroup.id}
+              workgroupName={workgroup.name}
+              onLeft={() => void refreshMembership()}
+              className="ml-auto"
+            />
+          ) : null}
         </div>
         {!checked || !membershipChecked ? (
           <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
@@ -157,6 +162,12 @@ export default function WorkgroupCollabClient({
           canInvite={canInvite || isMember}
         />
       ) : null}
+
+      <WorkgroupActivityFeed
+        workgroupSlug={workgroup.slug}
+        dpId={dpId}
+        initialItems={initialActivity}
+      />
     </div>
   );
 }
