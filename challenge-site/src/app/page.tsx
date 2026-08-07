@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
 import LayerHero from '@/components/LayerHero';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
@@ -178,17 +179,17 @@ export default async function Home() {
                 <span className="text-2xl" aria-hidden>
                   💬
                 </span>
-                <h3 className="mt-3 text-lg font-semibold text-white">Read & Discuss the Book</h3>
+                <h3 className="mt-3 text-lg font-semibold text-white">Discuss &amp; Patch</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
                   Chapter comments are live on book.desirableproperties.org. Passage-level patching
                   on the book is coming soon.
                 </p>
-                <a
+                <DiscussPatchLink
                   href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
                   className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
                   Open the book →
-                </a>
+                </DiscussPatchLink>
               </li>
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
                 <span className="text-2xl" aria-hidden>

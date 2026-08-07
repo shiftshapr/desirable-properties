@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
 
@@ -14,21 +15,19 @@ export default function SiteFooter() {
           <Link href={WORKGROUPS_SIGNUPS_HREF} className="text-slate-400 hover:text-slate-200">
             Signups
           </Link>
-          <a
+          <DiscussPatchLink
             href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-cyan-300 hover:text-cyan-200"
           >
-            Read & Discuss
-          </a>
+            Discuss &amp; Patch
+          </DiscussPatchLink>
           <a
             href={GOVHUB_DP_PATCHES_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyan-300 hover:text-cyan-200"
+            className="text-slate-400 hover:text-slate-200"
           >
-            Patch
+            Patch on Gov Hub
           </a>
           <Link href="/participate" className="text-slate-400 hover:text-slate-200">
             Participate
