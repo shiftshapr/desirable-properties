@@ -41,7 +41,7 @@ interface HermesChatProps {
 }
 
 const INTRO =
-  "I'm Hermes. I help this community improve the 22 inscribed Desirable Properties and active drafts like DP23 — clarifying what they mean, surfacing tensions, and turning good arguments into Gov Hub contributions. Sign in (free, via Web3Auth) to chat. Your conversations are saved in the sidebar.";
+  "I'm DP Hermes. I help this community improve the Desirable Properties of a layered web – clarifying what they mean, surfacing tensions, and turning good arguments into patches. Sign in to chat. Your conversations are saved in the sidebar for future reference and continuing dialog.";
 
 const STARTER_PROMPTS = [
   'What does DP7 mean by bridge?',
