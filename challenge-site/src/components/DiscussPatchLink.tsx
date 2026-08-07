@@ -14,11 +14,9 @@ type Props = {
 export default function DiscussPatchLink({ href, className, children }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setDismissed(isDiscussPatchHelpDismissed());
-    setReady(true);
   }, []);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -32,14 +30,6 @@ export default function DiscussPatchLink({ href, className, children }: Props) {
     if (isDiscussPatchHelpDismissed()) {
       setDismissed(true);
     }
-  }
-
-  if (!ready) {
-    return (
-      <span className={`${className} opacity-70`} aria-hidden>
-        {children}
-      </span>
-    );
   }
 
   return (
