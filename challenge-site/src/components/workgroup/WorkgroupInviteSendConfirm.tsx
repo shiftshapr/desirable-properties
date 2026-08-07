@@ -8,6 +8,8 @@ type Props = {
   mailto?: string;
   subject?: string;
   body?: string;
+  recipientName?: string;
+  recipientEmail?: string;
   onPlatformSend: () => Promise<void>;
   onClientPrepare: () => Promise<void>;
 };
@@ -18,6 +20,8 @@ export default function WorkgroupInviteSendConfirm({
   mailto,
   subject,
   body,
+  recipientName,
+  recipientEmail,
   onPlatformSend,
   onClientPrepare,
 }: Props) {
@@ -25,6 +29,18 @@ export default function WorkgroupInviteSendConfirm({
     <div className="space-y-4 rounded-lg border border-slate-800 bg-slate-950/40 p-4">
       <div>
         <h3 className="text-sm font-semibold text-white">Send invitation</h3>
+        {recipientName || recipientEmail ? (
+          <p className="mt-2 text-sm text-slate-200">
+            <span className="text-slate-500">To: </span>
+            {recipientName ? <span className="font-medium text-white">{recipientName}</span> : null}
+            {recipientEmail ? (
+              <span className="text-slate-300">
+                {recipientName ? ' ' : ''}
+                &lt;{recipientEmail}&gt;
+              </span>
+            ) : null}
+          </p>
+        ) : null}
         <p className="mt-1 text-sm text-slate-400">
           Both options create tracked join links. Platform send delivers via Desirable Properties email;
           send from your email opens your mail client.

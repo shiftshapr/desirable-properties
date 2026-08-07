@@ -10,7 +10,6 @@ import {
   clearInviteDraft,
   loadInviteDraft,
   saveInviteDraft,
-  type WorkgroupInviteDraft,
 } from '@/lib/workgroup-draft-storage';
 import type {
   InviteCandidate,
@@ -115,6 +114,30 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       .filter(Boolean);
   }
 
+  function resetInvite() {
+    clearInviteDraft(workgroupSlug);
+    setStep('research');
+    setBusy(false);
+    setError(null);
+    setName('');
+    setEmail('');
+    setLinkedinUrl('');
+    setPreviousInteraction('');
+    setExtraLinks('');
+    setCandidates([]);
+    setResolvedPerson(null);
+    setSuggested([]);
+    setPriorInvitations([]);
+    setSelectedExtraIds([]);
+    setTone('warm');
+    setLength('medium');
+    setDraft('');
+    setPlatformDone(false);
+    setMailto('');
+    setMailSubject('');
+    setMailBody('');
+  }
+
   async function runDraft(
     person: ResolvedPerson | null = resolvedPerson,
     prior: PriorInvitation[] = priorInvitations,
@@ -215,12 +238,35 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     }
   }
 
+  const hasProgress =
+    Boolean(name.trim() || email.trim() || linkedinUrl.trim() || draft.trim())
+    || step !== 'research'
+    || candidates.length > 0;
+
+  const recipientLabel = name.trim() || resolvedPerson?.name || 'Recipient';
+  const recipientEmail = email.trim();
+
   return (
     <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
-      <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
-      <p className="mt-1 text-sm text-slate-400">
-        Research a contact, draft a personal invitation, then send via platform mail or your own inbox.
-      </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Research a contact, draft a personal invitation, then send via platform mail or your own
+            inbox.
+          </p>
+        </div>
+        {hasProgress ? (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={resetInvite}
+            className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-50"
+          >
+            Start over
+          </button>
+        ) : null}
+      </div>
 
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
 
@@ -258,6 +304,16 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
 
         {(step === 'draft' || step === 'done') && (
           <div className="space-y-6">
+            <div className="rounded-lg border border-cyan-900/40 bg-cyan-950/25 px-3 py-2.5 text-sm text-cyan-50/95">
+              <span className="text-cyan-200/70">Inviting </span>
+              <span className="font-medium text-white">{recipientLabel}</span>
+              {recipientEmail ? (
+                <>
+                  {' '}
+                  <span className="text-cyan-100/80">&lt;{recipientEmail}&gt;</span>
+                </>
+              ) : null}
+            </div>
             <WorkgroupInviteDraftEditor
               tone={tone}
               length={length}
@@ -282,6 +338,8 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               mailto={mailto}
               subject={mailSubject}
               body={mailBody}
+              recipientName={recipientLabel}
+              recipientEmail={recipientEmail}
               onPlatformSend={() => send('platform')}
               onClientPrepare={() => send('client')}
             />

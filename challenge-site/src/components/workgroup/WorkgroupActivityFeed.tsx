@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import ActivityDiffBlock from '@/components/workgroup/ActivityDiffBlock';
+import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import {
-  isActivityResolved,
+  isActivityCommentOrPatch,
   type ActivityFeedItem,
 } from '@/lib/activity-feed';
 import { formatActivityDate } from '@/lib/govhub';
 
-type FilterMode = 'all' | 'resolved';
+type FilterMode = 'all' | 'comments_patches';
 
 type Props = {
   workgroupSlug: string;
@@ -72,12 +72,14 @@ export default function WorkgroupActivityFeed({
   }, [workgroupSlug]);
 
   const visible = useMemo(() => {
-    if (filter === 'resolved') return items.filter((item) => isActivityResolved(item));
+    if (filter === 'comments_patches') {
+      return items.filter((item) => isActivityCommentOrPatch(item));
+    }
     return items;
   }, [items, filter]);
 
-  const resolvedCount = useMemo(
-    () => items.filter((item) => isActivityResolved(item)).length,
+  const commentsPatchesCount = useMemo(
+    () => items.filter((item) => isActivityCommentOrPatch(item)).length,
     [items],
   );
 
@@ -89,10 +91,9 @@ export default function WorkgroupActivityFeed({
             {dpId ? `${dpId} activity` : 'Workgroup activity'}
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-slate-400">
-            Gov Hub workgroup events and draft patches, plus Canopi discuss on this DP&apos;s book
-            chapter. Resolved = accepted/declined/incorporated Gov Hub patches (and other
-            non-pending proposals). Chat, invites, joins/leaves, and open Canopi discuss patches
-            stay under All.
+            Gov Hub workgroup chat and draft patches, plus Canopi discuss on this DP&apos;s book
+            chapter. Comments &amp; patches filters to discuss posts, draft proposals, and chat —
+            hides joins, leaves, and invites.
           </p>
         </div>
         <div
@@ -113,14 +114,14 @@ export default function WorkgroupActivityFeed({
           </button>
           <button
             type="button"
-            onClick={() => setFilter('resolved')}
+            onClick={() => setFilter('comments_patches')}
             className={`rounded-md px-3 py-1.5 ${
-              filter === 'resolved'
+              filter === 'comments_patches'
                 ? 'bg-slate-700 text-white'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            Resolved ({resolvedCount})
+            Comments &amp; patches ({commentsPatchesCount})
           </button>
         </div>
       </div>
@@ -131,8 +132,8 @@ export default function WorkgroupActivityFeed({
         <p className="mt-5 text-sm text-rose-300">{error}</p>
       ) : visible.length === 0 ? (
         <p className="mt-5 text-sm text-slate-400">
-          {filter === 'resolved'
-            ? 'No resolved patches yet for this DP. Switch to All to see chat, invites, and open proposals.'
+          {filter === 'comments_patches'
+            ? 'No comments or patches yet for this DP. Switch to All to see invites and membership events.'
             : 'No activity yet for this DP. Chat, invites, draft patches, and book discuss posts will show up here.'}
         </p>
       ) : (
@@ -163,7 +164,7 @@ export default function WorkgroupActivityFeed({
                 </div>
               </div>
               {item.diff ? (
-                <ActivityDiffBlock
+                <ActivityPatchPreview
                   removed={item.diff.removed}
                   added={item.diff.added}
                   mode={item.diff.mode}

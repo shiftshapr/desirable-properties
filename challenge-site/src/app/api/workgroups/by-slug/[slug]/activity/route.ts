@@ -53,8 +53,8 @@ export async function GET(_request: Request, ctx: Ctx) {
       workgroup_slug: workgroup.slug,
       dp_id: dpId,
       items,
-      resolved_definition:
-        'Resolved = Gov Hub proposals that are not pending (accepted, declined, incorporated, orphaned, considered), plus revision-approved / published-as-RFC events. Chat, invites, membership, pending proposals, and Canopi discuss posts are not resolved.',
+      filter_definition:
+        'Comments & patches = Canopi discuss (comments + PATCH/INSERT), Gov Hub draft proposals/patches, workgroup chat. Excludes joins, leaves, invites, and generic draft lifecycle events.',
     },
     {
       headers: {

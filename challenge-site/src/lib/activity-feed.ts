@@ -324,10 +324,9 @@ export type WorkgroupDpActivityOpts = {
 /**
  * Per-DP / per-workgroup activity: Gov Hub WG events + draft proposals/events + Canopi discuss.
  *
- * Resolved (for the Resolved filter):
- * - Gov Hub proposals with status other than `pending` (accepted, declined, incorporated, …)
- * - Layer events: proposal accepted/declined, revision approved, published as RFC
- * Not resolved: chat, invites, joins/leaves, open (pending) proposals, Canopi discuss posts
+ * Comments & patches filter (see isActivityCommentOrPatch):
+ * - Canopi discuss (all + PATCH/INSERT), Gov Hub proposals, workgroup chat
+ * - Excludes joins/leaves, invites, generic draft lifecycle noise
  */
 export async function fetchWorkgroupDpActivity(
   opts: WorkgroupDpActivityOpts,
@@ -413,5 +412,35 @@ export function isActivityResolved(item: ActivityFeedItem): boolean {
     return status !== 'pending' && status !== '';
   }
   if (item.status && RESOLVED_EVENT_TYPES.has(item.status)) return true;
+  return false;
+}
+
+/** Draft / discuss comment & patch kinds for the Comments & patches filter. */
+const COMMENT_PATCH_EVENT_TYPES = new Set([
+  'dp_proposal_submitted',
+  'dp_proposal_accepted',
+  'dp_proposal_declined',
+  'draft_comment_added',
+  'workgroup_message_posted',
+]);
+
+/**
+ * Comments & patches filter:
+ * - Canopi discuss (comments + PATCH/INSERT)
+ * - Gov Hub draft proposals / patch items
+ * - Workgroup chat messages
+ * Excludes: joins/leaves, invites, generic draft lifecycle noise (created/approved/published).
+ */
+export function isActivityCommentOrPatch(item: ActivityFeedItem): boolean {
+  if (
+    item.kind === 'canopi'
+    || item.kind === 'canopi_patch'
+    || item.kind === 'canopi_insert'
+    || item.kind === 'govhub_proposal'
+    || item.kind === 'workgroup_message'
+  ) {
+    return true;
+  }
+  if (item.status && COMMENT_PATCH_EVENT_TYPES.has(item.status)) return true;
   return false;
 }

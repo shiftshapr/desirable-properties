@@ -37,7 +37,7 @@ export default function ActivityDiffBlock({ removed, added, mode }: Props) {
   const showRemoved = Boolean(removedText) && mode !== 'insert';
 
   return (
-    <div className="mt-2 space-y-1.5">
+    <div className="space-y-1.5">
       {mode === 'insert' ? (
         <p className="text-[11px] uppercase tracking-wide text-slate-500">Insert above selection</p>
       ) : null}
