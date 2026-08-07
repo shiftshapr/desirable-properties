@@ -87,7 +87,11 @@ export default function WorkgroupJoinPanel({
 
       const collabHref = resolvePostJoinHref(res.welcome_url, workgroupSlug);
       if (collabHref && normalizePath(window.location.pathname) !== normalizePath(collabHref)) {
-        router.push(collabHref);
+        const target = res.pending_approval
+          ? collabHref
+          : `${collabHref}?joined=1`;
+        router.refresh();
+        router.push(target);
         return;
       }
 

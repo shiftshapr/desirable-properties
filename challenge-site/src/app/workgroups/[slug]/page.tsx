@@ -9,10 +9,12 @@ import { workgroupGovHubHref } from '@/lib/workgroup-links';
 import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
-export const revalidate = 60;
+/** Membership is session-specific; never ISR-cache this page shell. */
+export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ joined?: string }>;
 };
 
 async function fetchWorkgroup(slug: string): Promise<WorkgroupCollabSummary | null> {
@@ -60,10 +62,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function WorkgroupCollabPage({ params }: PageProps) {
+export default async function WorkgroupCollabPage({ params, searchParams }: PageProps) {
   const { slug: raw } = await params;
+  const { joined } = await searchParams;
   const slug = getRequestedWorkgroupSlug(raw);
   if (!slug) notFound();
+  const justJoined = joined === '1' || joined === 'true';
 
   if (!(await isWorkgroupCollabEnabled())) {
     redirect(workgroupGovHubHref(slug));
@@ -102,6 +106,7 @@ export default async function WorkgroupCollabPage({ params }: PageProps) {
           initialActivity={initialActivity}
           initialIsMember={membership.isMember}
           initialMembershipResolved={membership.membershipResolved}
+          justJoined={justJoined}
         />
       </div>
     </main>

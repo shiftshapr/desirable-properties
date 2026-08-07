@@ -25,6 +25,8 @@ type Props = {
   initialActivity?: ActivityFeedItem[];
   initialIsMember?: boolean;
   initialMembershipResolved?: boolean;
+  /** Set when redirected here immediately after a successful join. */
+  justJoined?: boolean;
 };
 
 export default function WorkgroupCollabClient({
@@ -36,22 +38,26 @@ export default function WorkgroupCollabClient({
   initialActivity = [],
   initialIsMember = false,
   initialMembershipResolved = false,
+  justJoined = false,
 }: Props) {
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
-  const [isMember, setIsMember] = useState(initialIsMember);
-  const [canInvite, setCanInvite] = useState(Boolean(workgroup.can_invite_members));
+  // Trust SSR only for positive membership; stale false negatives show join UI too early.
+  const [isMember, setIsMember] = useState(initialIsMember || justJoined);
+  const [canInvite, setCanInvite] = useState(
+    Boolean(initialIsMember || justJoined || workgroup.can_invite_members),
+  );
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
-  const [membershipChecked, setMembershipChecked] = useState(initialMembershipResolved);
+  const [membershipChecked, setMembershipChecked] = useState(
+    justJoined || (initialMembershipResolved && initialIsMember),
+  );
 
   async function refreshMembership() {
     try {
       const data = await fetchWorkgroupMessages(workgroup.id, { full: true });
       setIsMember(Boolean(data.is_member));
       setCanInvite(Boolean(data.is_member) || Boolean(workgroup.can_invite_members));
-      if (!data.is_member) {
-        setTeaserMessages(data.messages || initialMessages);
-      }
+      setTeaserMessages(data.messages || initialMessages);
     } catch {
       setIsMember(false);
     } finally {
@@ -62,24 +68,39 @@ export default function WorkgroupCollabClient({
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      try {
-        const data = await fetchWorkgroupMessages(workgroup.id, { full: true });
+      const maxAttempts = justJoined ? 4 : 1;
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
         if (cancelled) return;
-        setIsMember(Boolean(data.is_member));
-        setCanInvite(Boolean(data.is_member) || Boolean(workgroup.can_invite_members));
-        if (!data.is_member) {
-          setTeaserMessages(data.messages || initialMessages);
+        if (attempt > 0) {
+          await new Promise((resolve) => window.setTimeout(resolve, 400 * attempt));
+          if (cancelled) return;
         }
-      } catch {
-        if (!cancelled) setIsMember(false);
-      } finally {
-        if (!cancelled) setMembershipChecked(true);
+        try {
+          const data = await fetchWorkgroupMessages(workgroup.id, { full: true });
+          if (cancelled) return;
+          const member = Boolean(data.is_member);
+          setIsMember(member);
+          setCanInvite(member || Boolean(workgroup.can_invite_members));
+          if (!member) {
+            setTeaserMessages(data.messages || initialMessages);
+          }
+          if (member || !justJoined || attempt === maxAttempts - 1) {
+            setMembershipChecked(true);
+            return;
+          }
+        } catch {
+          if (!cancelled && (!justJoined || attempt === maxAttempts - 1)) {
+            setIsMember(false);
+            setMembershipChecked(true);
+          }
+          return;
+        }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [workgroup.id, workgroup.can_invite_members, initialMessages, signedIn]);
+  }, [workgroup.id, workgroup.can_invite_members, initialMessages, signedIn, justJoined]);
 
   const showFullChat = membershipChecked && isMember;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
