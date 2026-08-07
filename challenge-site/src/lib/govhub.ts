@@ -1,4 +1,6 @@
 /** Public Gov Hub URL (hub.themetalayer.org avoids networks that block "gov" in hostnames). */
+import { workgroupActivityHref } from '@/lib/workgroup-links';
+
 export const GOVHUB_PUBLIC_BASE_URL =
   process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
 const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
@@ -39,6 +41,9 @@ const CHALLENGE_ACTIVITY_TYPES = new Set([
   'vote_started',
   'vote_closed',
   'member_joined',
+  'workgroup_message_posted',
+  'workgroup_invite_sent',
+  'workgroup_invite_accepted',
 ]);
 
 export type GovHubWorkgroup = {
@@ -168,6 +173,39 @@ function formatActivityEvent(
       text = `${who} joined The Metaweb layer`;
       href = '/layers/the-metaweb/';
       break;
+    case 'workgroup_message_posted': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} posted in ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_invite_sent': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} invited someone to ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_invite_accepted': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} accepted an invitation to ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
     default:
       return null;
   }

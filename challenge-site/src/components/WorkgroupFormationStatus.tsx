@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import localData from '@/data/desirable-properties.json';
 import { extractDpId, govhubUrl, type GovHubWorkgroup } from '@/lib/govhub';
+import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 
 type Props = {
   workgroups: GovHubWorkgroup[];
@@ -12,7 +14,7 @@ type Row = {
   active: boolean;
 };
 
-function WorkgroupCard({ dp, wg, active }: Row) {
+function WorkgroupCard({ dp, wg, active, collabEnabled }: Row & { collabEnabled: boolean }) {
   return (
     <div
       className={`flex items-center justify-between rounded-lg border px-3 py-2 text-sm ${
@@ -28,14 +30,22 @@ function WorkgroupCard({ dp, wg, active }: Row) {
       <span className="ml-2 flex shrink-0 flex-col items-end gap-1">
         {active && wg ? (
           <>
+            {collabEnabled ? (
+              <Link
+                href={workgroupPrimaryHref(wg.slug)}
+                className="text-xs text-cyan-300 hover:text-cyan-200"
+              >
+                Collaborate
+              </Link>
+            ) : null}
             <a
-              href={govhubUrl(`/workgroups/${wg.slug}/`)}
+              href={workgroupGovHubHref(wg.slug, 'join')}
               className="text-xs text-cyan-300 hover:text-cyan-200"
             >
               Join
             </a>
             <a
-              href={govhubUrl(`/workgroups/${wg.slug}/`)}
+              href={workgroupGovHubHref(wg.slug, 'nominate')}
               className="text-xs text-cyan-300 hover:text-cyan-200"
             >
               Nominate
@@ -57,7 +67,8 @@ function WorkgroupCard({ dp, wg, active }: Row) {
   );
 }
 
-export default function WorkgroupFormationStatus({ workgroups }: Props) {
+export default async function WorkgroupFormationStatus({ workgroups }: Props) {
+  const collabEnabled = await isWorkgroupCollabEnabled();
   const dpWorkgroups = new Map<string, GovHubWorkgroup>();
   for (const wg of workgroups) {
     const dpId = extractDpId(wg.name);
@@ -92,7 +103,7 @@ export default function WorkgroupFormationStatus({ workgroups }: Props) {
 
       <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {rows.map((row) => (
-          <WorkgroupCard key={row.dp.id} {...row} />
+          <WorkgroupCard key={row.dp.id} {...row} collabEnabled={collabEnabled} />
         ))}
       </div>
 

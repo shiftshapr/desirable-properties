@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import WorkgroupSignupsClient from './WorkgroupSignupsClient';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
+import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 
 export const revalidate = 120;
 
@@ -28,5 +29,10 @@ export default async function WorkgroupSignupsPage() {
     );
   }
 
-  return <WorkgroupSignupsClient data={data} />;
+  return (
+    <WorkgroupSignupsClient
+      data={data}
+      collabEnabled={await isWorkgroupCollabEnabled()}
+    />
+  );
 }

@@ -77,6 +77,7 @@ module.exports = {
           || resendEnv.RESEND_FROM
           || 'Desirable Properties <noreply@desirableproperties.org>',
         DP_PUBLIC_BASE: localEnv.DP_PUBLIC_BASE || 'https://desirableproperties.org',
+        DP_COLLAB_ENABLED: 'false',
         DP_DATABASE_URL:
           localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',
         DATABASE_URL: localEnv.DATABASE_URL || localEnv.DP_DATABASE_URL || '',

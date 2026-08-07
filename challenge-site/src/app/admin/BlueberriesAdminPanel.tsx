@@ -423,10 +423,29 @@ export default function BlueberriesAdminPanel() {
         ) : null}
         {canopiPosts.length > 0 ? (
           <ul className="mt-4 divide-y divide-slate-800 rounded-lg border border-slate-800">
-            {canopiPosts.map((post) => (
+            {canopiPosts.map((post) => {
+              const prefix = post.content.replace(/^\s+/, '').slice(0, 8).toLowerCase();
+              const patchBadge =
+                prefix.startsWith('patch:')
+                  ? 'Patch'
+                  : prefix.startsWith('insert:')
+                    ? 'Insert'
+                    : null;
+              return (
               <li key={post.id} className="flex flex-wrap items-start justify-between gap-3 px-4 py-3 text-sm">
                 <div className="min-w-0 flex-1">
-                  <p className="text-white">{post.content.slice(0, 200)}{post.content.length > 200 ? '…' : ''}</p>
+                  <p className="text-white">
+                    {patchBadge ? (
+                      <span className={`mr-2 inline-flex rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                        patchBadge === 'Patch'
+                          ? 'border-amber-800/60 bg-amber-950/40 text-amber-200'
+                          : 'border-violet-800/60 bg-violet-950/40 text-violet-200'
+                      }`}>
+                        {patchBadge}
+                      </span>
+                    ) : null}
+                    {post.content.slice(0, 200)}{post.content.length > 200 ? '…' : ''}
+                  </p>
                   <p className="mt-1 text-xs text-slate-500">
                     {post.authorName || 'Unknown author'}
                     {post.pageId ? ` · ${post.pageId}` : ''}
@@ -442,7 +461,8 @@ export default function BlueberriesAdminPanel() {
                   Add
                 </button>
               </li>
-            ))}
+              );
+            })}
           </ul>
         ) : canopiSearching ? null : (
           <p className="mt-4 text-sm text-slate-500">Search results appear here.</p>

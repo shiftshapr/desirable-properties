@@ -12,9 +12,16 @@ type TabKey = 'workgroups' | 'people';
 
 type Props = {
   data: WorkgroupSignupsPayload;
+  collabEnabled: boolean;
 };
 
-export default function WorkgroupSignupsClient({ data }: Props) {
+function workgroupLink(slug: string, collabEnabled: boolean): string {
+  return collabEnabled
+    ? `/workgroups/${encodeURIComponent(slug)}`
+    : govhubUrl(`/workgroups/${encodeURIComponent(slug)}/`);
+}
+
+export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
   const [tab, setTab] = useState<TabKey>('workgroups');
   const [query, setQuery] = useState('');
 
@@ -134,10 +141,10 @@ export default function WorkgroupSignupsClient({ data }: Props) {
                     </p>
                   </div>
                   <Link
-                    href={govhubUrl(`/workgroups/${group.slug}/`)}
+                    href={workgroupLink(group.slug, collabEnabled)}
                     className="text-sm text-cyan-300 hover:text-cyan-200"
                   >
-                    View on Gov Hub →
+                    {collabEnabled ? 'Collaborate →' : 'View on Gov Hub →'}
                   </Link>
                 </div>
                 {group.members.length === 0 ? (
@@ -187,7 +194,7 @@ export default function WorkgroupSignupsClient({ data }: Props) {
                         className="flex flex-col gap-1 rounded-md border border-slate-800 bg-slate-950/40 px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
                       >
                         <Link
-                          href={govhubUrl(`/workgroups/${group.slug}/`)}
+                          href={workgroupLink(group.slug, collabEnabled)}
                           className="text-sm text-cyan-300 hover:text-cyan-200"
                         >
                           {group.name}
