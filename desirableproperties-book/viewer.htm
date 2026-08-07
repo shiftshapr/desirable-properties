@@ -587,6 +587,19 @@
     .book-content .dp-intro-back:hover {
       background: rgba(212, 175, 55, 0.06);
     }
+    .book-content.cover-rail img,
+    .book-content .cover-rail img {
+      display: block;
+      max-width: min(420px, 100%);
+      height: auto;
+      margin: 1.25rem auto 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="light"] .book-content.cover-rail img,
+    [data-theme="light"] .book-content .cover-rail img {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
 
     .nav-bar {
       display: flex;
@@ -858,7 +871,7 @@
   <div class="header dp-container dp-container-wide" id="pageHeader">
     <div class="header-inner">
       <h1>
-        <a class="header-title-link" href="/viewer/intro">
+        <a class="header-title-link" href="/viewer/book_cover">
           The Layered Web
           <span class="header-subtitle">The Desirable Properties of a Meta-Layer</span>
         </a>
@@ -925,7 +938,7 @@
    *
    * Pattern: fetch /json/sources-sat.json at init → TOC built from
    * manifest.sources filtered by manifest.articleRails order.
-   * URL routing: /viewer/<railKey> (intro, dp01..dp23).
+   * URL routing: /viewer/<railKey> (book_cover, intro, dp01..dp23).
    * Mode toggle: Live (default; uses src.localOverride if present)
    *              Onchain (fetches /content/<inscriptionId> from ordinals.com
    *              proxy at /content/, so it works on book.desirableproperties.org).
@@ -953,7 +966,7 @@
     let RAILS = [];
     /** RailKey → index in RAILS. */
     let RAIL_INDEX = {};
-    /** Currently-displayed railKey (one of the RAILS keys; 'ml-draft-026' for intro). */
+    /** Currently-displayed railKey (book_cover first, then ml-draft-026 intro, dp01..dp23). */
     let currentRail = null;
     /** 'live' | 'onchain' */
     let currentMode = 'live';
@@ -1031,12 +1044,11 @@
       }
       MANIFEST = m;
 
-      // Build RAILS in articleRails order, dropping book_cover (cover is index.html).
+      // Build RAILS in articleRails order (book_cover is the top rail).
       const byKey = Object.fromEntries(m.sources.map(s => [s.railKey, s]));
       RAILS = m.articleRails
         .map(k => byKey[k])
         .filter(Boolean)
-        .filter(s => s.railKey !== 'book_cover')
         .map(s => ({
           railKey: s.railKey,
           label: s.label || s.railKey,
@@ -1059,7 +1071,7 @@
 
     function dpNumberFromRail(rail) {
       if (!rail) return null;
-      if (rail === 'ml-draft-026') return null; // intro
+      if (rail === 'book_cover' || rail === 'ml-draft-026') return null;
       const m = String(rail).match(/^dp(\d{1,2})$/);
       return m ? parseInt(m[1], 10) : null;
     }
@@ -1071,7 +1083,9 @@
 
     /**
      * Resolve the requested rail key from the URL.
-     * /viewer/intro     → 'ml-draft-026'
+     * /viewer/book_cover → 'book_cover'
+     * /viewer/cover      → 'book_cover'
+     * /viewer/intro      → 'ml-draft-026'
      * /viewer/dp01      → 'dp01'
      * /viewer/dp-1      → 'dp01'  (legacy: accept hyphenated form)
      * /viewer/dp1       → 'dp01'
@@ -1082,6 +1096,7 @@
       if (!m) return null;
       let seg = decodeURIComponent(m[1] || '').toLowerCase();
       if (!seg) return null;
+      if (seg === 'cover') return 'book_cover';
       if (seg === 'intro') return 'ml-draft-026';
       let m2 = seg.match(/^dp-?(\d{1,2})$/);
       if (m2) {
@@ -1098,9 +1113,13 @@
       if (!ul) return;
       const items = RAILS.map((r, i) => {
         const dp = r.dp || '';
+        const isCover = r.railKey === 'book_cover';
         const isIntro = r.railKey === 'ml-draft-026';
         let idLabel, titleText;
-        if (isIntro) {
+        if (isCover) {
+          idLabel = '';
+          titleText = 'Cover';
+        } else if (isIntro) {
           idLabel = '';                       // no "Intro" chip
           titleText = 'Introduction';         // full title, aligned with the others
         } else {
@@ -1447,7 +1466,9 @@
 
       if (currentModeIsLive() && r.localOverride) {
         const md = await fetchLocalOverride(r.localOverride);
-        return { html: renderChapterMarkdown(md), source: 'local' };
+        const html = renderChapterMarkdown(md);
+        const wrapClass = rail === 'book_cover' ? ' cover-rail' : '';
+        return { html: html, source: 'local', wrapClass: wrapClass };
       }
 
       if (r.inscriptionId) {
@@ -1538,7 +1559,9 @@
       if (idx == null) return '';
       const r = RAILS[idx];
       const { prev, next } = getNeighborRails(rail);
-      const prevLabel = prev === 'ml-draft-026' ? 'Introduction' : (prev ? (RAILS[RAIL_INDEX[prev]].dp || 'Prev') : '');
+      const prevLabel = prev === 'book_cover'
+        ? 'Cover'
+        : (prev === 'ml-draft-026' ? 'Introduction' : (prev ? (RAILS[RAIL_INDEX[prev]].dp || 'Prev') : ''));
       const nextLabel = next ? (RAILS[RAIL_INDEX[next]].dp || 'Next') : '';
       return (
         '<div class="nav-bar" id="navBar">' +
@@ -1561,8 +1584,8 @@
     async function loadChapter(rail, opts) {
       const o = opts || {};
       if (!(rail in RAIL_INDEX)) {
-        // Unknown rail → fall through to intro.
-        rail = 'ml-draft-026';
+        // Unknown rail → fall through to cover.
+        rail = 'book_cover';
       }
       currentRail = rail;
 
@@ -1576,7 +1599,8 @@
         if (result.source === 'not-onchain') {
           bodyHtml = result.html;
         } else {
-          bodyHtml = '<div class="book-content" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
+          const wrapClass = result.wrapClass || '';
+          bodyHtml = '<div class="book-content' + wrapClass + '" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
         }
         const navHtml = buildNavBarHtml(rail);
         const downloadHtml = result.source === 'not-onchain' ? '' : buildChapterDownloadHtml(rail);
@@ -1684,16 +1708,10 @@
       if (liveBtn) liveBtn.addEventListener('click', function () { setMode('live'); });
       if (onchainBtn) onchainBtn.addEventListener('click', function () { setMode('onchain'); });
 
-      // Keyboard nav.
+      // Keyboard nav (cover → intro → chapters).
       document.addEventListener('keydown', function (e) {
         const tag = (e.target && e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea') return;
-        if (currentRail === 'ml-draft-026') {
-          if (e.key === 'ArrowRight' && RAIL_INDEX['dp01'] != null) {
-            navigateToRail('dp01');
-          }
-          return;
-        }
         if (e.key === 'ArrowLeft' && currentRail) {
           const idx = RAIL_INDEX[currentRail];
           if (idx > 0) navigateToRail(RAILS[idx - 1].railKey);
@@ -1719,9 +1737,11 @@
       // Update sidebar meta.
       const meta = document.getElementById('sidebarTitleMeta');
       if (meta) {
-        const introCount = RAILS.some(r => r.railKey === 'ml-draft-026') ? 1 : 0;
-        const dpCount = RAILS.length - introCount;
-        meta.textContent = '– ' + (introCount + dpCount) + ' chapters';
+        const frontCount = RAILS.filter(function (r) {
+          return r.railKey === 'book_cover' || r.railKey === 'ml-draft-026';
+        }).length;
+        const dpCount = RAILS.length - frontCount;
+        meta.textContent = '– ' + (frontCount + dpCount) + ' chapters';
       }
 
       // Mode from storage (applied after rail is known — see below).
@@ -1740,13 +1760,13 @@
       // Decide which chapter to show.
       let rail = getRailKeyFromLocation();
       if (!rail || !(rail in RAIL_INDEX)) {
-        // Try last-read from storage, else intro.
+        // Try last-read from storage, else cover.
         let saved = null;
         try { saved = localStorage.getItem(STORAGE_LAST_CHAPTER); } catch (e) { /* ignore */ }
         if (saved && saved in RAIL_INDEX) {
           rail = saved;
         } else {
-          rail = 'ml-draft-026';
+          rail = 'book_cover';
         }
       }
 

@@ -188,7 +188,7 @@ POST /repos/shiftshapr/desirable-properties/dispatches
 | `GOVHUB_DP_RAIL_SYNC_DISPATCH` | Set `true` to trigger sync on DP revision approval |
 | `GITHUB_REPO` | Target repo (default `shiftshapr/desirable-properties`) |
 | `DP_RAIL_SYNC_ENV` | Hub env for sync workflow (default `main`) |
-| `DP_RAIL_SYNC_ML_NUMBERS` | Extra ML numbers to watch (default includes `ML-Draft-026` intro) |
+| `DP_RAIL_SYNC_ML_NUMBERS` | Extra ML numbers to watch (default includes `ML-Draft-026` intro and `ML-Draft-033` cover) |
 
 **No PAT required.** Gov Hub calls `gh workflow run govhub-rail-sync.yml` using the VPS
 [`gh auth login`](https://cli.github.com/manual/gh_auth_login) session (`~/.config/gh/hosts.yml`).

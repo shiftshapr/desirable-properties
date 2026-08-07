@@ -19,7 +19,7 @@ See [docs/GOVHUB-RAIL-SYNC.md](../../docs/GOVHUB-RAIL-SYNC.md) for full workflow
 
 ## Other files here
 
-- `about.md`, `acknowledgements.md` — book front matter; not Gov Hub–synced rails.
+- `about.md`, `acknowledgements.md`, `cover.md` — book front matter; not Gov Hub–synced DP rails (`cover.md` is published to Gov Hub as ML-Draft-033).
 - `DP-TEMPLATE.md` — authoring template for new chapters; not a live rail.
 
 ## Emergency override

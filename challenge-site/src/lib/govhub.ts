@@ -5,6 +5,11 @@ export const GOVHUB_PUBLIC_BASE_URL =
   process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
 const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
 
+/** ML-Draft-033 – book cover rail for The Layered Web */
+export const BOOK_COVER_REF = 'ML-Draft-033';
+export const BOOK_COVER_URL =
+  `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/ML-Draft-033/read/`;
+
 /** ML-Draft-026 – opening chapter framing the Desirable Properties Challenge */
 export const FRAMING_CHAPTER_URL =
   `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F`;
