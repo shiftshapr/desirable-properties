@@ -3,7 +3,7 @@ import DPProvenanceSection from '@/components/DPProvenanceSection';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
 import localData from '../../../data/desirable-properties.json';
 import {
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookDiscussHref,
   extractDpId,
   fetchChallengeWorkgroups,
   GOVHUB_DP_PATCHES_URL,
@@ -150,7 +150,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                   {(readHref || pdfDownloadHref) && (
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                       <a
-                        href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+                        href={bookDiscussHref({ dpId: dp.id })}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"

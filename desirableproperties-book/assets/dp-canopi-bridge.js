@@ -20,11 +20,92 @@
     pageUrlOrigin: staging ? 'https://book.desirableproperties.org' : undefined,
   };
 
+  var SDK_ORIGIN = global.DP_CANOPI_CONFIG.apiBase.replace(/\/$/, '');
+
   var ALLOWED_ORIGINS = new Set([
-    global.DP_CANOPI_CONFIG.apiBase.replace(/\/$/, ''),
+    SDK_ORIGIN,
     'https://app.canopi.live',
     window.location.origin,
   ]);
+
+  /** Host auth popup – registered before async v1.js so sidebar Sign In opens a top-level window (not iframe OAuth). */
+  var _embedAuthPopupWin = null;
+
+  function isCanopiEmbedOrigin(origin) {
+    if (!origin || ALLOWED_ORIGINS.has(origin)) return true;
+    try {
+      var host = new URL(origin).hostname;
+      return host === 'api.canopi.live' || host === 'app.canopi.live' || host.endsWith('.canopi.live');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function openHostAuthPopup(url) {
+    var w = 500;
+    var h = 680;
+    var left = Math.max(0, (screen.availWidth - w) / 2);
+    var top = Math.max(0, (screen.availHeight - h) / 2);
+    var features = 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes';
+    if (_embedAuthPopupWin) {
+      try {
+        if (!_embedAuthPopupWin.closed) {
+          _embedAuthPopupWin.focus();
+          _embedAuthPopupWin.location.href = url;
+          return _embedAuthPopupWin;
+        }
+      } catch (e) { /* COOP */ }
+      _embedAuthPopupWin = null;
+    }
+    _embedAuthPopupWin = global.open(url, 'canopi_web3auth', features);
+    return _embedAuthPopupWin;
+  }
+
+  function normalizeAuthPopupUrl(rawUrl) {
+    var url = rawUrl;
+    if (!url) {
+      var params = new URLSearchParams({
+        extensionId: 'canopi-web-embed',
+        embedIframe: '1',
+        reason: 'sign in',
+      });
+      try {
+        params.set('returnUrl', global.location.href.split('#')[0]);
+        params.set('parentOrigin', global.location.origin);
+      } catch (e) {}
+      url = SDK_ORIGIN + '/embed/web3auth-popup.html?' + params.toString();
+    } else {
+      try {
+        var u = new URL(url);
+        u.searchParams.set('embedIframe', '1');
+        u.searchParams.set('extensionId', 'canopi-web-embed');
+        try {
+          u.searchParams.set('returnUrl', global.location.href.split('#')[0]);
+          u.searchParams.set('parentOrigin', global.location.origin);
+        } catch (e2) {}
+        url = u.toString();
+      } catch (e3) { /* use raw */ }
+    }
+    try {
+      sessionStorage.setItem('canopi_embed_auth_return', global.location.href.split('#')[0]);
+    } catch (e4) {}
+    return url;
+  }
+
+  global.addEventListener('message', function (ev) {
+    var data = ev.data;
+    if (!data || typeof data !== 'object') return;
+    if (data.__canopiOpenAuthPopup) {
+      if (!isCanopiEmbedOrigin(String(ev.origin || ''))) return;
+      var popupUrl = normalizeAuthPopupUrl(data.url);
+      var win = openHostAuthPopup(popupUrl);
+      if (ev.source) {
+        try {
+          ev.source.postMessage({ __canopiAuthPopupOpened: true, ok: !!win }, ev.origin || '*');
+        } catch (e) {}
+      }
+    }
+  });
 
   document.documentElement.classList.add('dp-header-above-canopi');
 
@@ -67,4 +148,32 @@
       clearAuthPayload();
     }
   });
+
+  /** ?discuss=1 — open Canopi Discuss sidebar (from challenge-site Discuss & Patch links). */
+  function shouldAutoOpenDiscuss() {
+    try {
+      return new URLSearchParams(location.search).get('discuss') === '1';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function openDiscussSidebar() {
+    var embed = global.CanopiEmbed;
+    if (!embed || typeof embed.openSidebar !== 'function') return false;
+    var pageUrl = global.dpChapterPageUrl(location.pathname || '/');
+    embed.openSidebar({ pageUrl: pageUrl });
+    return true;
+  }
+
+  function scheduleDiscussAutoOpen() {
+    if (!shouldAutoOpenDiscuss()) return;
+    if (openDiscussSidebar()) return;
+    global.addEventListener('canopi:embed-ready', function onReady() {
+      global.removeEventListener('canopi:embed-ready', onReady);
+      openDiscussSidebar();
+    });
+  }
+
+  scheduleDiscussAutoOpen();
 })(window);

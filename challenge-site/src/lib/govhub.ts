@@ -54,21 +54,36 @@ export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.tri
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
 export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;
 
+function withDiscussQuery(url: string, discuss?: boolean): string {
+  if (!discuss) return url;
+  return url.includes('?') ? `${url}&discuss=1` : `${url}?discuss=1`;
+}
+
 /** Book viewer URL for a DP chapter or Canopi page slug. */
 export function bookViewerHref(opts?: {
   dpId?: string | null;
   pageId?: string | null;
+  /** Append ?discuss=1 so the book bridge auto-opens Canopi Discuss. */
+  discuss?: boolean;
 }): string {
   const pageId = String(opts?.pageId || '').trim();
   if (pageId && /^dp\d{2}$/i.test(pageId)) {
-    return `${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`;
+    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`, opts?.discuss);
   }
   const dpId = String(opts?.dpId || '').trim();
   if (dpId) {
     const n = dpId.replace(/^DP/i, '').padStart(2, '0');
-    return `${DP_BOOK_ORIGIN}/viewer/dp${n}`;
+    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/dp${n}`, opts?.discuss);
   }
-  return DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL;
+  return withDiscussQuery(DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, opts?.discuss);
+}
+
+/** Book URL that opens the reader with Canopi Discuss sidebar auto-expanded. */
+export function bookDiscussHref(opts?: {
+  dpId?: string | null;
+  pageId?: string | null;
+}): string {
+  return bookViewerHref({ ...opts, discuss: true });
 }
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';

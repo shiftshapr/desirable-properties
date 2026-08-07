@@ -72,7 +72,7 @@ banner hint that the canonical reference is the on-chain inscription.
 - **Dark + light themes** – `data-theme` attribute with CSS variables; persisted in `localStorage`.
 - **Mobile-safe-area padding** (`env(safe-area-inset-*)`).
 - **JSON-LD Book schema** for SEO.
-- **Canopi web embed** – one sidebar instance for all `/viewer/*` chapters (see `json/canopi-embed.json`).
+- **Canopi web embed** – one sidebar instance for all `/viewer/*` chapters (see `json/canopi-embed.json`). Links from the challenge-site append `?discuss=1` to auto-open Discuss (`assets/dp-canopi-bridge.js`).
 
 ## Canopi embed
 

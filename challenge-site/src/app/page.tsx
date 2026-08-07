@@ -9,7 +9,7 @@ import { fetchUnifiedActivity } from '@/lib/activity-feed';
 import {
   fetchChallengeWorkgroups,
   govhubUrl,
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
@@ -186,7 +186,7 @@ export default async function Home() {
                   on the book is coming soon.
                 </p>
                 <DiscussPatchLink
-                  href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+                  href={bookDiscussHref()}
                   className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
                   Open the book →

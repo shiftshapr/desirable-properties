@@ -1,4 +1,4 @@
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
+import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import {
   WORKGROUPS_LIST_HREF,
   WORKGROUPS_SIGNUPS_HREF,
@@ -34,7 +34,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
   },
   {
     label: 'Discuss & Patch',
-    href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+    href: bookDiscussHref(),
     discussPatchModal: true,
     children: [
       { href: GOVHUB_DP_PATCHES_URL, label: 'Patch on Gov Hub', external: true },

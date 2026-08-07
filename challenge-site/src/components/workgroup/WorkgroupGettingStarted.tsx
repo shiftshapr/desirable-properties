@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { MESSAGE_A_SECTIONS } from '@/lib/dp-welcome-content';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, bookViewerHref, govhubUrl } from '@/lib/govhub';
+import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
 
 type Props = {
   workgroupName: string;
@@ -10,9 +10,8 @@ type Props = {
   dpDetailHref: string | null;
 };
 
-function bookDiscussHref(dpId: string | null): string {
-  if (!dpId) return DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL;
-  return bookViewerHref({ dpId });
+function workgroupBookDiscussHref(dpId: string | null): string {
+  return bookDiscussHref(dpId ? { dpId } : undefined);
 }
 
 export default function WorkgroupGettingStarted({
@@ -23,7 +22,7 @@ export default function WorkgroupGettingStarted({
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
-  const discussHref = bookDiscussHref(dpId);
+  const discussHref = workgroupBookDiscussHref(dpId);
   const a = MESSAGE_A_SECTIONS;
 
   return (

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
+import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
 
 export default function SiteFooter() {
@@ -16,7 +16,7 @@ export default function SiteFooter() {
             Signups
           </Link>
           <DiscussPatchLink
-            href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            href={bookDiscussHref()}
             className="text-cyan-300 hover:text-cyan-200"
           >
             Discuss &amp; Patch

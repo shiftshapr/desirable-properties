@@ -5,7 +5,7 @@ import {
   eventMatchesWorkgroup,
   fetchDraftProposals,
   fetchLayerActivityEvents,
-  bookViewerHref,
+  bookDiscussHref,
   fetchChallengeActivity,
   formatActivityEventPublic,
   govhubUrl,
@@ -122,8 +122,8 @@ async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[
       createdAt: p.createdAt as string,
       text: classified.text,
       href: p.pageId
-        ? bookViewerHref({ pageId: p.pageId })
-        : bookViewerHref(),
+        ? bookDiscussHref({ pageId: p.pageId })
+        : bookDiscussHref(),
       kind,
       badge: classified.badge,
       resolved: false,
@@ -288,7 +288,7 @@ async function fetchCanopiItemsForDp(
       id: `canopi-${p.id}`,
       createdAt: p.createdAt || '',
       text: classified.text,
-      href: bookViewerHref({ dpId, pageId: p.pageId }),
+      href: bookDiscussHref({ dpId, pageId: p.pageId }),
       kind,
       badge: classified.badge,
       // Canopi Discuss has no accept/decline workflow yet — patches stay open.
