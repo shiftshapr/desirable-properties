@@ -19,7 +19,7 @@ export default function ActivityUpdatedText({ removed, added, mode }: Props) {
   return (
     <div className="space-y-1.5">
       <p className="text-[11px] uppercase tracking-wide text-slate-500">
-        {isInsert ? 'Insert above selection' : 'Updated text'}
+        {isInsert ? 'Text to insert above selection' : 'Patched text'}
       </p>
       {addedText ? (
         <pre className="whitespace-pre-wrap break-words rounded border border-slate-700 bg-slate-900/80 px-3 py-2 font-mono text-xs leading-relaxed text-slate-100">
@@ -29,7 +29,7 @@ export default function ActivityUpdatedText({ removed, added, mode }: Props) {
       {isInsert && removedText ? (
         <>
           <p className="text-[11px] uppercase tracking-wide text-slate-500">
-            Selection (unchanged below)
+            Selected passage (unchanged)
           </p>
           <pre className="whitespace-pre-wrap break-words rounded border border-slate-800 bg-slate-950/60 px-3 py-2 font-mono text-xs leading-relaxed text-slate-400">
             {removedText}
