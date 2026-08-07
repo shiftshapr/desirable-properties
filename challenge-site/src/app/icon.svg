@@ -18,8 +18,7 @@
   <text x="210" y="240" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">DESIRABLE</text>
   <text x="210" y="290" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="url(#goldGrad)">PROPERTIES</text>
   <line x1="100" y1="320" x2="320" y2="320" stroke="#d4af37" stroke-width="0.8" opacity="0.5"/>
-  <text x="210" y="360" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP22</text>
-  <text x="210" y="392" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">A Book of the Meta-Layer</text>
+  <text x="210" y="376" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" letter-spacing="0.32em" fill="#e6edf3" opacity="0.78">DP1 – DP22</text>
   <g transform="translate(210, 460)">
     <circle cx="0" cy="0" r="32" fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
     <circle cx="0" cy="0" r="22" fill="none" stroke="#d4af37" stroke-width="0.6" opacity="0.5"/>

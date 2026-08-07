@@ -1,7 +1,7 @@
 # Gov Hub → book rail sync
 
 How approved Gov Hub revisions flow into the Desirable Properties book local rails
-(`desirableproperties-book/content/local/dpN.md`, `about.md`, `acknowledgements.md`).
+(`desirableproperties-book/content/local/dpN.md`).
 
 This is the **inverse** of [GOVHUB-DP-PUBLISH.md](./GOVHUB-DP-PUBLISH.md), which pushes local
 rails *to* Gov Hub. For the DP book project, **Gov Hub is the editorial source of truth**; the
@@ -11,8 +11,7 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 
 | Script | Purpose |
 | --- | --- |
-| `scripts/govhub_sync_rails_from_hub.py` | Pull latest approved revision per ML-Draft → `content/local/*.md` |
-| `scripts/govhub_bootstrap_front_matter.py` | One-time bootstrap of about/acknowledgements as new root Gov Hub drafts |
+| `scripts/govhub_sync_rails_from_hub.py` | Pull latest approved revision per ML-Draft → `content/local/dpN.md` |
 | `scripts/govhub_dp_common.py` | Shared mapping + fetch helpers |
 | `scripts/check-rails-protected.sh` | Block unauthorized direct edits to `dp*.md` |
 | `scripts/test_govhub_sync_rails.py` | Unit tests (mapping, sync marker helpers) |
@@ -50,7 +49,7 @@ Useful flags:
 
 | Flag | Meaning |
 | --- | --- |
-| `--only about,DP1` | Sync specific rails (front matter or DP chapters) |
+| `--only DP1,DP13` | Sync specific chapters |
 | `--local-db` | Read from local Gov Hub SQLite instead of HTTP |
 | `--govhub-root /path/to/gov-hub-dev` | Gov Hub checkout for `--local-db` |
 | `--content-dir`, `--sources-sat` | Alternate book paths |
@@ -89,30 +88,9 @@ Each synced rail carries an HTML comment near the top:
 The sync script updates this line whenever the Gov Hub body changes. Existing
 `dp-local-version` comments are preserved.
 
-## Front matter (about, acknowledgements)
-
-`about.md` and `acknowledgements.md` are synced rails mapped to **ML-Draft-031** and
-**ML-Draft-032** in `sources-sat.json`. They appear in `articleRails` before the introduction
-and DP chapters.
-
-### Bootstrap (one-time)
-
-Before the first sync, create the root Gov Hub drafts from local front matter:
-
-```bash
-python3 scripts/govhub_bootstrap_front_matter.py --env main --dry-run
-python3 scripts/govhub_bootstrap_front_matter.py --env main --approve
-```
-
-This creates approved root submissions (`is_revision=False`) and assigns the next ML numbers
-(031, 032 on production as of ML-Draft-030). After bootstrap, use the normal sync workflow.
-
-Front matter revisions (after the root draft exists) can be published with
-`govhub_publish_dp_revisions.py --only about,acknowledgements` if needed.
-
 ## Edit protection
 
-Direct edits to `dp1.md` … `dp23.md`, `about.md`, and `acknowledgements.md` are discouraged and guarded:
+Direct edits to `dp1.md` … `dp23.md` are discouraged and guarded:
 
 | Layer | Behavior |
 | --- | --- |
@@ -210,7 +188,7 @@ POST /repos/shiftshapr/desirable-properties/dispatches
 | `GOVHUB_DP_RAIL_SYNC_DISPATCH` | Set `true` to trigger sync on DP revision approval |
 | `GITHUB_REPO` | Target repo (default `shiftshapr/desirable-properties`) |
 | `DP_RAIL_SYNC_ENV` | Hub env for sync workflow (default `main`) |
-| `DP_RAIL_SYNC_ML_NUMBERS` | Extra ML numbers to watch (default includes `ML-Draft-026` intro; front matter matched by title) |
+| `DP_RAIL_SYNC_ML_NUMBERS` | Extra ML numbers to watch (default includes `ML-Draft-026` intro and `ML-Draft-033` cover) |
 
 **No PAT required.** Gov Hub calls `gh workflow run govhub-rail-sync.yml` using the VPS
 [`gh auth login`](https://cli.github.com/manual/gh_auth_login) session (`~/.config/gh/hosts.yml`).
@@ -226,14 +204,6 @@ Per-project Gov Hub sync is configured in the BRC333 repo:
 `BRC333/projects/desirableproperties-book-ordinal/project.json` → `govhubSync`
 
 Other BRC333 projects omit the block or set `"enabled": false`.
-
-## Monitoring (meta-console)
-
-Workflow health is monitored centrally by
-[meta-console](https://github.com/shiftshapr/meta-console) on the VPS (`gh run list`,
-not per-workflow notify jobs). Registry entry: `desirable-properties` →
-`govhub-rail-sync.yml`, `max_age_hours: 36`, branch `main`. See
-`meta-console/docs/GITHUB-ACTIONS-MONITORING.md`.
 
 ## Typical workflow
 

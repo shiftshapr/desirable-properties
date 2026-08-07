@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL } from '@/lib/govhub';
+import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, DESIRABLE_PROPERTIES_BOOK_HOST } from '@/lib/govhub';
 import { useAuth } from '@/lib/auth-context';
 
 type TicketSummary = {
@@ -151,7 +151,7 @@ export default function SupportPageClient() {
           href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
           className="text-cyan-300 hover:text-cyan-200"
         >
-          book.desirableproperties.org
+          {DESIRABLE_PROPERTIES_BOOK_HOST}
         </a>
         . Workgroup coordinators and contributors should include the DP number and any suggested
         text revisions when asking about content.
@@ -448,7 +448,7 @@ export default function SupportPageClient() {
           href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
           className="text-cyan-300 hover:text-cyan-200"
         >
-          book.desirableproperties.org
+          {DESIRABLE_PROPERTIES_BOOK_HOST}
         </a>
         . To patch draft text, use Gov Hub. Or open{' '}
         <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">

@@ -8,6 +8,7 @@
     "summary": "Sources sat for The Layered Web. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
     "bookCoverInscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
     "articleRails": [
+        "book_cover",
         "about",
         "acknowledgements",
         "ml-draft-026",
@@ -38,18 +39,20 @@
     "sources": [
         {
             "railKey": "book_cover",
-            "label": "Book cover",
+            "label": "The Layered Web",
+            "mlNumber": "ML-Draft-033",
             "inscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
+            "localOverride": "/content/local/cover.md",
             "status": "active",
-            "reinscribable": false,
-            "reason": "Cover ordinal for The Layered Web monument"
+            "reinscribable": true,
+            "reason": "Book cover – Gov Hub draft (ML-Draft-033) with 2026 cover art; ordinal fallback for onchain mode"
         },
         {
             "railKey": "about",
             "label": "About This Digital Monument",
             "mlNumber": "ML-Draft-031",
             "localOverride": "/content/local/about.md",
-            "status": "active",
+            "status": "draft",
             "reinscribable": true,
             "reason": "Front matter – Gov Hub synced local rail"
         },
@@ -58,7 +61,7 @@
             "label": "Acknowledgements",
             "mlNumber": "ML-Draft-032",
             "localOverride": "/content/local/acknowledgements.md",
-            "status": "active",
+            "status": "draft",
             "reinscribable": true,
             "reason": "Front matter – Gov Hub synced local rail"
         },

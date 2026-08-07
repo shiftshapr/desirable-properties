@@ -1,6 +1,6 @@
-# Local book rails — do not edit directly
+# Local DP chapter rails — do not edit directly
 
-The files `dp1.md` … `dp23.md`, `about.md`, and `acknowledgements.md` in this directory are **synced from Gov Hub**, not authored here.
+The files `dp1.md` … `dp23.md` in this directory are **synced from Gov Hub**, not authored here.
 
 ## Source of truth
 
@@ -17,23 +17,14 @@ python3 scripts/govhub_sync_rails_from_hub.py           # write rails
 
 See [docs/GOVHUB-RAIL-SYNC.md](../../docs/GOVHUB-RAIL-SYNC.md) for full workflow, environments, and CI rules.
 
-## Front matter bootstrap
-
-`about.md` and `acknowledgements.md` were bootstrapped as new root Gov Hub drafts via:
-
-```bash
-python3 scripts/govhub_bootstrap_front_matter.py --env main --approve
-```
-
-After bootstrap they participate in the same sync pipeline as DP chapters (ML-Draft-031, ML-Draft-032).
-
 ## Other files here
 
+- `about.md`, `acknowledgements.md`, `cover.md` — book front matter; not Gov Hub–synced DP rails (`cover.md` is published to Gov Hub as ML-Draft-033).
 - `DP-TEMPLATE.md` — authoring template for new chapters; not a live rail.
 
 ## Emergency override
 
-Local edits to synced rails are blocked by CI unless the PR is labeled `rail-sync` or the commit message contains `[rail-sync]`. For a one-off manual fix:
+Local edits to `dp*.md` are blocked by CI unless the PR is labeled `rail-sync` or the commit message contains `[rail-sync]`. For a one-off manual fix:
 
 ```bash
 ALLOW_RAIL_EDIT=1 git commit ...

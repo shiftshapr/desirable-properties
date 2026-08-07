@@ -13,6 +13,7 @@ import {
   type DpWelcomeVariant,
 } from '@/lib/dp-welcome-content';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import { isWorkgroupCollabEnabledFromEnv, workgroupPrimaryHref } from '@/lib/workgroup-links';
 
 type Props = {
   variant: DpWelcomeVariant;
@@ -27,6 +28,8 @@ const LIST_ITEM = 'pl-1 text-slate-300';
 
 export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }: Props) {
   const subject = variant === 'coordinator' ? DP_WELCOME_SUBJECT_COORDINATOR : DP_WELCOME_SUBJECT_MEMBER;
+  const collabEnabled = isWorkgroupCollabEnabledFromEnv();
+  const collabHref = workgroupSlug && collabEnabled ? workgroupPrimaryHref(workgroupSlug) : null;
   const wgHref = workgroupSlug ? govhubUrl(`/workgroups/${workgroupSlug}/`) : null;
   const a = MESSAGE_A_SECTIONS;
 
@@ -111,6 +114,14 @@ export default function DpWelcomeView({ variant, workgroupName, workgroupSlug }:
       </section>
 
       <footer className="mt-12 flex flex-wrap gap-3 border-t border-slate-800 pt-8">
+        {collabHref ? (
+          <Link
+            href={collabHref}
+            className="rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600"
+          >
+            Open workgroup collaboration
+          </Link>
+        ) : null}
         <a
           href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
           target="_blank"

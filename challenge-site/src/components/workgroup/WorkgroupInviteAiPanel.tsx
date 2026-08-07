@@ -1,0 +1,351 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import WorkgroupInviteDisambiguation from '@/components/workgroup/WorkgroupInviteDisambiguation';
+import WorkgroupInviteDraftEditor from '@/components/workgroup/WorkgroupInviteDraftEditor';
+import WorkgroupInviteResearchForm from '@/components/workgroup/WorkgroupInviteResearchForm';
+import WorkgroupInviteSendConfirm from '@/components/workgroup/WorkgroupInviteSendConfirm';
+import { inviteAiDraft, inviteAiResearch, inviteAiSend } from '@/lib/workgroup-collab-api';
+import {
+  clearInviteDraft,
+  loadInviteDraft,
+  saveInviteDraft,
+} from '@/lib/workgroup-draft-storage';
+import type {
+  InviteCandidate,
+  PriorInvitation,
+  ResolvedPerson,
+  SuggestedWorkgroup,
+} from '@/lib/workgroup-collab-types';
+
+type Step = 'research' | 'disambiguate' | 'draft' | 'done';
+
+type Props = {
+  workgroupId: string;
+  workgroupSlug: string;
+  canInvite: boolean;
+};
+
+export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, canInvite }: Props) {
+  const [step, setStep] = useState<Step>('research');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [previousInteraction, setPreviousInteraction] = useState('');
+  const [extraLinks, setExtraLinks] = useState('');
+
+  const [candidates, setCandidates] = useState<InviteCandidate[]>([]);
+  const [resolvedPerson, setResolvedPerson] = useState<ResolvedPerson | null>(null);
+  const [suggested, setSuggested] = useState<SuggestedWorkgroup[]>([]);
+  const [priorInvitations, setPriorInvitations] = useState<PriorInvitation[]>([]);
+  const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
+
+  const [tone, setTone] = useState('warm');
+  const [length, setLength] = useState('medium');
+  const [draft, setDraft] = useState('');
+
+  const [platformDone, setPlatformDone] = useState(false);
+  const [mailto, setMailto] = useState('');
+  const [mailSubject, setMailSubject] = useState('');
+  const [mailBody, setMailBody] = useState('');
+
+  useEffect(() => {
+    const saved = loadInviteDraft(workgroupSlug);
+    if (saved) {
+      if (saved.name) setName(saved.name);
+      if (saved.email) setEmail(saved.email);
+      if (saved.linkedinUrl) setLinkedinUrl(saved.linkedinUrl);
+      if (saved.previousInteraction) setPreviousInteraction(saved.previousInteraction);
+      if (saved.extraLinks) setExtraLinks(saved.extraLinks);
+      if (saved.tone) setTone(saved.tone);
+      if (saved.length) setLength(saved.length);
+      if (saved.draft) setDraft(saved.draft);
+      if (saved.step) setStep(saved.step);
+    }
+    setHydrated(true);
+  }, [workgroupSlug]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    saveInviteDraft(workgroupSlug, {
+      name,
+      email,
+      linkedinUrl,
+      previousInteraction,
+      extraLinks,
+      tone,
+      length,
+      draft,
+      step,
+    });
+  }, [
+    draft,
+    email,
+    extraLinks,
+    hydrated,
+    length,
+    linkedinUrl,
+    name,
+    previousInteraction,
+    step,
+    tone,
+    workgroupSlug,
+  ]);
+
+  if (!canInvite) {
+    return (
+      <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+        <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
+        <p className="mt-2 text-sm text-slate-400">
+          Only workgroup members can invite people with the AI assistant.
+        </p>
+      </section>
+    );
+  }
+
+  function parseExtraLinks() {
+    return extraLinks
+      .split('\n')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+
+  function resetInvite() {
+    clearInviteDraft(workgroupSlug);
+    setStep('research');
+    setBusy(false);
+    setError(null);
+    setName('');
+    setEmail('');
+    setLinkedinUrl('');
+    setPreviousInteraction('');
+    setExtraLinks('');
+    setCandidates([]);
+    setResolvedPerson(null);
+    setSuggested([]);
+    setPriorInvitations([]);
+    setSelectedExtraIds([]);
+    setTone('warm');
+    setLength('medium');
+    setDraft('');
+    setPlatformDone(false);
+    setMailto('');
+    setMailSubject('');
+    setMailBody('');
+  }
+
+  async function runDraft(
+    person: ResolvedPerson | null = resolvedPerson,
+    prior: PriorInvitation[] = priorInvitations,
+    manageBusy = true,
+  ) {
+    if (manageBusy) setBusy(true);
+    setError(null);
+    try {
+      const data = await inviteAiDraft(workgroupId, {
+        name: name.trim(),
+        email: email.trim(),
+        tone,
+        length,
+        previous_interaction: previousInteraction.trim() || undefined,
+        resolved_person: person,
+        additional_workgroup_ids: selectedExtraIds,
+        prior_invitations: prior,
+      });
+      if (data.blocked || data.error) {
+        setError(data.error || 'Draft blocked');
+        return;
+      }
+      setDraft(data.draft || '');
+      if (data.prior_invitations) setPriorInvitations(data.prior_invitations);
+      setStep('draft');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Draft failed');
+    } finally {
+      if (manageBusy) setBusy(false);
+    }
+  }
+
+  async function runResearch(selectedIndex?: number | null) {
+    setBusy(true);
+    setError(null);
+    try {
+      const data = await inviteAiResearch(workgroupId, {
+        name: name.trim(),
+        email: email.trim(),
+        linkedin_url: linkedinUrl.trim() || undefined,
+        previous_interaction: previousInteraction.trim() || undefined,
+        extra_links: parseExtraLinks(),
+        selected_candidate_index: selectedIndex ?? null,
+      });
+      if (data.blocked || data.error) {
+        setError(data.error || 'Invite blocked');
+        return;
+      }
+      setPriorInvitations(data.prior_invitations || []);
+      setSuggested(data.suggested_workgroups || []);
+      setCandidates(data.candidates || []);
+      setResolvedPerson(data.resolved_person || null);
+      if (data.ambiguous && selectedIndex == null) {
+        setStep('disambiguate');
+        return;
+      }
+      await runDraft(
+        data.resolved_person || resolvedPerson,
+        data.prior_invitations || priorInvitations,
+        false,
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Research failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function send(mode: 'platform' | 'client') {
+    setBusy(true);
+    setError(null);
+    try {
+      const data = await inviteAiSend(workgroupId, {
+        name: name.trim(),
+        email: email.trim(),
+        body: draft.trim(),
+        additional_workgroup_ids: selectedExtraIds,
+        send_mode: mode,
+      });
+      if (data.blocked || data.error) {
+        setError(data.error || 'Send failed');
+        return;
+      }
+      if (mode === 'platform') {
+        setPlatformDone(true);
+        setStep('done');
+        clearInviteDraft(workgroupSlug);
+      } else {
+        setMailto(data.mailto || '');
+        setMailSubject(data.subject || '');
+        setMailBody(data.body || '');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Send failed');
+      throw err;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const hasProgress =
+    Boolean(name.trim() || email.trim() || linkedinUrl.trim() || draft.trim())
+    || step !== 'research'
+    || candidates.length > 0;
+
+  const recipientLabel = name.trim() || resolvedPerson?.name || 'Recipient';
+  const recipientEmail = email.trim();
+
+  return (
+    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Research a contact, draft a personal invitation, then send via platform mail or your own
+            inbox.
+          </p>
+        </div>
+        {hasProgress ? (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={resetInvite}
+            className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-50"
+          >
+            Start over
+          </button>
+        ) : null}
+      </div>
+
+      {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+
+      <div className="mt-6">
+        {step === 'research' || step === 'disambiguate' ? (
+          <WorkgroupInviteResearchForm
+            name={name}
+            email={email}
+            linkedinUrl={linkedinUrl}
+            previousInteraction={previousInteraction}
+            extraLinks={extraLinks}
+            busy={busy}
+            onChange={(patch) => {
+              if (patch.name !== undefined) setName(patch.name);
+              if (patch.email !== undefined) setEmail(patch.email);
+              if (patch.linkedinUrl !== undefined) setLinkedinUrl(patch.linkedinUrl);
+              if (patch.previousInteraction !== undefined) {
+                setPreviousInteraction(patch.previousInteraction);
+              }
+              if (patch.extraLinks !== undefined) setExtraLinks(patch.extraLinks);
+            }}
+            onSubmit={() => void runResearch()}
+          />
+        ) : null}
+
+        {step === 'disambiguate' ? (
+          <div className="mt-6">
+            <WorkgroupInviteDisambiguation
+              candidates={candidates}
+              busy={busy}
+              onSelect={(index) => void runResearch(index)}
+            />
+          </div>
+        ) : null}
+
+        {(step === 'draft' || step === 'done') && (
+          <div className="space-y-6">
+            <div className="rounded-lg border border-cyan-900/40 bg-cyan-950/25 px-3 py-2.5 text-sm text-cyan-50/95">
+              <span className="text-cyan-200/70">Inviting </span>
+              <span className="font-medium text-white">{recipientLabel}</span>
+              {recipientEmail ? (
+                <>
+                  {' '}
+                  <span className="text-cyan-100/80">&lt;{recipientEmail}&gt;</span>
+                </>
+              ) : null}
+            </div>
+            <WorkgroupInviteDraftEditor
+              tone={tone}
+              length={length}
+              draft={draft}
+              suggested={suggested}
+              selectedExtraIds={selectedExtraIds}
+              priorInvitations={priorInvitations}
+              busy={busy}
+              onTone={(t) => setTone(t)}
+              onLength={(l) => setLength(l)}
+              onDraft={setDraft}
+              onToggleExtra={(id) =>
+                setSelectedExtraIds((prev) =>
+                  prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+                )
+              }
+              onRegenerate={() => void runDraft()}
+            />
+            <WorkgroupInviteSendConfirm
+              busy={busy}
+              platformDone={platformDone || step === 'done'}
+              mailto={mailto}
+              subject={mailSubject}
+              body={mailBody}
+              recipientName={recipientLabel}
+              recipientEmail={recipientEmail}
+              onPlatformSend={() => send('platform')}
+              onClientPrepare={() => send('client')}
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

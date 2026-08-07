@@ -3,6 +3,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
+import {
+  DiscussPatchDesktopNav,
+  DiscussPatchMobileNav,
+} from '@/components/DiscussPatchNavGroup';
 import { SITE_NAV_LINKS, type SiteNavLink } from '@/lib/siteNav';
 
 function NavLink({
@@ -219,7 +223,9 @@ export default function SiteHeaderNav() {
         aria-label="Main"
       >
         {SITE_NAV_LINKS.map((link) =>
-          link.children?.length ? (
+          link.discussPatchModal ? (
+            <DiscussPatchDesktopNav key={link.label} item={link} />
+          ) : link.children?.length ? (
             <DesktopNavDropdown key={link.label} item={link} />
           ) : (
             <NavLink
@@ -278,7 +284,9 @@ export default function SiteHeaderNav() {
           <nav className="mx-auto max-w-6xl px-4 py-3 sm:px-6" aria-label="Main">
             <ul className="divide-y divide-slate-800">
               {SITE_NAV_LINKS.map((link) =>
-                link.children?.length ? (
+                link.discussPatchModal ? (
+                  <DiscussPatchMobileNav key={link.label} item={link} onNavigate={closeMenu} />
+                ) : link.children?.length ? (
                   <MobileNavGroup key={link.label} item={link} onNavigate={closeMenu} />
                 ) : (
                   <li key={link.href ?? link.label}>

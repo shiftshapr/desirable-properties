@@ -1,7 +1,14 @@
 /** Public Gov Hub URL (hub.themetalayer.org avoids networks that block "gov" in hostnames). */
+import { workgroupActivityHref } from '@/lib/workgroup-links';
+
 export const GOVHUB_PUBLIC_BASE_URL =
   process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
 const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
+
+/** ML-Draft-033 – book cover rail for The Layered Web */
+export const BOOK_COVER_REF = 'ML-Draft-033';
+export const BOOK_COVER_URL =
+  `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/ML-Draft-033/read/`;
 
 /** ML-Draft-026 – opening chapter framing the Desirable Properties Challenge */
 export const FRAMING_CHAPTER_URL =
@@ -14,17 +21,55 @@ export const DESIRABLE_PROPERTIES_BOOK_TITLE =
   'The Layered Web: The Desirable Properties of a Meta-Layer';
 export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 
+const PROD_BOOK_ORIGIN = 'https://book.desirableproperties.org';
+const STAGING_BOOK_ORIGIN = 'https://staging.book.desirableproperties.org';
+
+/** User-facing book host — staging challenge-site links to staging.book. */
+function resolveBookOrigin(): string {
+  const explicit = process.env.DP_BOOK_BASE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  if (typeof window !== 'undefined') {
+    return window.location.hostname === 'staging.desirableproperties.org'
+      ? STAGING_BOOK_ORIGIN
+      : PROD_BOOK_ORIGIN;
+  }
+  const publicBase = process.env.DP_PUBLIC_BASE?.trim() || '';
+  if (publicBase.includes('staging.desirableproperties.org')) {
+    return STAGING_BOOK_ORIGIN;
+  }
+  return PROD_BOOK_ORIGIN;
+}
+
+export const DP_BOOK_ORIGIN = resolveBookOrigin();
+
+export const DESIRABLE_PROPERTIES_BOOK_HOST = new URL(DP_BOOK_ORIGIN).hostname;
+
 /** Open-access BRC333 book reader (markdown ordinals).
- * Points at the cover page on the main domain so the in-header Book link
+ * Points at the cover page on the challenge-site so the in-header Book link
  * opens the cover; the cover click then routes into the viewer SPA at
  * /viewer/<chapter>. */
-export const DESIRABLE_PROPERTIES_BOOK_URL =
-  'https://desirableproperties.org/book';
+export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.trim() || 'https://desirableproperties.org').replace(/\/$/, '')}/book`;
 
 /** Live book reader with chapter comments (Canopi) — discuss on each chapter today.
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
-export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL =
-  'https://book.desirableproperties.org/';
+export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;
+
+/** Book viewer URL for a DP chapter or Canopi page slug. */
+export function bookViewerHref(opts?: {
+  dpId?: string | null;
+  pageId?: string | null;
+}): string {
+  const pageId = String(opts?.pageId || '').trim();
+  if (pageId && /^dp\d{2}$/i.test(pageId)) {
+    return `${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`;
+  }
+  const dpId = String(opts?.dpId || '').trim();
+  if (dpId) {
+    const n = dpId.replace(/^DP/i, '').padStart(2, '0');
+    return `${DP_BOOK_ORIGIN}/viewer/dp${n}`;
+  }
+  return DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL;
+}
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 
@@ -39,6 +84,11 @@ const CHALLENGE_ACTIVITY_TYPES = new Set([
   'vote_started',
   'vote_closed',
   'member_joined',
+  'workgroup_message_posted',
+  'workgroup_invite_sent',
+  'workgroup_invite_accepted',
+  'workgroup_member_joined',
+  'workgroup_member_left',
 ]);
 
 export type GovHubWorkgroup = {
@@ -60,14 +110,32 @@ export type ChallengeActivityItem = {
   href: string;
 };
 
+export type LayerActivityEvent = {
+  id: string;
+  event_type: string;
+  actor_display_name?: string;
+  created_at: string;
+  payload?: Record<string, unknown>;
+  subject_type?: string | null;
+  subject_id?: string | null;
+};
+
 type LayerActivityResponse = {
-  events?: Array<{
-    id: string;
-    event_type: string;
-    actor_display_name?: string;
-    created_at: string;
-    payload?: Record<string, unknown>;
-  }>;
+  events?: LayerActivityEvent[];
+};
+
+export type GovHubDraftProposal = {
+  id: string;
+  status: string;
+  status_label?: string | null;
+  patch_mode?: string | null;
+  original_text?: string | null;
+  proposed_text?: string | null;
+  author_name?: string | null;
+  created_at?: string | null;
+  reviewed_at?: string | null;
+  rationale?: string | null;
+  submission_id?: string | null;
 };
 
 type WorkgroupsResponse = {
@@ -168,6 +236,73 @@ function formatActivityEvent(
       text = `${who} joined The Metaweb layer`;
       href = '/layers/the-metaweb/';
       break;
+    case 'workgroup_message_posted': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} posted in ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_invite_sent': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} invited someone to ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_invite_accepted': {
+      const wgName = (payload.workgroup_name as string) || 'a workgroup';
+      const slug = (payload.workgroup_slug as string) || '';
+      text = `${who} accepted an invitation to ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_member_joined': {
+      const wgName =
+        (payload.name as string) ||
+        (payload.workgroup_name as string) ||
+        'a workgroup';
+      const slug =
+        (payload.slug as string) || (payload.workgroup_slug as string) || '';
+      const actor =
+        (payload.display_name as string) || who;
+      text = `${actor} joined ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
+    case 'workgroup_member_left': {
+      const wgName =
+        (payload.name as string) ||
+        (payload.workgroup_name as string) ||
+        'a workgroup';
+      const slug =
+        (payload.slug as string) || (payload.workgroup_slug as string) || '';
+      const actor =
+        (payload.display_name as string) || who;
+      text = `${actor} left ${wgName}`;
+      return {
+        id: event.id,
+        createdAt: event.created_at,
+        text,
+        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+      };
+    }
     default:
       return null;
   }
@@ -226,6 +361,81 @@ export async function fetchChallengeActivity(
   }
 
   return items;
+}
+
+/** Raw layer EventLog rows (optional event_type filter via repeated query params). */
+export async function fetchLayerActivityEvents(opts?: {
+  limit?: number;
+  eventTypes?: string[];
+}): Promise<LayerActivityEvent[]> {
+  const limit = Math.min(100, Math.max(1, opts?.limit ?? 50));
+  const params = new URLSearchParams();
+  params.set('limit', String(limit));
+  for (const t of opts?.eventTypes || []) {
+    if (t) params.append('event_type', t);
+  }
+  const data = await fetchGovHub<LayerActivityResponse>(
+    `/api/layers/${METAWEB_LAYER_ID}/activity/?${params.toString()}`,
+  );
+  return data?.events ?? [];
+}
+
+export async function fetchDraftProposals(
+  draftRef: string,
+): Promise<GovHubDraftProposal[]> {
+  const ref = String(draftRef || '').trim();
+  if (!ref) return [];
+  const data = await fetchGovHub<{ proposals?: GovHubDraftProposal[] }>(
+    `/api/doc/draft/${encodeURIComponent(ref)}/proposals/`,
+  );
+  return data?.proposals ?? [];
+}
+
+export function formatActivityEventPublic(
+  event: LayerActivityEvent,
+): ChallengeActivityItem | null {
+  return formatActivityEvent(event);
+}
+
+/** True when a layer event payload refers to this workgroup and/or its draft. */
+export function eventMatchesWorkgroup(
+  event: LayerActivityEvent,
+  opts: {
+    workgroupId?: string | null;
+    workgroupSlug?: string | null;
+    draftRefs?: string[];
+  },
+): boolean {
+  const payload = event.payload ?? {};
+  const wgId = (opts.workgroupId || '').trim();
+  const wgSlug = (opts.workgroupSlug || '').trim().toLowerCase();
+  const draftRefs = new Set(
+    (opts.draftRefs || []).map((r) => r.trim().toLowerCase()).filter(Boolean),
+  );
+
+  const payloadWgId = String(payload.workgroup_id || '').trim();
+  const payloadSlug = String(
+    payload.workgroup_slug || payload.slug || payload.acronym || '',
+  )
+    .trim()
+    .toLowerCase();
+
+  if (wgId && payloadWgId && payloadWgId === wgId) return true;
+  if (wgSlug && payloadSlug && payloadSlug === wgSlug) return true;
+
+  if (draftRefs.size) {
+    const candidates = [
+      payload.draft_name,
+      payload.ml_number,
+      payload.submission_id,
+      payload.draft_ref,
+    ]
+      .map((v) => String(v || '').trim().toLowerCase())
+      .filter(Boolean);
+    if (candidates.some((c) => draftRefs.has(c))) return true;
+  }
+
+  return false;
 }
 
 export function formatActivityDate(iso: string): string {

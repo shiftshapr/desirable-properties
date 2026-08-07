@@ -42,7 +42,7 @@ from `assets/data/desirable-properties.json` (top-level) and `assets/data/dp{n}.
 
 ## Inscriptions (existing – no new inscribe for chapters)
 
-- **Cover:** `64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0`
+- **Cover (ML-Draft-033):** Gov Hub draft + local rail at `content/local/cover.md`; onchain ordinal `64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0`
 - **ML-Draft-026:** `5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0`
 - **DP1–DP22:** from `challenge-site/src/data/dp-inscriptions.json`
 

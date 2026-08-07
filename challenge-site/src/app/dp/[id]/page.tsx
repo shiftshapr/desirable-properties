@@ -9,6 +9,8 @@ import {
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
+import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import {
   loadDpProvenance,
   dpInscriptionUrl,
@@ -45,7 +47,14 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
 
   const workgroup = workgroups.find((wg) => extractDpId(wg.name) === dp.id);
   const draftHref = workgroup?.document_href ? govhubUrl(workgroup.document_href) : null;
-  const workgroupHref = workgroup?.slug ? govhubUrl(`/workgroups/${workgroup.slug}/`) : null;
+  const collabEnabled = await isWorkgroupCollabEnabled();
+  const workgroupHref = workgroup?.slug ? workgroupPrimaryHref(workgroup.slug) : null;
+  const workgroupJoinHref = workgroup?.slug
+    ? workgroupGovHubHref(workgroup.slug, 'join')
+    : null;
+  const workgroupNominateHref = workgroup?.slug
+    ? workgroupGovHubHref(workgroup.slug, 'nominate')
+    : null;
   const onchainDraftHref = dpInscriptionUrl(dp.id);
   const govhubDraftHref = dpGovHubDraftUrl(dp.id);
   const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
@@ -214,15 +223,23 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
                 'Join the active workgroup stewarding this property and participate in its evolution.'}
             </p>
             {workgroupHref ? (
-              <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className={`mt-4 grid grid-cols-1 gap-2 ${collabEnabled ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+                {collabEnabled ? (
+                  <Link
+                    href={workgroupHref}
+                    className="inline-flex items-center justify-center rounded-lg bg-cyan-800 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
+                  >
+                    Collaborate
+                  </Link>
+                ) : null}
                 <a
-                  href={workgroupHref}
+                  href={workgroupJoinHref || workgroupHref}
                   className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
                 >
                   Join WG
                 </a>
                 <a
-                  href={`${workgroupHref}?action=nominate`}
+                  href={workgroupNominateHref || workgroupHref}
                   className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
                 >
                   Nominate to WG

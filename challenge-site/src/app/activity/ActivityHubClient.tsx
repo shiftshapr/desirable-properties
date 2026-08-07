@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
 import BroadcastArchivePanel from '@/components/BroadcastArchivePanel';
 import ChallengeActivity from '@/components/ChallengeActivity';
-import type { ChallengeActivityItem } from '@/lib/govhub';
+import type { ActivityFeedItem } from '@/lib/activity-feed';
 
 const TABS = [
   { key: 'activity', label: 'Activity' },
@@ -16,7 +16,7 @@ const TABS = [
 type TabKey = (typeof TABS)[number]['key'];
 
 type Props = {
-  activityItems: ChallengeActivityItem[];
+  activityItems: ActivityFeedItem[];
 };
 
 export default function ActivityHubClient({ activityItems }: Props) {
@@ -78,9 +78,9 @@ export default function ActivityHubClient({ activityItems }: Props) {
 
         {tab === 'activity' ? (
           <section>
-            <h2 className="text-xl font-semibold text-white">Gov Hub activity</h2>
+            <h2 className="text-xl font-semibold text-white">Challenge activity</h2>
             <p className="mt-2 text-sm text-slate-400">
-              Recent drafts, votes, and workgroup events from the Meta-Layer layer.
+              Recent drafts, workgroup chat and invites, votes, and book discussion.
             </p>
             <div className="mt-6">
               <ChallengeActivity items={activityItems} />

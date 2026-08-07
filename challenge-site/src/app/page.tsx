@@ -1,13 +1,16 @@
 import Link from 'next/link';
+import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
 import LayerHero from '@/components/LayerHero';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
+import { fetchUnifiedActivity } from '@/lib/activity-feed';
 import {
-  fetchChallengeActivity,
   fetchChallengeWorkgroups,
   govhubUrl,
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
@@ -25,7 +28,7 @@ const MISSING_ITEMS = [
 export default async function Home() {
   const now = new Date();
   const [activity, workgroups] = await Promise.all([
-    fetchChallengeActivity(12),
+    fetchUnifiedActivity(12),
     fetchChallengeWorkgroups(),
   ]);
 
@@ -34,6 +37,7 @@ export default async function Home() {
 
   return (
     <main>
+        <ActivityToastHost initialItems={activity} />
         {/* TODO: remove `hidden` and place overlay in hero or challenge section when ready */}
         <div className="hidden" aria-hidden="true">
           <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
@@ -93,9 +97,9 @@ export default async function Home() {
                 <ChallengeActivity items={activity} />
               </div>
               <p className="mt-4 text-sm text-slate-500">
-                <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
-                  View governance discussions on Gov Hub
-                </a>
+                <Link href="/activity" className="text-cyan-300 hover:text-cyan-200">
+                  View full activity feed →
+                </Link>
               </p>
             </div>
           </div>
@@ -139,12 +143,12 @@ export default async function Home() {
               >
                 Submit Candidate DP
               </a>
-              <a
-                href={govhubUrl('/workgroups/dp-discovery/')}
+              <Link
+                href="/workgroups/dp-discovery"
                 className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
               >
-                Join DP Discovery Workgroup
-              </a>
+                DP Discovery workgroup
+              </Link>
             </div>
           </div>
         </section>
@@ -176,17 +180,17 @@ export default async function Home() {
                 <span className="text-2xl" aria-hidden>
                   💬
                 </span>
-                <h3 className="mt-3 text-lg font-semibold text-white">Read & Discuss the Book</h3>
+                <h3 className="mt-3 text-lg font-semibold text-white">Discuss &amp; Patch</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
-                  Chapter comments are live on book.desirableproperties.org. Passage-level patching
+                  Chapter comments are live on {DESIRABLE_PROPERTIES_BOOK_HOST}. Passage-level patching
                   on the book is coming soon.
                 </p>
-                <a
+                <DiscussPatchLink
                   href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
                   className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
                   Open the book →
-                </a>
+                </DiscussPatchLink>
               </li>
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
                 <span className="text-2xl" aria-hidden>

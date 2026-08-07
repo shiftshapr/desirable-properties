@@ -1,10 +1,19 @@
 import localData from '@/data/desirable-properties.json';
 import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
 import Link from 'next/link';
-import { DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL, govhubUrl } from '@/lib/govhub';
+import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
+import {
+  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
+  fetchChallengeWorkgroups,
+  govhubUrl,
+} from '@/lib/govhub';
+import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
@@ -170,6 +179,9 @@ function deriveSlug(dp: { id: string; name?: string }): string {
 
 export default async function JoinWorkgroupPage() {
   const dps = localData.desirable_properties;
+  const collabEnabled = await isWorkgroupCollabEnabled();
+  const liveWorkgroups = collabEnabled ? await fetchChallengeWorkgroups() : [];
+  const idBySlug = new Map(liveWorkgroups.map((wg) => [wg.slug, wg.id]));
 
   return (
     <main className="border-b border-slate-800">
@@ -206,7 +218,7 @@ export default async function JoinWorkgroupPage() {
               href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="text-cyan-300 hover:text-cyan-200"
             >
-              comment on chapters at book.desirableproperties.org
+              comment on chapters at {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
             or{' '}
             <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
@@ -320,8 +332,10 @@ export default async function JoinWorkgroupPage() {
           <h2 className="text-3xl font-bold text-white">The 23 workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Each workgroup stewards one Desirable Property – drafting the canonical text,
-            reviewing contributions, and proposing updates. Click through to Gov Hub to join
-            as a member or nominate a coordinator.
+            reviewing contributions, and proposing updates.
+            {collabEnabled
+              ? ' Open the collaboration page for chat and invites, or join / nominate here without leaving the site.'
+              : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
           </p>
 
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -329,9 +343,9 @@ export default async function JoinWorkgroupPage() {
               const dpId = dp.id as string;
               const name = dp.name as string;
               const slug = deriveSlug(dp);
-              const wgHref = govhubUrl(`/workgroups/${slug}/`);
-              const joinHref = `${wgHref}?action=join`;
-              const nominateHref = `${wgHref}?action=nominate`;
+              const collabHref = workgroupPrimaryHref(slug);
+              const joinHref = workgroupGovHubHref(slug, 'join');
+              const nominateHref = workgroupGovHubHref(slug, 'nominate');
               const summary = shortDescription(dp);
               const dpDetailHref = `/dp/${dpId.toLowerCase()}`;
 
@@ -352,34 +366,62 @@ export default async function JoinWorkgroupPage() {
                     </span>
                   </div>
                   <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
-                    {name}
+                    {collabEnabled ? (
+                      <Link href={collabHref} className="hover:text-cyan-300">
+                        {name}
+                      </Link>
+                    ) : (
+                      name
+                    )}
                   </h3>
                   {summary && (
                     <p className="mt-2 text-sm leading-relaxed text-slate-400">
                       {summary}
                     </p>
                   )}
-                  <div className="mt-auto flex flex-wrap gap-2 pt-5">
-                    <a
-                      href={joinHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Join as member
-                      <span aria-hidden>→</span>
-                    </a>
-                    <a
-                      href={nominateHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
-                    >
-                      Nominate
-                    </a>
-                    <Link
-                      href={dpDetailHref}
-                      className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-200"
-                    >
-                      View DP detail
-                      <span aria-hidden>→</span>
-                    </Link>
+                  <div className="mt-auto flex flex-col gap-3 pt-5">
+                    <div className="flex flex-wrap gap-2">
+                      {collabEnabled ? (
+                        <Link
+                          href={collabHref}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                        >
+                          Collaborate
+                          <span aria-hidden>→</span>
+                        </Link>
+                      ) : (
+                        <a
+                          href={joinHref}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                        >
+                          Join as member
+                          <span aria-hidden>→</span>
+                        </a>
+                      )}
+                      {!collabEnabled ? (
+                        <a
+                          href={nominateHref}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+                        >
+                          Nominate
+                        </a>
+                      ) : null}
+                      <Link
+                        href={dpDetailHref}
+                        className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-200"
+                      >
+                        View DP detail
+                        <span aria-hidden>→</span>
+                      </Link>
+                    </div>
+                    {collabEnabled && idBySlug.get(slug) ? (
+                      <WorkgroupJoinNominateActions
+                        workgroupId={idBySlug.get(slug)!}
+                        workgroupName={name}
+                        joinFallbackHref={joinHref}
+                        nominateFallbackHref={nominateHref}
+                      />
+                    ) : null}
                   </div>
                 </li>
               );

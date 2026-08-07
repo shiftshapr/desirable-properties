@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  DESIRABLE_PROPERTIES_BOOK_HOST,
   FRAMING_CHAPTER_REF,
   FRAMING_CHAPTER_TITLE,
   FRAMING_CHAPTER_URL,
@@ -245,7 +246,7 @@ export default function AboutPage() {
               href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
               className="text-cyan-300 hover:text-cyan-200"
             >
-              book.desirableproperties.org
+              {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
             (comments live). Submit text patches on Gov Hub.
           </p>

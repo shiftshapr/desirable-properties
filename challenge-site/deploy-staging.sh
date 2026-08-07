@@ -6,11 +6,24 @@ NGINX_CONF="/home/ubuntu/nginx/staging.desirableproperties.org.conf"
 
 cd "$APP_DIR"
 
-echo "[1/5] Stopping staging PM2 only (prod stays up)..."
+echo "[1/5] Stopping staging PM2 only (prod stays up during build)..."
 pm2 stop desirableproperties-staging 2>/dev/null || true
 
+# Staging and prod share the same .next/ output directory. `npm run build` below
+# replaces it on disk. Prod keeps its old in-memory build until separately deployed
+# via deploy.sh — do NOT auto-restart prod from this script (that would ship staging
+# code to prod). Until prod is redeployed, prod CSS/chunks may break against the new
+# .next on disk.
 echo "[2/5] Building Next.js app..."
 npm run build
+
+echo ""
+echo "================================================================================"
+echo "WARNING: Prod still on old in-memory build — run deploy.sh to update prod"
+echo "         or prod CSS/chunks may break until prod is restarted/redeployed."
+echo "         This staging deploy does NOT restart prod (isolation)."
+echo "================================================================================"
+echo ""
 
 echo "[3/5] Starting staging PM2 process..."
 pm2 delete desirableproperties-staging 2>/dev/null || true
