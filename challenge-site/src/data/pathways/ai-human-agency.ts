@@ -96,6 +96,7 @@ export const AI_HUMAN_AGENCY_QUESTIONS: PathwayQuestion[] = [
     title: 'Where do humans meet?',
     framing: [
       'An AI can summarize a community without creating a community. It can tell us what others think without giving those people persistent space in which to encounter one another. If AI increasingly becomes our interface to information, where does independent human presence live?',
+      'The issue is not merely whether people can communicate online. It is whether human communities can establish persistent contextual space around shared digital resources without that space being owned by the underlying website, trapped inside a platform, or reconstructed only through AI.',
     ],
     dpLinks: [
       dp('DP8', 'Collaborative Environment and Meta-Communities'),
@@ -105,13 +106,14 @@ export const AI_HUMAN_AGENCY_QUESTIONS: PathwayQuestion[] = [
       dp('DP20', 'Community Ownership'),
     ],
     prompt:
-      'Should persistent human-to-human space be an explicit architectural requirement of a pro-human Meta-Layer?',
+      'Should independent human presence around shared digital resources be an explicit desirable property?',
   },
   {
     id: 'must-everything-pass-through-ai',
     title: 'Must everything pass through AI?',
     framing: [
-      'AI may become an extraordinarily useful universal adapter between people, websites, applications, agents, databases, and services. But interoperability mediated by AI is not the same as interoperability among the underlying participants.',
+      'The emerging machine Internet may contain trillions of interacting agents and quadrillions of data objects. AI may become the easiest way for humans to navigate that complexity. But convenience should not quietly become architectural necessity.',
+      'Can people, communities, applications, and institutions still discover and interact with one another directly? Can a person enter a contextual environment without an AI summarizing or mediating it first? Can one community establish a relationship to another through shared protocols rather than through a proprietary model?',
     ],
     dpLinks: [
       dp('DP7', 'Simplicity and Interoperability'),
@@ -126,7 +128,24 @@ export const AI_HUMAN_AGENCY_QUESTIONS: PathwayQuestion[] = [
         'Should humans and communities retain practical pathways to discover, interact, associate, and exchange context without requiring an AI intermediary?',
     },
     prompt:
-      'Is freedom from mandatory AI mediation already implicit in interoperability and agency—or should it be made explicit?',
+      'Should a pro-human layered Web guarantee practical non-AI pathways for presence, discovery, communication, and interaction?',
+  },
+  {
+    id: 'who-owns-contextual-space',
+    title: 'Who owns the space around information?',
+    framing: [
+      'Today, the publisher of a webpage largely controls the environment around that content. In an AI-mediated future, an AI provider may increasingly control the context through which that content is encountered. A layered Web proposes another possibility: independent environments can establish relationships to the same underlying resource without either the publisher or one intermediary owning the entire contextual space.',
+    ],
+    dpLinks: [
+      dp('DP2', 'Participant Agency and Empowerment'),
+      dp('DP8', 'Collaborative Environment and Meta-Communities'),
+      dp('DP22', 'Civic Memory & Epistemic Continuity'),
+      dp('DP14', 'Trust and Transparency'),
+      dp('DP7', 'Simplicity and Interoperability'),
+      dp('DP3', 'Adaptive Governance Supporting an Exponentially Growing Community'),
+    ],
+    prompt:
+      'What properties ensure that contextual space remains plural, contestable, and open to independent communities?',
   },
   {
     id: 'what-should-we-delegate',

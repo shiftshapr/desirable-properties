@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 const PERSPECTIVE_IMAGE_DIMS: Record<string, { width: number; height: number }> = {
   'ai-inhabitant-not-landlord.webp': { width: 1586, height: 992 },
   'concierge-vs-commons.webp': { width: 1600, height: 900 },
+  'human-centered-layered-web.webp': { width: 1600, height: 900 },
   'intellectual-sovereignty-subsidiarity.webp': { width: 1536, height: 1024 },
   'intelligence-is-not-a-place.webp': { width: 1586, height: 992 },
   'privatization-of-context.webp': { width: 1586, height: 992 },
@@ -63,12 +64,19 @@ export default function PerspectiveBody({ markdown }: Props) {
               {children}
             </blockquote>
           ),
-          img: ({ src, alt }) => {
+          img: ({ src, alt, title }) => {
             const srcStr = typeof src === 'string' ? src : '';
             const filename = srcStr.split('/').pop() ?? '';
             const dims = PERSPECTIVE_IMAGE_DIMS[filename];
+            const caption = typeof title === 'string' && title.trim() ? title.trim() : null;
 
             if (dims) {
+              const colonIdx = caption ? caption.indexOf(':') : -1;
+              const captionLead =
+                caption && colonIdx > 0 ? caption.slice(0, colonIdx + 1) : null;
+              const captionRest =
+                caption && colonIdx > 0 ? caption.slice(colonIdx + 1).trimStart() : caption;
+
               return (
                 <figure className="my-8">
                   <Image
@@ -79,6 +87,14 @@ export default function PerspectiveBody({ markdown }: Props) {
                     className="h-auto w-full rounded-lg border border-slate-800"
                     sizes="(max-width: 768px) 100vw, 768px"
                   />
+                  {caption ? (
+                    <figcaption className="mt-3 text-sm leading-relaxed text-slate-400 sm:text-base">
+                      {captionLead ? (
+                        <strong className="font-semibold text-slate-200">{captionLead}</strong>
+                      ) : null}{' '}
+                      {captionRest}
+                    </figcaption>
+                  ) : null}
                 </figure>
               );
             }
@@ -89,9 +105,15 @@ export default function PerspectiveBody({ markdown }: Props) {
                 <img
                   src={srcStr}
                   alt={alt ?? ''}
+                  title={title}
                   className="w-full rounded-lg border border-slate-800"
                   loading="lazy"
                 />
+                {caption ? (
+                  <figcaption className="mt-3 text-sm leading-relaxed text-slate-400 sm:text-base">
+                    {caption}
+                  </figcaption>
+                ) : null}
               </figure>
             );
           },

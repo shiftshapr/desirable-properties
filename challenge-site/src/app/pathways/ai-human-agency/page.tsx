@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ArchitectureFork from '@/components/pathways/ArchitectureFork';
+import LayeredWebVision from '@/components/pathways/LayeredWebVision';
 import PathwayHero from '@/components/pathways/PathwayHero';
 import PathwayQuestionCard from '@/components/pathways/PathwayQuestionCard';
 import PrincipleCard from '@/components/pathways/PrincipleCard';
@@ -36,9 +37,11 @@ export default function AiHumanAgencyPathwayPage() {
         subtitle={meta.subtitle}
         lead="AI is becoming ubiquitous. Human agency is not guaranteed."
         body={[
-          'Artificial intelligence could give humanity unprecedented access to knowledge while also becoming the primary mediator of that knowledge. A different future is possible: AI operating within a plural, human-centered digital environment in which people and communities retain independent presence, context, memory, and authority.',
+          'Artificial intelligence could give humanity unprecedented access to knowledge while also becoming the primary intermediary through which people experience the digital world. Meanwhile, beneath that interface, the Internet may fill with trillions of agents, models, services, devices, and computational environments.',
+          'The question is whether humans will also be able to inhabit that emerging plurality.',
+          'A human-centered layered Web would preserve Web resources as a shared substrate while allowing multiple independent computational environments to exist above and around them, with user-controlled identity and data, interoperable communities, shared human–AI contextual spaces, and protocols that allow those layers to discover, coexist, and interact.',
         ]}
-        highlight="The question is not only how to make AI safe. What properties must the digital environment around AI possess to remain meaningfully human-centered?"
+        highlight="The question is not only how to make AI safe. What properties must this emerging digital environment possess to remain meaningfully human-centered?"
         ctas={[
           {
             href: '/perspectives/the-fork-in-the-web',
@@ -78,6 +81,8 @@ export default function AiHumanAgencyPathwayPage() {
           </p>
         </div>
       </section>
+
+      <LayeredWebVision />
 
       <section
         id="questions"
@@ -119,11 +124,19 @@ export default function AiHumanAgencyPathwayPage() {
             >
               AI should be an inhabitant, not the landlord.
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">
-              In a human-centered layered Web, AI can summarize, translate, connect, protect,
-              recommend, discover, analyze, and act. But human communities, memory, institutions,
-              identity, and context should not have to exist only through an AI intermediary.
-            </p>
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-300 sm:text-lg">
+              <p>
+                In a human-centered layered Web, AI can be ubiquitous. It can summarize, translate,
+                recommend, coordinate, protect, discover, analyze, and act. But the architecture
+                should also support persistent human communities, user-controlled identity and data,
+                independent applications, public and private contextual environments, and direct
+                human-to-human presence.
+              </p>
+              <p>
+                AI should be able to move among these worlds without becoming the only world through
+                which they can be reached.
+              </p>
+            </div>
           </blockquote>
           <p className="mt-8 text-sm leading-relaxed text-slate-500">
             Intellectual sovereignty is the right. Intellectual subsidiarity is the operating
@@ -201,16 +214,18 @@ export default function AiHumanAgencyPathwayPage() {
           </h2>
           <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-300 sm:text-lg">
             <p>
-              The questions raised by artificial intelligence intersect with only part of the
-              Desirable Properties Challenge. A human-centered layered Web also raises questions of
-              identity, governance, ownership, participation, commerce, education, reputation,
-              security, community, interoperability, and forms of digital life that do not yet
-              exist.
+              The machine world is becoming multilayered whether we intentionally design a
+              human-centered layered Web or not. The Desirable Properties Challenge asks whether
+              people, communities, institutions, and AI systems can inhabit that emerging complexity
+              on terms that preserve human agency, plurality, and sovereignty.
             </p>
+            <p>The goal is not to build the Internet around AI.</p>
             <p>
-              The goal is not to build an Internet around AI. It is to define an architecture
-              capable of supporting human flourishing in a world where AI is one powerful
-              participant among many.
+              It is to ensure that as AI becomes one of its most powerful inhabitants,{' '}
+              <strong className="font-semibold text-white">
+                the Internet still has room for many other worlds
+              </strong>
+              .
             </p>
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -222,20 +237,22 @@ export default function AiHumanAgencyPathwayPage() {
             >
               Explore all Desirable Properties →
             </TrackedLink>
-            <Link
-              href={WORKGROUPS_LIST_HREF}
-              className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
-            >
-              Join a Workgroup →
-            </Link>
             <TrackedLink
-              href="/#missing"
-              eventName="pathway_whats_missing_click"
-              eventPayload={{ pathway: meta.slug }}
+              href={meta.hermesHref}
+              eventName="pathway_hermes_click"
+              eventPayload={{ pathway: meta.slug, surface: 'closing' }}
               className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
             >
-              See What&apos;s Missing →
+              Explore with Hermes →
             </TrackedLink>
+            <TrackedAnchor
+              href={govhubUrl('/submit/?layer=the-metaweb')}
+              eventName="pathway_candidate_dp_click"
+              eventPayload={{ pathway: meta.slug, surface: 'closing' }}
+              className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
+            >
+              Propose a Missing Property →
+            </TrackedAnchor>
           </div>
           <p className="mt-6 text-sm text-slate-500">
             Prefer the Candidate DP process?{' '}
@@ -249,7 +266,11 @@ export default function AiHumanAgencyPathwayPage() {
             <Link href="/workgroups/dp-discovery" className="text-cyan-300 hover:text-cyan-200">
               DP Discovery workgroup
             </Link>
-            .
+            . Join a{' '}
+            <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
+              workgroup
+            </Link>{' '}
+            to continue the conversation.
           </p>
         </div>
       </section>

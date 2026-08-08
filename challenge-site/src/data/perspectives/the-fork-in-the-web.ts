@@ -126,31 +126,47 @@ We may congratulate ourselves for rebuilding the commons when what we have actua
 
 That distinction matters because a concierge, however brilliant, is not a commons.
 
-## Another Internet Is Possible
+## A Human-Centered Layered Web
 
-There is another architectural path. Instead of treating today's Web primarily as a collection of destinations that increasingly powerful agents navigate for us, we could treat it as a substrate around which additional independent digital environments can exist.
+The crucial point is that the machine world is becoming multilayered whether we design for a Metaweb or not. Agents, models, APIs, services, databases, sensors, and computational environments will proliferate. The question is whether humans and human communities will also be able to inhabit that plurality directly—or whether most of it will become accessible to us primarily through AI intermediaries.
 
-Call this a layered Web, a meta-layer, a Metaweb, or something else entirely. The name matters less than the underlying architectural idea: the webpage would cease to be the outer boundary of digital experience.
+The alternative to ubiquitous AI mediation is not an Internet without AI. It is an Internet with a much richer architecture for both humans and machines.
+
+Imagine a Web in which the resources we already know—pages, documents, media, applications, datasets, and other digital objects—remain underneath as a common substrate. Above and around those resources can exist many independent computational environments, created by different communities, institutions, developers, networks, and individuals.
+
+Identity and data can remain under user control and move among those environments rather than being trapped inside individual platforms. People and AI agents can share contextual spaces, each contributing according to their roles and permissions. Communities can remain interoperable without being absorbed into a single social platform. Open protocols can allow different layers to discover one another, coexist around the same underlying resources, exchange context, and interact without requiring one system to control the others.
+
+**The machine world is becoming multilayered regardless. The question is whether humans get to inhabit that plurality too.**
+
+This is what that architecture looks like: Web resources remain underneath as common reference points, while independent computational environments exist above and around them; people carry identity and data among those environments; communities interoperate across boundaries; humans and AI share contextual space; and open protocols allow different layers to discover, coexist, and interact.
+
+![Diagram of a human-centered layered Web. Web resources form the underlying layer. Above them are multiple independent computational environments connected by open protocols. A user controls identity and data across environments, interoperable communities connect across layers, and people and AI agents share contextual spaces.](/images/perspectives/the-fork-in-the-web/human-centered-layered-web.webp "A human-centered layered Web: Web resources remain underneath while independent computational environments, people, communities, and AI can coexist through user-controlled identity, interoperable context, and open protocols.")
+
+The result would not be one new platform above the Web. It would be a **space for many worlds**.
+
+The Web gave humanity a common information space. A human-centered layered Web could add a common **computational and contextual space** around that information while preserving plurality within it.
+
+AI would be everywhere in such a world. But it would be one participant among many: alongside people, communities, applications, knowledge systems, institutions, markets, and forms of digital organization we have not yet invented.
 
 Consider a scientific paper. Today, the paper generally appears within the environment provided by its publisher. In a genuinely layered Web, many independent environments could establish relationships to that same paper. Researchers might maintain a methodological discussion around it. Students could study it together. A replication network could attach experimental results. A professional association could maintain contextual information. Critics could organize challenges to its assumptions. Annotation systems, reputation networks, knowledge graphs, prediction markets, artificial intelligences and entirely new kinds of applications could all operate in relation to the same underlying resource.
 
-![A central open document is surrounded by independent digital layers for annotations, replication, knowledge graphs, community context, and AI agents.](/images/perspectives/the-fork-in-the-web/space-for-layers.webp)
+None of those environments would necessarily exist inside the publisher's website. More importantly, they would not have to exist inside one giant platform placed above the publisher either. They could coexist above and around the shared resource without one needing to own either the information or the others.
 
-None of those environments would necessarily exist inside the publisher's website. More importantly, they would not have to exist inside one giant platform placed above the publisher either.
-
-They could coexist.
-
-That is the critical shift. The webpage becomes not the container for the whole digital experience but a coordinate within a larger digital space. Different communities and computational environments can gather around the same information without one needing to own either the information or the others.
-
-This would not eliminate AI. It would establish a richer environment in which AI could operate.
+That is the critical shift. The webpage becomes not the container for the whole digital experience but a coordinate within a larger digital space.
 
 ## The Difference Between a Layer and a Space for Layers
 
 The Web has already seen many attempts to add individual layers: annotation systems, social overlays, identity systems, reputation networks, browser assistants, knowledge graphs and now increasingly AI agents.
 
-Each can be useful. But building **a layer** is different from creating **an architectural space in which independent layers can coexist**.
+An annotation system is a layer. An AI assistant is a layer. A reputation system is a layer. A social overlay is a layer. A knowledge graph may be a layer. A community environment may be a layer. Each can be useful.
 
-The distinction is similar to the difference between an Internet application and the Internet itself. Email became one extraordinary application of Internet architecture, but email was not the architecture. In the same way, universal annotation would not itself constitute a multi-layered Web, nor would the presence of AI assistants above every page.
+But building **a layer** is different from creating **an architectural space in which independent layers can coexist**.
+
+The distinction is similar to the difference between an Internet application and the Internet itself. Email became one extraordinary application of Internet architecture, but email was not the architecture. In the same way, universal annotation would not itself constitute a human-centered layered Web, nor would the presence of AI assistants above every page.
+
+The goal is not to replace the Web with another platform. It is to establish the conditions under which many digital worlds can coexist in relation to the Web without one owning the others—independent computational environments, portable identity and data, interoperable communities, shared human–AI contextual space, and open protocols that allow those layers to discover one another, exchange context, and interact around the same underlying resources.
+
+A human-centered layered Web is therefore not another application category. It is an architectural category.
 
 An artificial intelligence should be able to inhabit this larger space without becoming the space itself.
 
@@ -166,6 +182,8 @@ The question is therefore not whether AI belongs everywhere. It may.
 
 The question is whether everything else should have to exist **through AI**.
 
+The machine Internet may contain trillions of agents and quadrillions of data objects. The pro-human question is whether humans remain directly present within that emerging plurality—or become primarily consumers of machine-generated interpretations of it.
+
 ## Intellectual Sovereignty
 
 This brings us to a principle that deserves a place alongside privacy, liberty and human control: **intellectual sovereignty**.
@@ -174,9 +192,11 @@ Intellectual sovereignty is the capacity of human beings and human communities t
 
 The danger begins when assistance becomes structural dependency upon an external cognitive authority.
 
-Do people retain meaningful access to underlying information, or only to its machine-generated interpretation? Can they inspect competing accounts? Can communities maintain their own memories and knowledge? Can people reason together independently of the system mediating them? Can they reject its framing, replace it or leave it without losing access to their intellectual environment?
+Do people retain meaningful access to underlying information, or only to its machine-generated interpretation? Can they inspect competing accounts? Can communities maintain their own memories and knowledge? Can people reason together independently of the system mediating them? Can they reject its framing, replace it or leave it without losing access to their intellectual environment? Can they enter shared spaces directly, choose among AI systems, interact without mandatory mediation, and maintain identity and context independently of one AI provider?
 
 Those questions go beyond whether an AI system is truthful or aligned. A perfectly truthful intermediary can still acquire enormous power if it becomes the necessary route through which knowledge is encountered.
+
+Intellectual sovereignty becomes difficult to exercise if people technically retain freedom of thought but the surrounding digital architecture makes a handful of AI systems the practical gateway to information, community, memory, and action.
 
 A pro-human technological order should therefore preserve more than human control over machines. It should preserve **human authority over meaning**.
 
@@ -200,11 +220,15 @@ The distinction is subtle but foundational. A machine can perform a task without
 
 This is what intellectual subsidiarity is meant to protect.
 
+A layered Web creates more places where cognitive responsibility can remain distributed. An individual can retain judgment, a community can retain memory and deliberation, specialized AI can provide assistance, and larger systems can coordinate where necessary without requiring every intellectual function to collapse into one intermediary. The architecture does not automatically guarantee subsidiarity, but it can make subsidiarity more structurally possible.
+
 ## The Right and the Rule
 
 Intellectual sovereignty and intellectual subsidiarity belong together.
 
 **Intellectual sovereignty is the right: humans and human communities retain ultimate authority over their judgment, meaning and worldview. Intellectual subsidiarity is the rule: cognitive authority should not be transferred upward farther than necessary.**
+
+**Intellectual sovereignty is the right. Intellectual subsidiarity is the operating principle.**
 
 ![A human council gathers around a glowing table of memory, meaning, evidence, and decision, while AI systems around the edges scan, translate, summarize, retrieve, and return evidence.](/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp)
 
@@ -232,11 +256,17 @@ None of this requires rejecting AI. Artificial intelligence may become one of th
 
 The real question is what kind of civilization receives that augmentation.
 
+The future machine Internet may become multilayered regardless. The real fork is whether that plurality remains largely hidden behind AI mediation or becomes a space humans can inhabit directly.
+
+One future gives each person an extraordinarily capable guide through an incomprehensibly complex machine world.
+
+The other gives us the guide **and** the world.
+
 One possible future retains roughly one underlying content world while placing intelligent mediation almost everywhere above it. Humans increasingly ask; machines increasingly retrieve, synthesize and act. Agents communicate with other agents. The enormous complexity of the network disappears behind simple personalized interfaces.
 
 Such a world could be efficient, convenient, productive and even comparatively safe. Yet human beings might become strangely absent from the architecture of their own digital civilization.
 
-The alternative is not an Internet without AI. It is an Internet with **more room for humanity**: a multi-layered digital environment containing communities, knowledge systems, cultural spaces, institutions, markets, conversations, applications and artificial intelligences, none of which must automatically become subordinate to one universal intermediary.
+The alternative is not an Internet without AI. It is an Internet with **more room for humanity**: a human-centered layered Web containing communities, knowledge systems, cultural spaces, institutions, markets, conversations, applications and artificial intelligences, none of which must automatically become subordinate to one universal intermediary.
 
 AI could travel among these environments, connect them and help us understand them. It could strengthen them. It could help people create new ones.
 
