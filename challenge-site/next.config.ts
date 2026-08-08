@@ -1,5 +1,20 @@
 import type { NextConfig } from 'next';
 
+/** Prod and staging PM2 share one checkout; separate dist dirs avoid build clobbering. */
+function resolveDistDir(): string {
+  if (process.env.NEXT_DIST_DIR) {
+    return process.env.NEXT_DIST_DIR;
+  }
+  const dpEnv = (process.env.DP_ENV || '').toLowerCase();
+  if (dpEnv === 'prod' || dpEnv === 'production') {
+    return '.next-prod';
+  }
+  if (dpEnv === 'staging') {
+    return '.next-staging';
+  }
+  return '.next';
+}
+
 /** Gov Hub DEFAULT_CSP — keep Web3Auth/wallet connectors working on every page. */
 const WEB3AUTH_CSP = [
   "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https: http:",
@@ -12,6 +27,7 @@ const WEB3AUTH_CSP = [
 ].join('; ');
 
 const nextConfig: NextConfig = {
+  distDir: resolveDistDir(),
   async headers() {
     return [
       {

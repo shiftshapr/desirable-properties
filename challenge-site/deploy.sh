@@ -9,7 +9,8 @@ cd "$APP_DIR"
 echo "[1/5] Stopping PM2 (avoid serving mid-build)..."
 pm2 stop desirableproperties 2>/dev/null || true
 
-echo "[2/5] Building Next.js app..."
+echo "[2/5] Building Next.js app (DP_ENV=prod → .next-prod)..."
+export DP_ENV=prod
 npm run build
 
 echo "[3/5] Starting PM2 process..."

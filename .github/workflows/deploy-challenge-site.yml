@@ -33,6 +33,7 @@ jobs:
         npm run build
       env:
         NODE_ENV: production
+        DP_ENV: prod
 
     - name: Deploy to server
       uses: appleboy/ssh-action@v1.0.3
@@ -62,8 +63,8 @@ jobs:
 
           cd "$APP_DIR"
           npm ci
-          npm run build
-          test -f .next/BUILD_ID
+          DP_ENV=prod npm run build
+          test -f .next-prod/BUILD_ID
 
           # Only restart PM2 after a successful build (keep serving on build failure)
           pm2 delete desirableproperties 2>/dev/null || true
