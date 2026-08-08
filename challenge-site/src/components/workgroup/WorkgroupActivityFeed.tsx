@@ -91,9 +91,9 @@ export default function WorkgroupActivityFeed({
             {dpId ? `${dpId} activity` : 'Workgroup activity'}
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-slate-400">
-            Gov Hub workgroup chat and draft patches, plus Canopi discuss on this DP&apos;s book
-            chapter. Comments &amp; patches filters to discuss posts, draft proposals, and chat —
-            hides joins, leaves, and invites.
+            Workgroup chat on this page, Gov Hub draft patches, plus Canopi discuss on this
+            DP&apos;s book chapter. Comments &amp; patches filters to discuss posts, draft
+            proposals, and chat — hides joins, leaves, and invites.
           </p>
         </div>
         <div

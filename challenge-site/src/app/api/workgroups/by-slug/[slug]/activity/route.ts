@@ -54,7 +54,7 @@ export async function GET(_request: Request, ctx: Ctx) {
       dp_id: dpId,
       items,
       filter_definition:
-        'Comments & patches = Canopi discuss (comments + PATCH/INSERT), Gov Hub draft proposals/patches, workgroup chat. Excludes joins, leaves, invites, and generic draft lifecycle events.',
+        'Comments & patches = Canopi discuss (comments + PATCH/INSERT), Gov Hub draft proposals/patches, workgroup chat (challenge-site UI, Gov Hub API). Excludes joins, leaves, invites, and generic draft lifecycle events.',
     },
     {
       headers: {
