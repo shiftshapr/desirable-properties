@@ -90,7 +90,7 @@ export default function BlueberriesWidget({ embedded = false }: { embedded?: boo
           />
         ) : (
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">
-            Optional participation activities beyond the core challenge paths — nutritious extras
+            Optional participation activities beyond the core challenge paths – nutritious extras
             you can pick up along the way.
           </p>
         )}

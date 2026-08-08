@@ -1,5 +1,5 @@
 /**
- * Two architectural trajectories — text-first, with a simple diagram that has
+ * Two architectural trajectories – text-first, with a simple diagram that has
  * accessible text equivalents. Stacks on mobile.
  */
 export default function ArchitectureFork() {
@@ -11,7 +11,7 @@ export default function ArchitectureFork() {
         </h2>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-400 sm:text-lg">
           These are architectural tendencies that can coexist. Design choices influence which
-          becomes dominant—not a deterministic binary, and not a moral cartoon.
+          becomes dominant – not a deterministic binary, and not a moral cartoon.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -74,7 +74,7 @@ export default function ArchitectureFork() {
             <ul className="mt-5 list-disc space-y-2 pl-5 text-sm text-slate-300">
               <li>Independent human and community presence</li>
               <li>Shared, contestable context</li>
-              <li>Interoperability among participants—not only agents</li>
+              <li>Interoperability among participants – not only agents</li>
               <li>Persistent civic and communal memory</li>
               <li>AI as one powerful participant among many</li>
             </ul>
@@ -83,7 +83,7 @@ export default function ArchitectureFork() {
 
         <p className="mt-8 max-w-3xl text-sm leading-relaxed text-slate-500">
           Ubiquitous AI mediation alone does not guarantee human-centered architecture. The
-          argument is about which relationships the environment makes possible—not about casting
+          argument is about which relationships the environment makes possible – not about casting
           either trajectory as inevitable destiny.
         </p>
       </div>

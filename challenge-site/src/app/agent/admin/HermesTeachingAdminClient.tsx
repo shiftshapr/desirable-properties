@@ -35,7 +35,7 @@ function statusBadge(status: string) {
 }
 
 function shortDate(value?: string | null) {
-  if (!value) return '—';
+  if (!value) return '–';
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value.slice(0, 19);
   return d.toLocaleString();
@@ -103,9 +103,9 @@ export default function HermesTeachingAdminClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `${action} failed`);
       if (action === 'verify') {
-        setFlash('Teaching verified — Hermes can use it now.');
+        setFlash('Teaching verified – Hermes can use it now.');
       } else if (action === 'revoke') {
-        setFlash('Verified teaching revoked — Hermes will no longer use it.');
+        setFlash('Verified teaching revoked – Hermes will no longer use it.');
       } else {
         setFlash('Suggestion rejected.');
       }
@@ -274,7 +274,7 @@ export default function HermesTeachingAdminClient() {
               {selected.wrongReply ? (
                 <details className="rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3">
                   <summary className="cursor-pointer text-xs text-slate-500">
-                    What Hermes said (wrong — audit only)
+                    What Hermes said (wrong – audit only)
                   </summary>
                   <p className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap text-sm text-slate-400">
                     {selected.wrongReply}

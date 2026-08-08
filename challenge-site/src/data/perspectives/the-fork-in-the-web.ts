@@ -4,7 +4,7 @@ export const FORK_IN_THE_WEB: PerspectiveMeta = {
   slug: 'the-fork-in-the-web',
   title: 'The Fork in the Web',
   subtitle:
-    'Will AI Mediate Reality—or Help Us Build a Human-Centered Internet?',
+    'Will AI Mediate Reality – or Help Us Build a Human-Centered Internet?',
   deck: 'Intellectual sovereignty, intellectual subsidiarity, and why a pro-human future requires more than safe AI.',
   seoTitle:
     'The Fork in the Web: AI-Mediated Awareness or a Human-Centered Internet?',
@@ -128,11 +128,11 @@ That distinction matters because a concierge, however brilliant, is not a common
 
 ## A Human-Centered Layered Web
 
-The crucial point is that the machine world is becoming multilayered whether we design for a Metaweb or not. Agents, models, APIs, services, databases, sensors, and computational environments will proliferate. The question is whether humans and human communities will also be able to inhabit that plurality directly—or whether most of it will become accessible to us primarily through AI intermediaries.
+The crucial point is that the machine world is becoming multilayered whether we design for a Metaweb or not. Agents, models, APIs, services, databases, sensors, and computational environments will proliferate. The question is whether humans and human communities will also be able to inhabit that plurality directly – or whether most of it will become accessible to us primarily through AI intermediaries.
 
 The alternative to ubiquitous AI mediation is not an Internet without AI. It is an Internet with a much richer architecture for both humans and machines.
 
-Imagine a Web in which the resources we already know—pages, documents, media, applications, datasets, and other digital objects—remain underneath as a common substrate. Above and around those resources can exist many independent computational environments, created by different communities, institutions, developers, networks, and individuals.
+Imagine a Web in which the resources we already know – pages, documents, media, applications, datasets, and other digital objects – remain underneath as a common substrate. Above and around those resources can exist many independent computational environments, created by different communities, institutions, developers, networks, and individuals.
 
 Identity and data can remain under user control and move among those environments rather than being trapped inside individual platforms. People and AI agents can share contextual spaces, each contributing according to their roles and permissions. Communities can remain interoperable without being absorbed into a single social platform. Open protocols can allow different layers to discover one another, coexist around the same underlying resources, exchange context, and interact without requiring one system to control the others.
 
@@ -164,7 +164,7 @@ But building **a layer** is different from creating **an architectural space in 
 
 The distinction is similar to the difference between an Internet application and the Internet itself. Email became one extraordinary application of Internet architecture, but email was not the architecture. In the same way, universal annotation would not itself constitute a human-centered layered Web, nor would the presence of AI assistants above every page.
 
-The goal is not to replace the Web with another platform. It is to establish the conditions under which many digital worlds can coexist in relation to the Web without one owning the others—independent computational environments, portable identity and data, interoperable communities, shared human–AI contextual space, and open protocols that allow those layers to discover one another, exchange context, and interact around the same underlying resources.
+The goal is not to replace the Web with another platform. It is to establish the conditions under which many digital worlds can coexist in relation to the Web without one owning the others – independent computational environments, portable identity and data, interoperable communities, shared human–AI contextual space, and open protocols that allow those layers to discover one another, exchange context, and interact around the same underlying resources.
 
 A human-centered layered Web is therefore not another application category. It is an architectural category.
 
@@ -182,7 +182,7 @@ The question is therefore not whether AI belongs everywhere. It may.
 
 The question is whether everything else should have to exist **through AI**.
 
-The machine Internet may contain trillions of agents and quadrillions of data objects. The pro-human question is whether humans remain directly present within that emerging plurality—or become primarily consumers of machine-generated interpretations of it.
+The machine Internet may contain trillions of agents and quadrillions of data objects. The pro-human question is whether humans remain directly present within that emerging plurality – or become primarily consumers of machine-generated interpretations of it.
 
 ## Intellectual Sovereignty
 
@@ -236,7 +236,7 @@ Those principles become especially important once we recognize that rights witho
 
 If the only convenient way to experience the digital world is through a handful of powerful AI intermediaries, humans may technically retain the right to think independently while losing many of the environments in which independent thought can be exercised collectively.
 
-A genuinely pro-human Internet therefore requires more than mechanisms for human oversight of artificial intelligence. It requires digital architecture that allows people themselves to remain present—not merely represented, summarized or modeled by machines, but present to one another.
+A genuinely pro-human Internet therefore requires more than mechanisms for human oversight of artificial intelligence. It requires digital architecture that allows people themselves to remain present – not merely represented, summarized or modeled by machines, but present to one another.
 
 ## A Pro-Human Internet Requires Human Places
 

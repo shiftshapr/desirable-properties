@@ -1,4 +1,4 @@
-/** Lightweight Perspectives content type — essays for discussion, not canonical DPs. */
+/** Lightweight Perspectives content type – essays for discussion, not canonical DPs. */
 
 export type PerspectiveMeta = {
   slug: string;

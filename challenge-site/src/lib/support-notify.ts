@@ -93,7 +93,7 @@ export async function sendSupportTicketAlert(dataDir: string, ticket: SupportTic
     <p><strong>Category:</strong> ${categoryLabel(ticket.category)}</p>
     <p><strong>Urgency:</strong> ${ticket.urgency}</p>
     <p><strong>From:</strong> ${ticket.handle || ticket.email || ticket.userId || 'unknown'}</p>
-    <p><strong>Page:</strong> ${ticket.pageUrl || '—'}</p>
+    <p><strong>Page:</strong> ${ticket.pageUrl || '–'}</p>
     <p><strong>Admin:</strong> <a href="${adminBase}/admin?tab=support">${adminBase}/admin?tab=support</a></p>
     <hr />
     <pre style="white-space:pre-wrap;font-family:system-ui,sans-serif">${ticket.body}</pre>
@@ -150,7 +150,7 @@ export async function sendSupportReplyEmail(
   const body = String(args.body || ticket.draftReply?.body || '').trim();
   if (!body) return { ok: false as const, error: 'reply_body_required' };
 
-  const ticketRef = ticket.id ? `\n\n—\nTicket reference: ${ticket.id}` : '';
+  const ticketRef = ticket.id ? `\n\n – \nTicket reference: ${ticket.id}` : '';
   const htmlBody = escapeHtml(body).replace(/\n/g, '<br>\n');
   const html = `<!DOCTYPE html><html><body style="font-family:Georgia,serif;line-height:1.6;color:#111;">
 ${htmlBody}

@@ -14,7 +14,7 @@ export function isCanopiUserId(userId: string | null | undefined) {
 /**
  * Resolve a Canopi AppUser email server-to-server (METAWEB_OPS_SECRET).
  * Use only when the ID is known to be a Canopi AppUser UUID. Workgroup signup
- * audience rows store Gov Hub User.id — use fetchGovHubUserEmails instead.
+ * audience rows store Gov Hub User.id – use fetchGovHubUserEmails instead.
  */
 export async function fetchCanopiUserEmail(userId: string): Promise<string | null> {
   const id = String(userId || '').trim();

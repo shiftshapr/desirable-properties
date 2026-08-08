@@ -93,7 +93,7 @@ export default function WorkgroupActivityFeed({
           <p className="mt-1 max-w-2xl text-sm text-slate-400">
             Workgroup chat on this page, Gov Hub draft patches, plus Canopi discuss on this
             DP&apos;s book chapter. Comments &amp; patches filters to discuss posts, draft
-            proposals, and chat — hides joins, leaves, and invites.
+            proposals, and chat – hides joins, leaves, and invites.
           </p>
         </div>
         <div

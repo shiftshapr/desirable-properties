@@ -555,7 +555,7 @@ export default function BlueberriesAdminPanel() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-white">{item.label}</p>
-                    <p className="text-sm text-slate-400">{item.description || '—'}</p>
+                    <p className="text-sm text-slate-400">{item.description || '–'}</p>
                     <p className="mt-1 text-xs text-slate-500">
                       {item.kind}
                       {item.dpIds.length ? ` · ${item.dpIds.join(', ')}` : ''}

@@ -85,7 +85,7 @@ const CONTRIBUTE_CARDS = [
         <p>Read the current draft and help improve it two ways:</p>
         <ul className="mt-3 list-disc space-y-2 pl-5">
           <li>
-            <strong className="font-semibold text-white">Discuss on the book</strong> — read chapters
+            <strong className="font-semibold text-white">Discuss on the book</strong> – read chapters
             and comment with the community on{' '}
             <a
               href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
@@ -98,7 +98,7 @@ const CONTRIBUTE_CARDS = [
             (comments are live now). Passage-level patching on the book is coming.
           </li>
           <li>
-            <strong className="font-semibold text-white">Patch on Gov Hub</strong> — open a draft,
+            <strong className="font-semibold text-white">Patch on Gov Hub</strong> – open a draft,
             select a passage, and submit a specific text revision on{' '}
             <a href={GOVHUB_DP_PATCHES_URL} className="text-cyan-300 hover:text-cyan-200">
               Gov Hub
@@ -228,7 +228,7 @@ const BADGE_SECTIONS = [
         </ul>
         <p className="mt-3">
           This creates a lasting record of participation that grows alongside the Meta-Layer
-          ecosystem. Badges recognize contribution — they do <strong className="font-semibold text-white">not</strong> confer ownership, authority, or governance rights.
+          ecosystem. Badges recognize contribution – they do <strong className="font-semibold text-white">not</strong> confer ownership, authority, or governance rights.
         </p>
       </>
     ),
@@ -303,7 +303,7 @@ export default function ParticipatePage() {
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             The Desirable Properties define what the Meta-Layer should make possible for humanity.
             Together, we&apos;re refining these properties into{' '}
-            <strong className="font-semibold text-white">Version 1.0</strong> — a clear,
+            <strong className="font-semibold text-white">Version 1.0</strong> – a clear,
             community-developed foundation that will guide the design and implementation of the
             Meta-Layer substrate.
           </p>
@@ -420,7 +420,7 @@ export default function ParticipatePage() {
 
       <BlueberriesWidget />
 
-      {/* Workgroups, in brief — full roles, duties, and the join-vs-nominate breakdown live on the join page */}
+      {/* Workgroups, in brief – full roles, duties, and the join-vs-nominate breakdown live on the join page */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <Section title="Workgroups, in Brief">
@@ -429,12 +429,12 @@ export default function ParticipatePage() {
               <strong className="font-semibold text-white">
                 to help develop and refine the Desirable Properties into Version 1.0.
               </strong>{' '}
-              It&apos;s a bounded commitment, not a permanent committee — after Version 1.0
+              It&apos;s a bounded commitment, not a permanent committee – after Version 1.0
               publishes, participants decide whether and how they&apos;d like to keep contributing.
             </p>
             <p>
               Members read drafts, discuss on the book, patch on Gov Hub, and join workgroup
-              discussion at their own pace — no obligation to attend every meeting. Coordinators
+              discussion at their own pace – no obligation to attend every meeting. Coordinators
               and Co-Leads facilitate; they don&apos;t own a property or make unilateral calls.
             </p>
             <p>

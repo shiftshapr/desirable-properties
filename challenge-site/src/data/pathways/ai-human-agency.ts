@@ -89,7 +89,7 @@ export const AI_HUMAN_AGENCY_QUESTIONS: PathwayQuestion[] = [
       dp('DP2', 'Participant Agency and Empowerment'),
     ],
     prompt:
-      'How do we prevent personalized AI mediation from turning shared reality into isolated private narratives—or machine synthesis into an implicit truth authority?',
+      'How do we prevent personalized AI mediation from turning shared reality into isolated private narratives – or machine synthesis into an implicit truth authority?',
   },
   {
     id: 'where-do-humans-meet',

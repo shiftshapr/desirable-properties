@@ -78,16 +78,16 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
           </p>
           <ul className="list-disc space-y-2 pl-5 marker:text-cyan-500">
             <li>
-              <span className="font-medium text-slate-200">Comment</span> — a normal anchored reply
+              <span className="font-medium text-slate-200">Comment</span> – a normal anchored reply
               adds discussion without changing the text.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Patch</span> — start your reply with{' '}
+              <span className="font-medium text-slate-200">Patch</span> – start your reply with{' '}
               <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">PATCH:</code>{' '}
               (case-insensitive) to propose replacing the selection.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Insert</span> — start with{' '}
+              <span className="font-medium text-slate-200">Insert</span> – start with{' '}
               <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">INSERT:</code> to
               propose new text above the selection.
             </li>

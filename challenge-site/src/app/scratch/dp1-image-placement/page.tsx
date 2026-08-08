@@ -24,7 +24,7 @@ export default function Dp1ImagePlacementMockupPage() {
   return (
     <main className="mx-auto max-w-3xl space-y-16 px-4 py-12 sm:px-6">
       <div className="rounded-xl border border-amber-800/60 bg-amber-950/30 p-4 text-sm text-amber-100">
-        <p className="font-semibold">Throwaway mockup — not linked from nav</p>
+        <p className="font-semibold">Throwaway mockup – not linked from nav</p>
         <p className="mt-1 text-amber-200/90">
           Compare image above vs below the chapter title for ML-Drafts. Delete this route once you
           decide.
@@ -38,7 +38,7 @@ export default function Dp1ImagePlacementMockupPage() {
 
       <section className="space-y-4">
         <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
-          Option A — image above the title
+          Option A – image above the title
         </h2>
         <article className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 sm:p-8">
           <figure className="overflow-hidden rounded-xl border border-slate-800">
@@ -62,7 +62,7 @@ export default function Dp1ImagePlacementMockupPage() {
 
       <section className="space-y-4">
         <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
-          Option B — image below the title
+          Option B – image below the title
         </h2>
         <article className="rounded-2xl border border-slate-800 bg-slate-950/50 p-6 sm:p-8">
           <p className="text-xs font-mono uppercase tracking-wide text-slate-500">{dp.id}</p>

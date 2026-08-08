@@ -96,7 +96,7 @@ function loadScript(src: string) {
   });
 }
 
-/** Gov Hub ghShouldUseSocialLoginOnly — DP site uses Google/email only (no wallet discovery). */
+/** Gov Hub ghShouldUseSocialLoginOnly – DP site uses Google/email only (no wallet discovery). */
 function useSocialLoginOnly() {
   return true;
 }
@@ -264,11 +264,11 @@ async function initWeb3Auth() {
 export function warmupWeb3Auth() {
   if (typeof window === 'undefined') return;
   void initWeb3Auth().catch(() => {
-    // Non-fatal — user can retry on Sign In
+    // Non-fatal – user can retry on Sign In
   });
 }
 
-/** Gov Hub connectWeb3AuthProvider — social AUTH connector, not generic wallet connect(). */
+/** Gov Hub connectWeb3AuthProvider – social AUTH connector, not generic wallet connect(). */
 async function connectWeb3AuthProvider(
   instance: Web3AuthInstance,
   mode: Web3AuthLoginMode,

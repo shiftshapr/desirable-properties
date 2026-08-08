@@ -12,7 +12,7 @@ const PROTECTED_API_PREFIXES = [
   '/api/admin',
 ];
 
-/** Public apex redirect — must not leak internal port 3005 from proxy_pass. */
+/** Public apex redirect – must not leak internal port 3005 from proxy_pass. */
 function apexRedirect(request: NextRequest) {
   const host = (request.headers.get('host') || '').split(':')[0];
   if (host !== 'www.desirableproperties.org') return null;

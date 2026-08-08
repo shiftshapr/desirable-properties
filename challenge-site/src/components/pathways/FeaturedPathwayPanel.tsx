@@ -113,7 +113,7 @@ export default function FeaturedPathwayPanel() {
             judgment, memory, identity, and digital space?
           </p>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
-            Explore a pro-human pathway through the Desirable Properties—and help identify what
+            Explore a pro-human pathway through the Desirable Properties – and help identify what
             may still be missing.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">

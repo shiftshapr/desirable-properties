@@ -24,7 +24,7 @@ export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 const PROD_BOOK_ORIGIN = 'https://book.desirableproperties.org';
 const STAGING_BOOK_ORIGIN = 'https://staging.book.desirableproperties.org';
 
-/** User-facing book host — staging challenge-site links to staging.book. */
+/** User-facing book host – staging challenge-site links to staging.book. */
 function resolveBookOrigin(): string {
   const explicit = process.env.DP_BOOK_BASE_URL?.trim();
   if (explicit) return explicit.replace(/\/$/, '');
@@ -50,7 +50,7 @@ export const DESIRABLE_PROPERTIES_BOOK_HOST = new URL(DP_BOOK_ORIGIN).hostname;
  * /viewer/<chapter>. */
 export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.trim() || 'https://desirableproperties.org').replace(/\/$/, '')}/book`;
 
-/** Live book reader with chapter comments (Canopi) — discuss on each chapter today.
+/** Live book reader with chapter comments (Canopi) – discuss on each chapter today.
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
 export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;
 
@@ -67,7 +67,7 @@ export function bookViewerHref(opts?: {
   discuss?: boolean;
 }): string {
   const pageId = String(opts?.pageId || '').trim().toLowerCase();
-  // Short chapter keys only (intro, dp01, …) — not Canopi hashed pageIds.
+  // Short chapter keys only (intro, dp01, …) – not Canopi hashed pageIds.
   if (pageId === 'intro' || /^dp\d{2}$/i.test(pageId)) {
     return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId}`, opts?.discuss);
   }
@@ -199,7 +199,7 @@ export const DP_DISCOVERY_SLUG = 'dp-discovery';
 export const DP_DISCOVERY_ASK_ITEMS = [
   'Review the Layered Web book (book.desirableproperties.org).',
   'Review for context and completeness.',
-  'Discuss on the book—chapter comments are live now (Canopi on each chapter).',
+  'Discuss on the book – chapter comments are live now (Canopi on each chapter).',
   'Participate in workgroup discussion as to a new DPs that may be needed.',
 ] as const;
 

@@ -574,7 +574,7 @@ export default async function JoinWorkgroupPage() {
           <h2 className="text-3xl font-bold text-white">Ready to participate?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
             Pick a workgroup above, or go straight to the Metaweb layer on Gov Hub to
-            discover drafts and discussions across all 23 properties — and DP Discovery.
+            discover drafts and discussions across all 23 properties – and DP Discovery.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a

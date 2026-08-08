@@ -81,7 +81,7 @@ export default function WorkgroupChatPanel({
         <div>
           <h2 className="text-lg font-semibold text-white">Workgroup chat</h2>
           <p className="mt-1 text-sm text-slate-400">
-            {isMember ? 'Member view — refreshes every 30s.' : 'Loading membership…'}
+            {isMember ? 'Member view – refreshes every 30s.' : 'Loading membership…'}
           </p>
         </div>
         <button

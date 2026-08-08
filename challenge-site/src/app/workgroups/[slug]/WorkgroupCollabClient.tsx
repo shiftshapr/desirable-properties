@@ -93,7 +93,7 @@ export default function WorkgroupCollabClient({
           }
         } catch {
           if (!cancelled && (!justJoined || attempt === maxAttempts - 1)) {
-            // Do not clear membership on upstream errors — SSR/signups may already be correct.
+            // Do not clear membership on upstream errors – SSR/signups may already be correct.
             setMembershipChecked(true);
           }
           return;

@@ -94,7 +94,7 @@ export default function AiHumanAgencyPathwayPage() {
             Questions before properties
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
-            Visitors coming from the AI conversation should encounter human questions first—and
+            Visitors coming from the AI conversation should encounter human questions first – and
             discover existing Desirable Properties through those questions.
           </p>
           <div className="mt-10 space-y-6">
@@ -141,7 +141,7 @@ export default function AiHumanAgencyPathwayPage() {
           <p className="mt-8 text-sm leading-relaxed text-slate-500">
             Intellectual sovereignty is the right. Intellectual subsidiarity is the operating
             principle. A human-centered layered Web is an architectural approach capable of
-            supporting both—it does not guarantee either.
+            supporting both – it does not guarantee either.
           </p>
         </div>
       </section>
@@ -161,7 +161,7 @@ export default function AiHumanAgencyPathwayPage() {
             </p>
             <p>
               Consider agency, cognition, community, identity, memory, interoperability,
-              governance, privacy, public space—or something the current Desirable Properties do
+              governance, privacy, public space – or something the current Desirable Properties do
               not yet capture.
             </p>
           </div>
@@ -202,7 +202,7 @@ export default function AiHumanAgencyPathwayPage() {
             >
               Explore these questions with Hermes
             </TrackedLink>
-            <span className="text-slate-600"> — pathway-specific starter prompt included.</span>
+            <span className="text-slate-600"> – pathway-specific starter prompt included.</span>
           </p>
         </div>
       </section>

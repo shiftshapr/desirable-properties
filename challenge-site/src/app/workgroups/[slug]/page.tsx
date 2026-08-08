@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: wg ? `${wg.name} · Workgroup` : 'Workgroup · Desirable Properties Challenge',
     description: wg?.description
       ? String(wg.description).slice(0, 160)
-      : 'Collaborate on a Desirable Properties workgroup — chat and invite members.',
+      : 'Collaborate on a Desirable Properties workgroup – chat and invite members.',
   };
 }
 

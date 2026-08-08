@@ -1,4 +1,4 @@
-/** Word-level inline diff — mirrors Gov Hub `text_diff.py` / `proposal-display.js`. */
+/** Word-level inline diff – mirrors Gov Hub `text_diff.py` / `proposal-display.js`. */
 
 export const MAX_DIFF_TOKENS = 4000;
 

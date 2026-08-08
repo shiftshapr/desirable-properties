@@ -10,7 +10,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-/** Book discuss link — shows help modal first unless user dismissed it. */
+/** Book discuss link – shows help modal first unless user dismissed it. */
 export default function DiscussPatchLink({ href, className, children }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);

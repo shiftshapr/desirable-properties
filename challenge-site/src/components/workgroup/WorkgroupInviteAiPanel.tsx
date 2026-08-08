@@ -167,7 +167,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       if (nextDraft) {
         setDraft(nextDraft);
       } else if (previousDraft.trim()) {
-        setError('Regenerate returned an empty draft — your previous text is unchanged.');
+        setError('Regenerate returned an empty draft – your previous text is unchanged.');
       } else {
         setDraft('');
       }

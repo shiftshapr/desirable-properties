@@ -40,7 +40,7 @@ export default function WorkgroupGettingStarted({
       <h2 className="text-xl font-semibold text-white">Getting started</h2>
       <p className="mt-2 max-w-3xl text-sm text-slate-400">
         This page adds chat and AI invites on top of the existing Desirable Properties workgroup
-        experience — welcome guide, DP detail, and Gov Hub drafting all remain available.
+        experience – welcome guide, DP detail, and Gov Hub drafting all remain available.
       </p>
 
       <div className="mt-5 flex flex-wrap gap-3">

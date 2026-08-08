@@ -156,12 +156,12 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Three ways to get involved — maps directly to the three primary journeys */}
+        {/* Three ways to get involved – maps directly to the three primary journeys */}
         <section>
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <h2 className="text-3xl font-bold text-white">Three Ways to Get Involved</h2>
             <p className="mt-3 max-w-2xl text-slate-400">
-              Pick a path — or do all three.
+              Pick a path – or do all three.
             </p>
             <ul className="mt-10 grid gap-5 sm:grid-cols-3">
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">

@@ -97,7 +97,7 @@ function kindForWorkgroupEvent(eventType: string): ActivityFeedKind {
 }
 
 async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[]> {
-  // Sample intro + a few early chapters only — full 23-chapter scan is too slow for SSR.
+  // Sample intro + a few early chapters only – full 23-chapter scan is too slow for SSR.
   const samplePages = ['intro', 'dp01', 'dp02', 'dp03', 'dp04', 'dp05'];
   const batches = await Promise.all(
     samplePages.map((pageId) => searchCanopiPosts({ pageId, limit: Math.min(limit, 8) })),
@@ -298,7 +298,7 @@ async function fetchCanopiItemsForDp(
       href: bookDiscussHref({ dpId, pageId: p.pageId }),
       kind,
       badge: classified.badge,
-      // Canopi Discuss has no accept/decline workflow yet — patches stay open.
+      // Canopi Discuss has no accept/decline workflow yet – patches stay open.
       resolved: false,
       status: parsed.kind,
       source: 'canopi' as const,

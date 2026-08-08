@@ -61,7 +61,7 @@ const DEFAULT_STARTER_PROMPTS = [
 function userFacingError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
   if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted/i.test(msg)) {
-    return "Hermes couldn't respond right now. Your message wasn't lost — try sending again.";
+    return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
   return msg;
 }
@@ -427,7 +427,7 @@ export default function HermesChat({
       setSystemNotice({
         variant: 'success',
         text: noteStatus === 'verified'
-          ? 'Teaching saved and active — Hermes will use this on future turns about the same DPs.'
+          ? 'Teaching saved and active – Hermes will use this on future turns about the same DPs.'
           : 'Suggestion saved for layer admin review. Hermes will only use it after approval.',
       });
     } catch (err) {
@@ -552,7 +552,7 @@ export default function HermesChat({
 
   return (
     <div className={shellClass}>
-      {/* Desktop sidebar — fixed to viewport left, full height below site header */}
+      {/* Desktop sidebar – fixed to viewport left, full height below site header */}
       <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
         <div className="pointer-events-auto flex h-full flex-col">
           {sidebar}
