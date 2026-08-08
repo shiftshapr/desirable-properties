@@ -6,8 +6,8 @@ export const DP_WELCOME_SUBJECT_COORDINATOR = "Welcome to the Desirable Properti
 export const CHALLENGE_KEY_DATES = {
   "communityReviewBegins": {
     "title": "Community review begins",
-    "label": "July 16, 2026",
-    "iso": "2026-07-16",
+    "label": "August 10, 2026",
+    "iso": "2026-08-10",
     "note": null
   },
   "workgroupSynthesis": {
@@ -43,7 +43,7 @@ export const MESSAGE_A_SECTIONS = {
   ],
   "timeTitle": "Time & deadline",
   "timeItems": [
-    "July 16, 2026 — Community review begins. Plan 1–3 hours per Desirable Property for a thorough review.",
+    "August 10, 2026 — Community review begins. Plan 1–3 hours per Desirable Property for a thorough review.",
     "September 1, 2026 — Workgroup synthesis (v1.0 editorial window).",
     "September 16, 2026 — The Layered Web and monument launch."
   ],

@@ -8,7 +8,7 @@ This document is the canonical source for welcome-page copy. After editing Messa
 
 **Key dates**
 
-- Community review begins: **July 16, 2026**
+- Community review begins: **August 10, 2026**
 - Workgroup synthesis target: **September 1, 2026** (v1.0 editorial window)
 - Book and monument launch: **September 16, 2026**
 
@@ -48,7 +48,7 @@ Your workgroup is helping refine one or more **Desirable Properties**—the comm
 
 **Time & deadline**
 
-- **July 16, 2026** — Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
+- **August 10, 2026** — Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
 - **September 1, 2026** — Workgroup synthesis (v1.0 editorial window).
 - **September 16, 2026** — The Layered Web and monument launch.
 
