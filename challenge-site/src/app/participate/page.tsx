@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
+import DpBadgeCarousel from '@/components/DpBadgeCarousel';
+import localData from '@/data/desirable-properties.json';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   DESIRABLE_PROPERTIES_BOOK_HOST,
@@ -467,6 +469,16 @@ export default function ParticipatePage() {
             participation will be recognized through the Desirable Properties Badge system.
           </p>
 
+          <div className="mt-10">
+            <DpBadgeCarousel
+              items={localData.desirable_properties.map((dp) => ({
+                id: dp.id,
+                name: dp.name,
+              }))}
+              variant="embed"
+            />
+          </div>
+
           <ul className="mt-10 grid gap-5 sm:grid-cols-2">
             {BADGE_SECTIONS.map((section) => (
               <li
@@ -478,6 +490,13 @@ export default function ParticipatePage() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-8 text-sm text-slate-400">
+            Browse the full gallery and mint preview links on the{' '}
+            <Link href="/badges" className="font-medium text-cyan-300 hover:text-cyan-200">
+              badges page →
+            </Link>
+          </p>
         </div>
       </section>
 

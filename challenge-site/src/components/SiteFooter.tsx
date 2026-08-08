@@ -35,6 +35,9 @@ export default function SiteFooter() {
           <Link href="/challenge" className="text-slate-400 hover:text-slate-200">
             Challenge
           </Link>
+          <Link href="/badges" className="text-slate-400 hover:text-slate-200">
+            Badges
+          </Link>
           <Link href="/about" className="text-slate-400 hover:text-slate-200">
             About
           </Link>

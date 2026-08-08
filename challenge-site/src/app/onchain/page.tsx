@@ -57,6 +57,12 @@ export default async function OnchainPage() {
             – it&apos;s wired up but rough. Explore the rest of the project in the meantime:
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <Link
+              href="/badges"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/60 bg-amber-400/10 px-3 py-1 text-amber-100 hover:bg-amber-400/20"
+            >
+              DP badges gallery
+            </Link>
             <a
               href="https://app.brc333.xyz/projects/desirableproperties-book-ordinal/learning.htm"
               target="_blank"
