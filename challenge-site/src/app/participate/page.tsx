@@ -449,7 +449,7 @@ export default function ParticipatePage() {
                 href={WORKGROUPS_LIST_HREF}
                 className="font-medium text-cyan-300 hover:text-cyan-200"
               >
-                browse the 23 workgroups →
+                browse DP workgroups →
               </Link>
             </p>
           </Section>

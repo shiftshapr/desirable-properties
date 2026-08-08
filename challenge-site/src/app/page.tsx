@@ -176,7 +176,7 @@ export default async function Home() {
                   href={WORKGROUPS_LIST_HREF}
                   className="mt-5 inline-flex w-fit items-center rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
                 >
-                  Browse the 23 workgroups →
+                  Browse DP workgroups →
                 </Link>
               </li>
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">

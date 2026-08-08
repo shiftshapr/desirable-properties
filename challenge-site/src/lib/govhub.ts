@@ -185,9 +185,25 @@ export function govhubDraftReadHref(documentHref: string | null | undefined): st
   return base.endsWith('/') ? `${base}read/` : `${base}/read/`;
 }
 
+/** Meta workgroup that tracks gaps across the numbered DP set (not itself a DP#). */
+export const DP_DISCOVERY_SLUG = 'dp-discovery';
+
 export function extractDpId(name: string): string | null {
   const match = name.match(/^DP(\d+)\b/i);
   return match ? `DP${match[1]}` : null;
+}
+
+/** Numbered DP workgroups plus the shared DP Discovery workgroup. */
+export function isDpChallengeWorkgroup(wg: {
+  name?: string | null;
+  slug?: string | null;
+  acronym?: string | null;
+}): boolean {
+  const slug = String(wg.slug || wg.acronym || '')
+    .trim()
+    .toLowerCase();
+  if (slug === DP_DISCOVERY_SLUG) return true;
+  return Boolean(extractDpId(String(wg.name || '')));
 }
 
 function draftHref(payload: Record<string, unknown>): string {
@@ -344,7 +360,7 @@ export async function fetchChallengeWorkgroups(): Promise<GovHubWorkgroup[]> {
   );
   const workgroups = data?.workgroups ?? [];
   return workgroups
-    .filter((wg) => extractDpId(wg.name))
+    .filter((wg) => isDpChallengeWorkgroup(wg))
     .map((wg) => ({
       id: wg.id,
       name: wg.name,
@@ -358,8 +374,8 @@ export async function fetchChallengeWorkgroups(): Promise<GovHubWorkgroup[]> {
         (wg as unknown as { document_draft_ref?: string | null }).document_draft_ref ?? null,
     }))
     .sort((a, b) => {
-      const aNum = Number(extractDpId(a.name)?.replace('DP', '') ?? 0);
-      const bNum = Number(extractDpId(b.name)?.replace('DP', '') ?? 0);
+      const aNum = Number(extractDpId(a.name)?.replace('DP', '') ?? 999);
+      const bNum = Number(extractDpId(b.name)?.replace('DP', '') ?? 999);
       return aNum - bNum;
     });
 }

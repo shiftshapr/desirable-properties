@@ -5,6 +5,7 @@ import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNo
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   DESIRABLE_PROPERTIES_BOOK_HOST,
+  DP_DISCOVERY_SLUG,
   fetchChallengeWorkgroups,
   govhubUrl,
 } from '@/lib/govhub';
@@ -19,8 +20,11 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
   description:
-    'Browse the 23 workgroups stewarding each Desirable Property and pick the one you want to join or nominate into.',
+    'Browse the 23 Desirable Property workgroups plus DP Discovery, and pick the one you want to join or nominate into.',
 };
+
+const DP_DISCOVERY_FALLBACK_DESCRIPTION =
+  'Curates, evaluates, and surfaces desirable properties the current 23 may have missed. Triages community submissions, runs open calls for emerging challenges, and shepherds promising candidates toward Challenge inclusion.';
 
 type Role = {
   key: string;
@@ -181,9 +185,19 @@ function deriveSlug(dp: { id: string; name?: string }): string {
 export default async function JoinWorkgroupPage() {
   const dps = localData.desirable_properties;
   const collabEnabled = await isWorkgroupCollabEnabled();
-  const liveWorkgroups = collabEnabled ? await fetchChallengeWorkgroups() : [];
+  // Always load live Metaweb DP workgroups (incl. Discovery) for ids + Discovery blurb.
+  const liveWorkgroups = await fetchChallengeWorkgroups();
   const idBySlug = new Map(liveWorkgroups.map((wg) => [wg.slug, wg.id]));
+  const discoveryLive = liveWorkgroups.find(
+    (wg) => (wg.slug || '').toLowerCase() === DP_DISCOVERY_SLUG,
+  );
+  const discoveryDescription = shortDescription({
+    description: discoveryLive?.description || DP_DISCOVERY_FALLBACK_DESCRIPTION,
+  });
   const memberWorkgroupIds = collabEnabled ? await readSessionMemberWorkgroupIds() : new Set<string>();
+  const discoveryCollabHref = workgroupPrimaryHref(DP_DISCOVERY_SLUG);
+  const discoveryJoinHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'join');
+  const discoveryNominateHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'nominate');
 
   return (
     <main className="border-b border-slate-800">
@@ -196,16 +210,17 @@ export default async function JoinWorkgroupPage() {
             Join a DP Workgroup
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup on Gov Hub.
-            Pick the property whose purpose resonates with you, join as a member, or nominate
-            yourself (or someone else) for a coordinator or contributor role.
+            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup on Gov Hub,
+            plus DP Discovery for gaps the current set may have missed. Pick the group whose
+            purpose resonates with you, join as a member, or nominate yourself (or someone else)
+            for a coordinator or contributor role.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href="#workgroups"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Browse all 23 workgroups →
+              Browse DP workgroups →
             </a>
             <a
               href="#faq"
@@ -331,16 +346,82 @@ export default async function JoinWorkgroupPage() {
 
       <section id="workgroups" className="scroll-mt-20 border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">The 23 workgroups</h2>
+          <h2 className="text-3xl font-bold text-white">The DP workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Each workgroup stewards one Desirable Property – drafting the canonical text,
-            reviewing contributions, and proposing updates.
+            Twenty-three workgroups each steward one Desirable Property – drafting the canonical
+            text, reviewing contributions, and proposing updates. DP Discovery watches for
+            properties the current 23 may have missed.
             {collabEnabled
               ? ' Open the collaboration page for chat and invites, or join / nominate here without leaving the site.'
               : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
           </p>
 
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <li className="flex h-full flex-col rounded-xl border border-amber-900/50 bg-slate-950/60 p-5 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3 lg:flex-row lg:items-start lg:gap-8">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <span className="rounded-md border border-amber-900/60 bg-amber-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-amber-200">
+                    Discovery
+                  </span>
+                  <span className="rounded-md border border-emerald-900/50 bg-emerald-950/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-300">
+                    Open for members
+                  </span>
+                </div>
+                <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
+                  {collabEnabled ? (
+                    <Link href={discoveryCollabHref} className="hover:text-cyan-300">
+                      DP Discovery
+                    </Link>
+                  ) : (
+                    'DP Discovery'
+                  )}
+                </h3>
+                {discoveryDescription ? (
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {discoveryDescription}
+                  </p>
+                ) : null}
+              </div>
+              <div className="mt-5 flex shrink-0 flex-col gap-3 lg:mt-0 lg:w-56">
+                <div className="flex flex-wrap gap-2">
+                  {collabEnabled ? (
+                    <Link
+                      href={discoveryCollabHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                    >
+                      Collaborate
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ) : (
+                    <a
+                      href={discoveryJoinHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                    >
+                      Join as member
+                      <span aria-hidden>→</span>
+                    </a>
+                  )}
+                  {!collabEnabled ? (
+                    <a
+                      href={discoveryNominateHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+                    >
+                      Nominate
+                    </a>
+                  ) : null}
+                </div>
+                {collabEnabled && idBySlug.get(DP_DISCOVERY_SLUG) ? (
+                  <WorkgroupJoinNominateActions
+                    workgroupId={idBySlug.get(DP_DISCOVERY_SLUG)!}
+                    workgroupName="DP Discovery"
+                    workgroupSlug={DP_DISCOVERY_SLUG}
+                    joinFallbackHref={discoveryJoinHref}
+                    nominateFallbackHref={discoveryNominateHref}
+                    isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
+                  />
+                ) : null}
+              </div>
+            </li>
             {dps.map((dp) => {
               const dpId = dp.id as string;
               const name = dp.name as string;
@@ -477,14 +558,14 @@ export default async function JoinWorkgroupPage() {
           <h2 className="text-3xl font-bold text-white">Ready to participate?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
             Pick a workgroup above, or go straight to the Metaweb layer on Gov Hub to
-            discover drafts and discussions across all 23 properties.
+            discover drafts and discussions across all 23 properties — and DP Discovery.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
               href="#workgroups"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Browse the 23 workgroups →
+              Browse DP workgroups →
             </a>
             <a
               href={govhubUrl('/layers/the-metaweb/')}

@@ -87,9 +87,12 @@ async function fetchSignupsFromWorkgroups(fresh?: boolean): Promise<WorkgroupSig
     );
     if (!workgroupsRes.ok) return null;
     const workgroupsData = (await workgroupsRes.json()) as WorkgroupsResponse;
-    const dpWorkgroups = (workgroupsData.workgroups ?? []).filter((wg) =>
-      /^DP\d+\b/i.test(wg.name),
-    );
+    const dpWorkgroups = (workgroupsData.workgroups ?? []).filter((wg) => {
+      const slug = String(wg.slug || wg.acronym || '')
+        .trim()
+        .toLowerCase();
+      return slug === 'dp-discovery' || /^DP\d+\b/i.test(wg.name);
+    });
 
     const byWorkgroup: WorkgroupSignupGroup[] = [];
     const peopleMap = new Map<string, WorkgroupSignupPerson>();
@@ -141,7 +144,8 @@ async function fetchSignupsFromWorkgroups(fresh?: boolean): Promise<WorkgroupSig
     byWorkgroup.sort((a, b) => {
       const aNum = Number(a.name.match(/^DP(\d+)/i)?.[1] ?? 999);
       const bNum = Number(b.name.match(/^DP(\d+)/i)?.[1] ?? 999);
-      return aNum - bNum;
+      if (aNum !== bNum) return aNum - bNum;
+      return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
     });
 
     const people = Array.from(peopleMap.values()).sort((a, b) =>
