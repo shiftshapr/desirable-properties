@@ -19,6 +19,14 @@ export default function ActivityPatchPreview({ removed, added, mode }: Props) {
   const addedText = (added || '').trim();
   if (!removedText && !addedText) return null;
 
+  if (mode === 'comment') {
+    return (
+      <div className="mt-2">
+        <ActivityDiffBlock removed={removed} added={added} mode={mode} />
+      </div>
+    );
+  }
+
   return (
     <div className="mt-2">
       <div

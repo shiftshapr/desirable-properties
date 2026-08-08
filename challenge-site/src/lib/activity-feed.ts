@@ -229,6 +229,13 @@ function eventToWorkgroupFeedItem(
     }
   }
 
+  if (event.event_type === 'draft_comment_added') {
+    const preview = String(payload.preview || payload.body_preview || '').trim();
+    if (preview) {
+      diff = { mode: 'comment', removed: null, added: preview };
+    }
+  }
+
   const href = base.href.startsWith('http')
     ? base.href
     : base.href.startsWith('/workgroups/')

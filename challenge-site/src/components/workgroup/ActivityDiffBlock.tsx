@@ -57,6 +57,15 @@ export default function ActivityDiffBlock({ removed, added, mode }: Props) {
   const proposed = (added || '').trim();
   if (!original && !proposed) return null;
 
+  if (mode === 'comment') {
+    return (
+      <div className="gh-patch-diff space-y-1.5">
+        <p className="text-[11px] uppercase tracking-wide text-slate-500">Comment</p>
+        {proposed ? <DiffPre>{proposed}</DiffPre> : null}
+      </div>
+    );
+  }
+
   if (mode === 'insert') {
     return (
       <div className="gh-patch-diff space-y-1.5">
