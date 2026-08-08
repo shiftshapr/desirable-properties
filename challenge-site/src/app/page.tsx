@@ -3,6 +3,7 @@ import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
+import FeaturedPathwayPanel from '@/components/pathways/FeaturedPathwayPanel';
 import LayerHero from '@/components/LayerHero';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
@@ -44,6 +45,8 @@ export default async function Home() {
         </div>
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
+
+        <FeaturedPathwayPanel />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
@@ -116,7 +119,7 @@ export default async function Home() {
         </section>
 
         {/* Missing Something? */}
-        <section className="border-b border-slate-800">
+        <section id="missing" className="border-b border-slate-800">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <h2 className="text-3xl font-bold text-white">Missing Something?</h2>
             <p className="mt-4 max-w-2xl text-lg text-slate-300">

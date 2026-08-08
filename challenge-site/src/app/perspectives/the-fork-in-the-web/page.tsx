@@ -1,0 +1,39 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import PerspectiveBody from '@/components/perspectives/PerspectiveBody';
+import PerspectiveCTA from '@/components/perspectives/PerspectiveCTA';
+import PerspectiveHeader from '@/components/perspectives/PerspectiveHeader';
+import { FORK_IN_THE_WEB } from '@/data/perspectives/the-fork-in-the-web';
+
+const article = FORK_IN_THE_WEB;
+
+export const metadata: Metadata = {
+  title: article.seoTitle,
+  description: article.seoDescription,
+  openGraph: {
+    title: article.seoTitle,
+    description: article.seoDescription,
+    url: `https://desirableproperties.org/perspectives/${article.slug}`,
+    type: 'article',
+  },
+};
+
+export default function ForkInTheWebPage() {
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+      <Link href="/pathways/ai-human-agency" className="text-sm text-cyan-300 hover:text-cyan-200">
+        ← AI &amp; Human Agency pathway
+      </Link>
+
+      <div className="mt-8">
+        <PerspectiveHeader
+          title={article.title}
+          subtitle={article.subtitle}
+          deck={article.deck}
+        />
+        <PerspectiveBody markdown={article.bodyMarkdown} />
+        <PerspectiveCTA perspectiveSlug={article.slug} />
+      </div>
+    </main>
+  );
+}

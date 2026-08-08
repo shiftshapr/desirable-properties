@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import DPProvenanceSection from '@/components/DPProvenanceSection';
+import RelatedPathway from '@/components/pathways/RelatedPathway';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
+import { AI_HUMAN_AGENCY_RELATED_DP_IDS } from '@/data/pathways/ai-human-agency';
 import localData from '../../../data/desirable-properties.json';
 import {
   bookDiscussHref,
@@ -124,6 +126,12 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
             </div>
           </section>
         )}
+
+        {AI_HUMAN_AGENCY_RELATED_DP_IDS.includes(
+          dp.id as (typeof AI_HUMAN_AGENCY_RELATED_DP_IDS)[number],
+        ) ? (
+          <RelatedPathway dpId={dp.id} />
+        ) : null}
 
         <section className="mt-10 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
