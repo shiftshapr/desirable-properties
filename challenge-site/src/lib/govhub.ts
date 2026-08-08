@@ -177,6 +177,14 @@ export function govhubUrl(path: string): string {
 /** Gov Hub document list filtered to Desirable Properties drafts (patch entry point). */
 export const GOVHUB_DP_PATCHES_URL = govhubUrl('/doc/all/?collection=desirable-properties');
 
+/** ML-Draft read view for a workgroup-linked draft (patch entry point). */
+export function govhubDraftReadHref(documentHref: string | null | undefined): string | null {
+  const href = String(documentHref || '').trim();
+  if (!href) return null;
+  const base = govhubUrl(href);
+  return base.endsWith('/') ? `${base}read/` : `${base}/read/`;
+}
+
 export function extractDpId(name: string): string | null {
   const match = name.match(/^DP(\d+)\b/i);
   return match ? `DP${match[1]}` : null;

@@ -12,7 +12,7 @@ import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
-import { govhubUrl } from '@/lib/govhub';
+import { govhubDraftReadHref, govhubUrl } from '@/lib/govhub';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
@@ -105,7 +105,7 @@ export default function WorkgroupCollabClient({
 
   const showFullChat = membershipChecked && isMember;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
-  const docHref = workgroup.document_href ? govhubUrl(workgroup.document_href) : null;
+  const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
 
   return (
@@ -164,6 +164,7 @@ export default function WorkgroupCollabClient({
         workgroupSlug={workgroup.slug}
         dpId={dpId}
         dpDetailHref={dpDetailHref}
+        documentHref={workgroup.document_href}
       />
 
       {showFullChat ? (

@@ -9,6 +9,7 @@ import {
   extractDpId,
   fetchChallengeWorkgroups,
   GOVHUB_DP_PATCHES_URL,
+  govhubDraftReadHref,
   govhubUrl,
 } from '@/lib/govhub';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
@@ -49,6 +50,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
 
   const workgroup = workgroups.find((wg) => extractDpId(wg.name) === dp.id);
   const draftHref = workgroup?.document_href ? govhubUrl(workgroup.document_href) : null;
+  const readHref = govhubDraftReadHref(workgroup?.document_href);
   const collabEnabled = await isWorkgroupCollabEnabled();
   const workgroupHref = workgroup?.slug ? workgroupPrimaryHref(workgroup.slug) : null;
   const workgroupJoinHref = workgroup?.slug
@@ -141,7 +143,6 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
               const match = rawLabel.match(/^(.*?)\s*\((ML-Draft-\d+)\)\s*$/);
               const draftTitle = match ? match[1].trim() : rawLabel || null;
               const draftRef = match ? match[2] : null;
-              const readHref = draftHref ? `${draftHref}read/` : null;
               return (
                 <div className="mt-3 flex flex-col items-start gap-2 text-sm">
                   {draftTitle && (

@@ -22,6 +22,8 @@ export default async function WelcomeCoordinatorPage({ searchParams }: Props) {
       variant="coordinator"
       workgroupSlug={workgroup?.slug ?? null}
       workgroupName={workgroup?.name ?? null}
+      dpId={workgroup?.dpId ?? null}
+      documentHref={workgroup?.document_href ?? null}
     />
   );
 }

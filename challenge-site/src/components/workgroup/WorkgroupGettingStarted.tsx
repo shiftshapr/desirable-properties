@@ -1,28 +1,27 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { MESSAGE_A_SECTIONS } from '@/lib/dp-welcome-content';
-import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
+import { bookDiscussHref, govhubDraftReadHref, govhubUrl } from '@/lib/govhub';
 
 type Props = {
   workgroupName: string;
   workgroupSlug: string;
   dpId: string | null;
   dpDetailHref: string | null;
+  documentHref?: string | null;
 };
-
-function workgroupBookDiscussHref(dpId: string | null): string {
-  return bookDiscussHref(dpId ? { dpId } : undefined);
-}
 
 export default function WorkgroupGettingStarted({
   workgroupName,
   workgroupSlug,
   dpId,
   dpDetailHref,
+  documentHref,
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
-  const discussHref = workgroupBookDiscussHref(dpId);
+  const discussHref = bookDiscussHref(dpId ? { dpId } : undefined);
+  const patchHref = govhubDraftReadHref(documentHref);
   const a = MESSAGE_A_SECTIONS;
 
   return (
@@ -54,6 +53,16 @@ export default function WorkgroupGettingStarted({
         >
           Discuss &amp; patch this chapter →
         </DiscussPatchLink>
+        {patchHref ? (
+          <a
+            href={patchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-cyan-800 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
+          >
+            Patch draft on Gov Hub
+          </a>
+        ) : null}
         <a
           href={govHubHref}
           target="_blank"
