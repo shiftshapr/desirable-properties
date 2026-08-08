@@ -50,6 +50,17 @@ export default function PerspectiveBody({ markdown }: Props) {
               {children}
             </blockquote>
           ),
+          img: ({ src, alt }) => (
+            <figure className="my-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={src}
+                alt={alt ?? ''}
+                className="w-full rounded-lg border border-slate-800"
+                loading="lazy"
+              />
+            </figure>
+          ),
           hr: () => <hr className="my-10 border-slate-800" />,
         }}
       >

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import CanopiWebEmbed from '@/components/canopi/CanopiWebEmbed';
 import PerspectiveBody from '@/components/perspectives/PerspectiveBody';
@@ -34,6 +35,16 @@ export default function ForkInTheWebPage() {
           subtitle={article.subtitle}
           deck={article.deck}
         />
+        <figure className="mt-10">
+          <Image
+            src="/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.png"
+            alt="A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers."
+            width={1586}
+            height={992}
+            className="w-full rounded-lg border border-slate-800"
+            priority
+          />
+        </figure>
         <PerspectiveBody markdown={article.bodyMarkdown} />
         <PerspectiveCTA perspectiveSlug={article.slug} />
       </div>
