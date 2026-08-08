@@ -128,6 +128,70 @@ class GovhubSyncCommonTests(unittest.TestCase):
         self.assertEqual(parsed['revision'], '02')
         self.assertEqual(parsed['submission'], 'new-id')
 
+    def test_extract_image_urls(self):
+        from govhub_rail_image_sync import extract_image_urls
+
+        body = (
+            '# Title\n\n'
+            '![DP1 art](https://example.com/DP1.webp)\n\n'
+            '<img src="/static/images/dp/dp1.png" alt="inline">\n'
+        )
+        self.assertEqual(
+            extract_image_urls(body),
+            [
+                'https://example.com/DP1.webp',
+                '/static/images/dp/dp1.png',
+            ],
+        )
+
+    def test_sync_images_copies_and_rewrites(self):
+        from govhub_rail_image_sync import sync_images_from_markdown
+
+        png_bytes = (
+            b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01'
+            b'\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89'
+            b'\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4'
+            b'\x00\x00\x00\x00IEND\xaeB`\x82'
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            book_root = Path(tmp) / 'book'
+            (book_root / 'content' / 'local' / 'assets' / 'dp').mkdir(parents=True)
+            body = '![DP1](https://example.com/images/DP1.webp)\n'
+            calls: list[str] = []
+
+            def fake_fetch(url: str, *, timeout: float = 30.0) -> bytes:
+                calls.append(url)
+                return png_bytes
+
+            import govhub_rail_image_sync as mod
+
+            original = mod._fetch_bytes
+            mod._fetch_bytes = fake_fetch
+            try:
+                summary = sync_images_from_markdown(
+                    body,
+                    book_root=book_root,
+                    hub_url='https://hub.example',
+                    dry_run=False,
+                )
+            finally:
+                mod._fetch_bytes = original
+
+            dest = book_root / 'content' / 'local' / 'assets' / 'dp' / 'DP1.webp'
+            self.assertTrue(dest.is_file())
+            self.assertIn('/content/local/assets/dp/DP1.webp', summary.body)
+            self.assertTrue(summary.assets_changed)
+            self.assertEqual(summary.results[0].status, 'copied')
+
+            summary_again = sync_images_from_markdown(
+                summary.body,
+                book_root=book_root,
+                hub_url='https://hub.example',
+                dry_run=False,
+            )
+            self.assertFalse(summary_again.assets_changed)
+            self.assertEqual(summary_again.results[0].status, 'unchanged')
+
 
 if __name__ == '__main__':
     unittest.main()

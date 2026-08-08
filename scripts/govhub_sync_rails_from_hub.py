@@ -44,9 +44,11 @@ from govhub_dp_common import (
     strip_sync_marker,
     upsert_sync_marker,
 )
+from govhub_rail_image_sync import sync_images_from_markdown
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONTENT_DIR = REPO_ROOT / 'desirableproperties-book' / 'content' / 'local'
+DEFAULT_BOOK_ROOT = REPO_ROOT / 'desirableproperties-book'
 DEFAULT_SOURCES_SAT = REPO_ROOT / 'desirableproperties-book' / 'json' / 'sources-sat.json'
 
 
@@ -69,6 +71,8 @@ def main() -> int:
     parser.add_argument('--flask-env', default='',
                         choices=['', 'development', 'production'],
                         help='Flask env for --local-db (default: matches --env)')
+    parser.add_argument('--book-root', default=str(DEFAULT_BOOK_ROOT),
+                        help='Book root (parent of content/, assets/)')
     parser.add_argument('--content-dir', default=str(DEFAULT_CONTENT_DIR),
                         help='Directory holding dpN.md local chapters')
     parser.add_argument('--sources-sat', default=str(DEFAULT_SOURCES_SAT),
@@ -82,8 +86,9 @@ def main() -> int:
     args = parser.parse_args()
 
     content_dir = Path(args.content_dir).resolve()
+    book_root = Path(args.book_root).resolve()
     sources_sat = Path(args.sources_sat).resolve()
-    for path in (content_dir, sources_sat):
+    for path in (content_dir, sources_sat, book_root):
         if not path.exists():
             print(f'ERROR: missing {path}', file=sys.stderr)
             return 2
@@ -101,6 +106,7 @@ def main() -> int:
 
     mode = 'local-db' if args.local_db else 'api'
     print(f'Content dir  : {content_dir}')
+    print(f'Book root    : {book_root}')
     print(f'Sources sat  : {sources_sat}')
     print(f'Rails target : {len(rails)}')
     print(f'Source mode  : {mode}')
@@ -149,6 +155,26 @@ def main() -> int:
         revision = info.get('revision_number') or '00'
         submission_id = info.get('submission_id') or ''
         content_hash = info.get('content_hash') or ''
+
+        image_summary = sync_images_from_markdown(
+            body,
+            book_root=book_root,
+            hub_url=hub_url,
+            dry_run=args.dry_run,
+        )
+        body = image_summary.body
+        if image_summary.results:
+            entry['images'] = [
+                {
+                    'source': row.source,
+                    'status': row.status,
+                    'dest_path': row.dest_path,
+                    'canonical_url': row.canonical_url,
+                    'detail': row.detail,
+                }
+                for row in image_summary.results
+            ]
+
         marker = format_sync_marker(
             ml_number=ml,
             revision_number=revision,
@@ -159,30 +185,47 @@ def main() -> int:
         new_text = upsert_sync_marker(body, marker)
         old_text = local_path.read_text(encoding='utf-8') if local_path.is_file() else ''
 
-        changed = _normalize(new_text) != _normalize(old_text)
+        rail_changed = _normalize(new_text) != _normalize(old_text)
+        assets_changed = image_summary.assets_changed
+        changed = rail_changed or assets_changed
         entry.update(
             submission_id=submission_id,
             revision_number=revision,
             content_hash=content_hash,
             changed=changed,
+            rail_changed=rail_changed,
+            assets_changed=assets_changed,
         )
+
+        image_note = ''
+        if image_summary.copied:
+            image_note = f' images={image_summary.copied}'
+        elif any(row.status == 'error' for row in image_summary.results):
+            image_note = ' image-errors'
 
         if not changed:
             entry['status'] = 'unchanged'
             results.append(entry)
-            print(f'{display:<18} OK    {ml} rev {revision} unchanged')
+            print(f'{display:<18} OK    {ml} rev {revision} unchanged{image_note}')
             continue
 
         if args.dry_run:
             entry['status'] = 'dry-run'
             results.append(entry)
-            print(f'{display:<18} DRY   {ml} rev {revision} would update {local_path.name}')
+            parts = []
+            if rail_changed:
+                parts.append(f'would update {local_path.name}')
+            if assets_changed:
+                parts.append(f'would sync {image_summary.copied or len(image_summary.results)} image(s)')
+            print(f'{display:<18} DRY   {ml} rev {revision} {"; ".join(parts)}{image_note}')
             continue
 
-        local_path.write_text(new_text, encoding='utf-8')
+        if rail_changed:
+            local_path.write_text(new_text, encoding='utf-8')
         entry['status'] = 'written'
         results.append(entry)
-        print(f'{display:<18} OK    {ml} rev {revision} -> {local_path.name}')
+        action = local_path.name if rail_changed else 'images only'
+        print(f'{display:<18} OK    {ml} rev {revision} -> {action}{image_note}')
 
     changed_rows = [r for r in results if r.get('changed')]
     errors = [r for r in results if r['status'] == 'error']
