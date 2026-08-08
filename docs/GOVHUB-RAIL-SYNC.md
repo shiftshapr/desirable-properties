@@ -12,6 +12,7 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 | Script | Purpose |
 | --- | --- |
 | `scripts/govhub_sync_rails_from_hub.py` | Pull latest approved revision per ML-Draft → `content/local/dpN.md` |
+| `scripts/govhub_rail_image_sync.py` | Copy revision markdown images into `content/local/assets/dp/` |
 | `scripts/govhub_dp_common.py` | Shared mapping + fetch helpers |
 | `scripts/check-rails-protected.sh` | Block unauthorized direct edits to `dp*.md` |
 | `scripts/test_govhub_sync_rails.py` | Unit tests (mapping, sync marker helpers) |
@@ -87,6 +88,22 @@ Each synced rail carries an HTML comment near the top:
 
 The sync script updates this line whenever the Gov Hub body changes. Existing
 `dp-local-version` comments are preserved.
+
+### Chapter images (automatic)
+
+When an approved revision markdown includes images (`![alt](url)` or `<img src="…">`),
+the sync script:
+
+1. Fetches each referenced image (absolute URL, Gov Hub `/static/…` path, or existing book asset path).
+2. Compares SHA-256 with `content/local/assets/dp/<filename>` on disk.
+3. Copies only when the file is missing or the bytes differ.
+4. Rewrites markdown to canonical book URLs: `/content/local/assets/dp/<filename>`.
+
+Editors can paste any stable source URL in Gov Hub (for example challenge-site DP art).
+The workflow commits synced assets alongside rail markdown and deploys the book when either changes.
+
+**Option B placement** (title and subtitle first, then image) is editorial — put the image
+markdown after the chapter heading block in the ML-Draft body.
 
 ## Edit protection
 

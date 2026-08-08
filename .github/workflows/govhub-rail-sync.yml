@@ -81,8 +81,14 @@ jobs:
             desirableproperties-book/content/local/about.md
             desirableproperties-book/content/local/acknowledgements.md
           )
+          asset_dir="desirableproperties-book/content/local/assets/dp"
           shopt -s nullglob
           files=("${rails[@]}")
+          if [ -d "${asset_dir}" ]; then
+            while IFS= read -r asset; do
+              files+=("${asset}")
+            done < <(find "${asset_dir}" -type f ! -name '.gitkeep' 2>/dev/null || true)
+          fi
           if [ ${#files[@]} -eq 0 ]; then
             echo "No rail files found; nothing to commit."
             echo "rails_changed=false" >> "$GITHUB_OUTPUT"

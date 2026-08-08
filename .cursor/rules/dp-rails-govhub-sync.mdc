@@ -5,6 +5,7 @@ globs:
   - desirableproperties-book/content/local/about.md
   - desirableproperties-book/content/local/acknowledgements.md
   - scripts/govhub_sync_rails_from_hub.py
+  - scripts/govhub_rail_image_sync.py
   - scripts/govhub_bootstrap_front_matter.py
   - scripts/govhub_dp_common.py
 ---
