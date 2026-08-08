@@ -1,8 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect } from 'react';
 import TrackedLink from '@/components/TrackedLink';
 import { trackEvent } from '@/lib/analytics';
+
+const FORK_HERO_SRC =
+  '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
+const FORK_HERO_ALT =
+  'A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers.';
 
 /** Small layered-space mark: plural layers, AI as one among several. */
 function LayeredSpaceMark() {
@@ -70,7 +76,22 @@ export default function FeaturedPathwayPanel() {
       aria-labelledby="featured-pathway-heading"
       className="border-b border-violet-900/40 bg-gradient-to-r from-violet-950/50 via-slate-900 to-cyan-950/40"
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 sm:py-12 md:flex-row md:items-center md:justify-between md:gap-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12 md:flex-row md:items-center md:gap-10 lg:gap-12">
+        <TrackedLink
+          href="/perspectives/the-fork-in-the-web"
+          eventName="homepage_fork_article_click"
+          className="group block w-full shrink-0 overflow-hidden rounded-xl border border-violet-900/50 bg-slate-950/40 shadow-lg shadow-violet-950/30 ring-1 ring-white/5 transition hover:border-violet-700/60 hover:ring-violet-400/20 md:w-[min(44%,28rem)]"
+        >
+          <Image
+            src={FORK_HERO_SRC}
+            alt={FORK_HERO_ALT}
+            width={1586}
+            height={992}
+            className="aspect-[1586/992] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            sizes="(max-width: 768px) 100vw, 28rem"
+          />
+        </TrackedLink>
+
         <div className="min-w-0 flex-1">
           <div className="flex items-start gap-4">
             <LayeredSpaceMark />
