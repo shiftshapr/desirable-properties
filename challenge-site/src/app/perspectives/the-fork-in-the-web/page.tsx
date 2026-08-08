@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import CanopiWebEmbed from '@/components/canopi/CanopiWebEmbed';
 import PerspectiveBody from '@/components/perspectives/PerspectiveBody';
 import PerspectiveCTA from '@/components/perspectives/PerspectiveCTA';
 import PerspectiveHeader from '@/components/perspectives/PerspectiveHeader';
@@ -20,7 +21,9 @@ export const metadata: Metadata = {
 
 export default function ForkInTheWebPage() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <CanopiWebEmbed />
+      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <Link href="/pathways/ai-human-agency" className="text-sm text-cyan-300 hover:text-cyan-200">
         ← AI &amp; Human Agency pathway
       </Link>
@@ -35,5 +38,6 @@ export default function ForkInTheWebPage() {
         <PerspectiveCTA perspectiveSlug={article.slug} />
       </div>
     </main>
+    </>
   );
 }

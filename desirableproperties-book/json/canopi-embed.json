@@ -4,18 +4,27 @@
   "communityId": "c0f30bc5-de17-4328-80d9-ff8f364907da",
   "trigger": {
     "style": "corner-tab",
-    "type": "corner-tab",
-    "label": "Go Meta",
+    "type": "bouncing-icon",
+    "label": "Join the discussion",
     "color": "#d4af37",
     "position": "bottom-right"
   },
-  "pageRules": ["/viewer/*", "/viewer.htm"],
+  "pageRules": {
+    "mode": "disable_all",
+    "exception_rules": [
+      "/viewer/*",
+      "/viewer.htm",
+      "/perspectives/the-fork-in-the-web"
+    ]
+  },
   "domains": [
     "book.desirableproperties.org",
     "book.themetalayer.org",
     "desirableproperties.org",
     "www.desirableproperties.org",
+    "staging.desirableproperties.org",
     "staging.book.desirableproperties.org"
   ],
-  "supportUrl": "https://desirableproperties.org/support"
+  "supportUrl": "https://desirableproperties.org/support",
+  "notes": "Mirror of canopi.live admin config — apply changes in canopi.live UI, not by editing this file alone. See docs/CANOPI-EMBED-PERSPECTIVE.md."
 }

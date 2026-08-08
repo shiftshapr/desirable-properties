@@ -39,3 +39,16 @@ mark.dp-diff-ins {
   padding: 0 1px;
   border-radius: 2px;
 }
+
+/* Canopi web-embed: keep site header above sidebar chrome when open */
+html.dp-header-above-canopi header {
+  position: relative;
+  z-index: 2147483000;
+}
+
+html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 2147483645 !important;
+}
