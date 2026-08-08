@@ -1,4 +1,17 @@
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+
+/** Known dimensions for perspective inline images (avoids layout shift). */
+const PERSPECTIVE_IMAGE_DIMS: Record<string, { width: number; height: number }> = {
+  'ai-inhabitant-not-landlord.webp': { width: 1586, height: 992 },
+  'concierge-vs-commons.webp': { width: 1600, height: 900 },
+  'intellectual-sovereignty-subsidiarity.webp': { width: 1536, height: 1024 },
+  'intelligence-is-not-a-place.webp': { width: 1586, height: 992 },
+  'privatization-of-context.webp': { width: 1586, height: 992 },
+  'second-fork-closing.webp': { width: 1576, height: 998 },
+  'space-for-layers.webp': { width: 1536, height: 1024 },
+  'you-ai-everything-else.webp': { width: 1586, height: 992 },
+};
 
 type Props = {
   markdown: string;
@@ -50,17 +63,38 @@ export default function PerspectiveBody({ markdown }: Props) {
               {children}
             </blockquote>
           ),
-          img: ({ src, alt }) => (
-            <figure className="my-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={src}
-                alt={alt ?? ''}
-                className="w-full rounded-lg border border-slate-800"
-                loading="lazy"
-              />
-            </figure>
-          ),
+          img: ({ src, alt }) => {
+            const srcStr = typeof src === 'string' ? src : '';
+            const filename = srcStr.split('/').pop() ?? '';
+            const dims = PERSPECTIVE_IMAGE_DIMS[filename];
+
+            if (dims) {
+              return (
+                <figure className="my-8">
+                  <Image
+                    src={srcStr}
+                    alt={alt ?? ''}
+                    width={dims.width}
+                    height={dims.height}
+                    className="h-auto w-full rounded-lg border border-slate-800"
+                    sizes="(max-width: 768px) 100vw, 768px"
+                  />
+                </figure>
+              );
+            }
+
+            return (
+              <figure className="my-8">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={srcStr}
+                  alt={alt ?? ''}
+                  className="w-full rounded-lg border border-slate-800"
+                  loading="lazy"
+                />
+              </figure>
+            );
+          },
           hr: () => <hr className="my-10 border-slate-800" />,
         }}
       >

@@ -70,7 +70,7 @@ From the human perspective, however, all of that complexity might collapse into 
 
 **You → AI → Everything Else.**
 
-![A person interacts with a glowing AI aperture that stands between them and a vast network of web content, databases, communities, APIs, media, commerce, records, and agents.](/images/perspectives/the-fork-in-the-web/you-ai-everything-else.png)
+![A person interacts with a glowing AI aperture that stands between them and a vast network of web content, databases, communities, APIs, media, commerce, records, and agents.](/images/perspectives/the-fork-in-the-web/you-ai-everything-else.webp)
 
 One interface. One conversational relationship. One personalized aperture onto civilization.
 
@@ -86,7 +86,7 @@ AI-mediated experiences can work very differently. An answer may be generated sp
 
 There are tremendous advantages to that fluidity and personalization. But we should understand the architectural exchange being made. Ubiquitous intelligence does not necessarily create ubiquitous shared space. It may instead create billions of extremely capable, highly personalized tunnels through the world's information.
 
-![Personalized answer streams surround isolated individuals on one side, while shared forums, archives, annotation spaces, and history layers persist on the other.](/images/perspectives/the-fork-in-the-web/intelligence-is-not-a-place.png)
+![Personalized answer streams surround isolated individuals on one side, while shared forums, archives, annotation spaces, and history layers persist on the other.](/images/perspectives/the-fork-in-the-web/intelligence-is-not-a-place.webp)
 
 We could know more while encountering one another less. We could gain unprecedented access to knowledge while losing some of the environments in which human beings collectively make sense of knowledge.
 
@@ -100,7 +100,7 @@ AI introduces the possibility of a more intimate form of centralization: **the p
 
 An AI does not merely retrieve information. It can determine which information appears relevant, summarize a controversy, select background facts, identify criticism, decide which voices appear authoritative, remember what the user previously believed and adjust its explanation accordingly. As AI systems become more agentic, they can increasingly act upon the interpretation they have constructed.
 
-![A person stands inside a transparent AI context sphere while surrounding communities, dissenting views, shared memories, and research discussions remain outside the filter.](/images/perspectives/the-fork-in-the-web/privatization-of-context.png)
+![A person stands inside a transparent AI context sphere while surrounding communities, dissenting views, shared memories, and research discussions remain outside the filter.](/images/perspectives/the-fork-in-the-web/privatization-of-context.webp)
 
 None of this requires malicious AI. Imagine instead an extraordinarily capable and trustworthy system sincerely dedicated to helping its user. The architectural problem remains: where does shared human context live?
 
@@ -122,7 +122,7 @@ Convenience can make structural deficiencies disappear from view. The old fragme
 
 We may congratulate ourselves for rebuilding the commons when what we have actually built is an extraordinarily capable concierge.
 
-![An AI concierge summarizes fragmented websites, apps, communities, and data silos for one user, while an open commons connects many people through shared context, annotations, public discussion, and open protocols.](/images/perspectives/the-fork-in-the-web/concierge-vs-commons.png)
+![An AI concierge summarizes fragmented websites, apps, communities, and data silos for one user, while an open commons connects many people through shared context, annotations, public discussion, and open protocols.](/images/perspectives/the-fork-in-the-web/concierge-vs-commons.webp)
 
 That distinction matters because a concierge, however brilliant, is not a commons.
 
@@ -134,7 +134,7 @@ Call this a layered Web, a meta-layer, a Metaweb, or something else entirely. Th
 
 Consider a scientific paper. Today, the paper generally appears within the environment provided by its publisher. In a genuinely layered Web, many independent environments could establish relationships to that same paper. Researchers might maintain a methodological discussion around it. Students could study it together. A replication network could attach experimental results. A professional association could maintain contextual information. Critics could organize challenges to its assumptions. Annotation systems, reputation networks, knowledge graphs, prediction markets, artificial intelligences and entirely new kinds of applications could all operate in relation to the same underlying resource.
 
-![A central open document is surrounded by independent digital layers for annotations, replication, knowledge graphs, community context, and AI agents.](/images/perspectives/the-fork-in-the-web/space-for-layers.png)
+![A central open document is surrounded by independent digital layers for annotations, replication, knowledge graphs, community context, and AI agents.](/images/perspectives/the-fork-in-the-web/space-for-layers.webp)
 
 None of those environments would necessarily exist inside the publisher's website. More importantly, they would not have to exist inside one giant platform placed above the publisher either.
 
@@ -158,7 +158,7 @@ That suggests a simple pro-human architectural principle:
 
 **AI should be an inhabitant, not the landlord.**
 
-![A layered civic Internet city contains many human places and community-governed spaces, with small AI helpers moving among them rather than controlling them.](/images/perspectives/the-fork-in-the-web/ai-inhabitant-not-landlord.png)
+![A layered civic Internet city contains many human places and community-governed spaces, with small AI helpers moving among them rather than controlling them.](/images/perspectives/the-fork-in-the-web/ai-inhabitant-not-landlord.webp)
 
 In a layered Internet, AI could still summarize discussions, translate between communities, identify relationships, challenge arguments, maintain knowledge, discover collaborators, operate applications and represent individuals when authorized. Communities might employ their own artificial intelligences, and individuals might move through digital space accompanied by agents that understand their preferences and protect their interests.
 
@@ -206,7 +206,7 @@ Intellectual sovereignty and intellectual subsidiarity belong together.
 
 **Intellectual sovereignty is the right: humans and human communities retain ultimate authority over their judgment, meaning and worldview. Intellectual subsidiarity is the rule: cognitive authority should not be transferred upward farther than necessary.**
 
-![A human council gathers around a glowing table of memory, meaning, evidence, and decision, while AI systems around the edges scan, translate, summarize, retrieve, and return evidence.](/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.png)
+![A human council gathers around a glowing table of memory, meaning, evidence, and decision, while AI systems around the edges scan, translate, summarize, retrieve, and return evidence.](/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp)
 
 Those principles become especially important once we recognize that rights without supporting architecture can gradually become aspirations rather than realities.
 
@@ -262,7 +262,7 @@ Not because humanity rejected a more plural, human-centered Internet, but becaus
 
 That is why the emerging pro-human conversation must extend beyond regulating artificial intelligence. We also need to decide what we are building **around it**.
 
-![At sunrise over a planetary web, people build and inhabit layered digital civic spaces while small AI helpers support classrooms, forums, studios, libraries, markets, and governance circles.](/images/perspectives/the-fork-in-the-web/second-fork-closing.png)
+![At sunrise over a planetary web, people build and inhabit layered digital civic spaces while small AI helpers support classrooms, forums, studios, libraries, markets, and governance circles.](/images/perspectives/the-fork-in-the-web/second-fork-closing.webp)
 
 We can create intelligence without surrendering intellectual sovereignty. We can automate while practicing intellectual subsidiarity. We can personalize without abolishing the commons. We can build powerful artificial intelligence while preserving persistent places where humans encounter other humans directly.
 
