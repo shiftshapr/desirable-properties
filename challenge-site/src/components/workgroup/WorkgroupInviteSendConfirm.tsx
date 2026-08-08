@@ -3,7 +3,8 @@
 import SendFromMyEmailButton from '@/components/workgroup/SendFromMyEmailButton';
 
 type Props = {
-  busy?: boolean;
+  sendBusy?: boolean;
+  draftBusy?: boolean;
   platformDone?: boolean;
   mailto?: string;
   subject?: string;
@@ -15,7 +16,8 @@ type Props = {
 };
 
 export default function WorkgroupInviteSendConfirm({
-  busy,
+  sendBusy,
+  draftBusy,
   platformDone,
   mailto,
   subject,
@@ -51,11 +53,11 @@ export default function WorkgroupInviteSendConfirm({
         <div className="flex-1 space-y-2">
           <button
             type="button"
-            disabled={busy || platformDone}
+            disabled={sendBusy || draftBusy || platformDone}
             onClick={() => void onPlatformSend()}
             className="w-full rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50 sm:w-auto"
           >
-            {platformDone ? 'Invitation sent' : busy ? 'Sending…' : 'Send invitation'}
+            {platformDone ? 'Invitation sent' : sendBusy ? 'Sending…' : 'Send invitation'}
           </button>
           <p className="text-xs text-slate-500">
             From your name via platform mail · Reply-To your address
@@ -66,7 +68,7 @@ export default function WorkgroupInviteSendConfirm({
             mailto={mailto}
             subject={subject}
             body={body}
-            busy={busy}
+            busy={sendBusy}
             onPrepare={onClientPrepare}
           />
         </div>

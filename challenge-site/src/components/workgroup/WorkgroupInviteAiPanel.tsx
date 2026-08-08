@@ -28,7 +28,8 @@ type Props = {
 
 export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, canInvite }: Props) {
   const [step, setStep] = useState<Step>('research');
-  const [busy, setBusy] = useState(false);
+  const [draftBusy, setDraftBusy] = useState(false);
+  const [sendBusy, setSendBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
@@ -117,7 +118,8 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   function resetInvite() {
     clearInviteDraft(workgroupSlug);
     setStep('research');
-    setBusy(false);
+    setDraftBusy(false);
+    setSendBusy(false);
     setError(null);
     setName('');
     setEmail('');
@@ -143,8 +145,9 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     prior: PriorInvitation[] = priorInvitations,
     manageBusy = true,
   ) {
-    if (manageBusy) setBusy(true);
+    if (manageBusy) setDraftBusy(true);
     setError(null);
+    const previousDraft = draft;
     try {
       const data = await inviteAiDraft(workgroupId, {
         name: name.trim(),
@@ -160,18 +163,25 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         setError(data.error || 'Draft blocked');
         return;
       }
-      setDraft(data.draft || '');
+      const nextDraft = (data.draft || '').trim();
+      if (nextDraft) {
+        setDraft(nextDraft);
+      } else if (previousDraft.trim()) {
+        setError('Regenerate returned an empty draft — your previous text is unchanged.');
+      } else {
+        setDraft('');
+      }
       if (data.prior_invitations) setPriorInvitations(data.prior_invitations);
       setStep('draft');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Draft failed');
     } finally {
-      if (manageBusy) setBusy(false);
+      if (manageBusy) setDraftBusy(false);
     }
   }
 
   async function runResearch(selectedIndex?: number | null) {
-    setBusy(true);
+    setDraftBusy(true);
     setError(null);
     try {
       const data = await inviteAiResearch(workgroupId, {
@@ -202,12 +212,12 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Research failed');
     } finally {
-      setBusy(false);
+      setDraftBusy(false);
     }
   }
 
   async function send(mode: 'platform' | 'client') {
-    setBusy(true);
+    setSendBusy(true);
     setError(null);
     try {
       const data = await inviteAiSend(workgroupId, {
@@ -234,9 +244,11 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       setError(err instanceof Error ? err.message : 'Send failed');
       throw err;
     } finally {
-      setBusy(false);
+      setSendBusy(false);
     }
   }
+
+  const anyBusy = draftBusy || sendBusy;
 
   const hasProgress =
     Boolean(name.trim() || email.trim() || linkedinUrl.trim() || draft.trim())
@@ -259,7 +271,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         {hasProgress ? (
           <button
             type="button"
-            disabled={busy}
+            disabled={anyBusy}
             onClick={resetInvite}
             className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-50"
           >
@@ -278,7 +290,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
             linkedinUrl={linkedinUrl}
             previousInteraction={previousInteraction}
             extraLinks={extraLinks}
-            busy={busy}
+            busy={draftBusy}
             onChange={(patch) => {
               if (patch.name !== undefined) setName(patch.name);
               if (patch.email !== undefined) setEmail(patch.email);
@@ -296,7 +308,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
           <div className="mt-6">
             <WorkgroupInviteDisambiguation
               candidates={candidates}
-              busy={busy}
+              busy={draftBusy}
               onSelect={(index) => void runResearch(index)}
             />
           </div>
@@ -321,7 +333,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               suggested={suggested}
               selectedExtraIds={selectedExtraIds}
               priorInvitations={priorInvitations}
-              busy={busy}
+              busy={draftBusy}
               onTone={(t) => setTone(t)}
               onLength={(l) => setLength(l)}
               onDraft={setDraft}
@@ -333,7 +345,8 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               onRegenerate={() => void runDraft()}
             />
             <WorkgroupInviteSendConfirm
-              busy={busy}
+              sendBusy={sendBusy}
+              draftBusy={draftBusy}
               platformDone={platformDone || step === 'done'}
               mailto={mailto}
               subject={mailSubject}
