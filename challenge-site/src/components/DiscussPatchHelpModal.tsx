@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { dismissDiscussPatchHelp } from '@/lib/discuss-patch-help';
 
 type Props = {
@@ -12,7 +13,12 @@ type Props = {
 export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Props) {
   const titleId = useId();
   const descId = useId();
+  const [mounted, setMounted] = useState(false);
   const [doNotShowAgain, setDoNotShowAgain] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -24,10 +30,18 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
   }, [open, onClose]);
 
   useEffect(() => {
-    if (!open) setDoNotShowAgain(false);
+    if (!open) {
+      setDoNotShowAgain(false);
+      return;
+    }
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   function openDiscuss() {
     if (doNotShowAgain) dismissDiscussPatchHelp();
@@ -35,7 +49,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
     onClose();
   }
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/75 p-5"
       onClick={onClose}
@@ -112,6 +126,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
