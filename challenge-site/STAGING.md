@@ -15,7 +15,9 @@ Staging runs the same Next.js challenge-site as production from `/home/ubuntu/de
 2. Verify on https://staging.desirableproperties.org (mobile hamburger nav, sign-in, Hermes, etc.)
 3. Promote to production: `./deploy.sh` (stops/restarts prod only; staging keeps running)
 
-Both scripts share one git checkout and one `npm run build` output (`.next/`). Staging deploy does **not** stop production.
+Both scripts share one git checkout but **separate build output directories** (`.next-prod` / `.next-staging`). Staging deploy does **not** stop production or overwrite prod's build artifacts.
+
+Set `DP_ENV=prod|staging` (or `NEXT_DIST_DIR`) before `npm run build`; deploy scripts export this automatically. PM2 ecosystem configs set `DP_ENV` for `next start`.
 
 ## Files
 

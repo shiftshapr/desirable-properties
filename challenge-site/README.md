@@ -37,6 +37,8 @@ Or from the repo root:
 
 Runs on port **3005** via PM2 process `desirableproperties`.
 
+Production builds write to **`.next-prod`** (`DP_ENV=prod`). Staging uses **`.next-staging`** — see [STAGING.md](STAGING.md). Local `npm run dev` keeps the default `.next/`.
+
 ## Environment
 
 | Variable | Default |

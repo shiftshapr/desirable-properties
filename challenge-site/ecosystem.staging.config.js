@@ -54,6 +54,7 @@ module.exports = {
       args: 'start -p 3006 -H 127.0.0.1',
       env: {
         NODE_ENV: 'production',
+        DP_ENV: 'staging',
         PORT: '3006',
         GOVHUB_BASE_URL: 'https://hub.themetalayer.org',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',

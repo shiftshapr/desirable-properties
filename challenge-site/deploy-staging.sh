@@ -9,21 +9,46 @@ cd "$APP_DIR"
 echo "[1/5] Stopping staging PM2 only (prod stays up during build)..."
 pm2 stop desirableproperties-staging 2>/dev/null || true
 
-# Staging and prod share the same .next/ output directory. `npm run build` below
-# replaces it on disk. Prod keeps its old in-memory build until separately deployed
-# via deploy.sh — do NOT auto-restart prod from this script (that would ship staging
-# code to prod). Until prod is redeployed, prod CSS/chunks may break against the new
-# .next on disk.
-echo "[2/5] Building Next.js app..."
+# Staging builds to .next-staging; prod uses .next-prod — builds no longer clobber each other.
+echo "[2/5] Building Next.js app (DP_ENV=staging → .next-staging)..."
+export DP_ENV=staging
 npm run build
 
-echo ""
-echo "================================================================================"
-echo "WARNING: Prod still on old in-memory build — run deploy.sh to update prod"
-echo "         or prod CSS/chunks may break until prod is restarted/redeployed."
-echo "         This staging deploy does NOT restart prod (isolation)."
-echo "================================================================================"
-echo ""
+probe_prod_css() {
+  if ! pm2 pid desirableproperties >/dev/null 2>&1; then
+    return 0
+  fi
+
+  echo ""
+  echo "[check] Probing prod CSS (staging build should not touch .next-prod)..."
+  local prod_html prod_css css_disk
+  prod_html=$(curl -fsS http://127.0.0.1:3005/ 2>/dev/null || true)
+  if [[ -z "$prod_html" ]]; then
+    echo "WARNING: prod not responding on :3005"
+    return 0
+  fi
+
+  prod_css=$(echo "$prod_html" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
+  if [[ -z "$prod_css" ]]; then
+    echo "WARNING: could not extract prod CSS href from homepage"
+    return 0
+  fi
+
+  if ! curl -fsS "http://127.0.0.1:3005${prod_css}" >/dev/null 2>&1; then
+    echo "WARNING: prod CSS probe failed (${prod_css}) — run ./deploy.sh to rebuild prod"
+    return 0
+  fi
+
+  css_disk="${APP_DIR}/.next-prod${prod_css}"
+  if [[ ! -f "$css_disk" ]]; then
+    echo "WARNING: prod serves ${prod_css} but file missing from .next-prod (disk mismatch)"
+    echo "         Run ./deploy.sh to align prod with .next-prod"
+  else
+    echo "OK: prod CSS loads and matches .next-prod on disk (${prod_css})"
+  fi
+}
+
+probe_prod_css
 
 echo "[3/5] Starting staging PM2 process..."
 pm2 delete desirableproperties-staging 2>/dev/null || true
@@ -56,3 +81,5 @@ sleep 2
 curl -fsS http://127.0.0.1:3006/ >/dev/null && echo "OK: staging app responding on :3006"
 HTML=$(curl -fsS http://127.0.0.1:3006/)
 echo "$HTML" | grep -q 'site-mobile-nav' && echo "OK: challenge-site markup (mobile nav) present"
+STAGING_CSS=$(echo "$HTML" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
+curl -fsS "http://127.0.0.1:3006${STAGING_CSS}" >/dev/null && echo "OK: staging CSS loads (${STAGING_CSS})"
