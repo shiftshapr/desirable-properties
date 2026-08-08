@@ -2,7 +2,10 @@
 
 *The Meta-Layer gives developers and community builders the tools and incentives to create shared value across the web.*
 
+![Illustration for Desirable Property DP9: Developer and Community Incentives](/content/local/assets/dp/DP9.webp)
+
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
+<!-- govhub-sync: ml=ML-Draft-016 revision=02 submission=ea011f29-118b-4981-b6d4-bd98e8ba6ba4 hash=f5e436a234071fa2 synced=2026-08-08T21:35:00Z -->
 
 ---
 

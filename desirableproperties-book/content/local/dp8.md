@@ -2,7 +2,10 @@
 
 *The Meta-Layer supports real-time collaboration that travels across the web — so your people are always close.*
 
+![Illustration for Desirable Property DP8: Collaborative Environment and Meta-Communities](/content/local/assets/dp/DP8.webp)
+
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
+<!-- govhub-sync: ml=ML-Draft-015 revision=02 submission=2eda2f5f-876f-416e-b8fa-e22d7be7a8fa hash=f58952d4b4ccd050 synced=2026-08-08T21:35:00Z -->
 
 ---
 

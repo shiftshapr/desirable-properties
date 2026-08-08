@@ -2,7 +2,10 @@
 
 *The Conditions for Trust — strong, federated authentication and decentralized accountability are the foundations for real trust, safe interaction, and meaningful community.*
 
+![Illustration for Desirable Property DP1: Federated Authentication & Accountability](/content/local/assets/dp/DP1.webp)
+
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
+<!-- govhub-sync: ml=ML-Draft-008 revision=04 submission=fd4409c6-e71c-41ad-adbd-b8f28c724a07 hash=f043a3c764b3987c synced=2026-08-08T21:35:00Z -->
 
 ---
 

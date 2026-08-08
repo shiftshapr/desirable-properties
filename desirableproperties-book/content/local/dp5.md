@@ -2,7 +2,10 @@
 
 *Claim your space in the Meta-Layer — meta-domains and personal identifiers give you sovereign, portable identity, owned by you, not a platform.*
 
+![Illustration for Desirable Property DP5: Decentralized Namespace](/content/local/assets/dp/DP5.webp)
+
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
+<!-- govhub-sync: ml=ML-Draft-012 revision=02 submission=997f0991-c23d-4386-9289-e590a27931ae hash=f0e7cbf3c1a8aad8 synced=2026-08-08T21:35:00Z -->
 
 ---
 
