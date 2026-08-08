@@ -66,9 +66,10 @@ export function bookViewerHref(opts?: {
   /** Append ?discuss=1 so the book bridge auto-opens Canopi Discuss. */
   discuss?: boolean;
 }): string {
-  const pageId = String(opts?.pageId || '').trim();
-  if (pageId && /^dp\d{2}$/i.test(pageId)) {
-    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`, opts?.discuss);
+  const pageId = String(opts?.pageId || '').trim().toLowerCase();
+  // Short chapter keys only (intro, dp01, …) — not Canopi hashed pageIds.
+  if (pageId === 'intro' || /^dp\d{2}$/i.test(pageId)) {
+    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId}`, opts?.discuss);
   }
   const dpId = String(opts?.dpId || '').trim();
   if (dpId) {
@@ -85,6 +86,12 @@ export function bookDiscussHref(opts?: {
 }): string {
   return bookViewerHref({ ...opts, discuss: true });
 }
+
+/** Intro chapter of The Layered Web with Canopi Discuss auto-opened. */
+export function bookIntroDiscussHref(): string {
+  return bookDiscussHref({ pageId: 'intro' });
+}
+
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 
@@ -187,6 +194,18 @@ export function govhubDraftReadHref(documentHref: string | null | undefined): st
 
 /** Meta workgroup that tracks gaps across the numbered DP set (not itself a DP#). */
 export const DP_DISCOVERY_SLUG = 'dp-discovery';
+
+/** Discovery-only “What we ask of you” copy (welcome + getting started). */
+export const DP_DISCOVERY_ASK_ITEMS = [
+  'Review the Layered Web book (book.desirableproperties.org).',
+  'Review for context and completeness.',
+  'Discuss on the book—chapter comments are live now (Canopi on each chapter).',
+  'Participate in workgroup discussion as to a new DPs that may be needed.',
+] as const;
+
+export function isDpDiscoveryWorkgroup(slug?: string | null): boolean {
+  return String(slug || '').trim().toLowerCase() === DP_DISCOVERY_SLUG;
+}
 
 export function extractDpId(name: string): string | null {
   const match = name.match(/^DP(\d+)\b/i);

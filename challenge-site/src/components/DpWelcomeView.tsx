@@ -2,8 +2,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   bookDiscussHref,
+  bookIntroDiscussHref,
+  DP_DISCOVERY_ASK_ITEMS,
   GOVHUB_DP_PATCHES_URL,
   govhubDraftReadHref,
+  isDpDiscoveryWorkgroup,
 } from '@/lib/govhub';
 import {
   DP_WELCOME_SUBJECT_COORDINATOR,
@@ -38,9 +41,13 @@ export default function DpWelcomeView({
   const subject = variant === 'coordinator' ? DP_WELCOME_SUBJECT_COORDINATOR : DP_WELCOME_SUBJECT_MEMBER;
   const collabEnabled = isWorkgroupCollabEnabledFromEnv();
   const collabHref = workgroupSlug && collabEnabled ? workgroupPrimaryHref(workgroupSlug) : null;
-  const bookHref = bookDiscussHref(dpId ? { dpId } : undefined);
-  const patchHref = govhubDraftReadHref(documentHref) ?? GOVHUB_DP_PATCHES_URL;
+  const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
+  const bookHref = isDiscovery
+    ? bookIntroDiscussHref()
+    : bookDiscussHref(dpId ? { dpId } : undefined);
+  const patchHref = isDiscovery ? null : govhubDraftReadHref(documentHref) ?? GOVHUB_DP_PATCHES_URL;
   const a = MESSAGE_A_SECTIONS;
+  const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
@@ -72,7 +79,7 @@ export default function DpWelcomeView({
 
         <h2 className={HEADING}>{a.askTitle}</h2>
         <ul className={LIST}>
-          {a.askItems.map((item) => (
+          {askItems.map((item) => (
             <li key={item} className={LIST_ITEM}>
               {item}
             </li>
@@ -139,14 +146,16 @@ export default function DpWelcomeView({
         >
           Read & discuss on the book
         </a>
-        <a
-          href={patchHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
-        >
-          Patch drafts on Gov Hub
-        </a>
+        {patchHref ? (
+          <a
+            href={patchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500"
+          >
+            Patch drafts on Gov Hub
+          </a>
+        ) : null}
         <Link
           href={WORKGROUPS_LIST_HREF}
           className="rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-semibold text-slate-200 hover:border-slate-500 hover:text-white"

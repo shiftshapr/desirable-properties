@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { MESSAGE_A_SECTIONS } from '@/lib/dp-welcome-content';
-import { bookDiscussHref, govhubDraftReadHref, govhubUrl } from '@/lib/govhub';
+import {
+  bookDiscussHref,
+  bookIntroDiscussHref,
+  DP_DISCOVERY_ASK_ITEMS,
+  govhubDraftReadHref,
+  govhubUrl,
+  isDpDiscoveryWorkgroup,
+} from '@/lib/govhub';
 
 type Props = {
   workgroupName: string;
@@ -20,9 +27,13 @@ export default function WorkgroupGettingStarted({
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
-  const discussHref = bookDiscussHref(dpId ? { dpId } : undefined);
-  const patchHref = govhubDraftReadHref(documentHref);
+  const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
+  const discussHref = isDiscovery
+    ? bookIntroDiscussHref()
+    : bookDiscussHref(dpId ? { dpId } : undefined);
+  const patchHref = isDiscovery ? null : govhubDraftReadHref(documentHref);
   const a = MESSAGE_A_SECTIONS;
+  const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
 
   return (
     <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
@@ -51,7 +62,7 @@ export default function WorkgroupGettingStarted({
           href={discussHref}
           className="rounded-lg bg-violet-800 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
         >
-          Discuss &amp; patch this chapter →
+          {isDiscovery ? 'Discuss →' : 'Discuss & patch this chapter →'}
         </DiscussPatchLink>
         {patchHref ? (
           <a
@@ -91,7 +102,7 @@ export default function WorkgroupGettingStarted({
             {a.askTitle}
           </h3>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-slate-300 marker:text-cyan-500">
-            {a.askItems.slice(0, 4).map((item) => (
+            {askItems.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
