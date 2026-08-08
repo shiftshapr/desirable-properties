@@ -64,15 +64,15 @@ Your AI moves through the digital world on your behalf. It searches websites, in
 
 This is already becoming technically plausible. The Model Context Protocol is creating standardized ways for AI applications to connect with external tools, data and workflows. Agent-to-agent protocols are being developed so that systems created by different organizations can communicate and collaborate. These are valuable developments, and they could make digital systems dramatically more capable.
 
-Yet consider the architecture they may ultimately produce. Beneath the surface could be millions of agents, billions of data sources, specialized models, APIs, websites, databases, blockchains, corporate systems and personal devices communicating continuously. Computationally, the Internet becomes almost unimaginably multilayered.
+Yet consider the architecture they may ultimately produce. Beneath the surface could be trillions of AI agents and other computational actors, moving among quadrillions of data objects distributed across specialized models, APIs, websites, databases, blockchains, corporate systems, sensors, personal devices, and digital environments. Computationally, the Internet could become more densely populated, dynamic, and multilayered than anything humanity has ever constructed.
 
-From the human perspective, however, all that complexity might collapse into something much simpler:
+From the human perspective, however, all of that complexity might collapse into something radically simpler:
 
 **You → AI → Everything Else.**
 
 One interface. One conversational relationship. One personalized aperture onto civilization.
 
-We could build the most complicated computational network in history while giving human beings an increasingly **single-layered experience of it**. That should give us pause.
+We could build the most complex and populous computational environment in history while giving human beings an increasingly single-layered experience of it.
 
 ## Intelligence Is Not a Place
 
