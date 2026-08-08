@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import localData from '@/data/desirable-properties.json';
 import { extractDpId, govhubUrl, type GovHubWorkgroup } from '@/lib/govhub';
+import { dpBadgeImageSrc, dpImageAlt } from '@/lib/dp-images';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 
@@ -15,17 +17,29 @@ type Row = {
 };
 
 function WorkgroupCard({ dp, wg, active, collabEnabled }: Row & { collabEnabled: boolean }) {
+  const badgeSrc = dpBadgeImageSrc(dp.id);
   return (
     <div
-      className={`flex items-center justify-between rounded-lg border px-3 py-2 text-sm ${
+      className={`flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm ${
         active
           ? 'border-emerald-900/50 bg-emerald-950/20'
           : 'border-amber-900/40 bg-amber-950/10'
       }`}
     >
-      <span className="font-medium text-slate-200">
-        <span className="mr-2 text-xs text-slate-500">{dp.id}</span>
-        {dp.name.length > 32 ? `${dp.name.slice(0, 30)}…` : dp.name}
+      <span className="flex min-w-0 items-center gap-2 font-medium text-slate-200">
+        {badgeSrc ? (
+          <Image
+            src={badgeSrc}
+            alt={dpImageAlt(dp.id, dp.name)}
+            width={36}
+            height={36}
+            className="h-9 w-9 shrink-0 rounded-md border border-slate-700/80 object-cover"
+          />
+        ) : null}
+        <span className="min-w-0 truncate">
+          <span className="mr-2 text-xs text-slate-500">{dp.id}</span>
+          {dp.name.length > 32 ? `${dp.name.slice(0, 30)}…` : dp.name}
+        </span>
       </span>
       <span className="ml-2 flex shrink-0 flex-col items-end gap-1">
         {active && wg ? (

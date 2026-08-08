@@ -1,5 +1,6 @@
 import localData from '@/data/desirable-properties.json';
 import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
+import Image from 'next/image';
 import Link from 'next/link';
 import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
 import {
@@ -9,6 +10,7 @@ import {
   fetchChallengeWorkgroups,
   govhubUrl,
 } from '@/lib/govhub';
+import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
@@ -431,12 +433,25 @@ export default async function JoinWorkgroupPage() {
               const nominateHref = workgroupGovHubHref(slug, 'nominate');
               const summary = shortDescription(dp);
               const dpDetailHref = `/dp/${dpId.toLowerCase()}`;
+              const cardSrc = dpCardImageSrc(dpId);
 
               return (
                 <li
                   key={dpId}
-                  className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-5 transition-colors hover:border-violet-700/60"
+                  className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/60 transition-colors hover:border-violet-700/60"
                 >
+                  {cardSrc ? (
+                    <Link href={dpDetailHref} className="relative block aspect-[4/3] bg-slate-950">
+                      <Image
+                        src={cardSrc}
+                        alt={dpImageAlt(dpId, name)}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </Link>
+                  ) : null}
+                  <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-start justify-between gap-2">
                     <Link
                       href={dpDetailHref}
@@ -507,6 +522,7 @@ export default async function JoinWorkgroupPage() {
                         isMember={memberWorkgroupIds.has(idBySlug.get(slug)!)}
                       />
                     ) : null}
+                  </div>
                   </div>
                 </li>
               );

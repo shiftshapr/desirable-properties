@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
@@ -12,6 +13,7 @@ import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
+import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
 import { govhubDraftReadHref, govhubUrl } from '@/lib/govhub';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
@@ -107,10 +109,25 @@ export default function WorkgroupCollabClient({
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
   const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
+  const artSrc = dpCardImageSrc(dpId);
 
   return (
     <div className="space-y-8">
       <header className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+        <div className={`flex flex-col gap-6 ${artSrc ? 'md:flex-row md:items-start' : ''}`}>
+          {artSrc ? (
+            <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-xl border border-slate-700 bg-slate-950 sm:w-48 md:mx-0">
+              <Image
+                src={artSrc}
+                alt={dpImageAlt(dpId || '', workgroup.name)}
+                fill
+                className="object-cover"
+                sizes="192px"
+                priority
+              />
+            </div>
+          ) : null}
+          <div className="min-w-0 flex-1">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Workgroup</p>
         <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{workgroup.name}</h1>
         {workgroup.description ? (
@@ -157,6 +174,8 @@ export default function WorkgroupCollabClient({
         {!membershipChecked ? (
           <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
         ) : null}
+          </div>
+        </div>
       </header>
 
       <WorkgroupGettingStarted

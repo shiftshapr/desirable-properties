@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import DPProvenanceSection from '@/components/DPProvenanceSection';
 import RelatedPathway from '@/components/pathways/RelatedPathway';
@@ -12,6 +13,7 @@ import {
   govhubDraftReadHref,
   govhubUrl,
 } from '@/lib/govhub';
+import { dpFullImageSrc, dpImageAlt } from '@/lib/dp-images';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import {
@@ -85,6 +87,19 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
           {dp.landing_subtitle && (
             <p className="mt-3 text-lg text-cyan-300">{dp.landing_subtitle}</p>
           )}
+          {dpFullImageSrc(dp.id) ? (
+            <figure className="mt-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/60 shadow-lg shadow-cyan-950/20">
+              <Image
+                src={dpFullImageSrc(dp.id)!}
+                alt={dpImageAlt(dp.id, dp.name)}
+                width={1200}
+                height={1200}
+                className="h-auto w-full object-cover"
+                priority
+                sizes="(max-width: 896px) 100vw, 896px"
+              />
+            </figure>
+          ) : null}
           {provenance && (
             <div className="mt-4 flex flex-wrap gap-6 text-sm">
               <p className="text-cyan-300">
