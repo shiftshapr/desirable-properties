@@ -14,7 +14,7 @@ Build a **public event series experience** on staging for the four *Fork in the 
 2. **Session Questions** on each session — structured reflection + artifact capture, using the **Metaweb book session-questions UX** (multi-field form + **✦ AI assist** per field via `ComposeFieldAiAssist`).
 3. **Admin** to create and edit **event series** generically (not hard-coded to Fork).
 4. **One series badge** (not per-session) for participants who **attend or watch** and **respond to session questions** across the series.
-5. **PEARL badge** (series-level) for participants who complete the **patch pipeline**: create patch idea → socialize → get feedback → submit patch → reflect.
+5. **PEARL badge** (series-level) for participants who complete the **patch pipeline**: create patch idea → socialize → get feedback → **submit a real patch** (verified automatically) → reflect.
 
 **Database:** Yes — challenge-site already uses **Postgres** via `DP_DATABASE_URL` / `DATABASE_URL`, with schema managed in `challenge-site/src/lib/dp-db.ts` (`ensureDpSchema()`). Questions, answers, and PEARL progress use **normalized relational tables**, not JSON blobs.
 
@@ -32,7 +32,7 @@ Build a **public event series experience** on staging for the four *Fork in the 
 |-------|----------|
 | Per-session badges | **No** — single **series badge** only |
 | Series badge criteria | Attend or watch **and** submit session questions (progress tracked per session; badge granted when series requirements met — see below) |
-| PEARL criteria | Patch idea → socialize → feedback → submit patch → reflect (self-attested feedback OK) |
+| PEARL criteria | Patch idea → socialize → feedback → **verified patch** (system lookup) → reflect |
 | Attendance proof | Honor checkbox or external registrant match — **either is fine** |
 | Auth | **Required** to save answers, submit questions, and claim badges |
 | Edit after submit | **Allowed** — users may update responses and PEARL steps after submit |
@@ -80,10 +80,10 @@ Available once user has **at least one** submitted session response (recommend: 
 1. **Patch idea** — draft a concrete DP-oriented patch concept (textarea + AI).
 2. **Socialize** — link where they shared it (Discuss, workgroup chat, office hours, etc.).
 3. **Feedback** — summarize feedback received (self-attested).
-4. **Submit patch** — link to submitted patch on **Gov Hub** or **Canopi** (passage-level patch or discuss thread).
+4. **Submit patch** — user patches on **Gov Hub** or **Canopi** (Discuss `PATCH:` / `INSERT:`); **the site does not ask for a URL**. The system **searches Gov Hub and Canopi** for a patch by the signed-in user and marks this step complete when found.
 5. **Reflect** — what changed after feedback; what they learned (textarea + AI).
 
-Submit PEARL track → **PEARL series badge offer** unlocked.
+Submit PEARL track → **PEARL series badge offer** unlocked (requires step 4 **verified**, not self-reported).
 
 PEARL aligns with DP10 (Prepare/Engage/Reflect/Leverage) but **Leverage** here is explicitly **patch contribution**, not a generic artifact link.
 
@@ -106,6 +106,7 @@ PEARL aligns with DP10 (Prepare/Engage/Reflect/Leverage) but **Leverage** here i
 /api/series/[seriesSlug]                   → public read (metadata only)
 /api/series/.../responses                  → auth: save/load answers
 /api/series/.../pearl                      → auth: save/load PEARL steps
+/api/series/.../pearl/patch-status           → auth: verify patch exists (Gov Hub + Canopi lookup)
 /api/admin/event-series/...                → admin CRUD
 ```
 
@@ -238,9 +239,14 @@ dp_event_series_pearl (
   socialize_note TEXT,
   feedback_summary TEXT,
   feedback_from TEXT,          -- peer | coordinator | public | other
-  patch_submit_url TEXT,       -- Gov Hub or Canopi URL
-  patch_submit_source TEXT,    -- govhub | canopi (optional; infer from URL host if null)
-  patch_submit_note TEXT,
+  -- Step 4: verified patch (system-detected; user does not paste URL)
+  patch_verified BOOLEAN NOT NULL DEFAULT false,
+  patch_verified_at TIMESTAMPTZ,
+  patch_verified_source TEXT,  -- govhub | canopi
+  patch_govhub_proposal_id TEXT,
+  patch_canopi_message_id TEXT,
+  patch_verified_href TEXT,    -- resolved link for display
+  patch_last_checked_at TIMESTAMPTZ,
   reflection TEXT,
   status TEXT NOT NULL DEFAULT 'draft',  -- draft | submitted
   submitted_at TIMESTAMPTZ,
@@ -260,9 +266,41 @@ dp_event_series_badge_grant (
   revoked_at TIMESTAMPTZ,
   UNIQUE (series_id, user_id, badge_code)
 )
+
+-- Optional cache of patch lookups (avoids hammering Gov Hub / Canopi)
+dp_event_series_patch_lookup (
+  id UUID PRIMARY KEY,
+  pearl_id UUID NOT NULL REFERENCES dp_event_series_pearl(id) ON DELETE CASCADE,
+  source TEXT NOT NULL,        -- govhub | canopi
+  external_id TEXT NOT NULL,
+  href TEXT,
+  snippet TEXT,
+  created_at TIMESTAMPTZ NOT NULL,
+  matched_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (pearl_id, source, external_id)
+)
 ```
 
 **Why not JSON:** Admin edits questions as rows; answers join on `question_id`; exports are straightforward SQL; Fork seed is a migration/seed script inserting rows, not a schema file.
+
+### Patch verification (step 4 — automatic)
+
+The user **submits patches in Gov Hub or Canopi** using existing flows. Challenge-site **verifies** by querying upstream systems matched to the signed-in user (`hermes_session.userId`, `email`, and Canopi `authorId` where available).
+
+| Source | What counts as a patch | Lookup approach |
+|--------|------------------------|-----------------|
+| **Canopi** | Discuss post whose body starts with `PATCH:` or `INSERT:` (see `parseDiscussPatch` in `discuss-patch.ts`) | Search DP book / perspective pageIds; filter `authorId` / author email to current user; `created_at` on or after PEARL row `created_at` (or series `created_at`) |
+| **Gov Hub** | Draft proposal / passage patch on a Desirable Properties document | Gov Hub API: proposals or layer activity where actor matches user and event is `dp_proposal_submitted` (or equivalent proposal record); scope to `desirable-properties` collection |
+
+**On PEARL page load** and on **“Check for my patch”** button:
+
+1. Run Canopi + Gov Hub lookups in parallel.
+2. If any match → set `patch_verified = true`, store ids/href/source, `patch_verified_at = now()`.
+3. If none → step 4 stays incomplete; show CTAs to patch + “Check again”.
+
+**Admin override:** support can manually set `patch_verified` on a PEARL row (edge cases, API outage).
+
+**No user-entered patch URL** in v1.
 
 ---
 
@@ -360,12 +398,21 @@ Admin seeds these rows for each session. Engage fields match [`fork-in-the-web-w
 | 1. Patch idea | `patch_idea` | Concrete suggested change to a DP or book passage; textarea + AI |
 | 2. Socialize | `socialize_url`, `socialize_note` | Link to Discuss, workgroup, office hours, etc. |
 | 3. Feedback | `feedback_summary`, `feedback_from` | Self-attested |
-| 4. Submit patch | `patch_submit_url`, `patch_submit_note` | **Gov Hub** or **Canopi** URL to the submitted patch (passage patch, discuss post, or annotation) |
+| 4. Submit patch | `patch_verified*`, `patch_*_id`, `patch_verified_href` | **Auto-verified** — user patches on Gov Hub or Canopi; system detects it |
 | 5. Reflect | `reflection` | What changed; what you learned; textarea + AI |
 
-**Submit** sets `dp_event_series_pearl.status = submitted`. User may **edit any step after submit**.
+**Submit** sets `dp_event_series_pearl.status = submitted` only when steps 1–3 and 5 are filled **and** `patch_verified = true`. User may **edit** user-entered steps after submit; step 4 refreshes on patch-status check.
 
-**Submit patch URL:** Accept **Gov Hub** or **Canopi** links. Optional soft validation: host matches known Gov Hub / Canopi / desirableproperties domains; show helper text with examples for both flows.
+### Step 4 UI (no URL field)
+
+- Heading: **Submit your patch**
+- Copy: Patch on Gov Hub or post `PATCH:` / `INSERT:` in Canopi Discuss — we’ll detect it automatically.
+- CTAs: **Patch on Gov Hub** · **Discuss & Patch (book)** · **Fork perspective discuss**
+- Status card:
+  - `Looking for your patch…` (on check)
+  - `Not found yet` + Check again
+  - `Patch found` + link (`patch_verified_href`) + source badge (Gov Hub / Canopi)
+- **Check for my patch** button; also re-check when user returns to the page (rate-limited, e.g. 1/min).
 
 **Deep links in UI:**
 
@@ -391,7 +438,7 @@ Admin seeds these rows for each session. Engage fields match [`fork-in-the-web-w
 | Badge | Code (proposed) | Criteria |
 |-------|-----------------|----------|
 | Fork Workshop Series | `fork-ws-series` | All sessions: attend/watch + questions submitted |
-| Fork Workshop PEARL | `fork-ws-series-pearl` | PEARL pipeline submitted (all 5 steps) |
+| Fork Workshop PEARL | `fork-ws-series-pearl` | PEARL submitted: idea + socialize + feedback + **verified patch** + reflect |
 
 **No** `fork-ws-01` … `fork-ws-04` session badges.
 
@@ -439,8 +486,8 @@ Session number, slug, title, image, schedule, live URL, blurb, perspective ancho
 |---------|------|
 | Fork perspective | CTA → series landing |
 | AI & Human Agency pathway | Inline link |
-| Discuss & Patch / Canopi | PEARL socialize + patch submit (Canopi URL) |
-| Gov Hub patches | PEARL patch submit (Gov Hub URL) |
+| Discuss & Patch / Canopi | PEARL patch detection (`PATCH:` / `INSERT:` posts) |
+| Gov Hub patches | PEARL patch detection (draft proposals) |
 | Workgroups | Post-session CTA; socialize target |
 | `/badges` | “Workshop series badges” subsection |
 
@@ -479,7 +526,8 @@ Deploy from `feat/ai-human-agency-pathway` via `./deploy-staging.sh`.
 - [ ] Auth required to answer; drafts autosave; **edit after submit works**
 - [ ] Progress: N/4 sessions toward series badge (not per-session badges)
 - [ ] Series badge unlocks when all sessions attend + submitted
-- [ ] PEARL page: patch idea → socialize → feedback → submit patch → reflect
+- [ ] PEARL page: patch idea → socialize → feedback → **auto-detected patch** → reflect
+- [ ] Patch verification queries Gov Hub + Canopi by signed-in user (no URL paste)
 - [ ] PEARL badge unlocks on PEARL submit
 - [ ] Admin can create a second test series without code change
 - [ ] Mobile-friendly question flow
@@ -496,6 +544,8 @@ Deploy from `feat/ai-human-agency-pathway` via `./deploy-staging.sh`.
 | Fork perspective | `challenge-site/src/data/perspectives/the-fork-in-the-web.ts` |
 | AI compose assist | `challenge-site/src/components/compose/ComposeFieldAiAssist.tsx` |
 | Discuss & Patch | `challenge-site/src/lib/govhub.ts`, `DiscussPatchLink` |
+| Patch parser | `challenge-site/src/lib/discuss-patch.ts` |
+| Activity feed (patch patterns) | `challenge-site/src/lib/activity-feed.ts` |
 | PEARL definition | `desirableproperties-book/content/local/dp10.md` §11 |
 | Badges page | `challenge-site/src/app/badges/page.tsx` |
 
