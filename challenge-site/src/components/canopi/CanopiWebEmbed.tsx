@@ -11,7 +11,7 @@ export default function CanopiWebEmbed() {
   return (
     <Script
       id="dp-canopi-bridge"
-      src="/assets/dp-canopi-bridge.js"
+      src="/embed/dp-canopi-bridge.js"
       strategy="afterInteractive"
     />
   );

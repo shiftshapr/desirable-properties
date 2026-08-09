@@ -99,7 +99,7 @@ After saving in canopi.live:
 
 | Piece | Path |
 |-------|------|
-| Bridge + v1 loader | `challenge-site/public/assets/dp-canopi-bridge.js` |
+| Bridge + v1 loader | `challenge-site/public/embed/dp-canopi-bridge.js` |
 | React loader | `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` |
 | Perspective page | `challenge-site/src/app/perspectives/the-fork-in-the-web/page.tsx` |
 | Config mirror | `desirableproperties-book/json/canopi-embed.json` |
