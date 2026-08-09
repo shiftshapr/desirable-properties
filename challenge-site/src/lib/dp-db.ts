@@ -349,7 +349,11 @@ export function getDpPool(): pg.Pool | null {
   const connectionString = dpDatabaseUrl();
   if (!connectionString) return null;
   if (!pool) {
-    pool = new Pool({ connectionString, max: 10 });
+    pool = new Pool({
+      connectionString,
+      max: 10,
+      connectionTimeoutMillis: 8000,
+    });
   }
   return pool;
 }

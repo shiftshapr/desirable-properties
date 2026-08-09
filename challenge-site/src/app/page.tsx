@@ -30,9 +30,9 @@ const MISSING_ITEMS = [
 export default async function Home() {
   const now = new Date();
   const [activity, workgroups, participation] = await Promise.all([
-    fetchUnifiedActivity(12),
-    fetchChallengeWorkgroups(),
-    getPathwayParticipationBand('/pathways/ai-human-agency'),
+    fetchUnifiedActivity(12).catch(() => [] as Awaited<ReturnType<typeof fetchUnifiedActivity>>),
+    fetchChallengeWorkgroups().catch(() => [] as Awaited<ReturnType<typeof fetchChallengeWorkgroups>>),
+    getPathwayParticipationBand('/pathways/ai-human-agency').catch(() => null),
   ]);
 
   const dps = localData.desirable_properties;

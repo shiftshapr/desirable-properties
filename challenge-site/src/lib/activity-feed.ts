@@ -134,10 +134,16 @@ async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[
 
 /** Merge Gov Hub layer activity (incl. WG chat/invite) + Canopi discuss posts. */
 export async function fetchUnifiedActivity(limit = 24): Promise<ActivityFeedItem[]> {
-  const [govhub, canopi] = await Promise.all([
-    fetchChallengeActivity(limit),
-    fetchCanopiDiscussItems(Math.min(12, limit)),
-  ]);
+  let govhub: Awaited<ReturnType<typeof fetchChallengeActivity>> = [];
+  let canopi: ActivityFeedItem[] = [];
+  try {
+    [govhub, canopi] = await Promise.all([
+      fetchChallengeActivity(limit),
+      fetchCanopiDiscussItems(Math.min(12, limit)),
+    ]);
+  } catch {
+    /* upstream timeout – render page without live activity */
+  }
 
   const merged: ActivityFeedItem[] = [
     ...govhub.map((item) => ({

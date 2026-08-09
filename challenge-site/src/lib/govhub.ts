@@ -168,6 +168,7 @@ async function fetchGovHub<T>(path: string): Promise<T | null> {
   try {
     const res = await fetch(`${GOVHUB_BASE}${path}`, {
       next: { revalidate: 300 },
+      signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) return null;
     return (await res.json()) as T;
