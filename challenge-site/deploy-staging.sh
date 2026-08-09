@@ -39,7 +39,8 @@ probe_prod_css() {
     return 0
   fi
 
-  css_disk="${APP_DIR}/.next-prod${prod_css}"
+  # distDir stores assets under static/, not _next/static/
+  css_disk="${APP_DIR}/.next-prod${prod_css#/_next}"
   if [[ ! -f "$css_disk" ]]; then
     echo "WARNING: prod serves ${prod_css} but file missing from .next-prod (disk mismatch)"
     echo "         Run ./deploy.sh to align prod with .next-prod"
