@@ -5,7 +5,8 @@ import PearlMark from '@/components/badges/PearlMark';
 import { notFound } from 'next/navigation';
 import SessionQuestionsForm from '@/components/series/SessionQuestionsForm';
 import SessionActionLink from '@/components/series/SessionActionLink';
-import { formatSessionSchedule, formatMinutesEstimate, sumPreReadMinutes } from '@/lib/event-series-session-ui';
+import { formatSessionSchedule, formatMinutesEstimate, sumPreReadMinutes, partitionPreReads } from '@/lib/event-series-session-ui';
+import type { EventSeriesPreRead } from '@/lib/dp-event-series-store';
 import {
   getEventSeriesBySlug,
   getOrCreateResponse,
@@ -60,7 +61,8 @@ export default async function SeriesSessionPage({ params }: Props) {
   }
 
   const schedule = formatSessionSchedule(session.startsAt, session.endsAt);
-  const preReadTotalMinutes = sumPreReadMinutes(preReads);
+  const { required: requiredPreReads, optional: optionalPreReads } = partitionPreReads(preReads);
+  const preReadTotalMinutes = sumPreReadMinutes(requiredPreReads);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -83,29 +85,20 @@ export default async function SeriesSessionPage({ params }: Props) {
         <p className="mt-6 text-slate-300">{session.facilitatorBlurbMd}</p>
       ) : null}
 
-      {preReads.length > 0 ? (
+      {requiredPreReads.length > 0 ? (
         <div className="mt-6">
           <p className="text-sm font-medium text-slate-300">
             Pre-Read
             {preReadTotalMinutes ? ` (${formatMinutesEstimate(preReadTotalMinutes)})` : null}
           </p>
-          <ul className="mt-2 space-y-1">
-            {preReads.map((pr) => (
-              <li key={pr.id}>
-                <a
-                  href={pr.url}
-                  className="text-sm text-cyan-300 hover:text-cyan-200"
-                  target={pr.url.startsWith('http') ? '_blank' : undefined}
-                  rel={pr.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                >
-                  {pr.label}
-                  {pr.minutesEstimate
-                    ? ` (${formatMinutesEstimate(pr.minutesEstimate)})`
-                    : null}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <PreReadLinkList items={requiredPreReads} />
+        </div>
+      ) : null}
+
+      {optionalPreReads.length > 0 ? (
+        <div className="mt-6">
+          <p className="text-sm font-medium text-slate-400">Deeper reading (optional)</p>
+          <PreReadLinkList items={optionalPreReads} className="text-slate-400" />
         </div>
       ) : null}
 
@@ -143,5 +136,32 @@ export default async function SeriesSessionPage({ params }: Props) {
         </Link>
       </p>
     </main>
+  );
+}
+
+function PreReadLinkList({
+  items,
+  className,
+}: {
+  items: EventSeriesPreRead[];
+  className?: string;
+}) {
+  const linkClass = className ?? 'text-cyan-300 hover:text-cyan-200';
+  return (
+    <ul className="mt-2 space-y-1">
+      {items.map((pr) => (
+        <li key={pr.id}>
+          <a
+            href={pr.url}
+            className={`text-sm ${linkClass}`}
+            target={pr.url.startsWith('http') ? '_blank' : undefined}
+            rel={pr.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >
+            {pr.label}
+            {pr.minutesEstimate ? ` (${formatMinutesEstimate(pr.minutesEstimate)})` : null}
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }

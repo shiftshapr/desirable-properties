@@ -325,6 +325,21 @@ export default function EventSeriesSessionEditor({
                   })
                 }
               />
+              <label className="flex items-center gap-1 text-xs text-slate-400">
+                <input
+                  type="checkbox"
+                  defaultChecked={pr.optional}
+                  onChange={(e) =>
+                    void runAction(async () => {
+                      await apiJson('/api/admin/event-series/pre-reads', 'PATCH', {
+                        id: pr.id,
+                        optional: e.target.checked,
+                      });
+                    })
+                  }
+                />
+                Optional
+              </label>
               <button
                 type="button"
                 disabled={busy}

@@ -26,6 +26,13 @@ export const BOOK_LAUNCH_SEED = {
   endsAt: null as string | null,
 } as const;
 
+export type PreReadSeed = {
+  label: string;
+  url: string;
+  minutesEstimate?: number;
+  optional?: boolean;
+};
+
 type QuestionSeed = {
   fieldKey: string;
   label: string;
@@ -121,6 +128,12 @@ export const FORK_SESSION_SEEDS = [
         label: 'Pro-Human AI Declaration',
         url: 'https://humanstatement.org/',
         minutesEstimate: 5,
+      },
+      {
+        label: 'Optional: Full essay — A Fork in the Web',
+        url: '/perspectives/the-fork-in-the-web',
+        minutesEstimate: 19,
+        optional: true,
       },
     ],
     sections: [
@@ -252,6 +265,12 @@ export const FORK_SESSION_SEEDS = [
         url: '/pathways/ai-human-agency#principles-heading',
         minutesEstimate: 5,
       },
+      {
+        label: 'Optional: Full pathway — AI & Human Agency',
+        url: '/pathways/ai-human-agency',
+        minutesEstimate: 10,
+        optional: true,
+      },
     ],
     sections: [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
@@ -285,7 +304,7 @@ export const FORK_SESSION_SEEDS = [
   facilitatorBlurb: string;
   perspectiveAnchor: string;
   relatedDpIds: string[];
-  preReads: Array<{ label: string; url: string; minutesEstimate?: number }>;
+  preReads: PreReadSeed[];
   sections: SectionSeed[];
 }>;
 

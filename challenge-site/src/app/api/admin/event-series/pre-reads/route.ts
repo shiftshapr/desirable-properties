@@ -16,6 +16,8 @@ export async function POST(request: Request) {
     label: String(body.label || ''),
     url: String(body.url || ''),
     sortOrder: body.sortOrder,
+    minutesEstimate: body.minutesEstimate,
+    optional: Boolean(body.optional),
   });
   if (!result.ok) return jsonError('Could not create pre-read.', 400, result.error);
   return NextResponse.json(result);

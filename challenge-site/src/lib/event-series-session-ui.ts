@@ -70,10 +70,23 @@ export function formatMinutesEstimate(minutes: number): string {
   return `${minutes} mins`;
 }
 
+export function partitionPreReads<T extends { optional?: boolean | null }>(
+  preReads: T[],
+): { required: T[]; optional: T[] } {
+  const required: T[] = [];
+  const optional: T[] = [];
+  for (const pr of preReads) {
+    if (pr.optional) optional.push(pr);
+    else required.push(pr);
+  }
+  return { required, optional };
+}
+
 export function sumPreReadMinutes(
-  preReads: Array<{ minutesEstimate?: number | null }>,
+  preReads: Array<{ minutesEstimate?: number | null; optional?: boolean | null }>,
 ): number | null {
   const values = preReads
+    .filter((pr) => !pr.optional)
     .map((pr) => pr.minutesEstimate)
     .filter((minutes): minutes is number => minutes != null && minutes > 0);
   if (!values.length) return null;

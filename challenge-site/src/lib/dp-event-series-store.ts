@@ -6,6 +6,7 @@ import {
   FORK_SESSION_SEEDS,
   BOOK_LAUNCH_SLUG,
   BOOK_LAUNCH_SEED,
+  type PreReadSeed,
 } from '@/lib/dp-event-series-seed';
 import {
   FORK_PEARL_BADGE_IMAGE_URL,
@@ -59,6 +60,7 @@ export type EventSeriesPreRead = {
   url: string;
   sortOrder: number;
   minutesEstimate: number | null;
+  optional: boolean;
 };
 
 export type EventSeriesQuestionSection = {
@@ -368,10 +370,10 @@ async function seedForkSeriesIfMissing() {
       );
 
       for (let i = 0; i < sessionSeed.preReads.length; i++) {
-        const pr = sessionSeed.preReads[i];
+        const pr = sessionSeed.preReads[i] as PreReadSeed;
         await pool.query(
-          `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate)
-           VALUES ($1,$2,$3,$4,$5,$6)`,
+          `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate, optional)
+           VALUES ($1,$2,$3,$4,$5,$6,$7)`,
           [
             crypto.randomUUID(),
             sessionId,
@@ -379,6 +381,7 @@ async function seedForkSeriesIfMissing() {
             pr.url,
             i,
             pr.minutesEstimate ?? null,
+            Boolean(pr.optional),
           ],
         );
       }
@@ -428,41 +431,82 @@ async function seedForkSeriesIfMissing() {
   await backfillForkSeriesBadgeImages();
 }
 
-async function backfillForkPreReadEstimates() {
+async function backfillForkPreReads() {
   const pool = await ensureDpSchema();
   if (!pool) return;
 
-  const res = await pool.query(
-    `SELECT s.session_number, pr.id, pr.url, pr.sort_order, pr.minutes_estimate, pr.label
+  const sessionsRes = await pool.query(
+    `SELECT s.id, s.session_number
      FROM dp_event_series_session s
      JOIN dp_event_series e ON e.id = s.series_id
-     JOIN dp_event_series_pre_read pr ON pr.session_id = s.id
      WHERE e.slug = $1
-     ORDER BY s.session_number, pr.sort_order`,
+     ORDER BY s.session_number`,
     [FORK_SERIES_SLUG],
   );
-  if (!res.rows.length) return;
+  if (!sessionsRes.rows.length) return;
 
-  for (const row of res.rows) {
-    const seed = FORK_SESSION_SEEDS.find((s) => s.sessionNumber === Number(row.session_number));
-    if (!seed) continue;
-    const seedPr =
-      seed.preReads[Number(row.sort_order)] ??
-      seed.preReads.find((pr) => pr.url === String(row.url));
-    if (!seedPr?.minutesEstimate) continue;
-
-    const needsUpdate =
-      row.minutes_estimate !== seedPr.minutesEstimate ||
-      String(row.url) !== seedPr.url ||
-      String(row.label) !== seedPr.label;
-    if (!needsUpdate) continue;
-
-    await pool.query(
-      `UPDATE dp_event_series_pre_read
-       SET minutes_estimate = $2, url = $3, label = $4
-       WHERE id = $1`,
-      [row.id, seedPr.minutesEstimate, seedPr.url, seedPr.label],
+  for (const sessionRow of sessionsRes.rows) {
+    const seed = FORK_SESSION_SEEDS.find(
+      (s) => s.sessionNumber === Number(sessionRow.session_number),
     );
+    if (!seed) continue;
+
+    const existingRes = await pool.query(
+      `SELECT id, url, sort_order, label, minutes_estimate, optional
+       FROM dp_event_series_pre_read
+       WHERE session_id = $1
+       ORDER BY sort_order`,
+      [sessionRow.id],
+    );
+    const existingRows = existingRes.rows;
+
+    for (let i = 0; i < seed.preReads.length; i++) {
+      const seedPr = seed.preReads[i] as PreReadSeed;
+      const existing =
+        existingRows.find((row) => String(row.url) === seedPr.url) ??
+        existingRows.find((row) => Number(row.sort_order) === i);
+      const optional = Boolean(seedPr.optional);
+
+      if (existing) {
+        const needsUpdate =
+          Number(existing.minutes_estimate) !== (seedPr.minutesEstimate ?? null) ||
+          String(existing.url) !== seedPr.url ||
+          String(existing.label) !== seedPr.label ||
+          Boolean(existing.optional) !== optional ||
+          Number(existing.sort_order) !== i;
+        if (!needsUpdate) continue;
+
+        await pool.query(
+          `UPDATE dp_event_series_pre_read
+           SET minutes_estimate = $2, url = $3, label = $4, optional = $5, sort_order = $6
+           WHERE id = $1`,
+          [
+            existing.id,
+            seedPr.minutesEstimate ?? null,
+            seedPr.url,
+            seedPr.label,
+            optional,
+            i,
+          ],
+        );
+        continue;
+      }
+
+      await pool.query(
+        `INSERT INTO dp_event_series_pre_read (
+           id, session_id, label, url, sort_order, minutes_estimate, optional
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [
+          crypto.randomUUID(),
+          sessionRow.id,
+          seedPr.label,
+          seedPr.url,
+          i,
+          seedPr.minutesEstimate ?? null,
+          optional,
+        ],
+      );
+    }
   }
 }
 
@@ -521,7 +565,7 @@ async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
   await backfillForkSeriesTitle();
-  await backfillForkPreReadEstimates();
+  await backfillForkPreReads();
 }
 
 async function backfillForkSeriesBadgeImages() {
@@ -708,6 +752,7 @@ export async function listPreReads(sessionId: string): Promise<EventSeriesPreRea
       row.minutes_estimate != null && Number.isFinite(Number(row.minutes_estimate))
         ? Number(row.minutes_estimate)
         : null,
+    optional: Boolean(row.optional),
   }));
 }
 
@@ -1534,6 +1579,7 @@ export async function createPreRead(input: {
   url: string;
   sortOrder?: number;
   minutesEstimate?: number | null;
+  optional?: boolean;
 }) {
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
@@ -1548,8 +1594,8 @@ export async function createPreRead(input: {
       ? Math.max(1, Math.floor(Number(input.minutesEstimate)))
       : null;
   await pool.query(
-    `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate)
-     VALUES ($1,$2,$3,$4,$5,$6)`,
+    `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate, optional)
+     VALUES ($1,$2,$3,$4,$5,$6,$7)`,
     [
       id,
       sessionId,
@@ -1557,6 +1603,7 @@ export async function createPreRead(input: {
       url,
       Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
       minutesEstimate,
+      Boolean(input.optional),
     ],
   );
   const preReads = await listPreReads(sessionId);
@@ -1586,7 +1633,7 @@ export async function updatePreRead(preReadId: string, input: Record<string, unk
 
   await pool.query(
     `UPDATE dp_event_series_pre_read
-     SET label = $2, url = $3, sort_order = $4, minutes_estimate = $5
+     SET label = $2, url = $3, sort_order = $4, minutes_estimate = $5, optional = $6
      WHERE id = $1`,
     [
       preReadId,
@@ -1598,6 +1645,7 @@ export async function updatePreRead(preReadId: string, input: Record<string, unk
           : Number(existing.sort_order)
         : Number(existing.sort_order),
       minutesEstimate,
+      input.optional !== undefined ? Boolean(input.optional) : Boolean(existing.optional),
     ],
   );
   const preReads = await listPreReads(String(existing.session_id));

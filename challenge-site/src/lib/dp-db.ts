@@ -235,6 +235,7 @@ CREATE TABLE IF NOT EXISTS dp_event_series_pre_read (
 );
 
 ALTER TABLE dp_event_series_pre_read ADD COLUMN IF NOT EXISTS minutes_estimate INTEGER;
+ALTER TABLE dp_event_series_pre_read ADD COLUMN IF NOT EXISTS optional BOOLEAN NOT NULL DEFAULT false;
 
 CREATE TABLE IF NOT EXISTS dp_event_series_session_dp (
   session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
