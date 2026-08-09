@@ -4,6 +4,14 @@ export const FORK_SERIES_SLUG = 'fork-in-the-web-workshops';
 
 export const FORK_SERIES_TITLE = 'Fork in the Web workshops';
 
+/** Live workshop slot length (from Luma). */
+export const FORK_SESSION_LENGTH_MINUTES = 75;
+
+/**
+ * Full series participation: pre-read (~2.5h) + 4×75 min sessions (5h) + session questions (~2.5h).
+ */
+export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈10 hours total';
+
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
 /** Single event — no badge; Luma date TBD (save-the-date). */
@@ -104,8 +112,16 @@ export const FORK_SESSION_SEEDS = [
     perspectiveAnchor: 'the-internet-where-we-stop-going-to-the-internet',
     relatedDpIds: ['DP2', 'DP4', 'DP8'],
     preReads: [
-      { label: 'A Fork in the Web (opening)', url: '/perspectives/the-fork-in-the-web' },
-      { label: 'Pro-Human AI Declaration', url: 'https://humanstatement.org/' },
+      {
+        label: 'A Fork in the Web (opening)',
+        url: '/perspectives/the-fork-in-the-web',
+        minutesEstimate: 25,
+      },
+      {
+        label: 'Pro-Human AI Declaration',
+        url: 'https://humanstatement.org/',
+        minutesEstimate: 10,
+      },
     ],
     sections: [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
@@ -138,8 +154,16 @@ export const FORK_SESSION_SEEDS = [
     perspectiveAnchor: 'we-could-solve-the-symptoms-without-solving-the-architecture',
     relatedDpIds: ['DP14', 'DP22', 'DP20'],
     preReads: [
-      { label: 'Privatization of Context', url: '/perspectives/the-fork-in-the-web#the-privatization-of-context' },
-      { label: 'Concierge vs. Commons', url: '/perspectives/the-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture' },
+      {
+        label: 'Privatization of Context',
+        url: '/perspectives/the-fork-in-the-web#the-privatization-of-context',
+        minutesEstimate: 15,
+      },
+      {
+        label: 'Concierge vs. Commons',
+        url: '/perspectives/the-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture',
+        minutesEstimate: 15,
+      },
     ],
     sections: [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
@@ -172,8 +196,16 @@ export const FORK_SESSION_SEEDS = [
     perspectiveAnchor: 'a-human-centered-layered-web',
     relatedDpIds: ['DP7', 'DP8', 'DP19'],
     preReads: [
-      { label: 'A Human-Centered Layered Web', url: '/perspectives/the-fork-in-the-web#a-human-centered-layered-web' },
-      { label: 'AI as inhabitant, not landlord', url: '/perspectives/the-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord' },
+      {
+        label: 'A Human-Centered Layered Web',
+        url: '/perspectives/the-fork-in-the-web#a-human-centered-layered-web',
+        minutesEstimate: 20,
+      },
+      {
+        label: 'AI as inhabitant, not landlord',
+        url: '/perspectives/the-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord',
+        minutesEstimate: 10,
+      },
     ],
     sections: [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
@@ -210,8 +242,16 @@ export const FORK_SESSION_SEEDS = [
     perspectiveAnchor: 'the-second-fork-in-the-road',
     relatedDpIds: ['DP2', 'DP11', 'DP12', 'DP22'],
     preReads: [
-      { label: 'Intellectual Sovereignty & Subsidiarity', url: '/perspectives/the-fork-in-the-web#intellectual-sovereignty' },
-      { label: 'AI & Human Agency pathway', url: '/pathways/ai-human-agency' },
+      {
+        label: 'Intellectual Sovereignty & Subsidiarity',
+        url: '/perspectives/the-fork-in-the-web#intellectual-sovereignty',
+        minutesEstimate: 20,
+      },
+      {
+        label: 'AI & Human Agency pathway',
+        url: '/pathways/ai-human-agency',
+        minutesEstimate: 25,
+      },
     ],
     sections: [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
@@ -245,7 +285,7 @@ export const FORK_SESSION_SEEDS = [
   facilitatorBlurb: string;
   perspectiveAnchor: string;
   relatedDpIds: string[];
-  preReads: Array<{ label: string; url: string }>;
+  preReads: Array<{ label: string; url: string; minutesEstimate?: number }>;
   sections: SectionSeed[];
 }>;
 

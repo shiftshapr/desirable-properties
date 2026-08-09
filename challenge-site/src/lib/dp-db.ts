@@ -230,8 +230,11 @@ CREATE TABLE IF NOT EXISTS dp_event_series_pre_read (
   session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
   label TEXT NOT NULL,
   url TEXT NOT NULL,
-  sort_order INTEGER NOT NULL DEFAULT 0
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  minutes_estimate INTEGER
 );
+
+ALTER TABLE dp_event_series_pre_read ADD COLUMN IF NOT EXISTS minutes_estimate INTEGER;
 
 CREATE TABLE IF NOT EXISTS dp_event_series_session_dp (
   session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,

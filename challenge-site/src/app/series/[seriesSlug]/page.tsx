@@ -8,6 +8,11 @@ import {
   getSeriesProgress,
   listSessionsForSeries,
 } from '@/lib/dp-event-series-store';
+import {
+  FORK_SERIES_SLUG,
+  FORK_SERIES_TOTAL_ESTIMATE_LABEL,
+  FORK_SESSION_LENGTH_MINUTES,
+} from '@/lib/dp-event-series-seed';
 import { readSession } from '@/lib/auth-session';
 
 type Props = { params: Promise<{ seriesSlug: string }> };
@@ -32,6 +37,14 @@ export default async function SeriesDetailPage({ params }: Props) {
   const progress = session?.userId
     ? await getSeriesProgress(series.id, session.userId)
     : null;
+
+  const sessionCount = sessions.length;
+  const seriesDurationMeta =
+    series.seriesType === 'series' && series.slug === FORK_SERIES_SLUG
+      ? `${FORK_SERIES_TOTAL_ESTIMATE_LABEL} · ${sessionCount} × ${FORK_SESSION_LENGTH_MINUTES} min sessions · Standalone`
+      : series.seriesType === 'series'
+        ? `Online · ${FORK_SESSION_LENGTH_MINUTES} min · Standalone sessions`
+        : null;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -62,9 +75,9 @@ export default async function SeriesDetailPage({ params }: Props) {
       <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-400">
         {series.seriesType === 'single' ? (
           <span>Save the date</span>
-        ) : (
-          <span>Online · 75 min · Standalone sessions</span>
-        )}
+        ) : seriesDurationMeta ? (
+          <span>{seriesDurationMeta}</span>
+        ) : null}
         {series.perspectiveUrl ? (
           <Link href={series.perspectiveUrl} className="text-cyan-300 hover:text-cyan-200">
             Read the perspective →

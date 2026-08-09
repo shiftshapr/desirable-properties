@@ -65,3 +65,17 @@ export function datetimeLocalInputToIso(local: string): string | null {
   if (Number.isNaN(parsed.getTime())) return null;
   return parsed.toISOString();
 }
+
+export function formatMinutesEstimate(minutes: number): string {
+  return `≈${minutes} min`;
+}
+
+export function sumPreReadMinutes(
+  preReads: Array<{ minutesEstimate?: number | null }>,
+): number | null {
+  const values = preReads
+    .map((pr) => pr.minutesEstimate)
+    .filter((minutes): minutes is number => minutes != null && minutes > 0);
+  if (!values.length) return null;
+  return values.reduce((sum, minutes) => sum + minutes, 0);
+}

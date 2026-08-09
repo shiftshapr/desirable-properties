@@ -58,6 +58,7 @@ export type EventSeriesPreRead = {
   label: string;
   url: string;
   sortOrder: number;
+  minutesEstimate: number | null;
 };
 
 export type EventSeriesQuestionSection = {
@@ -369,9 +370,16 @@ async function seedForkSeriesIfMissing() {
       for (let i = 0; i < sessionSeed.preReads.length; i++) {
         const pr = sessionSeed.preReads[i];
         await pool.query(
-          `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order)
-           VALUES ($1,$2,$3,$4,$5)`,
-          [crypto.randomUUID(), sessionId, pr.label, pr.url, i],
+          `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate)
+           VALUES ($1,$2,$3,$4,$5,$6)`,
+          [
+            crypto.randomUUID(),
+            sessionId,
+            pr.label,
+            pr.url,
+            i,
+            pr.minutesEstimate ?? null,
+          ],
         );
       }
 
@@ -418,6 +426,34 @@ async function seedForkSeriesIfMissing() {
 
   await backfillForkSessionSchedule();
   await backfillForkSeriesBadgeImages();
+}
+
+async function backfillForkPreReadEstimates() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  const res = await pool.query(
+    `SELECT s.session_number, pr.id, pr.url, pr.minutes_estimate
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     JOIN dp_event_series_pre_read pr ON pr.session_id = s.id
+     WHERE e.slug = $1`,
+    [FORK_SERIES_SLUG],
+  );
+  if (!res.rows.length) return;
+
+  for (const row of res.rows) {
+    const seed = FORK_SESSION_SEEDS.find((s) => s.sessionNumber === Number(row.session_number));
+    if (!seed) continue;
+    const seedPr = seed.preReads.find((pr) => pr.url === String(row.url));
+    if (!seedPr?.minutesEstimate) continue;
+    if (row.minutes_estimate != null) continue;
+
+    await pool.query(
+      `UPDATE dp_event_series_pre_read SET minutes_estimate = $2 WHERE id = $1`,
+      [row.id, seedPr.minutesEstimate],
+    );
+  }
 }
 
 async function seedBookLaunchIfMissing() {
@@ -475,6 +511,7 @@ async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
   await backfillForkSeriesTitle();
+  await backfillForkPreReadEstimates();
 }
 
 async function backfillForkSeriesBadgeImages() {
@@ -657,6 +694,10 @@ export async function listPreReads(sessionId: string): Promise<EventSeriesPreRea
     label: String(row.label),
     url: String(row.url),
     sortOrder: Number(row.sort_order) || 0,
+    minutesEstimate:
+      row.minutes_estimate != null && Number.isFinite(Number(row.minutes_estimate))
+        ? Number(row.minutes_estimate)
+        : null,
   }));
 }
 
@@ -1482,6 +1523,7 @@ export async function createPreRead(input: {
   label: string;
   url: string;
   sortOrder?: number;
+  minutesEstimate?: number | null;
 }) {
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
@@ -1491,15 +1533,20 @@ export async function createPreRead(input: {
   if (!sessionId || !label || !url) return { ok: false as const, error: 'invalid_input' };
 
   const id = crypto.randomUUID();
+  const minutesEstimate =
+    input.minutesEstimate != null && Number.isFinite(Number(input.minutesEstimate))
+      ? Math.max(1, Math.floor(Number(input.minutesEstimate)))
+      : null;
   await pool.query(
-    `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order)
-     VALUES ($1,$2,$3,$4,$5)`,
+    `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order, minutes_estimate)
+     VALUES ($1,$2,$3,$4,$5,$6)`,
     [
       id,
       sessionId,
       label,
       url,
       Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
+      minutesEstimate,
     ],
   );
   const preReads = await listPreReads(sessionId);
@@ -1514,9 +1561,23 @@ export async function updatePreRead(preReadId: string, input: Record<string, unk
   ]);
   if (!res.rows[0]) return { ok: false as const, error: 'not_found' };
   const existing = res.rows[0];
+  const minutesEstimate =
+    input.minutesEstimate !== undefined
+      ? input.minutesEstimate == null
+        ? null
+        : Number.isFinite(Number(input.minutesEstimate))
+          ? Math.max(1, Math.floor(Number(input.minutesEstimate)))
+          : existing.minutes_estimate != null
+            ? Number(existing.minutes_estimate)
+            : null
+      : existing.minutes_estimate != null
+        ? Number(existing.minutes_estimate)
+        : null;
 
   await pool.query(
-    `UPDATE dp_event_series_pre_read SET label = $2, url = $3, sort_order = $4 WHERE id = $1`,
+    `UPDATE dp_event_series_pre_read
+     SET label = $2, url = $3, sort_order = $4, minutes_estimate = $5
+     WHERE id = $1`,
     [
       preReadId,
       input.label != null ? normStr(input.label, 200) : String(existing.label),
@@ -1526,6 +1587,7 @@ export async function updatePreRead(preReadId: string, input: Record<string, unk
           ? Math.floor(Number(input.sortOrder))
           : Number(existing.sort_order)
         : Number(existing.sort_order),
+      minutesEstimate,
     ],
   );
   const preReads = await listPreReads(String(existing.session_id));

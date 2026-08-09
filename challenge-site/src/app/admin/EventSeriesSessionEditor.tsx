@@ -268,7 +268,7 @@ export default function EventSeriesSessionEditor({
           {session.preReads.map((pr) => (
             <li
               key={pr.id}
-              className="grid gap-2 rounded border border-slate-800 bg-slate-950/60 p-3 sm:grid-cols-[1fr_1fr_auto_auto]"
+              className="grid gap-2 rounded border border-slate-800 bg-slate-950/60 p-3 sm:grid-cols-[1fr_1fr_auto_auto_auto]"
             >
               <input
                 className="rounded border border-slate-700 bg-slate-900 px-2 py-1 text-sm text-slate-100"
@@ -290,6 +290,23 @@ export default function EventSeriesSessionEditor({
                     await apiJson('/api/admin/event-series/pre-reads', 'PATCH', {
                       id: pr.id,
                       url: e.target.value,
+                    });
+                  })
+                }
+              />
+              <input
+                type="number"
+                className="w-16 rounded border border-slate-700 bg-slate-900 px-2 py-1 text-sm text-slate-100"
+                defaultValue={pr.minutesEstimate ?? ''}
+                placeholder="min"
+                title="Minutes estimate"
+                min={1}
+                onBlur={(e) =>
+                  void runAction(async () => {
+                    const raw = e.target.value.trim();
+                    await apiJson('/api/admin/event-series/pre-reads', 'PATCH', {
+                      id: pr.id,
+                      minutesEstimate: raw ? Number(raw) : null,
                     });
                   })
                 }

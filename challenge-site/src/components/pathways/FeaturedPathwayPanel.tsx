@@ -7,6 +7,7 @@ import PearlMark from '@/components/badges/PearlMark';
 import TrackedLink from '@/components/TrackedLink';
 import { trackEvent } from '@/lib/analytics';
 import type { PathwayParticipationBand } from '@/lib/dp-event-series-store';
+import { FORK_SERIES_TOTAL_ESTIMATE_LABEL } from '@/lib/dp-event-series-seed';
 import { forkSeriesBadgeTopLabel } from '@/lib/dp-series-badges';
 
 const FORK_HERO_SRC =
@@ -102,8 +103,8 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
               </p>
             ) : null}
             <p className="mt-3 text-sm text-slate-400">
-              {participation.sessions.length} online sessions · attend or watch · submit session
-              questions
+              {participation.sessions.length} online sessions · {FORK_SERIES_TOTAL_ESTIMATE_LABEL}{' '}
+              with pre-read &amp; questions · attend or watch
             </p>
 
             <div className="mt-4 flex flex-wrap items-center gap-3">

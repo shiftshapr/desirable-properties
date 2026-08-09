@@ -5,7 +5,7 @@ import PearlMark from '@/components/badges/PearlMark';
 import { notFound } from 'next/navigation';
 import SessionQuestionsForm from '@/components/series/SessionQuestionsForm';
 import SessionActionLink from '@/components/series/SessionActionLink';
-import { formatSessionSchedule } from '@/lib/event-series-session-ui';
+import { formatSessionSchedule, formatMinutesEstimate, sumPreReadMinutes } from '@/lib/event-series-session-ui';
 import {
   getEventSeriesBySlug,
   getOrCreateResponse,
@@ -60,6 +60,7 @@ export default async function SeriesSessionPage({ params }: Props) {
   }
 
   const schedule = formatSessionSchedule(session.startsAt, session.endsAt);
+  const preReadTotalMinutes = sumPreReadMinutes(preReads);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
@@ -84,7 +85,15 @@ export default async function SeriesSessionPage({ params }: Props) {
 
       {preReads.length > 0 ? (
         <div className="mt-6">
-          <p className="text-sm font-medium text-slate-300">Pre-read</p>
+          <p className="text-sm font-medium text-slate-300">
+            Pre-read
+            {preReadTotalMinutes ? (
+              <span className="font-normal text-slate-500">
+                {' '}
+                · {formatMinutesEstimate(preReadTotalMinutes)}
+              </span>
+            ) : null}
+          </p>
           <ul className="mt-2 space-y-1">
             {preReads.map((pr) => (
               <li key={pr.id}>
@@ -95,6 +104,12 @@ export default async function SeriesSessionPage({ params }: Props) {
                   rel={pr.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                 >
                   {pr.label}
+                  {pr.minutesEstimate ? (
+                    <span className="text-slate-500">
+                      {' '}
+                      · {formatMinutesEstimate(pr.minutesEstimate)}
+                    </span>
+                  ) : null}
                 </a>
               </li>
             ))}
