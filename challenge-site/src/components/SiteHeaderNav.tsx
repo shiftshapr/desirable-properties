@@ -53,9 +53,12 @@ function DesktopNavDropdown({
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const childHrefs = (item.children ?? []).map((child) => child.href).filter(Boolean) as string[];
-  const isActive = childHrefs.some(
-    (href) => pathname === href || pathname.startsWith(`${href.split('#')[0]}/`),
-  );
+  const isActive =
+    (item.href &&
+      (pathname === item.href || pathname.startsWith(`${item.href.split('#')[0]}/`))) ||
+    childHrefs.some(
+      (href) => pathname === href || pathname.startsWith(`${href.split('#')[0]}/`),
+    );
 
   useEffect(() => {
     setOpen(false);
@@ -82,19 +85,35 @@ function DesktopNavDropdown({
     };
   }, [open]);
 
+  const labelClass = `whitespace-nowrap hover:text-white${isActive ? ' text-white' : ''}`;
+
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} className="relative inline-flex items-center">
+      {item.href ? (
+        <Link href={item.href} className={labelClass}>
+          {item.label}
+        </Link>
+      ) : (
+        <button
+          type="button"
+          className={labelClass}
+          aria-expanded={open}
+          aria-haspopup="menu"
+          aria-controls={menuId}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {item.label}
+        </button>
+      )}
       <button
         type="button"
-        className={`inline-flex items-center gap-1 whitespace-nowrap hover:text-white ${
-          isActive ? 'text-white' : ''
-        }`}
+        className="inline-flex items-center px-0.5 hover:text-white"
         aria-expanded={open}
         aria-haspopup="menu"
         aria-controls={menuId}
+        aria-label={`${item.label} menu`}
         onClick={() => setOpen((value) => !value)}
       >
-        {item.label}
         <svg viewBox="0 0 20 20" className="h-4 w-4 opacity-70" aria-hidden>
           <path
             d="M5 7l5 5 5-5"
@@ -110,7 +129,7 @@ function DesktopNavDropdown({
         <ul
           id={menuId}
           role="menu"
-          className="absolute left-0 top-full z-50 mt-2 min-w-[190px] overflow-hidden rounded-xl border border-slate-700 bg-slate-900 py-1 shadow-xl shadow-black/40"
+          className="absolute left-0 top-full z-50 mt-2 min-w-[280px] overflow-hidden rounded-xl border border-slate-700 bg-slate-900 py-1 shadow-xl shadow-black/40"
         >
           {(item.children ?? []).map((child) => (
             <li key={child.href ?? child.label} role="none">
@@ -118,7 +137,7 @@ function DesktopNavDropdown({
                 href={child.href ?? '#'}
                 label={child.label}
                 external={child.external}
-                className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+                className="block whitespace-nowrap px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
                 onNavigate={() => setOpen(false)}
               />
             </li>
@@ -140,24 +159,43 @@ function MobileNavGroup({
 
   return (
     <li>
-      <button
-        type="button"
-        className="flex w-full items-center justify-between py-3 text-sm text-slate-300 hover:text-white"
-        aria-expanded={expanded}
-        onClick={() => setExpanded((value) => !value)}
-      >
-        {item.label}
-        <svg viewBox="0 0 20 20" className={`h-4 w-4 transition ${expanded ? 'rotate-180' : ''}`} aria-hidden>
-          <path
-            d="M5 7l5 5 5-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <div className="flex items-center">
+        {item.href ? (
+          <NavLink
+            href={item.href}
+            label={item.label}
+            className="flex-1 py-3 text-sm text-slate-300 hover:text-white"
+            onNavigate={onNavigate}
           />
-        </svg>
-      </button>
+        ) : (
+          <button
+            type="button"
+            className="flex-1 py-3 text-left text-sm text-slate-300 hover:text-white"
+            aria-expanded={expanded}
+            onClick={() => setExpanded((value) => !value)}
+          >
+            {item.label}
+          </button>
+        )}
+        <button
+          type="button"
+          className="px-2 py-3 text-slate-400 hover:text-white"
+          aria-expanded={expanded}
+          aria-label={`Expand ${item.label} submenu`}
+          onClick={() => setExpanded((value) => !value)}
+        >
+          <svg viewBox="0 0 20 20" className={`h-4 w-4 transition ${expanded ? 'rotate-180' : ''}`} aria-hidden>
+            <path
+              d="M5 7l5 5 5-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
       {expanded ? (
         <ul className="mb-2 ml-3 border-l border-slate-800 pl-3">
           {(item.children ?? []).map((child) => (
@@ -177,7 +215,7 @@ function MobileNavGroup({
   );
 }
 
-export default function SiteHeaderNav() {
+export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: SiteNavLink[] }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -219,10 +257,10 @@ export default function SiteHeaderNav() {
   return (
     <div ref={navRef} className="flex items-center">
       <nav
-        className="hidden items-center gap-6 text-sm text-slate-300 lg:flex"
+        className="site-header-nav hidden min-w-0 items-center gap-6 text-sm text-slate-300 lg:flex"
         aria-label="Main"
       >
-        {SITE_NAV_LINKS.map((link) =>
+        {links.map((link) =>
           link.discussPatchModal ? (
             <DiscussPatchDesktopNav key={link.label} item={link} />
           ) : link.children?.length ? (
@@ -233,7 +271,11 @@ export default function SiteHeaderNav() {
               href={link.href ?? '#'}
               label={link.label}
               external={link.external}
-              className="whitespace-nowrap hover:text-white"
+              className={`whitespace-nowrap hover:text-white${
+                link.href === '/badges' || link.href === '/onchain'
+                  ? ' site-nav-optional'
+                  : ''
+              }`}
             />
           ),
         )}
@@ -243,7 +285,7 @@ export default function SiteHeaderNav() {
           rel="noopener noreferrer"
           className="whitespace-nowrap rounded-md bg-cyan-700 px-3 py-1.5 font-medium text-white hover:bg-cyan-600"
         >
-          Agent
+          Hermes
         </a>
       </nav>
 
@@ -283,7 +325,7 @@ export default function SiteHeaderNav() {
         >
           <nav className="mx-auto max-w-6xl px-4 py-3 sm:px-6" aria-label="Main">
             <ul className="divide-y divide-slate-800">
-              {SITE_NAV_LINKS.map((link) =>
+              {links.map((link) =>
                 link.discussPatchModal ? (
                   <DiscussPatchMobileNav key={link.label} item={link} onNavigate={closeMenu} />
                 ) : link.children?.length ? (
@@ -308,7 +350,7 @@ export default function SiteHeaderNav() {
                   className="mt-3 inline-flex rounded-md bg-cyan-700 px-3 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                   onClick={closeMenu}
                 >
-                  Agent
+                  Hermes
                 </a>
               </li>
             </ul>

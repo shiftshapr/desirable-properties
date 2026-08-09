@@ -69,7 +69,7 @@ export default function HermesContributionPanel({
 
       <label className="mt-3 block">
         <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500">
-          Preview — edit before submit
+          Preview – edit before submit
         </span>
         <textarea
           value={previewText}

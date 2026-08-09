@@ -1,12 +1,9 @@
-// Canonical local preview of The Layered Web book reader
-// (served from app.brc333.xyz). The `localSources` + `localFiles`
-// query flags make the preview load sources-sat.json / config-sat.json
-// from the same origin instead of the project's on-chain sources sat.
-const SATPLICATION_VIEWER_URL =
-  'https://app.brc333.xyz/projects/desirableproperties-book-ordinal/preview.html?localSources=1&localFiles=1';
+import { BRC333_BOOK_PREVIEW_URL, BRC333_BOOK_PROJECT } from '@/lib/brc333Links';
 
-const SAT_GRAPH_URL =
-  'https://app.brc333.xyz/projects/desirableproperties-book-ordinal/satplication-graph.html';
+// Use book-preview.html directly — preview.html only JS-redirects and renders blank in iframes.
+const SATPLICATION_VIEWER_URL = BRC333_BOOK_PREVIEW_URL;
+
+const SAT_GRAPH_URL = `${BRC333_BOOK_PROJECT}/satplication-graph.html`;
 
 export default function SatplicationEmbed() {
   return (
@@ -40,11 +37,11 @@ export default function SatplicationEmbed() {
           </a>
         </div>
       </div>
-      <div className="relative flex items-center justify-center bg-slate-950">
+      <div className="relative aspect-square w-full max-w-[min(100%,42rem)] bg-slate-950 sm:mx-auto">
         <iframe
           title="The Layered Web satplication"
           src={SATPLICATION_VIEWER_URL}
-          className="block h-[600px] w-[600px] border-0"
+          className="absolute inset-0 h-full w-full border-0"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />

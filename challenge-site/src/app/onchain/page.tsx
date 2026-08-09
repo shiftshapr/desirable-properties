@@ -7,8 +7,10 @@ import articlesData from '../../data/call-for-input-articles.json';
 import submissionIndex from '../../data/submission-index.json';
 import inscriptionMap from '../../data/submission-inscriptions.json';
 import dpInscriptionMap from '../../data/dp-inscriptions.json';
+import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
 import { inscriptionUrl } from '@/lib/ordinalLinks';
 import { extractDpId, fetchChallengeWorkgroups, govhubUrl } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 
 const CALL_FOR_INPUT_INSCRIPTION =
   articlesData.meta.call_for_input_inscription;
@@ -28,7 +30,7 @@ export default async function OnchainPage() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
           ← Back to Desirable Properties Challenge
         </Link>
@@ -57,6 +59,15 @@ export default async function OnchainPage() {
             – it&apos;s wired up but rough. Explore the rest of the project in the meantime:
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <a
+              href={BRC333_BADGES_MINT_PREVIEW_BASE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/60 bg-amber-400/10 px-3 py-1 text-amber-100 hover:bg-amber-400/20"
+            >
+              Preview
+              <span aria-hidden="true">↗</span>
+            </a>
             <a
               href="https://app.brc333.xyz/projects/desirableproperties-book-ordinal/learning.htm"
               target="_blank"
@@ -154,7 +165,7 @@ export default async function OnchainPage() {
               return (
                 <li key={dpId} className="flex items-start justify-between gap-4 px-4 py-3">
                   <div className="min-w-0">
-                    <Link href={`/dp/${dpId.toLowerCase()}`} className="font-medium text-white hover:text-cyan-200">
+                    <Link href={dpDetailHref(dpId, '/onchain')} className="font-medium text-white hover:text-cyan-200">
                       {dpId}
                       {dp ? ` – ${dp.name}` : ''}
                     </Link>

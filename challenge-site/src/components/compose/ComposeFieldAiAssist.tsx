@@ -1,0 +1,356 @@
+'use client';
+
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react';
+
+export type ComposeAiPromptOption = {
+  id: string;
+  label: string;
+  /** When false, chip works on an empty field (e.g. Help me get started). Default true. */
+  requiresDraft?: boolean;
+};
+
+type GenerateContext = {
+  draft: string;
+  selection: string;
+  selectionStart: number;
+  selectionEnd: number;
+};
+
+type Props = {
+  textareaRef: RefObject<HTMLTextAreaElement | null>;
+  value: string;
+  onValueChange: (next: string) => void;
+  disabled?: boolean;
+  promptOptions: ComposeAiPromptOption[];
+  onGenerate: (
+    option: ComposeAiPromptOption,
+    context: GenerateContext,
+    signal: AbortSignal,
+  ) => Promise<string>;
+  fieldLabel?: string;
+};
+
+function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
+  if (!textarea) {
+    return { draft: fallbackValue, selection: '', selectionStart: 0, selectionEnd: 0 };
+  }
+  const start = textarea.selectionStart ?? 0;
+  const end = textarea.selectionEnd ?? 0;
+  const draft = textarea.value || fallbackValue;
+  return {
+    draft,
+    selection: draft.slice(start, end),
+    selectionStart: start,
+    selectionEnd: end,
+  };
+}
+
+export default function ComposeFieldAiAssist({
+  textareaRef,
+  value,
+  onValueChange,
+  disabled,
+  promptOptions,
+  onGenerate,
+  fieldLabel = 'Message',
+}: Props) {
+  const menuId = useId();
+  const [focused, setFocused] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [fabPos, setFabPos] = useState({ top: 0, left: 0 });
+  const [generating, setGenerating] = useState(false);
+  const [preview, setPreview] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [lastOption, setLastOption] = useState<ComposeAiPromptOption | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const panelOpen = menuOpen || Boolean(preview) || generating || Boolean(error);
+
+  const positionFab = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setFabPos({
+      top: Math.max(8, rect.top + 8),
+      left: Math.max(8, rect.right - 72),
+    });
+  }, [textareaRef]);
+
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    const onFocus = () => {
+      setFocused(true);
+      positionFab();
+    };
+    const onBlur = () => {
+      window.setTimeout(() => {
+        if (!menuOpen && !preview && !generating && !error) setFocused(false);
+      }, 120);
+    };
+
+    el.addEventListener('focus', onFocus);
+    el.addEventListener('blur', onBlur);
+    return () => {
+      el.removeEventListener('focus', onFocus);
+      el.removeEventListener('blur', onBlur);
+    };
+  }, [textareaRef, positionFab, menuOpen, preview, generating, error]);
+
+  useLayoutEffect(() => {
+    if (!focused && !panelOpen) return;
+    positionFab();
+    const onScrollOrResize = () => positionFab();
+    window.addEventListener('scroll', onScrollOrResize, true);
+    window.addEventListener('resize', onScrollOrResize);
+    return () => {
+      window.removeEventListener('scroll', onScrollOrResize, true);
+      window.removeEventListener('resize', onScrollOrResize);
+    };
+  }, [focused, panelOpen, positionFab]);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!panelOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !generating) closePanel();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [panelOpen, generating]);
+
+  function closePanel() {
+    if (generating) abortRef.current?.abort();
+    setMenuOpen(false);
+    setPreview('');
+    setError(null);
+    setGenerating(false);
+    setLastOption(null);
+    setFocused(Boolean(textareaRef.current?.matches(':focus')));
+  }
+
+  function openMenu() {
+    if (disabled) return;
+    positionFab();
+    setPreview('');
+    setError(null);
+    setMenuOpen(true);
+  }
+
+  async function runGenerate(option: ComposeAiPromptOption, regenerate = false) {
+    if (disabled || generating) return;
+    const context = getSelection(textareaRef.current, value);
+    const needsDraft = option.requiresDraft !== false;
+    if (!regenerate && needsDraft && !context.draft.trim() && !context.selection.trim()) {
+      setError('Type or select text in the field first.');
+      setMenuOpen(true);
+      return;
+    }
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setLastOption(option);
+    setMenuOpen(false);
+    setGenerating(true);
+    setError(null);
+    setPreview('');
+
+    try {
+      const result = await onGenerate(option, context, controller.signal);
+      if (controller.signal.aborted) return;
+      setPreview((result || '').trim());
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      setError(err instanceof Error ? err.message : 'AI request failed');
+    } finally {
+      if (!controller.signal.aborted) setGenerating(false);
+    }
+  }
+
+  function applyDraft(mode: 'insert' | 'replace') {
+    const draft = preview.trim();
+    if (!draft) return;
+    const textarea = textareaRef.current;
+    const full = value;
+    const sel = getSelection(textarea, full);
+
+    let next = full;
+    let cursor = full.length;
+
+    if (mode === 'replace' && sel.selection.trim()) {
+      next = full.slice(0, sel.selectionStart) + draft + full.slice(sel.selectionEnd);
+      cursor = sel.selectionStart + draft.length;
+    } else if (textarea && textarea.selectionStart === textarea.selectionEnd) {
+      const pos = textarea.selectionStart ?? full.length;
+      next = full.slice(0, pos) + draft + full.slice(pos);
+      cursor = pos + draft.length;
+    } else if (mode === 'replace') {
+      next = draft;
+      cursor = draft.length;
+    } else {
+      const pos = textarea?.selectionStart ?? full.length;
+      next = full.slice(0, pos) + draft + full.slice(pos);
+      cursor = pos + draft.length;
+    }
+
+    onValueChange(next);
+    closePanel();
+    requestAnimationFrame(() => {
+      textarea?.focus();
+      if (textarea && typeof textarea.setSelectionRange === 'function') {
+        textarea.setSelectionRange(cursor, cursor);
+      }
+    });
+  }
+
+  function handleStop() {
+    abortRef.current?.abort();
+    setGenerating(false);
+  }
+
+  const showFab = (focused || panelOpen) && !disabled;
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-label={`AI assist for ${fieldLabel}`}
+        aria-expanded={panelOpen}
+        aria-controls={menuId}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
+        className={`fixed z-[12050] inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-950/95 px-2.5 py-1.5 text-xs font-bold text-cyan-300 shadow-lg transition-all duration-150 ${
+          showFab ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-1 opacity-0'
+        }`}
+        style={{ top: fabPos.top, left: fabPos.left }}
+        disabled={disabled}
+      >
+        <span aria-hidden="true">✦</span> AI
+      </button>
+
+      {panelOpen ? (
+        <div
+          className="fixed inset-0 z-[12100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !generating) closePanel();
+          }}
+        >
+          <div
+            id={menuId}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`${menuId}-title`}
+            className="max-h-[min(90vh,640px)] w-full max-w-lg overflow-auto rounded-xl border border-slate-700 bg-slate-900 p-4 text-slate-100 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <h2 id={`${menuId}-title`} className="text-base font-semibold text-white">
+                AI Assist
+              </h2>
+              <button
+                type="button"
+                aria-label="Close AI assist"
+                onClick={() => !generating && closePanel()}
+                className="text-xl leading-none text-slate-400 hover:text-white"
+              >
+                ×
+              </button>
+            </div>
+
+            {menuOpen ? (
+              <>
+                <p className="mb-3 text-sm text-slate-400">
+                  Choose a suggestion to draft text for your {fieldLabel.toLowerCase()}.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {promptOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      disabled={generating}
+                      onClick={() => void runGenerate(option)}
+                      className="rounded-full border border-slate-700 bg-cyan-950/30 px-3 py-1.5 text-xs font-semibold text-cyan-200 hover:border-cyan-700 hover:bg-cyan-950/50 disabled:opacity-50"
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {generating ? (
+              <p className="mt-4 text-sm text-amber-200" aria-live="polite">
+                Generating…
+              </p>
+            ) : null}
+
+            {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+
+            {preview ? (
+              <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950/60 p-3">
+                <p className="text-xs font-medium uppercase tracking-wide text-cyan-400/80">
+                  Generated text
+                </p>
+                <p className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
+                  {preview}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => applyDraft('insert')}
+                    className="rounded-lg border border-cyan-700 bg-cyan-950/40 px-3 py-1.5 text-sm font-medium text-cyan-100 hover:bg-cyan-900/40"
+                  >
+                    Insert
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyDraft('replace')}
+                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
+                  >
+                    Replace
+                  </button>
+                  {lastOption ? (
+                    <button
+                      type="button"
+                      onClick={() => void runGenerate(lastOption, true)}
+                      className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
+                    >
+                      Regenerate
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+
+            {generating ? (
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={handleStop}
+                  className="rounded-lg border border-rose-800/60 px-3 py-1.5 text-sm text-rose-200 hover:border-rose-600"
+                >
+                  Stop
+                </button>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}

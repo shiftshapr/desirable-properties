@@ -13,20 +13,57 @@ export type SiteNavLink = {
   discussPatchModal?: boolean;
 };
 
-// "Participate" leads because it's the front door — a single overview of every
-// way to engage (DP Community AI, book, Gov Hub, workgroups) for a first-time
-// visitor who doesn't yet know which path fits them. The three primary
-// journeys it summarizes — join a workgroup, discuss & patch the book, and
-// patch a draft on Gov Hub — are also linked directly afterward so returning
-// visitors who already know what they want can skip straight there.
-// "About" (the framing-chapter essay) is intentionally left out of the header —
-// it's not an action journey, and it's already one click away from Home,
-// Participate, and Challenge. It still lives in the footer for anyone hunting
-// for background context.
+export const WORKGROUPS_JOIN_HREF = '/workgroups/join';
+
+export const EVENTS_INDEX_HREF = '/events';
+
+export type UpcomingEventNavItem = {
+  href: string;
+  label: string;
+  external?: boolean;
+};
+
+/** Nav dropdown shows title only; dates appear on /events and series pages. */
+export function upcomingEventNavLabel(_dateLabel: string, title: string): string {
+  return title;
+}
+
+/** Insert Events nav after About when upcoming entries exist. */
+export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): SiteNavLink[] {
+  const eventsNav: SiteNavLink = upcomingEvents.length
+    ? {
+        label: 'Events',
+        href: EVENTS_INDEX_HREF,
+        children: upcomingEvents.map((event) => ({
+          href: event.href,
+          label: event.label,
+          external: event.external,
+        })),
+      }
+    : { label: 'Events', href: EVENTS_INDEX_HREF };
+
+  const links = [...SITE_NAV_LINKS];
+  const aboutIndex = links.findIndex((link) => link.label === 'About');
+  if (aboutIndex >= 0) {
+    links.splice(aboutIndex + 1, 0, eventsNav);
+  } else {
+    links.unshift(eventsNav);
+  }
+  return links;
+}
+
 export const SITE_NAV_LINKS: SiteNavLink[] = [
-  { href: '/participate', label: 'Participate' },
+  {
+    label: 'About',
+    href: '/about',
+    children: [
+      { href: '/challenge', label: 'The Challenge' },
+      { href: '/participate', label: 'Participate' },
+    ],
+  },
   {
     label: 'Workgroups',
+    href: WORKGROUPS_JOIN_HREF,
     children: [
       { href: WORKGROUPS_LIST_HREF, label: 'Browse workgroups' },
       { href: WORKGROUPS_SIGNUPS_HREF, label: 'Signups' },
@@ -40,7 +77,6 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
       { href: GOVHUB_DP_PATCHES_URL, label: 'Patch on Gov Hub', external: true },
     ],
   },
-  { href: '/challenge', label: 'Challenge' },
   { href: '/badges', label: 'Badges' },
   { href: '/onchain', label: 'On-Chain' },
 ];

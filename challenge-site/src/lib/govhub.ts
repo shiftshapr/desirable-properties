@@ -24,7 +24,7 @@ export const FRAMING_CHAPTER_REF = 'ML-Draft-026';
 const PROD_BOOK_ORIGIN = 'https://book.desirableproperties.org';
 const STAGING_BOOK_ORIGIN = 'https://staging.book.desirableproperties.org';
 
-/** User-facing book host — staging challenge-site links to staging.book. */
+/** User-facing book host – staging challenge-site links to staging.book. */
 function resolveBookOrigin(): string {
   const explicit = process.env.DP_BOOK_BASE_URL?.trim();
   if (explicit) return explicit.replace(/\/$/, '');
@@ -50,7 +50,7 @@ export const DESIRABLE_PROPERTIES_BOOK_HOST = new URL(DP_BOOK_ORIGIN).hostname;
  * /viewer/<chapter>. */
 export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.trim() || 'https://desirableproperties.org').replace(/\/$/, '')}/book`;
 
-/** Live book reader with chapter comments (Canopi) — discuss on each chapter today.
+/** Live book reader with chapter comments (Canopi) – discuss on each chapter today.
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
 export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;
 
@@ -66,9 +66,10 @@ export function bookViewerHref(opts?: {
   /** Append ?discuss=1 so the book bridge auto-opens Canopi Discuss. */
   discuss?: boolean;
 }): string {
-  const pageId = String(opts?.pageId || '').trim();
-  if (pageId && /^dp\d{2}$/i.test(pageId)) {
-    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId.toLowerCase()}`, opts?.discuss);
+  const pageId = String(opts?.pageId || '').trim().toLowerCase();
+  // Short chapter keys only (intro, dp01, …) – not Canopi hashed pageIds.
+  if (pageId === 'intro' || /^dp\d{2}$/i.test(pageId)) {
+    return withDiscussQuery(`${DP_BOOK_ORIGIN}/viewer/${pageId}`, opts?.discuss);
   }
   const dpId = String(opts?.dpId || '').trim();
   if (dpId) {
@@ -85,6 +86,12 @@ export function bookDiscussHref(opts?: {
 }): string {
   return bookViewerHref({ ...opts, discuss: true });
 }
+
+/** Intro chapter of The Layered Web with Canopi Discuss auto-opened. */
+export function bookIntroDiscussHref(): string {
+  return bookDiscussHref({ pageId: 'intro' });
+}
+
 const METAWEB_LAYER_ID =
   process.env.GOVHUB_METAWEB_LAYER_ID ?? '22d90c89-2783-4726-a8b6-220dca505402';
 
@@ -161,6 +168,7 @@ async function fetchGovHub<T>(path: string): Promise<T | null> {
   try {
     const res = await fetch(`${GOVHUB_BASE}${path}`, {
       next: { revalidate: 300 },
+      signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) return null;
     return (await res.json()) as T;
@@ -177,9 +185,45 @@ export function govhubUrl(path: string): string {
 /** Gov Hub document list filtered to Desirable Properties drafts (patch entry point). */
 export const GOVHUB_DP_PATCHES_URL = govhubUrl('/doc/all/?collection=desirable-properties');
 
+/** ML-Draft read view for a workgroup-linked draft (patch entry point). */
+export function govhubDraftReadHref(documentHref: string | null | undefined): string | null {
+  const href = String(documentHref || '').trim();
+  if (!href) return null;
+  const base = govhubUrl(href);
+  return base.endsWith('/') ? `${base}read/` : `${base}/read/`;
+}
+
+/** Meta workgroup that tracks gaps across the numbered DP set (not itself a DP#). */
+export const DP_DISCOVERY_SLUG = 'dp-discovery';
+
+/** Discovery-only “What we ask of you” copy (welcome + getting started). */
+export const DP_DISCOVERY_ASK_ITEMS = [
+  'Review the Layered Web book (book.desirableproperties.org).',
+  'Review for context and completeness.',
+  'Discuss on the book – chapter comments are live now (Canopi on each chapter).',
+  'Participate in workgroup discussion about where a new concept fits in the existing DPs and/or new DPs that may be needed.',
+] as const;
+
+export function isDpDiscoveryWorkgroup(slug?: string | null): boolean {
+  return String(slug || '').trim().toLowerCase() === DP_DISCOVERY_SLUG;
+}
+
 export function extractDpId(name: string): string | null {
   const match = name.match(/^DP(\d+)\b/i);
   return match ? `DP${match[1]}` : null;
+}
+
+/** Numbered DP workgroups plus the shared DP Discovery workgroup. */
+export function isDpChallengeWorkgroup(wg: {
+  name?: string | null;
+  slug?: string | null;
+  acronym?: string | null;
+}): boolean {
+  const slug = String(wg.slug || wg.acronym || '')
+    .trim()
+    .toLowerCase();
+  if (slug === DP_DISCOVERY_SLUG) return true;
+  return Boolean(extractDpId(String(wg.name || '')));
 }
 
 function draftHref(payload: Record<string, unknown>): string {
@@ -336,7 +380,7 @@ export async function fetchChallengeWorkgroups(): Promise<GovHubWorkgroup[]> {
   );
   const workgroups = data?.workgroups ?? [];
   return workgroups
-    .filter((wg) => extractDpId(wg.name))
+    .filter((wg) => isDpChallengeWorkgroup(wg))
     .map((wg) => ({
       id: wg.id,
       name: wg.name,
@@ -350,8 +394,8 @@ export async function fetchChallengeWorkgroups(): Promise<GovHubWorkgroup[]> {
         (wg as unknown as { document_draft_ref?: string | null }).document_draft_ref ?? null,
     }))
     .sort((a, b) => {
-      const aNum = Number(extractDpId(a.name)?.replace('DP', '') ?? 0);
-      const bNum = Number(extractDpId(b.name)?.replace('DP', '') ?? 0);
+      const aNum = Number(extractDpId(a.name)?.replace('DP', '') ?? 999);
+      const bNum = Number(extractDpId(b.name)?.replace('DP', '') ?? 999);
       return aNum - bNum;
     });
 }

@@ -3,9 +3,11 @@ import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
+import FeaturedPathwayPanel from '@/components/pathways/FeaturedPathwayPanel';
 import LayerHero from '@/components/LayerHero';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
+import { getPathwayParticipationBand } from '@/lib/dp-event-series-store';
 import {
   fetchChallengeWorkgroups,
   govhubUrl,
@@ -27,9 +29,10 @@ const MISSING_ITEMS = [
 
 export default async function Home() {
   const now = new Date();
-  const [activity, workgroups] = await Promise.all([
-    fetchUnifiedActivity(12),
-    fetchChallengeWorkgroups(),
+  const [activity, workgroups, participation] = await Promise.all([
+    fetchUnifiedActivity(12).catch(() => [] as Awaited<ReturnType<typeof fetchUnifiedActivity>>),
+    fetchChallengeWorkgroups().catch(() => [] as Awaited<ReturnType<typeof fetchChallengeWorkgroups>>),
+    getPathwayParticipationBand('/pathways/ai-human-agency').catch(() => null),
   ]);
 
   const dps = localData.desirable_properties;
@@ -44,6 +47,8 @@ export default async function Home() {
         </div>
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
+
+        <FeaturedPathwayPanel participation={participation} />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
@@ -116,7 +121,7 @@ export default async function Home() {
         </section>
 
         {/* Missing Something? */}
-        <section className="border-b border-slate-800">
+        <section id="missing" className="border-b border-slate-800">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <h2 className="text-3xl font-bold text-white">Missing Something?</h2>
             <p className="mt-4 max-w-2xl text-lg text-slate-300">
@@ -153,12 +158,12 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Three ways to get involved — maps directly to the three primary journeys */}
+        {/* Three ways to get involved – maps directly to the three primary journeys */}
         <section>
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <h2 className="text-3xl font-bold text-white">Three Ways to Get Involved</h2>
             <p className="mt-3 max-w-2xl text-slate-400">
-              Pick a path — or do all three.
+              Pick a path – or do all three.
             </p>
             <ul className="mt-10 grid gap-5 sm:grid-cols-3">
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
@@ -173,7 +178,7 @@ export default async function Home() {
                   href={WORKGROUPS_LIST_HREF}
                   className="mt-5 inline-flex w-fit items-center rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
                 >
-                  Browse the 23 workgroups →
+                  Browse DP workgroups →
                 </Link>
               </li>
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">

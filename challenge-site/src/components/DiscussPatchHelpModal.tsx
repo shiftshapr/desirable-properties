@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { dismissDiscussPatchHelp } from '@/lib/discuss-patch-help';
 
 type Props = {
@@ -12,7 +13,12 @@ type Props = {
 export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Props) {
   const titleId = useId();
   const descId = useId();
+  const [mounted, setMounted] = useState(false);
   const [doNotShowAgain, setDoNotShowAgain] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -24,10 +30,18 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
   }, [open, onClose]);
 
   useEffect(() => {
-    if (!open) setDoNotShowAgain(false);
+    if (!open) {
+      setDoNotShowAgain(false);
+      return;
+    }
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   function openDiscuss() {
     if (doNotShowAgain) dismissDiscussPatchHelp();
@@ -35,14 +49,14 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
     onClose();
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/75 p-5"
+      className="dp-discuss-patch-modal-overlay fixed inset-0 z-[2147483646] flex items-center justify-center bg-slate-950/95 p-5 backdrop-blur-sm"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl"
+        className="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl shadow-black/60"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -64,16 +78,16 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
           </p>
           <ul className="list-disc space-y-2 pl-5 marker:text-cyan-500">
             <li>
-              <span className="font-medium text-slate-200">Comment</span> — a normal anchored reply
+              <span className="font-medium text-slate-200">Comment</span> – a normal anchored reply
               adds discussion without changing the text.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Patch</span> — start your reply with{' '}
+              <span className="font-medium text-slate-200">Patch</span> – start your reply with{' '}
               <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">PATCH:</code>{' '}
               (case-insensitive) to propose replacing the selection.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Insert</span> — start with{' '}
+              <span className="font-medium text-slate-200">Insert</span> – start with{' '}
               <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">INSERT:</code> to
               propose new text above the selection.
             </li>
@@ -112,6 +126,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

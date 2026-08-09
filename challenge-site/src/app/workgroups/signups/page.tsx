@@ -9,7 +9,7 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: 'Workgroup Signups · Desirable Properties Challenge',
   description:
-    'See everyone who has joined a Desirable Properties workgroup — browse by workgroup or by person.',
+    'See everyone who has joined a Desirable Properties workgroup – browse by workgroup or by person.',
 };
 
 export default async function WorkgroupSignupsPage() {

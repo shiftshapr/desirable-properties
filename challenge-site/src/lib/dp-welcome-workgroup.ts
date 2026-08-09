@@ -1,8 +1,10 @@
-import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 
 type WorkgroupLookup = {
   name: string;
   slug: string;
+  document_href: string | null;
+  dpId: string | null;
 };
 
 export function getRequestedWorkgroupSlug(value: string | string[] | undefined): string | null {
@@ -20,9 +22,18 @@ export async function fetchWorkgroupBySlug(slug: string): Promise<WorkgroupLooku
       { next: { revalidate: 300 } },
     );
     if (!res.ok) return null;
-    const data = (await res.json()) as { name?: string; slug?: string };
+    const data = (await res.json()) as {
+      name?: string;
+      slug?: string;
+      document_href?: string | null;
+    };
     if (!data?.name) return null;
-    return { name: data.name, slug: data.slug || normalized };
+    return {
+      name: data.name,
+      slug: data.slug || normalized,
+      document_href: data.document_href ?? null,
+      dpId: extractDpId(data.name),
+    };
   } catch {
     return null;
   }

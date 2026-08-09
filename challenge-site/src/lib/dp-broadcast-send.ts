@@ -81,7 +81,7 @@ const sanitizeDefaults: sanitizeHtml.IOptions = {
     ...sanitizeHtml.defaults.allowedAttributes,
     a: ['href', 'name', 'target', 'rel'],
     img: ['src', 'alt', 'width', 'height', 'style'],
-    // transformTags injects inline spacing styles — must allow style or sanitize-html strips them.
+    // transformTags injects inline spacing styles – must allow style or sanitize-html strips them.
     p: ['style'],
     h1: ['style'],
     h2: ['style'],

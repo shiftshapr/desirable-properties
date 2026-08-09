@@ -33,6 +33,7 @@
     var s = document.createElement('script');
     s.src = cfg.apiBase.replace(/\/$/, '') + '/embed/v1.js';
     s.setAttribute('data-canopi-id', cfg.embedId);
+    s.setAttribute('data-canopi-theme', 'dark');
     s.async = true;
     document.head.appendChild(s);
   })();

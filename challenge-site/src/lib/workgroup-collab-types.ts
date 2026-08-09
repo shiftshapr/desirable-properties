@@ -119,6 +119,27 @@ export type InviteResearchInput = {
   selected_candidate_index?: number | null;
 };
 
+export type InviteLeadType = 'events' | 'perspectives';
+
+export type InviteContentEvent = {
+  title: string;
+  url: string;
+  description?: string | null;
+  event_date?: string | null;
+};
+
+export type InviteContentPerspective = {
+  title: string;
+  url: string;
+  slug: string;
+};
+
+export type InviteContentContext = {
+  events: InviteContentEvent[];
+  perspectives: InviteContentPerspective[];
+  lead: InviteLeadType;
+};
+
 export type InviteDraftInput = {
   name: string;
   email: string;
@@ -129,6 +150,7 @@ export type InviteDraftInput = {
   resolved_person?: ResolvedPerson | null;
   additional_workgroup_ids?: string[];
   prior_invitations?: PriorInvitation[];
+  invite_content?: InviteContentContext | null;
 };
 
 export type InviteSendInput = {

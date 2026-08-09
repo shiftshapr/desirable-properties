@@ -37,7 +37,7 @@ function captureItems(source, expression, label) {
 }
 
 const KEY_DATE_ISO = {
-  'Community review begins': '2026-07-16',
+  'Community review begins': '2026-08-10',
   'Workgroup synthesis target': '2026-09-01',
   'Book and monument launch': '2026-09-16',
 };

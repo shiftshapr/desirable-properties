@@ -1,13 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import DPProvenanceSection from '@/components/DPProvenanceSection';
+import RelatedPathway from '@/components/pathways/RelatedPathway';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
+import { AI_HUMAN_AGENCY_RELATED_DP_IDS } from '@/data/pathways/ai-human-agency';
 import localData from '../../../data/desirable-properties.json';
 import {
   bookDiscussHref,
   extractDpId,
   fetchChallengeWorkgroups,
   GOVHUB_DP_PATCHES_URL,
+  govhubDraftReadHref,
   govhubUrl,
 } from '@/lib/govhub';
 import { dpFullImageSrc, dpImageAlt } from '@/lib/dp-images';
@@ -21,6 +24,7 @@ import {
   dpPdfDownloadFilename,
   loadPciProvenanceForDp,
 } from '@/lib/dpProvenance';
+import { resolveBackPath } from '@/lib/dp-links';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 300;
@@ -31,8 +35,16 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function DPPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function DPPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
+}) {
   const { id } = await params;
+  const { from } = await searchParams;
+  const backHref = resolveBackPath(from);
   const dp = localData.desirable_properties.find(
     (d) => d.id.toLowerCase() === id.toLowerCase(),
   );
@@ -49,6 +61,7 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
 
   const workgroup = workgroups.find((wg) => extractDpId(wg.name) === dp.id);
   const draftHref = workgroup?.document_href ? govhubUrl(workgroup.document_href) : null;
+  const readHref = govhubDraftReadHref(workgroup?.document_href);
   const collabEnabled = await isWorkgroupCollabEnabled();
   const workgroupHref = workgroup?.slug ? workgroupPrimaryHref(workgroup.slug) : null;
   const workgroupJoinHref = workgroup?.slug
@@ -64,8 +77,8 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-        <Link href="/#dps" className="text-sm text-cyan-300 hover:text-cyan-200">
-          ← Back to all Desirable Properties
+        <Link href={backHref} className="text-sm text-cyan-300 hover:text-cyan-200">
+          ← Back
         </Link>
 
         <div className="mt-8">
@@ -140,6 +153,12 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
           </section>
         )}
 
+        {AI_HUMAN_AGENCY_RELATED_DP_IDS.includes(
+          dp.id as (typeof AI_HUMAN_AGENCY_RELATED_DP_IDS)[number],
+        ) ? (
+          <RelatedPathway dpId={dp.id} />
+        ) : null}
+
         <section className="mt-10 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
             <h2 className="text-xl font-bold">Current Draft</h2>
@@ -148,7 +167,6 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
               const match = rawLabel.match(/^(.*?)\s*\((ML-Draft-\d+)\)\s*$/);
               const draftTitle = match ? match[1].trim() : rawLabel || null;
               const draftRef = match ? match[2] : null;
-              const readHref = draftHref ? `${draftHref}read/` : null;
               return (
                 <div className="mt-3 flex flex-col items-start gap-2 text-sm">
                   {draftTitle && (

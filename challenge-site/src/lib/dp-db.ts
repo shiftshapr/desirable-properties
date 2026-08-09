@@ -138,6 +138,202 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_unsubscribe (
   email TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS dp_invite_global_event (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  event_date TIMESTAMPTZ,
+  description TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by TEXT,
+  updated_by TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_invite_global_event_sort ON dp_invite_global_event (sort_order ASC, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_invite_perspective (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by TEXT,
+  updated_by TEXT
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS dp_invite_perspective_slug ON dp_invite_perspective (slug);
+CREATE INDEX IF NOT EXISTS dp_invite_perspective_sort ON dp_invite_perspective (sort_order ASC, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_event_series (
+  id UUID PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  subtitle TEXT,
+  description_md TEXT,
+  hero_image_url TEXT,
+  perspective_url TEXT,
+  pathway_url TEXT,
+  sessions_required_count INTEGER,
+  series_type TEXT NOT NULL DEFAULT 'series',
+  badge_code TEXT,
+  pearl_badge_code TEXT,
+  badge_image_url TEXT,
+  badge_mint_preview_url TEXT,
+  pearl_badge_image_url TEXT,
+  pearl_badge_mint_preview_url TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by TEXT,
+  updated_by TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_event_series_sort ON dp_event_series (sort_order ASC, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_session (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  session_number INTEGER NOT NULL,
+  slug TEXT NOT NULL,
+  title TEXT NOT NULL,
+  image_url TEXT,
+  starts_at TIMESTAMPTZ,
+  ends_at TIMESTAMPTZ,
+  live_url TEXT,
+  facilitator_blurb_md TEXT,
+  perspective_section_anchor TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (series_id, session_number),
+  UNIQUE (series_id, slug)
+);
+
+CREATE INDEX IF NOT EXISTS dp_event_series_session_series ON dp_event_series_session (series_id, sort_order ASC);
+
+ALTER TABLE dp_event_series ADD COLUMN IF NOT EXISTS series_type TEXT NOT NULL DEFAULT 'series';
+ALTER TABLE dp_event_series ALTER COLUMN badge_code DROP NOT NULL;
+
+ALTER TABLE dp_event_series_session ADD COLUMN IF NOT EXISTS recording_url TEXT;
+
+CREATE TABLE IF NOT EXISTS dp_event_series_pre_read (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  label TEXT NOT NULL,
+  url TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_session_dp (
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  dp_id TEXT NOT NULL,
+  PRIMARY KEY (session_id, dp_id)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_question_section (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  section_key TEXT NOT NULL,
+  title TEXT NOT NULL,
+  pearl_stage TEXT,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (session_id, section_key)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_question (
+  id UUID PRIMARY KEY,
+  section_id UUID NOT NULL REFERENCES dp_event_series_question_section(id) ON DELETE CASCADE,
+  field_key TEXT NOT NULL,
+  label TEXT NOT NULL,
+  help_text TEXT,
+  field_type TEXT NOT NULL,
+  required BOOLEAN NOT NULL DEFAULT false,
+  ai_assist BOOLEAN NOT NULL DEFAULT false,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (section_id, field_key)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_response (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  user_email TEXT,
+  attended_confirmed BOOLEAN NOT NULL DEFAULT false,
+  status TEXT NOT NULL DEFAULT 'draft',
+  submitted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (session_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS dp_event_series_response_user ON dp_event_series_response (user_id);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_answer (
+  id UUID PRIMARY KEY,
+  response_id UUID NOT NULL REFERENCES dp_event_series_response(id) ON DELETE CASCADE,
+  question_id UUID NOT NULL REFERENCES dp_event_series_question(id) ON DELETE CASCADE,
+  value_text TEXT,
+  value_bool BOOLEAN,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (response_id, question_id)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_pearl (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  user_email TEXT,
+  patch_idea TEXT,
+  socialize_url TEXT,
+  socialize_note TEXT,
+  feedback_summary TEXT,
+  feedback_from TEXT,
+  patch_verified BOOLEAN NOT NULL DEFAULT false,
+  patch_verified_at TIMESTAMPTZ,
+  patch_verified_source TEXT,
+  patch_govhub_proposal_id TEXT,
+  patch_canopi_message_id TEXT,
+  patch_verified_href TEXT,
+  patch_last_checked_at TIMESTAMPTZ,
+  reflection TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  submitted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (series_id, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_badge_grant (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  badge_code TEXT NOT NULL,
+  grant_type TEXT NOT NULL,
+  granted_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  revoked_at TIMESTAMPTZ,
+  UNIQUE (series_id, user_id, badge_code)
+);
+
+CREATE TABLE IF NOT EXISTS dp_event_series_patch_lookup (
+  id UUID PRIMARY KEY,
+  pearl_id UUID NOT NULL REFERENCES dp_event_series_pearl(id) ON DELETE CASCADE,
+  source TEXT NOT NULL,
+  external_id TEXT NOT NULL,
+  href TEXT,
+  snippet TEXT,
+  created_at TIMESTAMPTZ NOT NULL,
+  matched_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (pearl_id, source, external_id)
+);
 `;
 
 let pool: pg.Pool | null = null;
@@ -159,7 +355,11 @@ export function getDpPool(): pg.Pool | null {
   const connectionString = dpDatabaseUrl();
   if (!connectionString) return null;
   if (!pool) {
-    pool = new Pool({ connectionString, max: 10 });
+    pool = new Pool({
+      connectionString,
+      max: 10,
+      connectionTimeoutMillis: 8000,
+    });
   }
   return pool;
 }

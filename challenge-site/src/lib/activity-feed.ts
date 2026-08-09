@@ -97,7 +97,7 @@ function kindForWorkgroupEvent(eventType: string): ActivityFeedKind {
 }
 
 async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[]> {
-  // Sample intro + a few early chapters only — full 23-chapter scan is too slow for SSR.
+  // Sample intro + a few early chapters only – full 23-chapter scan is too slow for SSR.
   const samplePages = ['intro', 'dp01', 'dp02', 'dp03', 'dp04', 'dp05'];
   const batches = await Promise.all(
     samplePages.map((pageId) => searchCanopiPosts({ pageId, limit: Math.min(limit, 8) })),
@@ -134,10 +134,16 @@ async function fetchCanopiDiscussItems(limit: number): Promise<ActivityFeedItem[
 
 /** Merge Gov Hub layer activity (incl. WG chat/invite) + Canopi discuss posts. */
 export async function fetchUnifiedActivity(limit = 24): Promise<ActivityFeedItem[]> {
-  const [govhub, canopi] = await Promise.all([
-    fetchChallengeActivity(limit),
-    fetchCanopiDiscussItems(Math.min(12, limit)),
-  ]);
+  let govhub: Awaited<ReturnType<typeof fetchChallengeActivity>> = [];
+  let canopi: ActivityFeedItem[] = [];
+  try {
+    [govhub, canopi] = await Promise.all([
+      fetchChallengeActivity(limit),
+      fetchCanopiDiscussItems(Math.min(12, limit)),
+    ]);
+  } catch {
+    /* upstream timeout – render page without live activity */
+  }
 
   const merged: ActivityFeedItem[] = [
     ...govhub.map((item) => ({
@@ -298,7 +304,7 @@ async function fetchCanopiItemsForDp(
       href: bookDiscussHref({ dpId, pageId: p.pageId }),
       kind,
       badge: classified.badge,
-      // Canopi Discuss has no accept/decline workflow yet — patches stay open.
+      // Canopi Discuss has no accept/decline workflow yet – patches stay open.
       resolved: false,
       status: parsed.kind,
       source: 'canopi' as const,

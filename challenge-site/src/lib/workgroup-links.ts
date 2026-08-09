@@ -1,6 +1,6 @@
 import { govhubUrl } from '@/lib/govhub';
 
-/** Env-only check — safe to import from isomorphic code (no request headers). */
+/** Env-only check – safe to import from isomorphic code (no request headers). */
 export function isWorkgroupCollabEnabledFromEnv(): boolean {
   const flag = process.env.DP_COLLAB_ENABLED;
   if (flag === 'true') return true;

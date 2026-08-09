@@ -18,6 +18,7 @@ import {
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
+import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 
 export const metadata = {
   title: 'The Challenge – Desirable Properties',
@@ -29,7 +30,10 @@ export const revalidate = 300;
 
 export default async function ChallengePage() {
   const now = new Date();
-  const workgroups = await fetchChallengeWorkgroups();
+  const [workgroups, memberWorkgroupIds] = await Promise.all([
+    fetchChallengeWorkgroups(),
+    readSessionMemberWorkgroupIds(),
+  ]);
 
   const current = getCurrentMilestone(now);
   const activeAndUpcoming = getActiveAndUpcoming(now);
@@ -38,7 +42,7 @@ export default async function ChallengePage() {
     isWorkgroupFormationPhase(now) || isBeforeWorkgroupFormation(now);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
         ← Back to home
       </Link>
@@ -58,7 +62,7 @@ export default async function ChallengePage() {
       </header>
 
       <div className="mt-10 space-y-14">
-        {/* Overview narrative — kept short: the timeline below covers the origin
+        {/* Overview narrative – kept short: the timeline below covers the origin
             story as dated milestones, and /about tells it in full as an essay. */}
         <section className="space-y-4 text-lg leading-relaxed text-slate-300">
           <p>
@@ -110,7 +114,7 @@ export default async function ChallengePage() {
             >
               {DESIRABLE_PROPERTIES_BOOK_HOST}
             </a>{' '}
-            (chapter comments are live now). Patch draft text on Gov Hub—select a passage and submit
+            (chapter comments are live now). Patch draft text on Gov Hub – select a passage and submit
             a revision. Over the coming months, workgroups will gather commentary, propose patches,
             and explore implementations that strengthen the overall coherence of the emerging
             framework. Every improvement helps move the work from exploration toward rough consensus
@@ -133,7 +137,10 @@ export default async function ChallengePage() {
         {/* Workgroup formation */}
         {showWorkgroupPanel && (
           <section>
-            <WorkgroupFormationStatus workgroups={workgroups} />
+            <WorkgroupFormationStatus
+              workgroups={workgroups}
+              memberWorkgroupIds={memberWorkgroupIds}
+            />
           </section>
         )}
 
@@ -142,8 +149,8 @@ export default async function ChallengePage() {
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
             <h3 className="text-lg font-semibold text-white">Living workspace</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              Patch drafts on Gov Hub—select a passage and submit a text revision. Join workgroups
-              and participate in governance—the active environment where the challenge evolves.
+              Patch drafts on Gov Hub – select a passage and submit a text revision. Join workgroups
+              and participate in governance – the active environment where the challenge evolves.
             </p>
             <a
               href={GOVHUB_DP_PATCHES_URL}
@@ -174,8 +181,7 @@ export default async function ChallengePage() {
                 className="text-violet-300 hover:text-violet-200"
               >
                 {DESIRABLE_PROPERTIES_BOOK_HOST}
-              </a>
-              —chapter comments are live now. Passage-level patching on the book is coming; patch
+              </a> – chapter comments are live now. Passage-level patching on the book is coming; patch
               drafts on Gov Hub today.
             </p>
             <a

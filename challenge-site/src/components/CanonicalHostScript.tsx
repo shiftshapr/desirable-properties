@@ -1,4 +1,4 @@
-/** Runs before hydration — fixes cached bad redirects to :3005 or www. */
+/** Runs before hydration – fixes cached bad redirects to :3005 or www. */
 export default function CanonicalHostScript() {
   return (
     <script

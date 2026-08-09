@@ -1,11 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import WorkgroupChatAiAssist from '@/components/workgroup/WorkgroupChatAiAssist';
 import { clearChatDraft, loadChatDraft, saveChatDraft } from '@/lib/workgroup-draft-storage';
+import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
   workgroupSlug: string;
+  workgroupName: string;
+  dpId: string | null;
+  recentMessages: WorkgroupMessage[];
   canPost: boolean;
   signedIn: boolean;
   busy?: boolean;
@@ -14,11 +19,15 @@ type Props = {
 
 export default function WorkgroupChatComposer({
   workgroupSlug,
+  workgroupName,
+  dpId,
+  recentMessages,
   canPost,
   signedIn,
   busy,
   onSend,
 }: Props) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [body, setBody] = useState('');
   const [hydrated, setHydrated] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,20 +76,33 @@ export default function WorkgroupChatComposer({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
-      <label htmlFor="wg-chat-body" className="sr-only">
-        Message
-      </label>
-      <textarea
-        id="wg-chat-body"
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        rows={3}
-        maxLength={8000}
-        placeholder="Share an update with the workgroup…"
-        className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none"
-        disabled={busy}
-      />
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="relative">
+        <label htmlFor="wg-chat-body" className="sr-only">
+          Message
+        </label>
+        <textarea
+          ref={textareaRef}
+          id="wg-chat-body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          rows={3}
+          maxLength={8000}
+          placeholder="Share an update with the workgroup…"
+          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none"
+          disabled={busy}
+        />
+        <WorkgroupChatAiAssist
+          textareaRef={textareaRef}
+          value={body}
+          onValueChange={setBody}
+          workgroupSlug={workgroupSlug}
+          workgroupName={workgroupName}
+          dpId={dpId}
+          recentMessages={recentMessages}
+          disabled={busy}
+        />
+      </div>
       <div className="flex items-center justify-between gap-3">
         {error ? <p className="text-sm text-rose-300">{error}</p> : <span />}
         <button

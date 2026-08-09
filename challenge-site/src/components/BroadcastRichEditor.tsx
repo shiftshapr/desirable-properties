@@ -106,7 +106,7 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
     const quill = quillRef.current;
     if (!quill) return;
 
-    // Parent is echoing our own edit — do not re-paste or cursor jumps.
+    // Parent is echoing our own edit – do not re-paste or cursor jumps.
     if (value === lastEmittedHtmlRef.current) {
       lastEmittedHtmlRef.current = null;
       return;

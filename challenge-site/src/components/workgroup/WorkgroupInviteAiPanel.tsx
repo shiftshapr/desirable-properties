@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import WorkgroupInviteContentPicker from '@/components/workgroup/WorkgroupInviteContentPicker';
 import WorkgroupInviteDisambiguation from '@/components/workgroup/WorkgroupInviteDisambiguation';
 import WorkgroupInviteDraftEditor from '@/components/workgroup/WorkgroupInviteDraftEditor';
 import WorkgroupInviteResearchForm from '@/components/workgroup/WorkgroupInviteResearchForm';
@@ -13,6 +14,8 @@ import {
 } from '@/lib/workgroup-draft-storage';
 import type {
   InviteCandidate,
+  InviteContentContext,
+  InviteLeadType,
   PriorInvitation,
   ResolvedPerson,
   SuggestedWorkgroup,
@@ -48,6 +51,19 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   const [tone, setTone] = useState('warm');
   const [length, setLength] = useState('medium');
   const [draft, setDraft] = useState('');
+  const [selectedEventIds, setSelectedEventIds] = useState<string[]>([]);
+  const [selectedPerspectiveIds, setSelectedPerspectiveIds] = useState<string[]>([]);
+  const [inviteLead, setInviteLead] = useState<InviteLeadType>('events');
+  const [contentCatalog, setContentCatalog] = useState<{
+    events: Array<{
+      id: string;
+      title: string;
+      url: string;
+      eventDate?: string | null;
+      description?: string | null;
+    }>;
+    perspectives: Array<{ id: string; title: string; url: string; slug: string }>;
+  }>({ events: [], perspectives: [] });
 
   const [platformDone, setPlatformDone] = useState(false);
   const [mailto, setMailto] = useState('');
@@ -66,9 +82,33 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       if (saved.length) setLength(saved.length);
       if (saved.draft) setDraft(saved.draft);
       if (saved.step) setStep(saved.step);
+      if (saved.selectedEventIds) setSelectedEventIds(saved.selectedEventIds);
+      if (saved.selectedPerspectiveIds) setSelectedPerspectiveIds(saved.selectedPerspectiveIds);
+      if (saved.inviteLead) setInviteLead(saved.inviteLead);
     }
     setHydrated(true);
   }, [workgroupSlug]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/invite-content', { cache: 'no-store' });
+        const data = await res.json();
+        if (!cancelled && res.ok && data.ok) {
+          setContentCatalog({
+            events: data.events || [],
+            perspectives: data.perspectives || [],
+          });
+        }
+      } catch {
+        /* optional catalog for draft context */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -82,29 +122,74 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       length,
       draft,
       step,
+      selectedEventIds,
+      selectedPerspectiveIds,
+      inviteLead,
     });
   }, [
     draft,
     email,
     extraLinks,
     hydrated,
+    inviteLead,
     length,
     linkedinUrl,
     name,
     previousInteraction,
+    selectedEventIds,
+    selectedPerspectiveIds,
     step,
     tone,
     workgroupSlug,
   ]);
 
+  const inviteContentContext = useMemo<InviteContentContext | null>(() => {
+    const events = contentCatalog.events
+      .filter((event) => selectedEventIds.includes(event.id))
+      .map((event) => ({
+        title: event.title,
+        url: event.url,
+        description: event.description ?? null,
+        event_date: event.eventDate ?? null,
+      }));
+    const perspectives = contentCatalog.perspectives
+      .filter((perspective) => selectedPerspectiveIds.includes(perspective.id))
+      .map((perspective) => ({
+        title: perspective.title,
+        url: perspective.url,
+        slug: perspective.slug,
+      }));
+    if (!events.length && !perspectives.length) return null;
+
+    let lead = inviteLead;
+    if (events.length && !perspectives.length) lead = 'events';
+    if (perspectives.length && !events.length) lead = 'perspectives';
+
+    return { events, perspectives, lead };
+  }, [contentCatalog, inviteLead, selectedEventIds, selectedPerspectiveIds]);
+
+  const handleInviteContentChange = useCallback(
+    (patch: {
+      selectedEventIds?: string[];
+      selectedPerspectiveIds?: string[];
+      lead?: InviteLeadType;
+    }) => {
+      if (patch.selectedEventIds !== undefined) setSelectedEventIds(patch.selectedEventIds);
+      if (patch.selectedPerspectiveIds !== undefined) {
+        setSelectedPerspectiveIds(patch.selectedPerspectiveIds);
+      }
+      if (patch.lead !== undefined) setInviteLead(patch.lead);
+    },
+    [],
+  );
+
   if (!canInvite) {
     return (
-      <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
-        <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
-        <p className="mt-2 text-sm text-slate-400">
+      <div>
+        <p className="text-sm text-slate-400">
           Only workgroup members can invite people with the AI assistant.
         </p>
-      </section>
+      </div>
     );
   }
 
@@ -131,6 +216,9 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     setSuggested([]);
     setPriorInvitations([]);
     setSelectedExtraIds([]);
+    setSelectedEventIds([]);
+    setSelectedPerspectiveIds([]);
+    setInviteLead('events');
     setTone('warm');
     setLength('medium');
     setDraft('');
@@ -158,6 +246,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         resolved_person: person,
         additional_workgroup_ids: selectedExtraIds,
         prior_invitations: prior,
+        invite_content: inviteContentContext,
       });
       if (data.blocked || data.error) {
         setError(data.error || 'Draft blocked');
@@ -167,7 +256,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       if (nextDraft) {
         setDraft(nextDraft);
       } else if (previousDraft.trim()) {
-        setError('Regenerate returned an empty draft — your previous text is unchanged.');
+        setError('Regenerate returned an empty draft – your previous text is unchanged.');
       } else {
         setDraft('');
       }
@@ -259,15 +348,12 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   const recipientEmail = email.trim();
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Invite with AI</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Research a contact, draft a personal invitation, then send via platform mail or your own
-            inbox.
-          </p>
-        </div>
+        <p className="text-sm text-slate-400">
+          Optionally include events or perspectives, research a contact, draft a personal
+          invitation, then send via platform mail or your own inbox.
+        </p>
         {hasProgress ? (
           <button
             type="button"
@@ -281,6 +367,15 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       </div>
 
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+
+      <div className="mt-6">
+        <WorkgroupInviteContentPicker
+          selectedEventIds={selectedEventIds}
+          selectedPerspectiveIds={selectedPerspectiveIds}
+          lead={inviteLead}
+          onChange={handleInviteContentChange}
+        />
+      </div>
 
       <div className="mt-6">
         {step === 'research' || step === 'disambiguate' ? (
@@ -359,6 +454,6 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 }

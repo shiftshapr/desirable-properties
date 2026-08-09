@@ -4,11 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { bookDiscussHref } from '@/lib/govhub';
-import {
-  brc333BadgeMintPreviewHref,
-  dpBadgeImageSrc,
-  dpImageAlt,
-} from '@/lib/dp-images';
+import { dpDetailHref } from '@/lib/dp-links';
+import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
+import { useCurrentFromPath } from '@/lib/useCurrentFromPath';
 
 export type DpBadgeCarouselItem = {
   id: string;
@@ -47,10 +45,10 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
 
   if (!current) return null;
 
-  const src = dpBadgeImageSrc(current.id);
-  const dpHref = `/dp/${current.id.toLowerCase()}`;
+  const fromPath = useCurrentFromPath();
+  const src = dpCardImageSrc(current.id);
+  const dpHref = dpDetailHref(current.id, fromPath);
   const discussHref = bookDiscussHref({ dpId: current.id });
-  const badgePreviewHref = brc333BadgeMintPreviewHref(current.id);
   const isPage = variant === 'page';
 
   return (
@@ -94,33 +92,14 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
       >
         <figure className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
           {src ? (
-            badgePreviewHref ? (
-              <a
-                href={badgePreviewHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative block h-full w-full"
-                aria-label={`Open BRC333 badge preview for ${current.id}`}
-              >
-                <Image
-                  src={src}
-                  alt={dpImageAlt(current.id, current.name)}
-                  fill
-                  className="object-cover transition hover:opacity-90"
-                  sizes={isPage ? '(max-width: 768px) 100vw, 352px' : '(max-width: 640px) 100vw, 224px'}
-                  priority={index === 0}
-                />
-              </a>
-            ) : (
-              <Image
-                src={src}
-                alt={dpImageAlt(current.id, current.name)}
-                fill
-                className="object-cover"
-                sizes={isPage ? '(max-width: 768px) 100vw, 352px' : '(max-width: 640px) 100vw, 224px'}
-                priority={index === 0}
-              />
-            )
+            <Image
+              src={src}
+              alt={dpImageAlt(current.id, current.name)}
+              fill
+              className="object-cover"
+              sizes={isPage ? '(max-width: 768px) 100vw, 352px' : '(max-width: 640px) 100vw, 224px'}
+              priority={index === 0}
+            />
           ) : null}
         </figure>
 
@@ -134,19 +113,9 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
             DP they help refine; role overlays and contribution evidence can be added over time.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {badgePreviewHref ? (
-              <a
-                href={badgePreviewHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-              >
-                Badge preview ↗
-              </a>
-            ) : null}
             <Link
               href={dpHref}
-              className="inline-flex items-center rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+              className="inline-flex items-center rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
             >
               View DP page →
             </Link>
@@ -174,7 +143,7 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
         aria-label="Jump to a Desirable Property badge"
       >
         {items.map((item, i) => {
-          const thumb = dpBadgeImageSrc(item.id);
+          const thumb = dpCardImageSrc(item.id);
           const active = i === index;
           return (
             <button

@@ -53,19 +53,31 @@ async function fetchCanopiMessagesForPage({
   params.set('pageId', pageId);
   params.set('limit', String(Math.min(limit, 100)));
   const url = `${resolveCanopiApiBase()}/api/messages?${params}`;
-  const res = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(12000) });
-  if (!res.ok) {
-    const errText = await res.text().catch(() => '');
+  try {
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) {
+      const errText = await res.text().catch(() => '');
+      return {
+        ok: false as const,
+        items: [] as Record<string, unknown>[],
+        error: `Canopi messages ${res.status}${errText ? `: ${errText.slice(0, 120)}` : ''}`,
+      };
+    }
+    const json = await res.json().catch(() => ({}));
+    const items =
+      json?.items ?? json?.data?.items ?? json?.messages ?? (Array.isArray(json) ? json : []);
+    return { ok: true as const, items: items as Record<string, unknown>[], pageId: json?.pageId || pageId };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Canopi request failed';
     return {
       ok: false as const,
       items: [] as Record<string, unknown>[],
-      error: `Canopi messages ${res.status}${errText ? `: ${errText.slice(0, 120)}` : ''}`,
+      error: message,
     };
   }
-  const json = await res.json().catch(() => ({}));
-  const items =
-    json?.items ?? json?.data?.items ?? json?.messages ?? (Array.isArray(json) ? json : []);
-  return { ok: true as const, items: items as Record<string, unknown>[], pageId: json?.pageId || pageId };
 }
 
 function chapterKey(pageId: string | null) {

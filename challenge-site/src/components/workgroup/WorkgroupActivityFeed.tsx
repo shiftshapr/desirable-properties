@@ -84,18 +84,19 @@ export default function WorkgroupActivityFeed({
   );
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold text-white">
-            {dpId ? `${dpId} activity` : 'Workgroup activity'}
-          </h2>
-          <p className="mt-1 max-w-2xl text-sm text-slate-400">
-            Gov Hub workgroup chat and draft patches, plus Canopi discuss on this DP&apos;s book
-            chapter. Comments &amp; patches filters to discuss posts, draft proposals, and chat —
-            hides joins, leaves, and invites.
-          </p>
-        </div>
+        <p className="max-w-2xl text-sm text-slate-400">
+          {dpId ? (
+            <>
+              <span className="font-medium text-cyan-300/90">{dpId}</span>
+              {' — '}
+            </>
+          ) : null}
+          Workgroup chat on this page, Gov Hub draft patches, plus Canopi discuss on this
+          DP&apos;s book chapter. Comments &amp; patches filters to discuss posts, draft
+          proposals, and chat – hides joins, leaves, and invites.
+        </p>
         <div
           className="inline-flex shrink-0 rounded-lg border border-slate-700 bg-slate-950/60 p-0.5 text-sm"
           role="group"
@@ -174,6 +175,6 @@ export default function WorkgroupActivityFeed({
           ))}
         </ul>
       )}
-    </section>
+    </div>
   );
 }

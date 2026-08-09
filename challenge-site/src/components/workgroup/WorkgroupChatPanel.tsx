@@ -8,6 +8,8 @@ import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 type Props = {
   workgroupId: string;
   workgroupSlug: string;
+  workgroupName: string;
+  dpId: string | null;
   signedIn: boolean;
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
@@ -28,6 +30,8 @@ function formatWhen(iso: string | null) {
 export default function WorkgroupChatPanel({
   workgroupId,
   workgroupSlug,
+  workgroupName,
+  dpId,
   signedIn,
   initialMessages = [],
   initialIsMember = false,
@@ -76,14 +80,11 @@ export default function WorkgroupChatPanel({
   }
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex items-end justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Workgroup chat</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            {isMember ? 'Member view — refreshes every 30s.' : 'Loading membership…'}
-          </p>
-        </div>
+        <p className="text-sm text-slate-400">
+          {isMember ? 'Member view – refreshes every 30s.' : 'Loading membership…'}
+        </p>
         <button
           type="button"
           onClick={() => void refresh()}
@@ -121,12 +122,15 @@ export default function WorkgroupChatPanel({
       <div className="mt-5 border-t border-slate-800 pt-4">
         <WorkgroupChatComposer
           workgroupSlug={workgroupSlug}
+          workgroupName={workgroupName}
+          dpId={dpId}
+          recentMessages={messages}
           canPost={canPost}
           signedIn={signedIn}
           busy={posting}
           onSend={handleSend}
         />
       </div>
-    </section>
+    </div>
   );
 }

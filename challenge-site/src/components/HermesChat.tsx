@@ -18,6 +18,8 @@ import {
 } from '@/lib/hermesDocuments';
 import { useAuth } from '@/lib/auth-context';
 import type { AuthUser } from '@/lib/auth-types';
+import { dpDetailHref } from '@/lib/dp-links';
+import { useCurrentFromPath } from '@/lib/useCurrentFromPath';
 
 interface Message {
   id: string;
@@ -41,12 +43,18 @@ interface HermesChatProps {
   compact?: boolean;
   initialSignedIn?: boolean;
   initialUser?: AuthUser | null;
+  /** Prefill the composer (e.g. from /agent?prompt=…). */
+  initialPrompt?: string | null;
+  /** Optional pathway-specific starters shown above the defaults. */
+  starterPrompts?: string[] | null;
+  /** Label shown above pathway starters. */
+  starterLabel?: string | null;
 }
 
 const INTRO =
   "I'm Hermes, the DP Community AI. I help this community improve the Desirable Properties of a layered web – clarifying what they mean, surfacing tensions, and turning good arguments into patches. Sign in to chat. Your conversations are saved in the sidebar for future reference and continuing dialog.";
 
-const STARTER_PROMPTS = [
+const DEFAULT_STARTER_PROMPTS = [
   'What does DP7 mean by bridge?',
   'Where do DP22 and DP23 overlap?',
   'What open proposals exist on DP4?',
@@ -55,7 +63,7 @@ const STARTER_PROMPTS = [
 function userFacingError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
   if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted/i.test(msg)) {
-    return "Hermes couldn't respond right now. Your message wasn't lost — try sending again.";
+    return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
   return msg;
 }
@@ -74,8 +82,12 @@ export default function HermesChat({
   compact = false,
   initialSignedIn = false,
   initialUser = null,
+  initialPrompt = null,
+  starterPrompts = null,
+  starterLabel = null,
 }: HermesChatProps) {
   const { user: authUser, checked, login, loginBusy } = useAuth();
+  const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
@@ -88,7 +100,13 @@ export default function HermesChat({
       timestamp: new Date(),
     },
   ]);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(() =>
+    typeof initialPrompt === 'string' ? initialPrompt : '',
+  );
+  const visibleStarters =
+    starterPrompts && starterPrompts.length > 0
+      ? starterPrompts
+      : DEFAULT_STARTER_PROMPTS;
   const [attachments, setAttachments] = useState<PendingHermesDocument[]>([]);
   const [attachError, setAttachError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -246,8 +264,17 @@ export default function HermesChat({
     setAttachments((prev) => prev.filter((doc) => doc.id !== id));
   };
 
-  const sendMessage = async () => {
-    const text = inputText.trim();
+  const applyStarter = (prompt: string) => {
+    setInputText(prompt);
+    if (!signedIn) {
+      promptSignIn();
+      return;
+    }
+    void sendMessage(prompt);
+  };
+
+  const sendMessage = async (overrideText?: string) => {
+    const text = (typeof overrideText === 'string' ? overrideText : inputText).trim();
     if ((!text && attachments.length === 0) || isLoading) return;
 
     if (!signedIn) {
@@ -403,7 +430,7 @@ export default function HermesChat({
       setSystemNotice({
         variant: 'success',
         text: noteStatus === 'verified'
-          ? 'Teaching saved and active — Hermes will use this on future turns about the same DPs.'
+          ? 'Teaching saved and active – Hermes will use this on future turns about the same DPs.'
           : 'Suggestion saved for layer admin review. Hermes will only use it after approval.',
       });
     } catch (err) {
@@ -528,7 +555,7 @@ export default function HermesChat({
 
   return (
     <div className={shellClass}>
-      {/* Desktop sidebar — fixed to viewport left, full height below site header */}
+      {/* Desktop sidebar – fixed to viewport left, full height below site header */}
       <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
         <div className="pointer-events-auto flex h-full flex-col">
           {sidebar}
@@ -604,18 +631,28 @@ export default function HermesChat({
                   )}
                   {message.sender === 'assistant'
                     && message.id === 'intro'
-                    && !signedIn ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {STARTER_PROMPTS.map((prompt) => (
-                        <button
-                          key={prompt}
-                          type="button"
-                          onClick={promptSignIn}
-                          className="rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-left text-[11px] text-slate-300 hover:border-cyan-700 hover:text-cyan-100"
-                        >
-                          {prompt}
-                        </button>
-                      ))}
+                    && messages.length === 1 ? (
+                    <div className="mt-3 space-y-2">
+                      {starterLabel ? (
+                        <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-cyan-400/90">
+                          {starterLabel}
+                        </p>
+                      ) : null}
+                      <div className="flex flex-wrap gap-2">
+                        {visibleStarters.map((prompt) => (
+                          <button
+                            key={prompt}
+                            type="button"
+                            onClick={() => applyStarter(prompt)}
+                            className="rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1.5 text-left text-[11px] text-slate-300 hover:border-cyan-700 hover:text-cyan-100"
+                          >
+                            {prompt.length > 120 ? `${prompt.slice(0, 117)}…` : prompt}
+                          </button>
+                        ))}
+                      </div>
+                      {!signedIn ? (
+                        <p className="text-[11px] text-slate-500">Sign in to send a starter.</p>
+                      ) : null}
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
@@ -624,7 +661,7 @@ export default function HermesChat({
                       {message.citedDps.slice(0, 6).map((dpNum) => (
                         <Link
                           key={`${message.id}-dp-${dpNum}`}
-                          href={`/dp/dp${dpNum}`}
+                          href={dpDetailHref(`DP${dpNum}`, fromPath)}
                           className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
                             dpNum >= 1 && dpNum <= 22
                               ? 'border-slate-600 bg-slate-900 text-slate-200'
@@ -753,7 +790,7 @@ export default function HermesChat({
               />
               <button
                 type="button"
-                onClick={signedIn ? sendMessage : promptSignIn}
+                onClick={signedIn ? () => void sendMessage() : promptSignIn}
                 disabled={
                   (!signedIn && loginBusy)
                   || (signedIn && !inputText.trim() && attachments.length === 0)

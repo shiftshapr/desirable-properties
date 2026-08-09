@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { GovHubWorkgroup } from '@/lib/govhub';
 import { extractDpId } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
 
 type LocalDp = {
@@ -13,6 +14,8 @@ type LocalDp = {
 type Props = {
   localDps: LocalDp[];
   workgroups: GovHubWorkgroup[];
+  /** Page path to return to from DP detail (default: home DP grid). */
+  fromPath?: string;
 };
 
 function statusLabel(wg: GovHubWorkgroup | undefined): string {
@@ -20,7 +23,7 @@ function statusLabel(wg: GovHubWorkgroup | undefined): string {
   return wg.state || wg.status || 'Draft';
 }
 
-export default function DPCardGrid({ localDps, workgroups }: Props) {
+export default function DPCardGrid({ localDps, workgroups, fromPath = '/#dps' }: Props) {
   const workgroupByDp = new Map<string, GovHubWorkgroup>();
   for (const wg of workgroups) {
     const dpId = extractDpId(wg.name);
@@ -32,7 +35,7 @@ export default function DPCardGrid({ localDps, workgroups }: Props) {
       {localDps.map((dp) => {
         const wg = workgroupByDp.get(dp.id);
         const status = statusLabel(wg);
-        const dpHref = `/dp/${dp.id.toLowerCase()}`;
+        const dpHref = dpDetailHref(dp.id, fromPath);
         const cardSrc = dpCardImageSrc(dp.id);
 
         return (

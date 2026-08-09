@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
@@ -13,9 +14,14 @@ import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
-import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
-import { govhubUrl } from '@/lib/govhub';
+import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
+import { govhubDraftReadHref, govhubUrl, isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
+import {
+  normalizeWorkgroupCollabTab,
+  WORKGROUP_COLLAB_TABS,
+  type WorkgroupCollabTabKey,
+} from '@/lib/workgroup-collab-tabs';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
@@ -42,18 +48,31 @@ export default function WorkgroupCollabClient({
   initialMembershipResolved = false,
   justJoined = false,
 }: Props) {
+  const searchParams = useSearchParams();
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
-  // Trust SSR only for positive membership; stale false negatives show join UI too early.
+  const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
+    normalizeWorkgroupCollabTab(searchParams.get('tab')),
+  );
   const [isMember, setIsMember] = useState(initialIsMember || justJoined);
   const [canInvite, setCanInvite] = useState(
     Boolean(initialIsMember || justJoined || workgroup.can_invite_members),
   );
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
-  // Trust SSR for initial membership; re-check client-side without clearing on errors.
   const [membershipChecked, setMembershipChecked] = useState(
     justJoined || initialMembershipResolved,
   );
+
+  useEffect(() => {
+    setTab(normalizeWorkgroupCollabTab(searchParams.get('tab')));
+  }, [searchParams]);
+
+  const selectTab = useCallback((next: WorkgroupCollabTabKey) => {
+    setTab(next);
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', next);
+    window.history.replaceState(null, '', url.toString());
+  }, []);
 
   async function refreshMembership() {
     try {
@@ -93,7 +112,6 @@ export default function WorkgroupCollabClient({
           }
         } catch {
           if (!cancelled && (!justJoined || attempt === maxAttempts - 1)) {
-            // Do not clear membership on upstream errors — SSR/signups may already be correct.
             setMembershipChecked(true);
           }
           return;
@@ -107,9 +125,12 @@ export default function WorkgroupCollabClient({
 
   const showFullChat = membershipChecked && isMember;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
-  const docHref = workgroup.document_href ? govhubUrl(workgroup.document_href) : null;
+  const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
-  const artSrc = dpCardImageSrc(dpId);
+  const artSrc = dpWorkgroupCardImageSrc({ dpId, workgroupSlug: workgroup.slug });
+  const artAlt = isDpDiscoveryWorkgroup(workgroup.slug)
+    ? dpDiscoveryImageAlt(workgroup.name)
+    : dpImageAlt(dpId || '', workgroup.name);
 
   return (
     <div className="space-y-8">
@@ -119,7 +140,7 @@ export default function WorkgroupCollabClient({
             <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-xl border border-slate-700 bg-slate-950 sm:w-48 md:mx-0">
               <Image
                 src={artSrc}
-                alt={dpImageAlt(dpId || '', workgroup.name)}
+                alt={artAlt}
                 fill
                 className="object-cover"
                 sizes="192px"
@@ -128,92 +149,148 @@ export default function WorkgroupCollabClient({
             </div>
           ) : null}
           <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Workgroup</p>
-        <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{workgroup.name}</h1>
-        {workgroup.description ? (
-          <p className="mt-4 max-w-3xl text-slate-300">{workgroup.description}</p>
-        ) : null}
-        <div className="mt-5 flex flex-wrap items-start gap-3 text-sm">
-          {membershipChecked && !isMember ? (
-            <WorkgroupJoinPanel
-              workgroupId={workgroup.id}
-              workgroupName={workgroup.name}
-              workgroupSlug={workgroup.slug}
-              fallbackHref={joinHref}
-              onJoined={() => void refreshMembership()}
-            />
-          ) : membershipChecked && isMember ? (
-            <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
-              You are a member
-            </span>
-          ) : null}
-          <WorkgroupNominatePanel
-            workgroupId={workgroup.id}
-            fallbackHref={nominateFallback}
-          />
-          {docHref ? (
-            <a
-              href={docHref}
-              className="rounded-lg border border-slate-700 px-4 py-2 text-slate-200 hover:border-slate-500"
-            >
-              {workgroup.document_label || 'Open draft'}
-            </a>
-          ) : null}
-          <Link href="/workgroups/join" className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300">
-            ← All workgroups
-          </Link>
-          {membershipChecked && isMember ? (
-            <WorkgroupLeavePanel
-              workgroupId={workgroup.id}
-              workgroupName={workgroup.name}
-              onLeft={() => void refreshMembership()}
-              className="ml-auto"
-            />
-          ) : null}
-        </div>
-        {!membershipChecked ? (
-          <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
-        ) : null}
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Workgroup</p>
+            <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{workgroup.name}</h1>
+            {workgroup.description ? (
+              <p className="mt-4 max-w-3xl text-slate-300">{workgroup.description}</p>
+            ) : null}
+            <div className="mt-5 flex flex-wrap items-start gap-3 text-sm">
+              {membershipChecked && !isMember ? (
+                <WorkgroupJoinPanel
+                  workgroupId={workgroup.id}
+                  workgroupName={workgroup.name}
+                  workgroupSlug={workgroup.slug}
+                  fallbackHref={joinHref}
+                  onJoined={() => void refreshMembership()}
+                />
+              ) : membershipChecked && isMember ? (
+                <span className="rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-emerald-200">
+                  You are a member
+                </span>
+              ) : null}
+              <WorkgroupNominatePanel
+                workgroupId={workgroup.id}
+                fallbackHref={nominateFallback}
+              />
+              {docHref ? (
+                <a
+                  href={docHref}
+                  className="rounded-lg border border-slate-700 px-4 py-2 text-slate-200 hover:border-slate-500"
+                >
+                  {workgroup.document_label || 'Open draft'}
+                </a>
+              ) : null}
+              <Link
+                href="/workgroups/join"
+                className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300"
+              >
+                ← All workgroups
+              </Link>
+              {membershipChecked && isMember ? (
+                <WorkgroupLeavePanel
+                  workgroupId={workgroup.id}
+                  workgroupName={workgroup.name}
+                  onLeft={() => void refreshMembership()}
+                  className="ml-auto"
+                />
+              ) : null}
+            </div>
+            {!membershipChecked ? (
+              <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
+            ) : null}
           </div>
         </div>
       </header>
 
-      <WorkgroupGettingStarted
-        workgroupName={workgroup.name}
-        workgroupSlug={workgroup.slug}
-        dpId={dpId}
-        dpDetailHref={dpDetailHref}
-      />
+      <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
+        <nav
+          className="flex flex-wrap items-end gap-0 border-b border-slate-800 bg-slate-950/30 px-2 pt-2"
+          role="tablist"
+          aria-label="Workgroup sections"
+        >
+          {WORKGROUP_COLLAB_TABS.map((item) => {
+            const active = tab === item.key;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                className={`relative rounded-t-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                  active
+                    ? 'z-10 -mb-px border-slate-800 border-b-slate-900/40 bg-slate-900/40 text-white'
+                    : 'border-transparent text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                }`}
+                onClick={() => selectTab(item.key)}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
 
-      {showFullChat ? (
-        <WorkgroupChatPanel
-          workgroupId={workgroup.id}
-          workgroupSlug={workgroup.slug}
-          signedIn={signedIn}
-          initialMessages={teaserMessages}
-          initialIsMember
-        />
-      ) : (
-        <WorkgroupChatTeaser
-          messages={teaserMessages}
-          joinHref={joinHref}
-          workgroupName={workgroup.name}
-        />
-      )}
+        <div role="tabpanel" className="p-5 sm:p-6">
+          {tab === 'getting-started' ? (
+            <WorkgroupGettingStarted
+              workgroupName={workgroup.name}
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              dpDetailHref={dpDetailHref}
+              documentHref={workgroup.document_href}
+            />
+          ) : null}
 
-      {showFullChat ? (
-        <WorkgroupInviteAiPanel
-          workgroupId={workgroup.id}
-          workgroupSlug={workgroup.slug}
-          canInvite={canInvite || isMember}
-        />
-      ) : null}
+          {tab === 'chat' ? (
+            showFullChat ? (
+              <WorkgroupChatPanel
+                workgroupId={workgroup.id}
+                workgroupSlug={workgroup.slug}
+                workgroupName={workgroup.name}
+                dpId={dpId}
+                signedIn={signedIn}
+                initialMessages={teaserMessages}
+                initialIsMember
+              />
+            ) : (
+              <WorkgroupChatTeaser
+                messages={teaserMessages}
+                joinHref={joinHref}
+                workgroupName={workgroup.name}
+              />
+            )
+          ) : null}
 
-      <WorkgroupActivityFeed
-        workgroupSlug={workgroup.slug}
-        dpId={dpId}
-        initialItems={initialActivity}
-      />
+          {tab === 'activity' ? (
+            <WorkgroupActivityFeed
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              initialItems={initialActivity}
+            />
+          ) : null}
+
+          {tab === 'invite' ? (
+            showFullChat ? (
+              <WorkgroupInviteAiPanel
+                workgroupId={workgroup.id}
+                workgroupSlug={workgroup.slug}
+                canInvite={canInvite || isMember}
+              />
+            ) : (
+              <div>
+                <p className="text-sm text-slate-400">
+                  Join this workgroup to invite people with the AI-assisted email flow.
+                </p>
+                <Link
+                  href={joinHref}
+                  className="mt-4 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                >
+                  Join workgroup
+                </Link>
+              </div>
+            )
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }

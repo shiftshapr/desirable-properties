@@ -9,11 +9,14 @@ Staging runs the same Next.js challenge-site as production from `/home/ubuntu/de
 | Production | https://desirableproperties.org | `desirableproperties` | 3005 |
 | Staging | https://staging.desirableproperties.org | `desirableproperties-staging` | 3006 |
 
-## Staging-first workflow
+## Deploy workflow
 
-1. Deploy to staging: `./deploy-staging.sh`
-2. Verify on https://staging.desirableproperties.org (mobile hamburger nav, sign-in, Hermes, etc.)
-3. Promote to production: `./deploy.sh` (stops/restarts prod only; staging keeps running)
+**Branch requirement:** Both production and staging deploy from `main`. `./deploy.sh` and `./deploy-staging.sh` abort if you are on another branch.
+
+1. `git checkout main && git pull origin main`
+2. Deploy to staging (optional preview): `./deploy-staging.sh`
+3. Verify on https://staging.desirableproperties.org (Featured Pathway panel, Fork in the Web, `/badges`, DP card images, mobile nav, sign-in, Hermes, etc.)
+4. Promote to production: `./deploy.sh` (stops/restarts prod only; staging keeps running)
 
 Both scripts share one git checkout but **separate build output directories** (`.next-prod` / `.next-staging`). Staging deploy does **not** stop production or overwrite prod's build artifacts.
 
@@ -28,7 +31,7 @@ Set `DP_ENV=prod|staging` (or `NEXT_DIST_DIR`) before `npm run build`; deploy sc
 
 ## Environment
 
-Staging sets `DP_PUBLIC_BASE=https://staging.desirableproperties.org`, `DP_BOOK_BASE_URL=https://staging.book.desirableproperties.org`, and `GOVHUB_BASE_URL=https://hub.themetalayer.org` in `ecosystem.staging.config.js`. Staging shares production Gov Hub (memberships, join/nominate APIs) while keeping its own Next.js host and book staging site. Override via `.env.local` keys `DP_PUBLIC_BASE_STAGING` / `DP_BOOK_BASE_URL_STAGING` if needed.
+Staging sets `DP_PUBLIC_BASE=https://staging.desirableproperties.org`, `DP_BOOK_BASE_URL=https://staging.book.desirableproperties.org`, and `GOVHUB_BASE_URL=https://dev.hub.themetalayer.org` in `ecosystem.staging.config.js`. Staging uses dev Gov Hub (dev.hub.themetalayer.org) (memberships, join/nominate APIs) while keeping its own Next.js host and book staging site. Override via `.env.local` keys `DP_PUBLIC_BASE_STAGING` / `DP_BOOK_BASE_URL_STAGING` if needed.
 
 Book nav links and activity-feed hrefs resolve from `DP_BOOK_BASE_URL` (or auto-detect from `DP_PUBLIC_BASE` / browser hostname when unset).
 

@@ -1,36 +1,45 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { MESSAGE_A_SECTIONS } from '@/lib/dp-welcome-content';
-import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
+import {
+  bookDiscussHref,
+  bookIntroDiscussHref,
+  DP_DISCOVERY_ASK_ITEMS,
+  govhubDraftReadHref,
+  govhubUrl,
+  isDpDiscoveryWorkgroup,
+} from '@/lib/govhub';
 
 type Props = {
   workgroupName: string;
   workgroupSlug: string;
   dpId: string | null;
   dpDetailHref: string | null;
+  documentHref?: string | null;
 };
-
-function workgroupBookDiscussHref(dpId: string | null): string {
-  return bookDiscussHref(dpId ? { dpId } : undefined);
-}
 
 export default function WorkgroupGettingStarted({
   workgroupName,
   workgroupSlug,
   dpId,
   dpDetailHref,
+  documentHref,
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
-  const discussHref = workgroupBookDiscussHref(dpId);
+  const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
+  const discussHref = isDiscovery
+    ? bookIntroDiscussHref()
+    : bookDiscussHref(dpId ? { dpId } : undefined);
+  const patchHref = isDiscovery ? null : govhubDraftReadHref(documentHref);
   const a = MESSAGE_A_SECTIONS;
+  const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
-      <h2 className="text-xl font-semibold text-white">Getting started</h2>
-      <p className="mt-2 max-w-3xl text-sm text-slate-400">
+    <div>
+      <p className="max-w-3xl text-sm text-slate-400">
         This page adds chat and AI invites on top of the existing Desirable Properties workgroup
-        experience — welcome guide, DP detail, and Gov Hub drafting all remain available.
+        experience – welcome guide, DP detail, and Gov Hub drafting all remain available.
       </p>
 
       <div className="mt-5 flex flex-wrap gap-3">
@@ -52,8 +61,18 @@ export default function WorkgroupGettingStarted({
           href={discussHref}
           className="rounded-lg bg-violet-800 px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
         >
-          Discuss &amp; patch this chapter →
+          {isDiscovery ? 'Discuss →' : 'Discuss & patch this chapter →'}
         </DiscussPatchLink>
+        {patchHref ? (
+          <a
+            href={patchHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-cyan-800 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
+          >
+            Patch draft on Gov Hub
+          </a>
+        ) : null}
         <a
           href={govHubHref}
           target="_blank"
@@ -82,7 +101,7 @@ export default function WorkgroupGettingStarted({
             {a.askTitle}
           </h3>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-slate-300 marker:text-cyan-500">
-            {a.askItems.slice(0, 4).map((item) => (
+            {askItems.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -92,6 +111,6 @@ export default function WorkgroupGettingStarted({
       <p className="mt-6 text-sm text-slate-400">
         Workgroup: <span className="font-medium text-slate-200">{workgroupName}</span>
       </p>
-    </section>
+    </div>
   );
 }

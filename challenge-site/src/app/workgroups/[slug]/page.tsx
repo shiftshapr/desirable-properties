@@ -1,9 +1,11 @@
+import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
 import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
 import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
@@ -58,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: wg ? `${wg.name} · Workgroup` : 'Workgroup · Desirable Properties Challenge',
     description: wg?.description
       ? String(wg.description).slice(0, 160)
-      : 'Collaborate on a Desirable Properties workgroup — chat and invite members.',
+      : 'Collaborate on a Desirable Properties workgroup – chat and invite members.',
   };
 }
 
@@ -83,7 +85,7 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
   const initialMessages = membership.messages;
   const joinHref = workgroupGovHubHref(workgroup.slug, 'join');
   const dpId = extractDpId(workgroup.name);
-  const dpDetailHref = dpId ? `/dp/${dpId.toLowerCase()}` : null;
+  const dpDetailHrefValue = dpId ? dpDetailHref(dpId, `/workgroups/${workgroup.slug}`) : null;
   const initialActivity = await fetchWorkgroupDpActivity({
     workgroupId: workgroup.id,
     workgroupSlug: workgroup.slug,
@@ -97,17 +99,23 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
   return (
     <main className="border-b border-slate-800">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <WorkgroupCollabClient
-          workgroup={workgroup}
-          initialMessages={initialMessages}
-          joinHref={joinHref}
-          dpId={dpId}
-          dpDetailHref={dpDetailHref}
-          initialActivity={initialActivity}
-          initialIsMember={membership.isMember}
-          initialMembershipResolved={membership.membershipResolved}
-          justJoined={justJoined}
-        />
+        <Suspense
+          fallback={
+            <div className="text-slate-400">Loading workgroup…</div>
+          }
+        >
+          <WorkgroupCollabClient
+            workgroup={workgroup}
+            initialMessages={initialMessages}
+            joinHref={joinHref}
+            dpId={dpId}
+            dpDetailHref={dpDetailHrefValue}
+            initialActivity={initialActivity}
+            initialIsMember={membership.isMember}
+            initialMembershipResolved={membership.membershipResolved}
+            justJoined={justJoined}
+          />
+        </Suspense>
       </div>
     </main>
   );

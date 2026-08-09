@@ -16,14 +16,11 @@ function formatWhen(iso: string | null) {
 
 export default function WorkgroupChatTeaser({ messages, joinHref, workgroupName }: Props) {
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Workgroup chat</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            A peek at recent conversation in {workgroupName}. Join to read the full history and post.
-          </p>
-        </div>
+        <p className="text-sm text-slate-400">
+          A peek at recent conversation in {workgroupName}. Join to read the full history and post.
+        </p>
         <Link
           href={joinHref}
           className="inline-flex shrink-0 items-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
@@ -47,6 +44,6 @@ export default function WorkgroupChatTeaser({ messages, joinHref, workgroupName 
           ))}
         </ul>
       )}
-    </section>
+    </div>
   );
 }
