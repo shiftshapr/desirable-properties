@@ -233,6 +233,40 @@ function pearlRow(row: Record<string, unknown>): EventSeriesPearl {
   };
 }
 
+async function backfillForkSessionSchedule() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  const res = await pool.query(
+    `SELECT s.id, s.session_number, s.starts_at, s.ends_at, s.live_url
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     WHERE e.slug = $1`,
+    [FORK_SERIES_SLUG],
+  );
+  if (!res.rows.length) return;
+
+  for (const row of res.rows) {
+    const seed = FORK_SESSION_SEEDS.find((s) => s.sessionNumber === Number(row.session_number));
+    if (!seed) continue;
+
+    const startsAt = row.starts_at ? null : seed.startsAt;
+    const endsAt = row.ends_at ? null : seed.endsAt;
+    const liveUrl = row.live_url ? null : seed.liveUrl;
+    if (!startsAt && !endsAt && !liveUrl) continue;
+
+    await pool.query(
+      `UPDATE dp_event_series_session
+       SET starts_at = COALESCE(starts_at, $2),
+           ends_at = COALESCE(ends_at, $3),
+           live_url = COALESCE(live_url, $4),
+           updated_at = now()
+       WHERE id = $1`,
+      [row.id, startsAt, endsAt, liveUrl],
+    );
+  }
+}
+
 async function seedForkSeriesIfMissing() {
   const pool = await ensureDpSchema();
   if (!pool) return;
@@ -240,100 +274,106 @@ async function seedForkSeriesIfMissing() {
   const existing = await pool.query('SELECT id FROM dp_event_series WHERE slug = $1', [
     FORK_SERIES_SLUG,
   ]);
-  if (existing.rows.length > 0) return;
-
-  const seriesId = crypto.randomUUID();
-  await pool.query(
-    `INSERT INTO dp_event_series (
-       id, slug, title, subtitle, description_md, hero_image_url,
-       perspective_url, pathway_url, sessions_required_count,
-       badge_code, pearl_badge_code, badge_image_url, active, sort_order,
-       created_by, updated_by
-     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,0,'seed','seed')`,
-    [
-      seriesId,
-      FORK_SERIES_SLUG,
-      'Fork in the Web Workshops',
-      'Will AI Mediate Reality — or Help Us Build a Human-Centered Internet?',
-      'Four standalone online workshops exploring the second fork in the road: what kind of digital world exists when AI is everywhere.',
-      '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
-      '/perspectives/the-fork-in-the-web',
-      '/pathways/ai-human-agency',
-      4,
-      'fork-ws-series',
-      'fork-ws-series-pearl',
-      '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
-    ],
-  );
-
-  for (const sessionSeed of FORK_SESSION_SEEDS) {
-    const sessionId = crypto.randomUUID();
+  if (existing.rows.length === 0) {
+    const seriesId = crypto.randomUUID();
     await pool.query(
-      `INSERT INTO dp_event_series_session (
-         id, series_id, session_number, slug, title, image_url,
-         facilitator_blurb_md, perspective_section_anchor, active, sort_order
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,true,$9)`,
+      `INSERT INTO dp_event_series (
+         id, slug, title, subtitle, description_md, hero_image_url,
+         perspective_url, pathway_url, sessions_required_count,
+         badge_code, pearl_badge_code, badge_image_url, active, sort_order,
+         created_by, updated_by
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,0,'seed','seed')`,
       [
-        sessionId,
         seriesId,
-        sessionSeed.sessionNumber,
-        sessionSeed.slug,
-        sessionSeed.title,
-        sessionSeed.imageUrl,
-        sessionSeed.facilitatorBlurb,
-        sessionSeed.perspectiveAnchor,
-        sessionSeed.sessionNumber,
+        FORK_SERIES_SLUG,
+        'Fork in the Web Workshops',
+        'Will AI Mediate Reality — or Help Us Build a Human-Centered Internet?',
+        'Four standalone online workshops exploring the second fork in the road: what kind of digital world exists when AI is everywhere.',
+        '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
+        '/perspectives/the-fork-in-the-web',
+        '/pathways/ai-human-agency',
+        4,
+        'fork-ws-series',
+        'fork-ws-series-pearl',
+        '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
       ],
     );
 
-    for (let i = 0; i < sessionSeed.preReads.length; i++) {
-      const pr = sessionSeed.preReads[i];
+    for (const sessionSeed of FORK_SESSION_SEEDS) {
+      const sessionId = crypto.randomUUID();
       await pool.query(
-        `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order)
-         VALUES ($1,$2,$3,$4,$5)`,
-        [crypto.randomUUID(), sessionId, pr.label, pr.url, i],
-      );
-    }
-
-    for (const dpId of sessionSeed.relatedDpIds) {
-      await pool.query(
-        `INSERT INTO dp_event_series_session_dp (session_id, dp_id) VALUES ($1,$2)`,
-        [sessionId, dpId],
-      );
-    }
-
-    for (let si = 0; si < sessionSeed.sections.length; si++) {
-      const section = sessionSeed.sections[si];
-      const sectionId = crypto.randomUUID();
-      await pool.query(
-        `INSERT INTO dp_event_series_question_section (
-           id, session_id, section_key, title, pearl_stage, sort_order
-         ) VALUES ($1,$2,$3,$4,$5,$6)`,
-        [sectionId, sessionId, section.sectionKey, section.title, section.pearlStage, si],
+        `INSERT INTO dp_event_series_session (
+           id, series_id, session_number, slug, title, image_url,
+           starts_at, ends_at, live_url,
+           facilitator_blurb_md, perspective_section_anchor, active, sort_order
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12)`,
+        [
+          sessionId,
+          seriesId,
+          sessionSeed.sessionNumber,
+          sessionSeed.slug,
+          sessionSeed.title,
+          sessionSeed.imageUrl,
+          sessionSeed.startsAt,
+          sessionSeed.endsAt,
+          sessionSeed.liveUrl,
+          sessionSeed.facilitatorBlurb,
+          sessionSeed.perspectiveAnchor,
+          sessionSeed.sessionNumber,
+        ],
       );
 
-      for (let qi = 0; qi < section.questions.length; qi++) {
-        const q = section.questions[qi];
+      for (let i = 0; i < sessionSeed.preReads.length; i++) {
+        const pr = sessionSeed.preReads[i];
         await pool.query(
-          `INSERT INTO dp_event_series_question (
-             id, section_id, field_key, label, help_text, field_type,
-             required, ai_assist, sort_order
-           ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-          [
-            crypto.randomUUID(),
-            sectionId,
-            q.fieldKey,
-            q.label,
-            q.helpText || null,
-            q.fieldType,
-            Boolean(q.required),
-            Boolean(q.aiAssist),
-            qi,
-          ],
+          `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order)
+           VALUES ($1,$2,$3,$4,$5)`,
+          [crypto.randomUUID(), sessionId, pr.label, pr.url, i],
         );
+      }
+
+      for (const dpId of sessionSeed.relatedDpIds) {
+        await pool.query(
+          `INSERT INTO dp_event_series_session_dp (session_id, dp_id) VALUES ($1,$2)`,
+          [sessionId, dpId],
+        );
+      }
+
+      for (let si = 0; si < sessionSeed.sections.length; si++) {
+        const section = sessionSeed.sections[si];
+        const sectionId = crypto.randomUUID();
+        await pool.query(
+          `INSERT INTO dp_event_series_question_section (
+             id, session_id, section_key, title, pearl_stage, sort_order
+           ) VALUES ($1,$2,$3,$4,$5,$6)`,
+          [sectionId, sessionId, section.sectionKey, section.title, section.pearlStage, si],
+        );
+
+        for (let qi = 0; qi < section.questions.length; qi++) {
+          const q = section.questions[qi];
+          await pool.query(
+            `INSERT INTO dp_event_series_question (
+               id, section_id, field_key, label, help_text, field_type,
+               required, ai_assist, sort_order
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+            [
+              crypto.randomUUID(),
+              sectionId,
+              q.fieldKey,
+              q.label,
+              q.helpText || null,
+              q.fieldType,
+              Boolean(q.required),
+              Boolean(q.aiAssist),
+              qi,
+            ],
+          );
+        }
       }
     }
   }
+
+  await backfillForkSessionSchedule();
 }
 
 export async function listEventSeries(activeOnly = false): Promise<EventSeries[]> {

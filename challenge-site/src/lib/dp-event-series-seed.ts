@@ -66,12 +66,23 @@ function engageFields(fields: Array<[string, string, boolean?]>): QuestionSeed[]
   }));
 }
 
+/** Pacific workshop slots from Luma (Mondays 11:30 AM–1:00 PM PT). */
+const FORK_SESSION_SCHEDULE = [
+  { startsAt: '2026-08-10T18:30:00.000Z', endsAt: '2026-08-10T20:00:00.000Z' },
+  { startsAt: '2026-08-17T18:30:00.000Z', endsAt: '2026-08-17T20:00:00.000Z' },
+  { startsAt: '2026-08-24T18:30:00.000Z', endsAt: '2026-08-24T20:00:00.000Z' },
+  { startsAt: '2026-08-31T18:30:00.000Z', endsAt: '2026-08-31T20:00:00.000Z' },
+] as const;
+
 export const FORK_SESSION_SEEDS = [
   {
     sessionNumber: 1,
     slug: 'the-first-fork',
     title: 'The First Fork: You → AI → Everything Else',
     imageUrl: '/images/perspectives/the-fork-in-the-web/you-ai-everything-else.webp',
+    startsAt: FORK_SESSION_SCHEDULE[0].startsAt,
+    endsAt: FORK_SESSION_SCHEDULE[0].endsAt,
+    liveUrl: 'https://luma.com/polb50e0',
     facilitatorBlurb:
       'Name what disappears when intelligence replaces place — and what must not become only an AI tunnel.',
     perspectiveAnchor: 'the-internet-where-we-stop-going-to-the-internet',
@@ -103,6 +114,9 @@ export const FORK_SESSION_SEEDS = [
     slug: 'concierge-vs-commons',
     title: 'Concierge vs. Commons',
     imageUrl: '/images/perspectives/the-fork-in-the-web/concierge-vs-commons.webp',
+    startsAt: FORK_SESSION_SCHEDULE[1].startsAt,
+    endsAt: FORK_SESSION_SCHEDULE[1].endsAt,
+    liveUrl: 'https://luma.com/j5s1q67g',
     facilitatorBlurb:
       'Separate brilliant convenience from shared, contestable context — an extraordinarily capable concierge is not a commons.',
     perspectiveAnchor: 'we-could-solve-the-symptoms-without-solving-the-architecture',
@@ -134,6 +148,9 @@ export const FORK_SESSION_SEEDS = [
     slug: 'human-centered-layered-web',
     title: 'Designing the Human-Centered Layered Web',
     imageUrl: '/images/perspectives/the-fork-in-the-web/human-centered-layered-web.webp',
+    startsAt: FORK_SESSION_SCHEDULE[2].startsAt,
+    endsAt: FORK_SESSION_SCHEDULE[2].endsAt,
+    liveUrl: 'https://luma.com/grrdboa9',
     facilitatorBlurb:
       'Sketch architecture — many worlds around one resource, with AI as inhabitant not landlord.',
     perspectiveAnchor: 'a-human-centered-layered-web',
@@ -169,6 +186,9 @@ export const FORK_SESSION_SEEDS = [
     slug: 'sovereignty-and-second-fork',
     title: 'Sovereignty, Subsidiarity & the Second Fork',
     imageUrl: '/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp',
+    startsAt: FORK_SESSION_SCHEDULE[3].startsAt,
+    endsAt: FORK_SESSION_SCHEDULE[3].endsAt,
+    liveUrl: 'https://luma.com/cwjilts3',
     facilitatorBlurb:
       'Turn principles into delegation rules — sovereignty is the right; subsidiarity is the operating principle.',
     perspectiveAnchor: 'the-second-fork-in-the-road',
@@ -203,6 +223,9 @@ export const FORK_SESSION_SEEDS = [
   slug: string;
   title: string;
   imageUrl: string;
+  startsAt: string;
+  endsAt: string;
+  liveUrl: string;
   facilitatorBlurb: string;
   perspectiveAnchor: string;
   relatedDpIds: string[];
