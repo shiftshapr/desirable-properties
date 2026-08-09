@@ -1,10 +1,15 @@
 'use client';
 
 import { useId } from 'react';
-import { DP_BADGE_RIBBON_SRC, DP_BADGE_SEAL_SRC } from '@/lib/dp-series-badges';
+import { DP_BADGE_SEAL_SRC } from '@/lib/dp-series-badges';
 
 const TOP_ARC = 'M 90 222 A 228 228 0 0 1 510 222';
 const OVERLAY = { cx: 300, cy: 300, r: 200 } as const;
+/** Pearl center art: small icon anchored in the lower interior of the seal. */
+const PEARL_CENTER = {
+  size: OVERLAY.r * 0.32,
+  cy: OVERLAY.cy + OVERLAY.r * 0.52,
+} as const;
 
 type Props = {
   centerSrc: string;
@@ -12,6 +17,7 @@ type Props = {
   size?: number;
   className?: string;
   alt?: string;
+  variant?: 'series' | 'pearl';
 };
 
 /** DP BRC333 seal wireframe with center overlay and top ring label. */
@@ -21,11 +27,17 @@ export default function DpSealBadge({
   size = 120,
   className = '',
   alt = '',
+  variant = 'series',
 }: Props) {
   const uid = useId().replace(/:/g, '');
   const topArcId = `topArc-${uid}`;
   const sealClipId = `sealClip-${uid}`;
   const label = topLabel.toUpperCase();
+  const isPearl = variant === 'pearl';
+
+  const centerSize = isPearl ? PEARL_CENTER.size : OVERLAY.r * 2;
+  const centerX = isPearl ? OVERLAY.cx - centerSize / 2 : OVERLAY.cx - OVERLAY.r;
+  const centerY = isPearl ? PEARL_CENTER.cy - centerSize / 2 : OVERLAY.cy - OVERLAY.r;
 
   return (
     <svg
@@ -46,12 +58,12 @@ export default function DpSealBadge({
       <image href={DP_BADGE_SEAL_SRC} x="0" y="0" width="600" height="600" />
       <image
         href={centerSrc}
-        x={OVERLAY.cx - OVERLAY.r}
-        y={OVERLAY.cy - OVERLAY.r}
-        width={OVERLAY.r * 2}
-        height={OVERLAY.r * 2}
+        x={centerX}
+        y={centerY}
+        width={centerSize}
+        height={centerSize}
         clipPath={`url(#${sealClipId})`}
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={isPearl ? 'xMidYMid meet' : 'xMidYMid slice'}
       />
       <text
         fill="#ffffff"
@@ -64,7 +76,6 @@ export default function DpSealBadge({
           {label}
         </textPath>
       </text>
-      <image href={DP_BADGE_RIBBON_SRC} x="0" y="0" width="600" height="600" />
     </svg>
   );
 }

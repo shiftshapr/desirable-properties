@@ -60,6 +60,7 @@ export default async function SeriesPearlPage({ params }: Props) {
             size={112}
             alt={`${topLabel} PEARL badge`}
             className="shrink-0"
+            variant="pearl"
           />
         ) : null}
         <div className="min-w-0 flex-1">

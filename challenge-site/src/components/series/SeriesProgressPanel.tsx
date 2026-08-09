@@ -155,6 +155,7 @@ export default function SeriesProgressPanel({
                 topLabel={topLabel}
                 size={96}
                 alt={`${topLabel} PEARL badge`}
+                variant="pearl"
               />
             </div>
           ) : null}

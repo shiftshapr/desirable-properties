@@ -1,7 +1,6 @@
 /** DP seal wireframe assets (same stack as BRC333 desirableproperties-badges-ordinal). */
 
 export const DP_BADGE_SEAL_SRC = '/images/badges/dp/seal-base.webp';
-export const DP_BADGE_RIBBON_SRC = '/images/badges/dp/ribbon.webp';
 
 /** Pearl agent-drop image (UUID 9507813d-55d4-41e7-a960-db440c07556f). */
 export const PEARL_AGENT_DROP_IMAGE = '/images/badges/pearl.webp';

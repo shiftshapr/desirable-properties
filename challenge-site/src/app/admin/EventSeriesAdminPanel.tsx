@@ -212,6 +212,7 @@ export default function EventSeriesAdminPanel() {
                       }
                       topLabel={forkSeriesBadgeTopLabel(draft.slug, draft.title)}
                       size={88}
+                      variant="pearl"
                     />
                   </div>
                 ) : null}
