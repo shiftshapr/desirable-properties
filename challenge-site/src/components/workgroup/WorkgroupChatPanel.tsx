@@ -8,10 +8,11 @@ import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 type Props = {
   workgroupId: string;
   workgroupSlug: string;
+  workgroupName: string;
+  dpId: string | null;
   signedIn: boolean;
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
-  onMessagesChange?: (messages: WorkgroupMessage[]) => void;
 };
 
 function formatWhen(iso: string | null) {
@@ -29,10 +30,11 @@ function formatWhen(iso: string | null) {
 export default function WorkgroupChatPanel({
   workgroupId,
   workgroupSlug,
+  workgroupName,
+  dpId,
   signedIn,
   initialMessages = [],
   initialIsMember = false,
-  onMessagesChange,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>(initialMessages);
   const [isMember, setIsMember] = useState(initialIsMember);
@@ -48,13 +50,12 @@ export default function WorkgroupChatPanel({
       setIsMember(Boolean(data.is_member));
       setCanPost(Boolean(data.can_post));
       setError(null);
-      onMessagesChange?.(data.messages || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load messages');
     } finally {
       setLoading(false);
     }
-  }, [workgroupId, onMessagesChange]);
+  }, [workgroupId]);
 
   useEffect(() => {
     void refresh();
@@ -69,11 +70,7 @@ export default function WorkgroupChatPanel({
     try {
       const result = await postWorkgroupMessage(workgroupId, body);
       if (result.message) {
-        setMessages((prev) => {
-          const next = [...prev, result.message!];
-          onMessagesChange?.(next);
-          return next;
-        });
+        setMessages((prev) => [...prev, result.message!]);
       } else {
         await refresh();
       }
@@ -128,6 +125,9 @@ export default function WorkgroupChatPanel({
       <div className="mt-5 border-t border-slate-800 pt-4">
         <WorkgroupChatComposer
           workgroupSlug={workgroupSlug}
+          workgroupName={workgroupName}
+          dpId={dpId}
+          recentMessages={messages}
           canPost={canPost}
           signedIn={signedIn}
           busy={posting}

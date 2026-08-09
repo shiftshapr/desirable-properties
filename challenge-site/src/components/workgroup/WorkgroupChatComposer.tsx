@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import WorkgroupChatAiAssist from '@/components/workgroup/WorkgroupChatAiAssist';
 import { clearChatDraft, loadChatDraft, saveChatDraft } from '@/lib/workgroup-draft-storage';
+import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
   workgroupSlug: string;
+  workgroupName: string;
+  dpId: string | null;
+  recentMessages: WorkgroupMessage[];
   canPost: boolean;
   signedIn: boolean;
   busy?: boolean;
@@ -14,6 +19,9 @@ type Props = {
 
 export default function WorkgroupChatComposer({
   workgroupSlug,
+  workgroupName,
+  dpId,
+  recentMessages,
   canPost,
   signedIn,
   busy,
@@ -67,7 +75,16 @@ export default function WorkgroupChatComposer({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <WorkgroupChatAiAssist
+        workgroupSlug={workgroupSlug}
+        workgroupName={workgroupName}
+        dpId={dpId}
+        recentMessages={recentMessages}
+        onInsertDraft={(text) => setBody((prev) => (prev.trim() ? `${prev.trim()}\n\n${text}` : text))}
+        disabled={busy}
+      />
+
       <label htmlFor="wg-chat-body" className="sr-only">
         Message
       </label>

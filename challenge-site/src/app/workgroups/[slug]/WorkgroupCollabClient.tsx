@@ -7,7 +7,6 @@ import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed'
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
-import WorkgroupHermesAssistPanel from '@/components/workgroup/WorkgroupHermesAssistPanel';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
@@ -51,7 +50,6 @@ export default function WorkgroupCollabClient({
     Boolean(initialIsMember || justJoined || workgroup.can_invite_members),
   );
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
-  const [chatMessages, setChatMessages] = useState(initialMessages);
   // Trust SSR for initial membership; re-check client-side without clearing on errors.
   const [membershipChecked, setMembershipChecked] = useState(
     justJoined || initialMembershipResolved,
@@ -192,22 +190,15 @@ export default function WorkgroupCollabClient({
       />
 
       {showFullChat ? (
-        <>
-          <WorkgroupChatPanel
-            workgroupId={workgroup.id}
-            workgroupSlug={workgroup.slug}
-            signedIn={signedIn}
-            initialMessages={teaserMessages}
-            initialIsMember
-            onMessagesChange={setChatMessages}
-          />
-          <WorkgroupHermesAssistPanel
-            workgroupSlug={workgroup.slug}
-            workgroupName={workgroup.name}
-            dpId={dpId}
-            recentMessages={chatMessages}
-          />
-        </>
+        <WorkgroupChatPanel
+          workgroupId={workgroup.id}
+          workgroupSlug={workgroup.slug}
+          workgroupName={workgroup.name}
+          dpId={dpId}
+          signedIn={signedIn}
+          initialMessages={teaserMessages}
+          initialIsMember
+        />
       ) : (
         <WorkgroupChatTeaser
           messages={teaserMessages}
