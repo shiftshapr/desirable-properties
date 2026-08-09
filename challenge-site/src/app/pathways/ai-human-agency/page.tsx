@@ -260,14 +260,8 @@ export default function AiHumanAgencyPathwayPage() {
             </TrackedAnchor>
           </div>
           <p className="mt-6 text-sm text-slate-500">
-            Prefer the Candidate DP process?{' '}
-            <a
-              href={govhubUrl('/submit/?layer=the-metaweb')}
-              className="text-cyan-300 hover:text-cyan-200"
-            >
-              Submit a missing property
-            </a>{' '}
-            or visit the{' '}
+            Prefer the Candidate DP process or not sure whether a concept belongs in an existing DP?{' '}
+            Visit the{' '}
             <Link href="/workgroups/dp-discovery" className="text-cyan-300 hover:text-cyan-200">
               DP Discovery workgroup
             </Link>
