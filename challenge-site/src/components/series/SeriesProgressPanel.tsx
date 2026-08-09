@@ -66,6 +66,7 @@ export default function SeriesProgressPanel({
       <div className="grid gap-4 sm:grid-cols-2">
         {sessions.map((session) => {
           const st = progress?.sessionStatuses.find((s) => s.sessionId === session.id);
+          const schedule = formatSessionSchedule(session.startsAt, session.endsAt);
           return (
             <article
               key={session.id}
@@ -93,24 +94,21 @@ export default function SeriesProgressPanel({
                   ) : null}
                 </p>
                 <h3 className="mt-1 text-base font-semibold text-white">{session.title}</h3>
-                {formatSessionSchedule(session.startsAt, session.endsAt) ? (
-                  <p className="mt-1 text-xs text-slate-400">
-                    {formatSessionSchedule(session.startsAt, session.endsAt)}
-                  </p>
-                ) : null}
+                {schedule ? <p className="mt-1 text-xs text-slate-400">{schedule}</p> : null}
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Link
-                    href={`/series/${seriesSlug}/session/${session.sessionNumber}`}
-                    className="rounded-lg bg-cyan-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-cyan-600"
-                  >
-                    Session questions
-                  </Link>
                   <SessionActionLink
                     recordingUrl={session.recordingUrl}
                     liveUrl={session.liveUrl}
-                    variant="secondary"
+                    variant="primary"
                     showPending={false}
+                    className="px-3 py-1.5 text-xs"
                   />
+                  <Link
+                    href={`/series/${seriesSlug}/session/${session.sessionNumber}`}
+                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-400"
+                  >
+                    Session questions
+                  </Link>
                 </div>
               </div>
             </article>
