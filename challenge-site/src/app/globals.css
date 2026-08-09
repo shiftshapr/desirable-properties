@@ -57,3 +57,23 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
   height: 100dvh;
   z-index: 2147483645 !important;
 }
+
+/*
+ * Push layout (v1.js adds html.canopi-embed-push-open): shrink the sticky header
+ * with the page so brand/nav are not clipped under the docked Discuss sidebar.
+ */
+@media (min-width: 481px) {
+  html.canopi-embed-push-open.dp-header-above-canopi {
+    --canopi-sidebar-width: 380px;
+  }
+
+  html.canopi-embed-push-open.dp-header-above-canopi header {
+    width: calc(100% - var(--canopi-sidebar-width, 380px));
+    max-width: calc(100% - var(--canopi-sidebar-width, 380px));
+    box-sizing: border-box;
+  }
+
+  html.canopi-embed-push-open.dp-header-above-canopi header > div {
+    max-width: none;
+  }
+}

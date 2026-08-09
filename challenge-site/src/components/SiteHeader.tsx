@@ -5,11 +5,11 @@ import SiteHeaderNav from '@/components/SiteHeaderNav';
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-      <div className="relative mx-auto max-w-6xl px-4 py-3 sm:px-6">
-        <div className="flex items-center justify-between gap-4">
+      <div className="relative mx-auto max-w-6xl min-w-0 px-4 py-3 sm:px-6">
+        <div className="flex min-w-0 items-center justify-between gap-3 sm:gap-4">
           <Link
             href="/"
-            className="shrink-0 text-sm font-semibold tracking-wide text-cyan-300"
+            className="min-w-0 shrink truncate text-sm font-semibold tracking-wide text-cyan-300"
           >
             DP Challenge
           </Link>
