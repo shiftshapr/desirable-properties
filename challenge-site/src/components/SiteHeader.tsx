@@ -4,7 +4,7 @@ import SiteHeaderNav from '@/components/SiteHeaderNav';
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
+    <header className="site-header sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
       <div className="relative mx-auto max-w-6xl min-w-0 px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center justify-between gap-3 sm:gap-4">
           <Link

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import type { Element } from 'hast';
 import ReactMarkdown from 'react-markdown';
 
 /** Known dimensions for perspective inline images (avoids layout shift). */
@@ -27,9 +28,16 @@ export default function PerspectiveBody({ markdown }: Props) {
     <div className="perspective-essay mt-10 text-lg leading-relaxed text-slate-300">
       <ReactMarkdown
         components={{
-          p: ({ children }) => (
-            <p className="mb-5 last:mb-0">{children}</p>
-          ),
+          p: ({ children, node }) => {
+            const isImageOnly =
+              node?.children?.length === 1 &&
+              node.children[0].type === 'element' &&
+              (node.children[0] as Element).tagName === 'img';
+            if (isImageOnly) {
+              return <>{children}</>;
+            }
+            return <p className="mb-5 last:mb-0">{children}</p>;
+          },
           strong: ({ children }) => (
             <strong className="font-semibold text-white">{children}</strong>
           ),
