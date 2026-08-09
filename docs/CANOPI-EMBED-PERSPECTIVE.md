@@ -99,17 +99,28 @@ After saving in canopi.live:
 
 | Piece | Path |
 |-------|------|
-| Bridge + v1 loader | `challenge-site/public/embed/dp-canopi-bridge.js` |
-| React loader | `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` |
+| React loader (one script tag) | `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` |
+| Host auth API | `challenge-site/src/app/api/auth/canopi/embed-session/route.ts` |
 | Perspective page | `challenge-site/src/app/perspectives/the-fork-in-the-web/page.tsx` |
 | Config mirror | `desirableproperties-book/json/canopi-embed.json` |
-| Book bridge (reference) | `desirableproperties-book/assets/dp-canopi-bridge.js` |
+
+Integration — no publisher bridge file:
+
+```html
+<script src="https://api.canopi.live/embed/v1.js"
+        data-canopi-id="7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c"
+        data-canopi-theme="dark"
+        data-canopi-auth-session="/api/auth/canopi/embed-session"
+        data-canopi-auth-refresh="/api/auth/canopi/refresh-embed"
+        data-canopi-auto-open="discuss"
+        async></script>
+```
 
 ---
 
 ## Auth note
 
-Discuss sign-in uses Canopi’s embed Web3Auth popup (same as the book). Challenge-site session cookies are not automatically synced to the embed in v1; users sign in via the sidebar if needed.
+When signed in on the challenge-site (Web3Auth cookie session), `data-canopi-auth-session` lets the SDK call `/api/auth/canopi/embed-session` and pass the embed JWT to Discuss without a second popup. Otherwise users sign in via the sidebar as usual.
 
 ---
 

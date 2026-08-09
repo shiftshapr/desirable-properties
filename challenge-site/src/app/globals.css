@@ -41,17 +41,17 @@ mark.dp-diff-ins {
 }
 
 /* Discuss/patch help modal must sit above Canopi header chrome (2147483000). */
-html.dp-header-above-canopi .dp-discuss-patch-modal-overlay {
+html[data-canopi-embed-host="1"] .dp-discuss-patch-modal-overlay {
   z-index: 2147483646 !important;
 }
 
 /* Canopi web-embed: keep site header above sidebar chrome when open */
-html.dp-header-above-canopi .site-header {
+html[data-canopi-embed-host="1"] .site-header {
   position: relative;
   z-index: 2147483000;
 }
 
-html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
+html[data-canopi-embed-host="1"] #canopi-overlay-root .canopi-sidebar-frame {
   top: 0;
   height: 100vh;
   height: 100dvh;
@@ -64,36 +64,30 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
  * inset (Metaweb/book pattern: outer band + inner max-width container).
  */
 @media (min-width: 481px) {
-  html.canopi-embed-push-open.dp-header-above-canopi .site-header,
-  html.dp-canopi-push-open.dp-header-above-canopi .site-header {
+  html.canopi-embed-push-open[data-canopi-embed-host="1"] .site-header {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
   }
 
-  /* Tighter nav when the docked sidebar steals ~380px of horizontal space. */
-  html.canopi-embed-push-open.dp-header-above-canopi .site-header-nav,
-  html.dp-canopi-push-open.dp-header-above-canopi .site-header-nav {
+  html.canopi-embed-push-open[data-canopi-embed-host="1"] .site-header-nav {
     gap: 0.75rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
 
-  html.canopi-embed-push-open.dp-header-above-canopi .site-header-nav::-webkit-scrollbar,
-  html.dp-canopi-push-open.dp-header-above-canopi .site-header-nav::-webkit-scrollbar {
+  html.canopi-embed-push-open[data-canopi-embed-host="1"] .site-header-nav::-webkit-scrollbar {
     display: none;
   }
 
-  html.canopi-embed-push-open.dp-header-above-canopi .site-nav-optional,
-  html.dp-canopi-push-open.dp-header-above-canopi .site-nav-optional {
+  html.canopi-embed-push-open[data-canopi-embed-host="1"] .site-nav-optional {
     display: none;
   }
 }
 
 @media (min-width: 1280px) {
-  html.canopi-embed-push-open.dp-header-above-canopi .site-nav-optional,
-  html.dp-canopi-push-open.dp-header-above-canopi .site-nav-optional {
+  html.canopi-embed-push-open[data-canopi-embed-host="1"] .site-nav-optional {
     display: inline;
   }
 }
