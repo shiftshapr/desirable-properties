@@ -433,11 +433,12 @@ async function backfillForkPreReadEstimates() {
   if (!pool) return;
 
   const res = await pool.query(
-    `SELECT s.session_number, pr.id, pr.url, pr.minutes_estimate
+    `SELECT s.session_number, pr.id, pr.url, pr.sort_order, pr.minutes_estimate, pr.label
      FROM dp_event_series_session s
      JOIN dp_event_series e ON e.id = s.series_id
      JOIN dp_event_series_pre_read pr ON pr.session_id = s.id
-     WHERE e.slug = $1`,
+     WHERE e.slug = $1
+     ORDER BY s.session_number, pr.sort_order`,
     [FORK_SERIES_SLUG],
   );
   if (!res.rows.length) return;
@@ -445,13 +446,22 @@ async function backfillForkPreReadEstimates() {
   for (const row of res.rows) {
     const seed = FORK_SESSION_SEEDS.find((s) => s.sessionNumber === Number(row.session_number));
     if (!seed) continue;
-    const seedPr = seed.preReads.find((pr) => pr.url === String(row.url));
+    const seedPr =
+      seed.preReads[Number(row.sort_order)] ??
+      seed.preReads.find((pr) => pr.url === String(row.url));
     if (!seedPr?.minutesEstimate) continue;
-    if (row.minutes_estimate != null) continue;
+
+    const needsUpdate =
+      row.minutes_estimate !== seedPr.minutesEstimate ||
+      String(row.url) !== seedPr.url ||
+      String(row.label) !== seedPr.label;
+    if (!needsUpdate) continue;
 
     await pool.query(
-      `UPDATE dp_event_series_pre_read SET minutes_estimate = $2 WHERE id = $1`,
-      [row.id, seedPr.minutesEstimate],
+      `UPDATE dp_event_series_pre_read
+       SET minutes_estimate = $2, url = $3, label = $4
+       WHERE id = $1`,
+      [row.id, seedPr.minutesEstimate, seedPr.url, seedPr.label],
     );
   }
 }

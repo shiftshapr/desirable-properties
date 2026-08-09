@@ -172,7 +172,7 @@ An artificial intelligence should be able to inhabit this larger space without b
 
 That suggests a simple pro-human architectural principle:
 
-**AI should be an inhabitant, not the landlord.**
+### AI should be an inhabitant, not the landlord.
 
 ![A layered civic Internet city contains many human places and community-governed spaces, with small AI helpers moving among them rather than controlling them.](/images/perspectives/the-fork-in-the-web/ai-inhabitant-not-landlord.webp)
 

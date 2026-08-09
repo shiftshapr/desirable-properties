@@ -1,6 +1,21 @@
 import Image from 'next/image';
 import type { Element } from 'hast';
+import { isValidElement, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
+
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function headingText(children: ReactNode): string {
+  if (typeof children === 'string' || typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(headingText).join('');
+  if (isValidElement(children)) return headingText(children.props.children);
+  return '';
+}
 
 /** Known dimensions for perspective inline images (avoids layout shift). */
 const PERSPECTIVE_IMAGE_DIMS: Record<string, { width: number; height: number }> = {
@@ -42,14 +57,25 @@ export default function PerspectiveBody({ markdown }: Props) {
             <strong className="font-semibold text-white">{children}</strong>
           ),
           em: ({ children }) => <em className="italic text-slate-200">{children}</em>,
-          h2: ({ children }) => (
-            <h2 className="mb-5 mt-12 border-b border-slate-800 pb-2 text-2xl font-bold text-white first:mt-0">
-              {children}
-            </h2>
-          ),
-          h3: ({ children }) => (
-            <h3 className="mb-4 mt-10 text-xl font-semibold text-white">{children}</h3>
-          ),
+          h2: ({ children }) => {
+            const id = slugifyHeading(headingText(children));
+            return (
+              <h2
+                id={id}
+                className="mb-5 mt-12 border-b border-slate-800 pb-2 text-2xl font-bold text-white first:mt-0"
+              >
+                {children}
+              </h2>
+            );
+          },
+          h3: ({ children }) => {
+            const id = slugifyHeading(headingText(children));
+            return (
+              <h3 id={id} className="mb-4 mt-10 text-xl font-semibold text-white">
+                {children}
+              </h3>
+            );
+          },
           ul: ({ children }) => (
             <ul className="mb-5 list-disc space-y-2 pl-6">{children}</ul>
           ),

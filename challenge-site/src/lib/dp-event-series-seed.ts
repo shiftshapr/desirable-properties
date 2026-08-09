@@ -8,9 +8,9 @@ export const FORK_SERIES_TITLE = 'Fork in the Web workshops';
 export const FORK_SESSION_LENGTH_MINUTES = 75;
 
 /**
- * Full series participation: pre-read (~2.5h) + 4×75 min sessions (5h) + session questions (~2.5h).
+ * Full series participation: pre-read (~40 min) + 4×75 min sessions (5h) + session questions (~2.5h).
  */
-export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈10 hours total';
+export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈8 hours total';
 
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
@@ -113,14 +113,14 @@ export const FORK_SESSION_SEEDS = [
     relatedDpIds: ['DP2', 'DP4', 'DP8'],
     preReads: [
       {
-        label: 'A Fork in the Web (opening)',
-        url: '/perspectives/the-fork-in-the-web',
-        minutesEstimate: 25,
+        label: 'A Fork in the Web — the first fork',
+        url: '/perspectives/the-fork-in-the-web#the-internet-where-we-stop-going-to-the-internet',
+        minutesEstimate: 5,
       },
       {
         label: 'Pro-Human AI Declaration',
         url: 'https://humanstatement.org/',
-        minutesEstimate: 10,
+        minutesEstimate: 5,
       },
     ],
     sections: [
@@ -157,12 +157,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'Privatization of Context',
         url: '/perspectives/the-fork-in-the-web#the-privatization-of-context',
-        minutesEstimate: 15,
+        minutesEstimate: 5,
       },
       {
         label: 'Concierge vs. Commons',
         url: '/perspectives/the-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture',
-        minutesEstimate: 15,
+        minutesEstimate: 5,
       },
     ],
     sections: [
@@ -199,12 +199,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'A Human-Centered Layered Web',
         url: '/perspectives/the-fork-in-the-web#a-human-centered-layered-web',
-        minutesEstimate: 20,
+        minutesEstimate: 5,
       },
       {
         label: 'AI as inhabitant, not landlord',
         url: '/perspectives/the-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord',
-        minutesEstimate: 10,
+        minutesEstimate: 5,
       },
     ],
     sections: [
@@ -245,12 +245,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'Intellectual Sovereignty & Subsidiarity',
         url: '/perspectives/the-fork-in-the-web#intellectual-sovereignty',
-        minutesEstimate: 20,
+        minutesEstimate: 5,
       },
       {
-        label: 'AI & Human Agency pathway',
-        url: '/pathways/ai-human-agency',
-        minutesEstimate: 25,
+        label: 'AI & Human Agency pathway (principles)',
+        url: '/pathways/ai-human-agency#principles-heading',
+        minutesEstimate: 5,
       },
     ],
     sections: [
