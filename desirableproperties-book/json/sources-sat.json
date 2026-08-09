@@ -41,11 +41,10 @@
             "railKey": "book_cover",
             "label": "The Layered Web",
             "mlNumber": "ML-Draft-033",
-            "inscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
             "localOverride": "/content/local/cover.md",
-            "status": "active",
+            "status": "draft",
             "reinscribable": true,
-            "reason": "Book cover – Gov Hub draft (ML-Draft-033) with 2026 cover art; ordinal fallback for onchain mode"
+            "reason": "Book cover – Gov Hub draft (ML-Draft-033) with 2026 cover art; not inscribed yet (Live mode only until next ordinal)"
         },
         {
             "railKey": "about",

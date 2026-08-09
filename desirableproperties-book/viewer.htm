@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dp-header-above dp-header-above-canopi">
+<html lang="en" class="dp-header-above dp-header-above-canopi" data-theme="dark" data-book-surface="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -81,9 +81,6 @@
       --accent-soft: rgba(212, 175, 55, 0.10);
       --accent-soft-2: rgba(212, 175, 55, 0.18);
       --nav-border: rgba(255, 255, 255, 0.08);
-      --book-bg: #f6f8fa;
-      --book-text: #1f2328;
-      --book-rule: #d0d7de;
     }
     [data-theme="light"] {
       --bg: #f6f8fa;
@@ -95,9 +92,27 @@
       --accent-soft: rgba(176, 141, 32, 0.10);
       --accent-soft-2: rgba(176, 141, 32, 0.18);
       --nav-border: rgba(0, 0, 0, 0.10);
+    }
+
+  [data-book-surface="light"] {
       --book-bg: #ffffff;
       --book-text: #1f2328;
       --book-rule: #d0d7de;
+      --book-link: #8a6d10;
+      --book-link-hover: #5a4710;
+      --book-code-bg: rgba(212, 175, 55, 0.08);
+      --book-code-text: #5a4710;
+      --book-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    }
+    [data-book-surface="dark"] {
+      --book-bg: #0d1117;
+      --book-text: #e6edf3;
+      --book-rule: rgba(255, 255, 255, 0.12);
+      --book-link: #e8c468;
+      --book-link-hover: #f5d878;
+      --book-code-bg: rgba(212, 175, 55, 0.14);
+      --book-code-text: #f0d68a;
+      --book-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
     }
 
     * { box-sizing: border-box; }
@@ -269,6 +284,28 @@
     [data-theme="dark"]  .theme-icon-light { display: none; }
     [data-theme="light"] .theme-icon-dark  { display: none; }
 
+    .book-theme-select {
+      height: var(--header-control-h);
+      min-height: var(--header-control-h);
+      border: 1px solid var(--nav-border, rgba(255,255,255,0.18));
+      background: transparent;
+      color: var(--muted);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0 8px;
+      cursor: pointer;
+      max-width: 7.5rem;
+    }
+    .book-theme-select:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    [data-theme="light"] .book-theme-select:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
     .header-progress {
       flex: 1 1 100%;
       font-size: 12px;
@@ -362,7 +399,7 @@
       flex-direction: column;
       gap: 1px;
       padding: 8px 18px;
-      color: rgba(232, 244, 255, 0.78);
+      color: var(--text);
       text-decoration: none;
       font-size: 13.5px;
       transition: color 0.2s, background 0.2s;
@@ -376,7 +413,7 @@
     .sidebar a.dp-toc-link .dp-toc-id {
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 11px;
-      color: rgba(232, 244, 255, 0.85);
+      color: var(--muted);
       flex-shrink: 0;
       opacity: 1;
       font-weight: 600;
@@ -411,6 +448,7 @@
       display: block;
       flex: 1;
       line-height: 1.3;
+      color: inherit;
     }
 
     .sidebar-backdrop {
@@ -455,19 +493,15 @@
       border-radius: 8px;
       max-width: 680px;
       margin: 0 auto;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+      box-shadow: var(--book-shadow);
       line-height: 1.6;
-    }
-    [data-theme="dark"] .book-content {
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-      background: #f6f8fa;
     }
 
     .book-content h1,
     .book-content h2,
     .book-content h3 {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      color: #1f2328;
+      color: var(--book-text);
       line-height: 1.25;
       margin-top: 1.6em;
       margin-bottom: 0.5em;
@@ -480,24 +514,22 @@
     }
     .book-content h2 {
       font-size: 1.3rem;
-      color: #1f2328;
     }
     .book-content h3 {
       font-size: 1.1rem;
-      color: #1f2328;
     }
     .book-content p {
       margin: 0 0 1em;
       font-size: 1rem;
     }
     .book-content a {
-      color: #8a6d10;
+      color: var(--book-link);
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 2px;
     }
     .book-content a:hover {
-      color: #5a4710;
+      color: var(--book-link-hover);
     }
     .book-content ul,
     .book-content ol {
@@ -511,9 +543,9 @@
       font-family: ui-monospace, "SF Mono", Menlo, monospace;
       font-size: 0.92em;
       padding: 1px 5px;
-      background: rgba(212, 175, 55, 0.08);
+      background: var(--book-code-bg);
       border-radius: 3px;
-      color: #5a4710;
+      color: var(--book-code-text);
     }
     .book-content hr {
       border: none;
@@ -572,7 +604,7 @@
       display: inline-block;
       padding: 10px 22px;
       border: 1px solid var(--book-rule);
-      color: #1f2328;
+      color: var(--book-text);
       border-radius: 6px;
       text-decoration: none;
       font-weight: 500;
@@ -588,14 +620,6 @@
       height: auto;
       margin: 1.25rem 0 1.5rem;
       border-radius: 8px;
-    }
-    .book-content.cover-rail img,
-    .book-content .cover-rail img {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-    }
-    [data-theme="light"] .book-content.cover-rail img,
-    [data-theme="light"] .book-content .cover-rail img {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .nav-bar {
@@ -826,6 +850,16 @@
       z-index: 2147483647 !important;
       pointer-events: auto !important;
     }
+    [data-theme="light"] #canopi-overlay-root .canopi-trigger--corner-tab {
+      background: var(--accent) !important;
+      color: #0d1117 !important;
+      border: 1px solid rgba(0, 0, 0, 0.14) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    }
+    [data-theme="light"] #canopi-overlay-root .canopi-trigger--corner-tab,
+    [data-theme="light"] #canopi-overlay-root .canopi-trigger--corner-tab * {
+      color: #0d1117 !important;
+    }
     html.dp-header-above-canopi .header {
       position: relative;
       z-index: 2147483000;
@@ -882,6 +916,11 @@
           title="Questions about the challenge, workgroups, or this book"
         >Support</a>
         <button type="button" class="toc-open-btn" id="btnTocOpen" aria-label="Show table of contents" title="Show table of contents">☰ Contents</button>
+        <select id="bookThemeSelect" class="book-theme-select" aria-label="Page theme" title="Page theme (Auto follows site theme)">
+          <option value="auto">Pages: Auto</option>
+          <option value="light">Pages: Light</option>
+          <option value="dark">Pages: Dark</option>
+        </select>
         <button type="button" id="btnThemeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle dark/light theme" aria-pressed="false">
           <span class="theme-icon-dark" aria-hidden="true">☾</span>
           <span class="theme-icon-light" aria-hidden="true">☀</span>
@@ -951,6 +990,8 @@
     const STORAGE_TOC_OPEN = 'dp-viewer-toc-open';
     const STORAGE_MODE = 'dp-viewer-mode';
     const STORAGE_THEME = 'dp-viewer-theme';
+    const STORAGE_BOOK_THEME = 'dp-viewer-book-theme';
+    const DEFAULT_BOOK_THEME = 'auto';
 
     const SITE_TITLE = 'The Layered Web';
     const SITE_SUBTITLE = 'The Desirable Properties of a Meta-Layer';
@@ -1686,12 +1727,25 @@
 
     /* ---------- Theme toggle (dark/light) ---------- */
 
+    function resolveBookSurface() {
+      let pref = DEFAULT_BOOK_THEME;
+      try { pref = localStorage.getItem(STORAGE_BOOK_THEME) || DEFAULT_BOOK_THEME; } catch (_) { /* ignore */ }
+      if (pref === 'light' || pref === 'dark') return pref;
+      const site = document.documentElement.getAttribute('data-theme') || 'dark';
+      return site === 'light' ? 'light' : 'dark';
+    }
+
+    function applyBookSurface() {
+      document.documentElement.setAttribute('data-book-surface', resolveBookSurface());
+    }
+
     (function initThemeToggle() {
       const root = document.documentElement;
       function applyTheme(t) {
         root.setAttribute('data-theme', t);
         const btn = document.getElementById('btnThemeToggle');
         if (btn) btn.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
+        applyBookSurface();
       }
       let saved = null;
       try { saved = localStorage.getItem(STORAGE_THEME); } catch (_) { /* ignore */ }
@@ -1704,6 +1758,22 @@
           applyTheme(next);
         });
       }
+    })();
+
+    (function initBookThemeSelect() {
+      const select = document.getElementById('bookThemeSelect');
+      if (!select) return;
+      let saved = DEFAULT_BOOK_THEME;
+      try { saved = localStorage.getItem(STORAGE_BOOK_THEME) || DEFAULT_BOOK_THEME; } catch (_) { /* ignore */ }
+      if (saved === 'light' || saved === 'dark' || saved === 'auto') {
+        select.value = saved;
+      }
+      applyBookSurface();
+      select.addEventListener('change', function () {
+        const value = select.value || DEFAULT_BOOK_THEME;
+        try { localStorage.setItem(STORAGE_BOOK_THEME, value); } catch (_) { /* ignore */ }
+        applyBookSurface();
+      });
     })();
 
     /* ---------- Init ---------- */

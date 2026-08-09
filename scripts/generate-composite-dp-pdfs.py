@@ -47,6 +47,13 @@ blockquote {
 }
 code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92em; }
 hr { border: none; border-top: 1px solid #ccc; margin: 1.2em 0; }
+img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0 1.2em;
+}
 .meta {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 9pt;
@@ -127,11 +134,40 @@ def chapter_markdown(source: dict) -> str:
     return normalize_escaped_markdown(fetch_onchain(iid))
 
 
+def strip_sync_comments(md_text: str) -> str:
+    return re.sub(r"<!--.*?-->\s*", "", md_text, flags=re.DOTALL)
+
+
+def resolve_book_asset_url(src: str) -> str | None:
+    """Map book site-root paths to local file URIs for WeasyPrint."""
+    src = (src or "").strip()
+    if not src or src.startswith(("http://", "https://", "data:")):
+        return None
+    rel = src.lstrip("/")
+    for candidate in (BOOK / rel, BOOK / rel.removeprefix("content/local/")):
+        if candidate.is_file():
+            return candidate.resolve().as_uri()
+    return None
+
+
+def rewrite_image_src_in_html(html_body: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        src = match.group(1)
+        resolved = resolve_book_asset_url(src)
+        if resolved:
+            return f'src="{resolved}"'
+        return match.group(0)
+
+    return re.sub(r'src="([^"]+)"', repl, html_body)
+
+
 def render_pdf(md_text: str, title: str, meta_line: str, out_path: Path) -> None:
+    md_text = strip_sync_comments(md_text)
     body = md_to_html(
         md_text,
         extensions=["extra", "sane_lists", "nl2br"],
     )
+    body = rewrite_image_src_in_html(body)
     doc = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{CSS}</style></head>
 <body>
