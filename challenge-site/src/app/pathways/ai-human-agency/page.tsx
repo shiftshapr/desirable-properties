@@ -12,7 +12,7 @@ import {
   AI_HUMAN_AGENCY_PRINCIPLES,
   AI_HUMAN_AGENCY_QUESTIONS,
 } from '@/data/pathways/ai-human-agency';
-import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
+import { bookViewerHref, govhubUrl } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 const meta = AI_HUMAN_AGENCY_META;
@@ -167,7 +167,7 @@ export default function AiHumanAgencyPathwayPage() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <TrackedAnchor
-              href={bookDiscussHref()}
+              href={bookViewerHref({ pageId: 'intro' })}
               eventName="pathway_discuss_click"
               eventPayload={{ pathway: meta.slug }}
               target="_blank"
