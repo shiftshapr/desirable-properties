@@ -240,3 +240,28 @@
   letter-spacing: 0.04em;
   margin-bottom: 2px;
 }
+
+/* Canopi web-embed push layout (mirrors metaweb-book viewer.htm) */
+html.dp-header-above-canopi .header {
+  /* Below auth/modals (2147483647); above Canopi sidebar (2147483645) */
+  z-index: 2147483646 !important;
+  pointer-events: auto !important;
+  isolation: isolate;
+}
+
+html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
+  top: 0 !important;
+  height: 100dvh !important;
+  z-index: 2147483645 !important;
+}
+
+html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame.canopi-sidebar-frame--open {
+  z-index: 2147483647 !important;
+}
+
+/* Push layout: header spans only the content column, not the docked sidebar strip */
+html.dp-header-above-canopi.canopi-embed-push-open .header,
+html.dp-header-above-canopi.dp-canopi-push-open .header {
+  width: calc(100% - var(--canopi-sidebar-width, 380px));
+  max-width: calc(100% - var(--canopi-sidebar-width, 380px));
+}

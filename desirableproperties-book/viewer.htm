@@ -21,7 +21,7 @@
   <meta name="twitter:title" content="The Layered Web: The Desirable Properties of a Meta-Layer">
   <meta name="twitter:description" content="Twenty-three Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
 
-  <link rel="stylesheet" href="/assets/dp-site.css?v=20260801" />
+  <link rel="stylesheet" href="/assets/dp-site.css?v=20260809" />
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js?v=20260801"></script>
@@ -860,18 +860,7 @@
     [data-theme="light"] #canopi-overlay-root .canopi-trigger--corner-tab * {
       color: #0d1117 !important;
     }
-    html.dp-header-above-canopi .header {
-      position: relative;
-      z-index: 2147483000;
-    }
-    html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
-      top: 0;
-      height: 100vh;
-      height: 100dvh;
-      z-index: 2147483645 !important;
-    }
-    /* Canopi push layout shrinks body width (margin-right). dp-container gutters
-       already align header, TOC, and reader — no extra left inset when open. */
+    /* Canopi push layout + header stacking: see dp-site.css (metaweb-book pattern) */
     .header-support-link {
       font-size: 12px;
       font-weight: 600;
@@ -901,8 +890,8 @@
 </head>
 <body>
 
-  <div class="header dp-container dp-container-wide" id="pageHeader">
-    <div class="header-inner">
+  <div class="header" id="pageHeader">
+    <div class="header-inner dp-container dp-container-wide">
       <h1>
         <a class="header-title-link" href="/viewer/book_cover">
           The Layered Web
