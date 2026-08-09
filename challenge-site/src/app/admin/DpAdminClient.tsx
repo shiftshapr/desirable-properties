@@ -7,6 +7,7 @@ import BlueberriesAdminPanel from '@/app/admin/BlueberriesAdminPanel';
 import BroadcastAdminPanel from '@/app/admin/BroadcastAdminPanel';
 import SiteMessagesAdminPanel from '@/app/admin/SiteMessagesAdminPanel';
 import InviteContentAdminPanel from '@/app/admin/InviteContentAdminPanel';
+import EventSeriesAdminPanel from '@/app/admin/EventSeriesAdminPanel';
 import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
 import { AdminToastProvider } from '@/components/AdminToastHost';
 import AdminAuthShell from '@/components/AdminAuthShell';
@@ -81,6 +82,7 @@ export default function DpAdminClient() {
         {tab === 'broadcast' ? <BroadcastAdminPanel /> : null}
         {tab === 'messages' ? <SiteMessagesAdminPanel /> : null}
         {tab === 'invite-content' ? <InviteContentAdminPanel /> : null}
+        {tab === 'event-series' ? <EventSeriesAdminPanel /> : null}
         {tab === 'site' ? <SiteAdminPanel /> : null}
       </div>
       </AdminAuthShell>

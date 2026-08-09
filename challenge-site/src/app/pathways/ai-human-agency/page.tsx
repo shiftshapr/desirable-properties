@@ -49,6 +49,11 @@ export default function AiHumanAgencyPathwayPage() {
             eventName: 'pathway_fork_article_click',
           },
           {
+            href: '/series/fork-in-the-web-workshops',
+            label: 'Fork workshops →',
+            variant: 'secondary',
+          },
+          {
             href: '#questions',
             label: 'Explore the questions ↓',
             variant: 'secondary',

@@ -4,6 +4,7 @@ export const DP_ADMIN_TABS = [
   { key: 'broadcast', label: 'Broadcast' },
   { key: 'messages', label: 'Site messages' },
   { key: 'invite-content', label: 'Invite content' },
+  { key: 'event-series', label: 'Event series' },
   { key: 'site', label: 'Site admin' },
 ] as const;
 

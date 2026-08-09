@@ -46,6 +46,19 @@ export default function ForkInTheWebPage() {
           />
         </figure>
         <PerspectiveBody markdown={article.bodyMarkdown} />
+        <div className="mt-10 rounded-xl border border-cyan-900/40 bg-cyan-950/20 p-6">
+          <p className="text-sm font-medium uppercase tracking-wide text-cyan-400">Workshops</p>
+          <h2 className="mt-2 text-xl font-bold text-white">Fork in the Web Workshops</h2>
+          <p className="mt-2 text-sm text-slate-400">
+            Four standalone online sessions with reflection questions and a series badge.
+          </p>
+          <Link
+            href="/series/fork-in-the-web-workshops"
+            className="mt-4 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+          >
+            View workshop series →
+          </Link>
+        </div>
         <PerspectiveCTA perspectiveSlug={article.slug} />
       </div>
     </main>
