@@ -870,13 +870,23 @@
       height: 100dvh;
       z-index: 2147483645 !important;
     }
-    /* Canopi push layout shrinks body width (margin-right). Add left inset so the
-       TOC + reader column does not hug the viewport edge when the sidebar is open. */
+    /* Canopi push layout shrinks body width (margin-right). Re-inset the page so
+       header + TOC + reader do not hug the left edge when the sidebar is open. */
     @media (min-width: 481px) {
-      html.canopi-embed-push-open .main {
-        padding-left: max(20px, env(safe-area-inset-left, 0px));
+      html.canopi-embed-push-open body,
+      html.dp-canopi-push-open body {
+        padding-left: clamp(28px, 5vw, 56px) !important;
       }
-      html.canopi-embed-push-open .reader {
+      html.canopi-embed-push-open .header,
+      html.dp-canopi-push-open .header {
+        padding-left: clamp(28px, 5vw, 56px);
+      }
+      html.canopi-embed-push-open .main,
+      html.dp-canopi-push-open .main {
+        padding-left: clamp(28px, 5vw, 56px);
+      }
+      html.canopi-embed-push-open .reader,
+      html.dp-canopi-push-open .reader {
         padding-left: 32px;
         padding-right: 28px;
       }
