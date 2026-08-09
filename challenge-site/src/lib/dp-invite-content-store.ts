@@ -92,7 +92,7 @@ async function seedInviteContentIfEmpty() {
      ) VALUES ($1, $2, $3, $4, true, 0, 'seed', 'seed')`,
     [
       id,
-      'Fork in the Web',
+      'A Fork in the Web',
       '/perspectives/the-fork-in-the-web',
       'the-fork-in-the-web',
     ],

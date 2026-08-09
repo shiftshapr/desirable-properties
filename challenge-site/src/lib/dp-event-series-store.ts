@@ -126,6 +126,21 @@ export type SeriesProgress = {
   }>;
 };
 
+export type PathwayParticipationBand = {
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  sessionsRequiredCount: number;
+  badgeCode: string;
+  pearlBadgeCode: string | null;
+  badgeImageUrl: string | null;
+  sessions: Array<{
+    sessionNumber: number;
+    title: string;
+    slug: string;
+  }>;
+};
+
 function normStr(s: unknown, max = 8000) {
   return String(s ?? '').trim().slice(0, max);
 }
@@ -328,6 +343,46 @@ export async function listEventSeries(activeOnly = false): Promise<EventSeries[]
      ORDER BY sort_order ASC, updated_at DESC`,
   );
   return res.rows.map(seriesRow);
+}
+
+/** Active event series linked to a pathway page (homepage participation band). */
+export async function getPathwayParticipationBand(
+  pathwayUrl: string,
+): Promise<PathwayParticipationBand | null> {
+  const normalized = normStr(pathwayUrl, 200);
+  if (!normalized) return null;
+
+  const pool = await ensureDpSchema();
+  if (!pool) return null;
+  await seedForkSeriesIfMissing();
+
+  const res = await pool.query(
+    `SELECT * FROM dp_event_series
+     WHERE active = true AND pathway_url = $1
+     ORDER BY sort_order ASC, updated_at DESC
+     LIMIT 1`,
+    [normalized],
+  );
+  if (!res.rows[0]) return null;
+
+  const series = seriesRow(res.rows[0]);
+  const sessions = await listSessionsForSeries(series.id, true);
+  if (!sessions.length) return null;
+
+  return {
+    slug: series.slug,
+    title: series.title,
+    subtitle: series.subtitle,
+    sessionsRequiredCount: series.sessionsRequiredCount ?? sessions.length,
+    badgeCode: series.badgeCode,
+    pearlBadgeCode: series.pearlBadgeCode,
+    badgeImageUrl: series.badgeImageUrl,
+    sessions: sessions.map((session) => ({
+      sessionNumber: session.sessionNumber,
+      title: session.title,
+      slug: session.slug,
+    })),
+  };
 }
 
 export async function getEventSeriesBySlug(slug: string): Promise<EventSeries | null> {

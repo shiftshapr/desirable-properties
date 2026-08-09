@@ -18,6 +18,7 @@ export const WORKGROUPS_JOIN_HREF = '/workgroups/join';
 export const SITE_NAV_LINKS: SiteNavLink[] = [
   {
     label: 'About',
+    href: '/about',
     children: [
       { href: '/challenge', label: 'The Challenge' },
       { href: '/participate', label: 'Participate' },

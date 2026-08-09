@@ -4,11 +4,16 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import TrackedLink from '@/components/TrackedLink';
 import { trackEvent } from '@/lib/analytics';
+import type { PathwayParticipationBand } from '@/lib/dp-event-series-store';
 
 const FORK_HERO_SRC =
   '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
 const FORK_HERO_ALT =
   'A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers.';
+
+type Props = {
+  participation: PathwayParticipationBand | null;
+};
 
 /** Small layered-space mark: plural layers, AI as one among several. */
 function LayeredSpaceMark() {
@@ -66,10 +71,122 @@ function LayeredSpaceMark() {
   );
 }
 
-export default function FeaturedPathwayPanel() {
+function ParticipationBand({ participation }: { participation: PathwayParticipationBand }) {
+  const seriesHref = `/series/${participation.slug}`;
+
+  return (
+    <div
+      id="pathway-participation-band"
+      className="border-t border-violet-900/35 bg-slate-950/45"
+      aria-labelledby="pathway-participation-heading"
+    >
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300/90">
+              Workshop series
+            </p>
+            <h3
+              id="pathway-participation-heading"
+              className="mt-2 text-xl font-bold text-white sm:text-2xl"
+            >
+              {participation.title}
+            </h3>
+            {participation.subtitle ? (
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
+                {participation.subtitle}
+              </p>
+            ) : null}
+            <p className="mt-3 text-sm text-slate-400">
+              {participation.sessions.length} online sessions · attend or watch · submit session
+              questions
+            </p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              {participation.badgeImageUrl ? (
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-violet-800/60 ring-1 ring-white/10">
+                  <Image
+                    src={participation.badgeImageUrl}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="40px"
+                  />
+                </div>
+              ) : (
+                <span
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-violet-800/60 bg-violet-950/50 text-lg"
+                  aria-hidden="true"
+                >
+                  ✦
+                </span>
+              )}
+              <div className="min-w-0 text-sm text-slate-300">
+                <p>
+                  Earn the{' '}
+                  <TrackedLink
+                    href="/badges"
+                    eventName="homepage_series_badge_click"
+                    className="font-medium text-cyan-300 hover:text-cyan-200"
+                  >
+                    series badge
+                  </TrackedLink>{' '}
+                  — complete all {participation.sessionsRequiredCount} sessions + questions
+                </p>
+                {participation.pearlBadgeCode ? (
+                  <p className="mt-1 text-slate-500">
+                    Optional{' '}
+                    <TrackedLink
+                      href={`${seriesHref}/pearl`}
+                      eventName="homepage_pearl_track_click"
+                      className="text-violet-300 hover:text-violet-200"
+                    >
+                      PEARL patch track
+                    </TrackedLink>{' '}
+                    for a second badge
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex w-full flex-col gap-4 lg:w-auto lg:min-w-[18rem]">
+            <div className="flex flex-wrap gap-2" role="list" aria-label="Workshop sessions">
+              {participation.sessions.map((session) => (
+                <TrackedLink
+                  key={session.slug}
+                  href={`${seriesHref}/session/${session.sessionNumber}`}
+                  eventName="homepage_series_session_click"
+                  eventPayload={{ session: session.sessionNumber }}
+                  title={session.title}
+                  className="inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/80 px-2.5 text-sm font-semibold text-slate-200 transition hover:border-cyan-700/60 hover:bg-cyan-950/30 hover:text-cyan-100"
+                  role="listitem"
+                >
+                  {session.sessionNumber}
+                </TrackedLink>
+              ))}
+            </div>
+            <TrackedLink
+              href={seriesHref}
+              eventName="homepage_series_click"
+              className="inline-flex items-center justify-center rounded-lg bg-violet-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700"
+            >
+              Join the workshop series →
+            </TrackedLink>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function FeaturedPathwayPanel({ participation }: Props) {
   useEffect(() => {
     trackEvent('homepage_ai_pathway_impression');
-  }, []);
+    if (participation) {
+      trackEvent('homepage_series_band_impression', { series: participation.slug });
+    }
+  }, [participation]);
 
   return (
     <section
@@ -80,7 +197,7 @@ export default function FeaturedPathwayPanel() {
         <TrackedLink
           href="/perspectives/the-fork-in-the-web"
           eventName="homepage_fork_article_click"
-          className="group block w-full shrink-0 overflow-hidden rounded-xl border border-violet-900/50 bg-slate-950/40 shadow-lg shadow-violet-950/30 ring-1 ring-white/5 transition hover:border-violet-700/60 hover:ring-violet-400/20 md:w-[min(44%,28rem)]"
+          className="group block w-full shrink-0 overflow-hidden rounded-xl border border-violet-900/50 bg-slate-950/40 shadow-lg shadow-violet-950/30 ring-1 ring-white/5 transition hover:border-violet-700/60 hover:ring-violet-400/20 md:w-[min(48%,32rem)]"
         >
           <Image
             src={FORK_HERO_SRC}
@@ -88,7 +205,7 @@ export default function FeaturedPathwayPanel() {
             width={1586}
             height={992}
             className="aspect-[1586/992] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-            sizes="(max-width: 768px) 100vw, 28rem"
+            sizes="(max-width: 768px) 100vw, 32rem"
           />
         </TrackedLink>
 
@@ -101,7 +218,7 @@ export default function FeaturedPathwayPanel() {
               </p>
               <h2
                 id="featured-pathway-heading"
-                className="mt-2 text-2xl font-bold text-white sm:text-3xl"
+                className="featured-pathway-heading mt-2 text-2xl font-bold text-white sm:text-3xl"
               >
                 AI &amp; Human Agency
               </h2>
@@ -129,7 +246,7 @@ export default function FeaturedPathwayPanel() {
               eventName="homepage_fork_article_click"
               className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
             >
-              Read: The Fork in the Web →
+              Read: A Fork in the Web →
             </TrackedLink>
           </div>
           <p className="mt-5 text-xs text-slate-500 sm:text-sm">
@@ -137,6 +254,8 @@ export default function FeaturedPathwayPanel() {
           </p>
         </div>
       </div>
+
+      {participation ? <ParticipationBand participation={participation} /> : null}
     </section>
   );
 }

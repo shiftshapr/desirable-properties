@@ -18,7 +18,7 @@ export default function PerspectiveCTA({ perspectiveSlug }: Props) {
       </h2>
       <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-300 sm:text-lg">
         <p>
-          <em>The Fork in the Web</em> presents two possible trajectories. In one, the machine
+          <em>A Fork in the Web</em> presents two possible trajectories. In one, the machine
           Internet becomes enormously multilayered while humans experience most of it through AI
           mediation. In the other, people, communities, institutions, applications, and AI agents
           can inhabit interoperable contextual spaces around shared Web resources.

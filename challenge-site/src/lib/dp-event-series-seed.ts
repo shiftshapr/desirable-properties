@@ -77,7 +77,7 @@ export const FORK_SESSION_SEEDS = [
     perspectiveAnchor: 'the-internet-where-we-stop-going-to-the-internet',
     relatedDpIds: ['DP2', 'DP4', 'DP8'],
     preReads: [
-      { label: 'The Fork in the Web (opening)', url: '/perspectives/the-fork-in-the-web' },
+      { label: 'A Fork in the Web (opening)', url: '/perspectives/the-fork-in-the-web' },
       { label: 'Pro-Human AI Declaration', url: 'https://humanstatement.org/' },
     ],
     sections: [

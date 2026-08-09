@@ -2,12 +2,12 @@ import type { PerspectiveMeta } from '@/lib/perspectives';
 
 export const FORK_IN_THE_WEB: PerspectiveMeta = {
   slug: 'the-fork-in-the-web',
-  title: 'The Fork in the Web',
+  title: 'A Fork in the Web',
   subtitle:
     'Will AI Mediate Reality – or Help Us Build a Human-Centered Internet?',
   deck: 'Intellectual sovereignty, intellectual subsidiarity, and why a pro-human future requires more than safe AI.',
   seoTitle:
-    'The Fork in the Web: AI-Mediated Awareness or a Human-Centered Internet?',
+    'A Fork in the Web: AI-Mediated Awareness or a Human-Centered Internet?',
   seoDescription:
     'AI could become the interface to almost everything online. What happens to human agency, shared context, community, and intellectual sovereignty when it does?',
   bodyMarkdown: `Humanity is pouring extraordinary resources into making intelligence ubiquitous.

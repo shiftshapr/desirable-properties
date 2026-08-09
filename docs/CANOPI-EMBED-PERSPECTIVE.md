@@ -1,4 +1,4 @@
-# Canopi web-embed — Fork in the Web Perspective
+# Canopi web-embed — A Fork in the Web Perspective
 
 The challenge-site loads Canopi Discuss on:
 
@@ -72,7 +72,7 @@ Suggested tweaks for Perspective visitors:
 | Field | Suggested text |
 |-------|----------------|
 | **Welcome title** | `Discuss this Perspective` |
-| **Welcome message** | `Welcome! Share reactions to *The Fork in the Web* and how it connects to the Desirable Properties Challenge.` |
+| **Welcome message** | `Welcome! Share reactions to *A Fork in the Web* and how it connects to the Desirable Properties Challenge.` |
 
 Book chapter pages can keep the existing DP workgroup welcome if the UI supports per-rule welcome (otherwise one shared welcome is fine).
 

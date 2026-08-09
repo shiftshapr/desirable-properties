@@ -45,7 +45,7 @@ export default function AiHumanAgencyPathwayPage() {
         ctas={[
           {
             href: '/perspectives/the-fork-in-the-web',
-            label: 'Read “The Fork in the Web” →',
+            label: 'Read “A Fork in the Web” →',
             eventName: 'pathway_fork_article_click',
           },
           {

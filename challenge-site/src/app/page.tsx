@@ -7,6 +7,7 @@ import FeaturedPathwayPanel from '@/components/pathways/FeaturedPathwayPanel';
 import LayerHero from '@/components/LayerHero';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
+import { getPathwayParticipationBand } from '@/lib/dp-event-series-store';
 import {
   fetchChallengeWorkgroups,
   govhubUrl,
@@ -28,9 +29,10 @@ const MISSING_ITEMS = [
 
 export default async function Home() {
   const now = new Date();
-  const [activity, workgroups] = await Promise.all([
+  const [activity, workgroups, participation] = await Promise.all([
     fetchUnifiedActivity(12),
     fetchChallengeWorkgroups(),
+    getPathwayParticipationBand('/pathways/ai-human-agency'),
   ]);
 
   const dps = localData.desirable_properties;
@@ -46,7 +48,7 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        <FeaturedPathwayPanel />
+        <FeaturedPathwayPanel participation={participation} />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">

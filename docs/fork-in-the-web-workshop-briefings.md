@@ -1,6 +1,6 @@
 # Fork in the Web — Workshop Series Briefings
 
-Facilitator and workshop-design agent brief for four **standalone**, **75-minute**, **online** workshops tied to the Desirable Properties Challenge perspective [*The Fork in the Web*](https://staging.desirableproperties.org/perspectives/the-fork-in-the-web).
+Facilitator and workshop-design agent brief for four **standalone**, **75-minute**, **online** workshops tied to the Desirable Properties Challenge perspective [*A Fork in the Web*](https://staging.desirableproperties.org/perspectives/the-fork-in-the-web).
 
 ---
 
@@ -66,7 +66,7 @@ You are designing facilitator-ready workshop experiences for the Desirable Prope
 Reuse at the start of **each** session:
 
 1. **First fork** ([humanstatement.org](https://humanstatement.org/)): Will AI remain under human control?
-2. **Second fork** (*Fork in the Web*): *What kind of digital world* exists when AI is everywhere?
+2. **Second fork** (*A Fork in the Web*): *What kind of digital world* exists when AI is everywhere?
 3. **Two trajectories** (one breath each):
    - **You → AI → Everything Else** — a complex machine world, simple human aperture
    - **Human-centered layered Web** — many independent environments around shared resources
@@ -368,7 +368,7 @@ All images live under:
 
 | Material | URL / path | Why |
 |----------|------------|-----|
-| **The Fork in the Web** | https://staging.desirableproperties.org/perspectives/the-fork-in-the-web | Canonical narrative + section order |
+| **A Fork in the Web** | https://staging.desirableproperties.org/perspectives/the-fork-in-the-web | Canonical narrative + section order |
 | **humanstatement.org** | https://humanstatement.org/ | First fork framing |
 | **AI & Human Agency pathway** | https://staging.desirableproperties.org/pathways/ai-human-agency | Questions + related DPs for artifact hooks |
 | **Fork illustrations** | `challenge-site/public/images/perspectives/the-fork-in-the-web/*.webp` | Visual anchors |
