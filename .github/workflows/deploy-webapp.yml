@@ -43,7 +43,9 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd /home/ubuntu/desirable-properties
-          git pull origin main
+          git fetch origin main
+          git checkout main
+          git merge --ff-only origin/main
           cd web-app
           npm ci --production
           npm run build
