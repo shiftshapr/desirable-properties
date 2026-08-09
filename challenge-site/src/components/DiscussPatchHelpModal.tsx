@@ -51,12 +51,12 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/75 p-5"
+      className="dp-discuss-patch-modal-overlay fixed inset-0 z-[2147483646] flex items-center justify-center bg-slate-950/95 p-5 backdrop-blur-sm"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl"
+        className="w-full max-w-lg rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl shadow-black/60"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

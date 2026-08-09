@@ -40,6 +40,11 @@ mark.dp-diff-ins {
   border-radius: 2px;
 }
 
+/* Discuss/patch help modal must sit above Canopi header chrome (2147483000). */
+html.dp-header-above-canopi .dp-discuss-patch-modal-overlay {
+  z-index: 2147483646 !important;
+}
+
 /* Canopi web-embed: keep site header above sidebar chrome when open */
 html.dp-header-above-canopi header {
   position: relative;
