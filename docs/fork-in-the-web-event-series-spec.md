@@ -80,7 +80,7 @@ Available once user has **at least one** submitted session response (recommend: 
 1. **Patch idea** — draft a concrete DP-oriented patch concept (textarea + AI).
 2. **Socialize** — link where they shared it (Discuss, workgroup chat, office hours, etc.).
 3. **Feedback** — summarize feedback received (self-attested).
-4. **Submit patch** — link to Gov Hub patch submission (or workgroup patch record).
+4. **Submit patch** — link to submitted patch on **Gov Hub** or **Canopi** (passage-level patch or discuss thread).
 5. **Reflect** — what changed after feedback; what they learned (textarea + AI).
 
 Submit PEARL track → **PEARL series badge offer** unlocked.
@@ -238,7 +238,8 @@ dp_event_series_pearl (
   socialize_note TEXT,
   feedback_summary TEXT,
   feedback_from TEXT,          -- peer | coordinator | public | other
-  patch_submit_url TEXT,
+  patch_submit_url TEXT,       -- Gov Hub or Canopi URL
+  patch_submit_source TEXT,    -- govhub | canopi (optional; infer from URL host if null)
   patch_submit_note TEXT,
   reflection TEXT,
   status TEXT NOT NULL DEFAULT 'draft',  -- draft | submitted
@@ -359,15 +360,18 @@ Admin seeds these rows for each session. Engage fields match [`fork-in-the-web-w
 | 1. Patch idea | `patch_idea` | Concrete suggested change to a DP or book passage; textarea + AI |
 | 2. Socialize | `socialize_url`, `socialize_note` | Link to Discuss, workgroup, office hours, etc. |
 | 3. Feedback | `feedback_summary`, `feedback_from` | Self-attested |
-| 4. Submit patch | `patch_submit_url`, `patch_submit_note` | Gov Hub patch URL (`GOVHUB_DP_PATCHES_URL` pattern) |
+| 4. Submit patch | `patch_submit_url`, `patch_submit_note` | **Gov Hub** or **Canopi** URL to the submitted patch (passage patch, discuss post, or annotation) |
 | 5. Reflect | `reflection` | What changed; what you learned; textarea + AI |
 
 **Submit** sets `dp_event_series_pearl.status = submitted`. User may **edit any step after submit**.
 
+**Submit patch URL:** Accept **Gov Hub** or **Canopi** links. Optional soft validation: host matches known Gov Hub / Canopi / desirableproperties domains; show helper text with examples for both flows.
+
 **Deep links in UI:**
 
-- Discuss & Patch modal / book discuss
-- Gov Hub submit patch
+- Discuss & Patch modal / book discuss (Canopi)
+- Gov Hub submit patch (`GOVHUB_DP_PATCHES_URL`)
+- Canopi discuss or annotation URL on book / perspective
 - Relevant workgroup (e.g. dp-discovery)
 
 ### PEARL vs session questions
@@ -435,8 +439,8 @@ Session number, slug, title, image, schedule, live URL, blurb, perspective ancho
 |---------|------|
 | Fork perspective | CTA → series landing |
 | AI & Human Agency pathway | Inline link |
-| Discuss & Patch | PEARL socialize + patch steps |
-| Gov Hub patches | PEARL submit patch URL |
+| Discuss & Patch / Canopi | PEARL socialize + patch submit (Canopi URL) |
+| Gov Hub patches | PEARL patch submit (Gov Hub URL) |
 | Workgroups | Post-session CTA; socialize target |
 | `/badges` | “Workshop series badges” subsection |
 
