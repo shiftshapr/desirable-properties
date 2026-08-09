@@ -141,9 +141,8 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
                       eventName="homepage_pearl_track_click"
                       className="text-violet-300 hover:text-violet-200"
                     >
-                      PEARL patch track
-                    </TrackedLink>{' '}
-                    for a second badge
+                      PEARL badge enhancement
+                    </TrackedLink>
                   </p>
                 ) : null}
               </div>
