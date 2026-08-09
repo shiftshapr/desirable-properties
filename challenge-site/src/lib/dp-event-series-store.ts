@@ -1,10 +1,12 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
-import { FORK_SERIES_SLUG, FORK_SESSION_SEEDS } from '@/lib/dp-event-series-seed';
+import { FORK_SERIES_SLUG, FORK_SESSION_SEEDS, BOOK_LAUNCH_SLUG, BOOK_LAUNCH_SEED } from '@/lib/dp-event-series-seed';
 import {
   FORK_PEARL_BADGE_IMAGE_URL,
   FORK_SERIES_BADGE_IMAGE_URL,
 } from '@/lib/dp-series-badges';
+
+export type EventSeriesType = 'series' | 'single';
 
 export type EventSeries = {
   id: string;
@@ -16,7 +18,8 @@ export type EventSeries = {
   perspectiveUrl: string | null;
   pathwayUrl: string | null;
   sessionsRequiredCount: number | null;
-  badgeCode: string;
+  seriesType: EventSeriesType;
+  badgeCode: string | null;
   pearlBadgeCode: string | null;
   badgeImageUrl: string | null;
   badgeMintPreviewUrl: string | null;
@@ -136,7 +139,7 @@ export type PathwayParticipationBand = {
   title: string;
   subtitle: string | null;
   sessionsRequiredCount: number;
-  badgeCode: string;
+  badgeCode: string | null;
   pearlBadgeCode: string | null;
   badgeImageUrl: string | null;
   pearlBadgeImageUrl: string | null;
@@ -146,6 +149,33 @@ export type PathwayParticipationBand = {
     slug: string;
   }>;
 };
+
+export type UpcomingEventEntry = {
+  id: string;
+  slug: string;
+  title: string;
+  seriesType: EventSeriesType;
+  href: string;
+  external: boolean;
+  startsAt: string | null;
+  dateLabel: string;
+};
+
+function parseSeriesType(raw: unknown): EventSeriesType {
+  return raw === 'single' ? 'single' : 'series';
+}
+
+function formatEventDateLabel(startsAt: string | null): string {
+  if (!startsAt) return 'Date TBD';
+  const date = new Date(startsAt);
+  if (Number.isNaN(date.getTime())) return 'Date TBD';
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'America/Los_Angeles',
+  });
+}
 
 function normStr(s: unknown, max = 8000) {
   return String(s ?? '').trim().slice(0, max);
@@ -171,7 +201,8 @@ function seriesRow(row: Record<string, unknown>): EventSeries {
     pathwayUrl: row.pathway_url ? String(row.pathway_url) : null,
     sessionsRequiredCount:
       row.sessions_required_count == null ? null : Number(row.sessions_required_count),
-    badgeCode: String(row.badge_code),
+    seriesType: parseSeriesType(row.series_type),
+    badgeCode: row.badge_code ? String(row.badge_code) : null,
     pearlBadgeCode: row.pearl_badge_code ? String(row.pearl_badge_code) : null,
     badgeImageUrl: row.badge_image_url ? String(row.badge_image_url) : null,
     badgeMintPreviewUrl: row.badge_mint_preview_url ? String(row.badge_mint_preview_url) : null,
@@ -383,6 +414,52 @@ async function seedForkSeriesIfMissing() {
   await backfillForkSeriesBadgeImages();
 }
 
+async function seedBookLaunchIfMissing() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  const existing = await pool.query('SELECT id FROM dp_event_series WHERE slug = $1', [
+    BOOK_LAUNCH_SLUG,
+  ]);
+  if (existing.rows.length > 0) return;
+
+  const seriesId = crypto.randomUUID();
+  const sessionId = crypto.randomUUID();
+  await pool.query(
+    `INSERT INTO dp_event_series (
+       id, slug, title, subtitle, description_md,
+       series_type, sessions_required_count,
+       badge_code, pearl_badge_code, active, sort_order, created_by, updated_by
+     ) VALUES ($1,$2,$3,$4,$5,'single',1,NULL,NULL,true,1,'seed','seed')`,
+    [
+      seriesId,
+      BOOK_LAUNCH_SLUG,
+      BOOK_LAUNCH_SEED.title,
+      BOOK_LAUNCH_SEED.subtitle,
+      BOOK_LAUNCH_SEED.descriptionMd,
+    ],
+  );
+  await pool.query(
+    `INSERT INTO dp_event_series_session (
+       id, series_id, session_number, slug, title,
+       starts_at, ends_at, live_url, active, sort_order
+     ) VALUES ($1,$2,1,'launch',$3,$4,$5,$6,true,0)`,
+    [
+      sessionId,
+      seriesId,
+      BOOK_LAUNCH_SEED.title,
+      BOOK_LAUNCH_SEED.startsAt,
+      BOOK_LAUNCH_SEED.endsAt,
+      BOOK_LAUNCH_SEED.liveUrl,
+    ],
+  );
+}
+
+async function ensureEventSeeds() {
+  await seedForkSeriesIfMissing();
+  await seedBookLaunchIfMissing();
+}
+
 async function backfillForkSeriesBadgeImages() {
   const pool = await ensureDpSchema();
   if (!pool) return;
@@ -404,12 +481,59 @@ async function backfillForkSeriesBadgeImages() {
 export async function listEventSeries(activeOnly = false): Promise<EventSeries[]> {
   const pool = await ensureDpSchema();
   if (!pool) return [];
-  await seedForkSeriesIfMissing();
+  await ensureEventSeeds();
   const res = await pool.query(
     `SELECT * FROM dp_event_series ${activeOnly ? 'WHERE active = true' : ''}
      ORDER BY sort_order ASC, updated_at DESC`,
   );
   return res.rows.map(seriesRow);
+}
+
+/** Upcoming series and single events, sorted by soonest session start. */
+export async function listUpcomingEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
+  const pool = await ensureDpSchema();
+  if (!pool) return [];
+  await ensureEventSeeds();
+
+  const res = await pool.query(
+    `SELECT
+       e.id,
+       e.slug,
+       e.title,
+       e.series_type,
+       MIN(s.starts_at) AS next_starts_at,
+       (array_agg(s.live_url ORDER BY s.starts_at NULLS LAST, s.sort_order ASC))[1] AS live_url
+     FROM dp_event_series e
+     JOIN dp_event_series_session s ON s.series_id = e.id AND s.active = true
+     WHERE e.active = true
+       AND (s.starts_at IS NULL OR s.starts_at >= $1)
+     GROUP BY e.id
+     ORDER BY next_starts_at ASC NULLS LAST, e.sort_order ASC, e.title ASC`,
+    [now.toISOString()],
+  );
+
+  return res.rows.map((row) => {
+    const seriesType = parseSeriesType(row.series_type);
+    const startsAt = row.next_starts_at
+      ? new Date(String(row.next_starts_at)).toISOString()
+      : null;
+    const liveUrl = row.live_url ? String(row.live_url) : null;
+    const href =
+      seriesType === 'single' && liveUrl ? liveUrl : `/series/${String(row.slug)}`;
+    const external = seriesType === 'single' && Boolean(liveUrl);
+    const dateLabel = formatEventDateLabel(startsAt);
+
+    return {
+      id: String(row.id),
+      slug: String(row.slug),
+      title: String(row.title),
+      seriesType,
+      href,
+      external,
+      startsAt,
+      dateLabel,
+    };
+  });
 }
 
 /** Active event series linked to a pathway page (homepage participation band). */
@@ -421,7 +545,7 @@ export async function getPathwayParticipationBand(
 
   const pool = await ensureDpSchema();
   if (!pool) return null;
-  await seedForkSeriesIfMissing();
+  await ensureEventSeeds();
 
   const res = await pool.query(
     `SELECT * FROM dp_event_series
@@ -456,7 +580,7 @@ export async function getPathwayParticipationBand(
 export async function getEventSeriesBySlug(slug: string): Promise<EventSeries | null> {
   const pool = await ensureDpSchema();
   if (!pool) return null;
-  await seedForkSeriesIfMissing();
+  await ensureEventSeeds();
   const res = await pool.query('SELECT * FROM dp_event_series WHERE slug = $1', [slug]);
   return res.rows[0] ? seriesRow(res.rows[0]) : null;
 }
@@ -839,7 +963,7 @@ async function grantBadge(seriesId: string, userId: string, badgeCode: string, g
 
 export async function maybeGrantSeriesBadge(seriesId: string, userId: string) {
   const series = await getEventSeriesById(seriesId);
-  if (!series) return;
+  if (!series || series.seriesType === 'single' || !series.badgeCode) return;
   if (await hasBadgeGrant(seriesId, userId, 'series')) return;
 
   const sessions = await listSessionsForSeries(seriesId, true);
@@ -865,7 +989,7 @@ export async function maybeGrantSeriesBadge(seriesId: string, userId: string) {
 
 export async function maybeGrantPearlBadge(seriesId: string, userId: string) {
   const series = await getEventSeriesById(seriesId);
-  if (!series?.pearlBadgeCode) return;
+  if (!series || series.seriesType === 'single' || !series?.pearlBadgeCode) return;
   if (await hasBadgeGrant(seriesId, userId, 'pearl')) return;
 
   const pearl = await getOrCreatePearl(seriesId, userId, null);
@@ -939,19 +1063,22 @@ export async function createEventSeries(input: Record<string, unknown>, actor: s
 
   const title = normStr(input.title, 200);
   const slug = slugify(normStr(input.slug, 120) || title);
-  const badgeCode = normStr(input.badgeCode, 80);
-  if (!title || !slug || !badgeCode) return { ok: false as const, error: 'invalid_input' };
+  const seriesType = parseSeriesType(input.seriesType);
+  const badgeCodeRaw = normStr(input.badgeCode, 80);
+  const badgeCode = badgeCodeRaw || null;
+  if (!title || !slug) return { ok: false as const, error: 'invalid_input' };
+  if (seriesType === 'series' && !badgeCode) return { ok: false as const, error: 'invalid_input' };
 
   const id = crypto.randomUUID();
   try {
     await pool.query(
       `INSERT INTO dp_event_series (
          id, slug, title, subtitle, description_md, hero_image_url,
-         perspective_url, pathway_url, sessions_required_count,
+         perspective_url, pathway_url, sessions_required_count, series_type,
          badge_code, pearl_badge_code, badge_image_url, badge_mint_preview_url,
          pearl_badge_image_url, pearl_badge_mint_preview_url,
          active, sort_order, created_by, updated_by
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$18)`,
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$19)`,
       [
         id,
         slug,
@@ -962,6 +1089,7 @@ export async function createEventSeries(input: Record<string, unknown>, actor: s
         normStr(input.perspectiveUrl, 512) || null,
         normStr(input.pathwayUrl, 512) || null,
         input.sessionsRequiredCount != null ? Number(input.sessionsRequiredCount) : null,
+        seriesType,
         badgeCode,
         normStr(input.pearlBadgeCode, 80) || null,
         normStr(input.badgeImageUrl, 512) || null,
@@ -986,14 +1114,24 @@ export async function updateEventSeries(id: string, input: Record<string, unknow
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
 
+  const nextSeriesType =
+    input.seriesType != null ? parseSeriesType(input.seriesType) : existing.seriesType;
+  const nextBadgeCode =
+    input.badgeCode !== undefined
+      ? normStr(input.badgeCode, 80) || null
+      : existing.badgeCode;
+  if (nextSeriesType === 'series' && !nextBadgeCode) {
+    return { ok: false as const, error: 'invalid_input' };
+  }
+
   await pool.query(
     `UPDATE dp_event_series SET
        slug = $2, title = $3, subtitle = $4, description_md = $5, hero_image_url = $6,
-       perspective_url = $7, pathway_url = $8, sessions_required_count = $9,
-       badge_code = $10, pearl_badge_code = $11, badge_image_url = $12,
-       badge_mint_preview_url = $13, pearl_badge_image_url = $14,
-       pearl_badge_mint_preview_url = $15, active = $16, sort_order = $17,
-       updated_at = now(), updated_by = $18
+       perspective_url = $7, pathway_url = $8, sessions_required_count = $9, series_type = $10,
+       badge_code = $11, pearl_badge_code = $12, badge_image_url = $13,
+       badge_mint_preview_url = $14, pearl_badge_image_url = $15,
+       pearl_badge_mint_preview_url = $16, active = $17, sort_order = $18,
+       updated_at = now(), updated_by = $19
      WHERE id = $1`,
     [
       id,
@@ -1015,7 +1153,8 @@ export async function updateEventSeries(id: string, input: Record<string, unknow
           ? null
           : Number(input.sessionsRequiredCount)
         : existing.sessionsRequiredCount,
-      input.badgeCode != null ? normStr(input.badgeCode, 80) : existing.badgeCode,
+      nextSeriesType,
+      nextBadgeCode,
       input.pearlBadgeCode !== undefined
         ? normStr(input.pearlBadgeCode, 80) || null
         : existing.pearlBadgeCode,

@@ -2,6 +2,20 @@
 
 export const FORK_SERIES_SLUG = 'fork-in-the-web-workshops';
 
+export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
+
+/** Single event — no badge; Luma date TBD (save-the-date). */
+export const BOOK_LAUNCH_SEED = {
+  title: 'Book Launch: The Layered Web',
+  subtitle: 'Desirable Properties Book Launch',
+  descriptionMd:
+    'The culmination of two years of work on the meta-layer. We will release the V1 Desirable Properties Meta-Layer (DPML) and feature speakers working on meta-layer aligned initiatives.',
+  liveUrl: 'https://luma.com/wfi1z9lv',
+  /** Luma lists save-the-date only; admin can set when announced. */
+  startsAt: null as string | null,
+  endsAt: null as string | null,
+} as const;
+
 type QuestionSeed = {
   fieldKey: string;
   label: string;

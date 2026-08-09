@@ -181,7 +181,8 @@ CREATE TABLE IF NOT EXISTS dp_event_series (
   perspective_url TEXT,
   pathway_url TEXT,
   sessions_required_count INTEGER,
-  badge_code TEXT NOT NULL,
+  series_type TEXT NOT NULL DEFAULT 'series',
+  badge_code TEXT,
   pearl_badge_code TEXT,
   badge_image_url TEXT,
   badge_mint_preview_url TEXT,
@@ -218,6 +219,9 @@ CREATE TABLE IF NOT EXISTS dp_event_series_session (
 );
 
 CREATE INDEX IF NOT EXISTS dp_event_series_session_series ON dp_event_series_session (series_id, sort_order ASC);
+
+ALTER TABLE dp_event_series ADD COLUMN IF NOT EXISTS series_type TEXT NOT NULL DEFAULT 'series';
+ALTER TABLE dp_event_series ALTER COLUMN badge_code DROP NOT NULL;
 
 ALTER TABLE dp_event_series_session ADD COLUMN IF NOT EXISTS recording_url TEXT;
 

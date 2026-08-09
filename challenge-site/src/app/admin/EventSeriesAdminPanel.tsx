@@ -18,6 +18,7 @@ function emptySeriesDraft() {
   return {
     title: '',
     slug: '',
+    seriesType: 'series' as 'series' | 'single',
     subtitle: '',
     descriptionMd: '',
     heroImageUrl: '',
@@ -67,6 +68,7 @@ export default function EventSeriesAdminPanel() {
     setDraft({
       title: item.title,
       slug: item.slug,
+      seriesType: item.seriesType,
       subtitle: item.subtitle || '',
       descriptionMd: item.descriptionMd || '',
       heroImageUrl: item.heroImageUrl || '',
@@ -74,7 +76,7 @@ export default function EventSeriesAdminPanel() {
       pathwayUrl: item.pathwayUrl || '',
       sessionsRequiredCount:
         item.sessionsRequiredCount != null ? String(item.sessionsRequiredCount) : '',
-      badgeCode: item.badgeCode,
+      badgeCode: item.badgeCode || '',
       pearlBadgeCode: item.pearlBadgeCode || '',
       badgeImageUrl: item.badgeImageUrl || '',
       pearlBadgeImageUrl: item.pearlBadgeImageUrl || '',
@@ -143,12 +145,28 @@ export default function EventSeriesAdminPanel() {
       <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-5">
         <h3 className="font-semibold text-white">{editId ? 'Edit series' : 'New series'}</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <label className="block text-sm">
+            <span className="text-slate-400">Type</span>
+            <select
+              className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
+              value={draft.seriesType}
+              onChange={(e) =>
+                setDraft((d) => ({
+                  ...d,
+                  seriesType: e.target.value === 'single' ? 'single' : 'series',
+                }))
+              }
+            >
+              <option value="series">Series (badges + sessions)</option>
+              <option value="single">Single event (no badge)</option>
+            </select>
+          </label>
           {(
             [
               ['title', 'Title'],
               ['slug', 'Slug'],
               ['subtitle', 'Subtitle'],
-              ['badgeCode', 'Badge code'],
+              ['badgeCode', draft.seriesType === 'single' ? 'Badge code (optional)' : 'Badge code'],
               ['pearlBadgeCode', 'PEARL badge code'],
               ['badgeImageUrl', 'Badge center image URL'],
               ['pearlBadgeImageUrl', 'PEARL badge center image URL'],
@@ -253,7 +271,7 @@ export default function EventSeriesAdminPanel() {
               <div>
                 <h3 className="text-lg font-semibold text-white">{item.title}</h3>
                 <p className="text-sm text-slate-500">
-                  /series/{item.slug} · {item.active ? 'active' : 'inactive'}
+                  /series/{item.slug} · {item.seriesType} · {item.active ? 'active' : 'inactive'}
                 </p>
               </div>
               <div className="flex gap-2">

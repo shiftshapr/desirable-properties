@@ -215,7 +215,7 @@ function MobileNavGroup({
   );
 }
 
-export default function SiteHeaderNav() {
+export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: SiteNavLink[] }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -260,7 +260,7 @@ export default function SiteHeaderNav() {
         className="site-header-nav hidden min-w-0 items-center gap-6 text-sm text-slate-300 lg:flex"
         aria-label="Main"
       >
-        {SITE_NAV_LINKS.map((link) =>
+        {links.map((link) =>
           link.discussPatchModal ? (
             <DiscussPatchDesktopNav key={link.label} item={link} />
           ) : link.children?.length ? (
@@ -325,7 +325,7 @@ export default function SiteHeaderNav() {
         >
           <nav className="mx-auto max-w-6xl px-4 py-3 sm:px-6" aria-label="Main">
             <ul className="divide-y divide-slate-800">
-              {SITE_NAV_LINKS.map((link) =>
+              {links.map((link) =>
                 link.discussPatchModal ? (
                   <DiscussPatchMobileNav key={link.label} item={link} onNavigate={closeMenu} />
                 ) : link.children?.length ? (

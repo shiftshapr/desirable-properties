@@ -15,6 +15,42 @@ export type SiteNavLink = {
 
 export const WORKGROUPS_JOIN_HREF = '/workgroups/join';
 
+export const EVENTS_INDEX_HREF = '/events';
+
+export type UpcomingEventNavItem = {
+  href: string;
+  label: string;
+  external?: boolean;
+};
+
+export function upcomingEventNavLabel(dateLabel: string, title: string): string {
+  return `${dateLabel} — ${title}`;
+}
+
+/** Insert Events nav after About when upcoming entries exist. */
+export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): SiteNavLink[] {
+  const eventsNav: SiteNavLink = upcomingEvents.length
+    ? {
+        label: 'Events',
+        href: EVENTS_INDEX_HREF,
+        children: upcomingEvents.map((event) => ({
+          href: event.href,
+          label: event.label,
+          external: event.external,
+        })),
+      }
+    : { label: 'Events', href: EVENTS_INDEX_HREF };
+
+  const links = [...SITE_NAV_LINKS];
+  const aboutIndex = links.findIndex((link) => link.label === 'About');
+  if (aboutIndex >= 0) {
+    links.splice(aboutIndex + 1, 0, eventsNav);
+  } else {
+    links.unshift(eventsNav);
+  }
+  return links;
+}
+
 export const SITE_NAV_LINKS: SiteNavLink[] = [
   {
     label: 'About',

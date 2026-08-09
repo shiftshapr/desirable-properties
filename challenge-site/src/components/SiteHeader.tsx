@@ -2,8 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SiteAuthNav from '@/components/SiteAuthNav';
 import SiteHeaderNav from '@/components/SiteHeaderNav';
+import { SITE_NAV_LINKS, type SiteNavLink } from '@/lib/siteNav';
 
-export default function SiteHeader() {
+type SiteHeaderProps = {
+  navLinks?: SiteNavLink[];
+};
+
+export default function SiteHeader({ navLinks = SITE_NAV_LINKS }: SiteHeaderProps) {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
       <div className="site-header-inner relative mx-auto max-w-6xl min-w-0 px-4 py-3 sm:px-6">
@@ -24,7 +29,7 @@ export default function SiteHeader() {
           </Link>
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <div className="order-2 min-w-0 lg:order-1">
-              <SiteHeaderNav />
+              <SiteHeaderNav links={navLinks} />
             </div>
             <div className="order-1 flex shrink-0 items-center border-r border-slate-800 pr-3 sm:pr-4 lg:order-2 lg:border-r-0 lg:border-l lg:pl-5 lg:pr-0">
               <SiteAuthNav />

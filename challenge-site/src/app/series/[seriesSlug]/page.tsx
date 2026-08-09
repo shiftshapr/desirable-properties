@@ -40,7 +40,7 @@ export default async function SeriesDetailPage({ params }: Props) {
       </Link>
 
       <p className="mt-6 text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
-        Event series
+        {series.seriesType === 'single' ? 'Event' : 'Event series'}
       </p>
       <h1 className="mt-2 text-4xl font-bold text-white">{series.title}</h1>
       {series.subtitle ? (
@@ -60,7 +60,11 @@ export default async function SeriesDetailPage({ params }: Props) {
       ) : null}
 
       <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-400">
-        <span>Online · 75 min · Standalone sessions</span>
+        {series.seriesType === 'single' ? (
+          <span>Save the date</span>
+        ) : (
+          <span>Online · 75 min · Standalone sessions</span>
+        )}
         {series.perspectiveUrl ? (
           <Link href={series.perspectiveUrl} className="text-cyan-300 hover:text-cyan-200">
             Read the perspective →
@@ -77,16 +81,43 @@ export default async function SeriesDetailPage({ params }: Props) {
         <p className="mt-6 max-w-3xl whitespace-pre-wrap text-slate-400">{series.descriptionMd}</p>
       ) : null}
 
-      <div className="mt-12">
-        <SeriesProgressPanel
-          seriesSlug={series.slug}
-          seriesTitle={series.title}
-          sessions={sessions}
-          progress={progress}
-          badgeImageUrl={series.badgeImageUrl}
-          pearlBadgeImageUrl={series.pearlBadgeImageUrl}
-        />
-      </div>
+      {series.seriesType === 'single' && sessions[0]?.liveUrl ? (
+        <div className="mt-8">
+          <a
+            href={sessions[0].liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
+          >
+            RSVP on Luma →
+          </a>
+          {sessions[0].startsAt ? (
+            <p className="mt-3 text-sm text-slate-500">
+              {new Date(sessions[0].startsAt).toLocaleString('en-US', {
+                dateStyle: 'full',
+                timeStyle: 'short',
+                timeZone: 'America/Los_Angeles',
+              })}{' '}
+              PT
+            </p>
+          ) : (
+            <p className="mt-3 text-sm text-slate-500">Date TBD — check Luma for updates.</p>
+          )}
+        </div>
+      ) : null}
+
+      {series.seriesType === 'series' ? (
+        <div className="mt-12">
+          <SeriesProgressPanel
+            seriesSlug={series.slug}
+            seriesTitle={series.title}
+            sessions={sessions}
+            progress={progress}
+            badgeImageUrl={series.badgeImageUrl}
+            pearlBadgeImageUrl={series.pearlBadgeImageUrl}
+          />
+        </div>
+      ) : null}
     </main>
   );
 }
