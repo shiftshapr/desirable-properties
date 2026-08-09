@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import DpBadgeCarousel from '@/components/DpBadgeCarousel';
 import localData from '@/data/desirable-properties.json';
 
@@ -10,24 +11,81 @@ export const metadata: Metadata = {
     'Browse badge artwork for each Desirable Property, learn how recognition works, and open DP pages or book chapters.',
 };
 
-const HOW_IT_WORKS = [
+const HOW_IT_WORKS: { title: string; body: ReactNode }[] = [
   {
-    title: 'One badge per Desirable Property',
-    body: 'Contributing to a specific DP earns that property’s badge. Over time, contributors build a portfolio of the Meta-Layer areas they helped shape.',
+    title: 'One Badge for Every Desirable Property',
+    body: (
+      <>
+        <p>Each Desirable Property has its own base badge. When you contribute to a specific DP, you earn that property&apos;s badge.</p>
+        <p className="mt-3">
+          Over time, contributors build a portfolio representing the parts of the Meta-Layer they
+          helped shape.
+        </p>
+      </>
+    ),
   },
   {
-    title: 'Role overlays',
-    body: 'Badges can carry overlays such as Member, Workgroup Coordinator, Co-Lead, Reviewer, Patch Contributor, or Steward – reflecting how you participated.',
+    title: 'Role Overlays',
+    body: (
+      <>
+        <p>Badges can include overlays that recognize how you contributed. Examples include:</p>
+        <ul className="mt-3 list-disc space-y-1 pl-5">
+          <li>Member</li>
+          <li>Workgroup Coordinator</li>
+          <li>Co-Lead</li>
+          <li>Reviewer</li>
+          <li>Patch Contributor</li>
+          <li>Steward</li>
+        </ul>
+        <p className="mt-3">
+          A single badge may contain multiple overlays reflecting different forms of participation.
+        </p>
+      </>
+    ),
   },
   {
-    title: 'Contribution evidence',
-    body: 'Minted badges can link to patches, workgroup docs, discussions, PRs, research, and other public records – recognition tied to real work.',
+    title: 'Contribution Evidence',
+    body: (
+      <>
+        <p>Badges aren&apos;t just symbols. When minted, they can include links to the actual work that earned them, such as:</p>
+        <ul className="mt-3 list-disc space-y-1 pl-5">
+          <li>proposed patches</li>
+          <li>workgroup documents</li>
+          <li>meeting notes</li>
+          <li>discussion threads</li>
+          <li>pull requests</li>
+          <li>implementation examples</li>
+          <li>published articles</li>
+          <li>supporting research</li>
+          <li>other public contribution records</li>
+        </ul>
+        <p className="mt-3">
+          This creates verifiable recognition connected directly to community contributions.
+        </p>
+      </>
+    ),
   },
   {
-    title: 'Not governance rights',
-    body: 'Badges recognize contribution. They do not confer ownership, authority, or voting power by themselves.',
+    title: 'Extensible Metadata',
+    body: (
+      <>
+        <p>Badge metadata can evolve to include:</p>
+        <ul className="mt-3 list-disc space-y-1 pl-5">
+          <li>Desirable Property number and title</li>
+          <li>contributor roles and workgroup</li>
+          <li>contribution summary and links</li>
+          <li>version number and dates</li>
+          <li>supporting resources and implementation evidence</li>
+          <li>issuer information</li>
+        </ul>
+        <p className="mt-3">
+          This creates a lasting record of participation that grows alongside the Meta-Layer
+          ecosystem. Badges recognize contribution – they do <strong className="font-semibold text-white">not</strong> confer ownership, authority, or governance rights.
+        </p>
+      </>
+    ),
   },
-] as const;
+];
 
 export default function BadgesPage() {
   const items = localData.desirable_properties.map((dp) => ({
@@ -59,7 +117,7 @@ export default function BadgesPage() {
                 className="rounded-xl border border-slate-800 bg-slate-900/50 p-5"
               >
                 <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.body}</p>
+                <div className="mt-2 text-sm leading-relaxed text-slate-400">{item.body}</div>
               </li>
             ))}
           </ul>
