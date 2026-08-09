@@ -1,5 +1,9 @@
 /** Optimized DP artwork from agent-drop final-dp-set (WebP). */
 
+export const DP_DISCOVERY_CARD_IMAGE = '/images/dps/card/dp-discovery.webp';
+export const DP_DISCOVERY_FULL_IMAGE = '/images/dps/full/dp-discovery.webp';
+export const DP_DISCOVERY_BADGE_IMAGE = '/images/dps/badge/dp-discovery.webp';
+
 export function normalizeDpNumber(dpId: string | null | undefined): number | null {
   if (!dpId) return null;
   const m = String(dpId).trim().match(/^DP\s*0*(\d+)$/i);
@@ -24,6 +28,37 @@ export function dpCardImageSrc(dpId: string | null | undefined): string | null {
 export function dpBadgeImageSrc(dpId: string | null | undefined): string | null {
   const n = normalizeDpNumber(dpId);
   return n ? `/images/dps/badge/dp${String(n).padStart(2, '0')}.webp` : null;
+}
+
+/** Compact art for DP Discovery workgroup listings (~480px). */
+export function dpDiscoveryCardImageSrc(): string {
+  return DP_DISCOVERY_CARD_IMAGE;
+}
+
+/** Full illustration for DP Discovery hero (~1200px). */
+export function dpDiscoveryFullImageSrc(): string {
+  return DP_DISCOVERY_FULL_IMAGE;
+}
+
+/** Badge-sized DP Discovery art (~300px). */
+export function dpDiscoveryBadgeImageSrc(): string {
+  return DP_DISCOVERY_BADGE_IMAGE;
+}
+
+export function dpDiscoveryImageAlt(name?: string | null): string {
+  const label = name?.trim() || 'DP Discovery';
+  return `Illustration for ${label}`;
+}
+
+/** Card image for a numbered DP or the DP Discovery workgroup. */
+export function dpWorkgroupCardImageSrc(opts: {
+  dpId?: string | null;
+  workgroupSlug?: string | null;
+}): string | null {
+  if (String(opts.workgroupSlug || '').trim().toLowerCase() === 'dp-discovery') {
+    return dpDiscoveryCardImageSrc();
+  }
+  return dpCardImageSrc(opts.dpId);
 }
 
 export function dpImageAlt(dpId: string, name?: string | null): string {

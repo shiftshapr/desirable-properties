@@ -13,8 +13,8 @@ import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
-import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
-import { govhubDraftReadHref, govhubUrl } from '@/lib/govhub';
+import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
+import { govhubDraftReadHref, govhubUrl, isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
@@ -109,7 +109,10 @@ export default function WorkgroupCollabClient({
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
   const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
-  const artSrc = dpCardImageSrc(dpId);
+  const artSrc = dpWorkgroupCardImageSrc({ dpId, workgroupSlug: workgroup.slug });
+  const artAlt = isDpDiscoveryWorkgroup(workgroup.slug)
+    ? dpDiscoveryImageAlt(workgroup.name)
+    : dpImageAlt(dpId || '', workgroup.name);
 
   return (
     <div className="space-y-8">
@@ -119,7 +122,7 @@ export default function WorkgroupCollabClient({
             <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-xl border border-slate-700 bg-slate-950 sm:w-48 md:mx-0">
               <Image
                 src={artSrc}
-                alt={dpImageAlt(dpId || '', workgroup.name)}
+                alt={artAlt}
                 fill
                 className="object-cover"
                 sizes="192px"

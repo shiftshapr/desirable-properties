@@ -10,7 +10,7 @@ import {
   fetchChallengeWorkgroups,
   govhubUrl,
 } from '@/lib/govhub';
-import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
+import { dpCardImageSrc, dpDiscoveryCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
@@ -200,6 +200,7 @@ export default async function JoinWorkgroupPage() {
   const discoveryCollabHref = workgroupPrimaryHref(DP_DISCOVERY_SLUG);
   const discoveryJoinHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'join');
   const discoveryNominateHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'nominate');
+  const discoveryCardSrc = dpDiscoveryCardImageSrc();
 
   return (
     <main className="border-b border-slate-800">
@@ -359,7 +360,18 @@ export default async function JoinWorkgroupPage() {
           </p>
 
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <li className="flex h-full flex-col rounded-xl border border-amber-900/50 bg-slate-950/60 p-5 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3 lg:flex-row lg:items-start lg:gap-8">
+            <li className="flex h-full flex-col overflow-hidden rounded-xl border border-amber-900/50 bg-slate-950/60 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3">
+              <div className="relative aspect-[21/9] bg-slate-950 sm:aspect-[3/1]">
+                <Image
+                  src={discoveryCardSrc}
+                  alt={dpDiscoveryImageAlt('DP Discovery')}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 1152px"
+                  priority
+                />
+              </div>
+              <div className="flex flex-1 flex-col p-5 lg:flex-row lg:items-start lg:gap-8">
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <span className="rounded-md border border-amber-900/60 bg-amber-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-amber-200">
@@ -422,6 +434,7 @@ export default async function JoinWorkgroupPage() {
                     isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
                   />
                 ) : null}
+              </div>
               </div>
             </li>
             {dps.map((dp) => {
