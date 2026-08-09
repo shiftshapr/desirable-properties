@@ -973,3 +973,304 @@ export async function adminSetPatchVerified(pearlId: string, verified: boolean) 
   );
   return { ok: true as const };
 }
+
+export type AdminSessionDetail = EventSeriesSession & {
+  preReads: EventSeriesPreRead[];
+  relatedDpIds: string[];
+  sections: EventSeriesQuestionSection[];
+};
+
+export async function getAdminSessionDetail(sessionId: string): Promise<AdminSessionDetail | null> {
+  const session = await getSessionById(sessionId);
+  if (!session) return null;
+  const [preReads, relatedDpIds, sections] = await Promise.all([
+    listPreReads(sessionId),
+    listRelatedDps(sessionId),
+    listQuestionSectionsForSession(sessionId),
+  ]);
+  return { ...session, preReads, relatedDpIds, sections };
+}
+
+export async function createQuestionSection(input: {
+  sessionId: string;
+  sectionKey: string;
+  title: string;
+  pearlStage?: string | null;
+  sortOrder?: number;
+}) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const sessionId = normStr(input.sessionId, 80);
+  const sectionKey = slugify(normStr(input.sectionKey, 80));
+  const title = normStr(input.title, 200);
+  if (!sessionId || !sectionKey || !title) return { ok: false as const, error: 'invalid_input' };
+
+  const id = crypto.randomUUID();
+  try {
+    await pool.query(
+      `INSERT INTO dp_event_series_question_section (
+         id, session_id, section_key, title, pearl_stage, sort_order
+       ) VALUES ($1,$2,$3,$4,$5,$6)`,
+      [
+        id,
+        sessionId,
+        sectionKey,
+        title,
+        normStr(input.pearlStage, 40) || null,
+        Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
+      ],
+    );
+  } catch (err) {
+    if (String(err).includes('dp_event_series_question_section')) {
+      return { ok: false as const, error: 'section_key_taken' };
+    }
+    throw err;
+  }
+  const sections = await listQuestionSectionsForSession(sessionId);
+  const section = sections.find((s) => s.id === id) || null;
+  return { ok: true as const, section };
+}
+
+export async function updateQuestionSection(
+  sectionId: string,
+  input: Record<string, unknown>,
+) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query(
+    'SELECT * FROM dp_event_series_question_section WHERE id = $1',
+    [sectionId],
+  );
+  if (!res.rows[0]) return { ok: false as const, error: 'not_found' };
+  const existing = res.rows[0];
+
+  await pool.query(
+    `UPDATE dp_event_series_question_section SET
+       section_key = $2, title = $3, pearl_stage = $4, sort_order = $5
+     WHERE id = $1`,
+    [
+      sectionId,
+      input.sectionKey != null ? slugify(normStr(input.sectionKey, 80)) : String(existing.section_key),
+      input.title != null ? normStr(input.title, 200) : String(existing.title),
+      input.pearlStage !== undefined
+        ? normStr(input.pearlStage, 40) || null
+        : existing.pearl_stage,
+      input.sortOrder !== undefined
+        ? Number.isFinite(Number(input.sortOrder))
+          ? Math.floor(Number(input.sortOrder))
+          : Number(existing.sort_order)
+        : Number(existing.sort_order),
+    ],
+  );
+  const sections = await listQuestionSectionsForSession(String(existing.session_id));
+  return { ok: true as const, section: sections.find((s) => s.id === sectionId) || null };
+}
+
+export async function deleteQuestionSection(sectionId: string) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query(
+    'DELETE FROM dp_event_series_question_section WHERE id = $1 RETURNING id',
+    [sectionId],
+  );
+  if (!res.rowCount) return { ok: false as const, error: 'not_found' };
+  return { ok: true as const, id: sectionId };
+}
+
+export async function createQuestion(input: {
+  sectionId: string;
+  fieldKey: string;
+  label: string;
+  helpText?: string | null;
+  fieldType: string;
+  required?: boolean;
+  aiAssist?: boolean;
+  sortOrder?: number;
+}) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+
+  const sectionId = normStr(input.sectionId, 80);
+  const fieldKey = slugify(normStr(input.fieldKey, 80));
+  const label = normStr(input.label, 500);
+  const fieldType = normStr(input.fieldType, 40) || 'textarea';
+  if (!sectionId || !fieldKey || !label) return { ok: false as const, error: 'invalid_input' };
+
+  const allowed = new Set(['checkbox', 'textarea', 'dp_hook', 'select']);
+  if (!allowed.has(fieldType)) return { ok: false as const, error: 'invalid_field_type' };
+
+  const id = crypto.randomUUID();
+  try {
+    await pool.query(
+      `INSERT INTO dp_event_series_question (
+         id, section_id, field_key, label, help_text, field_type,
+         required, ai_assist, sort_order
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      [
+        id,
+        sectionId,
+        fieldKey,
+        label,
+        normStr(input.helpText, 1000) || null,
+        fieldType,
+        Boolean(input.required),
+        Boolean(input.aiAssist),
+        Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
+      ],
+    );
+  } catch (err) {
+    if (String(err).includes('dp_event_series_question')) {
+      return { ok: false as const, error: 'field_key_taken' };
+    }
+    throw err;
+  }
+
+  const secRes = await pool.query(
+    'SELECT session_id FROM dp_event_series_question_section WHERE id = $1',
+    [sectionId],
+  );
+  const sessionId = String(secRes.rows[0]?.session_id || '');
+  const sections = sessionId ? await listQuestionSectionsForSession(sessionId) : [];
+  const question =
+    sections.flatMap((s) => s.questions).find((q) => q.id === id) || null;
+  return { ok: true as const, question };
+}
+
+export async function updateQuestion(questionId: string, input: Record<string, unknown>) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query('SELECT * FROM dp_event_series_question WHERE id = $1', [
+    questionId,
+  ]);
+  if (!res.rows[0]) return { ok: false as const, error: 'not_found' };
+  const existing = res.rows[0];
+
+  const fieldType =
+    input.fieldType != null ? normStr(input.fieldType, 40) : String(existing.field_type);
+  const allowed = new Set(['checkbox', 'textarea', 'dp_hook', 'select']);
+  if (!allowed.has(fieldType)) return { ok: false as const, error: 'invalid_field_type' };
+
+  await pool.query(
+    `UPDATE dp_event_series_question SET
+       field_key = $2, label = $3, help_text = $4, field_type = $5,
+       required = $6, ai_assist = $7, sort_order = $8
+     WHERE id = $1`,
+    [
+      questionId,
+      input.fieldKey != null ? slugify(normStr(input.fieldKey, 80)) : String(existing.field_key),
+      input.label != null ? normStr(input.label, 500) : String(existing.label),
+      input.helpText !== undefined
+        ? normStr(input.helpText, 1000) || null
+        : existing.help_text,
+      fieldType,
+      input.required !== undefined ? Boolean(input.required) : Boolean(existing.required),
+      input.aiAssist !== undefined ? Boolean(input.aiAssist) : Boolean(existing.ai_assist),
+      input.sortOrder !== undefined
+        ? Number.isFinite(Number(input.sortOrder))
+          ? Math.floor(Number(input.sortOrder))
+          : Number(existing.sort_order)
+        : Number(existing.sort_order),
+    ],
+  );
+
+  const secRes = await pool.query(
+    'SELECT session_id FROM dp_event_series_question_section WHERE id = $1',
+    [existing.section_id],
+  );
+  const sessionId = String(secRes.rows[0]?.session_id || '');
+  const sections = sessionId ? await listQuestionSectionsForSession(sessionId) : [];
+  const question =
+    sections.flatMap((s) => s.questions).find((q) => q.id === questionId) || null;
+  return { ok: true as const, question };
+}
+
+export async function deleteQuestion(questionId: string) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query(
+    'DELETE FROM dp_event_series_question WHERE id = $1 RETURNING id',
+    [questionId],
+  );
+  if (!res.rowCount) return { ok: false as const, error: 'not_found' };
+  return { ok: true as const, id: questionId };
+}
+
+export async function createPreRead(input: {
+  sessionId: string;
+  label: string;
+  url: string;
+  sortOrder?: number;
+}) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const sessionId = normStr(input.sessionId, 80);
+  const label = normStr(input.label, 200);
+  const url = normStr(input.url, 512);
+  if (!sessionId || !label || !url) return { ok: false as const, error: 'invalid_input' };
+
+  const id = crypto.randomUUID();
+  await pool.query(
+    `INSERT INTO dp_event_series_pre_read (id, session_id, label, url, sort_order)
+     VALUES ($1,$2,$3,$4,$5)`,
+    [
+      id,
+      sessionId,
+      label,
+      url,
+      Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
+    ],
+  );
+  const preReads = await listPreReads(sessionId);
+  return { ok: true as const, preRead: preReads.find((p) => p.id === id) || null };
+}
+
+export async function updatePreRead(preReadId: string, input: Record<string, unknown>) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query('SELECT * FROM dp_event_series_pre_read WHERE id = $1', [
+    preReadId,
+  ]);
+  if (!res.rows[0]) return { ok: false as const, error: 'not_found' };
+  const existing = res.rows[0];
+
+  await pool.query(
+    `UPDATE dp_event_series_pre_read SET label = $2, url = $3, sort_order = $4 WHERE id = $1`,
+    [
+      preReadId,
+      input.label != null ? normStr(input.label, 200) : String(existing.label),
+      input.url != null ? normStr(input.url, 512) : String(existing.url),
+      input.sortOrder !== undefined
+        ? Number.isFinite(Number(input.sortOrder))
+          ? Math.floor(Number(input.sortOrder))
+          : Number(existing.sort_order)
+        : Number(existing.sort_order),
+    ],
+  );
+  const preReads = await listPreReads(String(existing.session_id));
+  return { ok: true as const, preRead: preReads.find((p) => p.id === preReadId) || null };
+}
+
+export async function deletePreRead(preReadId: string) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const res = await pool.query(
+    'DELETE FROM dp_event_series_pre_read WHERE id = $1 RETURNING id',
+    [preReadId],
+  );
+  if (!res.rowCount) return { ok: false as const, error: 'not_found' };
+  return { ok: true as const, id: preReadId };
+}
+
+export async function setSessionRelatedDps(sessionId: string, dpIds: string[]) {
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const normalized = [...new Set(dpIds.map((d) => normStr(d, 20).toUpperCase()).filter(Boolean))];
+  await pool.query('DELETE FROM dp_event_series_session_dp WHERE session_id = $1', [sessionId]);
+  for (const dpId of normalized) {
+    await pool.query(
+      'INSERT INTO dp_event_series_session_dp (session_id, dp_id) VALUES ($1,$2)',
+      [sessionId, dpId],
+    );
+  }
+  return { ok: true as const, relatedDpIds: normalized };
+}

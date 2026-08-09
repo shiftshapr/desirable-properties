@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import EventSeriesSessionEditor from '@/app/admin/EventSeriesSessionEditor';
 import type { EventSeries, EventSeriesSession } from '@/lib/dp-event-series-store';
 
 type SeriesWithSessions = EventSeries & { sessions: EventSeriesSession[] };
@@ -32,6 +33,8 @@ export default function EventSeriesAdminPanel() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
+  const [editorSessionId, setEditorSessionId] = useState<string | null>(null);
+  const [editorSeriesSlug, setEditorSeriesSlug] = useState<string>('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -276,13 +279,33 @@ export default function EventSeriesAdminPanel() {
                       Active
                     </label>
                   </div>
-                  <Link
-                    href={`/series/${item.slug}/session/${session.sessionNumber}`}
-                    className="mt-2 inline-block text-xs text-cyan-400"
-                    target="_blank"
-                  >
-                    Session page →
-                  </Link>
+                  <div className="mt-2 flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditorSessionId(session.id);
+                        setEditorSeriesSlug(item.slug);
+                      }}
+                      className="text-xs font-medium text-violet-300 hover:text-violet-200"
+                    >
+                      Edit questions →
+                    </button>
+                    <Link
+                      href={`/series/${item.slug}/session/${session.sessionNumber}`}
+                      className="text-xs text-cyan-400 hover:text-cyan-300"
+                      target="_blank"
+                    >
+                      Session page →
+                    </Link>
+                  </div>
+                  {editorSessionId === session.id ? (
+                    <EventSeriesSessionEditor
+                      sessionId={session.id}
+                      seriesSlug={item.slug}
+                      onClose={() => setEditorSessionId(null)}
+                      onFlash={(msg) => setFlash(msg)}
+                    />
+                  ) : null}
                 </li>
               ))}
             </ul>
