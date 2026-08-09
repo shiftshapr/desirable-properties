@@ -4,7 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { bookDiscussHref } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
+import { useCurrentFromPath } from '@/lib/useCurrentFromPath';
 
 export type DpBadgeCarouselItem = {
   id: string;
@@ -43,8 +45,9 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
 
   if (!current) return null;
 
+  const fromPath = useCurrentFromPath();
   const src = dpCardImageSrc(current.id);
-  const dpHref = `/dp/${current.id.toLowerCase()}`;
+  const dpHref = dpDetailHref(current.id, fromPath);
   const discussHref = bookDiscussHref({ dpId: current.id });
   const isPage = variant === 'page';
 

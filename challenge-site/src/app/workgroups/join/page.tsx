@@ -11,6 +11,7 @@ import {
   govhubUrl,
 } from '@/lib/govhub';
 import { dpCardImageSrc, dpDiscoveryCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
+import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
@@ -354,7 +355,7 @@ export default async function JoinWorkgroupPage() {
               const joinHref = workgroupGovHubHref(slug, 'join');
               const nominateHref = workgroupGovHubHref(slug, 'nominate');
               const summary = shortDescription(dp);
-              const dpDetailHref = `/dp/${dpId.toLowerCase()}`;
+              const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups/join');
               const cardSrc = dpCardImageSrc(dpId);
 
               return (
@@ -363,7 +364,7 @@ export default async function JoinWorkgroupPage() {
                   className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/60 transition-colors hover:border-violet-700/60"
                 >
                   {cardSrc ? (
-                    <Link href={dpDetailHref} className="relative block aspect-[4/3] bg-slate-950">
+                    <Link href={dpDetailHrefValue} className="relative block aspect-[4/3] bg-slate-950">
                       <Image
                         src={cardSrc}
                         alt={dpImageAlt(dpId, name)}
@@ -376,7 +377,7 @@ export default async function JoinWorkgroupPage() {
                   <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-start justify-between gap-2">
                     <Link
-                      href={dpDetailHref}
+                      href={dpDetailHrefValue}
                       className="rounded-md border border-cyan-900/60 bg-cyan-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-cyan-200 hover:border-cyan-600/70 hover:text-cyan-100"
                     >
                       {dpId}
@@ -427,7 +428,7 @@ export default async function JoinWorkgroupPage() {
                         </a>
                       ) : null}
                       <Link
-                        href={dpDetailHref}
+                        href={dpDetailHrefValue}
                         className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-200"
                       >
                         View DP detail

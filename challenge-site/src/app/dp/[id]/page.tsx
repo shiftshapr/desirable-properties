@@ -24,6 +24,7 @@ import {
   dpPdfDownloadFilename,
   loadPciProvenanceForDp,
 } from '@/lib/dpProvenance';
+import { resolveBackPath } from '@/lib/dp-links';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 300;
@@ -34,8 +35,16 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function DPPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function DPPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
+}) {
   const { id } = await params;
+  const { from } = await searchParams;
+  const backHref = resolveBackPath(from);
   const dp = localData.desirable_properties.find(
     (d) => d.id.toLowerCase() === id.toLowerCase(),
   );
@@ -68,8 +77,8 @@ export default async function DPPage({ params }: { params: Promise<{ id: string 
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-        <Link href="/#dps" className="text-sm text-cyan-300 hover:text-cyan-200">
-          ← Back to all Desirable Properties
+        <Link href={backHref} className="text-sm text-cyan-300 hover:text-cyan-200">
+          ← Back
         </Link>
 
         <div className="mt-8">

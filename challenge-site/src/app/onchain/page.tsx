@@ -10,6 +10,7 @@ import dpInscriptionMap from '../../data/dp-inscriptions.json';
 import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
 import { inscriptionUrl } from '@/lib/ordinalLinks';
 import { extractDpId, fetchChallengeWorkgroups, govhubUrl } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 
 const CALL_FOR_INPUT_INSCRIPTION =
   articlesData.meta.call_for_input_inscription;
@@ -164,7 +165,7 @@ export default async function OnchainPage() {
               return (
                 <li key={dpId} className="flex items-start justify-between gap-4 px-4 py-3">
                   <div className="min-w-0">
-                    <Link href={`/dp/${dpId.toLowerCase()}`} className="font-medium text-white hover:text-cyan-200">
+                    <Link href={dpDetailHref(dpId, '/onchain')} className="font-medium text-white hover:text-cyan-200">
                       {dpId}
                       {dp ? ` – ${dp.name}` : ''}
                     </Link>

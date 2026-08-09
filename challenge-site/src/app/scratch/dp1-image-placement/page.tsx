@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import localData from '@/data/desirable-properties.json';
 import { dpFullImageSrc, dpImageAlt } from '@/lib/dp-images';
+import { dpDetailHref } from '@/lib/dp-links';
 
 export const metadata: Metadata = {
   title: 'Throwaway: DP1 image placement mockup',
@@ -30,7 +31,7 @@ export default function Dp1ImagePlacementMockupPage() {
           decide.
         </p>
         <p className="mt-2">
-          <Link href={`/dp/${dp.id.toLowerCase()}`} className="text-cyan-300 hover:text-cyan-200">
+          <Link href={dpDetailHref(dp.id, '/scratch/dp1-image-placement')} className="text-cyan-300 hover:text-cyan-200">
             Live DP1 page →
           </Link>
         </p>

@@ -4,6 +4,7 @@ import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient
 import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
 import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
@@ -83,7 +84,7 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
   const initialMessages = membership.messages;
   const joinHref = workgroupGovHubHref(workgroup.slug, 'join');
   const dpId = extractDpId(workgroup.name);
-  const dpDetailHref = dpId ? `/dp/${dpId.toLowerCase()}` : null;
+  const dpDetailHrefValue = dpId ? dpDetailHref(dpId, `/workgroups/${workgroup.slug}`) : null;
   const initialActivity = await fetchWorkgroupDpActivity({
     workgroupId: workgroup.id,
     workgroupSlug: workgroup.slug,
@@ -102,7 +103,7 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
           initialMessages={initialMessages}
           joinHref={joinHref}
           dpId={dpId}
-          dpDetailHref={dpDetailHref}
+          dpDetailHref={dpDetailHrefValue}
           initialActivity={initialActivity}
           initialIsMember={membership.isMember}
           initialMembershipResolved={membership.membershipResolved}

@@ -1,4 +1,5 @@
 import TrackedLink from '@/components/TrackedLink';
+import { dpDetailHref } from '@/lib/dp-links';
 import type { PathwayQuestion } from '@/lib/pathways';
 
 type Props = {
@@ -29,7 +30,7 @@ export default function PathwayQuestionCard({ question, index, pathwaySlug }: Pr
           {question.dpLinks.map((dp) => (
             <li key={dp.id}>
               <TrackedLink
-                href={dp.href}
+                href={dpDetailHref(dp.id, `/pathways/${pathwaySlug}#${question.id}`)}
                 eventName="pathway_dp_click"
                 eventPayload={{ pathway: pathwaySlug, dp: dp.id, question: question.id }}
                 className="inline-flex items-center rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-1.5 text-sm text-cyan-200 hover:border-cyan-700 hover:text-cyan-100"

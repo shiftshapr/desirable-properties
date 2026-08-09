@@ -5,7 +5,7 @@ import type {
 } from '@/lib/pathways';
 
 function dp(id: string, name: string) {
-  return { id, name, href: `/dp/${id.toLowerCase()}` };
+  return { id, name };
 }
 
 export const AI_HUMAN_AGENCY_META: PathwayMeta = {

@@ -3,7 +3,6 @@
 export type PathwayDpLink = {
   id: string;
   name: string;
-  href: string;
 };
 
 export type PathwayQuestion = {

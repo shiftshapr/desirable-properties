@@ -18,6 +18,8 @@ import {
 } from '@/lib/hermesDocuments';
 import { useAuth } from '@/lib/auth-context';
 import type { AuthUser } from '@/lib/auth-types';
+import { dpDetailHref } from '@/lib/dp-links';
+import { useCurrentFromPath } from '@/lib/useCurrentFromPath';
 
 interface Message {
   id: string;
@@ -85,6 +87,7 @@ export default function HermesChat({
   starterLabel = null,
 }: HermesChatProps) {
   const { user: authUser, checked, login, loginBusy } = useAuth();
+  const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
@@ -658,7 +661,7 @@ export default function HermesChat({
                       {message.citedDps.slice(0, 6).map((dpNum) => (
                         <Link
                           key={`${message.id}-dp-${dpNum}`}
-                          href={`/dp/dp${dpNum}`}
+                          href={dpDetailHref(`DP${dpNum}`, fromPath)}
                           className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
                             dpNum >= 1 && dpNum <= 22
                               ? 'border-slate-600 bg-slate-900 text-slate-200'
