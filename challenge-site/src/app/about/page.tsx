@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {
   DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
   DESIRABLE_PROPERTIES_BOOK_HOST,
+  DESIRABLE_PROPERTIES_BOOK_TITLE,
   FRAMING_CHAPTER_REF,
   FRAMING_CHAPTER_TITLE,
   FRAMING_CHAPTER_URL,
@@ -48,7 +49,13 @@ export default function AboutPage() {
             {FRAMING_CHAPTER_TITLE}
           </h1>
           <p className="mt-4 text-slate-400">
-            Opening chapter · Meta-Layer Initiative · Living draft on Gov Hub
+            Introduction of the book,{' '}
+            <a
+              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              className="italic text-cyan-300 hover:text-cyan-200"
+            >
+              {DESIRABLE_PROPERTIES_BOOK_TITLE}
+            </a>
           </p>
           <a
             href={FRAMING_CHAPTER_URL}
