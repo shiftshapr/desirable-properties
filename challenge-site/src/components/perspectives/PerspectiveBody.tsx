@@ -13,7 +13,9 @@ function slugifyHeading(text: string): string {
 function headingText(children: ReactNode): string {
   if (typeof children === 'string' || typeof children === 'number') return String(children);
   if (Array.isArray(children)) return children.map(headingText).join('');
-  if (isValidElement(children)) return headingText(children.props.children);
+  if (isValidElement<{ children?: ReactNode }>(children)) {
+    return headingText(children.props.children);
+  }
   return '';
 }
 
