@@ -36,9 +36,8 @@ export default function WorkgroupGettingStarted({
   const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
-      <h2 className="text-xl font-semibold text-white">Getting started</h2>
-      <p className="mt-2 max-w-3xl text-sm text-slate-400">
+    <div>
+      <p className="max-w-3xl text-sm text-slate-400">
         This page adds chat and AI invites on top of the existing Desirable Properties workgroup
         experience – welcome guide, DP detail, and Gov Hub drafting all remain available.
       </p>
@@ -112,6 +111,6 @@ export default function WorkgroupGettingStarted({
       <p className="mt-6 text-sm text-slate-400">
         Workgroup: <span className="font-medium text-slate-200">{workgroupName}</span>
       </p>
-    </section>
+    </div>
   );
 }

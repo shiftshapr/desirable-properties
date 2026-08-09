@@ -185,12 +185,11 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
 
   if (!canInvite) {
     return (
-      <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
-        <h2 className="text-lg font-semibold text-white">Invite with Email</h2>
-        <p className="mt-2 text-sm text-slate-400">
+      <div>
+        <p className="text-sm text-slate-400">
           Only workgroup members can invite people with the AI assistant.
         </p>
-      </section>
+      </div>
     );
   }
 
@@ -349,15 +348,12 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   const recipientEmail = email.trim();
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Invite with Email</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Optionally include events or perspectives, research a contact, draft a personal
-            invitation, then send via platform mail or your own inbox.
-          </p>
-        </div>
+        <p className="text-sm text-slate-400">
+          Optionally include events or perspectives, research a contact, draft a personal
+          invitation, then send via platform mail or your own inbox.
+        </p>
         {hasProgress ? (
           <button
             type="button"
@@ -458,6 +454,6 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 }

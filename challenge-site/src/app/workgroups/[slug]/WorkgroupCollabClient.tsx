@@ -202,87 +202,95 @@ export default function WorkgroupCollabClient({
         </div>
       </header>
 
-      <nav
-        className="flex flex-wrap gap-2 border-b border-slate-800 pb-4"
-        aria-label="Workgroup sections"
-      >
-        {WORKGROUP_COLLAB_TABS.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            className={`rounded-md px-3 py-2 text-sm font-medium ${
-              tab === item.key
-                ? 'bg-cyan-700 text-white'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-            }`}
-            aria-current={tab === item.key ? 'page' : undefined}
-            onClick={() => selectTab(item.key)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
+      <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
+        <nav
+          className="flex flex-wrap items-end gap-0 border-b border-slate-800 bg-slate-950/30 px-2 pt-2"
+          role="tablist"
+          aria-label="Workgroup sections"
+        >
+          {WORKGROUP_COLLAB_TABS.map((item) => {
+            const active = tab === item.key;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                className={`relative rounded-t-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                  active
+                    ? 'z-10 -mb-px border-slate-800 border-b-slate-900/40 bg-slate-900/40 text-white'
+                    : 'border-transparent text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
+                }`}
+                onClick={() => selectTab(item.key)}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
 
-      {tab === 'getting-started' ? (
-        <WorkgroupGettingStarted
-          workgroupName={workgroup.name}
-          workgroupSlug={workgroup.slug}
-          dpId={dpId}
-          dpDetailHref={dpDetailHref}
-          documentHref={workgroup.document_href}
-        />
-      ) : null}
+        <div role="tabpanel" className="p-5 sm:p-6">
+          {tab === 'getting-started' ? (
+            <WorkgroupGettingStarted
+              workgroupName={workgroup.name}
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              dpDetailHref={dpDetailHref}
+              documentHref={workgroup.document_href}
+            />
+          ) : null}
 
-      {tab === 'chat' ? (
-        showFullChat ? (
-          <WorkgroupChatPanel
-            workgroupId={workgroup.id}
-            workgroupSlug={workgroup.slug}
-            workgroupName={workgroup.name}
-            dpId={dpId}
-            signedIn={signedIn}
-            initialMessages={teaserMessages}
-            initialIsMember
-          />
-        ) : (
-          <WorkgroupChatTeaser
-            messages={teaserMessages}
-            joinHref={joinHref}
-            workgroupName={workgroup.name}
-          />
-        )
-      ) : null}
+          {tab === 'chat' ? (
+            showFullChat ? (
+              <WorkgroupChatPanel
+                workgroupId={workgroup.id}
+                workgroupSlug={workgroup.slug}
+                workgroupName={workgroup.name}
+                dpId={dpId}
+                signedIn={signedIn}
+                initialMessages={teaserMessages}
+                initialIsMember
+              />
+            ) : (
+              <WorkgroupChatTeaser
+                messages={teaserMessages}
+                joinHref={joinHref}
+                workgroupName={workgroup.name}
+              />
+            )
+          ) : null}
 
-      {tab === 'activity' ? (
-        <WorkgroupActivityFeed
-          workgroupSlug={workgroup.slug}
-          dpId={dpId}
-          initialItems={initialActivity}
-        />
-      ) : null}
+          {tab === 'activity' ? (
+            <WorkgroupActivityFeed
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              initialItems={initialActivity}
+            />
+          ) : null}
 
-      {tab === 'invite' ? (
-        showFullChat ? (
-          <WorkgroupInviteAiPanel
-            workgroupId={workgroup.id}
-            workgroupSlug={workgroup.slug}
-            canInvite={canInvite || isMember}
-          />
-        ) : (
-          <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
-            <h2 className="text-lg font-semibold text-white">Invite with Email</h2>
-            <p className="mt-2 text-sm text-slate-400">
-              Join this workgroup to invite people with the AI-assisted email flow.
-            </p>
-            <Link
-              href={joinHref}
-              className="mt-4 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-            >
-              Join workgroup
-            </Link>
-          </section>
-        )
-      ) : null}
+          {tab === 'invite' ? (
+            showFullChat ? (
+              <WorkgroupInviteAiPanel
+                workgroupId={workgroup.id}
+                workgroupSlug={workgroup.slug}
+                canInvite={canInvite || isMember}
+              />
+            ) : (
+              <div>
+                <p className="text-sm text-slate-400">
+                  Join this workgroup to invite people with the AI-assisted email flow.
+                </p>
+                <Link
+                  href={joinHref}
+                  className="mt-4 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                >
+                  Join workgroup
+                </Link>
+              </div>
+            )
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }

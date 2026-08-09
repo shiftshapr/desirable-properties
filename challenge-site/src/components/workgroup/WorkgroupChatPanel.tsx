@@ -80,14 +80,11 @@ export default function WorkgroupChatPanel({
   }
 
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+    <div>
       <div className="flex items-end justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Workgroup chat</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            {isMember ? 'Member view – refreshes every 30s.' : 'Loading membership…'}
-          </p>
-        </div>
+        <p className="text-sm text-slate-400">
+          {isMember ? 'Member view – refreshes every 30s.' : 'Loading membership…'}
+        </p>
         <button
           type="button"
           onClick={() => void refresh()}
@@ -134,6 +131,6 @@ export default function WorkgroupChatPanel({
           onSend={handleSend}
         />
       </div>
-    </section>
+    </div>
   );
 }
