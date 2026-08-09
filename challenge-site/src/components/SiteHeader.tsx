@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import SiteAuthNav from '@/components/SiteAuthNav';
 import SiteHeaderNav from '@/components/SiteHeaderNav';
@@ -9,9 +10,17 @@ export default function SiteHeader() {
         <div className="flex min-w-0 items-center justify-between gap-3 sm:gap-4">
           <Link
             href="/"
-            className="site-header-brand shrink-0 whitespace-nowrap text-sm font-semibold tracking-wide text-cyan-300"
+            className="site-header-brand flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-semibold tracking-wide text-cyan-300"
           >
-            DP Challenge
+            <Image
+              src="/images/dp-challenge-logo.webp"
+              alt="Desirable Properties Challenge"
+              width={36}
+              height={36}
+              className="h-9 w-9 shrink-0"
+              priority
+            />
+            <span className="sr-only sm:not-sr-only">DP Challenge</span>
           </Link>
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <div className="order-2 min-w-0 lg:order-1">
