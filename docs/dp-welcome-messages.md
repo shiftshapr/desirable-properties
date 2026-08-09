@@ -28,7 +28,7 @@ These dates are exported as `CHALLENGE_KEY_DATES` by `npm run generate:dp-welcom
 
 ---
 
-The properties you help refine today become the requirements and architectural decisions that guide how the Overweb—and the broader Meta-Layer—gets built:
+The properties you help refine today become the requirements and architectural decisions that guide how the Overweb – and the broader Meta-Layer – gets built:
 
 ![We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/images/dp-challenge-arc.jpg)
 
@@ -36,21 +36,21 @@ The properties you help refine today become the requirements and architectural d
 
 We are glad you are here. You bring experience and a critical lens that this challenge needs.
 
-Your workgroup is helping refine one or more **Desirable Properties**—the community-defined qualities a trustworthy Meta-Layer must possess *before* we lock in protocols. Getting the “what” right is the community’s first and most important architectural decision.
+Your workgroup is helping refine one or more **Desirable Properties** – the community-defined qualities a trustworthy Meta-Layer must possess *before* we lock in protocols. Getting the “what” right is the community’s first and most important architectural decision.
 
 **What we ask of you**
 
 - Read your assigned Desirable Property chapter(s) on the book ([book.desirableproperties.org](https://book.desirableproperties.org/)).
 - Review for **clarity**, **context**, and **completeness**.
-- **Discuss** on the book—chapter comments are live now (Canopi on each chapter).
-- **Patch** on Gov Hub—select a passage in the draft and submit specific suggested text revisions, not just general feedback. (Passage-level patching on the book is coming; use Gov Hub for patches today.)
+- **Discuss** on the book – chapter comments are live now (Canopi on each chapter).
+- **Patch** on Gov Hub – select a passage in the draft and submit specific suggested text revisions, not just general feedback. (Passage-level patching on the book is coming; use Gov Hub for patches today.)
 - Participate in workgroup discussion as community feedback arrives from the book and Gov Hub.
 
 **Time & deadline**
 
-- **August 10, 2026** — Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
-- **September 1, 2026** — Workgroup synthesis (v1.0 editorial window).
-- **September 16, 2026** — The Layered Web and monument launch.
+- **August 10, 2026** – Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
+- **September 1, 2026** – Workgroup synthesis (v1.0 editorial window).
+- **September 16, 2026** – The Layered Web and monument launch.
 
 **Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [hub.themetalayer.org/support](https://hub.themetalayer.org/support).
 
@@ -60,7 +60,7 @@ Welcome to the challenge.
 
 ## Message B — Workgroup coordinator (admin approved)
 
-**Subject:** Welcome to the Desirable Properties Challenge — Workgroup coordinator
+**Subject:** Welcome to the Desirable Properties Challenge – Workgroup coordinator
 
 Send **Message A** in full, then add this block (one combined welcome — not two separate messages):
 
@@ -80,8 +80,8 @@ You're approved as workgroup coordinator. In addition to the member duties above
 ## Short onboarding blurb (UI / email confirmation)
 
 > **You joined [DP workgroup name].**  
-> Help refine Desirable Properties v0.77 into v1.0 by reviewing for clarity, context, and completeness—and submitting suggested text revisions. Plan 1–3 hours per DP. Synthesis deadline: **Sept 1, 2026**.  
-> Your work defines *what* the Overweb must enable—before requirements, ADRs, and implementation.  
+> Help refine Desirable Properties v0.77 into v1.0 by reviewing for clarity, context, and completeness – and submitting suggested text revisions. Plan 1–3 hours per DP. Synthesis deadline: **Sept 1, 2026**.  
+> Your work defines *what* the Overweb must enable – before requirements, ADRs, and implementation.  
 > Questions? Submit a support request.
 
 ---
