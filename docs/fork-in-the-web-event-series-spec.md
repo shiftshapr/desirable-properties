@@ -13,13 +13,40 @@ Build a **public event series experience** on staging for the four *Fork in the 
 1. A **series landing page** and **per-session pages** (placeholder images initially).
 2. **Session Questions** on each session — structured reflection + artifact capture, using the **Metaweb book session-questions UX** (multi-field form + **✦ AI assist** per field via `ComposeFieldAiAssist`).
 3. **Admin** to create and edit **event series** generically (not hard-coded to Fork).
-4. **Badge offers** for participants who **attend** (or register) and **complete session questions**.
-5. **PEARL enhancement track** for participants who **create something**, **receive feedback**, and **reflect** — earning a richer credential aligned with DP10.
+4. **One series badge** (not per-session) for participants who **attend or watch** and **respond to session questions** across the series.
+5. **PEARL badge** (series-level) for participants who complete the **patch pipeline**: create patch idea → socialize → get feedback → submit patch → reflect.
+
+**Database:** Yes — challenge-site already uses **Postgres** via `DP_DATABASE_URL` / `DATABASE_URL`, with schema managed in `challenge-site/src/lib/dp-db.ts` (`ensureDpSchema()`). Questions, answers, and PEARL progress use **normalized relational tables**, not JSON blobs.
 
 **Staging URL target (proposed):**
 
 - Series: `https://staging.desirableproperties.org/series/fork-in-the-web-workshops`
 - Session: `https://staging.desirableproperties.org/series/fork-in-the-web-workshops/session/1` (etc.)
+- PEARL track: `https://staging.desirableproperties.org/series/fork-in-the-web-workshops/pearl`
+
+---
+
+## Product decisions (locked)
+
+| Topic | Decision |
+|-------|----------|
+| Per-session badges | **No** — single **series badge** only |
+| Series badge criteria | Attend or watch **and** submit session questions (progress tracked per session; badge granted when series requirements met — see below) |
+| PEARL criteria | Patch idea → socialize → feedback → submit patch → reflect (self-attested feedback OK) |
+| Attendance proof | Honor checkbox or external registrant match — **either is fine** |
+| Auth | **Required** to save answers, submit questions, and claim badges |
+| Edit after submit | **Allowed** — users may update responses and PEARL steps after submit |
+| PEARL feedback | **Self-attested** in v1 |
+| Storage | **Relational Postgres tables** — no JSON schema for questions/answers |
+
+### Series badge eligibility (proposed rule)
+
+Grant **one series badge** when the signed-in user has, for **each active session** in the series:
+
+- Confirmed attend/watch (`attended_confirmed = true`), **and**
+- Submitted session questions (`status = submitted` on that session’s response)
+
+All four Fork sessions required for `fork-ws-series`. Admin can configure `sessions_required_count` on the series if a future series differs.
 
 ---
 
@@ -29,62 +56,212 @@ Build a **public event series experience** on staging for the four *Fork in the 
 |------|----------------|
 | Discoverability | Fork readers and pathway visitors find workshops from perspective, pathway, and nav |
 | Standalone sessions | Any session page works without attending others |
-| Capture learning | Submitted session questions feed workgroup / DP discovery |
-| Recognition | Session badge per workshop; series completion badge; optional PEARL badge |
-| Reuse | Admin can clone pattern for future series (e.g. other pathways) |
+| Capture learning | Session answers stored in DB; feed workgroup / DP discovery |
+| Recognition | **One series badge** + optional **one PEARL series badge** |
+| Reuse | Admin can create another series without code changes |
 
 ---
 
 ## User journeys
 
-### Journey A — Attend + reflect (session badge)
+### Journey A — Watch + respond (series badge)
 
-1. Land on series page → pick a session (or arrive from invite with `?session=2`).
-2. Sign in (Gov Hub / existing DP auth — required to save answers and claim badge).
-3. Optional: mark **“I attended”** (honor checkbox + optional external Zoom registrant match later).
-4. Complete **Session Questions** (Prepare → Engage → Reflect).
-5. Submit → **session badge offer** unlocked (preview + claim / mint when BRC333 flow ready).
+1. Land on series page → pick a session (or `?session=2` from invite).
+2. **Sign in** (required).
+3. Mark **“I attended or watched”** (honor checkbox; Zoom match optional later).
+4. Complete **Session Questions** (Prepare → Engage → Reflect) for that session.
+5. Repeat for other sessions (standalone order OK).
+6. When **all sessions** meet attend + submitted criteria → **series badge offer** unlocked.
 
-### Journey B — PEARL enhancement (deeper badge)
+### Journey B — PEARL (patch pipeline)
 
-After Journey A (or in parallel):
+Available once user has **at least one** submitted session response (recommend: after series badge or in parallel once engaged).
 
-1. **Leverage** — publish or link an artifact (workshop template output, Discuss post, patch draft, workgroup doc).
-2. **Feedback** — receive at least one structured feedback (peer, coordinator, or DP18-style prompt).
-3. **Reflect again** — short reflection on feedback + revision intent.
-4. Submit PEARL evidence bundle → **PEARL-tier badge offer** (or overlay on session badge).
+1. **Patch idea** — draft a concrete DP-oriented patch concept (textarea + AI).
+2. **Socialize** — link where they shared it (Discuss, workgroup chat, office hours, etc.).
+3. **Feedback** — summarize feedback received (self-attested).
+4. **Submit patch** — link to Gov Hub patch submission (or workgroup patch record).
+5. **Reflect** — what changed after feedback; what they learned (textarea + AI).
+
+Submit PEARL track → **PEARL series badge offer** unlocked.
+
+PEARL aligns with DP10 (Prepare/Engage/Reflect/Leverage) but **Leverage** here is explicitly **patch contribution**, not a generic artifact link.
 
 ### Journey C — Admin
 
 1. `/admin?tab=event-series` → list series.
-2. Create/edit series metadata, sessions, question sets, badge config, images.
-3. Preview session page as admin.
-4. Export submissions CSV / link to workgroup review queue (phase 2).
+2. CRUD series, sessions, question sections/fields, pre-reads, badge config.
+3. Preview session page.
+4. View submissions and PEARL progress; export CSV.
 
 ---
 
 ## Information architecture
 
 ```
-/series                                    → optional index of all public series
-/series/[seriesSlug]                       → series landing (hero, 4 session cards, badges explained)
-/series/[seriesSlug]/session/[n]           → session detail + Session Questions form
-/series/[seriesSlug]/session/[n]/pearl     → PEARL enhancement flow (gated: session questions submitted)
-/api/series/[seriesSlug]                   → public read (series + sessions, no drafts)
-/api/series/[seriesSlug]/session/[n]/responses → POST save/submit (auth)
-/api/admin/event-series/...                → CRUD (admin auth)
+/series                                    → index of active series
+/series/[seriesSlug]                       → series landing
+/series/[seriesSlug]/session/[n]           → session + Session Questions (auth)
+/series/[seriesSlug]/pearl                 → PEARL patch pipeline (auth)
+/api/series/[seriesSlug]                   → public read (metadata only)
+/api/series/.../responses                  → auth: save/load answers
+/api/series/.../pearl                      → auth: save/load PEARL steps
+/api/admin/event-series/...                → admin CRUD
 ```
 
-**Fork seed data** (`seriesSlug`: `fork-in-the-web-workshops`):
+---
 
-| Session | Title | Image (initial) |
-|---------|-------|-----------------|
-| 1 | The First Fork: You → AI → Everything Else | Placeholder or `you-ai-everything-else.webp` when ready |
-| 2 | Concierge vs. Commons | Placeholder |
-| 3 | Designing the Human-Centered Layered Web | Placeholder |
-| 4 | Sovereignty, Subsidiarity & the Second Fork | Placeholder |
+## Database (existing + new tables)
 
-Use **placeholder** cards on series landing until final art is wired; session pages can use Fork illustration paths from `challenge-site/public/images/perspectives/the-fork-in-the-web/` when available.
+### Existing infrastructure
+
+Challenge-site Postgres is already used for admin users, site modals, blueberries, broadcast, support tickets, and invite content (`dp_invite_global_event`, `dp_invite_perspective`). New tables extend `SCHEMA_SQL` in `dp-db.ts` the same way.
+
+Connection: `DP_DATABASE_URL` or `DATABASE_URL`. If unset, feature degrades gracefully (same pattern as invite-content).
+
+### New tables (relational — no JSON for Q&A)
+
+```sql
+-- Series
+dp_event_series (
+  id UUID PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  subtitle TEXT,
+  description_md TEXT,
+  hero_image_url TEXT,
+  perspective_url TEXT,
+  pathway_url TEXT,
+  sessions_required_count INTEGER,  -- NULL = all active sessions
+  badge_code TEXT NOT NULL,       -- e.g. fork-ws-series
+  pearl_badge_code TEXT,          -- e.g. fork-ws-series-pearl
+  badge_image_url TEXT,
+  badge_mint_preview_url TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at, updated_at, created_by, updated_by
+)
+
+-- Sessions
+dp_event_series_session (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  session_number INTEGER NOT NULL,
+  slug TEXT NOT NULL,
+  title TEXT NOT NULL,
+  image_url TEXT,
+  starts_at TIMESTAMPTZ,
+  ends_at TIMESTAMPTZ,
+  live_url TEXT,
+  facilitator_blurb_md TEXT,
+  perspective_section_anchor TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (series_id, session_number),
+  UNIQUE (series_id, slug)
+)
+
+-- Pre-read links (per session)
+dp_event_series_pre_read (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  label TEXT NOT NULL,
+  url TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0
+)
+
+-- Related DPs (per session)
+dp_event_series_session_dp (
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  dp_id TEXT NOT NULL,  -- e.g. DP2
+  PRIMARY KEY (session_id, dp_id)
+)
+
+-- Question sections (Prepare / Engage / Reflect)
+dp_event_series_question_section (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  section_key TEXT NOT NULL,   -- prepare | engage | reflect
+  title TEXT NOT NULL,
+  pearl_stage TEXT,            -- prepare | engage | reflect (nullable for reflect-only UI)
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (session_id, section_key)
+)
+
+-- Individual questions (admin-editable fields)
+dp_event_series_question (
+  id UUID PRIMARY KEY,
+  section_id UUID NOT NULL REFERENCES dp_event_series_question_section(id) ON DELETE CASCADE,
+  field_key TEXT NOT NULL,     -- stable key, e.g. hope_to_explore
+  label TEXT NOT NULL,
+  help_text TEXT,
+  field_type TEXT NOT NULL,    -- checkbox | textarea | select | dp_hook
+  required BOOLEAN NOT NULL DEFAULT false,
+  ai_assist BOOLEAN NOT NULL DEFAULT false,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (section_id, field_key)
+)
+
+-- One response header per user per session
+dp_event_series_response (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  user_email TEXT,
+  attended_confirmed BOOLEAN NOT NULL DEFAULT false,
+  status TEXT NOT NULL DEFAULT 'draft',  -- draft | submitted
+  submitted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (session_id, user_id)
+)
+
+-- One row per question answer (editable after submit)
+dp_event_series_answer (
+  id UUID PRIMARY KEY,
+  response_id UUID NOT NULL REFERENCES dp_event_series_response(id) ON DELETE CASCADE,
+  question_id UUID NOT NULL REFERENCES dp_event_series_question(id) ON DELETE CASCADE,
+  value_text TEXT,
+  value_bool BOOLEAN,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (response_id, question_id)
+)
+
+-- PEARL patch pipeline (one row per user per series)
+dp_event_series_pearl (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  user_email TEXT,
+  patch_idea TEXT,
+  socialize_url TEXT,
+  socialize_note TEXT,
+  feedback_summary TEXT,
+  feedback_from TEXT,          -- peer | coordinator | public | other
+  patch_submit_url TEXT,
+  patch_submit_note TEXT,
+  reflection TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',  -- draft | submitted
+  submitted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (series_id, user_id)
+)
+
+-- Badge grants (denormalized for display / mint API)
+dp_event_series_badge_grant (
+  id UUID PRIMARY KEY,
+  series_id UUID NOT NULL REFERENCES dp_event_series(id) ON DELETE CASCADE,
+  user_id TEXT NOT NULL,
+  badge_code TEXT NOT NULL,
+  grant_type TEXT NOT NULL,    -- series | pearl
+  granted_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  revoked_at TIMESTAMPTZ,
+  UNIQUE (series_id, user_id, badge_code)
+)
+```
+
+**Why not JSON:** Admin edits questions as rows; answers join on `question_id`; exports are straightforward SQL; Fork seed is a migration/seed script inserting rows, not a schema file.
 
 ---
 
@@ -94,402 +271,214 @@ Use **placeholder** cards on series landing until final art is wired; session pa
 
 - Eyebrow: `Event series`
 - Title: **Fork in the Web Workshops**
-- Deck: one sentence from perspective subtitle
-- Hero image: placeholder 16:9 (`/images/series/fork-in-the-web-workshops/hero-placeholder.webp`)
-- CTAs: **Choose a session** (anchor) · **Read the perspective** · **AI & Human Agency pathway**
+- Deck: perspective subtitle
+- Hero: placeholder 16:9
+- CTAs: **Choose a session** · **Read the perspective** · **AI & Human Agency pathway**
 
-### Series meta block
+### Series meta
 
-- Format: Online · 75 min · Standalone sessions
-- Badge line: “Complete session questions to earn a workshop badge; PEARL track for creators”
-- Link to [`fork-in-the-web-workshop-briefings.md`](./fork-in-the-web-workshop-briefings.md) (facilitator PDF later)
+- Online · 75 min · Standalone sessions
+- Badge line: **“Complete all session question sets to earn the Fork Workshop series badge. PEARL track for patch contributors.”**
 
-### Session cards (grid)
+### Session cards
 
-Each card:
+- Thumb (placeholder or Fork art)
+- Session number + title + date
+- Status: `Upcoming` | `Live` | `On demand`
+- For signed-in users: chip `Not started` | `In progress` | `Submitted`
+- Links: **Session page** · **Join live** · **Session questions** (auth)
 
-- Placeholder or illustration thumb
-- Session number + title
-- Date/time (from admin, or “Coming soon”)
-- Status chip: `Upcoming` | `Live` | `On demand` (questions open)
-- Links: **Session page** · **Join live** (external URL from admin) · **Session questions**
+### Progress strip (signed-in)
 
-### Progress strip (signed-in user)
-
-- 0/4 session badges
-- Optional: PEARL progress indicator
-
-### Footer CTAs
-
-- Discuss the Fork perspective (Canopi)
-- Join a workgroup
-- humanstatement.org
-
-**Visual:** Match pathway / perspective pages (`max-w-6xl`, slate/cyan palette, same header nav).
+- `2/4 sessions submitted` · `Series badge: 50%` (not 4 separate badges)
+- PEARL track status if started
 
 ---
 
 ## Session page (UI spec)
 
-### Layout
-
-1. **Breadcrumb:** Series → Session N  
-2. **Hero:** image + title + date + live link button  
-3. **Facilitator blurb** (admin markdown, 2–3 sentences)  
-4. **Pre-read links** (from workshop briefings)  
-5. **Session Questions** (primary interactive block)  
-6. **Sidebar (desktop):** badge offer preview, PEARL track teaser, related DPs  
+1. Breadcrumb: Series → Session N  
+2. Hero: image, title, date, **Join live**  
+3. Facilitator blurb + pre-read links (from `dp_event_series_pre_read`)  
+4. **Session Questions** (auth required)  
+5. Sidebar: series badge progress, link to **PEARL track**
 
 ### Session Questions — Metaweb book pattern
 
-Reuse the **compose-field AI pattern** already in challenge-site:
+- `ComposeFieldAiAssist` on each `textarea` where `ai_assist = true`
+- Load sections/questions from DB ordered by `sort_order`
+- Autosave answers to `dp_event_series_answer` on debounce
+- **Submit** sets `response.status = submitted` (user may edit answers afterward)
+- Attend/watch checkbox on response header
 
-- Component: `ComposeFieldAiAssist` (`challenge-site/src/components/compose/ComposeFieldAiAssist.tsx`)
-- Behavior: focus textarea → **✦ AI** FAB → prompt chips → Insert / Replace / Stop / Regenerate
-- **Not** a separate Hermes panel; **not** a persistent chat sidebar
-
-Wrap in a **SessionQuestionsForm** (new) that:
-
-- Renders sections as accordion or stepped wizard (mobile-friendly).
-- One `textarea` (or rich text later) per question; each wired to AI assist.
-- Autosaves draft to API on blur / debounce.
-- **Submit** locks Reflect section (editable until submit; admin can reopen).
-
-#### AI prompt chips (default set — overridable per question in admin)
+### AI prompt chips (per question type, configured in code or small lookup table later)
 
 | Chip | Use |
 |------|-----|
 | Help me get started | Empty field |
 | Clarify my thinking | Draft exists |
-| Connect to a Desirable Property | Engage / Leverage |
+| Connect to a Desirable Property | Engage fields |
 | Strengthen this for submission | Before submit |
 | Shorter version | Length cap |
 
-**Context injected server-side for generation** (like workgroup chat assist):
-
-- Series title, session title, session number
-- Workshop “today’s slice” one-liner
-- Related DP ids/names
-- User’s other answers in this session (prior sections only)
-- Optional: excerpt from Fork perspective section (admin-configured)
-
-**API:** extend existing Hermes/agent route or add `/api/series/.../ai-assist` with rate limits + auth.
-
 ---
 
-## Session Questions content (Fork seed)
+## Session Questions seed (Fork — Engage field keys)
 
-Map workshop **artifacts** from briefings into form fields. Three layers per session:
+Admin seeds these rows for each session. Engage fields match [`fork-in-the-web-workshop-briefings.md`](./fork-in-the-web-workshop-briefings.md).
 
-### Layer 1 — Prepare (PEARL: Prepare)
+**All sessions — Prepare + Reflect (shared structure)**
 
-| Field | Type | Required |
-|-------|------|----------|
-| I reviewed the pre-read (or attended live) | checkbox | yes |
-| What I hope to explore | textarea + AI | yes |
+| section_key | field_key | field_type | required | ai_assist |
+|-------------|-----------|------------|----------|-----------|
+| prepare | pre_read_confirmed | checkbox | yes | no |
+| prepare | hope_to_explore | textarea | yes | yes |
+| reflect | thinking_shifted | textarea | yes | yes |
+| reflect | tension_held | textarea | no | yes |
+| reflect | would_share | textarea | no | yes |
 
-### Layer 2 — Engage (PEARL: Engage)
+**Session 1 Engage** — `scenario`, `ai_path_optimizes`, `direct_human_preserves`, `not_ai_tunnel`, `human_place_requirements`, `dp_hook`
 
-Session-specific fields from briefing artifacts (all textarea + AI):
+**Session 2 Engage** — `shared_resource`, `who_speaks`, `what_persists`, `where_dissent`, `one_week_experiment`, `dp_hook`
 
-**Session 1 — Human Place Requirements**
+**Session 3 Engage** — `substrate`, `environment_1`…`environment_4`, `portable`, `open_protocols`, `ai_role`, `draft_dp_paragraph`, `dp_hook`
 
-- Scenario
-- What AI path optimizes for
-- What direct-human path preserves
-- Must not become only an AI tunnel
-- Human place requirements (pick 2+)
-- Optional DP hook
-
-**Session 2 — Minimum Viable Commons**
-
-- Shared resource
-- Who can speak for themselves
-- What persists
-- Where dissent accumulates
-- One-week experiment
-- Optional DP hook
-
-**Session 3 — Layered Web Stack**
-
-- Substrate + 4 environments + portable + protocols + AI role
-- Draft desirable property paragraph
-- Optional DP hook
-
-**Session 4 — Second Fork Statement**
-
-- Scenario, sovereignty, delegation split, subsidiarity rule
-- Human place worth defending
-- The second fork for me (one sentence)
-- One action in 7 days
-- Optional DP hook
-
-### Layer 3 — Reflect (PEARL: Reflect)
-
-| Field | Type | Required |
-|-------|------|----------|
-| What shifted in my thinking? | textarea + AI | yes |
-| One tension I still hold | textarea + AI | no |
-| Would I share this with my community? | yes/no + why | no |
-
-**Submit** → triggers session badge eligibility.
+**Session 4 Engage** — `scenario`, `sovereignty`, `tasks_stay_human`, `tasks_delegate_ai`, `subsidiarity_rule`, `human_place`, `second_fork_for_me`, `action_7_days`, `dp_hook`
 
 ---
 
 ## PEARL enhancement flow
 
-Gated: **session questions submitted** for that session (or series policy: any 1+ session).
+**Route:** `/series/[seriesSlug]/pearl`  
+**Gate:** Signed in; recommend copy “Best after at least one session submitted.”
 
-### PEARL stages (DP10-aligned)
+### Steps (ordered UI wizard)
 
-| Stage | UI | Evidence |
-|-------|-----|----------|
-| **Prepare** | Already done in session Prepare section | — |
-| **Engage** | Already done in Engage section | — |
-| **Reflect** | Already done in Reflect section | — |
-| **Leverage** | New page section | **Create** — link or upload description |
+| Step | DB column(s) | Notes |
+|------|----------------|-------|
+| 1. Patch idea | `patch_idea` | Concrete suggested change to a DP or book passage; textarea + AI |
+| 2. Socialize | `socialize_url`, `socialize_note` | Link to Discuss, workgroup, office hours, etc. |
+| 3. Feedback | `feedback_summary`, `feedback_from` | Self-attested |
+| 4. Submit patch | `patch_submit_url`, `patch_submit_note` | Gov Hub patch URL (`GOVHUB_DP_PATCHES_URL` pattern) |
+| 5. Reflect | `reflection` | What changed; what you learned; textarea + AI |
 
-### Leverage page fields
+**Submit** sets `dp_event_series_pearl.status = submitted`. User may **edit any step after submit**.
 
-| Field | Notes |
-|-------|--------|
-| What I created | Link (Discuss, workgroup, GitHub, doc) or text description |
-| How it applies the workshop | textarea + AI |
-| Which DP(s) it touches | multi-select or free text |
+**Deep links in UI:**
 
-### Feedback (PEARL + DP18)
+- Discuss & Patch modal / book discuss
+- Gov Hub submit patch
+- Relevant workgroup (e.g. dp-discovery)
 
-| Field | Notes |
-|-------|--------|
-| Feedback received | textarea (paste or summarize) |
-| From whom | peer / coordinator / public / self-review |
-| What I will change | textarea + AI |
+### PEARL vs session questions
 
-**Phase 1:** self-attested feedback + optional coordinator endorsement flag.  
-**Phase 2:** integrate workgroup comment thread or DP18 feedback objects.
-
-### PEARL submit
-
-- Evidence bundle stored JSON-sidecar on response row.
-- Unlocks **PEARL badge offer** (distinct art or “PEARL” overlay on session badge).
+| | Session questions | PEARL |
+|--|-------------------|--------|
+| Scope | Per session | Per series |
+| Badge | Contributes to **series badge** | **PEARL series badge** |
+| DP10 stages | Prepare, Engage, Reflect in questions | Leverage = patch pipeline |
 
 ---
 
 ## Badge offers
 
-### Types
+### Types (series-level only)
 
 | Badge | Code (proposed) | Criteria |
 |-------|-----------------|----------|
-| Session 1–4 | `fork-ws-01` … `fork-ws-04` | Signed in + session questions submitted (+ attend checkbox honor) |
-| Series completer | `fork-ws-series` | All 4 session badges |
-| PEARL per session | `fork-ws-01-pearl` … | Session submit + Leverage + feedback + PEARL reflect |
-| PEARL series | `fork-ws-series-pearl` | All 4 PEARL session tracks (stretch) |
+| Fork Workshop Series | `fork-ws-series` | All sessions: attend/watch + questions submitted |
+| Fork Workshop PEARL | `fork-ws-series-pearl` | PEARL pipeline submitted (all 5 steps) |
+
+**No** `fork-ws-01` … `fork-ws-04` session badges.
 
 ### Offer UX
 
-- **Preview card** on session page (placeholder badge image initially — grey “Fork Workshop 1” template).
-- After submit: **Badge unlocked** state with:
-  - Congratulations copy (GhDialog on next visit if applicable)
-  - Link to BRC333 mint preview when `badge_mint_url` set in admin
-  - Share text for invite flow
-
-### Implementation notes
-
-- **Phase 1 (staging):** DB tracks eligibility + shows on-site “earned” state; mint URL optional manual.
-- **Phase 2:** BRC333 badges project issues from eligibility API; link to existing `BRC333_BADGES_MINT_PREVIEW_BASE` pattern on `/badges`.
-
-Badge metadata per series/session in admin:
-
-- `badge_code`, `title`, `description`, `image_url`, `mint_preview_url`, `pearl_variant_code`
+- Series landing shows **one** badge preview (placeholder art OK).
+- Progress: “3 of 4 sessions complete toward series badge.”
+- When eligible: congratulations + mint preview link when configured.
+- PEARL badge shown as separate card on `/pearl` and series landing once PEARL submitted.
 
 ---
 
 ## Admin — Event series
 
-**New admin tab:** `event-series` (alongside `invite-content` in `dp-admin-tabs.ts`).
+**Tab:** `event-series` in `dp-admin-tabs.ts`.
 
-### Admin capabilities
+### Series CRUD
 
-**Series CRUD**
+Slug, title, subtitle, description, hero image, perspective/pathway URLs, `sessions_required_count`, `badge_code`, `pearl_badge_code`, badge image/mint URLs, active, sort order.
 
-| Field | Notes |
-|-------|--------|
-| `slug` | URL segment |
-| `title`, `subtitle`, `description` (markdown) |
-| `hero_image_url` | placeholder ok |
-| `perspective_url`, `pathway_url` | optional cross-links |
-| `active`, `sort_order` |
-| `badge_series_code` | series completion badge |
+### Session CRUD
 
-**Session CRUD** (child of series)
+Session number, slug, title, image, schedule, live URL, blurb, perspective anchor, active, sort.
 
-| Field | Notes |
-|-------|--------|
-| `session_number` | 1-based, unique per series |
-| `title`, `slug` | |
-| `image_url` | placeholder |
-| `starts_at`, `ends_at` | optional |
-| `live_url` | Zoom etc. |
-| `facilitator_blurb` | markdown |
-| `pre_read_links` | JSON array `{label, url}` |
-| `fork_section_anchor` | optional link into perspective |
-| `related_dp_ids` | e.g. `["DP2","DP8"]` |
-| `questions_schema` | JSON — see below |
-| `badge_code`, `pearl_badge_code` | |
-| `active` | |
+### Question admin
 
-**Question schema** (admin-friendly)
+- Manage **sections** per session (add/reorder/rename).
+- Manage **questions** per section: label, field_key, type, required, ai_assist, sort.
+- Manage **pre-reads** and **session_dp** rows.
 
-Option A: JSON editor (v1).  
-Option B: Form builder (v2).
+**No JSON editor** for question schemas in v1 — use structured admin forms backed by the tables above.
 
-```json
-{
-  "sections": [
-    {
-      "id": "prepare",
-      "title": "Prepare",
-      "pearl_stage": "prepare",
-      "questions": [
-        {
-          "id": "pre_read",
-          "type": "checkbox",
-          "label": "I reviewed the pre-read or attended live",
-          "required": true
-        },
-        {
-          "id": "hope",
-          "type": "textarea",
-          "label": "What I hope to explore",
-          "required": true,
-          "ai_assist": true,
-          "ai_prompts": ["help_start", "clarify", "connect_dp"]
-        }
-      ]
-    }
-  ]
-}
-```
-
-**Seed:** import Fork 4-session question sets from this spec + workshop briefings on first deploy.
-
-**Submissions viewer (admin)**
+### Submissions viewer
 
 - Filter by series / session / user
-- View response JSON + PEARL bundle
-- Export CSV
-- Manually grant/revoke badge eligibility (support)
-
-### Pattern parity with invite-content
-
-Mirror `dp-invite-content-store.ts`:
-
-- Postgres tables via `ensureDpSchema()` in `dp-db.ts`
-- Admin API routes under `/api/admin/event-series/`
-- Public read under `/api/series/[slug]`
-- Auth: same admin allowlist as invite-content
+- Join `response` → `answer` → `question` for readable export
+- PEARL table viewer per user
+- Manual revoke badge grant (support)
 
 ---
 
-## Data model (proposed tables)
-
-```
-dp_event_series
-  id, slug, title, subtitle, description_md, hero_image_url,
-  perspective_url, pathway_url, badge_series_code,
-  active, sort_order, created_at, updated_at, created_by, updated_by
-
-dp_event_series_session
-  id, series_id, session_number, slug, title, image_url,
-  starts_at, ends_at, live_url, facilitator_blurb_md,
-  pre_read_links_json, questions_schema_json,
-  badge_code, pearl_badge_code, related_dp_ids_json,
-  active, sort_order, created_at, updated_at
-
-dp_event_series_response
-  id, session_id, user_id, user_email,
-  attended_confirmed, status (draft|submitted),
-  answers_json, pearl_json,
-  badge_session_eligible, badge_pearl_eligible,
-  submitted_at, created_at, updated_at
-
-dp_event_series_badge_grant (optional denormalized)
-  id, user_id, badge_code, series_id, session_id, granted_at, revoked_at
-```
-
-Unique constraint: `(session_id, user_id)` on responses.
-
----
-
-## Integrations & cross-links
+## Integrations
 
 | Surface | Link |
 |---------|------|
-| Fork perspective | CTA “Join a workshop” → series landing |
-| AI & Human Agency pathway | Featured card or inline link |
-| Invite with Email | New invite-content type: `event_series_session` (phase 2) |
-| Workgroups | Session submit → suggest `dp-discovery` or pathway workgroup |
-| Discuss / Canopi | Leverage step deep-links to Fork discuss with prefill |
-| `/badges` | New subsection “Workshop badges” when live |
+| Fork perspective | CTA → series landing |
+| AI & Human Agency pathway | Inline link |
+| Discuss & Patch | PEARL socialize + patch steps |
+| Gov Hub patches | PEARL submit patch URL |
+| Workgroups | Post-session CTA; socialize target |
+| `/badges` | “Workshop series badges” subsection |
 
 ---
 
-## Staging rollout plan (phased)
+## Staging rollout
 
-### Phase 0 — Content only (no DB)
+| Phase | Scope |
+|-------|--------|
+| **0** | Static pages + placeholder images (optional) |
+| **1** | Postgres tables + admin + session Q&A + series badge progress |
+| **2** | PEARL wizard + PEARL badge + BRC333 mint link |
+| **3** | Zoom attendance webhook, invite picker, CSV export |
 
-- Static series + session pages from TS seed file
-- Placeholder images
-- External Google Form for questions (optional bridge)
-
-### Phase 1 — MVP (target)
-
-- DB + admin CRUD
-- Session Questions with AI assist + auth
-- Badge eligibility flags + on-site earned UI
-- Fork series seeded
-
-### Phase 2
-
-- PEARL flow + feedback attestation
-- BRC333 mint integration
-- Invite picker + email templates
-- Facilitator export of submissions
-
-### Phase 3
-
-- Zoom registrant webhook → auto `attended_confirmed`
-- Public gallery of anonymized Leverage artifacts
-- Series template clone in admin
-
-**Deploy:** `feat/ai-human-agency-pathway` → `./deploy-staging.sh` (never from `main`).
+Deploy from `feat/ai-human-agency-pathway` via `./deploy-staging.sh`.
 
 ---
 
-## Open decisions (need product sign-off)
+## Resolved decisions
 
-| # | Question | Recommendation |
-|---|----------|----------------|
-| 1 | Attendance proof | Honor checkbox v1; webhook v2 |
-| 2 | Must sign in to view questions? | View public; submit requires auth |
-| 3 | Edit after submit? | No user edit after submit; admin reopen |
-| 4 | PEARL feedback | Self-attested v1 |
-| 5 | Series index at `/series` | Yes, but only list `active` series |
-| 6 | Question wizard vs long page | Wizard on mobile, single scroll on desktop |
+| # | Question | Decision |
+|---|----------|----------|
+| 1 | Attendance proof | Honor checkbox **or** webhook — either OK |
+| 2 | Auth | **Required** for questions, PEARL, badges |
+| 3 | Edit after submit | **User edit allowed** |
+| 4 | PEARL feedback | **Self-attested** v1 |
+| 5 | Series index at `/series` | Yes — active series only |
+| 6 | Question UX | Wizard on mobile; scroll on desktop |
 
 ---
 
 ## Acceptance criteria (staging)
 
-- [ ] Series landing renders 4 sessions with placeholder images
-- [ ] Each session page loads questions from DB (admin-editable)
-- [ ] ✦ AI assist works on each textarea field (ComposeFieldAiAssist pattern)
-- [ ] Signed-in user can save draft and submit
-- [ ] Submit shows session badge offer state
-- [ ] PEARL path accessible after submit with Leverage + feedback + reflect
-- [ ] Admin can create a **second** test series without code change
-- [ ] Mobile layout usable for full question flow
+- [ ] Series landing: 4 sessions, placeholder images, **one** series badge preview
+- [ ] Questions loaded from **relational tables** (admin-editable)
+- [ ] Auth required to answer; drafts autosave; **edit after submit works**
+- [ ] Progress: N/4 sessions toward series badge (not per-session badges)
+- [ ] Series badge unlocks when all sessions attend + submitted
+- [ ] PEARL page: patch idea → socialize → feedback → submit patch → reflect
+- [ ] PEARL badge unlocks on PEARL submit
+- [ ] Admin can create a second test series without code change
+- [ ] Mobile-friendly question flow
 
 ---
 
@@ -498,12 +487,13 @@ Unique constraint: `(session_id, user_id)` on responses.
 | Asset | Path |
 |-------|------|
 | Workshop briefings | `docs/fork-in-the-web-workshop-briefings.md` |
+| Postgres schema home | `challenge-site/src/lib/dp-db.ts` |
+| Invite-content store pattern | `challenge-site/src/lib/dp-invite-content-store.ts` |
 | Fork perspective | `challenge-site/src/data/perspectives/the-fork-in-the-web.ts` |
 | AI compose assist | `challenge-site/src/components/compose/ComposeFieldAiAssist.tsx` |
-| Invite admin pattern | `challenge-site/src/app/admin/InviteContentAdminPanel.tsx` |
+| Discuss & Patch | `challenge-site/src/lib/govhub.ts`, `DiscussPatchLink` |
 | PEARL definition | `desirableproperties-book/content/local/dp10.md` §11 |
 | Badges page | `challenge-site/src/app/badges/page.tsx` |
-| Fork images | `challenge-site/public/images/perspectives/the-fork-in-the-web/` |
 
 ---
 
