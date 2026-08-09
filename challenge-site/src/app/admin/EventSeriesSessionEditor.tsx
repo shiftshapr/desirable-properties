@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import type { AdminSessionDetail } from '@/lib/dp-event-series-store';
+import {
+  datetimeLocalInputToIso,
+  isoToDatetimeLocalInput,
+} from '@/lib/event-series-session-ui';
 
 type Props = {
   sessionId: string;
@@ -85,7 +89,10 @@ export default function EventSeriesSessionEditor({
         {
           title: session.title,
           imageUrl: session.imageUrl,
+          startsAt: session.startsAt,
+          endsAt: session.endsAt,
           liveUrl: session.liveUrl,
+          recordingUrl: session.recordingUrl,
           facilitatorBlurbMd: session.facilitatorBlurbMd,
           active: session.active,
           relatedDpIds,
@@ -153,6 +160,37 @@ export default function EventSeriesSessionEditor({
             />
           </label>
           <label className="block text-sm">
+            <span className="text-slate-400">Session date & time</span>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Shown on the public session page in Pacific Time.
+            </p>
+            <input
+              type="datetime-local"
+              className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
+              value={isoToDatetimeLocalInput(session.startsAt)}
+              onChange={(e) =>
+                setSession({
+                  ...session,
+                  startsAt: datetimeLocalInputToIso(e.target.value),
+                })
+              }
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="text-slate-400">Session end (optional)</span>
+            <input
+              type="datetime-local"
+              className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
+              value={isoToDatetimeLocalInput(session.endsAt)}
+              onChange={(e) =>
+                setSession({
+                  ...session,
+                  endsAt: datetimeLocalInputToIso(e.target.value),
+                })
+              }
+            />
+          </label>
+          <label className="block text-sm">
             <span className="text-slate-400">Image URL</span>
             <input
               className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
@@ -161,15 +199,27 @@ export default function EventSeriesSessionEditor({
             />
           </label>
           <label className="block text-sm">
-            <span className="text-slate-400">Live URL (join link)</span>
+            <span className="text-slate-400">RSVP / live link</span>
             <p className="mt-0.5 text-xs text-slate-500">
-              Zoom, Meet, or other link participants use to join this session live.
+              Registration or join link. Public page shows RSVP until a recording URL is set.
             </p>
             <input
               className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
               value={session.liveUrl || ''}
               placeholder="https://…"
               onChange={(e) => setSession({ ...session, liveUrl: e.target.value })}
+            />
+          </label>
+          <label className="block text-sm sm:col-span-2">
+            <span className="text-slate-400">Recording URL</span>
+            <p className="mt-0.5 text-xs text-slate-500">
+              When set, the public page shows Watch now instead of RSVP.
+            </p>
+            <input
+              className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
+              value={session.recordingUrl || ''}
+              placeholder="https://…"
+              onChange={(e) => setSession({ ...session, recordingUrl: e.target.value })}
             />
           </label>
           <label className="block text-sm sm:col-span-2">

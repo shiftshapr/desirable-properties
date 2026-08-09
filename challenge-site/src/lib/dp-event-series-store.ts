@@ -32,6 +32,7 @@ export type EventSeriesSession = {
   startsAt: string | null;
   endsAt: string | null;
   liveUrl: string | null;
+  recordingUrl: string | null;
   facilitatorBlurbMd: string | null;
   perspectiveSectionAnchor: string | null;
   active: boolean;
@@ -189,6 +190,7 @@ function sessionRow(row: Record<string, unknown>): EventSeriesSession {
     startsAt: row.starts_at ? new Date(String(row.starts_at)).toISOString() : null,
     endsAt: row.ends_at ? new Date(String(row.ends_at)).toISOString() : null,
     liveUrl: row.live_url ? String(row.live_url) : null,
+    recordingUrl: row.recording_url ? String(row.recording_url) : null,
     facilitatorBlurbMd: row.facilitator_blurb_md ? String(row.facilitator_blurb_md) : null,
     perspectiveSectionAnchor: row.perspective_section_anchor
       ? String(row.perspective_section_anchor)
@@ -988,7 +990,7 @@ export async function updateSession(
   await pool.query(
     `UPDATE dp_event_series_session SET
        title = $2, image_url = $3, starts_at = $4, ends_at = $5, live_url = $6,
-       facilitator_blurb_md = $7, active = $8, updated_at = now()
+       recording_url = $7, facilitator_blurb_md = $8, active = $9, updated_at = now()
      WHERE id = $1`,
     [
       sessionId,
@@ -1005,6 +1007,9 @@ export async function updateSession(
           : null
         : existing.endsAt,
       input.liveUrl !== undefined ? normStr(input.liveUrl, 512) || null : existing.liveUrl,
+      input.recordingUrl !== undefined
+        ? normStr(input.recordingUrl, 512) || null
+        : existing.recordingUrl,
       input.facilitatorBlurbMd !== undefined
         ? normStr(input.facilitatorBlurbMd, 4000) || null
         : existing.facilitatorBlurbMd,

@@ -3,6 +3,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { EventSeriesSession } from '@/lib/dp-event-series-store';
+import {
+  datetimeLocalInputToIso,
+  isoToDatetimeLocalInput,
+} from '@/lib/event-series-session-ui';
 
 type Props = {
   session: EventSeriesSession;
@@ -24,23 +28,33 @@ export default function EventSeriesSessionCard({
   children,
 }: Props) {
   const serverLiveUrl = session.liveUrl || '';
+  const serverRecordingUrl = session.recordingUrl || '';
+  const serverStartsAt = session.startsAt || '';
   const serverActive = session.active;
 
   const [liveUrl, setLiveUrl] = useState(serverLiveUrl);
+  const [recordingUrl, setRecordingUrl] = useState(serverRecordingUrl);
+  const [startsAtLocal, setStartsAtLocal] = useState(isoToDatetimeLocalInput(serverStartsAt));
   const [active, setActive] = useState(serverActive);
   const [status, setStatus] = useState<SaveStatus>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const isDirty = liveUrl !== serverLiveUrl || active !== serverActive;
+  const isDirty =
+    liveUrl !== serverLiveUrl ||
+    recordingUrl !== serverRecordingUrl ||
+    startsAtLocal !== isoToDatetimeLocalInput(serverStartsAt) ||
+    active !== serverActive;
 
   useEffect(() => {
     if (status === 'saving') return;
     setLiveUrl(serverLiveUrl);
+    setRecordingUrl(serverRecordingUrl);
+    setStartsAtLocal(isoToDatetimeLocalInput(serverStartsAt));
     setActive(serverActive);
     if (!isDirty) {
       setStatus((s) => (s === 'dirty' || s === 'saved' ? 'idle' : s));
     }
-  }, [serverLiveUrl, serverActive, session.id]);
+  }, [serverLiveUrl, serverRecordingUrl, serverStartsAt, serverActive, session.id]);
 
   useEffect(() => {
     if (status === 'saving' || status === 'saved') return;
@@ -67,7 +81,12 @@ export default function EventSeriesSessionCard({
           method: 'PATCH',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ liveUrl, active }),
+          body: JSON.stringify({
+            liveUrl,
+            recordingUrl,
+            startsAt: datetimeLocalInputToIso(startsAtLocal),
+            active,
+          }),
         },
       );
       const data = await res.json();
@@ -81,7 +100,7 @@ export default function EventSeriesSessionCard({
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Save failed');
     }
-  }, [session.id, liveUrl, active, onSaved]);
+  }, [session.id, liveUrl, recordingUrl, startsAtLocal, active, onSaved]);
 
   const statusLabel =
     status === 'saving'
@@ -116,9 +135,24 @@ export default function EventSeriesSessionCard({
 
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <label className="block sm:col-span-2">
-          <span className="text-xs font-medium text-slate-300">Live URL (join link)</span>
+          <span className="text-xs font-medium text-slate-300">Session date & time</span>
           <p className="mt-0.5 text-xs text-slate-500">
-            Zoom, Meet, or other link participants use to join this session live.
+            Shown on the public session page in Pacific Time.
+          </p>
+          <input
+            type="datetime-local"
+            className="mt-1.5 w-full rounded border border-slate-700 bg-slate-900 px-2 py-1.5 text-slate-100"
+            value={startsAtLocal}
+            onChange={(e) => {
+              setStartsAtLocal(e.target.value);
+              if (status !== 'saving') setStatus('dirty');
+            }}
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-xs font-medium text-slate-300">RSVP / live link</span>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Registration or join link. Public page shows an RSVP button until a recording is set.
           </p>
           <input
             className="mt-1.5 w-full rounded border border-slate-700 bg-slate-900 px-2 py-1.5 text-slate-100"
@@ -126,6 +160,21 @@ export default function EventSeriesSessionCard({
             placeholder="https://…"
             onChange={(e) => {
               setLiveUrl(e.target.value);
+              if (status !== 'saving') setStatus('dirty');
+            }}
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="text-xs font-medium text-slate-300">Recording URL</span>
+          <p className="mt-0.5 text-xs text-slate-500">
+            When set, the public page shows Watch now instead of RSVP.
+          </p>
+          <input
+            className="mt-1.5 w-full rounded border border-slate-700 bg-slate-900 px-2 py-1.5 text-slate-100"
+            value={recordingUrl}
+            placeholder="https://…"
+            onChange={(e) => {
+              setRecordingUrl(e.target.value);
               if (status !== 'saving') setStatus('dirty');
             }}
           />
@@ -156,7 +205,7 @@ export default function EventSeriesSessionCard({
           onClick={() => void save()}
           className="rounded bg-cyan-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-cyan-600 disabled:opacity-40"
         >
-          {status === 'saving' ? 'Saving…' : 'Save session link'}
+          {status === 'saving' ? 'Saving…' : 'Save session'}
         </button>
         <button
           type="button"

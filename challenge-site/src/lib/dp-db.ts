@@ -219,6 +219,8 @@ CREATE TABLE IF NOT EXISTS dp_event_series_session (
 
 CREATE INDEX IF NOT EXISTS dp_event_series_session_series ON dp_event_series_session (series_id, sort_order ASC);
 
+ALTER TABLE dp_event_series_session ADD COLUMN IF NOT EXISTS recording_url TEXT;
+
 CREATE TABLE IF NOT EXISTS dp_event_series_pre_read (
   id UUID PRIMARY KEY,
   session_id UUID NOT NULL REFERENCES dp_event_series_session(id) ON DELETE CASCADE,

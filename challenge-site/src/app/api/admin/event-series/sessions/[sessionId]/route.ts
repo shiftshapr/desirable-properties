@@ -37,6 +37,7 @@ export async function PATCH(request: Request, { params }: Params) {
     body.title != null ||
     body.imageUrl !== undefined ||
     body.liveUrl !== undefined ||
+    body.recordingUrl !== undefined ||
     body.facilitatorBlurbMd !== undefined ||
     body.active !== undefined ||
     body.startsAt !== undefined ||

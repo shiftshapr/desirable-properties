@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import SessionQuestionsForm from '@/components/series/SessionQuestionsForm';
+import SessionActionLink from '@/components/series/SessionActionLink';
+import { formatSessionSchedule } from '@/lib/event-series-session-ui';
 import {
   getEventSeriesBySlug,
   getOrCreateResponse,
@@ -56,6 +58,8 @@ export default async function SeriesSessionPage({ params }: Props) {
     };
   }
 
+  const schedule = formatSessionSchedule(session.startsAt, session.endsAt);
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <Link href={`/series/${series.slug}`} className="text-sm text-cyan-300 hover:text-cyan-200">
@@ -64,6 +68,8 @@ export default async function SeriesSessionPage({ params }: Props) {
 
       <p className="mt-6 text-sm text-cyan-400">Session {session.sessionNumber}</p>
       <h1 className="mt-1 text-3xl font-bold text-white">{session.title}</h1>
+
+      {schedule ? <p className="mt-3 text-sm text-slate-300">{schedule}</p> : null}
 
       {session.imageUrl ? (
         <div className="relative mt-6 aspect-video overflow-hidden rounded-lg border border-slate-800">
@@ -95,16 +101,9 @@ export default async function SeriesSessionPage({ params }: Props) {
         </div>
       ) : null}
 
-      {session.liveUrl ? (
-        <a
-          href={session.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-        >
-          Join live
-        </a>
-      ) : null}
+      <div className="mt-6">
+        <SessionActionLink recordingUrl={session.recordingUrl} liveUrl={session.liveUrl} />
+      </div>
 
       <div className="mt-10 border-t border-slate-800 pt-10">
         <h2 className="text-xl font-bold text-white">Session questions</h2>

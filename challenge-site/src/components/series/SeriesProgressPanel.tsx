@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import SessionActionLink from '@/components/series/SessionActionLink';
+import { formatSessionSchedule } from '@/lib/event-series-session-ui';
 import type { SeriesProgress } from '@/lib/dp-event-series-store';
 
 type Session = {
@@ -10,7 +12,9 @@ type Session = {
   title: string;
   imageUrl: string | null;
   startsAt: string | null;
+  endsAt: string | null;
   liveUrl: string | null;
+  recordingUrl: string | null;
 };
 
 type Props = {
@@ -89,6 +93,11 @@ export default function SeriesProgressPanel({
                   ) : null}
                 </p>
                 <h3 className="mt-1 text-base font-semibold text-white">{session.title}</h3>
+                {formatSessionSchedule(session.startsAt, session.endsAt) ? (
+                  <p className="mt-1 text-xs text-slate-400">
+                    {formatSessionSchedule(session.startsAt, session.endsAt)}
+                  </p>
+                ) : null}
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
                     href={`/series/${seriesSlug}/session/${session.sessionNumber}`}
@@ -96,16 +105,12 @@ export default function SeriesProgressPanel({
                   >
                     Session questions
                   </Link>
-                  {session.liveUrl ? (
-                    <a
-                      href={session.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-400"
-                    >
-                      Join live
-                    </a>
-                  ) : null}
+                  <SessionActionLink
+                    recordingUrl={session.recordingUrl}
+                    liveUrl={session.liveUrl}
+                    variant="secondary"
+                    showPending={false}
+                  />
                 </div>
               </div>
             </article>
