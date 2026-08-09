@@ -164,9 +164,14 @@ export default function SessionQuestionsForm({
   const [saving, setSaving] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const hasUserEdited = useRef(false);
+
+  const markEdited = useCallback(() => {
+    hasUserEdited.current = true;
+  }, []);
 
   const save = useCallback(
-    async (submit = false) => {
+    async (submit = false, fromAutosave = false) => {
       if (!user) return;
       setSaving(true);
       setError(null);
@@ -191,7 +196,11 @@ export default function SessionQuestionsForm({
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Save failed');
         if (submit) setStatus('submitted');
-        setFlash(submit ? 'Session questions submitted.' : 'Draft saved.');
+        if (submit) {
+          setFlash('Session questions submitted.');
+        } else if (!fromAutosave || hasUserEdited.current) {
+          setFlash('Draft saved.');
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Save failed');
       } finally {
@@ -202,9 +211,9 @@ export default function SessionQuestionsForm({
   );
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !hasUserEdited.current) return;
     const t = window.setTimeout(() => {
-      void save(false);
+      void save(false, true);
     }, 2000);
     return () => window.clearTimeout(t);
   }, [answers, attended, user, save]);
@@ -248,7 +257,10 @@ export default function SessionQuestionsForm({
         <input
           type="checkbox"
           checked={attended}
-          onChange={(e) => setAttended(e.target.checked)}
+          onChange={(e) => {
+            markEdited();
+            setAttended(e.target.checked);
+          }}
         />
         <span className="text-sm text-slate-200">I attended or watched this session</span>
       </label>
@@ -261,7 +273,10 @@ export default function SessionQuestionsForm({
               key={q.id}
               question={q}
               value={answers[q.id] || {}}
-              onChange={(val) => setAnswers((prev) => ({ ...prev, [q.id]: val }))}
+              onChange={(val) => {
+                markEdited();
+                setAnswers((prev) => ({ ...prev, [q.id]: val }));
+              }}
               seriesTitle={seriesTitle}
               sessionTitle={sessionTitle}
               relatedDpIds={relatedDpIds}
