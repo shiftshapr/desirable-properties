@@ -22,11 +22,21 @@ type PearlState = {
 };
 
 const AI_PROMPTS: ComposeAiPromptOption[] = [
-  { id: 'start', label: 'Help me draft a patch idea' },
+  { id: 'start', label: 'Help me draft a patch idea', requiresDraft: false },
   { id: 'clarify', label: 'Clarify my thinking' },
+  { id: 'expand', label: 'Expand' },
   { id: 'dp', label: 'Connect to a Desirable Property' },
   { id: 'reflect', label: 'Strengthen my reflection' },
 ];
+
+const AI_INSTRUCTIONS: Record<string, string> = {
+  start:
+    'The field is empty. Suggest 2–3 concrete patch angles or starter sentences the participant could develop. Keep it practical for Gov Hub or Canopi.',
+  clarify: 'Clarify and sharpen the ideas in the draft.',
+  expand: 'Expand the draft with supporting detail and examples. Stay on topic.',
+  dp: 'Connect this patch idea to relevant Desirable Properties.',
+  reflect: 'Strengthen this reflection: be specific about what changed and why it matters.',
+};
 
 function AiTextarea({
   label,
@@ -47,11 +57,12 @@ function AiTextarea({
     signal: AbortSignal,
   ) {
     const userDraft = context.selection.trim() || context.draft.trim();
+    const instruction = AI_INSTRUCTIONS[option.id] || option.label;
     const message = [
       `PEARL track for event series: ${seriesTitle}`,
       `Field: ${label}`,
-      userDraft ? `Current draft:\n${userDraft}\n\n---\n\n` : '',
-      option.label,
+      userDraft ? `Current draft:\n${userDraft}\n\n---\n\n` : 'The field is currently empty.\n\n---\n\n',
+      instruction,
     ]
       .filter(Boolean)
       .join('\n');

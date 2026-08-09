@@ -13,6 +13,8 @@ import {
 export type ComposeAiPromptOption = {
   id: string;
   label: string;
+  /** When false, chip works on an empty field (e.g. Help me get started). Default true. */
+  requiresDraft?: boolean;
 };
 
 type GenerateContext = {
@@ -151,7 +153,8 @@ export default function ComposeFieldAiAssist({
   async function runGenerate(option: ComposeAiPromptOption, regenerate = false) {
     if (disabled || generating) return;
     const context = getSelection(textareaRef.current, value);
-    if (!regenerate && !context.draft.trim() && !context.selection.trim()) {
+    const needsDraft = option.requiresDraft !== false;
+    if (!regenerate && needsDraft && !context.draft.trim() && !context.selection.trim()) {
       setError('Type or select text in the field first.');
       setMenuOpen(true);
       return;
