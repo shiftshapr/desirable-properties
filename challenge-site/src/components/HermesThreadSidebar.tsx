@@ -121,16 +121,22 @@ export default function HermesThreadSidebar({
       <div className="min-h-0 flex-1 overflow-y-auto p-2">
         {!signedIn ? (
           <div className="px-2 py-4">
-            <p className="text-sm text-slate-400">Sign in to save and search conversations.</p>
-            {onSignIn ? (
-              <button
-                type="button"
-                onClick={onSignIn}
-                className="mt-3 text-sm text-cyan-300 hover:text-cyan-200"
-              >
-                Sign In →
-              </button>
-            ) : null}
+            <p className="text-sm text-slate-400">
+              {onSignIn ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={onSignIn}
+                    className="text-cyan-300 hover:text-cyan-200"
+                  >
+                    Sign in
+                  </button>
+                  {' to save and search conversations.'}
+                </>
+              ) : (
+                'Sign in to save and search conversations.'
+              )}
+            </p>
           </div>
         ) : loading ? (
           <p className="px-2 py-3 text-xs text-slate-500">Loading conversations…</p>
