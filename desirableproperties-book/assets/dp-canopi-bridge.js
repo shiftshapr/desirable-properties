@@ -28,8 +28,12 @@
     window.location.origin,
   ]);
 
-  /** Host auth popup – registered before async v1.js so sidebar Sign In opens a top-level window (not iframe OAuth). */
+  /** Host auth popup – only before async v1.js loads; v1.js owns popups once CanopiEmbed is ready. */
   var _embedAuthPopupWin = null;
+
+  function embedSdkOwnsAuthPopup() {
+    return !!(global.__canopiEmbedReady__ || global.CanopiEmbed);
+  }
 
   function isCanopiEmbedOrigin(origin) {
     if (!origin || ALLOWED_ORIGINS.has(origin)) return true;
@@ -96,6 +100,7 @@
     var data = ev.data;
     if (!data || typeof data !== 'object') return;
     if (data.__canopiOpenAuthPopup) {
+      if (embedSdkOwnsAuthPopup()) return;
       if (!isCanopiEmbedOrigin(String(ev.origin || ''))) return;
       var popupUrl = normalizeAuthPopupUrl(data.url);
       var win = openHostAuthPopup(popupUrl);
@@ -131,6 +136,63 @@
     } catch (e) { /* ignore */ }
   }
 
+  function readStoredAuthPayload() {
+    try {
+      if (sessionStorage.getItem(AUTH_SESSION_KEY) !== '1') return null;
+      var raw = sessionStorage.getItem(AUTH_PAYLOAD_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function normalizeAuthPayload(stored) {
+    if (!stored) return null;
+    if (stored.type === 'CANOPI_AUTH_SUCCESS' && stored.user && stored.user.id) return stored;
+    if (stored.user && stored.user.id) {
+      return {
+        type: 'CANOPI_AUTH_SUCCESS',
+        user: stored.user,
+        session: stored.session || null,
+        embedToken: stored.embedToken || stored.authToken || null,
+      };
+    }
+    return null;
+  }
+
+  function applyStoredAuthToEmbed() {
+    var embed = global.CanopiEmbed;
+    if (!embed || typeof embed.setAuth !== 'function') return false;
+    var payload = normalizeAuthPayload(readStoredAuthPayload());
+    if (!payload) return false;
+    embed.setAuth(payload);
+    return true;
+  }
+
+  /** Same-tab sign-in return (#canopi_auth=…) when popup was blocked or auth ran in-page. */
+  function consumeCanopiAuthHash() {
+    try {
+      var hash = String(location.hash || '');
+      var marker = 'canopi_auth=';
+      var idx = hash.indexOf(marker);
+      if (idx < 0) return false;
+      var token = hash.slice(idx + marker.length).split('&')[0];
+      if (!token) return false;
+      var b64 = token.replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      var msg = JSON.parse(atob(b64));
+      if (!msg || msg.type !== 'CANOPI_AUTH_SUCCESS' || !msg.user || !msg.user.id) return false;
+      persistAuthPayload(msg);
+      try {
+        history.replaceState(null, '', location.pathname + location.search);
+      } catch (eHist) { /* ignore */ }
+      applyStoredAuthToEmbed();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function clearAuthPayload() {
     try {
       sessionStorage.removeItem(AUTH_SESSION_KEY);
@@ -142,7 +204,8 @@
     if (!ev.data || typeof ev.data !== 'object') return;
     if (!ALLOWED_ORIGINS.has(String(ev.origin || ''))) return;
     if (ev.data.type === 'CANOPI_AUTH_SUCCESS') {
-      persistAuthPayload(ev.data.payload || ev.data.user || ev.data);
+      persistAuthPayload(ev.data);
+      applyStoredAuthToEmbed();
     }
     if (ev.data.type === 'CANOPI_AUTH_CLEAR' || ev.data.type === 'CANOPI_SIGN_OUT') {
       clearAuthPayload();
@@ -174,6 +237,11 @@
       openDiscussSidebar();
     });
   }
+
+  consumeCanopiAuthHash();
+  global.addEventListener('canopi:embed-ready', function onEmbedAuthReady() {
+    applyStoredAuthToEmbed();
+  });
 
   scheduleDiscussAutoOpen();
 })(window);

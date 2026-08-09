@@ -108,7 +108,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
             onClick={openDiscuss}
             className="rounded-md bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"
           >
-            Open Discuss
+            Open the book
           </button>
         </div>
       </div>
