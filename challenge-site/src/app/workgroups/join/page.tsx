@@ -107,20 +107,6 @@ const FAQ_ITEMS: FaqItem[] = [
     q: 'How are Coordinators chosen?',
     a: 'Coordinators can be nominated by anyone in the community, or you can nominate yourself. The layer admin reviews and approves each nomination.',
   },
-  {
-    q: "Can't open Gov Hub? (connection or security error)",
-    a: 'Join and Nominate take you to hub.themetalayer.org (Gov Hub). If you see “This site can’t provide a secure connection” or ERR_SSL_PROTOCOL_ERROR, the link is usually fine – something on your network is interfering with HTTPS. If it works on cellular but not Wi‑Fi, the problem is your home router or ISP, not Gov Hub.',
-    steps: [
-      'Quick check: on the same device, turn off Wi‑Fi and try again on cellular. If that works, focus on your home network (steps below).',
-      'Confirm the address bar shows https://hub.themetalayer.org/... (not the raw IP address).',
-      'Change your router or device DNS to 1.1.1.1 or 8.8.8.8 (some ISP or filter DNS returns bad answers that break HTTPS).',
-      'Check for Pi-hole, AdGuard Home, NextDNS, or router “security” / parental controls that may block or rewrite Gov Hub hostnames.',
-      'Reboot your modem and router, then flush DNS (Windows: ipconfig /flushdns; Chrome: chrome://net-internals/#dns → Clear host cache).',
-      'If it still fails only on Wi‑Fi, try another browser or disable VPN and antivirus HTTPS scanning – then contact your ISP if nothing else helps.',
-    ],
-    footer:
-      'Cellular works but home Wi‑Fi does not? Tell us your ISP and router model – that pattern almost always means DNS or filtering on the home network.',
-  },
 ];
 
 function shortDescription(dp: { description?: string; landing_subtitle?: string }): string {
@@ -360,83 +346,6 @@ export default async function JoinWorkgroupPage() {
           </p>
 
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <li className="flex h-full flex-col overflow-hidden rounded-xl border border-amber-900/50 bg-slate-950/60 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3">
-              <div className="relative aspect-[21/9] bg-slate-950 sm:aspect-[3/1]">
-                <Image
-                  src={discoveryCardSrc}
-                  alt={dpDiscoveryImageAlt('DP Discovery')}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 1152px"
-                  priority
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-5 lg:flex-row lg:items-start lg:gap-8">
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <span className="rounded-md border border-amber-900/60 bg-amber-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-amber-200">
-                    Discovery
-                  </span>
-                  <span className="rounded-md border border-emerald-900/50 bg-emerald-950/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-300">
-                    Open for members
-                  </span>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
-                  {collabEnabled ? (
-                    <Link href={discoveryCollabHref} className="hover:text-cyan-300">
-                      DP Discovery
-                    </Link>
-                  ) : (
-                    'DP Discovery'
-                  )}
-                </h3>
-                {discoveryDescription ? (
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                    {discoveryDescription}
-                  </p>
-                ) : null}
-              </div>
-              <div className="mt-5 flex shrink-0 flex-col gap-3 lg:mt-0 lg:w-56">
-                <div className="flex flex-wrap gap-2">
-                  {collabEnabled ? (
-                    <Link
-                      href={discoveryCollabHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Collaborate
-                      <span aria-hidden>→</span>
-                    </Link>
-                  ) : (
-                    <a
-                      href={discoveryJoinHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Join as member
-                      <span aria-hidden>→</span>
-                    </a>
-                  )}
-                  {!collabEnabled ? (
-                    <a
-                      href={discoveryNominateHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
-                    >
-                      Nominate
-                    </a>
-                  ) : null}
-                </div>
-                {collabEnabled && idBySlug.get(DP_DISCOVERY_SLUG) ? (
-                  <WorkgroupJoinNominateActions
-                    workgroupId={idBySlug.get(DP_DISCOVERY_SLUG)!}
-                    workgroupName="DP Discovery"
-                    workgroupSlug={DP_DISCOVERY_SLUG}
-                    joinFallbackHref={discoveryJoinHref}
-                    nominateFallbackHref={discoveryNominateHref}
-                    isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
-                  />
-                ) : null}
-              </div>
-              </div>
-            </li>
             {dps.map((dp) => {
               const dpId = dp.id as string;
               const name = dp.name as string;
@@ -540,6 +449,82 @@ export default async function JoinWorkgroupPage() {
                 </li>
               );
             })}
+            <li className="flex h-full flex-col overflow-hidden rounded-xl border border-amber-900/50 bg-slate-950/60 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3">
+              <div className="relative aspect-[21/9] bg-slate-950 sm:aspect-[3/1]">
+                <Image
+                  src={discoveryCardSrc}
+                  alt={dpDiscoveryImageAlt('DP Discovery')}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 1152px"
+                />
+              </div>
+              <div className="flex flex-1 flex-col p-5 lg:flex-row lg:items-start lg:gap-8">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <span className="rounded-md border border-amber-900/60 bg-amber-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-amber-200">
+                    Discovery
+                  </span>
+                  <span className="rounded-md border border-emerald-900/50 bg-emerald-950/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-300">
+                    Open for members
+                  </span>
+                </div>
+                <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
+                  {collabEnabled ? (
+                    <Link href={discoveryCollabHref} className="hover:text-cyan-300">
+                      DP Discovery
+                    </Link>
+                  ) : (
+                    'DP Discovery'
+                  )}
+                </h3>
+                {discoveryDescription ? (
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {discoveryDescription}
+                  </p>
+                ) : null}
+              </div>
+              <div className="mt-5 flex shrink-0 flex-col gap-3 lg:mt-0 lg:w-56">
+                <div className="flex flex-wrap gap-2">
+                  {collabEnabled ? (
+                    <Link
+                      href={discoveryCollabHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                    >
+                      Collaborate
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ) : (
+                    <a
+                      href={discoveryJoinHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                    >
+                      Join as member
+                      <span aria-hidden>→</span>
+                    </a>
+                  )}
+                  {!collabEnabled ? (
+                    <a
+                      href={discoveryNominateHref}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+                    >
+                      Nominate
+                    </a>
+                  ) : null}
+                </div>
+                {collabEnabled && idBySlug.get(DP_DISCOVERY_SLUG) ? (
+                  <WorkgroupJoinNominateActions
+                    workgroupId={idBySlug.get(DP_DISCOVERY_SLUG)!}
+                    workgroupName="DP Discovery"
+                    workgroupSlug={DP_DISCOVERY_SLUG}
+                    joinFallbackHref={discoveryJoinHref}
+                    nominateFallbackHref={discoveryNominateHref}
+                    isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
+                  />
+                ) : null}
+              </div>
+              </div>
+            </li>
           </ul>
         </div>
       </section>

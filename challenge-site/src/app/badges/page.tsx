@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
 import type { Metadata } from 'next';
 import DpBadgeCarousel from '@/components/DpBadgeCarousel';
 import localData from '@/data/desirable-properties.json';
@@ -73,12 +74,12 @@ export default function BadgesPage() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
-              href="https://app.brc333.xyz/projects/desirableproperties-badges-ordinal/preview.html"
+              href={BRC333_BADGES_MINT_PREVIEW_BASE}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
             >
-              Open badge preview ↗
+              Preview ↗
             </a>
             <Link
               href="/participate#badges"

@@ -8,6 +8,7 @@ import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links
 
 type Props = {
   workgroups: GovHubWorkgroup[];
+  memberWorkgroupIds?: Set<string>;
 };
 
 type Row = {
@@ -16,7 +17,13 @@ type Row = {
   active: boolean;
 };
 
-function WorkgroupCard({ dp, wg, active, collabEnabled }: Row & { collabEnabled: boolean }) {
+function WorkgroupCard({
+  dp,
+  wg,
+  active,
+  collabEnabled,
+  isMember,
+}: Row & { collabEnabled: boolean; isMember: boolean }) {
   const badgeSrc = dpBadgeImageSrc(dp.id);
   return (
     <div
@@ -52,12 +59,16 @@ function WorkgroupCard({ dp, wg, active, collabEnabled }: Row & { collabEnabled:
                 Collaborate
               </Link>
             ) : null}
-            <a
-              href={workgroupGovHubHref(wg.slug, 'join')}
-              className="text-xs text-cyan-300 hover:text-cyan-200"
-            >
-              Join
-            </a>
+            {isMember ? (
+              <span className="text-xs text-emerald-300">Member</span>
+            ) : (
+              <a
+                href={workgroupGovHubHref(wg.slug, 'join')}
+                className="text-xs text-cyan-300 hover:text-cyan-200"
+              >
+                Join
+              </a>
+            )}
             <a
               href={workgroupGovHubHref(wg.slug, 'nominate')}
               className="text-xs text-cyan-300 hover:text-cyan-200"
@@ -81,7 +92,10 @@ function WorkgroupCard({ dp, wg, active, collabEnabled }: Row & { collabEnabled:
   );
 }
 
-export default async function WorkgroupFormationStatus({ workgroups }: Props) {
+export default async function WorkgroupFormationStatus({
+  workgroups,
+  memberWorkgroupIds = new Set(),
+}: Props) {
   const collabEnabled = await isWorkgroupCollabEnabled();
   const dpWorkgroups = new Map<string, GovHubWorkgroup>();
   for (const wg of workgroups) {
@@ -117,17 +131,22 @@ export default async function WorkgroupFormationStatus({ workgroups }: Props) {
 
       <div className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {rows.map((row) => (
-          <WorkgroupCard key={row.dp.id} {...row} collabEnabled={collabEnabled} />
+          <WorkgroupCard
+            key={row.dp.id}
+            {...row}
+            collabEnabled={collabEnabled}
+            isMember={Boolean(row.wg && memberWorkgroupIds.has(row.wg.id))}
+          />
         ))}
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <a
-          href={govhubUrl('/layers/the-metaweb/')}
+        <Link
+          href="/workgroups/join"
           className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
         >
           Join or coordinate a workgroup
-        </a>
+        </Link>
         <a
           href={govhubUrl('/layers/the-metaweb/#workgroups')}
           className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"

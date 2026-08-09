@@ -18,6 +18,7 @@ import {
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
+import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 
 export const metadata = {
   title: 'The Challenge – Desirable Properties',
@@ -29,7 +30,10 @@ export const revalidate = 300;
 
 export default async function ChallengePage() {
   const now = new Date();
-  const workgroups = await fetchChallengeWorkgroups();
+  const [workgroups, memberWorkgroupIds] = await Promise.all([
+    fetchChallengeWorkgroups(),
+    readSessionMemberWorkgroupIds(),
+  ]);
 
   const current = getCurrentMilestone(now);
   const activeAndUpcoming = getActiveAndUpcoming(now);
@@ -38,7 +42,7 @@ export default async function ChallengePage() {
     isWorkgroupFormationPhase(now) || isBeforeWorkgroupFormation(now);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
         ← Back to home
       </Link>
@@ -133,7 +137,10 @@ export default async function ChallengePage() {
         {/* Workgroup formation */}
         {showWorkgroupPanel && (
           <section>
-            <WorkgroupFormationStatus workgroups={workgroups} />
+            <WorkgroupFormationStatus
+              workgroups={workgroups}
+              memberWorkgroupIds={memberWorkgroupIds}
+            />
           </section>
         )}
 
