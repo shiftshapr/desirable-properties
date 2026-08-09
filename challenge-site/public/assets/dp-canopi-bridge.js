@@ -92,6 +92,23 @@
 
   document.documentElement.classList.add('dp-header-above-canopi');
 
+  function syncDpCanopiPushClass() {
+    var open = document.documentElement.classList.contains('canopi-embed-push-open');
+    document.documentElement.classList.toggle('dp-canopi-push-open', open);
+  }
+
+  syncDpCanopiPushClass();
+  global.addEventListener('canopi:embed-sidebar-open', syncDpCanopiPushClass);
+  global.addEventListener('canopi:embed-sidebar-closed', syncDpCanopiPushClass);
+
+  try {
+    var pushObserver = new MutationObserver(syncDpCanopiPushClass);
+    pushObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  } catch (e) { /* ignore */ }
+
   global.DP_CANOPI = {
     id: CANOPI_ID,
     supportUrl: 'https://desirableproperties.org/support',

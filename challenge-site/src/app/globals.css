@@ -59,21 +59,41 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
 }
 
 /*
- * Push layout (v1.js adds html.canopi-embed-push-open): shrink the sticky header
- * with the page so brand/nav are not clipped under the docked Discuss sidebar.
+ * Push layout (v1.js adds html.canopi-embed-push-open): Canopi trigger.css already
+ * narrows the page via body margin-right. Keep the header band full width of that
+ * inset (Metaweb/book pattern: outer band + inner max-width container).
  */
 @media (min-width: 481px) {
-  html.canopi-embed-push-open.dp-header-above-canopi {
-    --canopi-sidebar-width: 380px;
-  }
-
-  html.canopi-embed-push-open.dp-header-above-canopi .site-header {
-    width: calc(100% - var(--canopi-sidebar-width, 380px));
-    max-width: calc(100% - var(--canopi-sidebar-width, 380px));
+  html.canopi-embed-push-open.dp-header-above-canopi .site-header,
+  html.dp-canopi-push-open.dp-header-above-canopi .site-header {
     box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 
-  html.canopi-embed-push-open.dp-header-above-canopi .site-header > div {
-    max-width: none;
+  /* Tighter nav when the docked sidebar steals ~380px of horizontal space. */
+  html.canopi-embed-push-open.dp-header-above-canopi .site-header-nav,
+  html.dp-canopi-push-open.dp-header-above-canopi .site-header-nav {
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  html.canopi-embed-push-open.dp-header-above-canopi .site-header-nav::-webkit-scrollbar,
+  html.dp-canopi-push-open.dp-header-above-canopi .site-header-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  html.canopi-embed-push-open.dp-header-above-canopi .site-nav-optional,
+  html.dp-canopi-push-open.dp-header-above-canopi .site-nav-optional {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  html.canopi-embed-push-open.dp-header-above-canopi .site-nav-optional,
+  html.dp-canopi-push-open.dp-header-above-canopi .site-nav-optional {
+    display: inline;
   }
 }

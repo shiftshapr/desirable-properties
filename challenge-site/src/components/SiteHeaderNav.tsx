@@ -219,7 +219,7 @@ export default function SiteHeaderNav() {
   return (
     <div ref={navRef} className="flex items-center">
       <nav
-        className="hidden items-center gap-6 text-sm text-slate-300 lg:flex"
+        className="site-header-nav hidden min-w-0 items-center gap-6 text-sm text-slate-300 lg:flex"
         aria-label="Main"
       >
         {SITE_NAV_LINKS.map((link) =>
@@ -233,7 +233,11 @@ export default function SiteHeaderNav() {
               href={link.href ?? '#'}
               label={link.label}
               external={link.external}
-              className="whitespace-nowrap hover:text-white"
+              className={`whitespace-nowrap hover:text-white${
+                link.href === '/badges' || link.href === '/onchain'
+                  ? ' site-nav-optional'
+                  : ''
+              }`}
             />
           ),
         )}
