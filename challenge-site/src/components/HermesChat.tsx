@@ -74,6 +74,8 @@ function dpChipLabel(dpNum: number): string {
 }
 
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
+/** Matches Tailwind `max-h-40` on the composer textarea. */
+const COMPOSER_MAX_HEIGHT_PX = 160;
 
 export default function HermesChat({
   apiPath = '/api/agent/chat',
@@ -130,7 +132,17 @@ export default function HermesChat({
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const composerRef = useRef<HTMLTextAreaElement>(null);
   const activeThreadIdRef = useRef<string | null>(null);
+
+  const syncComposerHeight = useCallback(() => {
+    const el = composerRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    const next = Math.min(el.scrollHeight, COMPOSER_MAX_HEIGHT_PX);
+    el.style.height = `${next}px`;
+    el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
+  }, []);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -218,6 +230,16 @@ export default function HermesChat({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading, contributionDraft]);
+
+  useEffect(() => {
+    syncComposerHeight();
+  }, [inputText, syncComposerHeight]);
+
+  useEffect(() => {
+    const onResize = () => syncComposerHeight();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [syncComposerHeight]);
 
   const promptSignIn = () => {
     void login().then(() => loadThreads()).catch(() => {
@@ -776,6 +798,7 @@ export default function HermesChat({
                 </svg>
               </button>
               <textarea
+                ref={composerRef}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={onKeyDown}
