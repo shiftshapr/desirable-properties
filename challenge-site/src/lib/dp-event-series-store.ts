@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { FORK_SERIES_SLUG, FORK_SESSION_SEEDS } from '@/lib/dp-event-series-seed';
+import {
+  FORK_PEARL_BADGE_IMAGE_URL,
+  FORK_SERIES_BADGE_IMAGE_URL,
+} from '@/lib/dp-series-badges';
 
 export type EventSeries = {
   id: string;
@@ -135,6 +139,7 @@ export type PathwayParticipationBand = {
   badgeCode: string;
   pearlBadgeCode: string | null;
   badgeImageUrl: string | null;
+  pearlBadgeImageUrl: string | null;
   sessions: Array<{
     sessionNumber: number;
     title: string;
@@ -280,9 +285,9 @@ async function seedForkSeriesIfMissing() {
       `INSERT INTO dp_event_series (
          id, slug, title, subtitle, description_md, hero_image_url,
          perspective_url, pathway_url, sessions_required_count,
-         badge_code, pearl_badge_code, badge_image_url, active, sort_order,
-         created_by, updated_by
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,0,'seed','seed')`,
+         badge_code, pearl_badge_code, badge_image_url, pearl_badge_image_url,
+         active, sort_order, created_by, updated_by
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,0,'seed','seed')`,
       [
         seriesId,
         FORK_SERIES_SLUG,
@@ -295,7 +300,8 @@ async function seedForkSeriesIfMissing() {
         4,
         'fork-ws-series',
         'fork-ws-series-pearl',
-        '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
+        FORK_SERIES_BADGE_IMAGE_URL,
+        FORK_PEARL_BADGE_IMAGE_URL,
       ],
     );
 
@@ -374,6 +380,25 @@ async function seedForkSeriesIfMissing() {
   }
 
   await backfillForkSessionSchedule();
+  await backfillForkSeriesBadgeImages();
+}
+
+async function backfillForkSeriesBadgeImages() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+  await pool.query(
+    `UPDATE dp_event_series SET
+       badge_image_url = $1,
+       pearl_badge_image_url = $2,
+       updated_at = now(),
+       updated_by = 'seed'
+     WHERE slug = $3
+       AND (
+         badge_image_url IS DISTINCT FROM $1
+         OR pearl_badge_image_url IS DISTINCT FROM $2
+       )`,
+    [FORK_SERIES_BADGE_IMAGE_URL, FORK_PEARL_BADGE_IMAGE_URL, FORK_SERIES_SLUG],
+  );
 }
 
 export async function listEventSeries(activeOnly = false): Promise<EventSeries[]> {
@@ -419,6 +444,7 @@ export async function getPathwayParticipationBand(
     badgeCode: series.badgeCode,
     pearlBadgeCode: series.pearlBadgeCode,
     badgeImageUrl: series.badgeImageUrl,
+    pearlBadgeImageUrl: series.pearlBadgeImageUrl,
     sessions: sessions.map((session) => ({
       sessionNumber: session.sessionNumber,
       title: session.title,

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import PearlMark from '@/components/badges/PearlMark';
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
@@ -189,7 +190,10 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
   if (!user) {
     return (
       <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6">
-        <p className="text-slate-300">Sign in to start the PEARL patch track.</p>
+        <p className="flex items-center gap-2 text-slate-300">
+          <PearlMark size={18} />
+          Sign in to start the PEARL patch track.
+        </p>
         <button
           type="button"
           onClick={() => void login()}
@@ -343,7 +347,10 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
           {state.status === 'submitted' ? 'Update PEARL submission' : 'Submit PEARL track'}
         </button>
         {pearlBadgeCode && state.status === 'submitted' ? (
-          <span className="self-center text-sm text-emerald-300">PEARL badge: {pearlBadgeCode}</span>
+          <span className="flex items-center gap-1.5 self-center text-sm text-emerald-300">
+            <PearlMark size={16} />
+            PEARL badge: {pearlBadgeCode}
+          </span>
         ) : null}
         <Link href={`/series/${seriesSlug}`} className="self-center text-sm text-cyan-300">
           ← Back to series

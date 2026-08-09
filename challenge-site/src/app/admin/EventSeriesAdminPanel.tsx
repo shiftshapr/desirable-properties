@@ -2,9 +2,15 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import DpSealBadge from '@/components/badges/DpSealBadge';
+import PearlMark from '@/components/badges/PearlMark';
 import EventSeriesSessionCard from '@/app/admin/EventSeriesSessionCard';
 import EventSeriesSessionEditor from '@/app/admin/EventSeriesSessionEditor';
 import type { EventSeries, EventSeriesSession } from '@/lib/dp-event-series-store';
+import {
+  forkSeriesBadgeTopLabel,
+  pearlBadgeCenterUrl,
+} from '@/lib/dp-series-badges';
 
 type SeriesWithSessions = EventSeries & { sessions: EventSeriesSession[] };
 
@@ -21,6 +27,7 @@ function emptySeriesDraft() {
     badgeCode: '',
     pearlBadgeCode: '',
     badgeImageUrl: '',
+    pearlBadgeImageUrl: '',
     active: true,
     sortOrder: '0',
   };
@@ -70,6 +77,7 @@ export default function EventSeriesAdminPanel() {
       badgeCode: item.badgeCode,
       pearlBadgeCode: item.pearlBadgeCode || '',
       badgeImageUrl: item.badgeImageUrl || '',
+      pearlBadgeImageUrl: item.pearlBadgeImageUrl || '',
       active: item.active,
       sortOrder: String(item.sortOrder),
     });
@@ -142,6 +150,8 @@ export default function EventSeriesAdminPanel() {
               ['subtitle', 'Subtitle'],
               ['badgeCode', 'Badge code'],
               ['pearlBadgeCode', 'PEARL badge code'],
+              ['badgeImageUrl', 'Badge center image URL'],
+              ['pearlBadgeImageUrl', 'PEARL badge center image URL'],
               ['heroImageUrl', 'Hero image URL'],
               ['perspectiveUrl', 'Perspective URL'],
               ['pathwayUrl', 'Pathway URL'],
@@ -175,6 +185,39 @@ export default function EventSeriesAdminPanel() {
             />
             Active
           </label>
+          {draft.badgeImageUrl || draft.pearlBadgeImageUrl ? (
+            <div className="sm:col-span-2">
+              <p className="text-sm text-slate-400">Badge preview</p>
+              <div className="mt-3 flex flex-wrap items-end gap-6">
+                {draft.badgeImageUrl ? (
+                  <div>
+                    <p className="mb-2 text-xs text-slate-500">Series badge</p>
+                    <DpSealBadge
+                      centerSrc={draft.badgeImageUrl}
+                      topLabel={forkSeriesBadgeTopLabel(draft.slug, draft.title)}
+                      size={88}
+                    />
+                  </div>
+                ) : null}
+                {pearlBadgeCenterUrl(draft.pearlBadgeImageUrl, draft.badgeImageUrl) ? (
+                  <div>
+                    <p className="mb-2 flex items-center gap-1 text-xs text-slate-500">
+                      <PearlMark size={14} />
+                      PEARL badge
+                    </p>
+                    <DpSealBadge
+                      centerSrc={
+                        pearlBadgeCenterUrl(draft.pearlBadgeImageUrl, draft.badgeImageUrl) ||
+                        draft.badgeImageUrl
+                      }
+                      topLabel={forkSeriesBadgeTopLabel(draft.slug, draft.title)}
+                      size={88}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </div>
         <div className="mt-4 flex gap-2">
           <button

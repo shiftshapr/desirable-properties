@@ -80,10 +80,11 @@ export default async function SeriesDetailPage({ params }: Props) {
       <div className="mt-12">
         <SeriesProgressPanel
           seriesSlug={series.slug}
+          seriesTitle={series.title}
           sessions={sessions}
           progress={progress}
           badgeImageUrl={series.badgeImageUrl}
-          pearlBadgeImageUrl={series.pearlBadgeImageUrl || series.badgeImageUrl}
+          pearlBadgeImageUrl={series.pearlBadgeImageUrl}
         />
       </div>
     </main>

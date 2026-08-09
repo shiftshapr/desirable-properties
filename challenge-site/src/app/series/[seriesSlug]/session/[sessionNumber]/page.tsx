@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import PearlMark from '@/components/badges/PearlMark';
 import { notFound } from 'next/navigation';
 import SessionQuestionsForm from '@/components/series/SessionQuestionsForm';
 import SessionActionLink from '@/components/series/SessionActionLink';
@@ -126,7 +127,11 @@ export default async function SeriesSessionPage({ params }: Props) {
       </div>
 
       <p className="mt-10 text-sm text-slate-500">
-        <Link href={`/series/${series.slug}/pearl`} className="text-violet-300 hover:text-violet-200">
+        <Link
+          href={`/series/${series.slug}/pearl`}
+          className="inline-flex items-center gap-1.5 text-violet-300 hover:text-violet-200"
+        >
+          <PearlMark size={16} />
           PEARL patch track →
         </Link>
       </p>

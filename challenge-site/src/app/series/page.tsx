@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import PearlMark from '@/components/badges/PearlMark';
 import { listEventSeries } from '@/lib/dp-event-series-store';
 
 export const metadata: Metadata = {
@@ -15,7 +16,12 @@ export default async function SeriesIndexPage() {
       <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Event series</p>
       <h1 className="mt-3 text-4xl font-bold text-white">Workshops &amp; series</h1>
       <p className="mt-4 max-w-2xl text-lg text-slate-400">
-        Standalone sessions with reflection questions, series badges, and optional PEARL patch tracks.
+        Standalone sessions with reflection questions, series badges, and optional{' '}
+        <span className="inline-flex items-center gap-1 text-violet-300">
+          <PearlMark size={18} />
+          PEARL
+        </span>{' '}
+        patch tracks.
       </p>
 
       <ul className="mt-10 grid gap-6 sm:grid-cols-2">

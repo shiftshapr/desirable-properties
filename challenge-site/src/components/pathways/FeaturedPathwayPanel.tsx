@@ -2,9 +2,12 @@
 
 import Image from 'next/image';
 import { useEffect } from 'react';
+import DpSealBadge from '@/components/badges/DpSealBadge';
+import PearlMark from '@/components/badges/PearlMark';
 import TrackedLink from '@/components/TrackedLink';
 import { trackEvent } from '@/lib/analytics';
 import type { PathwayParticipationBand } from '@/lib/dp-event-series-store';
+import { forkSeriesBadgeTopLabel } from '@/lib/dp-series-badges';
 
 const FORK_HERO_SRC =
   '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
@@ -104,15 +107,12 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
               {participation.badgeImageUrl ? (
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-violet-800/60 ring-1 ring-white/10">
-                  <Image
-                    src={participation.badgeImageUrl}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="40px"
-                  />
-                </div>
+                <DpSealBadge
+                  centerSrc={participation.badgeImageUrl}
+                  topLabel={forkSeriesBadgeTopLabel(participation.slug, participation.title)}
+                  size={40}
+                  alt={`${participation.title} series badge`}
+                />
               ) : (
                 <span
                   className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-violet-800/60 bg-violet-950/50 text-lg"
@@ -134,15 +134,18 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
                   — complete all {participation.sessionsRequiredCount} sessions + questions
                 </p>
                 {participation.pearlBadgeCode ? (
-                  <p className="mt-1 text-slate-500">
-                    Optional{' '}
-                    <TrackedLink
-                      href={`${seriesHref}/pearl`}
-                      eventName="homepage_pearl_track_click"
-                      className="text-violet-300 hover:text-violet-200"
-                    >
-                      PEARL badge enhancement
-                    </TrackedLink>
+                  <p className="mt-1 flex items-center gap-1.5 text-slate-500">
+                    <PearlMark size={16} />
+                    <span>
+                      Optional{' '}
+                      <TrackedLink
+                        href={`${seriesHref}/pearl`}
+                        eventName="homepage_pearl_track_click"
+                        className="text-violet-300 hover:text-violet-200"
+                      >
+                        PEARL badge enhancement
+                      </TrackedLink>
+                    </span>
                   </p>
                 ) : null}
               </div>
