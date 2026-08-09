@@ -373,6 +373,7 @@
     var s = document.createElement('script');
     s.src = (cfg.apiBase || SDK_ORIGIN).replace(/\/$/, '') + '/embed/v1.js';
     s.setAttribute('data-canopi-id', cfg.embedId || CANOPI_ID);
+    s.setAttribute('data-canopi-theme', 'dark');
     s.async = true;
     s.addEventListener('load', function () {
       try {

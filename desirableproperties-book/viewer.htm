@@ -33,6 +33,7 @@
     var s = document.createElement('script');
     s.src = cfg.apiBase.replace(/\/$/, '') + '/embed/v1.js';
     s.setAttribute('data-canopi-id', cfg.embedId);
+    s.setAttribute('data-canopi-theme', 'dark');
     s.async = true;
     document.head.appendChild(s);
   })();
@@ -805,13 +806,6 @@
     #canopi-overlay-root .canopi-trigger--bouncing-icon,
     #canopi-overlay-root .canopi-trigger--corner-tab {
       z-index: 2147483644 !important;
-    }
-    #canopi-overlay-root .canopi-trigger--corner-tab {
-      background: #fff !important;
-      color: #111 !important;
-    }
-    #canopi-overlay-root .canopi-trigger--corner-tab .canopi-trigger__label {
-      color: #111 !important;
     }
     #canopi-overlay-root .canopi-trigger__icon,
     #canopi-overlay-root .canopi-trigger__icon-img {

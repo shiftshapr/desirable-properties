@@ -77,12 +77,3 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame {
     max-width: none;
   }
 }
-
-/* Canopi embed: corner-tab trigger readable on dark backgrounds */
-#canopi-overlay-root .canopi-trigger--corner-tab {
-  background: #fff !important;
-  color: #111 !important;
-}
-#canopi-overlay-root .canopi-trigger--corner-tab .canopi-trigger__label {
-  color: #111 !important;
-}
