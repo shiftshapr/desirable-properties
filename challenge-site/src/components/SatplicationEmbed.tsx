@@ -7,18 +7,18 @@ const SAT_GRAPH_URL = `${BRC333_BOOK_PROJECT}/satplication-graph.html`;
 
 export default function SatplicationEmbed() {
   return (
-    <section className="mt-10 overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-2xl shadow-black/40">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 bg-slate-900/80 px-4 py-3 sm:px-5">
-        <div>
+    <section className="mt-10 w-full max-w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 shadow-2xl shadow-black/40">
+      <div className="flex flex-col gap-3 border-b border-slate-800 bg-slate-900/80 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div className="min-w-0">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-400">
             BRC333 Satplication · work in progress
           </p>
-          <p className="mt-1 text-sm text-slate-300">
-            <code className="text-cyan-300">desirableproperties-book</code> – <em>The Layered Web</em>, served as a local preview while we wire up the
-            chapter index.
+          <p className="mt-1 text-sm leading-relaxed text-slate-300">
+            <code className="break-all text-cyan-300">desirableproperties-book</code> –{' '}
+            <em>The Layered Web</em>, served as a local preview while we wire up the chapter index.
           </p>
         </div>
-        <div className="flex items-center gap-3 text-sm">
+        <div className="flex shrink-0 flex-wrap items-center gap-2 text-sm sm:gap-3">
           <a
             href={SAT_GRAPH_URL}
             target="_blank"
@@ -37,7 +37,7 @@ export default function SatplicationEmbed() {
           </a>
         </div>
       </div>
-      <div className="relative aspect-square w-full max-w-[min(100%,42rem)] bg-slate-950 sm:mx-auto">
+      <div className="relative aspect-square w-full max-w-full bg-slate-950 sm:mx-auto sm:max-w-[min(100%,42rem)]">
         <iframe
           title="The Layered Web satplication"
           src={SATPLICATION_VIEWER_URL}

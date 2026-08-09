@@ -29,7 +29,9 @@ export default function SiteShell({
     <AuthProvider initialUser={initialUser} initialChecked={initialChecked}>
       <div className="flex min-h-dvh flex-col">
         {isAgentPage ? null : <SiteHeader navLinks={navLinks} />}
-        <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+        <main className="flex min-h-0 min-w-0 w-full flex-1 flex-col overflow-x-clip">
+          {children}
+        </main>
         {isAgentPage ? null : <SiteFooter />}
         {isAgentPage ? null : <SiteModalsBanner />}
       </div>

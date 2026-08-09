@@ -116,7 +116,7 @@ export default function LayerHero({ workgroupHref }: Props) {
 
   return (
     <section
-      className="relative h-[88vh] min-h-[640px] w-full overflow-hidden border-b border-slate-800"
+      className="relative h-[min(88vh,720px)] min-h-[28rem] w-full overflow-hidden border-b border-slate-800 sm:min-h-[36rem] lg:min-h-[40rem]"
       style={
         {
           '--crossfade-ms': `${CROSSFADE_MS}ms`,
@@ -196,11 +196,11 @@ export default function LayerHero({ workgroupHref }: Props) {
 
       {/* Copy – fixed position so image crossfades never shift layout */}
       <div
-        className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-4 pt-[14vh] sm:px-6 sm:pt-[16vh]"
+        className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-4 pt-[10vh] sm:px-6 sm:pt-[14vh] lg:pt-[16vh]"
         style={{ position: 'absolute', zIndex: 10, left: 0, right: 0, top: 0 }}
       >
         <div className="max-w-xl lg:max-w-2xl">
-          <h1 className="text-4xl font-bold leading-tight text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
+          <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-sm sm:text-5xl lg:text-6xl">
             The Desirable Properties Challenge
           </h1>
           <p className="mt-6 text-xl leading-relaxed text-slate-100 drop-shadow-sm">

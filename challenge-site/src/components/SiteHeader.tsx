@@ -11,7 +11,7 @@ type SiteHeaderProps = {
 export default function SiteHeader({ navLinks = SITE_NAV_LINKS }: SiteHeaderProps) {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-      <div className="site-header-inner relative mx-auto max-w-6xl min-w-0 px-4 py-3 sm:px-6">
+      <div className="site-header-inner relative mx-auto w-full max-w-6xl min-w-0 overflow-x-clip px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center justify-between gap-3 sm:gap-4">
           <Link
             href="/"

@@ -30,7 +30,7 @@ export default async function OnchainPage() {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <main className="mx-auto w-full min-w-0 max-w-6xl px-4 py-10 sm:px-6">
         <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
           ← Back to Desirable Properties Challenge
         </Link>
@@ -95,7 +95,7 @@ export default async function OnchainPage() {
           <h2 className="text-2xl font-bold">Call for Input inscription</h2>
           <p className="mt-3 text-slate-300">
             The original <em>Meta-Layer Call for Input</em> satplication (
-            <code className="text-cyan-300">meta-layer-call-for-input</code>) is preserved as
+            <code className="break-all text-cyan-300">meta-layer-call-for-input</code>) is preserved as
             a sibling artifact on Bitcoin Ordinals. The iframe above renders the new
             The Layered Web satplication; the references below point at the
             historical Call for Input and the <em>how-to-inscribe</em> guidance.
@@ -163,7 +163,10 @@ export default async function OnchainPage() {
             {dpInscriptions.map(([dpId, inscriptionId]) => {
               const dp = localData.desirable_properties.find((d) => d.id === dpId);
               return (
-                <li key={dpId} className="flex items-start justify-between gap-4 px-4 py-3">
+                <li
+                  key={dpId}
+                  className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+                >
                   <div className="min-w-0">
                     <Link href={dpDetailHref(dpId, '/onchain')} className="font-medium text-white hover:text-cyan-200">
                       {dpId}

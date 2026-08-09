@@ -51,7 +51,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
   ];
 
   return (
-    <div className="rounded-xl border border-violet-800/50 bg-gradient-to-br from-violet-950/40 to-slate-900/60 p-6">
+    <div className="rounded-xl border border-violet-800/50 bg-gradient-to-br from-violet-950/40 to-slate-900/60 p-4 sm:p-6">
       <p className="text-center text-sm font-medium uppercase tracking-[0.15em] text-violet-300">
         Countdown to launch
       </p>
@@ -61,11 +61,11 @@ export default function ChallengeCountdown({ initialNow }: Props) {
       <p className="mt-1 text-center text-sm text-slate-400">
         {launchLabel} · {launchTime}
       </p>
-      <div className="mt-6 grid grid-cols-4 gap-3">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
         {units.map(({ value, label }) => (
           <div
             key={label}
-            className="rounded-lg border border-slate-700/80 bg-slate-950/60 px-2 py-3 text-center"
+            className="rounded-lg border border-slate-700/80 bg-slate-950/60 px-2 py-2.5 text-center sm:py-3"
           >
             <span className="block font-mono text-2xl font-bold tabular-nums text-white sm:text-3xl">
               {String(value).padStart(2, '0')}
