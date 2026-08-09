@@ -86,13 +86,8 @@ export default async function SeriesSessionPage({ params }: Props) {
       {preReads.length > 0 ? (
         <div className="mt-6">
           <p className="text-sm font-medium text-slate-300">
-            Pre-read
-            {preReadTotalMinutes ? (
-              <span className="font-normal text-slate-500">
-                {' '}
-                · {formatMinutesEstimate(preReadTotalMinutes)}
-              </span>
-            ) : null}
+            Pre-Read
+            {preReadTotalMinutes ? ` (${formatMinutesEstimate(preReadTotalMinutes)})` : null}
           </p>
           <ul className="mt-2 space-y-1">
             {preReads.map((pr) => (
@@ -104,12 +99,9 @@ export default async function SeriesSessionPage({ params }: Props) {
                   rel={pr.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                 >
                   {pr.label}
-                  {pr.minutesEstimate ? (
-                    <span className="text-slate-500">
-                      {' '}
-                      · {formatMinutesEstimate(pr.minutesEstimate)}
-                    </span>
-                  ) : null}
+                  {pr.minutesEstimate
+                    ? ` (${formatMinutesEstimate(pr.minutesEstimate)})`
+                    : null}
                 </a>
               </li>
             ))}

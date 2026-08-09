@@ -67,7 +67,7 @@ export function datetimeLocalInputToIso(local: string): string | null {
 }
 
 export function formatMinutesEstimate(minutes: number): string {
-  return `≈${minutes} min`;
+  return `${minutes} mins`;
 }
 
 export function sumPreReadMinutes(
