@@ -127,7 +127,10 @@ export default function SeriesProgressPanel({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+        <div
+          id="series-badge"
+          className="rounded-xl border border-slate-800 bg-slate-900/50 p-5 scroll-mt-24"
+        >
           <p className="text-sm font-medium text-slate-300">Series badge</p>
           {badgeImageUrl ? (
             <div className="mt-3">

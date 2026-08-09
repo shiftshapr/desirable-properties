@@ -76,6 +76,7 @@ function LayeredSpaceMark() {
 
 function ParticipationBand({ participation }: { participation: PathwayParticipationBand }) {
   const seriesHref = `/series/${participation.slug}`;
+  const seriesBadgeHref = `${seriesHref}#series-badge`;
 
   return (
     <div
@@ -107,25 +108,34 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
               {participation.badgeImageUrl ? (
-                <DpSealBadge
-                  centerSrc={participation.badgeImageUrl}
-                  topLabel={forkSeriesBadgeTopLabel(participation.slug, participation.title)}
-                  size={40}
-                  alt={`${participation.title} series badge`}
-                />
+                <TrackedLink
+                  href={seriesBadgeHref}
+                  eventName="homepage_series_badge_click"
+                  className="shrink-0 rounded-full transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  aria-label={`${participation.title} series badge`}
+                >
+                  <DpSealBadge
+                    centerSrc={participation.badgeImageUrl}
+                    topLabel={forkSeriesBadgeTopLabel(participation.slug, participation.title)}
+                    size={40}
+                    alt={`${participation.title} series badge`}
+                  />
+                </TrackedLink>
               ) : (
-                <span
-                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-violet-800/60 bg-violet-950/50 text-lg"
-                  aria-hidden="true"
+                <TrackedLink
+                  href={seriesBadgeHref}
+                  eventName="homepage_series_badge_click"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-violet-800/60 bg-violet-950/50 text-lg transition hover:border-violet-600/80 hover:bg-violet-900/50"
+                  aria-label={`${participation.title} series badge`}
                 >
                   ✦
-                </span>
+                </TrackedLink>
               )}
               <div className="min-w-0 text-sm text-slate-300">
                 <p>
                   Earn the{' '}
                   <TrackedLink
-                    href="/badges"
+                    href={seriesBadgeHref}
                     eventName="homepage_series_badge_click"
                     className="font-medium text-cyan-300 hover:text-cyan-200"
                   >
