@@ -41,6 +41,12 @@ interface HermesChatProps {
   surface?: string;
   dpFocus?: number | null;
   compact?: boolean;
+  /** Embedded in another page – hides thread sidebar and uses a local storage key. */
+  embedded?: boolean;
+  /** Override default intro assistant message. */
+  introText?: string | null;
+  /** sessionStorage key for the active thread (embedded panels use per-workgroup keys). */
+  threadStorageKey?: string | null;
   initialSignedIn?: boolean;
   initialUser?: AuthUser | null;
   /** Prefill the composer (e.g. from /agent?prompt=…). */
@@ -80,12 +86,17 @@ export default function HermesChat({
   surface = 'desirableproperties.org',
   dpFocus = null,
   compact = false,
+  embedded = false,
+  introText = null,
+  threadStorageKey = null,
   initialSignedIn = false,
   initialUser = null,
   initialPrompt = null,
   starterPrompts = null,
   starterLabel = null,
 }: HermesChatProps) {
+  const resolvedIntro = introText?.trim() || INTRO;
+  const activeThreadKey = threadStorageKey?.trim() || ACTIVE_THREAD_KEY;
   const { user: authUser, checked, login, loginBusy } = useAuth();
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
@@ -95,7 +106,7 @@ export default function HermesChat({
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'intro',
-      text: INTRO,
+      text: resolvedIntro,
       sender: 'assistant',
       timestamp: new Date(),
     },
@@ -136,9 +147,9 @@ export default function HermesChat({
     activeThreadIdRef.current = threadId;
     setActiveThreadId(threadId);
     if (typeof sessionStorage === 'undefined') return;
-    if (threadId) sessionStorage.setItem(ACTIVE_THREAD_KEY, threadId);
-    else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
-  }, []);
+    if (threadId) sessionStorage.setItem(activeThreadKey, threadId);
+    else sessionStorage.removeItem(activeThreadKey);
+  }, [activeThreadKey]);
 
   const loadThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
     setThreadsLoading(true);
@@ -168,7 +179,7 @@ export default function HermesChat({
       const restored: Message[] = [
         {
           id: 'intro',
-          text: INTRO,
+          text: resolvedIntro,
           sender: 'assistant',
           timestamp: new Date(),
         },
@@ -199,21 +210,30 @@ export default function HermesChat({
     } finally {
       setThreadLoadingId(null);
     }
-  }, [persistActiveThread]);
+  }, [persistActiveThread, resolvedIntro]);
 
   useEffect(() => {
-    if (!signedIn) return;
+    if (!signedIn || embedded) return;
     void (async () => {
       const threadList = await loadThreads();
       const saved =
         typeof sessionStorage !== 'undefined'
-          ? sessionStorage.getItem(ACTIVE_THREAD_KEY)
+          ? sessionStorage.getItem(activeThreadKey)
           : null;
       if (saved && threadList.some((thread) => thread.id === saved)) {
         await loadThread(saved);
       }
     })();
-  }, [signedIn, loadThreads, loadThread]);
+  }, [signedIn, embedded, loadThreads, loadThread, activeThreadKey]);
+
+  useEffect(() => {
+    if (!signedIn || !embedded) return;
+    const saved =
+      typeof sessionStorage !== 'undefined'
+        ? sessionStorage.getItem(activeThreadKey)
+        : null;
+    if (saved) void loadThread(saved);
+  }, [signedIn, embedded, loadThread, activeThreadKey]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -232,7 +252,7 @@ export default function HermesChat({
     setAttachError(null);
     setSystemNotice(null);
     setMessages([
-      { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
+      { id: 'intro', text: resolvedIntro, sender: 'assistant', timestamp: new Date() },
     ]);
   };
 
@@ -536,7 +556,7 @@ export default function HermesChat({
     }
   };
 
-  const shellClass = compact
+  const shellClass = embedded || compact
     ? 'relative flex h-full min-h-[420px] w-full flex-col bg-slate-950'
     : 'relative flex h-full min-h-0 w-full flex-1 flex-col bg-slate-950 md:pl-[260px] lg:pl-[280px]';
 
@@ -555,42 +575,48 @@ export default function HermesChat({
 
   return (
     <div className={shellClass}>
-      {/* Desktop sidebar – fixed to viewport left, full height below site header */}
-      <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
-        <div className="pointer-events-auto flex h-full flex-col">
-          {sidebar}
-        </div>
-      </div>
-
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen ? (
+      {!embedded ? (
         <>
-          <button
-            type="button"
-            className="fixed inset-0 z-40 bg-black/60 md:hidden"
-            aria-label="Close sidebar"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="fixed inset-y-0 left-0 z-50 flex w-[min(100%,280px)] md:hidden">
-            <div className="flex h-full w-full flex-col">{sidebar}</div>
+          {/* Desktop sidebar – fixed to viewport left, full height below site header */}
+          <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
+            <div className="pointer-events-auto flex h-full flex-col">
+              {sidebar}
+            </div>
           </div>
+
+          {/* Mobile sidebar overlay */}
+          {sidebarOpen ? (
+            <>
+              <button
+                type="button"
+                className="fixed inset-0 z-40 bg-black/60 md:hidden"
+                aria-label="Close sidebar"
+                onClick={() => setSidebarOpen(false)}
+              />
+              <div className="fixed inset-y-0 left-0 z-50 flex w-[min(100%,280px)] md:hidden">
+                <div className="flex h-full w-full flex-col">{sidebar}</div>
+              </div>
+            </>
+          ) : null}
         </>
       ) : null}
 
       <div className="flex h-full min-h-0 w-full flex-1 flex-col">
-        <div className="flex shrink-0 items-center gap-3 border-b border-slate-800 px-4 py-2.5 md:hidden">
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(true)}
-            className="rounded-lg border border-slate-700 p-2 text-slate-300 hover:bg-slate-900"
-            aria-label="Open conversations"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <p className="text-sm font-medium text-white">Hermes</p>
-        </div>
+        {!embedded ? (
+          <div className="flex shrink-0 items-center gap-3 border-b border-slate-800 px-4 py-2.5 md:hidden">
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(true)}
+              className="rounded-lg border border-slate-700 p-2 text-slate-300 hover:bg-slate-900"
+              aria-label="Open conversations"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <p className="text-sm font-medium text-white">Hermes</p>
+          </div>
+        ) : null}
 
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">

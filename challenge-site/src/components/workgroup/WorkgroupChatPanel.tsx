@@ -11,6 +11,7 @@ type Props = {
   signedIn: boolean;
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
+  onMessagesChange?: (messages: WorkgroupMessage[]) => void;
 };
 
 function formatWhen(iso: string | null) {
@@ -31,6 +32,7 @@ export default function WorkgroupChatPanel({
   signedIn,
   initialMessages = [],
   initialIsMember = false,
+  onMessagesChange,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>(initialMessages);
   const [isMember, setIsMember] = useState(initialIsMember);
@@ -46,12 +48,13 @@ export default function WorkgroupChatPanel({
       setIsMember(Boolean(data.is_member));
       setCanPost(Boolean(data.can_post));
       setError(null);
+      onMessagesChange?.(data.messages || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load messages');
     } finally {
       setLoading(false);
     }
-  }, [workgroupId]);
+  }, [workgroupId, onMessagesChange]);
 
   useEffect(() => {
     void refresh();
@@ -66,7 +69,11 @@ export default function WorkgroupChatPanel({
     try {
       const result = await postWorkgroupMessage(workgroupId, body);
       if (result.message) {
-        setMessages((prev) => [...prev, result.message!]);
+        setMessages((prev) => {
+          const next = [...prev, result.message!];
+          onMessagesChange?.(next);
+          return next;
+        });
       } else {
         await refresh();
       }

@@ -200,7 +200,7 @@ export const DP_DISCOVERY_ASK_ITEMS = [
   'Review the Layered Web book (book.desirableproperties.org).',
   'Review for context and completeness.',
   'Discuss on the book – chapter comments are live now (Canopi on each chapter).',
-  'Participate in workgroup discussion as to a new DPs that may be needed.',
+  'Participate in workgroup discussion about where a new concept fits in the existing DPs and/or new DPs that may be needed.',
 ] as const;
 
 export function isDpDiscoveryWorkgroup(slug?: string | null): boolean {

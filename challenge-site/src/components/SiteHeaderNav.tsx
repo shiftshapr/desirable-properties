@@ -247,7 +247,7 @@ export default function SiteHeaderNav() {
           rel="noopener noreferrer"
           className="whitespace-nowrap rounded-md bg-cyan-700 px-3 py-1.5 font-medium text-white hover:bg-cyan-600"
         >
-          Agent
+          Hermes
         </a>
       </nav>
 
@@ -312,7 +312,7 @@ export default function SiteHeaderNav() {
                   className="mt-3 inline-flex rounded-md bg-cyan-700 px-3 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                   onClick={closeMenu}
                 >
-                  Agent
+                  Hermes
                 </a>
               </li>
             </ul>
