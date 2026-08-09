@@ -31,7 +31,7 @@ Set `DP_ENV=prod|staging` (or `NEXT_DIST_DIR`) before `npm run build`; deploy sc
 
 ## Environment
 
-Staging sets `DP_PUBLIC_BASE=https://staging.desirableproperties.org`, `DP_BOOK_BASE_URL=https://staging.book.desirableproperties.org`, and `GOVHUB_BASE_URL=https://hub.themetalayer.org` in `ecosystem.staging.config.js`. Staging shares production Gov Hub (memberships, join/nominate APIs) while keeping its own Next.js host and book staging site. Override via `.env.local` keys `DP_PUBLIC_BASE_STAGING` / `DP_BOOK_BASE_URL_STAGING` if needed.
+Staging sets `DP_PUBLIC_BASE=https://staging.desirableproperties.org`, `DP_BOOK_BASE_URL=https://staging.book.desirableproperties.org`, and `GOVHUB_BASE_URL=https://dev.hub.themetalayer.org` in `ecosystem.staging.config.js`. Staging uses dev Gov Hub (dev.hub.themetalayer.org) (memberships, join/nominate APIs) while keeping its own Next.js host and book staging site. Override via `.env.local` keys `DP_PUBLIC_BASE_STAGING` / `DP_BOOK_BASE_URL_STAGING` if needed.
 
 Book nav links and activity-feed hrefs resolve from `DP_BOOK_BASE_URL` (or auto-detect from `DP_PUBLIC_BASE` / browser hostname when unset).
 
