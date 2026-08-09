@@ -82,35 +82,19 @@ function DesktopNavDropdown({
     };
   }, [open]);
 
-  const labelClass = `whitespace-nowrap hover:text-white${isActive ? ' text-white' : ''}`;
-
   return (
-    <div ref={rootRef} className="relative inline-flex items-center">
-      {item.href ? (
-        <Link href={item.href} className={labelClass}>
-          {item.label}
-        </Link>
-      ) : (
-        <button
-          type="button"
-          className={labelClass}
-          aria-expanded={open}
-          aria-haspopup="menu"
-          aria-controls={menuId}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {item.label}
-        </button>
-      )}
+    <div ref={rootRef} className="relative">
       <button
         type="button"
-        className="inline-flex items-center px-0.5 hover:text-white"
+        className={`inline-flex items-center gap-1 whitespace-nowrap hover:text-white ${
+          isActive ? 'text-white' : ''
+        }`}
         aria-expanded={open}
         aria-haspopup="menu"
         aria-controls={menuId}
-        aria-label={`${item.label} menu`}
         onClick={() => setOpen((value) => !value)}
       >
+        {item.label}
         <svg viewBox="0 0 20 20" className="h-4 w-4 opacity-70" aria-hidden>
           <path
             d="M5 7l5 5 5-5"
@@ -156,43 +140,24 @@ function MobileNavGroup({
 
   return (
     <li>
-      <div className="flex items-center">
-        {item.href ? (
-          <NavLink
-            href={item.href}
-            label={item.label}
-            className="flex-1 py-3 text-sm text-slate-300 hover:text-white"
-            onNavigate={onNavigate}
+      <button
+        type="button"
+        className="flex w-full items-center justify-between py-3 text-sm text-slate-300 hover:text-white"
+        aria-expanded={expanded}
+        onClick={() => setExpanded((value) => !value)}
+      >
+        {item.label}
+        <svg viewBox="0 0 20 20" className={`h-4 w-4 transition ${expanded ? 'rotate-180' : ''}`} aria-hidden>
+          <path
+            d="M5 7l5 5 5-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
-        ) : (
-          <button
-            type="button"
-            className="flex-1 py-3 text-left text-sm text-slate-300 hover:text-white"
-            aria-expanded={expanded}
-            onClick={() => setExpanded((value) => !value)}
-          >
-            {item.label}
-          </button>
-        )}
-        <button
-          type="button"
-          className="px-2 py-3 text-slate-400 hover:text-white"
-          aria-expanded={expanded}
-          aria-label={`Expand ${item.label} submenu`}
-          onClick={() => setExpanded((value) => !value)}
-        >
-          <svg viewBox="0 0 20 20" className={`h-4 w-4 transition ${expanded ? 'rotate-180' : ''}`} aria-hidden>
-            <path
-              d="M5 7l5 5 5-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
+        </svg>
+      </button>
       {expanded ? (
         <ul className="mb-2 ml-3 border-l border-slate-800 pl-3">
           {(item.children ?? []).map((child) => (
