@@ -1,10 +1,11 @@
+<!-- govhub-sync: ml=ML-Draft-031 revision=02 submission=19af47d9-b7f5-4f0c-8e7f-f1dd7d2c7ff0 hash=1c997cf81d8d4510 synced=2026-08-09T06:38:16Z -->
 # About This Digital Monument
 
 This edition of *The Layered Web: The Desirable Properties of a Meta-Layer* is not a conventional ebook. It is a digital monument – a civic record inscribed on Bitcoin and intended to be read by people who were not in the room when the work began, including generations not yet born.
 
 This book exists to help define the foundational properties of a trustworthy Meta-Layer for the Internet – a global collaboration to build a human-aligned, decentralized, AI-assisted coordination layer that supports trust, agency, accountability, and human flourishing.
 
-![The layered Web: Physical Infrastructure, Internet Infrastructure, Websites and Applications, and the Meta-Layer above – Trust, Context, Presence, Governance](/content/local/assets/layered-web-coordination-layer.jpg)
+![The layered Web: Physical Infrastructure, Internet Infrastructure, Websites and Applications, and the Meta-Layer above – Trust, Context, Presence, Governance](/content/local/assets/dp/layered-web-coordination-layer.jpg)
 
 *Figure: From today's Web to the Meta-Layer. Physical Infrastructure and Internet Infrastructure carry packets and protocols. Websites & Applications are what most people experience as "the Web." The Meta-Layer sits above that surface – a shared coordination layer for Trust · Context · Presence · Governance – where this book's Desirable Properties apply.*
 
@@ -14,7 +15,7 @@ That is how this monument will be used: as the open, inscribed edition of that i
 
 We are here to define the next level of the internet. The properties refined in this challenge become the requirements and architectural decisions that guide how the Overweb – and the broader Meta-Layer – gets built.
 
-![We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/content/local/assets/overweb-roadmap.jpg)
+![We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/content/local/assets/dp/overweb-roadmap.jpg)
 
 *Figure: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb. This inscribed edition captures Step 1: community-defined qualities a trustworthy Meta-Layer must possess before protocols are locked in.*
 
