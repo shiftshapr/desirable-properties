@@ -41,5 +41,6 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     ],
   },
   { href: '/challenge', label: 'Challenge' },
+  { href: '/badges', label: 'Badges' },
   { href: '/onchain', label: 'On-Chain' },
 ];
