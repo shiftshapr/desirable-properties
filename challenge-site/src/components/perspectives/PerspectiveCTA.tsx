@@ -1,5 +1,6 @@
 import TrackedLink from '@/components/TrackedLink';
 import TrackedAnchor from '@/components/TrackedAnchor';
+import { perspectiveDiscussHref } from '@/lib/canopi-embed';
 import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
 
 type Props = {
@@ -41,6 +42,14 @@ export default function PerspectiveCTA({ perspectiveSlug }: Props) {
           className="inline-flex items-center rounded-lg bg-cyan-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
         >
           Explore AI &amp; Human Agency →
+        </TrackedLink>
+        <TrackedLink
+          href={perspectiveDiscussHref(`/perspectives/${perspectiveSlug}`)}
+          eventName="article_discuss_click"
+          eventPayload={{ perspective: perspectiveSlug, surface: 'perspective_embed' }}
+          className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
+        >
+          Discuss this essay →
         </TrackedLink>
         <TrackedAnchor
           href={bookDiscussHref()}

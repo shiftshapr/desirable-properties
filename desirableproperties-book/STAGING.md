@@ -45,7 +45,16 @@ WHERE id = '7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c'
   AND NOT ('staging.book.desirableproperties.org' = ANY(domain_whitelist));
 ```
 
-Apply on the Canopi API Postgres (see `canopi/migrations/023_dp_book_embed.sql` for the base row).
+For the **challenge-site** staging host (Fork in the Web perspective embed):
+
+```sql
+UPDATE canopi_embed_instances
+SET domain_whitelist = array_append(domain_whitelist, 'staging.desirableproperties.org')
+WHERE id = '7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c'
+  AND NOT ('staging.desirableproperties.org' = ANY(domain_whitelist));
+```
+
+Apply on the Canopi API Postgres (see `canopi/migrations/023_dp_book_embed.sql` and `024_dp_fork_perspective_staging_host.sql` for the base row).
 
 `assets/dp-canopi-bridge.js` sets `pageUrlOrigin` to `https://book.desirableproperties.org` on the staging host so Canopi pageIds match prod.
 
