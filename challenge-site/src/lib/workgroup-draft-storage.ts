@@ -11,6 +11,9 @@ export type WorkgroupInviteDraft = {
   length: string;
   draft: string;
   step: 'research' | 'disambiguate' | 'draft' | 'done';
+  selectedEventIds: string[];
+  selectedPerspectiveIds: string[];
+  inviteLead: 'events' | 'perspectives';
 };
 
 function readJson<T>(key: string): T | null {
@@ -88,7 +91,9 @@ export function saveInviteDraft(slug: string, draft: WorkgroupInviteDraft): void
     || draft.linkedinUrl.trim()
     || draft.previousInteraction.trim()
     || draft.extraLinks.trim()
-    || draft.draft.trim();
+    || draft.draft.trim()
+    || draft.selectedEventIds.length > 0
+    || draft.selectedPerspectiveIds.length > 0;
   if (!hasContent) {
     clearInviteDraft(slug);
     return;

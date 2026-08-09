@@ -138,6 +138,38 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_unsubscribe (
   email TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS dp_invite_global_event (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  event_date TIMESTAMPTZ,
+  description TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by TEXT,
+  updated_by TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_invite_global_event_sort ON dp_invite_global_event (sort_order ASC, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS dp_invite_perspective (
+  id UUID PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT true,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_by TEXT,
+  updated_by TEXT
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS dp_invite_perspective_slug ON dp_invite_perspective (slug);
+CREATE INDEX IF NOT EXISTS dp_invite_perspective_sort ON dp_invite_perspective (sort_order ASC, updated_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

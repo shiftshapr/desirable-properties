@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
@@ -98,17 +99,23 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
   return (
     <main className="border-b border-slate-800">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <WorkgroupCollabClient
-          workgroup={workgroup}
-          initialMessages={initialMessages}
-          joinHref={joinHref}
-          dpId={dpId}
-          dpDetailHref={dpDetailHrefValue}
-          initialActivity={initialActivity}
-          initialIsMember={membership.isMember}
-          initialMembershipResolved={membership.membershipResolved}
-          justJoined={justJoined}
-        />
+        <Suspense
+          fallback={
+            <div className="text-slate-400">Loading workgroup…</div>
+          }
+        >
+          <WorkgroupCollabClient
+            workgroup={workgroup}
+            initialMessages={initialMessages}
+            joinHref={joinHref}
+            dpId={dpId}
+            dpDetailHref={dpDetailHrefValue}
+            initialActivity={initialActivity}
+            initialIsMember={membership.isMember}
+            initialMembershipResolved={membership.membershipResolved}
+            justJoined={justJoined}
+          />
+        </Suspense>
       </div>
     </main>
   );
