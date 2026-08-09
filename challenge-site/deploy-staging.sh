@@ -1,10 +1,33 @@
 #!/usr/bin/env bash
+# MUST run from feat/ai-human-agency-pathway until AI pathway work is merged to main.
+# Staging is the preview host for that branch — deploying from main drops FeaturedPathwayPanel,
+# Fork in the Web, badges nav, and DP card images. This script aborts if pathway files are missing.
 set -euo pipefail
 
 APP_DIR="/home/ubuntu/desirable-properties/challenge-site"
+REPO_ROOT="/home/ubuntu/desirable-properties"
 NGINX_CONF="/home/ubuntu/nginx/staging.desirableproperties.org.conf"
+REQUIRED_BRANCH="feat/ai-human-agency-pathway"
+PATHWAY_MARKER="${APP_DIR}/src/components/pathways/FeaturedPathwayPanel.tsx"
 
 cd "$APP_DIR"
+
+if [[ ! -f "$PATHWAY_MARKER" ]]; then
+  echo "ERROR: Staging deploy blocked — missing ${PATHWAY_MARKER}"
+  echo "       Staging must ship feat/ai-human-agency-pathway content (AI pathway, Fork in the Web, etc.)."
+  echo "       Checkout: git checkout ${REQUIRED_BRANCH}"
+  exit 1
+fi
+
+current_branch=$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+if [[ "$current_branch" != "$REQUIRED_BRANCH" ]]; then
+  echo "ERROR: Staging deploy blocked — on branch '${current_branch}', expected '${REQUIRED_BRANCH}'."
+  echo "       Staging previews the AI & Human Agency pathway branch, not main."
+  echo "       Checkout: git checkout ${REQUIRED_BRANCH}"
+  exit 1
+fi
+
+echo "[0/5] Branch guard OK (${REQUIRED_BRANCH}, FeaturedPathwayPanel present)"
 
 echo "[1/5] Stopping staging PM2 only (prod stays up during build)..."
 pm2 stop desirableproperties-staging 2>/dev/null || true
@@ -81,5 +104,9 @@ sleep 2
 curl -fsS http://127.0.0.1:3006/ >/dev/null && echo "OK: staging app responding on :3006"
 HTML=$(curl -fsS http://127.0.0.1:3006/)
 echo "$HTML" | grep -q 'site-mobile-nav' && echo "OK: challenge-site markup (mobile nav) present"
+echo "$HTML" | grep -q 'featured-pathway-heading' && echo "OK: FeaturedPathwayPanel (AI & Human Agency) present"
+echo "$HTML" | grep -q 'the-fork-in-the-web' && echo "OK: Fork in the Web pathway content present"
+echo "$HTML" | grep -q 'href="/badges"' && echo "OK: Badges nav link present"
+echo "$HTML" | grep -q '/images/dps/card/' && echo "OK: DP card image paths present"
 STAGING_CSS=$(echo "$HTML" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
 curl -fsS "http://127.0.0.1:3006${STAGING_CSS}" >/dev/null && echo "OK: staging CSS loads (${STAGING_CSS})"

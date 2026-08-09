@@ -11,9 +11,12 @@ Staging runs the same Next.js challenge-site as production from `/home/ubuntu/de
 
 ## Staging-first workflow
 
-1. Deploy to staging: `./deploy-staging.sh`
-2. Verify on https://staging.desirableproperties.org (mobile hamburger nav, sign-in, Hermes, etc.)
-3. Promote to production: `./deploy.sh` (stops/restarts prod only; staging keeps running)
+**Branch requirement:** Staging currently previews `feat/ai-human-agency-pathway` (AI & Human Agency pathway, Fork in the Web panel, badges nav, DP card images). Until that branch merges to `main`, **always** checkout `feat/ai-human-agency-pathway` before `./deploy-staging.sh`. The script aborts if you are on another branch or if `FeaturedPathwayPanel.tsx` is missing (e.g. after a mistaken deploy from `main`).
+
+1. `git checkout feat/ai-human-agency-pathway`
+2. Deploy to staging: `./deploy-staging.sh`
+3. Verify on https://staging.desirableproperties.org (Featured Pathway panel, Fork in the Web, `/badges`, DP card images, mobile nav, sign-in, Hermes, etc.)
+4. Promote to production: `./deploy.sh` (stops/restarts prod only; staging keeps running) — production follows `main`, not the feat branch
 
 Both scripts share one git checkout but **separate build output directories** (`.next-prod` / `.next-staging`). Staging deploy does **not** stop production or overwrite prod's build artifacts.
 
