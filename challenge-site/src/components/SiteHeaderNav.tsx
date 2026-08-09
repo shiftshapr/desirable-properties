@@ -129,7 +129,7 @@ function DesktopNavDropdown({
         <ul
           id={menuId}
           role="menu"
-          className="absolute left-0 top-full z-50 mt-2 min-w-[190px] overflow-hidden rounded-xl border border-slate-700 bg-slate-900 py-1 shadow-xl shadow-black/40"
+          className="absolute left-0 top-full z-50 mt-2 min-w-[280px] overflow-hidden rounded-xl border border-slate-700 bg-slate-900 py-1 shadow-xl shadow-black/40"
         >
           {(item.children ?? []).map((child) => (
             <li key={child.href ?? child.label} role="none">
@@ -137,7 +137,7 @@ function DesktopNavDropdown({
                 href={child.href ?? '#'}
                 label={child.label}
                 external={child.external}
-                className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+                className="block whitespace-nowrap px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
                 onNavigate={() => setOpen(false)}
               />
             </li>

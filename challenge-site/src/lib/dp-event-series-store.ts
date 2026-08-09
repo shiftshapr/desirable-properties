@@ -1,6 +1,12 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
-import { FORK_SERIES_SLUG, FORK_SESSION_SEEDS, BOOK_LAUNCH_SLUG, BOOK_LAUNCH_SEED } from '@/lib/dp-event-series-seed';
+import {
+  FORK_SERIES_SLUG,
+  FORK_SERIES_TITLE,
+  FORK_SESSION_SEEDS,
+  BOOK_LAUNCH_SLUG,
+  BOOK_LAUNCH_SEED,
+} from '@/lib/dp-event-series-seed';
 import {
   FORK_PEARL_BADGE_IMAGE_URL,
   FORK_SERIES_BADGE_IMAGE_URL,
@@ -322,7 +328,7 @@ async function seedForkSeriesIfMissing() {
       [
         seriesId,
         FORK_SERIES_SLUG,
-        'Fork in the Web Workshops',
+        FORK_SERIES_TITLE,
         'Will AI Mediate Reality — or Help Us Build a Human-Centered Internet?',
         'Four standalone online workshops exploring the second fork in the road: what kind of digital world exists when AI is everywhere.',
         '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
@@ -455,9 +461,20 @@ async function seedBookLaunchIfMissing() {
   );
 }
 
+async function backfillForkSeriesTitle() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+  await pool.query(
+    `UPDATE dp_event_series SET title = $1, updated_at = now(), updated_by = 'seed'
+     WHERE slug = $2 AND title = 'Fork in the Web Workshops'`,
+    [FORK_SERIES_TITLE, FORK_SERIES_SLUG],
+  );
+}
+
 async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
+  await backfillForkSeriesTitle();
 }
 
 async function backfillForkSeriesBadgeImages() {

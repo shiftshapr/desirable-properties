@@ -2,6 +2,8 @@
 
 export const FORK_SERIES_SLUG = 'fork-in-the-web-workshops';
 
+export const FORK_SERIES_TITLE = 'Fork in the Web workshops';
+
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
 /** Single event — no badge; Luma date TBD (save-the-date). */

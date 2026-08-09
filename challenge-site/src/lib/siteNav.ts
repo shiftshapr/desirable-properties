@@ -23,8 +23,9 @@ export type UpcomingEventNavItem = {
   external?: boolean;
 };
 
-export function upcomingEventNavLabel(dateLabel: string, title: string): string {
-  return `${dateLabel} — ${title}`;
+/** Nav dropdown shows title only; dates appear on /events and series pages. */
+export function upcomingEventNavLabel(_dateLabel: string, title: string): string {
+  return title;
 }
 
 /** Insert Events nav after About when upcoming entries exist. */
