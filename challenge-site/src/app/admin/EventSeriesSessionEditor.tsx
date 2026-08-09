@@ -161,10 +161,14 @@ export default function EventSeriesSessionEditor({
             />
           </label>
           <label className="block text-sm">
-            <span className="text-slate-400">Live URL</span>
+            <span className="text-slate-400">Live URL (join link)</span>
+            <p className="mt-0.5 text-xs text-slate-500">
+              Zoom, Meet, or other link participants use to join this session live.
+            </p>
             <input
               className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5 text-slate-100"
               value={session.liveUrl || ''}
+              placeholder="https://…"
               onChange={(e) => setSession({ ...session, liveUrl: e.target.value })}
             />
           </label>
