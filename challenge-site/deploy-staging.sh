@@ -29,13 +29,36 @@ fi
 
 echo "[0/5] Branch guard OK (${REQUIRED_BRANCH}, FeaturedPathwayPanel present)"
 
-echo "[1/5] Stopping staging PM2 only (prod stays up during build)..."
-pm2 stop desirableproperties-staging 2>/dev/null || true
+# Build to a side directory so the live PM2 process keeps serving .next-staging (no 502 window).
+STAGING_BUILD_DIR=".next-staging-build"
+STAGING_LIVE_DIR=".next-staging"
 
-# Staging builds to .next-staging; prod uses .next-prod — builds no longer clobber each other.
-echo "[2/5] Building Next.js app (DP_ENV=staging → .next-staging)..."
+echo "[1/5] Building Next.js app (staging stays online; build → ${STAGING_BUILD_DIR})..."
 export DP_ENV=staging
+export NEXT_DIST_DIR="$STAGING_BUILD_DIR"
+rm -rf "$STAGING_BUILD_DIR"
+
+monitor_pid=""
+if pm2 pid desirableproperties-staging >/dev/null 2>&1; then
+  (
+    while true; do
+      if curl -fsS --max-time 5 http://127.0.0.1:3006/ >/dev/null 2>&1; then
+        echo "[monitor] staging OK on :3006 ($(date +%H:%M:%S))"
+      else
+        echo "[monitor] WARNING: staging not responding on :3006 ($(date +%H:%M:%S))"
+      fi
+      sleep 30
+    done
+  ) &
+  monitor_pid=$!
+fi
+
 npm run build
+
+if [[ -n "$monitor_pid" ]]; then
+  kill "$monitor_pid" 2>/dev/null || true
+  wait "$monitor_pid" 2>/dev/null || true
+fi
 
 probe_prod_css() {
   if ! pm2 pid desirableproperties >/dev/null 2>&1; then
@@ -73,9 +96,24 @@ probe_prod_css() {
 
 probe_prod_css
 
-echo "[3/5] Starting staging PM2 process..."
-pm2 delete desirableproperties-staging 2>/dev/null || true
-pm2 start ecosystem.staging.config.js
+echo "[2/5] Swapping ${STAGING_BUILD_DIR} → ${STAGING_LIVE_DIR} and restarting staging PM2..."
+if [[ ! -d "$STAGING_BUILD_DIR" ]]; then
+  echo "ERROR: build output missing at ${STAGING_BUILD_DIR}"
+  exit 1
+fi
+rm -rf "${STAGING_LIVE_DIR}.old"
+if [[ -d "$STAGING_LIVE_DIR" ]]; then
+  mv "$STAGING_LIVE_DIR" "${STAGING_LIVE_DIR}.old"
+fi
+mv "$STAGING_BUILD_DIR" "$STAGING_LIVE_DIR"
+rm -rf "${STAGING_LIVE_DIR}.old"
+
+if pm2 pid desirableproperties-staging >/dev/null 2>&1; then
+  pm2 restart desirableproperties-staging
+else
+  pm2 delete desirableproperties-staging 2>/dev/null || true
+  pm2 start ecosystem.staging.config.js
+fi
 
 if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
   echo
@@ -85,7 +123,7 @@ if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
   echo "           /home/ubuntu/meta-console/bin/pm2-safe-save"
 fi
 
-echo "[4/5] Installing nginx vhost (requires sudo)..."
+echo "[3/5] Installing nginx vhost (requires sudo)..."
 if [[ "$(id -u)" -eq 0 ]]; then
   install -m 0644 "$NGINX_CONF" /etc/nginx/sites-available/staging.desirableproperties.org.conf
   ln -sf /etc/nginx/sites-available/staging.desirableproperties.org.conf /etc/nginx/sites-enabled/staging.desirableproperties.org.conf
@@ -99,7 +137,7 @@ else
   echo "  sudo certbot --nginx -d staging.desirableproperties.org"
 fi
 
-echo "[5/5] Smoke test..."
+echo "[4/5] Smoke test..."
 sleep 2
 curl -fsS http://127.0.0.1:3006/ >/dev/null && echo "OK: staging app responding on :3006"
 HTML=$(curl -fsS http://127.0.0.1:3006/)
