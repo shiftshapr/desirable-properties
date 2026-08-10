@@ -130,7 +130,7 @@ export const FORK_SESSION_SEEDS = [
         minutesEstimate: 5,
       },
       {
-        label: 'Optional: Full essay — A Fork in the Web',
+        label: 'Full essay — A Fork in the Web',
         url: '/perspectives/a-fork-in-the-web',
         minutesEstimate: 19,
         optional: true,
@@ -266,7 +266,7 @@ export const FORK_SESSION_SEEDS = [
         minutesEstimate: 1,
       },
       {
-        label: 'Optional: Full pathway — AI & Human Agency',
+        label: 'Full pathway — AI & Human Agency',
         url: '/pathways/ai-human-agency',
         minutesEstimate: 10,
         optional: true,
