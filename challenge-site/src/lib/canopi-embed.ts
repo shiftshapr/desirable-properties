@@ -9,7 +9,7 @@ export const DP_CANOPI_COMMUNITY_ID = 'c0f30bc5-de17-4328-80d9-ff8f364907da';
 /** Prod origin used for Canopi pageId hashing (staging mirrors prod threads). */
 export const DP_CANOPI_SITE_ORIGIN = 'https://desirableproperties.org';
 
-export const FORK_PERSPECTIVE_PATH = '/perspectives/the-fork-in-the-web';
+export const FORK_PERSPECTIVE_PATH = '/perspectives/a-fork-in-the-web';
 
 /** Open Discuss on a challenge-site perspective page. */
 export function perspectiveDiscussHref(path: string = FORK_PERSPECTIVE_PATH): string {

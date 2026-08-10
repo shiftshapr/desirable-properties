@@ -1,7 +1,7 @@
 import type { PerspectiveMeta } from '@/lib/perspectives';
 
 export const FORK_IN_THE_WEB: PerspectiveMeta = {
-  slug: 'the-fork-in-the-web',
+  slug: 'a-fork-in-the-web',
   title: 'A Fork in the Web',
   subtitle:
     'Will AI Mediate Reality – or Help Us Build a Human-Centered Internet?',

@@ -5,7 +5,7 @@ import CanopiWebEmbed from '@/components/canopi/CanopiWebEmbed';
 import PerspectiveBody from '@/components/perspectives/PerspectiveBody';
 import PerspectiveCTA from '@/components/perspectives/PerspectiveCTA';
 import PerspectiveHeader from '@/components/perspectives/PerspectiveHeader';
-import { FORK_IN_THE_WEB } from '@/data/perspectives/the-fork-in-the-web';
+import { FORK_IN_THE_WEB } from '@/data/perspectives/a-fork-in-the-web';
 
 const article = FORK_IN_THE_WEB;
 

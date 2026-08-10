@@ -28,6 +28,15 @@ const WEB3AUTH_CSP = [
 
 const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
+  async redirects() {
+    return [
+      {
+        source: '/perspectives/the-fork-in-the-web',
+        destination: '/perspectives/a-fork-in-the-web',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
