@@ -541,7 +541,7 @@ Deploy from `feat/ai-human-agency-pathway` via `./deploy-staging.sh`.
 | Workshop briefings | `docs/fork-in-the-web-workshop-briefings.md` |
 | Postgres schema home | `challenge-site/src/lib/dp-db.ts` |
 | Invite-content store pattern | `challenge-site/src/lib/dp-invite-content-store.ts` |
-| Fork perspective | `challenge-site/src/data/perspectives/the-fork-in-the-web.ts` |
+| Fork perspective | `challenge-site/src/data/perspectives/a-fork-in-the-web.ts` |
 | AI compose assist | `challenge-site/src/components/compose/ComposeFieldAiAssist.tsx` |
 | Discuss & Patch | `challenge-site/src/lib/govhub.ts`, `DiscussPatchLink` |
 | Patch parser | `challenge-site/src/lib/discuss-patch.ts` |

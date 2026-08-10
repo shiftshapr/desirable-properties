@@ -209,7 +209,7 @@ export default function InviteContentAdminPanel() {
         </p>
         <p className="mt-2 text-slate-400">
           Events are manual links only (no Luma API). Perspectives should use site paths like{' '}
-          <code className="text-slate-300">/perspectives/the-fork-in-the-web</code>.
+          <code className="text-slate-300">/perspectives/a-fork-in-the-web</code>.
         </p>
       </div>
 
@@ -355,7 +355,7 @@ export default function InviteContentAdminPanel() {
             <input
               value={perspectiveDraft.url}
               onChange={(e) => setPerspectiveDraft((d) => ({ ...d, url: e.target.value }))}
-              placeholder="/perspectives/the-fork-in-the-web"
+              placeholder="/perspectives/a-fork-in-the-web"
               className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-3 py-2 text-white"
             />
           </label>
@@ -364,7 +364,7 @@ export default function InviteContentAdminPanel() {
             <input
               value={perspectiveDraft.slug}
               onChange={(e) => setPerspectiveDraft((d) => ({ ...d, slug: e.target.value }))}
-              placeholder="the-fork-in-the-web"
+              placeholder="a-fork-in-the-web"
               className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-3 py-2 text-white"
             />
           </label>

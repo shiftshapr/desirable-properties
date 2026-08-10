@@ -1,6 +1,6 @@
 # Fork in the Web — Workshop Series Briefings
 
-Facilitator and workshop-design agent brief for four **standalone**, **75-minute**, **online** workshops tied to the Desirable Properties Challenge perspective [*A Fork in the Web*](https://staging.desirableproperties.org/perspectives/the-fork-in-the-web).
+Facilitator and workshop-design agent brief for four **standalone**, **75-minute**, **online** workshops tied to the Desirable Properties Challenge perspective [*A Fork in the Web*](https://staging.desirableproperties.org/perspectives/a-fork-in-the-web).
 
 ---
 
@@ -91,8 +91,8 @@ Surface the nested fork inside the Pro-Human AI conversation: not only “will A
 
 | Role | File (repo path) |
 |------|------------------|
-| Primary (open) | `challenge-site/public/images/perspectives/the-fork-in-the-web/you-ai-everything-else.webp` |
-| Secondary (contrast) | `challenge-site/public/images/perspectives/the-fork-in-the-web/intelligence-is-not-a-place.webp` |
+| Primary (open) | `challenge-site/public/images/perspectives/a-fork-in-the-web/you-ai-everything-else.webp` |
+| Secondary (contrast) | `challenge-site/public/images/perspectives/a-fork-in-the-web/intelligence-is-not-a-place.webp` |
 
 ### Central questions
 
@@ -152,8 +152,8 @@ Help participants feel the difference between AI that makes fragmentation invisi
 
 | Role | File (repo path) |
 |------|------------------|
-| Open | `challenge-site/public/images/perspectives/the-fork-in-the-web/privatization-of-context.webp` |
-| Mid / close | `challenge-site/public/images/perspectives/the-fork-in-the-web/concierge-vs-commons.webp` |
+| Open | `challenge-site/public/images/perspectives/a-fork-in-the-web/privatization-of-context.webp` |
+| Mid / close | `challenge-site/public/images/perspectives/a-fork-in-the-web/concierge-vs-commons.webp` |
 
 ### Central questions
 
@@ -217,9 +217,9 @@ Move from critique to constructive architecture: many independent environments a
 
 | Role | File (repo path) |
 |------|------------------|
-| Primary | `challenge-site/public/images/perspectives/the-fork-in-the-web/human-centered-layered-web.webp` |
-| Close | `challenge-site/public/images/perspectives/the-fork-in-the-web/ai-inhabitant-not-landlord.webp` |
-| Optional | `challenge-site/public/images/perspectives/the-fork-in-the-web/space-for-layers.webp` (layer vs. space for layers) |
+| Primary | `challenge-site/public/images/perspectives/a-fork-in-the-web/human-centered-layered-web.webp` |
+| Close | `challenge-site/public/images/perspectives/a-fork-in-the-web/ai-inhabitant-not-landlord.webp` |
+| Optional | `challenge-site/public/images/perspectives/a-fork-in-the-web/space-for-layers.webp` (layer vs. space for layers) |
 
 ### Central questions
 
@@ -286,9 +286,9 @@ Convert principles into governance instincts: who holds authority over meaning, 
 
 | Role | File (repo path) |
 |------|------------------|
-| Open | `challenge-site/public/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp` |
-| Optional opener | `challenge-site/public/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp` |
-| Close | `challenge-site/public/images/perspectives/the-fork-in-the-web/second-fork-closing.webp` |
+| Open | `challenge-site/public/images/perspectives/a-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp` |
+| Optional opener | `challenge-site/public/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp` |
+| Close | `challenge-site/public/images/perspectives/a-fork-in-the-web/second-fork-closing.webp` |
 
 ### Central questions
 
@@ -358,7 +358,7 @@ End on hope, not doom: the second-fork image shows layered civic spaces we can s
 
 All images live under:
 
-`challenge-site/public/images/perspectives/the-fork-in-the-web/`
+`challenge-site/public/images/perspectives/a-fork-in-the-web/`
 
 ---
 
@@ -368,10 +368,10 @@ All images live under:
 
 | Material | URL / path | Why |
 |----------|------------|-----|
-| **A Fork in the Web** | https://staging.desirableproperties.org/perspectives/the-fork-in-the-web | Canonical narrative + section order |
+| **A Fork in the Web** | https://staging.desirableproperties.org/perspectives/a-fork-in-the-web | Canonical narrative + section order |
 | **humanstatement.org** | https://humanstatement.org/ | First fork framing |
 | **AI & Human Agency pathway** | https://staging.desirableproperties.org/pathways/ai-human-agency | Questions + related DPs for artifact hooks |
-| **Fork illustrations** | `challenge-site/public/images/perspectives/the-fork-in-the-web/*.webp` | Visual anchors |
+| **Fork illustrations** | `challenge-site/public/images/perspectives/a-fork-in-the-web/*.webp` | Visual anchors |
 | **This document** | `docs/fork-in-the-web-workshop-briefings.md` | Scope, outcomes, constraints |
 
 ### Tier 2 — Agent should produce
@@ -389,7 +389,7 @@ All images live under:
 | Full DP list / individual DP pages | Only if workshops produce DP patches |
 | Book intro | https://staging.book.desirableproperties.org/viewer/intro |
 | `challenge-site/src/components/pathways/ArchitectureFork.tsx` | Short “two trajectories” contrast |
-| `challenge-site/src/data/perspectives/the-fork-in-the-web.ts` | Full essay source for quotes |
+| `challenge-site/src/data/perspectives/a-fork-in-the-web.ts` | Full essay source for quotes |
 | Luma / event links | Post-workshop invites only |
 
 ---
@@ -425,8 +425,8 @@ Deliver per workshop:
 
 | Asset | Location |
 |-------|----------|
-| Perspective page | `challenge-site/src/app/perspectives/the-fork-in-the-web/page.tsx` |
-| Essay body (markdown) | `challenge-site/src/data/perspectives/the-fork-in-the-web.ts` |
+| Perspective page | `challenge-site/src/app/perspectives/a-fork-in-the-web/page.tsx` |
+| Essay body (markdown) | `challenge-site/src/data/perspectives/a-fork-in-the-web.ts` |
 | Pathway data | `challenge-site/src/data/pathways/ai-human-agency.ts` |
 | Two trajectories UI | `challenge-site/src/components/pathways/ArchitectureFork.tsx` |
 

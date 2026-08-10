@@ -2,9 +2,9 @@
 
 The challenge-site loads Canopi Discuss on:
 
-`https://desirableproperties.org/perspectives/the-fork-in-the-web`
+`https://desirableproperties.org/perspectives/a-fork-in-the-web`
 
-(staging: `https://staging.desirableproperties.org/perspectives/the-fork-in-the-web`)
+(staging: `https://staging.desirableproperties.org/perspectives/a-fork-in-the-web`)
 
 **Embed instance ID:** `7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c`  
 **Community:** DP Challenge (`c0f30bc5-de17-4328-80d9-ff8f364907da`)
@@ -45,7 +45,7 @@ The instance uses **disable all pages except listed rules** (same as the book).
 Under **Page targeting** → **Exception rules**, add:
 
 ```
-/perspectives/the-fork-in-the-web
+/perspectives/a-fork-in-the-web
 ```
 
 Optional (if you add more Perspectives later):
@@ -83,14 +83,14 @@ Book chapter pages can keep the existing DP workgroup welcome if the UI supports
 After saving in canopi.live:
 
 1. Open  
-   `https://staging.desirableproperties.org/perspectives/the-fork-in-the-web`
+   `https://staging.desirableproperties.org/perspectives/a-fork-in-the-web`
 2. Confirm the **Join the discussion** trigger (bottom-right) appears within a few seconds.
 3. Click it — Canopi Discuss sidebar should open for this page.
 4. Test auto-open:  
-   `…/perspectives/the-fork-in-the-web?discuss=1`  
+   `…/perspectives/a-fork-in-the-web?discuss=1`  
    Sidebar should open on load (after embed ready).
 5. Post a test comment; confirm it appears under the page context for  
-   `https://desirableproperties.org/perspectives/the-fork-in-the-web`  
+   `https://desirableproperties.org/perspectives/a-fork-in-the-web`  
    (staging uses prod page URL for thread identity).
 
 ---
@@ -101,7 +101,7 @@ After saving in canopi.live:
 |-------|------|
 | React loader (one script tag) | `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` |
 | Host auth API | `challenge-site/src/app/api/auth/canopi/embed-session/route.ts` |
-| Perspective page | `challenge-site/src/app/perspectives/the-fork-in-the-web/page.tsx` |
+| Perspective page | `challenge-site/src/app/perspectives/a-fork-in-the-web/page.tsx` |
 | Config mirror | `desirableproperties-book/json/canopi-embed.json` |
 
 Integration — no publisher bridge file:

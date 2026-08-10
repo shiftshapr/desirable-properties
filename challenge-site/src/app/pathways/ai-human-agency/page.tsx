@@ -44,7 +44,7 @@ export default function AiHumanAgencyPathwayPage() {
         highlight="The question is not only how to make AI safe. What properties must this emerging digital environment possess to remain meaningfully human-centered?"
         ctas={[
           {
-            href: '/perspectives/the-fork-in-the-web',
+            href: '/perspectives/a-fork-in-the-web',
             label: 'Read “A Fork in the Web” →',
             eventName: 'pathway_fork_article_click',
           },

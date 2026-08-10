@@ -11,7 +11,7 @@ import { FORK_SERIES_TOTAL_ESTIMATE_LABEL } from '@/lib/dp-event-series-seed';
 import { forkSeriesBadgeTopLabel } from '@/lib/dp-series-badges';
 
 const FORK_HERO_SRC =
-  '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
+  '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
 const FORK_HERO_ALT =
   'A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers.';
 
@@ -208,7 +208,7 @@ export default function FeaturedPathwayPanel({ participation }: Props) {
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12 md:flex-row md:items-center md:gap-10 lg:gap-12">
         <TrackedLink
-          href="/perspectives/the-fork-in-the-web"
+          href="/perspectives/a-fork-in-the-web"
           eventName="homepage_fork_article_click"
           className="group block w-full shrink-0 overflow-hidden rounded-xl border border-violet-900/50 bg-slate-950/40 shadow-lg shadow-violet-950/30 ring-1 ring-white/5 transition hover:border-violet-700/60 hover:ring-violet-400/20 md:w-[min(48%,32rem)]"
         >
@@ -255,7 +255,7 @@ export default function FeaturedPathwayPanel({ participation }: Props) {
               Explore AI &amp; Human Agency →
             </TrackedLink>
             <TrackedLink
-              href="/perspectives/the-fork-in-the-web"
+              href="/perspectives/a-fork-in-the-web"
               eventName="homepage_fork_article_click"
               className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
             >

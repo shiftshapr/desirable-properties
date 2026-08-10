@@ -142,7 +142,7 @@ curl -fsS http://127.0.0.1:3006/ >/dev/null && echo "OK: staging app responding 
 HTML=$(curl -fsS http://127.0.0.1:3006/)
 echo "$HTML" | grep -q 'site-mobile-nav' && echo "OK: challenge-site markup (mobile nav) present"
 echo "$HTML" | grep -q 'featured-pathway-heading' && echo "OK: FeaturedPathwayPanel (AI & Human Agency) present"
-echo "$HTML" | grep -q 'the-fork-in-the-web' && echo "OK: Fork in the Web pathway content present"
+echo "$HTML" | grep -q 'a-fork-in-the-web' && echo "OK: Fork in the Web pathway content present"
 echo "$HTML" | grep -q 'href="/badges"' && echo "OK: Badges nav link present"
 echo "$HTML" | grep -q '/images/dps/card/' && echo "OK: DP card image paths present"
 STAGING_CSS=$(echo "$HTML" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')

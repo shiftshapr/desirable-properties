@@ -78,9 +78,26 @@ function perspectiveRowToModel(row: Record<string, unknown>): InvitePerspective 
   };
 }
 
+async function migrateForkPerspectiveSlug() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  await pool.query(
+    `UPDATE dp_invite_perspective
+     SET url = '/perspectives/a-fork-in-the-web',
+         slug = 'a-fork-in-the-web',
+         updated_at = now(),
+         updated_by = 'slug-migration'
+     WHERE slug = 'the-fork-in-the-web'
+        OR url = '/perspectives/the-fork-in-the-web'`,
+  );
+}
+
 async function seedInviteContentIfEmpty() {
   const pool = await ensureDpSchema();
   if (!pool) return;
+
+  await migrateForkPerspectiveSlug();
 
   const perspectiveCount = await pool.query('SELECT COUNT(*)::int AS n FROM dp_invite_perspective');
   if ((perspectiveCount.rows[0]?.n as number) > 0) return;
@@ -93,8 +110,8 @@ async function seedInviteContentIfEmpty() {
     [
       id,
       'A Fork in the Web',
-      '/perspectives/the-fork-in-the-web',
-      'the-fork-in-the-web',
+      '/perspectives/a-fork-in-the-web',
+      'a-fork-in-the-web',
     ],
   );
 }

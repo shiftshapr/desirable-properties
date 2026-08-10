@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
 const URL =
-  'https://staging.desirableproperties.org/perspectives/the-fork-in-the-web?discuss=1';
+  'https://staging.desirableproperties.org/perspectives/a-fork-in-the-web?discuss=1';
 
 async function main() {
   const browser = await chromium.launch({ headless: true });

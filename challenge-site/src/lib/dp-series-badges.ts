@@ -8,7 +8,7 @@ export const PEARL_AGENT_DROP_IMAGE = '/images/badges/pearl.webp';
 export const FORK_SERIES_SLUG = 'fork-in-the-web-workshops';
 export const FORK_SERIES_BADGE_TOP_LABEL = 'A Fork in the Web';
 export const FORK_SERIES_BADGE_CENTER =
-  '/images/perspectives/the-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
+  '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
 export const FORK_PEARL_BADGE_CENTER = PEARL_AGENT_DROP_IMAGE;
 
 /** Default center overlays for Fork workshop series badge seed / admin. */

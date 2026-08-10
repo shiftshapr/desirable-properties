@@ -32,8 +32,8 @@ const CANOPI_PAGE_IDS = [
   'dp04',
   'dp05',
   canopiPageIdFromUrl(`${DP_CANOPI_BOOK_ORIGIN}/viewer/intro`),
-  canopiPageIdFromUrl('https://staging.desirableproperties.org/perspectives/the-fork-in-the-web'),
-  canopiPageIdFromUrl('https://desirableproperties.org/perspectives/the-fork-in-the-web'),
+  canopiPageIdFromUrl('https://staging.desirableproperties.org/perspectives/a-fork-in-the-web'),
+  canopiPageIdFromUrl('https://desirableproperties.org/perspectives/a-fork-in-the-web'),
 ];
 
 function namesMatch(a: string, b: string) {

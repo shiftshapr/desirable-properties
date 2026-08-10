@@ -110,7 +110,7 @@ export const FORK_SESSION_SEEDS = [
     sessionNumber: 1,
     slug: 'the-first-fork',
     title: 'The First Fork: You → AI → Everything Else',
-    imageUrl: '/images/perspectives/the-fork-in-the-web/you-ai-everything-else.webp',
+    imageUrl: '/images/perspectives/a-fork-in-the-web/you-ai-everything-else.webp',
     startsAt: FORK_SESSION_SCHEDULE[0].startsAt,
     endsAt: FORK_SESSION_SCHEDULE[0].endsAt,
     liveUrl: 'https://luma.com/polb50e0',
@@ -121,7 +121,7 @@ export const FORK_SESSION_SEEDS = [
     preReads: [
       {
         label: 'A Fork in the Web — the first fork',
-        url: '/perspectives/the-fork-in-the-web#the-internet-where-we-stop-going-to-the-internet',
+        url: '/perspectives/a-fork-in-the-web#the-internet-where-we-stop-going-to-the-internet',
         minutesEstimate: 2,
       },
       {
@@ -131,7 +131,7 @@ export const FORK_SESSION_SEEDS = [
       },
       {
         label: 'Optional: Full essay — A Fork in the Web',
-        url: '/perspectives/the-fork-in-the-web',
+        url: '/perspectives/a-fork-in-the-web',
         minutesEstimate: 19,
         optional: true,
       },
@@ -158,7 +158,7 @@ export const FORK_SESSION_SEEDS = [
     sessionNumber: 2,
     slug: 'concierge-vs-commons',
     title: 'Concierge vs. Commons',
-    imageUrl: '/images/perspectives/the-fork-in-the-web/concierge-vs-commons.webp',
+    imageUrl: '/images/perspectives/a-fork-in-the-web/concierge-vs-commons.webp',
     startsAt: FORK_SESSION_SCHEDULE[1].startsAt,
     endsAt: FORK_SESSION_SCHEDULE[1].endsAt,
     liveUrl: 'https://luma.com/j5s1q67g',
@@ -169,12 +169,12 @@ export const FORK_SESSION_SEEDS = [
     preReads: [
       {
         label: 'Privatization of Context',
-        url: '/perspectives/the-fork-in-the-web#the-privatization-of-context',
+        url: '/perspectives/a-fork-in-the-web#the-privatization-of-context',
         minutesEstimate: 1,
       },
       {
         label: 'Concierge vs. Commons',
-        url: '/perspectives/the-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture',
+        url: '/perspectives/a-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture',
         minutesEstimate: 1,
       },
     ],
@@ -200,7 +200,7 @@ export const FORK_SESSION_SEEDS = [
     sessionNumber: 3,
     slug: 'human-centered-layered-web',
     title: 'Designing the Human-Centered Layered Web',
-    imageUrl: '/images/perspectives/the-fork-in-the-web/human-centered-layered-web.webp',
+    imageUrl: '/images/perspectives/a-fork-in-the-web/human-centered-layered-web.webp',
     startsAt: FORK_SESSION_SCHEDULE[2].startsAt,
     endsAt: FORK_SESSION_SCHEDULE[2].endsAt,
     liveUrl: 'https://luma.com/grrdboa9',
@@ -211,12 +211,12 @@ export const FORK_SESSION_SEEDS = [
     preReads: [
       {
         label: 'A Human-Centered Layered Web',
-        url: '/perspectives/the-fork-in-the-web#a-human-centered-layered-web',
+        url: '/perspectives/a-fork-in-the-web#a-human-centered-layered-web',
         minutesEstimate: 3,
       },
       {
         label: 'AI as inhabitant, not landlord',
-        url: '/perspectives/the-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord',
+        url: '/perspectives/a-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord',
         minutesEstimate: 1,
       },
     ],
@@ -246,7 +246,7 @@ export const FORK_SESSION_SEEDS = [
     sessionNumber: 4,
     slug: 'sovereignty-and-second-fork',
     title: 'Sovereignty, Subsidiarity & the Second Fork',
-    imageUrl: '/images/perspectives/the-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp',
+    imageUrl: '/images/perspectives/a-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp',
     startsAt: FORK_SESSION_SCHEDULE[3].startsAt,
     endsAt: FORK_SESSION_SCHEDULE[3].endsAt,
     liveUrl: 'https://luma.com/cwjilts3',
@@ -257,7 +257,7 @@ export const FORK_SESSION_SEEDS = [
     preReads: [
       {
         label: 'Intellectual Sovereignty & Subsidiarity',
-        url: '/perspectives/the-fork-in-the-web#intellectual-sovereignty',
+        url: '/perspectives/a-fork-in-the-web#intellectual-sovereignty',
         minutesEstimate: 1,
       },
       {
