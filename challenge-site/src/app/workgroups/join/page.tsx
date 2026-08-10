@@ -451,19 +451,18 @@ export default async function JoinWorkgroupPage() {
                 </li>
               );
             })}
-            <li className="flex h-full flex-col overflow-hidden rounded-xl border border-amber-900/50 bg-slate-950/60 transition-colors hover:border-amber-700/60 sm:col-span-2 lg:col-span-3">
-              <div className="relative aspect-[21/9] bg-slate-950 sm:aspect-[3/1]">
+            <li className="flex h-full flex-col overflow-hidden rounded-xl border border-amber-900/50 bg-slate-950/60 transition-colors hover:border-amber-700/60">
+              <Link href={discoveryCollabHref} className="relative block aspect-[4/3] bg-slate-950">
                 <Image
                   src={discoveryCardSrc}
                   alt={dpDiscoveryImageAlt('DP Discovery')}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 1152px"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-              </div>
-              <div className="flex flex-1 flex-col p-5 lg:flex-row lg:items-start lg:gap-8">
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-2">
+              </Link>
+              <div className="flex flex-1 flex-col p-5">
+                <div className="flex items-start justify-between gap-2">
                   <span className="rounded-md border border-amber-900/60 bg-amber-950/30 px-2 py-0.5 text-xs font-mono font-semibold text-amber-200">
                     Discovery
                   </span>
@@ -485,46 +484,45 @@ export default async function JoinWorkgroupPage() {
                     {discoveryDescription}
                   </p>
                 ) : null}
-              </div>
-              <div className="mt-5 flex shrink-0 flex-col gap-3 lg:mt-0 lg:w-56">
-                <div className="flex flex-wrap gap-2">
-                  {collabEnabled ? (
-                    <Link
-                      href={discoveryCollabHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Collaborate
-                      <span aria-hidden>→</span>
-                    </Link>
-                  ) : (
-                    <a
-                      href={discoveryJoinHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                    >
-                      Join as member
-                      <span aria-hidden>→</span>
-                    </a>
-                  )}
-                  {!collabEnabled ? (
-                    <a
-                      href={discoveryNominateHref}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
-                    >
-                      Nominate
-                    </a>
+                <div className="mt-auto flex flex-col gap-3 pt-5">
+                  <div className="flex flex-wrap gap-2">
+                    {collabEnabled ? (
+                      <Link
+                        href={discoveryCollabHref}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                      >
+                        Collaborate
+                        <span aria-hidden>→</span>
+                      </Link>
+                    ) : (
+                      <a
+                        href={discoveryJoinHref}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-700 px-3.5 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+                      >
+                        Join as member
+                        <span aria-hidden>→</span>
+                      </a>
+                    )}
+                    {!collabEnabled ? (
+                      <a
+                        href={discoveryNominateHref}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+                      >
+                        Nominate
+                      </a>
+                    ) : null}
+                  </div>
+                  {collabEnabled && idBySlug.get(DP_DISCOVERY_SLUG) ? (
+                    <WorkgroupJoinNominateActions
+                      workgroupId={idBySlug.get(DP_DISCOVERY_SLUG)!}
+                      workgroupName="DP Discovery"
+                      workgroupSlug={DP_DISCOVERY_SLUG}
+                      joinFallbackHref={discoveryJoinHref}
+                      nominateFallbackHref={discoveryNominateHref}
+                      isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
+                    />
                   ) : null}
                 </div>
-                {collabEnabled && idBySlug.get(DP_DISCOVERY_SLUG) ? (
-                  <WorkgroupJoinNominateActions
-                    workgroupId={idBySlug.get(DP_DISCOVERY_SLUG)!}
-                    workgroupName="DP Discovery"
-                    workgroupSlug={DP_DISCOVERY_SLUG}
-                    joinFallbackHref={discoveryJoinHref}
-                    nominateFallbackHref={discoveryNominateHref}
-                    isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
-                  />
-                ) : null}
-              </div>
               </div>
             </li>
           </ul>
