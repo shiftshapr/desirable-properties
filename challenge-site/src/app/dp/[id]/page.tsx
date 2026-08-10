@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPProvenanceSection from '@/components/DPProvenanceSection';
 import RelatedPathway from '@/components/pathways/RelatedPathway';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
@@ -15,6 +16,7 @@ import {
 } from '@/lib/govhub';
 import { dpFullImageSrc, dpImageAlt } from '@/lib/dp-images';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import {
   loadDpProvenance,
@@ -53,9 +55,10 @@ export default async function DPPage({
     notFound();
   }
 
-  const [workgroups, provenance] = await Promise.all([
+  const [workgroups, provenance, memberWorkgroupIds] = await Promise.all([
     fetchChallengeWorkgroups(),
     Promise.resolve(loadDpProvenance(dp.id)),
+    readSessionMemberWorkgroupIds(),
   ]);
   const pciLinks = loadPciProvenanceForDp(dp.id);
 
@@ -70,6 +73,9 @@ export default async function DPPage({
   const workgroupNominateHref = workgroup?.slug
     ? workgroupGovHubHref(workgroup.slug, 'nominate')
     : null;
+  const isWorkgroupMember = Boolean(
+    workgroup?.id && memberWorkgroupIds.has(workgroup.id),
+  );
   const onchainDraftHref = dpInscriptionUrl(dp.id);
   const govhubDraftHref = dpGovHubDraftUrl(dp.id);
   const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
@@ -182,14 +188,12 @@ export default async function DPPage({
                   )}
                   {(readHref || pdfDownloadHref) && (
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                      <a
+                      <DiscussPatchLink
                         href={bookDiscussHref({ dpId: dp.id })}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="inline-flex items-center justify-center rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"
                       >
                         Read & discuss on the book
-                      </a>
+                      </DiscussPatchLink>
                       {readHref ? (
                         <a
                           href={readHref}
@@ -265,12 +269,18 @@ export default async function DPPage({
                     Collaborate
                   </Link>
                 ) : null}
-                <a
-                  href={workgroupJoinHref || workgroupHref}
-                  className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-                >
-                  Join WG
-                </a>
+                {isWorkgroupMember ? (
+                  <span className="inline-flex items-center justify-center rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-4 py-2 text-sm font-medium text-emerald-200">
+                    Member
+                  </span>
+                ) : (
+                  <a
+                    href={workgroupJoinHref || workgroupHref}
+                    className="inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                  >
+                    Join WG
+                  </a>
+                )}
                 <a
                   href={workgroupNominateHref || workgroupHref}
                   className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"

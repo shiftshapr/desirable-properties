@@ -51,12 +51,12 @@ export default function AboutPage() {
           </h1>
           <p className="mt-4 text-slate-400">
             Introduction of the book,{' '}
-            <a
+            <DiscussPatchLink
               href={bookIntroDiscussHref()}
               className="italic text-cyan-300 hover:text-cyan-200"
             >
               {DESIRABLE_PROPERTIES_BOOK_TITLE}
-            </a>
+            </DiscussPatchLink>
           </p>
           <a
             href={FRAMING_CHAPTER_URL}
@@ -250,12 +250,12 @@ export default function AboutPage() {
         <footer className="mt-16 rounded-xl border border-slate-800 bg-slate-900/60 p-6">
           <p className="text-slate-300">
             This page summarizes the opening chapter. Read and discuss chapters on{' '}
-            <a
+            <DiscussPatchLink
               href={bookIntroDiscussHref()}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </a>{' '}
+            </DiscussPatchLink>{' '}
             (comments live). Submit text patches on Gov Hub.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">

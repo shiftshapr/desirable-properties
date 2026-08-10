@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import {
   bookDiscussHref,
   bookIntroDiscussHref,
@@ -138,14 +139,12 @@ export default function DpWelcomeView({
             Open workgroup collaboration
           </Link>
         ) : null}
-        <a
+        <DiscussPatchLink
           href={bookHref}
-          target="_blank"
-          rel="noopener noreferrer"
           className="rounded-lg bg-violet-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-600"
         >
           Read & discuss on the book
-        </a>
+        </DiscussPatchLink>
         {patchHref ? (
           <a
             href={patchHref}

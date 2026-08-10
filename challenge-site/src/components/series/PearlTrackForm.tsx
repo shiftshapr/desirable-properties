@@ -6,6 +6,7 @@ import PearlMark from '@/components/badges/PearlMark';
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { useAuth } from '@/lib/auth-context';
 import { bookIntroDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 
@@ -285,12 +286,12 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
           >
             Patch on Gov Hub
           </a>
-          <a
+          <DiscussPatchLink
             href={bookIntroDiscussHref()}
             className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:border-slate-400"
           >
             Discuss &amp; Patch (book)
-          </a>
+          </DiscussPatchLink>
           <button
             type="button"
             onClick={() => void checkPatch()}

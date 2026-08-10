@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ChallengeCountdown from '@/components/ChallengeCountdown';
 import ChallengeTimeline from '@/components/ChallengeTimeline';
 import WorkgroupFormationStatus from '@/components/WorkgroupFormationStatus';
@@ -11,7 +12,7 @@ import {
   isWorkgroupFormationPhase,
 } from '@/lib/challengeTimeline';
 import {
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   fetchChallengeWorkgroups,
   FRAMING_CHAPTER_URL,
@@ -108,12 +109,12 @@ export default async function ChallengePage() {
             Today the project enters a new phase. The Desirable Properties Challenge invites people
             everywhere to refine, debate, test, and improve these living drafts using Meta-Layer
             tools. Read and discuss chapters on{' '}
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </a>{' '}
+            </DiscussPatchLink>{' '}
             (chapter comments are live now). Patch draft text on Gov Hub – select a passage and submit
             a revision. Over the coming months, workgroups will gather commentary, propose patches,
             and explore implementations that strengthen the overall coherence of the emerging
@@ -176,20 +177,21 @@ export default async function ChallengePage() {
             <h3 className="text-lg font-semibold text-white">The Layered Web</h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
               Read and discuss chapters on{' '}
-              <a
-                href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              <DiscussPatchLink
+                href={bookDiscussHref()}
                 className="text-violet-300 hover:text-violet-200"
               >
                 {DESIRABLE_PROPERTIES_BOOK_HOST}
-              </a> – chapter comments are live now. Passage-level patching on the book is coming; patch
+              </DiscussPatchLink>{' '}
+              – chapter comments are live now. Passage-level patching on the book is coming; patch
               drafts on Gov Hub today.
             </p>
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
               className="mt-4 inline-block text-sm font-medium text-violet-300 hover:text-violet-200"
             >
               Read & discuss on the book →
-            </a>
+            </DiscussPatchLink>
           </div>
         </section>
 
@@ -209,12 +211,12 @@ export default async function ChallengePage() {
             >
               Browse Version {challengeMeta.current_draft_version} DPs
             </Link>
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
               className="rounded-lg border border-violet-700/60 bg-violet-950/30 px-4 py-2 text-sm text-violet-200 hover:border-violet-500"
             >
               Read & discuss on the book
-            </a>
+            </DiscussPatchLink>
             <Link
               href="/about"
               className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"

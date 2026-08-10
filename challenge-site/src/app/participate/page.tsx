@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DpBadgeCarousel from '@/components/DpBadgeCarousel';
 import localData from '@/data/desirable-properties.json';
 import {
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
@@ -16,11 +17,20 @@ function PageLink({
   href,
   className,
   children,
+  discussPatch,
 }: {
   href: string;
   className: string;
   children: ReactNode;
+  discussPatch?: boolean;
 }) {
+  if (discussPatch) {
+    return (
+      <DiscussPatchLink href={href} className={className}>
+        {children}
+      </DiscussPatchLink>
+    );
+  }
   if (href === '/agent' || href.startsWith('http://') || href.startsWith('https://')) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
@@ -89,14 +99,12 @@ const CONTRIBUTE_CARDS = [
           <li>
             <strong className="font-semibold text-white">Discuss on the book</strong> – read chapters
             and comment with the community on{' '}
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
               className="text-cyan-300 hover:text-cyan-200"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </a>{' '}
+            </DiscussPatchLink>{' '}
             (comments are live now). Passage-level patching on the book is coming.
           </li>
           <li>
@@ -112,9 +120,10 @@ const CONTRIBUTE_CARDS = [
       </>
     ),
     cta: {
-      href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+      href: bookDiscussHref(),
       label: 'Read & discuss on the book →',
       primary: true,
+      discussPatch: true,
     },
     secondaryCta: {
       href: GOVHUB_DP_PATCHES_URL,
@@ -192,8 +201,9 @@ const FINAL_CTAS = [
     emoji: '📝',
     title: 'Review the Desirable Properties',
     description: 'Read and discuss on the book (comments live). Patch drafts on Gov Hub.',
-    href: DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+    href: bookDiscussHref(),
     primary: false,
+    discussPatch: true,
   },
   {
     emoji: '🤝',
@@ -335,6 +345,7 @@ export default function ParticipatePage() {
                         <>
                           <PageLink
                             href={card.cta.href}
+                            discussPatch={'discussPatch' in card.cta && card.cta.discussPatch}
                             className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
                           >
                             {card.cta.label}
@@ -349,6 +360,7 @@ export default function ParticipatePage() {
                       ) : (
                         <PageLink
                           href={card.cta.href}
+                          discussPatch={'discussPatch' in card.cta && card.cta.discussPatch}
                           className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
                         >
                           {card.cta.label}
@@ -492,6 +504,7 @@ export default function ParticipatePage() {
                 </p>
                 <PageLink
                   href={item.href}
+                  discussPatch={'discussPatch' in item && item.discussPatch}
                   className={`mt-5 inline-flex w-fit items-center rounded-lg px-4 py-2.5 text-sm font-medium ${
                     item.primary
                       ? 'bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500'

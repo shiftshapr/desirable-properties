@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { bookDiscussHref } from '@/lib/govhub';
 import { dpDetailHref } from '@/lib/dp-links';
@@ -119,12 +120,12 @@ export default function DpBadgeCarousel({ items, variant = 'embed' }: Props) {
             >
               View DP page →
             </Link>
-            <a
+            <DiscussPatchLink
               href={discussHref}
               className="inline-flex items-center rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
             >
               Discuss chapter
-            </a>
+            </DiscussPatchLink>
             {isPage ? null : (
               <Link
                 href="/badges"

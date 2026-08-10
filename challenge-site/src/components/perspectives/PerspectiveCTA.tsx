@@ -1,5 +1,6 @@
 import TrackedLink from '@/components/TrackedLink';
 import TrackedAnchor from '@/components/TrackedAnchor';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { perspectiveDiscussHref } from '@/lib/canopi-embed';
 import { bookDiscussHref, govhubUrl } from '@/lib/govhub';
 
@@ -51,16 +52,12 @@ export default function PerspectiveCTA({ perspectiveSlug }: Props) {
         >
           Discuss this essay →
         </TrackedLink>
-        <TrackedAnchor
+        <DiscussPatchLink
           href={bookDiscussHref()}
-          eventName="article_discuss_click"
-          eventPayload={{ perspective: perspectiveSlug, surface: 'book' }}
-          target="_blank"
-          rel="noopener noreferrer"
           className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-400"
         >
           Discuss the Desirable Properties →
-        </TrackedAnchor>
+        </DiscussPatchLink>
         <TrackedAnchor
           href={govhubUrl('/submit/?layer=the-metaweb')}
           eventName="article_candidate_dp_click"

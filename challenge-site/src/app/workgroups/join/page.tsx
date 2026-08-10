@@ -3,8 +3,9 @@ import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
 import Image from 'next/image';
 import Link from 'next/link';
 import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import {
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   DP_DISCOVERY_SLUG,
   fetchChallengeWorkgroups,
@@ -221,12 +222,12 @@ export default async function JoinWorkgroupPage() {
           </div>
           <p className="mt-6 text-sm text-slate-400">
             Not ready to join a workgroup yet? You can also{' '}
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
               className="text-cyan-300 hover:text-cyan-200"
             >
               comment on chapters at {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </a>{' '}
+            </DiscussPatchLink>{' '}
             or{' '}
             <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
               patch drafts directly on Gov Hub
