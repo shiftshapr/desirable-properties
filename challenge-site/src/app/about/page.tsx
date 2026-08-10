@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import DiscussPatchLink from '@/components/DiscussPatchLink';
 import {
-  DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL,
+  bookIntroDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   DESIRABLE_PROPERTIES_BOOK_TITLE,
   FRAMING_CHAPTER_REF,
@@ -51,7 +52,7 @@ export default function AboutPage() {
           <p className="mt-4 text-slate-400">
             Introduction of the book,{' '}
             <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              href={bookIntroDiscussHref()}
               className="italic text-cyan-300 hover:text-cyan-200"
             >
               {DESIRABLE_PROPERTIES_BOOK_TITLE}
@@ -250,7 +251,7 @@ export default function AboutPage() {
           <p className="text-slate-300">
             This page summarizes the opening chapter. Read and discuss chapters on{' '}
             <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+              href={bookIntroDiscussHref()}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {DESIRABLE_PROPERTIES_BOOK_HOST}
@@ -258,12 +259,12 @@ export default function AboutPage() {
             (comments live). Submit text patches on Gov Hub.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <a
-              href={DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL}
+            <DiscussPatchLink
+              href={bookIntroDiscussHref()}
               className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600"
             >
               Read & discuss on the book
-            </a>
+            </DiscussPatchLink>
             <a
               href={FRAMING_CHAPTER_URL}
               className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
