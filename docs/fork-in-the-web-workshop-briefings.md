@@ -287,7 +287,7 @@ Convert principles into governance instincts: who holds authority over meaning, 
 | Role | File (repo path) |
 |------|------------------|
 | Open | `challenge-site/public/images/perspectives/a-fork-in-the-web/intellectual-sovereignty-subsidiarity.webp` |
-| Optional opener | `challenge-site/public/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp` |
+| Optional opener | `challenge-site/public/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp` |
 | Close | `challenge-site/public/images/perspectives/a-fork-in-the-web/second-fork-closing.webp` |
 
 ### Central questions
@@ -353,7 +353,7 @@ End on hope, not doom: the second-fork image shows layered civic spaces we can s
 | `space-for-layers.webp` | 3 (optional) |
 | `ai-inhabitant-not-landlord.webp` | 3 |
 | `intellectual-sovereignty-subsidiarity.webp` | 4 |
-| `the-fork-in-the-web-hero-draft.webp` | 4 (optional opener) |
+| `a-fork-in-the-web-hero-draft.webp` | 4 (optional opener) |
 | `second-fork-closing.webp` | 4 |
 
 All images live under:

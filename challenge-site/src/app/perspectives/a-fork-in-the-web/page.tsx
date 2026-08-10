@@ -37,7 +37,7 @@ export default function ForkInTheWebPage() {
         />
         <figure className="mt-10">
           <Image
-            src="/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp"
+            src="/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp"
             alt="A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers."
             width={1586}
             height={992}

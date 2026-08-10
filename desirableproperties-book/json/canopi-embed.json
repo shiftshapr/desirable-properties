@@ -14,7 +14,7 @@
     "exception_rules": [
       "/viewer/*",
       "/viewer.htm",
-      "/perspectives/the-fork-in-the-web"
+      "/perspectives/a-fork-in-the-web"
     ]
   },
   "domains": [

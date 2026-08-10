@@ -334,7 +334,7 @@ async function seedForkSeriesIfMissing() {
         FORK_SERIES_TITLE,
         'Will AI Mediate Reality — or Help Us Build a Human-Centered Internet?',
         'Four standalone online workshops exploring the second fork in the road: what kind of digital world exists when AI is everywhere.',
-        '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
+        '/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp',
         '/perspectives/a-fork-in-the-web',
         '/pathways/ai-human-agency',
         4,
@@ -569,13 +569,14 @@ async function backfillForkPerspectiveSlug() {
   await pool.query(
     `UPDATE dp_event_series SET
        perspective_url = '/perspectives/a-fork-in-the-web',
-       hero_image_url = '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
+       hero_image_url = '/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp',
        updated_at = now(),
        updated_by = 'slug-migration'
      WHERE slug = $1
        AND (
          perspective_url = '/perspectives/the-fork-in-the-web'
          OR hero_image_url LIKE '/images/perspectives/the-fork-in-the-web/%'
+         OR hero_image_url LIKE '%/the-fork-in-the-web-hero-draft.webp'
        )`,
     [FORK_SERIES_SLUG],
   );

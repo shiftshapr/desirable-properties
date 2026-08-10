@@ -11,7 +11,7 @@ import { FORK_SERIES_TOTAL_ESTIMATE_LABEL } from '@/lib/dp-event-series-seed';
 import { forkSeriesBadgeTopLabel } from '@/lib/dp-series-badges';
 
 const FORK_HERO_SRC =
-  '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp';
+  '/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp';
 const FORK_HERO_ALT =
   'A luminous digital road forks above a glowing web, with one path narrowing into an AI gate and the other opening into shared human-centered layers.';
 
