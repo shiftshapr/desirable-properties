@@ -8,7 +8,7 @@ export const FORK_SERIES_TITLE = 'Fork in the Web workshops';
 export const FORK_SESSION_LENGTH_MINUTES = 75;
 
 /**
- * Full series participation: pre-read (~40 min) + 4×75 min sessions (5h) + session questions (~2.5h).
+ * Full series participation: pre-read (~15 min) + 4×75 min sessions (5h) + session questions (~2.5h).
  */
 export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈8 hours total';
 
@@ -122,7 +122,7 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'A Fork in the Web — the first fork',
         url: '/perspectives/the-fork-in-the-web#the-internet-where-we-stop-going-to-the-internet',
-        minutesEstimate: 5,
+        minutesEstimate: 2,
       },
       {
         label: 'Pro-Human AI Declaration',
@@ -170,12 +170,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'Privatization of Context',
         url: '/perspectives/the-fork-in-the-web#the-privatization-of-context',
-        minutesEstimate: 5,
+        minutesEstimate: 1,
       },
       {
         label: 'Concierge vs. Commons',
         url: '/perspectives/the-fork-in-the-web#we-could-solve-the-symptoms-without-solving-the-architecture',
-        minutesEstimate: 5,
+        minutesEstimate: 1,
       },
     ],
     sections: [
@@ -212,12 +212,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'A Human-Centered Layered Web',
         url: '/perspectives/the-fork-in-the-web#a-human-centered-layered-web',
-        minutesEstimate: 5,
+        minutesEstimate: 3,
       },
       {
         label: 'AI as inhabitant, not landlord',
         url: '/perspectives/the-fork-in-the-web#ai-should-be-an-inhabitant-not-the-landlord',
-        minutesEstimate: 5,
+        minutesEstimate: 1,
       },
     ],
     sections: [
@@ -258,12 +258,12 @@ export const FORK_SESSION_SEEDS = [
       {
         label: 'Intellectual Sovereignty & Subsidiarity',
         url: '/perspectives/the-fork-in-the-web#intellectual-sovereignty',
-        minutesEstimate: 5,
+        minutesEstimate: 1,
       },
       {
         label: 'AI & Human Agency pathway (principles)',
         url: '/pathways/ai-human-agency#principles-heading',
-        minutesEstimate: 5,
+        minutesEstimate: 1,
       },
       {
         label: 'Optional: Full pathway — AI & Human Agency',
