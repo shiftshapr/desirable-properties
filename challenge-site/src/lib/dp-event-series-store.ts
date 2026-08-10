@@ -561,10 +561,57 @@ async function backfillForkSeriesTitle() {
   );
 }
 
+/** Migrate stored fork perspective URLs after the-fork-in-the-web → a-fork-in-the-web rename. */
+async function backfillForkPerspectiveSlug() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  await pool.query(
+    `UPDATE dp_event_series SET
+       perspective_url = '/perspectives/a-fork-in-the-web',
+       hero_image_url = '/images/perspectives/a-fork-in-the-web/the-fork-in-the-web-hero-draft.webp',
+       updated_at = now(),
+       updated_by = 'slug-migration'
+     WHERE slug = $1
+       AND (
+         perspective_url = '/perspectives/the-fork-in-the-web'
+         OR hero_image_url LIKE '/images/perspectives/the-fork-in-the-web/%'
+       )`,
+    [FORK_SERIES_SLUG],
+  );
+
+  await pool.query(
+    `UPDATE dp_event_series_pre_read
+     SET url = REPLACE(url, '/perspectives/the-fork-in-the-web', '/perspectives/a-fork-in-the-web')
+     WHERE url LIKE '/perspectives/the-fork-in-the-web%'`,
+  );
+
+  const sessionsRes = await pool.query(
+    `SELECT s.id, s.session_number, s.image_url
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     WHERE e.slug = $1`,
+    [FORK_SERIES_SLUG],
+  );
+  for (const row of sessionsRes.rows) {
+    const seed = FORK_SESSION_SEEDS.find(
+      (s) => s.sessionNumber === Number(row.session_number),
+    );
+    if (!seed || String(row.image_url) === seed.imageUrl) continue;
+    await pool.query(
+      `UPDATE dp_event_series_session
+       SET image_url = $2, updated_at = now()
+       WHERE id = $1`,
+      [row.id, seed.imageUrl],
+    );
+  }
+}
+
 async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
   await backfillForkSeriesTitle();
+  await backfillForkPerspectiveSlug();
   await backfillForkPreReads();
 }
 
