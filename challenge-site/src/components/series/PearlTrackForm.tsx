@@ -144,7 +144,7 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
             status: data.pearl.status === 'submitted' ? 'submitted' : 'draft',
           });
         }
-        setFlash(submit ? 'PEARL track submitted — badge unlocked!' : 'Saved.');
+        setFlash(submit ? 'PEARL track submitted. Badge unlocked!' : 'Saved.');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Save failed');
       } finally {
@@ -173,7 +173,7 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
           patchVerifiedSource: data.pearl.patchVerifiedSource || null,
         }));
       }
-      setFlash(data.verified ? 'Patch found!' : 'No patch found yet — try again after posting.');
+      setFlash(data.verified ? 'Patch found!' : 'No patch found yet. Try again after posting.');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Check failed');
     } finally {
@@ -275,7 +275,7 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
         <h3 className="text-lg font-semibold text-white">4. Submit patch</h3>
         <p className="text-sm text-slate-400">
           Post your patch on Gov Hub or use <code className="text-cyan-300">PATCH:</code> /{' '}
-          <code className="text-cyan-300">INSERT:</code> in Canopi Discuss — we detect it automatically.
+          <code className="text-cyan-300">INSERT:</code> in Canopi Discuss. We detect it automatically.
         </p>
         <div className="flex flex-wrap gap-3">
           <a
@@ -316,7 +316,7 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
             ) : null}
           </p>
         ) : (
-          <p className="text-sm text-amber-200">Not found yet — submit a patch, then check again.</p>
+          <p className="text-sm text-amber-200">Not found yet. Submit a patch, then check again.</p>
         )}
       </section>
 

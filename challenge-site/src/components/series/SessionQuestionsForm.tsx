@@ -41,7 +41,7 @@ const AI_PROMPTS: ComposeAiPromptOption[] = [
 
 const AI_INSTRUCTIONS: Record<string, string> = {
   start:
-    'The field is empty. Offer 2–3 short starter angles, reflective questions, or example opening sentences the participant could build on. Do not write a full polished answer—help them begin.',
+    'The field is empty. Offer 2–3 short starter angles, reflective questions, or example opening sentences the participant could build on. Do not write a full polished answer. Help them begin.',
   clarify: 'Clarify and sharpen the ideas in the draft. Ask one reflective question if helpful.',
   expand: 'Expand the draft with supporting detail and examples. Stay on topic and in the participant\'s voice.',
   dp: 'Connect this thinking to relevant Desirable Properties from the session context.',

@@ -3,6 +3,7 @@ import { ensureDpSchema } from '@/lib/dp-db';
 import {
   FORK_SERIES_SLUG,
   FORK_SERIES_TITLE,
+  FORK_SERIES_SUBTITLE,
   FORK_SESSION_SEEDS,
   BOOK_LAUNCH_SLUG,
   BOOK_LAUNCH_SEED,
@@ -335,7 +336,7 @@ async function seedForkSeriesIfMissing() {
         seriesId,
         FORK_SERIES_SLUG,
         FORK_SERIES_TITLE,
-        'Will AI Mediate Reality — or Help Us Build a Human-Centered Internet?',
+        FORK_SERIES_SUBTITLE,
         'Four standalone online workshops exploring the second fork in the road: what kind of digital world exists when AI is everywhere.',
         '/images/perspectives/a-fork-in-the-web/a-fork-in-the-web-hero-draft.webp',
         '/perspectives/a-fork-in-the-web',
@@ -716,11 +717,43 @@ async function backfillForkPerspectiveSlug() {
   }
 }
 
+async function backfillForkSeriesCopy() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  await pool.query(
+    `UPDATE dp_event_series SET subtitle = $1, updated_at = now(), updated_by = 'seed'
+     WHERE slug = $2 AND subtitle IS DISTINCT FROM $1`,
+    [FORK_SERIES_SUBTITLE, FORK_SERIES_SLUG],
+  );
+
+  const sessionsRes = await pool.query(
+    `SELECT s.id, s.session_number, s.facilitator_blurb_md
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     WHERE e.slug = $1`,
+    [FORK_SERIES_SLUG],
+  );
+  for (const row of sessionsRes.rows) {
+    const seed = FORK_SESSION_SEEDS.find(
+      (s) => s.sessionNumber === Number(row.session_number),
+    );
+    if (!seed || String(row.facilitator_blurb_md) === seed.facilitatorBlurb) continue;
+    await pool.query(
+      `UPDATE dp_event_series_session
+       SET facilitator_blurb_md = $2, updated_at = now()
+       WHERE id = $1`,
+      [row.id, seed.facilitatorBlurb],
+    );
+  }
+}
+
 async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
   await backfillForkSeriesTitle();
   await backfillForkPerspectiveSlug();
+  await backfillForkSeriesCopy();
   await backfillForkPreReads();
   for (const sessionSeed of FORK_SESSION_SEEDS) {
     await backfillForkSessionQuestions(sessionSeed.sessionNumber);

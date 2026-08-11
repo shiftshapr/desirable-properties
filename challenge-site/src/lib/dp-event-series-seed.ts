@@ -4,6 +4,9 @@ export const FORK_SERIES_SLUG = 'fork-in-the-web-workshops';
 
 export const FORK_SERIES_TITLE = 'Fork in the Web workshops';
 
+export const FORK_SERIES_SUBTITLE =
+  'Will AI Mediate Reality, or Help Us Build a Human-Centered Internet?';
+
 /** Live workshop slot length (from Luma). */
 export const FORK_SESSION_LENGTH_MINUTES = 75;
 
@@ -205,12 +208,12 @@ export const FORK_SESSION_SEEDS = [
     endsAt: FORK_SESSION_SCHEDULE[0].endsAt,
     liveUrl: 'https://luma.com/polb50e0',
     facilitatorBlurb:
-      'Name what disappears when intelligence replaces place — and what must not become only an AI tunnel.',
+      'Name what disappears when intelligence replaces place, and what must not become only an AI tunnel.',
     perspectiveAnchor: 'the-internet-where-we-stop-going-to-the-internet',
     relatedDpIds: ['DP2', 'DP4', 'DP8'],
     preReads: [
       {
-        label: 'A Fork in the Web — the first fork',
+        label: 'A Fork in the Web: the first fork',
         url: '/perspectives/a-fork-in-the-web#the-internet-where-we-stop-going-to-the-internet',
         minutesEstimate: 2,
       },
@@ -220,7 +223,7 @@ export const FORK_SESSION_SEEDS = [
         minutesEstimate: 5,
       },
       {
-        label: 'Full essay — A Fork in the Web',
+        label: 'Full essay: A Fork in the Web',
         url: '/perspectives/a-fork-in-the-web',
         minutesEstimate: 19,
         optional: true,
@@ -230,7 +233,7 @@ export const FORK_SESSION_SEEDS = [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SESSION_1_PREPARE },
       {
         sectionKey: 'engage' as const,
-        title: 'Engage — What AI Should Not Replace',
+        title: 'Engage: What AI Should Not Replace',
         pearlStage: 'engage',
         questions: engageFields(
           [
@@ -238,7 +241,7 @@ export const FORK_SESSION_SEEDS = [
               'ai_stood_between',
               'A recent time AI stood between me and a site, source, service, person, or community',
             ],
-            ['easier_and_hidden', 'What became easier — and what moved behind the interface'],
+            ['easier_and_hidden', 'What became easier, and what moved behind the interface'],
             [
               'remain_reachable',
               'One thing that should remain directly reachable, inspectable, or participatory (and why)',
@@ -268,7 +271,7 @@ export const FORK_SESSION_SEEDS = [
     endsAt: FORK_SESSION_SCHEDULE[1].endsAt,
     liveUrl: 'https://luma.com/j5s1q67g',
     facilitatorBlurb:
-      'Separate brilliant convenience from shared, contestable context — an extraordinarily capable concierge is not a commons.',
+      'Separate brilliant convenience from shared, contestable context. An extraordinarily capable concierge is not a commons.',
     perspectiveAnchor: 'we-could-solve-the-symptoms-without-solving-the-architecture',
     relatedDpIds: ['DP14', 'DP22', 'DP20'],
     preReads: [
@@ -287,7 +290,7 @@ export const FORK_SESSION_SEEDS = [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
       {
         sectionKey: 'engage' as const,
-        title: 'Engage — Minimum Viable Commons',
+        title: 'Engage: Minimum Viable Commons',
         pearlStage: 'engage',
         questions: engageFields([
           ['shared_resource', 'Shared resource (URL, document, policy, or event)'],
@@ -311,7 +314,7 @@ export const FORK_SESSION_SEEDS = [
     endsAt: FORK_SESSION_SCHEDULE[2].endsAt,
     liveUrl: 'https://luma.com/grrdboa9',
     facilitatorBlurb:
-      'Sketch architecture — many worlds around one resource, with AI as inhabitant not landlord.',
+      'Sketch architecture: many worlds around one resource, with AI as inhabitant not landlord.',
     perspectiveAnchor: 'a-human-centered-layered-web',
     relatedDpIds: ['DP7', 'DP8', 'DP19'],
     preReads: [
@@ -330,7 +333,7 @@ export const FORK_SESSION_SEEDS = [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
       {
         sectionKey: 'engage' as const,
-        title: 'Engage — Layered Web Stack',
+        title: 'Engage: Layered Web Stack',
         pearlStage: 'engage',
         questions: engageFields([
           ['substrate', 'Substrate (shared resource)'],
@@ -358,7 +361,7 @@ export const FORK_SESSION_SEEDS = [
     endsAt: FORK_SESSION_SCHEDULE[3].endsAt,
     liveUrl: 'https://luma.com/cwjilts3',
     facilitatorBlurb:
-      'Turn principles into delegation rules — sovereignty is the right; subsidiarity is the operating principle.',
+      'Turn principles into delegation rules. Sovereignty is the right; subsidiarity is the operating principle.',
     perspectiveAnchor: 'the-second-fork-in-the-road',
     relatedDpIds: ['DP2', 'DP11', 'DP12', 'DP22'],
     preReads: [
@@ -373,7 +376,7 @@ export const FORK_SESSION_SEEDS = [
         minutesEstimate: 1,
       },
       {
-        label: 'Full pathway — AI & Human Agency',
+        label: 'Full pathway: AI & Human Agency',
         url: '/pathways/ai-human-agency',
         minutesEstimate: 10,
         optional: true,
@@ -383,7 +386,7 @@ export const FORK_SESSION_SEEDS = [
       { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
       {
         sectionKey: 'engage' as const,
-        title: 'Engage — Second Fork Statement',
+        title: 'Engage: Second Fork Statement',
         pearlStage: 'engage',
         questions: engageFields([
           ['scenario', 'Scenario'],
