@@ -821,6 +821,7 @@ export default function HermesChat({
                     surface={surface}
                     dpFocus={dpFocus}
                     disabled={isLoading}
+                    onSendResponse={(text) => void sendMessage(text)}
                   />
                 ) : null}
               </div>

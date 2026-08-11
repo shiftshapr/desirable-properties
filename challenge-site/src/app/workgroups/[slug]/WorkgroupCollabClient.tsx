@@ -33,6 +33,7 @@ type Props = {
   initialActivity?: ActivityFeedItem[];
   initialIsMember?: boolean;
   initialMembershipResolved?: boolean;
+  initialCanPost?: boolean;
   /** Set when redirected here immediately after a successful join. */
   justJoined?: boolean;
 };
@@ -46,6 +47,7 @@ export default function WorkgroupCollabClient({
   initialActivity = [],
   initialIsMember = false,
   initialMembershipResolved = false,
+  initialCanPost = false,
   justJoined = false,
 }: Props) {
   const searchParams = useSearchParams();
@@ -77,8 +79,11 @@ export default function WorkgroupCollabClient({
   async function refreshMembership() {
     try {
       const data = await fetchWorkgroupMessages(workgroup.id, { full: true });
-      setIsMember(Boolean(data.is_member));
-      setCanInvite(Boolean(data.is_member) || Boolean(workgroup.can_invite_members));
+      const member = Boolean(data.is_member);
+      setIsMember((prev) => member || prev);
+      setCanInvite(
+        (prev) => member || prev || Boolean(workgroup.can_invite_members),
+      );
       setTeaserMessages(data.messages || initialMessages);
     } catch {
       // Keep existing membership on transient API errors.
@@ -101,8 +106,11 @@ export default function WorkgroupCollabClient({
           const data = await fetchWorkgroupMessages(workgroup.id, { full: true });
           if (cancelled) return;
           const member = Boolean(data.is_member);
-          setIsMember(member);
-          setCanInvite(member || Boolean(workgroup.can_invite_members));
+          setIsMember((prev) => member || prev || initialIsMember);
+          setCanInvite(
+            (prev) =>
+              member || prev || initialIsMember || Boolean(workgroup.can_invite_members),
+          );
           if (!member) {
             setTeaserMessages(data.messages || initialMessages);
           }
@@ -121,7 +129,14 @@ export default function WorkgroupCollabClient({
     return () => {
       cancelled = true;
     };
-  }, [workgroup.id, workgroup.can_invite_members, initialMessages, signedIn, justJoined]);
+  }, [
+    workgroup.id,
+    workgroup.can_invite_members,
+    initialMessages,
+    signedIn,
+    justJoined,
+    initialIsMember,
+  ]);
 
   const showFullChat = membershipChecked && isMember;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
@@ -250,12 +265,14 @@ export default function WorkgroupCollabClient({
                 signedIn={signedIn}
                 initialMessages={teaserMessages}
                 initialIsMember
+                initialCanPost={initialCanPost || isMember}
               />
             ) : (
               <WorkgroupChatTeaser
                 messages={teaserMessages}
                 joinHref={joinHref}
                 workgroupName={workgroup.name}
+                isMember={isMember}
               />
             )
           ) : null}
@@ -280,12 +297,15 @@ export default function WorkgroupCollabClient({
                 <p className="text-sm text-slate-400">
                   Join this workgroup to invite people with the AI-assisted email flow.
                 </p>
-                <Link
-                  href={joinHref}
-                  className="mt-4 inline-flex rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                >
-                  Join workgroup
-                </Link>
+                <WorkgroupJoinPanel
+                  workgroupId={workgroup.id}
+                  workgroupName={workgroup.name}
+                  workgroupSlug={workgroup.slug}
+                  fallbackHref={joinHref}
+                  isMember={isMember}
+                  className="mt-4"
+                  onJoined={() => void refreshMembership()}
+                />
               </div>
             )
           ) : null}

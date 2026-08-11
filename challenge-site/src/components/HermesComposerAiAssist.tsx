@@ -20,6 +20,7 @@ type Props = {
   surface?: string;
   dpFocus?: number | null;
   disabled?: boolean;
+  onSendResponse?: (text: string) => void;
 };
 
 export default function HermesComposerAiAssist({
@@ -29,6 +30,7 @@ export default function HermesComposerAiAssist({
   surface = 'desirableproperties.org/agent',
   dpFocus = null,
   disabled,
+  onSendResponse,
 }: Props) {
   async function generate(
     option: ComposeAiPromptOption,
@@ -64,6 +66,8 @@ export default function HermesComposerAiAssist({
       value={value}
       onValueChange={onValueChange}
       disabled={disabled}
+      mode="chatReply"
+      onSendResponse={onSendResponse}
       promptOptions={COMPOSE_AI_INITIAL_PROMPTS}
       refinementOptions={[...COMPOSE_AI_REFINEMENTS, COMPOSE_AI_STRENGTHEN]}
       onGenerate={generate}

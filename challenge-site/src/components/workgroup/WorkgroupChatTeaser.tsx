@@ -5,6 +5,8 @@ type Props = {
   messages: WorkgroupMessage[];
   joinHref: string;
   workgroupName: string;
+  /** When true, omit the join CTA (member view). */
+  isMember?: boolean;
 };
 
 function formatWhen(iso: string | null) {
@@ -14,19 +16,28 @@ function formatWhen(iso: string | null) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-export default function WorkgroupChatTeaser({ messages, joinHref, workgroupName }: Props) {
+export default function WorkgroupChatTeaser({
+  messages,
+  joinHref,
+  workgroupName,
+  isMember = false,
+}: Props) {
   return (
     <div>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <p className="text-sm text-slate-400">
-          A peek at recent conversation in {workgroupName}. Join to read the full history and post.
+          {isMember
+            ? `Recent conversation in ${workgroupName}.`
+            : `A peek at recent conversation in ${workgroupName}. Join to read the full history and post.`}
         </p>
-        <Link
-          href={joinHref}
-          className="inline-flex shrink-0 items-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-        >
-          Join workgroup →
-        </Link>
+        {isMember ? null : (
+          <Link
+            href={joinHref}
+            className="inline-flex shrink-0 items-center rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
+          >
+            Join workgroup →
+          </Link>
+        )}
       </div>
 
       {messages.length === 0 ? (

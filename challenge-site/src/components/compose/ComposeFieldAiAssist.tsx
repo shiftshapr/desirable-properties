@@ -46,6 +46,8 @@ function capComposeAiText(text: string, max = COMPOSE_AI_MAX_CHARS): string {
   return slice.trim();
 }
 
+export type ComposeAiAssistMode = 'compose' | 'chatReply';
+
 type Props = {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
   value: string;
@@ -61,6 +63,10 @@ type Props = {
   ) => Promise<string>;
   fieldLabel?: string;
   onAiApplied?: () => void;
+  /** compose = Insert/Replace into a field; chatReply = user message in chat (not Hermes). */
+  mode?: ComposeAiAssistMode;
+  /** When mode is chatReply, send the draft as the user's chat message. */
+  onSendResponse?: (text: string) => void;
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -88,6 +94,8 @@ export default function ComposeFieldAiAssist({
   onGenerate,
   fieldLabel = 'Message',
   onAiApplied,
+  mode = 'compose',
+  onSendResponse,
 }: Props) {
   const menuId = useId();
   const [focused, setFocused] = useState(false);
@@ -222,6 +230,18 @@ export default function ComposeFieldAiAssist({
     }
   }
 
+  function sendAsResponse() {
+    const draft = markdownToPlainText(capComposeAiText(preview));
+    if (!draft) return;
+    if (onSendResponse) {
+      onSendResponse(draft);
+      onAiApplied?.();
+      closePanel();
+      return;
+    }
+    applyDraft('replace');
+  }
+
   function applyDraft(mode: 'insert' | 'replace') {
     const draft = markdownToPlainText(capComposeAiText(preview));
     if (!draft) return;
@@ -320,7 +340,9 @@ export default function ComposeFieldAiAssist({
             {menuOpen ? (
               <>
                 <p className="mb-3 text-sm text-slate-400">
-                  Choose a suggestion to draft text for your {fieldLabel.toLowerCase()}.
+                  {mode === 'chatReply'
+                    ? 'Draft a reply you can send as your own message (not from Hermes).'
+                    : `Choose a suggestion to draft text for your ${fieldLabel.toLowerCase()}.`}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {promptOptions.map((option) => (
@@ -347,10 +369,21 @@ export default function ComposeFieldAiAssist({
             {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
 
             {preview ? (
-              <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950/60 p-3">
+              <div
+                className={`mt-4 rounded-lg border p-3 ${
+                  mode === 'chatReply'
+                    ? 'border-cyan-700/50 bg-cyan-950/20'
+                    : 'border-slate-700 bg-slate-950/60'
+                }`}
+              >
                 <p className="text-xs font-medium uppercase tracking-wide text-cyan-400/80">
-                  Generated text
+                  {mode === 'chatReply' ? 'Your draft reply' : 'Generated text'}
                 </p>
+                {mode === 'chatReply' ? (
+                  <p className="mt-1 text-xs text-slate-400">
+                    This will be sent as your message, not from Hermes.
+                  </p>
+                ) : null}
                 <div className="mt-2 max-h-48 overflow-auto text-sm leading-relaxed">
                   <HermesMarkdown text={preview} variant="dark" />
                 </div>
@@ -370,20 +403,41 @@ export default function ComposeFieldAiAssist({
                   </div>
                 ) : null}
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => applyDraft('insert')}
-                    className="rounded-lg border border-cyan-700 bg-cyan-950/40 px-3 py-1.5 text-sm font-medium text-cyan-100 hover:bg-cyan-900/40"
-                  >
-                    Insert
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => applyDraft('replace')}
-                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
-                  >
-                    Replace
-                  </button>
+                  {mode === 'chatReply' ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={sendAsResponse}
+                        className="rounded-lg border border-cyan-700 bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600"
+                      >
+                        {onSendResponse ? 'Send as response' : 'Use as my message'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => applyDraft('replace')}
+                        className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
+                      >
+                        Edit in composer
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => applyDraft('insert')}
+                        className="rounded-lg border border-cyan-700 bg-cyan-950/40 px-3 py-1.5 text-sm font-medium text-cyan-100 hover:bg-cyan-900/40"
+                      >
+                        Insert
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => applyDraft('replace')}
+                        className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
+                      >
+                        Replace
+                      </button>
+                    </>
+                  )}
                   {lastOption ? (
                     <button
                       type="button"

@@ -113,6 +113,7 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             initialActivity={initialActivity}
             initialIsMember={membership.isMember}
             initialMembershipResolved={membership.membershipResolved}
+            initialCanPost={membership.canPost}
             justJoined={justJoined}
           />
         </Suspense>

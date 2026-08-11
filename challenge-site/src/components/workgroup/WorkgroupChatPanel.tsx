@@ -23,6 +23,7 @@ type Props = {
   signedIn: boolean;
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
+  initialCanPost?: boolean;
 };
 
 function formatWhen(iso: string | null) {
@@ -45,11 +46,12 @@ export default function WorkgroupChatPanel({
   signedIn,
   initialMessages = [],
   initialIsMember = false,
+  initialCanPost = false,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>(initialMessages);
   const [isMember, setIsMember] = useState(initialIsMember);
-  const [canPost, setCanPost] = useState(initialIsMember);
-  const [loading, setLoading] = useState(true);
+  const [canPost, setCanPost] = useState(initialCanPost || initialIsMember);
+  const [loading, setLoading] = useState(!initialIsMember);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hands, setHands] = useState<HermesHand[]>([]);
@@ -82,8 +84,8 @@ export default function WorkgroupChatPanel({
     try {
       const data = await fetchWorkgroupMessages(workgroupId, { full: true });
       setMessages(data.messages || []);
-      setIsMember(Boolean(data.is_member));
-      setCanPost(Boolean(data.can_post));
+      setIsMember((prev) => Boolean(data.is_member) || prev);
+      setCanPost((prev) => Boolean(data.can_post) || prev);
       setError(null);
       await refreshHands();
     } catch (err) {
