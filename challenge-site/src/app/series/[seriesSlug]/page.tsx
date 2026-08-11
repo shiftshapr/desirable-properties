@@ -114,7 +114,7 @@ export default async function SeriesDetailPage({ params }: Props) {
               PT
             </p>
           ) : (
-            <p className="mt-3 text-sm text-slate-500">Date TBD — check Luma for updates.</p>
+            <p className="mt-3 text-sm text-slate-500">Date TBD. Check Luma for updates.</p>
           )}
         </div>
       ) : null}
