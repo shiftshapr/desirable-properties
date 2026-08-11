@@ -40,7 +40,16 @@ type QuestionSeed = {
   fieldType: 'checkbox' | 'textarea' | 'dp_hook';
   required?: boolean;
   aiAssist?: boolean;
+  maxLength?: number;
 };
+
+/** Session 1 text fields — short reflections, not essays. */
+export const FORK_SESSION_1_TEXT_MAX_LENGTH = 200;
+
+function withTextMaxLength(q: QuestionSeed, max = FORK_SESSION_1_TEXT_MAX_LENGTH): QuestionSeed {
+  if (q.fieldType === 'checkbox') return q;
+  return { ...q, maxLength: max };
+}
 
 type SectionSeed = {
   sectionKey: 'prepare' | 'engage' | 'reflect';
@@ -74,33 +83,33 @@ const SESSION_1_PREPARE: QuestionSeed[] = [
     fieldType: 'checkbox',
     required: true,
   },
-  {
+  withTextMaxLength({
     fieldKey: 'humanstatement_resonated',
     label: 'What resonated with me about the pro-human framing',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
-  },
-  {
+  }),
+  withTextMaxLength({
     fieldKey: 'humanstatement_troubled',
     label: 'What troubled me or gave me pause',
     fieldType: 'textarea',
     aiAssist: true,
-  },
-  {
+  }),
+  withTextMaxLength({
     fieldKey: 'principle_keep_change_reject',
     label: 'One principle I would keep, change, or reject (and why)',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
-  },
-  {
+  }),
+  withTextMaxLength({
     fieldKey: 'would_sign_declaration',
     label: 'Would I sign the declaration? Why or why not?',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
-  },
+  }),
 ];
 
 const SHARED_REFLECT: QuestionSeed[] = [
@@ -125,13 +134,19 @@ const SHARED_REFLECT: QuestionSeed[] = [
   },
 ];
 
-function engageFields(fields: Array<[string, string, boolean?]>): QuestionSeed[] {
+const SESSION_1_REFLECT: QuestionSeed[] = SHARED_REFLECT.map((q) => withTextMaxLength(q));
+
+function engageFields(
+  fields: Array<[string, string, boolean?]>,
+  options?: { textMaxLength?: number },
+): QuestionSeed[] {
   return fields.map(([fieldKey, label, required]) => ({
     fieldKey,
     label,
     fieldType: fieldKey === 'dp_hook' ? 'dp_hook' : 'textarea',
     required: required ?? fieldKey !== 'dp_hook',
     aiAssist: fieldKey !== 'dp_hook',
+    ...(options?.textMaxLength ? { maxLength: options.textMaxLength } : {}),
   }));
 }
 
@@ -180,25 +195,28 @@ export const FORK_SESSION_SEEDS = [
         sectionKey: 'engage' as const,
         title: 'Engage — What AI Should Not Replace',
         pearlStage: 'engage',
-        questions: engageFields([
+        questions: engageFields(
           [
-            'ai_stood_between',
-            'A recent time AI stood between me and a site, source, service, person, or community',
+            [
+              'ai_stood_between',
+              'A recent time AI stood between me and a site, source, service, person, or community',
+            ],
+            ['easier_and_hidden', 'What became easier — and what moved behind the interface'],
+            [
+              'remain_reachable',
+              'One thing that should remain directly reachable, inspectable, or participatory (and why)',
+            ],
+            [
+              'trust_high_stakes',
+              'What I would need to trust an AI-mediated answer in a high-stakes situation (e.g. health, voting, education)',
+            ],
+            ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
+            ['dp_hook', 'Optional DP hook', false],
           ],
-          ['easier_and_hidden', 'What became easier — and what moved behind the interface'],
-          [
-            'remain_reachable',
-            'One thing that should remain directly reachable, inspectable, or participatory (and why)',
-          ],
-          [
-            'trust_high_stakes',
-            'What I would need to trust an AI-mediated answer in a high-stakes situation (e.g. health, voting, education)',
-          ],
-          ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
-          ['dp_hook', 'Optional DP hook', false],
-        ]),
+          { textMaxLength: FORK_SESSION_1_TEXT_MAX_LENGTH },
+        ),
       },
-      { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
+      { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SESSION_1_REFLECT },
     ],
   },
   {

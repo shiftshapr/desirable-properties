@@ -83,6 +83,7 @@ export type EventSeriesQuestion = {
   required: boolean;
   aiAssist: boolean;
   sortOrder: number;
+  maxLength: number | null;
 };
 
 export type EventSeriesResponse = {
@@ -408,8 +409,8 @@ async function seedForkSeriesIfMissing() {
           await pool.query(
             `INSERT INTO dp_event_series_question (
                id, section_id, field_key, label, help_text, field_type,
-               required, ai_assist, sort_order
-             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+               required, ai_assist, sort_order, max_length
+             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
             [
               crypto.randomUUID(),
               sectionId,
@@ -420,6 +421,7 @@ async function seedForkSeriesIfMissing() {
               Boolean(q.required),
               Boolean(q.aiAssist),
               qi,
+              q.maxLength ?? null,
             ],
           );
         }
@@ -566,7 +568,7 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
       if (existing) {
         await pool.query(
           `UPDATE dp_event_series_question
-           SET label = $2, help_text = $3, field_type = $4, required = $5, ai_assist = $6, sort_order = $7
+           SET label = $2, help_text = $3, field_type = $4, required = $5, ai_assist = $6, sort_order = $7, max_length = $8
            WHERE id = $1`,
           [
             existing.id,
@@ -576,6 +578,7 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
             Boolean(q.required),
             Boolean(q.aiAssist),
             qi,
+            q.maxLength ?? null,
           ],
         );
         continue;
@@ -584,8 +587,8 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
       await pool.query(
         `INSERT INTO dp_event_series_question (
            id, section_id, field_key, label, help_text, field_type,
-           required, ai_assist, sort_order
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+           required, ai_assist, sort_order, max_length
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
         [
           crypto.randomUUID(),
           sectionId,
@@ -596,6 +599,7 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
           Boolean(q.required),
           Boolean(q.aiAssist),
           qi,
+          q.maxLength ?? null,
         ],
       );
     }
@@ -941,6 +945,10 @@ export async function listQuestionSectionsForSession(
         required: Boolean(q.required),
         aiAssist: Boolean(q.ai_assist),
         sortOrder: Number(q.sort_order) || 0,
+        maxLength:
+          q.max_length != null && Number.isFinite(Number(q.max_length))
+            ? Number(q.max_length)
+            : null,
       })),
     });
   }
@@ -1017,7 +1025,25 @@ export async function saveResponseAnswers(input: {
     );
   }
 
+  const sections = await listQuestionSectionsForSession(input.sessionId);
+  const questionById = new Map(
+    sections.flatMap((s) => s.questions).map((q) => [q.id, q]),
+  );
+
   for (const answer of input.answers) {
+    const question = questionById.get(answer.questionId);
+    if (question?.maxLength != null && answer.valueText != null) {
+      const len = String(answer.valueText).length;
+      if (len > question.maxLength) {
+        return {
+          ok: false as const,
+          error: 'answer_too_long',
+          fieldKey: question.fieldKey,
+          maxLength: question.maxLength,
+        };
+      }
+    }
+
     await pool.query(
       `INSERT INTO dp_event_series_answer (id, response_id, question_id, value_text, value_bool, updated_at)
        VALUES ($1,$2,$3,$4,$5,now())
@@ -1605,6 +1631,7 @@ export async function createQuestion(input: {
   required?: boolean;
   aiAssist?: boolean;
   sortOrder?: number;
+  maxLength?: number | null;
 }) {
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
@@ -1618,13 +1645,18 @@ export async function createQuestion(input: {
   const allowed = new Set(['checkbox', 'textarea', 'dp_hook', 'select']);
   if (!allowed.has(fieldType)) return { ok: false as const, error: 'invalid_field_type' };
 
+  const maxLength =
+    input.maxLength != null && Number.isFinite(Number(input.maxLength))
+      ? Math.floor(Number(input.maxLength))
+      : null;
+
   const id = crypto.randomUUID();
   try {
     await pool.query(
       `INSERT INTO dp_event_series_question (
          id, section_id, field_key, label, help_text, field_type,
-         required, ai_assist, sort_order
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+         required, ai_assist, sort_order, max_length
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
       [
         id,
         sectionId,
@@ -1635,6 +1667,7 @@ export async function createQuestion(input: {
         Boolean(input.required),
         Boolean(input.aiAssist),
         Number.isFinite(Number(input.sortOrder)) ? Math.floor(Number(input.sortOrder)) : 0,
+        maxLength,
       ],
     );
   } catch (err) {
@@ -1669,10 +1702,19 @@ export async function updateQuestion(questionId: string, input: Record<string, u
   const allowed = new Set(['checkbox', 'textarea', 'dp_hook', 'select']);
   if (!allowed.has(fieldType)) return { ok: false as const, error: 'invalid_field_type' };
 
+  const maxLength =
+    input.maxLength !== undefined
+      ? input.maxLength != null && Number.isFinite(Number(input.maxLength))
+        ? Math.floor(Number(input.maxLength))
+        : null
+      : existing.max_length != null && Number.isFinite(Number(existing.max_length))
+        ? Number(existing.max_length)
+        : null;
+
   await pool.query(
     `UPDATE dp_event_series_question SET
        field_key = $2, label = $3, help_text = $4, field_type = $5,
-       required = $6, ai_assist = $7, sort_order = $8
+       required = $6, ai_assist = $7, sort_order = $8, max_length = $9
      WHERE id = $1`,
     [
       questionId,
@@ -1689,6 +1731,7 @@ export async function updateQuestion(questionId: string, input: Record<string, u
           ? Math.floor(Number(input.sortOrder))
           : Number(existing.sort_order)
         : Number(existing.sort_order),
+      maxLength,
     ],
   );
 

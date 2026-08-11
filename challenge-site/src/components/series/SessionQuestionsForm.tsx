@@ -15,6 +15,7 @@ type Question = {
   fieldType: string;
   required: boolean;
   aiAssist: boolean;
+  maxLength: number | null;
 };
 
 type Section = {
@@ -62,6 +63,13 @@ function QuestionField({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const text = value.valueText ?? '';
+  const maxLength = question.maxLength;
+
+  function setText(next: string) {
+    onChange({
+      valueText: maxLength != null ? next.slice(0, maxLength) : next,
+    });
+  }
 
   async function onGenerate(
     option: ComposeAiPromptOption,
@@ -118,13 +126,23 @@ function QuestionField({
         rows={4}
         className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
         value={text}
-        onChange={(e) => onChange({ valueText: e.target.value })}
+        maxLength={maxLength ?? undefined}
+        onChange={(e) => setText(e.target.value)}
       />
+      {maxLength != null ? (
+        <p
+          className={`mt-1 text-right text-xs ${
+            text.length >= maxLength ? 'text-amber-400' : 'text-slate-500'
+          }`}
+        >
+          {text.length}/{maxLength}
+        </p>
+      ) : null}
       {question.aiAssist ? (
         <ComposeFieldAiAssist
           textareaRef={textareaRef}
           value={text}
-          onValueChange={(v) => onChange({ valueText: v })}
+          onValueChange={setText}
           promptOptions={AI_PROMPTS}
           onGenerate={onGenerate}
           fieldLabel={question.label}

@@ -263,8 +263,11 @@ CREATE TABLE IF NOT EXISTS dp_event_series_question (
   required BOOLEAN NOT NULL DEFAULT false,
   ai_assist BOOLEAN NOT NULL DEFAULT false,
   sort_order INTEGER NOT NULL DEFAULT 0,
+  max_length INTEGER,
   UNIQUE (section_id, field_key)
 );
+
+ALTER TABLE dp_event_series_question ADD COLUMN IF NOT EXISTS max_length INTEGER;
 
 CREATE TABLE IF NOT EXISTS dp_event_series_response (
   id UUID PRIMARY KEY,
