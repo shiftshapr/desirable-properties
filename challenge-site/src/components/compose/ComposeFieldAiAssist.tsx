@@ -9,6 +9,8 @@ import {
   type RefObject,
 } from 'react';
 import HermesMarkdown from '@/components/HermesMarkdown';
+import AiPromptInfoModal from '@/components/workgroup/AiPromptInfoModal';
+import { getAiPromptInfo } from '@/lib/ai-prompt-info';
 import { COMPOSE_AI_REFINEMENTS } from '@/lib/compose-ai-prompts';
 import { markdownToPlainText } from '@/lib/markdown-to-plain-text';
 
@@ -73,6 +75,8 @@ type Props = {
   defaultOpen?: boolean;
   /** When embedded, called instead of closing the fixed overlay. */
   onEmbeddedClose?: () => void;
+  /** Context for DP-aware prompt info modals. */
+  promptInfoContext?: { dpId?: string | null; isDiscovery?: boolean };
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -105,6 +109,7 @@ export default function ComposeFieldAiAssist({
   embedded = false,
   defaultOpen = false,
   onEmbeddedClose,
+  promptInfoContext,
 }: Props) {
   const menuId = useId();
   const [focused, setFocused] = useState(embedded && defaultOpen);
@@ -114,6 +119,8 @@ export default function ComposeFieldAiAssist({
   const [preview, setPreview] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [lastOption, setLastOption] = useState<ComposeAiPromptOption | null>(null);
+  const [pendingOption, setPendingOption] = useState<ComposeAiPromptOption | null>(null);
+  const [promptInfoOpen, setPromptInfoOpen] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const typingTimerRef = useRef<number | null>(null);
   const panelOpen = menuOpen || Boolean(preview) || generating || Boolean(error);
@@ -209,6 +216,16 @@ export default function ComposeFieldAiAssist({
     } finally {
       if (!controller.signal.aborted) setGenerating(false);
     }
+  }
+
+  function handlePromptClick(option: ComposeAiPromptOption) {
+    const info = getAiPromptInfo(option, promptInfoContext);
+    if (info) {
+      setPendingOption(option);
+      setPromptInfoOpen(true);
+      return;
+    }
+    void runGenerate(option);
   }
 
   async function runGenerate(option: ComposeAiPromptOption, regenerate = false) {
@@ -331,7 +348,7 @@ export default function ComposeFieldAiAssist({
                       key={option.id}
                       type="button"
                       disabled={generating}
-                      onClick={() => void runGenerate(option)}
+                      onClick={() => handlePromptClick(option)}
                       className="rounded-full border border-slate-700 bg-cyan-950/30 px-3 py-1.5 text-xs font-semibold text-cyan-200 hover:border-cyan-700 hover:bg-cyan-950/50 disabled:opacity-50"
                     >
                       {option.label}
@@ -446,12 +463,39 @@ export default function ComposeFieldAiAssist({
     </>
   );
 
+  const pendingInfo = pendingOption
+    ? getAiPromptInfo(pendingOption, promptInfoContext)
+    : null;
+
+  const infoModal = (
+    <AiPromptInfoModal
+      open={promptInfoOpen}
+      info={pendingInfo}
+      onCancel={() => {
+        setPromptInfoOpen(false);
+        setPendingOption(null);
+      }}
+      onContinue={() => {
+        const opt = pendingOption;
+        setPromptInfoOpen(false);
+        setPendingOption(null);
+        if (opt) void runGenerate(opt);
+      }}
+    />
+  );
+
   if (embedded) {
-    return panelOpen ? <div id={menuId}>{panelContent}</div> : null;
+    return panelOpen ? (
+      <div id={menuId}>
+        {panelContent}
+        {infoModal}
+      </div>
+    ) : null;
   }
 
   return (
     <>
+      {infoModal}
       <button
         type="button"
         aria-label={`AI assist for ${fieldLabel}`}

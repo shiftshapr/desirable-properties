@@ -12,6 +12,8 @@ import {
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
+import HermesExperimentalBadge from '@/components/workgroup/HermesExperimentalBadge';
+import AiPromptInfoModal from '@/components/workgroup/AiPromptInfoModal';
 import {
   COMPOSE_AI_REFINEMENTS,
   COMPOSE_AI_STRENGTHEN,
@@ -19,6 +21,7 @@ import {
   composeAiInstruction,
   fetchComposeAiResponse,
 } from '@/lib/compose-ai-prompts';
+import { getAiPromptInfo } from '@/lib/ai-prompt-info';
 import { isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { HERMES_MODE_LABELS, type HermesAmbientMode } from '@/lib/hermes-ambient-types';
 import {
@@ -44,6 +47,7 @@ type Props = {
   disabled?: boolean;
   onSendAsMessage?: (text: string) => void;
   onHermesReply?: (note: WorkgroupAskNote) => void;
+  onOpenHermesInstructions?: () => void;
 };
 
 function dpFocusFromId(dpId: string | null): number | null {
@@ -85,6 +89,7 @@ export default function WorkgroupChatAiAssist({
   disabled,
   onSendAsMessage,
   onHermesReply,
+  onOpenHermesInstructions,
 }: Props) {
   const menuId = useId();
   const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
@@ -101,6 +106,8 @@ export default function WorkgroupChatAiAssist({
   const [askQuestion, setAskQuestion] = useState('');
   const [askGenerating, setAskGenerating] = useState(false);
   const [askError, setAskError] = useState<string | null>(null);
+  const [pendingAskOption, setPendingAskOption] = useState<ComposeAiPromptOption | null>(null);
+  const [askPromptInfoOpen, setAskPromptInfoOpen] = useState(false);
   const askAbortRef = useRef<AbortController | null>(null);
   const typingTimerRef = useRef<number | null>(null);
 
@@ -165,6 +172,15 @@ export default function WorkgroupChatAiAssist({
     setPanelOpen(true);
   }
 
+  function openInstructions() {
+    onOpenHermesInstructions?.();
+  }
+
+  const promptInfoContext = useMemo(
+    () => ({ dpId, isDiscovery }),
+    [dpId, isDiscovery],
+  );
+
   async function generateAssist(
     option: ComposeAiPromptOption,
     context: { draft: string; selection: string },
@@ -178,6 +194,16 @@ export default function WorkgroupChatAiAssist({
       instruction,
     });
     return fetchComposeAiResponse({ message, surface, dpFocus, signal });
+  }
+
+  function handleAskPromptClick(option: ComposeAiPromptOption) {
+    const info = getAiPromptInfo(option, promptInfoContext);
+    if (info) {
+      setPendingAskOption(option);
+      setAskPromptInfoOpen(true);
+      return;
+    }
+    void runAskHermes(option);
   }
 
   async function runAskHermes(option: ComposeAiPromptOption) {
@@ -239,6 +265,20 @@ export default function WorkgroupChatAiAssist({
 
   return (
     <>
+      <AiPromptInfoModal
+        open={askPromptInfoOpen}
+        info={pendingAskOption ? getAiPromptInfo(pendingAskOption, promptInfoContext) : null}
+        onCancel={() => {
+          setAskPromptInfoOpen(false);
+          setPendingAskOption(null);
+        }}
+        onContinue={() => {
+          const opt = pendingAskOption;
+          setAskPromptInfoOpen(false);
+          setPendingAskOption(null);
+          if (opt) void runAskHermes(opt);
+        }}
+      />
       <button
         type="button"
         aria-label="AI assist for workgroup message"
@@ -274,9 +314,21 @@ export default function WorkgroupChatAiAssist({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between gap-3">
-              <h2 id={`${menuId}-title`} className="text-base font-semibold text-white">
-                AI
-              </h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 id={`${menuId}-title`} className="text-base font-semibold text-white">
+                  AI
+                </h2>
+                <HermesExperimentalBadge />
+                <button
+                  type="button"
+                  onClick={openInstructions}
+                  className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-600 text-xs font-bold text-slate-300 hover:border-slate-500 hover:text-white"
+                  aria-label="How Hermes works"
+                  title="How Hermes works"
+                >
+                  ?
+                </button>
+              </div>
               <button
                 type="button"
                 aria-label="Close AI"
@@ -319,6 +371,7 @@ export default function WorkgroupChatAiAssist({
                 onValueChange={onValueChange}
                 disabled={disabled}
                 promptOptions={assistPromptOptions}
+                promptInfoContext={promptInfoContext}
                 onGenerate={generateAssist}
                 onSendAsMessage={onSendAsMessage}
                 onClose={closePanel}
@@ -371,7 +424,7 @@ export default function WorkgroupChatAiAssist({
                       key={option.id}
                       type="button"
                       disabled={askGenerating}
-                      onClick={() => void runAskHermes(option)}
+                      onClick={() => handleAskPromptClick(option)}
                       className="rounded-full border border-slate-700 bg-violet-950/30 px-3 py-1.5 text-xs font-semibold text-violet-200 hover:border-violet-700 hover:bg-violet-950/50 disabled:opacity-50"
                     >
                       {option.label}
@@ -417,6 +470,7 @@ function AssistTabContent({
   onValueChange,
   disabled,
   promptOptions,
+  promptInfoContext,
   onGenerate,
   onSendAsMessage,
   onClose,
@@ -426,6 +480,7 @@ function AssistTabContent({
   onValueChange: (next: string) => void;
   disabled?: boolean;
   promptOptions: ComposeAiPromptOption[];
+  promptInfoContext?: { dpId?: string | null; isDiscovery?: boolean };
   onGenerate: (
     option: ComposeAiPromptOption,
     context: { draft: string; selection: string },
@@ -453,6 +508,7 @@ function AssistTabContent({
           : undefined
       }
       promptOptions={promptOptions}
+      promptInfoContext={promptInfoContext}
       refinementOptions={[...COMPOSE_AI_REFINEMENTS, COMPOSE_AI_STRENGTHEN]}
       onGenerate={onGenerate}
       fieldLabel="workgroup message"

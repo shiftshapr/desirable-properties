@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DpDialogHost } from '@/components/DpDialog';
+import HermesExperimentalInstructionsModal from '@/components/workgroup/HermesExperimentalInstructionsModal';
 import WorkgroupChatComposer from '@/components/workgroup/WorkgroupChatComposer';
 import HermesAmbientFacilitatorQueue from '@/components/workgroup/HermesAmbientFacilitatorQueue';
 import HermesAmbientHandBadge from '@/components/workgroup/HermesAmbientHandBadge';
@@ -13,6 +14,7 @@ import {
   fetchHermesHands,
 } from '@/lib/hermes-ambient-api';
 import { fetchWorkgroupMessages, postWorkgroupMessage } from '@/lib/workgroup-collab-api';
+import { isHermesExperimentalInstructionsDismissed } from '@/lib/hermes-experimental-instructions';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { HermesHand } from '@/lib/hermes-ambient-types';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
@@ -65,6 +67,13 @@ export default function WorkgroupChatPanel({
   const [panelCollapsed, setPanelCollapsed] = useState(false);
   const [mobileHermesOpen, setMobileHermesOpen] = useState(false);
   const [adoptDraft, setAdoptDraft] = useState<{ key: number; text: string } | null>(null);
+  const [hermesInstructionsOpen, setHermesInstructionsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isHermesExperimentalInstructionsDismissed()) {
+      setHermesInstructionsOpen(true);
+    }
+  }, []);
 
   const handsByMessage = useMemo(() => {
     const map = new Map<string, HermesHand[]>();
@@ -197,6 +206,12 @@ export default function WorkgroupChatPanel({
   return (
     <div className="relative">
       <DpDialogHost />
+      <HermesExperimentalInstructionsModal
+        open={hermesInstructionsOpen}
+        workgroupSlug={workgroupSlug}
+        workgroupName={workgroupName}
+        onClose={() => setHermesInstructionsOpen(false)}
+      />
 
       <div className="lg:flex lg:min-h-[32rem] lg:items-stretch">
         <div className="min-w-0 flex-1">
@@ -277,6 +292,7 @@ export default function WorkgroupChatPanel({
               onSend={handleSend}
               adoptDraft={adoptDraft}
               onHermesReply={handleHermesReply}
+              onOpenHermesInstructions={() => setHermesInstructionsOpen(true)}
             />
           </div>
         </div>
@@ -309,6 +325,7 @@ export default function WorkgroupChatPanel({
           onToggleCollapse={() => setPanelCollapsed((c) => !c)}
           mobileOpen={mobileHermesOpen}
           onMobileClose={() => setMobileHermesOpen(false)}
+          onOpenHermesInstructions={() => setHermesInstructionsOpen(true)}
         />
       </div>
     </div>

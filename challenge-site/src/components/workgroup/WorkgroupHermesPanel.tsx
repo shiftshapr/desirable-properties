@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import { DpDialog } from '@/components/DpDialog';
+import HermesExperimentalBadge from '@/components/workgroup/HermesExperimentalBadge';
 import {
   dismissHermesHand,
   openHermesHand,
@@ -33,6 +34,7 @@ type Props = {
   onToggleCollapse?: () => void;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
+  onOpenHermesInstructions?: () => void;
 };
 
 function formatWhen(iso: string) {
@@ -60,6 +62,7 @@ export default function WorkgroupHermesPanel({
   onToggleCollapse,
   mobileOpen = false,
   onMobileClose,
+  onOpenHermesInstructions,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
@@ -79,11 +82,25 @@ export default function WorkgroupHermesPanel({
     <>
       <header className="flex items-start justify-between gap-3 border-b border-slate-800 px-4 py-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-violet-400">Hermes</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-violet-400">Hermes</p>
+            <HermesExperimentalBadge />
+          </div>
           <h2 className="text-base font-semibold text-white">Private panel</h2>
           <p className="mt-1 text-xs text-slate-500">Raised hands &amp; Ask Hermes replies</p>
         </div>
         <div className="flex items-center gap-1">
+          {onOpenHermesInstructions ? (
+            <button
+              type="button"
+              onClick={onOpenHermesInstructions}
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-600 text-xs font-bold text-slate-300 hover:border-slate-500 hover:text-white"
+              aria-label="How Hermes works"
+              title="How Hermes works"
+            >
+              ?
+            </button>
+          ) : null}
           {onToggleCollapse ? (
             <button
               type="button"

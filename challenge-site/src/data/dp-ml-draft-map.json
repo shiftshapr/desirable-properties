@@ -1,0 +1,120 @@
+{
+  "generated_from": "sources-sat.json",
+  "map": {
+    "DP1": {
+      "mlNumber": "ML-Draft-008",
+      "label": "DP1 – Federated Authentication & Accountability",
+      "status": "active"
+    },
+    "DP2": {
+      "mlNumber": "ML-Draft-009",
+      "label": "DP2 – Participant Agency and Empowerment",
+      "status": "active"
+    },
+    "DP3": {
+      "mlNumber": "ML-Draft-010",
+      "label": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
+      "status": "active"
+    },
+    "DP4": {
+      "mlNumber": "ML-Draft-011",
+      "label": "DP4 – Data Sovereignty and Privacy",
+      "status": "active"
+    },
+    "DP5": {
+      "mlNumber": "ML-Draft-012",
+      "label": "DP5 – Decentralized Namespace",
+      "status": "active"
+    },
+    "DP6": {
+      "mlNumber": "ML-Draft-013",
+      "label": "DP6 – Commerce",
+      "status": "active"
+    },
+    "DP7": {
+      "mlNumber": "ML-Draft-014",
+      "label": "DP7 – Simplicity and Interoperability",
+      "status": "active"
+    },
+    "DP8": {
+      "mlNumber": "ML-Draft-015",
+      "label": "DP8 – Collaborative Environment and Meta-Communities",
+      "status": "active"
+    },
+    "DP9": {
+      "mlNumber": "ML-Draft-016",
+      "label": "DP9 – Developer and Community Incentives",
+      "status": "active"
+    },
+    "DP10": {
+      "mlNumber": "ML-Draft-017",
+      "label": "DP10 – Education",
+      "status": "active"
+    },
+    "DP11": {
+      "mlNumber": "ML-Draft-002",
+      "label": "DP11 – Safe and Ethical AI",
+      "status": "active"
+    },
+    "DP12": {
+      "mlNumber": "ML-Draft-003",
+      "label": "DP12 – Community-based AI Governance",
+      "status": "active"
+    },
+    "DP13": {
+      "mlNumber": "ML-Draft-004",
+      "label": "DP13 – AI Containment",
+      "status": "active"
+    },
+    "DP14": {
+      "mlNumber": "ML-Draft-018",
+      "label": "DP14 – Trust and Transparency",
+      "status": "active"
+    },
+    "DP15": {
+      "mlNumber": "ML-Draft-019",
+      "label": "DP15 – Security and Provenance",
+      "status": "active"
+    },
+    "DP16": {
+      "mlNumber": "ML-Draft-020",
+      "label": "DP16 – Roadmap and Milestones",
+      "status": "active"
+    },
+    "DP17": {
+      "mlNumber": "ML-Draft-021",
+      "label": "DP17 – Financial Sustainability",
+      "status": "active"
+    },
+    "DP18": {
+      "mlNumber": "ML-Draft-022",
+      "label": "DP18 – Feedback Loops and Reputation",
+      "status": "active"
+    },
+    "DP19": {
+      "mlNumber": "ML-Draft-023",
+      "label": "DP19 – Amplifying Presence and Community Engagement",
+      "status": "active"
+    },
+    "DP20": {
+      "mlNumber": "ML-Draft-024",
+      "label": "DP20 – Community Ownership",
+      "status": "active"
+    },
+    "DP21": {
+      "mlNumber": "ML-Draft-025",
+      "label": "DP21 – Multi-modal",
+      "status": "active"
+    },
+    "DP22": {
+      "mlNumber": "ML-Draft-028",
+      "label": "DP22 – Civic Memory & Epistemic Continuity",
+      "status": "active"
+    },
+    "DP23": {
+      "mlNumber": "ML-Draft-030",
+      "label": "DP23 – Universal Participation & Linguistic Interoperability",
+      "status": "draft"
+    }
+  }
+}

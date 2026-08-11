@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { bookDiscussHref, DESIRABLE_PROPERTIES_BOOK_HOST } from '@/lib/govhub';
 import { useAuth } from '@/lib/auth-context';
@@ -45,12 +46,15 @@ async function readFilesAsBase64(files: File[]) {
 }
 
 export default function SupportPageClient() {
+  const searchParams = useSearchParams();
+  const formRef = useRef<HTMLFormElement>(null);
   const { user, checked, login, loginBusy, loginError } = useAuth();
   const [tickets, setTickets] = useState<TicketSummary[]>([]);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [screenshots, setScreenshots] = useState<File[]>([]);
+  const [feedbackMode, setFeedbackMode] = useState(false);
 
   const [subject, setSubject] = useState('');
   const [category, setCategory] = useState('challenge_question');
@@ -76,6 +80,34 @@ export default function SupportPageClient() {
   useEffect(() => {
     if (user) void loadTickets();
   }, [user, loadTickets]);
+
+  useEffect(() => {
+    if (searchParams.get('feedback') !== '1') return;
+
+    setFeedbackMode(true);
+    setCategory('general');
+    setSubject((prev) => prev || 'Hermes experimental feature feedback');
+
+    const workgroup = searchParams.get('workgroup')?.trim();
+    const context = searchParams.get('context')?.trim();
+    const workgroupLabel = context || workgroup;
+    setBody((prev) => {
+      if (prev.trim()) return prev;
+      const lines = [
+        'Feedback about the experimental workgroup Hermes feature:',
+        '',
+        workgroupLabel ? `Workgroup: ${workgroupLabel}` : null,
+        typeof window !== 'undefined' ? `Page: ${window.location.href}` : null,
+        '',
+        'What worked well or what should we improve?',
+      ].filter(Boolean);
+      return lines.join('\n');
+    });
+
+    window.setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  }, [searchParams]);
 
   const diagnosticBundle = useMemo(() => {
     if (!includeDiagnostics) return null;
@@ -185,6 +217,12 @@ export default function SupportPageClient() {
         </div>
       ) : (
         <>
+          {feedbackMode ? (
+            <p className="mt-6 rounded-lg border border-violet-700/50 bg-violet-950/30 px-4 py-3 text-sm text-violet-100">
+              Share feedback about an experimental feature. We pre-filled the form — edit anything
+              before you submit.
+            </p>
+          ) : null}
           {flash ? (
             <p className="mt-6 rounded-lg border border-emerald-700/50 bg-emerald-950/40 px-4 py-3 text-emerald-200">
               {flash}
@@ -196,7 +234,7 @@ export default function SupportPageClient() {
             </p>
           ) : null}
 
-          <form onSubmit={(e) => void onSubmit(e)} className="mt-8 space-y-4">
+          <form ref={formRef} onSubmit={(e) => void onSubmit(e)} className="mt-8 space-y-4">
             <p className="text-xs text-slate-500">Fields marked * are required.</p>
             <div>
               <label htmlFor="support-subject" className="mb-1 block text-sm text-slate-300">

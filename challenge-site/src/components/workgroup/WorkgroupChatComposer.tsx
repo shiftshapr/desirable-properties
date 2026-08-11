@@ -18,6 +18,7 @@ type Props = {
   onSend: (body: string) => Promise<void>;
   adoptDraft?: { key: number; text: string } | null;
   onHermesReply?: (note: WorkgroupAskNote) => void;
+  onOpenHermesInstructions?: () => void;
 };
 
 export default function WorkgroupChatComposer({
@@ -31,6 +32,7 @@ export default function WorkgroupChatComposer({
   onSend,
   adoptDraft,
   onHermesReply,
+  onOpenHermesInstructions,
 }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [body, setBody] = useState('');
@@ -123,6 +125,7 @@ export default function WorkgroupChatComposer({
             }
           }}
           onHermesReply={onHermesReply}
+          onOpenHermesInstructions={onOpenHermesInstructions}
         />
       </div>
       <div className="flex items-center justify-between gap-3">
