@@ -15,7 +15,7 @@ type Question = {
   fieldType: string;
   required: boolean;
   aiAssist: boolean;
-  maxLength: number | null;
+  minLength: number | null;
 };
 
 type Section = {
@@ -63,12 +63,10 @@ function QuestionField({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const text = value.valueText ?? '';
-  const maxLength = question.maxLength;
+  const minLength = question.minLength;
 
   function setText(next: string) {
-    onChange({
-      valueText: maxLength != null ? next.slice(0, maxLength) : next,
-    });
+    onChange({ valueText: next });
   }
 
   async function onGenerate(
@@ -126,16 +124,15 @@ function QuestionField({
         rows={4}
         className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
         value={text}
-        maxLength={maxLength ?? undefined}
         onChange={(e) => setText(e.target.value)}
       />
-      {maxLength != null ? (
+      {minLength != null ? (
         <p
           className={`mt-1 text-right text-xs ${
-            text.length >= maxLength ? 'text-amber-400' : 'text-slate-500'
+            text.trim().length >= minLength ? 'text-emerald-400' : 'text-amber-400'
           }`}
         >
-          {text.length}/{maxLength}
+          {text.trim().length}/{minLength} minimum
         </p>
       ) : null}
       {question.aiAssist ? (
@@ -191,6 +188,22 @@ export default function SessionQuestionsForm({
   const save = useCallback(
     async (submit = false, fromAutosave = false) => {
       if (!user) return;
+
+      if (submit) {
+        for (const section of sections) {
+          for (const q of section.questions) {
+            if (q.minLength == null) continue;
+            const val = (answers[q.id]?.valueText ?? '').trim();
+            if (val.length < q.minLength) {
+              setError(
+                `"${q.label}" needs at least ${q.minLength} characters (currently ${val.length}).`,
+              );
+              return;
+            }
+          }
+        }
+      }
+
       setSaving(true);
       setError(null);
       try {
@@ -225,7 +238,7 @@ export default function SessionQuestionsForm({
         setSaving(false);
       }
     },
-    [answers, attended, seriesSlug, sessionNumber, user],
+    [answers, attended, seriesSlug, sessionNumber, user, sections],
   );
 
   useEffect(() => {

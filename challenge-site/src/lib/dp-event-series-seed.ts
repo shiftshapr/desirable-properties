@@ -40,15 +40,15 @@ type QuestionSeed = {
   fieldType: 'checkbox' | 'textarea' | 'dp_hook';
   required?: boolean;
   aiAssist?: boolean;
-  maxLength?: number;
+  minLength?: number;
 };
 
-/** Session 1 text fields — short reflections, not essays. */
-export const FORK_SESSION_1_TEXT_MAX_LENGTH = 200;
+/** Session 1 text fields — minimum reflection length before submit. */
+export const FORK_SESSION_1_TEXT_MIN_LENGTH = 200;
 
-function withTextMaxLength(q: QuestionSeed, max = FORK_SESSION_1_TEXT_MAX_LENGTH): QuestionSeed {
+function withTextMinLength(q: QuestionSeed, min = FORK_SESSION_1_TEXT_MIN_LENGTH): QuestionSeed {
   if (q.fieldType === 'checkbox') return q;
-  return { ...q, maxLength: max };
+  return { ...q, minLength: min };
 }
 
 type SectionSeed = {
@@ -83,27 +83,27 @@ const SESSION_1_PREPARE: QuestionSeed[] = [
     fieldType: 'checkbox',
     required: true,
   },
-  withTextMaxLength({
+  withTextMinLength({
     fieldKey: 'humanstatement_resonated',
     label: 'What resonated with me about the pro-human framing',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
   }),
-  withTextMaxLength({
+  withTextMinLength({
     fieldKey: 'humanstatement_troubled',
     label: 'What troubled me or gave me pause',
     fieldType: 'textarea',
     aiAssist: true,
   }),
-  withTextMaxLength({
+  withTextMinLength({
     fieldKey: 'principle_keep_change_reject',
     label: 'One principle I would keep, change, or reject (and why)',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
   }),
-  withTextMaxLength({
+  withTextMinLength({
     fieldKey: 'would_sign_declaration',
     label: 'Would I sign the declaration? Why or why not?',
     fieldType: 'textarea',
@@ -134,11 +134,11 @@ const SHARED_REFLECT: QuestionSeed[] = [
   },
 ];
 
-const SESSION_1_REFLECT: QuestionSeed[] = SHARED_REFLECT.map((q) => withTextMaxLength(q));
+const SESSION_1_REFLECT: QuestionSeed[] = SHARED_REFLECT.map((q) => withTextMinLength(q));
 
 function engageFields(
   fields: Array<[string, string, boolean?]>,
-  options?: { textMaxLength?: number },
+  options?: { textMinLength?: number },
 ): QuestionSeed[] {
   return fields.map(([fieldKey, label, required]) => ({
     fieldKey,
@@ -146,7 +146,7 @@ function engageFields(
     fieldType: fieldKey === 'dp_hook' ? 'dp_hook' : 'textarea',
     required: required ?? fieldKey !== 'dp_hook',
     aiAssist: fieldKey !== 'dp_hook',
-    ...(options?.textMaxLength ? { maxLength: options.textMaxLength } : {}),
+    ...(options?.textMinLength ? { minLength: options.textMinLength } : {}),
   }));
 }
 
@@ -213,7 +213,7 @@ export const FORK_SESSION_SEEDS = [
             ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
             ['dp_hook', 'Optional DP hook', false],
           ],
-          { textMaxLength: FORK_SESSION_1_TEXT_MAX_LENGTH },
+          { textMinLength: FORK_SESSION_1_TEXT_MIN_LENGTH },
         ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SESSION_1_REFLECT },

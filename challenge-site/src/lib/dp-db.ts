@@ -263,11 +263,28 @@ CREATE TABLE IF NOT EXISTS dp_event_series_question (
   required BOOLEAN NOT NULL DEFAULT false,
   ai_assist BOOLEAN NOT NULL DEFAULT false,
   sort_order INTEGER NOT NULL DEFAULT 0,
-  max_length INTEGER,
+  min_length INTEGER,
   UNIQUE (section_id, field_key)
 );
 
-ALTER TABLE dp_event_series_question ADD COLUMN IF NOT EXISTS max_length INTEGER;
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'dp_event_series_question'
+      AND column_name = 'max_length'
+  ) AND NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'dp_event_series_question'
+      AND column_name = 'min_length'
+  ) THEN
+    ALTER TABLE dp_event_series_question RENAME COLUMN max_length TO min_length;
+  END IF;
+END $$;
+
+ALTER TABLE dp_event_series_question ADD COLUMN IF NOT EXISTS min_length INTEGER;
 
 CREATE TABLE IF NOT EXISTS dp_event_series_response (
   id UUID PRIMARY KEY,

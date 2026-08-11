@@ -66,11 +66,13 @@ export default function ComposeFieldAiAssist({
   const [focused, setFocused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [fabPos, setFabPos] = useState({ top: 0, left: 0 });
+  const [typing, setTyping] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [lastOption, setLastOption] = useState<ComposeAiPromptOption | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const typingTimerRef = useRef<number | null>(null);
   const panelOpen = menuOpen || Boolean(preview) || generating || Boolean(error);
 
   const positionFab = useCallback(() => {
@@ -78,8 +80,8 @@ export default function ComposeFieldAiAssist({
     if (!el) return;
     const rect = el.getBoundingClientRect();
     setFabPos({
-      top: Math.max(8, rect.top + 8),
-      left: Math.max(8, rect.right - 72),
+      top: rect.bottom - 36,
+      left: rect.left + 8,
     });
   }, [textareaRef]);
 
@@ -96,12 +98,20 @@ export default function ComposeFieldAiAssist({
         if (!menuOpen && !preview && !generating && !error) setFocused(false);
       }, 120);
     };
+    const onInput = () => {
+      setTyping(true);
+      if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
+      typingTimerRef.current = window.setTimeout(() => setTyping(false), 1400);
+    };
 
     el.addEventListener('focus', onFocus);
     el.addEventListener('blur', onBlur);
+    el.addEventListener('input', onInput);
     return () => {
       el.removeEventListener('focus', onFocus);
       el.removeEventListener('blur', onBlur);
+      el.removeEventListener('input', onInput);
+      if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
     };
   }, [textareaRef, positionFab, menuOpen, preview, generating, error]);
 
@@ -224,6 +234,7 @@ export default function ComposeFieldAiAssist({
   }
 
   const showFab = (focused || panelOpen) && !disabled;
+  const fabFaded = typing && !panelOpen;
 
   return (
     <>
@@ -234,8 +245,12 @@ export default function ComposeFieldAiAssist({
         aria-controls={menuId}
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
-        className={`fixed z-[12050] inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-950/95 px-2.5 py-1.5 text-xs font-bold text-cyan-300 shadow-lg transition-all duration-150 ${
-          showFab ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-1 opacity-0'
+        className={`fixed z-[12050] inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-950/95 px-2.5 py-1.5 text-xs font-bold text-cyan-300 shadow-lg transition-all duration-300 ${
+          showFab
+            ? fabFaded
+              ? 'pointer-events-auto translate-y-0 opacity-25'
+              : 'pointer-events-auto translate-y-0 opacity-100'
+            : 'pointer-events-none translate-y-1 opacity-0'
         }`}
         style={{ top: fabPos.top, left: fabPos.left }}
         disabled={disabled}
