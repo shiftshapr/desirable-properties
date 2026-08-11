@@ -361,6 +361,41 @@ CREATE TABLE IF NOT EXISTS dp_event_series_patch_lookup (
   matched_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (pearl_id, source, external_id)
 );
+
+CREATE TABLE IF NOT EXISTS dp_hermes_workgroup_settings (
+  workgroup_id TEXT PRIMARY KEY,
+  confidence_threshold REAL NOT NULL DEFAULT 0.8,
+  allowed_modes JSONB NOT NULL DEFAULT '["observer","facilitator"]'::jsonb,
+  cooldown_minutes INTEGER NOT NULL DEFAULT 15,
+  devils_advocate_mode TEXT NOT NULL DEFAULT 'request_only',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by TEXT
+);
+
+CREATE TABLE IF NOT EXISTS dp_hermes_hand (
+  id UUID PRIMARY KEY,
+  workgroup_id TEXT NOT NULL,
+  trigger_message_id TEXT NOT NULL,
+  trigger_message_body TEXT NOT NULL DEFAULT '',
+  trigger_author_user_id TEXT NOT NULL,
+  mode TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'raised',
+  confidence REAL NOT NULL DEFAULT 0,
+  teaser TEXT NOT NULL DEFAULT '',
+  full_reply TEXT,
+  requested_explicitly BOOLEAN NOT NULL DEFAULT false,
+  visibility TEXT NOT NULL DEFAULT 'private',
+  owner_user_id TEXT NOT NULL,
+  shared_message_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  opened_at TIMESTAMPTZ,
+  shared_at TIMESTAMPTZ,
+  dismissed_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_workgroup ON dp_hermes_hand (workgroup_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_owner ON dp_hermes_hand (owner_user_id, workgroup_id, status);
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_message ON dp_hermes_hand (workgroup_id, trigger_message_id);
 `;
 
 let pool: pg.Pool | null = null;
