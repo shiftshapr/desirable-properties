@@ -9,6 +9,7 @@ import {
   type RefObject,
 } from 'react';
 import HermesMarkdown from '@/components/HermesMarkdown';
+import { COMPOSE_AI_REFINEMENTS } from '@/lib/compose-ai-prompts';
 
 export type ComposeAiPromptOption = {
   id: string;
@@ -50,6 +51,8 @@ type Props = {
   onValueChange: (next: string) => void;
   disabled?: boolean;
   promptOptions: ComposeAiPromptOption[];
+  /** Shown after generation to refine the preview (Expand, Clarify, etc.). */
+  refinementOptions?: ComposeAiPromptOption[];
   onGenerate: (
     option: ComposeAiPromptOption,
     context: GenerateContext,
@@ -80,6 +83,7 @@ export default function ComposeFieldAiAssist({
   onValueChange,
   disabled,
   promptOptions,
+  refinementOptions = COMPOSE_AI_REFINEMENTS,
   onGenerate,
   fieldLabel = 'Message',
   onAiApplied,
@@ -153,6 +157,36 @@ export default function ComposeFieldAiAssist({
     setPreview('');
     setError(null);
     setMenuOpen(true);
+  }
+
+  async function runRefine(option: ComposeAiPromptOption) {
+    if (disabled || generating || !preview.trim()) return;
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setLastOption(option);
+    setGenerating(true);
+    setError(null);
+
+    const context = {
+      draft: preview,
+      selection: '',
+      selectionStart: 0,
+      selectionEnd: 0,
+    };
+
+    try {
+      const result = await onGenerate(option, context, controller.signal);
+      if (controller.signal.aborted) return;
+      setPreview(capComposeAiText(result || ''));
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      setError(err instanceof Error ? err.message : 'AI request failed');
+    } finally {
+      if (!controller.signal.aborted) setGenerating(false);
+    }
   }
 
   async function runGenerate(option: ComposeAiPromptOption, regenerate = false) {
@@ -319,6 +353,21 @@ export default function ComposeFieldAiAssist({
                 <div className="mt-2 max-h-48 overflow-auto text-sm leading-relaxed">
                   <HermesMarkdown text={preview} variant="dark" />
                 </div>
+                {refinementOptions.length > 0 ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {refinementOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        disabled={generating}
+                        onClick={() => void runRefine(option)}
+                        className="rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200 hover:border-cyan-700 hover:text-cyan-100 disabled:opacity-50"
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
                     type="button"

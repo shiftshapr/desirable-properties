@@ -5,6 +5,14 @@ import Link from 'next/link';
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
+import {
+  COMPOSE_AI_INITIAL_PROMPTS,
+  COMPOSE_AI_REFINEMENTS,
+  COMPOSE_AI_STRENGTHEN,
+  buildComposeAiMessage,
+  composeAiInstruction,
+  fetchComposeAiResponse,
+} from '@/lib/compose-ai-prompts';
 import { FORK_AI_SUBMISSION_STANDBY_FIELD_KEY } from '@/lib/dp-event-series-seed';
 import {
   clearSessionDraft,
@@ -35,23 +43,10 @@ type Section = {
 
 type AnswerMap = Record<string, { valueText?: string | null; valueBool?: boolean | null }>;
 
-const AI_PROMPTS: ComposeAiPromptOption[] = [
-  { id: 'start', label: 'Help me get started', requiresDraft: false },
-  { id: 'clarify', label: 'Clarify my thinking' },
-  { id: 'expand', label: 'Expand' },
-  { id: 'dp', label: 'Connect to a Desirable Property' },
-  { id: 'strengthen', label: 'Strengthen for submission' },
-  { id: 'shorter', label: 'Shorter version' },
-];
-
 const AI_INSTRUCTIONS: Record<string, string> = {
   start:
     'The field is empty. Offer 2–3 short starter angles, reflective questions, or example opening sentences the participant could build on. Do not write a full polished answer. Help them begin.',
-  clarify: 'Clarify and sharpen the ideas in the draft. Ask one reflective question if helpful.',
-  expand: 'Expand the draft with supporting detail and examples. Stay on topic and in the participant\'s voice.',
   dp: 'Connect this thinking to relevant Desirable Properties from the session context.',
-  strengthen: 'Strengthen this draft for submission: be specific, concrete, and honest.',
-  shorter: 'Produce a shorter version that keeps the core insight.',
 };
 
 function isQuestionCompleteForSubmit(
@@ -119,28 +114,23 @@ function QuestionField({
     signal: AbortSignal,
   ) {
     const userDraft = context.selection.trim() || context.draft.trim();
-    const instruction = AI_INSTRUCTIONS[option.id] || option.label;
-    const message = [
-      `Event series: ${seriesTitle}`,
-      `Session: ${sessionTitle}`,
-      relatedDpIds.length ? `Related DPs: ${relatedDpIds.join(', ')}` : '',
-      `Question: ${question.label}`,
-      '',
-      userDraft ? `Current draft:\n${userDraft}\n\n---\n\n` : 'The field is currently empty.\n\n---\n\n',
+    const instruction = composeAiInstruction(option, AI_INSTRUCTIONS);
+    const message = buildComposeAiMessage({
+      contextLines: [
+        `Event series: ${seriesTitle}`,
+        `Session: ${sessionTitle}`,
+        relatedDpIds.length ? `Related DPs: ${relatedDpIds.join(', ')}` : '',
+        `Question: ${question.label}`,
+      ],
+      userDraft,
       instruction,
-    ]
-      .filter(Boolean)
-      .join('\n');
+    });
 
-    const res = await fetch('/api/agent/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, history: [], surface: 'desirableproperties.org/series' }),
+    return fetchComposeAiResponse({
+      message,
+      surface: 'desirableproperties.org/series',
       signal,
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'AI request failed');
-    return data.response || '';
   }
 
   if (question.fieldType === 'checkbox') {
@@ -178,7 +168,8 @@ function QuestionField({
             textareaRef={textareaRef}
             value={text}
             onValueChange={setText}
-            promptOptions={AI_PROMPTS}
+            promptOptions={COMPOSE_AI_INITIAL_PROMPTS}
+            refinementOptions={[...COMPOSE_AI_REFINEMENTS, COMPOSE_AI_STRENGTHEN]}
             onGenerate={onGenerate}
             fieldLabel={question.label}
             onAiApplied={onAiUsed}

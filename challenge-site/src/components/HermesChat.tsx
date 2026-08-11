@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import HermesComposerAiAssist from '@/components/HermesComposerAiAssist';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
@@ -797,20 +798,32 @@ export default function HermesChat({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
               </button>
-              <textarea
-                ref={composerRef}
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={onKeyDown}
-                placeholder={
-                  signedIn
-                    ? 'Message Hermes…'
-                    : 'Sign in to send a message…'
-                }
-                className="max-h-40 min-h-10 flex-1 resize-none bg-transparent px-1 py-2.5 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
-                rows={1}
-                disabled={isLoading}
-              />
+              <div className="relative min-h-10 flex-1">
+                <textarea
+                  ref={composerRef}
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  placeholder={
+                    signedIn
+                      ? 'Message Hermes…'
+                      : 'Sign in to send a message…'
+                  }
+                  className="max-h-40 min-h-10 w-full resize-none bg-transparent px-1 py-2.5 pb-10 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
+                  rows={1}
+                  disabled={isLoading}
+                />
+                {signedIn ? (
+                  <HermesComposerAiAssist
+                    textareaRef={composerRef}
+                    value={inputText}
+                    onValueChange={setInputText}
+                    surface={surface}
+                    dpFocus={dpFocus}
+                    disabled={isLoading}
+                  />
+                ) : null}
+              </div>
               <button
                 type="button"
                 onClick={signedIn ? () => void sendMessage() : promptSignIn}
