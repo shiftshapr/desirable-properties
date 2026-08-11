@@ -10,6 +10,7 @@ import {
 } from 'react';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import { COMPOSE_AI_REFINEMENTS } from '@/lib/compose-ai-prompts';
+import { markdownToPlainText } from '@/lib/markdown-to-plain-text';
 
 export type ComposeAiPromptOption = {
   id: string;
@@ -222,7 +223,7 @@ export default function ComposeFieldAiAssist({
   }
 
   function applyDraft(mode: 'insert' | 'replace') {
-    const draft = capComposeAiText(preview);
+    const draft = markdownToPlainText(capComposeAiText(preview));
     if (!draft) return;
     const textarea = textareaRef.current;
     const full = value;

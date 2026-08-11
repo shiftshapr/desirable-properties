@@ -22,6 +22,10 @@ export const COMPOSE_AI_INITIAL_PROMPTS: ComposeAiPromptOption[] = [
   { id: 'shorter', label: 'Shorter version' },
 ];
 
+/** Plain-prose guard for compose-assist model calls (belt-and-suspenders with insert-time stripping). */
+export const COMPOSE_AI_PLAIN_PROSE_RULE =
+  'Return plain prose only. Do not use markdown formatting (no **bold**, *italic*, headings, blockquotes, or bullet lists).';
+
 export const COMPOSE_AI_REFINEMENT_INSTRUCTIONS: Record<string, string> = {
   start:
     'The field is empty. Offer 2–3 short starter angles, reflective questions, or example opening sentences the participant could build on. Do not write a full polished answer. Help them begin.',
@@ -54,6 +58,8 @@ export function buildComposeAiMessage(options: {
       ? `Current draft:\n${userDraft}\n\n---\n\n`
       : 'The field is currently empty.\n\n---\n\n',
     instruction,
+    '',
+    COMPOSE_AI_PLAIN_PROSE_RULE,
   ]
     .filter((line) => line !== null)
     .join('\n');
