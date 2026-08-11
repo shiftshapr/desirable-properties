@@ -46,8 +46,11 @@ type QuestionSeed = {
   minLength?: number;
 };
 
-/** Session 1 text fields — minimum reflection length before submit. */
+/** Session 1 prepare/reflect text fields — minimum reflection length before submit. */
 export const FORK_SESSION_1_TEXT_MIN_LENGTH = 200;
+
+/** Session 1 engage text fields (excluding not_ai_tunnel and dp_hook). */
+export const FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH = 100;
 
 function withTextMinLength(q: QuestionSeed, min = FORK_SESSION_1_TEXT_MIN_LENGTH): QuestionSeed {
   if (q.fieldType === 'checkbox') return q;
@@ -246,7 +249,7 @@ export const FORK_SESSION_SEEDS = [
             ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
             ['dp_hook', 'Optional DP hook', false],
           ],
-          { textMinLength: FORK_SESSION_1_TEXT_MIN_LENGTH },
+          { textMinLength: FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH },
         ).map((q) =>
           q.fieldKey === 'not_ai_tunnel' ? { ...q, minLength: 50 } : q,
         ),
