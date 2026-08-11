@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import WorkgroupMessageBody from '@/components/workgroup/WorkgroupMessageBody';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
@@ -50,7 +51,7 @@ export default function WorkgroupChatTeaser({
                 <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
                 <time className="text-xs text-slate-500">{formatWhen(msg.created_at)}</time>
               </div>
-              <p className="mt-1 text-sm leading-relaxed text-slate-300">{msg.body}</p>
+              <WorkgroupMessageBody body={msg.body} className="text-slate-300" />
             </li>
           ))}
         </ul>

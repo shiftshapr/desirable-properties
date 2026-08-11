@@ -7,6 +7,7 @@ import HermesAmbientFacilitatorQueue from '@/components/workgroup/HermesAmbientF
 import HermesAmbientHandBadge from '@/components/workgroup/HermesAmbientHandBadge';
 import HermesAmbientSettingsPanel from '@/components/workgroup/HermesAmbientSettingsPanel';
 import WorkgroupHermesPanel from '@/components/workgroup/WorkgroupHermesPanel';
+import WorkgroupMessageBody from '@/components/workgroup/WorkgroupMessageBody';
 import {
   assessHermesAmbient,
   fetchHermesHands,
@@ -250,9 +251,7 @@ export default function WorkgroupChatPanel({
                       <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
                       <time className="text-xs text-slate-500">{formatWhen(msg.created_at)}</time>
                     </div>
-                    <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
-                      {msg.body}
-                    </p>
+                    <WorkgroupMessageBody body={msg.body} />
                     {msgHands.map((hand) => (
                       <HermesAmbientHandBadge
                         key={hand.id}
