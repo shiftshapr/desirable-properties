@@ -47,7 +47,7 @@ type QuestionSeed = {
 };
 
 /** Session 1 prepare/reflect text fields — minimum reflection length before submit. */
-export const FORK_SESSION_1_TEXT_MIN_LENGTH = 200;
+export const FORK_SESSION_1_TEXT_MIN_LENGTH = 100;
 
 /** Session 1 engage text fields (excluding not_ai_tunnel and dp_hook). */
 export const FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH = 100;
