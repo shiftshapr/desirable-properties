@@ -6,6 +6,11 @@ import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
 import { FORK_AI_SUBMISSION_STANDBY_FIELD_KEY } from '@/lib/dp-event-series-seed';
+import {
+  clearSessionDraft,
+  loadSessionDraft,
+  saveSessionDraft,
+} from '@/lib/compose-draft-storage';
 import { useAuth } from '@/lib/auth-context';
 
 export const SUBMIT_CONSENT_SECTION_KEY = 'submit';
@@ -226,7 +231,28 @@ export default function SessionQuestionsForm({
   const [saving, setSaving] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [draftHydrated, setDraftHydrated] = useState(false);
   const hasUserEdited = useRef(false);
+
+  useEffect(() => {
+    const local = loadSessionDraft(seriesSlug, sessionNumber);
+    if (local) {
+      setAttended(local.attended);
+      setAnswers(local.answers);
+      setAiAssistUsed(local.aiAssistUsed);
+      hasUserEdited.current = true;
+    }
+    setDraftHydrated(true);
+  }, [seriesSlug, sessionNumber]);
+
+  useEffect(() => {
+    if (!draftHydrated) return;
+    saveSessionDraft(seriesSlug, sessionNumber, {
+      attended,
+      answers,
+      aiAssistUsed,
+    });
+  }, [attended, answers, aiAssistUsed, draftHydrated, seriesSlug, sessionNumber]);
 
   const markEdited = useCallback(() => {
     hasUserEdited.current = true;
@@ -289,7 +315,10 @@ export default function SessionQuestionsForm({
           }
           throw new Error(data.error || 'Save failed');
         }
-        if (submit) setStatus('submitted');
+        if (submit) {
+          setStatus('submitted');
+          clearSessionDraft(seriesSlug, sessionNumber);
+        }
         if (submit) {
           setFlash('Session questions submitted.');
         } else if (!fromAutosave || hasUserEdited.current) {

@@ -8,6 +8,7 @@ import {
   useState,
   type RefObject,
 } from 'react';
+import HermesMarkdown from '@/components/HermesMarkdown';
 
 export type ComposeAiPromptOption = {
   id: string;
@@ -315,9 +316,9 @@ export default function ComposeFieldAiAssist({
                 <p className="text-xs font-medium uppercase tracking-wide text-cyan-400/80">
                   Generated text
                 </p>
-                <p className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
-                  {preview}
-                </p>
+                <div className="mt-2 max-h-48 overflow-auto text-sm leading-relaxed">
+                  <HermesMarkdown text={preview} variant="dark" />
+                </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
                     type="button"

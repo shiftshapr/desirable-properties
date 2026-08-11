@@ -7,6 +7,11 @@ import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import {
+  clearPearlDraft,
+  loadPearlDraft,
+  savePearlDraft,
+} from '@/lib/compose-draft-storage';
 import { useAuth } from '@/lib/auth-context';
 import { bookIntroDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 
@@ -116,6 +121,35 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
   const [saving, setSaving] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [draftHydrated, setDraftHydrated] = useState(false);
+
+  useEffect(() => {
+    const local = loadPearlDraft(seriesSlug);
+    if (local) {
+      setState((prev) => ({
+        ...prev,
+        patchIdea: local.patchIdea,
+        socializeUrl: local.socializeUrl,
+        socializeNote: local.socializeNote,
+        feedbackSummary: local.feedbackSummary,
+        feedbackFrom: local.feedbackFrom,
+        reflection: local.reflection,
+      }));
+    }
+    setDraftHydrated(true);
+  }, [seriesSlug]);
+
+  useEffect(() => {
+    if (!draftHydrated) return;
+    savePearlDraft(seriesSlug, {
+      patchIdea: state.patchIdea,
+      socializeUrl: state.socializeUrl,
+      socializeNote: state.socializeNote,
+      feedbackSummary: state.feedbackSummary,
+      feedbackFrom: state.feedbackFrom,
+      reflection: state.reflection,
+    });
+  }, [state, draftHydrated, seriesSlug]);
 
   const save = useCallback(
     async (submit = false) => {
@@ -145,6 +179,7 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
           });
         }
         setFlash(submit ? 'PEARL track submitted. Badge unlocked!' : 'Saved.');
+        if (submit) clearPearlDraft(seriesSlug);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Save failed');
       } finally {
