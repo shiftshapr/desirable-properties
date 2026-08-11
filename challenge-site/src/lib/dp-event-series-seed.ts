@@ -51,11 +51,38 @@ function withTextMinLength(q: QuestionSeed, min = FORK_SESSION_1_TEXT_MIN_LENGTH
   return { ...q, minLength: min };
 }
 
+/** Stored in dp_event_series_answer (value_bool) for all Fork workshop sessions. */
+export const FORK_USAGE_CONSENT_FIELD_KEY = 'usage_consent';
+export const FORK_ATTRIBUTE_ANSWERS_FIELD_KEY = 'attribute_answers';
+
+export const FORK_SUBMIT_CONSENT_QUESTIONS: QuestionSeed[] = [
+  {
+    fieldKey: FORK_USAGE_CONSENT_FIELD_KEY,
+    label:
+      'I understand that my anonymized answers may be used in part, whole, or in analyses to generate content',
+    fieldType: 'checkbox',
+    required: true,
+  },
+  {
+    fieldKey: FORK_ATTRIBUTE_ANSWERS_FIELD_KEY,
+    label: 'Please attribute my answers to me',
+    fieldType: 'checkbox',
+    required: false,
+  },
+];
+
 type SectionSeed = {
-  sectionKey: 'prepare' | 'engage' | 'reflect';
+  sectionKey: 'prepare' | 'engage' | 'reflect' | 'submit';
   title: string;
   pearlStage: string;
   questions: QuestionSeed[];
+};
+
+const FORK_SUBMIT_SECTION: SectionSeed = {
+  sectionKey: 'submit',
+  title: 'Before you submit',
+  pearlStage: 'submit',
+  questions: FORK_SUBMIT_CONSENT_QUESTIONS,
 };
 
 const SHARED_PREPARE: QuestionSeed[] = [
@@ -217,6 +244,7 @@ export const FORK_SESSION_SEEDS = [
         ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SESSION_1_REFLECT },
+      FORK_SUBMIT_SECTION,
     ],
   },
   {
@@ -259,6 +287,7 @@ export const FORK_SESSION_SEEDS = [
         ]),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
+      FORK_SUBMIT_SECTION,
     ],
   },
   {
@@ -305,6 +334,7 @@ export const FORK_SESSION_SEEDS = [
         ]),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
+      FORK_SUBMIT_SECTION,
     ],
   },
   {
@@ -356,6 +386,7 @@ export const FORK_SESSION_SEEDS = [
         ]),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
+      FORK_SUBMIT_SECTION,
     ],
   },
 ] satisfies Array<{

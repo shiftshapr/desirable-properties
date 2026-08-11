@@ -7,6 +7,8 @@ import ComposeFieldAiAssist, {
 } from '@/components/compose/ComposeFieldAiAssist';
 import { useAuth } from '@/lib/auth-context';
 
+export const SUBMIT_CONSENT_SECTION_KEY = 'submit';
+
 type Question = {
   id: string;
   fieldKey: string;
@@ -192,6 +194,10 @@ export default function SessionQuestionsForm({
       if (submit) {
         for (const section of sections) {
           for (const q of section.questions) {
+            if (q.required && q.fieldType === 'checkbox' && !answers[q.id]?.valueBool) {
+              setError(`Please confirm: "${q.label}"`);
+              return;
+            }
             if (q.minLength == null) continue;
             const val = (answers[q.id]?.valueText ?? '').trim();
             if (val.length < q.minLength) {
@@ -249,7 +255,11 @@ export default function SessionQuestionsForm({
     return () => window.clearTimeout(t);
   }, [answers, attended, user, save]);
 
-  const allSections = useMemo(() => sections, [sections]);
+  const { contentSections, consentSection } = useMemo(() => {
+    const consent = sections.find((s) => s.sectionKey === SUBMIT_CONSENT_SECTION_KEY) ?? null;
+    const content = sections.filter((s) => s.sectionKey !== SUBMIT_CONSENT_SECTION_KEY);
+    return { contentSections: content, consentSection: consent };
+  }, [sections]);
 
   if (!checked) {
     return <p className="text-sm text-slate-400">Loading…</p>;
@@ -296,7 +306,7 @@ export default function SessionQuestionsForm({
         <span className="text-sm text-slate-200">I attended or watched this session</span>
       </label>
 
-      {allSections.map((section) => (
+      {contentSections.map((section) => (
         <section key={section.id} className="space-y-4">
           <h3 className="text-lg font-semibold text-white">{section.title}</h3>
           {section.questions.map((q) => (
@@ -315,6 +325,25 @@ export default function SessionQuestionsForm({
           ))}
         </section>
       ))}
+
+      {consentSection ? (
+        <div className="space-y-3 border-t border-slate-800 pt-6">
+          {consentSection.questions.map((q) => (
+            <QuestionField
+              key={q.id}
+              question={q}
+              value={answers[q.id] || {}}
+              onChange={(val) => {
+                markEdited();
+                setAnswers((prev) => ({ ...prev, [q.id]: val }));
+              }}
+              seriesTitle={seriesTitle}
+              sessionTitle={sessionTitle}
+              relatedDpIds={relatedDpIds}
+            />
+          ))}
+        </div>
+      ) : null}
 
       <div className="flex flex-wrap gap-3">
         <button

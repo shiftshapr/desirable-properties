@@ -537,18 +537,28 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
 
   for (let si = 0; si < seed.sections.length; si++) {
     const sectionSeed = seed.sections[si];
-    const existingSection = sectionsRes.rows.find(
+    let existingSection = sectionsRes.rows.find(
       (row) => String(row.section_key) === sectionSeed.sectionKey,
     );
-    if (!existingSection) continue;
 
-    const sectionId = String(existingSection.id);
-    await pool.query(
-      `UPDATE dp_event_series_question_section
-       SET title = $2, pearl_stage = $3, sort_order = $4
-       WHERE id = $1`,
-      [sectionId, sectionSeed.title, sectionSeed.pearlStage, si],
-    );
+    let sectionId: string;
+    if (!existingSection) {
+      sectionId = crypto.randomUUID();
+      await pool.query(
+        `INSERT INTO dp_event_series_question_section (
+           id, session_id, section_key, title, pearl_stage, sort_order
+         ) VALUES ($1,$2,$3,$4,$5,$6)`,
+        [sectionId, sessionId, sectionSeed.sectionKey, sectionSeed.title, sectionSeed.pearlStage, si],
+      );
+    } else {
+      sectionId = String(existingSection.id);
+      await pool.query(
+        `UPDATE dp_event_series_question_section
+         SET title = $2, pearl_stage = $3, sort_order = $4
+         WHERE id = $1`,
+        [sectionId, sectionSeed.title, sectionSeed.pearlStage, si],
+      );
+    }
 
     const questionsRes = await pool.query(
       `SELECT id, field_key FROM dp_event_series_question WHERE section_id = $1`,
@@ -710,7 +720,9 @@ async function ensureEventSeeds() {
   await backfillForkSeriesTitle();
   await backfillForkPerspectiveSlug();
   await backfillForkPreReads();
-  await backfillForkSessionQuestions(1);
+  for (const sessionSeed of FORK_SESSION_SEEDS) {
+    await backfillForkSessionQuestions(sessionSeed.sessionNumber);
+  }
 }
 
 async function backfillForkSeriesBadgeImages() {
@@ -1029,6 +1041,24 @@ export async function saveResponseAnswers(input: {
   const questionById = new Map(
     sections.flatMap((s) => s.questions).map((q) => [q.id, q]),
   );
+  const answerByQuestionId = new Map(input.answers.map((a) => [a.questionId, a]));
+
+  if (input.submit) {
+    for (const section of sections) {
+      for (const question of section.questions) {
+        if (!question.required || question.fieldType !== 'checkbox') continue;
+        const answer = answerByQuestionId.get(question.id);
+        if (!answer?.valueBool) {
+          return {
+            ok: false as const,
+            error: 'required_checkbox',
+            fieldKey: question.fieldKey,
+            label: question.label,
+          };
+        }
+      }
+    }
+  }
 
   for (const answer of input.answers) {
     const question = questionById.get(answer.questionId);
