@@ -126,6 +126,7 @@ export default function WorkgroupInviteDraftEditor({
       <label className="block text-sm">
         <span className="text-slate-300">Email draft</span>
         <textarea
+          id="invite-draft-textarea"
           value={draft}
           onChange={(e) => onDraft(e.target.value)}
           rows={12}
@@ -134,14 +135,16 @@ export default function WorkgroupInviteDraftEditor({
         />
       </label>
 
-      <button
-        type="button"
-        onClick={onRegenerate}
-        disabled={busy}
-        className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
-      >
-        {busy ? 'Drafting…' : 'Regenerate draft'}
-      </button>
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={onRegenerate}
+          disabled={busy}
+          className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+        >
+          {busy ? 'Drafting…' : 'Regenerate draft'}
+        </button>
+      </div>
     </div>
   );
 }

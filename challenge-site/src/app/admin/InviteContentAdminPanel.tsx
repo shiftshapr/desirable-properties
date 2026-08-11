@@ -208,7 +208,9 @@ export default function InviteContentAdminPanel() {
           emails. URL: <span className="text-cyan-300">/admin?tab=invite-content</span>
         </p>
         <p className="mt-2 text-slate-400">
-          Events are manual links only (no Luma API). Perspectives should use site paths like{' '}
+          Global events are manual links (no Luma API). Upcoming series and sessions are managed
+          under <span className="text-cyan-300">/admin?tab=event-series</span>. Perspectives should
+          use site paths like{' '}
           <code className="text-slate-300">/perspectives/a-fork-in-the-web</code>.
         </p>
       </div>

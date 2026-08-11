@@ -12,6 +12,11 @@ export type InviteContentOption = {
   slug?: string;
 };
 
+export type InviteSeriesContentOption = InviteContentOption & {
+  kind: 'single' | 'series' | 'session';
+  subtitle?: string | null;
+};
+
 type Props = {
   selectedEventIds: string[];
   selectedPerspectiveIds: string[];
@@ -23,13 +28,73 @@ type Props = {
   }) => void;
 };
 
+function formatEventDate(eventDate: string | null | undefined) {
+  if (!eventDate) return null;
+  return new Date(eventDate).toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+function EventCheckboxRow({
+  id,
+  title,
+  eventDate,
+  description,
+  subtitle,
+  kindLabel,
+  checked,
+  onToggle,
+}: {
+  id: string;
+  title: string;
+  eventDate?: string | null;
+  description?: string | null;
+  subtitle?: string | null;
+  kindLabel?: string | null;
+  checked: boolean;
+  onToggle: (id: string) => void;
+}) {
+  const dateLabel = formatEventDate(eventDate);
+  return (
+    <label
+      key={id}
+      className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-800 px-3 py-2 hover:border-slate-700"
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={() => onToggle(id)}
+        className="mt-1"
+      />
+      <span className="min-w-0">
+        <span className="block text-sm font-medium text-slate-100">{title}</span>
+        {subtitle ? (
+          <span className="block text-xs text-slate-500">{subtitle}</span>
+        ) : null}
+        {dateLabel ? <span className="block text-xs text-slate-500">{dateLabel}</span> : null}
+        {kindLabel ? (
+          <span className="mt-0.5 block text-xs text-slate-500">{kindLabel}</span>
+        ) : null}
+        {description ? (
+          <span className="mt-1 block text-xs text-slate-400">{description}</span>
+        ) : null}
+      </span>
+    </label>
+  );
+}
+
 export default function WorkgroupInviteContentPicker({
   selectedEventIds,
   selectedPerspectiveIds,
   lead,
   onChange,
 }: Props) {
-  const [events, setEvents] = useState<InviteContentOption[]>([]);
+  const [globalEvents, setGlobalEvents] = useState<InviteContentOption[]>([]);
+  const [seriesEvents, setSeriesEvents] = useState<InviteSeriesContentOption[]>([]);
   const [perspectives, setPerspectives] = useState<InviteContentOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +107,8 @@ export default function WorkgroupInviteContentPicker({
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.message || 'Failed to load invite content');
         if (cancelled) return;
-        setEvents(data.events || []);
+        setGlobalEvents(data.events || []);
+        setSeriesEvents(data.seriesEvents || []);
         setPerspectives(data.perspectives || []);
       } catch (err) {
         if (!cancelled) {
@@ -89,6 +155,9 @@ export default function WorkgroupInviteContentPicker({
     });
   }
 
+  const upcomingSeries = seriesEvents.filter((event) => event.kind === 'series' || event.kind === 'single');
+  const upcomingSessions = seriesEvents.filter((event) => event.kind === 'session');
+
   if (loading) {
     return <p className="text-sm text-slate-500">Loading events and perspectives…</p>;
   }
@@ -97,10 +166,11 @@ export default function WorkgroupInviteContentPicker({
     return <p className="text-sm text-rose-300">{error}</p>;
   }
 
-  if (!events.length && !perspectives.length) {
+  if (!globalEvents.length && !seriesEvents.length && !perspectives.length) {
     return (
       <p className="text-sm text-slate-500">
-        No invite content configured yet. Site admins can add events and perspectives at{' '}
+        No invite content configured yet. Upcoming events come from{' '}
+        <span className="text-cyan-300">/admin?tab=event-series</span>; add manual links at{' '}
         <span className="text-cyan-300">/admin?tab=invite-content</span>.
       </p>
     );
@@ -115,40 +185,65 @@ export default function WorkgroupInviteContentPicker({
         </p>
       </div>
 
-      {events.length > 0 ? (
+      {upcomingSeries.length > 0 ? (
+        <fieldset className="space-y-2">
+          <legend className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Upcoming events
+          </legend>
+          {upcomingSeries.map((event) => (
+            <EventCheckboxRow
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              eventDate={event.eventDate}
+              description={event.description}
+              kindLabel={
+                event.kind === 'single'
+                  ? event.description || 'Single event'
+                  : 'Event series'
+              }
+              checked={selectedEventIds.includes(event.id)}
+              onToggle={toggleEvent}
+            />
+          ))}
+        </fieldset>
+      ) : null}
+
+      {upcomingSessions.length > 0 ? (
+        <fieldset className="space-y-2">
+          <legend className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Upcoming sessions
+          </legend>
+          {upcomingSessions.map((event) => (
+            <EventCheckboxRow
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              eventDate={event.eventDate}
+              subtitle={event.subtitle}
+              kindLabel="Session"
+              checked={selectedEventIds.includes(event.id)}
+              onToggle={toggleEvent}
+            />
+          ))}
+        </fieldset>
+      ) : null}
+
+      {globalEvents.length > 0 ? (
         <fieldset className="space-y-2">
           <legend className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Global events
           </legend>
-          {events.map((event) => (
-            <label
+          {globalEvents.map((event) => (
+            <EventCheckboxRow
               key={event.id}
-              className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-800 px-3 py-2 hover:border-slate-700"
-            >
-              <input
-                type="checkbox"
-                checked={selectedEventIds.includes(event.id)}
-                onChange={() => toggleEvent(event.id)}
-                className="mt-1"
-              />
-              <span className="min-w-0">
-                <span className="block text-sm font-medium text-slate-100">{event.title}</span>
-                {event.eventDate ? (
-                  <span className="block text-xs text-slate-500">
-                    {new Date(event.eventDate).toLocaleString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit',
-                    })}
-                  </span>
-                ) : null}
-                {event.description ? (
-                  <span className="mt-1 block text-xs text-slate-400">{event.description}</span>
-                ) : null}
-              </span>
-            </label>
+              id={event.id}
+              title={event.title}
+              eventDate={event.eventDate}
+              description={event.description}
+              checked={selectedEventIds.includes(event.id)}
+              onToggle={toggleEvent}
+            />
           ))}
         </fieldset>
       ) : null}

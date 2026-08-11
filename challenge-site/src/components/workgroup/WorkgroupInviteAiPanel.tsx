@@ -62,8 +62,15 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       eventDate?: string | null;
       description?: string | null;
     }>;
+    seriesEvents: Array<{
+      id: string;
+      title: string;
+      url: string;
+      eventDate?: string | null;
+      description?: string | null;
+    }>;
     perspectives: Array<{ id: string; title: string; url: string; slug: string }>;
-  }>({ events: [], perspectives: [] });
+  }>({ events: [], seriesEvents: [], perspectives: [] });
 
   const [platformDone, setPlatformDone] = useState(false);
   const [mailto, setMailto] = useState('');
@@ -98,6 +105,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         if (!cancelled && res.ok && data.ok) {
           setContentCatalog({
             events: data.events || [],
+            seriesEvents: data.seriesEvents || [],
             perspectives: data.perspectives || [],
           });
         }
@@ -143,8 +151,13 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     workgroupSlug,
   ]);
 
+  const allSelectableEvents = useMemo(
+    () => [...contentCatalog.events, ...contentCatalog.seriesEvents],
+    [contentCatalog.events, contentCatalog.seriesEvents],
+  );
+
   const inviteContentContext = useMemo<InviteContentContext | null>(() => {
-    const events = contentCatalog.events
+    const events = allSelectableEvents
       .filter((event) => selectedEventIds.includes(event.id))
       .map((event) => ({
         title: event.title,
@@ -166,7 +179,13 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     if (perspectives.length && !events.length) lead = 'perspectives';
 
     return { events, perspectives, lead };
-  }, [contentCatalog, inviteLead, selectedEventIds, selectedPerspectiveIds]);
+  }, [
+    allSelectableEvents,
+    contentCatalog.perspectives,
+    inviteLead,
+    selectedEventIds,
+    selectedPerspectiveIds,
+  ]);
 
   const handleInviteContentChange = useCallback(
     (patch: {
@@ -346,6 +365,21 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
 
   const recipientLabel = name.trim() || resolvedPerson?.name || 'Recipient';
   const recipientEmail = email.trim();
+  const hasDraft = Boolean(draft.trim());
+  const showDraftPhase = step === 'draft' || step === 'done' || (step === 'research' && hasDraft);
+
+  function focusDraftEditor() {
+    const el = document.getElementById('invite-draft-textarea');
+    if (el instanceof HTMLTextAreaElement) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.focus();
+    }
+  }
+
+  function editRecipientDetails() {
+    setError(null);
+    setStep('research');
+  }
 
   return (
     <div>
@@ -379,24 +413,42 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
 
       <div className="mt-6">
         {step === 'research' || step === 'disambiguate' ? (
-          <WorkgroupInviteResearchForm
-            name={name}
-            email={email}
-            linkedinUrl={linkedinUrl}
-            previousInteraction={previousInteraction}
-            extraLinks={extraLinks}
-            busy={draftBusy}
-            onChange={(patch) => {
-              if (patch.name !== undefined) setName(patch.name);
-              if (patch.email !== undefined) setEmail(patch.email);
-              if (patch.linkedinUrl !== undefined) setLinkedinUrl(patch.linkedinUrl);
-              if (patch.previousInteraction !== undefined) {
-                setPreviousInteraction(patch.previousInteraction);
-              }
-              if (patch.extraLinks !== undefined) setExtraLinks(patch.extraLinks);
-            }}
-            onSubmit={() => void runResearch()}
-          />
+          <>
+            {step === 'research' && hasDraft ? (
+              <div className="mb-4 flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-slate-400">
+                  Editing recipient details. Your draft is saved below — regenerate after changes if
+                  needed.
+                </p>
+                <button
+                  type="button"
+                  disabled={anyBusy}
+                  onClick={() => setStep('draft')}
+                  className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+                >
+                  Back to draft
+                </button>
+              </div>
+            ) : null}
+            <WorkgroupInviteResearchForm
+              name={name}
+              email={email}
+              linkedinUrl={linkedinUrl}
+              previousInteraction={previousInteraction}
+              extraLinks={extraLinks}
+              busy={draftBusy}
+              onChange={(patch) => {
+                if (patch.name !== undefined) setName(patch.name);
+                if (patch.email !== undefined) setEmail(patch.email);
+                if (patch.linkedinUrl !== undefined) setLinkedinUrl(patch.linkedinUrl);
+                if (patch.previousInteraction !== undefined) {
+                  setPreviousInteraction(patch.previousInteraction);
+                }
+                if (patch.extraLinks !== undefined) setExtraLinks(patch.extraLinks);
+              }}
+              onSubmit={() => void runResearch()}
+            />
+          </>
         ) : null}
 
         {step === 'disambiguate' ? (
@@ -409,16 +461,28 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
           </div>
         ) : null}
 
-        {(step === 'draft' || step === 'done') && (
-          <div className="space-y-6">
-            <div className="rounded-lg border border-cyan-900/40 bg-cyan-950/25 px-3 py-2.5 text-sm text-cyan-50/95">
-              <span className="text-cyan-200/70">Inviting </span>
-              <span className="font-medium text-white">{recipientLabel}</span>
-              {recipientEmail ? (
-                <>
-                  {' '}
-                  <span className="text-cyan-100/80">&lt;{recipientEmail}&gt;</span>
-                </>
+        {showDraftPhase ? (
+          <div className="mt-6 space-y-6">
+            <div className="flex flex-col gap-3 rounded-lg border border-cyan-900/40 bg-cyan-950/25 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-cyan-50/95">
+                <span className="text-cyan-200/70">Inviting </span>
+                <span className="font-medium text-white">{recipientLabel}</span>
+                {recipientEmail ? (
+                  <>
+                    {' '}
+                    <span className="text-cyan-100/80">&lt;{recipientEmail}&gt;</span>
+                  </>
+                ) : null}
+              </p>
+              {step === 'draft' && !platformDone ? (
+                <button
+                  type="button"
+                  disabled={anyBusy}
+                  onClick={editRecipientDetails}
+                  className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+                >
+                  Edit recipient
+                </button>
               ) : null}
             </div>
             <WorkgroupInviteDraftEditor
@@ -450,9 +514,10 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               recipientEmail={recipientEmail}
               onPlatformSend={() => send('platform')}
               onClientPrepare={() => send('client')}
+              onEditDraft={focusDraftEditor}
             />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
