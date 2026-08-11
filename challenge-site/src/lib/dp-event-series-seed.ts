@@ -114,13 +114,6 @@ const SHARED_PREPARE: QuestionSeed[] = [
 
 /** Session 1 Prepare — Human Statement values check-in (Workshop 1 plenary). */
 const SESSION_1_PREPARE: QuestionSeed[] = [
-  {
-    fieldKey: 'pre_read_confirmed',
-    label:
-      'I reviewed the Pro-Human AI Declaration at humanstatement.org (or attended/watched the session)',
-    fieldType: 'checkbox',
-    required: true,
-  },
   withTextMinLength({
     fieldKey: 'humanstatement_resonated',
     label: 'What resonated with me about the pro-human framing',

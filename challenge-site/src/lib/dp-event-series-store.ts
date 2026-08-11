@@ -533,6 +533,18 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
   if (!sessionRes.rows[0]) return;
   const sessionId = String(sessionRes.rows[0].id);
 
+  if (sessionNumber === 1) {
+    await pool.query(
+      `DELETE FROM dp_event_series_question q
+       USING dp_event_series_question_section sec
+       WHERE q.section_id = sec.id
+         AND sec.session_id = $1
+         AND sec.section_key = 'prepare'
+         AND q.field_key = 'pre_read_confirmed'`,
+      [sessionId],
+    );
+  }
+
   const sectionsRes = await pool.query(
     `SELECT id, section_key FROM dp_event_series_question_section WHERE session_id = $1`,
     [sessionId],
