@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
+import { composeAiInstruction } from '@/lib/compose-ai-prompts';
 import { isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 import type { RefObject } from 'react';
@@ -89,7 +90,7 @@ export default function WorkgroupChatAiAssist({
       '---',
       '',
       userDraft ? `Current draft:\n${userDraft}\n\n---\n\n` : '',
-      option.label,
+      composeAiInstruction(option),
     ]
       .filter(Boolean)
       .join('\n');

@@ -13,6 +13,10 @@ import {
   savePearlDraft,
 } from '@/lib/compose-draft-storage';
 import { useAuth } from '@/lib/auth-context';
+import {
+  COMPOSE_AI_REFINEMENTS,
+  composeAiInstruction,
+} from '@/lib/compose-ai-prompts';
 import { bookIntroDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 
 type PearlState = {
@@ -39,8 +43,6 @@ const AI_PROMPTS: ComposeAiPromptOption[] = [
 const AI_INSTRUCTIONS: Record<string, string> = {
   start:
     'The field is empty. Suggest 2–3 concrete patch angles or starter sentences the participant could develop. Keep it practical for Gov Hub or Canopi.',
-  clarify: 'Clarify and sharpen the ideas in the draft.',
-  expand: 'Expand the draft with supporting detail and examples. Stay on topic.',
   dp: 'Connect this patch idea to relevant Desirable Properties.',
   reflect: 'Strengthen this reflection: be specific about what changed and why it matters.',
 };
@@ -64,7 +66,7 @@ function AiTextarea({
     signal: AbortSignal,
   ) {
     const userDraft = context.selection.trim() || context.draft.trim();
-    const instruction = AI_INSTRUCTIONS[option.id] || option.label;
+    const instruction = composeAiInstruction(option, AI_INSTRUCTIONS);
     const message = [
       `PEARL track for event series: ${seriesTitle}`,
       `Field: ${label}`,
@@ -100,6 +102,10 @@ function AiTextarea({
         value={value}
         onValueChange={onChange}
         promptOptions={AI_PROMPTS}
+        refinementOptions={[
+          ...COMPOSE_AI_REFINEMENTS,
+          { id: 'reflect', label: 'Strengthen' },
+        ]}
         onGenerate={onGenerate}
         fieldLabel={label}
       />
