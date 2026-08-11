@@ -23,6 +23,26 @@ type GenerateContext = {
   selectionEnd: number;
 };
 
+const COMPOSE_AI_MAX_CHARS = 1000;
+
+function capComposeAiText(text: string, max = COMPOSE_AI_MAX_CHARS): string {
+  const t = text.trim();
+  if (t.length <= max) return t;
+
+  const slice = t.slice(0, max);
+  const sentenceRe = /[.!?]["')]*(?:\s+|$)/g;
+  let lastSentenceEnd = -1;
+  let match: RegExpExecArray | null;
+  while ((match = sentenceRe.exec(slice)) !== null) {
+    lastSentenceEnd = match.index + match[0].trimEnd().length;
+  }
+  if (lastSentenceEnd > 0) return t.slice(0, lastSentenceEnd).trim();
+
+  const lastSpace = slice.lastIndexOf(' ');
+  if (lastSpace > 0) return t.slice(0, lastSpace).trim();
+  return slice.trim();
+}
+
 type Props = {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
   value: string;
@@ -157,7 +177,7 @@ export default function ComposeFieldAiAssist({
     try {
       const result = await onGenerate(option, context, controller.signal);
       if (controller.signal.aborted) return;
-      setPreview((result || '').trim());
+      setPreview(capComposeAiText(result || ''));
     } catch (err) {
       if (controller.signal.aborted) return;
       setError(err instanceof Error ? err.message : 'AI request failed');
@@ -167,7 +187,7 @@ export default function ComposeFieldAiAssist({
   }
 
   function applyDraft(mode: 'insert' | 'replace') {
-    const draft = preview.trim();
+    const draft = capComposeAiText(preview);
     if (!draft) return;
     const textarea = textareaRef.current;
     const full = value;
