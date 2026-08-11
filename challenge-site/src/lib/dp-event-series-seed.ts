@@ -181,7 +181,9 @@ function engageFields(
     fieldType: fieldKey === 'dp_hook' ? 'dp_hook' : 'textarea',
     required: required ?? fieldKey !== 'dp_hook',
     aiAssist: fieldKey !== 'dp_hook',
-    ...(options?.textMinLength ? { minLength: options.textMinLength } : {}),
+    ...(options?.textMinLength && fieldKey !== 'dp_hook'
+      ? { minLength: options.textMinLength }
+      : {}),
   }));
 }
 
