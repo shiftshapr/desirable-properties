@@ -45,6 +45,7 @@ export default function SeriesBadgeCards({
         ) : null}
         <p className="mt-2 text-xs text-slate-500">
           Complete the session question set (attend/watch + submit) for all four sessions.
+          Estimated 6 hours watch time (on regular speed) + 2-4 hours for questions
         </p>
       </div>
       <div className="rounded-xl border border-violet-900/40 bg-violet-950/20 p-5">
@@ -62,7 +63,7 @@ export default function SeriesBadgeCards({
           </div>
         ) : null}
         <p className="mt-2 text-xs text-slate-400">
-          Patch idea → socialize → feedback → verified patch → reflect.
+          Patch idea → socialize → feedback → verified patch → reflect. Estimated 2-4 hours.
         </p>
         <Link
           href={`/series/${seriesSlug}/pearl`}

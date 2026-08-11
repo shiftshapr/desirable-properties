@@ -96,7 +96,14 @@ export default function SeriesProgressPanel({
                     </span>
                   ) : null}
                 </p>
-                <h3 className="mt-1 text-base font-semibold text-white">{session.title}</h3>
+                <h3 className="mt-1 text-base font-semibold">
+                  <Link
+                    href={`/series/${seriesSlug}/session/${session.sessionNumber}`}
+                    className="text-white hover:text-cyan-300"
+                  >
+                    {session.title}
+                  </Link>
+                </h3>
                 {schedule ? <p className="mt-1 text-xs text-slate-400">{schedule}</p> : null}
                 <div className="mt-4 flex flex-wrap gap-2">
                   <SessionActionLink
