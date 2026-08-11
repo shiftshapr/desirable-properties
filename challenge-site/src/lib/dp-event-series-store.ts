@@ -510,6 +510,98 @@ async function backfillForkPreReads() {
   }
 }
 
+/** Sync session question sections/fields from seed (idempotent; removes stale field_keys). */
+async function backfillForkSessionQuestions(sessionNumber: number) {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  const seed = FORK_SESSION_SEEDS.find((s) => s.sessionNumber === sessionNumber);
+  if (!seed) return;
+
+  const sessionRes = await pool.query(
+    `SELECT s.id
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     WHERE e.slug = $1 AND s.session_number = $2`,
+    [FORK_SERIES_SLUG, sessionNumber],
+  );
+  if (!sessionRes.rows[0]) return;
+  const sessionId = String(sessionRes.rows[0].id);
+
+  const sectionsRes = await pool.query(
+    `SELECT id, section_key FROM dp_event_series_question_section WHERE session_id = $1`,
+    [sessionId],
+  );
+
+  for (let si = 0; si < seed.sections.length; si++) {
+    const sectionSeed = seed.sections[si];
+    const existingSection = sectionsRes.rows.find(
+      (row) => String(row.section_key) === sectionSeed.sectionKey,
+    );
+    if (!existingSection) continue;
+
+    const sectionId = String(existingSection.id);
+    await pool.query(
+      `UPDATE dp_event_series_question_section
+       SET title = $2, pearl_stage = $3, sort_order = $4
+       WHERE id = $1`,
+      [sectionId, sectionSeed.title, sectionSeed.pearlStage, si],
+    );
+
+    const questionsRes = await pool.query(
+      `SELECT id, field_key FROM dp_event_series_question WHERE section_id = $1`,
+      [sectionId],
+    );
+    const seedFieldKeys = new Set(sectionSeed.questions.map((q) => q.fieldKey));
+
+    for (const row of questionsRes.rows) {
+      if (!seedFieldKeys.has(String(row.field_key))) {
+        await pool.query('DELETE FROM dp_event_series_question WHERE id = $1', [row.id]);
+      }
+    }
+
+    for (let qi = 0; qi < sectionSeed.questions.length; qi++) {
+      const q = sectionSeed.questions[qi];
+      const existing = questionsRes.rows.find((row) => String(row.field_key) === q.fieldKey);
+      if (existing) {
+        await pool.query(
+          `UPDATE dp_event_series_question
+           SET label = $2, help_text = $3, field_type = $4, required = $5, ai_assist = $6, sort_order = $7
+           WHERE id = $1`,
+          [
+            existing.id,
+            q.label,
+            q.helpText || null,
+            q.fieldType,
+            Boolean(q.required),
+            Boolean(q.aiAssist),
+            qi,
+          ],
+        );
+        continue;
+      }
+
+      await pool.query(
+        `INSERT INTO dp_event_series_question (
+           id, section_id, field_key, label, help_text, field_type,
+           required, ai_assist, sort_order
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+        [
+          crypto.randomUUID(),
+          sectionId,
+          q.fieldKey,
+          q.label,
+          q.helpText || null,
+          q.fieldType,
+          Boolean(q.required),
+          Boolean(q.aiAssist),
+          qi,
+        ],
+      );
+    }
+  }
+}
+
 async function seedBookLaunchIfMissing() {
   const pool = await ensureDpSchema();
   if (!pool) return;
@@ -614,6 +706,7 @@ async function ensureEventSeeds() {
   await backfillForkSeriesTitle();
   await backfillForkPerspectiveSlug();
   await backfillForkPreReads();
+  await backfillForkSessionQuestions(1);
 }
 
 async function backfillForkSeriesBadgeImages() {

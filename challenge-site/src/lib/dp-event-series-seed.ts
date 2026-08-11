@@ -65,6 +65,44 @@ const SHARED_PREPARE: QuestionSeed[] = [
   },
 ];
 
+/** Session 1 Prepare — Human Statement values check-in (Workshop 1 plenary). */
+const SESSION_1_PREPARE: QuestionSeed[] = [
+  {
+    fieldKey: 'pre_read_confirmed',
+    label:
+      'I reviewed the Pro-Human AI Declaration at humanstatement.org (or attended/watched the session)',
+    fieldType: 'checkbox',
+    required: true,
+  },
+  {
+    fieldKey: 'humanstatement_resonated',
+    label: 'What resonated with me about the pro-human framing',
+    fieldType: 'textarea',
+    required: true,
+    aiAssist: true,
+  },
+  {
+    fieldKey: 'humanstatement_troubled',
+    label: 'What troubled me or gave me pause',
+    fieldType: 'textarea',
+    aiAssist: true,
+  },
+  {
+    fieldKey: 'principle_keep_change_reject',
+    label: 'One principle I would keep, change, or reject (and why)',
+    fieldType: 'textarea',
+    required: true,
+    aiAssist: true,
+  },
+  {
+    fieldKey: 'would_sign_declaration',
+    label: 'Would I sign the declaration? Why or why not?',
+    fieldType: 'textarea',
+    required: true,
+    aiAssist: true,
+  },
+];
+
 const SHARED_REFLECT: QuestionSeed[] = [
   {
     fieldKey: 'thinking_shifted',
@@ -137,17 +175,26 @@ export const FORK_SESSION_SEEDS = [
       },
     ],
     sections: [
-      { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SHARED_PREPARE },
+      { sectionKey: 'prepare' as const, title: 'Prepare', pearlStage: 'prepare', questions: SESSION_1_PREPARE },
       {
         sectionKey: 'engage' as const,
-        title: 'Engage — Human Place Requirements',
+        title: 'Engage — What AI Should Not Replace',
         pearlStage: 'engage',
         questions: engageFields([
-          ['scenario', 'Scenario (information need we mapped)'],
-          ['ai_path_optimizes', 'What the AI path optimizes for'],
-          ['direct_human_preserves', 'What the direct-human path preserves'],
+          [
+            'ai_stood_between',
+            'A recent time AI stood between me and a site, source, service, person, or community',
+          ],
+          ['easier_and_hidden', 'What became easier — and what moved behind the interface'],
+          [
+            'remain_reachable',
+            'One thing that should remain directly reachable, inspectable, or participatory (and why)',
+          ],
+          [
+            'trust_high_stakes',
+            'What I would need to trust an AI-mediated answer in a high-stakes situation (e.g. health, voting, education)',
+          ],
           ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
-          ['human_place_requirements', 'Human place requirements (persistence, co-presence, contestability, etc.)'],
           ['dp_hook', 'Optional DP hook', false],
         ]),
       },
