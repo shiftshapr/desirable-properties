@@ -85,7 +85,7 @@ function AiTextarea({
       <label className="block text-sm font-medium text-slate-200">{label}</label>
       <textarea
         ref={textareaRef}
-        rows={4}
+        rows={2}
         className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 pb-10 text-sm text-slate-100"
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import PearlMark from '@/components/badges/PearlMark';
 import { notFound } from 'next/navigation';
 import SessionQuestionsForm from '@/components/series/SessionQuestionsForm';
+import SeriesBadgeCards from '@/components/series/SeriesBadgeCards';
 import SessionActionLink from '@/components/series/SessionActionLink';
 import { formatSessionSchedule, formatMinutesEstimate, sumPreReadMinutes, partitionPreReads } from '@/lib/event-series-session-ui';
 import type { EventSeriesPreRead } from '@/lib/dp-event-series-store';
 import {
   getEventSeriesBySlug,
   getOrCreateResponse,
+  getSeriesProgress,
   getSessionBySeriesAndNumber,
   listPreReads,
   listQuestionSectionsForSession,
@@ -45,6 +46,9 @@ export default async function SeriesSessionPage({ params }: Props) {
   const relatedDpIds = await listRelatedDps(session.id);
 
   const authSession = await readSession();
+  const progress = authSession?.userId
+    ? await getSeriesProgress(series.id, authSession.userId)
+    : null;
   const response = authSession?.userId
     ? await getOrCreateResponse(session.id, authSession.userId, authSession.email ?? null)
     : null;
@@ -107,7 +111,16 @@ export default async function SeriesSessionPage({ params }: Props) {
       </div>
 
       <div className="mt-10 border-t border-slate-800 pt-10">
-        <h2 className="text-xl font-bold text-white">Session questions</h2>
+        <SeriesBadgeCards
+          seriesSlug={series.slug}
+          seriesTitle={series.title}
+          badgeImageUrl={series.badgeImageUrl}
+          pearlBadgeImageUrl={series.pearlBadgeImageUrl}
+          progress={progress}
+          showSeriesBadgeAnchor={false}
+        />
+
+        <h2 className="mt-10 text-xl font-bold text-white">Session questions</h2>
         <p className="mt-2 text-sm text-slate-400">
           Sign in required. Answers autosave; you can edit after submit.
         </p>
@@ -130,9 +143,8 @@ export default async function SeriesSessionPage({ params }: Props) {
       <p className="mt-10 text-sm text-slate-500">
         <Link
           href={`/series/${series.slug}/pearl`}
-          className="inline-flex items-center gap-1.5 text-violet-300 hover:text-violet-200"
+          className="text-violet-300 hover:text-violet-200"
         >
-          <PearlMark size={16} />
           PEARL patch track →
         </Link>
       </p>

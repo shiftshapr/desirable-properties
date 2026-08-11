@@ -46,13 +46,16 @@ type QuestionSeed = {
   minLength?: number;
 };
 
-/** Session 1 prepare/reflect text fields — minimum reflection length before submit. */
-export const FORK_SESSION_1_TEXT_MIN_LENGTH = 100;
+/** All Fork workshop textarea fields — minimum reflection length before submit. */
+export const FORK_TEXT_MIN_LENGTH = 100;
 
-/** Session 1 engage text fields (excluding not_ai_tunnel and dp_hook). */
-export const FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH = 100;
+/** @deprecated Use FORK_TEXT_MIN_LENGTH */
+export const FORK_SESSION_1_TEXT_MIN_LENGTH = FORK_TEXT_MIN_LENGTH;
 
-function withTextMinLength(q: QuestionSeed, min = FORK_SESSION_1_TEXT_MIN_LENGTH): QuestionSeed {
+/** @deprecated Use FORK_TEXT_MIN_LENGTH */
+export const FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH = FORK_TEXT_MIN_LENGTH;
+
+function withTextMinLength(q: QuestionSeed, min = FORK_TEXT_MIN_LENGTH): QuestionSeed {
   if (q.fieldType === 'checkbox') return q;
   return { ...q, minLength: min };
 }
@@ -73,7 +76,7 @@ export const FORK_SUBMIT_CONSENT_QUESTIONS: QuestionSeed[] = [
   },
   {
     fieldKey: FORK_ATTRIBUTE_ANSWERS_FIELD_KEY,
-    label: 'Please attribute my answers to me',
+    label: 'Please attribute my answers to me (optional)',
     fieldType: 'checkbox',
     required: false,
   },
@@ -106,13 +109,13 @@ const SHARED_PREPARE: QuestionSeed[] = [
     fieldType: 'checkbox',
     required: true,
   },
-  {
+  withTextMinLength({
     fieldKey: 'hope_to_explore',
     label: 'What I hope to explore',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
-  },
+  }),
 ];
 
 /** Session 1 Prepare — Human Statement values check-in (Workshop 1 plenary). */
@@ -147,28 +150,28 @@ const SESSION_1_PREPARE: QuestionSeed[] = [
 ];
 
 const SHARED_REFLECT: QuestionSeed[] = [
-  {
+  withTextMinLength({
     fieldKey: 'thinking_shifted',
     label: 'What shifted in my thinking?',
     fieldType: 'textarea',
     required: true,
     aiAssist: true,
-  },
-  {
+  }),
+  withTextMinLength({
     fieldKey: 'tension_held',
     label: 'One tension I still hold',
     fieldType: 'textarea',
     aiAssist: true,
-  },
-  {
+  }),
+  withTextMinLength({
     fieldKey: 'would_share',
     label: 'Would I share this with my community? Why or why not?',
     fieldType: 'textarea',
     aiAssist: true,
-  },
+  }),
 ];
 
-const SESSION_1_REFLECT: QuestionSeed[] = SHARED_REFLECT.map((q) => withTextMinLength(q));
+const SESSION_1_REFLECT: QuestionSeed[] = SHARED_REFLECT;
 
 function engageFields(
   fields: Array<[string, string, boolean?]>,
@@ -249,7 +252,7 @@ export const FORK_SESSION_SEEDS = [
             ['not_ai_tunnel', 'Must not become only an AI tunnel (one sentence)'],
             ['dp_hook', 'Optional DP hook', false],
           ],
-          { textMinLength: FORK_SESSION_1_ENGAGE_TEXT_MIN_LENGTH },
+          { textMinLength: FORK_TEXT_MIN_LENGTH },
         ).map((q) =>
           q.fieldKey === 'not_ai_tunnel' ? { ...q, minLength: 50 } : q,
         ),
@@ -288,14 +291,17 @@ export const FORK_SESSION_SEEDS = [
         sectionKey: 'engage' as const,
         title: 'Engage: Minimum Viable Commons',
         pearlStage: 'engage',
-        questions: engageFields([
-          ['shared_resource', 'Shared resource (URL, document, policy, or event)'],
-          ['who_speaks', 'Who can speak for themselves here?'],
-          ['what_persists', 'What persists after the session?'],
-          ['where_dissent', 'Where does dissent accumulate?'],
-          ['one_week_experiment', 'One-week experiment your community could run'],
-          ['dp_hook', 'Optional DP hook', false],
-        ]),
+        questions: engageFields(
+          [
+            ['shared_resource', 'Shared resource (URL, document, policy, or event)'],
+            ['who_speaks', 'Who can speak for themselves here?'],
+            ['what_persists', 'What persists after the session?'],
+            ['where_dissent', 'Where does dissent accumulate?'],
+            ['one_week_experiment', 'One-week experiment your community could run'],
+            ['dp_hook', 'Optional DP hook', false],
+          ],
+          { textMinLength: FORK_TEXT_MIN_LENGTH },
+        ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
       FORK_SUBMIT_SECTION,
@@ -331,18 +337,21 @@ export const FORK_SESSION_SEEDS = [
         sectionKey: 'engage' as const,
         title: 'Engage: Layered Web Stack',
         pearlStage: 'engage',
-        questions: engageFields([
-          ['substrate', 'Substrate (shared resource)'],
-          ['environment_1', 'Environment 1 (who, what activity)'],
-          ['environment_2', 'Environment 2'],
-          ['environment_3', 'Environment 3'],
-          ['environment_4', 'Environment 4'],
-          ['portable', 'What must be portable (identity, data, context)'],
-          ['open_protocols', 'Open protocols needed'],
-          ['ai_role', 'AI role (inhabitant, not landlord)'],
-          ['draft_dp_paragraph', 'Draft Desirable Property paragraph'],
-          ['dp_hook', 'Optional DP hook', false],
-        ]),
+        questions: engageFields(
+          [
+            ['substrate', 'Substrate (shared resource)'],
+            ['environment_1', 'Environment 1 (who, what activity)'],
+            ['environment_2', 'Environment 2'],
+            ['environment_3', 'Environment 3'],
+            ['environment_4', 'Environment 4'],
+            ['portable', 'What must be portable (identity, data, context)'],
+            ['open_protocols', 'Open protocols needed'],
+            ['ai_role', 'AI role (inhabitant, not landlord)'],
+            ['draft_dp_paragraph', 'Draft Desirable Property paragraph'],
+            ['dp_hook', 'Optional DP hook', false],
+          ],
+          { textMinLength: FORK_TEXT_MIN_LENGTH },
+        ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
       FORK_SUBMIT_SECTION,
@@ -384,17 +393,20 @@ export const FORK_SESSION_SEEDS = [
         sectionKey: 'engage' as const,
         title: 'Engage: Second Fork Statement',
         pearlStage: 'engage',
-        questions: engageFields([
-          ['scenario', 'Scenario'],
-          ['sovereignty', 'Who holds authority over meaning? (sovereignty)'],
-          ['tasks_stay_human', 'Tasks that must stay human/community'],
-          ['tasks_delegate_ai', 'Tasks rightly delegated to AI'],
-          ['subsidiarity_rule', 'Subsidiarity rule (one sentence)'],
-          ['human_place', 'Human place worth defending'],
-          ['second_fork_for_me', 'The second fork for me (one sentence)'],
-          ['action_7_days', 'One action in 7 days'],
-          ['dp_hook', 'Optional DP hook', false],
-        ]),
+        questions: engageFields(
+          [
+            ['scenario', 'Scenario'],
+            ['sovereignty', 'Who holds authority over meaning? (sovereignty)'],
+            ['tasks_stay_human', 'Tasks that must stay human/community'],
+            ['tasks_delegate_ai', 'Tasks rightly delegated to AI'],
+            ['subsidiarity_rule', 'Subsidiarity rule (one sentence)'],
+            ['human_place', 'Human place worth defending'],
+            ['second_fork_for_me', 'The second fork for me (one sentence)'],
+            ['action_7_days', 'One action in 7 days'],
+            ['dp_hook', 'Optional DP hook', false],
+          ],
+          { textMinLength: FORK_TEXT_MIN_LENGTH },
+        ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SHARED_REFLECT },
       FORK_SUBMIT_SECTION,

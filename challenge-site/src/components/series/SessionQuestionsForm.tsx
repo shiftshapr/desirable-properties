@@ -49,6 +49,38 @@ const AI_INSTRUCTIONS: Record<string, string> = {
   shorter: 'Produce a shorter version that keeps the core insight.',
 };
 
+function isQuestionCompleteForSubmit(
+  question: Question,
+  answers: AnswerMap,
+  aiAssistUsed: boolean,
+): boolean {
+  if (question.fieldKey === FORK_AI_SUBMISSION_STANDBY_FIELD_KEY) {
+    if (!aiAssistUsed) return true;
+    return Boolean(answers[question.id]?.valueBool);
+  }
+
+  if (question.fieldType === 'checkbox') {
+    if (!question.required) return true;
+    return Boolean(answers[question.id]?.valueBool);
+  }
+
+  const text = (answers[question.id]?.valueText ?? '').trim();
+  if (question.minLength != null) {
+    return text.length >= question.minLength;
+  }
+  if (question.required) {
+    return text.length > 0;
+  }
+  return true;
+}
+
+function checkboxLabel(question: Question): string {
+  if (question.fieldType !== 'checkbox' || question.required) {
+    return question.label;
+  }
+  return question.label.includes('(optional)') ? question.label : `${question.label} (optional)`;
+}
+
 function QuestionField({
   question,
   value,
@@ -115,7 +147,7 @@ function QuestionField({
           checked={Boolean(value.valueBool)}
           onChange={(e) => onChange({ valueBool: e.target.checked })}
         />
-        <span className="text-sm text-slate-200">{question.label}</span>
+        <span className="text-sm text-slate-200">{checkboxLabel(question)}</span>
       </label>
     );
   }
@@ -129,7 +161,7 @@ function QuestionField({
       <div className="relative mt-2">
         <textarea
           ref={textareaRef}
-          rows={4}
+          rows={2}
           className={`w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 ${
             question.aiAssist ? 'pb-10' : ''
           }`}
@@ -212,28 +244,19 @@ export default function SessionQuestionsForm({
       if (submit) {
         for (const section of sections) {
           for (const q of section.questions) {
-            if (q.required && q.fieldType === 'checkbox' && !answers[q.id]?.valueBool) {
-              setError(`Please confirm: "${q.label}"`);
+            if (!isQuestionCompleteForSubmit(q, answers, aiAssistUsed)) {
+              if (q.fieldType === 'checkbox') {
+                setError(`Please confirm: "${checkboxLabel(q)}"`);
+              } else if (q.minLength != null) {
+                const val = (answers[q.id]?.valueText ?? '').trim();
+                setError(
+                  `"${q.label}" needs at least ${q.minLength} characters (currently ${val.length}).`,
+                );
+              } else {
+                setError(`Please complete: "${q.label}"`);
+              }
               return;
             }
-            if (q.minLength == null) continue;
-            const val = (answers[q.id]?.valueText ?? '').trim();
-            if (val.length < q.minLength) {
-              setError(
-                `"${q.label}" needs at least ${q.minLength} characters (currently ${val.length}).`,
-              );
-              return;
-            }
-          }
-        }
-
-        if (aiAssistUsed) {
-          const standbyQuestion = sections
-            .flatMap((s) => s.questions)
-            .find((q) => q.fieldKey === FORK_AI_SUBMISSION_STANDBY_FIELD_KEY);
-          if (standbyQuestion && !answers[standbyQuestion.id]?.valueBool) {
-            setError(`Please confirm: "${standbyQuestion.label}"`);
-            return;
           }
         }
       }
@@ -304,6 +327,14 @@ export default function SessionQuestionsForm({
       visibleConsentQuestions: visibleConsent,
     };
   }, [sections, aiAssistUsed]);
+
+  const submitReady = useMemo(() => {
+    const allQuestions = [
+      ...contentSections.flatMap((s) => s.questions),
+      ...visibleConsentQuestions,
+    ];
+    return allQuestions.every((q) => isQuestionCompleteForSubmit(q, answers, aiAssistUsed));
+  }, [contentSections, visibleConsentQuestions, answers, aiAssistUsed]);
 
   if (!checked) {
     return <p className="text-sm text-slate-400">Loading…</p>;
@@ -402,8 +433,13 @@ export default function SessionQuestionsForm({
         <button
           type="button"
           onClick={() => void save(true)}
-          disabled={saving}
-          className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+          disabled={saving || !submitReady}
+          title={
+            submitReady
+              ? undefined
+              : 'Complete all required fields and minimum lengths before submitting'
+          }
+          className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {status === 'submitted' ? 'Update submission' : 'Submit session questions'}
         </button>

@@ -1,15 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import DpSealBadge from '@/components/badges/DpSealBadge';
-import PearlMark from '@/components/badges/PearlMark';
 import SessionActionLink from '@/components/series/SessionActionLink';
+import SeriesBadgeCards from '@/components/series/SeriesBadgeCards';
 import { formatSessionSchedule } from '@/lib/event-series-session-ui';
 import type { SeriesProgress } from '@/lib/dp-event-series-store';
-import {
-  forkSeriesBadgeTopLabel,
-  pearlBadgeCenterUrl,
-} from '@/lib/dp-series-badges';
 
 type Session = {
   id: string;
@@ -46,8 +41,6 @@ export default function SeriesProgressPanel({
   badgeImageUrl,
   pearlBadgeImageUrl,
 }: Props) {
-  const topLabel = forkSeriesBadgeTopLabel(seriesSlug, seriesTitle);
-  const pearlCenter = pearlBadgeCenterUrl(pearlBadgeImageUrl, badgeImageUrl);
   const pct = progress
     ? Math.round((progress.completedSessions / Math.max(progress.requiredSessions, 1)) * 100)
     : 0;
@@ -126,57 +119,13 @@ export default function SeriesProgressPanel({
         })}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div
-          id="series-badge"
-          className="rounded-xl border border-slate-800 bg-slate-900/50 p-5 scroll-mt-24"
-        >
-          <p className="text-sm font-medium text-slate-300">Series badge</p>
-          {badgeImageUrl ? (
-            <div className="mt-3">
-              <DpSealBadge
-                centerSrc={badgeImageUrl}
-                topLabel={topLabel}
-                size={96}
-                alt={`${topLabel} series badge`}
-              />
-            </div>
-          ) : null}
-          <p className="mt-2 text-xs text-slate-500">
-            Complete all session question sets (attend/watch + submit).
-          </p>
-        </div>
-        <div className="rounded-xl border border-violet-900/40 bg-violet-950/20 p-5">
-          <p className="flex items-center gap-2 text-sm font-medium text-violet-200">
-            <PearlMark size={18} />
-            PEARL badge
-          </p>
-          {pearlCenter ? (
-            <div className="mt-3">
-              <DpSealBadge
-                centerSrc={pearlCenter}
-                topLabel={topLabel}
-                size={96}
-                alt={`${topLabel} PEARL badge`}
-                variant="pearl"
-              />
-            </div>
-          ) : null}
-          <p className="mt-2 text-xs text-slate-400">
-            Patch idea → socialize → feedback → verified patch → reflect.
-          </p>
-          <Link
-            href={`/series/${seriesSlug}/pearl`}
-            className="mt-3 inline-flex items-center gap-1.5 text-sm text-violet-300 hover:text-violet-200"
-          >
-            <PearlMark size={16} />
-            PEARL track →
-          </Link>
-          {progress?.pearlBadgeGranted ? (
-            <p className="mt-2 text-sm text-emerald-300">PEARL badge earned!</p>
-          ) : null}
-        </div>
-      </div>
+      <SeriesBadgeCards
+        seriesSlug={seriesSlug}
+        seriesTitle={seriesTitle}
+        badgeImageUrl={badgeImageUrl}
+        pearlBadgeImageUrl={pearlBadgeImageUrl}
+        progress={progress}
+      />
     </div>
   );
 }

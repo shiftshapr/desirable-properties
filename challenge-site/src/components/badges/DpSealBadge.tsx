@@ -1,7 +1,7 @@
 'use client';
 
 import { useId } from 'react';
-import { DP_BADGE_SEAL_SRC } from '@/lib/dp-series-badges';
+import { DP_BADGE_SEAL_SRC, PEARL_AGENT_DROP_IMAGE } from '@/lib/dp-series-badges';
 
 const TOP_ARC = 'M 90 222 A 228 228 0 0 1 510 222';
 const OVERLAY = { cx: 300, cy: 300, r: 200 } as const;
@@ -14,6 +14,8 @@ const PEARL_CENTER = {
 type Props = {
   centerSrc: string;
   topLabel: string;
+  /** Pearl agent-drop overlaid on the series center art (PEARL badge variant). */
+  pearlOverlaySrc?: string | null;
   size?: number;
   className?: string;
   alt?: string;
@@ -24,6 +26,7 @@ type Props = {
 export default function DpSealBadge({
   centerSrc,
   topLabel,
+  pearlOverlaySrc,
   size = 120,
   className = '',
   alt = '',
@@ -34,10 +37,15 @@ export default function DpSealBadge({
   const sealClipId = `sealClip-${uid}`;
   const label = topLabel.toUpperCase();
   const isPearl = variant === 'pearl';
+  const pearlSrc = pearlOverlaySrc || (isPearl ? PEARL_AGENT_DROP_IMAGE : null);
+  const showPearlOverlay = Boolean(pearlSrc);
 
-  const centerSize = isPearl ? PEARL_CENTER.size : OVERLAY.r * 2;
-  const centerX = isPearl ? OVERLAY.cx - centerSize / 2 : OVERLAY.cx - OVERLAY.r;
-  const centerY = isPearl ? PEARL_CENTER.cy - centerSize / 2 : OVERLAY.cy - OVERLAY.r;
+  const centerSize = OVERLAY.r * 2;
+  const centerX = OVERLAY.cx - OVERLAY.r;
+  const centerY = OVERLAY.cy - OVERLAY.r;
+  const pearlSize = PEARL_CENTER.size;
+  const pearlX = OVERLAY.cx - pearlSize / 2;
+  const pearlY = PEARL_CENTER.cy - pearlSize / 2;
 
   return (
     <svg
@@ -63,8 +71,19 @@ export default function DpSealBadge({
         width={centerSize}
         height={centerSize}
         clipPath={`url(#${sealClipId})`}
-        preserveAspectRatio={isPearl ? 'xMidYMid meet' : 'xMidYMid slice'}
+        preserveAspectRatio="xMidYMid slice"
       />
+      {showPearlOverlay && pearlSrc ? (
+        <image
+          href={pearlSrc}
+          x={pearlX}
+          y={pearlY}
+          width={pearlSize}
+          height={pearlSize}
+          clipPath={`url(#${sealClipId})`}
+          preserveAspectRatio="xMidYMid meet"
+        />
+      ) : null}
       <text
         fill="#ffffff"
         fontSize="29"
