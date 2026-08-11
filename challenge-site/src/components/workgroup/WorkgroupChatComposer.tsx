@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import WorkgroupChatAiAssist from '@/components/workgroup/WorkgroupChatAiAssist';
 import { clearChatDraft, loadChatDraft, saveChatDraft } from '@/lib/workgroup-draft-storage';
+import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
@@ -15,6 +16,8 @@ type Props = {
   signedIn: boolean;
   busy?: boolean;
   onSend: (body: string) => Promise<void>;
+  adoptDraft?: { key: number; text: string } | null;
+  onHermesReply?: (note: WorkgroupAskNote) => void;
 };
 
 export default function WorkgroupChatComposer({
@@ -26,6 +29,8 @@ export default function WorkgroupChatComposer({
   signedIn,
   busy,
   onSend,
+  adoptDraft,
+  onHermesReply,
 }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [body, setBody] = useState('');
@@ -41,6 +46,11 @@ export default function WorkgroupChatComposer({
     if (!hydrated) return;
     saveChatDraft(workgroupSlug, body);
   }, [body, hydrated, workgroupSlug]);
+
+  useEffect(() => {
+    if (!adoptDraft?.text) return;
+    setBody(adoptDraft.text);
+  }, [adoptDraft?.key]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -101,6 +111,18 @@ export default function WorkgroupChatComposer({
           dpId={dpId}
           recentMessages={recentMessages}
           disabled={busy}
+          onSendAsMessage={async (text) => {
+            if (!text.trim() || busy) return;
+            setError(null);
+            try {
+              await onSend(text.trim());
+              setBody('');
+              clearChatDraft(workgroupSlug);
+            } catch (err) {
+              setError(err instanceof Error ? err.message : 'Failed to send');
+            }
+          }}
+          onHermesReply={onHermesReply}
         />
       </div>
       <div className="flex items-center justify-between gap-3">

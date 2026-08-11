@@ -67,6 +67,12 @@ type Props = {
   mode?: ComposeAiAssistMode;
   /** When mode is chatReply, send the draft as the user's chat message. */
   onSendResponse?: (text: string) => void;
+  /** Render inline inside a parent modal (no FAB, no backdrop). */
+  embedded?: boolean;
+  /** When embedded, start with chip menu open. */
+  defaultOpen?: boolean;
+  /** When embedded, called instead of closing the fixed overlay. */
+  onEmbeddedClose?: () => void;
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -96,10 +102,13 @@ export default function ComposeFieldAiAssist({
   onAiApplied,
   mode = 'compose',
   onSendResponse,
+  embedded = false,
+  defaultOpen = false,
+  onEmbeddedClose,
 }: Props) {
   const menuId = useId();
-  const [focused, setFocused] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [focused, setFocused] = useState(embedded && defaultOpen);
+  const [menuOpen, setMenuOpen] = useState(embedded && defaultOpen);
   const [typing, setTyping] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [preview, setPreview] = useState('');
@@ -158,8 +167,12 @@ export default function ComposeFieldAiAssist({
     setError(null);
     setGenerating(false);
     setLastOption(null);
+    if (embedded && onEmbeddedClose) {
+      onEmbeddedClose();
+      return;
+    }
     setFocused(Boolean(textareaRef.current?.matches(':focus')));
-  }, [generating, textareaRef]);
+  }, [embedded, generating, onEmbeddedClose, textareaRef]);
 
   function openMenu() {
     if (disabled) return;
@@ -284,58 +297,26 @@ export default function ComposeFieldAiAssist({
     setGenerating(false);
   }
 
-  const showFab = (focused || panelOpen) && !disabled;
+  const showFab = !embedded && (focused || panelOpen) && !disabled;
   const fabFaded = typing && !panelOpen;
 
-  return (
+  const panelContent = (
     <>
-      <button
-        type="button"
-        aria-label={`AI assist for ${fieldLabel}`}
-        aria-expanded={panelOpen}
-        aria-controls={menuId}
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
-        className={`absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900/95 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
-          showFab
-            ? fabFaded
-              ? 'pointer-events-auto translate-y-0 opacity-25'
-              : 'pointer-events-auto translate-y-0 opacity-100'
-            : 'pointer-events-none translate-y-1 opacity-0'
-        }`}
-        disabled={disabled}
-      >
-        <span aria-hidden="true">✦</span> AI
-      </button>
-
-      {panelOpen ? (
-        <div
-          className="fixed inset-0 z-[12100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
-          onClick={(e) => {
-            if (e.target === e.currentTarget && !generating) closePanel();
-          }}
-        >
-          <div
-            id={menuId}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={`${menuId}-title`}
-            className="max-h-[min(90vh,640px)] w-full max-w-lg overflow-auto rounded-xl border border-slate-700 bg-slate-900 p-4 text-slate-100 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-2 flex items-center justify-between gap-3">
-              <h2 id={`${menuId}-title`} className="text-base font-semibold text-white">
-                AI Assist
-              </h2>
-              <button
-                type="button"
-                aria-label="Close AI assist"
-                onClick={() => !generating && closePanel()}
-                className="text-xl leading-none text-slate-400 hover:text-white"
-              >
-                ×
-              </button>
-            </div>
+            {!embedded ? (
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <h2 id={`${menuId}-title`} className="text-base font-semibold text-white">
+                  AI Assist
+                </h2>
+                <button
+                  type="button"
+                  aria-label="Close AI assist"
+                  onClick={() => !generating && closePanel()}
+                  className="text-xl leading-none text-slate-400 hover:text-white"
+                >
+                  ×
+                </button>
+              </div>
+            ) : null}
 
             {menuOpen ? (
               <>
@@ -410,14 +391,14 @@ export default function ComposeFieldAiAssist({
                         onClick={sendAsResponse}
                         className="rounded-lg border border-cyan-700 bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600"
                       >
-                        {onSendResponse ? 'Send as response' : 'Use as my message'}
+                        {onSendResponse ? 'Send as my message' : 'Use as my message'}
                       </button>
                       <button
                         type="button"
                         onClick={() => applyDraft('replace')}
                         className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400"
                       >
-                        Edit in composer
+                        Put in composer
                       </button>
                     </>
                   ) : (
@@ -462,6 +443,50 @@ export default function ComposeFieldAiAssist({
                 </button>
               </div>
             ) : null}
+    </>
+  );
+
+  if (embedded) {
+    return panelOpen ? <div id={menuId}>{panelContent}</div> : null;
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-label={`AI assist for ${fieldLabel}`}
+        aria-expanded={panelOpen}
+        aria-controls={menuId}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
+        className={`absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900/95 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
+          showFab
+            ? fabFaded
+              ? 'pointer-events-auto translate-y-0 opacity-25'
+              : 'pointer-events-auto translate-y-0 opacity-100'
+            : 'pointer-events-none translate-y-1 opacity-0'
+        }`}
+        disabled={disabled}
+      >
+        <span aria-hidden="true">✦</span> AI
+      </button>
+
+      {panelOpen ? (
+        <div
+          className="fixed inset-0 z-[12100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !generating) closePanel();
+          }}
+        >
+          <div
+            id={menuId}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`${menuId}-title`}
+            className="max-h-[min(90vh,640px)] w-full max-w-lg overflow-auto rounded-xl border border-slate-700 bg-slate-900 p-4 text-slate-100 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {panelContent}
           </div>
         </div>
       ) : null}
