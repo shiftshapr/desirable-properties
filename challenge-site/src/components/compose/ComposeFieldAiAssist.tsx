@@ -240,12 +240,12 @@ export default function ComposeFieldAiAssist({
         aria-controls={menuId}
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
-        className={`absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
+        className={`absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900/95 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
           showFab
             ? fabFaded
-              ? 'pointer-events-auto opacity-25'
-              : 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0'
+              ? 'pointer-events-auto translate-y-0 opacity-25'
+              : 'pointer-events-auto translate-y-0 opacity-100'
+            : 'pointer-events-none translate-y-1 opacity-0'
         }`}
         disabled={disabled}
       >

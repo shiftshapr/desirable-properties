@@ -86,7 +86,7 @@ function AiTextarea({
       <textarea
         ref={textareaRef}
         rows={4}
-        className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
+        className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 pb-10 text-sm text-slate-100"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

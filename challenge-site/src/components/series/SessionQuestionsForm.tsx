@@ -131,7 +131,7 @@ function QuestionField({
           ref={textareaRef}
           rows={4}
           className={`w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 ${
-            question.aiAssist ? 'pr-14' : ''
+            question.aiAssist ? 'pb-10' : ''
           }`}
           value={text}
           onChange={(e) => setText(e.target.value)}

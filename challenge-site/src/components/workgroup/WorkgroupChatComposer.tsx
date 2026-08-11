@@ -89,7 +89,7 @@ export default function WorkgroupChatComposer({
           rows={3}
           maxLength={8000}
           placeholder="Share an update with the workgroup…"
-          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none"
+          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 pb-10 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none"
           disabled={busy}
         />
         <WorkgroupChatAiAssist
