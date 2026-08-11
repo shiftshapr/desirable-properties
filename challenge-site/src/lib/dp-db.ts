@@ -292,12 +292,15 @@ CREATE TABLE IF NOT EXISTS dp_event_series_response (
   user_id TEXT NOT NULL,
   user_email TEXT,
   attended_confirmed BOOLEAN NOT NULL DEFAULT false,
+  ai_assist_used BOOLEAN NOT NULL DEFAULT false,
   status TEXT NOT NULL DEFAULT 'draft',
   submitted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (session_id, user_id)
 );
+
+ALTER TABLE dp_event_series_response ADD COLUMN IF NOT EXISTS ai_assist_used BOOLEAN NOT NULL DEFAULT false;
 
 CREATE INDEX IF NOT EXISTS dp_event_series_response_user ON dp_event_series_response (user_id);
 

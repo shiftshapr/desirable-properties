@@ -54,6 +54,8 @@ function withTextMinLength(q: QuestionSeed, min = FORK_SESSION_1_TEXT_MIN_LENGTH
 /** Stored in dp_event_series_answer (value_bool) for all Fork workshop sessions. */
 export const FORK_USAGE_CONSENT_FIELD_KEY = 'usage_consent';
 export const FORK_ATTRIBUTE_ANSWERS_FIELD_KEY = 'attribute_answers';
+/** Required on submit when AI assist was used on any field in this response. */
+export const FORK_AI_SUBMISSION_STANDBY_FIELD_KEY = 'ai_submission_standby';
 
 export const FORK_SUBMIT_CONSENT_QUESTIONS: QuestionSeed[] = [
   {
@@ -66,6 +68,12 @@ export const FORK_SUBMIT_CONSENT_QUESTIONS: QuestionSeed[] = [
   {
     fieldKey: FORK_ATTRIBUTE_ANSWERS_FIELD_KEY,
     label: 'Please attribute my answers to me',
+    fieldType: 'checkbox',
+    required: false,
+  },
+  {
+    fieldKey: FORK_AI_SUBMISSION_STANDBY_FIELD_KEY,
+    label: 'I stand by all the answers generated and submitted in this submission',
     fieldType: 'checkbox',
     required: false,
   },
@@ -241,6 +249,8 @@ export const FORK_SESSION_SEEDS = [
             ['dp_hook', 'Optional DP hook', false],
           ],
           { textMinLength: FORK_SESSION_1_TEXT_MIN_LENGTH },
+        ).map((q) =>
+          q.fieldKey === 'not_ai_tunnel' ? { ...q, minLength: 50 } : q,
         ),
       },
       { sectionKey: 'reflect' as const, title: 'Reflect', pearlStage: 'reflect', questions: SESSION_1_REFLECT },

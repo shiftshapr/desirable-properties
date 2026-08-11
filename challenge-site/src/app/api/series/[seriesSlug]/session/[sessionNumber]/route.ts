@@ -75,6 +75,7 @@ export async function POST(request: Request, { params }: Params) {
       attendedConfirmed: body.attendedConfirmed,
       answers: Array.isArray(body.answers) ? body.answers : [],
       submit: Boolean(body.submit),
+      aiUsed: Boolean(body.aiUsed),
     }),
   );
 

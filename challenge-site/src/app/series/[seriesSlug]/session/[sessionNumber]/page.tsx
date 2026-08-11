@@ -122,6 +122,7 @@ export default async function SeriesSessionPage({ params }: Props) {
             initialAttended={response?.attendedConfirmed ?? false}
             initialStatus={response?.status ?? 'draft'}
             initialAnswers={initialAnswers}
+            initialAiAssistUsed={response?.aiAssistUsed ?? false}
           />
         </div>
       </div>

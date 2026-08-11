@@ -6,6 +6,7 @@ import {
   FORK_SESSION_SEEDS,
   BOOK_LAUNCH_SLUG,
   BOOK_LAUNCH_SEED,
+  FORK_AI_SUBMISSION_STANDBY_FIELD_KEY,
   type PreReadSeed,
 } from '@/lib/dp-event-series-seed';
 import {
@@ -92,6 +93,7 @@ export type EventSeriesResponse = {
   userId: string;
   userEmail: string | null;
   attendedConfirmed: boolean;
+  aiAssistUsed: boolean;
   status: 'draft' | 'submitted';
   submittedAt: string | null;
   answers: EventSeriesAnswer[];
@@ -1002,6 +1004,7 @@ export async function getOrCreateResponse(
     userId: String(res.rows[0].user_id),
     userEmail: res.rows[0].user_email ? String(res.rows[0].user_email) : null,
     attendedConfirmed: Boolean(res.rows[0].attended_confirmed),
+    aiAssistUsed: Boolean(res.rows[0].ai_assist_used),
     status: res.rows[0].status === 'submitted' ? 'submitted' : 'draft',
     submittedAt: res.rows[0].submitted_at
       ? new Date(String(res.rows[0].submitted_at)).toISOString()
@@ -1022,6 +1025,7 @@ export async function saveResponseAnswers(input: {
   attendedConfirmed?: boolean;
   answers: Array<{ questionId: string; valueText?: string | null; valueBool?: boolean | null }>;
   submit?: boolean;
+  aiUsed?: boolean;
 }) {
   const pool = await ensureDpSchema();
   if (!pool) return { ok: false as const, error: 'database_unavailable' };
@@ -1034,6 +1038,14 @@ export async function saveResponseAnswers(input: {
       `UPDATE dp_event_series_response SET attended_confirmed = $2, updated_at = now()
        WHERE id = $1`,
       [response.id, Boolean(input.attendedConfirmed)],
+    );
+  }
+
+  if (input.aiUsed) {
+    await pool.query(
+      `UPDATE dp_event_series_response SET ai_assist_used = true, updated_at = now()
+       WHERE id = $1 AND ai_assist_used = false`,
+      [response.id],
     );
   }
 
@@ -1054,6 +1066,24 @@ export async function saveResponseAnswers(input: {
             error: 'required_checkbox',
             fieldKey: question.fieldKey,
             label: question.label,
+          };
+        }
+      }
+    }
+
+    const aiAssistUsed = Boolean(input.aiUsed || response.aiAssistUsed);
+    if (aiAssistUsed) {
+      const standbyQuestion = sections
+        .flatMap((s) => s.questions)
+        .find((q) => q.fieldKey === FORK_AI_SUBMISSION_STANDBY_FIELD_KEY);
+      if (standbyQuestion) {
+        const standbyAnswer = answerByQuestionId.get(standbyQuestion.id);
+        if (!standbyAnswer?.valueBool) {
+          return {
+            ok: false as const,
+            error: 'ai_standby_required',
+            fieldKey: FORK_AI_SUBMISSION_STANDBY_FIELD_KEY,
+            label: standbyQuestion.label,
           };
         }
       }

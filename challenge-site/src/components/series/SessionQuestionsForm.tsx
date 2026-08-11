@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ComposeFieldAiAssist, {
   type ComposeAiPromptOption,
 } from '@/components/compose/ComposeFieldAiAssist';
+import { FORK_AI_SUBMISSION_STANDBY_FIELD_KEY } from '@/lib/dp-event-series-seed';
 import { useAuth } from '@/lib/auth-context';
 
 export const SUBMIT_CONSENT_SECTION_KEY = 'submit';
@@ -55,6 +56,7 @@ function QuestionField({
   seriesTitle,
   sessionTitle,
   relatedDpIds,
+  onAiUsed,
 }: {
   question: Question;
   value: { valueText?: string | null; valueBool?: boolean | null };
@@ -62,10 +64,13 @@ function QuestionField({
   seriesTitle: string;
   sessionTitle: string;
   relatedDpIds: string[];
+  onAiUsed?: () => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const text = value.valueText ?? '';
   const minLength = question.minLength;
+  const showMinCounter =
+    minLength != null && question.fieldType !== 'dp_hook' && question.fieldKey !== 'dp_hook';
 
   function setText(next: string) {
     onChange({ valueText: next });
@@ -116,19 +121,34 @@ function QuestionField({
   }
 
   return (
-    <div className="relative">
+    <div>
       <label className="block text-sm font-medium text-slate-200">{question.label}</label>
       {question.helpText ? (
         <p className="mt-1 text-xs text-slate-500">{question.helpText}</p>
       ) : null}
-      <textarea
-        ref={textareaRef}
-        rows={4}
-        className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-      {minLength != null ? (
+      <div className="relative mt-2">
+        <textarea
+          ref={textareaRef}
+          rows={4}
+          className={`w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 ${
+            question.aiAssist ? 'pr-14' : ''
+          }`}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        {question.aiAssist ? (
+          <ComposeFieldAiAssist
+            textareaRef={textareaRef}
+            value={text}
+            onValueChange={setText}
+            promptOptions={AI_PROMPTS}
+            onGenerate={onGenerate}
+            fieldLabel={question.label}
+            onAiApplied={onAiUsed}
+          />
+        ) : null}
+      </div>
+      {showMinCounter ? (
         <p
           className={`mt-1 text-right text-xs ${
             text.trim().length >= minLength ? 'text-emerald-400' : 'text-amber-400'
@@ -136,16 +156,6 @@ function QuestionField({
         >
           {text.trim().length}/{minLength} minimum
         </p>
-      ) : null}
-      {question.aiAssist ? (
-        <ComposeFieldAiAssist
-          textareaRef={textareaRef}
-          value={text}
-          onValueChange={setText}
-          promptOptions={AI_PROMPTS}
-          onGenerate={onGenerate}
-          fieldLabel={question.label}
-        />
       ) : null}
     </div>
   );
@@ -161,6 +171,7 @@ type Props = {
   initialAttended: boolean;
   initialStatus: 'draft' | 'submitted';
   initialAnswers: AnswerMap;
+  initialAiAssistUsed?: boolean;
 };
 
 export default function SessionQuestionsForm({
@@ -173,11 +184,13 @@ export default function SessionQuestionsForm({
   initialAttended,
   initialStatus,
   initialAnswers,
+  initialAiAssistUsed = false,
 }: Props) {
   const { user, checked, login, loginBusy } = useAuth();
   const [attended, setAttended] = useState(initialAttended);
   const [answers, setAnswers] = useState<AnswerMap>(initialAnswers);
   const [status, setStatus] = useState(initialStatus);
+  const [aiAssistUsed, setAiAssistUsed] = useState(initialAiAssistUsed);
   const [saving, setSaving] = useState(false);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -186,6 +199,11 @@ export default function SessionQuestionsForm({
   const markEdited = useCallback(() => {
     hasUserEdited.current = true;
   }, []);
+
+  const markAiUsed = useCallback(() => {
+    setAiAssistUsed(true);
+    markEdited();
+  }, [markEdited]);
 
   const save = useCallback(
     async (submit = false, fromAutosave = false) => {
@@ -208,6 +226,16 @@ export default function SessionQuestionsForm({
             }
           }
         }
+
+        if (aiAssistUsed) {
+          const standbyQuestion = sections
+            .flatMap((s) => s.questions)
+            .find((q) => q.fieldKey === FORK_AI_SUBMISSION_STANDBY_FIELD_KEY);
+          if (standbyQuestion && !answers[standbyQuestion.id]?.valueBool) {
+            setError(`Please confirm: "${standbyQuestion.label}"`);
+            return;
+          }
+        }
       }
 
       setSaving(true);
@@ -216,6 +244,7 @@ export default function SessionQuestionsForm({
         const payload = {
           attendedConfirmed: attended,
           submit,
+          aiUsed: aiAssistUsed,
           answers: Object.entries(answers).map(([questionId, val]) => ({
             questionId,
             valueText: val.valueText ?? null,
@@ -231,7 +260,12 @@ export default function SessionQuestionsForm({
           },
         );
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Save failed');
+        if (!res.ok) {
+          if (data.error === 'ai_standby_required') {
+            throw new Error(`Please confirm: "${data.label || 'AI submission standby'}"`);
+          }
+          throw new Error(data.error || 'Save failed');
+        }
         if (submit) setStatus('submitted');
         if (submit) {
           setFlash('Session questions submitted.');
@@ -244,7 +278,7 @@ export default function SessionQuestionsForm({
         setSaving(false);
       }
     },
-    [answers, attended, seriesSlug, sessionNumber, user, sections],
+    [answers, attended, seriesSlug, sessionNumber, user, sections, aiAssistUsed],
   );
 
   useEffect(() => {
@@ -253,13 +287,23 @@ export default function SessionQuestionsForm({
       void save(false, true);
     }, 2000);
     return () => window.clearTimeout(t);
-  }, [answers, attended, user, save]);
+  }, [answers, attended, user, save, aiAssistUsed]);
 
-  const { contentSections, consentSection } = useMemo(() => {
+  const { contentSections, consentSection, visibleConsentQuestions } = useMemo(() => {
     const consent = sections.find((s) => s.sectionKey === SUBMIT_CONSENT_SECTION_KEY) ?? null;
     const content = sections.filter((s) => s.sectionKey !== SUBMIT_CONSENT_SECTION_KEY);
-    return { contentSections: content, consentSection: consent };
-  }, [sections]);
+    const visibleConsent = consent
+      ? consent.questions.filter(
+          (q) =>
+            q.fieldKey !== FORK_AI_SUBMISSION_STANDBY_FIELD_KEY || aiAssistUsed,
+        )
+      : [];
+    return {
+      contentSections: content,
+      consentSection: consent,
+      visibleConsentQuestions: visibleConsent,
+    };
+  }, [sections, aiAssistUsed]);
 
   if (!checked) {
     return <p className="text-sm text-slate-400">Loading…</p>;
@@ -321,14 +365,15 @@ export default function SessionQuestionsForm({
               seriesTitle={seriesTitle}
               sessionTitle={sessionTitle}
               relatedDpIds={relatedDpIds}
+              onAiUsed={markAiUsed}
             />
           ))}
         </section>
       ))}
 
-      {consentSection ? (
+      {consentSection && visibleConsentQuestions.length > 0 ? (
         <div className="space-y-3 border-t border-slate-800 pt-6">
-          {consentSection.questions.map((q) => (
+          {visibleConsentQuestions.map((q) => (
             <QuestionField
               key={q.id}
               question={q}

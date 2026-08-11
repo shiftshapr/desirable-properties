@@ -4,7 +4,6 @@ import {
   useCallback,
   useEffect,
   useId,
-  useLayoutEffect,
   useRef,
   useState,
   type RefObject,
@@ -36,6 +35,7 @@ type Props = {
     signal: AbortSignal,
   ) => Promise<string>;
   fieldLabel?: string;
+  onAiApplied?: () => void;
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -61,11 +61,11 @@ export default function ComposeFieldAiAssist({
   promptOptions,
   onGenerate,
   fieldLabel = 'Message',
+  onAiApplied,
 }: Props) {
   const menuId = useId();
   const [focused, setFocused] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [fabPos, setFabPos] = useState({ top: 0, left: 0 });
   const [typing, setTyping] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [preview, setPreview] = useState('');
@@ -75,24 +75,11 @@ export default function ComposeFieldAiAssist({
   const typingTimerRef = useRef<number | null>(null);
   const panelOpen = menuOpen || Boolean(preview) || generating || Boolean(error);
 
-  const positionFab = useCallback(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    setFabPos({
-      top: rect.bottom - 36,
-      left: rect.left + 8,
-    });
-  }, [textareaRef]);
-
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
 
-    const onFocus = () => {
-      setFocused(true);
-      positionFab();
-    };
+    const onFocus = () => setFocused(true);
     const onBlur = () => {
       window.setTimeout(() => {
         if (!menuOpen && !preview && !generating && !error) setFocused(false);
@@ -113,19 +100,7 @@ export default function ComposeFieldAiAssist({
       el.removeEventListener('input', onInput);
       if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
     };
-  }, [textareaRef, positionFab, menuOpen, preview, generating, error]);
-
-  useLayoutEffect(() => {
-    if (!focused && !panelOpen) return;
-    positionFab();
-    const onScrollOrResize = () => positionFab();
-    window.addEventListener('scroll', onScrollOrResize, true);
-    window.addEventListener('resize', onScrollOrResize);
-    return () => {
-      window.removeEventListener('scroll', onScrollOrResize, true);
-      window.removeEventListener('resize', onScrollOrResize);
-    };
-  }, [focused, panelOpen, positionFab]);
+  }, [textareaRef, menuOpen, preview, generating, error]);
 
   useEffect(() => {
     return () => {
@@ -142,7 +117,7 @@ export default function ComposeFieldAiAssist({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [panelOpen, generating]);
 
-  function closePanel() {
+  const closePanel = useCallback(() => {
     if (generating) abortRef.current?.abort();
     setMenuOpen(false);
     setPreview('');
@@ -150,11 +125,10 @@ export default function ComposeFieldAiAssist({
     setGenerating(false);
     setLastOption(null);
     setFocused(Boolean(textareaRef.current?.matches(':focus')));
-  }
+  }, [generating, textareaRef]);
 
   function openMenu() {
     if (disabled) return;
-    positionFab();
     setPreview('');
     setError(null);
     setMenuOpen(true);
@@ -219,6 +193,7 @@ export default function ComposeFieldAiAssist({
     }
 
     onValueChange(next);
+    onAiApplied?.();
     closePanel();
     requestAnimationFrame(() => {
       textarea?.focus();
@@ -245,14 +220,13 @@ export default function ComposeFieldAiAssist({
         aria-controls={menuId}
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
-        className={`fixed z-[12050] inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-950/95 px-2.5 py-1.5 text-xs font-bold text-cyan-300 shadow-lg transition-all duration-300 ${
+        className={`absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
           showFab
             ? fabFaded
-              ? 'pointer-events-auto translate-y-0 opacity-25'
-              : 'pointer-events-auto translate-y-0 opacity-100'
-            : 'pointer-events-none translate-y-1 opacity-0'
+              ? 'pointer-events-auto opacity-25'
+              : 'pointer-events-auto opacity-100'
+            : 'pointer-events-none opacity-0'
         }`}
-        style={{ top: fabPos.top, left: fabPos.left }}
         disabled={disabled}
       >
         <span aria-hidden="true">✦</span> AI
