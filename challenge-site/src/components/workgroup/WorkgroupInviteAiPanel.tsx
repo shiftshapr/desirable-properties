@@ -229,7 +229,11 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     person: ResolvedPerson | null = resolvedPerson,
     prior: PriorInvitation[] = priorInvitations,
     manageBusy = true,
+    opts?: { tone?: string; length?: string; regenerate?: boolean },
   ) {
+    const effectiveTone = opts?.tone ?? tone;
+    const effectiveLength = opts?.length ?? length;
+    const isRegenerate = opts?.regenerate ?? false;
     if (manageBusy) setDraftBusy(true);
     setError(null);
     const previousDraft = draft;
@@ -257,13 +261,15 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       const data = await inviteAiDraft(workgroupId, {
         name: name.trim(),
         email: email.trim(),
-        tone,
-        length,
+        tone: effectiveTone,
+        length: effectiveLength,
         previous_interaction: previousInteraction.trim() || undefined,
         resolved_person: person,
         additional_workgroup_ids: selectedExtraIds,
         prior_invitations: prior,
         invite_content: inviteContent,
+        regenerate: isRegenerate,
+        previous_draft: isRegenerate ? previousDraft : undefined,
       });
       if (data.blocked || data.error) {
         setError(data.error || 'Draft blocked');
@@ -502,7 +508,13 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
                   prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
                 )
               }
-              onRegenerate={() => void runDraft()}
+              onRegenerate={(t, l) =>
+                void runDraft(undefined, undefined, true, {
+                  tone: t,
+                  length: l,
+                  regenerate: true,
+                })
+              }
             />
             <WorkgroupInviteSendConfirm
               sendBusy={sendBusy}

@@ -26,7 +26,7 @@ type Props = {
   onLength: (length: string) => void;
   onDraft: (draft: string) => void;
   onToggleExtra: (workgroupId: string) => void;
-  onRegenerate: () => void;
+  onRegenerate: (tone: string, length: string) => void;
 };
 
 export default function WorkgroupInviteDraftEditor({
@@ -138,7 +138,7 @@ export default function WorkgroupInviteDraftEditor({
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={onRegenerate}
+          onClick={() => onRegenerate(tone, length)}
           disabled={busy}
           className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
         >

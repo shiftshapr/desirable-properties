@@ -154,6 +154,8 @@ export type InviteDraftInput = {
   additional_workgroup_ids?: string[];
   prior_invitations?: PriorInvitation[];
   invite_content?: InviteContentContext | null;
+  regenerate?: boolean;
+  previous_draft?: string;
 };
 
 export type InviteSendInput = {
