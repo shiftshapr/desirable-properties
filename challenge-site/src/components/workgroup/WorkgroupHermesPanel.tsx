@@ -138,7 +138,7 @@ export default function WorkgroupHermesPanel({
                       className="w-full rounded-lg border border-violet-900/40 bg-violet-950/20 px-3 py-2 text-left text-sm text-violet-100 hover:border-violet-700"
                     >
                       <span className="mr-1" aria-hidden="true">✋</span>
-                      {HERMES_MODE_LABELS[hand.mode]} — {hand.teaser?.slice(0, 48) || 'Raised hand'}
+                      {HERMES_MODE_LABELS[hand.mode]} – {hand.teaser?.slice(0, 48) || 'Raised hand'}
                     </button>
                   </li>
                 ))}
@@ -162,7 +162,7 @@ export default function WorkgroupHermesPanel({
           <div className="flex-1 overflow-y-auto px-4 py-4">
             {!hasContent ? (
               <p className="text-sm text-slate-500">
-                Hermes notes appear here — raised hands after messages, or replies from Ask Hermes.
+                Hermes notes appear here – raised hands after messages, or replies from Ask Hermes.
                 Nothing posts until you choose.
               </p>
             ) : null}

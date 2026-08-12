@@ -45,7 +45,7 @@ export default function HermesComposerAiAssist({
     });
     const message = buildComposeAiMessage({
       contextLines: [
-        'Hermes chat — help refine my message before I send it.',
+        'Hermes chat – help refine my message before I send it.',
         dpFocus ? `DP focus: DP${dpFocus}` : '',
       ],
       userDraft,

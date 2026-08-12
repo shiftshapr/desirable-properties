@@ -90,11 +90,11 @@ export default function HermesExperimentalInstructionsModal({
             <p className="font-medium text-slate-200">Draft my message vs Ask Hermes</p>
             <ul className="mt-2 list-disc space-y-2 pl-5 marker:text-cyan-500">
               <li>
-                <span className="font-medium text-slate-200">Draft my message</span> — AI helps you
+                <span className="font-medium text-slate-200">Draft my message</span> – AI helps you
                 write text you send as yourself. Use Insert or Send when ready.
               </li>
               <li>
-                <span className="font-medium text-slate-200">Ask Hermes</span> — Hermes replies in
+                <span className="font-medium text-slate-200">Ask Hermes</span> – Hermes replies in
                 your private side panel. Nothing posts to the thread until you share or adopt.
               </li>
             </ul>
@@ -130,11 +130,11 @@ export default function HermesExperimentalInstructionsModal({
             <p className="font-medium text-slate-200">What posts as you vs as Hermes</p>
             <ul className="mt-2 list-disc space-y-2 pl-5 marker:text-violet-500">
               <li>
-                <span className="font-medium text-slate-200">You</span> — anything you send from the
+                <span className="font-medium text-slate-200">You</span> – anything you send from the
                 composer, including AI-drafted replies you choose to send.
               </li>
               <li>
-                <span className="font-medium text-slate-200">Hermes</span> — only when you share a
+                <span className="font-medium text-slate-200">Hermes</span> – only when you share a
                 Hermes note to the thread (labeled ✋ Hermes).
               </li>
             </ul>

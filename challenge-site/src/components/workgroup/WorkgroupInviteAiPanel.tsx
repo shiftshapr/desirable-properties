@@ -236,7 +236,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     const hasContentSelections =
       selectedEventIds.length > 0 || selectedPerspectiveIds.length > 0;
     if (hasContentSelections && contentCatalogLoading) {
-      setError('Still loading events and perspectives — try again in a moment.');
+      setError('Still loading events and perspectives – try again in a moment.');
       if (manageBusy) setDraftBusy(false);
       return;
     }
@@ -418,7 +418,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
             {step === 'research' && hasDraft ? (
               <div className="mb-4 flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-slate-400">
-                  Editing recipient details. Your draft is saved below — regenerate after changes if
+                  Editing recipient details. Your draft is saved below – regenerate after changes if
                   needed.
                 </p>
                 <button

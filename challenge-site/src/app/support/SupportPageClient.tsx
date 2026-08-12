@@ -219,7 +219,7 @@ export default function SupportPageClient() {
         <>
           {feedbackMode ? (
             <p className="mt-6 rounded-lg border border-violet-700/50 bg-violet-950/30 px-4 py-3 text-sm text-violet-100">
-              Share feedback about an experimental feature. We pre-filled the form — edit anything
+              Share feedback about an experimental feature. We pre-filled the form – edit anything
               before you submit.
             </p>
           ) : null}

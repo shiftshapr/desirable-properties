@@ -61,7 +61,7 @@ export function dpContextBlurb(dpId: string | null | undefined): string | null {
   if (!entry) return null;
   const statusNote =
     entry.status === 'draft'
-      ? ' (draft — not yet inscribed on Bitcoin)'
+      ? ' (draft – not yet inscribed on Bitcoin)'
       : ' (inscribed on Bitcoin)';
   const mlNote = entry.mlNumber ? ` Gov Hub: ${entry.mlNumber}.` : '';
   return `${entry.id} – ${entry.name}${statusNote}.${mlNote} ${entry.description}`;

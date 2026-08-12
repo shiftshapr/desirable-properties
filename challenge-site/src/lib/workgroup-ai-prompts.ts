@@ -2,7 +2,7 @@ import type { ComposeAiPromptOption } from '@/components/compose/ComposeFieldAiA
 import { COMPOSE_AI_INITIAL_PROMPTS } from '@/lib/compose-ai-prompts';
 import type { HermesAmbientMode } from '@/lib/hermes-ambient-types';
 
-/** Ask Hermes respond starter pills (private panel — nothing posts until user chooses). */
+/** Ask Hermes respond starter pills (private panel – nothing posts until user chooses). */
 export const WORKGROUP_ASK_HERMES_PROMPTS: ComposeAiPromptOption[] = [
   { id: 'fit', label: 'Where might this fit among existing DPs?', requiresDraft: false },
   { id: 'new-dp', label: 'Should we consider a new DP?', requiresDraft: false },
@@ -83,7 +83,7 @@ export function buildAskHermesMessage(opts: {
         : 'Respond as Hermes in Observer mode: observe the thread and offer grounded insight without taking sides.';
 
   return [
-    'Workgroup Ask Hermes — private reply for the participant only.',
+    'Workgroup Ask Hermes – private reply for the participant only.',
     modeLine,
     '',
     opts.contextBlock,

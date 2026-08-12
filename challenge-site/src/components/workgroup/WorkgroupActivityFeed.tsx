@@ -90,7 +90,7 @@ export default function WorkgroupActivityFeed({
           {dpId ? (
             <>
               <span className="font-medium text-cyan-300/90">{dpId}</span>
-              {' — '}
+              {' – '}
             </>
           ) : null}
           Workgroup chat on this page, Gov Hub draft patches, plus Canopi discuss on this

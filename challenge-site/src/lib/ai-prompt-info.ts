@@ -25,7 +25,7 @@ const DP_GENERAL: AiPromptInfo = {
     'Desirable Properties are community-defined principles for a trustworthy Meta-Layer. DP1–DP22 are inscribed on Bitcoin; DP23+ are active Gov Hub drafts.',
   details: [
     'Hermes retrieves the latest ML-Draft text synced from Gov Hub when answering.',
-    'Pills that mention DPs help map discussion to the framework — they do not post on your behalf.',
+    'Pills that mention DPs help map discussion to the framework – they do not post on your behalf.',
   ],
   links: [
     { label: 'Browse all DPs', href: '/participate' },
@@ -37,12 +37,12 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
   start: () => ({
     title: 'Help me get started',
     summary: 'Hermes suggests 2–3 starter angles or questions based on your workgroup context.',
-    details: ['Works even when the composer is empty.', 'Output goes into your composer — you send it as your message.'],
+    details: ['Works even when the composer is empty.', 'Output goes into your composer – you send it as your message.'],
   }),
   clarify: () => ({
     title: 'Clarify my thinking',
     summary: 'Sharpens ideas in your draft and may ask one reflective question.',
-    details: ['You edit or send the result — nothing posts automatically.'],
+    details: ['You edit or send the result – nothing posts automatically.'],
   }),
   expand: () => ({
     title: 'Expand',
@@ -62,7 +62,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
   strengthen: () => ({
     title: 'Strengthen for submission',
     summary: 'Makes your draft more specific and concrete for Gov Hub or workgroup submission.',
-    details: ['You review before sending — this is your message, not Hermes speaking.'],
+    details: ['You review before sending – this is your message, not Hermes speaking.'],
   }),
   shorter: () => ({
     title: 'Shorter version',
@@ -73,7 +73,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
     summary: 'Hermes compares the thread to inscribed and draft DPs and names closest matches.',
     details: [
       'Uses latest ML-Draft text from Gov Hub rails.',
-      'Reply appears in your private Hermes panel — nothing posts until you share or adopt.',
+      'Reply appears in your private Hermes panel – nothing posts until you share or adopt.',
     ],
     links: [{ label: 'DP framework overview', href: '/participate' }],
   }),
@@ -82,7 +82,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
     summary: 'Evaluates whether the topic warrants a new Desirable Property and how it would relate to existing ones.',
     details: [
       'DP23 (Universal Participation) is the current draft beyond the inscribed set.',
-      'Private reply — share to thread only when ready.',
+      'Private reply – share to thread only when ready.',
     ],
     relatedDps: ['DP23'],
   }),
@@ -95,17 +95,17 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
   decision: () => ({
     title: "What's the decision we're actually making?",
     summary: 'Facilitator-style clarification: options, stakeholders, and what resolution looks like.',
-    details: ['Private note — use Share to thread when the room should see it.'],
+    details: ['Private note – use Share to thread when the room should see it.'],
   }),
   steelman: () => ({
     title: 'Steelman the opposite',
     summary: "Devil's advocate: the strongest fair counter-argument to the current direction.",
-    details: ['Mode affects tone — try Facilitator or Devil\'s advocate pills above.'],
+    details: ['Mode affects tone – try Facilitator or Devil\'s advocate pills above.'],
   }),
   summarize: () => ({
     title: 'Summarize for the room',
     summary: 'Key claims, open questions, and where the group seems headed.',
-    details: ['Good for late joiners — adopt into composer or share when ready.'],
+    details: ['Good for late joiners – adopt into composer or share when ready.'],
   }),
   'wg-fit': () => ({
     title: 'Fit among existing DPs',
@@ -122,7 +122,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
     title: 'Draft a reply',
     summary: 'Drafts a reply to the latest thread message for your composer.',
     details: [
-      'This is Draft my message — you send it as yourself, not as Hermes.',
+      'This is Draft my message – you send it as yourself, not as Hermes.',
       ctx.dpId ? `Scoped to ${ctx.dpId} context.` : undefined,
     ].filter(Boolean) as string[],
     relatedDps: ctx.dpId ? [ctx.dpId] : undefined,

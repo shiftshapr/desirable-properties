@@ -142,7 +142,7 @@ function ParticipationBand({ participation }: { participation: PathwayParticipat
                   >
                     series badge
                   </TrackedLink>{' '}
-                  — complete all {participation.sessionsRequiredCount} sessions + questions
+                  – complete all {participation.sessionsRequiredCount} sessions + questions
                 </p>
                 {participation.pearlBadgeCode ? (
                   <p className="mt-1 flex items-center gap-1.5 text-slate-500">

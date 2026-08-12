@@ -92,7 +92,7 @@ export default function HermesContributionPanel({
         </div>
         {draft.recommendedDestination === 'either' ? (
           <p className="mt-1 text-[11px] text-slate-400">
-            Hermes marked either destination as fine — pick where you want this filed.
+            Hermes marked either destination as fine – pick where you want this filed.
           </p>
         ) : null}
       </fieldset>

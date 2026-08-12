@@ -62,7 +62,7 @@ export default async function EventsIndexPage() {
       <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Events</p>
       <h1 className="mt-3 text-4xl font-bold text-white">Upcoming</h1>
       <p className="mt-4 max-w-2xl text-lg text-slate-400">
-        Workshops, book launches, and gatherings — sorted by date.
+        Workshops, book launches, and gatherings – sorted by date.
       </p>
 
       <ul className="mt-10 grid gap-6 sm:grid-cols-2">
