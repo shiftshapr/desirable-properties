@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import type { InviteContentCatalog } from '@/lib/dp-invite-content-context';
 import type { InviteLeadType } from '@/lib/workgroup-collab-types';
 
 export type InviteContentOption = {
@@ -26,11 +27,7 @@ type Props = {
     selectedPerspectiveIds?: string[];
     lead?: InviteLeadType;
   }) => void;
-  catalog?: {
-    events: InviteContentOption[];
-    seriesEvents: InviteSeriesContentOption[];
-    perspectives: InviteContentOption[];
-  } | null;
+  catalog?: InviteContentCatalog | null;
   catalogLoading?: boolean;
   catalogError?: string | null;
 };
@@ -105,7 +102,7 @@ export default function WorkgroupInviteContentPicker({
 }: Props) {
   const [globalEvents, setGlobalEvents] = useState<InviteContentOption[]>(catalog?.events ?? []);
   const [seriesEvents, setSeriesEvents] = useState<InviteSeriesContentOption[]>(
-    catalog?.seriesEvents ?? [],
+    (catalog?.seriesEvents as InviteSeriesContentOption[] | undefined) ?? [],
   );
   const [perspectives, setPerspectives] = useState<InviteContentOption[]>(
     catalog?.perspectives ?? [],
@@ -116,7 +113,7 @@ export default function WorkgroupInviteContentPicker({
   useEffect(() => {
     if (catalog) {
       setGlobalEvents(catalog.events);
-      setSeriesEvents(catalog.seriesEvents);
+      setSeriesEvents(catalog.seriesEvents as InviteSeriesContentOption[]);
       setPerspectives(catalog.perspectives);
       setLoading(catalogLoading);
       setError(catalogError);
@@ -182,7 +179,9 @@ export default function WorkgroupInviteContentPicker({
     });
   }
 
-  const upcomingSeries = seriesEvents.filter((event) => event.kind === 'series' || event.kind === 'single');
+  const upcomingSeries = seriesEvents.filter(
+    (event) => !event.kind || event.kind === 'series' || event.kind === 'single',
+  );
   const upcomingSessions = seriesEvents.filter((event) => event.kind === 'session');
 
   if (loading) {

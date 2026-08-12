@@ -1,3 +1,5 @@
+import type { InviteLeadType } from '@/lib/workgroup-collab-types';
+
 const CHAT_PREFIX = 'dp-wg-chat-draft:';
 const INVITE_PREFIX = 'dp-wg-invite:';
 
@@ -13,7 +15,7 @@ export type WorkgroupInviteDraft = {
   step: 'research' | 'disambiguate' | 'draft' | 'done';
   selectedEventIds: string[];
   selectedPerspectiveIds: string[];
-  inviteLead: 'events' | 'perspectives';
+  inviteLead: InviteLeadType;
 };
 
 function readJson<T>(key: string): T | null {

@@ -10,7 +10,7 @@ import { inviteAiDraft, inviteAiResearch, inviteAiSend } from '@/lib/workgroup-c
 import {
   buildInviteContentContext,
   type InviteContentCatalog,
-} from '@/lib/dp-invite-event-catalog';
+} from '@/lib/dp-invite-content-context';
 import {
   clearInviteDraft,
   loadInviteDraft,

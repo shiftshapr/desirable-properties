@@ -5,8 +5,29 @@ import {
 } from '@/lib/dp-event-series-store';
 import { ensureDpSchema } from '@/lib/dp-db';
 
-export const INVITE_SERIES_EVENT_PREFIX = 'series:';
-export const INVITE_SESSION_EVENT_PREFIX = 'session:';
+import {
+  INVITE_SERIES_EVENT_PREFIX,
+  INVITE_SESSION_EVENT_PREFIX,
+  buildInviteContentContext,
+  resolveSelectedInviteEvents,
+  resolveSelectedInvitePerspectives,
+  type InviteContentCatalog,
+  type InviteContentContextPayload,
+  type InviteLeadType,
+  type ResolvedInviteContentEvent,
+} from '@/lib/dp-invite-content-context';
+
+export {
+  INVITE_SERIES_EVENT_PREFIX,
+  INVITE_SESSION_EVENT_PREFIX,
+  buildInviteContentContext,
+  resolveSelectedInviteEvents,
+  resolveSelectedInvitePerspectives,
+  type InviteContentCatalog,
+  type InviteContentContextPayload,
+  type InviteLeadType,
+  type ResolvedInviteContentEvent,
+};
 
 export type InviteSelectableSeriesEvent = {
   id: string;
@@ -103,113 +124,6 @@ export async function listInviteSelectableSeriesEvents(
   }
 
   return options;
-}
-
-export type ResolvedInviteContentEvent = {
-  title: string;
-  url: string;
-  description?: string | null;
-  event_date?: string | null;
-};
-
-type GlobalInviteEventOption = {
-  id: string;
-  title: string;
-  url: string;
-  eventDate?: string | null;
-  description?: string | null;
-};
-
-/** Map selected picker IDs (global UUID or series:/session: prefix) to draft payload events. */
-export type InviteContentCatalog = {
-  events: GlobalInviteEventOption[];
-  seriesEvents: InviteSelectableSeriesEvent[];
-  perspectives: Array<{ id: string; title: string; url: string; slug: string }>;
-};
-
-export function resolveSelectedInvitePerspectives(
-  selectedIds: string[],
-  perspectives: InviteContentCatalog['perspectives'],
-): Array<{ title: string; url: string; slug: string }> {
-  const byId = new Map(perspectives.map((item) => [item.id, item]));
-  const resolved: Array<{ title: string; url: string; slug: string }> = [];
-  for (const id of selectedIds) {
-    const item = byId.get(id);
-    if (item) {
-      resolved.push({ title: item.title, url: item.url, slug: item.slug });
-    }
-  }
-  return resolved;
-}
-
-export type InviteLeadType = 'events' | 'perspectives' | 'engagement';
-
-export type InviteContentContextPayload = {
-  events: ResolvedInviteContentEvent[];
-  perspectives: Array<{ title: string; url: string; slug: string }>;
-  lead: InviteLeadType;
-};
-
-/** Map picker selections to the invite-ai draft payload (handles series:/session: IDs). */
-export function buildInviteContentContext(
-  selectedEventIds: string[],
-  selectedPerspectiveIds: string[],
-  lead: InviteLeadType,
-  catalog: InviteContentCatalog,
-): InviteContentContextPayload | null {
-  const events = resolveSelectedInviteEvents(
-    selectedEventIds,
-    catalog.events,
-    catalog.seriesEvents,
-  );
-  const perspectives = resolveSelectedInvitePerspectives(
-    selectedPerspectiveIds,
-    catalog.perspectives,
-  );
-  if (!events.length && !perspectives.length) return null;
-
-  let effectiveLead = lead;
-  if (events.length && !perspectives.length && effectiveLead === 'perspectives') {
-    effectiveLead = 'events';
-  } else if (perspectives.length && !events.length && effectiveLead === 'events') {
-    effectiveLead = 'perspectives';
-  }
-
-  return { events, perspectives, lead: effectiveLead };
-}
-
-export function resolveSelectedInviteEvents(
-  selectedIds: string[],
-  globalEvents: GlobalInviteEventOption[],
-  seriesEvents: InviteSelectableSeriesEvent[],
-): ResolvedInviteContentEvent[] {
-  const globalById = new Map(globalEvents.map((event) => [event.id, event]));
-  const seriesById = new Map(seriesEvents.map((event) => [event.id, event]));
-  const resolved: ResolvedInviteContentEvent[] = [];
-
-  for (const id of selectedIds) {
-    const global = globalById.get(id);
-    if (global) {
-      resolved.push({
-        title: global.title,
-        url: global.url,
-        description: global.description ?? null,
-        event_date: global.eventDate ?? null,
-      });
-      continue;
-    }
-    const series = seriesById.get(id);
-    if (series) {
-      resolved.push({
-        title: series.title,
-        url: series.url,
-        description: series.description ?? series.subtitle ?? null,
-        event_date: series.eventDate ?? null,
-      });
-    }
-  }
-
-  return resolved;
 }
 
 export function seriesEventKindLabel(kind: InviteSelectableSeriesEvent['kind']) {
