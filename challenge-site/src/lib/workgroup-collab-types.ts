@@ -119,7 +119,7 @@ export type InviteResearchInput = {
   selected_candidate_index?: number | null;
 };
 
-export type InviteLeadType = 'events' | 'perspectives';
+export type InviteLeadType = 'events' | 'perspectives' | 'engagement';
 
 export type InviteContentEvent = {
   title: string;

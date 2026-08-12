@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs scripts/dp-welcome-default.test.mjs",
-    "test:dp-broadcast-email": "node --test scripts/dp-broadcast-email.test.mjs"
+    "test:dp-broadcast-email": "node --test scripts/dp-broadcast-email.test.mjs",
+    "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs"
   },
   "dependencies": {
     "jose": "^6.2.4",

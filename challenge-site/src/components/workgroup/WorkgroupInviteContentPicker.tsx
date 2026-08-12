@@ -26,6 +26,13 @@ type Props = {
     selectedPerspectiveIds?: string[];
     lead?: InviteLeadType;
   }) => void;
+  catalog?: {
+    events: InviteContentOption[];
+    seriesEvents: InviteSeriesContentOption[];
+    perspectives: InviteContentOption[];
+  } | null;
+  catalogLoading?: boolean;
+  catalogError?: string | null;
 };
 
 function formatEventDate(eventDate: string | null | undefined) {
@@ -92,14 +99,30 @@ export default function WorkgroupInviteContentPicker({
   selectedPerspectiveIds,
   lead,
   onChange,
+  catalog,
+  catalogLoading = false,
+  catalogError = null,
 }: Props) {
-  const [globalEvents, setGlobalEvents] = useState<InviteContentOption[]>([]);
-  const [seriesEvents, setSeriesEvents] = useState<InviteSeriesContentOption[]>([]);
-  const [perspectives, setPerspectives] = useState<InviteContentOption[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [globalEvents, setGlobalEvents] = useState<InviteContentOption[]>(catalog?.events ?? []);
+  const [seriesEvents, setSeriesEvents] = useState<InviteSeriesContentOption[]>(
+    catalog?.seriesEvents ?? [],
+  );
+  const [perspectives, setPerspectives] = useState<InviteContentOption[]>(
+    catalog?.perspectives ?? [],
+  );
+  const [loading, setLoading] = useState(!catalog);
+  const [error, setError] = useState<string | null>(catalogError);
 
   useEffect(() => {
+    if (catalog) {
+      setGlobalEvents(catalog.events);
+      setSeriesEvents(catalog.seriesEvents);
+      setPerspectives(catalog.perspectives);
+      setLoading(catalogLoading);
+      setError(catalogError);
+      return;
+    }
+
     let cancelled = false;
     (async () => {
       try {
@@ -121,15 +144,19 @@ export default function WorkgroupInviteContentPicker({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [catalog, catalogError, catalogLoading]);
 
   const hasEvents = selectedEventIds.length > 0;
   const hasPerspectives = selectedPerspectiveIds.length > 0;
-  const showLeadSelector = hasEvents && hasPerspectives;
+  const showLeadSelector = hasEvents || hasPerspectives;
 
   const effectiveLead = useMemo<InviteLeadType>(() => {
-    if (hasEvents && !hasPerspectives) return 'events';
-    if (hasPerspectives && !hasEvents) return 'perspectives';
+    if (hasEvents && !hasPerspectives) {
+      return lead === 'engagement' ? 'engagement' : 'events';
+    }
+    if (hasPerspectives && !hasEvents) {
+      return lead === 'engagement' ? 'engagement' : 'perspectives';
+    }
     return lead;
   }, [hasEvents, hasPerspectives, lead]);
 
@@ -280,23 +307,36 @@ export default function WorkgroupInviteContentPicker({
           <legend className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Lead with
           </legend>
+          {hasEvents ? (
+            <label className="flex items-center gap-2 text-sm text-slate-200">
+              <input
+                type="radio"
+                name="invite-lead"
+                checked={effectiveLead === 'events'}
+                onChange={() => onChange({ lead: 'events' })}
+              />
+              Event leads
+            </label>
+          ) : null}
+          {hasPerspectives ? (
+            <label className="flex items-center gap-2 text-sm text-slate-200">
+              <input
+                type="radio"
+                name="invite-lead"
+                checked={effectiveLead === 'perspectives'}
+                onChange={() => onChange({ lead: 'perspectives' })}
+              />
+              Perspective leads
+            </label>
+          ) : null}
           <label className="flex items-center gap-2 text-sm text-slate-200">
             <input
               type="radio"
               name="invite-lead"
-              checked={effectiveLead === 'events'}
-              onChange={() => onChange({ lead: 'events' })}
+              checked={effectiveLead === 'engagement'}
+              onChange={() => onChange({ lead: 'engagement' })}
             />
-            Event leads
-          </label>
-          <label className="flex items-center gap-2 text-sm text-slate-200">
-            <input
-              type="radio"
-              name="invite-lead"
-              checked={effectiveLead === 'perspectives'}
-              onChange={() => onChange({ lead: 'perspectives' })}
-            />
-            Perspective leads
+            Desirable Properties leads
           </label>
         </fieldset>
       ) : null}

@@ -121,6 +121,63 @@ type GlobalInviteEventOption = {
 };
 
 /** Map selected picker IDs (global UUID or series:/session: prefix) to draft payload events. */
+export type InviteContentCatalog = {
+  events: GlobalInviteEventOption[];
+  seriesEvents: InviteSelectableSeriesEvent[];
+  perspectives: Array<{ id: string; title: string; url: string; slug: string }>;
+};
+
+export function resolveSelectedInvitePerspectives(
+  selectedIds: string[],
+  perspectives: InviteContentCatalog['perspectives'],
+): Array<{ title: string; url: string; slug: string }> {
+  const byId = new Map(perspectives.map((item) => [item.id, item]));
+  const resolved: Array<{ title: string; url: string; slug: string }> = [];
+  for (const id of selectedIds) {
+    const item = byId.get(id);
+    if (item) {
+      resolved.push({ title: item.title, url: item.url, slug: item.slug });
+    }
+  }
+  return resolved;
+}
+
+export type InviteLeadType = 'events' | 'perspectives' | 'engagement';
+
+export type InviteContentContextPayload = {
+  events: ResolvedInviteContentEvent[];
+  perspectives: Array<{ title: string; url: string; slug: string }>;
+  lead: InviteLeadType;
+};
+
+/** Map picker selections to the invite-ai draft payload (handles series:/session: IDs). */
+export function buildInviteContentContext(
+  selectedEventIds: string[],
+  selectedPerspectiveIds: string[],
+  lead: InviteLeadType,
+  catalog: InviteContentCatalog,
+): InviteContentContextPayload | null {
+  const events = resolveSelectedInviteEvents(
+    selectedEventIds,
+    catalog.events,
+    catalog.seriesEvents,
+  );
+  const perspectives = resolveSelectedInvitePerspectives(
+    selectedPerspectiveIds,
+    catalog.perspectives,
+  );
+  if (!events.length && !perspectives.length) return null;
+
+  let effectiveLead = lead;
+  if (events.length && !perspectives.length && effectiveLead === 'perspectives') {
+    effectiveLead = 'events';
+  } else if (perspectives.length && !events.length && effectiveLead === 'events') {
+    effectiveLead = 'perspectives';
+  }
+
+  return { events, perspectives, lead: effectiveLead };
+}
+
 export function resolveSelectedInviteEvents(
   selectedIds: string[],
   globalEvents: GlobalInviteEventOption[],

@@ -1,12 +1,16 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WorkgroupInviteContentPicker from '@/components/workgroup/WorkgroupInviteContentPicker';
 import WorkgroupInviteDisambiguation from '@/components/workgroup/WorkgroupInviteDisambiguation';
 import WorkgroupInviteDraftEditor from '@/components/workgroup/WorkgroupInviteDraftEditor';
 import WorkgroupInviteResearchForm from '@/components/workgroup/WorkgroupInviteResearchForm';
 import WorkgroupInviteSendConfirm from '@/components/workgroup/WorkgroupInviteSendConfirm';
 import { inviteAiDraft, inviteAiResearch, inviteAiSend } from '@/lib/workgroup-collab-api';
+import {
+  buildInviteContentContext,
+  type InviteContentCatalog,
+} from '@/lib/dp-invite-event-catalog';
 import {
   clearInviteDraft,
   loadInviteDraft,
@@ -54,23 +58,13 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   const [selectedEventIds, setSelectedEventIds] = useState<string[]>([]);
   const [selectedPerspectiveIds, setSelectedPerspectiveIds] = useState<string[]>([]);
   const [inviteLead, setInviteLead] = useState<InviteLeadType>('events');
-  const [contentCatalog, setContentCatalog] = useState<{
-    events: Array<{
-      id: string;
-      title: string;
-      url: string;
-      eventDate?: string | null;
-      description?: string | null;
-    }>;
-    seriesEvents: Array<{
-      id: string;
-      title: string;
-      url: string;
-      eventDate?: string | null;
-      description?: string | null;
-    }>;
-    perspectives: Array<{ id: string; title: string; url: string; slug: string }>;
-  }>({ events: [], seriesEvents: [], perspectives: [] });
+  const [contentCatalog, setContentCatalog] = useState<InviteContentCatalog>({
+    events: [],
+    seriesEvents: [],
+    perspectives: [],
+  });
+  const [contentCatalogLoading, setContentCatalogLoading] = useState(true);
+  const [contentCatalogError, setContentCatalogError] = useState<string | null>(null);
 
   const [platformDone, setPlatformDone] = useState(false);
   const [mailto, setMailto] = useState('');
@@ -99,18 +93,29 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      setContentCatalogLoading(true);
+      setContentCatalogError(null);
       try {
         const res = await fetch('/api/invite-content', { cache: 'no-store' });
         const data = await res.json();
-        if (!cancelled && res.ok && data.ok) {
+        if (!res.ok || !data.ok) {
+          throw new Error(data.message || 'Failed to load invite content');
+        }
+        if (!cancelled) {
           setContentCatalog({
             events: data.events || [],
             seriesEvents: data.seriesEvents || [],
             perspectives: data.perspectives || [],
           });
         }
-      } catch {
-        /* optional catalog for draft context */
+      } catch (err) {
+        if (!cancelled) {
+          setContentCatalogError(
+            err instanceof Error ? err.message : 'Failed to load invite content',
+          );
+        }
+      } finally {
+        if (!cancelled) setContentCatalogLoading(false);
       }
     })();
     return () => {
@@ -151,41 +156,14 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     workgroupSlug,
   ]);
 
-  const allSelectableEvents = useMemo(
-    () => [...contentCatalog.events, ...contentCatalog.seriesEvents],
-    [contentCatalog.events, contentCatalog.seriesEvents],
-  );
-
-  const inviteContentContext = useMemo<InviteContentContext | null>(() => {
-    const events = allSelectableEvents
-      .filter((event) => selectedEventIds.includes(event.id))
-      .map((event) => ({
-        title: event.title,
-        url: event.url,
-        description: event.description ?? null,
-        event_date: event.eventDate ?? null,
-      }));
-    const perspectives = contentCatalog.perspectives
-      .filter((perspective) => selectedPerspectiveIds.includes(perspective.id))
-      .map((perspective) => ({
-        title: perspective.title,
-        url: perspective.url,
-        slug: perspective.slug,
-      }));
-    if (!events.length && !perspectives.length) return null;
-
-    let lead = inviteLead;
-    if (events.length && !perspectives.length) lead = 'events';
-    if (perspectives.length && !events.length) lead = 'perspectives';
-
-    return { events, perspectives, lead };
-  }, [
-    allSelectableEvents,
-    contentCatalog.perspectives,
-    inviteLead,
-    selectedEventIds,
-    selectedPerspectiveIds,
-  ]);
+  function resolveInviteContentForDraft(): InviteContentContext | null {
+    return buildInviteContentContext(
+      selectedEventIds,
+      selectedPerspectiveIds,
+      inviteLead,
+      contentCatalog,
+    );
+  }
 
   const handleInviteContentChange = useCallback(
     (patch: {
@@ -255,6 +233,26 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     if (manageBusy) setDraftBusy(true);
     setError(null);
     const previousDraft = draft;
+    const hasContentSelections =
+      selectedEventIds.length > 0 || selectedPerspectiveIds.length > 0;
+    if (hasContentSelections && contentCatalogLoading) {
+      setError('Still loading events and perspectives — try again in a moment.');
+      if (manageBusy) setDraftBusy(false);
+      return;
+    }
+    if (hasContentSelections && contentCatalogError) {
+      setError(`Cannot include invite content: ${contentCatalogError}`);
+      if (manageBusy) setDraftBusy(false);
+      return;
+    }
+    const inviteContent = resolveInviteContentForDraft();
+    if (hasContentSelections && !inviteContent) {
+      setError(
+        'Selected events or perspectives could not be resolved. Refresh the page and try again.',
+      );
+      if (manageBusy) setDraftBusy(false);
+      return;
+    }
     try {
       const data = await inviteAiDraft(workgroupId, {
         name: name.trim(),
@@ -265,7 +263,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         resolved_person: person,
         additional_workgroup_ids: selectedExtraIds,
         prior_invitations: prior,
-        invite_content: inviteContentContext,
+        invite_content: inviteContent,
       });
       if (data.blocked || data.error) {
         setError(data.error || 'Draft blocked');
@@ -408,6 +406,9 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
           selectedPerspectiveIds={selectedPerspectiveIds}
           lead={inviteLead}
           onChange={handleInviteContentChange}
+          catalog={contentCatalog}
+          catalogLoading={contentCatalogLoading}
+          catalogError={contentCatalogError}
         />
       </div>
 
