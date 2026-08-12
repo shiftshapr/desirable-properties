@@ -148,16 +148,6 @@ export default function WorkgroupInviteWelcomeModal({
     if (!inviteToken) return;
     if (sessionStorage.getItem(storageKey) === 'accepted') return;
 
-    try {
-      const urlToken = new URL(window.location.href).searchParams.get('invite')?.trim();
-      if (urlToken === inviteToken && sessionStorage.getItem(storageKey) === 'dismissed') {
-        sessionStorage.removeItem(storageKey);
-      }
-    } catch {
-      // ignore
-    }
-    if (sessionStorage.getItem(storageKey) === 'dismissed') return;
-
     let cancelled = false;
     (async () => {
       try {
@@ -168,10 +158,7 @@ export default function WorkgroupInviteWelcomeModal({
           return;
         }
         setPreview(data);
-
-        if (sessionStorage.getItem(storageKey) !== 'dismissed') {
-          setOpen(true);
-        }
+        setOpen(true);
       } catch (e) {
         if (!cancelled) {
           setLoadError(e instanceof Error ? e.message : 'Could not load invitation');

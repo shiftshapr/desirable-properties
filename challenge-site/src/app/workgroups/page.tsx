@@ -2,6 +2,7 @@ import localData from '@/data/desirable-properties.json';
 import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import {
@@ -16,6 +17,7 @@ import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
+import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -172,7 +174,17 @@ function deriveSlug(dp: { id: string; name?: string }): string {
   return `dp${n}-${nameSlug || 'workgroup'}`;
 }
 
-export default async function JoinWorkgroupPage() {
+type PageProps = {
+  searchParams: Promise<{ invite?: string }>;
+};
+
+export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
+  const { invite } = await searchParams;
+  if (invite?.trim()) {
+    const landingPath = await resolveWorkgroupInviteLandingPath(invite);
+    if (landingPath) redirect(landingPath);
+  }
+
   const dps = localData.desirable_properties;
   const collabEnabled = await isWorkgroupCollabEnabled();
   // Always load live Metaweb DP workgroups (incl. Discovery) for ids + Discovery blurb.
