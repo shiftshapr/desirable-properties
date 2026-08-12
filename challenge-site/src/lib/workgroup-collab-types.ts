@@ -175,6 +175,8 @@ export type WorkgroupInvitePreview = {
   landing_path?: string | null;
   landing_url?: string | null;
   authenticated?: boolean;
+  already_accepted?: boolean;
+  redirect_path?: string;
   target?: {
     workgroup_id?: string;
     workgroup_slug?: string;
@@ -196,5 +198,6 @@ export type WorkgroupInviteAcceptResult = {
   redirect_path?: string;
   pending_approval?: boolean;
   duplicate?: boolean;
+  already_accepted?: boolean;
   error?: string;
 };

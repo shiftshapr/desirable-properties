@@ -193,6 +193,10 @@ export default function WorkgroupInviteWelcomeModal({
           setLoadError('This invitation is not for a workgroup.');
           return;
         }
+        if (data.already_accepted) {
+          finishAccept({ redirect_path: data.redirect_path });
+          return;
+        }
         setPreview(data);
         setOpen(true);
       } catch (e) {
@@ -205,7 +209,7 @@ export default function WorkgroupInviteWelcomeModal({
     return () => {
       cancelled = true;
     };
-  }, [inviteToken, storageKey]);
+  }, [finishAccept, inviteToken, storageKey]);
 
   useEffect(() => {
     if (!user || !inviteToken || !preview) return;
@@ -231,7 +235,7 @@ export default function WorkgroupInviteWelcomeModal({
       try {
         await login();
         await refresh();
-        await runAccept();
+        // Post-login accept runs once via the pending-login effect (avoids double accept).
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Sign-in failed';
         if (!isUserDismissedAuthError(message)) {

@@ -16,6 +16,9 @@ export async function fetchWorkgroupInvitePreview(token: string): Promise<Workgr
     cache: 'no-store',
   });
   const data = await parseJson(res);
+  if (data.already_accepted && data.valid) {
+    return data as WorkgroupInvitePreview;
+  }
   if (!res.ok || !data.valid) {
     throw new Error(String(data.error || 'Invalid invitation'));
   }
@@ -51,7 +54,18 @@ export async function acceptWorkgroupInvite(
     }
   }
   if (!res.ok) {
-    throw new Error(String(data.error || 'Could not accept invitation'));
+    const message = String(data.error || 'Could not accept invitation');
+    if (
+      data.already_accepted ||
+      message.toLowerCase().includes('invitation is accepted')
+    ) {
+      return {
+        success: true,
+        already_accepted: true,
+        redirect_path: typeof data.redirect_path === 'string' ? data.redirect_path : undefined,
+      };
+    }
+    throw new Error(message);
   }
   return data as WorkgroupInviteAcceptResult;
 }
