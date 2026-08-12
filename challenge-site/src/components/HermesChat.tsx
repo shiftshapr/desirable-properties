@@ -524,6 +524,9 @@ export default function HermesChat({
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     try {
+      const destination =
+        contributionDraft.destination
+        || (contributionDraft.recommendedDestination === 'canopi' ? 'canopi' : 'govhub');
       const res = await fetch('/api/agent/contributions/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -531,16 +534,21 @@ export default function HermesChat({
           kind: contributionDraft.kind,
           draftRef: contributionDraft.draftRef,
           payload: contributionDraft.payload,
+          destination,
           threadId: activeThreadId,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submit failed');
       const submitted = contributionDraft;
+      const dest = data.destination || destination;
       setContributionDraft(null);
       setSystemNotice({
         variant: 'success',
-        text: `Submitted to Gov Hub as a ${submitted.kind} on ${submitted.draftRef}.`,
+        text:
+          dest === 'canopi'
+            ? `Posted to Canopi Discuss as a ${submitted.kind} on ${submitted.draftRef}.`
+            : `Submitted to Gov Hub as a ${submitted.kind} on ${submitted.draftRef}.`,
       });
     } catch (err) {
       setSystemNotice({
