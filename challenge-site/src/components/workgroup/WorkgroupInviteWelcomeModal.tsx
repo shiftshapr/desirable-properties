@@ -1,8 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { isUserDismissedAuthError } from '@/lib/auth-errors';
 import {
   acceptWorkgroupInvite,
   fetchWorkgroupInvitePreview,
@@ -10,6 +11,7 @@ import {
 import type { WorkgroupInvitePreview } from '@/lib/workgroup-collab-types';
 
 const STORAGE_PREFIX = 'dp_platform_invite:';
+const PENDING_LOGIN_KEY = 'dp_invite_pending_login';
 
 type Props = {
   inviteToken: string;
@@ -52,6 +54,44 @@ function resolveRedirectPath(
   return pendingApproval ? base : `${base}?joined=1`;
 }
 
+function ModalShell({
+  titleId,
+  descId,
+  title,
+  children,
+  actions,
+}: {
+  titleId: string;
+  descId: string;
+  title: string;
+  children: ReactNode;
+  actions: ReactNode;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-[10002] flex items-center justify-center bg-slate-950/80 p-5"
+      role="presentation"
+    >
+      <div
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descId}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id={titleId} className="text-lg font-semibold text-white">
+          {title}
+        </h2>
+        <div id={descId} className="mt-3 space-y-3 text-sm leading-relaxed text-slate-300">
+          {children}
+        </div>
+        <div className="mt-5 flex flex-wrap justify-end gap-2">{actions}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function WorkgroupInviteWelcomeModal({
   inviteToken,
   workgroupSlug,
@@ -59,12 +99,16 @@ export default function WorkgroupInviteWelcomeModal({
 }: Props) {
   const router = useRouter();
   const { user, checked, login, loginBusy } = useAuth();
-  const titleId = useId();
-  const descId = useId();
+  const welcomeTitleId = useId();
+  const welcomeDescId = useId();
+  const signInTitleId = useId();
+  const signInDescId = useId();
 
   const [open, setOpen] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const [preview, setPreview] = useState<WorkgroupInvitePreview | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [signInError, setSignInError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -73,6 +117,7 @@ export default function WorkgroupInviteWelcomeModal({
   const finishAccept = useCallback(
     (data: { redirect_path?: string; pending_approval?: boolean }) => {
       sessionStorage.setItem(storageKey, 'accepted');
+      sessionStorage.removeItem(PENDING_LOGIN_KEY);
       stripInviteFromUrl();
       onAccepted?.();
       const target = resolveRedirectPath(
@@ -92,20 +137,14 @@ export default function WorkgroupInviteWelcomeModal({
     try {
       const data = await acceptWorkgroupInvite(inviteToken);
       setOpen(false);
+      setShowSignInModal(false);
       finishAccept(data);
     } catch (e) {
-      const message = e instanceof Error ? e.message : 'Could not accept invitation';
-      if (message.toLowerCase().includes('email')) {
-        setError(
-          `This invitation was sent to a different email address. Sign in with the invited account, or ask ${preview?.inviter_name || 'the sender'} to send a new invite.`,
-        );
-      } else {
-        setError(message);
-      }
+      setError(e instanceof Error ? e.message : 'Could not accept invitation');
     } finally {
       setBusy(false);
     }
-  }, [finishAccept, inviteToken, preview?.inviter_name]);
+  }, [finishAccept, inviteToken]);
 
   useEffect(() => {
     if (!inviteToken) return;
@@ -123,21 +162,9 @@ export default function WorkgroupInviteWelcomeModal({
         }
         setPreview(data);
 
-        const pendingLogin = sessionStorage.getItem('dp_invite_pending_login') === inviteToken;
-        if (pendingLogin) {
-          sessionStorage.removeItem('dp_invite_pending_login');
-        }
-
-        if (user && pendingLogin) {
-          try {
-            const accepted = await acceptWorkgroupInvite(inviteToken);
-            if (!cancelled) finishAccept(accepted);
-          } catch (e) {
-            if (!cancelled) {
-              setError(e instanceof Error ? e.message : 'Could not accept invitation');
-              setOpen(true);
-            }
-          }
+        const pendingLogin = sessionStorage.getItem(PENDING_LOGIN_KEY) === inviteToken;
+        if (pendingLogin && !user) {
+          setShowSignInModal(true);
           return;
         }
 
@@ -154,21 +181,72 @@ export default function WorkgroupInviteWelcomeModal({
     return () => {
       cancelled = true;
     };
-  }, [finishAccept, inviteToken, storageKey, user]);
+  }, [inviteToken, storageKey, user]);
+
+  useEffect(() => {
+    if (!user || !inviteToken || !preview) return;
+    if (sessionStorage.getItem(storageKey) === 'accepted') return;
+    if (sessionStorage.getItem(PENDING_LOGIN_KEY) !== inviteToken) return;
+
+    let cancelled = false;
+    (async () => {
+      setBusy(true);
+      setSignInError(null);
+      setError(null);
+      try {
+        const accepted = await acceptWorkgroupInvite(inviteToken);
+        if (!cancelled) {
+          setShowSignInModal(false);
+          setOpen(false);
+          finishAccept(accepted);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          const message = e instanceof Error ? e.message : 'Could not accept invitation';
+          setSignInError(message);
+          setShowSignInModal(true);
+          setOpen(false);
+        }
+      } finally {
+        if (!cancelled) setBusy(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, inviteToken, preview, storageKey, finishAccept]);
 
   function handleDismiss() {
     sessionStorage.setItem(storageKey, 'dismissed');
+    sessionStorage.removeItem(PENDING_LOGIN_KEY);
     setOpen(false);
+    setShowSignInModal(false);
   }
 
-  async function handlePrimary() {
+  function handleWelcomeAccept() {
     if (!user) {
-      sessionStorage.setItem('dp_invite_pending_login', inviteToken);
-      const next = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      window.location.href = `/login?next=${encodeURIComponent(next)}`;
+      sessionStorage.setItem(PENDING_LOGIN_KEY, inviteToken);
+      setError(null);
+      setOpen(false);
+      setShowSignInModal(true);
       return;
     }
-    await runAccept();
+    void runAccept();
+  }
+
+  async function handleSignIn() {
+    setSignInError(null);
+    setShowSignInModal(false);
+    try {
+      await login();
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Sign-in failed';
+      if (!isUserDismissedAuthError(message)) {
+        setSignInError(message);
+      }
+      setShowSignInModal(true);
+    }
   }
 
   if (loadError) {
@@ -179,68 +257,65 @@ export default function WorkgroupInviteWelcomeModal({
     );
   }
 
-  if (!open || !preview) return null;
+  if (!preview) return null;
 
   const inviter = preview.inviter_name || 'Someone';
   const title = preview.target_title || 'Workgroup';
 
-  return (
-    <div
-      className="fixed inset-0 z-[10002] flex items-center justify-center bg-slate-950/80 p-5"
-      role="presentation"
-    >
-      <div
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-slate-700 bg-slate-900 p-5 shadow-2xl"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descId}
-        onClick={(e) => e.stopPropagation()}
+  if (showSignInModal) {
+    return (
+      <ModalShell
+        titleId={signInTitleId}
+        descId={signInDescId}
+        title="Almost there"
+        actions={
+          <>
+            <button
+              type="button"
+              disabled={busy || loginBusy}
+              onClick={handleDismiss}
+              className="rounded-md border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 disabled:opacity-50"
+            >
+              Not now
+            </button>
+            <button
+              type="button"
+              disabled={busy || loginBusy || !checked}
+              onClick={() => void handleSignIn()}
+              className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+            >
+              {busy || loginBusy ? 'Working…' : 'Sign in'}
+            </button>
+          </>
+        }
       >
-        <h2 id={titleId} className="text-lg font-semibold text-white">
-          Workgroup invitation
-        </h2>
-        <div id={descId} className="mt-3 space-y-3 text-sm leading-relaxed text-slate-300">
-          <p>
-            <strong className="text-white">{inviter}</strong> invited you to{' '}
-            {inviteTypeLabel(preview.invite_type)} on <strong className="text-white">{title}</strong>.
-          </p>
-          {preview.shareable ? (
-            <p className="text-slate-400">
-              Anyone with this link can participate after signing in (any email).
-            </p>
-          ) : preview.invitee_email_masked ? (
-            <p>
-              This invitation was sent to{' '}
-              <strong className="text-white">{preview.invitee_email_masked}</strong>.
-            </p>
-          ) : null}
-          {preview.message?.trim() ? (
-            <blockquote className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-2 text-slate-200">
-              <em>{preview.message.trim()}</em>
-            </blockquote>
-          ) : null}
-          <p className="text-slate-400">
-            After you accept, you will be joined or asked to join the workgroup (approval may be
-            required).
-          </p>
-          {!user && checked ? (
-            <p className="border-t border-slate-800 pt-3 text-slate-400">
-              <strong className="text-slate-200">Not signed in?</strong> Sign in with Google or
-              email to continue. Use the same address this invitation was sent to.
-            </p>
-          ) : user ? (
-            <p className="border-t border-slate-800 pt-3 text-slate-400">
-              You are signed in. Accept to continue to the workgroup page.
-            </p>
-          ) : null}
-        </div>
-        {error ? (
-          <p className="mt-3 rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
-            {error}
+        <p>
+          We&apos;re happy that you have decided to join the workgroup.{' '}
+          <span className="text-slate-400">(You can leave at any time.)</span>
+        </p>
+        <p>To complete the process, please sign in now.</p>
+        <p className="text-slate-400">
+          You can sign in with any email — it doesn&apos;t have to match the address this
+          invitation was sent to.
+        </p>
+        {signInError ? (
+          <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+            {signInError}
           </p>
         ) : null}
-        <div className="mt-5 flex flex-wrap justify-end gap-2">
+      </ModalShell>
+    );
+  }
+
+  if (!open) return null;
+
+  return (
+    <ModalShell
+      titleId={welcomeTitleId}
+      descId={welcomeDescId}
+      title="Workgroup invitation"
+      actions={
+        <>
           <button
             type="button"
             disabled={busy}
@@ -252,17 +327,51 @@ export default function WorkgroupInviteWelcomeModal({
           <button
             type="button"
             disabled={busy || loginBusy || !checked}
-            onClick={() => void handlePrimary()}
+            onClick={() => void handleWelcomeAccept()}
             className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
           >
-            {busy || loginBusy
-              ? 'Working…'
-              : user
-                ? 'Accept invitation'
-                : 'Sign in to accept'}
+            {busy || loginBusy ? 'Working…' : 'Accept'}
           </button>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    >
+      <p>
+        <strong className="text-white">{inviter}</strong> invited you to{' '}
+        {inviteTypeLabel(preview.invite_type)} on <strong className="text-white">{title}</strong>.
+      </p>
+      {preview.shareable ? (
+        <p className="text-slate-400">
+          Anyone with this link can participate after signing in (any email).
+        </p>
+      ) : preview.invitee_email_masked ? (
+        <p>
+          This invitation was sent to{' '}
+          <strong className="text-white">{preview.invitee_email_masked}</strong>.
+        </p>
+      ) : null}
+      {preview.message?.trim() ? (
+        <blockquote className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-2 text-slate-200">
+          <em>{preview.message.trim()}</em>
+        </blockquote>
+      ) : null}
+      <p className="text-slate-400">
+        After you accept, you will be joined or asked to join the workgroup (approval may be
+        required).
+      </p>
+      {user ? (
+        <p className="border-t border-slate-800 pt-3 text-slate-400">
+          You are signed in. Accept to continue to the workgroup page.
+        </p>
+      ) : checked ? (
+        <p className="border-t border-slate-800 pt-3 text-slate-400">
+          Sign in when you accept — you can use any email address.
+        </p>
+      ) : null}
+      {error ? (
+        <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+          {error}
+        </p>
+      ) : null}
+    </ModalShell>
   );
 }
