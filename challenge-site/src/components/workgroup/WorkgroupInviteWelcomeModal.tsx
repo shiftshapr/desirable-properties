@@ -147,6 +147,15 @@ export default function WorkgroupInviteWelcomeModal({
   useEffect(() => {
     if (!inviteToken) return;
     if (sessionStorage.getItem(storageKey) === 'accepted') return;
+
+    try {
+      const urlToken = new URL(window.location.href).searchParams.get('invite')?.trim();
+      if (urlToken === inviteToken && sessionStorage.getItem(storageKey) === 'dismissed') {
+        sessionStorage.removeItem(storageKey);
+      }
+    } catch {
+      // ignore
+    }
     if (sessionStorage.getItem(storageKey) === 'dismissed') return;
 
     let cancelled = false;
@@ -207,7 +216,6 @@ export default function WorkgroupInviteWelcomeModal({
   }, [user, inviteToken, preview, storageKey, finishAccept]);
 
   function handleDismiss() {
-    sessionStorage.setItem(storageKey, 'dismissed');
     sessionStorage.removeItem(PENDING_LOGIN_KEY);
     setOpen(false);
   }
@@ -292,11 +300,6 @@ export default function WorkgroupInviteWelcomeModal({
       {preview.shareable ? (
         <p className="text-slate-400">
           Anyone with this link can participate after signing in.
-        </p>
-      ) : preview.invitee_email_masked ? (
-        <p>
-          This invitation was sent to{' '}
-          <strong className="text-white">{preview.invitee_email_masked}</strong>.
         </p>
       ) : null}
       <p>
