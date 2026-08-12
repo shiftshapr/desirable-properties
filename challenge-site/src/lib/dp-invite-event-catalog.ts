@@ -1,4 +1,3 @@
-import { dpPublicBase } from '@/lib/support-store';
 import {
   listUpcomingEventEntries,
   type EventSeriesType,
@@ -9,6 +8,8 @@ import {
   INVITE_SERIES_EVENT_PREFIX,
   INVITE_SESSION_EVENT_PREFIX,
   buildInviteContentContext,
+  dpPublicBaseForInvite,
+  resolveInviteAbsoluteUrl,
   resolveSelectedInviteEvents,
   resolveSelectedInvitePerspectives,
   type InviteContentCatalog,
@@ -21,6 +22,8 @@ export {
   INVITE_SERIES_EVENT_PREFIX,
   INVITE_SESSION_EVENT_PREFIX,
   buildInviteContentContext,
+  dpPublicBaseForInvite,
+  resolveInviteAbsoluteUrl,
   resolveSelectedInviteEvents,
   resolveSelectedInvitePerspectives,
   type InviteContentCatalog,
@@ -38,6 +41,7 @@ export type InviteSelectableSeriesEvent = {
   kind: 'single' | 'series' | 'session';
   seriesType: EventSeriesType;
   subtitle?: string | null;
+  seriesStarted?: string | null;
 };
 
 export function inviteSeriesEventId(seriesId: string) {
@@ -49,11 +53,7 @@ export function inviteSessionEventId(sessionId: string) {
 }
 
 export function resolveInviteEventAbsoluteUrl(href: string): string {
-  const raw = String(href || '').trim();
-  if (!raw) return '';
-  if (/^https?:\/\//i.test(raw)) return raw;
-  const base = dpPublicBase();
-  return `${base}${raw.startsWith('/') ? raw : `/${raw}`}`;
+  return resolveInviteAbsoluteUrl(href);
 }
 
 export async function listInviteSelectableSeriesEvents(
@@ -77,6 +77,20 @@ export async function listInviteSelectableSeriesEvents(
       continue;
     }
 
+    let seriesStarted: string | null = null;
+    if (pool) {
+      const startedRes = await pool.query(
+        `SELECT MIN(s.starts_at) AS first_starts_at
+         FROM dp_event_series_session s
+         WHERE s.series_id = $1 AND s.active = true AND s.starts_at IS NOT NULL`,
+        [entry.id],
+      );
+      const firstStarts = startedRes.rows[0]?.first_starts_at;
+      if (firstStarts) {
+        seriesStarted = new Date(String(firstStarts)).toISOString();
+      }
+    }
+
     options.push({
       id: inviteSeriesEventId(entry.id),
       title: entry.title,
@@ -85,6 +99,7 @@ export async function listInviteSelectableSeriesEvents(
       description: 'Event series',
       kind: 'series',
       seriesType: entry.seriesType,
+      seriesStarted,
     });
 
     if (!pool) continue;

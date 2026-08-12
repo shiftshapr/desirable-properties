@@ -1,8 +1,58 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-// Keep in sync with src/lib/dp-invite-event-catalog.ts
+// Keep in sync with src/lib/dp-invite-content-context.ts
 const INVITE_SERIES_EVENT_PREFIX = 'series:';
+const DEFAULT_DP_PUBLIC_BASE = 'https://desirableproperties.org';
+
+function dpPublicBaseForInvite() {
+  return DEFAULT_DP_PUBLIC_BASE;
+}
+
+function resolveInviteAbsoluteUrl(href) {
+  const raw = String(href || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  const base = dpPublicBaseForInvite();
+  return `${base}${raw.startsWith('/') ? raw : `/${raw}`}`;
+}
+
+function resolveSeriesEvent(item) {
+  const kind = item.kind ?? 'series';
+  const eventDate = item.eventDate ?? null;
+  const seriesStarted = item.seriesStarted ?? null;
+
+  if (kind === 'series') {
+    return {
+      title: item.title,
+      url: resolveInviteAbsoluteUrl(item.url),
+      description: item.description ?? item.subtitle ?? null,
+      event_date: eventDate,
+      kind: 'series',
+      next_session_date: eventDate,
+      series_started: seriesStarted,
+    };
+  }
+
+  if (kind === 'session') {
+    return {
+      title: item.title,
+      url: resolveInviteAbsoluteUrl(item.url),
+      description: item.description ?? item.subtitle ?? null,
+      event_date: eventDate,
+      kind: 'session',
+      next_session_date: eventDate,
+    };
+  }
+
+  return {
+    title: item.title,
+    url: resolveInviteAbsoluteUrl(item.url),
+    description: item.description ?? null,
+    event_date: eventDate,
+    kind: 'single',
+  };
+}
 
 function resolveSelectedInviteEvents(selectedIds, globalEvents, seriesEvents) {
   const globalById = new Map(globalEvents.map((event) => [event.id, event]));
@@ -14,20 +64,16 @@ function resolveSelectedInviteEvents(selectedIds, globalEvents, seriesEvents) {
     if (global) {
       resolved.push({
         title: global.title,
-        url: global.url,
+        url: resolveInviteAbsoluteUrl(global.url),
         description: global.description ?? null,
         event_date: global.eventDate ?? null,
+        kind: 'single',
       });
       continue;
     }
     const series = seriesById.get(id);
     if (series) {
-      resolved.push({
-        title: series.title,
-        url: series.url,
-        description: series.description ?? series.subtitle ?? null,
-        event_date: series.eventDate ?? null,
-      });
+      resolved.push(resolveSeriesEvent(series));
     }
   }
 
@@ -42,7 +88,11 @@ function buildInviteContentContext(selectedEventIds, selectedPerspectiveIds, lea
   );
   const perspectives = catalog.perspectives
     .filter((item) => selectedPerspectiveIds.includes(item.id))
-    .map((item) => ({ title: item.title, url: item.url, slug: item.slug }));
+    .map((item) => ({
+      title: item.title,
+      url: resolveInviteAbsoluteUrl(item.url),
+      slug: item.slug,
+    }));
 
   if (!events.length && !perspectives.length) return null;
 
@@ -63,9 +113,10 @@ test('buildInviteContentContext resolves series-prefixed event IDs', () => {
       id: `${INVITE_SERIES_EVENT_PREFIX}abc`,
       title: 'Fork in the Web workshops',
       url: 'https://desirableproperties.org/series/fork-in-the-web',
-      eventDate: '2026-09-01T00:00:00.000Z',
+      eventDate: '2026-08-17T00:00:00.000Z',
       description: 'Event series',
       kind: 'series',
+      seriesStarted: '2026-06-01T00:00:00.000Z',
     }],
     perspectives: [{
       id: 'persp-1',
@@ -84,7 +135,14 @@ test('buildInviteContentContext resolves series-prefixed event IDs', () => {
 
   assert.equal(context.events.length, 1);
   assert.equal(context.events[0].title, 'Fork in the Web workshops');
+  assert.equal(context.events[0].kind, 'series');
+  assert.equal(context.events[0].next_session_date, '2026-08-17T00:00:00.000Z');
+  assert.equal(context.events[0].series_started, '2026-06-01T00:00:00.000Z');
   assert.equal(context.perspectives.length, 1);
+  assert.equal(
+    context.perspectives[0].url,
+    'https://desirableproperties.org/perspectives/a-fork-in-the-web',
+  );
   assert.equal(context.lead, 'perspectives');
 });
 

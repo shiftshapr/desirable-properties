@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
+import { resolveInviteAbsoluteUrl } from '@/lib/dp-invite-content-context';
 
 export type InviteGlobalEvent = {
   id: string;
@@ -324,7 +325,7 @@ export function publicInviteEventPayload(event: InviteGlobalEvent) {
   return {
     id: event.id,
     title: event.title,
-    url: event.url,
+    url: resolveInviteAbsoluteUrl(event.url),
     eventDate: event.eventDate,
     description: event.description,
   };
@@ -334,7 +335,7 @@ export function publicInvitePerspectivePayload(perspective: InvitePerspective) {
   return {
     id: perspective.id,
     title: perspective.title,
-    url: perspective.url,
+    url: resolveInviteAbsoluteUrl(perspective.url),
     slug: perspective.slug,
   };
 }

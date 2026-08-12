@@ -126,6 +126,9 @@ export type InviteContentEvent = {
   url: string;
   description?: string | null;
   event_date?: string | null;
+  kind?: 'single' | 'series' | 'session';
+  next_session_date?: string | null;
+  series_started?: string | null;
 };
 
 export type InviteContentPerspective = {

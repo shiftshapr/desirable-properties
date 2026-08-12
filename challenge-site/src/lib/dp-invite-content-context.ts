@@ -3,6 +3,8 @@
 export const INVITE_SERIES_EVENT_PREFIX = 'series:';
 export const INVITE_SESSION_EVENT_PREFIX = 'session:';
 
+const DEFAULT_DP_PUBLIC_BASE = 'https://desirableproperties.org';
+
 export type InviteSeriesEventOption = {
   id: string;
   title: string;
@@ -11,6 +13,7 @@ export type InviteSeriesEventOption = {
   description?: string | null;
   subtitle?: string | null;
   kind?: 'single' | 'series' | 'session';
+  seriesStarted?: string | null;
 };
 
 export type ResolvedInviteContentEvent = {
@@ -18,6 +21,9 @@ export type ResolvedInviteContentEvent = {
   url: string;
   description?: string | null;
   event_date?: string | null;
+  kind?: 'single' | 'series' | 'session';
+  next_session_date?: string | null;
+  series_started?: string | null;
 };
 
 type GlobalInviteEventOption = {
@@ -42,6 +48,62 @@ export type InviteContentContextPayload = {
   lead: InviteLeadType;
 };
 
+/** Public site base for absolute invite URLs (client + server). */
+export function dpPublicBaseForInvite(): string {
+  if (typeof process !== 'undefined' && process.env) {
+    const fromEnv =
+      process.env.NEXT_PUBLIC_DP_PUBLIC_BASE || process.env.DP_PUBLIC_BASE;
+    if (fromEnv) return String(fromEnv).replace(/\/$/, '');
+  }
+  return DEFAULT_DP_PUBLIC_BASE;
+}
+
+/** Resolve relative DP paths to full https URLs for invite prose. */
+export function resolveInviteAbsoluteUrl(href: string): string {
+  const raw = String(href || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  const base = dpPublicBaseForInvite();
+  return `${base}${raw.startsWith('/') ? raw : `/${raw}`}`;
+}
+
+function resolveSeriesEvent(item: InviteSeriesEventOption): ResolvedInviteContentEvent {
+  const kind = item.kind ?? 'series';
+  const eventDate = item.eventDate ?? null;
+  const seriesStarted = item.seriesStarted ?? null;
+
+  if (kind === 'series') {
+    return {
+      title: item.title,
+      url: resolveInviteAbsoluteUrl(item.url),
+      description: item.description ?? item.subtitle ?? null,
+      event_date: eventDate,
+      kind: 'series',
+      next_session_date: eventDate,
+      series_started: seriesStarted,
+    };
+  }
+
+  if (kind === 'session') {
+    return {
+      title: item.title,
+      url: resolveInviteAbsoluteUrl(item.url),
+      description: item.description ?? item.subtitle ?? null,
+      event_date: eventDate,
+      kind: 'session',
+      next_session_date: eventDate,
+    };
+  }
+
+  return {
+    title: item.title,
+    url: resolveInviteAbsoluteUrl(item.url),
+    description: item.description ?? null,
+    event_date: eventDate,
+    kind: 'single',
+  };
+}
+
 export function resolveSelectedInviteEvents(
   selectedIds: string[],
   globalEvents: GlobalInviteEventOption[],
@@ -56,20 +118,16 @@ export function resolveSelectedInviteEvents(
     if (global) {
       resolved.push({
         title: global.title,
-        url: global.url,
+        url: resolveInviteAbsoluteUrl(global.url),
         description: global.description ?? null,
         event_date: global.eventDate ?? null,
+        kind: 'single',
       });
       continue;
     }
     const series = seriesById.get(id);
     if (series) {
-      resolved.push({
-        title: series.title,
-        url: series.url,
-        description: series.description ?? series.subtitle ?? null,
-        event_date: series.eventDate ?? null,
-      });
+      resolved.push(resolveSeriesEvent(series));
     }
   }
 
@@ -85,7 +143,11 @@ export function resolveSelectedInvitePerspectives(
   for (const id of selectedIds) {
     const item = byId.get(id);
     if (item) {
-      resolved.push({ title: item.title, url: item.url, slug: item.slug });
+      resolved.push({
+        title: item.title,
+        url: resolveInviteAbsoluteUrl(item.url),
+        slug: item.slug,
+      });
     }
   }
   return resolved;
