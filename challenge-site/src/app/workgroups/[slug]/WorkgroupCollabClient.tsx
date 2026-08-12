@@ -17,6 +17,7 @@ import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
 import { govhubDraftReadHref, govhubUrl, isDpDiscoveryWorkgroup } from '@/lib/govhub';
+import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import {
   normalizeWorkgroupCollabTab,
@@ -155,6 +156,8 @@ export default function WorkgroupCollabClient({
         <WorkgroupInviteWelcomeModal
           inviteToken={inviteToken}
           workgroupSlug={workgroup.slug}
+          workgroupName={workgroup.name}
+          workgroupDescription={workgroup.description}
           onAccepted={() => void refreshMembership()}
         />
       ) : null}
@@ -205,7 +208,7 @@ export default function WorkgroupCollabClient({
                 </a>
               ) : null}
               <Link
-                href="/workgroups/join"
+                href={WORKGROUPS_JOIN_HREF}
                 className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300"
               >
                 ← All workgroups

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 import localData from '@/data/desirable-properties.json';
 import { extractDpId, govhubUrl, type GovHubWorkgroup } from '@/lib/govhub';
 import { dpBadgeImageSrc, dpImageAlt } from '@/lib/dp-images';
@@ -142,7 +143,7 @@ export default async function WorkgroupFormationStatus({
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
-          href="/workgroups/join"
+          href={WORKGROUPS_JOIN_HREF}
           className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
         >
           Join or coordinate a workgroup

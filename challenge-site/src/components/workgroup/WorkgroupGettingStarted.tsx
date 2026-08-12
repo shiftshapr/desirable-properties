@@ -9,6 +9,7 @@ import {
   govhubUrl,
   isDpDiscoveryWorkgroup,
 } from '@/lib/govhub';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 type Props = {
   workgroupName: string;
@@ -82,7 +83,7 @@ export default function WorkgroupGettingStarted({
           Open on Gov Hub
         </a>
         <Link
-          href="/workgroups/join#workgroups"
+          href={WORKGROUPS_LIST_HREF}
           className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
         >
           All workgroups

@@ -1,5 +1,6 @@
 import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import {
+  WORKGROUPS_JOIN_HREF,
   WORKGROUPS_LIST_HREF,
   WORKGROUPS_SIGNUPS_HREF,
 } from '@/lib/routes';
@@ -12,8 +13,6 @@ export type SiteNavLink = {
   /** Opens DiscussPatchHelpModal on primary click (book discuss flow). */
   discussPatchModal?: boolean;
 };
-
-export const WORKGROUPS_JOIN_HREF = '/workgroups/join';
 
 export const EVENTS_INDEX_HREF = '/events';
 

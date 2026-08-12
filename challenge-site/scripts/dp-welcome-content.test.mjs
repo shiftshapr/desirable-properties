@@ -72,9 +72,9 @@ test('key dates align with welcome timeline bullets and book launch', async () =
 
 test('workgroup cards retain their direct-join continuation parameter', async () => {
   const joinPage = await readFile(
-    resolve(challengeRoot, 'src/app/workgroups/join/page.tsx'),
+    resolve(challengeRoot, 'src/app/workgroups/page.tsx'),
     'utf8',
   );
 
-  assert.match(joinPage, /const joinHref = `\$\{wgHref\}\?action=join`;/);
+  assert.match(joinPage, /const joinHref = workgroupGovHubHref\(slug, 'join'\);/);
 });

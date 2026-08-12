@@ -7,6 +7,7 @@ import {
   formatSignupDate,
   type WorkgroupSignupsPayload,
 } from '@/lib/workgroup-signups';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 type TabKey = 'workgroups' | 'people';
 
@@ -214,7 +215,7 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
 
       <p className="mt-8 text-sm text-slate-500">
         Want to join?{' '}
-        <Link href="/workgroups/join#workgroups" className="text-cyan-300 hover:text-cyan-200">
+        <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
           Browse workgroups
         </Link>
         .

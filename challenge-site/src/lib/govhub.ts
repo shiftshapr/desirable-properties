@@ -1,5 +1,6 @@
 /** Public Gov Hub URL (hub.themetalayer.org avoids networks that block "gov" in hostnames). */
 import { workgroupActivityHref } from '@/lib/workgroup-links';
+import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 
 export const GOVHUB_PUBLIC_BASE_URL =
   process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
@@ -303,7 +304,7 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
       };
     }
     case 'workgroup_invite_sent': {
@@ -314,7 +315,7 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
       };
     }
     case 'workgroup_invite_accepted': {
@@ -325,7 +326,7 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
       };
     }
     case 'workgroup_member_joined': {
@@ -342,7 +343,7 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
       };
     }
     case 'workgroup_member_left': {
@@ -359,7 +360,7 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : '/workgroups/join',
+        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
       };
     }
     default:

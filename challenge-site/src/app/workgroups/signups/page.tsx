@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import WorkgroupSignupsClient from './WorkgroupSignupsClient';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
+import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 
 export const revalidate = 120;
 
@@ -22,7 +23,7 @@ export default async function WorkgroupSignupsPage() {
         <p className="mt-3 text-slate-300">
           We could not load signup data from Gov Hub right now. Please try again in a few minutes.
         </p>
-        <Link href="/workgroups/join" className="mt-6 inline-block text-cyan-300 hover:text-cyan-200">
+        <Link href={WORKGROUPS_JOIN_HREF} className="mt-6 inline-block text-cyan-300 hover:text-cyan-200">
           Back to workgroups →
         </Link>
       </div>

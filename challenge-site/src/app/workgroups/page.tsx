@@ -356,7 +356,7 @@ export default async function JoinWorkgroupPage() {
               const joinHref = workgroupGovHubHref(slug, 'join');
               const nominateHref = workgroupGovHubHref(slug, 'nominate');
               const summary = shortDescription(dp);
-              const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups/join');
+              const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups');
               const cardSrc = dpCardImageSrc(dpId);
 
               return (

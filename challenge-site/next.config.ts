@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
         destination: '/perspectives/a-fork-in-the-web',
         permanent: true,
       },
+      {
+        source: '/workgroups/join',
+        destination: '/workgroups',
+        permanent: true,
+      },
     ];
   },
   async headers() {

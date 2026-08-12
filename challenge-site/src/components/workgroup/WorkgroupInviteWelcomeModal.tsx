@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { isUserDismissedAuthError } from '@/lib/auth-errors';
+import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import {
   acceptWorkgroupInvite,
   fetchWorkgroupInvitePreview,
@@ -16,13 +18,10 @@ const PENDING_LOGIN_KEY = 'dp_invite_pending_login';
 type Props = {
   inviteToken: string;
   workgroupSlug: string;
+  workgroupName?: string | null;
+  workgroupDescription?: string | null;
   onAccepted?: () => void;
 };
-
-function inviteTypeLabel(type: string | undefined): string {
-  if (type === 'join_workgroup') return 'join a workgroup';
-  return 'participate on Desirable Properties';
-}
 
 function stripInviteFromUrl(): void {
   const url = new URL(window.location.href);
@@ -95,6 +94,8 @@ function ModalShell({
 export default function WorkgroupInviteWelcomeModal({
   inviteToken,
   workgroupSlug,
+  workgroupName,
+  workgroupDescription,
   onAccepted,
 }: Props) {
   const router = useRouter();
@@ -109,6 +110,8 @@ export default function WorkgroupInviteWelcomeModal({
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const storageKey = `${STORAGE_PREFIX}${inviteToken}`;
+  const collabHref = `/workgroups/${encodeURIComponent(workgroupSlug)}`;
+  const displayName = workgroupName || preview?.target_title || 'Workgroup';
 
   const finishAccept = useCallback(
     (data: { redirect_path?: string; pending_approval?: boolean }) => {
@@ -241,9 +244,6 @@ export default function WorkgroupInviteWelcomeModal({
 
   if (!preview || !open) return null;
 
-  const inviter = preview.inviter_name || 'Someone';
-  const title = preview.target_title || 'Workgroup';
-
   return (
     <ModalShell
       titleId={titleId}
@@ -271,8 +271,23 @@ export default function WorkgroupInviteWelcomeModal({
       }
     >
       <p>
-        <strong className="text-white">{inviter}</strong> invited you to{' '}
-        {inviteTypeLabel(preview.invite_type)} on <strong className="text-white">{title}</strong>.
+        <strong className="text-white">{displayName}</strong>
+      </p>
+      {workgroupDescription?.trim() ? (
+        <p className="text-slate-400">{workgroupDescription.trim()}</p>
+      ) : null}
+      <p>
+        <Link href={collabHref} className="text-cyan-300 hover:text-cyan-200">
+          Collab workspace
+        </Link>
+      </p>
+      <p className="flex flex-wrap gap-x-4 gap-y-1">
+        <Link href={WORKGROUPS_JOIN_HREF} className="text-cyan-300 hover:text-cyan-200">
+          About workgroups
+        </Link>
+        <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
+          Browse workgroups
+        </Link>
       </p>
       {preview.shareable ? (
         <p className="text-slate-400">
@@ -284,14 +299,12 @@ export default function WorkgroupInviteWelcomeModal({
           <strong className="text-white">{preview.invitee_email_masked}</strong>.
         </p>
       ) : null}
-      {preview.message?.trim() ? (
-        <blockquote className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-2 text-slate-200">
-          <em>{preview.message.trim()}</em>
-        </blockquote>
-      ) : null}
       <p>
         How you participate in the workgroup is up to you, ranging from an hour or two or more
-        through mid September, and you may leave at any time.
+        through mid September, and you may leave at any time. Meaningful contributions to
+        workgroups will receive the workgroup digital badge and mention as a contributor in the
+        Acknowledgements section of the forthcoming book, &ldquo;The Layered Web: The Desirable
+        Properties of a Meta-Layer&rdquo; (to be released digitally on Sept 16, 2026).
       </p>
       {!user && checked ? (
         <p className="text-slate-400">

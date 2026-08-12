@@ -9,7 +9,7 @@ import {
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
-import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
@@ -164,7 +164,7 @@ const CONTRIBUTE_CARDS = [
     ),
     cta: { href: WORKGROUPS_LIST_HREF, label: 'Join a Workgroup', primary: true },
     secondaryCta: {
-      href: '/workgroups/join#join-vs-nominate',
+      href: '/workgroups#join-vs-nominate',
       label: 'Nominate a Workgroup Coordinator',
     },
   },
@@ -216,7 +216,7 @@ const FINAL_CTAS = [
     emoji: '🌟',
     title: 'Nominate a Workgroup Coordinator',
     description: 'Help coordinate one of the collaborative synthesis teams.',
-    href: '/workgroups/join#join-vs-nominate',
+    href: '/workgroups#join-vs-nominate',
     primary: false,
   },
 ] as const;
@@ -396,7 +396,7 @@ export default function ParticipatePage() {
             </p>
             <p>
               <Link
-                href="/workgroups/join#roles"
+                href="/workgroups#roles"
                 className="font-medium text-cyan-300 hover:text-cyan-200"
               >
                 See all workgroup roles →
