@@ -9,6 +9,7 @@ import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
+import WorkgroupInviteWelcomeModal from '@/components/workgroup/WorkgroupInviteWelcomeModal';
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
@@ -51,6 +52,7 @@ export default function WorkgroupCollabClient({
   justJoined = false,
 }: Props) {
   const searchParams = useSearchParams();
+  const inviteToken = searchParams.get('invite')?.trim() || null;
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
   const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
@@ -149,6 +151,13 @@ export default function WorkgroupCollabClient({
 
   return (
     <div className="space-y-8">
+      {inviteToken ? (
+        <WorkgroupInviteWelcomeModal
+          inviteToken={inviteToken}
+          workgroupSlug={workgroup.slug}
+          onAccepted={() => void refreshMembership()}
+        />
+      ) : null}
       <header className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
         <div className={`flex flex-col gap-6 ${artSrc ? 'md:flex-row md:items-start' : ''}`}>
           {artSrc ? (

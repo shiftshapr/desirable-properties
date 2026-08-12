@@ -160,3 +160,25 @@ export type InviteSendInput = {
   additional_workgroup_ids?: string[];
   send_mode: InviteSendMode;
 };
+
+export type WorkgroupInvitePreview = {
+  valid: boolean;
+  invite_type?: string;
+  shareable?: boolean;
+  inviter_name?: string | null;
+  target_title?: string | null;
+  message?: string | null;
+  invitee_email_masked?: string | null;
+  landing_path?: string | null;
+  landing_url?: string | null;
+  authenticated?: boolean;
+  error?: string;
+};
+
+export type WorkgroupInviteAcceptResult = {
+  success?: boolean;
+  redirect_path?: string;
+  pending_approval?: boolean;
+  duplicate?: boolean;
+  error?: string;
+};
