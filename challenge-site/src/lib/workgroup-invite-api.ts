@@ -22,14 +22,34 @@ export async function fetchWorkgroupInvitePreview(token: string): Promise<Workgr
   return data as WorkgroupInvitePreview;
 }
 
-export async function acceptWorkgroupInvite(token: string): Promise<WorkgroupInviteAcceptResult> {
+export async function isInviteSessionAuthenticated(): Promise<boolean> {
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' });
+    const data = await parseJson(res);
+    return res.ok && Boolean(data.authenticated);
+  } catch {
+    return false;
+  }
+}
+
+export async function acceptWorkgroupInvite(
+  token: string,
+  options?: { retryOn401?: boolean },
+): Promise<WorkgroupInviteAcceptResult> {
   const res = await fetch(`/api/invitations/by-token/${encodeURIComponent(token)}/accept`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: '{}',
+    cache: 'no-store',
   });
   const data = await parseJson(res);
+  if (res.status === 401 && !options?.retryOn401) {
+    const authed = await isInviteSessionAuthenticated();
+    if (authed) {
+      return acceptWorkgroupInvite(token, { retryOn401: true });
+    }
+  }
   if (!res.ok) {
     throw new Error(String(data.error || 'Could not accept invitation'));
   }

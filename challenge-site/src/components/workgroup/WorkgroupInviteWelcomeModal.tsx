@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { isUserDismissedAuthError } from '@/lib/auth-errors';
 import {
@@ -133,9 +132,10 @@ export default function WorkgroupInviteWelcomeModal({
   onAccepted,
 }: Props) {
   const router = useRouter();
-  const { user, checked, login, loginBusy } = useAuth();
+  const { user, checked, login, loginBusy, refresh } = useAuth();
   const titleId = useId();
   const descId = useId();
+  const acceptingRef = useRef(false);
 
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<WorkgroupInvitePreview | null>(null);
@@ -163,6 +163,8 @@ export default function WorkgroupInviteWelcomeModal({
   );
 
   const runAccept = useCallback(async () => {
+    if (acceptingRef.current) return;
+    acceptingRef.current = true;
     setError(null);
     setBusy(true);
     try {
@@ -171,7 +173,9 @@ export default function WorkgroupInviteWelcomeModal({
       finishAccept(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not accept invitation');
+      setOpen(true);
     } finally {
+      acceptingRef.current = false;
       setBusy(false);
     }
   }, [finishAccept, inviteToken]);
@@ -208,31 +212,10 @@ export default function WorkgroupInviteWelcomeModal({
     if (sessionStorage.getItem(storageKey) === 'accepted') return;
     if (sessionStorage.getItem(PENDING_LOGIN_KEY) !== inviteToken) return;
 
-    let cancelled = false;
-    (async () => {
-      setBusy(true);
-      setError(null);
-      try {
-        const accepted = await acceptWorkgroupInvite(inviteToken);
-        if (!cancelled) {
-          setOpen(false);
-          finishAccept(accepted);
-        }
-      } catch (e) {
-        if (!cancelled) {
-          const message = e instanceof Error ? e.message : 'Could not accept invitation';
-          setError(message);
-          setOpen(true);
-        }
-      } finally {
-        if (!cancelled) setBusy(false);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [user, inviteToken, preview, storageKey, finishAccept]);
+    void refresh().then(() => {
+      void runAccept();
+    });
+  }, [user, inviteToken, preview, storageKey, refresh, runAccept]);
 
   function handleDismiss() {
     sessionStorage.removeItem(PENDING_LOGIN_KEY);
@@ -247,10 +230,13 @@ export default function WorkgroupInviteWelcomeModal({
       setBusy(true);
       try {
         await login();
+        await refresh();
+        await runAccept();
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Sign-in failed';
         if (!isUserDismissedAuthError(message)) {
           setError(message);
+          setOpen(true);
         }
       } finally {
         setBusy(false);
@@ -328,12 +314,22 @@ export default function WorkgroupInviteWelcomeModal({
         ))}
       </div>
       <p className="flex flex-wrap gap-x-4 gap-y-1">
-        <Link href={WORKGROUPS_JOIN_HREF} className="text-cyan-300 hover:text-cyan-200">
+        <a
+          href={WORKGROUPS_JOIN_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 hover:text-cyan-200"
+        >
           About workgroups
-        </Link>
-        <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
+        </a>
+        <a
+          href={WORKGROUPS_LIST_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 hover:text-cyan-200"
+        >
           Browse workgroups
-        </Link>
+        </a>
       </p>
       {preview.shareable ? (
         <p className="text-slate-400">
