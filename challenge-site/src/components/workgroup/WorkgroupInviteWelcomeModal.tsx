@@ -5,12 +5,17 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useId, useState, type ReactNode } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { isUserDismissedAuthError } from '@/lib/auth-errors';
+import {
+  DESIRABLE_PROPERTIES_BOOK_TITLE,
+  DP_BOOK_ORIGIN,
+  META_LAYER_SUMMIT_LUMA_URL,
+} from '@/lib/govhub';
 import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import {
   acceptWorkgroupInvite,
   fetchWorkgroupInvitePreview,
 } from '@/lib/workgroup-invite-api';
-import type { WorkgroupInvitePreview } from '@/lib/workgroup-collab-types';
+import type { InvitedWorkgroupPreview, WorkgroupInvitePreview } from '@/lib/workgroup-collab-types';
 
 const STORAGE_PREFIX = 'dp_platform_invite:';
 const PENDING_LOGIN_KEY = 'dp_invite_pending_login';
@@ -51,6 +56,35 @@ function resolveRedirectPath(
   }
   const base = `/workgroups/${encodeURIComponent(workgroupSlug)}`;
   return pendingApproval ? base : `${base}?joined=1`;
+}
+
+function workgroupCollabUrl(slug: string): string {
+  const base =
+    typeof window !== 'undefined'
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_DP_PUBLIC_BASE ||
+          process.env.DP_PUBLIC_BASE ||
+          'https://desirableproperties.org'
+        ).replace(/\/$/, '');
+  return `${base}/workgroups/${encodeURIComponent(slug)}`;
+}
+
+function resolveInvitedWorkgroups(
+  preview: WorkgroupInvitePreview,
+  workgroupSlug: string,
+  workgroupName?: string | null,
+  workgroupDescription?: string | null,
+): InvitedWorkgroupPreview[] {
+  if (preview.invited_workgroups?.length) {
+    return preview.invited_workgroups.filter((wg) => wg.slug?.trim());
+  }
+
+  const target = preview.target;
+  const slug = workgroupSlug || target?.workgroup_slug || '';
+  const name = workgroupName || target?.workgroup_name || preview.target_title || 'Workgroup';
+  const description = workgroupDescription?.trim() || null;
+  if (!slug) return [{ name, slug: '', description }];
+  return [{ name, slug, description }];
 }
 
 function ModalShell({
@@ -110,8 +144,6 @@ export default function WorkgroupInviteWelcomeModal({
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const storageKey = `${STORAGE_PREFIX}${inviteToken}`;
-  const collabHref = `/workgroups/${encodeURIComponent(workgroupSlug)}`;
-  const displayName = workgroupName || preview?.target_title || 'Workgroup';
 
   const finishAccept = useCallback(
     (data: { redirect_path?: string; pending_approval?: boolean }) => {
@@ -239,6 +271,13 @@ export default function WorkgroupInviteWelcomeModal({
 
   if (!preview || !open) return null;
 
+  const invitedWorkgroups = resolveInvitedWorkgroups(
+    preview,
+    workgroupSlug,
+    workgroupName,
+    workgroupDescription,
+  );
+
   return (
     <ModalShell
       titleId={titleId}
@@ -265,17 +304,29 @@ export default function WorkgroupInviteWelcomeModal({
         </>
       }
     >
-      <p>
-        <strong className="text-white">{displayName}</strong>
-      </p>
-      {workgroupDescription?.trim() ? (
-        <p className="text-slate-400">{workgroupDescription.trim()}</p>
-      ) : null}
-      <p>
-        <Link href={collabHref} className="text-cyan-300 hover:text-cyan-200">
-          Collab workspace
-        </Link>
-      </p>
+      <div className="space-y-4">
+        {invitedWorkgroups.map((wg) => (
+          <div key={wg.slug || wg.name}>
+            <p>
+              {wg.slug ? (
+                <a
+                  href={workgroupCollabUrl(wg.slug)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-cyan-300 hover:text-cyan-200"
+                >
+                  {wg.name}
+                </a>
+              ) : (
+                <strong className="text-white">{wg.name}</strong>
+              )}
+            </p>
+            {wg.description?.trim() ? (
+              <p className="text-slate-400">{wg.description.trim()}</p>
+            ) : null}
+          </div>
+        ))}
+      </div>
       <p className="flex flex-wrap gap-x-4 gap-y-1">
         <Link href={WORKGROUPS_JOIN_HREF} className="text-cyan-300 hover:text-cyan-200">
           About workgroups
@@ -293,8 +344,25 @@ export default function WorkgroupInviteWelcomeModal({
         How you participate in the workgroup is up to you, ranging from an hour or two or more
         through mid September, and you may leave at any time. Meaningful contributions to
         workgroups will receive the workgroup digital badge and mention as a contributor in the
-        Acknowledgements section of the forthcoming book, &ldquo;The Layered Web: The Desirable
-        Properties of a Meta-Layer&rdquo; (to be released digitally on Sept 16, 2026).
+        Acknowledgements section of the forthcoming book,{' '}
+        <a
+          href={DP_BOOK_ORIGIN}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 hover:text-cyan-200"
+        >
+          <em>{DESIRABLE_PROPERTIES_BOOK_TITLE}</em>
+        </a>{' '}
+        (to be released digitally on{' '}
+        <a
+          href={META_LAYER_SUMMIT_LUMA_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-300 hover:text-cyan-200"
+        >
+          Sept 16, 2026
+        </a>
+        ).
       </p>
       {!user && checked ? (
         <p className="text-slate-400">

@@ -51,6 +51,9 @@ export const DESIRABLE_PROPERTIES_BOOK_HOST = new URL(DP_BOOK_ORIGIN).hostname;
  * /viewer/<chapter>. */
 export const DESIRABLE_PROPERTIES_BOOK_URL = `${(process.env.DP_PUBLIC_BASE?.trim() || 'https://desirableproperties.org').replace(/\/$/, '')}/book`;
 
+/** Meta-Layer Summit / book launch – Sept 16, 2026 (challenge-timeline.json). */
+export const META_LAYER_SUMMIT_LUMA_URL = 'https://luma.com/wfi1z9lv';
+
 /** Live book reader with chapter comments (Canopi) – discuss on each chapter today.
  * Passage-level patching on the book is coming; use Gov Hub to patch drafts now. */
 export const DESIRABLE_PROPERTIES_BOOK_DISCUSSION_URL = `${DP_BOOK_ORIGIN}/`;

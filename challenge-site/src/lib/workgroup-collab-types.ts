@@ -175,7 +175,20 @@ export type WorkgroupInvitePreview = {
   landing_path?: string | null;
   landing_url?: string | null;
   authenticated?: boolean;
+  target?: {
+    workgroup_id?: string;
+    workgroup_slug?: string;
+    workgroup_name?: string;
+  };
+  invited_workgroups?: InvitedWorkgroupPreview[];
   error?: string;
+};
+
+export type InvitedWorkgroupPreview = {
+  name: string;
+  slug: string;
+  description?: string | null;
+  token?: string;
 };
 
 export type WorkgroupInviteAcceptResult = {
