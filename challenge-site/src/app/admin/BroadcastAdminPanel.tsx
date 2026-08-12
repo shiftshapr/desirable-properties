@@ -664,9 +664,9 @@ export default function BroadcastAdminPanel() {
         >
           <h2 className="text-xl font-semibold text-white">Compose broadcast</h2>
           <p className="mt-2 text-sm text-slate-400">
-            Rich email to workgroup participants. Merge tags: {'{name}'}, {'{userName}'},{' '}
-            {'{workgroups}'} (Oxford-comma list with Gov Hub links). Unsubscribe links are appended
-            automatically.
+            Rich email to workgroup participants. Personalization: {'{name}'}, {'{userName}'},{' '}
+            {'{profileLink}'}, {'{workgroups}'} (Oxford-comma list with Gov Hub links). Unsubscribe
+            links are appended automatically.
           </p>
 
           <div className="mt-4 grid gap-3">
@@ -703,16 +703,24 @@ export default function BroadcastAdminPanel() {
                 Insert images with the toolbar image button (PNG, JPEG, or GIF, max 5 MB).
               </p>
               <div className="flex flex-wrap gap-2 border-t border-slate-800 pt-2 text-xs text-slate-400">
-                <span>Merge tags:</span>
-                {['{name}', '{userName}', '{workgroups}'].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => insertMergeTag(tag)}
-                    className="rounded border border-slate-700 px-2 py-0.5 font-mono text-cyan-300 hover:bg-slate-800"
-                  >
-                    {tag}
-                  </button>
+                <span>Personalization:</span>
+                {[
+                  { tag: '{name}', label: 'display name' },
+                  { tag: '{userName}', label: 'full name' },
+                  { tag: '{profileLink}', label: 'Canopi profile link' },
+                  { tag: '{workgroups}', label: 'workgroups' },
+                ].map(({ tag, label }) => (
+                  <span key={tag} className="inline-flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => insertMergeTag(tag)}
+                      className="rounded border border-slate-700 px-2 py-0.5 font-mono text-cyan-300 hover:bg-slate-800"
+                      title={`Insert ${label}`}
+                    >
+                      {tag}
+                    </button>
+                    {label}
+                  </span>
                 ))}
               </div>
             </div>
@@ -795,6 +803,7 @@ export default function BroadcastAdminPanel() {
               type="button"
               disabled={busy}
               onClick={clearCompose}
+              title="Discard subject and body"
               className="rounded-md border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800"
             >
               Clear

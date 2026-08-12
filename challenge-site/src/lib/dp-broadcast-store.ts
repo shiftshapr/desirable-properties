@@ -12,7 +12,7 @@ import {
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
 import type { BroadcastRecipientResult } from '@/lib/dp-broadcast-result';
-import { isCanopiUserId } from '@/lib/dp-canopi-user';
+import { isCanopiUserId, fetchCanopiUserHandles } from '@/lib/dp-canopi-user';
 import {
   fetchWorkgroupSignups,
   type WorkgroupSignupGroup,
@@ -31,6 +31,7 @@ export type BroadcastAudienceRow = {
   userId: string | null;
   userName: string | null;
   email: string | null;
+  canopiHandle?: string | null;
   workgroups: string[];
   workgroupIds: string[];
   workgroupDetails: BroadcastWorkgroupRef[];
@@ -202,8 +203,27 @@ function formatWorkgroupsHtml(details: BroadcastWorkgroupRef[]) {
   return `${head}, and ${linkFor(items[items.length - 1])}`;
 }
 
+function canopiAppBase() {
+  return (process.env.CANOPI_APP_BASE?.trim() || 'https://app.canopi.live').replace(/\/$/, '');
+}
+
+function handleFromUserName(userName: string | null | undefined) {
+  const raw = String(userName || '').trim();
+  if (raw.startsWith('@')) return raw.replace(/^@+/, '');
+  return null;
+}
+
+function canopiProfileLinkForRow(row: BroadcastAudienceRow) {
+  const handle = String(row.canopiHandle || handleFromUserName(row.userName) || '')
+    .trim()
+    .replace(/^@+/, '');
+  if (!handle) return '';
+  return `${canopiAppBase()}/p/${encodeURIComponent(handle)}`;
+}
+
 function applyMergeTags(template: string, row: BroadcastAudienceRow, format: 'html' | 'plain' = 'html') {
   const name = row.userName?.split(/\s+/)[0] || 'there';
+  const profileLink = canopiProfileLinkForRow(row);
   const workgroupsValue =
     format === 'plain'
       ? formatWorkgroupsPlain(row.workgroupDetails)
@@ -211,6 +231,8 @@ function applyMergeTags(template: string, row: BroadcastAudienceRow, format: 'ht
   return template
     .replace(/\{name\}/gi, name)
     .replace(/\{userName\}/gi, row.userName || '')
+    .replace(/\{profileLink\}/gi, profileLink)
+    .replace(/\{profile link\}/gi, profileLink)
     .replace(/\{workgroups?\}/gi, workgroupsValue);
 }
 
@@ -352,7 +374,16 @@ export async function sendBroadcast(input: {
   const base = publicBase();
   const wrappedTemplate = wrapBroadcastBodyHtml(htmlRaw, fontId);
 
-  for (const row of targets) {
+  const canopiIds = targets.map((row) => row.userId).filter((id): id is string => Boolean(id && isCanopiUserId(id)));
+  const handleMap = testMode ? new Map<string, string>() : await fetchCanopiUserHandles(canopiIds);
+  const targetsWithHandles = targets.map((row) => {
+    const fromApi = row.userId ? handleMap.get(row.userId) : null;
+    const fromName = handleFromUserName(row.userName);
+    const canopiHandle = fromApi || fromName || row.canopiHandle || null;
+    return canopiHandle && canopiHandle !== row.canopiHandle ? { ...row, canopiHandle } : row;
+  });
+
+  for (const row of targetsWithHandles) {
     const to = row.email;
     if (!to) {
       failureCount += 1;
@@ -535,6 +566,7 @@ export function previewBroadcastHtml(
       userId: null,
       userName: 'Alex Example',
       email: 'alex@example.com',
+      canopiHandle: 'alex',
       workgroups: ['DP1 Federated Auth', 'DP2 Discovery'],
       workgroupIds: [],
       workgroupDetails: [

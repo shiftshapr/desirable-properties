@@ -68,3 +68,54 @@ export async function fetchCanopiUserEmails(
   await Promise.all(Array.from({ length: Math.min(concurrency, ids.length) }, () => worker()));
   return out;
 }
+
+function pickCanopiHandle(profile: Record<string, unknown>): string | null {
+  const candidates = [profile?.handle, profile?.username].filter(Boolean);
+  for (const raw of candidates) {
+    const h = String(raw || '').trim().replace(/^@+/, '');
+    if (h) return h;
+  }
+  return null;
+}
+
+/** Public Canopi profile handle for `/p/{handle}` links (no auth required). */
+export async function fetchCanopiUserHandle(userId: string): Promise<string | null> {
+  const id = String(userId || '').trim();
+  if (!isCanopiUserId(id)) return null;
+
+  try {
+    const base = resolveCanopiApiBase();
+    const res = await fetch(`${base}/v1/users/${encodeURIComponent(id)}`, {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) return null;
+    const data = await res.json().catch(() => ({}));
+    return pickCanopiHandle(data as Record<string, unknown>);
+  } catch {
+    return null;
+  }
+}
+
+/** Batch handle lookup with bounded concurrency. */
+export async function fetchCanopiUserHandles(
+  userIds: string[],
+  concurrency = 6,
+): Promise<Map<string, string>> {
+  const ids = [...new Set(userIds.map((id) => String(id || '').trim()).filter(isCanopiUserId))];
+  const out = new Map<string, string>();
+  if (!ids.length) return out;
+
+  let index = 0;
+  async function worker() {
+    while (index < ids.length) {
+      const id = ids[index];
+      index += 1;
+      const handle = await fetchCanopiUserHandle(id);
+      if (handle) out.set(id, handle);
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(concurrency, ids.length) }, () => worker()));
+  return out;
+}
