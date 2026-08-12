@@ -99,16 +99,12 @@ export default function WorkgroupInviteWelcomeModal({
 }: Props) {
   const router = useRouter();
   const { user, checked, login, loginBusy } = useAuth();
-  const welcomeTitleId = useId();
-  const welcomeDescId = useId();
-  const signInTitleId = useId();
-  const signInDescId = useId();
+  const titleId = useId();
+  const descId = useId();
 
   const [open, setOpen] = useState(false);
-  const [showSignInModal, setShowSignInModal] = useState(false);
   const [preview, setPreview] = useState<WorkgroupInvitePreview | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [signInError, setSignInError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -137,7 +133,6 @@ export default function WorkgroupInviteWelcomeModal({
     try {
       const data = await acceptWorkgroupInvite(inviteToken);
       setOpen(false);
-      setShowSignInModal(false);
       finishAccept(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not accept invitation');
@@ -162,12 +157,6 @@ export default function WorkgroupInviteWelcomeModal({
         }
         setPreview(data);
 
-        const pendingLogin = sessionStorage.getItem(PENDING_LOGIN_KEY) === inviteToken;
-        if (pendingLogin && !user) {
-          setShowSignInModal(true);
-          return;
-        }
-
         if (sessionStorage.getItem(storageKey) !== 'dismissed') {
           setOpen(true);
         }
@@ -181,7 +170,7 @@ export default function WorkgroupInviteWelcomeModal({
     return () => {
       cancelled = true;
     };
-  }, [inviteToken, storageKey, user]);
+  }, [inviteToken, storageKey]);
 
   useEffect(() => {
     if (!user || !inviteToken || !preview) return;
@@ -191,21 +180,18 @@ export default function WorkgroupInviteWelcomeModal({
     let cancelled = false;
     (async () => {
       setBusy(true);
-      setSignInError(null);
       setError(null);
       try {
         const accepted = await acceptWorkgroupInvite(inviteToken);
         if (!cancelled) {
-          setShowSignInModal(false);
           setOpen(false);
           finishAccept(accepted);
         }
       } catch (e) {
         if (!cancelled) {
           const message = e instanceof Error ? e.message : 'Could not accept invitation';
-          setSignInError(message);
-          setShowSignInModal(true);
-          setOpen(false);
+          setError(message);
+          setOpen(true);
         }
       } finally {
         if (!cancelled) setBusy(false);
@@ -221,32 +207,28 @@ export default function WorkgroupInviteWelcomeModal({
     sessionStorage.setItem(storageKey, 'dismissed');
     sessionStorage.removeItem(PENDING_LOGIN_KEY);
     setOpen(false);
-    setShowSignInModal(false);
   }
 
-  function handleWelcomeAccept() {
+  async function handleAccept() {
+    setError(null);
+
     if (!user) {
       sessionStorage.setItem(PENDING_LOGIN_KEY, inviteToken);
-      setError(null);
-      setOpen(false);
-      setShowSignInModal(true);
+      setBusy(true);
+      try {
+        await login();
+      } catch (e) {
+        const message = e instanceof Error ? e.message : 'Sign-in failed';
+        if (!isUserDismissedAuthError(message)) {
+          setError(message);
+        }
+      } finally {
+        setBusy(false);
+      }
       return;
     }
-    void runAccept();
-  }
 
-  async function handleSignIn() {
-    setSignInError(null);
-    setShowSignInModal(false);
-    try {
-      await login();
-    } catch (e) {
-      const message = e instanceof Error ? e.message : 'Sign-in failed';
-      if (!isUserDismissedAuthError(message)) {
-        setSignInError(message);
-      }
-      setShowSignInModal(true);
-    }
+    void runAccept();
   }
 
   if (loadError) {
@@ -257,62 +239,15 @@ export default function WorkgroupInviteWelcomeModal({
     );
   }
 
-  if (!preview) return null;
+  if (!preview || !open) return null;
 
   const inviter = preview.inviter_name || 'Someone';
   const title = preview.target_title || 'Workgroup';
 
-  if (showSignInModal) {
-    return (
-      <ModalShell
-        titleId={signInTitleId}
-        descId={signInDescId}
-        title="Almost there"
-        actions={
-          <>
-            <button
-              type="button"
-              disabled={busy || loginBusy}
-              onClick={handleDismiss}
-              className="rounded-md border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 disabled:opacity-50"
-            >
-              Not now
-            </button>
-            <button
-              type="button"
-              disabled={busy || loginBusy || !checked}
-              onClick={() => void handleSignIn()}
-              className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
-            >
-              {busy || loginBusy ? 'Working…' : 'Sign in'}
-            </button>
-          </>
-        }
-      >
-        <p>
-          We&apos;re happy that you have decided to join the workgroup.{' '}
-          <span className="text-slate-400">(You can leave at any time.)</span>
-        </p>
-        <p>To complete the process, please sign in now.</p>
-        <p className="text-slate-400">
-          You can sign in with any email — it doesn&apos;t have to match the address this
-          invitation was sent to.
-        </p>
-        {signInError ? (
-          <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
-            {signInError}
-          </p>
-        ) : null}
-      </ModalShell>
-    );
-  }
-
-  if (!open) return null;
-
   return (
     <ModalShell
-      titleId={welcomeTitleId}
-      descId={welcomeDescId}
+      titleId={titleId}
+      descId={descId}
       title="Workgroup invitation"
       actions={
         <>
@@ -327,7 +262,7 @@ export default function WorkgroupInviteWelcomeModal({
           <button
             type="button"
             disabled={busy || loginBusy || !checked}
-            onClick={() => void handleWelcomeAccept()}
+            onClick={() => void handleAccept()}
             className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
           >
             {busy || loginBusy ? 'Working…' : 'Accept'}
@@ -341,7 +276,7 @@ export default function WorkgroupInviteWelcomeModal({
       </p>
       {preview.shareable ? (
         <p className="text-slate-400">
-          Anyone with this link can participate after signing in (any email).
+          Anyone with this link can participate after signing in.
         </p>
       ) : preview.invitee_email_masked ? (
         <p>
@@ -354,17 +289,13 @@ export default function WorkgroupInviteWelcomeModal({
           <em>{preview.message.trim()}</em>
         </blockquote>
       ) : null}
-      <p className="text-slate-400">
-        After you accept, you will be joined or asked to join the workgroup (approval may be
-        required).
+      <p>
+        How you participate in the workgroup is up to you, ranging from an hour or two or more
+        through mid September, and you may leave at any time.
       </p>
-      {user ? (
-        <p className="border-t border-slate-800 pt-3 text-slate-400">
-          You are signed in. Accept to continue to the workgroup page.
-        </p>
-      ) : checked ? (
-        <p className="border-t border-slate-800 pt-3 text-slate-400">
-          Sign in when you accept — you can use any email address.
+      {!user && checked ? (
+        <p className="text-slate-400">
+          After you accept, you will need to sign in. Any email address is fine.
         </p>
       ) : null}
       {error ? (
