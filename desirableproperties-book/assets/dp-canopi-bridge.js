@@ -47,12 +47,16 @@
     }
   }
 
-  function openHostAuthPopup(url) {
+  function markReopenDiscussAfterAuth() {
     try {
       if (global.__canopiEmbedSidebarOpen__ || sessionStorage.getItem('dp_canopi_sidebar_open') === '1') {
         sessionStorage.setItem('dp_canopi_reopen_sidebar', '1');
       }
     } catch (e0) { /* ignore */ }
+  }
+
+  function openHostAuthPopup(url) {
+    markReopenDiscussAfterAuth();
     var w = 500;
     var h = 680;
     var left = Math.max(0, (screen.availWidth - w) / 2);
@@ -107,6 +111,7 @@
     var data = ev.data;
     if (!data || typeof data !== 'object') return;
     if (data.__canopiOpenAuthPopup) {
+      markReopenDiscussAfterAuth();
       if (embedSdkOwnsAuthPopup()) return;
       if (!isCanopiEmbedOrigin(String(ev.origin || ''))) return;
       var popupUrl = normalizeAuthPopupUrl(data.url);
@@ -209,6 +214,7 @@
         history.replaceState(null, '', location.pathname + location.search);
       } catch (eHist) { /* ignore */ }
       applyStoredAuthToEmbed();
+      scheduleReopenDiscussAfterAuth();
       return true;
     } catch (e) {
       return false;
@@ -235,25 +241,62 @@
     try { sessionStorage.removeItem('dp_canopi_reopen_sidebar'); } catch (e) {}
   }
 
+  function openDiscussSidebar() {
+    var embed = global.CanopiEmbed;
+    if (!embed || typeof embed.openSidebar !== 'function') return false;
+    var pageUrl = global.dpChapterPageUrl(location.pathname || '/');
+    embed.openSidebar({ pageUrl: pageUrl });
+    return true;
+  }
+
+  function scheduleReopenDiscussAfterAuth() {
+    if (!shouldReopenDiscussAfterAuth()) return;
+    var delays = [0, 200, 500, 1000, 2000, 4000];
+    var attempt = 0;
+    function tryOpen() {
+      if (!shouldReopenDiscussAfterAuth()) return;
+      if (openDiscussSidebar()) {
+        clearReopenDiscussFlag();
+        return;
+      }
+      attempt += 1;
+      if (attempt < delays.length) {
+        setTimeout(tryOpen, delays[attempt]);
+      }
+    }
+    if (openDiscussSidebar()) {
+      clearReopenDiscussFlag();
+      return;
+    }
+    if (global.__canopiEmbedReady__) {
+      setTimeout(tryOpen, delays[0]);
+      return;
+    }
+    global.addEventListener('canopi:embed-ready', function onAuthReady() {
+      global.removeEventListener('canopi:embed-ready', onAuthReady);
+      setTimeout(tryOpen, delays[0]);
+    });
+  }
+
+  function handleAuthSuccessPayload(data) {
+    persistAuthPayload(data);
+    applyStoredAuthToEmbed();
+    scheduleReopenDiscussAfterAuth();
+  }
+
   global.addEventListener('message', function (ev) {
     if (!ev.data || typeof ev.data !== 'object') return;
     if (!ALLOWED_ORIGINS.has(String(ev.origin || ''))) return;
     if (ev.data.type === 'CANOPI_AUTH_SUCCESS') {
-      persistAuthPayload(ev.data);
-      applyStoredAuthToEmbed();
-      if (shouldReopenDiscussAfterAuth()) {
-        clearReopenDiscussFlag();
-        if (!openDiscussSidebar()) {
-          global.addEventListener('canopi:embed-ready', function onAuthReady() {
-            global.removeEventListener('canopi:embed-ready', onAuthReady);
-            openDiscussSidebar();
-          });
-        }
-      }
+      handleAuthSuccessPayload(ev.data);
     }
     if (ev.data.type === 'CANOPI_AUTH_CLEAR' || ev.data.type === 'CANOPI_SIGN_OUT') {
       clearAuthPayload();
     }
+  });
+
+  global.addEventListener('canopi:auth-changed', function () {
+    scheduleReopenDiscussAfterAuth();
   });
 
   /** ?discuss=1 — open Canopi Discuss sidebar (from challenge-site Discuss & Patch links). */
@@ -263,14 +306,6 @@
     } catch (e) {
       return false;
     }
-  }
-
-  function openDiscussSidebar() {
-    var embed = global.CanopiEmbed;
-    if (!embed || typeof embed.openSidebar !== 'function') return false;
-    var pageUrl = global.dpChapterPageUrl(location.pathname || '/');
-    embed.openSidebar({ pageUrl: pageUrl });
-    return true;
   }
 
   function scheduleDiscussAutoOpen() {
