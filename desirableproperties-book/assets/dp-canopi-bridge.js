@@ -48,6 +48,11 @@
   }
 
   function openHostAuthPopup(url) {
+    try {
+      if (global.__canopiEmbedSidebarOpen__ || sessionStorage.getItem('dp_canopi_sidebar_open') === '1') {
+        sessionStorage.setItem('dp_canopi_reopen_sidebar', '1');
+      }
+    } catch (e0) { /* ignore */ }
     var w = 500;
     var h = 680;
     var left = Math.max(0, (screen.availWidth - w) / 2);
@@ -121,9 +126,11 @@
   }
   global.addEventListener('canopi:embed-sidebar-open', function () {
     syncHostPushLayoutClass(true);
+    try { sessionStorage.setItem('dp_canopi_sidebar_open', '1'); } catch (e) {}
   });
   global.addEventListener('canopi:embed-sidebar-closed', function () {
     syncHostPushLayoutClass(false);
+    try { sessionStorage.setItem('dp_canopi_sidebar_open', '0'); } catch (e) {}
   });
   global.addEventListener('canopi:embed-ready', function () {
     if (global.__canopiEmbedSidebarOpen__) syncHostPushLayoutClass(true);
@@ -215,12 +222,34 @@
     } catch (e) { /* ignore */ }
   }
 
+  function shouldReopenDiscussAfterAuth() {
+    try {
+      return sessionStorage.getItem('dp_canopi_reopen_sidebar') === '1'
+        || sessionStorage.getItem('dp_canopi_sidebar_open') === '1';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function clearReopenDiscussFlag() {
+    try { sessionStorage.removeItem('dp_canopi_reopen_sidebar'); } catch (e) {}
+  }
+
   global.addEventListener('message', function (ev) {
     if (!ev.data || typeof ev.data !== 'object') return;
     if (!ALLOWED_ORIGINS.has(String(ev.origin || ''))) return;
     if (ev.data.type === 'CANOPI_AUTH_SUCCESS') {
       persistAuthPayload(ev.data);
       applyStoredAuthToEmbed();
+      if (shouldReopenDiscussAfterAuth()) {
+        clearReopenDiscussFlag();
+        if (!openDiscussSidebar()) {
+          global.addEventListener('canopi:embed-ready', function onAuthReady() {
+            global.removeEventListener('canopi:embed-ready', onAuthReady);
+            openDiscussSidebar();
+          });
+        }
+      }
     }
     if (ev.data.type === 'CANOPI_AUTH_CLEAR' || ev.data.type === 'CANOPI_SIGN_OUT') {
       clearAuthPayload();
