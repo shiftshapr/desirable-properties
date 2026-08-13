@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import {
+  adminInviteIngestZoho,
   adminInvitePathwayApply,
   adminInvitePathwaySearch,
   adminInvitePathwayUrl,
@@ -16,6 +17,7 @@ type PathwayTab = 'zoho' | 'search' | 'url' | 'manual';
 
 type Props = {
   onApply: (payload: InvitePathwayApplyPayload) => void;
+  onStartBatch?: (contacts: ZohoContactCandidate[]) => void;
 };
 
 function confidenceClass(level: string) {
@@ -31,7 +33,21 @@ const TABS: Array<{ key: PathwayTab; label: string }> = [
   { key: 'manual', label: 'Manual entry' },
 ];
 
-export default function AdminInviteResearchPathways({ onApply }: Props) {
+function formatZohoMeta(contact: ZohoContactCandidate) {
+  const parts: string[] = [];
+  if (contact.message_count != null) {
+    parts.push(`${contact.message_count} prior email${contact.message_count === 1 ? '' : 's'}`);
+  }
+  if (contact.last_contact) {
+    parts.push(`last contact ${new Date(contact.last_contact).toLocaleDateString()}`);
+  }
+  if (contact.communication_style?.labels?.length) {
+    parts.push(`style: ${contact.communication_style.labels.join(', ')}`);
+  }
+  return parts.join(' · ');
+}
+
+export default function AdminInviteResearchPathways({ onApply, onStartBatch }: Props) {
   const [tab, setTab] = useState<PathwayTab>('zoho');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +55,8 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
 
   const [zohoContacts, setZohoContacts] = useState<ZohoContactCandidate[]>([]);
   const [selectedZohoId, setSelectedZohoId] = useState('');
+  const [selectedZohoIds, setSelectedZohoIds] = useState<string[]>([]);
+  const [agentDropName, setAgentDropName] = useState('');
 
   const [searchName, setSearchName] = useState('');
   const [searchContext, setSearchContext] = useState('');
@@ -63,6 +81,7 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
         return;
       }
       setZohoContacts(data.contacts || []);
+      setSelectedZohoIds([]);
       if (!data.configured) {
         setNotice(
           data.error
@@ -78,6 +97,31 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Zoho scan failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function ingestFromAgentDrop() {
+    if (!agentDropName.trim()) {
+      setError('Enter the ZIP filename from agent drop (e.g. zoho-export.zip).');
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const data = await adminInviteIngestZoho({ agent_drop_name: agentDropName.trim() });
+      if (data.error) {
+        setError(data.error);
+        return;
+      }
+      setNotice(
+        `Ingested ${data.contact_count ?? 0} contacts from ${data.message_count ?? 0} messages.`,
+      );
+      await loadZoho();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ingest failed');
     } finally {
       setBusy(false);
     }
@@ -188,6 +232,23 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
     }
   }
 
+  function toggleZohoContact(id: string) {
+    setSelectedZohoIds((prev) =>
+      prev.includes(id) ? prev.filter((value) => value !== id) : [...prev, id],
+    );
+    setSelectedZohoId(id);
+  }
+
+  function startBatchReview() {
+    const selected = zohoContacts.filter((row) => selectedZohoIds.includes(row.id));
+    if (selected.length < 2) {
+      setError('Select at least two Zoho contacts for batch review.');
+      return;
+    }
+    onStartBatch?.(selected);
+    setNotice(`Batch queue started with ${selected.length} contacts.`);
+  }
+
   function toggleSearchHit(id: string) {
     setSelectedSearchIds((prev) =>
       prev.includes(id) ? prev.filter((value) => value !== id) : [...prev, id],
@@ -226,9 +287,37 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
       {tab === 'zoho' ? (
         <div className="mt-4 space-y-4">
           <p className="text-sm text-slate-400">
-            Scan your Zoho mailbox for meta-layer related threads, rank contacts by relevance, then
-            feed the selected person into the invite flow.
+            Upload a Zoho mail export ZIP to{' '}
+            <a
+              href="https://console.themetalayer.org/agent-drop"
+              target="_blank"
+              rel="noreferrer"
+              className="text-cyan-300 hover:underline"
+            >
+              Meta-Console agent drop
+            </a>
+            , ingest it here, then scan and batch-review contacts.
           </p>
+          <div className="flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900/40 p-3 sm:flex-row sm:items-end">
+            <label className="block flex-1 text-sm">
+              <span className="text-slate-300">Agent drop ZIP filename</span>
+              <input
+                value={agentDropName}
+                onChange={(e) => setAgentDropName(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100"
+                disabled={busy}
+                placeholder="zoho-mail-export.zip"
+              />
+            </label>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void ingestFromAgentDrop()}
+              className="rounded-lg border border-violet-700/70 px-4 py-2 text-sm font-medium text-violet-100 hover:border-violet-500 disabled:opacity-50"
+            >
+              Ingest from agent drop
+            </button>
+          </div>
           <button
             type="button"
             disabled={busy}
@@ -238,22 +327,45 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
             {busy ? 'Scanning Zoho…' : 'Scan Zoho mail'}
           </button>
           {zohoContacts.length > 0 ? (
-            <ul className="space-y-3">
-              {zohoContacts.map((contact) => (
-                <li
-                  key={contact.id}
-                  className="rounded-lg border border-slate-800 bg-slate-900/50 p-4"
-                >
-                  <label className="flex cursor-pointer items-start gap-3">
-                    <input
-                      type="radio"
-                      name="zoho-contact"
-                      checked={selectedZohoId === contact.id}
-                      onChange={() => setSelectedZohoId(contact.id)}
-                      disabled={busy}
-                      className="mt-1"
-                    />
-                    <span className="min-w-0 flex-1">
+            <>
+              <div className="flex flex-wrap items-center gap-3">
+                <p className="text-sm text-slate-400">
+                  Select one contact for the form, or multiple for batch review.
+                </p>
+                {selectedZohoIds.length >= 2 ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={startBatchReview}
+                    className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+                  >
+                    Start batch review ({selectedZohoIds.length})
+                  </button>
+                ) : null}
+              </div>
+              <ul className="space-y-3">
+                {zohoContacts.map((contact) => (
+                  <li
+                    key={contact.id}
+                    className="rounded-lg border border-slate-800 bg-slate-900/50 p-4"
+                  >
+                    <label className="flex cursor-pointer items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedZohoIds.includes(contact.id)}
+                        onChange={() => toggleZohoContact(contact.id)}
+                        disabled={busy}
+                        className="mt-1"
+                      />
+                      <input
+                        type="radio"
+                        name="zoho-contact"
+                        checked={selectedZohoId === contact.id}
+                        onChange={() => setSelectedZohoId(contact.id)}
+                        disabled={busy}
+                        className="mt-1"
+                      />
+                      <span className="min-w-0 flex-1">
                       <span className="flex flex-wrap items-center gap-2">
                         <span className="font-medium text-white">{contact.name}</span>
                         <span className="text-sm text-slate-400">{contact.email}</span>
@@ -266,6 +378,9 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
                       {contact.summary ? (
                         <span className="mt-1 block text-sm text-slate-400">{contact.summary}</span>
                       ) : null}
+                      {formatZohoMeta(contact) ? (
+                        <span className="mt-1 block text-xs text-slate-500">{formatZohoMeta(contact)}</span>
+                      ) : null}
                       {contact.sample_subjects?.length ? (
                         <span className="mt-1 block text-xs text-slate-500">
                           Subjects: {contact.sample_subjects.join(' · ')}
@@ -276,6 +391,7 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
                 </li>
               ))}
             </ul>
+            </>
           ) : null}
         </div>
       ) : null}

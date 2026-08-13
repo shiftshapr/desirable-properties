@@ -144,6 +144,26 @@ export type InviteResearchInput = {
 
 export type InviteLeadType = 'events' | 'perspectives' | 'engagement';
 
+export type ZohoCommunicationStyle = {
+  labels?: string[];
+  notes?: string;
+  formality?: string;
+  verbosity?: string;
+};
+
+export type ZohoContactContext = {
+  source?: string;
+  email?: string;
+  name?: string;
+  last_contact?: string;
+  last_contact_recency?: string;
+  message_count?: number;
+  subjects?: string[];
+  snippets?: string[];
+  summary?: string;
+  communication_style?: ZohoCommunicationStyle;
+};
+
 export type InviteContentEvent = {
   title: string;
   url: string;
@@ -178,6 +198,7 @@ export type InviteDraftInput = {
   additional_workgroup_ids?: string[];
   prior_invitations?: PriorInvitation[];
   invite_content?: InviteContentContext | null;
+  zoho_contact_context?: ZohoContactContext | null;
   regenerate?: boolean;
   previous_draft?: string;
 };

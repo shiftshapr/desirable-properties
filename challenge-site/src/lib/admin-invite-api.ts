@@ -5,7 +5,11 @@ import type {
   InviteResearchResponse,
   InviteSendInput,
   InviteSendResponse,
+  ZohoCommunicationStyle,
+  ZohoContactContext,
 } from '@/lib/workgroup-collab-types';
+
+export type { ZohoCommunicationStyle, ZohoContactContext };
 
 export type ZohoContactCandidate = {
   id: string;
@@ -18,6 +22,7 @@ export type ZohoContactCandidate = {
   last_contact?: string;
   sample_subjects?: string[];
   snippets?: string[];
+  communication_style?: ZohoCommunicationStyle;
 };
 
 export type SearchHitCandidate = {
@@ -48,6 +53,7 @@ export type InvitePathwayApplyPayload = {
   previous_interaction: string;
   extra_links: string[];
   linkedin_url?: string;
+  zoho_contact_context?: ZohoContactContext | null;
 };
 
 async function parseJson<T>(res: Response): Promise<T> {
@@ -83,7 +89,9 @@ export async function adminInviteDraft(
   return parseJson<InviteDraftResponse>(res);
 }
 
-export async function adminInviteSend(input: InviteSendInput): Promise<InviteSendResponse> {
+export async function adminInviteSend(
+  input: InviteSendInput & { source?: string },
+): Promise<InviteSendResponse> {
   const res = await fetch('/api/admin/invite-ai/send', {
     method: 'POST',
     credentials: 'include',
@@ -154,6 +162,88 @@ export async function adminInvitePathwayApply(input: {
   page_summary?: string;
 }): Promise<InvitePathwayApplyPayload & { success?: boolean }> {
   const res = await fetch('/api/admin/invite-ai/pathways/apply', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  return parseJson(res);
+}
+
+export type AdminInviteSendRecord = {
+  id: string;
+  admin_id: string;
+  admin_email: string;
+  recipient_email: string;
+  recipient_name: string;
+  workgroup_ids: string[];
+  draft_hash?: string | null;
+  draft_excerpt?: string | null;
+  status: 'sent' | 'skipped' | 'draft' | 'client_prepared';
+  invitation_id?: string | null;
+  send_mode?: string | null;
+  source: string;
+  created_at?: string | null;
+};
+
+export async function adminInviteIngestZoho(input: {
+  agent_drop_name: string;
+}): Promise<{
+  success?: boolean;
+  owner_email?: string;
+  snapshot_path?: string;
+  agent_drop_name?: string;
+  contact_count?: number;
+  message_count?: number;
+  exported_at?: string;
+  error?: string;
+}> {
+  const res = await fetch('/api/admin/invite-ai/ingest-zoho', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  return parseJson(res);
+}
+
+export async function adminInviteSendRecords(input?: {
+  recipient_email?: string;
+  limit?: number;
+}): Promise<{ records?: AdminInviteSendRecord[]; error?: string }> {
+  const params = new URLSearchParams();
+  if (input?.recipient_email) params.set('recipient_email', input.recipient_email);
+  if (input?.limit) params.set('limit', String(input.limit));
+  const query = params.toString();
+  const res = await fetch(`/api/admin/invite-ai/send-records${query ? `?${query}` : ''}`, {
+    credentials: 'include',
+    cache: 'no-store',
+  });
+  return parseJson(res);
+}
+
+export async function adminInviteBatchHistory(input: {
+  recipient_emails: string[];
+}): Promise<{ history_by_email?: Record<string, AdminInviteSendRecord[]>; error?: string }> {
+  const res = await fetch('/api/admin/invite-ai/batch/history', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  return parseJson(res);
+}
+
+export async function adminInviteBatchRecord(input: {
+  recipient_email: string;
+  recipient_name?: string;
+  primary_workgroup_id?: string;
+  workgroup_ids?: string[];
+  body?: string;
+  status: 'skipped' | 'draft';
+  source?: string;
+}): Promise<{ record?: AdminInviteSendRecord; error?: string }> {
+  const res = await fetch('/api/admin/invite-ai/batch/record', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },

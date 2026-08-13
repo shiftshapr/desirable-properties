@@ -8,8 +8,18 @@ import WorkgroupInviteDisambiguation from '@/components/workgroup/WorkgroupInvit
 import WorkgroupInviteDraftEditor from '@/components/workgroup/WorkgroupInviteDraftEditor';
 import WorkgroupInviteResearchForm from '@/components/workgroup/WorkgroupInviteResearchForm';
 import WorkgroupInviteSendConfirm from '@/components/workgroup/WorkgroupInviteSendConfirm';
-import { adminInviteDraft, adminInviteResearch, adminInviteSend } from '@/lib/admin-invite-api';
-import type { InvitePathwayApplyPayload } from '@/lib/admin-invite-api';
+import {
+  adminInviteBatchHistory,
+  adminInviteBatchRecord,
+  adminInviteDraft,
+  adminInvitePathwayApply,
+  adminInviteResearch,
+  adminInviteSend,
+  adminInviteSendRecords,
+  type AdminInviteSendRecord,
+  type InvitePathwayApplyPayload,
+  type ZohoContactCandidate,
+} from '@/lib/admin-invite-api';
 import {
   buildInviteContentContext,
   type InviteContentCatalog,
@@ -23,6 +33,7 @@ import type {
   ResolvedPerson,
   WorkgroupCatalogEntry,
   WorkgroupMatch,
+  ZohoContactContext,
 } from '@/lib/workgroup-collab-types';
 
 type Step = 'research' | 'disambiguate' | 'workgroups' | 'draft' | 'done';
@@ -38,6 +49,7 @@ export default function AdminInviteAiPanel() {
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [previousInteraction, setPreviousInteraction] = useState('');
   const [extraLinks, setExtraLinks] = useState('');
+  const [zohoContactContext, setZohoContactContext] = useState<ZohoContactContext | null>(null);
 
   const [candidates, setCandidates] = useState<InviteCandidate[]>([]);
   const [resolvedPerson, setResolvedPerson] = useState<ResolvedPerson | null>(null);
@@ -67,6 +79,10 @@ export default function AdminInviteAiPanel() {
   const [mailSubject, setMailSubject] = useState('');
   const [mailBody, setMailBody] = useState('');
 
+  const [batchQueue, setBatchQueue] = useState<ZohoContactCandidate[]>([]);
+  const [batchIndex, setBatchIndex] = useState(0);
+  const [sendHistory, setSendHistory] = useState<AdminInviteSendRecord[]>([]);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -93,6 +109,21 @@ export default function AdminInviteAiPanel() {
         }
       } finally {
         if (!cancelled) setContentCatalogLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await adminInviteSendRecords({ limit: 20 });
+        if (!cancelled) setSendHistory(data.records || []);
+      } catch {
+        if (!cancelled) setSendHistory([]);
       }
     })();
     return () => {
@@ -141,6 +172,7 @@ export default function AdminInviteAiPanel() {
     setLinkedinUrl('');
     setPreviousInteraction('');
     setExtraLinks('');
+    setZohoContactContext(null);
     setCandidates([]);
     setResolvedPerson(null);
     setWorkgroupMatches([]);
@@ -159,6 +191,8 @@ export default function AdminInviteAiPanel() {
     setMailto('');
     setMailSubject('');
     setMailBody('');
+    setBatchQueue([]);
+    setBatchIndex(0);
   }
 
   function applyResearchResult(data: {
@@ -224,6 +258,7 @@ export default function AdminInviteAiPanel() {
         additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
         prior_invitations: priorInvitations,
         invite_content: inviteContent,
+        zoho_contact_context: zohoContactContext,
         regenerate: isRegenerate,
         previous_draft: isRegenerate ? previousDraft : undefined,
       });
@@ -340,6 +375,7 @@ export default function AdminInviteAiPanel() {
         primary_workgroup_id: primaryWorkgroupId,
         additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
         send_mode: mode,
+        source: batchQueue.length ? 'zoho_batch' : 'manual',
       });
       if (data.blocked || data.error) {
         setError(data.error || 'Send failed');
@@ -347,12 +383,18 @@ export default function AdminInviteAiPanel() {
       }
       if (mode === 'platform') {
         setPlatformDone(true);
+        if (batchQueue.length) {
+          await advanceBatch('sent');
+          return;
+        }
         setStep('done');
       } else {
         setMailto(data.mailto || '');
         setMailSubject(data.subject || '');
         setMailBody(data.body || '');
       }
+      const history = await adminInviteSendRecords({ limit: 20 });
+      setSendHistory(history.records || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Send failed');
       throw err;
@@ -418,7 +460,86 @@ export default function AdminInviteAiPanel() {
       }
       setExtraLinks(merged.join('\n'));
     }
+    if (payload.zoho_contact_context) {
+      setZohoContactContext(payload.zoho_contact_context);
+    }
     setError(null);
+  }
+
+  async function applyZohoContact(contact: ZohoContactCandidate) {
+    const payload = await adminInvitePathwayApply({ zoho_contact: contact });
+    applyPathwayResearch(payload);
+  }
+
+  async function startBatchReview(contacts: ZohoContactCandidate[]) {
+    if (!contacts.length) return;
+    resetInvite();
+    setBatchQueue(contacts);
+    setBatchIndex(0);
+    try {
+      await applyZohoContact(contacts[0]);
+      const history = await adminInviteBatchHistory({
+        recipient_emails: contacts.map((row) => row.email),
+      });
+      const flat = Object.values(history.history_by_email || {}).flat();
+      if (flat.length) {
+        setSendHistory((prev) => {
+          const seen = new Set(prev.map((row) => row.id));
+          const merged = [...prev];
+          for (const row of flat) {
+            if (!seen.has(row.id)) merged.push(row);
+          }
+          return merged.sort((a, b) =>
+            (b.created_at || '').localeCompare(a.created_at || ''),
+          );
+        });
+      }
+      setStep('research');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not start batch review');
+    }
+  }
+
+  async function advanceBatch(status: 'sent' | 'skipped') {
+    const current = batchQueue[batchIndex];
+    if (current && status === 'skipped') {
+      await adminInviteBatchRecord({
+        recipient_email: current.email,
+        recipient_name: current.name,
+        primary_workgroup_id: primaryWorkgroupId || undefined,
+        workgroup_ids: selectedExtraIds,
+        body: draft.trim() || undefined,
+        status: 'skipped',
+        source: 'zoho_batch',
+      });
+    }
+    const nextIndex = batchIndex + 1;
+    if (nextIndex >= batchQueue.length) {
+      setBatchQueue([]);
+      setBatchIndex(0);
+      setPlatformDone(true);
+      setStep('done');
+      const history = await adminInviteSendRecords({ limit: 20 });
+      setSendHistory(history.records || []);
+      return;
+    }
+    setBatchIndex(nextIndex);
+    setPlatformDone(false);
+    setDraft('');
+    setStep('research');
+    await applyZohoContact(batchQueue[nextIndex]);
+  }
+
+  async function skipBatchContact() {
+    setSendBusy(true);
+    setError(null);
+    try {
+      await advanceBatch('skipped');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Skip failed');
+    } finally {
+      setSendBusy(false);
+    }
   }
 
   return (
@@ -445,8 +566,91 @@ export default function AdminInviteAiPanel() {
 
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
 
+      {batchQueue.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/20 px-4 py-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-cyan-100">
+                Batch review {batchIndex + 1} of {batchQueue.length}:{' '}
+                <span className="font-medium text-white">
+                  {batchQueue[batchIndex]?.name || batchQueue[batchIndex]?.email}
+                </span>
+              </p>
+              {batchQueue[batchIndex] ? (
+                <p className="mt-1 text-xs text-cyan-200/80">
+                  {batchQueue[batchIndex].message_count != null ? (
+                    <span>{batchQueue[batchIndex].message_count} prior emails</span>
+                  ) : null}
+                  {batchQueue[batchIndex].last_contact ? (
+                    <>
+                      {batchQueue[batchIndex].message_count != null ? ' · ' : null}
+                      <span>
+                        Last contact{' '}
+                        {new Date(batchQueue[batchIndex].last_contact as string).toLocaleDateString()}
+                      </span>
+                    </>
+                  ) : null}
+                  {batchQueue[batchIndex].communication_style?.labels?.length ? (
+                    <>
+                      {' · '}
+                      <span>
+                        Style: {batchQueue[batchIndex].communication_style?.labels?.join(', ')}
+                      </span>
+                    </>
+                  ) : null}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                disabled={anyBusy}
+                onClick={() => void skipBatchContact()}
+                className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-amber-600 disabled:opacity-50"
+              >
+                Skip
+              </button>
+              {step === 'draft' && hasDraft ? (
+                <button
+                  type="button"
+                  disabled={anyBusy}
+                  onClick={() => void send('platform')}
+                  className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+                >
+                  Send &amp; next
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {sendHistory.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/30 px-4 py-3">
+          <p className="text-sm font-medium text-slate-200">Recent send log</p>
+          <ul className="mt-2 space-y-2">
+            {sendHistory.slice(0, 8).map((row) => (
+              <li key={row.id} className="text-xs text-slate-400">
+                <span className="text-slate-200">{row.recipient_name || row.recipient_email}</span>
+                {' · '}
+                <span>{row.status}</span>
+                {row.created_at ? (
+                  <>
+                    {' · '}
+                    <span>{new Date(row.created_at).toLocaleString()}</span>
+                  </>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       <div className="mt-6">
-        <AdminInviteResearchPathways onApply={applyPathwayResearch} />
+        <AdminInviteResearchPathways
+          onApply={applyPathwayResearch}
+          onStartBatch={(contacts) => void startBatchReview(contacts)}
+        />
       </div>
 
       <div className="mt-6">
