@@ -16,7 +16,7 @@ interface HermesContributionPanelProps {
 }
 
 function destinationLabel(dest: ContributionDestination) {
-  return dest === 'canopi' ? 'Canopi Discuss (book)' : 'Gov Hub';
+  return dest === 'canopi' ? 'Canopi Discuss (book)' : 'Gov Hub (formal draft)';
 }
 
 export default function HermesContributionPanel({
@@ -75,7 +75,7 @@ export default function HermesContributionPanel({
           Submit to
         </legend>
         <div className="mt-2 flex flex-wrap gap-2">
-          {(['govhub', 'canopi'] as const).map((dest) => (
+          {(['canopi', 'govhub'] as const).map((dest) => (
             <button
               key={dest}
               type="button"
@@ -87,12 +87,19 @@ export default function HermesContributionPanel({
               }`}
             >
               {destinationLabel(dest)}
+              {dest === 'canopi' && draft.recommendedDestination !== 'govhub' ? (
+                <span className="ml-1.5 text-[10px] font-normal opacity-80">recommended</span>
+              ) : null}
             </button>
           ))}
         </div>
         {draft.recommendedDestination === 'either' ? (
           <p className="mt-1 text-[11px] text-slate-400">
-            Hermes marked either destination as fine – pick where you want this filed.
+            Canopi Discuss is the default for book patches; switch to Gov Hub for formal ML-Draft proposals.
+          </p>
+        ) : draft.recommendedDestination === 'govhub' ? (
+          <p className="mt-1 text-[11px] text-slate-400">
+            Hermes recommends Gov Hub for this draft — Canopi Discuss is still available to test.
           </p>
         ) : null}
       </fieldset>
@@ -164,8 +171,7 @@ export default function HermesContributionPanel({
           Rationale (required)
         </span>
         <p className="mt-0.5 text-[11px] text-slate-400">
-          Why it fits, length choice, and pre-flight checks. Posted as Gov Hub rationale or appended
-          on Canopi Discuss after the patch line.
+          Why it fits, length choice, and pre-flight checks. Posted on Canopi Discuss after the patch line, or as Gov Hub rationale.
         </p>
         <textarea
           value={rationaleText}

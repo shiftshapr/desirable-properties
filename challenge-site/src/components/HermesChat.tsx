@@ -9,7 +9,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import type { ContributionDraft, ContributionHint, ContributionScope } from '@/lib/hermesContribution';
-import { inferContributionHint } from '@/lib/hermesContribution';
+import { defaultDestination, inferContributionHint } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -689,9 +689,7 @@ export default function HermesChat({
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     try {
-      const destination =
-        contributionDraft.destination
-        || (contributionDraft.recommendedDestination === 'canopi' ? 'canopi' : 'govhub');
+      const destination = defaultDestination(contributionDraft);
       const res = await fetch('/api/agent/contributions/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

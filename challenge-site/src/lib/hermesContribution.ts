@@ -30,8 +30,8 @@ export function defaultDestination(
   draft: Pick<ContributionDraft, 'recommendedDestination' | 'destination'>,
 ): ContributionDestination {
   if (draft.destination) return draft.destination;
-  if (draft.recommendedDestination === 'canopi') return 'canopi';
-  return 'govhub';
+  if (draft.recommendedDestination === 'govhub') return 'govhub';
+  return 'canopi';
 }
 
 export function patchModeFromPayload(payload: Record<string, unknown>): PatchMode {
@@ -41,6 +41,9 @@ export function patchModeFromPayload(payload: Record<string, unknown>): PatchMod
 const PATCH_SIGNALS = [
   /\bsuggest an edit\b/i,
   /\bgov hub\b/i,
+  /\bcanopi discuss\b/i,
+  /\bpatch:\b/i,
+  /\binsert:\b/i,
   /\bproposed (?:addition|revision|text|patch|clause|sentence)\b/i,
   /\binsert as a new\b/i,
   /\boriginal[_ ]text\b/i,
@@ -92,7 +95,7 @@ export function inferContributionHint(
   return {
     contributionReady: true,
     recommendedScope,
-    reason: 'This exchange includes concrete Gov Hub edit language — ready to draft a contribution.',
+    reason: 'This exchange includes concrete edit language — ready to draft for Canopi Discuss.',
     suggestedKind,
     draftRefHint,
     defaultScope: recommendedScope === 'ambiguous' ? 'message' : recommendedScope,

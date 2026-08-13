@@ -20,7 +20,7 @@ export default function HermesContributionCTA({
   if (!hint.contributionReady) return null;
 
   const scope = hint.recommendedScope || 'message';
-  const reason = hint.reason || 'This looks ready to file on Gov Hub.';
+  const reason = hint.reason || 'This looks ready to draft for Canopi Discuss.';
 
   const primaryClass =
     'rounded-lg bg-cyan-700 px-3 py-2 text-xs font-medium text-white hover:bg-cyan-600 disabled:opacity-50';
@@ -78,7 +78,9 @@ export default function HermesContributionCTA({
       ) : null}
       <div className="mt-2">{renderButtons()}</div>
       {!signedIn ? (
-        <p className="mt-2 text-[11px] text-slate-400">Sign in to draft and submit on Gov Hub.</p>
+        <p className="mt-2 text-[11px] text-slate-400">
+          Sign in to draft and submit to Canopi Discuss (default) or Gov Hub.
+        </p>
       ) : null}
     </div>
   );
