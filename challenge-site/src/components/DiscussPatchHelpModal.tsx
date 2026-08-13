@@ -64,9 +64,14 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
         onClick={(e) => e.stopPropagation()}
       >
         <h3 id={titleId} className="text-base font-semibold text-white">
-          PATCH 101
+          Discuss &amp; patch on the book
         </h3>
         <div id={descId} className="mt-3 space-y-3 text-sm leading-relaxed text-slate-300">
+          <p>
+            To discuss or patch, open Canopi by clicking the{' '}
+            <span className="font-medium text-slate-200">Go Meta…</span> button on the book viewer
+            (corner tab, bottom-right).
+          </p>
           <p>
             A patch is an append-only revision with provenance associated with a passage (one or
             more sentences). In addition to the standard patch which replaces the selected passage
@@ -74,11 +79,15 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
             passage.
           </p>
           <p>
-            To patch, select text or an existing anchor, and click{' '}
-            <span className="font-medium text-slate-200">Discuss</span> on the modal.
+            Open a chapter. To patch, select text or an existing anchor, and click{' '}
+            <span className="font-medium text-slate-200">Discuss</span> on the modal. How you write
+            your reply determines what happens:
           </p>
-          <p>How you write your reply determines what happens:</p>
           <ul className="list-disc space-y-2 pl-5 marker:text-cyan-500">
+            <li>
+              <span className="font-medium text-slate-200">Comment</span> – a normal anchored reply
+              adds discussion without changing the text.
+            </li>
             <li>
               <span className="font-medium text-slate-200">Patch</span> – start with{' '}
               <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">PATCH:</code>{' '}
