@@ -184,7 +184,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     return (
       <div>
         <p className="text-sm text-slate-400">
-          Only workgroup members can invite people with the AI assistant.
+          Only workgroup members and DP site admins can invite people with the AI assistant.
         </p>
       </div>
     );

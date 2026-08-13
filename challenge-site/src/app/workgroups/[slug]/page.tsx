@@ -1,9 +1,12 @@
 import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
 import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
+import { resolveAdminEmail } from '@/lib/dp-admin-auth';
+import { readSession } from '@/lib/auth-session';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
@@ -19,11 +22,18 @@ type PageProps = {
   searchParams: Promise<{ joined?: string }>;
 };
 
-async function fetchWorkgroup(slug: string): Promise<WorkgroupCollabSummary | null> {
+async function fetchWorkgroup(
+  slug: string,
+  idToken?: string | null,
+): Promise<WorkgroupCollabSummary | null> {
   try {
+    const headers: HeadersInit = { Accept: 'application/json' };
+    if (idToken) {
+      headers.Authorization = `Bearer ${idToken}`;
+    }
     const res = await fetch(
       `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/by-slug/${encodeURIComponent(slug)}/`,
-      { next: { revalidate: 60 } },
+      { next: { revalidate: 60 }, headers },
     );
     if (!res.ok) return null;
     const data = (await res.json()) as WorkgroupCollabSummary;
@@ -75,7 +85,11 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
     redirect(workgroupGovHubHref(slug));
   }
 
-  const workgroup = await fetchWorkgroup(slug);
+  const session = await readSession();
+  const cookieStore = await cookies();
+  const isDpAdmin = Boolean(await resolveAdminEmail(cookieStore));
+
+  const workgroup = await fetchWorkgroup(slug, session?.idToken);
   if (!workgroup) notFound();
 
   const teaserMessages = await fetchTeaserMessages(workgroup.id);
@@ -114,6 +128,7 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             initialIsMember={membership.isMember}
             initialMembershipResolved={membership.membershipResolved}
             initialCanPost={membership.canPost}
+            initialIsDpAdmin={isDpAdmin}
             justJoined={justJoined}
           />
         </Suspense>

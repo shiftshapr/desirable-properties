@@ -36,6 +36,8 @@ type Props = {
   initialIsMember?: boolean;
   initialMembershipResolved?: boolean;
   initialCanPost?: boolean;
+  /** DP site admin may invite to any workgroup without joining first. */
+  initialIsDpAdmin?: boolean;
   /** Set when redirected here immediately after a successful join. */
   justJoined?: boolean;
 };
@@ -50,6 +52,7 @@ export default function WorkgroupCollabClient({
   initialIsMember = false,
   initialMembershipResolved = false,
   initialCanPost = false,
+  initialIsDpAdmin = false,
   justJoined = false,
 }: Props) {
   const searchParams = useSearchParams();
@@ -61,7 +64,9 @@ export default function WorkgroupCollabClient({
   );
   const [isMember, setIsMember] = useState(initialIsMember || justJoined);
   const [canInvite, setCanInvite] = useState(
-    Boolean(initialIsMember || justJoined || workgroup.can_invite_members),
+    Boolean(
+      initialIsDpAdmin || initialIsMember || justJoined || workgroup.can_invite_members,
+    ),
   );
   const [teaserMessages, setTeaserMessages] = useState(initialMessages);
   const [membershipChecked, setMembershipChecked] = useState(
@@ -85,7 +90,8 @@ export default function WorkgroupCollabClient({
       const member = Boolean(data.is_member);
       setIsMember((prev) => member || prev);
       setCanInvite(
-        (prev) => member || prev || Boolean(workgroup.can_invite_members),
+        (prev) =>
+          member || prev || initialIsDpAdmin || Boolean(workgroup.can_invite_members),
       );
       setTeaserMessages(data.messages || initialMessages);
     } catch {
@@ -112,7 +118,11 @@ export default function WorkgroupCollabClient({
           setIsMember((prev) => member || prev || initialIsMember);
           setCanInvite(
             (prev) =>
-              member || prev || initialIsMember || Boolean(workgroup.can_invite_members),
+              member
+              || prev
+              || initialIsMember
+              || initialIsDpAdmin
+              || Boolean(workgroup.can_invite_members),
           );
           if (!member) {
             setTeaserMessages(data.messages || initialMessages);
@@ -139,9 +149,11 @@ export default function WorkgroupCollabClient({
     signedIn,
     justJoined,
     initialIsMember,
+    initialIsDpAdmin,
   ]);
 
   const showFullChat = membershipChecked && isMember;
+  const showInviteTools = showFullChat || initialIsDpAdmin;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
   const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
@@ -298,11 +310,11 @@ export default function WorkgroupCollabClient({
           ) : null}
 
           {tab === 'invite' ? (
-            showFullChat ? (
+            showInviteTools ? (
               <WorkgroupInviteAiPanel
                 workgroupId={workgroup.id}
                 workgroupSlug={workgroup.slug}
-                canInvite={canInvite || isMember}
+                canInvite={canInvite || isMember || initialIsDpAdmin}
               />
             ) : (
               <div>
