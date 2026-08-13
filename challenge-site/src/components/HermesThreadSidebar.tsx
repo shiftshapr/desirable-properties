@@ -7,6 +7,7 @@ export interface HermesThreadSummary {
   id: string;
   title: string;
   surface?: string;
+  pinned?: boolean;
   updatedAt?: string | null;
 }
 
@@ -18,6 +19,7 @@ interface HermesThreadSidebarProps {
   onSelect: (threadId: string) => void;
   onCreate: () => void;
   onRename?: (threadId: string, title: string) => Promise<void> | void;
+  onPin?: (threadId: string, pinned: boolean) => Promise<void> | void;
   onDelete?: (threadId: string) => Promise<void> | void;
   onSignIn?: () => void;
   onClose?: () => void;
@@ -38,6 +40,16 @@ function formatThreadDate(value?: string | null): string | null {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+function sortThreads(threads: HermesThreadSummary[]): HermesThreadSummary[] {
+  return [...threads].sort((a, b) => {
+    const pinDiff = Number(Boolean(b.pinned)) - Number(Boolean(a.pinned));
+    if (pinDiff !== 0) return pinDiff;
+    const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    return bTime - aTime;
+  });
+}
+
 export default function HermesThreadSidebar({
   threads,
   activeThreadId,
@@ -46,6 +58,7 @@ export default function HermesThreadSidebar({
   onSelect,
   onCreate,
   onRename,
+  onPin,
   onDelete,
   onSignIn,
   onClose,
@@ -61,10 +74,12 @@ export default function HermesThreadSidebar({
 
   const filteredThreads = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return threads;
-    return threads.filter((thread) =>
-      (thread.title || 'Conversation').toLowerCase().includes(q),
-    );
+    const base = q
+      ? threads.filter((thread) =>
+        (thread.title || 'Conversation').toLowerCase().includes(q),
+      )
+      : threads;
+    return sortThreads(base);
   }, [query, threads]);
 
   useEffect(() => {
@@ -110,6 +125,17 @@ export default function HermesThreadSidebar({
     }
   };
 
+  const togglePin = async (thread: HermesThreadSummary) => {
+    if (!onPin) return;
+    setMenuThreadId(null);
+    setActionBusy(true);
+    try {
+      await onPin(thread.id, !thread.pinned);
+    } finally {
+      setActionBusy(false);
+    }
+  };
+
   const confirmDelete = async () => {
     if (!deleteConfirmId || !onDelete) return;
     setActionBusy(true);
@@ -122,10 +148,10 @@ export default function HermesThreadSidebar({
     }
   };
 
-  const threadActionsEnabled = signedIn && (onRename || onDelete);
+  const threadActionsEnabled = signedIn && (onRename || onPin || onDelete);
 
   return (
-    <aside className="flex h-full min-h-0 w-full flex-col border-r border-slate-800 bg-slate-900/95">
+    <aside className="relative z-40 flex h-full min-h-0 w-full flex-col border-r border-slate-800 bg-slate-900">
       <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-3 py-3">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-white">Hermes</p>
@@ -253,7 +279,10 @@ export default function HermesThreadSidebar({
               }
 
               return (
-                <li key={thread.id} className="group relative">
+                <li
+                  key={thread.id}
+                  className={`group relative ${menuOpen ? 'z-[100]' : 'z-0'}`}
+                >
                   <button
                     type="button"
                     onClick={() => {
@@ -263,11 +292,20 @@ export default function HermesThreadSidebar({
                     className={`w-full rounded-lg py-2.5 pl-3 pr-9 text-left transition ${
                       active
                         ? 'bg-slate-800 text-white'
-                        : 'text-slate-300 hover:bg-slate-800/70'
+                        : thread.pinned
+                          ? 'bg-slate-800/40 text-slate-200 hover:bg-slate-800/70'
+                          : 'text-slate-300 hover:bg-slate-800/70'
                     }`}
                   >
-                    <span className="line-clamp-2 text-sm leading-snug">
-                      {thread.title || 'New conversation'}
+                    <span className="flex items-start gap-1.5">
+                      {thread.pinned ? (
+                        <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400" aria-hidden title="Pinned">
+                          📌
+                        </span>
+                      ) : null}
+                      <span className="line-clamp-2 text-sm leading-snug">
+                        {thread.title || 'New conversation'}
+                      </span>
                     </span>
                     {dateLabel ? (
                       <span className="mt-1 block text-[11px] text-slate-500 group-hover:text-slate-400">
@@ -277,7 +315,7 @@ export default function HermesThreadSidebar({
                   </button>
 
                   {threadActionsEnabled ? (
-                    <div className="absolute right-1 top-1/2 -translate-y-1/2">
+                    <div className="absolute right-1 top-1/2 z-[110] -translate-y-1/2">
                       <button
                         type="button"
                         onClick={(e) => {
@@ -296,14 +334,24 @@ export default function HermesThreadSidebar({
                       {menuOpen ? (
                         <div
                           ref={menuRef}
-                          className="absolute right-0 z-20 mt-1 w-36 rounded-lg border border-slate-700 bg-slate-900 py-1 shadow-lg"
+                          className="absolute right-0 z-[120] mt-1 w-36 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
                           role="menu"
                         >
+                          {onPin ? (
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                              onClick={() => void togglePin(thread)}
+                            >
+                              {thread.pinned ? 'Unpin' : 'Pin'}
+                            </button>
+                          ) : null}
                           {onRename ? (
                             <button
                               type="button"
                               role="menuitem"
-                              className="block w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
                               onClick={() => startRename(thread)}
                             >
                               Rename
@@ -313,7 +361,7 @@ export default function HermesThreadSidebar({
                             <button
                               type="button"
                               role="menuitem"
-                              className="block w-full px-3 py-1.5 text-left text-xs text-rose-300 hover:bg-rose-950/50"
+                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-rose-300 hover:bg-rose-950/50"
                               onClick={() => {
                                 setMenuThreadId(null);
                                 setDeleteConfirmId(thread.id);
@@ -334,7 +382,7 @@ export default function HermesThreadSidebar({
       </div>
 
       {deleteConfirmId ? (
-        <div className="border-t border-slate-800 p-3">
+        <div className="relative z-[130] border-t border-slate-800 bg-slate-900 p-3">
           <p className="text-xs text-slate-300">Delete this conversation? This cannot be undone.</p>
           <div className="mt-2 flex gap-2">
             <button

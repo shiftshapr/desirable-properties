@@ -201,6 +201,7 @@ export default function HermesChat({
   const [contributionBusy, setContributionBusy] = useState(false);
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [teachOpen, setTeachOpen] = useState(false);
   const [teachTargetId, setTeachTargetId] = useState<string | null>(null);
   const [teachText, setTeachText] = useState('');
@@ -363,6 +364,40 @@ export default function HermesChat({
     setThreads((prev) =>
       prev.map((thread) => (thread.id === threadId ? { ...thread, title } : thread)),
     );
+  }, []);
+
+  const pinThread = useCallback(async (threadId: string, pinned: boolean) => {
+    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pinned }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSystemNotice({
+        variant: 'error',
+        text: data.error || 'Could not update pin',
+      });
+      return;
+    }
+    setThreads((prev) =>
+      prev.map((thread) => (thread.id === threadId ? { ...thread, pinned } : thread)),
+    );
+  }, []);
+
+  const copyAssistantMarkdown = useCallback(async (messageId: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedMessageId(messageId);
+      window.setTimeout(() => {
+        setCopiedMessageId((current) => (current === messageId ? null : current));
+      }, 1800);
+    } catch {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Could not copy to clipboard',
+      });
+    }
   }, []);
 
   const deleteThread = useCallback(async (threadId: string) => {
@@ -710,6 +745,7 @@ export default function HermesChat({
       onSelect={loadThread}
       onCreate={startNewConversation}
       onRename={signedIn ? renameThread : undefined}
+      onPin={signedIn ? pinThread : undefined}
       onDelete={signedIn ? deleteThread : undefined}
       onSignIn={promptSignIn}
       onClose={() => setSidebarOpen(false)}
@@ -844,6 +880,13 @@ export default function HermesChat({
                   {message.sender === 'assistant'
                     && message.id !== 'intro' ? (
                     <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => void copyAssistantMarkdown(message.id, message.text)}
+                        className="rounded-md border border-slate-600 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-800/80"
+                      >
+                        {copiedMessageId === message.id ? 'Copied' : 'Copy markdown'}
+                      </button>
                       <button
                         type="button"
                         disabled={correctionBusyId === message.id}

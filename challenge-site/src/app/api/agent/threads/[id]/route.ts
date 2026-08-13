@@ -36,6 +36,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     body: JSON.stringify({
       verifierId: session.verifierId,
       title: body.title,
+      pinned: body.pinned,
     }),
     signal: AbortSignal.timeout(15000),
   });
