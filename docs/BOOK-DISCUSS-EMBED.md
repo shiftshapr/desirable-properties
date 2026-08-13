@@ -28,7 +28,9 @@ https://staging.book.desirableproperties.org/viewer/dp07?discuss=1
 1. Loads before `embed/v1.js` (see `viewer.htm`).
 2. On load, if `discuss=1` in the query string, waits for `canopi:embed-ready`.
 3. Calls `CanopiEmbed.openSidebar({ pageUrl: dpChapterPageUrl(pathname) })`.
-4. Staging uses `pageUrlOrigin: https://book.desirableproperties.org` so Canopi pageIds match prod.
+4. Staging uses `pageUrlOrigin: https://book.desirableproperties.org` so Canopi pageIds match prod, and `apiBase: https://staging.api.canopi.live` so the embed hits staging Canopi (prod book uses `api.canopi.live`).
+
+**Deploy:** edit `desirableproperties-book/assets/dp-canopi-bridge.js` in git, then `bash desirableproperties-book/scripts/deploy-staging-book.sh` — never edit the nginx web root (`desirableproperties-book-staging/`) directly.
 
 Plain book links (TOC, “read cover”) **do not** append `discuss=1` — sidebar stays collapsed until the reader clicks Go Meta.
 

@@ -13,8 +13,8 @@
   var AUTH_PAYLOAD_KEY = 'dp-viewer-canopi-auth-payload';
 
   global.DP_CANOPI_CONFIG = {
-    /** Staging HTML uses prod Canopi API (embed + messages share prod pageIds). */
-    apiBase: 'https://api.canopi.live',
+    /** Staging host → staging Canopi API; prod book → prod API. pageUrlOrigin keeps pageIds aligned. */
+    apiBase: staging ? 'https://staging.api.canopi.live' : 'https://api.canopi.live',
     embedId: CANOPI_ID,
     /** Staging host: Canopi pageId must match prod (book.desirableproperties.org). */
     pageUrlOrigin: staging ? 'https://book.desirableproperties.org' : undefined,
@@ -24,6 +24,8 @@
 
   var ALLOWED_ORIGINS = new Set([
     SDK_ORIGIN,
+    'https://api.canopi.live',
+    'https://staging.api.canopi.live',
     'https://app.canopi.live',
     window.location.origin,
   ]);

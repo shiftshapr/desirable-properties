@@ -1,6 +1,8 @@
 # Staging: `staging.book.desirableproperties.org`
 
-Static staging for the DP book reader — mirrors prod Canopi API and pageIds (same pattern as `staging.metawebbook.com`).
+Static staging for the DP book reader — uses **staging Canopi API** with prod-aligned pageIds (same pattern as `staging.metawebbook.com`).
+
+**Source of truth:** edit files in this repo (`desirableproperties-book/`), then run `scripts/deploy-staging-book.sh`. Do **not** edit `/home/ubuntu/desirableproperties-book-staging` directly — that path is the nginx web root only.
 
 ## DNS (Cloudflare)
 
@@ -36,7 +38,7 @@ sudo certbot --nginx -d staging.book.desirableproperties.org
 
 ## Canopi embed whitelist
 
-Staging uses prod API (`https://api.canopi.live`) and the same embed UUID as prod. Add the staging hostname to the embed domain whitelist:
+Staging uses **staging API** (`https://staging.api.canopi.live`) via `dp-canopi-bridge.js`; prod book uses `https://api.canopi.live`. Both share the same embed UUID and prod-aligned `pageUrlOrigin`. Add the staging hostname to the embed domain whitelist on **both** APIs if needed:
 
 ```sql
 UPDATE canopi_embed_instances
