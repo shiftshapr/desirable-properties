@@ -18,6 +18,7 @@ import type {
   InviteCandidate,
   InviteContentContext,
   InviteLeadType,
+  InviteResearchResponse,
   PriorInvitation,
   ResolvedPerson,
   WorkgroupCatalogEntry,
@@ -45,6 +46,7 @@ export default function AdminInviteAiPanel() {
   const [primaryWorkgroupId, setPrimaryWorkgroupId] = useState('');
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
   const [priorInvitations, setPriorInvitations] = useState<PriorInvitation[]>([]);
+  const [researchWarnings, setResearchWarnings] = useState<string[]>([]);
 
   const [tone, setTone] = useState('warm');
   const [length, setLength] = useState('medium');
@@ -146,6 +148,7 @@ export default function AdminInviteAiPanel() {
     setPrimaryWorkgroupId('');
     setSelectedExtraIds([]);
     setPriorInvitations([]);
+    setResearchWarnings([]);
     setSelectedEventIds([]);
     setSelectedPerspectiveIds([]);
     setInviteLead('events');
@@ -163,12 +166,14 @@ export default function AdminInviteAiPanel() {
     workgroup_catalog?: WorkgroupCatalogEntry[];
     prior_invitations?: PriorInvitation[];
     resolved_person?: ResolvedPerson | null;
+    corpus_meta?: InviteResearchResponse['corpus_meta'];
   }) {
     const matches = data.workgroup_matches || [];
     const catalog = data.workgroup_catalog || [];
     setWorkgroupMatches(matches);
     setWorkgroupCatalog(catalog);
     setPriorInvitations(data.prior_invitations || []);
+    setResearchWarnings(data.corpus_meta?.research_warnings || []);
     if (data.resolved_person) setResolvedPerson(data.resolved_person);
     const defaultPrimary = matches[0]?.workgroup_id || catalog[0]?.id || '';
     setPrimaryWorkgroupId(defaultPrimary);
@@ -367,7 +372,15 @@ export default function AdminInviteAiPanel() {
   const anyBusy = draftBusy || sendBusy;
   const recipientLabel = name.trim() || resolvedPerson?.name || 'Recipient';
   const recipientEmail = email.trim();
-  const showDraftPhase = step === 'draft' || step === 'done';
+  const hasDraft = Boolean(draft.trim());
+  const showDraftPhase = step === 'draft' || step === 'done' || (step === 'research' && hasDraft);
+
+  function firstLinkedInUrl(links: string[]) {
+    for (const link of links) {
+      if (/linkedin\.com\/in\//i.test(link)) return link;
+    }
+    return '';
+  }
 
   function focusDraftEditor() {
     const el = document.getElementById('invite-draft-textarea');
@@ -377,9 +390,19 @@ export default function AdminInviteAiPanel() {
     }
   }
 
+  function editRecipientDetails() {
+    setError(null);
+    setStep('research');
+  }
+
   function applyPathwayResearch(payload: InvitePathwayApplyPayload) {
     if (payload.name) setName(payload.name);
     if (payload.email) setEmail(payload.email);
+    const pathwayLinkedIn =
+      payload.linkedin_url?.trim() || firstLinkedInUrl(payload.extra_links || []);
+    if (pathwayLinkedIn && !linkedinUrl.trim()) {
+      setLinkedinUrl(pathwayLinkedIn);
+    }
     if (payload.previous_interaction) {
       setPreviousInteraction((prev) =>
         prev.trim()
@@ -441,6 +464,22 @@ export default function AdminInviteAiPanel() {
       <div className="mt-6">
         {step === 'research' || step === 'disambiguate' ? (
           <>
+            {step === 'research' && hasDraft ? (
+              <div className="mb-4 flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-slate-400">
+                  Editing recipient details. Your draft is saved below – regenerate after changes if
+                  needed.
+                </p>
+                <button
+                  type="button"
+                  disabled={anyBusy}
+                  onClick={() => setStep('draft')}
+                  className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+                >
+                  Back to draft
+                </button>
+              </div>
+            ) : null}
             <WorkgroupInviteResearchForm
               name={name}
               email={email}
@@ -479,14 +518,26 @@ export default function AdminInviteAiPanel() {
             primaryId={primaryWorkgroupId}
             extraIds={selectedExtraIds}
             busy={draftBusy}
+            researchWarnings={researchWarnings}
             onPrimaryChange={setPrimaryWorkgroupId}
             onToggleExtra={toggleExtra}
             onContinue={() => void runDraft()}
+            onEditRecipient={editRecipientDetails}
           />
         ) : null}
 
         {showDraftPhase ? (
           <div className="mt-6 space-y-6">
+            {researchWarnings.length && step === 'draft' ? (
+              <div className="rounded-lg border border-amber-800/50 bg-amber-950/30 px-3 py-2.5 text-sm text-amber-100/90">
+                <p className="font-medium text-amber-200">Research limitations</p>
+                <ul className="mt-1 list-disc space-y-1 pl-5 text-amber-100/85">
+                  {researchWarnings.map((warning) => (
+                    <li key={warning}>{warning}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <div className="flex flex-col gap-3 rounded-lg border border-cyan-900/40 bg-cyan-950/25 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-cyan-50/95">
                 <span className="text-cyan-200/70">Inviting </span>
@@ -499,14 +550,24 @@ export default function AdminInviteAiPanel() {
                 ) : null}
               </p>
               {step === 'draft' && !platformDone ? (
-                <button
-                  type="button"
-                  disabled={anyBusy}
-                  onClick={() => setStep('workgroups')}
-                  className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
-                >
-                  Edit workgroups
-                </button>
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  <button
+                    type="button"
+                    disabled={anyBusy}
+                    onClick={() => setStep('workgroups')}
+                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+                  >
+                    Edit workgroups
+                  </button>
+                  <button
+                    type="button"
+                    disabled={anyBusy}
+                    onClick={editRecipientDetails}
+                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+                  >
+                    Edit recipient
+                  </button>
+                </div>
               ) : null}
             </div>
             <WorkgroupInviteDraftEditor

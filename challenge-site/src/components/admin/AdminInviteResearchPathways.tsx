@@ -64,7 +64,15 @@ export default function AdminInviteResearchPathways({ onApply }: Props) {
       }
       setZohoContacts(data.contacts || []);
       if (!data.configured) {
-        setNotice(data.error || 'Zoho Mail is not configured on Gov Hub yet.');
+        setNotice(
+          data.error
+            || 'Zoho Mail is not configured on Gov Hub yet. Export mail as EML/ZIP and run scripts/zoho_mail_ingest_export.py, or set ZOHO_MAIL_* OAuth vars.',
+        );
+      } else if (data.source === 'snapshot') {
+        const exported = data.exported_at
+          ? ` (exported ${new Date(data.exported_at).toLocaleDateString()})`
+          : '';
+        setNotice(`Using one-time Zoho mail export snapshot${exported}.`);
       } else if (!data.contacts?.length) {
         setNotice('No meta-layer related contacts found in recent Zoho mail.');
       }

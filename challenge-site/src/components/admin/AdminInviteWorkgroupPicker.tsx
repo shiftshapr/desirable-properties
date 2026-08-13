@@ -14,9 +14,11 @@ type Props = {
   primaryId: string;
   extraIds: string[];
   busy?: boolean;
+  researchWarnings?: string[];
   onPrimaryChange: (workgroupId: string) => void;
   onToggleExtra: (workgroupId: string) => void;
   onContinue: () => void;
+  onEditRecipient?: () => void;
 };
 
 export default function AdminInviteWorkgroupPicker({
@@ -25,9 +27,11 @@ export default function AdminInviteWorkgroupPicker({
   primaryId,
   extraIds,
   busy,
+  researchWarnings,
   onPrimaryChange,
   onToggleExtra,
   onContinue,
+  onEditRecipient,
 }: Props) {
   const catalogById = new Map(catalog.map((entry) => [entry.id, entry]));
   const orderedMatches = matches.length
@@ -43,13 +47,36 @@ export default function AdminInviteWorkgroupPicker({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-sm font-semibold text-white">Recommended workgroups</h3>
-        <p className="mt-1 text-sm text-slate-400">
-          Choose the lead workgroup for this invitation, then optionally add others to mention in
-          the same email.
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-white">Recommended workgroups</h3>
+          <p className="mt-1 text-sm text-slate-400">
+            Choose the lead workgroup for this invitation, then optionally add others to mention in
+            the same email.
+          </p>
+        </div>
+        {onEditRecipient ? (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onEditRecipient}
+            className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
+          >
+            Edit recipient
+          </button>
+        ) : null}
       </div>
+
+      {researchWarnings?.length ? (
+        <div className="rounded-lg border border-amber-800/50 bg-amber-950/30 px-3 py-2.5 text-sm text-amber-100/90">
+          <p className="font-medium text-amber-200">Research limitations</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-amber-100/85">
+            {researchWarnings.map((warning) => (
+              <li key={warning}>{warning}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {orderedMatches.length > 0 ? (
         <ul className="space-y-3">

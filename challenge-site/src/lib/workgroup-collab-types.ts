@@ -96,6 +96,9 @@ export type InviteResearchResponse = {
     urls_fetched?: number;
     search_hits?: number;
     search_available?: boolean;
+    linkedin_fetch_ok?: boolean;
+    linkedin_vanity?: string;
+    research_warnings?: string[];
   };
 };
 

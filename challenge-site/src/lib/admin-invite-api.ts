@@ -47,6 +47,7 @@ export type InvitePathwayApplyPayload = {
   email: string;
   previous_interaction: string;
   extra_links: string[];
+  linkedin_url?: string;
 };
 
 async function parseJson<T>(res: Response): Promise<T> {
@@ -97,6 +98,8 @@ export async function adminInvitePathwayZoho(): Promise<{
   contacts?: ZohoContactCandidate[];
   error?: string;
   message_count?: number;
+  source?: 'snapshot' | 'live';
+  exported_at?: string;
 }> {
   const res = await fetch('/api/admin/invite-ai/pathways/zoho', {
     method: 'POST',
