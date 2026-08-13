@@ -135,7 +135,7 @@ export default function WorkgroupInviteDraftEditor({
         />
       </label>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={() => onRegenerate(tone, length)}
@@ -144,6 +144,9 @@ export default function WorkgroupInviteDraftEditor({
         >
           {busy ? 'Drafting…' : 'Regenerate draft'}
         </button>
+        <span className="text-sm text-slate-500">
+          {draft.length.toLocaleString()} characters
+        </span>
       </div>
     </div>
   );
