@@ -14,6 +14,10 @@ const LENGTHS = [
   { key: 'long', label: 'Long' },
 ] as const;
 
+function countWords(text: string): number {
+  return text.split(/\s+/).filter(Boolean).length;
+}
+
 type Props = {
   tone: string;
   length: string;
@@ -145,7 +149,7 @@ export default function WorkgroupInviteDraftEditor({
           {busy ? 'Drafting…' : 'Regenerate draft'}
         </button>
         <span className="text-sm text-slate-500">
-          {draft.length.toLocaleString()} characters
+          {draft.length.toLocaleString()} characters · {countWords(draft).toLocaleString()} words
         </span>
       </div>
     </div>
