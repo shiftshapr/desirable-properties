@@ -82,6 +82,17 @@ const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 /** Matches Tailwind `max-h-40` on the composer textarea. */
 const COMPOSER_MAX_HEIGHT_PX = 160;
 
+function formatUserMessageTimestamp(date: Date): string {
+  return date.toLocaleString(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
 async function hydrateLastContributionHint(
   messages: Message[],
   dpFocus: number | null,
@@ -265,7 +276,7 @@ export default function HermesChat({
             id: `${turn.id}-u`,
             text: turn.user,
             sender: 'user',
-            timestamp: new Date(),
+            timestamp: turn.createdAt ? new Date(turn.createdAt) : new Date(),
           });
         }
         if (turn.assistant) {
@@ -273,7 +284,7 @@ export default function HermesChat({
             id: `${turn.id}-a`,
             text: turn.assistant,
             sender: 'assistant',
-            timestamp: new Date(),
+            timestamp: turn.createdAt ? new Date(turn.createdAt) : new Date(),
             contributionHint: turn.contributionHint || null,
             citedDps: Array.isArray(turn.citedDps) ? turn.citedDps : [],
           });
@@ -334,6 +345,49 @@ export default function HermesChat({
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
   };
+
+  const renameThread = useCallback(async (threadId: string, title: string) => {
+    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSystemNotice({
+        variant: 'error',
+        text: data.error || 'Could not rename conversation',
+      });
+      return;
+    }
+    setThreads((prev) =>
+      prev.map((thread) => (thread.id === threadId ? { ...thread, title } : thread)),
+    );
+  }, []);
+
+  const deleteThread = useCallback(async (threadId: string) => {
+    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSystemNotice({
+        variant: 'error',
+        text: data.error || 'Could not delete conversation',
+      });
+      return;
+    }
+    setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
+    if (activeThreadIdRef.current === threadId) {
+      persistActiveThread(null);
+      setContributionDraft(null);
+      setAttachments([]);
+      setAttachError(null);
+      setMessages([
+        { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
+      ]);
+    }
+  }, [persistActiveThread]);
 
   const onFilesSelected = async (files: FileList | null) => {
     if (!files?.length) return;
@@ -655,6 +709,8 @@ export default function HermesChat({
       signedIn={signedIn}
       onSelect={loadThread}
       onCreate={startNewConversation}
+      onRename={signedIn ? renameThread : undefined}
+      onDelete={signedIn ? deleteThread : undefined}
       onSignIn={promptSignIn}
       onClose={() => setSidebarOpen(false)}
     />
@@ -730,6 +786,11 @@ export default function HermesChat({
                       ? 'bg-cyan-700 text-white'
                       : 'text-slate-100'
                   }`}
+                  title={
+                    message.sender === 'user'
+                      ? formatUserMessageTimestamp(message.timestamp)
+                      : undefined
+                  }
                 >
                   {message.sender === 'assistant' ? (
                     <HermesMarkdown text={message.text} variant="dark" />

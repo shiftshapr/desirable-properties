@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SiteAuthNav from '@/components/SiteAuthNav';
 
 export interface HermesThreadSummary {
@@ -17,6 +17,8 @@ interface HermesThreadSidebarProps {
   signedIn: boolean;
   onSelect: (threadId: string) => void;
   onCreate: () => void;
+  onRename?: (threadId: string, title: string) => Promise<void> | void;
+  onDelete?: (threadId: string) => Promise<void> | void;
   onSignIn?: () => void;
   onClose?: () => void;
 }
@@ -43,10 +45,19 @@ export default function HermesThreadSidebar({
   signedIn,
   onSelect,
   onCreate,
+  onRename,
+  onDelete,
   onSignIn,
   onClose,
 }: HermesThreadSidebarProps) {
   const [query, setQuery] = useState('');
+  const [menuThreadId, setMenuThreadId] = useState<string | null>(null);
+  const [renamingThreadId, setRenamingThreadId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [actionBusy, setActionBusy] = useState(false);
+  const renameInputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const filteredThreads = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -55,6 +66,63 @@ export default function HermesThreadSidebar({
       (thread.title || 'Conversation').toLowerCase().includes(q),
     );
   }, [query, threads]);
+
+  useEffect(() => {
+    if (renamingThreadId) {
+      renameInputRef.current?.focus();
+      renameInputRef.current?.select();
+    }
+  }, [renamingThreadId]);
+
+  useEffect(() => {
+    if (!menuThreadId) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuThreadId(null);
+      }
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [menuThreadId]);
+
+  const startRename = (thread: HermesThreadSummary) => {
+    setMenuThreadId(null);
+    setRenamingThreadId(thread.id);
+    setRenameValue(thread.title || 'New conversation');
+  };
+
+  const commitRename = async () => {
+    if (!renamingThreadId || !onRename) {
+      setRenamingThreadId(null);
+      return;
+    }
+    const trimmed = renameValue.trim();
+    if (!trimmed) {
+      setRenamingThreadId(null);
+      return;
+    }
+    setActionBusy(true);
+    try {
+      await onRename(renamingThreadId, trimmed);
+    } finally {
+      setActionBusy(false);
+      setRenamingThreadId(null);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirmId || !onDelete) return;
+    setActionBusy(true);
+    try {
+      await onDelete(deleteConfirmId);
+    } finally {
+      setActionBusy(false);
+      setDeleteConfirmId(null);
+      setMenuThreadId(null);
+    }
+  };
+
+  const threadActionsEnabled = signedIn && (onRename || onDelete);
 
   return (
     <aside className="flex h-full min-h-0 w-full flex-col border-r border-slate-800 bg-slate-900/95">
@@ -149,15 +217,50 @@ export default function HermesThreadSidebar({
             {filteredThreads.map((thread) => {
               const active = thread.id === activeThreadId;
               const dateLabel = formatThreadDate(thread.updatedAt);
+              const menuOpen = menuThreadId === thread.id;
+
+              if (renamingThreadId === thread.id) {
+                return (
+                  <li key={thread.id} className="px-1 py-0.5">
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        void commitRename();
+                      }}
+                    >
+                      <input
+                        ref={renameInputRef}
+                        type="text"
+                        value={renameValue}
+                        onChange={(e) => setRenameValue(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Escape') {
+                            e.preventDefault();
+                            setRenamingThreadId(null);
+                          }
+                        }}
+                        onBlur={() => {
+                          void commitRename();
+                        }}
+                        disabled={actionBusy}
+                        maxLength={120}
+                        className="w-full rounded-lg border border-cyan-700 bg-slate-950 px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-cyan-600"
+                        aria-label="Conversation title"
+                      />
+                    </form>
+                  </li>
+                );
+              }
+
               return (
-                <li key={thread.id}>
+                <li key={thread.id} className="group relative">
                   <button
                     type="button"
                     onClick={() => {
                       onSelect(thread.id);
                       onClose?.();
                     }}
-                    className={`group w-full rounded-lg px-3 py-2.5 text-left transition ${
+                    className={`w-full rounded-lg py-2.5 pl-3 pr-9 text-left transition ${
                       active
                         ? 'bg-slate-800 text-white'
                         : 'text-slate-300 hover:bg-slate-800/70'
@@ -172,12 +275,87 @@ export default function HermesThreadSidebar({
                       </span>
                     ) : null}
                   </button>
+
+                  {threadActionsEnabled ? (
+                    <div className="absolute right-1 top-1/2 -translate-y-1/2">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMenuThreadId(menuOpen ? null : thread.id);
+                        }}
+                        className={`rounded-md p-1 text-slate-500 transition hover:bg-slate-700 hover:text-slate-200 ${
+                          menuOpen ? 'bg-slate-700 text-slate-200' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
+                        }`}
+                        aria-label="Conversation actions"
+                        aria-expanded={menuOpen}
+                      >
+                        ⋯
+                      </button>
+
+                      {menuOpen ? (
+                        <div
+                          ref={menuRef}
+                          className="absolute right-0 z-20 mt-1 w-36 rounded-lg border border-slate-700 bg-slate-900 py-1 shadow-lg"
+                          role="menu"
+                        >
+                          {onRename ? (
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="block w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                              onClick={() => startRename(thread)}
+                            >
+                              Rename
+                            </button>
+                          ) : null}
+                          {onDelete ? (
+                            <button
+                              type="button"
+                              role="menuitem"
+                              className="block w-full px-3 py-1.5 text-left text-xs text-rose-300 hover:bg-rose-950/50"
+                              onClick={() => {
+                                setMenuThreadId(null);
+                                setDeleteConfirmId(thread.id);
+                              }}
+                            >
+                              Delete
+                            </button>
+                          ) : null}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </li>
               );
             })}
           </ul>
         )}
       </div>
+
+      {deleteConfirmId ? (
+        <div className="border-t border-slate-800 p-3">
+          <p className="text-xs text-slate-300">Delete this conversation? This cannot be undone.</p>
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              disabled={actionBusy}
+              onClick={() => void confirmDelete()}
+              className="rounded-md bg-rose-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-rose-600 disabled:opacity-50"
+            >
+              {actionBusy ? 'Deleting…' : 'Delete'}
+            </button>
+            <button
+              type="button"
+              disabled={actionBusy}
+              onClick={() => setDeleteConfirmId(null)}
+              className="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800 disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : null}
     </aside>
   );
 }

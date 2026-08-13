@@ -42,3 +42,22 @@ export async function PATCH(request: Request, { params }: RouteParams) {
   const data = await upstream.json();
   return NextResponse.json(data, { status: upstream.status });
 }
+
+export async function DELETE(_request: Request, { params }: RouteParams) {
+  const session = await readSession();
+  if (!session) {
+    return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const upstream = await fetch(
+    `${getHermesChatUrl()}/api/hermes/threads/${encodeURIComponent(id)}?verifierId=${encodeURIComponent(session.verifierId)}`,
+    {
+      method: 'DELETE',
+      headers: hermesUpstreamHeaders(),
+      signal: AbortSignal.timeout(15000),
+    },
+  );
+  const data = await upstream.json().catch(() => ({}));
+  return NextResponse.json(data, { status: upstream.status });
+}
