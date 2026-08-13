@@ -7,8 +7,8 @@ SRC="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DEST="${DP_BOOK_STAGING_ROOT:-/home/ubuntu/desirableproperties-book-staging}"
 
 echo "==> Deploy DP Book staging"
-echo "    from: ${SRC}"
-echo "    to:   ${DEST}"
+echo "    from: ${SRC}  (git source — edit here, not ${DEST})"
+echo "    to:   ${DEST}  (nginx web root only)"
 
 if [[ ! -d "${DEST}" ]]; then
   mkdir -p "${DEST}"
