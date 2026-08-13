@@ -1,5 +1,5 @@
+import InscriptionReferenceLinks from '@/components/InscriptionReferenceLinks';
 import type { PciDpLink } from '@/lib/dpProvenance';
-import { inscriptionUrl } from '@/lib/ordinalLinks';
 
 type Props = {
   links: PciDpLink[];
@@ -65,7 +65,6 @@ export default function PCIProvenanceSection({ links }: Props) {
 
       <ul className="mt-6 space-y-3">
         {links.map((link) => {
-          const href = inscriptionUrl(link.pci_id);
           const dotColor = CONFIDENCE_DOT[link.confidence] ?? CONFIDENCE_DOT.low;
           return (
             <li
@@ -75,18 +74,12 @@ export default function PCIProvenanceSection({ links }: Props) {
               <div className="flex flex-wrap items-center gap-2">
                 <RelBadge relationship={link.relationship} />
                 <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} title={`${link.confidence} confidence`} />
-                {href ? (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-white hover:text-cyan-200"
-                  >
-                    {link.title}
-                  </a>
-                ) : (
-                  <span className="font-medium text-white">{link.title}</span>
-                )}
+                <InscriptionReferenceLinks
+                  inscriptionId={link.pci_id}
+                  previewTitle={link.title}
+                >
+                  {link.title}
+                </InscriptionReferenceLinks>
               </div>
               {link.summary && (
                 <p className="mt-1.5 text-sm text-slate-400">{link.summary}</p>

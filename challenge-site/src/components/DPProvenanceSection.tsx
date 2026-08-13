@@ -1,10 +1,11 @@
+import InscriptionReferenceLinks from '@/components/InscriptionReferenceLinks';
 import type {
   DpAlignment,
   DpClarification,
   DpExtension,
   DpProvenanceMeta,
 } from '@/lib/dpProvenance';
-import { submissionLink } from '@/lib/dpProvenance';
+import { archiveSubmissionUrl, submissionInscriptionId } from '@/lib/dpProvenance';
 
 type Props = {
   meta: DpProvenanceMeta;
@@ -36,23 +37,30 @@ function SubmissionLink({
   sourceFile: string;
   title: string;
 }) {
-  const link = submissionLink(sourceFile);
-  if (!link) {
-    return <span className="font-medium text-cyan-300">{title}</span>;
+  const inscriptionId = submissionInscriptionId(sourceFile);
+  if (inscriptionId) {
+    return (
+      <InscriptionReferenceLinks inscriptionId={inscriptionId} previewTitle={title}>
+        {title}
+      </InscriptionReferenceLinks>
+    );
   }
-  return (
-    <a
-      href={link.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="font-medium text-cyan-300 hover:text-cyan-200"
-    >
-      {title}
-      {link.kind === 'inscription' && (
-        <span className="ml-2 text-xs text-slate-500">on-chain</span>
-      )}
-    </a>
-  );
+
+  const archiveHref = archiveSubmissionUrl(sourceFile);
+  if (archiveHref) {
+    return (
+      <a
+        href={archiveHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-medium text-cyan-300 hover:text-cyan-200"
+      >
+        {title}
+      </a>
+    );
+  }
+
+  return <span className="font-medium text-cyan-300">{title}</span>;
 }
 
 export default function DPProvenanceSection({

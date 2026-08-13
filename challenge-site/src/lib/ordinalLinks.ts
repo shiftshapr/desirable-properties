@@ -1,6 +1,20 @@
+const ORDINALS_ORIGIN = 'https://ordinals.com';
+
 export function inscriptionUrl(inscriptionId: string | null | undefined): string | null {
   if (!inscriptionId) return null;
-  return `https://ordinals.com/inscription/${inscriptionId}`;
+  return `${ORDINALS_ORIGIN}/inscription/${inscriptionId}`;
+}
+
+/** Readable inscription content on ordinals.com. */
+export function contentUrl(inscriptionId: string | null | undefined): string | null {
+  if (!inscriptionId) return null;
+  return `${ORDINALS_ORIGIN}/content/${inscriptionId}`;
+}
+
+/** Inscription metadata page on ordinals.com. */
+export function localInscriptionUrl(inscriptionId: string | null | undefined): string | null {
+  if (!inscriptionId) return null;
+  return `${ORDINALS_ORIGIN}/inscription/${inscriptionId}`;
 }
 
 export function archiveSubmissionUrl(sourceFile: string | null | undefined): string | null {

@@ -27,6 +27,30 @@ a {
   text-decoration: none;
 }
 
+/* Cyan inscription pills — matches BRC333 sat-graph; title opens preview modal. */
+.dp-inscription-pill.sat-graph-inscription-link {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 191, 255, 0.1);
+  border: 1px solid rgba(0, 191, 255, 0.45);
+  color: #00bfff;
+  font-weight: 600;
+  font-size: inherit;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.dp-inscription-pill.sat-graph-inscription-link:hover {
+  background: rgba(0, 191, 255, 0.22);
+  border-color: #00bfff;
+  color: #7fe1ff;
+  text-decoration: none;
+}
+
 /* Gov Hub–style inline word diff (activity feed patch preview) */
 .dp-diff-del {
   text-decoration: line-through;

@@ -85,10 +85,13 @@ export function loadDpProvenance(dpId: string): DpProvenance | null {
   return loadJson<DpProvenance>(`dp${num}.json`);
 }
 
-export function submissionInscriptionUrl(sourceFile: string | null | undefined): string | null {
+export function submissionInscriptionId(sourceFile: string | null | undefined): string | null {
   if (!sourceFile) return null;
-  const id = inscriptionData?.by_source_file?.[sourceFile];
-  return inscriptionUrl(id);
+  return inscriptionData?.by_source_file?.[sourceFile] ?? null;
+}
+
+export function submissionInscriptionUrl(sourceFile: string | null | undefined): string | null {
+  return inscriptionUrl(submissionInscriptionId(sourceFile));
 }
 
 export function dpInscriptionUrl(dpId: string | null | undefined): string | null {
