@@ -672,6 +672,9 @@ export default function HermesChat({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not draft contribution');
+      if (!data.draft || typeof data.draft !== 'object') {
+        throw new Error('Draft response was empty — try again in a moment');
+      }
       setContributionDraft(data.draft);
       setSystemNotice(null);
     } catch (err) {
@@ -679,6 +682,20 @@ export default function HermesChat({
         variant: 'error',
         text: userFacingError(err),
       });
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === assistantMessageId && m.contributionHint?.contributionReady
+            ? {
+              ...m,
+              contributionHint: {
+                ...m.contributionHint,
+                contributionReady: false,
+                reason: 'Draft failed — see notice above. Send a follow-up or try again later.',
+              },
+            }
+            : m,
+        ),
+      );
     } finally {
       setContributionBusy(false);
       setDraftingMessageId(null);
