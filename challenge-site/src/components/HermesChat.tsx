@@ -64,7 +64,10 @@ const DEFAULT_STARTER_PROMPTS = [
 
 function userFacingError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
-  if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted/i.test(msg)) {
+  if (/did not match the expected pattern/i.test(msg)) {
+    return "Hermes couldn't reach the server. Hard-refresh the page and try again — if it keeps failing, the reply may be timing out.";
+  }
+  if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted|load failed/i.test(msg)) {
     return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
   return msg;

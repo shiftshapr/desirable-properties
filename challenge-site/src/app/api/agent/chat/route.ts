@@ -28,10 +28,21 @@ export async function POST(request: Request) {
         govHubUserId: session.userId,
         documents: body.documents || [],
       }),
-      signal: AbortSignal.timeout(95000),
+      signal: AbortSignal.timeout(120000),
     });
 
-    const data = await upstream.json();
+    const raw = await upstream.text();
+    let data: { error?: string; response?: string } = {};
+    if (raw) {
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        return NextResponse.json(
+          { error: upstream.ok ? 'Invalid response from Hermes' : 'Hermes unavailable' },
+          { status: upstream.ok ? 502 : upstream.status || 502 },
+        );
+      }
+    }
     if (!upstream.ok) {
       return NextResponse.json(
         { error: data.error || 'Hermes unavailable' },
