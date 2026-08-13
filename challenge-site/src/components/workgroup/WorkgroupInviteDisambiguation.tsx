@@ -6,14 +6,33 @@ type Props = {
   candidates: InviteCandidate[];
   busy?: boolean;
   onSelect: (index: number) => void;
+  onContinueAnyway?: () => void;
 };
 
-export default function WorkgroupInviteDisambiguation({ candidates, busy, onSelect }: Props) {
+export default function WorkgroupInviteDisambiguation({
+  candidates,
+  busy,
+  onSelect,
+  onContinueAnyway,
+}: Props) {
   if (!candidates.length) {
     return (
-      <p className="text-sm text-slate-400">
-        Research was ambiguous but no candidates were returned. Try adding a LinkedIn URL or extra links.
-      </p>
+      <div className="space-y-3">
+        <p className="text-sm text-slate-400">
+          Research could not list multiple matches. You can continue with the name and LinkedIn you
+          entered and draft the invitation anyway.
+        </p>
+        {onContinueAnyway ? (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onContinueAnyway}
+            className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-100 hover:border-cyan-600 disabled:opacity-50"
+          >
+            Continue to draft
+          </button>
+        ) : null}
+      </div>
     );
   }
 

@@ -56,6 +56,24 @@ export type SuggestedWorkgroup = {
   rationale?: string;
 };
 
+export type WorkgroupMatchConfidence = 'high' | 'medium' | 'low';
+
+export type WorkgroupMatch = {
+  workgroup_id: string;
+  name: string;
+  slug?: string;
+  confidence: WorkgroupMatchConfidence;
+  score: number;
+  rationale?: string;
+};
+
+export type WorkgroupCatalogEntry = {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+};
+
 export type PriorInvitation = {
   id?: string;
   status?: string;
@@ -71,6 +89,8 @@ export type InviteResearchResponse = {
   candidates?: InviteCandidate[];
   resolved_person?: ResolvedPerson | null;
   suggested_workgroups?: SuggestedWorkgroup[];
+  workgroup_matches?: WorkgroupMatch[];
+  workgroup_catalog?: WorkgroupCatalogEntry[];
   prior_invitations?: PriorInvitation[];
   corpus_meta?: {
     urls_fetched?: number;
@@ -151,6 +171,7 @@ export type InviteDraftInput = {
   previous_interaction?: string;
   extra_guidance?: string;
   resolved_person?: ResolvedPerson | null;
+  primary_workgroup_id?: string;
   additional_workgroup_ids?: string[];
   prior_invitations?: PriorInvitation[];
   invite_content?: InviteContentContext | null;
@@ -162,6 +183,7 @@ export type InviteSendInput = {
   name: string;
   email: string;
   body: string;
+  primary_workgroup_id?: string;
   additional_workgroup_ids?: string[];
   send_mode: InviteSendMode;
 };

@@ -9,6 +9,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import type { ContributionDraft, ContributionHint, ContributionScope } from '@/lib/hermesContribution';
+import { inferContributionHint } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -77,6 +78,75 @@ function dpChipLabel(dpNum: number): string {
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 /** Matches Tailwind `max-h-40` on the composer textarea. */
 const COMPOSER_MAX_HEIGHT_PX = 160;
+
+async function hydrateLastContributionHint(
+  messages: Message[],
+  dpFocus: number | null,
+): Promise<Message[]> {
+  let lastAssistantIdx = -1;
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    if (messages[i].sender === 'assistant' && messages[i].id !== 'intro') {
+      lastAssistantIdx = i;
+      break;
+    }
+  }
+  if (lastAssistantIdx < 0) return messages;
+
+  const assistantMessage = messages[lastAssistantIdx];
+  if (assistantMessage.contributionHint?.contributionReady) return messages;
+
+  const userMessage = [...messages.slice(0, lastAssistantIdx)]
+    .reverse()
+    .find((m) => m.sender === 'user');
+  if (!userMessage?.text || !assistantMessage.text) return messages;
+
+  const history = messages
+    .slice(0, lastAssistantIdx)
+    .filter((m) => m.id !== 'intro' && m.id !== userMessage.id)
+    .slice(-10)
+    .map((m) => ({ text: m.text, sender: m.sender }));
+
+  try {
+    const res = await fetch('/api/agent/contributions/readiness', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage.text,
+        assistantReply: assistantMessage.text,
+        history,
+        dpFocus,
+      }),
+    });
+    const data = await res.json();
+    if (res.ok && data.contributionHint?.contributionReady) {
+      const next = [...messages];
+      next[lastAssistantIdx] = {
+        ...assistantMessage,
+        contributionHint: data.contributionHint,
+      };
+      return next;
+    }
+  } catch {
+    /* try local heuristic */
+  }
+
+  const localHint = inferContributionHint(
+    userMessage.text,
+    assistantMessage.text,
+    history,
+    dpFocus,
+  );
+  if (localHint?.contributionReady) {
+    const next = [...messages];
+    next[lastAssistantIdx] = {
+      ...assistantMessage,
+      contributionHint: localHint,
+    };
+    return next;
+  }
+
+  return messages;
+}
 
 export default function HermesChat({
   apiPath = '/api/agent/chat',
@@ -201,10 +271,13 @@ export default function HermesChat({
             text: turn.assistant,
             sender: 'assistant',
             timestamp: new Date(),
+            contributionHint: turn.contributionHint || null,
+            citedDps: Array.isArray(turn.citedDps) ? turn.citedDps : [],
           });
         }
       }
-      setMessages(restored);
+      const hydrated = await hydrateLastContributionHint(restored, dpFocus);
+      setMessages(hydrated);
       setContributionDraft(null);
       setAttachments([]);
       setAttachError(null);
@@ -212,7 +285,7 @@ export default function HermesChat({
     } finally {
       setThreadLoadingId(null);
     }
-  }, [persistActiveThread]);
+  }, [persistActiveThread, dpFocus]);
 
   useEffect(() => {
     if (!signedIn) return;

@@ -1,44 +1,36 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import AdminInviteWorkgroupPicker from '@/components/admin/AdminInviteWorkgroupPicker';
+import AdminInviteResearchPathways from '@/components/admin/AdminInviteResearchPathways';
 import WorkgroupInviteContentPicker from '@/components/workgroup/WorkgroupInviteContentPicker';
 import WorkgroupInviteDisambiguation from '@/components/workgroup/WorkgroupInviteDisambiguation';
 import WorkgroupInviteDraftEditor from '@/components/workgroup/WorkgroupInviteDraftEditor';
 import WorkgroupInviteResearchForm from '@/components/workgroup/WorkgroupInviteResearchForm';
 import WorkgroupInviteSendConfirm from '@/components/workgroup/WorkgroupInviteSendConfirm';
-import { inviteAiDraft, inviteAiResearch, inviteAiSend } from '@/lib/workgroup-collab-api';
+import { adminInviteDraft, adminInviteResearch, adminInviteSend } from '@/lib/admin-invite-api';
+import type { InvitePathwayApplyPayload } from '@/lib/admin-invite-api';
 import {
   buildInviteContentContext,
   type InviteContentCatalog,
 } from '@/lib/dp-invite-content-context';
-import {
-  clearInviteDraft,
-  loadInviteDraft,
-  saveInviteDraft,
-} from '@/lib/workgroup-draft-storage';
 import type {
   InviteCandidate,
   InviteContentContext,
   InviteLeadType,
   PriorInvitation,
   ResolvedPerson,
-  SuggestedWorkgroup,
+  WorkgroupCatalogEntry,
+  WorkgroupMatch,
 } from '@/lib/workgroup-collab-types';
 
-type Step = 'research' | 'disambiguate' | 'draft' | 'done';
+type Step = 'research' | 'disambiguate' | 'workgroups' | 'draft' | 'done';
 
-type Props = {
-  workgroupId: string;
-  workgroupSlug: string;
-  canInvite: boolean;
-};
-
-export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, canInvite }: Props) {
+export default function AdminInviteAiPanel() {
   const [step, setStep] = useState<Step>('research');
   const [draftBusy, setDraftBusy] = useState(false);
   const [sendBusy, setSendBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hydrated, setHydrated] = useState(false);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -48,9 +40,11 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
 
   const [candidates, setCandidates] = useState<InviteCandidate[]>([]);
   const [resolvedPerson, setResolvedPerson] = useState<ResolvedPerson | null>(null);
-  const [suggested, setSuggested] = useState<SuggestedWorkgroup[]>([]);
-  const [priorInvitations, setPriorInvitations] = useState<PriorInvitation[]>([]);
+  const [workgroupMatches, setWorkgroupMatches] = useState<WorkgroupMatch[]>([]);
+  const [workgroupCatalog, setWorkgroupCatalog] = useState<WorkgroupCatalogEntry[]>([]);
+  const [primaryWorkgroupId, setPrimaryWorkgroupId] = useState('');
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
+  const [priorInvitations, setPriorInvitations] = useState<PriorInvitation[]>([]);
 
   const [tone, setTone] = useState('warm');
   const [length, setLength] = useState('medium');
@@ -70,25 +64,6 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   const [mailto, setMailto] = useState('');
   const [mailSubject, setMailSubject] = useState('');
   const [mailBody, setMailBody] = useState('');
-
-  useEffect(() => {
-    const saved = loadInviteDraft(workgroupSlug);
-    if (saved) {
-      if (saved.name) setName(saved.name);
-      if (saved.email) setEmail(saved.email);
-      if (saved.linkedinUrl) setLinkedinUrl(saved.linkedinUrl);
-      if (saved.previousInteraction) setPreviousInteraction(saved.previousInteraction);
-      if (saved.extraLinks) setExtraLinks(saved.extraLinks);
-      if (saved.tone) setTone(saved.tone);
-      if (saved.length) setLength(saved.length);
-      if (saved.draft) setDraft(saved.draft);
-      if (saved.step) setStep(saved.step);
-      if (saved.selectedEventIds) setSelectedEventIds(saved.selectedEventIds);
-      if (saved.selectedPerspectiveIds) setSelectedPerspectiveIds(saved.selectedPerspectiveIds);
-      if (saved.inviteLead) setInviteLead(saved.inviteLead);
-    }
-    setHydrated(true);
-  }, [workgroupSlug]);
 
   useEffect(() => {
     let cancelled = false;
@@ -123,38 +98,12 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     };
   }, []);
 
-  useEffect(() => {
-    if (!hydrated) return;
-    saveInviteDraft(workgroupSlug, {
-      name,
-      email,
-      linkedinUrl,
-      previousInteraction,
-      extraLinks,
-      tone,
-      length,
-      draft,
-      step,
-      selectedEventIds,
-      selectedPerspectiveIds,
-      inviteLead,
-    });
-  }, [
-    draft,
-    email,
-    extraLinks,
-    hydrated,
-    inviteLead,
-    length,
-    linkedinUrl,
-    name,
-    previousInteraction,
-    selectedEventIds,
-    selectedPerspectiveIds,
-    step,
-    tone,
-    workgroupSlug,
-  ]);
+  function parseExtraLinks() {
+    return extraLinks
+      .split('\n')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
 
   function resolveInviteContentForDraft(): InviteContentContext | null {
     return buildInviteContentContext(
@@ -180,25 +129,7 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     [],
   );
 
-  if (!canInvite) {
-    return (
-      <div>
-        <p className="text-sm text-slate-400">
-          Only workgroup members and DP site admins can invite people with the AI assistant.
-        </p>
-      </div>
-    );
-  }
-
-  function parseExtraLinks() {
-    return extraLinks
-      .split('\n')
-      .map((s) => s.trim())
-      .filter(Boolean);
-  }
-
   function resetInvite() {
-    clearInviteDraft(workgroupSlug);
     setStep('research');
     setDraftBusy(false);
     setSendBusy(false);
@@ -210,9 +141,11 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     setExtraLinks('');
     setCandidates([]);
     setResolvedPerson(null);
-    setSuggested([]);
-    setPriorInvitations([]);
+    setWorkgroupMatches([]);
+    setWorkgroupCatalog([]);
+    setPrimaryWorkgroupId('');
     setSelectedExtraIds([]);
+    setPriorInvitations([]);
     setSelectedEventIds([]);
     setSelectedPerspectiveIds([]);
     setInviteLead('events');
@@ -225,28 +158,45 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     setMailBody('');
   }
 
-  async function runDraft(
-    person: ResolvedPerson | null = resolvedPerson,
-    prior: PriorInvitation[] = priorInvitations,
-    manageBusy = true,
-    opts?: { tone?: string; length?: string; regenerate?: boolean },
-  ) {
+  function applyResearchResult(data: {
+    workgroup_matches?: WorkgroupMatch[];
+    workgroup_catalog?: WorkgroupCatalogEntry[];
+    prior_invitations?: PriorInvitation[];
+    resolved_person?: ResolvedPerson | null;
+  }) {
+    const matches = data.workgroup_matches || [];
+    const catalog = data.workgroup_catalog || [];
+    setWorkgroupMatches(matches);
+    setWorkgroupCatalog(catalog);
+    setPriorInvitations(data.prior_invitations || []);
+    if (data.resolved_person) setResolvedPerson(data.resolved_person);
+    const defaultPrimary = matches[0]?.workgroup_id || catalog[0]?.id || '';
+    setPrimaryWorkgroupId(defaultPrimary);
+    setSelectedExtraIds([]);
+    setStep('workgroups');
+  }
+
+  async function runDraft(opts?: { tone?: string; length?: string; regenerate?: boolean }) {
+    if (!primaryWorkgroupId) {
+      setError('Select a primary workgroup before generating the draft.');
+      return;
+    }
     const effectiveTone = opts?.tone ?? tone;
     const effectiveLength = opts?.length ?? length;
     const isRegenerate = opts?.regenerate ?? false;
-    if (manageBusy) setDraftBusy(true);
+    setDraftBusy(true);
     setError(null);
     const previousDraft = draft;
     const hasContentSelections =
       selectedEventIds.length > 0 || selectedPerspectiveIds.length > 0;
     if (hasContentSelections && contentCatalogLoading) {
       setError('Still loading events and perspectives – try again in a moment.');
-      if (manageBusy) setDraftBusy(false);
+      setDraftBusy(false);
       return;
     }
     if (hasContentSelections && contentCatalogError) {
       setError(`Cannot include invite content: ${contentCatalogError}`);
-      if (manageBusy) setDraftBusy(false);
+      setDraftBusy(false);
       return;
     }
     const inviteContent = resolveInviteContentForDraft();
@@ -254,19 +204,20 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       setError(
         'Selected events or perspectives could not be resolved. Refresh the page and try again.',
       );
-      if (manageBusy) setDraftBusy(false);
+      setDraftBusy(false);
       return;
     }
     try {
-      const data = await inviteAiDraft(workgroupId, {
+      const data = await adminInviteDraft({
         name: name.trim(),
         email: email.trim(),
+        primary_workgroup_id: primaryWorkgroupId,
         tone: effectiveTone,
         length: effectiveLength,
         previous_interaction: previousInteraction.trim() || undefined,
-        resolved_person: person,
-        additional_workgroup_ids: selectedExtraIds,
-        prior_invitations: prior,
+        resolved_person: resolvedPerson,
+        additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
+        prior_invitations: priorInvitations,
         invite_content: inviteContent,
         regenerate: isRegenerate,
         previous_draft: isRegenerate ? previousDraft : undefined,
@@ -288,13 +239,39 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Draft failed');
     } finally {
-      if (manageBusy) setDraftBusy(false);
+      setDraftBusy(false);
+    }
+  }
+
+  async function ensureWorkgroupCatalog(): Promise<WorkgroupCatalogEntry[]> {
+    if (workgroupCatalog.length) return workgroupCatalog;
+    try {
+      const res = await fetch('/api/admin/broadcast?view=workgroups', {
+        credentials: 'include',
+        cache: 'no-store',
+      });
+      const data = await res.json();
+      const catalog = (data.workgroups || []).map(
+        (wg: { id: string; name: string; slug?: string }) => ({
+          id: wg.id,
+          name: wg.name,
+          slug: wg.slug || '',
+          description: '',
+        }),
+      );
+      setWorkgroupCatalog(catalog);
+      if (!primaryWorkgroupId && catalog[0]?.id) {
+        setPrimaryWorkgroupId(catalog[0].id);
+      }
+      return catalog;
+    } catch {
+      return [];
     }
   }
 
   async function continueToDraftFromForm(
-    person?: typeof resolvedPerson,
-    prior?: typeof priorInvitations,
+    person?: ResolvedPerson | null,
+    prior?: PriorInvitation[],
   ) {
     const fallback = person || resolvedPerson || {
       name: name.trim(),
@@ -303,14 +280,16 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       expertise_tags: [] as string[],
     };
     setResolvedPerson(fallback);
-    await runDraft(fallback, prior || priorInvitations, false);
+    setPriorInvitations(prior || priorInvitations);
+    await ensureWorkgroupCatalog();
+    setStep('workgroups');
   }
 
   async function runResearch(selectedIndex?: number | null) {
     setDraftBusy(true);
     setError(null);
     try {
-      const data = await inviteAiResearch(workgroupId, {
+      const data = await adminInviteResearch({
         name: name.trim(),
         email: email.trim(),
         linkedin_url: linkedinUrl.trim() || undefined,
@@ -322,23 +301,18 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
         setError(data.error || 'Invite blocked');
         return;
       }
-      setPriorInvitations(data.prior_invitations || []);
-      setSuggested(data.suggested_workgroups || []);
       setCandidates(data.candidates || []);
-      setResolvedPerson(data.resolved_person || null);
       if (data.ambiguous && selectedIndex == null) {
         if (!data.candidates?.length) {
-          await continueToDraftFromForm(data.resolved_person, data.prior_invitations);
+          applyResearchResult(data);
           return;
         }
+        setPriorInvitations(data.prior_invitations || []);
+        if (data.resolved_person) setResolvedPerson(data.resolved_person);
         setStep('disambiguate');
         return;
       }
-      await runDraft(
-        data.resolved_person || resolvedPerson,
-        data.prior_invitations || priorInvitations,
-        false,
-      );
+      applyResearchResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Research failed');
     } finally {
@@ -347,14 +321,19 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
   }
 
   async function send(mode: 'platform' | 'client') {
+    if (!primaryWorkgroupId) {
+      setError('Select a primary workgroup before sending.');
+      return;
+    }
     setSendBusy(true);
     setError(null);
     try {
-      const data = await inviteAiSend(workgroupId, {
+      const data = await adminInviteSend({
         name: name.trim(),
         email: email.trim(),
         body: draft.trim(),
-        additional_workgroup_ids: selectedExtraIds,
+        primary_workgroup_id: primaryWorkgroupId,
+        additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
         send_mode: mode,
       });
       if (data.blocked || data.error) {
@@ -364,7 +343,6 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       if (mode === 'platform') {
         setPlatformDone(true);
         setStep('done');
-        clearInviteDraft(workgroupSlug);
       } else {
         setMailto(data.mailto || '');
         setMailSubject(data.subject || '');
@@ -378,17 +356,18 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     }
   }
 
+  function toggleExtra(workgroupId: string) {
+    setSelectedExtraIds((prev) =>
+      prev.includes(workgroupId)
+        ? prev.filter((id) => id !== workgroupId)
+        : [...prev, workgroupId],
+    );
+  }
+
   const anyBusy = draftBusy || sendBusy;
-
-  const hasProgress =
-    Boolean(name.trim() || email.trim() || linkedinUrl.trim() || draft.trim())
-    || step !== 'research'
-    || candidates.length > 0;
-
   const recipientLabel = name.trim() || resolvedPerson?.name || 'Recipient';
   const recipientEmail = email.trim();
-  const hasDraft = Boolean(draft.trim());
-  const showDraftPhase = step === 'draft' || step === 'done' || (step === 'research' && hasDraft);
+  const showDraftPhase = step === 'draft' || step === 'done';
 
   function focusDraftEditor() {
     const el = document.getElementById('invite-draft-textarea');
@@ -398,19 +377,38 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
     }
   }
 
-  function editRecipientDetails() {
+  function applyPathwayResearch(payload: InvitePathwayApplyPayload) {
+    if (payload.name) setName(payload.name);
+    if (payload.email) setEmail(payload.email);
+    if (payload.previous_interaction) {
+      setPreviousInteraction((prev) =>
+        prev.trim()
+          ? `${prev.trim()}\n\n${payload.previous_interaction.trim()}`
+          : payload.previous_interaction.trim(),
+      );
+    }
+    if (payload.extra_links?.length) {
+      const existing = parseExtraLinks();
+      const merged = [...existing];
+      for (const link of payload.extra_links) {
+        if (link && !merged.includes(link)) merged.push(link);
+      }
+      setExtraLinks(merged.join('\n'));
+    }
     setError(null);
-    setStep('research');
   }
 
   return (
-    <div>
+    <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <p className="text-sm text-slate-400">
-          Optionally include events or perspectives, research a contact, draft a personal
-          invitation, then send via platform mail or your own inbox.
-        </p>
-        {hasProgress ? (
+        <div>
+          <h2 className="text-lg font-semibold text-white">Email invites</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Research a contact, pick the best-matching workgroups, then draft and send a personal
+            invitation without starting from a specific DP page.
+          </p>
+        </div>
+        {step !== 'research' || name.trim() || email.trim() ? (
           <button
             type="button"
             disabled={anyBusy}
@@ -423,6 +421,10 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       </div>
 
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+
+      <div className="mt-6">
+        <AdminInviteResearchPathways onApply={applyPathwayResearch} />
+      </div>
 
       <div className="mt-6">
         <WorkgroupInviteContentPicker
@@ -439,22 +441,6 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
       <div className="mt-6">
         {step === 'research' || step === 'disambiguate' ? (
           <>
-            {step === 'research' && hasDraft ? (
-              <div className="mb-4 flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-slate-400">
-                  Editing recipient details. Your draft is saved below – regenerate after changes if
-                  needed.
-                </p>
-                <button
-                  type="button"
-                  disabled={anyBusy}
-                  onClick={() => setStep('draft')}
-                  className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
-                >
-                  Back to draft
-                </button>
-              </div>
-            ) : null}
             <WorkgroupInviteResearchForm
               name={name}
               email={email}
@@ -473,18 +459,30 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               }}
               onSubmit={() => void runResearch()}
             />
+            {step === 'disambiguate' ? (
+              <div className="mt-6">
+                <WorkgroupInviteDisambiguation
+                  candidates={candidates}
+                  busy={draftBusy}
+                  onSelect={(index) => void runResearch(index)}
+                  onContinueAnyway={() => void continueToDraftFromForm()}
+                />
+              </div>
+            ) : null}
           </>
         ) : null}
 
-        {step === 'disambiguate' ? (
-          <div className="mt-6">
-            <WorkgroupInviteDisambiguation
-              candidates={candidates}
-              busy={draftBusy}
-              onSelect={(index) => void runResearch(index)}
-              onContinueAnyway={() => void continueToDraftFromForm()}
-            />
-          </div>
+        {step === 'workgroups' ? (
+          <AdminInviteWorkgroupPicker
+            matches={workgroupMatches}
+            catalog={workgroupCatalog}
+            primaryId={primaryWorkgroupId}
+            extraIds={selectedExtraIds}
+            busy={draftBusy}
+            onPrimaryChange={setPrimaryWorkgroupId}
+            onToggleExtra={toggleExtra}
+            onContinue={() => void runDraft()}
+          />
         ) : null}
 
         {showDraftPhase ? (
@@ -504,10 +502,10 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
                 <button
                   type="button"
                   disabled={anyBusy}
-                  onClick={editRecipientDetails}
+                  onClick={() => setStep('workgroups')}
                   className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-600 disabled:opacity-50"
                 >
-                  Edit recipient
+                  Edit workgroups
                 </button>
               ) : null}
             </div>
@@ -515,25 +513,15 @@ export default function WorkgroupInviteAiPanel({ workgroupId, workgroupSlug, can
               tone={tone}
               length={length}
               draft={draft}
-              suggested={suggested}
+              suggested={[]}
               selectedExtraIds={selectedExtraIds}
               priorInvitations={priorInvitations}
               busy={draftBusy}
-              onTone={(t) => setTone(t)}
-              onLength={(l) => setLength(l)}
+              onTone={setTone}
+              onLength={setLength}
               onDraft={setDraft}
-              onToggleExtra={(id) =>
-                setSelectedExtraIds((prev) =>
-                  prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-                )
-              }
-              onRegenerate={(t, l) =>
-                void runDraft(undefined, undefined, true, {
-                  tone: t,
-                  length: l,
-                  regenerate: true,
-                })
-              }
+              onToggleExtra={toggleExtra}
+              onRegenerate={(t, l) => void runDraft({ tone: t, length: l, regenerate: true })}
             />
             <WorkgroupInviteSendConfirm
               sendBusy={sendBusy}
