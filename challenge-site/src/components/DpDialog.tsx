@@ -4,11 +4,17 @@ import { useEffect, useId, useState } from 'react';
 
 type Variant = 'success' | 'info' | 'warning' | 'danger';
 
+export type DpDialogLink = {
+  href: string;
+  label: string;
+};
+
 type AlertOptions = {
   title: string;
   message: string;
   variant?: Variant;
   confirmLabel?: string;
+  links?: DpDialogLink[];
 };
 
 type ConfirmOptions = AlertOptions & {
@@ -126,6 +132,22 @@ export function DpDialogHost() {
         <p id={descId} className="mt-2 text-sm leading-relaxed text-slate-300">
           {options.message}
         </p>
+        {options.links?.length ? (
+          <ul className="mt-3 space-y-2">
+            {options.links.map((link) => (
+              <li key={`${link.href}-${link.label}`}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-cyan-300 underline decoration-cyan-600/60 underline-offset-2 hover:text-cyan-200"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <div className="mt-5 flex justify-end gap-2">
           {kind === 'confirm' ? (
             <button

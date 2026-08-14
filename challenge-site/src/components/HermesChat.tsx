@@ -9,9 +9,9 @@ import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
-import { bookDiscussDraftHref, bookDiscussPostHref } from '@/lib/govhub';
+import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import { defaultDestination, discussLinkLabel, inferContributionHint, saveStagedProposal } from '@/lib/hermesContribution';
-import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionScope, DiscussDeepLink } from '@/lib/hermesContribution';
+import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionScope, ContributionSubmitMode, DiscussDeepLink } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -90,23 +90,53 @@ function isAbortError(err: unknown): boolean {
 function resolveDiscussLink(
   item: ContributionProposal,
   draftRef: string,
-  data: { link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } },
+  data: {
+    link?: { id?: string; href?: string; pageId?: string };
+    result?: { id?: string; pageId?: string; messageId?: string; draftId?: string };
+  },
   kind: 'post' | 'draft',
 ): DiscussDeepLink | null {
-  const id = String(data.link?.id || data.result?.id || '').trim();
-  if (!id) return null;
-  const pageId = String(data.link?.pageId || data.result?.pageId || '').trim() || undefined;
-  const href =
-    data.link?.href
-    || (kind === 'draft'
-      ? bookDiscussDraftHref({ draftId: id, draftRef, pageId })
-      : bookDiscussPostHref({ messageId: id, draftRef, pageId }));
-  return {
-    id,
-    href,
-    pageId,
-    label: discussLinkLabel(item, kind),
-  };
+  const backendLink = data.link;
+  if (backendLink?.href) {
+    return {
+      id: String(backendLink.id || data.result?.id || `${kind}-${item.id}`),
+      href: backendLink.href,
+      pageId: backendLink.pageId || data.result?.pageId,
+      label: discussLinkLabel(item, kind),
+    };
+  }
+
+  const result = data.result && typeof data.result === 'object' ? data.result : {};
+  const id = String(
+    result.id || result.messageId || result.draftId || '',
+  ).trim();
+  const pageId = String(result.pageId || '').trim() || undefined;
+  if (id) {
+    const href =
+      kind === 'draft'
+        ? bookDiscussDraftHref({ draftId: id, draftRef, pageId })
+        : bookDiscussPostHref({ messageId: id, draftRef, pageId });
+    if (href) {
+      return {
+        id,
+        href,
+        pageId,
+        label: discussLinkLabel(item, kind),
+      };
+    }
+  }
+
+  const fallbackHref = bookDiscussHref({ dpId: draftRef.replace(/^ML-/i, 'DP') });
+  if (fallbackHref) {
+    return {
+      id: `discuss-${item.id}`,
+      href: fallbackHref,
+      label: kind === 'draft'
+        ? `Open Discuss drafts on ${draftRef}`
+        : `Open Discuss on ${draftRef}`,
+    };
+  }
+  return null;
 }
 
 function proposalsFromContributionDraft(draft: ContributionDraft): ContributionProposal[] {
@@ -1219,85 +1249,78 @@ export default function HermesChat({
     }
   };
 
-  const submitContribution = async () => {
+  const submitContribution = async (mode: ContributionSubmitMode) => {
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     const draftRef = contributionDraft.draftRef;
     const items = proposalsFromContributionDraft(contributionDraft);
+    const isDraft = mode === 'draft';
     try {
-      const destination = defaultDestination();
       const links: DiscussDeepLink[] = [];
-      let posted = 0;
-      for (const item of items) {
-        const res = await fetch('/api/agent/contributions/submit', {
+
+      if (isDraft) {
+        const res = await fetch('/api/agent/contributions/stage', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            kind: item.kind,
             draftRef,
-            payload: item.payload,
-            destination,
+            proposals: items,
             threadId: activeThreadId,
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Submit failed');
-        const link = resolveDiscussLink(item, draftRef, data, 'post');
-        if (link) links.push(link);
-        posted += 1;
+        if (!res.ok) throw new Error(data.error || 'Could not save drafts');
+        const staged = Array.isArray(data.staged) ? data.staged : [];
+        staged.forEach((row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } }, index: number) => {
+          const item = items.find((p) => p.id === row.proposalId) || items[index];
+          if (!item) return;
+          const link = resolveDiscussLink(item, draftRef, row, 'draft');
+          if (link) links.push(link);
+        });
+        if (!links.length) {
+          items.forEach((item) => {
+            const link = resolveDiscussLink(item, draftRef, {}, 'draft');
+            if (link) links.push(link);
+          });
+        }
+        saveStagedProposal(contributionDraft);
+      } else {
+        const destination = defaultDestination();
+        for (const item of items) {
+          const res = await fetch('/api/agent/contributions/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              kind: item.kind,
+              draftRef,
+              payload: item.payload,
+              destination,
+              threadId: activeThreadId,
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Submit failed');
+          const link = resolveDiscussLink(item, draftRef, data, 'post');
+          if (link) links.push(link);
+        }
       }
-      setContributionDraft(null);
-      setSystemNotice({
-        variant: 'success',
-        text: `Posted ${posted} proposal${posted === 1 ? '' : 's'} to Canopi Discuss on ${draftRef}.`,
-        links,
-      });
-    } catch (err) {
-      setSystemNotice({
-        variant: 'error',
-        text: userFacingError(err),
-      });
-    } finally {
-      setContributionBusy(false);
-    }
-  };
 
-  const stageContribution = async () => {
-    if (!contributionDraft || !signedIn) return;
-    setContributionBusy(true);
-    const draftRef = contributionDraft.draftRef;
-    const items = proposalsFromContributionDraft(contributionDraft);
-    try {
-      const res = await fetch('/api/agent/contributions/stage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          draftRef,
-          proposals: items,
-          threadId: activeThreadId,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Stage failed');
-      const staged = Array.isArray(data.staged) ? data.staged : [];
-      const links: DiscussDeepLink[] = [];
-      staged.forEach((row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } }, index: number) => {
-        const item = items.find((p) => p.id === row.proposalId) || items[index];
-        if (!item) return;
-        const link = resolveDiscussLink(item, draftRef, row, 'draft');
-        if (link) links.push(link);
-      });
-      saveStagedProposal(contributionDraft);
       setContributionDraft(null);
-      setSystemNotice({
+      const count = items.length;
+      const actionLabel = isDraft ? 'saved as draft' : 'published';
+      await DpDialog.alert({
+        title: isDraft ? 'Drafts saved' : 'Published to Discuss',
+        message: `${count} proposal${count === 1 ? '' : 's'} ${actionLabel} on ${draftRef}. Open each link below to review in Canopi Discuss.`,
         variant: 'success',
-        text: `Saved ${links.length || items.length} draft${links.length === 1 ? '' : 's'} in Canopi Discuss on ${draftRef}.`,
-        links,
+        confirmLabel: 'Done',
+        links: links.map((link) => ({ href: link.href, label: link.label })),
       });
     } catch (err) {
-      setSystemNotice({
-        variant: 'error',
-        text: userFacingError(err),
+      await DpDialog.alert({
+        title: isDraft ? 'Could not save drafts' : 'Could not publish',
+        message: userFacingError(err),
+        variant: 'danger',
+        confirmLabel: 'OK',
       });
     } finally {
       setContributionBusy(false);
@@ -1592,8 +1615,7 @@ export default function HermesChat({
               <HermesContributionPanel
                 draft={contributionDraft}
                 busy={contributionBusy}
-                onConfirm={submitContribution}
-                onStage={stageContribution}
+                onSubmit={submitContribution}
                 onCancel={() => setContributionDraft(null)}
                 onDraftChange={setContributionDraft}
               />

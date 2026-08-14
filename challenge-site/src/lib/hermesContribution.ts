@@ -39,6 +39,9 @@ export interface DiscussDeepLink {
 
 export type DiscussLinkKind = 'post' | 'draft';
 
+/** Save to Canopi Discuss drafts vs publish immediately. */
+export type ContributionSubmitMode = 'draft' | 'publish';
+
 const STAGED_KEY = 'hermes-staged-proposals-v1';
 
 export function defaultDestination(): ContributionDestination {

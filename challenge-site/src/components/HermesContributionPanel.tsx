@@ -1,13 +1,13 @@
 'use client';
 
-import type { ContributionDraft, ContributionProposal } from '@/lib/hermesContribution';
+import { useState } from 'react';
+import type { ContributionDraft, ContributionProposal, ContributionSubmitMode } from '@/lib/hermesContribution';
 import { patchModeFromPayload, proposalLabel } from '@/lib/hermesContribution';
 
 interface HermesContributionPanelProps {
   draft: ContributionDraft | null;
   busy?: boolean;
-  onConfirm: () => void;
-  onStage: () => void;
+  onSubmit: (mode: ContributionSubmitMode) => void;
   onCancel: () => void;
   onDraftChange?: (draft: ContributionDraft) => void;
 }
@@ -20,11 +20,12 @@ function proposalsFromDraft(draft: ContributionDraft): ContributionProposal[] {
 export default function HermesContributionPanel({
   draft,
   busy = false,
-  onConfirm,
-  onStage,
+  onSubmit,
   onCancel,
   onDraftChange,
 }: HermesContributionPanelProps) {
+  const [submitMode, setSubmitMode] = useState<ContributionSubmitMode>('draft');
+
   if (!draft) return null;
 
   const scopeLabel =
@@ -55,6 +56,11 @@ export default function HermesContributionPanel({
     return Boolean(text);
   });
 
+  const submitLabel =
+    submitMode === 'draft'
+      ? `Save ${proposals.length} as Discuss draft${proposals.length === 1 ? '' : 's'}`
+      : `Publish ${proposals.length} to Canopi Discuss`;
+
   return (
     <div className="rounded-xl border border-amber-700/50 bg-amber-950/30 p-4">
       <div>
@@ -67,9 +73,47 @@ export default function HermesContributionPanel({
       </div>
 
       <p className="mt-3 text-xs text-amber-100/90">
-        Review each patch or insert below. Submit now, stage for later, or edit before posting to
-        Canopi Discuss on the book.
+        Review each patch or insert below. Choose whether to save drafts you can edit in Discuss,
+        or publish immediately.
       </p>
+
+      <fieldset className="mt-4 space-y-2">
+        <legend className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          When you submit
+        </legend>
+        <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700/80 bg-slate-950/60 px-3 py-2.5 has-[:checked]:border-violet-600/70 has-[:checked]:bg-violet-950/20">
+          <input
+            type="radio"
+            name="contribution-submit-mode"
+            value="draft"
+            checked={submitMode === 'draft'}
+            onChange={() => setSubmitMode('draft')}
+            className="mt-0.5"
+          />
+          <span>
+            <span className="block text-sm font-medium text-white">Save to my drafts</span>
+            <span className="mt-0.5 block text-[11px] text-slate-400">
+              Recommended — opens in Canopi Discuss for review before publishing.
+            </span>
+          </span>
+        </label>
+        <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700/80 bg-slate-950/60 px-3 py-2.5 has-[:checked]:border-cyan-600/70 has-[:checked]:bg-cyan-950/20">
+          <input
+            type="radio"
+            name="contribution-submit-mode"
+            value="publish"
+            checked={submitMode === 'publish'}
+            onChange={() => setSubmitMode('publish')}
+            className="mt-0.5"
+          />
+          <span>
+            <span className="block text-sm font-medium text-white">Publish now</span>
+            <span className="mt-0.5 block text-[11px] text-slate-400">
+              Posts immediately to Canopi Discuss on the book.
+            </span>
+          </span>
+        </label>
+      </fieldset>
 
       <div className="mt-4 space-y-4">
         {proposals.map((proposal, index) => {
@@ -145,19 +189,15 @@ export default function HermesContributionPanel({
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={onConfirm}
+          onClick={() => onSubmit(submitMode)}
           disabled={busy || !allValid}
-          className="rounded-lg bg-cyan-700 px-4 py-2 text-xs font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
+            submitMode === 'draft'
+              ? 'bg-violet-700 hover:bg-violet-600'
+              : 'bg-cyan-700 hover:bg-cyan-600'
+          }`}
         >
-          {busy ? 'Submitting…' : `Submit ${proposals.length} to Canopi Discuss`}
-        </button>
-        <button
-          type="button"
-          onClick={onStage}
-          disabled={busy || !allValid}
-          className="rounded-lg border border-violet-600 px-4 py-2 text-xs font-medium text-violet-200 hover:bg-violet-950/40 disabled:opacity-50"
-        >
-          Stage as Discuss drafts
+          {busy ? 'Submitting…' : submitLabel}
         </button>
         <button
           type="button"

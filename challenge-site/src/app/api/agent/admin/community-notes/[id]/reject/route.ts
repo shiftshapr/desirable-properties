@@ -9,6 +9,9 @@ export async function PATCH(
 ) {
   const auth = await requireDpAdminWithSession();
   if (!auth.ok) return auth.response;
+  if (!auth.session) {
+    return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
+  }
 
   const { id } = await context.params;
   if (!id) {
