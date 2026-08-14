@@ -1,4 +1,4 @@
-import { parseDiscussPatch } from '@/lib/discuss-patch';
+import { classifyDiscussPost } from '@/lib/discuss-patch';
 import { canopiPageIdFromUrl, DP_CANOPI_BOOK_ORIGIN } from '@/lib/dp-canopi-chapters';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import {
@@ -53,7 +53,7 @@ async function findCanopiPatch(session: HermesSession, sinceIso: string | null):
     const batch = await searchCanopiPosts({ pageId, limit: 50 });
     if (!batch.ok) continue;
     for (const post of batch.posts) {
-      const parsed = parseDiscussPatch(post.content);
+      const parsed = classifyDiscussPost({ body: post.content, tagType: post.tagType });
       if (parsed.kind !== 'patch' && parsed.kind !== 'insert') continue;
 
       const authorId = post.authorId ? String(post.authorId) : '';

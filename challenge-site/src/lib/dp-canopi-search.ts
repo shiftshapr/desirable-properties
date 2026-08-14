@@ -36,6 +36,7 @@ function normalizeCanopiMessage(m: Record<string, unknown>, fallbackPageId: stri
     authorId: (m.authorId ?? m.userId ?? author?.id ?? null) as string | null,
     authorName: messageAuthorName(m) || null,
     createdAt: (m.createdAt ?? m.created_at ?? null) as string | null,
+    tagType: String(m.tagType ?? m.tag_type ?? '').trim() || null,
   };
 }
 

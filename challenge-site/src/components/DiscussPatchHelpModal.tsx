@@ -79,29 +79,25 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
             passage.
           </p>
           <p>
-            Open a chapter. To patch, select text or an existing anchor, and click{' '}
-            <span className="font-medium text-slate-200">Discuss</span> on the modal. How you write
-            your reply determines what happens:
+            Open a chapter. Select text on the page, then use the widget buttons:
           </p>
           <ul className="list-disc space-y-2 pl-5 marker:text-cyan-500">
             <li>
-              <span className="font-medium text-slate-200">Comment</span> – a normal anchored reply
+              <span className="font-medium text-slate-200">Discuss</span> – a normal anchored reply
               adds discussion without changing the text.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Patch</span> – start with{' '}
-              <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">PATCH:</code>{' '}
-              (case-insensitive) to propose replacing the selection.
+              <span className="font-medium text-slate-200">Patch</span> – propose replacing the
+              selected passage with your revised text.
             </li>
             <li>
-              <span className="font-medium text-slate-200">Insert</span> – start with{' '}
-              <code className="rounded bg-slate-800 px-1 py-0.5 text-cyan-300">INSERT:</code> to
-              propose new text above the selection.
+              <span className="font-medium text-slate-200">Insert</span> – propose new text that
+              goes above the selection (the anchor passage stays unchanged).
             </li>
           </ul>
           <p className="text-slate-400">
-            The command must be on the first line of your reply. Everything after it is your
-            proposed text.
+            Each opens the Discuss composer with the anchor attached. Hover a Patch or Insert pill in
+            the feed to preview the change (strikeouts and +/− character counts).
           </p>
         </div>
 

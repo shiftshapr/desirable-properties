@@ -1,5 +1,5 @@
 import { canopiPageIdsForDp } from '@/lib/dp-canopi-chapters';
-import { discussPatchActivityText, parseDiscussPatch } from '@/lib/discuss-patch';
+import { classifyDiscussPost, discussPatchActivityText } from '@/lib/discuss-patch';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import {
   eventMatchesWorkgroup,
@@ -277,11 +277,12 @@ async function fetchCanopiItemsForDp(
   if (!result.ok) return [];
 
   return result.posts.map((p) => {
-    const parsed = parseDiscussPatch(p.content);
+    const parsed = classifyDiscussPost({ body: p.content, tagType: p.tagType });
     const classified = discussPatchActivityText({
       authorName: p.authorName,
       pageId: p.pageId,
       body: p.content,
+      tagType: p.tagType,
     });
     const kind: ActivityFeedKind =
       classified.kind === 'patch'

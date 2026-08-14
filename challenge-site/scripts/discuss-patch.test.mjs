@@ -27,6 +27,7 @@ function parseDiscussPatch(body) {
 describe('discuss-patch parser contract', () => {
   it('source exports parseDiscussPatch', () => {
     assert.match(src, /export function parseDiscussPatch/);
+    assert.match(src, /export function classifyDiscussPost/);
   });
 
   it('PATCH case-insensitive', () => {

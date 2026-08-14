@@ -315,8 +315,9 @@ export default function PearlTrackForm({ seriesSlug, seriesTitle, pearlBadgeCode
       <section className="space-y-4 rounded-xl border border-violet-900/40 bg-violet-950/20 p-5">
         <h3 className="text-lg font-semibold text-white">4. Submit patch</h3>
         <p className="text-sm text-slate-400">
-          Post your patch on Gov Hub or use <code className="text-cyan-300">PATCH:</code> /{' '}
-          <code className="text-cyan-300">INSERT:</code> in Canopi Discuss. We detect it automatically.
+          Post your patch on Gov Hub or use the <span className="font-medium text-slate-200">Patch</span> /{' '}
+          <span className="font-medium text-slate-200">Insert</span> buttons in Canopi Discuss on the book.
+          We detect it automatically.
         </p>
         <div className="flex flex-wrap gap-3">
           <a

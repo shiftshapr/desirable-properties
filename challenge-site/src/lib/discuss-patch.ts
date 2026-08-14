@@ -1,7 +1,6 @@
 /**
- * Read-only Canopi Discuss PATCH:/INSERT: parser (challenge-site only).
- * Users post anchored replies in Canopi Discuss with a first-line prefix;
- * we classify messages when ingesting for activity feed / display.
+ * Read-only Canopi Discuss patch/insert classifier (challenge-site only).
+ * Prefers API `tag_type` (patch | insert); falls back to legacy PATCH:/INSERT: first-line prefixes.
  * Does not mutate Canopi storage.
  */
 
@@ -11,11 +10,44 @@ export type ParsedDiscussPatch = {
   kind: DiscussPatchKind;
   /** Body after the command line (replacement / insertion text), or full body for comments. */
   content: string;
-  /** Original first-line command when kind is patch|insert (e.g. "PATCH:"). */
+  /** Original first-line command when kind is patch|insert via legacy prefix (e.g. "PATCH:"). */
   commandLine?: string;
 };
 
 const COMMAND_RE = /^(patch|insert)\s*:\s*(.*)$/i;
+const RATIONALE_SECTION_RE = /^\s*(Why it fits|Why it is|Pre-flight|Rationale)\b/i;
+
+function stripHermesRationale(body: string): string {
+  const idx = body.indexOf('\n\n');
+  if (idx > 0 && RATIONALE_SECTION_RE.test(body.slice(idx + 2))) {
+    return body.slice(0, idx).trim();
+  }
+  return body.trim();
+}
+
+function classifyFromTagType(tagType: string | null | undefined): DiscussPatchKind | null {
+  const t = String(tagType || '').trim().toLowerCase();
+  if (t === 'patch') return 'patch';
+  if (t === 'insert') return 'insert';
+  return null;
+}
+
+/**
+ * Classify a Canopi Discuss post. Pass `tagType` from API when available.
+ */
+export function classifyDiscussPost(opts: {
+  body: string;
+  tagType?: string | null;
+}): ParsedDiscussPatch {
+  const fromTag = classifyFromTagType(opts.tagType);
+  if (fromTag) {
+    return {
+      kind: fromTag,
+      content: stripHermesRationale(String(opts.body ?? '').trim()),
+    };
+  }
+  return parseDiscussPatch(opts.body);
+}
 
 /**
  * Strip leading whitespace; first line matching PATCH:|INSERT: (case-insensitive)
@@ -61,8 +93,9 @@ export function discussPatchActivityText(opts: {
   authorName?: string | null;
   pageId?: string | null;
   body: string;
+  tagType?: string | null;
 }): { kind: DiscussPatchKind; text: string; badge: string | null } {
-  const parsed = parseDiscussPatch(opts.body);
+  const parsed = classifyDiscussPost({ body: opts.body, tagType: opts.tagType });
   const who = (opts.authorName || 'Someone').trim() || 'Someone';
   const chapter = opts.pageId ? ` (${opts.pageId})` : '';
   const snippetSource = parsed.kind === 'comment' ? opts.body : parsed.content || opts.body;
