@@ -11,6 +11,26 @@ export type CanopiAuthUser = {
   avatarUrl?: string | null;
 };
 
+/** Public Canopi profile by AppUser UUID. */
+export async function fetchCanopiUserProfile(userId: string): Promise<CanopiAuthUser | null> {
+  const id = String(userId || '').trim();
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    return null;
+  }
+
+  try {
+    const res = await fetch(`${getCanopiApiBase()}/v1/users/${encodeURIComponent(id)}`, {
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data?.id) return null;
+    return data as CanopiAuthUser;
+  } catch {
+    return null;
+  }
+}
+
 /** Exchange Web3Auth idToken for Canopi AppUser (avatar, handle). Best-effort. */
 export async function fetchCanopiWeb3AuthUser(
   idToken: string,

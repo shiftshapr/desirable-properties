@@ -12,6 +12,7 @@ export interface HermesSession {
   username: string;
   displayName: string | null;
   profileImage?: string | null;
+  canopiUserId?: string | null;
   idToken: string;
   email?: string | null;
 }
@@ -62,6 +63,7 @@ export async function readSessionFromCookieValue(
       username: String(payload.username || ''),
       displayName: payload.displayName ? String(payload.displayName) : null,
       profileImage: payload.profileImage ? String(payload.profileImage) : null,
+      canopiUserId: payload.canopiUserId ? String(payload.canopiUserId) : null,
       idToken,
       email: payload.email ? String(payload.email) : null,
     };

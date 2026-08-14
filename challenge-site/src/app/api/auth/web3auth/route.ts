@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
 import { createSessionCookie } from '@/lib/auth-session';
+import { pickProfileImage } from '@/lib/auth-profile';
 import { fetchCanopiWeb3AuthUser } from '@/lib/canopi-api';
 import { getGovHubBaseUrl } from '@/lib/web3auth-config';
 import { identityFromWeb3AuthClaims } from '@/lib/web3auth-verify';
@@ -53,17 +54,17 @@ export async function POST(request: Request) {
     const identity = identityFromWeb3AuthClaims(claims);
 
     const user = ghData.user || {};
-    const profileImage =
-      (canopiUser?.avatarUrl && String(canopiUser.avatarUrl).trim()) ||
-      user.profileImage ||
-      identity.profileImage ||
-      null;
+    const profileImage = pickProfileImage(
+      canopiUser?.avatarUrl,
+      user.profileImage || identity.profileImage || null,
+    );
     const cookie = await createSessionCookie({
       verifierId: identity.verifierId,
       userId: String(user.id || ''),
       username: String(user.username || ''),
       displayName: user.displayName || user.oauthName || identity.name || null,
       profileImage,
+      canopiUserId: canopiUser?.id || null,
       idToken,
       email: identity.email,
     });
