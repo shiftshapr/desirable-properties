@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { DpDialog, DpDialogHost } from '@/components/DpDialog';
 import HermesComposerAiAssist from '@/components/HermesComposerAiAssist';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
@@ -738,9 +739,13 @@ export default function HermesChat({
 
     const downstreamCount = messages.slice(msgIndex + 1).filter((m) => m.id !== 'intro').length;
     if (downstreamCount > 0) {
-      const ok = window.confirm(
-        `Replace this message and remove ${downstreamCount} later message${downstreamCount === 1 ? '' : 's'}?`,
-      );
+      const ok = await DpDialog.confirm({
+        title: 'Replace message?',
+        message: `Replace this message and remove ${downstreamCount} later message${downstreamCount === 1 ? '' : 's'}?`,
+        variant: 'warning',
+        confirmLabel: 'Replace',
+        cancelLabel: 'Cancel',
+      });
       if (!ok) return;
     }
 
@@ -1436,6 +1441,8 @@ export default function HermesChat({
         onCancel={closeTeachModal}
         onSave={saveTeaching}
       />
+
+      <DpDialogHost />
     </div>
   );
 }
