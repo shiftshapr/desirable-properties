@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { resolveAvatarUrl } from '@/lib/avatar';
+import { resolveAvatarUrl, avatarInitials } from '@/lib/avatar';
 import { govhubUrl } from '@/lib/govhub';
 
 type DpWelcomeLink = {
@@ -136,6 +136,7 @@ export default function SiteAuthNav() {
 
   const displayName = user.displayName || user.username;
   const avatarSrc = resolveAvatarUrl(user.profileImage, 40);
+  const initials = avatarInitials(user.displayName, user.username);
   const profileHref = govhubUrl(`/profile/${encodeURIComponent(user.username)}/`);
   const welcomeLinks = welcomeState.userId === user.id ? welcomeState.links : [];
   const welcomeHref =
@@ -162,17 +163,19 @@ export default function SiteAuthNav() {
             alt=""
             className="h-7 w-7 rounded-full border border-slate-700 object-cover"
             onError={(event) => {
-              event.currentTarget.src = govhubUrl('/static/images/default-avatar.png');
+              event.currentTarget.style.display = 'none';
+              const fallback = event.currentTarget.nextElementSibling;
+              if (fallback instanceof HTMLElement) fallback.style.display = 'flex';
             }}
           />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={govhubUrl('/static/images/default-avatar.png')}
-            alt=""
-            className="h-7 w-7 rounded-full border border-slate-700 object-cover"
-          />
-        )}
+        ) : null}
+        <span
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-violet-700 text-[10px] font-semibold text-white"
+          style={{ display: avatarSrc ? 'none' : 'flex' }}
+          aria-hidden={Boolean(avatarSrc)}
+        >
+          {initials}
+        </span>
       </button>
       {menuOpen ? (
         <ul

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
 import { createSessionCookie } from '@/lib/auth-session';
+import { fetchCanopiWeb3AuthUser } from '@/lib/canopi-api';
 import { getGovHubBaseUrl } from '@/lib/web3auth-config';
 import { identityFromWeb3AuthClaims } from '@/lib/web3auth-verify';
 
@@ -27,7 +28,10 @@ export async function POST(request: Request) {
       }),
       signal: AbortSignal.timeout(30000),
     });
-    const ghData = await ghRes.json();
+    const [ghData, canopiUser] = await Promise.all([
+      ghRes.json(),
+      fetchCanopiWeb3AuthUser(idToken),
+    ]);
     if (!ghRes.ok) {
       return NextResponse.json(
         { error: ghData.error || 'Gov Hub sign-in failed' },
@@ -49,7 +53,11 @@ export async function POST(request: Request) {
     const identity = identityFromWeb3AuthClaims(claims);
 
     const user = ghData.user || {};
-    const profileImage = user.profileImage || identity.profileImage || null;
+    const profileImage =
+      (canopiUser?.avatarUrl && String(canopiUser.avatarUrl).trim()) ||
+      user.profileImage ||
+      identity.profileImage ||
+      null;
     const cookie = await createSessionCookie({
       verifierId: identity.verifierId,
       userId: String(user.id || ''),
