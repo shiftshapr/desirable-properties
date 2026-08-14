@@ -91,6 +91,52 @@ export function bookDiscussHref(opts?: {
   return bookViewerHref({ ...opts, discuss: true });
 }
 
+function dpIdFromDraftRef(draftRef?: string | null): string | null {
+  const raw = String(draftRef || '').trim();
+  if (!raw) return null;
+  const dp = raw.match(/\bDP\s*0*(\d{1,2})\b/i);
+  if (dp) return `DP${Number(dp[1])}`;
+  const ml = raw.match(/\bML[-\s]?0*(\d{1,2})\b/i);
+  if (ml) return `DP${Number(ml[1])}`;
+  return null;
+}
+
+/** Deep link into book Discuss — published post opens in focus mode. */
+export function bookDiscussPostHref(opts: {
+  messageId: string;
+  draftRef?: string | null;
+  dpId?: string | null;
+  pageId?: string | null;
+}): string {
+  const base = bookDiscussHref({
+    dpId: opts.dpId || dpIdFromDraftRef(opts.draftRef),
+    pageId: opts.pageId,
+  });
+  const url = new URL(base);
+  url.searchParams.set('canopiOpen', '1');
+  url.searchParams.set('canopiMsg', opts.messageId);
+  if (opts.pageId) url.searchParams.set('canopiPageId', opts.pageId);
+  return url.href;
+}
+
+/** Deep link into book Discuss — draft opens in UnifiedMessageModal. */
+export function bookDiscussDraftHref(opts: {
+  draftId: string;
+  draftRef?: string | null;
+  dpId?: string | null;
+  pageId?: string | null;
+}): string {
+  const base = bookDiscussHref({
+    dpId: opts.dpId || dpIdFromDraftRef(opts.draftRef),
+    pageId: opts.pageId,
+  });
+  const url = new URL(base);
+  url.searchParams.set('canopiOpen', '1');
+  url.searchParams.set('canopiDraft', opts.draftId);
+  if (opts.pageId) url.searchParams.set('canopiPageId', opts.pageId);
+  return url.href;
+}
+
 /** Intro chapter of The Layered Web with Canopi Discuss auto-opened. */
 export function bookIntroDiscussHref(): string {
   return bookDiscussHref({ pageId: 'intro' });

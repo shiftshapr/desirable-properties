@@ -8,8 +8,9 @@ import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
-import type { ContributionDraft, ContributionHint, ContributionScope } from '@/lib/hermesContribution';
-import { defaultDestination, inferContributionHint } from '@/lib/hermesContribution';
+import { bookDiscussDraftHref, bookDiscussPostHref } from '@/lib/govhub';
+import { defaultDestination, discussLinkLabel, inferContributionHint, saveStagedProposal } from '@/lib/hermesContribution';
+import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionScope, DiscussDeepLink } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -36,6 +37,7 @@ interface Message {
 type SystemNotice = {
   text: string;
   variant: 'success' | 'error' | 'info';
+  links?: DiscussDeepLink[];
 };
 
 interface HermesChatProps {
@@ -71,6 +73,33 @@ function userFacingError(err: unknown): string {
     return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
   return msg;
+}
+
+function resolveDiscussLink(
+  item: ContributionProposal,
+  draftRef: string,
+  data: { link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } },
+  kind: 'post' | 'draft',
+): DiscussDeepLink | null {
+  const id = String(data.link?.id || data.result?.id || '').trim();
+  if (!id) return null;
+  const pageId = String(data.link?.pageId || data.result?.pageId || '').trim() || undefined;
+  const href =
+    data.link?.href
+    || (kind === 'draft'
+      ? bookDiscussDraftHref({ draftId: id, draftRef, pageId })
+      : bookDiscussPostHref({ messageId: id, draftRef, pageId }));
+  return {
+    id,
+    href,
+    pageId,
+    label: discussLinkLabel(item, kind),
+  };
+}
+
+function proposalsFromContributionDraft(draft: ContributionDraft): ContributionProposal[] {
+  if (draft.proposals?.length) return draft.proposals;
+  return [{ id: 'p0', kind: draft.kind, payload: draft.payload }];
 }
 
 function dpChipLabel(dpNum: number): string {
@@ -705,30 +734,77 @@ export default function HermesChat({
   const submitContribution = async () => {
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
+    const draftRef = contributionDraft.draftRef;
+    const items = proposalsFromContributionDraft(contributionDraft);
     try {
-      const destination = defaultDestination(contributionDraft);
-      const res = await fetch('/api/agent/contributions/submit', {
+      const destination = defaultDestination();
+      const links: DiscussDeepLink[] = [];
+      let posted = 0;
+      for (const item of items) {
+        const res = await fetch('/api/agent/contributions/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            kind: item.kind,
+            draftRef,
+            payload: item.payload,
+            destination,
+            threadId: activeThreadId,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Submit failed');
+        const link = resolveDiscussLink(item, draftRef, data, 'post');
+        if (link) links.push(link);
+        posted += 1;
+      }
+      setContributionDraft(null);
+      setSystemNotice({
+        variant: 'success',
+        text: `Posted ${posted} proposal${posted === 1 ? '' : 's'} to Canopi Discuss on ${draftRef}.`,
+        links,
+      });
+    } catch (err) {
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
+    } finally {
+      setContributionBusy(false);
+    }
+  };
+
+  const stageContribution = async () => {
+    if (!contributionDraft || !signedIn) return;
+    setContributionBusy(true);
+    const draftRef = contributionDraft.draftRef;
+    const items = proposalsFromContributionDraft(contributionDraft);
+    try {
+      const res = await fetch('/api/agent/contributions/stage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          kind: contributionDraft.kind,
-          draftRef: contributionDraft.draftRef,
-          payload: contributionDraft.payload,
-          destination,
+          draftRef,
+          proposals: items,
           threadId: activeThreadId,
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Submit failed');
-      const submitted = contributionDraft;
-      const dest = data.destination || destination;
+      if (!res.ok) throw new Error(data.error || 'Stage failed');
+      const staged = Array.isArray(data.staged) ? data.staged : [];
+      const links: DiscussDeepLink[] = [];
+      staged.forEach((row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } }, index: number) => {
+        const item = items.find((p) => p.id === row.proposalId) || items[index];
+        if (!item) return;
+        const link = resolveDiscussLink(item, draftRef, row, 'draft');
+        if (link) links.push(link);
+      });
+      saveStagedProposal(contributionDraft);
       setContributionDraft(null);
       setSystemNotice({
         variant: 'success',
-        text:
-          dest === 'canopi'
-            ? `Posted to Canopi Discuss as a ${submitted.kind} on ${submitted.draftRef}.`
-            : `Submitted to Gov Hub as a ${submitted.kind} on ${submitted.draftRef}.`,
+        text: `Saved ${links.length || items.length} draft${links.length === 1 ? '' : 's'} in Canopi Discuss on ${draftRef}.`,
+        links,
       });
     } catch (err) {
       setSystemNotice({
@@ -814,7 +890,7 @@ export default function HermesChat({
               </p>
             ) : null}
             {systemNotice ? (
-              <p
+              <div
                 className={`rounded-lg border px-3 py-2 text-sm ${
                   systemNotice.variant === 'error'
                     ? 'border-rose-800/60 bg-rose-950/30 text-rose-200'
@@ -823,8 +899,24 @@ export default function HermesChat({
                       : 'border-slate-700 bg-slate-900/80 text-slate-200'
                 }`}
               >
-                {systemNotice.text}
-              </p>
+                <p>{systemNotice.text}</p>
+                {systemNotice.links?.length ? (
+                  <ul className="mt-2 space-y-1">
+                    {systemNotice.links.map((link) => (
+                      <li key={link.id}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-cyan-300 underline decoration-cyan-600/60 underline-offset-2 hover:text-cyan-200"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
             ) : null}
             {messages.map((message) => (
               <div
@@ -936,6 +1028,7 @@ export default function HermesChat({
                 draft={contributionDraft}
                 busy={contributionBusy}
                 onConfirm={submitContribution}
+                onStage={stageContribution}
                 onCancel={() => setContributionDraft(null)}
                 onDraftChange={setContributionDraft}
               />

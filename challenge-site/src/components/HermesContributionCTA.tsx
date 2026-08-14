@@ -79,7 +79,7 @@ export default function HermesContributionCTA({
       <div className="mt-2">{renderButtons()}</div>
       {!signedIn ? (
         <p className="mt-2 text-[11px] text-slate-400">
-          Sign in to draft and submit to Canopi Discuss (default) or Gov Hub.
+          Sign in to draft and submit patches to Canopi Discuss on the book.
         </p>
       ) : null}
     </div>
