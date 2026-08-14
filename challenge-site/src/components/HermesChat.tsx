@@ -32,6 +32,7 @@ interface Message {
   attachments?: string[];
   contributionHint?: ContributionHint | null;
   citedDps?: number[];
+  turnId?: string;
 }
 
 type SystemNotice = {
@@ -120,6 +121,19 @@ function formatUserMessageTimestamp(date: Date): string {
     hour: 'numeric',
     minute: '2-digit',
   });
+}
+
+function turnIdFromMessageId(messageId: string): string | null {
+  if (!messageId.endsWith('-u')) return null;
+  const turnId = messageId.slice(0, -2);
+  return turnId && turnId !== 'intro' ? turnId : null;
+}
+
+function historyFromMessages(msgs: Message[]) {
+  return msgs
+    .filter((m) => m.id !== 'intro')
+    .slice(-10)
+    .map((m) => ({ text: m.text, sender: m.sender }));
 }
 
 async function hydrateLastContributionHint(
@@ -231,6 +245,9 @@ export default function HermesChat({
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editText, setEditText] = useState('');
+  const [editBusy, setEditBusy] = useState(false);
   const [teachOpen, setTeachOpen] = useState(false);
   const [teachTargetId, setTeachTargetId] = useState<string | null>(null);
   const [teachText, setTeachText] = useState('');
@@ -307,6 +324,7 @@ export default function HermesChat({
             text: turn.user,
             sender: 'user',
             timestamp: turn.createdAt ? new Date(turn.createdAt) : new Date(),
+            turnId: turn.id,
           });
         }
         if (turn.assistant) {
@@ -315,6 +333,7 @@ export default function HermesChat({
             text: turn.assistant,
             sender: 'assistant',
             timestamp: turn.createdAt ? new Date(turn.createdAt) : new Date(),
+            turnId: turn.id,
             contributionHint: turn.contributionHint || null,
             citedDps: Array.isArray(turn.citedDps) ? turn.citedDps : [],
           });
@@ -490,43 +509,39 @@ export default function HermesChat({
     void sendMessage(prompt);
   };
 
-  const sendMessage = async (overrideText?: string) => {
-    const text = (typeof overrideText === 'string' ? overrideText : inputText).trim();
-    if ((!text && attachments.length === 0) || isLoading) return;
-
-    if (!signedIn) {
-      promptSignIn();
-      return;
-    }
-
-    const attachmentNames = attachments.map((doc) => doc.name);
-    const displayText = text
-      || (attachmentNames.length
-        ? `Uploaded ${attachmentNames.join(', ')} for review`
-        : '');
+  const submitChatMessage = useCallback(async ({
+    text,
+    priorMessages,
+    threadId: explicitThreadId,
+  }: {
+    text: string;
+    priorMessages: Message[];
+    threadId?: string | null;
+  }) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
 
     const userMessage: Message = {
       id: `${Date.now()}-u`,
-      text: displayText,
+      text: trimmed,
       sender: 'user',
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputText('');
-    const docsToSend = attachments;
-    setAttachments([]);
+    setMessages([...priorMessages, userMessage]);
     setIsLoading(true);
+    setContributionDraft(null);
+    setSystemNotice(null);
 
     try {
-      let threadIdToSend = activeThreadIdRef.current;
+      let threadIdToSend = explicitThreadId ?? activeThreadIdRef.current;
       if (!threadIdToSend) {
         const createRes = await fetch('/api/agent/threads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             surface: `${surface}/agent`,
-            title: displayText.slice(0, 120) || 'New conversation',
+            title: trimmed.slice(0, 120) || 'New conversation',
           }),
         });
         const createData = await createRes.json();
@@ -541,12 +556,9 @@ export default function HermesChat({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: text,
-          documents: toDocumentPayload(docsToSend),
-          history: messages
-            .filter((m) => m.id !== 'intro')
-            .slice(-10)
-            .map((m) => ({ text: m.text, sender: m.sender })),
+          message: trimmed,
+          documents: [],
+          history: historyFromMessages(priorMessages),
           surface,
           sessionId,
           threadId: threadIdToSend,
@@ -562,13 +574,19 @@ export default function HermesChat({
         throw new Error(data.error || 'Request failed');
       }
 
+      const memoryId = typeof data.memoryId === 'string' ? data.memoryId : null;
+      const userId = memoryId ? `${memoryId}-u` : userMessage.id;
+      const assistantId = memoryId ? `${memoryId}-a` : `${Date.now()}-a`;
+
       setMessages((prev) => [
-        ...prev,
+        ...prev.slice(0, -1),
+        { ...userMessage, id: userId, turnId: memoryId || undefined },
         {
-          id: `${Date.now()}-a`,
+          id: assistantId,
           text: data.response,
           sender: 'assistant',
           timestamp: new Date(),
+          turnId: memoryId || undefined,
           contributionHint: data.contributionHint || null,
           citedDps: Array.isArray(data.citedDps) && data.citedDps.length
             ? data.citedDps
@@ -577,7 +595,6 @@ export default function HermesChat({
               : [],
         },
       ]);
-      setSystemNotice(null);
 
       if (data.threadId) {
         persistActiveThread(data.threadId);
@@ -589,8 +606,213 @@ export default function HermesChat({
         variant: 'error',
         text: userFacingError(err),
       });
+      setMessages(priorMessages);
     } finally {
       setIsLoading(false);
+    }
+  }, [apiPath, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
+
+  const sendMessage = async (overrideText?: string) => {
+    const text = (typeof overrideText === 'string' ? overrideText : inputText).trim();
+    if ((!text && attachments.length === 0) || isLoading) return;
+
+    if (!signedIn) {
+      promptSignIn();
+      return;
+    }
+
+    const attachmentNames = attachments.map((doc) => doc.name);
+    const displayText = text
+      || (attachmentNames.length
+        ? `Uploaded ${attachmentNames.join(', ')} for review`
+        : '');
+
+    if (!text && attachments.length > 0) {
+      // Document-only send keeps existing attachment flow
+      const userMessage: Message = {
+        id: `${Date.now()}-u`,
+        text: displayText,
+        sender: 'user',
+        timestamp: new Date(),
+        attachments: attachmentNames,
+      };
+      setMessages((prev) => [...prev, userMessage]);
+      setInputText('');
+      const docsToSend = attachments;
+      setAttachments([]);
+      setIsLoading(true);
+      try {
+        let threadIdToSend = activeThreadIdRef.current;
+        if (!threadIdToSend) {
+          const createRes = await fetch('/api/agent/threads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              surface: `${surface}/agent`,
+              title: displayText.slice(0, 120) || 'New conversation',
+            }),
+          });
+          const createData = await createRes.json();
+          if (createRes.ok && createData.thread?.id) {
+            threadIdToSend = createData.thread.id;
+            persistActiveThread(threadIdToSend);
+            setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
+          }
+        }
+        const response = await fetch(apiPath, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            documents: toDocumentPayload(docsToSend),
+            history: historyFromMessages(messages),
+            surface,
+            sessionId,
+            threadId: threadIdToSend,
+            dpFocus,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Request failed');
+        const memoryId = typeof data.memoryId === 'string' ? data.memoryId : null;
+        setMessages((prev) => [
+          ...prev.slice(0, -1),
+          {
+            ...prev[prev.length - 1],
+            id: memoryId ? `${memoryId}-u` : prev[prev.length - 1].id,
+            turnId: memoryId || undefined,
+          },
+          {
+            id: memoryId ? `${memoryId}-a` : `${Date.now()}-a`,
+            text: data.response,
+            sender: 'assistant',
+            timestamp: new Date(),
+            turnId: memoryId || undefined,
+            contributionHint: data.contributionHint || null,
+            citedDps: Array.isArray(data.citedDps) ? data.citedDps : [],
+          },
+        ]);
+        if (data.threadId) persistActiveThread(data.threadId);
+        if (signedIn) loadThreads();
+      } catch (err) {
+        setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    setInputText('');
+    setAttachments([]);
+    await submitChatMessage({ text, priorMessages: messages });
+  };
+
+  const startEditMessage = (messageId: string, currentText: string) => {
+    if (!signedIn || isLoading) return;
+    setEditingMessageId(messageId);
+    setEditText(currentText);
+  };
+
+  const cancelEditMessage = () => {
+    setEditingMessageId(null);
+    setEditText('');
+  };
+
+  const resubmitEditedMessage = async () => {
+    if (!editingMessageId || editBusy) return;
+    const trimmed = editText.trim();
+    if (!trimmed) return;
+
+    const msgIndex = messages.findIndex((m) => m.id === editingMessageId);
+    if (msgIndex < 0) return;
+
+    const turnId = turnIdFromMessageId(editingMessageId) || messages[msgIndex].turnId;
+    const threadId = activeThreadIdRef.current;
+    if (!threadId || !turnId) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Wait for Hermes to finish replying before editing this message.',
+      });
+      return;
+    }
+
+    const downstreamCount = messages.slice(msgIndex + 1).filter((m) => m.id !== 'intro').length;
+    if (downstreamCount > 0) {
+      const ok = window.confirm(
+        `Replace this message and remove ${downstreamCount} later message${downstreamCount === 1 ? '' : 's'}?`,
+      );
+      if (!ok) return;
+    }
+
+    setEditBusy(true);
+    try {
+      const truncRes = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/truncate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ turnId }),
+      });
+      const truncData = await truncRes.json().catch(() => ({}));
+      if (!truncRes.ok) throw new Error(truncData.error || 'Could not truncate conversation');
+
+      const priorMessages = messages.slice(0, msgIndex);
+      setEditingMessageId(null);
+      setEditText('');
+      await submitChatMessage({ text: trimmed, priorMessages, threadId });
+    } catch (err) {
+      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      await loadThread(threadId);
+    } finally {
+      setEditBusy(false);
+    }
+  };
+
+  const forkEditedMessage = async () => {
+    if (!editingMessageId || editBusy) return;
+    const trimmed = editText.trim();
+    if (!trimmed) return;
+
+    const msgIndex = messages.findIndex((m) => m.id === editingMessageId);
+    if (msgIndex < 0) return;
+
+    const turnId = turnIdFromMessageId(editingMessageId) || messages[msgIndex].turnId;
+    const threadId = activeThreadIdRef.current;
+    if (!threadId || !turnId) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Wait for Hermes to finish replying before forking from this message.',
+      });
+      return;
+    }
+
+    setEditBusy(true);
+    let newThreadId: string | null = null;
+    try {
+      const forkRes = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/fork`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ turnId, surface: `${surface}/agent` }),
+      });
+      const forkData = await forkRes.json().catch(() => ({}));
+      if (!forkRes.ok || !forkData.thread?.id) {
+        throw new Error(forkData.error || 'Could not fork conversation');
+      }
+
+      newThreadId = forkData.thread.id as string;
+      const priorMessages = messages.slice(0, msgIndex);
+      persistActiveThread(newThreadId);
+      setThreads((prev) => [forkData.thread, ...prev.filter((t) => t.id !== newThreadId)]);
+      setEditingMessageId(null);
+      setEditText('');
+      setSystemNotice({
+        variant: 'info',
+        text: 'Started a forked conversation from your edit. The original thread is unchanged.',
+      });
+      await submitChatMessage({ text: trimmed, priorMessages, threadId: newThreadId });
+    } catch (err) {
+      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      if (newThreadId) await loadThread(newThreadId);
+    } finally {
+      setEditBusy(false);
     }
   };
 
@@ -921,7 +1143,7 @@ export default function HermesChat({
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex w-full ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`group flex w-full ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
@@ -930,13 +1152,53 @@ export default function HermesChat({
                       : 'text-slate-100'
                   }`}
                   title={
-                    message.sender === 'user'
+                    message.sender === 'user' && editingMessageId !== message.id
                       ? formatUserMessageTimestamp(message.timestamp)
                       : undefined
                   }
                 >
                   {message.sender === 'assistant' ? (
                     <HermesMarkdown text={message.text} variant="dark" />
+                  ) : editingMessageId === message.id ? (
+                    <div className="space-y-2">
+                      <textarea
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        rows={4}
+                        disabled={editBusy || isLoading}
+                        className="w-full resize-y rounded-lg border border-cyan-500/50 bg-cyan-950/40 px-3 py-2 text-sm text-white placeholder:text-cyan-200/50 focus:border-cyan-300 focus:outline-none focus:ring-1 focus:ring-cyan-300 disabled:opacity-60"
+                        aria-label="Edit message"
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          disabled={editBusy || isLoading || !editText.trim()}
+                          onClick={() => void resubmitEditedMessage()}
+                          className="rounded-md bg-white px-2.5 py-1 text-[11px] font-medium text-cyan-800 hover:bg-cyan-50 disabled:opacity-50"
+                        >
+                          {editBusy ? 'Sending…' : 'Resubmit'}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={editBusy || isLoading || !editText.trim()}
+                          onClick={() => void forkEditedMessage()}
+                          className="rounded-md border border-white/60 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+                        >
+                          Fork
+                        </button>
+                        <button
+                          type="button"
+                          disabled={editBusy}
+                          onClick={cancelEditMessage}
+                          className="rounded-md px-2.5 py-1 text-[11px] text-cyan-100/80 hover:text-white disabled:opacity-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      <p className="text-[10px] text-cyan-100/70">
+                        Resubmit replaces later messages in this thread. Fork keeps the original and starts a new branch.
+                      </p>
+                    </div>
                   ) : (
                     <p className="whitespace-pre-wrap">{message.text}</p>
                   )}
@@ -1018,6 +1280,20 @@ export default function HermesChat({
                     <p className="mt-2 text-[11px] opacity-80">
                       Attached: {message.attachments.join(', ')}
                     </p>
+                  ) : null}
+                  {message.sender === 'user'
+                    && editingMessageId !== message.id
+                    && signedIn
+                    && !isLoading ? (
+                    <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                      <button
+                        type="button"
+                        onClick={() => startEditMessage(message.id, message.text)}
+                        className="rounded-md border border-white/30 px-2 py-0.5 text-[10px] text-white/90 hover:bg-cyan-600/60"
+                      >
+                        Edit
+                      </button>
+                    </div>
                   ) : null}
                 </div>
               </div>
