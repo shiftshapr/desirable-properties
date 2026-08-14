@@ -3,6 +3,14 @@ import { readSession } from '@/lib/auth-session';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
 
+function chatUpstreamSignal(clientSignal: AbortSignal): AbortSignal {
+  const timeout = AbortSignal.timeout(120000);
+  if (typeof AbortSignal.any === 'function') {
+    return AbortSignal.any([clientSignal, timeout]);
+  }
+  return clientSignal;
+}
+
 export async function POST(request: Request) {
   try {
     const session = await readSession();
@@ -29,7 +37,7 @@ export async function POST(request: Request) {
         documents: body.documents || [],
         skipMemoryRecord: Boolean(body.skipMemoryRecord),
       }),
-      signal: AbortSignal.timeout(120000),
+      signal: chatUpstreamSignal(request.signal),
     });
 
     const raw = await upstream.text();
@@ -53,6 +61,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data);
   } catch (err) {
+    if (err instanceof Error && err.name === 'AbortError') {
+      return NextResponse.json({ error: 'Aborted' }, { status: 499 });
+    }
     const message = err instanceof Error ? err.message : 'Chat request failed';
     return NextResponse.json({ error: message }, { status: 500 });
   }

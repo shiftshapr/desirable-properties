@@ -69,6 +69,9 @@ const DEFAULT_STARTER_PROMPTS = [
 
 function userFacingError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
+  if (isAbortError(err)) {
+    return 'Stopped.';
+  }
   if (/did not match the expected pattern/i.test(msg)) {
     return "Hermes couldn't reach the server. Hard-refresh the page and try again — if it keeps failing, the reply may be timing out.";
   }
@@ -76,6 +79,12 @@ function userFacingError(err: unknown): string {
     return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
   return msg;
+}
+
+function isAbortError(err: unknown): boolean {
+  if (err instanceof DOMException && err.name === 'AbortError') return true;
+  if (err instanceof Error && err.name === 'AbortError') return true;
+  return false;
 }
 
 function resolveDiscussLink(
@@ -279,6 +288,25 @@ export default function HermesChat({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const activeThreadIdRef = useRef<string | null>(null);
+  const chatAbortRef = useRef<AbortController | null>(null);
+
+  const beginChatAbort = useCallback(() => {
+    chatAbortRef.current?.abort();
+    const controller = new AbortController();
+    chatAbortRef.current = controller;
+    return controller;
+  }, []);
+
+  const clearChatAbort = useCallback((controller: AbortController) => {
+    if (chatAbortRef.current === controller) {
+      chatAbortRef.current = null;
+    }
+  }, []);
+
+  const stopChat = useCallback(() => {
+    chatAbortRef.current?.abort();
+    chatAbortRef.current = null;
+  }, []);
 
   const syncComposerHeight = useCallback(() => {
     const el = composerRef.current;
@@ -546,6 +574,8 @@ export default function HermesChat({
     setContributionDraft(null);
     setSystemNotice(null);
 
+    const abortController = beginChatAbort();
+
     try {
       let threadIdToSend = explicitThreadId ?? activeThreadIdRef.current;
       if (!threadIdToSend) {
@@ -556,6 +586,7 @@ export default function HermesChat({
             surface: `${surface}/agent`,
             title: trimmed.slice(0, 120) || 'New conversation',
           }),
+          signal: abortController.signal,
         });
         const createData = await createRes.json();
         if (createRes.ok && createData.thread?.id) {
@@ -577,6 +608,7 @@ export default function HermesChat({
           threadId: threadIdToSend,
           dpFocus,
         }),
+        signal: abortController.signal,
       });
 
       const data = await response.json();
@@ -616,15 +648,20 @@ export default function HermesChat({
 
       if (signedIn) loadThreads();
     } catch (err) {
-      setSystemNotice({
-        variant: 'error',
-        text: userFacingError(err),
-      });
+      if (isAbortError(err)) {
+        setSystemNotice({ variant: 'info', text: 'Stopped.' });
+      } else {
+        setSystemNotice({
+          variant: 'error',
+          text: userFacingError(err),
+        });
+      }
       setMessages(priorMessages);
     } finally {
+      clearChatAbort(abortController);
       setIsLoading(false);
     }
-  }, [apiPath, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
+  }, [apiPath, beginChatAbort, clearChatAbort, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
 
   const persistTurnAssistant = useCallback(async (
     turnId: string,
@@ -660,6 +697,8 @@ export default function HermesChat({
     setIsLoading(true);
     setSystemNotice(null);
 
+    const abortController = beginChatAbort();
+
     try {
       const response = await fetch(apiPath, {
         method: 'POST',
@@ -674,6 +713,7 @@ export default function HermesChat({
           dpFocus,
           skipMemoryRecord: true,
         }),
+        signal: abortController.signal,
       });
 
       const data = await response.json();
@@ -707,12 +747,17 @@ export default function HermesChat({
         );
       }
     } catch (err) {
-      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      if (isAbortError(err)) {
+        setSystemNotice({ variant: 'info', text: 'Stopped.' });
+      } else {
+        setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      }
     } finally {
+      clearChatAbort(abortController);
       setAssistantActionId(null);
       setIsLoading(false);
     }
-  }, [apiPath, dpFocus, isLoading, messages, persistTurnAssistant, sessionId, signedIn, surface]);
+  }, [apiPath, beginChatAbort, clearChatAbort, dpFocus, isLoading, messages, persistTurnAssistant, sessionId, signedIn, surface]);
 
   const regenerateAssistantReply = useCallback(async (assistantMessageId: string) => {
     if (!signedIn || isLoading) return;
@@ -732,12 +777,15 @@ export default function HermesChat({
     setSystemNotice(null);
     setContributionDraft(null);
 
+    const abortController = beginChatAbort();
+
     try {
       if (threadId && turnId) {
         const truncRes = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/truncate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ turnId }),
+          signal: abortController.signal,
         });
         if (!truncRes.ok) {
           const truncData = await truncRes.json().catch(() => ({}));
@@ -757,6 +805,7 @@ export default function HermesChat({
           threadId,
           dpFocus,
         }),
+        signal: abortController.signal,
       });
 
       const data = await response.json();
@@ -788,14 +837,21 @@ export default function HermesChat({
       if (data.threadId) persistActiveThread(data.threadId);
       if (signedIn) loadThreads();
     } catch (err) {
-      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      if (isAbortError(err)) {
+        setSystemNotice({ variant: 'info', text: 'Stopped.' });
+      } else {
+        setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      }
       if (threadId) await loadThread(threadId);
     } finally {
+      clearChatAbort(abortController);
       setAssistantActionId(null);
       setIsLoading(false);
     }
   }, [
     apiPath,
+    beginChatAbort,
+    clearChatAbort,
     dpFocus,
     isLoading,
     loadThread,
@@ -836,6 +892,8 @@ export default function HermesChat({
       const docsToSend = attachments;
       setAttachments([]);
       setIsLoading(true);
+      const priorMessages = messages;
+      const abortController = beginChatAbort();
       try {
         let threadIdToSend = activeThreadIdRef.current;
         if (!threadIdToSend) {
@@ -846,6 +904,7 @@ export default function HermesChat({
               surface: `${surface}/agent`,
               title: displayText.slice(0, 120) || 'New conversation',
             }),
+            signal: abortController.signal,
           });
           const createData = await createRes.json();
           if (createRes.ok && createData.thread?.id) {
@@ -860,12 +919,13 @@ export default function HermesChat({
           body: JSON.stringify({
             message: text,
             documents: toDocumentPayload(docsToSend),
-            history: historyFromMessages(messages),
+            history: historyFromMessages(priorMessages),
             surface,
             sessionId,
             threadId: threadIdToSend,
             dpFocus,
           }),
+          signal: abortController.signal,
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Request failed');
@@ -890,8 +950,15 @@ export default function HermesChat({
         if (data.threadId) persistActiveThread(data.threadId);
         if (signedIn) loadThreads();
       } catch (err) {
-        setSystemNotice({ variant: 'error', text: userFacingError(err) });
+        if (isAbortError(err)) {
+          setSystemNotice({ variant: 'info', text: 'Stopped.' });
+        } else {
+          setSystemNotice({ variant: 'error', text: userFacingError(err) });
+        }
+        setMessages(priorMessages);
+        setAttachments(docsToSend);
       } finally {
+        clearChatAbort(abortController);
         setIsLoading(false);
       }
       return;
@@ -1533,7 +1600,7 @@ export default function HermesChat({
             ) : null}
 
             {isLoading && (
-              <div className="flex justify-start">
+              <div className="flex items-center justify-start gap-3">
                 <div className="rounded-2xl px-4 py-3 text-slate-300">
                   <span className="inline-flex gap-1">
                     <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-400" />
@@ -1541,6 +1608,13 @@ export default function HermesChat({
                     <span className="h-2 w-2 animate-bounce rounded-full bg-cyan-400 [animation-delay:0.2s]" />
                   </span>
                 </div>
+                <button
+                  type="button"
+                  onClick={stopChat}
+                  className="rounded-lg border border-rose-800/60 px-3 py-1.5 text-xs font-medium text-rose-200 hover:border-rose-600 hover:bg-rose-950/40"
+                >
+                  Stop
+                </button>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -1621,23 +1695,30 @@ export default function HermesChat({
               </div>
               <button
                 type="button"
-                onClick={signedIn ? () => void sendMessage() : promptSignIn}
+                onClick={signedIn ? (isLoading ? stopChat : () => void sendMessage()) : promptSignIn}
                 disabled={
                   (!signedIn && loginBusy)
-                  || (signedIn && !inputText.trim() && attachments.length === 0)
-                  || isLoading
+                  || (signedIn && !isLoading && !inputText.trim() && attachments.length === 0)
                 }
                 className={
                   signedIn
-                    ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
+                    ? isLoading
+                      ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-rose-800/60 bg-rose-950/40 text-rose-200 hover:border-rose-600 hover:bg-rose-950/70'
+                      : 'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
                     : 'flex h-10 shrink-0 items-center justify-center rounded-lg bg-cyan-700 px-3 text-xs font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400'
                 }
-                aria-label={signedIn ? 'Send message' : 'Sign in to chat'}
+                aria-label={signedIn ? (isLoading ? 'Stop generating' : 'Send message') : 'Sign in to chat'}
               >
                 {signedIn ? (
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
+                  isLoading ? (
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <rect x="6" y="6" width="12" height="12" rx="1" />
+                    </svg>
+                  ) : (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  )
                 ) : (
                   'Sign in'
                 )}
