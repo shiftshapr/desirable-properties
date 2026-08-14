@@ -96,6 +96,7 @@ export type CanopiSearchPost = {
   authorId: string | null;
   authorName: string | null;
   createdAt: string | null;
+  tagType: string | null;
 };
 
 export async function searchCanopiPosts(opts: {
@@ -179,6 +180,7 @@ export async function searchCanopiPosts(opts: {
       authorId: m.authorId,
       authorName: m.authorName,
       createdAt: m.createdAt,
+      tagType: m.tagType,
     });
   }
 

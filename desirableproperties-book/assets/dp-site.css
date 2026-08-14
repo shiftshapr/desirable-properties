@@ -259,9 +259,9 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame.canopi-si
   z-index: 2147483647 !important;
 }
 
-/* Push layout: header spans only the content column, not the docked sidebar strip */
+/* Push layout: header spans full viewport width above the docked sidebar */
 html.dp-header-above-canopi.canopi-embed-push-open .header,
 html.dp-header-above-canopi.dp-canopi-push-open .header {
-  width: calc(100% - var(--canopi-sidebar-width, 380px));
-  max-width: calc(100% - var(--canopi-sidebar-width, 380px));
+  width: 100%;
+  max-width: 100%;
 }

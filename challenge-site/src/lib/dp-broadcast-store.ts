@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { enrichBroadcastAudienceEmails } from '@/lib/dp-broadcast-email';
+import { fetchGovHubPatchStatus } from '@/lib/dp-govhub-patch-status';
 import {
   sanitizeBroadcastHtml,
   stripHtml,
@@ -36,6 +37,9 @@ export type BroadcastAudienceRow = {
   workgroupIds: string[];
   workgroupDetails: BroadcastWorkgroupRef[];
   joinedAt: string | null;
+  hasSubmittedPatch?: boolean;
+  patchCount?: number;
+  patchDpIds?: string[];
 };
 
 export type BroadcastWorkgroupMember = {
@@ -166,7 +170,21 @@ export async function buildBroadcastAudience(opts: {
     return hay.includes(q);
   });
 
-  const { rows: enriched } = await enrichBroadcastAudienceEmails(filtered);
+  const patchStatusByUser = await fetchGovHubPatchStatus();
+  const withPatchStatus = filtered.map((row) => {
+    const userId = String(row.userId || '').trim();
+    const patch = userId ? patchStatusByUser.get(userId) : null;
+    const patchCount = patch?.patchCount || 0;
+    const patchDpIds = patch?.patchDpIds || [];
+    return {
+      ...row,
+      hasSubmittedPatch: patchCount > 0,
+      patchCount,
+      patchDpIds,
+    };
+  });
+
+  const { rows: enriched } = await enrichBroadcastAudienceEmails(withPatchStatus);
   return enriched;
 }
 

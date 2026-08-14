@@ -16,6 +16,12 @@ import {
   formatBroadcastSendMessage,
   type BroadcastRecipientResult,
 } from '@/lib/dp-broadcast-result';
+import {
+  broadcastAudienceMatchesFilters,
+  type BroadcastDpScope,
+  type BroadcastPatchFilter,
+} from '@/lib/dp-broadcast-audience-filter';
+import { extractDpId } from '@/lib/govhub';
 
 const BroadcastRichEditor = dynamic(() => import('@/components/BroadcastRichEditor'), {
   ssr: false,
@@ -30,6 +36,9 @@ type AudienceRow = {
   userName: string | null;
   email: string | null;
   workgroups: string[];
+  hasSubmittedPatch?: boolean;
+  patchCount?: number;
+  patchDpIds?: string[];
 };
 
 type WorkgroupRow = {
@@ -118,6 +127,9 @@ export default function BroadcastAdminPanel() {
   const [selectedWorkgroups, setSelectedWorkgroups] = useState<Set<string>>(initial.selectedWorkgroups);
   const [recipientView, setRecipientView] = useState<RecipientView>(initial.recipientView);
   const [memberSearch, setMemberSearch] = useState(initial.memberSearch);
+  const [patchFilter, setPatchFilter] = useState<BroadcastPatchFilter>('all');
+  const [dpScope, setDpScope] = useState<BroadcastDpScope>('all');
+  const [dpId, setDpId] = useState('');
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [flash, setFlash] = useState<{ kind: 'ok' | 'warn' | 'err'; message: string } | null>(null);
@@ -199,16 +211,39 @@ export default function BroadcastAdminPanel() {
   }, [load]);
 
   const filteredMembers = useMemo(() => {
+    const scoped = audience.filter((row) =>
+      broadcastAudienceMatchesFilters(row, {
+        patchFilter,
+        dpScope,
+        dpId: dpScope === 'specific' ? dpId : null,
+      }),
+    );
     const q = memberSearch.trim().toLowerCase();
-    if (!q) return audience;
-    return audience.filter((row) => {
+    if (!q) return scoped;
+    return scoped.filter((row) => {
       const hay = [row.userName, row.userId, row.email, ...row.workgroups]
         .filter(Boolean)
         .join(' ')
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [audience, memberSearch]);
+  }, [audience, memberSearch, patchFilter, dpScope, dpId]);
+
+  const dpOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const wg of workgroups) {
+      const id = extractDpId(wg.name);
+      if (id) map.set(id, wg.name);
+    }
+    return [...map.entries()].sort(
+      (a, b) => Number(a[0].replace(/^DP/i, '')) - Number(b[0].replace(/^DP/i, '')),
+    );
+  }, [workgroups]);
+
+  const filteredWorkgroups = useMemo(() => {
+    if (dpScope !== 'specific' || !dpId) return workgroups;
+    return workgroups.filter((wg) => extractDpId(wg.name) === dpId);
+  }, [workgroups, dpScope, dpId]);
 
   const workgroupMemberKeys = useMemo(() => {
     const map = new Map<string, Set<string>>();
@@ -872,14 +907,66 @@ export default function BroadcastAdminPanel() {
             </div>
           </div>
 
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="block text-sm text-slate-300">
+              <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">Patch</span>
+              <select
+                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                value={patchFilter}
+                onChange={(e) => setPatchFilter(e.target.value as BroadcastPatchFilter)}
+              >
+                <option value="all">Any</option>
+                <option value="submitted">Submitted a patch</option>
+                <option value="not_submitted">No patch submitted</option>
+              </select>
+            </label>
+            <label className="block text-sm text-slate-300">
+              <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">DP</span>
+              <select
+                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                value={dpScope}
+                onChange={(e) => {
+                  const next = e.target.value as BroadcastDpScope;
+                  setDpScope(next);
+                  if (next === 'all') setDpId('');
+                }}
+              >
+                <option value="all">All DPs</option>
+                <option value="specific">Specific DP</option>
+              </select>
+            </label>
+            {dpScope === 'specific' ? (
+              <label className="block text-sm text-slate-300">
+                <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">DP workgroup</span>
+                <select
+                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                  value={dpId}
+                  onChange={(e) => setDpId(e.target.value)}
+                >
+                  <option value="">Select DP…</option>
+                  {dpOptions.map(([id, label]) => (
+                    <option key={id} value={id}>
+                      {id} · {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+          </div>
+          <p className="mt-2 text-xs text-slate-500">
+            Filters apply to the member list and narrow workgroups when a specific DP is selected.
+            Patch status uses Gov Hub proposal authors
+            {dpScope === 'specific' && dpId ? ` for ${dpId}` : ' across all DP drafts'}.
+          </p>
+
           {loading ? (
             <p className="mt-4 text-sm text-slate-400">Loading audience…</p>
           ) : recipientView === 'workgroups' ? (
-            workgroups.length === 0 ? (
-              <p className="mt-4 text-sm text-slate-500">No workgroups loaded from Gov Hub.</p>
+            filteredWorkgroups.length === 0 ? (
+              <p className="mt-4 text-sm text-slate-500">No workgroups match the current DP filter.</p>
             ) : (
               <ul className="mt-4 max-h-[28rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800">
-                {workgroups.map((wg) => (
+                {filteredWorkgroups.map((wg) => (
                   <li key={wg.id} id={`workgroup-${wg.id}`} className="text-sm">
                     <details
                       className="group"
@@ -996,6 +1083,9 @@ export default function BroadcastAdminPanel() {
                         ) : (
                           'No workgroups'
                         )}
+                        {row.hasSubmittedPatch
+                          ? ` · ${row.patchCount || 1} patch${(row.patchCount || 1) === 1 ? '' : 'es'}`
+                          : ' · No patch'}
                         {row.email ? ' · Receives email' : ' · No email on file'}
                       </p>
                     </div>
