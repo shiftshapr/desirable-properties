@@ -27,6 +27,7 @@ export async function POST(request: Request) {
         displayName: session.displayName || null,
         govHubUserId: session.userId,
         documents: body.documents || [],
+        skipMemoryRecord: Boolean(body.skipMemoryRecord),
       }),
       signal: AbortSignal.timeout(120000),
     });

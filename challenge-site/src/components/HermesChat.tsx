@@ -34,6 +34,7 @@ interface Message {
   contributionHint?: ContributionHint | null;
   citedDps?: number[];
   turnId?: string;
+  truncated?: boolean;
 }
 
 type SystemNotice = {
@@ -112,6 +113,16 @@ function dpChipLabel(dpNum: number): string {
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 /** Matches Tailwind `max-h-40` on the composer textarea. */
 const COMPOSER_MAX_HEIGHT_PX = 160;
+
+const CONTINUE_PROMPT =
+  'Continue your previous reply from exactly where you stopped. Do not repeat content you already wrote. Complete any unfinished numbered items, tables, or sentences and end with proper punctuation.';
+
+function looksTruncatedReply(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed) return false;
+  if (/[.!?)"'\]]$/.test(trimmed)) return false;
+  return /[a-zA-Z0-9'"]$/.test(trimmed);
+}
 
 function formatUserMessageTimestamp(date: Date): string {
   return date.toLocaleString(undefined, {
@@ -246,6 +257,7 @@ export default function HermesChat({
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [assistantActionId, setAssistantActionId] = useState<string | null>(null);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
   const [editBusy, setEditBusy] = useState(false);
@@ -594,6 +606,7 @@ export default function HermesChat({
             : Array.isArray(data.mentionedDps)
               ? data.mentionedDps
               : [],
+          truncated: Boolean(data.truncated) || looksTruncatedReply(String(data.response || '')),
         },
       ]);
 
@@ -612,6 +625,187 @@ export default function HermesChat({
       setIsLoading(false);
     }
   }, [apiPath, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
+
+  const persistTurnAssistant = useCallback(async (
+    turnId: string,
+    assistantMessage: string,
+    citedDps: number[],
+    contributionHint: ContributionHint | null | undefined,
+  ) => {
+    try {
+      await fetch(`/api/agent/turns/${encodeURIComponent(turnId)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          assistantMessage,
+          citedDps,
+          contributionHint: contributionHint || null,
+        }),
+      });
+    } catch {
+      /* non-fatal */
+    }
+  }, []);
+
+  const continueAssistantReply = useCallback(async (assistantMessageId: string) => {
+    if (!signedIn || isLoading) return;
+
+    const assistantIdx = messages.findIndex((m) => m.id === assistantMessageId);
+    if (assistantIdx < 1) return;
+
+    const assistantMsg = messages[assistantIdx];
+    const historyPrior = messages.slice(0, assistantIdx);
+
+    setAssistantActionId(assistantMessageId);
+    setIsLoading(true);
+    setSystemNotice(null);
+
+    try {
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: CONTINUE_PROMPT,
+          documents: [],
+          history: historyFromMessages([...historyPrior, assistantMsg]),
+          surface,
+          sessionId,
+          threadId: activeThreadIdRef.current,
+          dpFocus,
+          skipMemoryRecord: true,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Continue failed');
+
+      const continuation = String(data.response || '').trim();
+      const combined = continuation
+        ? `${assistantMsg.text.trimEnd()}\n\n${continuation}`
+        : assistantMsg.text;
+
+      const citedDps = Array.isArray(data.citedDps) && data.citedDps.length
+        ? data.citedDps
+        : assistantMsg.citedDps || [];
+
+      const nextMessage: Message = {
+        ...assistantMsg,
+        text: combined,
+        truncated: Boolean(data.truncated) || looksTruncatedReply(combined),
+        contributionHint: data.contributionHint ?? assistantMsg.contributionHint,
+        citedDps,
+      };
+
+      setMessages((prev) => prev.map((m) => (m.id === assistantMessageId ? nextMessage : m)));
+
+      if (assistantMsg.turnId) {
+        await persistTurnAssistant(
+          assistantMsg.turnId,
+          combined,
+          citedDps,
+          nextMessage.contributionHint,
+        );
+      }
+    } catch (err) {
+      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+    } finally {
+      setAssistantActionId(null);
+      setIsLoading(false);
+    }
+  }, [apiPath, dpFocus, isLoading, messages, persistTurnAssistant, sessionId, signedIn, surface]);
+
+  const regenerateAssistantReply = useCallback(async (assistantMessageId: string) => {
+    if (!signedIn || isLoading) return;
+
+    const assistantIdx = messages.findIndex((m) => m.id === assistantMessageId);
+    if (assistantIdx < 1) return;
+
+    const userMsg = messages[assistantIdx - 1];
+    if (userMsg.sender !== 'user') return;
+
+    const turnId = messages[assistantIdx].turnId;
+    const threadId = activeThreadIdRef.current;
+    const historyPrior = messages.slice(0, assistantIdx - 1);
+
+    setAssistantActionId(assistantMessageId);
+    setIsLoading(true);
+    setSystemNotice(null);
+    setContributionDraft(null);
+
+    try {
+      if (threadId && turnId) {
+        const truncRes = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/truncate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ turnId }),
+        });
+        if (!truncRes.ok) {
+          const truncData = await truncRes.json().catch(() => ({}));
+          throw new Error(truncData.error || 'Could not reset this reply');
+        }
+      }
+
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMsg.text,
+          documents: [],
+          history: historyFromMessages(historyPrior),
+          surface,
+          sessionId,
+          threadId,
+          dpFocus,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Regenerate failed');
+
+      const memoryId = typeof data.memoryId === 'string' ? data.memoryId : turnId || null;
+      const userId = memoryId ? `${memoryId}-u` : userMsg.id;
+      const assistantId = memoryId ? `${memoryId}-a` : assistantMessageId;
+
+      setMessages([
+        ...historyPrior,
+        { ...userMsg, id: userId, turnId: memoryId || userMsg.turnId },
+        {
+          id: assistantId,
+          text: data.response,
+          sender: 'assistant',
+          timestamp: new Date(),
+          turnId: memoryId || undefined,
+          contributionHint: data.contributionHint || null,
+          citedDps: Array.isArray(data.citedDps) && data.citedDps.length
+            ? data.citedDps
+            : Array.isArray(data.mentionedDps)
+              ? data.mentionedDps
+              : [],
+          truncated: Boolean(data.truncated) || looksTruncatedReply(String(data.response || '')),
+        },
+      ]);
+
+      if (data.threadId) persistActiveThread(data.threadId);
+      if (signedIn) loadThreads();
+    } catch (err) {
+      setSystemNotice({ variant: 'error', text: userFacingError(err) });
+      if (threadId) await loadThread(threadId);
+    } finally {
+      setAssistantActionId(null);
+      setIsLoading(false);
+    }
+  }, [
+    apiPath,
+    dpFocus,
+    isLoading,
+    loadThread,
+    loadThreads,
+    messages,
+    persistActiveThread,
+    sessionId,
+    signedIn,
+    surface,
+  ]);
 
   const sendMessage = async (overrideText?: string) => {
     const text = (typeof overrideText === 'string' ? overrideText : inputText).trim();
@@ -1254,6 +1448,29 @@ export default function HermesChat({
                   {message.sender === 'assistant'
                     && message.id !== 'intro' ? (
                     <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
+                      {(message.truncated || looksTruncatedReply(message.text)) ? (
+                        <p className="mb-1 w-full text-[11px] text-amber-200/90">
+                          Response may be incomplete.
+                        </p>
+                      ) : null}
+                      {(message.truncated || looksTruncatedReply(message.text)) ? (
+                        <button
+                          type="button"
+                          disabled={isLoading}
+                          onClick={() => void continueAssistantReply(message.id)}
+                          className="rounded-md border border-amber-700/70 bg-amber-950/30 px-2 py-1 text-[11px] text-amber-100 hover:bg-amber-950/50 disabled:opacity-50"
+                        >
+                          {assistantActionId === message.id && isLoading ? 'Continuing…' : 'Continue'}
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        disabled={isLoading}
+                        onClick={() => void regenerateAssistantReply(message.id)}
+                        className="rounded-md border border-slate-600 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-800/80 disabled:opacity-50"
+                      >
+                        {assistantActionId === message.id && isLoading ? 'Regenerating…' : 'Regenerate'}
+                      </button>
                       <button
                         type="button"
                         onClick={() => void copyAssistantMarkdown(message.id, message.text)}
