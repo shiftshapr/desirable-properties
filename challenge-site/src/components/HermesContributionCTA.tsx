@@ -1,6 +1,7 @@
 'use client';
 
 import type { ContributionHint, ContributionScope } from '@/lib/hermesContribution';
+import { shouldShowContributionCTA } from '@/lib/hermesContribution';
 
 interface HermesContributionCTAProps {
   hint: ContributionHint;
@@ -17,7 +18,7 @@ export default function HermesContributionCTA({
   onDraft,
   onSignIn,
 }: HermesContributionCTAProps) {
-  if (!hint.contributionReady) return null;
+  if (!shouldShowContributionCTA(hint)) return null;
 
   const scope = hint.recommendedScope || 'message';
   const reason = hint.reason || 'This looks ready to draft for Canopi Discuss.';

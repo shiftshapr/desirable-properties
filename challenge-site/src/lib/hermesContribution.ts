@@ -6,11 +6,63 @@ export type PatchMode = 'replace' | 'insert';
 
 export interface ContributionHint {
   contributionReady: boolean;
+  /** Set after user submits from this exchange — hides the draft CTA. */
+  contributionSubmitted?: boolean;
+  submittedDraftRef?: string | null;
+  submittedMode?: ContributionSubmitMode | null;
+  submittedAt?: string | null;
   recommendedScope?: ContributionScope | 'ambiguous';
   reason?: string;
   suggestedKind?: 'comment' | 'patch' | null;
   draftRefHint?: string | null;
   defaultScope?: ContributionScope;
+}
+
+export function shouldShowContributionCTA(
+  hint: MessageContributionHint | null | undefined,
+): boolean {
+  if (!hint || isContributionRecordHint(hint)) return false;
+  if ('contributionSubmitted' in hint && hint.contributionSubmitted) return false;
+  return Boolean(hint.contributionReady);
+}
+
+export function markHintSubmitted(
+  hint: ContributionHint,
+  draftRef: string,
+  mode: ContributionSubmitMode,
+): ContributionHint {
+  return {
+    ...hint,
+    contributionReady: false,
+    contributionSubmitted: true,
+    submittedDraftRef: draftRef,
+    submittedMode: mode,
+    submittedAt: new Date().toISOString(),
+  };
+}
+
+/** Summaries of proposals already filed — pass to draft API to avoid duplicates. */
+export function submittedProposalExclusionsFromMessages(
+  messages: Array<{ sender?: string; text?: string; contributionRecord?: boolean; contributionHint?: MessageContributionHint | null }>,
+): string[] {
+  const exclusions: string[] = [];
+  for (const m of messages) {
+    if (m.sender !== 'assistant') continue;
+    if (!m.contributionRecord && !isContributionRecordHint(m.contributionHint)) continue;
+    const text = String(m.text || '').trim();
+    if (!text) continue;
+
+    const sectionMatches = text.matchAll(/^###\s+\d+\.\s+(.+)$/gm);
+    for (const match of sectionMatches) {
+      exclusions.push(String(match[1]).trim());
+    }
+
+    const anchorMatch = text.match(/\*\*Anchor passage\*\*\s*\n+([\s\S]*?)(?:\n\n\*\*|$)/);
+    if (anchorMatch?.[1]) {
+      exclusions.push(`Anchor: ${anchorMatch[1].trim().slice(0, 200)}`);
+    }
+  }
+  return [...new Set(exclusions.filter(Boolean))];
 }
 
 /** Persisted on thread after submit — not a draft CTA. */

@@ -10,7 +10,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
-import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, formatContributionSubmissionMarkdown, formatContributionUserSummary, inferContributionHint, isContributionRecordHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, proposalsFromContributionDraft, savePendingContributionDraft, saveStagedProposal } from '@/lib/hermesContribution';
+import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, formatContributionSubmissionMarkdown, formatContributionUserSummary, inferContributionHint, isContributionRecordHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, markHintSubmitted, proposalsFromContributionDraft, savePendingContributionDraft, saveStagedProposal, shouldShowContributionCTA, submittedProposalExclusionsFromMessages } from '@/lib/hermesContribution';
 import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionRecordHint, ContributionScope, ContributionSubmitMode, DiscussDeepLink, MessageContributionHint } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
@@ -190,6 +190,57 @@ function turnIdFromMessageId(messageId: string): string | null {
   return turnId && turnId !== 'intro' ? turnId : null;
 }
 
+function turnIdFromAssistantMessageId(messageId: string): string | null {
+  if (!messageId.endsWith('-a')) return null;
+  const turnId = messageId.slice(0, -2);
+  return turnId && turnId !== 'intro' ? turnId : null;
+}
+
+/** Hide draft CTA on assistant turns that already have a contribution record after them. */
+function suppressSubmittedContributionHints(messages: Message[]): Message[] {
+  const recordIndices = messages
+    .map((m, i) => (isContributionRecordHint(m.contributionHint) || m.contributionRecord ? i : -1))
+    .filter((i) => i >= 0);
+  if (!recordIndices.length) return messages;
+
+  return messages.map((m, idx) => {
+    if (m.sender !== 'assistant' || isContributionRecordHint(m.contributionHint)) return m;
+    const hasRecordAfter = recordIndices.some((ri) => ri > idx);
+    if (!hasRecordAfter) return m;
+    if (m.contributionHint && 'contributionSubmitted' in m.contributionHint && m.contributionHint.contributionSubmitted) {
+      return m;
+    }
+    if (!m.contributionHint || !('contributionReady' in m.contributionHint) || !m.contributionHint.contributionReady) {
+      return m;
+    }
+    const draftRef =
+      ('submittedDraftRef' in m.contributionHint && m.contributionHint.submittedDraftRef)
+      || m.contributionHint.draftRefHint
+      || 'ML-5';
+    return {
+      ...m,
+      contributionHint: markHintSubmitted(m.contributionHint, String(draftRef), 'publish'),
+    };
+  });
+}
+
+function findContributionHydrateIndex(messages: Message[]): number {
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    const m = messages[i];
+    if (m.sender !== 'assistant' || m.id === 'intro') continue;
+    if (isContributionRecordHint(m.contributionHint) || m.contributionRecord) continue;
+    if (m.contributionHint && 'contributionSubmitted' in m.contributionHint && m.contributionHint.contributionSubmitted) {
+      continue;
+    }
+    const hasRecordAfter = messages
+      .slice(i + 1)
+      .some((later) => isContributionRecordHint(later.contributionHint) || later.contributionRecord);
+    if (hasRecordAfter) continue;
+    return i;
+  }
+  return -1;
+}
+
 function historyFromMessages(msgs: Message[]) {
   return msgs
     .filter((m) => m.id !== 'intro')
@@ -201,21 +252,15 @@ async function hydrateLastContributionHint(
   messages: Message[],
   dpFocus: number | null,
 ): Promise<Message[]> {
-  let lastAssistantIdx = -1;
-  for (let i = messages.length - 1; i >= 0; i -= 1) {
-    if (messages[i].sender === 'assistant' && messages[i].id !== 'intro') {
-      lastAssistantIdx = i;
-      break;
-    }
-  }
+  const lastAssistantIdx = findContributionHydrateIndex(messages);
   if (lastAssistantIdx < 0) return messages;
 
   const assistantMessage = messages[lastAssistantIdx];
-  if (assistantMessage.contributionHint?.contributionReady) return messages;
+  if (shouldShowContributionCTA(assistantMessage.contributionHint)) return messages;
 
   const userMessage = [...messages.slice(0, lastAssistantIdx)]
     .reverse()
-    .find((m) => m.sender === 'user');
+    .find((m) => m.sender === 'user' && !m.contributionRecord);
   if (!userMessage?.text || !assistantMessage.text) return messages;
 
   const history = messages
@@ -425,7 +470,10 @@ export default function HermesChat({
           });
         }
       }
-      const hydrated = await hydrateLastContributionHint(restored, dpFocus);
+      const hydrated = await hydrateLastContributionHint(
+        suppressSubmittedContributionHints(restored),
+        dpFocus,
+      );
       setMessages(hydrated);
       const pending = loadPendingContributionDraft(threadId);
       if (pending?.draft) {
@@ -964,6 +1012,14 @@ export default function HermesChat({
       return;
     }
 
+    // Always allow follow-up chat while a contribution panel is open or submitting.
+    if (contributionDraft) {
+      setContributionDraft(null);
+      clearPendingContributionDraft();
+      draftingMessageIdRef.current = null;
+      setDraftingMessageId(null);
+    }
+
     const attachmentNames = attachments.map((doc) => doc.name);
     const displayText = text
       || (attachmentNames.length
@@ -1267,6 +1323,7 @@ export default function HermesChat({
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
     draftingMessageIdRef.current = assistantMessageId;
+    const excludeProposals = submittedProposalExclusionsFromMessages(messages);
     try {
       const res = await fetch('/api/agent/contributions/draft', {
         method: 'POST',
@@ -1279,6 +1336,7 @@ export default function HermesChat({
           dpFocus,
           kind: draftHint?.suggestedKind || undefined,
           draftRef: draftHint?.draftRefHint || undefined,
+          excludeProposals,
         }),
       });
       const data = await res.json();
@@ -1393,6 +1451,11 @@ export default function HermesChat({
 
       let recordTurnId: string | null = null;
       const threadId = activeThreadIdRef.current;
+      const sourceAssistantMessageId = draftingMessageIdRef.current;
+      const sourceTurnId =
+        messages.find((m) => m.id === sourceAssistantMessageId)?.turnId
+        || (sourceAssistantMessageId ? turnIdFromAssistantMessageId(sourceAssistantMessageId) : null);
+
       if (threadId) {
         try {
           const recordRes = await fetch(
@@ -1403,12 +1466,14 @@ export default function HermesChat({
               body: JSON.stringify({
                 userSummary,
                 bodyMarkdown,
+                sourceTurnId,
                 meta: {
                   mode,
                   draftRef,
                   destination: defaultDestination(),
                   links,
                   title: contributionDraft.title,
+                  sourceTurnId,
                 },
               }),
             },
@@ -1424,26 +1489,45 @@ export default function HermesChat({
 
       const now = new Date();
       const turnKey = recordTurnId || `local-${Date.now()}`;
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `${turnKey}-u`,
-          text: userSummary,
-          sender: 'user',
-          timestamp: now,
-          turnId: recordTurnId || undefined,
-          contributionRecord: true,
-        },
-        {
-          id: `${turnKey}-a`,
-          text: bodyMarkdown,
-          sender: 'assistant',
-          timestamp: now,
-          turnId: recordTurnId || undefined,
-          contributionHint: recordHint,
-          contributionRecord: true,
-        },
-      ]);
+      const submittedHint = sourceAssistantMessageId
+        ? messages.find((m) => m.id === sourceAssistantMessageId)?.contributionHint
+        : null;
+
+      setMessages((prev) => {
+        const marked = sourceAssistantMessageId && submittedHint && !isContributionRecordHint(submittedHint)
+          ? prev.map((m) =>
+            m.id === sourceAssistantMessageId
+              ? {
+                ...m,
+                contributionHint: markHintSubmitted(submittedHint as ContributionHint, draftRef, mode),
+              }
+              : m,
+          )
+          : prev;
+        return [
+          ...marked,
+          {
+            id: `${turnKey}-u`,
+            text: userSummary,
+            sender: 'user',
+            timestamp: now,
+            turnId: recordTurnId || undefined,
+            contributionRecord: true,
+          },
+          {
+            id: `${turnKey}-a`,
+            text: bodyMarkdown,
+            sender: 'assistant',
+            timestamp: now,
+            turnId: recordTurnId || undefined,
+            contributionHint: recordHint,
+            contributionRecord: true,
+          },
+        ];
+      });
+      draftingMessageIdRef.current = null;
+      setDraftingMessageId(null);
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     } catch (err) {
       const message = userFacingError(err);
       const needsSignIn = /sign in again|session expired/i.test(message);
@@ -1744,11 +1828,9 @@ export default function HermesChat({
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
-                    && message.contributionHint
-                    && 'contributionReady' in message.contributionHint
-                    && message.contributionHint.contributionReady ? (
+                    && shouldShowContributionCTA(message.contributionHint) ? (
                     <HermesContributionCTA
-                      hint={message.contributionHint}
+                      hint={message.contributionHint as ContributionHint}
                       busy={contributionBusy && draftingMessageId === message.id}
                       signedIn={signedIn}
                       onDraft={(scope) => draftContribution(scope, message.id)}

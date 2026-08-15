@@ -29,6 +29,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         userSummary: body.userSummary,
         bodyMarkdown: body.bodyMarkdown,
         meta: body.meta || {},
+        sourceTurnId: body.sourceTurnId || null,
       }),
       signal: AbortSignal.timeout(15000),
     },
