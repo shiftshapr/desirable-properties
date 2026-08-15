@@ -10,7 +10,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
-import { defaultDestination, discussLinkLabel, inferContributionHint, saveStagedProposal } from '@/lib/hermesContribution';
+import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, inferContributionHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, savePendingContributionDraft, saveStagedProposal } from '@/lib/hermesContribution';
 import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionScope, ContributionSubmitMode, DiscussDeepLink } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
@@ -328,6 +328,8 @@ export default function HermesChat({
       : `sess-${Date.now()}`,
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const contributionPanelRef = useRef<HTMLDivElement>(null);
+  const draftingMessageIdRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const activeThreadIdRef = useRef<string | null>(null);
@@ -425,7 +427,27 @@ export default function HermesChat({
       }
       const hydrated = await hydrateLastContributionHint(restored, dpFocus);
       setMessages(hydrated);
-      setContributionDraft(null);
+      const pending = loadPendingContributionDraft(threadId);
+      if (pending?.draft) {
+        setContributionDraft(pending.draft);
+        draftingMessageIdRef.current = pending.assistantMessageId || null;
+        setSystemNotice({
+          variant: 'info',
+          text: 'Restored your in-progress contribution draft from this session.',
+        });
+      } else {
+        const recentStaged = loadStagedProposals()[0];
+        if (recentStaged) {
+          setContributionDraft(recentStaged);
+          draftingMessageIdRef.current = null;
+          setSystemNotice({
+            variant: 'info',
+            text: 'Restored your last locally saved contribution draft. Review and submit when ready.',
+          });
+        } else {
+          setContributionDraft(null);
+        }
+      }
       setAttachments([]);
       setAttachError(null);
       persistActiveThread(threadId);
@@ -470,6 +492,7 @@ export default function HermesChat({
 
   const startNewConversation = () => {
     persistActiveThread(null);
+    clearPendingContributionDraft();
     setContributionDraft(null);
     setAttachments([]);
     setAttachError(null);
@@ -478,6 +501,32 @@ export default function HermesChat({
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
   };
+
+  const updateContributionDraft = useCallback((draft: ContributionDraft | null) => {
+    setContributionDraft(draft);
+    if (draft) {
+      savePendingContributionDraft(
+        draft,
+        activeThreadIdRef.current,
+        draftingMessageIdRef.current,
+      );
+    }
+  }, []);
+
+  const cancelContributionDraft = useCallback(async () => {
+    if (contributionDraft) {
+      const ok = await DpDialog.confirm({
+        title: 'Discard contribution draft?',
+        message: 'Your edits will stay in local backup until you submit successfully. Discard the open panel?',
+        variant: 'warning',
+        confirmLabel: 'Discard',
+        cancelLabel: 'Keep editing',
+      });
+      if (!ok) return;
+    }
+    setContributionDraft(null);
+    clearPendingContributionDraft();
+  }, [contributionDraft]);
 
   const renameThread = useCallback(async (threadId: string, title: string) => {
     const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
@@ -1216,6 +1265,7 @@ export default function HermesChat({
 
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
+    draftingMessageIdRef.current = assistantMessageId;
     try {
       const res = await fetch('/api/agent/contributions/draft', {
         method: 'POST',
@@ -1236,6 +1286,11 @@ export default function HermesChat({
         throw new Error('Draft response was empty — try again in a moment');
       }
       setContributionDraft(data.draft);
+      savePendingContributionDraft(
+        data.draft,
+        activeThreadIdRef.current,
+        assistantMessageId,
+      );
       setSystemNotice(null);
     } catch (err) {
       setSystemNotice({
@@ -1320,6 +1375,7 @@ export default function HermesChat({
       }
 
       setContributionDraft(null);
+      clearPendingContributionDraft();
       const count = items.length;
       const actionLabel = isDraft ? 'saved as draft' : 'published';
       await DpDialog.alert({
@@ -1332,9 +1388,18 @@ export default function HermesChat({
     } catch (err) {
       const message = userFacingError(err);
       const needsSignIn = /sign in again|session expired/i.test(message);
+      if (contributionDraft) {
+        savePendingContributionDraft(
+          contributionDraft,
+          activeThreadIdRef.current,
+          draftingMessageIdRef.current,
+        );
+        saveStagedProposal(contributionDraft);
+      }
+      contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       await DpDialog.alert({
         title: isDraft ? 'Could not save drafts' : 'Could not publish',
-        message,
+        message: `${message}\n\nYour draft is still open below — nothing was lost. Try Save to my drafts, or edit and retry.`,
         variant: 'danger',
         confirmLabel: needsSignIn ? 'Sign in' : 'OK',
       });
@@ -1629,13 +1694,15 @@ export default function HermesChat({
             ))}
 
             {contributionDraft ? (
-              <HermesContributionPanel
-                draft={contributionDraft}
-                busy={contributionBusy}
-                onSubmit={submitContribution}
-                onCancel={() => setContributionDraft(null)}
-                onDraftChange={setContributionDraft}
-              />
+              <div ref={contributionPanelRef}>
+                <HermesContributionPanel
+                  draft={contributionDraft}
+                  busy={contributionBusy}
+                  onSubmit={submitContribution}
+                  onCancel={() => void cancelContributionDraft()}
+                  onDraftChange={updateContributionDraft}
+                />
+              </div>
             ) : null}
 
             {isLoading && (

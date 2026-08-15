@@ -45,6 +45,67 @@ export type DiscussLinkKind = 'post' | 'draft';
 export type ContributionSubmitMode = 'draft' | 'publish';
 
 const STAGED_KEY = 'hermes-staged-proposals-v1';
+const PENDING_DRAFT_KEY = 'hermes-pending-contribution-draft-v1';
+
+export interface PendingContributionDraft {
+  threadId: string | null;
+  assistantMessageId?: string | null;
+  draft: ContributionDraft;
+  savedAt: string;
+}
+
+export function savePendingContributionDraft(
+  draft: ContributionDraft,
+  threadId: string | null,
+  assistantMessageId?: string | null,
+): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const payload: PendingContributionDraft = {
+      threadId,
+      assistantMessageId: assistantMessageId || null,
+      draft,
+      savedAt: new Date().toISOString(),
+    };
+    sessionStorage.setItem(PENDING_DRAFT_KEY, JSON.stringify(payload));
+    saveStagedProposal(draft);
+  } catch {
+    /* ignore quota errors */
+  }
+}
+
+export function loadPendingContributionDraft(threadId: string | null): PendingContributionDraft | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = sessionStorage.getItem(PENDING_DRAFT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PendingContributionDraft;
+    if (!parsed?.draft) return null;
+    if (threadId && parsed.threadId && parsed.threadId !== threadId) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+export function clearPendingContributionDraft(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    sessionStorage.removeItem(PENDING_DRAFT_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Most recent staged draft for a draftRef (e.g. ML-5), from localStorage backup. */
+export function loadStagedProposalForRef(draftRef: string): ContributionDraft | null {
+  const ref = String(draftRef || '').trim().toUpperCase();
+  if (!ref) return null;
+  for (const row of loadStagedProposals()) {
+    if (String(row.draftRef || '').trim().toUpperCase() === ref) return row;
+  }
+  return null;
+}
 
 export function defaultDestination(): ContributionDestination {
   return 'canopi';

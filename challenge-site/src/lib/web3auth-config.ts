@@ -27,6 +27,16 @@ export function getGovHubBaseUrl() {
   return String(process.env.GOVHUB_BASE_URL || 'https://hub.themetalayer.org').replace(/\/$/, '');
 }
 
+/** Server-side Gov Hub proxy — prefer loopback to avoid nginx HTML 502 pages. */
+export function getGovHubProxyBaseUrl() {
+  const explicit = String(process.env.GOVHUB_INTERNAL_BASE_URL || '').trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  if (process.env.NODE_ENV === 'production') {
+    return 'http://127.0.0.1:8000';
+  }
+  return getGovHubBaseUrl();
+}
+
 export function getHermesChatUrl() {
   return String(process.env.HERMES_CHAT_URL || 'http://127.0.0.1:8790').replace(/\/$/, '');
 }
