@@ -21,6 +21,7 @@ import {
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
 import { useAuth } from '@/lib/auth-context';
+import { refreshSessionIdToken } from '@/lib/web3auth-login';
 import type { AuthUser } from '@/lib/auth-types';
 import { dpDetailHref } from '@/lib/dp-links';
 import { useCurrentFromPath } from '@/lib/useCurrentFromPath';
@@ -78,7 +79,19 @@ function userFacingError(err: unknown): string {
   if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted|load failed/i.test(msg)) {
     return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
   }
+  if (/jwt expired|session expired|sign in again/i.test(msg)) {
+    return msg;
+  }
+  if (/internal server error/i.test(msg)) {
+    return 'Publish failed on Canopi Discuss. Your sign-in may have expired — sign in again and retry. If it persists, try Save to my drafts first.';
+  }
   return msg;
+}
+
+async function ensureFreshCanopiSession(): Promise<void> {
+  const refreshed = await refreshSessionIdToken();
+  if (refreshed) return;
+  throw new Error('Your sign-in session expired. Sign in again, then retry publishing.');
 }
 
 function isAbortError(err: unknown): boolean {
@@ -1256,6 +1269,7 @@ export default function HermesChat({
     const items = proposalsFromContributionDraft(contributionDraft);
     const isDraft = mode === 'draft';
     try {
+      await ensureFreshCanopiSession();
       const links: DiscussDeepLink[] = [];
 
       if (isDraft) {
@@ -1269,7 +1283,7 @@ export default function HermesChat({
           }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Could not save drafts');
+        if (!res.ok) throw new Error(data.details || data.error || 'Could not save drafts');
         const staged = Array.isArray(data.staged) ? data.staged : [];
         staged.forEach((row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } }, index: number) => {
           const item = items.find((p) => p.id === row.proposalId) || items[index];
@@ -1299,7 +1313,7 @@ export default function HermesChat({
             }),
           });
           const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Submit failed');
+          if (!res.ok) throw new Error(data.details || data.error || 'Submit failed');
           const link = resolveDiscussLink(item, draftRef, data, 'post');
           if (link) links.push(link);
         }
@@ -1316,12 +1330,15 @@ export default function HermesChat({
         links: links.map((link) => ({ href: link.href, label: link.label })),
       });
     } catch (err) {
+      const message = userFacingError(err);
+      const needsSignIn = /sign in again|session expired/i.test(message);
       await DpDialog.alert({
         title: isDraft ? 'Could not save drafts' : 'Could not publish',
-        message: userFacingError(err),
+        message,
         variant: 'danger',
-        confirmLabel: 'OK',
+        confirmLabel: needsSignIn ? 'Sign in' : 'OK',
       });
+      if (needsSignIn) promptSignIn();
     } finally {
       setContributionBusy(false);
     }

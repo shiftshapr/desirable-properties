@@ -447,6 +447,31 @@ export function loginWithEmail(email: string) {
   })();
 }
 
+/**
+ * Refresh the encrypted site session cookie with a fresh Web3Auth idToken.
+ * Required before Canopi publish/stage — the stored idToken expires ~1h while
+ * the session cookie can last 24h.
+ */
+export async function refreshSessionIdToken(): Promise<boolean> {
+  try {
+    const instance = await initWeb3Auth();
+    if (!instance.connected) return false;
+
+    const idToken = await resolveIdentityToken(instance);
+    if (!idToken) return false;
+
+    const res = await fetch('/api/auth/web3auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ idToken, evmAddress: '' }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function logoutWeb3Auth() {
   dismissWeb3AuthModal(web3auth);
   if (web3auth) {
