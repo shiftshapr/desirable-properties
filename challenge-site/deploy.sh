@@ -3,7 +3,7 @@ set -euo pipefail
 
 APP_DIR="/home/ubuntu/desirable-properties/challenge-site"
 REPO_ROOT="/home/ubuntu/desirable-properties"
-NGINX_CONF="/home/ubuntu/nginx/desirableproperties.org.conf"
+NGINX_CONF="${APP_DIR}/nginx/desirableproperties.org.conf"
 REQUIRED_BRANCH="main"
 
 cd "$APP_DIR"
@@ -19,6 +19,8 @@ fi
 echo "[0/5] Branch guard OK (${REQUIRED_BRANCH})"
 
 # Build to a side directory so the live PM2 process keeps serving .next-prod (no outage window).
+# Never run `DP_ENV=prod npm run build` on this checkout — that writes into the
+# live distDir and Next.js returns 500 text/plain (21B) for /_next/static CSS.
 PROD_BUILD_DIR=".next-prod-build"
 PROD_LIVE_DIR=".next-prod"
 
@@ -71,7 +73,8 @@ if [[ "$(id -u)" -eq 0 ]]; then
   nginx -t
   systemctl reload nginx
 else
-  echo "Run manually:"
+  echo "Run manually (or apply both vhosts):"
+  echo "  sudo bash /home/ubuntu/scripts/apply-dp-next-static-nginx.sh"
   echo "  sudo cp $NGINX_CONF /etc/nginx/sites-available/desirableproperties.org.conf"
   echo "  sudo ln -sf /etc/nginx/sites-available/desirableproperties.org.conf /etc/nginx/sites-enabled/"
   echo "  sudo nginx -t && sudo systemctl reload nginx"

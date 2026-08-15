@@ -4,7 +4,7 @@ set -euo pipefail
 
 APP_DIR="/home/ubuntu/desirable-properties/challenge-site"
 REPO_ROOT="/home/ubuntu/desirable-properties"
-NGINX_CONF="/home/ubuntu/nginx/staging.desirableproperties.org.conf"
+NGINX_CONF="${APP_DIR}/nginx/staging.desirableproperties.org.conf"
 REQUIRED_BRANCH="main"
 PATHWAY_MARKER="${APP_DIR}/src/components/pathways/FeaturedPathwayPanel.tsx"
 

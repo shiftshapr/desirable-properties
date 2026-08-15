@@ -26,7 +26,7 @@ Set `DP_ENV=prod|staging` (or `NEXT_DIST_DIR`) before `npm run build`; deploy sc
 
 - `ecosystem.config.js` — production PM2 (`desirableproperties`, :3005)
 - `ecosystem.staging.config.js` — staging PM2 (`desirableproperties-staging`, :3006)
-- `/home/ubuntu/nginx/staging.desirableproperties.org.conf` — nginx vhost → :3006
+- `nginx/staging.desirableproperties.org.conf` — nginx vhost → :3006 (`/_next/static/` from `.next-staging/static/`)
 - `/home/ubuntu/meta-console/registry.yaml` — estate registry entry
 
 ## Environment

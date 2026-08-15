@@ -39,6 +39,8 @@ Runs on port **3005** via PM2 process `desirableproperties`.
 
 Production builds write to **`.next-prod`** (`DP_ENV=prod`). Staging uses **`.next-staging`** — see [STAGING.md](STAGING.md). Local `npm run dev` keeps the default `.next/`.
 
+On this VPS, always deploy with `./deploy.sh` (atomic `.next-prod-build` swap). Never run `DP_ENV=prod npm run build` against the live checkout — that overwrites `.next-prod` while PM2 is serving it and Next.js returns **HTTP 500** `text/plain` (21B) for `/_next/static` CSS.
+
 ## Environment
 
 | Variable | Default |

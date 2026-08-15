@@ -65,21 +65,7 @@ jobs:
 
           cd "$APP_DIR"
           npm ci
-          DP_ENV=prod npm run build
-          test -f .next-prod/BUILD_ID
-
-          # Only restart PM2 after a successful build (keep serving on build failure)
-          pm2 delete desirableproperties 2>/dev/null || true
-          pm2 start ecosystem.config.js
-
-          # `pm2 save` persists only what is online. Deploying while some other
-          # app happens to be down would delete that app from ~/.pm2/dump.pm2,
-          # so it would not survive the next reboot. The guard refuses unless
-          # every app in meta-console/registry.yaml is online and serving.
-          # A refusal must never be worked around with a bare `pm2 save`.
-          if ! /home/ubuntu/meta-console/bin/pm2-safe-save --wait 60; then
-            echo "::warning::pm2 boot dump not updated - another app is unhealthy."
-            echo "Deploy succeeded and the site is serving; ~/.pm2/dump.pm2 still"
-            echo "holds the previous state. Fix the app(s), then run"
-            echo "/home/ubuntu/meta-console/bin/pm2-safe-save on the box."
-          fi
+          # Atomic swap via deploy.sh — do not `DP_ENV=prod npm run build` here.
+          # In-place writes to .next-prod while PM2 is serving it return
+          # HTTP 500 text/plain (21B) for /_next/static CSS.
+          ./deploy.sh
