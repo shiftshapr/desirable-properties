@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import KickoffRecording from '@/components/KickoffRecording';
 import { bookIntroDiscussHref, DESIRABLE_PROPERTIES_BOOK_TITLE } from '@/lib/govhub';
 
 export const metadata = {
@@ -24,6 +25,16 @@ function Section({
         {children}
       </div>
     </section>
+  );
+}
+
+/** Keep a real space after bold leads. Next.js otherwise emits `</strong>Prefer`. */
+function Term({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <strong className="font-semibold text-white">{children}</strong>
+      {' '}
+    </>
   );
 }
 
@@ -55,6 +66,11 @@ export default function KickoffPage() {
       <nav className="mt-8 rounded-xl border border-slate-800 bg-slate-900/40 p-5 text-sm">
         <p className="font-medium text-slate-200">On this page</p>
         <ul className="mt-3 grid gap-2 text-cyan-300 sm:grid-cols-2">
+          <li>
+            <a href="#recording" className="hover:text-cyan-200">
+              Recording
+            </a>
+          </li>
           <li>
             <a href="#welcome" className="hover:text-cyan-200">
               Welcome
@@ -99,6 +115,8 @@ export default function KickoffPage() {
       </nav>
 
       <div className="mt-12 space-y-14">
+        <KickoffRecording />
+
         <Section id="welcome" title="Welcome and housekeeping">
           <p>
             Daveed Benjamin opened the Zoom with Liz and Brad as co-organizers. The group was asked
@@ -125,16 +143,17 @@ export default function KickoffPage() {
           <p>He extracted several design implications from the Internet&apos;s history:</p>
           <ul className="list-disc space-y-2 pl-6">
             <li>
-              <strong className="font-semibold text-white">Standards.</strong> Interoperability
-              cannot depend on pairwise negotiation. Standards let parties who will never meet still
-              interwork, and they let competing products share properties so customers have choice.
+              <Term>Standards.</Term>
+              Interoperability cannot depend on pairwise negotiation. Standards let parties who will
+              never meet still interwork, and they let competing products share properties so
+              customers have choice.
             </li>
             <li>
-              <strong className="font-semibold text-white">Broad adoption.</strong> Infrastructure
-              only pays off if it is widely used.
+              <Term>Broad adoption.</Term>
+              Infrastructure only pays off if it is widely used.
             </li>
             <li>
-              <strong className="font-semibold text-white">Self-sustaining business models.</strong>{' '}
+              <Term>Self-sustaining business models.</Term>
               Early Internet backbones were government-sponsored (DARPA, NSF, DOE, NASA) and limited
               by acceptable-use policy. Cerf described connecting MCI Mail to the NSFNET backbone
               in 1988 as a deliberate break of that policy. Commercial ISPs (UUNET, PSINet, CERFnet)
@@ -142,17 +161,16 @@ export default function KickoffPage() {
               a business model had to support both spread and ongoing enhancement.
             </li>
             <li>
-              <strong className="font-semibold text-white">Simplicity.</strong> Prefer one way to do
-              a thing. Multiple options force a negotiation before two parties can talk–the problem
-              he associated with X.25 and OSI&apos;s many transport protocols.
+              <Term>Simplicity.</Term>
+              Prefer one way to do a thing. Multiple options force a negotiation before two parties
+              can talk–the problem he associated with X.25 and OSI&apos;s many transport protocols.
             </li>
             <li>
-              <strong className="font-semibold text-white">Safety, security, and strong
-              authenticity.</strong> Because the layer will touch identity and high-consequence
-              transactions (finance, medicine), it must resist attack. AI and large language models
-              raise the stakes: they will be invited to act on users&apos; behalf, and they
-              hallucinate. His elevator example: once the door closes, you depend entirely on
-              someone else&apos;s software.
+              <Term>Safety, security, and strong authenticity.</Term>
+              Because the layer will touch identity and high-consequence transactions (finance,
+              medicine), it must resist attack. AI and large language models raise the stakes: they
+              will be invited to act on users&apos; behalf, and they hallucinate. His elevator
+              example: once the door closes, you depend entirely on someone else&apos;s software.
             </li>
           </ul>
           <p>
@@ -165,8 +183,8 @@ export default function KickoffPage() {
 
         <Section id="qa" title="Questions for Vint">
           <p>
-            <strong className="font-semibold text-white">Accountability and agency.</strong> Daveed
-            asked about accountability. Cerf said his two watchwords are accountability and agency.
+            <Term>Accountability and agency.</Term>
+            Daveed asked about accountability. Cerf said his two watchwords are accountability and agency.
             He once favored anonymity as a default. He still believes people should not have to
             identify themselves merely to use Internet resources–but online systems now amplify
             everything, including harm. Cross-border damage is hard to police (he noted the UN
@@ -176,8 +194,8 @@ export default function KickoffPage() {
             person needs carefully designed transitive authority–no implied consent.
           </p>
           <p>
-            <strong className="font-semibold text-white">Why pricing was left out of the
-            protocol.</strong> Eric Harris-Braun (Holochain) asked who decided not to put cost and
+            <Term>Why pricing was left out of the protocol.</Term>
+            Eric Harris-Braun (Holochain) asked who decided not to put cost and
             pricing into the Internet&apos;s protocol design. Cerf said it was circumstance, not a
             commercial theory: ARPANET and the Internet were paid for by DARPA as command-and-control
             infrastructure, not as a market. Kahn and Cerf published the 1974 IEEE design so allies
@@ -185,8 +203,8 @@ export default function KickoffPage() {
             allies would be 25 years later.
           </p>
           <p>
-            <strong className="font-semibold text-white">Encryption after quantum
-            computers.</strong> Asked which encryption standards would be needed, Cerf said RSA-style
+            <Term>Encryption after quantum computers.</Term>
+            Asked which encryption standards would be needed, Cerf said RSA-style
             algorithms that rely on factoring are under a future quantum threat (Shor&apos;s
             algorithm). He did not believe a quantum computer could yet break significant crypto,
             but information that must stay secret for decades needs post-quantum algorithms now.
@@ -194,8 +212,8 @@ export default function KickoffPage() {
             signatures and encryption. Google had begun implementing them.
           </p>
           <p>
-            <strong className="font-semibold text-white">What might be next.</strong> Quantum
-            entanglement, he said, does not give zero-delay communication. If there is a next big
+            <Term>What might be next.</Term>
+            Quantum entanglement, he said, does not give zero-delay communication. If there is a next big
             thing, it is likely AI. LLM failures, in his view, are failures of context: a chatbot
             asked to write his obituary invented a death date, conflated other people&apos;s careers
             with his, and fabricated family members. Larger context windows help generation but do
@@ -240,8 +258,9 @@ export default function KickoffPage() {
           </ol>
           <p>
             In the host/note-taker room, Cerf argued against boiling the ocean. A focused
-            contribution could be a standard for <strong className="font-semibold text-white">federated
-            strong authentication</strong>–multiple competitive authenticators, with oversight
+            contribution could be a standard for{' '}
+            <strong className="font-semibold text-white">federated strong authentication</strong>
+            –multiple competitive authenticators, with oversight
             analogous to how browsers treat certificate authorities. He then named a concrete
             exercise: an essay titled <em>Desirable Properties of the Meta-Layer</em>. Making
             properties specific would reveal the ensemble of things the layer must implement. For
@@ -263,31 +282,31 @@ export default function KickoffPage() {
           <p>Liz asked each room for a short readout. Themes that surfaced:</p>
           <ul className="list-disc space-y-2 pl-6">
             <li>
-              <strong className="font-semibold text-white">Identity, privacy, and proof of
-              humanity.</strong> Annotation needs trust in who is writing, and many annotators still
-              need privacy or anonymity.
+              <Term>Identity, privacy, and proof of humanity.</Term>
+              Annotation needs trust in who is writing, and many annotators still need privacy or
+              anonymity.
             </li>
             <li>
-              <strong className="font-semibold text-white">Commerce and safety.</strong> How the
-              layer might support exchange without becoming an unsafe space.
+              <Term>Commerce and safety.</Term>
+              How the layer might support exchange without becoming an unsafe space.
             </li>
             <li>
-              <strong className="font-semibold text-white">Standards from implementation.</strong>{' '}
+              <Term>Standards from implementation.</Term>
               Interoperability and open process; standards that emerge from communities actually
               building, then coming together.
             </li>
             <li>
-              <strong className="font-semibold text-white">Use cases still unclear.</strong> Several
-              people said they did not yet see what would motivate ordinary users.
+              <Term>Use cases still unclear.</Term>
+              Several people said they did not yet see what would motivate ordinary users.
             </li>
             <li>
-              <strong className="font-semibold text-white">Adjacent work.</strong> The liminal web,
-              Goodly Labs / Public Editor (annotating news for manipulative language), and other
-              protocols that might link these efforts.
+              <Term>Adjacent work.</Term>
+              The liminal web, Goodly Labs / Public Editor (annotating news for manipulative
+              language), and other protocols that might link these efforts.
             </li>
             <li>
-              <strong className="font-semibold text-white">Shared target and funding.</strong> Many
-              disciplines and some corporate walls; a common outcome, a roadmap, and a clear
+              <Term>Shared target and funding.</Term>
+              Many disciplines and some corporate walls; a common outcome, a roadmap, and a clear
               funding path (new foundation vs. existing apparatus) were named as organizing needs.
             </li>
           </ul>
