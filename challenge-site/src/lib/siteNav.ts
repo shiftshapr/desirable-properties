@@ -74,6 +74,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     href: bookDiscussHref(),
     discussPatchModal: true,
     children: [
+      { href: '/contribution-activity', label: 'Contribution activity' },
       { href: GOVHUB_DP_PATCHES_URL, label: 'Patch on Gov Hub', external: true },
     ],
   },
