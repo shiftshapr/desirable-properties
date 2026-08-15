@@ -41,6 +41,9 @@ export default function SiteFooter() {
           <Link href="/about" className="text-slate-400 hover:text-slate-200">
             About
           </Link>
+          <Link href="/kickoff" className="text-slate-400 hover:text-slate-200">
+            Kickoff
+          </Link>
           <Link href="/onchain" className="text-slate-400 hover:text-slate-200">
             Onchain
           </Link>

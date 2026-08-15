@@ -133,7 +133,12 @@ export default function AboutPage() {
               long before formal protocols stabilized. He suggested{' '}
               <strong>Federated Strong Authentication</strong> as an initial property, emphasizing
               federation over centralization. The Desirable Properties effort emerged directly from
-              this moment, with DP1 addressing trust and authentication at the outset.
+              this moment, with DP1 addressing trust and authentication at the outset. A section-by-section
+              summary of that meeting is on the{' '}
+              <Link href="/kickoff" className="text-cyan-300 hover:text-cyan-200">
+                Kickoff meeting
+              </Link>{' '}
+              page.
             </p>
           </Section>
 
