@@ -30,6 +30,8 @@ export async function POST(request: Request, { params }: RouteParams) {
         bodyMarkdown: body.bodyMarkdown,
         meta: body.meta || {},
         sourceTurnId: body.sourceTurnId || null,
+        contributionSet: body.contributionSet || null,
+        proposalUpdates: body.proposalUpdates || null,
       }),
       signal: AbortSignal.timeout(15000),
     },

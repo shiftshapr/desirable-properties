@@ -8,6 +8,7 @@ import BroadcastAdminPanel from '@/app/admin/BroadcastAdminPanel';
 import SiteMessagesAdminPanel from '@/app/admin/SiteMessagesAdminPanel';
 import InviteContentAdminPanel from '@/app/admin/InviteContentAdminPanel';
 import AdminInviteAiPanel from '@/app/admin/AdminInviteAiPanel';
+import AdminLongGapSendPanel from '@/components/admin/AdminLongGapSendPanel';
 import EventSeriesAdminPanel from '@/app/admin/EventSeriesAdminPanel';
 import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
 import { AdminToastProvider } from '@/components/AdminToastHost';
@@ -157,6 +158,7 @@ export default function DpAdminClient() {
           {tab === 'messages' ? <SiteMessagesAdminPanel /> : null}
           {tab === 'invite-content' ? <InviteContentAdminPanel /> : null}
           {tab === 'email-invites' ? <AdminInviteAiPanel /> : null}
+          {tab === 'long-gap-send' ? <AdminLongGapSendPanel /> : null}
           {tab === 'event-series' ? <EventSeriesAdminPanel /> : null}
           {tab === 'site' ? <SiteAdminPanel /> : null}
         </div>

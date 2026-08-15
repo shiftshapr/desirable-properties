@@ -58,6 +58,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     children: [
       { href: '/challenge', label: 'The Challenge' },
       { href: '/participate', label: 'Participate' },
+      { href: '/kickoff', label: 'Kickoff meeting' },
     ],
   },
   {

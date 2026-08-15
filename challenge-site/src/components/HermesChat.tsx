@@ -9,9 +9,48 @@ import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
+import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
-import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, formatContributionSubmissionMarkdown, formatContributionUserSummary, inferContributionHint, isContributionRecordHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, markHintSubmitted, proposalsFromContributionDraft, savePendingContributionDraft, saveStagedProposal, shouldShowContributionCTA, submittedProposalExclusionsFromMessages } from '@/lib/hermesContribution';
-import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionRecordHint, ContributionScope, ContributionSubmitMode, DiscussDeepLink, MessageContributionHint } from '@/lib/hermesContribution';
+import {
+  buildContributionSetFromDraft,
+  buildProposalUpdates,
+  buildRevisionDraftFromProposal,
+  clearPendingContributionDraft,
+  clearPendingUserMessage,
+  clearStagedProposalsForRef,
+  defaultDestination,
+  discussLinkLabel,
+  formatContributionSubmissionMarkdown,
+  formatContributionUserSummary,
+  inferContributionHint,
+  isContributionRecordHint,
+  isDraftFullyFiledInLedger,
+  loadPendingContributionDraft,
+  loadStagedProposals,
+  markHintSubmitted,
+  mergePendingUserMessagesIntoThread,
+  migratePendingUserMessages,
+  proposalFingerprint,
+  proposalsFromContributionDraft,
+  savePendingContributionDraft,
+  savePendingUserMessage,
+  saveStagedProposal,
+  shouldShowContributionCTA,
+  sourceTurnHasFiledSet,
+  submittedProposalExclusionsFromMessages,
+} from '@/lib/hermesContribution';
+import type {
+  ContributionDraft,
+  ContributionHint,
+  ContributionProposal,
+  ContributionRecordHint,
+  ContributionScope,
+  ContributionSet,
+  ContributionSubmitMode,
+  DiscussDeepLink,
+  LedgerProposal,
+  MessageContributionHint,
+} from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -38,6 +77,9 @@ interface Message {
   truncated?: boolean;
   /** True for user/assistant pair recording a contribution submit. */
   contributionRecord?: boolean;
+  /** User message persisted locally after a failed send — offer retry. */
+  pendingSend?: boolean;
+  sendError?: string | null;
 }
 
 type SystemNotice = {
@@ -196,17 +238,23 @@ function turnIdFromAssistantMessageId(messageId: string): string | null {
   return turnId && turnId !== 'intro' ? turnId : null;
 }
 
-/** Hide draft CTA on assistant turns that already have a contribution record after them. */
-function suppressSubmittedContributionHints(messages: Message[]): Message[] {
+/** Hide draft CTA on assistant turns already filed in the ledger or with a record after them. */
+function suppressSubmittedContributionHints(
+  messages: Message[],
+  contributionSets: ContributionSet[],
+): Message[] {
   const recordIndices = messages
     .map((m, i) => (isContributionRecordHint(m.contributionHint) || m.contributionRecord ? i : -1))
     .filter((i) => i >= 0);
-  if (!recordIndices.length) return messages;
 
   return messages.map((m, idx) => {
     if (m.sender !== 'assistant' || isContributionRecordHint(m.contributionHint)) return m;
+
+    const turnId = m.turnId || turnIdFromAssistantMessageId(m.id);
+    const filedInLedger = sourceTurnHasFiledSet(contributionSets, turnId);
     const hasRecordAfter = recordIndices.some((ri) => ri > idx);
-    if (!hasRecordAfter) return m;
+    if (!filedInLedger && !hasRecordAfter) return m;
+
     if (m.contributionHint && 'contributionSubmitted' in m.contributionHint && m.contributionHint.contributionSubmitted) {
       return m;
     }
@@ -224,7 +272,10 @@ function suppressSubmittedContributionHints(messages: Message[]): Message[] {
   });
 }
 
-function findContributionHydrateIndex(messages: Message[]): number {
+function findContributionHydrateIndex(
+  messages: Message[],
+  contributionSets: ContributionSet[],
+): number {
   for (let i = messages.length - 1; i >= 0; i -= 1) {
     const m = messages[i];
     if (m.sender !== 'assistant' || m.id === 'intro') continue;
@@ -232,6 +283,8 @@ function findContributionHydrateIndex(messages: Message[]): number {
     if (m.contributionHint && 'contributionSubmitted' in m.contributionHint && m.contributionHint.contributionSubmitted) {
       continue;
     }
+    const turnId = m.turnId || turnIdFromAssistantMessageId(m.id);
+    if (sourceTurnHasFiledSet(contributionSets, turnId)) continue;
     const hasRecordAfter = messages
       .slice(i + 1)
       .some((later) => isContributionRecordHint(later.contributionHint) || later.contributionRecord);
@@ -251,12 +304,20 @@ function historyFromMessages(msgs: Message[]) {
 async function hydrateLastContributionHint(
   messages: Message[],
   dpFocus: number | null,
+  contributionSets: ContributionSet[],
 ): Promise<Message[]> {
-  const lastAssistantIdx = findContributionHydrateIndex(messages);
+  const lastAssistantIdx = findContributionHydrateIndex(messages, contributionSets);
   if (lastAssistantIdx < 0) return messages;
 
   const assistantMessage = messages[lastAssistantIdx];
-  if (shouldShowContributionCTA(assistantMessage.contributionHint)) return messages;
+  const assistantTurnId = assistantMessage.turnId || turnIdFromAssistantMessageId(assistantMessage.id);
+  if (shouldShowContributionCTA(assistantMessage.contributionHint, {
+    sourceTurnId: assistantTurnId,
+    contributionSets,
+  })) {
+    return messages;
+  }
+  if (sourceTurnHasFiledSet(contributionSets, assistantTurnId)) return messages;
 
   const userMessage = [...messages.slice(0, lastAssistantIdx)]
     .reverse()
@@ -347,6 +408,7 @@ export default function HermesChat({
   const [attachError, setAttachError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [contributionDraft, setContributionDraft] = useState<ContributionDraft | null>(null);
+  const [contributionSets, setContributionSets] = useState<ContributionSet[]>([]);
   const [contributionBusy, setContributionBusy] = useState(false);
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
@@ -437,6 +499,10 @@ export default function HermesChat({
         return;
       }
       const turns = data.thread?.turns || [];
+      const sets: ContributionSet[] = Array.isArray(data.thread?.contributionSets)
+        ? data.thread.contributionSets
+        : [];
+      setContributionSets(sets);
       const restored: Message[] = [
         {
           id: 'intro',
@@ -471,22 +537,38 @@ export default function HermesChat({
         }
       }
       const hydrated = await hydrateLastContributionHint(
-        suppressSubmittedContributionHints(restored),
+        suppressSubmittedContributionHints(restored, sets),
         dpFocus,
+        sets,
       );
-      setMessages(hydrated);
+      setMessages(mergePendingUserMessagesIntoThread(hydrated, threadId));
       const pending = loadPendingContributionDraft(threadId);
       if (pending?.draft) {
-        setContributionDraft(pending.draft);
-        draftingMessageIdRef.current = pending.assistantMessageId || null;
-        setSystemNotice({
-          variant: 'info',
-          text: 'Restored your in-progress contribution draft from this session.',
-        });
+        const assistantTurnId = pending.assistantMessageId
+          ? turnIdFromAssistantMessageId(pending.assistantMessageId)
+          : null;
+        const filed = sourceTurnHasFiledSet(sets, assistantTurnId)
+          || await isDraftFullyFiledInLedger(pending.draft, sets);
+        if (!filed) {
+          setContributionDraft(pending.draft);
+          draftingMessageIdRef.current = pending.assistantMessageId || null;
+          setSystemNotice({
+            variant: 'info',
+            text: 'Restored your in-progress contribution draft from this session.',
+          });
+        } else {
+          setContributionDraft(null);
+          clearPendingContributionDraft();
+        }
       } else {
-        const recentStaged = loadStagedProposals()[0];
-        if (recentStaged) {
-          setContributionDraft(recentStaged);
+        let restoredStaged: ContributionDraft | null = null;
+        for (const row of loadStagedProposals()) {
+          if (await isDraftFullyFiledInLedger(row, sets)) continue;
+          restoredStaged = row;
+          break;
+        }
+        if (restoredStaged) {
+          setContributionDraft(restoredStaged);
           draftingMessageIdRef.current = null;
           setSystemNotice({
             variant: 'info',
@@ -541,6 +623,7 @@ export default function HermesChat({
   const startNewConversation = () => {
     persistActiveThread(null);
     clearPendingContributionDraft();
+    setContributionSets([]);
     setContributionDraft(null);
     setAttachments([]);
     setAttachError(null);
@@ -694,30 +777,40 @@ export default function HermesChat({
     text,
     priorMessages,
     threadId: explicitThreadId,
+    resendClientId,
   }: {
     text: string;
     priorMessages: Message[];
     threadId?: string | null;
+    resendClientId?: string;
   }) => {
     const trimmed = text.trim();
     if (!trimmed) return;
 
     const userMessage: Message = {
-      id: `${Date.now()}-u`,
+      id: resendClientId || `${Date.now()}-u`,
       text: trimmed,
       sender: 'user',
       timestamp: new Date(),
     };
 
-    setMessages([...priorMessages, userMessage]);
+    const optimistic = [...priorMessages, userMessage];
+    setMessages(optimistic);
     setIsLoading(true);
-    setContributionDraft(null);
     setSystemNotice(null);
+
+    const threadIdForPending = explicitThreadId ?? activeThreadIdRef.current;
+    savePendingUserMessage({
+      clientId: userMessage.id,
+      threadId: threadIdForPending,
+      text: trimmed,
+      timestamp: userMessage.timestamp.toISOString(),
+    });
 
     const abortController = beginChatAbort();
 
     try {
-      let threadIdToSend = explicitThreadId ?? activeThreadIdRef.current;
+      let threadIdToSend = threadIdForPending;
       if (!threadIdToSend) {
         const createRes = await fetch('/api/agent/threads', {
           method: 'POST',
@@ -731,6 +824,13 @@ export default function HermesChat({
         const createData = await createRes.json();
         if (createRes.ok && createData.thread?.id) {
           threadIdToSend = createData.thread.id;
+          migratePendingUserMessages(null, createData.thread.id);
+          savePendingUserMessage({
+            clientId: userMessage.id,
+            threadId: createData.thread.id,
+            text: trimmed,
+            timestamp: userMessage.timestamp.toISOString(),
+          });
           persistActiveThread(threadIdToSend);
           setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
         }
@@ -759,13 +859,15 @@ export default function HermesChat({
         throw new Error(data.error || 'Request failed');
       }
 
+      clearPendingUserMessage(userMessage.id, threadIdToSend || threadIdForPending);
+
       const memoryId = typeof data.memoryId === 'string' ? data.memoryId : null;
       const userId = memoryId ? `${memoryId}-u` : userMessage.id;
       const assistantId = memoryId ? `${memoryId}-a` : `${Date.now()}-a`;
 
       setMessages((prev) => [
         ...prev.slice(0, -1),
-        { ...userMessage, id: userId, turnId: memoryId || undefined },
+        { ...userMessage, id: userId, turnId: memoryId || undefined, pendingSend: false, sendError: null },
         {
           id: assistantId,
           text: data.response,
@@ -790,13 +892,26 @@ export default function HermesChat({
     } catch (err) {
       if (isAbortError(err)) {
         setSystemNotice({ variant: 'info', text: 'Stopped.' });
+        clearPendingUserMessage(userMessage.id, threadIdForPending);
+        setMessages(priorMessages);
       } else {
+        const errorText = userFacingError(err);
         setSystemNotice({
           variant: 'error',
-          text: userFacingError(err),
+          text: errorText,
         });
+        savePendingUserMessage({
+          clientId: userMessage.id,
+          threadId: threadIdForPending,
+          text: trimmed,
+          timestamp: userMessage.timestamp.toISOString(),
+          sendError: errorText,
+        });
+        setMessages([
+          ...priorMessages,
+          { ...userMessage, pendingSend: true, sendError: errorText },
+        ]);
       }
-      setMessages(priorMessages);
     } finally {
       clearChatAbort(abortController);
       setIsLoading(false);
@@ -1010,14 +1125,6 @@ export default function HermesChat({
     if (!signedIn) {
       promptSignIn();
       return;
-    }
-
-    // Always allow follow-up chat while a contribution panel is open or submitting.
-    if (contributionDraft) {
-      setContributionDraft(null);
-      clearPendingContributionDraft();
-      draftingMessageIdRef.current = null;
-      setDraftingMessageId(null);
     }
 
     const attachmentNames = attachments.map((doc) => doc.name);
@@ -1296,6 +1403,48 @@ export default function HermesChat({
     }
   };
 
+  const retryFailedMessage = async (messageId: string) => {
+    if (!signedIn || isLoading) return;
+    const msgIndex = messages.findIndex((m) => m.id === messageId);
+    if (msgIndex < 0) return;
+    const msg = messages[msgIndex];
+    if (!msg.pendingSend) return;
+    await submitChatMessage({
+      text: msg.text,
+      priorMessages: messages.slice(0, msgIndex),
+      threadId: activeThreadIdRef.current,
+      resendClientId: msg.id,
+    });
+  };
+
+  const startRevision = useCallback((
+    set: ContributionSet,
+    proposal: LedgerProposal,
+    recordMarkdown: string,
+  ) => {
+    if (!signedIn) {
+      promptSignIn();
+      return;
+    }
+    const draft = buildRevisionDraftFromProposal(set, proposal, recordMarkdown);
+    if (!draft) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Could not load this proposal for revision. Try Open in Discuss instead.',
+      });
+      return;
+    }
+    setContributionDraft(draft);
+    draftingMessageIdRef.current = null;
+    setDraftingMessageId(null);
+    savePendingContributionDraft(draft, activeThreadIdRef.current, null);
+    setSystemNotice({
+      variant: 'info',
+      text: 'Revision draft opened — edit below, then save or publish. This supersedes your prior published post.',
+    });
+    contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [promptSignIn, signedIn]);
+
   const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
     if (!signedIn) {
       promptSignIn();
@@ -1435,10 +1584,39 @@ export default function HermesChat({
 
       setContributionDraft(null);
       clearPendingContributionDraft();
+      clearStagedProposalsForRef(draftRef);
 
       const count = items.length;
       const userSummary = formatContributionUserSummary(contributionDraft, mode, count);
       const bodyMarkdown = formatContributionSubmissionMarkdown(contributionDraft, mode, links);
+      const threadId = activeThreadIdRef.current;
+      const sourceAssistantMessageId = draftingMessageIdRef.current;
+      const sourceTurnId =
+        messages.find((m) => m.id === sourceAssistantMessageId)?.turnId
+        || (sourceAssistantMessageId ? turnIdFromAssistantMessageId(sourceAssistantMessageId) : null);
+
+      const proposalsWithFp = await Promise.all(
+        items.map(async (p) => ({
+          ...p,
+          fingerprint: await proposalFingerprint(p, contributionDraft.supersedesMessageId),
+        })),
+      );
+      const contributionSet = threadId
+        ? buildContributionSetFromDraft(
+          threadId,
+          sourceTurnId,
+          contributionDraft,
+          mode,
+          proposalsWithFp,
+          {
+            supersedesMessageId: contributionDraft.supersedesMessageId,
+            supersedesSetId: contributionDraft.supersedesSetId,
+            revisionOfProposalId: contributionDraft.revisionOfProposalId,
+          },
+        )
+        : null;
+      const proposalUpdates = await buildProposalUpdates(items, links, mode);
+
       const recordHint: ContributionRecordHint = {
         type: 'contribution_record',
         contributionReady: false,
@@ -1447,14 +1625,11 @@ export default function HermesChat({
         destination: defaultDestination(),
         links,
         title: contributionDraft.title,
+        setId: contributionSet?.id,
+        sourceTurnId,
       };
 
       let recordTurnId: string | null = null;
-      const threadId = activeThreadIdRef.current;
-      const sourceAssistantMessageId = draftingMessageIdRef.current;
-      const sourceTurnId =
-        messages.find((m) => m.id === sourceAssistantMessageId)?.turnId
-        || (sourceAssistantMessageId ? turnIdFromAssistantMessageId(sourceAssistantMessageId) : null);
 
       if (threadId) {
         try {
@@ -1467,6 +1642,8 @@ export default function HermesChat({
                 userSummary,
                 bodyMarkdown,
                 sourceTurnId,
+                contributionSet,
+                proposalUpdates,
                 meta: {
                   mode,
                   draftRef,
@@ -1474,6 +1651,8 @@ export default function HermesChat({
                   links,
                   title: contributionDraft.title,
                   sourceTurnId,
+                  setId: contributionSet?.id,
+                  draft: contributionDraft,
                 },
               }),
             },
@@ -1481,6 +1660,17 @@ export default function HermesChat({
           const recordData = await recordRes.json().catch(() => ({}));
           if (recordRes.ok && recordData.turn?.id) {
             recordTurnId = recordData.turn.id;
+            if (recordData.turn.contributionSet) {
+              setContributionSets((prev) => {
+                const next = prev.filter((s) => s.id !== recordData.turn.contributionSet.id);
+                return [...next, recordData.turn.contributionSet];
+              });
+            } else if (contributionSet) {
+              setContributionSets((prev) => [
+                ...prev.filter((s) => s.id !== contributionSet.id),
+                { ...contributionSet, status: 'complete', recordTurnId },
+              ]);
+            }
           }
         } catch {
           /* still show in UI even if persistence fails */
@@ -1676,11 +1866,19 @@ export default function HermesChat({
                   {message.sender === 'assistant' ? (
                     <>
                       {isContributionRecordHint(message.contributionHint) ? (
-                        <p className="mb-2 inline-flex rounded-full border border-emerald-600/60 bg-emerald-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-200">
-                          {message.contributionHint.mode === 'draft'
-                            ? 'Saved to Discuss drafts'
-                            : 'Published to Canopi Discuss'}
-                        </p>
+                        <>
+                          <HermesContributionLedger
+                            recordHint={message.contributionHint}
+                            contributionSets={contributionSets}
+                            recordMarkdown={message.text}
+                            onRevise={startRevision}
+                          />
+                          <p className="mb-2 inline-flex rounded-full border border-emerald-600/60 bg-emerald-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-200">
+                            {message.contributionHint.mode === 'draft'
+                              ? 'Saved to Discuss drafts'
+                              : 'Published to Canopi Discuss'}
+                          </p>
+                        </>
                       ) : null}
                       <HermesMarkdown text={message.text} variant="dark" />
                     </>
@@ -1725,7 +1923,24 @@ export default function HermesChat({
                       </p>
                     </div>
                   ) : (
-                    <p className="whitespace-pre-wrap">{message.text}</p>
+                    <>
+                      <p className="whitespace-pre-wrap">{message.text}</p>
+                      {message.pendingSend ? (
+                        <div className="mt-2 space-y-1 border-t border-cyan-600/40 pt-2">
+                          <p className="text-[11px] text-amber-100/90">
+                            {message.sendError || 'Message not saved — Hermes did not receive this turn.'}
+                          </p>
+                          <button
+                            type="button"
+                            disabled={isLoading}
+                            onClick={() => void retryFailedMessage(message.id)}
+                            className="rounded-md bg-white px-2.5 py-1 text-[11px] font-medium text-cyan-800 hover:bg-cyan-50 disabled:opacity-50"
+                          >
+                            Retry send
+                          </button>
+                        </div>
+                      ) : null}
+                    </>
                   )}
                   {message.sender === 'assistant'
                     && message.id === 'intro'
@@ -1828,7 +2043,10 @@ export default function HermesChat({
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
-                    && shouldShowContributionCTA(message.contributionHint) ? (
+                    && shouldShowContributionCTA(message.contributionHint, {
+                      sourceTurnId: message.turnId || turnIdFromAssistantMessageId(message.id),
+                      contributionSets,
+                    }) ? (
                     <HermesContributionCTA
                       hint={message.contributionHint as ContributionHint}
                       busy={contributionBusy && draftingMessageId === message.id}

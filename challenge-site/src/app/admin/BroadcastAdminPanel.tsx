@@ -4,6 +4,13 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAdminToast } from '@/components/AdminToastHost';
 import BroadcastConfirmDialog from '@/components/BroadcastConfirmDialog';
+import BroadcastRecipientList from '@/components/BroadcastRecipientList';
+import {
+  BROADCAST_COHORTS,
+  cohortUsesDpChallengeFilters,
+  type BroadcastCohortKey,
+} from '@/data/dp-broadcast-cohorts';
+import { applyBroadcastCohortFilter } from '@/lib/dp-broadcast-cohort-recipients';
 import {
   clearBroadcastDraft,
   fixBroadcastEmDashes,
@@ -130,6 +137,7 @@ export default function BroadcastAdminPanel() {
   const [patchFilter, setPatchFilter] = useState<BroadcastPatchFilter>('all');
   const [dpScope, setDpScope] = useState<BroadcastDpScope>('all');
   const [dpId, setDpId] = useState('');
+  const [cohortFilter, setCohortFilter] = useState<BroadcastCohortKey>('all');
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [flash, setFlash] = useState<{ kind: 'ok' | 'warn' | 'err'; message: string } | null>(null);
@@ -210,9 +218,17 @@ export default function BroadcastAdminPanel() {
     void load();
   }, [load]);
 
+  const cohortAudience = useMemo(
+    () => applyBroadcastCohortFilter(audience, cohortFilter),
+    [audience, cohortFilter],
+  );
+
+  const dpFiltersActive = cohortUsesDpChallengeFilters(cohortFilter);
+
   const filteredMembers = useMemo(() => {
-    const scoped = audience.filter((row) =>
+    const scoped = cohortAudience.filter((row) =>
       broadcastAudienceMatchesFilters(row, {
+        cohort: cohortFilter,
         patchFilter,
         dpScope,
         dpId: dpScope === 'specific' ? dpId : null,
@@ -227,7 +243,7 @@ export default function BroadcastAdminPanel() {
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [audience, memberSearch, patchFilter, dpScope, dpId]);
+  }, [cohortAudience, memberSearch, cohortFilter, patchFilter, dpScope, dpId]);
 
   const dpOptions = useMemo(() => {
     const map = new Map<string, string>();
@@ -241,9 +257,21 @@ export default function BroadcastAdminPanel() {
   }, [workgroups]);
 
   const filteredWorkgroups = useMemo(() => {
+    if (!dpFiltersActive) return workgroups;
     if (dpScope !== 'specific' || !dpId) return workgroups;
     return workgroups.filter((wg) => extractDpId(wg.name) === dpId);
-  }, [workgroups, dpScope, dpId]);
+  }, [workgroups, dpScope, dpId, dpFiltersActive]);
+
+  const cohortCounts = useMemo(() => {
+    const counts: Record<BroadcastCohortKey, number> = {
+      all: audience.length,
+      cfi1_pci: applyBroadcastCohortFilter(audience, 'cfi1_pci').length,
+      cfi1_zoom: applyBroadcastCohortFilter(audience, 'cfi1_zoom').length,
+      cfi2_submitters: applyBroadcastCohortFilter(audience, 'cfi2_submitters').length,
+      dp_challenge: audience.length,
+    };
+    return counts;
+  }, [audience]);
 
   const workgroupMemberKeys = useMemo(() => {
     const map = new Map<string, Set<string>>();
@@ -279,10 +307,12 @@ export default function BroadcastAdminPanel() {
     return keys;
   }, [selected, workgroupDerivedKeys]);
 
-  const selectedAudienceRows = useMemo(
-    () => audience.filter((row) => effectiveSelected.has(row.key)),
-    [audience, effectiveSelected],
-  );
+  const selectedAudienceRows = useMemo(() => {
+    const keys = [...effectiveSelected];
+    return keys
+      .map((key) => cohortAudience.find((row) => row.key === key) || audience.find((row) => row.key === key))
+      .filter((row): row is AudienceRow => Boolean(row));
+  }, [audience, cohortAudience, effectiveSelected]);
 
   const selectedMissingEmailCount = useMemo(
     () => selectedAudienceRows.filter((row) => !row.email).length,
@@ -551,9 +581,13 @@ export default function BroadcastAdminPanel() {
           recipientKeys,
           availableInArchive: testMode ? false : availableInArchive,
           audienceFilter: {
+            cohort: cohortFilter,
             memberCount: selected.size,
             workgroupCount: selectedWorkgroups.size,
             recipientView,
+            patchFilter: dpFiltersActive ? patchFilter : undefined,
+            dpScope: dpFiltersActive ? dpScope : undefined,
+            dpId: dpFiltersActive && dpScope === 'specific' ? dpId : undefined,
           },
         }),
       });
@@ -907,12 +941,39 @@ export default function BroadcastAdminPanel() {
             </div>
           </div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <label className="block text-sm text-slate-300">
+              <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">Cohort</span>
+              <select
+                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                value={cohortFilter}
+                onChange={(e) => {
+                  const next = e.target.value as BroadcastCohortKey;
+                  setCohortFilter(next);
+                  if (!cohortUsesDpChallengeFilters(next)) {
+                    setPatchFilter('all');
+                    setDpScope('all');
+                    setDpId('');
+                  }
+                  if (next !== 'all' && next !== 'dp_challenge') {
+                    setRecipientView('members');
+                  }
+                }}
+              >
+                {BROADCAST_COHORTS.map((cohort) => (
+                  <option key={cohort.key} value={cohort.key}>
+                    {cohort.label}
+                    {cohort.key !== 'all' ? ` (${cohortCounts[cohort.key]})` : ` (${cohortCounts.all})`}
+                  </option>
+                ))}
+              </select>
+            </label>
             <label className="block text-sm text-slate-300">
               <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">Patch</span>
               <select
-                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white disabled:opacity-50"
                 value={patchFilter}
+                disabled={!dpFiltersActive}
                 onChange={(e) => setPatchFilter(e.target.value as BroadcastPatchFilter)}
               >
                 <option value="all">Any</option>
@@ -923,8 +984,9 @@ export default function BroadcastAdminPanel() {
             <label className="block text-sm text-slate-300">
               <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">DP</span>
               <select
-                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white disabled:opacity-50"
                 value={dpScope}
+                disabled={!dpFiltersActive}
                 onChange={(e) => {
                   const next = e.target.value as BroadcastDpScope;
                   setDpScope(next);
@@ -935,7 +997,7 @@ export default function BroadcastAdminPanel() {
                 <option value="specific">Specific DP</option>
               </select>
             </label>
-            {dpScope === 'specific' ? (
+            {dpFiltersActive && dpScope === 'specific' ? (
               <label className="block text-sm text-slate-300">
                 <span className="mb-1 block text-xs uppercase tracking-wide text-slate-500">DP workgroup</span>
                 <select
@@ -954,9 +1016,11 @@ export default function BroadcastAdminPanel() {
             ) : null}
           </div>
           <p className="mt-2 text-xs text-slate-500">
-            Filters apply to the member list and narrow workgroups when a specific DP is selected.
-            Patch status uses Gov Hub proposal authors
-            {dpScope === 'specific' && dpId ? ` for ${dpId}` : ' across all DP drafts'}.
+            {BROADCAST_COHORTS.find((c) => c.key === cohortFilter)?.description}
+            {dpFiltersActive
+              ? ' Patch and DP filters apply to the member list and narrow workgroups when a specific DP is selected. Patch status uses Gov Hub proposal authors.'
+              : ' Select DP Challenge to enable Patch and DP filters.'}
+            {dpFiltersActive && dpScope === 'specific' && dpId ? ` Filtering for ${dpId}.` : ''}
           </p>
 
           {loading ? (
@@ -1021,6 +1085,10 @@ export default function BroadcastAdminPanel() {
                 ))}
               </ul>
             )
+          ) : cohortFilter === 'cfi1_zoom' && cohortCounts.cfi1_zoom === 0 ? (
+            <p className="mt-4 text-sm text-slate-500">
+              CFI#1 ZOOM attendee list is TBD — no recipients yet.
+            </p>
           ) : audience.length === 0 ? (
             <p className="mt-4 text-sm text-slate-500">No audience rows loaded from Gov Hub signups.</p>
           ) : (
@@ -1031,67 +1099,18 @@ export default function BroadcastAdminPanel() {
                 value={memberSearch}
                 onChange={(e) => setMemberSearch(e.target.value)}
               />
-              <label className="mt-3 flex items-center gap-2 px-1 text-sm text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={allVisibleMembersSelected}
-                  ref={(el) => {
-                    if (el) el.indeterminate = someVisibleMembersSelected;
-                  }}
-                  onChange={(e) => toggleAllVisibleMembers(e.target.checked)}
-                  disabled={filteredMembers.length === 0}
-                />
-                Select all visible
-              </label>
-              <ul className="mt-2 max-h-[24rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800">
-                {filteredMembers.map((row) => (
-                  <li
-                    key={row.key}
-                    id={`member-${row.key}`}
-                    className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
-                      highlightMemberKey === row.key ? 'bg-cyan-950/40' : ''
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected.has(row.key)}
-                      onChange={() => toggleMember(row.key)}
-                    />
-                    <div>
-                      <p className="text-white">{row.userName || row.userId || row.key}</p>
-                      <p className="text-xs text-slate-500">
-                        {row.workgroups.length ? (
-                          row.workgroups.map((wgName, i) => {
-                            const wgId = workgroupIdByLabel.get(wgName);
-                            return (
-                              <span key={`${row.key}-${wgName}`}>
-                                {i > 0 ? ', ' : null}
-                                {wgId ? (
-                                  <button
-                                    type="button"
-                                    onClick={() => navigateToWorkgroup(wgId)}
-                                    className="text-slate-500 hover:text-cyan-300 hover:underline"
-                                  >
-                                    {wgName}
-                                  </button>
-                                ) : (
-                                  wgName
-                                )}
-                              </span>
-                            );
-                          })
-                        ) : (
-                          'No workgroups'
-                        )}
-                        {row.hasSubmittedPatch
-                          ? ` · ${row.patchCount || 1} patch${(row.patchCount || 1) === 1 ? '' : 'es'}`
-                          : ' · No patch'}
-                        {row.email ? ' · Receives email' : ' · No email on file'}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <BroadcastRecipientList
+                rows={filteredMembers}
+                selected={selected}
+                onToggle={toggleMember}
+                onToggleAllVisible={toggleAllVisibleMembers}
+                allVisibleSelected={allVisibleMembersSelected}
+                someVisibleSelected={someVisibleMembersSelected}
+                highlightKey={highlightMemberKey}
+                workgroupIdByLabel={workgroupIdByLabel}
+                onNavigateWorkgroup={navigateToWorkgroup}
+                emptyMessage="No recipients match the current cohort and filters."
+              />
             </>
           )}
         </section>

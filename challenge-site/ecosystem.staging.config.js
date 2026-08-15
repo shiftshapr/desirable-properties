@@ -55,6 +55,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         DP_ENV: 'staging',
+        NEXT_DIST_DIR: '.next-staging',
         PORT: '3006',
         GOVHUB_BASE_URL: 'https://dev.hub.themetalayer.org',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',

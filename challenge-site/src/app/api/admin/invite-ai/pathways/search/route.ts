@@ -1,17 +1,13 @@
-import { proxyGovHubJson } from '@/lib/govhub-proxy';
-import { requireDpAdminWithSession } from '@/lib/dp-admin-api';
+import { proxyDpAdminInviteGovHub } from '@/lib/dp-admin-invite-proxy';
 
 export async function POST(request: Request) {
-  const auth = await requireDpAdminWithSession();
-  if (!auth.ok) return auth.response;
   let body: unknown = {};
   try {
     body = await request.json();
   } catch {
     body = {};
   }
-  return proxyGovHubJson('/api/admin/dp-invite/pathways/search/', {
-    requireAuth: true,
+  return proxyDpAdminInviteGovHub('/api/admin/dp-invite/pathways/search/', {
     method: 'POST',
     body,
     timeoutMs: 90000,

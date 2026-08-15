@@ -75,6 +75,11 @@ export default function HermesContributionPanel({
         ) : null}
         <p className="mt-1 text-xs text-slate-300">{draft.summary}</p>
         <p className="mt-1 text-[11px] text-slate-400">Target: {draft.draftRef}</p>
+        {draft.isRevision && draft.supersedesMessageId ? (
+          <p className="mt-2 inline-flex rounded-full border border-amber-600/60 bg-amber-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200">
+            Revision of published contribution
+          </p>
+        ) : null}
       </div>
 
       <p className="mt-3 text-xs text-amber-100/90">

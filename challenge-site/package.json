@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs scripts/dp-welcome-default.test.mjs",
     "test:dp-broadcast-email": "node --test scripts/dp-broadcast-email.test.mjs",
+    "test:dp-broadcast-audience-filter": "node --test scripts/dp-broadcast-audience-filter.test.mjs",
     "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs"
   },
   "dependencies": {

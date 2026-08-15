@@ -1,23 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  adminInviteHideContact,
   adminInviteIngestZoho,
   adminInvitePathwayApply,
   adminInvitePathwaySearch,
   adminInvitePathwayUrl,
   adminInvitePathwayZoho,
   type InvitePathwayApplyPayload,
+  type MessageStrategy,
+  type OutreachSelectionReason,
   type SearchHitCandidate,
   type UrlAuthorCandidate,
   type ZohoContactCandidate,
 } from '@/lib/admin-invite-api';
+import {
+  fetchZohoInviteSelection,
+  migrateZohoInviteSelectionFromLocalStorage,
+  removeZohoInviteSelectionEmails,
+  saveZohoInviteSelection,
+  zohoEmailsForIds,
+  zohoIdsForEmails,
+} from '@/lib/dp-invite-zoho-selection';
 
 type PathwayTab = 'zoho' | 'search' | 'url' | 'manual';
 
 type Props = {
   onApply: (payload: InvitePathwayApplyPayload) => void;
   onStartBatch?: (contacts: ZohoContactCandidate[]) => void;
+  /** When set, removes these recipient emails from the saved Zoho batch selection. */
+  removedFromSelection?: string[];
 };
 
 function confidenceClass(level: string) {
@@ -47,13 +60,104 @@ function formatZohoMeta(contact: ZohoContactCandidate) {
   return parts.join(' · ');
 }
 
-export default function AdminInviteResearchPathways({ onApply, onStartBatch }: Props) {
+function strategyLabel(strategy?: MessageStrategy) {
+  if (strategy === 'recent_follow_up') return 'Recent follow-up';
+  if (strategy === 'custom') return 'Custom';
+  return 'Long-gap reconnection';
+}
+
+function formatSelectionReason(reason?: OutreachSelectionReason) {
+  if (!reason) return null;
+  const parts: string[] = [];
+  if (reason.matched_via_message_count) {
+    parts.push(
+      `${reason.meta_layer_message_count} meta-layer email${reason.meta_layer_message_count === 1 ? '' : 's'}`,
+    );
+  }
+  if (reason.matched_via_topics && reason.matched_terms.length) {
+    parts.push(`topic terms: ${reason.matched_terms.join(', ')}`);
+  }
+  if (!parts.length) {
+    parts.push('matched outreach filter (no detailed signal recorded)');
+  }
+  return parts.join(' · ');
+}
+
+function ZohoSelectionReasonPanel({ reason }: { reason?: OutreachSelectionReason }) {
+  const [open, setOpen] = useState(false);
+  if (!reason) return null;
+  return (
+    <div className="mt-2">
+      <button
+        type="button"
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setOpen((value) => !value);
+        }}
+        className="flex items-center gap-1 text-xs text-cyan-300/90 hover:text-cyan-200"
+        aria-expanded={open}
+      >
+        <span className="inline-block transition-transform" style={{ transform: open ? 'rotate(90deg)' : undefined }}>
+          ▸
+        </span>
+        Why selected?
+      </button>
+      {open ? (
+        <div className="mt-1 rounded border border-slate-800 bg-slate-950/70 p-2 text-xs text-slate-400">
+          <p>{formatSelectionReason(reason)}</p>
+          {reason.message_count > 0 ? (
+            <p className="mt-1">
+              {reason.message_count} total email{reason.message_count === 1 ? '' : 's'}
+              {reason.keyword_score > 0 ? ` · keyword score ${reason.keyword_score}` : ''}
+            </p>
+          ) : null}
+          {reason.sample_subject_hits.length ? (
+            <p className="mt-1 text-slate-500">
+              Matching subjects: {reason.sample_subject_hits.join(' · ')}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function formatZohoLoadError(message: string, statusCode?: number) {
+  const normalized = message.trim().toLowerCase();
+  if (
+    normalized.includes('sign in to dp admin')
+    || normalized === 'unauthorized'
+    || normalized.includes('authentication required')
+  ) {
+    return 'Sign in to DP admin to use Zoho outreach.';
+  }
+  if (normalized.includes('not authorized for admin') || normalized === 'forbidden') {
+    return 'Your account is signed in but is not authorized for DP admin.';
+  }
+  if (statusCode === 502 || statusCode === 504 || normalized.includes('upstream')) {
+    return 'Gov Hub is temporarily unavailable. Try again in a moment.';
+  }
+  return message;
+}
+
+export default function AdminInviteResearchPathways({
+  onApply,
+  onStartBatch,
+  removedFromSelection = [],
+}: Props) {
   const [tab, setTab] = useState<PathwayTab>('zoho');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [adminEmail, setAdminEmail] = useState('');
+  const autoScanAttempted = useRef(false);
+  const processedSelectionRemovals = useRef<Set<string>>(new Set());
 
   const [zohoContacts, setZohoContacts] = useState<ZohoContactCandidate[]>([]);
+  const [zohoFilter, setZohoFilter] = useState('');
+  const [showHiddenZoho, setShowHiddenZoho] = useState(false);
+  const [hiddenZohoCount, setHiddenZohoCount] = useState(0);
   const [selectedZohoId, setSelectedZohoId] = useState('');
   const [selectedZohoIds, setSelectedZohoIds] = useState<string[]>([]);
   const [agentDropName, setAgentDropName] = useState('');
@@ -68,35 +172,144 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
   const [pageSummary, setPageSummary] = useState('');
   const [selectedAuthorId, setSelectedAuthorId] = useState('');
   const [selectedAuthorEmail, setSelectedAuthorEmail] = useState('');
+  const [selectionSaved, setSelectionSaved] = useState(false);
+  const selectionSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const selectionSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function loadZoho() {
+  const persistZohoSelection = useCallback(
+    (ids: string[], contacts: ZohoContactCandidate[] = zohoContacts) => {
+      if (!adminEmail.trim()) return;
+      const emails = zohoEmailsForIds(contacts, ids);
+      if (selectionSaveTimer.current) clearTimeout(selectionSaveTimer.current);
+      selectionSaveTimer.current = setTimeout(() => {
+        void saveZohoInviteSelection(adminEmail, emails)
+          .then(() => {
+            setSelectionSaved(true);
+            if (selectionSavedTimer.current) clearTimeout(selectionSavedTimer.current);
+            selectionSavedTimer.current = setTimeout(() => setSelectionSaved(false), 2000);
+          })
+          .catch(() => {
+            /* selection save failed — next toggle will retry */
+          });
+      }, 250);
+    },
+    [adminEmail, zohoContacts],
+  );
+
+  const applyPersistedZohoSelection = useCallback(
+    async (contacts: ZohoContactCandidate[]) => {
+      if (!adminEmail.trim()) {
+        setSelectedZohoIds([]);
+        return;
+      }
+      try {
+        const savedEmails = await fetchZohoInviteSelection(adminEmail);
+        setSelectedZohoIds(zohoIdsForEmails(contacts, savedEmails));
+      } catch {
+        setSelectedZohoIds([]);
+      }
+    },
+    [adminEmail],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/admin/me', { credentials: 'include' });
+        const data = await res.json().catch(() => ({}));
+        if (!cancelled && res.ok && data.ok && typeof data.email === 'string') {
+          setAdminEmail(data.email.trim().toLowerCase());
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!adminEmail.trim()) return;
+    void migrateZohoInviteSelectionFromLocalStorage(adminEmail);
+  }, [adminEmail]);
+
+  useEffect(() => {
+    if (!adminEmail.trim() || !removedFromSelection.length) return;
+    const fresh = removedFromSelection
+      .map((email) => email.trim().toLowerCase())
+      .filter((email) => email && !processedSelectionRemovals.current.has(email));
+    if (!fresh.length) return;
+    for (const email of fresh) processedSelectionRemovals.current.add(email);
+    void removeZohoInviteSelectionEmails(adminEmail, fresh);
+    setSelectedZohoIds((ids) => {
+      const remove = new Set(
+        zohoContacts
+          .filter((row) => fresh.includes(row.email.trim().toLowerCase()))
+          .map((row) => row.id),
+      );
+      return ids.filter((id) => !remove.has(id));
+    });
+  }, [adminEmail, removedFromSelection, zohoContacts]);
+
+  const filteredZohoContacts = zohoFilter.trim()
+    ? zohoContacts.filter((contact) => {
+        const query = zohoFilter.trim().toLowerCase();
+        const blob = [
+          contact.name,
+          contact.email,
+          contact.summary,
+          ...(contact.sample_subjects || []),
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        return blob.includes(query);
+      })
+    : zohoContacts;
+
+  async function loadZoho(showHidden = showHiddenZoho) {
     setBusy(true);
     setError(null);
     setNotice(null);
     try {
-      const data = await adminInvitePathwayZoho();
-      if (data.error && !data.contacts?.length) {
-        setError(data.error);
-        setZohoContacts([]);
-        return;
-      }
-      setZohoContacts(data.contacts || []);
-      setSelectedZohoIds([]);
+      const data = await adminInvitePathwayZoho({ show_hidden: showHidden });
       if (!data.configured) {
+        setZohoContacts([]);
+        setHiddenZohoCount(0);
+        setError(null);
         setNotice(
           data.error
-            || 'Zoho Mail is not configured on Gov Hub yet. Export mail as EML/ZIP and run scripts/zoho_mail_ingest_export.py, or set ZOHO_MAIL_* OAuth vars.',
+            || 'Zoho Mail is not configured yet. Export mail as EML/ZIP, upload to Meta-Console agent drop, then use Ingest from agent drop — or set ZOHO_MAIL_* OAuth vars on Gov Hub.',
         );
-      } else if (data.source === 'snapshot') {
+        return;
+      }
+      if (data.error && !data.contacts?.length) {
+        setError(formatZohoLoadError(data.error));
+        setZohoContacts([]);
+        setHiddenZohoCount(0);
+        return;
+      }
+      const contacts = data.contacts || [];
+      setZohoContacts(contacts);
+      setHiddenZohoCount(data.hidden_count ?? 0);
+      await applyPersistedZohoSelection(contacts);
+      if (data.source === 'snapshot') {
         const exported = data.exported_at
           ? ` (exported ${new Date(data.exported_at).toLocaleDateString()})`
           : '';
-        setNotice(`Using one-time Zoho mail export snapshot${exported}.`);
+        const count = data.contacts?.length ?? 0;
+        const hidden = data.hidden_count ?? 0;
+        const hiddenNote = hidden > 0 && !showHidden ? ` (${hidden} hidden)` : '';
+        setNotice(`Loaded ${count} relevant contacts from Zoho export snapshot${exported}${hiddenNote}.`);
       } else if (!data.contacts?.length) {
         setNotice('No meta-layer related contacts found in recent Zoho mail.');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Zoho scan failed');
+      setError(
+        formatZohoLoadError(err instanceof Error ? err.message : 'Zoho scan failed'),
+      );
     } finally {
       setBusy(false);
     }
@@ -122,6 +335,33 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
       await loadZoho();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ingest failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function hideZohoContact(contact: ZohoContactCandidate) {
+    setBusy(true);
+    setError(null);
+    try {
+      await adminInviteHideContact({ recipient_email: contact.email });
+      setZohoContacts((rows) => rows.filter((row) => row.id !== contact.id));
+      setSelectedZohoIds((ids) => {
+        const next = ids.filter((id) => id !== contact.id);
+        persistZohoSelection(
+          next,
+          zohoContacts.filter((row) => row.id !== contact.id),
+        );
+        return next;
+      });
+      if (adminEmail.trim()) {
+        void removeZohoInviteSelectionEmails(adminEmail, [contact.email]);
+      }
+      if (selectedZohoId === contact.id) setSelectedZohoId('');
+      setHiddenZohoCount((count) => count + 1);
+      setNotice(`Hidden ${contact.name || contact.email}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Hide failed');
     } finally {
       setBusy(false);
     }
@@ -233,11 +473,24 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
   }
 
   function toggleZohoContact(id: string) {
-    setSelectedZohoIds((prev) =>
-      prev.includes(id) ? prev.filter((value) => value !== id) : [...prev, id],
-    );
+    setSelectedZohoIds((prev) => {
+      const next = prev.includes(id)
+        ? prev.filter((value) => value !== id)
+        : [...prev, id];
+      persistZohoSelection(next);
+      return next;
+    });
     setSelectedZohoId(id);
   }
+
+  useEffect(() => {
+    if (!adminEmail.trim() || autoScanAttempted.current) return;
+    autoScanAttempted.current = true;
+    void fetchZohoInviteSelection(adminEmail).then((emails) => {
+      if (emails.length) void loadZoho();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once when admin email is known
+  }, [adminEmail]);
 
   function startBatchReview() {
     const selected = zohoContacts.filter((row) => selectedZohoIds.includes(row.id));
@@ -283,6 +536,9 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
 
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
       {notice ? <p className="mt-4 text-sm text-amber-200/90">{notice}</p> : null}
+      {selectionSaved ? (
+        <p className="mt-2 text-xs text-emerald-300/90">Selection saved to server.</p>
+      ) : null}
 
       {tab === 'zoho' ? (
         <div className="mt-4 space-y-4">
@@ -330,7 +586,10 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
             <>
               <div className="flex flex-wrap items-center gap-3">
                 <p className="text-sm text-slate-400">
-                  Select one contact for the form, or multiple for batch review.
+                  {filteredZohoContacts.length === zohoContacts.length
+                    ? `${zohoContacts.length} relevant contacts`
+                    : `${filteredZohoContacts.length} of ${zohoContacts.length} contacts`}
+                  {' — '}select one for the form, or multiple for batch review.
                 </p>
                 {selectedZohoIds.length >= 2 ? (
                   <button
@@ -343,8 +602,32 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
                   </button>
                 ) : null}
               </div>
-              <ul className="space-y-3">
-                {zohoContacts.map((contact) => (
+              <label className="block text-sm">
+                <span className="text-slate-300">Filter contacts</span>
+                <input
+                  value={zohoFilter}
+                  onChange={(e) => setZohoFilter(e.target.value)}
+                  className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100"
+                  disabled={busy}
+                  placeholder="Search by name, email, or subject…"
+                />
+              </label>
+              <label className="flex items-center gap-2 text-sm text-slate-400">
+                <input
+                  type="checkbox"
+                  checked={showHiddenZoho}
+                  onChange={(e) => {
+                    const next = e.target.checked;
+                    setShowHiddenZoho(next);
+                    void loadZoho(next);
+                  }}
+                  disabled={busy}
+                />
+                Show hidden / already contacted
+                {hiddenZohoCount > 0 && !showHiddenZoho ? ` (${hiddenZohoCount})` : ''}
+              </label>
+              <ul className="max-h-[32rem] space-y-3 overflow-y-auto pr-1">
+                {filteredZohoContacts.map((contact) => (
                   <li
                     key={contact.id}
                     className="rounded-lg border border-slate-800 bg-slate-900/50 p-4"
@@ -374,6 +657,11 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
                         >
                           {contact.confidence} · {contact.score}%
                         </span>
+                        {contact.suggested_strategy ? (
+                          <span className="rounded-full border border-cyan-800/60 bg-cyan-950/40 px-2 py-0.5 text-xs text-cyan-100">
+                            {strategyLabel(contact.suggested_strategy)}
+                          </span>
+                        ) : null}
                       </span>
                       {contact.summary ? (
                         <span className="mt-1 block text-sm text-slate-400">{contact.summary}</span>
@@ -386,7 +674,21 @@ export default function AdminInviteResearchPathways({ onApply, onStartBatch }: P
                           Subjects: {contact.sample_subjects.join(' · ')}
                         </span>
                       ) : null}
+                      <ZohoSelectionReasonPanel reason={contact.selection_reason} />
                     </span>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        void hideZohoContact(contact);
+                      }}
+                      className="shrink-0 rounded-lg border border-slate-700 px-2 py-1 text-xs text-slate-300 hover:border-rose-700 hover:text-rose-200 disabled:opacity-50"
+                      title="Hide this contact from future scans"
+                    >
+                      Hide
+                    </button>
                   </label>
                 </li>
               ))}

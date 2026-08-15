@@ -15,6 +15,8 @@ type Props = {
   extraIds: string[];
   busy?: boolean;
   researchWarnings?: string[];
+  continueDisabled?: boolean;
+  continueHint?: string;
   onPrimaryChange: (workgroupId: string) => void;
   onToggleExtra: (workgroupId: string) => void;
   onContinue: () => void;
@@ -28,6 +30,8 @@ export default function AdminInviteWorkgroupPicker({
   extraIds,
   busy,
   researchWarnings,
+  continueDisabled,
+  continueHint,
   onPrimaryChange,
   onToggleExtra,
   onContinue,
@@ -173,14 +177,17 @@ export default function AdminInviteWorkgroupPicker({
       ) : null}
 
       {primaryId && catalogById.get(primaryId) ? (
-        <button
-          type="button"
-          disabled={busy}
-          onClick={onContinue}
-          className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
-        >
-          {busy ? 'Drafting…' : 'Generate email draft'}
-        </button>
+        <div className="space-y-2">
+          <button
+            type="button"
+            disabled={busy || continueDisabled}
+            onClick={onContinue}
+            className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
+          >
+            {busy ? 'Drafting…' : 'Generate email draft'}
+          </button>
+          {continueHint ? <p className="text-sm text-amber-200/90">{continueHint}</p> : null}
+        </div>
       ) : (
         <p className="text-sm text-amber-200/90">Select a primary workgroup to continue.</p>
       )}

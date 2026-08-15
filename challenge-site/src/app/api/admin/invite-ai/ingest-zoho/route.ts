@@ -1,25 +1,15 @@
-import { proxyGovHubJson } from '@/lib/govhub-proxy';
-import { requireDpAdminWithSession } from '@/lib/dp-admin-api';
+import { proxyDpAdminInviteGovHub } from '@/lib/dp-admin-invite-proxy';
 
-async function proxyInvite(path: string, request: Request, method: 'GET' | 'POST' = 'POST') {
-  const auth = await requireDpAdminWithSession();
-  if (!auth.ok) return auth.response;
-  let body: unknown = undefined;
-  if (method === 'POST') {
-    try {
-      body = await request.json();
-    } catch {
-      body = {};
-    }
+export async function POST(request: Request) {
+  let body: unknown = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
   }
-  return proxyGovHubJson(path, {
-    requireAuth: true,
-    method,
+  return proxyDpAdminInviteGovHub('/api/admin/dp-invite/ingest-zoho/', {
+    method: 'POST',
     body,
     timeoutMs: 120000,
   });
-}
-
-export async function POST(request: Request) {
-  return proxyInvite('/api/admin/dp-invite/ingest-zoho/', request);
 }

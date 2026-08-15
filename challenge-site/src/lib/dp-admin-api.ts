@@ -32,13 +32,13 @@ export async function requireDpAdmin() {
   };
 }
 
-/** Admin routes that proxy to Hermes need both admin email and Web3Auth idToken. */
-export async function requireDpAdminWithSession() {
+/** Admin routes that proxy to Gov Hub need a verified DP admin email (Web3Auth or legacy). */
+export async function requireDpAdminForGovHubProxy() {
   const cookieStore = await cookies();
   const email = await resolveAdminEmail(cookieStore);
   const session = await readSession();
-  if (!email || !session?.idToken) {
-    if (session && !email) {
+  if (!email) {
+    if (session) {
       return {
         ok: false as const,
         response: NextResponse.json(
@@ -53,10 +53,37 @@ export async function requireDpAdminWithSession() {
     }
     return {
       ok: false as const,
-      response: NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 }),
+      response: NextResponse.json(
+        {
+          ok: false,
+          error: 'unauthorized',
+          message: 'Sign in to DP admin to use this feature.',
+        },
+        { status: 401 },
+      ),
     };
   }
   return { ok: true as const, email, session };
+}
+
+/** Routes that forward Web3Auth idToken upstream still need a Hermes session. */
+export async function requireDpAdminWithSession() {
+  const auth = await requireDpAdminForGovHubProxy();
+  if (!auth.ok) return auth;
+  if (!auth.session?.idToken) {
+    return {
+      ok: false as const,
+      response: NextResponse.json(
+        {
+          ok: false,
+          error: 'unauthorized',
+          message: 'Sign in with Web3Auth to use this feature.',
+        },
+        { status: 401 },
+      ),
+    };
+  }
+  return { ok: true as const, email: auth.email, session: auth.session };
 }
 
 export async function allAdminEmails(): Promise<string[]> {

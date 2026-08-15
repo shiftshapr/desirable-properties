@@ -5,6 +5,7 @@ export const DP_ADMIN_TAB_LABELS = {
   messages: 'Site messages',
   'invite-content': 'Invite content',
   'email-invites': 'Email invites',
+  'long-gap-send': 'Long-gap send',
   'event-series': 'Event series',
   site: 'Site admin',
 } as const;
@@ -20,7 +21,7 @@ export const DP_ADMIN_GROUPS = [
   {
     key: 'outreach',
     label: 'Outreach',
-    tabs: ['broadcast', 'messages', 'invite-content', 'email-invites'] as const satisfies readonly DpAdminTabKey[],
+    tabs: ['broadcast', 'messages', 'invite-content', 'email-invites', 'long-gap-send'] as const satisfies readonly DpAdminTabKey[],
   },
   {
     key: 'events',

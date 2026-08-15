@@ -12,6 +12,7 @@ import {
   indexUnsubscribeToken,
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
+import { resolveBroadcastRecipientRow } from '@/lib/dp-broadcast-cohort-recipients';
 import type { BroadcastRecipientResult } from '@/lib/dp-broadcast-result';
 import { isCanopiUserId, fetchCanopiUserHandles } from '@/lib/dp-canopi-user';
 import {
@@ -355,6 +356,29 @@ export async function sendBroadcast(input: {
       : null;
 
   let targets = audience.filter((row) => !keySet || keySet.has(row.key));
+
+  if (keySet) {
+    const resolved: BroadcastAudienceRow[] = [];
+    const seen = new Set<string>();
+    for (const key of keySet) {
+      if (seen.has(key)) continue;
+      const row = resolveBroadcastRecipientRow(key, audience);
+      if (row) {
+        const full: BroadcastAudienceRow =
+          'workgroupIds' in row
+            ? (row as BroadcastAudienceRow)
+            : {
+                ...row,
+                workgroupIds: [],
+                workgroupDetails: [],
+                joinedAt: null,
+              };
+        resolved.push(full);
+        seen.add(key);
+      }
+    }
+    targets = resolved;
+  }
   const testMode = Boolean(input.testMode);
   const testEmail = normStr(input.testEmail, 200).toLowerCase();
 
@@ -570,6 +594,52 @@ export async function getBroadcastArchiveEntry(id: string) {
     fontId: String(row.font_id || 'default'),
     sentAt: new Date(String(row.sent_at)).toISOString(),
   };
+}
+
+export type RecipientBroadcastHistoryItem = {
+  id: string;
+  subject: string;
+  sentAt: string;
+  testMode: boolean;
+  ok: boolean;
+};
+
+export async function getRecipientBroadcastHistory(email: string, limit = 30) {
+  const pool = await ensureDpSchema();
+  if (!pool) return [] as RecipientBroadcastHistoryItem[];
+
+  const normalized = String(email || '')
+    .trim()
+    .toLowerCase();
+  if (!normalized.includes('@')) return [];
+
+  const res = await pool.query(
+    `SELECT id, subject, sent_at, test_mode, recipients
+     FROM dp_broadcast_log
+     WHERE EXISTS (
+       SELECT 1 FROM jsonb_array_elements(recipients) AS r
+       WHERE lower(trim(r->>'email')) = $1
+     )
+     ORDER BY sent_at DESC
+     LIMIT $2`,
+    [normalized, Math.min(50, Math.max(1, limit))],
+  );
+
+  return res.rows.map((row) => {
+    const recipients = Array.isArray(row.recipients)
+      ? (row.recipients as Array<Record<string, unknown>>)
+      : [];
+    const match = recipients.find(
+      (r) => String(r.email || '').trim().toLowerCase() === normalized,
+    );
+    return {
+      id: String(row.id),
+      subject: String(row.subject || ''),
+      sentAt: new Date(String(row.sent_at)).toISOString(),
+      testMode: Boolean(row.test_mode),
+      ok: match ? Boolean(match.ok) : true,
+    };
+  });
 }
 
 export function previewBroadcastHtml(

@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
-import { getGovHubBaseUrl } from '@/lib/web3auth-config';
+import { govhubInternalApiSecret } from '@/lib/support-hermes-auth';
+import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
 
 type ProxyOptions = {
   requireAuth?: boolean;
+  /** DP site admin email for server-to-server Gov Hub proxy auth. */
+  adminEmail?: string;
   method?: string;
   body?: unknown;
   searchParams?: URLSearchParams | string;
@@ -23,7 +26,7 @@ export async function proxyGovHubJson(
     );
   }
 
-  const base = getGovHubBaseUrl();
+  const base = getGovHubProxyBaseUrl();
   const qs =
     typeof options.searchParams === 'string'
       ? options.searchParams
@@ -33,8 +36,21 @@ export async function proxyGovHubJson(
   const headers: Record<string, string> = {
     Accept: 'application/json',
   };
-  if (session?.idToken) {
+  const adminEmail = options.adminEmail?.trim().toLowerCase();
+  const internalSecret = govhubInternalApiSecret();
+  if (adminEmail && internalSecret) {
+    headers.Authorization = `Bearer ${internalSecret}`;
+    headers['X-DP-Admin-Email'] = adminEmail;
+  } else if (session?.idToken) {
     headers.Authorization = `Bearer ${session.idToken}`;
+  } else if (adminEmail && !internalSecret) {
+    return NextResponse.json(
+      {
+        error: 'Gov Hub proxy is not configured (missing internal secret)',
+        code: 'GOVHUB_PROXY_MISCONFIGURED',
+      },
+      { status: 500, headers: { 'Cache-Control': 'no-store' } },
+    );
   }
   if (options.body !== undefined) {
     headers['Content-Type'] = 'application/json';
@@ -63,8 +79,20 @@ export async function proxyGovHubJson(
       try {
         data = JSON.parse(text);
       } catch {
+        const snippet = text.replace(/\s+/g, ' ').trim().slice(0, 240);
+        const upstreamStatus = res.status;
+        const contentType = res.headers.get('content-type') || '';
+        const detail = snippet
+          ? `Gov Hub returned non-JSON (${upstreamStatus}, ${contentType}): ${snippet}`
+          : `Gov Hub returned empty non-JSON response (${upstreamStatus})`;
         return NextResponse.json(
-          { error: 'Upstream returned non-JSON', code: 'UPSTREAM_MALFORMED_RESPONSE' },
+          {
+            error: detail,
+            message: detail,
+            code: 'UPSTREAM_MALFORMED_RESPONSE',
+            upstream_status: upstreamStatus,
+            upstream_content_type: contentType,
+          },
           { status: 502, headers: { 'Cache-Control': 'no-store' } },
         );
       }

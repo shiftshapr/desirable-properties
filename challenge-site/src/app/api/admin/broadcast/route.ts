@@ -7,8 +7,11 @@ import {
   sendBroadcast,
   getBroadcastLogEntry,
   previewBroadcastHtml,
+  getRecipientBroadcastHistory,
 } from '@/lib/dp-broadcast-store';
 import { BROADCAST_FONT_OPTIONS } from '@/lib/dp-broadcast-send';
+import { proxyDpAdminInviteGovHub } from '@/lib/dp-admin-invite-proxy';
+import { requireDpAdminForGovHubProxy } from '@/lib/dp-admin-api';
 
 export async function GET(request: Request) {
   const auth = await requireDpAdmin();
@@ -44,6 +47,36 @@ export async function GET(request: Request) {
     const offset = Number(searchParams.get('offset') || 0);
     const log = await listBroadcastLog(limit, offset);
     return NextResponse.json({ ok: true, ...log });
+  }
+
+  if (view === 'recipient-history') {
+    const email = searchParams.get('email') || '';
+    if (!email.trim()) {
+      return jsonError('Email is required.', 400, 'email_required');
+    }
+
+    const broadcasts = await getRecipientBroadcastHistory(email, 30);
+
+    let invites: Array<Record<string, unknown>> = [];
+    const inviteAuth = await requireDpAdminForGovHubProxy();
+    if (inviteAuth.ok) {
+      const query = new URLSearchParams({
+        recipient_email: email.trim(),
+        limit: '30',
+      });
+      const inviteRes = await proxyDpAdminInviteGovHub(
+        `/api/admin/dp-invite/send-records/?${query.toString()}`,
+        { method: 'GET', timeoutMs: 20000 },
+      );
+      if (inviteRes.ok) {
+        const inviteData = await inviteRes.json().catch(() => ({}));
+        if (Array.isArray(inviteData.records)) {
+          invites = inviteData.records as Array<Record<string, unknown>>;
+        }
+      }
+    }
+
+    return NextResponse.json({ ok: true, broadcasts, invites });
   }
 
   const id = searchParams.get('id');

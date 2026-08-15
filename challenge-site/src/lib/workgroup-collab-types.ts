@@ -109,6 +109,8 @@ export type InviteDraftResponse = {
   draft?: string;
   tone?: string;
   length?: string;
+  message_strategy?: MessageStrategy | null;
+  strategy_confirmed?: boolean;
   prior_invitations?: PriorInvitation[];
 };
 
@@ -151,6 +153,8 @@ export type ZohoCommunicationStyle = {
   verbosity?: string;
 };
 
+export type MessageStrategy = 'long_gap_reconnect' | 'recent_follow_up' | 'custom';
+
 export type ZohoContactContext = {
   source?: string;
   email?: string;
@@ -162,6 +166,8 @@ export type ZohoContactContext = {
   snippets?: string[];
   summary?: string;
   communication_style?: ZohoCommunicationStyle;
+  suggested_strategy?: MessageStrategy;
+  message_strategy?: MessageStrategy;
 };
 
 export type InviteContentEvent = {
@@ -199,6 +205,8 @@ export type InviteDraftInput = {
   prior_invitations?: PriorInvitation[];
   invite_content?: InviteContentContext | null;
   zoho_contact_context?: ZohoContactContext | null;
+  message_strategy?: MessageStrategy;
+  strategy_confirmed?: boolean;
   regenerate?: boolean;
   previous_draft?: string;
 };
@@ -210,6 +218,7 @@ export type InviteSendInput = {
   primary_workgroup_id?: string;
   additional_workgroup_ids?: string[];
   send_mode: InviteSendMode;
+  message_strategy?: MessageStrategy;
 };
 
 export type WorkgroupInvitePreview = {

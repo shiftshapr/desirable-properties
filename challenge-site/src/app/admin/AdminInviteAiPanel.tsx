@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import AdminInviteBatchReview from '@/components/admin/AdminInviteBatchReview';
 import AdminInviteWorkgroupPicker from '@/components/admin/AdminInviteWorkgroupPicker';
 import AdminInviteResearchPathways from '@/components/admin/AdminInviteResearchPathways';
 import WorkgroupInviteContentPicker from '@/components/workgroup/WorkgroupInviteContentPicker';
@@ -18,6 +19,7 @@ import {
   adminInviteSendRecords,
   type AdminInviteSendRecord,
   type InvitePathwayApplyPayload,
+  type MessageStrategy,
   type ZohoContactCandidate,
 } from '@/lib/admin-invite-api';
 import {
@@ -37,6 +39,44 @@ import type {
 } from '@/lib/workgroup-collab-types';
 
 type Step = 'research' | 'disambiguate' | 'workgroups' | 'draft' | 'done';
+
+function strategyFromContact(contact?: ZohoContactCandidate | null): MessageStrategy {
+  return contact?.message_strategy || contact?.suggested_strategy || 'long_gap_reconnect';
+}
+
+function buildPathwayPayloadFromZohoContact(
+  contact: ZohoContactCandidate,
+): InvitePathwayApplyPayload {
+  const previousParts: string[] = [];
+  if (contact.summary?.trim()) previousParts.push(contact.summary.trim());
+  if (contact.sample_subjects?.length) {
+    previousParts.push(
+      `Prior email subjects: ${contact.sample_subjects.slice(0, 6).join('; ')}`,
+    );
+  }
+  if (contact.snippets?.length) {
+    previousParts.push(contact.snippets.slice(0, 4).map((snippet) => `> ${snippet}`).join('\n'));
+  }
+  return {
+    name: (contact.name || '').trim() || contact.email,
+    email: contact.email.trim(),
+    previous_interaction: previousParts.join('\n\n'),
+    extra_links: [],
+    zoho_contact_context: {
+      source: 'zoho_batch',
+      email: contact.email,
+      name: contact.name,
+      last_contact: contact.last_contact,
+      message_count: contact.message_count,
+      subjects: contact.sample_subjects,
+      snippets: contact.snippets,
+      summary: contact.summary,
+      communication_style: contact.communication_style,
+      suggested_strategy: contact.suggested_strategy || contact.message_strategy,
+      message_strategy: contact.message_strategy || contact.suggested_strategy,
+    },
+  };
+}
 
 export default function AdminInviteAiPanel() {
   const [step, setStep] = useState<Step>('research');
@@ -81,7 +121,13 @@ export default function AdminInviteAiPanel() {
 
   const [batchQueue, setBatchQueue] = useState<ZohoContactCandidate[]>([]);
   const [batchIndex, setBatchIndex] = useState(0);
+  const [batchPrefill, setBatchPrefill] = useState<
+    Record<string, { draft: string; primaryWorkgroupId?: string }>
+  >({});
+  const [messageStrategy, setMessageStrategy] = useState<MessageStrategy>('long_gap_reconnect');
+  const [strategyConfirmed, setStrategyConfirmed] = useState(false);
   const [sendHistory, setSendHistory] = useState<AdminInviteSendRecord[]>([]);
+  const [selectionRemovals, setSelectionRemovals] = useState<string[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -193,6 +239,9 @@ export default function AdminInviteAiPanel() {
     setMailBody('');
     setBatchQueue([]);
     setBatchIndex(0);
+    setBatchPrefill({});
+    setMessageStrategy('long_gap_reconnect');
+    setStrategyConfirmed(false);
   }
 
   function applyResearchResult(data: {
@@ -216,8 +265,14 @@ export default function AdminInviteAiPanel() {
   }
 
   async function runDraft(opts?: { tone?: string; length?: string; regenerate?: boolean }) {
-    if (!primaryWorkgroupId) {
-      setError('Select a primary workgroup before generating the draft.');
+    const allowGenericBatchDraft =
+      inBatchMode && !primaryWorkgroupId && messageStrategy === 'long_gap_reconnect';
+    if (!primaryWorkgroupId && !allowGenericBatchDraft) {
+      setError('Select a primary workgroup or use generic reconnect (no specific DP).');
+      return;
+    }
+    if (batchQueue.length > 0 && !strategyConfirmed) {
+      setError('Confirm the message approach for this contact before drafting.');
       return;
     }
     const effectiveTone = opts?.tone ?? tone;
@@ -250,7 +305,7 @@ export default function AdminInviteAiPanel() {
       const data = await adminInviteDraft({
         name: name.trim(),
         email: email.trim(),
-        primary_workgroup_id: primaryWorkgroupId,
+        primary_workgroup_id: primaryWorkgroupId || undefined,
         tone: effectiveTone,
         length: effectiveLength,
         previous_interaction: previousInteraction.trim() || undefined,
@@ -258,7 +313,11 @@ export default function AdminInviteAiPanel() {
         additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
         prior_invitations: priorInvitations,
         invite_content: inviteContent,
-        zoho_contact_context: zohoContactContext,
+        zoho_contact_context: zohoContactContext
+          ? { ...zohoContactContext, message_strategy: messageStrategy }
+          : null,
+        message_strategy: messageStrategy,
+        strategy_confirmed: strategyConfirmed,
         regenerate: isRegenerate,
         previous_draft: isRegenerate ? previousDraft : undefined,
       });
@@ -361,8 +420,16 @@ export default function AdminInviteAiPanel() {
   }
 
   async function send(mode: 'platform' | 'client') {
-    if (!primaryWorkgroupId) {
-      setError('Select a primary workgroup before sending.');
+    if (!draft.trim()) {
+      setError('Add or load a draft before sending.');
+      return;
+    }
+    const allowGenericBatchSend =
+      inBatchMode && !primaryWorkgroupId && messageStrategy === 'long_gap_reconnect';
+    if (!primaryWorkgroupId && !allowGenericBatchSend) {
+      setError(
+        'Select a primary workgroup or choose generic reconnect (no specific DP) before sending.',
+      );
       return;
     }
     setSendBusy(true);
@@ -372,10 +439,11 @@ export default function AdminInviteAiPanel() {
         name: name.trim(),
         email: email.trim(),
         body: draft.trim(),
-        primary_workgroup_id: primaryWorkgroupId,
+        primary_workgroup_id: primaryWorkgroupId || undefined,
         additional_workgroup_ids: selectedExtraIds.filter((id) => id !== primaryWorkgroupId),
         send_mode: mode,
         source: batchQueue.length ? 'zoho_batch' : 'manual',
+        message_strategy: batchQueue.length ? messageStrategy : undefined,
       });
       if (data.blocked || data.error) {
         setError(data.error || 'Send failed');
@@ -384,6 +452,7 @@ export default function AdminInviteAiPanel() {
       if (mode === 'platform') {
         setPlatformDone(true);
         if (batchQueue.length) {
+          setSelectionRemovals((prev) => [...prev, email.trim()]);
           await advanceBatch('sent');
           return;
         }
@@ -416,12 +485,20 @@ export default function AdminInviteAiPanel() {
   const recipientEmail = email.trim();
   const hasDraft = Boolean(draft.trim());
   const showDraftPhase = step === 'draft' || step === 'done' || (step === 'research' && hasDraft);
+  const inBatchMode = batchQueue.length > 0;
 
   function firstLinkedInUrl(links: string[]) {
     for (const link of links) {
       if (/linkedin\.com\/in\//i.test(link)) return link;
     }
     return '';
+  }
+
+  function focusBatchPanel() {
+    document.getElementById('batch-invite-panel')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   }
 
   function focusDraftEditor() {
@@ -466,18 +543,55 @@ export default function AdminInviteAiPanel() {
     setError(null);
   }
 
-  async function applyZohoContact(contact: ZohoContactCandidate) {
-    const payload = await adminInvitePathwayApply({ zoho_contact: contact });
-    applyPathwayResearch(payload);
+  async function applyZohoContact(
+    contact: ZohoContactCandidate,
+    prefillMap?: Record<string, { draft: string; primaryWorkgroupId?: string }>,
+  ): Promise<boolean> {
+    const prefillSource = prefillMap ?? batchPrefill;
+    const emailKey = contact.email.trim().toLowerCase();
+    const prefill = prefillSource[emailKey];
+    const hasPrefillDraft = Boolean(prefill?.draft?.trim());
+
+    if (hasPrefillDraft) {
+      applyPathwayResearch(buildPathwayPayloadFromZohoContact(contact));
+    } else {
+      const payload = await adminInvitePathwayApply({ zoho_contact: contact });
+      applyPathwayResearch(payload);
+    }
+
+    setMessageStrategy(strategyFromContact(contact));
+    if (prefill?.primaryWorkgroupId) {
+      setPrimaryWorkgroupId(prefill.primaryWorkgroupId);
+    } else {
+      setPrimaryWorkgroupId('');
+    }
+
+    if (hasPrefillDraft) {
+      setDraft(prefill!.draft.trim());
+      setStrategyConfirmed(true);
+      await ensureWorkgroupCatalog();
+      setStep('draft');
+      return true;
+    }
+
+    setStrategyConfirmed(false);
+    await ensureWorkgroupCatalog();
+    setStep('draft');
+    return false;
   }
 
-  async function startBatchReview(contacts: ZohoContactCandidate[]) {
+  async function startBatchReview(
+    contacts: ZohoContactCandidate[],
+    prefill?: Record<string, { draft: string; primaryWorkgroupId?: string }>,
+  ) {
     if (!contacts.length) return;
     resetInvite();
+    const prefillMap = prefill || {};
     setBatchQueue(contacts);
     setBatchIndex(0);
+    setBatchPrefill(prefillMap);
     try {
-      await applyZohoContact(contacts[0]);
+      const loadedDraft = await applyZohoContact(contacts[0], prefillMap);
       const history = await adminInviteBatchHistory({
         recipient_emails: contacts.map((row) => row.email),
       });
@@ -494,7 +608,13 @@ export default function AdminInviteAiPanel() {
           );
         });
       }
-      setStep('research');
+      if (!loadedDraft) {
+        setStep('draft');
+      }
+      requestAnimationFrame(() => {
+        focusBatchPanel();
+        if (loadedDraft) focusDraftEditor();
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not start batch review');
     }
@@ -511,6 +631,7 @@ export default function AdminInviteAiPanel() {
         body: draft.trim() || undefined,
         status: 'skipped',
         source: 'zoho_batch',
+        message_strategy: messageStrategy,
       });
     }
     const nextIndex = batchIndex + 1;
@@ -526,8 +647,16 @@ export default function AdminInviteAiPanel() {
     setBatchIndex(nextIndex);
     setPlatformDone(false);
     setDraft('');
-    setStep('research');
-    await applyZohoContact(batchQueue[nextIndex]);
+    setStrategyConfirmed(false);
+    const nextContact = batchQueue[nextIndex];
+    const loadedDraft = await applyZohoContact(nextContact, batchPrefill);
+    if (!loadedDraft) {
+      setStep('draft');
+    }
+    requestAnimationFrame(() => {
+      focusBatchPanel();
+      if (loadedDraft) focusDraftEditor();
+    });
   }
 
   async function skipBatchContact() {
@@ -542,130 +671,9 @@ export default function AdminInviteAiPanel() {
     }
   }
 
-  return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Email invites</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Research a contact, pick the best-matching workgroups, then draft and send a personal
-            invitation without starting from a specific DP page.
-          </p>
-        </div>
-        {step !== 'research' || name.trim() || email.trim() ? (
-          <button
-            type="button"
-            disabled={anyBusy}
-            onClick={resetInvite}
-            className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-50"
-          >
-            Start over
-          </button>
-        ) : null}
-      </div>
-
-      {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
-
-      {batchQueue.length > 0 ? (
-        <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/20 px-4 py-3">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-cyan-100">
-                Batch review {batchIndex + 1} of {batchQueue.length}:{' '}
-                <span className="font-medium text-white">
-                  {batchQueue[batchIndex]?.name || batchQueue[batchIndex]?.email}
-                </span>
-              </p>
-              {batchQueue[batchIndex] ? (
-                <p className="mt-1 text-xs text-cyan-200/80">
-                  {batchQueue[batchIndex].message_count != null ? (
-                    <span>{batchQueue[batchIndex].message_count} prior emails</span>
-                  ) : null}
-                  {batchQueue[batchIndex].last_contact ? (
-                    <>
-                      {batchQueue[batchIndex].message_count != null ? ' · ' : null}
-                      <span>
-                        Last contact{' '}
-                        {new Date(batchQueue[batchIndex].last_contact as string).toLocaleDateString()}
-                      </span>
-                    </>
-                  ) : null}
-                  {batchQueue[batchIndex].communication_style?.labels?.length ? (
-                    <>
-                      {' · '}
-                      <span>
-                        Style: {batchQueue[batchIndex].communication_style?.labels?.join(', ')}
-                      </span>
-                    </>
-                  ) : null}
-                </p>
-              ) : null}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                disabled={anyBusy}
-                onClick={() => void skipBatchContact()}
-                className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-amber-600 disabled:opacity-50"
-              >
-                Skip
-              </button>
-              {step === 'draft' && hasDraft ? (
-                <button
-                  type="button"
-                  disabled={anyBusy}
-                  onClick={() => void send('platform')}
-                  className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
-                >
-                  Send &amp; next
-                </button>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {sendHistory.length > 0 ? (
-        <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/30 px-4 py-3">
-          <p className="text-sm font-medium text-slate-200">Recent send log</p>
-          <ul className="mt-2 space-y-2">
-            {sendHistory.slice(0, 8).map((row) => (
-              <li key={row.id} className="text-xs text-slate-400">
-                <span className="text-slate-200">{row.recipient_name || row.recipient_email}</span>
-                {' · '}
-                <span>{row.status}</span>
-                {row.created_at ? (
-                  <>
-                    {' · '}
-                    <span>{new Date(row.created_at).toLocaleString()}</span>
-                  </>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-
-      <div className="mt-6">
-        <AdminInviteResearchPathways
-          onApply={applyPathwayResearch}
-          onStartBatch={(contacts) => void startBatchReview(contacts)}
-        />
-      </div>
-
-      <div className="mt-6">
-        <WorkgroupInviteContentPicker
-          selectedEventIds={selectedEventIds}
-          selectedPerspectiveIds={selectedPerspectiveIds}
-          lead={inviteLead}
-          onChange={handleInviteContentChange}
-          catalog={contentCatalog}
-          catalogLoading={contentCatalogLoading}
-          catalogError={contentCatalogError}
-        />
-      </div>
-
-      <div className="mt-6">
+  function renderInviteWorkflow() {
+    return (
+      <>
         {step === 'research' || step === 'disambiguate' ? (
           <>
             {step === 'research' && hasDraft ? (
@@ -731,7 +739,7 @@ export default function AdminInviteAiPanel() {
         ) : null}
 
         {showDraftPhase ? (
-          <div className="mt-6 space-y-6">
+          <div className="space-y-6">
             {researchWarnings.length && step === 'draft' ? (
               <div className="rounded-lg border border-amber-800/50 bg-amber-950/30 px-3 py-2.5 text-sm text-amber-100/90">
                 <p className="font-medium text-amber-200">Research limitations</p>
@@ -803,7 +811,118 @@ export default function AdminInviteAiPanel() {
             />
           </div>
         ) : null}
+      </>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Email invites</h2>
+          <p className="mt-1 text-sm text-slate-400">
+            Research a contact, pick the best-matching workgroups, then draft and send a personal
+            invitation without starting from a specific DP page.
+          </p>
+        </div>
+        {step !== 'research' || name.trim() || email.trim() ? (
+          <button
+            type="button"
+            disabled={anyBusy}
+            onClick={resetInvite}
+            className="shrink-0 rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-50"
+          >
+            Start over
+          </button>
+        ) : null}
       </div>
+
+      {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+
+      {inBatchMode ? (
+        <AdminInviteBatchReview
+          batchQueue={batchQueue}
+          batchIndex={batchIndex}
+          messageStrategy={messageStrategy}
+          strategyConfirmed={strategyConfirmed}
+          draft={draft}
+          tone={tone}
+          length={length}
+          primaryWorkgroupId={primaryWorkgroupId}
+          selectedExtraIds={selectedExtraIds}
+          workgroupCatalog={workgroupCatalog}
+          priorInvitations={priorInvitations}
+          platformDone={platformDone}
+          sendBusy={sendBusy}
+          draftBusy={draftBusy}
+          mailto={mailto}
+          mailSubject={mailSubject}
+          mailBody={mailBody}
+          onMessageStrategyChange={(strategy) => {
+            setMessageStrategy(strategy);
+            setStrategyConfirmed(false);
+          }}
+          onStrategyConfirmedChange={setStrategyConfirmed}
+          onDraft={setDraft}
+          onTone={setTone}
+          onLength={setLength}
+          onPrimaryWorkgroupChange={setPrimaryWorkgroupId}
+          onToggleExtra={toggleExtra}
+          onRegenerate={(t, l) => void runDraft({ tone: t, length: l, regenerate: true })}
+          onGenerateDraft={() => void runDraft()}
+          onPlatformSend={() => send('platform')}
+          onClientPrepare={() => send('client')}
+          onSkip={() => void skipBatchContact()}
+          onFocusDraft={focusDraftEditor}
+        />
+      ) : null}
+
+      {sendHistory.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/30 px-4 py-3">
+          <p className="text-sm font-medium text-slate-200">Recent send log</p>
+          <ul className="mt-2 space-y-2">
+            {sendHistory.slice(0, 8).map((row) => (
+              <li key={row.id} className="text-xs text-slate-400">
+                <span className="text-slate-200">{row.recipient_name || row.recipient_email}</span>
+                {' · '}
+                <span>{row.status}</span>
+                {row.created_at ? (
+                  <>
+                    {' · '}
+                    <span>{new Date(row.created_at).toLocaleString()}</span>
+                  </>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {!inBatchMode ? (
+        <div className="mt-6">
+          <AdminInviteResearchPathways
+            onApply={applyPathwayResearch}
+            onStartBatch={(contacts) => void startBatchReview(contacts)}
+            removedFromSelection={selectionRemovals}
+          />
+        </div>
+      ) : null}
+
+      {!inBatchMode ? (
+        <div className="mt-6">
+          <WorkgroupInviteContentPicker
+            selectedEventIds={selectedEventIds}
+            selectedPerspectiveIds={selectedPerspectiveIds}
+            lead={inviteLead}
+            onChange={handleInviteContentChange}
+            catalog={contentCatalog}
+            catalogLoading={contentCatalogLoading}
+            catalogError={contentCatalogError}
+          />
+        </div>
+      ) : null}
+
+      {!inBatchMode ? <div className="mt-6">{renderInviteWorkflow()}</div> : null}
     </div>
   );
 }
