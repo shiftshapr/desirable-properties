@@ -10,8 +10,8 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
-import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, inferContributionHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, savePendingContributionDraft, saveStagedProposal } from '@/lib/hermesContribution';
-import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionScope, ContributionSubmitMode, DiscussDeepLink } from '@/lib/hermesContribution';
+import { clearPendingContributionDraft, defaultDestination, discussLinkLabel, formatContributionSubmissionMarkdown, formatContributionUserSummary, inferContributionHint, isContributionRecordHint, loadPendingContributionDraft, loadStagedProposalForRef, loadStagedProposals, proposalsFromContributionDraft, savePendingContributionDraft, saveStagedProposal } from '@/lib/hermesContribution';
+import type { ContributionDraft, ContributionHint, ContributionProposal, ContributionRecordHint, ContributionScope, ContributionSubmitMode, DiscussDeepLink, MessageContributionHint } from '@/lib/hermesContribution';
 import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
@@ -32,10 +32,12 @@ interface Message {
   sender: 'user' | 'assistant';
   timestamp: Date;
   attachments?: string[];
-  contributionHint?: ContributionHint | null;
+  contributionHint?: MessageContributionHint | null;
   citedDps?: number[];
   turnId?: string;
   truncated?: boolean;
+  /** True for user/assistant pair recording a contribution submit. */
+  contributionRecord?: boolean;
 }
 
 type SystemNotice = {
@@ -150,11 +152,6 @@ function resolveDiscussLink(
     };
   }
   return null;
-}
-
-function proposalsFromContributionDraft(draft: ContributionDraft): ContributionProposal[] {
-  if (draft.proposals?.length) return draft.proposals;
-  return [{ id: 'p0', kind: draft.kind, payload: draft.payload }];
 }
 
 function dpChipLabel(dpNum: number): string {
@@ -404,6 +401,7 @@ export default function HermesChat({
         },
       ];
       for (const turn of turns) {
+        const isRecord = isContributionRecordHint(turn.contributionHint);
         if (turn.user) {
           restored.push({
             id: `${turn.id}-u`,
@@ -411,6 +409,7 @@ export default function HermesChat({
             sender: 'user',
             timestamp: turn.createdAt ? new Date(turn.createdAt) : new Date(),
             turnId: turn.id,
+            contributionRecord: isRecord,
           });
         }
         if (turn.assistant) {
@@ -422,6 +421,7 @@ export default function HermesChat({
             turnId: turn.id,
             contributionHint: turn.contributionHint || null,
             citedDps: Array.isArray(turn.citedDps) ? turn.citedDps : [],
+            contributionRecord: isRecord,
           });
         }
       }
@@ -1262,6 +1262,7 @@ export default function HermesChat({
       .map((m) => ({ text: m.text, sender: m.sender }));
 
     const hint = assistantMessage.contributionHint;
+    const draftHint = hint && !isContributionRecordHint(hint) ? hint : null;
 
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
@@ -1276,8 +1277,8 @@ export default function HermesChat({
           assistantReply: assistantMessage.text,
           history,
           dpFocus,
-          kind: hint?.suggestedKind || undefined,
-          draftRef: hint?.draftRefHint || undefined,
+          kind: draftHint?.suggestedKind || undefined,
+          draftRef: draftHint?.draftRefHint || undefined,
         }),
       });
       const data = await res.json();
@@ -1376,15 +1377,73 @@ export default function HermesChat({
 
       setContributionDraft(null);
       clearPendingContributionDraft();
+
       const count = items.length;
-      const actionLabel = isDraft ? 'saved as draft' : 'published';
-      await DpDialog.alert({
-        title: isDraft ? 'Drafts saved' : 'Published to Discuss',
-        message: `${count} proposal${count === 1 ? '' : 's'} ${actionLabel} on ${draftRef}. Open each link below to review in Canopi Discuss.`,
-        variant: 'success',
-        confirmLabel: 'Done',
-        links: links.map((link) => ({ href: link.href, label: link.label })),
-      });
+      const userSummary = formatContributionUserSummary(contributionDraft, mode, count);
+      const bodyMarkdown = formatContributionSubmissionMarkdown(contributionDraft, mode, links);
+      const recordHint: ContributionRecordHint = {
+        type: 'contribution_record',
+        contributionReady: false,
+        mode,
+        draftRef,
+        destination: defaultDestination(),
+        links,
+        title: contributionDraft.title,
+      };
+
+      let recordTurnId: string | null = null;
+      const threadId = activeThreadIdRef.current;
+      if (threadId) {
+        try {
+          const recordRes = await fetch(
+            `/api/agent/threads/${encodeURIComponent(threadId)}/contribution-record`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userSummary,
+                bodyMarkdown,
+                meta: {
+                  mode,
+                  draftRef,
+                  destination: defaultDestination(),
+                  links,
+                  title: contributionDraft.title,
+                },
+              }),
+            },
+          );
+          const recordData = await recordRes.json().catch(() => ({}));
+          if (recordRes.ok && recordData.turn?.id) {
+            recordTurnId = recordData.turn.id;
+          }
+        } catch {
+          /* still show in UI even if persistence fails */
+        }
+      }
+
+      const now = new Date();
+      const turnKey = recordTurnId || `local-${Date.now()}`;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${turnKey}-u`,
+          text: userSummary,
+          sender: 'user',
+          timestamp: now,
+          turnId: recordTurnId || undefined,
+          contributionRecord: true,
+        },
+        {
+          id: `${turnKey}-a`,
+          text: bodyMarkdown,
+          sender: 'assistant',
+          timestamp: now,
+          turnId: recordTurnId || undefined,
+          contributionHint: recordHint,
+          contributionRecord: true,
+        },
+      ]);
     } catch (err) {
       const message = userFacingError(err);
       const needsSignIn = /sign in again|session expired/i.test(message);
@@ -1520,7 +1579,9 @@ export default function HermesChat({
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
                     message.sender === 'user'
                       ? 'bg-cyan-700 text-white'
-                      : 'text-slate-100'
+                      : message.contributionRecord
+                        ? 'border border-emerald-700/50 bg-emerald-950/25 text-slate-100'
+                        : 'text-slate-100'
                   }`}
                   title={
                     message.sender === 'user' && editingMessageId !== message.id
@@ -1529,7 +1590,16 @@ export default function HermesChat({
                   }
                 >
                   {message.sender === 'assistant' ? (
-                    <HermesMarkdown text={message.text} variant="dark" />
+                    <>
+                      {isContributionRecordHint(message.contributionHint) ? (
+                        <p className="mb-2 inline-flex rounded-full border border-emerald-600/60 bg-emerald-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-200">
+                          {message.contributionHint.mode === 'draft'
+                            ? 'Saved to Discuss drafts'
+                            : 'Published to Canopi Discuss'}
+                        </p>
+                      ) : null}
+                      <HermesMarkdown text={message.text} variant="dark" />
+                    </>
                   ) : editingMessageId === message.id ? (
                     <div className="space-y-2">
                       <textarea
@@ -1618,7 +1688,8 @@ export default function HermesChat({
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
-                    && message.id !== 'intro' ? (
+                    && message.id !== 'intro'
+                    && !isContributionRecordHint(message.contributionHint) ? (
                     <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
                       {(message.truncated || looksTruncatedReply(message.text)) ? (
                         <p className="mb-1 w-full text-[11px] text-amber-200/90">
@@ -1661,7 +1732,21 @@ export default function HermesChat({
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
-                    && message.contributionHint?.contributionReady ? (
+                    && isContributionRecordHint(message.contributionHint) ? (
+                    <div className="mt-3 flex flex-wrap gap-2 border-t border-emerald-800/40 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => void copyAssistantMarkdown(message.id, message.text)}
+                        className="rounded-md border border-emerald-700/60 px-2 py-1 text-[11px] text-emerald-100 hover:bg-emerald-950/40"
+                      >
+                        {copiedMessageId === message.id ? 'Copied' : 'Copy markdown'}
+                      </button>
+                    </div>
+                  ) : null}
+                  {message.sender === 'assistant'
+                    && message.contributionHint
+                    && 'contributionReady' in message.contributionHint
+                    && message.contributionHint.contributionReady ? (
                     <HermesContributionCTA
                       hint={message.contributionHint}
                       busy={contributionBusy && draftingMessageId === message.id}
@@ -1678,7 +1763,8 @@ export default function HermesChat({
                   {message.sender === 'user'
                     && editingMessageId !== message.id
                     && signedIn
-                    && !isLoading ? (
+                    && !isLoading
+                    && !message.contributionRecord ? (
                     <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
                       <button
                         type="button"

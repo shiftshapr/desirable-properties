@@ -13,6 +13,25 @@ export interface ContributionHint {
   defaultScope?: ContributionScope;
 }
 
+/** Persisted on thread after submit — not a draft CTA. */
+export interface ContributionRecordHint {
+  type: 'contribution_record';
+  contributionReady: false;
+  mode: ContributionSubmitMode;
+  draftRef: string;
+  destination?: ContributionDestination;
+  links?: DiscussDeepLink[];
+  title?: string;
+}
+
+export type MessageContributionHint = ContributionHint | ContributionRecordHint;
+
+export function isContributionRecordHint(
+  hint: MessageContributionHint | null | undefined,
+): hint is ContributionRecordHint {
+  return Boolean(hint && typeof hint === 'object' && 'type' in hint && hint.type === 'contribution_record');
+}
+
 export interface ContributionProposal {
   id: string;
   kind: 'comment' | 'patch';
@@ -126,6 +145,78 @@ export function discussLinkLabel(
 ): string {
   const action = kind === 'draft' ? 'Open draft' : 'View post';
   return `${action}: ${proposalLabel(proposal as ContributionProposal)}`;
+}
+
+export function proposalsFromContributionDraft(draft: ContributionDraft): ContributionProposal[] {
+  if (draft.proposals?.length) return draft.proposals;
+  return [{ id: 'p0', kind: draft.kind, payload: draft.payload }];
+}
+
+export function formatContributionUserSummary(
+  draft: ContributionDraft,
+  mode: ContributionSubmitMode,
+  count: number,
+): string {
+  const action = mode === 'draft' ? 'Saved' : 'Published';
+  const target = mode === 'draft' ? 'Discuss drafts' : 'Canopi Discuss';
+  const noun = count === 1 ? 'proposal' : 'proposals';
+  return `${action} ${count} ${noun} to ${target} · ${draft.draftRef}`;
+}
+
+export function formatContributionSubmissionMarkdown(
+  draft: ContributionDraft,
+  mode: ContributionSubmitMode,
+  links: DiscussDeepLink[],
+): string {
+  const proposals = proposalsFromContributionDraft(draft);
+  const actionLabel = mode === 'draft' ? 'saved as Discuss drafts' : 'published to Canopi Discuss';
+  const lines: string[] = [
+    `## Contribution ${actionLabel}`,
+    '',
+    `**${draft.title || 'Contribution'}**`,
+  ];
+
+  if (draft.summary?.trim()) {
+    lines.push('', draft.summary.trim());
+  }
+
+  lines.push('', `**Target:** ${draft.draftRef}`, '');
+
+  proposals.forEach((proposal, index) => {
+    lines.push(`### ${index + 1}. ${proposalLabel(proposal)}`, '');
+    if (proposal.kind === 'patch') {
+      const anchor = String(
+        proposal.payload.original_text || proposal.payload.anchor_passage || '',
+      ).trim();
+      const proposed = String(proposal.payload.proposed_text || '').trim();
+      const rationale = String(proposal.payload.rationale || '').trim();
+      const patchMode = patchModeFromPayload(proposal.payload);
+
+      if (anchor) {
+        lines.push('**Anchor passage**', '', anchor, '');
+      }
+      if (proposed) {
+        lines.push(`**Proposed text** (${patchMode})`, '', proposed, '');
+      }
+      if (rationale) {
+        lines.push('**Rationale**', '', rationale, '');
+      }
+    } else {
+      const text = String(proposal.payload.text || '').trim();
+      if (text) {
+        lines.push('**Comment**', '', text, '');
+      }
+    }
+  });
+
+  if (links.length) {
+    lines.push('### Links', '');
+    for (const link of links) {
+      lines.push(`- [${link.label}](${link.href})`);
+    }
+  }
+
+  return lines.join('\n').trim();
 }
 
 export function loadStagedProposals(): ContributionDraft[] {
