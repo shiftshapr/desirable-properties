@@ -12,6 +12,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const adminRequested = searchParams.get('admin') === '1';
+  const scopeParam = String(searchParams.get('scope') || 'hermes').trim().toLowerCase();
+  const scope = scopeParam === 'all' ? 'all' : 'hermes';
   const isAdmin =
     adminRequested && session.email ? await isEmailAdmin(session.email) : false;
 
@@ -21,6 +23,7 @@ export async function GET(request: Request) {
 
   const upstreamUrl = new URL(`${getHermesChatUrl()}/api/hermes/contribution-activity`);
   upstreamUrl.searchParams.set('verifierId', session.verifierId);
+  upstreamUrl.searchParams.set('scope', scope);
   if (isAdmin) upstreamUrl.searchParams.set('admin', '1');
 
   const headers: Record<string, string> = { ...hermesUpstreamHeaders() };

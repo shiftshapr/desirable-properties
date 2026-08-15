@@ -24,6 +24,7 @@ async function fetchContributionActivity(session: {
   const isAdmin = email ? await isEmailAdmin(email) : false;
   const upstreamUrl = new URL(`${getHermesChatUrl()}/api/hermes/contribution-activity`);
   upstreamUrl.searchParams.set('verifierId', session.verifierId);
+  upstreamUrl.searchParams.set('scope', 'hermes');
   if (isAdmin) upstreamUrl.searchParams.set('admin', '1');
 
   const headers: Record<string, string> = { ...hermesUpstreamHeaders() };
@@ -76,9 +77,10 @@ export default async function ContributionActivityPage() {
 
   return (
     <ContributionActivityClient
-      rows={data.rows}
-      summary={data.summary}
+      initialRows={data.rows}
+      initialSummary={data.summary}
       isAdmin={data.isAdmin}
+      initialScope="hermes"
     />
   );
 }
