@@ -28,6 +28,8 @@ export interface ContributionDraft {
   proposals?: ContributionProposal[];
   scope?: ContributionScope;
   destination?: ContributionDestination;
+  /** True when Hermes recovered the draft heuristically after JSON failure. */
+  recovered?: boolean;
 }
 
 export interface DiscussDeepLink {

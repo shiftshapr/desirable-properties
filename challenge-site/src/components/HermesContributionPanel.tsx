@@ -68,6 +68,11 @@ export default function HermesContributionPanel({
           Proposals for review ({scopeLabel})
         </p>
         <p className="mt-1 text-sm font-medium text-white">{draft.title}</p>
+        {draft.recovered ? (
+          <p className="mt-2 inline-flex rounded-full border border-amber-600/60 bg-amber-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200">
+            Draft recovered — please review
+          </p>
+        ) : null}
         <p className="mt-1 text-xs text-slate-300">{draft.summary}</p>
         <p className="mt-1 text-[11px] text-slate-400">Target: {draft.draftRef}</p>
       </div>
@@ -134,7 +139,7 @@ export default function HermesContributionPanel({
                 {index + 1}. {proposalLabel(proposal)}
                 {isPatch && patchMode === 'insert' ? (
                   <span className="ml-2 font-normal normal-case text-slate-400">
-                    (above anchor paragraph)
+                    (above anchor passage)
                   </span>
                 ) : null}
               </p>
@@ -142,7 +147,7 @@ export default function HermesContributionPanel({
               {isPatch ? (
                 <label className="mt-2 block">
                   <span className="text-[11px] font-medium uppercase tracking-wide text-slate-500">
-                    Anchor paragraph
+                    Anchor passage
                   </span>
                   <textarea
                     value={originalText}
