@@ -12,7 +12,6 @@ import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/Herm
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
-  buildContributionSetFromDraft,
   buildEditDraftFromProposal,
   buildProposalUpdates,
   buildRevisionDraftFromProposal,
@@ -28,15 +27,18 @@ import {
   formatContributionSubmissionMarkdown,
   formatContributionUserSummary,
   inferContributionHint,
+  initializeDraftForEditing,
   isContributionRecordHint,
   isReplaceSubmitMode,
   loadPendingContributionDraft,
   loadStagedProposals,
   markHintSubmitted,
+  mergeContributionSetForPartialSave,
   mergePendingUserMessagesIntoThread,
   migratePendingUserMessages,
   proposalFingerprint,
   proposalsFromContributionDraft,
+  proposalsToStage,
   resolveContributionEditContext,
   savePendingContributionDraft,
   savePendingUserMessage,
@@ -580,7 +582,7 @@ export default function HermesChat({
           : null;
         const filed = await shouldBlockDraftRestore(pending.draft, sets, assistantTurnId);
         if (!filed) {
-          setContributionDraft(pending.draft);
+          setContributionDraft(initializeDraftForEditing(pending.draft, sets));
           draftingMessageIdRef.current = pending.assistantMessageId || null;
           setSystemNotice({
             variant: 'info',
@@ -599,7 +601,7 @@ export default function HermesChat({
           break;
         }
         if (restoredStaged) {
-          setContributionDraft(restoredStaged);
+          setContributionDraft(initializeDraftForEditing(restoredStaged, sets));
           draftingMessageIdRef.current = null;
           setSystemNotice({
             variant: 'info',
@@ -1465,7 +1467,7 @@ export default function HermesChat({
       });
       return;
     }
-    setContributionDraft(draft);
+    setContributionDraft(initializeDraftForEditing(draft, contributionSets));
     draftingMessageIdRef.current = null;
     setDraftingMessageId(null);
     savePendingContributionDraft(draft, activeThreadIdRef.current, null);
@@ -1493,7 +1495,7 @@ export default function HermesChat({
       });
       return;
     }
-    setContributionDraft(draft);
+    setContributionDraft(initializeDraftForEditing(draft, contributionSets));
     draftingMessageIdRef.current = null;
     setDraftingMessageId(null);
     savePendingContributionDraft(draft, activeThreadIdRef.current, null);
@@ -1569,7 +1571,7 @@ export default function HermesChat({
       if (!data.draft || typeof data.draft !== 'object') {
         throw new Error('Draft response was empty — try again in a moment');
       }
-      setContributionDraft(data.draft);
+      setContributionDraft(initializeDraftForEditing(data.draft, contributionSets));
       savePendingContributionDraft(
         data.draft,
         activeThreadIdRef.current,
@@ -1609,25 +1611,43 @@ export default function HermesChat({
       contributionDraft,
       contributionSets,
     );
-    const draftWithContext = { ...contributionDraft, editContext };
+    const draftWithContext = initializeDraftForEditing(
+      { ...contributionDraft, editContext },
+      contributionSets,
+    );
     let items = enrichProposalsWithLedgerDraftIds(
       proposalsFromContributionDraft(draftWithContext),
       contributionSets,
       draftRef,
     );
+    const stageItems = proposalsToStage(draftWithContext, items);
     const replacing = isReplaceSubmitMode(mode, editContext);
     const isDraft = mode === 'draft';
+
+    if (editContext !== 'new' && stageItems.length === 0) {
+      setContributionBusy(false);
+      await DpDialog.alert({
+        title: 'No changes to save',
+        message: 'Edit at least one proposal before saving.',
+        variant: 'info',
+        confirmLabel: 'OK',
+      });
+      return;
+    }
 
     if (isDraft && editContext === 'draft_id_already_published') {
       items = items.map(({ canopiDraftId: _omit, ...rest }) => rest);
     }
+    const itemsToSubmit = isDraft && editContext === 'draft_id_already_published'
+      ? proposalsToStage(draftWithContext, items)
+      : stageItems;
 
     try {
       await ensureFreshCanopiSession();
       const links: DiscussDeepLink[] = [];
 
       if (replacing) {
-        const publishItems = items.map((item) => ({
+        const publishItems = itemsToSubmit.map((item) => ({
           ...item,
           replaceMessageId:
             editContext === 'edit_draft'
@@ -1652,7 +1672,7 @@ export default function HermesChat({
           row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } },
           index: number,
         ) => {
-          const item = items.find((p) => p.id === row.proposalId) || items[index];
+          const item = itemsToSubmit.find((p) => p.id === row.proposalId) || itemsToSubmit[index];
           if (!item) return;
           const link = resolveDiscussLink(item, draftRef, row, 'post');
           if (link) links.push(link);
@@ -1663,7 +1683,7 @@ export default function HermesChat({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             draftRef,
-            proposals: items,
+            proposals: itemsToSubmit,
             threadId: activeThreadId,
           }),
         });
@@ -1671,13 +1691,13 @@ export default function HermesChat({
         if (!res.ok) throw new Error(data.details || data.error || 'Could not save drafts');
         const staged = Array.isArray(data.staged) ? data.staged : [];
         staged.forEach((row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } }, index: number) => {
-          const item = items.find((p) => p.id === row.proposalId) || items[index];
+          const item = itemsToSubmit.find((p) => p.id === row.proposalId) || itemsToSubmit[index];
           if (!item) return;
           const link = resolveDiscussLink(item, draftRef, row, 'draft');
           if (link) links.push(link);
         });
         if (!links.length) {
-          items.forEach((item) => {
+          itemsToSubmit.forEach((item) => {
             const link = resolveDiscussLink(item, draftRef, {}, 'draft');
             if (link) links.push(link);
           });
@@ -1685,7 +1705,7 @@ export default function HermesChat({
         saveStagedProposal(draftWithContext);
       } else {
         const destination = defaultDestination();
-        for (const item of items) {
+        for (const item of itemsToSubmit) {
           const res = await fetch('/api/agent/contributions/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1710,7 +1730,7 @@ export default function HermesChat({
       clearPendingContributionDraft();
       clearStagedProposalsForRef(draftRef);
 
-      const count = items.length;
+      const count = itemsToSubmit.length;
       const userSummary = formatContributionUserSummary(draftWithContext, mode, count);
       const bodyMarkdown = formatContributionSubmissionMarkdown(draftWithContext, mode, links);
       const threadId = activeThreadIdRef.current;
@@ -1720,18 +1740,22 @@ export default function HermesChat({
         || (sourceAssistantMessageId ? turnIdFromAssistantMessageId(sourceAssistantMessageId) : null);
 
       const proposalsWithFp = await Promise.all(
-        items.map(async (p) => ({
+        itemsToSubmit.map(async (p) => ({
           ...p,
           fingerprint: await proposalFingerprint(p, contributionDraft.supersedesMessageId),
         })),
       );
+      const existingSet = draftWithContext.editSetId
+        ? contributionSets.find((s) => s.id === draftWithContext.editSetId)
+        : undefined;
       const contributionSet = threadId
-        ? buildContributionSetFromDraft(
+        ? mergeContributionSetForPartialSave(
           threadId,
           sourceTurnId,
           draftWithContext,
           replacing ? 'replace' : mode,
           proposalsWithFp,
+          existingSet,
           {
             supersedesMessageId: contributionDraft.supersedesMessageId,
             supersedesSetId: contributionDraft.supersedesSetId,
@@ -1739,7 +1763,7 @@ export default function HermesChat({
           },
         )
         : null;
-      const proposalUpdates = await buildProposalUpdates(items, links, mode, editContext);
+      const proposalUpdates = await buildProposalUpdates(itemsToSubmit, links, mode, editContext);
 
       const recordHint: ContributionRecordHint = {
         type: 'contribution_record',

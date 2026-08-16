@@ -208,3 +208,57 @@ test('parseContributionRecordProposals extracts patch fields', () => {
   assert.equal(rows[0].payload.proposed_text, 'new line');
   assert.equal(rows[0].payload.rationale, 'because');
 });
+
+function proposalsToStage(draft, proposals) {
+  const dirty = new Set(draft.dirtyProposalIds || []);
+  if (!dirty.size) return proposals;
+  return proposals.filter((p) => dirty.has(p.id));
+}
+
+function mergeContributionSetForPartialSave(existingSet, dirtyProposalsWithFp) {
+  const dirtyById = new Map(dirtyProposalsWithFp.map((p) => [p.id, p]));
+  return {
+    ...existingSet,
+    proposals: existingSet.proposals.map((row) => {
+      const dirty = dirtyById.get(row.proposalId);
+      if (!dirty) return row;
+      return { ...row, fingerprint: dirty.fingerprint, status: 'pending' };
+    }),
+  };
+}
+
+test('proposalsToStage sends only dirty proposals on partial re-save', () => {
+  const draft = {
+    draftRef: 'ML-5',
+    dirtyProposalIds: ['p1'],
+    proposals: [
+      { id: 'p1', kind: 'patch', payload: { original_text: 'a', proposed_text: 'b' } },
+      { id: 'p2', kind: 'patch', payload: { original_text: 'c', proposed_text: 'd', patch_mode: 'insert' } },
+    ],
+  };
+  const staged = proposalsToStage(draft, draft.proposals);
+  assert.equal(staged.length, 1);
+  assert.equal(staged[0].id, 'p1');
+});
+
+test('mergeContributionSetForPartialSave keeps sibling proposals in ledger set', () => {
+  const existingSet = {
+    id: 'set-1',
+    draftRef: 'ML-5',
+    mode: 'draft',
+    status: 'complete',
+    proposals: [
+      { proposalId: 'p1', label: 'Patch', status: 'draft', fingerprint: 'fp1', canopiDraftId: 'd1' },
+      { proposalId: 'p2', label: 'Insert', status: 'draft', fingerprint: 'fp2', canopiDraftId: 'd2' },
+    ],
+  };
+  const merged = mergeContributionSetForPartialSave(existingSet, [
+    { id: 'p1', fingerprint: 'fp1-edited' },
+  ]);
+  assert.equal(merged.proposals.length, 2);
+  assert.equal(merged.proposals[0].fingerprint, 'fp1-edited');
+  assert.equal(merged.proposals[0].status, 'pending');
+  assert.equal(merged.proposals[1].proposalId, 'p2');
+  assert.equal(merged.proposals[1].canopiDraftId, 'd2');
+  assert.equal(merged.proposals[1].fingerprint, 'fp2');
+});

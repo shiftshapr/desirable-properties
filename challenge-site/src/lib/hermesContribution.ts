@@ -186,6 +186,10 @@ export interface ContributionDraft {
   editContext?: ContributionEditContext;
   /** Published Discuss message id when replacing in place. */
   canopiMessageId?: string;
+  /** Ledger set id when editing inside an existing filing set (partial re-save). */
+  editSetId?: string;
+  /** Proposal ids the user changed — only these are re-staged to Canopi. */
+  dirtyProposalIds?: string[];
 }
 
 export interface DiscussDeepLink {
@@ -815,6 +819,8 @@ export function buildRevisionDraftFromProposal(
     revisionOfProposalId: proposal.proposalId,
     editContext: 'edit_revision',
     canopiMessageId: proposal.canopiMessageId,
+    editSetId: set.id,
+    dirtyProposalIds: [],
   };
 }
 
@@ -857,6 +863,8 @@ export function buildEditDraftFromProposal(
     destination: defaultDestination(),
     editContext,
     canopiMessageId: proposal.canopiMessageId,
+    editSetId: set.id,
+    dirtyProposalIds: [],
   };
 }
 
@@ -887,6 +895,140 @@ export function enrichProposalsWithLedgerDraftIds(
     const fromLedger = draftIdByProposalId.get(proposal.id);
     return fromLedger ? { ...proposal, canopiDraftId: fromLedger } : proposal;
   });
+}
+
+function isFiledContributionSet(set: ContributionSet): boolean {
+  return set.status === 'complete' || set.status === 'partial';
+}
+
+/** Ledger set to merge into when re-saving a subset of proposals. */
+export function resolveEditSetId(
+  draft: ContributionDraft,
+  sets: ContributionSet[] = [],
+): string | undefined {
+  if (draft.editSetId) return draft.editSetId;
+  const ref = String(draft.draftRef || '').trim().toUpperCase();
+  if (!ref || !sets.length) return undefined;
+
+  const draftProposalIds = new Set(proposalsFromContributionDraft(draft).map((p) => p.id));
+  const candidates = sets
+    .filter((s) => String(s.draftRef || '').trim().toUpperCase() === ref && isFiledContributionSet(s))
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+
+  for (const set of candidates) {
+    if ((set.proposals || []).some((p) => draftProposalIds.has(p.proposalId))) {
+      return set.id;
+    }
+  }
+  return candidates[0]?.id;
+}
+
+/** Initialize dirty tracking when opening a draft in the panel. */
+export function initializeDraftForEditing(
+  draft: ContributionDraft,
+  sets: ContributionSet[] = [],
+): ContributionDraft {
+  const editSetId = resolveEditSetId(draft, sets);
+  const existingSet = editSetId ? sets.find((s) => s.id === editSetId) : undefined;
+  let editContext = draft.editContext || resolveContributionEditContext(draft, sets);
+  if (editContext === 'new' && existingSet?.mode === 'draft') {
+    editContext = 'edit_draft';
+  }
+
+  const proposals = enrichProposalsWithLedgerDraftIds(
+    proposalsFromContributionDraft(draft),
+    sets,
+    draft.draftRef,
+  );
+  const dirtyProposalIds = editContext === 'new'
+    ? proposals.map((p) => p.id)
+    : (draft.dirtyProposalIds || []);
+
+  return {
+    ...draft,
+    editContext,
+    editSetId,
+    dirtyProposalIds,
+    proposals,
+    kind: proposals[0]?.kind || draft.kind,
+    payload: proposals[0]?.payload || draft.payload,
+  };
+}
+
+export function markProposalDirty(
+  draft: ContributionDraft,
+  proposalId: string,
+): ContributionDraft {
+  const id = String(proposalId || '').trim();
+  if (!id) return draft;
+  const next = new Set(draft.dirtyProposalIds || []);
+  next.add(id);
+  return { ...draft, dirtyProposalIds: [...next] };
+}
+
+/** Proposals that should be POST/PATCHed to Canopi on this save. */
+export function proposalsToStage(
+  draft: ContributionDraft,
+  proposals: ContributionProposal[],
+): ContributionProposal[] {
+  const dirty = new Set(draft.dirtyProposalIds || []);
+  if (!dirty.size) return proposals;
+  return proposals.filter((p) => dirty.has(p.id));
+}
+
+/**
+ * Build ledger set for submit — merges dirty proposal updates into an existing set
+ * so unchanged siblings are not dropped.
+ */
+export function mergeContributionSetForPartialSave(
+  threadId: string,
+  sourceTurnId: string | null | undefined,
+  draft: ContributionDraft,
+  mode: ContributionSubmitMode,
+  dirtyProposalsWithFp: Array<ContributionProposal & { fingerprint: string }>,
+  existingSet: ContributionSet | null | undefined,
+  revisionMeta?: {
+    supersedesMessageId?: string;
+    supersedesSetId?: string;
+    revisionOfProposalId?: string;
+  },
+): ContributionSet {
+  const dirtyById = new Map(dirtyProposalsWithFp.map((p) => [p.id, p]));
+  const ledgerMode = mode === 'replace' ? 'publish' : mode;
+
+  if (existingSet) {
+    return {
+      ...existingSet,
+      threadId,
+      sourceTurnId: sourceTurnId || existingSet.sourceTurnId || null,
+      mode: ledgerMode,
+      status: 'staged',
+      title: draft.title || existingSet.title,
+      supersedesMessageId: revisionMeta?.supersedesMessageId || draft.supersedesMessageId || existingSet.supersedesMessageId,
+      supersedesSetId: revisionMeta?.supersedesSetId || draft.supersedesSetId || existingSet.supersedesSetId,
+      revisionOfProposalId: revisionMeta?.revisionOfProposalId || draft.revisionOfProposalId || existingSet.revisionOfProposalId,
+      proposals: existingSet.proposals.map((row) => {
+        const dirty = dirtyById.get(row.proposalId);
+        if (!dirty) return row;
+        return {
+          ...row,
+          kind: dirty.kind,
+          label: proposalLabel(dirty),
+          fingerprint: dirty.fingerprint,
+          status: 'pending' as ProposalLedgerStatus,
+        };
+      }),
+    };
+  }
+
+  return buildContributionSetFromDraft(
+    threadId,
+    sourceTurnId,
+    draft,
+    mode,
+    dirtyProposalsWithFp,
+    revisionMeta,
+  );
 }
 
 function normalizeLedgerLabel(label: string): string {

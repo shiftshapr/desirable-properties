@@ -10,8 +10,10 @@ import type {
 } from '@/lib/hermesContribution';
 import {
   contributionEditContextCopy,
+  markProposalDirty,
   patchModeFromPayload,
   proposalLabel,
+  proposalsToStage,
   resolveContributionEditContext,
 } from '@/lib/hermesContribution';
 
@@ -56,12 +58,12 @@ export default function HermesContributionPanel({
     const next = proposals.map((p) =>
       p.id === id ? { ...p, payload: { ...p.payload, ...patch } } : p,
     );
-    onDraftChange({
+    onDraftChange(markProposalDirty({
       ...draft,
       proposals: next,
       kind: next[0]?.kind || draft.kind,
       payload: next[0]?.payload || draft.payload,
-    });
+    }, id));
   };
 
   const allValid = proposals.every((p) => {
@@ -78,18 +80,20 @@ export default function HermesContributionPanel({
   const effectiveMode: ContributionSubmitMode = isEditing && submitMode === 'publish'
     ? 'replace'
     : submitMode;
+  const stageCount = proposalsToStage(draft, proposals).length;
+  const submitCount = isEditing && editContext !== 'new' ? stageCount : proposals.length;
 
   const submitLabel = (() => {
     if (busy) return 'Submitting…';
     if (editContext === 'edit_draft') {
       return effectiveMode === 'replace'
-        ? `Replace live post (${proposals.length})`
-        : `Update draft${proposals.length === 1 ? '' : 's'} (${proposals.length})`;
+        ? `Replace live post (${submitCount})`
+        : `Update draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
     }
     if (editContext === 'edit_revision' || editContext === 'draft_id_already_published') {
       return effectiveMode === 'replace'
-        ? `Replace published post (${proposals.length})`
-        : `Save revision draft${proposals.length === 1 ? '' : 's'} (${proposals.length})`;
+        ? `Replace published post (${submitCount})`
+        : `Save revision draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
     }
     return effectiveMode === 'draft'
       ? `Save ${proposals.length} as Discuss draft${proposals.length === 1 ? '' : 's'}`
@@ -245,7 +249,7 @@ export default function HermesContributionPanel({
         <button
           type="button"
           onClick={() => onSubmit(effectiveMode)}
-          disabled={busy || !allValid}
+          disabled={busy || !allValid || (isEditing && editContext !== 'new' && submitCount === 0)}
           className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
             effectiveMode === 'draft'
               ? 'bg-violet-700 hover:bg-violet-600'
