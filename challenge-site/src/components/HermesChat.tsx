@@ -154,6 +154,18 @@ function isAbortError(err: unknown): boolean {
   return false;
 }
 
+const STOPPED_BEFORE_REPLY = 'Stopped before Hermes replied.';
+
+function isStoppedChatRequest(
+  err: unknown,
+  response?: Response,
+  data?: { error?: string },
+): boolean {
+  if (isAbortError(err)) return true;
+  if (response && (response.status === 499 || data?.error === 'Aborted')) return true;
+  return false;
+}
+
 function resolveDiscussLink(
   item: ContributionProposal,
   draftRef: string,
@@ -886,6 +898,22 @@ export default function HermesChat({
 
       const data = await response.json();
       if (!response.ok) {
+        if (isStoppedChatRequest(null, response, data)) {
+          savePendingUserMessage({
+            clientId: userMessage.id,
+            threadId: threadIdForPending,
+            text: trimmed,
+            timestamp: userMessage.timestamp.toISOString(),
+            sendError: STOPPED_BEFORE_REPLY,
+          });
+          setMessages([
+            ...priorMessages,
+            { ...userMessage, pendingSend: true, sendError: STOPPED_BEFORE_REPLY },
+          ]);
+          setInputText(trimmed);
+          setSystemNotice({ variant: 'info', text: 'Stopped.' });
+          return;
+        }
         if (response.status === 401) {
           promptSignIn();
         }
@@ -923,10 +951,20 @@ export default function HermesChat({
 
       if (signedIn) loadThreads();
     } catch (err) {
-      if (isAbortError(err)) {
+      if (isStoppedChatRequest(err)) {
+        savePendingUserMessage({
+          clientId: userMessage.id,
+          threadId: threadIdForPending,
+          text: trimmed,
+          timestamp: userMessage.timestamp.toISOString(),
+          sendError: STOPPED_BEFORE_REPLY,
+        });
+        setMessages([
+          ...priorMessages,
+          { ...userMessage, pendingSend: true, sendError: STOPPED_BEFORE_REPLY },
+        ]);
+        setInputText(trimmed);
         setSystemNotice({ variant: 'info', text: 'Stopped.' });
-        clearPendingUserMessage(userMessage.id, threadIdForPending);
-        setMessages(priorMessages);
       } else {
         const errorText = userFacingError(err);
         setSystemNotice({
@@ -1238,13 +1276,13 @@ export default function HermesChat({
         if (data.threadId) persistActiveThread(data.threadId);
         if (signedIn) loadThreads();
       } catch (err) {
-        if (isAbortError(err)) {
+        if (isStoppedChatRequest(err)) {
           setSystemNotice({ variant: 'info', text: 'Stopped.' });
         } else {
           setSystemNotice({ variant: 'error', text: userFacingError(err) });
+          setMessages(priorMessages);
+          setAttachments(docsToSend);
         }
-        setMessages(priorMessages);
-        setAttachments(docsToSend);
       } finally {
         clearChatAbort(abortController);
         setIsLoading(false);
