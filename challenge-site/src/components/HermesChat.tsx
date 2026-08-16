@@ -910,7 +910,6 @@ export default function HermesChat({
             ...priorMessages,
             { ...userMessage, pendingSend: true, sendError: STOPPED_BEFORE_REPLY },
           ]);
-          setInputText(trimmed);
           setSystemNotice({ variant: 'info', text: 'Stopped.' });
           return;
         }
@@ -963,7 +962,6 @@ export default function HermesChat({
           ...priorMessages,
           { ...userMessage, pendingSend: true, sendError: STOPPED_BEFORE_REPLY },
         ]);
-        setInputText(trimmed);
         setSystemNotice({ variant: 'info', text: 'Stopped.' });
       } else {
         const errorText = userFacingError(err);
