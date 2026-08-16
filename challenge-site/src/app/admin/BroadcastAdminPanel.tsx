@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAdminToast } from '@/components/AdminToastHost';
 import BroadcastConfirmDialog from '@/components/BroadcastConfirmDialog';
+import BroadcastComposeAssist from '@/components/admin/BroadcastComposeAssist';
 import BroadcastRecipientList from '@/components/BroadcastRecipientList';
 import {
   BROADCAST_COHORTS,
@@ -740,11 +741,12 @@ export default function BroadcastAdminPanel() {
           </p>
 
           <div className="mt-4 grid gap-3">
-            <input
-              className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-              placeholder="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+            <BroadcastComposeAssist
+              subject={subject}
+              onSubjectChange={setSubject}
+              html={html}
+              onHtmlChange={setHtml}
+              disabled={busy}
             />
             <label className="text-sm text-slate-300">
               Body font
@@ -770,7 +772,7 @@ export default function BroadcastAdminPanel() {
             />
             <div className="space-y-2">
               <p className="text-xs text-slate-500">
-                Insert images with the toolbar image button (PNG, JPEG, or GIF, max 5 MB).
+                Insert images with the toolbar image button (up to 25 MB; optimized to WebP ~800px wide for email).
               </p>
               <div className="flex flex-wrap gap-2 border-t border-slate-800 pt-2 text-xs text-slate-400">
                 <span>Personalization:</span>

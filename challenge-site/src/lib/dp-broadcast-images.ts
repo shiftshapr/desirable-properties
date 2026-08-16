@@ -1,44 +1,36 @@
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { optimizeBroadcastImageBytes } from '@/lib/dp-broadcast-image-optimize';
 
 const FILE_ID_RE = /^bi_[a-z0-9]+_[a-z0-9]+$/i;
-const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
-const ALLOWED_MIME = ['image/png', 'image/jpeg', 'image/gif'] as const;
+const DEFAULT_UPLOAD_MAX_BYTES = 25 * 1024 * 1024;
+const STORED_MIME = 'image/webp';
+const STORED_EXT = '.webp';
 
-const EXT_BY_MIME: Record<(typeof ALLOWED_MIME)[number], string> = {
+/** Legacy uploads before WebP optimization. */
+const LEGACY_MIME = ['image/png', 'image/jpeg', 'image/gif'] as const;
+
+const LEGACY_EXT_BY_MIME: Record<(typeof LEGACY_MIME)[number], string> = {
   'image/png': '.png',
   'image/jpeg': '.jpg',
   'image/gif': '.gif',
 };
 
+/** Broad browser MIME list; bytes are validated by decoding with sharp. */
+const ACCEPTED_UPLOAD_MIME = [
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+] as const;
+
 function normalizeMime(raw: string) {
   const m = String(raw || '').trim().toLowerCase();
   if (m === 'image/jpg') return 'image/jpeg';
   return m;
-}
-
-function mimeMatchesMagic(buf: Buffer, mime: string) {
-  if (!Buffer.isBuffer(buf) || buf.length < 6) return false;
-  const m = normalizeMime(mime);
-  if (m === 'image/png') {
-    return (
-      buf[0] === 0x89 &&
-      buf[1] === 0x50 &&
-      buf[2] === 0x4e &&
-      buf[3] === 0x47 &&
-      buf[4] === 0x0d &&
-      buf[5] === 0x0a &&
-      buf[6] === 0x1a &&
-      buf[7] === 0x0a
-    );
-  }
-  if (m === 'image/jpeg') return buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff;
-  if (m === 'image/gif') {
-    const head = buf.slice(0, 6).toString('ascii');
-    return head === 'GIF87a' || head === 'GIF89a';
-  }
-  return false;
 }
 
 function newFileId() {
@@ -67,13 +59,28 @@ function publicBase() {
   ).replace(/\/$/, '');
 }
 
-export function broadcastImageMaxBytes() {
-  return Number(process.env.DP_BROADCAST_IMAGE_MAX_BYTES || DEFAULT_MAX_BYTES);
+export function broadcastImageUploadMaxBytes() {
+  const uploadMax = process.env.DP_BROADCAST_IMAGE_UPLOAD_MAX_BYTES?.trim();
+  if (uploadMax) return Number(uploadMax);
+  return Number(process.env.DP_BROADCAST_IMAGE_MAX_BYTES || DEFAULT_UPLOAD_MAX_BYTES);
 }
 
-function filePathFor(fileId: string, mime: string) {
+/** Backward-compatible alias for upload size checks. */
+export function broadcastImageMaxBytes() {
+  return broadcastImageUploadMaxBytes();
+}
+
+function storedFilePath(fileId: string) {
   if (!FILE_ID_RE.test(String(fileId || ''))) return null;
-  const ext = EXT_BY_MIME[normalizeMime(mime) as (typeof ALLOWED_MIME)[number]];
+  const root = imageRootDir();
+  const resolved = path.resolve(root, `${fileId}${STORED_EXT}`);
+  if (!resolved.startsWith(root + path.sep)) return null;
+  return resolved;
+}
+
+function legacyFilePath(fileId: string, mime: string) {
+  if (!FILE_ID_RE.test(String(fileId || ''))) return null;
+  const ext = LEGACY_EXT_BY_MIME[normalizeMime(mime) as (typeof LEGACY_MIME)[number]];
   if (!ext) return null;
   const root = imageRootDir();
   const resolved = path.resolve(root, `${fileId}${ext}`);
@@ -83,8 +90,14 @@ function filePathFor(fileId: string, mime: string) {
 
 function findExistingPath(fileId: string) {
   if (!FILE_ID_RE.test(String(fileId || ''))) return null;
-  for (const mime of ALLOWED_MIME) {
-    const p = filePathFor(fileId, mime);
+
+  const webpPath = storedFilePath(fileId);
+  if (webpPath && fs.existsSync(webpPath)) {
+    return { path: webpPath, mime: STORED_MIME };
+  }
+
+  for (const mime of LEGACY_MIME) {
+    const p = legacyFilePath(fileId, mime);
     if (p && fs.existsSync(p)) {
       return { path: p, mime: normalizeMime(mime) };
     }
@@ -96,23 +109,31 @@ export function broadcastImagePublicUrl(fileId: string) {
   return `${publicBase()}/api/broadcast/images/${encodeURIComponent(fileId)}`;
 }
 
-export function uploadBroadcastImage(input: {
+function uploadMimeAllowed(mime: string) {
+  const normalized = normalizeMime(mime);
+  if (!normalized) return true;
+  if (!normalized.startsWith('image/')) return false;
+  if (ACCEPTED_UPLOAD_MIME.includes(normalized as (typeof ACCEPTED_UPLOAD_MIME)[number])) return true;
+  return normalized === 'image/*';
+}
+
+export async function uploadBroadcastImage(input: {
   mime: string;
   bytes: Buffer;
   adminEmail?: string | null;
 }) {
   const mime = normalizeMime(input?.mime);
-  if (!ALLOWED_MIME.includes(mime as (typeof ALLOWED_MIME)[number])) {
+  if (!uploadMimeAllowed(mime)) {
     return {
       ok: false as const,
       status: 400,
       error: 'mime_not_allowed',
-      message: 'Use PNG, JPEG, or GIF (email-safe formats).',
+      message: 'Upload a PNG, JPEG, GIF, WebP, or HEIC image.',
     };
   }
 
   const bytes = Buffer.isBuffer(input?.bytes) ? input.bytes : Buffer.from(input?.bytes || []);
-  const maxBytes = broadcastImageMaxBytes();
+  const maxBytes = broadcastImageUploadMaxBytes();
   if (!bytes.length) {
     return { ok: false as const, status: 400, error: 'empty_file', message: 'Image file is empty.' };
   }
@@ -121,31 +142,41 @@ export function uploadBroadcastImage(input: {
       ok: false as const,
       status: 413,
       error: 'file_too_large',
-      message: `Image must be ${Math.floor(maxBytes / (1024 * 1024))} MB or smaller.`,
+      message: `Image must be ${Math.floor(maxBytes / (1024 * 1024))} MB or smaller before optimization.`,
     };
   }
-  if (!mimeMatchesMagic(bytes, mime)) {
+
+  let optimized;
+  try {
+    optimized = await optimizeBroadcastImageBytes(bytes);
+  } catch (e) {
     return {
       ok: false as const,
       status: 400,
-      error: 'mime_magic_mismatch',
-      message: 'File content does not match the declared image type.',
+      error: 'invalid_image',
+      message: e instanceof Error ? e.message : 'Could not process image.',
     };
   }
 
   fs.mkdirSync(imageRootDir(), { recursive: true });
   const fileId = newFileId();
-  const target = filePathFor(fileId, mime);
+  const target = storedFilePath(fileId);
   if (!target) {
     return { ok: false as const, status: 500, error: 'path_error', message: 'Could not resolve image path.' };
   }
-  atomicWriteFile(target, bytes);
+  atomicWriteFile(target, optimized.bytes);
 
   return {
     ok: true as const,
     fileId,
-    mime,
-    sizeBytes: bytes.length,
+    mime: STORED_MIME,
+    sizeBytes: optimized.bytes.length,
+    originalSizeBytes: bytes.length,
+    width: optimized.width,
+    height: optimized.height,
+    originalWidth: optimized.originalWidth,
+    originalHeight: optimized.originalHeight,
+    webpQuality: optimized.webpQuality,
     url: broadcastImagePublicUrl(fileId),
     uploadedAt: new Date().toISOString(),
     uploadedBy: input?.adminEmail || null,

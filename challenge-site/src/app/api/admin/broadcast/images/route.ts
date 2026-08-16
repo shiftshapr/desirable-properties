@@ -17,11 +17,15 @@ export async function POST(request: Request) {
   const maxBytes = broadcastImageMaxBytes();
   if (file.size > maxBytes) {
     const maxMb = Math.floor(maxBytes / (1024 * 1024));
-    return jsonError(`Image must be ${maxMb} MB or smaller.`, 413, 'file_too_large');
+    return jsonError(
+      `Image must be ${maxMb} MB or smaller before optimization.`,
+      413,
+      'file_too_large',
+    );
   }
 
   const bytes = Buffer.from(await file.arrayBuffer());
-  const result = uploadBroadcastImage({
+  const result = await uploadBroadcastImage({
     mime: file.type,
     bytes,
     adminEmail: auth.email,
@@ -40,6 +44,12 @@ export async function POST(request: Request) {
     url: result.url,
     mime: result.mime,
     sizeBytes: result.sizeBytes,
+    originalSizeBytes: result.originalSizeBytes,
+    width: result.width,
+    height: result.height,
+    originalWidth: result.originalWidth,
+    originalHeight: result.originalHeight,
+    webpQuality: result.webpQuality,
     uploadedAt: result.uploadedAt,
   });
 }

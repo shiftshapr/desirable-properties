@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test:dp-welcome": "node --test scripts/dp-welcome-content.test.mjs scripts/dp-welcome-default.test.mjs",
     "test:dp-broadcast-email": "node --test scripts/dp-broadcast-email.test.mjs",
+    "test:dp-broadcast-image-optimize": "node --test scripts/dp-broadcast-image-optimize.test.mjs",
     "test:dp-broadcast-audience-filter": "node --test scripts/dp-broadcast-audience-filter.test.mjs",
     "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs"
   },
@@ -23,7 +24,8 @@
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "sanitize-html": "^2.17.5"
+    "sanitize-html": "^2.17.5",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

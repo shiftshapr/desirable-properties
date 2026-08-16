@@ -48,7 +48,7 @@ export default function BroadcastRichEditor({ value, onChange, disabled, onUploa
             image: () => {
               const input = document.createElement('input');
               input.type = 'file';
-              input.accept = 'image/png,image/jpeg,image/gif';
+              input.accept = 'image/*';
               input.onchange = async () => {
                 const file = input.files?.[0];
                 if (!file) return;
