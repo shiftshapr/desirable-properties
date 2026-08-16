@@ -801,6 +801,57 @@ export async function listEventSeries(activeOnly = false): Promise<EventSeries[]
   return res.rows.map(seriesRow);
 }
 
+/** Past series and single events, sorted by most recent session start. */
+export async function listPastEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
+  const pool = await ensureDpSchema();
+  if (!pool) return [];
+  await ensureEventSeeds();
+
+  const res = await pool.query(
+    `SELECT
+       e.id,
+       e.slug,
+       e.title,
+       e.series_type,
+       MAX(s.starts_at) AS last_starts_at,
+       (array_agg(s.recording_url ORDER BY s.starts_at DESC NULLS LAST, s.sort_order ASC))[1] AS recording_url,
+       (array_agg(s.live_url ORDER BY s.starts_at DESC NULLS LAST, s.sort_order ASC))[1] AS live_url
+     FROM dp_event_series e
+     JOIN dp_event_series_session s ON s.series_id = e.id AND s.active = true
+     WHERE e.active = true
+       AND s.starts_at IS NOT NULL
+     GROUP BY e.id
+     HAVING MAX(s.starts_at) < $1
+     ORDER BY last_starts_at DESC, e.sort_order ASC, e.title ASC`,
+    [now.toISOString()],
+  );
+
+  return res.rows.map((row) => {
+    const seriesType = parseSeriesType(row.series_type);
+    const startsAt = row.last_starts_at
+      ? new Date(String(row.last_starts_at)).toISOString()
+      : null;
+    const recordingUrl = row.recording_url ? String(row.recording_url) : null;
+    const liveUrl = row.live_url ? String(row.live_url) : null;
+    const href =
+      recordingUrl ||
+      (seriesType === 'single' && liveUrl ? liveUrl : `/series/${String(row.slug)}`);
+    const external = Boolean(recordingUrl || (seriesType === 'single' && liveUrl));
+    const dateLabel = formatEventDateLabel(startsAt);
+
+    return {
+      id: String(row.id),
+      slug: String(row.slug),
+      title: String(row.title),
+      seriesType,
+      href,
+      external,
+      startsAt,
+      dateLabel,
+    };
+  });
+}
+
 /** Upcoming series and single events, sorted by soonest session start. */
 export async function listUpcomingEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
   const pool = await ensureDpSchema();
