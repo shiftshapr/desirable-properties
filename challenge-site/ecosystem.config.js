@@ -26,19 +26,24 @@ function loadEnvLocal() {
 
 const localEnv = loadEnvLocal();
 
-/** Resend keys for support ack/reply emails — prefer challenge-site .env.local. */
+/** Resend keys — prefer challenge-site .env.local, then metaweb-book, then stripe-server. */
 function loadResendEnv() {
   const out = {};
-  const stripeEnvPath = '/home/ubuntu/metaweb-book/stripe-server/.env';
-  if (!fs.existsSync(stripeEnvPath)) return out;
-  for (const line of fs.readFileSync(stripeEnvPath, 'utf8').split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const idx = trimmed.indexOf('=');
-    if (idx <= 0) continue;
-    const key = trimmed.slice(0, idx).trim();
-    if (!key.startsWith('RESEND_')) continue;
-    out[key] = trimmed.slice(idx + 1).trim();
+  const paths = [
+    '/home/ubuntu/metaweb-book/.env',
+    '/home/ubuntu/metaweb-book/stripe-server/.env',
+  ];
+  for (const filePath of paths) {
+    if (!fs.existsSync(filePath)) continue;
+    for (const line of fs.readFileSync(filePath, 'utf8').split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx <= 0) continue;
+      const key = trimmed.slice(0, idx).trim();
+      if (!key.startsWith('RESEND_')) continue;
+      if (!out[key]) out[key] = trimmed.slice(idx + 1).trim();
+    }
   }
   return out;
 }

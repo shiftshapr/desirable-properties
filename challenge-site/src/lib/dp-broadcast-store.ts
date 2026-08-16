@@ -470,12 +470,16 @@ export async function sendBroadcast(input: {
       recipientResults.push({ key: row.key, userName: row.userName, email: to, ok: true, resendId: result.id });
     } else {
       failureCount += 1;
+      const resendMessage =
+        result.detail && typeof result.detail === 'object' && 'message' in result.detail
+          ? String((result.detail as { message?: unknown }).message || '').trim()
+          : '';
       recipientResults.push({
         key: row.key,
         userName: row.userName,
         email: to,
         ok: false,
-        error: result.error,
+        error: resendMessage ? `${result.error}: ${resendMessage}` : result.error,
       });
     }
   }
