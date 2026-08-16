@@ -1,11 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import type { ContributionDraft, ContributionProposal, ContributionSubmitMode } from '@/lib/hermesContribution';
-import { patchModeFromPayload, proposalLabel } from '@/lib/hermesContribution';
+import { useMemo, useState } from 'react';
+import type {
+  ContributionDraft,
+  ContributionEditContext,
+  ContributionProposal,
+  ContributionSet,
+  ContributionSubmitMode,
+} from '@/lib/hermesContribution';
+import {
+  contributionEditContextCopy,
+  patchModeFromPayload,
+  proposalLabel,
+  resolveContributionEditContext,
+} from '@/lib/hermesContribution';
 
 interface HermesContributionPanelProps {
   draft: ContributionDraft | null;
+  contributionSets?: ContributionSet[];
   busy?: boolean;
   onSubmit: (mode: ContributionSubmitMode) => void;
   onCancel: () => void;
@@ -19,11 +31,16 @@ function proposalsFromDraft(draft: ContributionDraft): ContributionProposal[] {
 
 export default function HermesContributionPanel({
   draft,
+  contributionSets = [],
   busy = false,
   onSubmit,
   onCancel,
   onDraftChange,
 }: HermesContributionPanelProps) {
+  const editContext: ContributionEditContext = useMemo(
+    () => (draft ? resolveContributionEditContext(draft, contributionSets) : 'new'),
+    [draft, contributionSets],
+  );
   const [submitMode, setSubmitMode] = useState<ContributionSubmitMode>('draft');
 
   if (!draft) return null;
@@ -31,6 +48,8 @@ export default function HermesContributionPanel({
   const scopeLabel =
     draft.scope === 'thread' ? 'from full thread' : 'from latest message';
   const proposals = proposalsFromDraft(draft);
+  const copy = contributionEditContextCopy(editContext);
+  const isEditing = editContext !== 'new';
 
   const updateProposal = (id: string, patch: Record<string, unknown>) => {
     if (!onDraftChange) return;
@@ -56,10 +75,26 @@ export default function HermesContributionPanel({
     return Boolean(text);
   });
 
-  const submitLabel =
-    submitMode === 'draft'
+  const effectiveMode: ContributionSubmitMode = isEditing && submitMode === 'publish'
+    ? 'replace'
+    : submitMode;
+
+  const submitLabel = (() => {
+    if (busy) return 'Submitting…';
+    if (editContext === 'edit_draft') {
+      return effectiveMode === 'replace'
+        ? `Replace live post (${proposals.length})`
+        : `Update draft${proposals.length === 1 ? '' : 's'} (${proposals.length})`;
+    }
+    if (editContext === 'edit_revision' || editContext === 'draft_id_already_published') {
+      return effectiveMode === 'replace'
+        ? `Replace published post (${proposals.length})`
+        : `Save revision draft${proposals.length === 1 ? '' : 's'} (${proposals.length})`;
+    }
+    return effectiveMode === 'draft'
       ? `Save ${proposals.length} as Discuss draft${proposals.length === 1 ? '' : 's'}`
       : `Publish ${proposals.length} to Canopi Discuss`;
+  })();
 
   return (
     <div className="rounded-xl border border-amber-700/50 bg-amber-950/30 p-4">
@@ -80,13 +115,22 @@ export default function HermesContributionPanel({
             Revision of published contribution
           </p>
         ) : null}
+        {editContext === 'edit_draft' ? (
+          <p className="mt-2 inline-flex rounded-full border border-violet-600/60 bg-violet-950/40 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-violet-200">
+            Editing saved draft
+          </p>
+        ) : null}
       </div>
 
-      <p className="mt-3 text-xs text-amber-100/90">
-        Review each patch or insert below. Edits stay in Hermes until you submit — they do not
-        auto-sync to Canopi Discuss. Choose whether to save drafts you can edit in Discuss,
-        or publish immediately.
-      </p>
+      <div className="mt-3 rounded-lg border border-amber-700/40 bg-amber-950/20 px-3 py-2.5">
+        <p className="text-xs font-medium text-amber-100">{copy.headline}</p>
+        <p className="mt-1 text-[11px] leading-relaxed text-slate-300">{copy.detail}</p>
+        {editContext === 'draft_id_already_published' ? (
+          <p className="mt-2 text-[11px] font-medium text-rose-200/90">
+            The linked draft id is already published on Discuss. Choose Replace to update the live post, or Save as new draft to start a separate draft row.
+          </p>
+        ) : null}
+      </div>
 
       <fieldset className="mt-4 space-y-2">
         <legend className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
@@ -102,9 +146,9 @@ export default function HermesContributionPanel({
             className="mt-0.5"
           />
           <span>
-            <span className="block text-sm font-medium text-white">Save to my drafts</span>
+            <span className="block text-sm font-medium text-white">{copy.draftOption.title}</span>
             <span className="mt-0.5 block text-[11px] text-slate-400">
-              Recommended — opens in Canopi Discuss for review before publishing.
+              {copy.draftOption.detail}
             </span>
           </span>
         </label>
@@ -118,9 +162,9 @@ export default function HermesContributionPanel({
             className="mt-0.5"
           />
           <span>
-            <span className="block text-sm font-medium text-white">Publish now</span>
+            <span className="block text-sm font-medium text-white">{copy.publishOption.title}</span>
             <span className="mt-0.5 block text-[11px] text-slate-400">
-              Posts immediately to Canopi Discuss on the book.
+              {copy.publishOption.detail}
             </span>
           </span>
         </label>
@@ -200,15 +244,15 @@ export default function HermesContributionPanel({
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={() => onSubmit(submitMode)}
+          onClick={() => onSubmit(effectiveMode)}
           disabled={busy || !allValid}
           className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
-            submitMode === 'draft'
+            effectiveMode === 'draft'
               ? 'bg-violet-700 hover:bg-violet-600'
               : 'bg-cyan-700 hover:bg-cyan-600'
           }`}
         >
-          {busy ? 'Submitting…' : submitLabel}
+          {submitLabel}
         </button>
         <button
           type="button"

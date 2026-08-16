@@ -182,6 +182,10 @@ export interface ContributionDraft {
   supersedesSetId?: string;
   revisionOfProposalId?: string;
   isRevision?: boolean;
+  /** Resolved edit context for panel copy and submit routing. */
+  editContext?: ContributionEditContext;
+  /** Published Discuss message id when replacing in place. */
+  canopiMessageId?: string;
 }
 
 export interface DiscussDeepLink {
@@ -193,8 +197,15 @@ export interface DiscussDeepLink {
 
 export type DiscussLinkKind = 'post' | 'draft';
 
-/** Save to Canopi Discuss drafts vs publish immediately. */
-export type ContributionSubmitMode = 'draft' | 'publish';
+/** Save to Canopi Discuss drafts vs publish immediately vs replace published in place. */
+export type ContributionSubmitMode = 'draft' | 'publish' | 'replace';
+
+/** How an open contribution draft relates to an existing Canopi row. */
+export type ContributionEditContext =
+  | 'new'
+  | 'edit_draft'
+  | 'edit_revision'
+  | 'draft_id_already_published';
 
 const STAGED_KEY = 'hermes-staged-proposals-v1';
 const PENDING_DRAFT_KEY = 'hermes-pending-contribution-draft-v1';
@@ -390,6 +401,111 @@ export function proposalLabel(proposal: ContributionProposal): string {
   return patchModeFromPayload(proposal.payload) === 'insert' ? 'Insert' : 'Patch';
 }
 
+function findLedgerProposal(
+  sets: ContributionSet[],
+  draftRef: string,
+  proposalId: string,
+): LedgerProposal | null {
+  const ref = String(draftRef || '').trim().toUpperCase();
+  for (const set of sets) {
+    if (String(set.draftRef || '').trim().toUpperCase() !== ref) continue;
+    const row = (set.proposals || []).find((p) => p.proposalId === proposalId);
+    if (row) return row;
+  }
+  return null;
+}
+
+/** Detect whether the user is editing an existing Canopi row vs filing fresh. */
+export function resolveContributionEditContext(
+  draft: ContributionDraft,
+  sets: ContributionSet[] = [],
+): ContributionEditContext {
+  if (draft.editContext) return draft.editContext;
+  if (draft.isRevision && draft.supersedesMessageId) return 'edit_revision';
+
+  const proposals = proposalsFromContributionDraft(draft);
+  const withDraftId = proposals.filter((p) => p.canopiDraftId);
+  if (!withDraftId.length) return 'new';
+
+  for (const p of withDraftId) {
+    const ledger = findLedgerProposal(sets, draft.draftRef, p.id);
+    if (ledger?.status === 'published' && ledger.canopiMessageId) {
+      return 'draft_id_already_published';
+    }
+  }
+  return 'edit_draft';
+}
+
+export function contributionEditContextCopy(
+  context: ContributionEditContext,
+): { headline: string; detail: string; draftOption: { title: string; detail: string }; publishOption: { title: string; detail: string } } {
+  switch (context) {
+    case 'edit_draft':
+      return {
+        headline: 'Editing a saved Discuss draft',
+        detail:
+          'Your edits update the existing draft row on Canopi. The live book does not change until you publish.',
+        draftOption: {
+          title: 'Update draft',
+          detail: 'Save changes to your Discuss draft. Publish later from Discuss or choose Replace live post below.',
+        },
+        publishOption: {
+          title: 'Replace live post',
+          detail: 'Publish this draft now so it goes live on the book (same draft row, no duplicate).',
+        },
+      };
+    case 'edit_revision':
+      return {
+        headline: 'Revising a published contribution',
+        detail:
+          'Saving as a draft creates a revision draft. Replacing updates the published post text in place (Discuss edit window applies).',
+        draftOption: {
+          title: 'Save revision draft',
+          detail: 'Stage a revision draft on Discuss. You must publish from Discuss to replace the live post.',
+        },
+        publishOption: {
+          title: 'Replace published post',
+          detail: 'Update the live post text now. Anchor and rationale metadata may not change on published rows.',
+        },
+      };
+    case 'draft_id_already_published':
+      return {
+        headline: 'This draft was already published',
+        detail:
+          'The saved draft link points to a post that is already live. Updating draft creates a new draft row. Replace updates the live post.',
+        draftOption: {
+          title: 'Save as new draft',
+          detail: 'Create a fresh Discuss draft with your edits (does not change the live post).',
+        },
+        publishOption: {
+          title: 'Replace published post',
+          detail: 'Update the live post text in place on Canopi Discuss.',
+        },
+      };
+    default:
+      return {
+        headline: 'Review before submitting',
+        detail:
+          'Edits stay in Hermes until you submit. They do not auto-sync to Canopi Discuss.',
+        draftOption: {
+          title: 'Save to my drafts',
+          detail: 'Recommended — opens in Canopi Discuss for review before publishing.',
+        },
+        publishOption: {
+          title: 'Publish now',
+          detail: 'Posts immediately to Canopi Discuss on the book.',
+        },
+      };
+  }
+}
+
+export function isReplaceSubmitMode(
+  mode: ContributionSubmitMode,
+  context: ContributionEditContext,
+): boolean {
+  return mode === 'replace' || (mode === 'publish' && context !== 'new');
+}
+
 export function discussLinkLabel(
   proposal: Pick<ContributionProposal, 'kind' | 'payload'>,
   kind: DiscussLinkKind,
@@ -408,6 +524,11 @@ export function formatContributionUserSummary(
   mode: ContributionSubmitMode,
   count: number,
 ): string {
+  const context = draft.editContext || (draft.isRevision ? 'edit_revision' : 'new');
+  if (mode === 'replace' || (mode === 'publish' && context !== 'new')) {
+    const noun = count === 1 ? 'proposal' : 'proposals';
+    return `Replaced live post for ${count} ${noun} · ${draft.draftRef}`;
+  }
   const action = mode === 'draft' ? 'Saved' : 'Published';
   const target = mode === 'draft' ? 'Discuss drafts' : 'Canopi Discuss';
   const noun = count === 1 ? 'proposal' : 'proposals';
@@ -420,7 +541,12 @@ export function formatContributionSubmissionMarkdown(
   links: DiscussDeepLink[],
 ): string {
   const proposals = proposalsFromContributionDraft(draft);
-  const actionLabel = mode === 'draft' ? 'saved as Discuss drafts' : 'published to Canopi Discuss';
+  const context = draft.editContext || (draft.isRevision ? 'edit_revision' : 'new');
+  const actionLabel = mode === 'replace' || (mode === 'publish' && context !== 'new')
+    ? 'replaced on Canopi Discuss'
+    : mode === 'draft'
+      ? 'saved as Discuss drafts'
+      : 'published to Canopi Discuss';
   const lines: string[] = [
     `## Contribution ${actionLabel}`,
     '',
@@ -687,6 +813,8 @@ export function buildRevisionDraftFromProposal(
     supersedesMessageId: proposal.canopiMessageId,
     supersedesSetId: set.id,
     revisionOfProposalId: proposal.proposalId,
+    editContext: 'edit_revision',
+    canopiMessageId: proposal.canopiMessageId,
   };
 }
 
@@ -712,6 +840,11 @@ export function buildEditDraftFromProposal(
     canopiDraftId: proposal.canopiDraftId,
   };
 
+  const editContext: ContributionEditContext =
+    proposal.status === 'published' && proposal.canopiMessageId
+      ? 'draft_id_already_published'
+      : 'edit_draft';
+
   return {
     kind: parsedRow.kind,
     draftRef: set.draftRef,
@@ -722,6 +855,8 @@ export function buildEditDraftFromProposal(
     proposals: [contributionProposal],
     scope: 'message',
     destination: defaultDestination(),
+    editContext,
+    canopiMessageId: proposal.canopiMessageId,
   };
 }
 
@@ -873,6 +1008,7 @@ export async function buildProposalUpdates(
   proposals: ContributionProposal[],
   links: DiscussDeepLink[],
   mode: ContributionSubmitMode,
+  editContext: ContributionEditContext = 'new',
 ): Promise<Array<{
   proposalId: string;
   status: ProposalLedgerStatus;
@@ -880,14 +1016,22 @@ export async function buildProposalUpdates(
   canopiDraftId?: string;
   href?: string;
 }>> {
+  const replacing = isReplaceSubmitMode(mode, editContext);
   return Promise.all(proposals.map(async (proposal, index) => {
     const link = links.find((l) => l.id === proposal.id) || links[index];
-    const status: ProposalLedgerStatus = mode === 'draft' ? 'draft' : 'published';
+    let status: ProposalLedgerStatus;
+    if (replacing) status = 'updated';
+    else if (mode === 'draft') status = 'draft';
+    else status = 'published';
     return {
       proposalId: proposal.id,
       status,
-      canopiMessageId: mode === 'publish' ? link?.id : undefined,
-      canopiDraftId: mode === 'draft' ? (link?.id || proposal.canopiDraftId) : undefined,
+      canopiMessageId: replacing || mode === 'publish' || mode === 'replace'
+        ? (link?.id || proposal.canopiDraftId)
+        : undefined,
+      canopiDraftId: mode === 'draft' && !replacing
+        ? (link?.id || proposal.canopiDraftId)
+        : undefined,
       href: link?.href,
     };
   }));

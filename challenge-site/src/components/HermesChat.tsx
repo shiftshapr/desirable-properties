@@ -29,6 +29,7 @@ import {
   formatContributionUserSummary,
   inferContributionHint,
   isContributionRecordHint,
+  isReplaceSubmitMode,
   loadPendingContributionDraft,
   loadStagedProposals,
   markHintSubmitted,
@@ -36,6 +37,7 @@ import {
   migratePendingUserMessages,
   proposalFingerprint,
   proposalsFromContributionDraft,
+  resolveContributionEditContext,
   savePendingContributionDraft,
   savePendingUserMessage,
   saveStagedProposal,
@@ -46,6 +48,7 @@ import {
 } from '@/lib/hermesContribution';
 import type {
   ContributionDraft,
+  ContributionEditContext,
   ContributionHint,
   ContributionProposal,
   ContributionRecordHint,
@@ -1468,7 +1471,7 @@ export default function HermesChat({
     savePendingContributionDraft(draft, activeThreadIdRef.current, null);
     setSystemNotice({
       variant: 'info',
-      text: 'Draft opened for editing — changes sync to Canopi Discuss when you save drafts again.',
+      text: 'Draft opened for editing — choose Update draft or Replace live post when you submit.',
     });
     contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [promptSignIn, signedIn]);
@@ -1496,7 +1499,7 @@ export default function HermesChat({
     savePendingContributionDraft(draft, activeThreadIdRef.current, null);
     setSystemNotice({
       variant: 'info',
-      text: 'Revision draft opened — edit below, then save or publish. This supersedes your prior published post.',
+      text: 'Revision opened — choose Save revision draft or Replace published post when you submit.',
     });
     contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, [promptSignIn, signedIn]);
@@ -1602,17 +1605,59 @@ export default function HermesChat({
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     const draftRef = contributionDraft.draftRef;
-    const items = enrichProposalsWithLedgerDraftIds(
-      proposalsFromContributionDraft(contributionDraft),
+    const editContext: ContributionEditContext = resolveContributionEditContext(
+      contributionDraft,
+      contributionSets,
+    );
+    const draftWithContext = { ...contributionDraft, editContext };
+    let items = enrichProposalsWithLedgerDraftIds(
+      proposalsFromContributionDraft(draftWithContext),
       contributionSets,
       draftRef,
     );
+    const replacing = isReplaceSubmitMode(mode, editContext);
     const isDraft = mode === 'draft';
+
+    if (isDraft && editContext === 'draft_id_already_published') {
+      items = items.map(({ canopiDraftId: _omit, ...rest }) => rest);
+    }
+
     try {
       await ensureFreshCanopiSession();
       const links: DiscussDeepLink[] = [];
 
-      if (isDraft) {
+      if (replacing) {
+        const publishItems = items.map((item) => ({
+          ...item,
+          replaceMessageId:
+            editContext === 'edit_draft'
+              ? undefined
+              : (contributionDraft.canopiMessageId
+                || String(item.payload?.supersedes_message_id || item.payload?.supersedesMessageId || '')),
+        }));
+        const res = await fetch('/api/agent/contributions/publish-edits', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            draftRef,
+            proposals: publishItems,
+            editContext,
+            threadId: activeThreadId,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.details || data.error || 'Could not replace published post');
+        const published = Array.isArray(data.published) ? data.published : [];
+        published.forEach((
+          row: { proposalId?: string; link?: { id?: string; href?: string; pageId?: string }; result?: { id?: string; pageId?: string } },
+          index: number,
+        ) => {
+          const item = items.find((p) => p.id === row.proposalId) || items[index];
+          if (!item) return;
+          const link = resolveDiscussLink(item, draftRef, row, 'post');
+          if (link) links.push(link);
+        });
+      } else if (isDraft) {
         const res = await fetch('/api/agent/contributions/stage', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1637,7 +1682,7 @@ export default function HermesChat({
             if (link) links.push(link);
           });
         }
-        saveStagedProposal(contributionDraft);
+        saveStagedProposal(draftWithContext);
       } else {
         const destination = defaultDestination();
         for (const item of items) {
@@ -1650,6 +1695,8 @@ export default function HermesChat({
               payload: item.payload,
               destination,
               threadId: activeThreadId,
+              proposalId: item.id,
+              canopiDraftId: item.canopiDraftId || null,
             }),
           });
           const data = await res.json();
@@ -1664,8 +1711,8 @@ export default function HermesChat({
       clearStagedProposalsForRef(draftRef);
 
       const count = items.length;
-      const userSummary = formatContributionUserSummary(contributionDraft, mode, count);
-      const bodyMarkdown = formatContributionSubmissionMarkdown(contributionDraft, mode, links);
+      const userSummary = formatContributionUserSummary(draftWithContext, mode, count);
+      const bodyMarkdown = formatContributionSubmissionMarkdown(draftWithContext, mode, links);
       const threadId = activeThreadIdRef.current;
       const sourceAssistantMessageId = draftingMessageIdRef.current;
       const sourceTurnId =
@@ -1682,8 +1729,8 @@ export default function HermesChat({
         ? buildContributionSetFromDraft(
           threadId,
           sourceTurnId,
-          contributionDraft,
-          mode,
+          draftWithContext,
+          replacing ? 'replace' : mode,
           proposalsWithFp,
           {
             supersedesMessageId: contributionDraft.supersedesMessageId,
@@ -1692,7 +1739,7 @@ export default function HermesChat({
           },
         )
         : null;
-      const proposalUpdates = await buildProposalUpdates(items, links, mode);
+      const proposalUpdates = await buildProposalUpdates(items, links, mode, editContext);
 
       const recordHint: ContributionRecordHint = {
         type: 'contribution_record',
@@ -2161,6 +2208,7 @@ export default function HermesChat({
               <div ref={contributionPanelRef}>
                 <HermesContributionPanel
                   draft={contributionDraft}
+                  contributionSets={contributionSets}
                   busy={contributionBusy}
                   onSubmit={submitContribution}
                   onCancel={() => void cancelContributionDraft()}
