@@ -756,6 +756,23 @@ export async function isDraftFullyFiledInLedger(
   return true;
 }
 
+/**
+ * True when a locally cached draft must not reopen — ledger already has this batch.
+ * Checks thread-level first (covers mismatched assistantMessageId on session restore).
+ */
+export async function shouldBlockDraftRestore(
+  draft: ContributionDraft,
+  sets: ContributionSet[],
+  sourceTurnId?: string | null,
+): Promise<boolean> {
+  if (sourceTurnId && sourceTurnHasFiledSet(sets, sourceTurnId)) return true;
+  if (isDraftDuplicateOfLedgerByLabels(draft, sets)) return true;
+  if (sourceTurnId && isDraftDuplicateOfLedgerByLabels(draft, sets, sourceTurnId)) return true;
+  if (await isDraftFullyFiledInLedger(draft, sets)) return true;
+  if (sourceTurnId && await isDraftFullyFiledInLedger(draft, sets, sourceTurnId)) return true;
+  return false;
+}
+
 /** Remove local staged backups when the thread ledger already has complete sets for those refs. */
 export function clearStagedProposalsForFiledRefs(sets: ContributionSet[]): void {
   if (typeof window === 'undefined') return;
@@ -766,6 +783,23 @@ export function clearStagedProposalsForFiledRefs(sets: ContributionSet[]): void 
       .filter(Boolean),
   );
   for (const ref of refs) clearStagedProposalsForRef(ref);
+}
+
+/** Drop session pending draft when it matches a filed ledger batch on this thread. */
+export function clearPendingDraftIfFiledOnThread(
+  sets: ContributionSet[],
+  threadId: string | null,
+): void {
+  if (typeof window === 'undefined') return;
+  const pending = loadPendingContributionDraft(threadId);
+  if (!pending?.draft) return;
+  const assistantTurnId = pending.assistantMessageId
+    ? pending.assistantMessageId.replace(/-a$/, '')
+    : null;
+  if (sourceTurnHasFiledSet(sets, assistantTurnId)
+    || isDraftDuplicateOfLedgerByLabels(pending.draft, sets)) {
+    clearPendingContributionDraft();
+  }
 }
 
 /** Build proposal status updates after Canopi submit. */

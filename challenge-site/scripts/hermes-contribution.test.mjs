@@ -148,6 +148,36 @@ test('isDraftDuplicateOfLedgerByLabels matches backfilled link-id fingerprints',
   assert.equal(isDraftDuplicateOfLedgerByLabels(draft, backfillSets, 'turn-18'), true);
 });
 
+test('shouldBlockDraftRestore matches when assistantMessageId differs from ledger sourceTurnId', async () => {
+  const draft = {
+    kind: 'patch',
+    draftRef: 'ML-5',
+    title: 'Test',
+    summary: '',
+    payload: {},
+    proposals: [
+      { id: 'p1', kind: 'patch', payload: { original_text: 'a', proposed_text: 'b', patch_mode: 'replace' } },
+      { id: 'p2', kind: 'patch', payload: { original_text: 'c', proposed_text: 'd', patch_mode: 'insert' } },
+    ],
+  };
+  const sets = [{
+    id: 'set-1',
+    threadId: 't1',
+    sourceTurnId: 'hermes:memory:turn-18',
+    draftRef: 'ML-5',
+    mode: 'publish',
+    status: 'complete',
+    createdAt: '2026-08-15T06:00:00Z',
+    proposals: [
+      { proposalId: 'p1', kind: 'patch', label: 'View post: Patch', status: 'published', fingerprint: 'x' },
+      { proposalId: 'p2', kind: 'patch', label: 'View post: Insert', status: 'published', fingerprint: 'y' },
+    ],
+  }];
+  // Pending draft saved with wrong assistant turn — thread-level label match must still block.
+  assert.equal(isDraftDuplicateOfLedgerByLabels(draft, sets, 'hermes:memory:turn-17'), false);
+  assert.equal(isDraftDuplicateOfLedgerByLabels(draft, sets), true);
+});
+
 test('parseContributionRecordProposals extracts patch fields', () => {
   const md = [
     '## Contribution published to Canopi Discuss',

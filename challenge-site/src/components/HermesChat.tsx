@@ -18,6 +18,7 @@ import {
   clearPendingContributionDraft,
   clearPendingUserMessage,
   clearStagedProposalsForRef,
+  clearPendingDraftIfFiledOnThread,
   clearStagedProposalsForFiledRefs,
   defaultDestination,
   discussLinkLabel,
@@ -26,8 +27,6 @@ import {
   formatContributionUserSummary,
   inferContributionHint,
   isContributionRecordHint,
-  isDraftDuplicateOfLedgerByLabels,
-  isDraftFullyFiledInLedger,
   loadPendingContributionDraft,
   loadStagedProposals,
   markHintSubmitted,
@@ -38,6 +37,7 @@ import {
   savePendingContributionDraft,
   savePendingUserMessage,
   saveStagedProposal,
+  shouldBlockDraftRestore,
   shouldShowContributionCTA,
   sourceTurnHasFiledSet,
   submittedProposalExclusionsFromMessages,
@@ -528,6 +528,7 @@ export default function HermesChat({
         : [];
       setContributionSets(sets);
       clearStagedProposalsForFiledRefs(sets);
+      clearPendingDraftIfFiledOnThread(sets, threadId);
       const restored: Message[] = [
         {
           id: 'intro',
@@ -572,9 +573,7 @@ export default function HermesChat({
         const assistantTurnId = pending.assistantMessageId
           ? turnIdFromAssistantMessageId(pending.assistantMessageId)
           : null;
-        const filed = sourceTurnHasFiledSet(sets, assistantTurnId)
-          || isDraftDuplicateOfLedgerByLabels(pending.draft, sets, assistantTurnId)
-          || await isDraftFullyFiledInLedger(pending.draft, sets, assistantTurnId);
+        const filed = await shouldBlockDraftRestore(pending.draft, sets, assistantTurnId);
         if (!filed) {
           setContributionDraft(pending.draft);
           draftingMessageIdRef.current = pending.assistantMessageId || null;
@@ -590,8 +589,7 @@ export default function HermesChat({
       } else {
         let restoredStaged: ContributionDraft | null = null;
         for (const row of loadStagedProposals()) {
-          if (isDraftDuplicateOfLedgerByLabels(row, sets)
-            || await isDraftFullyFiledInLedger(row, sets)) continue;
+          if (await shouldBlockDraftRestore(row, sets)) continue;
           restoredStaged = row;
           break;
         }
