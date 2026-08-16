@@ -108,7 +108,7 @@ mv "$STAGING_BUILD_DIR" "$STAGING_LIVE_DIR"
 rm -rf "${STAGING_LIVE_DIR}.old"
 
 if pm2 pid desirableproperties-staging >/dev/null 2>&1; then
-  pm2 restart desirableproperties-staging
+  pm2 restart ecosystem.staging.config.js --update-env
 else
   pm2 delete desirableproperties-staging 2>/dev/null || true
   pm2 start ecosystem.staging.config.js

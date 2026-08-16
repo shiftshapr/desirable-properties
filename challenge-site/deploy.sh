@@ -43,7 +43,7 @@ mv "$PROD_BUILD_DIR" "$PROD_LIVE_DIR"
 rm -rf "${PROD_LIVE_DIR}.old"
 
 if pm2 pid desirableproperties >/dev/null 2>&1; then
-  pm2 restart desirableproperties
+  pm2 restart ecosystem.config.js --update-env
 else
   pm2 delete desirableproperties 2>/dev/null || true
   pm2 start ecosystem.config.js
