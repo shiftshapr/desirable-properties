@@ -87,21 +87,101 @@ export default function WorkgroupHermesPanel({
   const visibleHands = hands.filter((h) => h.status !== 'dismissed');
   const pendingHands = visibleHands.filter((h) => h.status === 'raised' || (h.status === 'opened' && h.visibility === 'private'));
   const hasContent = pendingHands.length > 0 || askNotes.length > 0 || activeHand || activeAskNote;
+  const pendingAskNotes = askNotes.filter((n) => !n.shared);
+  const railBadgeCount =
+    visibleHands.filter((h) => h.status !== 'dismissed' && h.status !== 'shared').length + pendingAskNotes.length;
   const showRailOnly = collapsed && !mobileOpen;
 
-  const collapsedRail = onToggleCollapse ? (
-    <div className="flex flex-1 flex-col items-center pt-3">
+  const collapsedRail = (
+    <nav
+      className="flex flex-1 flex-col items-center gap-2 py-3"
+      aria-label="Hermes private panel"
+    >
+      {onToggleCollapse ? (
+        <button
+          type="button"
+          onClick={onToggleCollapse}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white"
+          aria-label="Expand panel"
+          title="Expand panel"
+        >
+          <HermesPanelChevron direction="left" />
+        </button>
+      ) : null}
+
       <button
         type="button"
         onClick={onToggleCollapse}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-800 hover:text-white"
-        aria-label="Expand Hermes panel"
-        title="Expand Hermes panel"
+        className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-violet-300 hover:bg-violet-950/50 hover:text-violet-200"
+        aria-label="Hermes private panel"
+        title="Hermes private panel"
       >
-        <HermesPanelChevron direction="left" />
+        <span className="text-base" aria-hidden="true">✦</span>
+        {railBadgeCount > 0 ? (
+          <span
+            className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-violet-700 px-1 text-[10px] font-bold leading-none text-white"
+            aria-hidden="true"
+          >
+            {railBadgeCount > 9 ? '9+' : railBadgeCount}
+          </span>
+        ) : null}
       </button>
-    </div>
-  ) : null;
+
+      {pendingHands.length > 0 ? (
+        <button
+          type="button"
+          onClick={() => {
+            onToggleCollapse?.();
+            onSelectHand(pendingHands[0]);
+          }}
+          className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-amber-200 hover:bg-amber-950/40"
+          aria-label={`Raised hands (${pendingHands.length})`}
+          title={`Raised hands (${pendingHands.length})`}
+        >
+          <span className="text-base" aria-hidden="true">✋</span>
+          <span
+            className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-700 px-1 text-[10px] font-bold leading-none text-white"
+            aria-hidden="true"
+          >
+            {pendingHands.length > 9 ? '9+' : pendingHands.length}
+          </span>
+        </button>
+      ) : null}
+
+      {pendingAskNotes.length > 0 ? (
+        <button
+          type="button"
+          onClick={() => {
+            onToggleCollapse?.();
+            onSelectAskNote(pendingAskNotes[0]);
+          }}
+          className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-cyan-200 hover:bg-cyan-950/40"
+          aria-label={`Ask Hermes replies (${pendingAskNotes.length})`}
+          title={`Ask Hermes replies (${pendingAskNotes.length})`}
+        >
+          <span className="text-sm font-bold" aria-hidden="true">✦</span>
+          <span
+            className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-cyan-700 px-1 text-[10px] font-bold leading-none text-white"
+            aria-hidden="true"
+          >
+            {pendingAskNotes.length > 9 ? '9+' : pendingAskNotes.length}
+          </span>
+        </button>
+      ) : null}
+
+      {onOpenHermesInstructions ? (
+        <button
+          type="button"
+          onClick={onOpenHermesInstructions}
+          className="mt-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-xs font-bold text-slate-400 hover:border-slate-600 hover:text-white"
+          aria-label="How Hermes works"
+          title="How Hermes works"
+        >
+          ?
+        </button>
+      ) : null}
+    </nav>
+  );
 
   const expandedPanel = (
     <>
@@ -337,7 +417,7 @@ export default function WorkgroupHermesPanel({
       {/* Desktop: persistent column */}
       <aside
         className={`hidden flex-col border-l border-violet-900/40 bg-slate-950/80 lg:flex ${
-          showRailOnly ? 'w-10 shrink-0' : 'w-full min-w-[18rem] max-w-sm'
+          showRailOnly ? 'w-14 shrink-0' : 'w-full min-w-[18rem] max-w-sm'
         }`}
       >
         {showRailOnly ? collapsedRail : expandedPanel}
