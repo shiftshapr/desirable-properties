@@ -1,21 +1,31 @@
 /**
  * Broadcast cohort email lists for targeted outreach.
  * Sources: meta-console/docs/PCI-META-LAYER-HISTORY.md (First Call for Input table),
- * mail-exports/daveed/submissions-participants.txt (CFI#2).
+ * mail-exports/daveed/submissions-participants.txt (CFI#2),
+ * src/data/isoc-nevada-members.json (ISOC Nevada chapter).
  */
+
+import isocNevadaMembersJson from '@/data/isoc-nevada-members.json';
 
 export type BroadcastCohortKey =
   | 'all'
   | 'cfi1_pci'
   | 'cfi1_zoom'
   | 'cfi2_submitters'
+  | 'isoc_nevada'
   | 'dp_challenge';
+
+export type BroadcastCohortMember = {
+  name: string;
+  email: string;
+};
 
 export type BroadcastCohortConfig = {
   key: BroadcastCohortKey;
   label: string;
   description?: string;
   emails: string[];
+  members?: BroadcastCohortMember[];
 };
 
 /** First CFI — PCI participants (24 addresses from PCI history doc table). */
@@ -71,6 +81,21 @@ export const CFI2_SUBMITTER_EMAILS: string[] = [
   'wojakk3336@gmail.com',
 ];
 
+export function normalizeBroadcastEmail(email: string | null | undefined): string {
+  return String(email || '')
+    .trim()
+    .toLowerCase();
+}
+
+const ISOC_NEVADA_MEMBERS: BroadcastCohortMember[] = (
+  isocNevadaMembersJson as { members?: BroadcastCohortMember[] }
+).members?.map((row) => ({
+  name: String(row.name || '').trim(),
+  email: normalizeBroadcastEmail(row.email),
+}))?.filter((row) => row.email.includes('@')) || [];
+
+export const ISOC_NEVADA_EMAILS: string[] = ISOC_NEVADA_MEMBERS.map((row) => row.email);
+
 export const BROADCAST_COHORTS: BroadcastCohortConfig[] = [
   {
     key: 'all',
@@ -97,6 +122,13 @@ export const BROADCAST_COHORTS: BroadcastCohortConfig[] = [
     emails: CFI2_SUBMITTER_EMAILS,
   },
   {
+    key: 'isoc_nevada',
+    label: 'ISOC Nevada',
+    description: 'Internet Society Nevada Chapter founding members and core roster.',
+    emails: ISOC_NEVADA_EMAILS,
+    members: ISOC_NEVADA_MEMBERS,
+  },
+  {
     key: 'dp_challenge',
     label: 'DP Challenge',
     description: 'Current Desirable Properties challenge workgroup participants.',
@@ -104,15 +136,23 @@ export const BROADCAST_COHORTS: BroadcastCohortConfig[] = [
   },
 ];
 
-export function normalizeBroadcastEmail(email: string | null | undefined): string {
-  return String(email || '')
-    .trim()
-    .toLowerCase();
-}
-
 export function cohortEmailsForKey(cohort: BroadcastCohortKey): string[] {
   const entry = BROADCAST_COHORTS.find((c) => c.key === cohort);
   return entry?.emails || [];
+}
+
+export function cohortMembersForKey(cohort: BroadcastCohortKey): BroadcastCohortMember[] {
+  const entry = BROADCAST_COHORTS.find((c) => c.key === cohort);
+  if (!entry?.members?.length) {
+    return cohortEmailsForKey(cohort).map((email) => ({ name: email, email }));
+  }
+  return entry.members;
+}
+
+export function cohortDisplayNameForEmail(cohort: BroadcastCohortKey, email: string): string {
+  const normalized = normalizeBroadcastEmail(email);
+  const member = cohortMembersForKey(cohort).find((row) => row.email === normalized);
+  return member?.name?.trim() || normalized;
 }
 
 export function cohortLabelForKey(cohort: BroadcastCohortKey): string {

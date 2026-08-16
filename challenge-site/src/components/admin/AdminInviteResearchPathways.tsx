@@ -1,6 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import AdminInviteListFilters, {
+  AdminInviteCompactListRow,
+} from '@/components/admin/AdminInviteListFilters';
 import {
   adminInviteHideContact,
   adminInviteIngestZoho,
@@ -8,6 +11,8 @@ import {
   adminInvitePathwaySearch,
   adminInvitePathwayUrl,
   adminInvitePathwayZoho,
+  adminInviteSendRecords,
+  type AdminInviteSendRecord,
   type InvitePathwayApplyPayload,
   type MessageStrategy,
   type OutreachSelectionReason,
@@ -15,6 +20,11 @@ import {
   type UrlAuthorCandidate,
   type ZohoContactCandidate,
 } from '@/lib/admin-invite-api';
+import {
+  buildRecentSendIndex,
+  passesInviteListFilters,
+  proposedOrgHideReason,
+} from '@/lib/dp-invite-contact-filters';
 import {
   fetchZohoInviteSelection,
   migrateZohoInviteSelectionFromLocalStorage,
@@ -176,6 +186,13 @@ export default function AdminInviteResearchPathways({
   const selectionSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const selectionSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [sendRecords, setSendRecords] = useState<AdminInviteSendRecord[]>([]);
+  const [excludeRecentSends, setExcludeRecentSends] = useState(false);
+  const [recentSendDays, setRecentSendDays] = useState(30);
+  const [hideOrgAddresses, setHideOrgAddresses] = useState(false);
+  const [compactView, setCompactView] = useState(false);
+  const [expandedContactIds, setExpandedContactIds] = useState<Set<string>>(new Set());
+
   const persistZohoSelection = useCallback(
     (ids: string[], contacts: ZohoContactCandidate[] = zohoContacts) => {
       if (!adminEmail.trim()) return;
@@ -236,6 +253,42 @@ export default function AdminInviteResearchPathways({
   }, [adminEmail]);
 
   useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await adminInviteSendRecords({ limit: 5000 });
+        if (!cancelled) setSendRecords(data.records || []);
+      } catch {
+        if (!cancelled) setSendRecords([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const sendIndex = useMemo(() => buildRecentSendIndex(sendRecords), [sendRecords]);
+
+  const listFilterOptions = useMemo(
+    () => ({
+      excludeRecentSends,
+      recentSendDays,
+      hideOrgAddresses,
+      sendIndex,
+    }),
+    [excludeRecentSends, recentSendDays, hideOrgAddresses, sendIndex],
+  );
+
+  function toggleExpandedContact(id: string) {
+    setExpandedContactIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  useEffect(() => {
     if (!adminEmail.trim() || !removedFromSelection.length) return;
     const fresh = removedFromSelection
       .map((email) => email.trim().toLowerCase())
@@ -253,7 +306,7 @@ export default function AdminInviteResearchPathways({
     });
   }, [adminEmail, removedFromSelection, zohoContacts]);
 
-  const filteredZohoContacts = zohoFilter.trim()
+  const textFilteredZohoContacts = zohoFilter.trim()
     ? zohoContacts.filter((contact) => {
         const query = zohoFilter.trim().toLowerCase();
         const blob = [
@@ -268,6 +321,15 @@ export default function AdminInviteResearchPathways({
         return blob.includes(query);
       })
     : zohoContacts;
+
+  const filteredZohoContacts = textFilteredZohoContacts.filter((contact) =>
+    passesInviteListFilters(contact.email, listFilterOptions),
+  );
+
+  const filteredUrlAuthors = urlAuthors.filter((author) => {
+    const email = author.suggested_email || author.email_candidates?.[0]?.email || '';
+    return passesInviteListFilters(email, listFilterOptions);
+  });
 
   async function loadZoho(showHidden = showHiddenZoho) {
     setBusy(true);
@@ -540,6 +602,25 @@ export default function AdminInviteResearchPathways({
         <p className="mt-2 text-xs text-emerald-300/90">Selection saved to server.</p>
       ) : null}
 
+      {tab !== 'manual' &&
+      (zohoContacts.length > 0 || searchResults.length > 0 || urlAuthors.length > 0) ? (
+        <div className="mt-4">
+          <AdminInviteListFilters
+            excludeRecentSends={excludeRecentSends}
+            recentSendDays={recentSendDays}
+            hideOrgAddresses={hideOrgAddresses}
+            compactView={compactView}
+            onExcludeRecentSendsChange={setExcludeRecentSends}
+            onRecentSendDaysChange={setRecentSendDays}
+            onHideOrgAddressesChange={setHideOrgAddresses}
+            onCompactViewChange={setCompactView}
+            disabled={busy}
+            filteredCount={tab === 'zoho' ? filteredZohoContacts.length : undefined}
+            totalCount={tab === 'zoho' ? textFilteredZohoContacts.length : undefined}
+          />
+        </div>
+      ) : null}
+
       {tab === 'zoho' ? (
         <div className="mt-4 space-y-4">
           <p className="text-sm text-slate-400">
@@ -586,9 +667,12 @@ export default function AdminInviteResearchPathways({
             <>
               <div className="flex flex-wrap items-center gap-3">
                 <p className="text-sm text-slate-400">
-                  {filteredZohoContacts.length === zohoContacts.length
-                    ? `${zohoContacts.length} relevant contacts`
-                    : `${filteredZohoContacts.length} of ${zohoContacts.length} contacts`}
+                  {filteredZohoContacts.length === textFilteredZohoContacts.length
+                    ? `${textFilteredZohoContacts.length} relevant contacts`
+                    : `${filteredZohoContacts.length} of ${textFilteredZohoContacts.length} contacts`}
+                  {textFilteredZohoContacts.length !== zohoContacts.length
+                    ? ` (${zohoContacts.length} total)`
+                    : ''}
                   {' — '}select one for the form, or multiple for batch review.
                 </p>
                 {selectedZohoIds.length >= 2 ? (
@@ -626,8 +710,99 @@ export default function AdminInviteResearchPathways({
                 Show hidden / already contacted
                 {hiddenZohoCount > 0 && !showHiddenZoho ? ` (${hiddenZohoCount})` : ''}
               </label>
-              <ul className="max-h-[32rem] space-y-3 overflow-y-auto pr-1">
-                {filteredZohoContacts.map((contact) => (
+              <ul
+                className={
+                  compactView
+                    ? 'max-h-[32rem] overflow-y-auto divide-y divide-slate-800 rounded-lg border border-slate-800'
+                    : 'max-h-[32rem] space-y-3 overflow-y-auto pr-1'
+                }
+              >
+                {filteredZohoContacts.map((contact) => {
+                  const orgHideReason = proposedOrgHideReason(contact.email);
+                  const expanded = expandedContactIds.has(contact.id);
+                  const details = (
+                    <>
+                      {contact.summary ? (
+                        <p className="text-sm text-slate-400">{contact.summary}</p>
+                      ) : null}
+                      {formatZohoMeta(contact) ? (
+                        <p className="mt-1">{formatZohoMeta(contact)}</p>
+                      ) : null}
+                      {contact.sample_subjects?.length ? (
+                        <p className="mt-1">
+                          Subjects: {contact.sample_subjects.join(' · ')}
+                        </p>
+                      ) : null}
+                      {orgHideReason ? (
+                        <p className="mt-1 text-amber-400/90">Proposed hide: {orgHideReason}</p>
+                      ) : null}
+                      <ZohoSelectionReasonPanel reason={contact.selection_reason} />
+                    </>
+                  );
+
+                  if (compactView) {
+                    return (
+                      <AdminInviteCompactListRow
+                        key={contact.id}
+                        compactView
+                        expanded={expanded}
+                        onToggleExpanded={() => toggleExpandedContact(contact.id)}
+                        checkbox={
+                          <>
+                            <input
+                              type="checkbox"
+                              checked={selectedZohoIds.includes(contact.id)}
+                              onChange={() => toggleZohoContact(contact.id)}
+                              disabled={busy}
+                              className="shrink-0"
+                            />
+                            <input
+                              type="radio"
+                              name="zoho-contact"
+                              checked={selectedZohoId === contact.id}
+                              onChange={() => setSelectedZohoId(contact.id)}
+                              disabled={busy}
+                              className="shrink-0"
+                            />
+                          </>
+                        }
+                        primary={
+                          <p className="truncate font-medium text-white">
+                            {contact.name}
+                            <span className="ml-2 font-normal text-slate-400">{contact.email}</span>
+                            <span
+                              className={`ml-2 rounded-full border px-2 py-0.5 text-xs ${confidenceClass(contact.confidence)}`}
+                            >
+                              {contact.confidence} · {contact.score}%
+                            </span>
+                          </p>
+                        }
+                        secondary={
+                          contact.suggested_strategy
+                            ? `${strategyLabel(contact.suggested_strategy)} · ${formatZohoMeta(contact) || contact.email}`
+                            : formatZohoMeta(contact) || contact.email
+                        }
+                        actions={
+                          <button
+                            type="button"
+                            disabled={busy}
+                            onClick={(event) => {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              void hideZohoContact(contact);
+                            }}
+                            className="shrink-0 rounded-lg border border-slate-700 px-2 py-1 text-xs text-slate-300 hover:border-rose-700 hover:text-rose-200 disabled:opacity-50"
+                            title="Hide this contact from future scans"
+                          >
+                            Hide
+                          </button>
+                        }
+                        details={details}
+                      />
+                    );
+                  }
+
+                  return (
                   <li
                     key={contact.id}
                     className="rounded-lg border border-slate-800 bg-slate-900/50 p-4"
@@ -674,6 +849,11 @@ export default function AdminInviteResearchPathways({
                           Subjects: {contact.sample_subjects.join(' · ')}
                         </span>
                       ) : null}
+                      {orgHideReason ? (
+                        <span className="mt-1 block text-xs text-amber-400/90">
+                          Proposed hide: {orgHideReason}
+                        </span>
+                      ) : null}
                       <ZohoSelectionReasonPanel reason={contact.selection_reason} />
                     </span>
                     <button
@@ -691,8 +871,12 @@ export default function AdminInviteResearchPathways({
                     </button>
                   </label>
                 </li>
-              ))}
+                  );
+                })}
             </ul>
+            {filteredZohoContacts.length === 0 && textFilteredZohoContacts.length > 0 ? (
+              <p className="mt-2 text-sm text-slate-500">No contacts match the current filters.</p>
+            ) : null}
             </>
           ) : null}
         </div>
@@ -730,8 +914,64 @@ export default function AdminInviteResearchPathways({
             {busy ? 'Searching…' : 'Search web'}
           </button>
           {searchResults.length > 0 ? (
-            <ul className="space-y-3">
-              {searchResults.map((hit) => (
+            <ul
+              className={
+                compactView
+                  ? 'divide-y divide-slate-800 rounded-lg border border-slate-800'
+                  : 'space-y-3'
+              }
+            >
+              {searchResults.map((hit) => {
+                const hitKey = `search-${hit.id}`;
+                const expanded = expandedContactIds.has(hitKey);
+
+                if (compactView) {
+                  return (
+                    <AdminInviteCompactListRow
+                      key={hit.id}
+                      compactView
+                      expanded={expanded}
+                      onToggleExpanded={() => toggleExpandedContact(hitKey)}
+                      checkbox={
+                        <input
+                          type="checkbox"
+                          checked={selectedSearchIds.includes(hit.id)}
+                          onChange={() => toggleSearchHit(hit.id)}
+                          disabled={busy}
+                          className="shrink-0"
+                        />
+                      }
+                      primary={
+                        <p className="truncate font-medium text-white">
+                          {hit.title || hit.url}
+                          <span
+                            className={`ml-2 rounded-full border px-2 py-0.5 text-xs ${confidenceClass(hit.relevance)}`}
+                          >
+                            {hit.relevance} · {hit.relevance_score}%
+                          </span>
+                        </p>
+                      }
+                      secondary={hit.url}
+                      details={
+                        <>
+                          {hit.snippet ? <p>{hit.snippet}</p> : null}
+                          {hit.url ? (
+                            <a
+                              href={hit.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="mt-1 block text-cyan-300 hover:underline"
+                            >
+                              {hit.url}
+                            </a>
+                          ) : null}
+                        </>
+                      }
+                    />
+                  );
+                }
+
+                return (
                 <li key={hit.id} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
                   <label className="flex cursor-pointer items-start gap-3">
                     <input
@@ -766,7 +1006,8 @@ export default function AdminInviteResearchPathways({
                     </span>
                   </label>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           ) : null}
         </div>
@@ -793,8 +1034,67 @@ export default function AdminInviteResearchPathways({
             {busy ? 'Analyzing…' : 'Extract authors'}
           </button>
           {urlAuthors.length > 0 ? (
-            <ul className="space-y-3">
-              {urlAuthors.map((author) => (
+            <ul
+              className={
+                compactView
+                  ? 'divide-y divide-slate-800 rounded-lg border border-slate-800'
+                  : 'space-y-3'
+              }
+            >
+              {filteredUrlAuthors.map((author) => {
+                const authorKey = `url-${author.id}`;
+                const expanded = expandedContactIds.has(authorKey);
+                const email = author.suggested_email || author.email_candidates?.[0]?.email || '';
+                const orgHideReason = proposedOrgHideReason(email);
+
+                if (compactView) {
+                  return (
+                    <AdminInviteCompactListRow
+                      key={author.id}
+                      compactView
+                      expanded={expanded}
+                      onToggleExpanded={() => toggleExpandedContact(authorKey)}
+                      checkbox={
+                        <input
+                          type="radio"
+                          name="url-author"
+                          checked={selectedAuthorId === author.id}
+                          onChange={() => {
+                            setSelectedAuthorId(author.id);
+                            setSelectedAuthorEmail(author.suggested_email || '');
+                          }}
+                          disabled={busy}
+                          className="shrink-0"
+                        />
+                      }
+                      primary={
+                        <p className="truncate font-medium text-white">
+                          {author.name}
+                          {author.role ? (
+                            <span className="ml-2 font-normal text-slate-400">{author.role}</span>
+                          ) : null}
+                          <span
+                            className={`ml-2 rounded-full border px-2 py-0.5 text-xs ${confidenceClass(author.confidence)}`}
+                          >
+                            {author.confidence} · {author.score}%
+                          </span>
+                        </p>
+                      }
+                      secondary={email || author.context || 'No email'}
+                      details={
+                        <>
+                          {author.context ? <p>{author.context}</p> : null}
+                          {email ? <p className="mt-1 text-slate-400">{email}</p> : null}
+                          {orgHideReason ? (
+                            <p className="mt-1 text-amber-400/90">Proposed hide: {orgHideReason}</p>
+                          ) : null}
+                        </>
+                      }
+                    />
+                  );
+                }
+
+                return (
                 <li key={author.id} className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
                   <label className="flex cursor-pointer items-start gap-3">
                     <input
@@ -823,11 +1123,20 @@ export default function AdminInviteResearchPathways({
                       {author.context ? (
                         <span className="mt-1 block text-sm text-slate-400">{author.context}</span>
                       ) : null}
+                      {orgHideReason ? (
+                        <span className="mt-1 block text-xs text-amber-400/90">
+                          Proposed hide: {orgHideReason}
+                        </span>
+                      ) : null}
                     </span>
                   </label>
                 </li>
-              ))}
+                );
+              })}
             </ul>
+          ) : null}
+          {urlAuthors.length > 0 && filteredUrlAuthors.length === 0 ? (
+            <p className="text-sm text-slate-500">No authors match the current filters.</p>
           ) : null}
           {selectedAuthor ? (
             <label className="block text-sm">

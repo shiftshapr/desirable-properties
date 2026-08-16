@@ -554,6 +554,9 @@ export type LongGapSendAllJobStatus = {
   current_email?: string;
   error?: string;
   message?: string;
+  job_mode?: 'send_all' | 'retry_failed';
+  retry_available?: number;
+  retry_already_sent?: number;
 };
 
 export async function adminInviteDispatchSendAll(): Promise<LongGapSendAllJobStatus> {
@@ -570,6 +573,16 @@ export async function adminInviteDispatchSendAllStatus(): Promise<LongGapSendAll
   const res = await fetch('/api/admin/invite-ai/dispatch/send-all/status', {
     credentials: 'include',
     cache: 'no-store',
+  });
+  return parseJson(res);
+}
+
+export async function adminInviteDispatchRetryFailed(): Promise<LongGapSendAllJobStatus> {
+  const res = await fetch('/api/admin/invite-ai/dispatch/retry-failed', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ test_mode: false }),
   });
   return parseJson(res);
 }

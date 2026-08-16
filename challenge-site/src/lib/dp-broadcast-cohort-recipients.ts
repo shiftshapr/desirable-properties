@@ -1,5 +1,6 @@
 import type { BroadcastCohortKey } from '@/data/dp-broadcast-cohorts';
 import {
+  cohortDisplayNameForEmail,
   cohortEmailsForKey,
   cohortRecipientKeyForEmail,
   normalizeBroadcastEmail,
@@ -23,10 +24,11 @@ export type CohortRecipientRow = CohortRecipientBase & {
 
 function syntheticCohortRow(email: string, cohort: BroadcastCohortKey): CohortRecipientRow {
   const normalized = normalizeBroadcastEmail(email);
+  const displayName = cohortDisplayNameForEmail(cohort, normalized);
   return {
     key: cohortRecipientKeyForEmail(normalized),
     userId: null,
-    userName: normalized,
+    userName: displayName,
     email: normalized,
     workgroups: [],
     cohortOnly: true,

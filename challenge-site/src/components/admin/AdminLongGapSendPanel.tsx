@@ -10,10 +10,12 @@ import {
   adminInviteDispatchSend,
   adminInviteDispatchSendAll,
   adminInviteDispatchSendAllStatus,
+  adminInviteDispatchRetryFailed,
   adminInviteDispatchTemplate,
   type AdminInviteSendRecord,
   type DispatchWorkgroupCatalogEntry,
   type LongGapDispatchRow,
+  type LongGapSendAllJobStatus,
   type LongGapTemplateStructure,
 } from '@/lib/admin-invite-api';
 
@@ -176,6 +178,57 @@ export default function AdminLongGapSendPanel() {
   const [error, setError] = useState<string | null>(null);
   const [bulkSendBusy, setBulkSendBusy] = useState(false);
   const [bulkSendNotice, setBulkSendNotice] = useState<string | null>(null);
+  const [retryAvailable, setRetryAvailable] = useState(0);
+
+  const pollBulkSendJob = useCallback(
+    async (initialTotal: number, label: 'Sending' | 'Retrying') => {
+      const pollIntervalMs = 2500;
+      const maxPollMs = 45 * 60 * 1000;
+      const startedAt = Date.now();
+
+      async function pollUntilDone(): Promise<LongGapSendAllJobStatus> {
+        const status = await adminInviteDispatchSendAllStatus();
+        if (status.error && status.status === 'error') {
+          throw new Error(status.error);
+        }
+        const total = status.total ?? initialTotal;
+        const completed = status.completed ?? 0;
+        const sent = status.sent ?? 0;
+        const errCount = status.errors ?? 0;
+        if (status.status === 'running') {
+          const current = status.current_email ? ` (${status.current_email})` : '';
+          setBulkSendNotice(
+            `${label} ${completed}/${total}… ${sent} sent, ${errCount} failed${current}`,
+          );
+        }
+        if (status.status === 'done' || status.status === 'idle') {
+          return status;
+        }
+        if (status.status === 'error') {
+          throw new Error(status.error || 'Bulk send failed');
+        }
+        if (Date.now() - startedAt > maxPollMs) {
+          throw new Error(
+            'Bulk send is still running after 45 minutes. Refresh to see partial progress.',
+          );
+        }
+        await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+        return pollUntilDone();
+      }
+
+      return pollUntilDone();
+    },
+    [],
+  );
+
+  const refreshRetryAvailable = useCallback(async () => {
+    try {
+      const status = await adminInviteDispatchSendAllStatus();
+      setRetryAvailable(status.retry_available ?? 0);
+    } catch {
+      setRetryAvailable(0);
+    }
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -200,12 +253,13 @@ export default function AdminLongGapSendPanel() {
         const hist = await adminInviteBatchHistory({ recipient_emails: emails });
         setSendHistory(hist.history_by_email || {});
       }
+      await refreshRetryAvailable();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load long-gap send list');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [refreshRetryAvailable]);
 
   useEffect(() => {
     void load();
@@ -247,29 +301,37 @@ export default function AdminLongGapSendPanel() {
     return null;
   }, [loading, bulkSendBusy, pendingSendCount, testMode]);
 
-  async function sendAllApproved() {
-    if (testMode) {
-      showToast('err', 'Turn off test mode before sending to real contacts.');
-      return;
-    }
-    if (pendingSendCount === 0) {
-      showToast('err', 'No pending approved contacts to send.');
-      return;
-    }
+  const retryFailedDisabledReason = useMemo(() => {
+    if (loading) return 'Loading contacts…';
+    if (bulkSendBusy) return 'Bulk send in progress…';
+    if (retryAvailable === 0) return 'No failed contacts from the last bulk send need retry.';
+    if (testMode) return 'Turn off test mode below to send to real contacts.';
+    return null;
+  }, [loading, bulkSendBusy, retryAvailable, testMode]);
+
+  async function runBulkSendJob(options: {
+    start: () => Promise<LongGapSendAllJobStatus>;
+    confirmTitle: string;
+    confirmMessage: string;
+    confirmLabel: string;
+    startingNotice: string;
+    pollLabel: 'Sending' | 'Retrying';
+    fallbackTotal: number;
+  }) {
     const ok = await DpDialog.confirm({
-      title: 'Send all approved contacts',
-      message: `Send to ${pendingSendCount} contact${pendingSendCount === 1 ? '' : 's'}? This cannot be undone.`,
+      title: options.confirmTitle,
+      message: options.confirmMessage,
       variant: 'danger',
-      confirmLabel: 'Send all',
+      confirmLabel: options.confirmLabel,
       cancelLabel: 'Cancel',
     });
     if (!ok) return;
 
     setBulkSendBusy(true);
-    setBulkSendNotice('Starting bulk send…');
+    setBulkSendNotice(options.startingNotice);
     setError(null);
     try {
-      const data = await adminInviteDispatchSendAll();
+      const data = await options.start();
       if (data.error) throw new Error(data.error);
 
       if (data.status === 'done' && (data.total ?? 0) === 0) {
@@ -279,47 +341,16 @@ export default function AdminLongGapSendPanel() {
         return;
       }
 
-      const pollIntervalMs = 2500;
-      const maxPollMs = 45 * 60 * 1000;
-      const startedAt = Date.now();
-
-      async function pollUntilDone() {
-        const status = await adminInviteDispatchSendAllStatus();
-        if (status.error && status.status === 'error') {
-          throw new Error(status.error);
-        }
-        const total = status.total ?? data.total ?? pendingSendCount;
-        const completed = status.completed ?? 0;
-        const sent = status.sent ?? 0;
-        const errCount = status.errors ?? 0;
-        if (status.status === 'running') {
-          const current = status.current_email ? ` (${status.current_email})` : '';
-          setBulkSendNotice(
-            `Sending ${completed}/${total}… ${sent} sent, ${errCount} failed${current}`,
-          );
-        }
-        if (status.status === 'done' || status.status === 'idle') {
-          return status;
-        }
-        if (status.status === 'error') {
-          throw new Error(status.error || 'Bulk send failed');
-        }
-        if (Date.now() - startedAt > maxPollMs) {
-          throw new Error(
-            'Bulk send is still running after 45 minutes. Refresh to see partial progress.',
-          );
-        }
-        await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
-        return pollUntilDone();
-      }
-
-      const finalStatus = await pollUntilDone();
+      const finalStatus = await pollBulkSendJob(
+        data.total ?? options.fallbackTotal,
+        options.pollLabel,
+      );
       const sent = finalStatus.sent ?? 0;
       const errCount = finalStatus.errors ?? 0;
       const skipped = finalStatus.skipped ?? 0;
       const alreadySent = finalStatus.already_sent ?? 0;
       const errDetails = finalStatus.error_details || [];
-      let summary = `Sent ${sent} of ${finalStatus.total ?? pendingSendCount}.`;
+      let summary = `Sent ${sent} of ${finalStatus.total ?? options.fallbackTotal}.`;
       if (skipped > 0) summary += ` ${skipped} skipped (already sent).`;
       if (alreadySent > 0) summary += ` ${alreadySent} were already sent before this run.`;
       if (errCount > 0) {
@@ -347,6 +378,46 @@ export default function AdminLongGapSendPanel() {
     } finally {
       setBulkSendBusy(false);
     }
+  }
+
+  async function sendAllApproved() {
+    if (testMode) {
+      showToast('err', 'Turn off test mode before sending to real contacts.');
+      return;
+    }
+    if (pendingSendCount === 0) {
+      showToast('err', 'No pending approved contacts to send.');
+      return;
+    }
+    await runBulkSendJob({
+      start: adminInviteDispatchSendAll,
+      confirmTitle: 'Send all approved contacts',
+      confirmMessage: `Send to ${pendingSendCount} contact${pendingSendCount === 1 ? '' : 's'}? This cannot be undone.`,
+      confirmLabel: 'Send all',
+      startingNotice: 'Starting bulk send…',
+      pollLabel: 'Sending',
+      fallbackTotal: pendingSendCount,
+    });
+  }
+
+  async function retryFailedOnly() {
+    if (testMode) {
+      showToast('err', 'Turn off test mode before sending to real contacts.');
+      return;
+    }
+    if (retryAvailable === 0) {
+      showToast('err', 'No failed contacts to retry.');
+      return;
+    }
+    await runBulkSendJob({
+      start: adminInviteDispatchRetryFailed,
+      confirmTitle: 'Retry failed contacts',
+      confirmMessage: `Retry ${retryAvailable} contact${retryAvailable === 1 ? '' : 's'} from the last bulk send?`,
+      confirmLabel: 'Retry failed',
+      startingNotice: 'Starting retry for failed contacts…',
+      pollLabel: 'Retrying',
+      fallbackTotal: retryAvailable,
+    });
   }
 
   async function sendOne(email: string, options?: { test?: boolean }) {
@@ -535,6 +606,17 @@ export default function AdminLongGapSendPanel() {
             >
               {bulkSendBusy ? 'Sending all…' : `Send all approved (${pendingSendCount})`}
             </button>
+            {retryAvailable > 0 ? (
+              <button
+                type="button"
+                disabled={Boolean(retryFailedDisabledReason)}
+                title={retryFailedDisabledReason || undefined}
+                onClick={() => void retryFailedOnly()}
+                className="rounded-lg border border-amber-600/80 bg-amber-950/40 px-5 py-2.5 text-sm font-medium text-amber-100 hover:border-amber-500 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {bulkSendBusy ? 'Retrying…' : `Retry failed (${retryAvailable})`}
+              </button>
+            ) : null}
             {bulkSendDisabledReason ? (
               <p className="max-w-xs text-xs text-amber-200/90 sm:text-right">
                 {bulkSendDisabledReason}

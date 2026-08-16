@@ -61,6 +61,7 @@ const COHORT_EMAILS = {
   cfi1_pci: ['kevin@peoplecentered.net'],
   cfi1_zoom: [],
   cfi2_submitters: CFI2_SUBMITTER_EMAILS,
+  isoc_nevada: ['valeuchtmann@gmail.com', 'davidreineremail@gmail.com'],
 };
 
 function applyBroadcastCohortFilter(audience, cohort) {
@@ -172,5 +173,8 @@ assert.ok(cfi2.some((r) => r.cohortOnly && r.email === 'alex.nassarius@gmail.com
 
 const zoom = applyBroadcastCohortFilter(audience, 'cfi1_zoom');
 assert.equal(zoom.length, 0);
+
+const isoc = applyBroadcastCohortFilter(audience, 'isoc_nevada');
+assert.ok(isoc.some((r) => r.cohortOnly && r.email === 'davidreineremail@gmail.com'));
 
 console.log('dp broadcast audience filter tests: ok');

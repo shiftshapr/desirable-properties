@@ -263,13 +263,14 @@ export default function BroadcastAdminPanel() {
   }, [workgroups, dpScope, dpId, dpFiltersActive]);
 
   const cohortCounts = useMemo(() => {
-    const counts: Record<BroadcastCohortKey, number> = {
-      all: audience.length,
-      cfi1_pci: applyBroadcastCohortFilter(audience, 'cfi1_pci').length,
-      cfi1_zoom: applyBroadcastCohortFilter(audience, 'cfi1_zoom').length,
-      cfi2_submitters: applyBroadcastCohortFilter(audience, 'cfi2_submitters').length,
-      dp_challenge: audience.length,
-    };
+  const counts: Record<BroadcastCohortKey, number> = {
+    all: audience.length,
+    cfi1_pci: applyBroadcastCohortFilter(audience, 'cfi1_pci').length,
+    cfi1_zoom: applyBroadcastCohortFilter(audience, 'cfi1_zoom').length,
+    cfi2_submitters: applyBroadcastCohortFilter(audience, 'cfi2_submitters').length,
+    isoc_nevada: applyBroadcastCohortFilter(audience, 'isoc_nevada').length,
+    dp_challenge: audience.length,
+  };
     return counts;
   }, [audience]);
 
