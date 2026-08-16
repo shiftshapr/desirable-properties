@@ -12,64 +12,74 @@ export const metadata: Metadata = {
   description: 'Upcoming workshops, launches, and gatherings for the Desirable Properties Challenge.',
 };
 
-function actionLabel(event: UpcomingEventEntry) {
-  if (event.recordingUrl) return 'Watch recording →';
-  if (event.external) return 'RSVP →';
-  if (event.seriesHref) return 'View series →';
-  return 'View details →';
-}
+const cardLinkClass =
+  'no-underline transition-colors hover:text-cyan-300 focus-visible:text-cyan-300';
+const actionLinkClass =
+  'mt-4 inline-block text-sm text-cyan-300 no-underline transition-colors hover:text-cyan-200 focus-visible:text-cyan-200';
 
 function EventRow({ event }: { event: UpcomingEventEntry }) {
   const kind = event.seriesType === 'single' ? 'Event' : 'Workshop';
-  const href = event.recordingUrl || event.href;
-  const external = Boolean(event.external || event.recordingUrl);
+  const detailHref = event.detailHref;
   const cardClassName =
-    'block overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
-
-  const inner = (
-    <>
-      {event.imageUrl ? (
-        <div className="relative aspect-[16/9] max-h-44 w-full bg-slate-950">
-          <Image
-            src={event.imageUrl}
-            alt=""
-            fill
-            sizes="(min-width: 640px) 50vw, 100vw"
-            className="object-cover"
-          />
-        </div>
-      ) : null}
-      <div className="p-6">
-        <p className="text-sm font-medium text-cyan-400">{event.dateLabel}</p>
-        <h2 className="mt-1 text-xl font-semibold text-white">{event.title}</h2>
-        <p className="mt-2 text-sm text-slate-500">
-          {kind}
-          {event.external && !event.recordingUrl ? ' · RSVP on Luma' : ''}
-          {event.recordingUrl ? ' · Recording available' : ''}
-        </p>
-        {event.seriesTitle && event.seriesHref ? (
-          <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
-        ) : null}
-        <span className="mt-4 inline-block text-sm text-cyan-300">{actionLabel(event)}</span>
-      </div>
-    </>
-  );
-
-  if (external) {
-    return (
-      <li>
-        <a href={href} target="_blank" rel="noopener noreferrer" className={cardClassName}>
-          {inner}
-        </a>
-      </li>
-    );
-  }
+    'overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
 
   return (
     <li>
-      <Link href={href} className={cardClassName}>
-        {inner}
-      </Link>
+      <article className={cardClassName}>
+        {event.imageUrl ? (
+          <Link href={detailHref} className={`block ${cardLinkClass}`}>
+            <div className="relative aspect-[16/9] max-h-44 w-full bg-slate-950">
+              <Image
+                src={event.imageUrl}
+                alt=""
+                fill
+                sizes="(min-width: 640px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </Link>
+        ) : null}
+        <div className="p-6">
+          <p className="text-sm font-medium">
+            <Link href={detailHref} className={`text-cyan-400 ${cardLinkClass}`}>
+              {event.dateLabel}
+            </Link>
+          </p>
+          <h2 className="mt-1 text-xl font-semibold">
+            <Link href={detailHref} className={`text-white ${cardLinkClass}`}>
+              {event.title}
+            </Link>
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            {kind}
+            {event.external && !event.recordingUrl ? ' · RSVP on Luma' : ''}
+            {event.recordingUrl ? ' · Recording available' : ''}
+          </p>
+          {event.seriesTitle ? (
+            <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
+          ) : null}
+          {event.recordingUrl ? (
+            <a
+              href={event.recordingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={actionLinkClass}
+            >
+              Watch recording →
+            </a>
+          ) : null}
+          {!event.recordingUrl && event.external ? (
+            <a href={event.href} target="_blank" rel="noopener noreferrer" className={actionLinkClass}>
+              RSVP →
+            </a>
+          ) : null}
+          {!event.recordingUrl && !event.external && event.seriesHref ? (
+            <Link href={event.seriesHref} className={actionLinkClass}>
+              View series →
+            </Link>
+          ) : null}
+        </div>
+      </article>
     </li>
   );
 }
@@ -85,7 +95,7 @@ export default async function EventsIndexPage() {
       <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Events</p>
       <h1 className="mt-3 text-4xl font-bold text-white">Workshops and gatherings</h1>
       <p className="mt-4 max-w-2xl text-lg text-slate-400">
-        Individual sessions sorted by date. Series workshops link to the full series page.
+        Individual sessions sorted by date. Date and title open the session page with questions.
       </p>
 
       <section className="mt-10" aria-labelledby="events-upcoming-heading">

@@ -170,6 +170,7 @@ export type UpcomingEventEntry = {
   title: string;
   seriesType: EventSeriesType;
   href: string;
+  detailHref: string;
   external: boolean;
   startsAt: string | null;
   dateLabel: string;
@@ -870,6 +871,8 @@ function mapSessionEventEntry(
   const recordingUrl = row.recording_url ? String(row.recording_url) : null;
   const seriesSlug = String(row.series_slug);
   const seriesHref = `/series/${seriesSlug}`;
+  const sessionNumber = Number(row.session_number) || 1;
+  const detailHref = `/series/${seriesSlug}/session/${sessionNumber}`;
 
   let href: string;
   let external: boolean;
@@ -895,11 +898,12 @@ function mapSessionEventEntry(
 
   const entry: UpcomingEventEntry = {
     id: String(row.session_id),
-    sessionNumber: Number(row.session_number) || 1,
+    sessionNumber,
     slug: String(row.session_slug),
     title: String(row.session_title),
     seriesType,
     href,
+    detailHref,
     external,
     startsAt,
     dateLabel: formatEventDateLabel(startsAt),
