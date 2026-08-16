@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 const cardLinkClass =
   'no-underline transition-colors hover:text-cyan-300 focus-visible:text-cyan-300';
 const actionLinkClass =
-  'mt-4 inline-block text-sm text-cyan-300 no-underline transition-colors hover:text-cyan-200 focus-visible:text-cyan-200';
+  'mt-auto inline-block pt-4 text-sm text-cyan-300 no-underline transition-colors hover:text-cyan-200 focus-visible:text-cyan-200';
 
 function EventRow({ event }: { event: UpcomingEventEntry }) {
   const kind = event.seriesType === 'single' ? 'Event' : 'Workshop';
   const detailHref = event.detailHref;
   const cardClassName =
-    'overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
+    'flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
 
   return (
-    <li>
+    <li className="flex">
       <article className={cardClassName}>
         {event.imageUrl ? (
           <Link href={detailHref} className={`block ${cardLinkClass}`}>
@@ -39,7 +39,7 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
             </div>
           </Link>
         ) : null}
-        <div className="p-6">
+        <div className="flex flex-1 flex-col p-6">
           <p className="text-sm font-medium">
             <Link href={detailHref} className={`text-cyan-400 ${cardLinkClass}`}>
               {event.dateLabel}
