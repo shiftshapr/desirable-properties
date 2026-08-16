@@ -13,11 +13,13 @@ import {
 } from '@/data/dp-broadcast-cohorts';
 import { applyBroadcastCohortFilter } from '@/lib/dp-broadcast-cohort-recipients';
 import {
+  clearBroadcastComposeAfterSend,
   clearBroadcastDraft,
   fixBroadcastEmDashes,
   isBroadcastDraftEmpty,
   readBroadcastDraft,
   writeBroadcastDraft,
+  type BroadcastDraftInput,
 } from '@/lib/dp-broadcast-draft';
 import { BROADCAST_FONT_OPTIONS } from '@/lib/dp-broadcast-send';
 import {
@@ -99,6 +101,10 @@ function initFromDraft() {
       selected: new Set<string>(),
       selectedWorkgroups: new Set<string>(),
       memberSearch: '',
+      cohortFilter: 'all' as BroadcastCohortKey,
+      patchFilter: 'all' as BroadcastPatchFilter,
+      dpScope: 'all' as BroadcastDpScope,
+      dpId: '',
       draftRestored: false,
     };
   }
@@ -113,6 +119,10 @@ function initFromDraft() {
     selected: new Set(draft.selected),
     selectedWorkgroups: new Set(draft.selectedWorkgroups),
     memberSearch: draft.memberSearch,
+    cohortFilter: draft.cohortFilter,
+    patchFilter: draft.patchFilter,
+    dpScope: draft.dpScope,
+    dpId: draft.dpId,
     draftRestored: true,
   };
 }
@@ -121,6 +131,22 @@ export default function BroadcastAdminPanel() {
   const initial = useMemo(() => initFromDraft(), []);
   const { showToast } = useAdminToast();
   const draftTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const draftRef = useRef<BroadcastDraftInput>({
+    subject: initial.subject,
+    html: initial.html,
+    fontId: initial.fontId,
+    testMode: initial.testMode,
+    testEmail: initial.testEmail,
+    availableInArchive: initial.availableInArchive,
+    recipientView: initial.recipientView,
+    selected: [...initial.selected],
+    selectedWorkgroups: [...initial.selectedWorkgroups],
+    memberSearch: initial.memberSearch,
+    cohortFilter: initial.cohortFilter,
+    patchFilter: initial.patchFilter,
+    dpScope: initial.dpScope,
+    dpId: initial.dpId,
+  });
 
   const [audience, setAudience] = useState<AudienceRow[]>([]);
   const [workgroups, setWorkgroups] = useState<WorkgroupRow[]>([]);
@@ -135,10 +161,10 @@ export default function BroadcastAdminPanel() {
   const [selectedWorkgroups, setSelectedWorkgroups] = useState<Set<string>>(initial.selectedWorkgroups);
   const [recipientView, setRecipientView] = useState<RecipientView>(initial.recipientView);
   const [memberSearch, setMemberSearch] = useState(initial.memberSearch);
-  const [patchFilter, setPatchFilter] = useState<BroadcastPatchFilter>('all');
-  const [dpScope, setDpScope] = useState<BroadcastDpScope>('all');
-  const [dpId, setDpId] = useState('');
-  const [cohortFilter, setCohortFilter] = useState<BroadcastCohortKey>('all');
+  const [patchFilter, setPatchFilter] = useState<BroadcastPatchFilter>(initial.patchFilter);
+  const [dpScope, setDpScope] = useState<BroadcastDpScope>(initial.dpScope);
+  const [dpId, setDpId] = useState(initial.dpId);
+  const [cohortFilter, setCohortFilter] = useState<BroadcastCohortKey>(initial.cohortFilter);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [flash, setFlash] = useState<{ kind: 'ok' | 'warn' | 'err'; message: string } | null>(null);
@@ -149,21 +175,27 @@ export default function BroadcastAdminPanel() {
   const [selectedLogId, setSelectedLogId] = useState<string | null>(null);
 
   const scheduleDraftSave = useCallback(() => {
+    const draft: BroadcastDraftInput = {
+      subject,
+      html,
+      fontId,
+      testMode,
+      testEmail,
+      availableInArchive,
+      recipientView,
+      selected: [...selected],
+      selectedWorkgroups: [...selectedWorkgroups],
+      memberSearch,
+      cohortFilter,
+      patchFilter,
+      dpScope,
+      dpId,
+    };
+    draftRef.current = draft;
     if (draftTimerRef.current) clearTimeout(draftTimerRef.current);
     draftTimerRef.current = setTimeout(() => {
-      writeBroadcastDraft({
-        subject,
-        html,
-        fontId,
-        testMode,
-        testEmail,
-        availableInArchive,
-        recipientView,
-        selected: [...selected],
-        selectedWorkgroups: [...selectedWorkgroups],
-        memberSearch,
-      });
-    }, 1500);
+      writeBroadcastDraft(draft);
+    }, 400);
   }, [
     subject,
     html,
@@ -175,6 +207,10 @@ export default function BroadcastAdminPanel() {
     selected,
     selectedWorkgroups,
     memberSearch,
+    cohortFilter,
+    patchFilter,
+    dpScope,
+    dpId,
   ]);
 
   useEffect(() => {
@@ -183,6 +219,12 @@ export default function BroadcastAdminPanel() {
       if (draftTimerRef.current) clearTimeout(draftTimerRef.current);
     };
   }, [scheduleDraftSave]);
+
+  useEffect(() => {
+    const flush = () => writeBroadcastDraft(draftRef.current);
+    window.addEventListener('pagehide', flush);
+    return () => window.removeEventListener('pagehide', flush);
+  }, []);
 
   useEffect(() => {
     if (initial.draftRestored) {
@@ -515,6 +557,11 @@ export default function BroadcastAdminPanel() {
       setAvailableInArchive(false);
       setSelected(new Set());
       setSelectedWorkgroups(new Set());
+      setMemberSearch('');
+      setCohortFilter('all');
+      setPatchFilter('all');
+      setDpScope('all');
+      setDpId('');
       setPreviewHtml('');
       setFlash(null);
       setSelectedLogId(null);
@@ -613,8 +660,28 @@ export default function BroadcastAdminPanel() {
           : 'ok';
       setFlash({ kind: flashKind, message: okMsg });
       showToast(flashKind === 'err' ? 'err' : flashKind === 'warn' ? 'info' : 'ok', okMsg);
-      clearBroadcastDraft();
-      if (!testMode) {
+      if (!data.testMode) {
+        const composeAfterSend: BroadcastDraftInput = {
+          subject: '',
+          html: '',
+          fontId: 'default',
+          testMode,
+          testEmail,
+          availableInArchive: false,
+          recipientView,
+          selected: [],
+          selectedWorkgroups: [],
+          memberSearch,
+          cohortFilter,
+          patchFilter,
+          dpScope,
+          dpId,
+        };
+        clearBroadcastComposeAfterSend(composeAfterSend);
+        setSubject('');
+        setHtml('<p><br></p>');
+        setFontId('default');
+        setAvailableInArchive(false);
         setSelected(new Set());
         setSelectedWorkgroups(new Set());
       }
