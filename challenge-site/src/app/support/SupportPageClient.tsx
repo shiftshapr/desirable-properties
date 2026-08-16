@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import SignInPanel from '@/components/SignInPanel';
 import { bookDiscussHref, DESIRABLE_PROPERTIES_BOOK_HOST } from '@/lib/govhub';
 import { useAuth } from '@/lib/auth-context';
 
@@ -48,7 +49,7 @@ async function readFilesAsBase64(files: File[]) {
 export default function SupportPageClient() {
   const searchParams = useSearchParams();
   const formRef = useRef<HTMLFormElement>(null);
-  const { user, checked, login, loginBusy, loginError } = useAuth();
+  const { user, checked } = useAuth();
   const [tickets, setTickets] = useState<TicketSummary[]>([]);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -195,25 +196,10 @@ export default function SupportPageClient() {
       ) : !user ? (
         <div className="mt-8 rounded-xl border border-slate-700 bg-slate-900/60 p-6">
           <p className="text-slate-300">
-            Sign in to submit and track support requests.
+            Sign in to submit and track support requests. Use Continue with email if your address
+            is not a Google account (Hotmail, Outlook, Proton, and similar).
           </p>
-          {loginError ? (
-            <p className="mt-4 rounded-lg border border-red-700/50 bg-red-950/40 px-4 py-3 text-sm text-red-200">
-              {loginError}
-            </p>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => {
-              void login().catch(() => {
-                // loginError set in auth context
-              });
-            }}
-            disabled={loginBusy}
-            className="mt-4 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500 disabled:opacity-60"
-          >
-            {loginBusy ? 'Signing in…' : 'Sign in'}
-          </button>
+          <SignInPanel className="mt-4" />
         </div>
       ) : (
         <>
