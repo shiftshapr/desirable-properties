@@ -173,6 +173,7 @@ export type UpcomingEventEntry = {
   external: boolean;
   startsAt: string | null;
   dateLabel: string;
+  imageUrl?: string | null;
   recordingUrl?: string | null;
   seriesId: string;
   seriesSlug?: string | null;
@@ -642,7 +643,7 @@ async function backfillBookLaunchSchedule() {
   if (!pool) return;
 
   const res = await pool.query(
-    `SELECT s.id, s.starts_at, s.ends_at, s.live_url
+    `SELECT s.id, s.starts_at, s.ends_at, s.live_url, s.image_url
      FROM dp_event_series_session s
      JOIN dp_event_series e ON e.id = s.series_id
      WHERE e.slug = $1`,
@@ -654,16 +655,27 @@ async function backfillBookLaunchSchedule() {
   const startsAt = row.starts_at ? null : BOOK_LAUNCH_SEED.startsAt;
   const endsAt = row.ends_at ? null : BOOK_LAUNCH_SEED.endsAt;
   const liveUrl = row.live_url ? null : BOOK_LAUNCH_SEED.liveUrl;
-  if (!startsAt && !endsAt && !liveUrl) return;
+  const imageUrl = row.image_url ? null : BOOK_LAUNCH_SEED.imageUrl;
+  if (!startsAt && !endsAt && !liveUrl && !imageUrl) return;
 
   await pool.query(
     `UPDATE dp_event_series_session
      SET starts_at = COALESCE(starts_at, $2),
          ends_at = COALESCE(ends_at, $3),
          live_url = COALESCE(live_url, $4),
+         image_url = COALESCE(image_url, $5),
          updated_at = now()
      WHERE id = $1`,
-    [row.id, startsAt, endsAt, liveUrl],
+    [row.id, startsAt, endsAt, liveUrl, imageUrl],
+  );
+
+  await pool.query(
+    `UPDATE dp_event_series
+     SET hero_image_url = COALESCE(hero_image_url, $2),
+         updated_at = now(),
+         updated_by = 'seed'
+     WHERE slug = $1 AND hero_image_url IS NULL`,
+    [BOOK_LAUNCH_SLUG, BOOK_LAUNCH_SEED.imageUrl],
   );
 }
 
@@ -680,23 +692,24 @@ async function seedBookLaunchIfMissing() {
   const sessionId = crypto.randomUUID();
   await pool.query(
     `INSERT INTO dp_event_series (
-       id, slug, title, subtitle, description_md,
+       id, slug, title, subtitle, description_md, hero_image_url,
        series_type, sessions_required_count,
        badge_code, pearl_badge_code, active, sort_order, created_by, updated_by
-     ) VALUES ($1,$2,$3,$4,$5,'single',1,NULL,NULL,true,1,'seed','seed')`,
+     ) VALUES ($1,$2,$3,$4,$5,$6,'single',1,NULL,NULL,true,1,'seed','seed')`,
     [
       seriesId,
       BOOK_LAUNCH_SLUG,
       BOOK_LAUNCH_SEED.title,
       BOOK_LAUNCH_SEED.subtitle,
       BOOK_LAUNCH_SEED.descriptionMd,
+      BOOK_LAUNCH_SEED.imageUrl,
     ],
   );
   await pool.query(
     `INSERT INTO dp_event_series_session (
        id, series_id, session_number, slug, title,
-       starts_at, ends_at, live_url, active, sort_order
-     ) VALUES ($1,$2,1,'launch',$3,$4,$5,$6,true,0)`,
+       starts_at, ends_at, live_url, image_url, active, sort_order
+     ) VALUES ($1,$2,1,'launch',$3,$4,$5,$6,$7,true,0)`,
     [
       sessionId,
       seriesId,
@@ -704,6 +717,7 @@ async function seedBookLaunchIfMissing() {
       BOOK_LAUNCH_SEED.startsAt,
       BOOK_LAUNCH_SEED.endsAt,
       BOOK_LAUNCH_SEED.liveUrl,
+      BOOK_LAUNCH_SEED.imageUrl,
     ],
   );
 }
@@ -838,6 +852,12 @@ export async function listEventSeries(activeOnly = false): Promise<EventSeries[]
   return res.rows.map(seriesRow);
 }
 
+function resolveEventImageUrl(row: Record<string, unknown>): string | null {
+  const sessionImage = row.session_image_url ? String(row.session_image_url) : null;
+  const seriesHero = row.series_hero_image_url ? String(row.series_hero_image_url) : null;
+  return sessionImage || seriesHero || null;
+}
+
 function mapSessionEventEntry(
   row: Record<string, unknown>,
   options: { past?: boolean } = {},
@@ -888,6 +908,9 @@ function mapSessionEventEntry(
 
   if (recordingUrl) entry.recordingUrl = recordingUrl;
 
+  const imageUrl = resolveEventImageUrl(row);
+  if (imageUrl) entry.imageUrl = imageUrl;
+
   if (seriesType === 'series') {
     entry.seriesSlug = seriesSlug;
     entry.seriesTitle = String(row.series_title);
@@ -912,9 +935,11 @@ export async function listPastEventEntries(now = new Date()): Promise<UpcomingEv
        s.starts_at,
        s.live_url,
        s.recording_url,
+       s.image_url AS session_image_url,
        e.id AS series_id,
        e.slug AS series_slug,
        e.title AS series_title,
+       e.hero_image_url AS series_hero_image_url,
        e.series_type,
        e.sort_order
      FROM dp_event_series_session s
@@ -945,9 +970,11 @@ export async function listUpcomingEventEntries(now = new Date()): Promise<Upcomi
        s.starts_at,
        s.live_url,
        s.recording_url,
+       s.image_url AS session_image_url,
        e.id AS series_id,
        e.slug AS series_slug,
        e.title AS series_title,
+       e.hero_image_url AS series_hero_image_url,
        e.series_type,
        e.sort_order
      FROM dp_event_series_session s

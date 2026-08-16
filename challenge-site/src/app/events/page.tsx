@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   listPastEventEntries,
@@ -22,32 +23,42 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
   const kind = event.seriesType === 'single' ? 'Event' : 'Workshop';
   const href = event.recordingUrl || event.href;
   const external = Boolean(event.external || event.recordingUrl);
+  const cardClassName =
+    'block overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
 
   const inner = (
     <>
-      <p className="text-sm font-medium text-cyan-400">{event.dateLabel}</p>
-      <h2 className="mt-1 text-xl font-semibold text-white">{event.title}</h2>
-      <p className="mt-2 text-sm text-slate-500">
-        {kind}
-        {event.external && !event.recordingUrl ? ' · RSVP on Luma' : ''}
-        {event.recordingUrl ? ' · Recording available' : ''}
-      </p>
-      {event.seriesTitle && event.seriesHref ? (
-        <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
+      {event.imageUrl ? (
+        <div className="relative aspect-[16/9] max-h-44 w-full bg-slate-950">
+          <Image
+            src={event.imageUrl}
+            alt=""
+            fill
+            sizes="(min-width: 640px) 50vw, 100vw"
+            className="object-cover"
+          />
+        </div>
       ) : null}
-      <span className="mt-4 inline-block text-sm text-cyan-300">{actionLabel(event)}</span>
+      <div className="p-6">
+        <p className="text-sm font-medium text-cyan-400">{event.dateLabel}</p>
+        <h2 className="mt-1 text-xl font-semibold text-white">{event.title}</h2>
+        <p className="mt-2 text-sm text-slate-500">
+          {kind}
+          {event.external && !event.recordingUrl ? ' · RSVP on Luma' : ''}
+          {event.recordingUrl ? ' · Recording available' : ''}
+        </p>
+        {event.seriesTitle && event.seriesHref ? (
+          <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
+        ) : null}
+        <span className="mt-4 inline-block text-sm text-cyan-300">{actionLabel(event)}</span>
+      </div>
     </>
   );
 
   if (external) {
     return (
       <li>
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-xl border border-slate-800 bg-slate-900/50 p-6 transition hover:border-cyan-800/50"
-        >
+        <a href={href} target="_blank" rel="noopener noreferrer" className={cardClassName}>
           {inner}
         </a>
       </li>
@@ -56,10 +67,7 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
 
   return (
     <li>
-      <Link
-        href={href}
-        className="block rounded-xl border border-slate-800 bg-slate-900/50 p-6 transition hover:border-cyan-800/50"
-      >
+      <Link href={href} className={cardClassName}>
         {inner}
       </Link>
     </li>

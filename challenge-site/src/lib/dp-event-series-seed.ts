@@ -27,6 +27,7 @@ export const BOOK_LAUNCH_SEED = {
   /** Sept 16, 2026 · 9:00 AM–12:00 PM Pacific (PDT). */
   startsAt: '2026-09-16T16:00:00.000Z' as string | null,
   endsAt: '2026-09-16T19:00:00.000Z' as string | null,
+  imageUrl: '/images/events/layered-web-book-cover.webp',
 } as const;
 
 export type PreReadSeed = {
