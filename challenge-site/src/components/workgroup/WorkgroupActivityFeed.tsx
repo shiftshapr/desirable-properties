@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
+import UserDateTime from '@/components/UserDateTime';
 import {
   isActivityCommentOrPatch,
   type ActivityFeedItem,
 } from '@/lib/activity-feed';
-import { formatActivityDate } from '@/lib/govhub';
 
 type FilterMode = 'all' | 'comments_patches';
 
@@ -161,7 +161,7 @@ export default function WorkgroupActivityFeed({
                   {item.resolved ? (
                     <span className="text-emerald-500/90">Resolved</span>
                   ) : null}
-                  <time>{formatActivityDate(item.createdAt)}</time>
+                  <UserDateTime value={item.createdAt} mode="datetime" className="text-xs text-slate-500" />
                 </div>
               </div>
               {item.diff ? (

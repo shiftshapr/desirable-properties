@@ -1,5 +1,6 @@
 'use client';
 
+import UserDateTime from '@/components/UserDateTime';
 import type { PriorInvitation, SuggestedWorkgroup } from '@/lib/workgroup-collab-types';
 
 const TONES = [
@@ -52,7 +53,14 @@ export default function WorkgroupInviteDraftEditor({
       {priorInvitations && priorInvitations.length > 0 ? (
         <p className="rounded-lg border border-amber-900/50 bg-amber-950/30 px-3 py-2 text-sm text-amber-100/90">
           Prior invitation on file ({priorInvitations[0].status || 'pending'}
-          {priorInvitations[0].created_at ? ` · ${priorInvitations[0].created_at.slice(0, 10)}` : ''}).
+          {priorInvitations[0].created_at ? (
+            <>
+              {' '}
+              ·{' '}
+              <UserDateTime value={priorInvitations[0].created_at} mode="date" />
+            </>
+          ) : null}
+          ).
           The draft may acknowledge this.
         </p>
       ) : null}

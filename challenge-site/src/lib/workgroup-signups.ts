@@ -163,13 +163,10 @@ async function fetchSignupsFromWorkgroups(fresh?: boolean): Promise<WorkgroupSig
   }
 }
 
+import { formatUserDate } from '@/lib/format-user-datetime';
+
 export function formatSignupDate(iso: string | null | undefined): string {
   if (!iso) return '–';
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return '–';
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const formatted = formatUserDate(iso);
+  return formatted || '–';
 }

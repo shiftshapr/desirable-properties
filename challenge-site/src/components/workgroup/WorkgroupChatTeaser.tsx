@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import UserDateTime from '@/components/UserDateTime';
 import WorkgroupMessageBody from '@/components/workgroup/WorkgroupMessageBody';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
@@ -9,13 +10,6 @@ type Props = {
   /** When true, omit the join CTA (member view). */
   isMember?: boolean;
 };
-
-function formatWhen(iso: string | null) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
 
 export default function WorkgroupChatTeaser({
   messages,
@@ -49,7 +43,11 @@ export default function WorkgroupChatTeaser({
             <li key={msg.id} className="rounded-lg border border-slate-800/80 bg-slate-950/40 px-4 py-3">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
-                <time className="text-xs text-slate-500">{formatWhen(msg.created_at)}</time>
+                <UserDateTime
+                  value={msg.created_at}
+                  mode="date-short"
+                  className="text-xs text-slate-500"
+                />
               </div>
               <WorkgroupMessageBody body={msg.body} className="text-slate-300" />
             </li>

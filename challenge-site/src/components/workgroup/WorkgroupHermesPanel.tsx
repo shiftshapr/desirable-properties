@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import { DpDialog } from '@/components/DpDialog';
+import UserDateTime from '@/components/UserDateTime';
 import HermesExperimentalBadge from '@/components/workgroup/HermesExperimentalBadge';
 import {
   dismissHermesHand,
@@ -36,12 +37,6 @@ type Props = {
   onMobileClose?: () => void;
   onOpenHermesInstructions?: () => void;
 };
-
-function formatWhen(iso: string) {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-}
 
 export default function WorkgroupHermesPanel({
   workgroupId,
@@ -377,7 +372,7 @@ function HandDetail({
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-xs text-slate-500">{formatWhen(hand.createdAt)}</p>
+        <UserDateTime value={hand.createdAt} mode="short" className="text-xs text-slate-500" />
         <h3 className="text-sm font-semibold text-violet-200">{modeLabel}</h3>
       </div>
 
@@ -459,7 +454,7 @@ function AskNoteDetail({
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-xs text-slate-500">{formatWhen(note.createdAt)}</p>
+        <UserDateTime value={note.createdAt} mode="short" className="text-xs text-slate-500" />
         <h3 className="text-sm font-semibold text-cyan-200">{modeLabel}</h3>
         <p className="text-xs text-slate-500">{note.promptLabel}</p>
       </div>

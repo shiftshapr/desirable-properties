@@ -547,10 +547,10 @@ export function eventMatchesWorkgroup(
   return false;
 }
 
+import { formatUserDate } from '@/lib/format-user-datetime';
+
 export function formatActivityDate(iso: string): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString('en-US', {
+  return formatUserDate(iso, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',

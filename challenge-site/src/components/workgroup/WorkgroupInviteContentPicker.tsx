@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import UserDateTime from '@/components/UserDateTime';
 import type { InviteContentCatalog } from '@/lib/dp-invite-content-context';
 import type { InviteLeadType } from '@/lib/workgroup-collab-types';
 
@@ -32,17 +33,6 @@ type Props = {
   catalogError?: string | null;
 };
 
-function formatEventDate(eventDate: string | null | undefined) {
-  if (!eventDate) return null;
-  return new Date(eventDate).toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-}
-
 function EventCheckboxRow({
   id,
   title,
@@ -62,7 +52,9 @@ function EventCheckboxRow({
   checked: boolean;
   onToggle: (id: string) => void;
 }) {
-  const dateLabel = formatEventDate(eventDate);
+  const dateLabel = eventDate ? (
+    <UserDateTime value={eventDate} mode="datetime" className="text-xs text-slate-500" />
+  ) : null;
   return (
     <label
       key={id}

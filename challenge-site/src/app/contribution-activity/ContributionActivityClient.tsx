@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
+import UserDateTime from '@/components/UserDateTime';
 
 export type ContributionActivityDiscussLink = {
   label: string;
@@ -46,19 +47,6 @@ type Props = {
   isAdmin: boolean;
   initialScope?: ContributionActivityScope;
 };
-
-function formatFiledAt(value: string | null) {
-  if (!value) return '—';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString(undefined, {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-}
 
 function contributorLabel(row: ContributionActivityRow) {
   return row.contributorName || row.contributorEmail || 'Unknown';
@@ -351,7 +339,11 @@ export default function ContributionActivityClient({
                     ) : null}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-slate-300">
-                    {formatFiledAt(row.filedAt)}
+                    {row.filedAt ? (
+                      <UserDateTime value={row.filedAt} mode="datetime" />
+                    ) : (
+                      '—'
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     {row.threadTitle ? (

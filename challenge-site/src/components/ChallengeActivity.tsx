@@ -1,4 +1,4 @@
-import { formatActivityDate } from '@/lib/govhub';
+import UserDateTime from '@/components/UserDateTime';
 
 type ActivityListItem = {
   id: string;
@@ -47,9 +47,11 @@ export default function ChallengeActivity({ items }: Props) {
                 {item.text}
               </a>
             </p>
-            <time className="shrink-0 text-sm text-slate-500">
-              {formatActivityDate(item.createdAt)}
-            </time>
+            <UserDateTime
+              value={item.createdAt}
+              mode="date"
+              className="shrink-0 text-sm text-slate-500"
+            />
           </div>
         </li>
       ))}

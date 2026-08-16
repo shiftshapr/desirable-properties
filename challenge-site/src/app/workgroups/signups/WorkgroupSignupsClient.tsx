@@ -2,11 +2,9 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import UserDateTime from '@/components/UserDateTime';
 import { govhubUrl } from '@/lib/govhub';
-import {
-  formatSignupDate,
-  type WorkgroupSignupsPayload,
-} from '@/lib/workgroup-signups';
+import type { WorkgroupSignupsPayload } from '@/lib/workgroup-signups';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 type TabKey = 'workgroups' | 'people';
@@ -159,7 +157,7 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
                       >
                         <span className="text-white">{member.user_name || 'Unknown member'}</span>
                         <span className="text-sm text-slate-400">
-                          Joined {formatSignupDate(member.joined_at)}
+                          Joined <UserDateTime value={member.joined_at} mode="date" />
                         </span>
                       </li>
                     ))}
@@ -201,7 +199,7 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
                           {group.name}
                         </Link>
                         <span className="text-xs text-slate-500">
-                          Joined {formatSignupDate(group.joined_at)}
+                          Joined <UserDateTime value={group.joined_at} mode="date" />
                         </span>
                       </li>
                     ))}

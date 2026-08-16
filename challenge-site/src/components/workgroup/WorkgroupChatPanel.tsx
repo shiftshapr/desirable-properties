@@ -17,6 +17,7 @@ import { fetchWorkgroupMessages, postWorkgroupMessage } from '@/lib/workgroup-co
 import { isHermesExperimentalInstructionsDismissed } from '@/lib/hermes-experimental-instructions';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { HermesHand } from '@/lib/hermes-ambient-types';
+import UserDateTime from '@/components/UserDateTime';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
@@ -29,18 +30,6 @@ type Props = {
   initialIsMember?: boolean;
   initialCanPost?: boolean;
 };
-
-function formatWhen(iso: string | null) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-}
 
 export default function WorkgroupChatPanel({
   workgroupId,
@@ -264,7 +253,11 @@ export default function WorkgroupChatPanel({
                   >
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
-                      <time className="text-xs text-slate-500">{formatWhen(msg.created_at)}</time>
+                      <UserDateTime
+                        value={msg.created_at}
+                        mode="short"
+                        className="text-xs text-slate-500"
+                      />
                     </div>
                     <WorkgroupMessageBody body={msg.body} />
                     {msgHands.map((hand) => (
