@@ -38,6 +38,21 @@ type Props = {
   onOpenHermesInstructions?: () => void;
 };
 
+function HermesPanelChevron({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden>
+      <path
+        d={direction === 'left' ? 'M12 5l-5 5 5 5' : 'M8 5l5 5-5 5'}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function WorkgroupHermesPanel({
   workgroupId,
   workgroupSlug,
@@ -72,8 +87,23 @@ export default function WorkgroupHermesPanel({
   const visibleHands = hands.filter((h) => h.status !== 'dismissed');
   const pendingHands = visibleHands.filter((h) => h.status === 'raised' || (h.status === 'opened' && h.visibility === 'private'));
   const hasContent = pendingHands.length > 0 || askNotes.length > 0 || activeHand || activeAskNote;
+  const showRailOnly = collapsed && !mobileOpen;
 
-  const panelBody = (
+  const collapsedRail = onToggleCollapse ? (
+    <div className="flex flex-1 flex-col items-center pt-3">
+      <button
+        type="button"
+        onClick={onToggleCollapse}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-800 hover:text-white"
+        aria-label="Expand Hermes panel"
+        title="Expand Hermes panel"
+      >
+        <HermesPanelChevron direction="left" />
+      </button>
+    </div>
+  ) : null;
+
+  const expandedPanel = (
     <>
       <header className="flex items-start justify-between gap-3 border-b border-slate-800 px-4 py-3">
         <div>
@@ -101,9 +131,10 @@ export default function WorkgroupHermesPanel({
               type="button"
               onClick={onToggleCollapse}
               className="hidden rounded p-1 text-slate-400 hover:bg-slate-800 hover:text-white lg:inline-flex"
-              aria-label={collapsed ? 'Expand panel' : 'Collapse panel'}
+              aria-label="Collapse Hermes panel"
+              title="Collapse Hermes panel"
             >
-              {collapsed ? '◀' : '▶'}
+              <HermesPanelChevron direction="right" />
             </button>
           ) : null}
           {onMobileClose ? (
@@ -119,8 +150,7 @@ export default function WorkgroupHermesPanel({
         </div>
       </header>
 
-      {!collapsed ? (
-        <>
+      <>
           {(pendingHands.length > 0 || askNotes.length > 0) && !activeHand && !activeAskNote ? (
             <div className="border-b border-slate-800 px-4 py-3">
               <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">Your notes</p>
@@ -298,19 +328,7 @@ export default function WorkgroupHermesPanel({
               <p className="mt-3 text-sm text-rose-300">{error}</p>
             ) : null}
           </div>
-        </>
-      ) : (
-        <div className="flex flex-1 items-center justify-center px-2 py-8">
-          <button
-            type="button"
-            onClick={onToggleCollapse}
-            className="text-xs text-violet-400 hover:text-violet-300"
-            aria-label="Expand Hermes panel"
-          >
-            Hermes
-          </button>
-        </div>
-      )}
+      </>
     </>
   );
 
@@ -319,10 +337,10 @@ export default function WorkgroupHermesPanel({
       {/* Desktop: persistent column */}
       <aside
         className={`hidden flex-col border-l border-violet-900/40 bg-slate-950/80 lg:flex ${
-          collapsed ? 'w-12' : 'w-full min-w-[18rem] max-w-sm'
+          showRailOnly ? 'w-10 shrink-0' : 'w-full min-w-[18rem] max-w-sm'
         }`}
       >
-        {panelBody}
+        {showRailOnly ? collapsedRail : expandedPanel}
       </aside>
 
       {/* Mobile: bottom sheet overlay */}
@@ -335,7 +353,7 @@ export default function WorkgroupHermesPanel({
             onClick={onMobileClose}
           />
           <aside className="absolute inset-x-0 bottom-0 flex max-h-[75vh] flex-col rounded-t-xl border-t border-violet-900/50 bg-slate-950 shadow-2xl">
-            {panelBody}
+            {expandedPanel}
           </aside>
         </div>
       ) : null}
