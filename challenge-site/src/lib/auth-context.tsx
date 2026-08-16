@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { AuthUser } from '@/lib/auth-types';
 import { formatAuthError, isUserDismissedAuthError } from '@/lib/auth-errors';
-import { loginWithEmail, loginWithGoogle, logoutWeb3Auth, warmupWeb3Auth } from '@/lib/web3auth-login';
+import { loginWithGoogle, logoutWeb3Auth, warmupWeb3Auth } from '@/lib/web3auth-login';
 
 type AuthContextValue = {
   user: AuthUser | null;
@@ -12,7 +12,6 @@ type AuthContextValue = {
   loginError: string | null;
   setUser: (user: AuthUser | null) => void;
   login: () => Promise<void>;
-  loginEmail: (email: string) => Promise<void>;
   refresh: () => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -91,35 +90,14 @@ export function AuthProvider({
     }
   }, [loginBusy]);
 
-  const loginEmail = useCallback(
-    async (email: string) => {
-      if (loginBusy) return;
-      setLoginBusy(true);
-      setLoginError(null);
-      try {
-        const nextUser = await loginWithEmail(email);
-        setUser(nextUser);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Sign-in failed';
-        if (!isUserDismissedAuthError(message)) {
-          setLoginError(formatAuthError(message));
-        }
-        throw error;
-      } finally {
-        setLoginBusy(false);
-      }
-    },
-    [loginBusy],
-  );
-
   const logout = useCallback(async () => {
     await logoutWeb3Auth();
     setUser(null);
   }, []);
 
   const value = useMemo(
-    () => ({ user, checked, loginBusy, loginError, setUser, login, loginEmail, refresh, logout }),
-    [user, checked, loginBusy, loginError, login, loginEmail, refresh, logout],
+    () => ({ user, checked, loginBusy, loginError, setUser, login, refresh, logout }),
+    [user, checked, loginBusy, loginError, login, refresh, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import SignInPanel from '@/components/SignInPanel';
 import { useAuth } from '@/lib/auth-context';
 
 function safeReturnPath(raw: string | null) {
@@ -23,7 +22,7 @@ function ensureApexDomain() {
 export default function LoginPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, checked } = useAuth();
+  const { user, checked, login, loginBusy, loginError } = useAuth();
   const rawNext = safeReturnPath(searchParams.get('next'));
   const nextPath = rawNext.startsWith('/support/admin') ? '/admin?tab=support' : rawNext;
   const isAdminLogin =
@@ -53,11 +52,28 @@ export default function LoginPageClient() {
       <p className="mt-4 text-slate-300">
         {isAdminLogin
           ? 'Sign in with the same Web3Auth account used across the site. Only allowlisted admin emails can access admin tools after sign-in.'
-          : 'Sign in with Google or the email you want to use for this account. Hotmail, Outlook, and other non-Google addresses should use Continue with email.'}
+          : 'Sign in to submit support requests, save agent threads, and track your contributions.'}
       </p>
 
+      {loginError ? (
+        <p className="mt-6 rounded-lg border border-red-700/50 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+          {loginError}
+        </p>
+      ) : null}
+
       <div className="mt-8">
-        <SignInPanel />
+        <button
+          type="button"
+          disabled={loginBusy}
+          onClick={() => {
+            void login().catch(() => {
+              // loginError set in auth context
+            });
+          }}
+          className="flex w-full items-center justify-center rounded-lg bg-cyan-600 px-4 py-3 text-sm font-semibold text-white hover:bg-cyan-500 disabled:opacity-60"
+        >
+          {loginBusy ? 'Signing in…' : 'Sign In'}
+        </button>
       </div>
 
       <p className="mt-4 text-sm text-slate-500">

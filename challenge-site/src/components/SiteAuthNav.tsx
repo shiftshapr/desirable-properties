@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { resolveAvatarUrl, avatarInitials } from '@/lib/avatar';
 import { govhubUrl } from '@/lib/govhub';
@@ -21,9 +20,7 @@ type WelcomeState = {
 };
 
 export default function SiteAuthNav() {
-  const { user, checked, loginError, logout } = useAuth();
-  const pathname = usePathname() || '/';
-  const loginHref = `/login?next=${encodeURIComponent(pathname)}`;
+  const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [welcomeState, setWelcomeState] = useState<WelcomeState>({
     userId: null,
@@ -115,13 +112,19 @@ export default function SiteAuthNav() {
   if (!user) {
     return (
       <div className="flex flex-col items-end gap-1">
-        <a
-          href={loginHref}
-          className="shrink-0 text-sm text-slate-300 hover:text-white"
-          title="Sign in with Google or email"
+        <button
+          type="button"
+          onClick={() => {
+            void login().catch(() => {
+              // loginError is set in auth context
+            });
+          }}
+          disabled={loginBusy}
+          className="shrink-0 text-sm text-slate-300 hover:text-white disabled:opacity-60"
+          title="Sign in with Web3Auth"
         >
-          Sign In
-        </a>
+          {loginBusy ? 'Signing in…' : 'Sign In'}
+        </button>
         {loginError ? (
           <span className="max-w-[220px] text-right text-xs text-red-300" role="alert">
             {loginError}
