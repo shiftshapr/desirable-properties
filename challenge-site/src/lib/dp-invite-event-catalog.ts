@@ -62,11 +62,12 @@ export async function listInviteSelectableSeriesEvents(
   const entries = await listUpcomingEventEntries(now);
   const pool = await ensureDpSchema();
   const options: InviteSelectableSeriesEvent[] = [];
+  const seriesIdsAdded = new Set<string>();
 
   for (const entry of entries) {
     if (entry.seriesType === 'single') {
       options.push({
-        id: inviteSeriesEventId(entry.id),
+        id: inviteSeriesEventId(entry.seriesId),
         title: entry.title,
         url: resolveInviteEventAbsoluteUrl(entry.href),
         eventDate: entry.startsAt,
@@ -77,65 +78,45 @@ export async function listInviteSelectableSeriesEvents(
       continue;
     }
 
-    let seriesStarted: string | null = null;
-    if (pool) {
-      const startedRes = await pool.query(
-        `SELECT MIN(s.starts_at) AS first_starts_at
-         FROM dp_event_series_session s
-         WHERE s.series_id = $1 AND s.active = true AND s.starts_at IS NOT NULL`,
-        [entry.id],
-      );
-      const firstStarts = startedRes.rows[0]?.first_starts_at;
-      if (firstStarts) {
-        seriesStarted = new Date(String(firstStarts)).toISOString();
+    if (entry.seriesId && !seriesIdsAdded.has(entry.seriesId)) {
+      seriesIdsAdded.add(entry.seriesId);
+
+      let seriesStarted: string | null = null;
+      if (pool) {
+        const startedRes = await pool.query(
+          `SELECT MIN(s.starts_at) AS first_starts_at
+           FROM dp_event_series_session s
+           WHERE s.series_id = $1 AND s.active = true AND s.starts_at IS NOT NULL`,
+          [entry.seriesId],
+        );
+        const firstStarts = startedRes.rows[0]?.first_starts_at;
+        if (firstStarts) {
+          seriesStarted = new Date(String(firstStarts)).toISOString();
+        }
       }
+
+      options.push({
+        id: inviteSeriesEventId(entry.seriesId),
+        title: entry.seriesTitle || entry.title,
+        url: resolveInviteEventAbsoluteUrl(entry.seriesHref || entry.href),
+        eventDate: entry.startsAt,
+        description: 'Event series',
+        kind: 'series',
+        seriesType: entry.seriesType,
+        seriesStarted,
+      });
     }
 
     options.push({
-      id: inviteSeriesEventId(entry.id),
+      id: inviteSessionEventId(entry.id),
       title: entry.title,
       url: resolveInviteEventAbsoluteUrl(entry.href),
       eventDate: entry.startsAt,
-      description: 'Event series',
-      kind: 'series',
-      seriesType: entry.seriesType,
-      seriesStarted,
+      description: null,
+      kind: 'session',
+      seriesType: 'series',
+      subtitle: entry.seriesTitle || null,
     });
-
-    if (!pool) continue;
-
-    const sessions = await pool.query(
-      `SELECT s.id, s.title, s.session_number, s.starts_at, s.live_url, e.slug
-       FROM dp_event_series_session s
-       JOIN dp_event_series e ON e.id = s.series_id
-       WHERE s.series_id = $1
-         AND s.active = true
-         AND (s.starts_at IS NULL OR s.starts_at >= $2)
-       ORDER BY s.starts_at ASC NULLS LAST, s.session_number ASC`,
-      [entry.id, now.toISOString()],
-    );
-
-    for (const row of sessions.rows) {
-      const sessionNumber = Number(row.session_number) || 0;
-      const sessionTitle = String(row.title || '').trim() || `Session ${sessionNumber}`;
-      const liveUrl = row.live_url ? String(row.live_url) : null;
-      const href =
-        liveUrl || `/series/${String(row.slug)}/session/${sessionNumber}`;
-      const startsAt = row.starts_at
-        ? new Date(String(row.starts_at)).toISOString()
-        : null;
-
-      options.push({
-        id: inviteSessionEventId(String(row.id)),
-        title: sessionTitle,
-        url: resolveInviteEventAbsoluteUrl(href),
-        eventDate: startsAt,
-        description: null,
-        kind: 'session',
-        seriesType: 'series',
-        subtitle: entry.title,
-      });
-    }
   }
 
   return options;

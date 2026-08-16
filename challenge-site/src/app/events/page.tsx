@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
+  listPastEventEntries,
   listUpcomingEventEntries,
   type UpcomingEventEntry,
 } from '@/lib/dp-event-series-store';
@@ -10,8 +11,17 @@ export const metadata: Metadata = {
   description: 'Upcoming workshops, launches, and gatherings for the Desirable Properties Challenge.',
 };
 
+function actionLabel(event: UpcomingEventEntry) {
+  if (event.recordingUrl) return 'Watch recording →';
+  if (event.external) return 'RSVP →';
+  if (event.seriesHref) return 'View series →';
+  return 'View details →';
+}
+
 function EventRow({ event }: { event: UpcomingEventEntry }) {
-  const kind = event.seriesType === 'single' ? 'Event' : 'Series';
+  const kind = event.seriesType === 'single' ? 'Event' : 'Workshop';
+  const href = event.recordingUrl || event.href;
+  const external = Boolean(event.external || event.recordingUrl);
 
   const inner = (
     <>
@@ -19,19 +29,21 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
       <h2 className="mt-1 text-xl font-semibold text-white">{event.title}</h2>
       <p className="mt-2 text-sm text-slate-500">
         {kind}
-        {event.external ? ' · RSVP on Luma' : ''}
+        {event.external && !event.recordingUrl ? ' · RSVP on Luma' : ''}
+        {event.recordingUrl ? ' · Recording available' : ''}
       </p>
-      <span className="mt-4 inline-block text-sm text-cyan-300">
-        {event.external ? 'RSVP →' : 'View details →'}
-      </span>
+      {event.seriesTitle && event.seriesHref ? (
+        <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
+      ) : null}
+      <span className="mt-4 inline-block text-sm text-cyan-300">{actionLabel(event)}</span>
     </>
   );
 
-  if (event.external) {
+  if (external) {
     return (
       <li>
         <a
-          href={event.href}
+          href={href}
           target="_blank"
           rel="noopener noreferrer"
           className="block rounded-xl border border-slate-800 bg-slate-900/50 p-6 transition hover:border-cyan-800/50"
@@ -45,7 +57,7 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
   return (
     <li>
       <Link
-        href={event.href}
+        href={href}
         className="block rounded-xl border border-slate-800 bg-slate-900/50 p-6 transition hover:border-cyan-800/50"
       >
         {inner}
@@ -55,25 +67,46 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
 }
 
 export default async function EventsIndexPage() {
-  const events = await listUpcomingEventEntries();
+  const [upcoming, past] = await Promise.all([
+    listUpcomingEventEntries(),
+    listPastEventEntries(),
+  ]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Events</p>
-      <h1 className="mt-3 text-4xl font-bold text-white">Upcoming</h1>
+      <h1 className="mt-3 text-4xl font-bold text-white">Workshops and gatherings</h1>
       <p className="mt-4 max-w-2xl text-lg text-slate-400">
-        Workshops, book launches, and gatherings – sorted by date.
+        Individual sessions sorted by date. Series workshops link to the full series page.
       </p>
 
-      <ul className="mt-10 grid gap-6 sm:grid-cols-2">
-        {events.map((event) => (
-          <EventRow key={event.id} event={event} />
-        ))}
-      </ul>
+      <section className="mt-10" aria-labelledby="events-upcoming-heading">
+        <h2 id="events-upcoming-heading" className="text-2xl font-semibold text-white">
+          Upcoming <span className="text-slate-500">({upcoming.length})</span>
+        </h2>
+        <ul className="mt-6 grid gap-6 sm:grid-cols-2">
+          {upcoming.map((event) => (
+            <EventRow key={event.id} event={event} />
+          ))}
+        </ul>
+        {upcoming.length === 0 ? (
+          <p className="mt-6 text-slate-500">No upcoming events right now.</p>
+        ) : null}
+      </section>
 
-      {events.length === 0 ? (
-        <p className="mt-8 text-slate-500">No upcoming events right now.</p>
-      ) : null}
+      <section className="mt-14" aria-labelledby="events-past-heading">
+        <h2 id="events-past-heading" className="text-2xl font-semibold text-white">
+          Past <span className="text-slate-500">({past.length})</span>
+        </h2>
+        <ul className="mt-6 grid gap-6 sm:grid-cols-2">
+          {past.map((event) => (
+            <EventRow key={event.id} event={event} />
+          ))}
+        </ul>
+        {past.length === 0 ? (
+          <p className="mt-6 text-slate-500">No past events yet.</p>
+        ) : null}
+      </section>
     </main>
   );
 }
