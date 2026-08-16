@@ -81,7 +81,7 @@ export default function HermesContributionPanel({
     ? 'replace'
     : submitMode;
   const stageCount = proposalsToStage(draft, proposals).length;
-  const submitCount = isEditing && editContext !== 'new' ? stageCount : proposals.length;
+  const submitCount = isEditing ? stageCount : proposals.length;
 
   const submitLabel = (() => {
     if (busy) return 'Submitting…';
@@ -249,7 +249,7 @@ export default function HermesContributionPanel({
         <button
           type="button"
           onClick={() => onSubmit(effectiveMode)}
-          disabled={busy || !allValid || (isEditing && editContext !== 'new' && submitCount === 0)}
+          disabled={busy || !allValid || (isEditing && submitCount === 0)}
           className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
             effectiveMode === 'draft'
               ? 'bg-violet-700 hover:bg-violet-600'
