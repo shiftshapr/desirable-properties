@@ -13,6 +13,7 @@ import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
   buildContributionSetFromDraft,
+  buildEditDraftFromProposal,
   buildProposalUpdates,
   buildRevisionDraftFromProposal,
   clearPendingContributionDraft,
@@ -22,6 +23,7 @@ import {
   clearStagedProposalsForFiledRefs,
   defaultDestination,
   discussLinkLabel,
+  enrichProposalsWithLedgerDraftIds,
   filedSetsForSourceTurn,
   formatContributionSubmissionMarkdown,
   formatContributionUserSummary,
@@ -1443,6 +1445,34 @@ export default function HermesChat({
     });
   };
 
+  const startEditDraft = useCallback((
+    set: ContributionSet,
+    proposal: LedgerProposal,
+    recordMarkdown: string,
+  ) => {
+    if (!signedIn) {
+      promptSignIn();
+      return;
+    }
+    const draft = buildEditDraftFromProposal(set, proposal, recordMarkdown);
+    if (!draft) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Could not load this draft for editing. Try Open in Discuss instead.',
+      });
+      return;
+    }
+    setContributionDraft(draft);
+    draftingMessageIdRef.current = null;
+    setDraftingMessageId(null);
+    savePendingContributionDraft(draft, activeThreadIdRef.current, null);
+    setSystemNotice({
+      variant: 'info',
+      text: 'Draft opened for editing — changes sync to Canopi Discuss when you save drafts again.',
+    });
+    contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [promptSignIn, signedIn]);
+
   const startRevision = useCallback((
     set: ContributionSet,
     proposal: LedgerProposal,
@@ -1572,7 +1602,11 @@ export default function HermesChat({
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     const draftRef = contributionDraft.draftRef;
-    const items = proposalsFromContributionDraft(contributionDraft);
+    const items = enrichProposalsWithLedgerDraftIds(
+      proposalsFromContributionDraft(contributionDraft),
+      contributionSets,
+      draftRef,
+    );
     const isDraft = mode === 'draft';
     try {
       await ensureFreshCanopiSession();
@@ -1915,6 +1949,7 @@ export default function HermesChat({
                             contributionSets={contributionSets}
                             recordMarkdown={message.text}
                             onRevise={startRevision}
+                            onEditDraft={startEditDraft}
                           />
                           <p className="mb-2 inline-flex rounded-full border border-emerald-600/60 bg-emerald-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-200">
                             {message.contributionHint.mode === 'draft'

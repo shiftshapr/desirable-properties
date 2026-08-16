@@ -83,7 +83,8 @@ export default function HermesContributionPanel({
       </div>
 
       <p className="mt-3 text-xs text-amber-100/90">
-        Review each patch or insert below. Choose whether to save drafts you can edit in Discuss,
+        Review each patch or insert below. Edits stay in Hermes until you submit — they do not
+        auto-sync to Canopi Discuss. Choose whether to save drafts you can edit in Discuss,
         or publish immediately.
       </p>
 

@@ -8,6 +8,7 @@ interface HermesContributionLedgerProps {
   contributionSets: ContributionSet[];
   recordMarkdown?: string;
   onRevise?: (set: ContributionSet, proposal: LedgerProposal, recordMarkdown: string) => void;
+  onEditDraft?: (set: ContributionSet, proposal: LedgerProposal, recordMarkdown: string) => void;
 }
 
 export default function HermesContributionLedger({
@@ -15,6 +16,7 @@ export default function HermesContributionLedger({
   contributionSets,
   recordMarkdown = '',
   onRevise,
+  onEditDraft,
 }: HermesContributionLedgerProps) {
   const set = ledgerSetForRecord(contributionSets, recordHint);
   if (!set?.proposals?.length) return null;
@@ -42,6 +44,15 @@ export default function HermesContributionLedger({
               {proposalStatusBadge(proposal.status)}
             </span>
             <span>{proposal.label}</span>
+            {proposal.status === 'draft' && proposal.canopiDraftId && onEditDraft ? (
+              <button
+                type="button"
+                onClick={() => onEditDraft(set, proposal, recordMarkdown)}
+                className="text-violet-300 hover:underline"
+              >
+                Edit draft
+              </button>
+            ) : null}
             {proposal.status === 'published' && proposal.canopiMessageId && onRevise ? (
               <button
                 type="button"

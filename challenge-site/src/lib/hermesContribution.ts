@@ -162,6 +162,8 @@ export interface ContributionProposal {
   id: string;
   kind: 'comment' | 'patch';
   payload: Record<string, unknown>;
+  /** Existing Canopi Discuss draft row — re-save PATCHes instead of creating duplicates. */
+  canopiDraftId?: string;
 }
 
 export interface ContributionDraft {
@@ -688,6 +690,70 @@ export function buildRevisionDraftFromProposal(
   };
 }
 
+/** Re-open a saved Discuss draft from the ledger for editing in Hermes. */
+export function buildEditDraftFromProposal(
+  set: ContributionSet,
+  proposal: LedgerProposal,
+  recordMarkdown: string,
+): ContributionDraft | null {
+  if (!proposal.canopiDraftId) return null;
+
+  const parsed = parseContributionRecordProposals(recordMarkdown);
+  const proposalIndex = set.proposals.findIndex((p) => p.proposalId === proposal.proposalId);
+  const parsedRow = proposalIndex >= 0 ? parsed[proposalIndex] : parsed[0];
+  if (!parsedRow) return null;
+
+  const titleMatch = recordMarkdown.match(/\*\*(.+?)\*\*/);
+  const summaryMatch = recordMarkdown.match(/\*\*.+?\*\*\s*\n\n([\s\S]*?)\n\n\*\*Target:\*\*/);
+  const contributionProposal: ContributionProposal = {
+    id: proposal.proposalId,
+    kind: parsedRow.kind,
+    payload: parsedRow.payload,
+    canopiDraftId: proposal.canopiDraftId,
+  };
+
+  return {
+    kind: parsedRow.kind,
+    draftRef: set.draftRef,
+    title: titleMatch?.[1]?.trim() || set.title || `Edit · ${proposal.label}`,
+    summary: summaryMatch?.[1]?.trim()
+      || `Edit your saved ${proposal.label.toLowerCase()} draft on ${set.draftRef}.`,
+    payload: contributionProposal.payload,
+    proposals: [contributionProposal],
+    scope: 'message',
+    destination: defaultDestination(),
+  };
+}
+
+/** Attach ledger canopiDraftId before re-staging so Canopi rows update in place. */
+export function enrichProposalsWithLedgerDraftIds(
+  proposals: ContributionProposal[],
+  sets: ContributionSet[],
+  draftRef: string,
+): ContributionProposal[] {
+  const ref = String(draftRef || '').trim().toUpperCase();
+  if (!ref || !sets.length) return proposals;
+
+  const draftSets = sets
+    .filter((s) => String(s.draftRef || '').trim().toUpperCase() === ref && s.mode === 'draft')
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+
+  const draftIdByProposalId = new Map<string, string>();
+  for (const set of draftSets) {
+    for (const row of set.proposals || []) {
+      if (row.canopiDraftId && row.status === 'draft') {
+        draftIdByProposalId.set(row.proposalId, row.canopiDraftId);
+      }
+    }
+  }
+
+  return proposals.map((proposal) => {
+    if (proposal.canopiDraftId) return proposal;
+    const fromLedger = draftIdByProposalId.get(proposal.id);
+    return fromLedger ? { ...proposal, canopiDraftId: fromLedger } : proposal;
+  });
+}
+
 function normalizeLedgerLabel(label: string): string {
   const lower = String(label || '').trim().toLowerCase();
   if (lower.includes('insert')) return 'Insert';
@@ -821,7 +887,7 @@ export async function buildProposalUpdates(
       proposalId: proposal.id,
       status,
       canopiMessageId: mode === 'publish' ? link?.id : undefined,
-      canopiDraftId: mode === 'draft' ? link?.id : undefined,
+      canopiDraftId: mode === 'draft' ? (link?.id || proposal.canopiDraftId) : undefined,
       href: link?.href,
     };
   }));
