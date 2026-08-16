@@ -631,6 +631,36 @@ async function backfillForkSessionQuestions(sessionNumber: number) {
   }
 }
 
+async function backfillBookLaunchSchedule() {
+  const pool = await ensureDpSchema();
+  if (!pool) return;
+
+  const res = await pool.query(
+    `SELECT s.id, s.starts_at, s.ends_at, s.live_url
+     FROM dp_event_series_session s
+     JOIN dp_event_series e ON e.id = s.series_id
+     WHERE e.slug = $1`,
+    [BOOK_LAUNCH_SLUG],
+  );
+  if (!res.rows[0]) return;
+
+  const row = res.rows[0];
+  const startsAt = row.starts_at ? null : BOOK_LAUNCH_SEED.startsAt;
+  const endsAt = row.ends_at ? null : BOOK_LAUNCH_SEED.endsAt;
+  const liveUrl = row.live_url ? null : BOOK_LAUNCH_SEED.liveUrl;
+  if (!startsAt && !endsAt && !liveUrl) return;
+
+  await pool.query(
+    `UPDATE dp_event_series_session
+     SET starts_at = COALESCE(starts_at, $2),
+         ends_at = COALESCE(ends_at, $3),
+         live_url = COALESCE(live_url, $4),
+         updated_at = now()
+     WHERE id = $1`,
+    [row.id, startsAt, endsAt, liveUrl],
+  );
+}
+
 async function seedBookLaunchIfMissing() {
   const pool = await ensureDpSchema();
   if (!pool) return;
@@ -763,6 +793,7 @@ async function backfillForkSeriesCopy() {
 async function ensureEventSeeds() {
   await seedForkSeriesIfMissing();
   await seedBookLaunchIfMissing();
+  await backfillBookLaunchSchedule();
   await backfillForkSeriesTitle();
   await backfillForkPerspectiveSlug();
   await backfillForkSeriesCopy();

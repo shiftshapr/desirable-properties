@@ -17,16 +17,16 @@ export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈8 hours total';
 
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
-/** Single event — no badge; Luma date TBD (save-the-date). */
+/** Single event — no badge; Sept 16, 2026 summit (challenge-timeline.json). */
 export const BOOK_LAUNCH_SEED = {
   title: 'Book Launch: The Layered Web',
   subtitle: 'Desirable Properties Book Launch',
   descriptionMd:
     'The culmination of two years of work on the meta-layer. We will release the V1 Desirable Properties Meta-Layer (DPML) and feature speakers working on meta-layer aligned initiatives.',
   liveUrl: 'https://luma.com/wfi1z9lv',
-  /** Luma lists save-the-date only; admin can set when announced. */
-  startsAt: null as string | null,
-  endsAt: null as string | null,
+  /** Sept 16, 2026 · 9:00 AM–12:00 PM Pacific (PDT). */
+  startsAt: '2026-09-16T16:00:00.000Z' as string | null,
+  endsAt: '2026-09-16T19:00:00.000Z' as string | null,
 } as const;
 
 export type PreReadSeed = {
