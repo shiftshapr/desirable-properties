@@ -18,12 +18,15 @@ import {
   clearPendingContributionDraft,
   clearPendingUserMessage,
   clearStagedProposalsForRef,
+  clearStagedProposalsForFiledRefs,
   defaultDestination,
   discussLinkLabel,
+  filedSetsForSourceTurn,
   formatContributionSubmissionMarkdown,
   formatContributionUserSummary,
   inferContributionHint,
   isContributionRecordHint,
+  isDraftDuplicateOfLedgerByLabels,
   isDraftFullyFiledInLedger,
   loadPendingContributionDraft,
   loadStagedProposals,
@@ -252,8 +255,17 @@ function suppressSubmittedContributionHints(
 
     const turnId = m.turnId || turnIdFromAssistantMessageId(m.id);
     const filedInLedger = sourceTurnHasFiledSet(contributionSets, turnId);
+    const draftRefHint = m.contributionHint && 'draftRefHint' in m.contributionHint
+      ? m.contributionHint.draftRefHint
+      : null;
+    const filedForRefAndTurn = draftRefHint
+      ? filedSetsForSourceTurn(contributionSets, turnId).some(
+        (s) => String(s.draftRef || '').trim().toUpperCase()
+          === String(draftRefHint || '').trim().toUpperCase(),
+      )
+      : false;
     const hasRecordAfter = recordIndices.some((ri) => ri > idx);
-    if (!filedInLedger && !hasRecordAfter) return m;
+    if (!filedInLedger && !hasRecordAfter && !filedForRefAndTurn) return m;
 
     if (m.contributionHint && 'contributionSubmitted' in m.contributionHint && m.contributionHint.contributionSubmitted) {
       return m;
@@ -318,6 +330,18 @@ async function hydrateLastContributionHint(
     return messages;
   }
   if (sourceTurnHasFiledSet(contributionSets, assistantTurnId)) return messages;
+
+  const hintDraftRef = assistantMessage.contributionHint
+    && 'draftRefHint' in assistantMessage.contributionHint
+    ? assistantMessage.contributionHint.draftRefHint
+    : null;
+  const inferredRef = hintDraftRef || (dpFocus ? `ML-${dpFocus}` : null);
+  if (inferredRef && filedSetsForSourceTurn(contributionSets, assistantTurnId).some(
+    (s) => String(s.draftRef || '').trim().toUpperCase()
+      === String(inferredRef).trim().toUpperCase(),
+  )) {
+    return messages;
+  }
 
   const userMessage = [...messages.slice(0, lastAssistantIdx)]
     .reverse()
@@ -503,6 +527,7 @@ export default function HermesChat({
         ? data.thread.contributionSets
         : [];
       setContributionSets(sets);
+      clearStagedProposalsForFiledRefs(sets);
       const restored: Message[] = [
         {
           id: 'intro',
@@ -548,7 +573,8 @@ export default function HermesChat({
           ? turnIdFromAssistantMessageId(pending.assistantMessageId)
           : null;
         const filed = sourceTurnHasFiledSet(sets, assistantTurnId)
-          || await isDraftFullyFiledInLedger(pending.draft, sets);
+          || isDraftDuplicateOfLedgerByLabels(pending.draft, sets, assistantTurnId)
+          || await isDraftFullyFiledInLedger(pending.draft, sets, assistantTurnId);
         if (!filed) {
           setContributionDraft(pending.draft);
           draftingMessageIdRef.current = pending.assistantMessageId || null;
@@ -559,11 +585,13 @@ export default function HermesChat({
         } else {
           setContributionDraft(null);
           clearPendingContributionDraft();
+          clearStagedProposalsForRef(pending.draft.draftRef);
         }
       } else {
         let restoredStaged: ContributionDraft | null = null;
         for (const row of loadStagedProposals()) {
-          if (await isDraftFullyFiledInLedger(row, sets)) continue;
+          if (isDraftDuplicateOfLedgerByLabels(row, sets)
+            || await isDraftFullyFiledInLedger(row, sets)) continue;
           restoredStaged = row;
           break;
         }
@@ -1455,6 +1483,26 @@ export default function HermesChat({
     if (assistantIdx < 0) return;
 
     const assistantMessage = messages[assistantIdx];
+    const assistantTurnId = assistantMessage.turnId || turnIdFromAssistantMessageId(assistantMessageId);
+    const hint = assistantMessage.contributionHint;
+    const draftHint = hint && !isContributionRecordHint(hint) ? hint : null;
+
+    if (sourceTurnHasFiledSet(contributionSets, assistantTurnId)) {
+      const filedSets = filedSetsForSourceTurn(contributionSets, assistantTurnId);
+      const linkLines = filedSets.flatMap((s) => (s.proposals || [])
+        .filter((p) => p.href)
+        .map((p) => `- [${p.label}](${p.href})`)).slice(0, 6);
+      await DpDialog.alert({
+        title: 'Already filed',
+        message: linkLines.length
+          ? `This exchange was already submitted to the ledger.\n\n${linkLines.join('\n')}\n\nSee the contribution timeline below for details.`
+          : 'This exchange was already submitted to the ledger. See the contribution timeline below.',
+        variant: 'info',
+        confirmLabel: 'OK',
+      });
+      return;
+    }
+
     const userMessage = [...messages.slice(0, assistantIdx)]
       .reverse()
       .find((m) => m.sender === 'user');
@@ -1466,13 +1514,10 @@ export default function HermesChat({
       .slice(-10)
       .map((m) => ({ text: m.text, sender: m.sender }));
 
-    const hint = assistantMessage.contributionHint;
-    const draftHint = hint && !isContributionRecordHint(hint) ? hint : null;
-
+    const excludeProposals = submittedProposalExclusionsFromMessages(messages);
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
     draftingMessageIdRef.current = assistantMessageId;
-    const excludeProposals = submittedProposalExclusionsFromMessages(messages);
     try {
       const res = await fetch('/api/agent/contributions/draft', {
         method: 'POST',

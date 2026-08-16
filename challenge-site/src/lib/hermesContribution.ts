@@ -19,6 +19,31 @@ export interface ContributionHint {
   defaultScope?: ContributionScope;
 }
 
+export function isDraftRefFullyFiled(
+  sets: ContributionSet[],
+  draftRef: string | null | undefined,
+  mode: ContributionSubmitMode | null = null,
+): boolean {
+  const ref = String(draftRef || '').trim().toUpperCase();
+  if (!ref) return false;
+  return sets.some((s) => {
+    if (String(s.draftRef || '').trim().toUpperCase() !== ref) return false;
+    if (mode && s.mode !== mode) return false;
+    return s.status === 'complete' || s.status === 'partial';
+  });
+}
+
+export function filedSetsForSourceTurn(
+  sets: ContributionSet[],
+  sourceTurnId: string | null | undefined,
+): ContributionSet[] {
+  if (!sourceTurnId) return [];
+  return sets.filter(
+    (s) => s.sourceTurnId === sourceTurnId
+      && (s.status === 'complete' || s.status === 'partial'),
+  );
+}
+
 export function shouldShowContributionCTA(
   hint: MessageContributionHint | null | undefined,
   opts?: { sourceTurnId?: string | null; contributionSets?: ContributionSet[] },
@@ -27,6 +52,15 @@ export function shouldShowContributionCTA(
   if ('contributionSubmitted' in hint && hint.contributionSubmitted) return false;
   if (opts?.sourceTurnId && opts.contributionSets?.length) {
     if (sourceTurnHasFiledSet(opts.contributionSets, opts.sourceTurnId)) return false;
+  }
+  if (opts?.contributionSets?.length && 'draftRefHint' in hint && hint.draftRefHint) {
+    const filedForTurn = opts.sourceTurnId
+      ? filedSetsForSourceTurn(opts.contributionSets, opts.sourceTurnId)
+      : [];
+    if (filedForTurn.some((s) => String(s.draftRef || '').trim().toUpperCase()
+      === String(hint.draftRefHint || '').trim().toUpperCase())) {
+      return false;
+    }
   }
   return Boolean(hint.contributionReady);
 }
@@ -654,11 +688,64 @@ export function buildRevisionDraftFromProposal(
   };
 }
 
+function normalizeLedgerLabel(label: string): string {
+  const lower = String(label || '').trim().toLowerCase();
+  if (lower.includes('insert')) return 'Insert';
+  if (lower.includes('patch')) return 'Patch';
+  if (lower.includes('comment')) return 'Comment';
+  return String(label || '').trim();
+}
+
+function proposalLabelsSignature(proposals: Array<{ kind: string; payload: Record<string, unknown> } | LedgerProposal>): string {
+  const labels = proposals.map((p) => {
+    if ('label' in p && p.label) return normalizeLedgerLabel(p.label);
+    if ('kind' in p && p.kind === 'comment') return 'Comment';
+    const mode = String(('payload' in p ? p.payload?.patch_mode : undefined) || 'replace').toLowerCase();
+    return mode === 'insert' ? 'Insert' : 'Patch';
+  });
+  return labels.sort().join('|');
+}
+
+/**
+ * Fallback when ledger fingerprints are link-id hashes (backfilled records) instead of content hashes.
+ */
+export function isDraftDuplicateOfLedgerByLabels(
+  draft: ContributionDraft,
+  sets: ContributionSet[],
+  sourceTurnId?: string | null,
+): boolean {
+  const ref = String(draft.draftRef || '').trim().toUpperCase();
+  if (!ref) return false;
+  const draftProposals = proposalsFromContributionDraft(draft);
+  const draftSig = proposalLabelsSignature(draftProposals);
+  const candidates = sets.filter((s) => {
+    if (String(s.draftRef || '').trim().toUpperCase() !== ref) return false;
+    if (s.status !== 'complete' && s.status !== 'partial') return false;
+    if (sourceTurnId && s.sourceTurnId !== sourceTurnId) return false;
+    return true;
+  });
+  return candidates.some(
+    (s) => proposalLabelsSignature(s.proposals || []) === draftSig
+      && (s.proposals?.length || 0) === draftProposals.length,
+  );
+}
+
 /** True when every proposal fingerprint in draft is already filed on the thread ledger. */
 export async function isDraftFullyFiledInLedger(
   draft: ContributionDraft,
   sets: ContributionSet[],
+  sourceTurnId?: string | null,
 ): Promise<boolean> {
+  if (isDraftDuplicateOfLedgerByLabels(draft, sets, sourceTurnId)) return true;
+  if (sourceTurnId && sourceTurnHasFiledSet(sets, sourceTurnId)) {
+    const ref = String(draft.draftRef || '').trim().toUpperCase();
+    if (ref && filedSetsForSourceTurn(sets, sourceTurnId).some(
+      (s) => String(s.draftRef || '').trim().toUpperCase() === ref,
+    )) {
+      return true;
+    }
+  }
+
   const filed = filedFingerprintsFromSets(sets);
   if (!filed.size) return false;
   const proposals = proposalsFromContributionDraft(draft);
@@ -667,6 +754,18 @@ export async function isDraftFullyFiledInLedger(
     if (!filed.has(fp)) return false;
   }
   return true;
+}
+
+/** Remove local staged backups when the thread ledger already has complete sets for those refs. */
+export function clearStagedProposalsForFiledRefs(sets: ContributionSet[]): void {
+  if (typeof window === 'undefined') return;
+  const refs = new Set(
+    sets
+      .filter((s) => s.status === 'complete' || s.status === 'partial')
+      .map((s) => String(s.draftRef || '').trim().toUpperCase())
+      .filter(Boolean),
+  );
+  for (const ref of refs) clearStagedProposalsForRef(ref);
 }
 
 /** Build proposal status updates after Canopi submit. */
