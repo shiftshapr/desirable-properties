@@ -77,6 +77,8 @@ type Props = {
   onEmbeddedClose?: () => void;
   /** Context for DP-aware prompt info modals. */
   promptInfoContext?: { dpId?: string | null; isDiscovery?: boolean };
+  /** When always, show the AI FAB without requiring textarea focus (e.g. rich editor body). */
+  showFabWhen?: 'focused' | 'always';
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -110,6 +112,7 @@ export default function ComposeFieldAiAssist({
   defaultOpen = false,
   onEmbeddedClose,
   promptInfoContext,
+  showFabWhen = 'focused',
 }: Props) {
   const menuId = useId();
   const [focused, setFocused] = useState(embedded && defaultOpen);
@@ -314,7 +317,8 @@ export default function ComposeFieldAiAssist({
     setGenerating(false);
   }
 
-  const showFab = !embedded && (focused || panelOpen) && !disabled;
+  const showFab =
+    !embedded && !disabled && (showFabWhen === 'always' || focused || panelOpen);
   const fabFaded = typing && !panelOpen;
 
   const panelContent = (

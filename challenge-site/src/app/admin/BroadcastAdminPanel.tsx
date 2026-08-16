@@ -747,29 +747,30 @@ export default function BroadcastAdminPanel() {
               html={html}
               onHtmlChange={setHtml}
               disabled={busy}
-            />
-            <label className="text-sm text-slate-300">
-              Body font
-              <select
-                className="mt-1 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-                value={fontId}
-                onChange={(e) => setFontId(e.target.value)}
-              >
-                {BROADCAST_FONT_OPTIONS.map((opt) => (
-                  <option key={opt.id} value={opt.id}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <BroadcastRichEditor
-              value={html}
-              onChange={setHtml}
-              disabled={busy}
-              onUploadError={(msg) => {
-                showToast('err', msg);
-              }}
-            />
+            >
+              <label className="mt-2 block text-sm text-slate-300">
+                Font
+                <select
+                  className="mt-1 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                  value={fontId}
+                  onChange={(e) => setFontId(e.target.value)}
+                >
+                  {BROADCAST_FONT_OPTIONS.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <BroadcastRichEditor
+                value={html}
+                onChange={setHtml}
+                disabled={busy}
+                onUploadError={(msg) => {
+                  showToast('err', msg);
+                }}
+              />
+            </BroadcastComposeAssist>
             <div className="space-y-2">
               <p className="text-xs text-slate-500">
                 Insert images with the toolbar image button (up to 25 MB; optimized to WebP ~800px wide for email).
