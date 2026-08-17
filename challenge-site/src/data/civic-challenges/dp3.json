@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp3",
+  "number": 3,
+  "slug": "adaptive-governance",
+  "title": "Adaptive Governance Supporting an Exponentially Growing Community",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How can communities govern themselves without recreating Big Tech rulebooks?",
+  "summary": "Composable, adaptive governance lets communities set and evolve rules while remaining interoperable across the Meta-Layer.",
+  "humanIssue": "Big Tech making all the rules",
+  "webProblem": "Governance is centralized and slow",
+  "opportunity": "Communities govern themselves with composable governance",
+  "hero": {
+    "headline": "Rules should grow with the community, not above it.",
+    "text": "When a handful of platforms write the terms for billions of people, local norms disappear. Adaptive governance gives communities modular tools to set policy, resolve conflict, and evolve without waiting for a corporate update.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A neighborhood mutual-aid group is banned overnight for a policy they never saw drafted. Appeals go into a void. The people who built the community have no say in the rules that dissolve it.",
+    "stakes": [
+      "Centralized terms of service",
+      "Opaque enforcement",
+      "Slow appeals",
+      "No local policy modularity"
+    ]
+  },
+  "currentChallenges": [
+    "One-size-fits-all platform rules",
+    "Unaccountable moderation",
+    "Governance theater",
+    "No portable community charters",
+    "Capture by largest stakeholders"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Platforms centralize rule-making because they own the servers, the graph, and the enforcement stack. Communities cannot take their governance with them when they leave."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities compose governance modules (membership, speech norms, dispute resolution) and carry those agreements across contexts.",
+    "bullets": [
+      "Local rules with interoperable hooks",
+      "Transparent roles and escalation paths",
+      "Incentives aligned with stewardship",
+      "Governance that scales without becoming a new monopoly"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "community-organizers",
+      "label": "Community organizers",
+      "why": "Run groups with clear, adaptable charters."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Support plural civic spaces without capturing them."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Implement governance primitives once, reuse everywhere."
+    },
+    {
+      "id": "businesses",
+      "label": "Businesses",
+      "why": "Participate in ecosystems with predictable community rules."
+    }
+  ],
+  "capabilities": [
+    "community-governance",
+    "meta-communities",
+    "reputation",
+    "consent",
+    "trust-signals"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Open source",
+      "text": "Composable maintainer and contributor roles."
+    },
+    {
+      "label": "Municipal forums",
+      "text": "Neighborhood policy modules."
+    },
+    {
+      "label": "Research consortia",
+      "text": "Shared review and conflict protocols."
+    },
+    {
+      "label": "Creator communities",
+      "text": "Member-led moderation with portable charters."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP3",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP3",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP3 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#7C5CFF",
+    "badge": "dp3"
+  }
+}

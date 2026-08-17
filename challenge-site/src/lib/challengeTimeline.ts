@@ -55,9 +55,12 @@ export function enrichMilestones(now: Date = new Date()): EnrichedMilestone[] {
   }));
 }
 
+export function getCurrentMilestones(now: Date = new Date()): EnrichedMilestone[] {
+  return enrichMilestones(now).filter((m) => m.status === 'current');
+}
+
 export function getCurrentMilestone(now: Date = new Date()): EnrichedMilestone | null {
-  const enriched = enrichMilestones(now);
-  return enriched.find((m) => m.status === 'current') ?? null;
+  return getCurrentMilestones(now)[0] ?? null;
 }
 
 export function getUpcomingMilestones(now: Date = new Date()): EnrichedMilestone[] {

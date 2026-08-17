@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp17",
+  "number": 17,
+  "slug": "financial-sustainability",
+  "title": "Financial Sustainability",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we fund public digital infrastructure without ads or extractive capital alone?",
+  "summary": "Sustainable community funding models for public-interest Meta-Layer infrastructure beyond advertising and venture dependence.",
+  "humanIssue": "Good public infrastructure has no funding",
+  "webProblem": "Dependence on advertising and venture capital",
+  "opportunity": "Sustainable community funding",
+  "hero": {
+    "headline": "Infrastructure that serves everyone needs a durable purse.",
+    "text": "Critical digital public goods often survive on grants, burnout, or ads. Financial sustainability explores community funding that matches the mission.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A trusted open tool loses its grant. Maintainers face a choice: shut down, sell out, or bolt on surveillance advertising that contradicts the project values.",
+    "stakes": [
+      "Boom-bust funding",
+      "Mission drift",
+      "Volunteer exhaustion",
+      "Capture by largest payers"
+    ]
+  },
+  "currentChallenges": [
+    "Grant dependency",
+    "Ad capture",
+    "Venture timelines vs commons needs",
+    "Unclear public funding rails"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Markets fund what can lock in users. Shared infrastructure that anyone can use struggles to capture returns, so it underfunds by design."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities, institutions, and beneficiaries co-fund the rails they rely on, with transparent budgets and stewardship.",
+    "bullets": [
+      "Diversified community funding",
+      "Transparent treasuries",
+      "Incentives aligned with public benefit"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "maintainers",
+      "label": "Maintainers",
+      "why": "Keep projects alive without mission betrayal."
+    },
+    {
+      "id": "funders",
+      "label": "Funders",
+      "why": "Support durable commons, not one-off demos."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Treat digital public goods as infrastructure."
+    },
+    {
+      "id": "users",
+      "label": "Users",
+      "why": "Contribute fairly to tools they depend on."
+    }
+  ],
+  "capabilities": [
+    "micropayments",
+    "community-governance",
+    "reputation",
+    "interoperability"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Open protocols",
+      "text": "Membership and patronage for rails."
+    },
+    {
+      "label": "Local civic tools",
+      "text": "Municipal and community co-funding."
+    },
+    {
+      "label": "Archives",
+      "text": "Sustained stewardship budgets."
+    },
+    {
+      "label": "Education platforms",
+      "text": "Public-interest operating funds."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP17",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP17",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP17 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#84CC16",
+    "badge": "dp17"
+  }
+}

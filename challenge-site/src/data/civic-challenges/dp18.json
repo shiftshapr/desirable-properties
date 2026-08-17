@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp18",
+  "number": 18,
+  "slug": "feedback-loops-reputation",
+  "title": "Feedback Loops and Reputation",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we reward contribution instead of toxicity?",
+  "summary": "Reputation and feedback systems based on meaningful participation so constructive behavior is visible and valued.",
+  "humanIssue": "Toxic behavior is rewarded",
+  "webProblem": "Engagement beats contribution",
+  "opportunity": "Reputation based on meaningful participation",
+  "hero": {
+    "headline": "What we measure becomes what we get.",
+    "text": "Feeds reward outrage because outrage keeps people scrolling. Better feedback loops make helpful contribution legible and portable.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A careful explainer gets buried. A dunk goes viral. Over time, people learn that heat beats help, and communities hollow out.",
+    "stakes": [
+      "Toxicity incentives",
+      "Gaming of likes",
+      "Invisible stewardship",
+      "Reputation that does not travel"
+    ]
+  },
+  "currentChallenges": [
+    "Engagement metrics as reputation",
+    "Brigading and review bombs",
+    "Non-portable standing",
+    "Punishment without due process"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Platforms meter easy signals (clicks, dwell time). Meaningful contribution is harder to score, so incentives follow the cheap metrics."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Reputation reflects stewardship, craft, and trustworthiness across communities, with context and contestability.",
+    "bullets": [
+      "Signals tied to real contribution",
+      "Portable standing with local nuance",
+      "Feedback that improves systems, not only posts"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "moderators",
+      "label": "Moderators",
+      "why": "Recognize care work that keeps spaces healthy."
+    },
+    {
+      "id": "creators",
+      "label": "Creators",
+      "why": "Build standing that is not just virality."
+    },
+    {
+      "id": "educators",
+      "label": "Educators",
+      "why": "Reward learning contribution over performative posting."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Design anti-gaming reputation primitives."
+    }
+  ],
+  "capabilities": [
+    "reputation",
+    "trust-signals",
+    "community-governance",
+    "presence",
+    "civic-memory"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Forums",
+      "text": "Contribution-weighted reputation."
+    },
+    {
+      "label": "Open source",
+      "text": "Maintainer and reviewer standing."
+    },
+    {
+      "label": "Civic platforms",
+      "text": "Credit for substantive deliberation."
+    },
+    {
+      "label": "Marketplaces",
+      "text": "Context-rich seller and buyer trust."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP18",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP18",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP18 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#F43F5E",
+    "badge": "dp18"
+  }
+}

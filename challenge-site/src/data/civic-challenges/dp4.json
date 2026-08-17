@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp4",
+  "number": 4,
+  "slug": "data-sovereignty-privacy",
+  "title": "Data Sovereignty and Privacy",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "Who should own your data?",
+  "summary": "Individuals own and selectively share their data through privacy-centric vaults, dynamic consent, and context-aware controls.",
+  "humanIssue": "Companies own your data",
+  "webProblem": "Data is harvested and locked away",
+  "opportunity": "Individuals own and selectively share their data",
+  "hero": {
+    "headline": "Your data should work for you, not against you.",
+    "text": "Today, personal information is harvested as the price of participation. Data sovereignty restores control: you decide what is stored, shared, and revoked across contexts.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A health app sells behavioral data to advertisers. A school platform keeps student records after graduation. Leaving a service rarely means taking your history with you, or deleting it for good.",
+    "stakes": [
+      "Surveillance by default",
+      "Lock-in through data hostage",
+      "Opaque secondary uses",
+      "Weak revocation"
+    ]
+  },
+  "currentChallenges": [
+    "Forced consent bundles",
+    "Data brokers",
+    "Vendor lock-in",
+    "Cross-context leakage",
+    "Weak deletion guarantees"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Services store user data as a competitive asset. Interoperability of identity and history threatens that advantage, so sovereignty is treated as a compliance checkbox rather than a design goal."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Personal data vaults and selective disclosure let you prove what is needed without surrendering everything else.",
+    "bullets": [
+      "Share the minimum claim for each interaction",
+      "Revoke access when context ends",
+      "Move history without losing continuity",
+      "Audit who accessed what, and why"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Protect family data from silent resale."
+    },
+    {
+      "id": "patients",
+      "label": "Patients",
+      "why": "Control health information across providers."
+    },
+    {
+      "id": "researchers",
+      "label": "Researchers",
+      "why": "Access consented data without coercive collection."
+    },
+    {
+      "id": "businesses",
+      "label": "Businesses",
+      "why": "Build trust with clear data stewardship."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Respect citizens as data principals, not inventory."
+    }
+  ],
+  "capabilities": [
+    "data-sovereignty",
+    "consent",
+    "portable-identity",
+    "smart-tags",
+    "provenance"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Healthcare",
+      "text": "Patient-controlled record sharing."
+    },
+    {
+      "label": "Education",
+      "text": "Learner-owned portfolios."
+    },
+    {
+      "label": "Finance",
+      "text": "Selective KYC disclosure."
+    },
+    {
+      "label": "Civic apps",
+      "text": "Participation without permanent dossiers."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP4",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP4",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP4 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#00C2A8",
+    "badge": "dp4"
+  }
+}

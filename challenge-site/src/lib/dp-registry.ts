@@ -1,6 +1,7 @@
 import desirableProperties from '@/data/desirable-properties.json';
 import dpInscriptions from '@/data/dp-inscriptions.json';
 import dpMlDraftMap from '@/data/dp-ml-draft-map.json';
+import { getCivicChallenge } from '@/lib/civic-challenges';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 
 export type DpRegistryEntry = {
@@ -64,5 +65,9 @@ export function dpContextBlurb(dpId: string | null | undefined): string | null {
       ? ' (draft – not yet inscribed on Bitcoin)'
       : ' (inscribed on Bitcoin)';
   const mlNote = entry.mlNumber ? ` Gov Hub: ${entry.mlNumber}.` : '';
+  const challenge = getCivicChallenge(entry.id);
+  if (challenge) {
+    return `${entry.id} – ${entry.name}${statusNote}.${mlNote} Guiding question: ${challenge.guidingQuestion} Human issue: ${challenge.humanIssue}. ${challenge.summary}`;
+  }
   return `${entry.id} – ${entry.name}${statusNote}.${mlNote} ${entry.description}`;
 }

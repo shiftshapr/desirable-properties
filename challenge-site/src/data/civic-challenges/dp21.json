@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp21",
+  "number": 21,
+  "slug": "multi-modal",
+  "title": "Multi-modal",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do text, audio, video, and devices work as one experience?",
+  "summary": "Seamless multimodal experiences so information is not trapped in a single medium or device silo.",
+  "humanIssue": "Information trapped in one medium",
+  "webProblem": "Text, audio, video, and devices remain siloed",
+  "opportunity": "Seamless multimodal experiences",
+  "hero": {
+    "headline": "Meaning should move across senses and devices.",
+    "text": "A conversation starts in chat, continues on a call, and ends as a document. Multimodal Meta-Layer design keeps context intact across those shifts.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A blind user cannot access a critical video update. A meeting recording never links back to the decision thread. Each medium is a dead end.",
+    "stakes": [
+      "Accessibility gaps",
+      "Lost cross-media context",
+      "Device lock-in",
+      "Duplicated content labor"
+    ]
+  },
+  "currentChallenges": [
+    "Format silos",
+    "Weak captions and transcripts as first-class objects",
+    "Device-specific apps",
+    "No shared multimodal identity of a conversation"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Products specialize by medium because media stacks and business units are separate. Continuity across modalities is an afterthought."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "A single collaborative thread can be spoken, read, watched, or felt across devices without losing provenance or participants.",
+    "bullets": [
+      "Accessible equivalents by default",
+      "Cross-device continuity",
+      "Shared context objects across media"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "accessibility-advocates",
+      "label": "Accessibility advocates",
+      "why": "Make multimodal access non-negotiable."
+    },
+    {
+      "id": "educators",
+      "label": "Educators",
+      "why": "Teach across media without losing the thread."
+    },
+    {
+      "id": "creators",
+      "label": "Creators",
+      "why": "Publish once, reach many modalities."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Target shared multimodal primitives."
+    }
+  ],
+  "capabilities": [
+    "multimodal",
+    "interoperability",
+    "context-overlays",
+    "presence",
+    "provenance"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Education",
+      "text": "Lessons that move from video to text to practice."
+    },
+    {
+      "label": "Healthcare",
+      "text": "Accessible multimodal care instructions."
+    },
+    {
+      "label": "Meetings",
+      "text": "Decisions linked across recording and notes."
+    },
+    {
+      "label": "Field work",
+      "text": "Voice-to-structured reports with continuity."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP21",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP21",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP21 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#FB7185",
+    "badge": "dp21"
+  }
+}

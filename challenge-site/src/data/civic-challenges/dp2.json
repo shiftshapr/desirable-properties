@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp2",
+  "number": 2,
+  "slug": "participant-agency-empowerment",
+  "title": "Participant Agency and Empowerment",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we ensure people stay in control of their digital lives?",
+  "summary": "Participants control presence, filters, feeds, AI assistance, and attention so platforms optimize for human choice rather than extraction.",
+  "humanIssue": "Algorithms controlling what you see",
+  "webProblem": "Platforms optimize for engagement over user choice",
+  "opportunity": "Users control filters, feeds, AI, and attention",
+  "hero": {
+    "headline": "Your attention should belong to you.",
+    "text": "Feeds, recommendations, and AI assistants increasingly decide what you notice. Participant agency means you set the terms: what reaches you, who can interact with you, and how assistance works on your behalf.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "You open an app to check one thing and leave an hour later unsure what you came for. The feed was optimized for time-on-site, not for your goals. When algorithms and AI steer attention by default, people lose the ability to shape their own digital experience.",
+    "stakes": [
+      "Attention is harvested",
+      "Filters are opaque",
+      "AI acts without clear consent",
+      "Presence settings reset per platform"
+    ]
+  },
+  "currentChallenges": [
+    "Engagement-maximizing feeds",
+    "Opaque ranking",
+    "Dark patterns",
+    "AI assistants without user control",
+    "One-size-fits-all moderation",
+    "No portable preference profiles"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Platforms own the interface between you and the world. Preferences, block lists, and attention settings stay trapped inside each app, so agency does not travel and defaults favor engagement metrics."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "You carry portable agency settings across the web: smart filters, presence rules, and AI permissions that you author and revise.",
+    "bullets": [
+      "Choose feeds and filters that serve your purpose",
+      "Set AI boundaries that travel with you",
+      "Decide who can reach you in each context",
+      "Earn reputation for constructive participation, not outrage"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Shape healthier attention environments for families."
+    },
+    {
+      "id": "teachers",
+      "label": "Teachers",
+      "why": "Help learners focus without platform distraction defaults."
+    },
+    {
+      "id": "researchers",
+      "label": "Researchers",
+      "why": "Study agency-preserving interfaces instead of engagement traps."
+    },
+    {
+      "id": "young-people",
+      "label": "Young people",
+      "why": "Grow up with tools that respect autonomy, not addiction loops."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Ship products that honor user-controlled preference layers."
+    }
+  ],
+  "capabilities": [
+    "attention-agency",
+    "presence",
+    "consent",
+    "smart-tags",
+    "reputation",
+    "context-overlays"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Social media",
+      "text": "User-authored feed policies."
+    },
+    {
+      "label": "Education",
+      "text": "Focus modes that students control."
+    },
+    {
+      "label": "Civic tech",
+      "text": "Participation without engagement bait."
+    },
+    {
+      "label": "Workplace tools",
+      "text": "Notification and AI consent you set once."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP2",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP2",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP2 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#5B8CFF",
+    "badge": "dp2"
+  }
+}

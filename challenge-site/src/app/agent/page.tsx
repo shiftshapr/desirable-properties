@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import HermesChat from '@/components/HermesChat';
 import { AI_HUMAN_AGENCY_META } from '@/data/pathways/ai-human-agency';
 import { readSession, sessionToAuthUser } from '@/lib/auth-session';
+import { getCivicChallenge } from '@/lib/civic-challenges';
+import { getDpRegistryEntry } from '@/lib/dp-registry';
 
 export const metadata: Metadata = {
   title: 'Hermes – Desirable Properties',
@@ -17,6 +19,22 @@ function firstParam(value: string | string[] | undefined): string | null {
   return value || null;
 }
 
+function dpStarterPrompt(dpParam: string): { prompt: string; label: string } | null {
+  const entry = getDpRegistryEntry(dpParam);
+  if (!entry) return null;
+  const challenge = getCivicChallenge(entry.id);
+  if (challenge) {
+    return {
+      label: `${entry.id} campaign`,
+      prompt: `Let's explore ${entry.id} (${challenge.title}). Guiding question: ${challenge.guidingQuestion} Human issue: ${challenge.humanIssue}. Help me contribute.`,
+    };
+  }
+  return {
+    label: entry.id,
+    prompt: `Let's explore ${entry.id} (${entry.name}). ${entry.description}`,
+  };
+}
+
 export default async function AgentPage({
   searchParams,
 }: {
@@ -27,14 +45,23 @@ export default async function AgentPage({
   const params = await searchParams;
   const starter = firstParam(params.starter);
   const promptParam = firstParam(params.prompt);
+  const dpParam = firstParam(params.dp);
 
   const fromAiPathway = starter === 'ai-human-agency';
-  const initialPrompt = promptParam || (fromAiPathway ? AI_HUMAN_AGENCY_META.hermesPrompt : null);
-  const starterPrompts = fromAiPathway || promptParam
-    ? [initialPrompt || AI_HUMAN_AGENCY_META.hermesPrompt]
-    : null;
-  const starterLabel =
-    fromAiPathway || promptParam ? 'AI & Human Agency pathway' : null;
+  const dpStarter = dpParam ? dpStarterPrompt(dpParam) : null;
+  const initialPrompt =
+    promptParam ||
+    dpStarter?.prompt ||
+    (fromAiPathway ? AI_HUMAN_AGENCY_META.hermesPrompt : null);
+  const starterPrompts =
+    fromAiPathway || promptParam || dpStarter
+      ? [initialPrompt || AI_HUMAN_AGENCY_META.hermesPrompt]
+      : null;
+  const starterLabel = dpStarter
+    ? dpStarter.label
+    : fromAiPathway || promptParam
+      ? 'AI & Human Agency pathway'
+      : null;
 
   return (
     <div className="flex min-h-0 w-full flex-1 flex-col bg-slate-950">

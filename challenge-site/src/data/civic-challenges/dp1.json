@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp1",
+  "number": 1,
+  "slug": "federated-authentication-accountability",
+  "title": "Federated Authentication & Accountability",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How can we know who we are interacting with without sacrificing privacy or decentralization?",
+  "summary": "Federated strong authentication enables decentralized identity, portable reputation, and accountable participation while preserving participant privacy and community autonomy.",
+  "humanIssue": "Fake accounts, scams, and impersonation",
+  "webProblem": "Identity is fragmented and easily spoofed",
+  "opportunity": "Portable identity and accountable participation",
+  "hero": {
+    "headline": "Identity is becoming the foundation of trust.",
+    "text": "As AI-generated identities, bots, and impersonation become commonplace, the Internet needs new ways to establish authenticity without centralizing control. The Meta-Layer proposes a decentralized approach to identity that enables trust without relying on a single company or authority.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "Every day, millions of people encounter fake accounts, impersonation, scams, AI bots, and anonymous abuse online. As AI becomes capable of creating realistic identities, voices, and conversations, one of the most fundamental questions of the Internet becomes: who am I actually interacting with?",
+    "stakes": [
+      "Scams flourish",
+      "Bots overwhelm communities",
+      "Reputation becomes meaningless",
+      "AI agents become indistinguishable from humans",
+      "Accountability disappears"
+    ]
+  },
+  "currentChallenges": [
+    "Fake accounts",
+    "AI impersonation",
+    "Anonymous harassment",
+    "Phishing",
+    "Credential theft",
+    "Platform-specific identities",
+    "No portable reputation",
+    "Sock puppet campaigns"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Today's Web was built around websites. Every platform manages its own accounts, maintains its own reputation, and creates another silo. Identity rarely travels with you, so trust has to be rebuilt over and over again."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Participants choose what to reveal, carry portable reputation across communities, and interact within transparent trust frameworks that distinguish humans, organizations, and AI.",
+    "bullets": [
+      "Arrive at any webpage and choose which aspects of your identity to share",
+      "Carry reputation across communities",
+      "AI agents clearly identify themselves",
+      "Communities define their own trust policies while remaining interoperable",
+      "Prove you are qualified without revealing unnecessary personal information"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Protect families from impersonation and scams targeting children and elders."
+    },
+    {
+      "id": "journalists",
+      "label": "Journalists",
+      "why": "Verify sources and authorship without relying on a single platform."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Build once against portable identity instead of per-platform login silos."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Enable accountable public consultation without mandatory real-name traps."
+    },
+    {
+      "id": "businesses",
+      "label": "Businesses",
+      "why": "Reduce fraud while respecting customer privacy and choice."
+    },
+    {
+      "id": "young-people",
+      "label": "Young people",
+      "why": "Participate online with dignity, without surrendering every personal detail."
+    }
+  ],
+  "capabilities": [
+    "presence",
+    "trust-signals",
+    "portable-identity",
+    "reputation",
+    "consent",
+    "smart-tags",
+    "community-governance",
+    "ai-accountability"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Healthcare",
+      "text": "Verifying medical professionals."
+    },
+    {
+      "label": "Education",
+      "text": "Portable learner credentials."
+    },
+    {
+      "label": "Journalism",
+      "text": "Verifiable authorship."
+    },
+    {
+      "label": "Government",
+      "text": "Public consultation with accountable participation."
+    },
+    {
+      "label": "Open Source",
+      "text": "Persistent contributor reputation."
+    },
+    {
+      "label": "Community Forums",
+      "text": "Reduced trolling without mandatory real names."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP1",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP1",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP1 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#2EC5FF",
+    "badge": "dp1"
+  }
+}

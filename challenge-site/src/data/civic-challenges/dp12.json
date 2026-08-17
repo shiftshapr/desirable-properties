@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp12",
+  "number": 12,
+  "slug": "community-based-ai-governance",
+  "title": "Community-based AI Governance",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "Who should decide how AI behaves in our communities?",
+  "summary": "Communities shape AI behavior through participatory governance rather than accepting rules set only by vendors.",
+  "humanIssue": "AI rules decided by companies",
+  "webProblem": "Communities have no voice",
+  "opportunity": "Communities shape AI behavior",
+  "hero": {
+    "headline": "AI policy should not be a terms-of-service footnote.",
+    "text": "Model behavior affects classrooms, forums, and civic spaces. Community-based AI governance gives those spaces a real say in how assistance works among them.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A community forum enables an AI moderator tuned for engagement. Members wanted safety and nuance. They never got a vote; the vendor shipped a default.",
+    "stakes": [
+      "Corporate AI policy monopoly",
+      "Local values ignored",
+      "No participatory override",
+      "One global default for plural contexts"
+    ]
+  },
+  "currentChallenges": [
+    "Vendor-set safety policies",
+    "No community review boards",
+    "Opaque model updates",
+    "Weak local configuration"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "AI governance is treated as a corporate risk function. Platforms lack durable mechanisms for communities to author, audit, and revise AI behavior in their contexts."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities publish AI charters, review changes, and compose governance modules that travel with the group.",
+    "bullets": [
+      "Participatory AI policy",
+      "Context-specific behavior constraints",
+      "Transparent change logs communities can contest"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Align AI with local norms and purposes."
+    },
+    {
+      "id": "educators",
+      "label": "Educators",
+      "why": "Govern classroom AI with staff and students."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Enable plural oversight without centralizing culture."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Expose hooks for community policy layers."
+    }
+  ],
+  "capabilities": [
+    "community-governance",
+    "ai-accountability",
+    "ai-containment",
+    "meta-communities",
+    "consent"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Online forums",
+      "text": "Member-led AI moderation charters."
+    },
+    {
+      "label": "Schools",
+      "text": "Shared AI use agreements."
+    },
+    {
+      "label": "Municipal services",
+      "text": "Public review of civic AI agents."
+    },
+    {
+      "label": "Research labs",
+      "text": "Consortium rules for model use."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP12",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP12",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP12 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#8B5CF6",
+    "badge": "dp12"
+  }
+}

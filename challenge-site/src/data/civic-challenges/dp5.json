@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp5",
+  "number": 5,
+  "slug": "decentralized-namespace",
+  "title": "Decentralized Namespace",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do names and identities persist when platforms change?",
+  "summary": "A decentralized namespace keeps human-meaningful names and identifiers portable across services, communities, and time.",
+  "humanIssue": "Losing your identity when platforms change",
+  "webProblem": "Usernames and identities belong to platforms",
+  "opportunity": "Persistent identities across the web",
+  "hero": {
+    "headline": "Your name should outlast any single app.",
+    "text": "Handles, domains, and display names are rented from platforms. When a service pivots, bans, or dies, the name people know you by often disappears with it.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A creator builds an audience under a username for a decade. The platform changes ownership, the handle is reassigned, and years of recognition evaporate overnight.",
+    "stakes": [
+      "Handle squatting",
+      "Forced rebranding",
+      "Broken links and citations",
+      "Impersonation after abandonment"
+    ]
+  },
+  "currentChallenges": [
+    "Platform-owned usernames",
+    "Non-portable handles",
+    "Conflicting identity systems",
+    "No shared resolution layer"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Namespaces are competitive moats. Each service invents its own naming scheme, so continuity depends on corporate goodwill rather than open resolution."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "People and communities control persistent names that resolve across apps, with clear delegation and revocation.",
+    "bullets": [
+      "One identity, many presentations",
+      "Portable handles communities can verify",
+      "Resilient links that survive platform churn"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "creators",
+      "label": "Creators",
+      "why": "Keep audience recognition across platforms."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Resolve identities without proprietary APIs alone."
+    },
+    {
+      "id": "archivists",
+      "label": "Archivists",
+      "why": "Cite people and projects that remain findable."
+    },
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Maintain shared identity beyond any host."
+    }
+  ],
+  "capabilities": [
+    "portable-identity",
+    "provenance",
+    "meta-communities",
+    "interoperability",
+    "trust-signals"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Publishing",
+      "text": "Stable author identities across outlets."
+    },
+    {
+      "label": "Open source",
+      "text": "Persistent contributor names."
+    },
+    {
+      "label": "Education",
+      "text": "Credentials tied to portable identity."
+    },
+    {
+      "label": "Civic groups",
+      "text": "Community names that travel with members."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP5",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP5",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP5 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#FF8A3D",
+    "badge": "dp5"
+  }
+}

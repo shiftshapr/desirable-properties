@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp11",
+  "number": 11,
+  "slug": "safe-ethical-ai",
+  "title": "Safe and Ethical AI",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "What does trustworthy AI actually look like?",
+  "summary": "AI systems that are transparent, community-aligned, and accountable so hallucinations and harmful outputs are visible and governable.",
+  "humanIssue": "AI hallucinations and harmful outputs",
+  "webProblem": "AI lacks visible accountability",
+  "opportunity": "Transparent, community-aligned AI",
+  "hero": {
+    "headline": "Trustworthy AI is more than a marketing claim.",
+    "text": "People already rely on AI for advice, writing, and decisions. Safety and ethics require visible limits, provenance of outputs, and alignment with community values, not slogans.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "An AI confidently invents a legal citation. A student submits it. Harm spreads before anyone notices the system had no grounding and no accountability path.",
+    "stakes": [
+      "Confident falsehoods",
+      "Hidden training harms",
+      "No recourse when AI fails",
+      "Opaque system behavior"
+    ]
+  },
+  "currentChallenges": [
+    "Hallucinations",
+    "Bias and harmful outputs",
+    "Black-box systems",
+    "Unclear responsibility",
+    "Safety theater"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "AI is shipped as a product feature inside platforms that control evaluation, logging, and redress. Communities cannot inspect or align behavior to local norms."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "AI assistance arrives with transparent boundaries, provenance, and community-aligned safeguards people can understand.",
+    "bullets": [
+      "Visible uncertainty and sources",
+      "Clear accountability for deployments",
+      "Ethics grounded in participatory oversight"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "teachers",
+      "label": "Teachers",
+      "why": "Use AI without normalizing fabricated knowledge."
+    },
+    {
+      "id": "journalists",
+      "label": "Journalists",
+      "why": "Demand accountable AI in reporting workflows."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Ship models with inspectable safety properties."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Set expectations for public-interest AI."
+    },
+    {
+      "id": "young-people",
+      "label": "Young people",
+      "why": "Grow up with AI that admits limits."
+    }
+  ],
+  "capabilities": [
+    "ai-accountability",
+    "trust-signals",
+    "provenance",
+    "consent",
+    "community-governance"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Education",
+      "text": "AI tutors with visible grounding."
+    },
+    {
+      "label": "Healthcare support",
+      "text": "Assistive AI with clear disclaimers and audit trails."
+    },
+    {
+      "label": "Public services",
+      "text": "Citizen-facing AI with accountable operators."
+    },
+    {
+      "label": "Creative tools",
+      "text": "Provenance for AI-assisted works."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP11",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP11",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP11 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#00A3FF",
+    "badge": "dp11"
+  }
+}

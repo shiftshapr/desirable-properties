@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp22",
+  "number": 22,
+  "slug": "civic-memory-epistemic-continuity",
+  "title": "Civic Memory & Epistemic Continuity",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we preserve collective understanding without creating centralized truth?",
+  "summary": "Traceable civic memory and evolving understanding so societies stop replaying the same debates without context.",
+  "humanIssue": "Society keeps repeating the same debates",
+  "webProblem": "Knowledge loses context over time",
+  "opportunity": "Traceable civic memory and evolving understanding",
+  "hero": {
+    "headline": "Memory is how a free society learns.",
+    "text": "Without shared civic memory, every controversy restarts from zero. Continuity means retaining context, dissent, and evolution without crowning a single official truth.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A policy debate rages as if no prior evidence existed. Archives are scattered, links rot, and newcomers inherit heat without history.",
+    "stakes": [
+      "Context loss",
+      "Link rot",
+      "Erasure of minority records",
+      "Centralized truth ministries as false fix"
+    ]
+  },
+  "currentChallenges": [
+    "Ephemeral platforms",
+    "Unindexed deliberations",
+    "Broken citations",
+    "No living map of how understanding changed"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "The web is excellent at publishing and poor at remembering with structure. Attention markets prefer novelty over continuity."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities maintain traceable memory of claims, evidence, and revisions: plural, contestable, and durable.",
+    "bullets": [
+      "Evolving understanding with provenance",
+      "Civic archives communities can query",
+      "Continuity without a monopoly on truth"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "historians",
+      "label": "Historians",
+      "why": "Preserve plural records with integrity."
+    },
+    {
+      "id": "journalists",
+      "label": "Journalists",
+      "why": "Ground reporting in durable context."
+    },
+    {
+      "id": "educators",
+      "label": "Educators",
+      "why": "Teach how understanding changes over time."
+    },
+    {
+      "id": "citizens",
+      "label": "Citizens",
+      "why": "Enter debates with inherited context, not amnesia."
+    },
+    {
+      "id": "policymakers",
+      "label": "Policymakers",
+      "why": "See prior evidence before resetting policy theater."
+    }
+  ],
+  "capabilities": [
+    "civic-memory",
+    "provenance",
+    "trust-signals",
+    "context-overlays",
+    "meta-communities"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Public policy",
+      "text": "Living records of proposals and outcomes."
+    },
+    {
+      "label": "Science",
+      "text": "Claim evolution with citations intact."
+    },
+    {
+      "label": "Local government",
+      "text": "Meeting memory citizens can traverse."
+    },
+    {
+      "label": "Journalism",
+      "text": "Storylines that retain corrections and context."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP22",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP22",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP22 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#818CF8",
+    "badge": "dp22"
+  }
+}

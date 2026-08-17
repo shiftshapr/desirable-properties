@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp6",
+  "number": 6,
+  "slug": "commerce",
+  "title": "Commerce",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do creators and communities get paid without advertising as the default?",
+  "summary": "Commerce primitives for micropayments, care economies, and community value exchange that are not dependent on surveillance advertising.",
+  "humanIssue": "Creators not getting paid",
+  "webProblem": "Advertising dominates business models",
+  "opportunity": "Micropayments, care economy, community economies",
+  "hero": {
+    "headline": "Value should flow to people who create it.",
+    "text": "The open web mostly funds itself by selling attention. Commerce on the Meta-Layer explores fairer exchange: small payments, mutual aid, and community economies that respect participants.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A teacher publishes free guides that millions use. Platforms monetize the traffic; the teacher sees almost nothing. Advertising fills the gap, and the incentive to manipulate attention grows.",
+    "stakes": [
+      "Creator poverty amid platform wealth",
+      "Ad-driven design",
+      "Fragile patronage",
+      "No interoperable micropayments"
+    ]
+  },
+  "currentChallenges": [
+    "Ad dependence",
+    "Payment silos",
+    "High fees for small transfers",
+    "Care work undervalued",
+    "Platform take rates"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Business models follow what is easy to meter at scale: ads and subscriptions inside walled gardens. Cross-site micropayments and care economies lack shared rails."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "People tip, subscribe, or exchange value across communities with low friction, including non-extractive care economies.",
+    "bullets": [
+      "Micropayments that work across sites",
+      "Community treasuries with transparent rules",
+      "Recognition for care and stewardship work"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "creators",
+      "label": "Creators",
+      "why": "Earn without surrendering the audience graph."
+    },
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Fund shared goods without ad capture."
+    },
+    {
+      "id": "businesses",
+      "label": "Businesses",
+      "why": "Participate in open commerce rails."
+    },
+    {
+      "id": "care-workers",
+      "label": "Care workers",
+      "why": "Make mutual aid and care economically visible."
+    }
+  ],
+  "capabilities": [
+    "micropayments",
+    "community-governance",
+    "reputation",
+    "interoperability",
+    "consent"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Independent media",
+      "text": "Reader-supported micropayments."
+    },
+    {
+      "label": "Open source",
+      "text": "Sustainable maintainer funding."
+    },
+    {
+      "label": "Mutual aid",
+      "text": "Transparent community pools."
+    },
+    {
+      "label": "Education",
+      "text": "Pay-what-you-can learning resources."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP6",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP6",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP6 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#E6B800",
+    "badge": "dp6"
+  }
+}

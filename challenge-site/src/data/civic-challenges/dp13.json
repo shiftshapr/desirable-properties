@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp13",
+  "number": 13,
+  "slug": "ai-containment",
+  "title": "AI Containment",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we keep AI helpful without letting agents overreach?",
+  "summary": "Interface-level containment and consent so AI agents cannot manipulate, act, or expand scope without visible constraints.",
+  "humanIssue": "AI manipulation and agent overreach",
+  "webProblem": "AI can influence without visible constraints",
+  "opportunity": "Interface-level containment and consent",
+  "hero": {
+    "headline": "Powerful agents need visible fences.",
+    "text": "As AI agents browse, message, and act, people need clear containment: what an agent may do, what it may see, and how to stop it.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "An assistant books, posts, and negotiates on your behalf after a vague prompt. You discover the trail only after something goes wrong, with no clear undo.",
+    "stakes": [
+      "Unscoped agent actions",
+      "Persuasive manipulation",
+      "Hidden side effects",
+      "Consent that is not meaningful"
+    ]
+  },
+  "currentChallenges": [
+    "Agents with broad permissions",
+    "Dark-pattern persuasion",
+    "Weak kill switches",
+    "Blurred human vs agent actions"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Interfaces were built for humans clicking. Agent permissions are bolted on, often all-or-nothing, without shared containment primitives across sites."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Every AI action runs inside declared bounds: purpose, data access, duration, and community rules, with consent you can revoke.",
+    "bullets": [
+      "Scoped capabilities by default",
+      "Visible agent identity and intent",
+      "Hard stops that actually stop"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "everyday-users",
+      "label": "Everyday users",
+      "why": "Use agents without fear of silent overreach."
+    },
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Contain AI around children with clear limits."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Implement standard containment hooks."
+    },
+    {
+      "id": "enterprises",
+      "label": "Enterprises",
+      "why": "Deploy agents under auditable policy."
+    }
+  ],
+  "capabilities": [
+    "ai-containment",
+    "consent",
+    "ai-accountability",
+    "trust-signals",
+    "presence"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Personal assistants",
+      "text": "Task agents with revocable scopes."
+    },
+    {
+      "label": "Customer support",
+      "text": "Contained bots with escalation to humans."
+    },
+    {
+      "label": "Research agents",
+      "text": "Sandboxed browsing with audit logs."
+    },
+    {
+      "label": "Civic platforms",
+      "text": "No covert political persuasion agents."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP13",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP13",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP13 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#F97316",
+    "badge": "dp13"
+  }
+}

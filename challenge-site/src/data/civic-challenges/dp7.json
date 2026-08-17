@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp7",
+  "number": 7,
+  "slug": "simplicity-interoperability",
+  "title": "Simplicity and Interoperability",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we connect the web without forcing people into yet another app?",
+  "summary": "A simple, interoperable Meta-Layer reduces digital fragmentation so tools, communities, and identities work across the open web.",
+  "humanIssue": "Too many disconnected apps",
+  "webProblem": "Digital fragmentation",
+  "opportunity": "One interoperable layer across the Web",
+  "hero": {
+    "headline": "The next layer should simplify, not multiply tabs.",
+    "text": "People already juggle too many logins, chats, and tools. Interoperability means capabilities compose across sites instead of forcing yet another destination.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A volunteer coordinates across five apps for one campaign: chat here, docs there, events somewhere else. Context is lost in the seams, and newcomers never catch up.",
+    "stakes": [
+      "Tool fatigue",
+      "Broken handoffs",
+      "Duplicate identities",
+      "Integration tax for builders"
+    ]
+  },
+  "currentChallenges": [
+    "App sprawl",
+    "Proprietary APIs",
+    "Incompatible formats",
+    "Complex onboarding",
+    "Brittle integrations"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Each product optimizes for its own retention. Standards exist, but product incentives reward lock-in, so users pay the complexity tax."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Presence, identity, community, and context travel as a coherent layer above pages and apps.",
+    "bullets": [
+      "Fewer silos, clearer shared primitives",
+      "Build once, connect many surfaces",
+      "Simple defaults that still allow depth"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "everyday-users",
+      "label": "Everyday users",
+      "why": "Less juggling, more continuity."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Stable interoperability targets."
+    },
+    {
+      "id": "enterprises",
+      "label": "Enterprises",
+      "why": "Compose tools without endless custom glue."
+    },
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Coordinate without mandating one vendor."
+    }
+  ],
+  "capabilities": [
+    "interoperability",
+    "context-overlays",
+    "portable-identity",
+    "smart-tags",
+    "meta-communities"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Civic campaigns",
+      "text": "Shared presence across tools."
+    },
+    {
+      "label": "Education",
+      "text": "Portable learning context."
+    },
+    {
+      "label": "Healthcare",
+      "text": "Interoperable patient-facing layers."
+    },
+    {
+      "label": "Research",
+      "text": "Cross-lab collaboration without lock-in."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP7",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP7",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP7 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#3DDC97",
+    "badge": "dp7"
+  }
+}

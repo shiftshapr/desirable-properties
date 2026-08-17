@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { GovHubWorkgroup } from '@/lib/govhub';
 import { extractDpId } from '@/lib/govhub';
+import { getCivicChallenge } from '@/lib/civic-challenges';
 import { dpDetailHref } from '@/lib/dp-links';
 import { dpCardImageSrc, dpImageAlt } from '@/lib/dp-images';
 
@@ -23,6 +24,13 @@ function statusLabel(wg: GovHubWorkgroup | undefined): string {
   return wg.state || wg.status || 'Draft';
 }
 
+function cardBlurb(dp: LocalDp): string {
+  const challenge = getCivicChallenge(dp.id);
+  if (challenge?.guidingQuestion) return challenge.guidingQuestion;
+  if (challenge?.humanIssue) return challenge.humanIssue;
+  return dp.description;
+}
+
 export default function DPCardGrid({ localDps, workgroups, fromPath = '/#dps' }: Props) {
   const workgroupByDp = new Map<string, GovHubWorkgroup>();
   for (const wg of workgroups) {
@@ -37,6 +45,7 @@ export default function DPCardGrid({ localDps, workgroups, fromPath = '/#dps' }:
         const status = statusLabel(wg);
         const dpHref = dpDetailHref(dp.id, fromPath);
         const cardSrc = dpCardImageSrc(dp.id);
+        const blurb = cardBlurb(dp);
 
         return (
           <article
@@ -66,14 +75,14 @@ export default function DPCardGrid({ localDps, workgroups, fromPath = '/#dps' }:
                   {dp.name}
                 </Link>
               </h3>
-              <p className="mb-4 flex-grow text-sm leading-relaxed text-slate-300 line-clamp-3">
-                {dp.description}
+              <p className="mb-4 flex-grow text-sm leading-relaxed text-slate-300 line-clamp-2">
+                {blurb}
               </p>
               <Link
                 href={dpHref}
                 className="text-sm font-medium text-cyan-300 hover:text-cyan-200"
               >
-                View DP page →
+                View campaign →
               </Link>
             </div>
           </article>

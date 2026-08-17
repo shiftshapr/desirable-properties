@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp14",
+  "number": 14,
+  "slug": "trust-transparency",
+  "title": "Trust and Transparency",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we rebuild trust in an AI-powered Internet?",
+  "summary": "Trust overlays, provenance, and contextual verification help people evaluate claims without defaulting to central censorship.",
+  "humanIssue": "Misinformation, propaganda, and deepfakes",
+  "webProblem": "Trust signals are broken",
+  "opportunity": "Trust overlays, provenance, contextual verification",
+  "hero": {
+    "headline": "Trust has to be rebuilt in public view.",
+    "text": "A family member shares a convincing AI-generated political video. Thousands believe it before fact-checkers can respond. How do we rebuild trust without central censorship?",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "Synthetic media and viral claims move faster than verification. People lose shared reality not because they are careless, but because the interface offers almost no trustworthy context.",
+    "stakes": [
+      "Deepfakes",
+      "Engagement-driven amplification",
+      "Broken institutional trust",
+      "Censorship vs chaos false choice"
+    ]
+  },
+  "currentChallenges": [
+    "Missing provenance",
+    "Manipulated media",
+    "Opaque ranking",
+    "Fact-check lag",
+    "Context collapse"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "The web transmits content efficiently and context poorly. Platforms add trust labels late, inconsistently, and under contested incentives."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Trust overlays show provenance, related context, and community verification signals beside content, without a single oracle of truth.",
+    "bullets": [
+      "Contextual verification people can inspect",
+      "Plural trust networks",
+      "Transparency that travels with the media"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Help families spot synthetic and misleading media."
+    },
+    {
+      "id": "journalists",
+      "label": "Journalists",
+      "why": "Attach verifiable context to reporting."
+    },
+    {
+      "id": "teachers",
+      "label": "Teachers",
+      "why": "Teach media literacy with better interface cues."
+    },
+    {
+      "id": "governments",
+      "label": "Governments",
+      "why": "Support public trust without monopoly truth offices."
+    },
+    {
+      "id": "researchers",
+      "label": "Researchers",
+      "why": "Study and improve contextual trust systems."
+    }
+  ],
+  "capabilities": [
+    "trust-signals",
+    "provenance",
+    "context-overlays",
+    "civic-memory",
+    "ai-accountability"
+  ],
+  "exampleDomains": [
+    {
+      "label": "News",
+      "text": "Provenance-aware article overlays."
+    },
+    {
+      "label": "Elections",
+      "text": "Contextual verification of viral claims."
+    },
+    {
+      "label": "Science communication",
+      "text": "Link claims to sources and debates."
+    },
+    {
+      "label": "Social video",
+      "text": "Deepfake-aware trust cues."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP14",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP14",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP14 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#22D3EE",
+    "badge": "dp14"
+  }
+}

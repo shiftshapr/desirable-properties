@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp16",
+  "number": 16,
+  "slug": "roadmap-milestones",
+  "title": "Roadmap and Milestones",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we steer technology with society instead of forever reacting?",
+  "summary": "A shared long-term roadmap and milestones so Meta-Layer development is proactive, coordinated, and publicly legible.",
+  "humanIssue": "Technology changes faster than society",
+  "webProblem": "Reactive development",
+  "opportunity": "Shared long-term roadmap",
+  "hero": {
+    "headline": "Shared direction beats perpetual scramble.",
+    "text": "Without a public roadmap, communities only respond after harms scale. Milestones make progress visible and invite coordinated contribution.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A new capability ships globally before schools, laws, or communities have language for it. Debate starts after deployment, when reversing course is hardest.",
+    "stakes": [
+      "Reactive policy",
+      "Fragmented efforts",
+      "Invisible progress",
+      "Burnout from crisis mode"
+    ]
+  },
+  "currentChallenges": [
+    "No shared north star",
+    "Duplicate initiatives",
+    "Milestone theater",
+    "Closed corporate roadmaps"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Product roadmaps are private competitive assets. Public-interest coordination lacks a durable, shared planning surface."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities co-maintain a living roadmap with milestones anyone can track, critique, and help deliver.",
+    "bullets": [
+      "Public milestones with clear owners",
+      "Space for foresight, not only incident response",
+      "Alignment across workgroups and implementations"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "stewards",
+      "label": "Stewards",
+      "why": "Coordinate work without reinventing plans."
+    },
+    {
+      "id": "funders",
+      "label": "Funders",
+      "why": "See where investment advances shared milestones."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Know what to build next in common."
+    },
+    {
+      "id": "public",
+      "label": "The public",
+      "why": "Follow progress without insider access."
+    }
+  ],
+  "capabilities": [
+    "community-governance",
+    "civic-memory",
+    "context-overlays",
+    "meta-communities"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Standards bodies",
+      "text": "Open milestone tracking."
+    },
+    {
+      "label": "Civic tech",
+      "text": "Shared delivery roadmaps."
+    },
+    {
+      "label": "Research consortia",
+      "text": "Coordinated research agendas."
+    },
+    {
+      "label": "DP Challenge",
+      "text": "Visible property advancement goals."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP16",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP16",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP16 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#A78BFA",
+    "badge": "dp16"
+  }
+}

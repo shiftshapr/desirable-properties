@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp10",
+  "number": 10,
+  "slug": "education",
+  "title": "Education",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we learn continuously without drowning in fragmented information?",
+  "summary": "Context-aware lifelong learning that connects people, resources, and communities across the web instead of trapping education in passive silos.",
+  "humanIssue": "Information overload",
+  "webProblem": "Learning is fragmented and passive",
+  "opportunity": "Context-aware lifelong learning",
+  "hero": {
+    "headline": "Learning should follow curiosity, not course catalogs alone.",
+    "text": "People learn in fragments across videos, chats, and docs. Education on the Meta-Layer connects context, mentors, and progress so learning stays continuous and active.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A student bookmarks twenty explanations of the same concept, none linked to prior knowledge or a mentor. Progress is invisible; overwhelm wins.",
+    "stakes": [
+      "Passive consumption",
+      "Lost learning trails",
+      "Credential silos",
+      "No portable learning context"
+    ]
+  },
+  "currentChallenges": [
+    "Content overload",
+    "Disconnected LMS platforms",
+    "Weak peer learning rails",
+    "Credentials that do not travel"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Education products optimize for enrollment and completion inside one system. Context about the learner rarely moves with them across the open web."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Learners carry context-aware pathways, mentors, and proof of growth across communities and tools.",
+    "bullets": [
+      "Active, situated learning overlays",
+      "Portable learner identity and progress",
+      "Communities as learning environments"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "teachers",
+      "label": "Teachers",
+      "why": "Meet learners where they already are on the web."
+    },
+    {
+      "id": "students",
+      "label": "Students",
+      "why": "Keep progress when switching tools or schools."
+    },
+    {
+      "id": "parents",
+      "label": "Parents",
+      "why": "Support learning without opaque platform lock-in."
+    },
+    {
+      "id": "lifelong-learners",
+      "label": "Lifelong learners",
+      "why": "Grow skills continuously with coherent context."
+    }
+  ],
+  "capabilities": [
+    "context-overlays",
+    "portable-identity",
+    "meta-communities",
+    "smart-tags",
+    "civic-memory"
+  ],
+  "exampleDomains": [
+    {
+      "label": "K-12",
+      "text": "Portable learner portfolios."
+    },
+    {
+      "label": "Higher ed",
+      "text": "Cross-institution pathways."
+    },
+    {
+      "label": "Workforce",
+      "text": "Skills verified across employers."
+    },
+    {
+      "label": "Public libraries",
+      "text": "Community learning overlays."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP10",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP10",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP10 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#6C63FF",
+    "badge": "dp10"
+  }
+}

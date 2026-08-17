@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0",
+  "family": "desirable-properties",
+  "challenges": [
+    {
+      "id": "dp1",
+      "number": 1,
+      "slug": "federated-authentication-accountability",
+      "title": "Federated Authentication & Accountability",
+      "status": "ACTIVE",
+      "file": "dp1.json"
+    },
+    {
+      "id": "dp2",
+      "number": 2,
+      "slug": "participant-agency-empowerment",
+      "title": "Participant Agency and Empowerment",
+      "status": "ACTIVE",
+      "file": "dp2.json"
+    },
+    {
+      "id": "dp3",
+      "number": 3,
+      "slug": "adaptive-governance",
+      "title": "Adaptive Governance Supporting an Exponentially Growing Community",
+      "status": "ACTIVE",
+      "file": "dp3.json"
+    },
+    {
+      "id": "dp4",
+      "number": 4,
+      "slug": "data-sovereignty-privacy",
+      "title": "Data Sovereignty and Privacy",
+      "status": "ACTIVE",
+      "file": "dp4.json"
+    },
+    {
+      "id": "dp5",
+      "number": 5,
+      "slug": "decentralized-namespace",
+      "title": "Decentralized Namespace",
+      "status": "ACTIVE",
+      "file": "dp5.json"
+    },
+    {
+      "id": "dp6",
+      "number": 6,
+      "slug": "commerce",
+      "title": "Commerce",
+      "status": "ACTIVE",
+      "file": "dp6.json"
+    },
+    {
+      "id": "dp7",
+      "number": 7,
+      "slug": "simplicity-interoperability",
+      "title": "Simplicity and Interoperability",
+      "status": "ACTIVE",
+      "file": "dp7.json"
+    },
+    {
+      "id": "dp8",
+      "number": 8,
+      "slug": "collaborative-environment-meta-communities",
+      "title": "Collaborative Environment and Meta-Communities",
+      "status": "ACTIVE",
+      "file": "dp8.json"
+    },
+    {
+      "id": "dp9",
+      "number": 9,
+      "slug": "developer-community-incentives",
+      "title": "Developer and Community Incentives",
+      "status": "ACTIVE",
+      "file": "dp9.json"
+    },
+    {
+      "id": "dp10",
+      "number": 10,
+      "slug": "education",
+      "title": "Education",
+      "status": "ACTIVE",
+      "file": "dp10.json"
+    },
+    {
+      "id": "dp11",
+      "number": 11,
+      "slug": "safe-ethical-ai",
+      "title": "Safe and Ethical AI",
+      "status": "ACTIVE",
+      "file": "dp11.json"
+    },
+    {
+      "id": "dp12",
+      "number": 12,
+      "slug": "community-based-ai-governance",
+      "title": "Community-based AI Governance",
+      "status": "ACTIVE",
+      "file": "dp12.json"
+    },
+    {
+      "id": "dp13",
+      "number": 13,
+      "slug": "ai-containment",
+      "title": "AI Containment",
+      "status": "ACTIVE",
+      "file": "dp13.json"
+    },
+    {
+      "id": "dp14",
+      "number": 14,
+      "slug": "trust-transparency",
+      "title": "Trust and Transparency",
+      "status": "ACTIVE",
+      "file": "dp14.json"
+    },
+    {
+      "id": "dp15",
+      "number": 15,
+      "slug": "security-provenance",
+      "title": "Security and Provenance",
+      "status": "ACTIVE",
+      "file": "dp15.json"
+    },
+    {
+      "id": "dp16",
+      "number": 16,
+      "slug": "roadmap-milestones",
+      "title": "Roadmap and Milestones",
+      "status": "ACTIVE",
+      "file": "dp16.json"
+    },
+    {
+      "id": "dp17",
+      "number": 17,
+      "slug": "financial-sustainability",
+      "title": "Financial Sustainability",
+      "status": "ACTIVE",
+      "file": "dp17.json"
+    },
+    {
+      "id": "dp18",
+      "number": 18,
+      "slug": "feedback-loops-reputation",
+      "title": "Feedback Loops and Reputation",
+      "status": "ACTIVE",
+      "file": "dp18.json"
+    },
+    {
+      "id": "dp19",
+      "number": 19,
+      "slug": "amplifying-presence-community-engagement",
+      "title": "Amplifying Presence and Community Engagement",
+      "status": "ACTIVE",
+      "file": "dp19.json"
+    },
+    {
+      "id": "dp20",
+      "number": 20,
+      "slug": "community-ownership",
+      "title": "Community Ownership",
+      "status": "ACTIVE",
+      "file": "dp20.json"
+    },
+    {
+      "id": "dp21",
+      "number": 21,
+      "slug": "multi-modal",
+      "title": "Multi-modal",
+      "status": "ACTIVE",
+      "file": "dp21.json"
+    },
+    {
+      "id": "dp22",
+      "number": 22,
+      "slug": "civic-memory-epistemic-continuity",
+      "title": "Civic Memory & Epistemic Continuity",
+      "status": "ACTIVE",
+      "file": "dp22.json"
+    }
+  ]
+}

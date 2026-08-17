@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp8",
+  "number": 8,
+  "slug": "collaborative-environment-meta-communities",
+  "title": "Collaborative Environment and Meta-Communities",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do communities persist beyond platforms?",
+  "summary": "Meta-communities are persistent collaborative environments that travel with members across the web instead of dying inside a single host.",
+  "humanIssue": "Online communities constantly restart",
+  "webProblem": "Communities are trapped inside platforms",
+  "opportunity": "Persistent communities that travel everywhere",
+  "hero": {
+    "headline": "A community should not die when an app changes its algorithm.",
+    "text": "Groups rebuild the same social fabric every time they move platforms. Meta-communities keep membership, norms, and shared work portable.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A thriving forum is shut down. Members scatter to three new apps, lose moderation history, and spend months reconstructing trust that already existed.",
+    "stakes": [
+      "Platform eviction",
+      "Lost history",
+      "Fragmented membership",
+      "Repeated onboarding labor"
+    ]
+  },
+  "currentChallenges": [
+    "Hosted-only communities",
+    "Non-portable membership",
+    "Lost archives",
+    "Split conversations",
+    "No shared collaboration surface"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Communities are features of products. When the product changes incentives or shuts down, the community has no independent substrate."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities exist as first-class objects on the Meta-Layer: members, charters, and collaboration follow the group across contexts.",
+    "bullets": [
+      "Portable membership and roles",
+      "Shared workspaces above any page",
+      "Continuity of culture and memory"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "community-organizers",
+      "label": "Community organizers",
+      "why": "Keep groups intact across migrations."
+    },
+    {
+      "id": "educators",
+      "label": "Educators",
+      "why": "Cohorts that persist beyond a learning platform."
+    },
+    {
+      "id": "movements",
+      "label": "Movements",
+      "why": "Coordinate without a single point of failure."
+    },
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Build collaboration that is not host-bound."
+    }
+  ],
+  "capabilities": [
+    "meta-communities",
+    "community-governance",
+    "presence",
+    "civic-memory",
+    "interoperability"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Mutual aid",
+      "text": "Groups that survive platform churn."
+    },
+    {
+      "label": "Open source",
+      "text": "Contributor communities across forges."
+    },
+    {
+      "label": "Alumni networks",
+      "text": "Lifelong cohorts with shared memory."
+    },
+    {
+      "label": "Local civic groups",
+      "text": "Neighborhood collaboration overlays."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP8",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP8",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP8 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#FF5C8A",
+    "badge": "dp8"
+  }
+}

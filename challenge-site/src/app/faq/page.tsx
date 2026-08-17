@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import FaqList from '@/components/FaqList';
 import { SITE_FAQ_COUNT, SITE_FAQ_SECTIONS } from '@/data/site-faq';
-import { getCurrentMilestone } from '@/lib/challengeTimeline';
+import { getCurrentMilestones } from '@/lib/challengeTimeline';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   const now = new Date();
-  const current = getCurrentMilestone(now);
+  const currentMilestones = getCurrentMilestones(now);
 
   const sections = SITE_FAQ_SECTIONS.map((section) => {
     if (section.id !== 'timeline') return section;
@@ -26,11 +26,20 @@ export default function FaqPage() {
           ...item,
           a: (
             <>
-              {current ? (
+              {currentMilestones.length > 0 ? (
                 <p>
-                  Current phase:{' '}
-                  <strong className="font-semibold text-white">{current.title}</strong> (
-                  {current.dateLabel}). {current.description}
+                  Current {currentMilestones.length > 1 ? 'phases' : 'phase'}:{' '}
+                  {currentMilestones.map((m, i) => (
+                    <span key={m.id}>
+                      {i > 0 ? '; ' : ''}
+                      <strong className="font-semibold text-white">{m.title}</strong> (
+                      {m.dateLabel})
+                    </span>
+                  ))}
+                  .{' '}
+                  {currentMilestones.length === 1
+                    ? currentMilestones[0].description
+                    : currentMilestones.map((m) => m.description).join(' ')}
                 </p>
               ) : (
                 <p>
@@ -39,8 +48,7 @@ export default function FaqPage() {
                 </p>
               )}
               <p>
-                Key upcoming milestones include community review, workgroup synthesis toward Version
-                1.0, and the{' '}
+                Key upcoming milestones include workgroup synthesis toward Version 1.0 and the{' '}
                 <Link href="/challenge#timeline">September 16 book and summit launch</Link>.
               </p>
             </>

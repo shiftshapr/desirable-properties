@@ -6,7 +6,7 @@ import WorkgroupFormationStatus from '@/components/WorkgroupFormationStatus';
 import {
   challengeMeta,
   getActiveAndUpcoming,
-  getCurrentMilestone,
+  getCurrentMilestones,
   getPastMilestones,
   isBeforeWorkgroupFormation,
   isWorkgroupFormationPhase,
@@ -36,7 +36,7 @@ export default async function ChallengePage() {
     readSessionMemberWorkgroupIds(),
   ]);
 
-  const current = getCurrentMilestone(now);
+  const currentMilestones = getCurrentMilestones(now);
   const activeAndUpcoming = getActiveAndUpcoming(now);
   const past = getPastMilestones(now);
   const showWorkgroupPanel =
@@ -55,9 +55,10 @@ export default async function ChallengePage() {
         <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">
           The Desirable Properties Challenge
         </h1>
-        {current && (
-          <p className="mt-4 inline-flex rounded-full border border-cyan-800/60 bg-cyan-950/40 px-3 py-1 text-sm text-cyan-200">
-            Current phase: {current.title}
+        {currentMilestones.length > 0 && (
+          <p className="mt-4 inline-flex max-w-full flex-wrap rounded-full border border-cyan-800/60 bg-cyan-950/40 px-3 py-1 text-sm text-cyan-200">
+            {currentMilestones.length > 1 ? 'Current:' : 'Current phase:'}{' '}
+            {currentMilestones.map((m) => m.title).join(' · ')}
           </p>
         )}
       </header>

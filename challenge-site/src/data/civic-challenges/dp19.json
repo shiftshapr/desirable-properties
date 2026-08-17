@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp19",
+  "number": 19,
+  "slug": "amplifying-presence-community-engagement",
+  "title": "Amplifying Presence and Community Engagement",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do good ideas reach critical mass without platform gatekeepers?",
+  "summary": "Visible civic participation and coordinated action so people feel agency and collective efforts can scale.",
+  "humanIssue": "People feel powerless",
+  "webProblem": "Good ideas never reach critical mass",
+  "opportunity": "Visible civic participation and coordinated action",
+  "hero": {
+    "headline": "Presence should make collective action possible.",
+    "text": "Many people care, but care stays invisible. Amplifying presence means showing who is engaged, where coordination is happening, and how to join without waiting for a viral lottery.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "Neighbors share the same concern in private chats. Separately, each feels alone. Nothing reaches the threshold for action because presence was never visible together.",
+    "stakes": [
+      "Invisible support",
+      "Coordination failure",
+      "Gatekept amplification",
+      "Burnout of the few who organize"
+    ]
+  },
+  "currentChallenges": [
+    "Fragmented signals of interest",
+    "Algorithmic obscurity",
+    "Weak call-to-action rails",
+    "No shared presence layer"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Reach is rented from platforms. Without a shared presence layer, communities cannot see or amplify participation on their own terms."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "People opt into visible civic presence, coordinate actions, and invite others through interoperable engagement signals.",
+    "bullets": [
+      "Opt-in presence that travels",
+      "Coordination without a single host",
+      "Amplification based on consent and purpose"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "organizers",
+      "label": "Organizers",
+      "why": "See and grow participation honestly."
+    },
+    {
+      "id": "citizens",
+      "label": "Citizens",
+      "why": "Find others who share a concrete aim."
+    },
+    {
+      "id": "nonprofits",
+      "label": "Nonprofits",
+      "why": "Mobilize supporters across channels."
+    },
+    {
+      "id": "young-people",
+      "label": "Young people",
+      "why": "Experience agency, not only feeds."
+    }
+  ],
+  "capabilities": [
+    "presence",
+    "meta-communities",
+    "attention-agency",
+    "community-governance",
+    "context-overlays"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Local government",
+      "text": "Visible consultation participation."
+    },
+    {
+      "label": "Climate action",
+      "text": "Coordinated campaigns across sites."
+    },
+    {
+      "label": "Schools",
+      "text": "Parent and student engagement overlays."
+    },
+    {
+      "label": "Mutual aid",
+      "text": "Presence maps of who can help."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP19",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP19",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP19 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#38BDF8",
+    "badge": "dp19"
+  }
+}

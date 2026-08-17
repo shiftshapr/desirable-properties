@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp15",
+  "number": 15,
+  "slug": "security-provenance",
+  "title": "Security and Provenance",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we verify where media and documents really came from?",
+  "summary": "Traceable provenance and secure communication so people can detect tampering, fake media, and forged documents.",
+  "humanIssue": "Fake media and document tampering",
+  "webProblem": "No easy way to verify origins",
+  "opportunity": "Traceable provenance and secure communication",
+  "hero": {
+    "headline": "Origins should be checkable, not guesswork.",
+    "text": "When anyone can generate a photo, voice, or PDF, societies need practical provenance: ways to verify authenticity without requiring everyone to become a forensic expert.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A forged letter circulates as a screenshot. A cloned voice authorizes a transfer. Without shared provenance rails, each recipient must decide alone, too late.",
+    "stakes": [
+      "Forged documents",
+      "Synthetic media",
+      "Compromised channels",
+      "No common verification UX"
+    ]
+  },
+  "currentChallenges": [
+    "Easy forgery",
+    "Broken chain of custody",
+    "Insecure messaging defaults",
+    "Fragmented attestation standards"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Content is copied without history. Security tools exist for experts, but everyday interfaces rarely expose provenance people can use in the moment."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Media and documents can carry verifiable origin trails, and secure communication is a default Meta-Layer capability.",
+    "bullets": [
+      "Traceable authorship and edits",
+      "Tamper-evident shares",
+      "Secure channels communities can trust"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "journalists",
+      "label": "Journalists",
+      "why": "Authenticate sources and media under deadline."
+    },
+    {
+      "id": "lawyers",
+      "label": "Legal professionals",
+      "why": "Reduce forged evidence risk."
+    },
+    {
+      "id": "businesses",
+      "label": "Businesses",
+      "why": "Protect transactions from social-engineering fakes."
+    },
+    {
+      "id": "citizens",
+      "label": "Citizens",
+      "why": "Verify official communications."
+    }
+  ],
+  "capabilities": [
+    "provenance",
+    "trust-signals",
+    "portable-identity",
+    "consent",
+    "ai-accountability"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Media",
+      "text": "Signed capture and distribution trails."
+    },
+    {
+      "label": "Government docs",
+      "text": "Verifiable public notices."
+    },
+    {
+      "label": "Finance",
+      "text": "Anti-spoof communication channels."
+    },
+    {
+      "label": "Healthcare",
+      "text": "Tamper-evident clinical records sharing."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP15",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP15",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP15 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#14B8A6",
+    "badge": "dp15"
+  }
+}

@@ -18,6 +18,7 @@ import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server';
+import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import type { Metadata } from 'next';
 
 export const revalidate = 300;
@@ -120,40 +121,6 @@ function shortDescription(dp: { description?: string; landing_subtitle?: string 
   const best = candidates.sort((a, b) => a.length - b.length)[0] ?? '';
   return best.length > 220 ? `${best.slice(0, 217).trimEnd()}…` : best;
 }
-
-// Canonical Gov Hub slugs for each of the 23 Desirable Properties workgroups.
-// These mirror the `working_group.slug` column in the gov-hub-prod database
-// (see `working_group` table, layer_id=22d90c89-...-220dca505402, "The Metaweb").
-// The slugs are *not* a naive slugify of the DP `name` – they are curated
-// short slugs assigned at workgroup-creation time. A naive slugify produced
-// e.g. `dp1-federated-authentication-and-accountability` which 404s on
-// `/api/workgroups/by-slug/<slug>/`; the canonical slug is `dp1-federated-auth`.
-// Update this map if/when a DP's canonical slug changes on Gov Hub.
-const DP_WORKGROUP_SLUGS: Record<string, string> = {
-  DP1: 'dp1-federated-auth',
-  DP2: 'dp2-participant-agency',
-  DP3: 'dp3-adaptive-governance',
-  DP4: 'dp4-data-sovereignty',
-  DP5: 'dp5-decentralized-namespace',
-  DP6: 'dp6-commerce',
-  DP7: 'dp7-simplicity-interoperability',
-  DP8: 'dp8-collaborative-environment',
-  DP9: 'dp9-developer-incentives',
-  DP10: 'dp10-education',
-  DP11: 'dp11-safe-ethical-ai',
-  DP12: 'dp12-community-ai-governance',
-  DP13: 'dp13-ai-containment',
-  DP14: 'dp14-trust-transparency',
-  DP15: 'dp15-security-provenance',
-  DP16: 'dp16-roadmap-milestones',
-  DP17: 'dp17-financial-sustainability',
-  DP18: 'dp18-feedback-reputation',
-  DP19: 'dp19-community-engagement',
-  DP20: 'dp20-community-ownership',
-  DP21: 'dp21-multi-modal',
-  DP22: 'dp22-civic-memory-epistemic-continuity',
-  DP23: 'dp23-universal-participation-linguistic-interoperability',
-};
 
 function deriveSlug(dp: { id: string; name?: string }): string {
   const dpId = String(dp.id || '');

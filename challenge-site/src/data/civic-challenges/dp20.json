@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp20",
+  "number": 20,
+  "slug": "community-ownership",
+  "title": "Community Ownership",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "Who should own the next layer of the Internet?",
+  "summary": "Shared ownership of infrastructure and knowledge so platforms do not extract all value from what communities create.",
+  "humanIssue": "Platforms own everything users create",
+  "webProblem": "Value extraction",
+  "opportunity": "Shared ownership of infrastructure and knowledge",
+  "hero": {
+    "headline": "If we build it together, we should own it together.",
+    "text": "Communities generate content, culture, and care. Ownership on the Meta-Layer asks who controls the rails, the archives, and the upside.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "Users create a marketplace of knowledge inside a platform. The company changes terms, licenses the corpus to AI trainers, and the community has no stake and no exit with dignity.",
+    "stakes": [
+      "Extractive terms",
+      "No residual rights",
+      "Privatization of commons",
+      "Exit without continuity"
+    ]
+  },
+  "currentChallenges": [
+    "Platform IP capture",
+    "Unclear stewardship",
+    "Commons without legal form",
+    "Concentration of ownership"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Legal and product defaults assign ownership to the operator of the database. Collective creation rarely maps to collective control."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Communities hold meaningful stakes in infrastructure and knowledge, with portable exports and shared governance of commons.",
+    "bullets": [
+      "Collective stewardship models",
+      "Knowledge that communities can keep",
+      "Infrastructure treated as shared asset"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Retain control of what they build."
+    },
+    {
+      "id": "creators",
+      "label": "Creators",
+      "why": "Share upside without surrendering the corpus."
+    },
+    {
+      "id": "cooperatives",
+      "label": "Cooperatives",
+      "why": "Extend co-op ownership into digital rails."
+    },
+    {
+      "id": "policymakers",
+      "label": "Policymakers",
+      "why": "Support ownership forms beyond platform monopoly."
+    }
+  ],
+  "capabilities": [
+    "community-governance",
+    "data-sovereignty",
+    "meta-communities",
+    "civic-memory",
+    "micropayments"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Knowledge bases",
+      "text": "Community-owned corpora."
+    },
+    {
+      "label": "Social platforms",
+      "text": "Member ownership of the graph."
+    },
+    {
+      "label": "Data trusts",
+      "text": "Shared stewardship of sensitive sets."
+    },
+    {
+      "label": "Local media",
+      "text": "Community-owned distribution rails."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP20",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP20",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP20 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#EAB308",
+    "badge": "dp20"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "desirable-property",
+  "id": "dp9",
+  "number": 9,
+  "slug": "developer-community-incentives",
+  "title": "Developer and Community Incentives",
+  "status": "ACTIVE",
+  "family": "desirable-properties",
+  "guidingQuestion": "How do we stop rebuilding the same foundations on every platform?",
+  "summary": "Incentives for developers and communities to build once for the Metaweb, with recognition and rewards that reduce lock-in labor.",
+  "humanIssue": "Developers rebuild the same things repeatedly",
+  "webProblem": "Platform lock-in",
+  "opportunity": "Build once, run across the Metaweb",
+  "hero": {
+    "headline": "Build for the web, not for a landlord.",
+    "text": "Developers spend careers reimplementing identity, feeds, and moderation for each silo. Better incentives reward shared infrastructure and portable contributions.",
+    "media": {
+      "image": null,
+      "video": null
+    }
+  },
+  "problemStory": {
+    "title": "Why this matters",
+    "scenario": "A small team ships a useful community tool, then rewrites it three times for three platforms. Progress stalls while the underlying need never changes.",
+    "stakes": [
+      "Duplicated effort",
+      "API churn",
+      "Talent drained into integration work",
+      "Weak rewards for open primitives"
+    ]
+  },
+  "currentChallenges": [
+    "Per-platform SDKs",
+    "Unrewarded commons work",
+    "Short-term venture pressure",
+    "Fragmented contributor recognition"
+  ],
+  "webLimitations": {
+    "title": "Why today's Web struggles",
+    "text": "Platforms pay for exclusivity. Shared layers threaten moats, so incentives pull builders toward proprietary stacks instead of common rails."
+  },
+  "futureVision": {
+    "title": "Imagine instead",
+    "text": "Developers ship Meta-Layer capabilities once and communities fund the commons that everyone reuses.",
+    "bullets": [
+      "Portable contributor reputation",
+      "Incentives for interoperability work",
+      "Shared primitives instead of endless forks"
+    ]
+  },
+  "audiences": [
+    {
+      "id": "developers",
+      "label": "Developers",
+      "why": "Spend time on new value, not re-plumbing silos."
+    },
+    {
+      "id": "funders",
+      "label": "Funders",
+      "why": "Support infrastructure with clear public goods outcomes."
+    },
+    {
+      "id": "communities",
+      "label": "Communities",
+      "why": "Reward maintainers who keep shared tools healthy."
+    },
+    {
+      "id": "startups",
+      "label": "Startups",
+      "why": "Compete on product, not on captive graphs."
+    }
+  ],
+  "capabilities": [
+    "interoperability",
+    "reputation",
+    "micropayments",
+    "community-governance",
+    "portable-identity"
+  ],
+  "exampleDomains": [
+    {
+      "label": "Open source",
+      "text": "Sustained maintainer incentives."
+    },
+    {
+      "label": "Civic tech",
+      "text": "Reusable governance modules."
+    },
+    {
+      "label": "Education tools",
+      "text": "Shared learning primitives."
+    },
+    {
+      "label": "Identity stacks",
+      "text": "Build once for many surfaces."
+    }
+  ],
+  "actions": [
+    {
+      "id": "submit_problem",
+      "label": "Submit a real-world problem for DP9",
+      "intent": "Capture a concrete lived issue that this property should address."
+    },
+    {
+      "id": "companion",
+      "label": "Talk with the AI Companion",
+      "intent": "Explore the challenge and draft a position with Hermes."
+    },
+    {
+      "id": "improve",
+      "label": "Suggest improvements to DP9",
+      "intent": "Propose clarifications, extensions, or patches to the property."
+    },
+    {
+      "id": "join_workgroup",
+      "label": "Join the DP9 workgroup",
+      "intent": "Collaborate with stewards advancing this property."
+    },
+    {
+      "id": "curate",
+      "label": "Help curate community submissions",
+      "intent": "Review and organize contributions related to this challenge."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "video",
+      "title": "3-minute video",
+      "optional": true
+    },
+    {
+      "kind": "infographic",
+      "title": "Infographic",
+      "optional": true
+    },
+    {
+      "kind": "research",
+      "title": "Research papers",
+      "optional": true
+    },
+    {
+      "kind": "discussion",
+      "title": "Community discussion",
+      "optional": true
+    }
+  ],
+  "presentation": {
+    "themeColor": "#4ECDC4",
+    "badge": "dp9"
+  }
+}
