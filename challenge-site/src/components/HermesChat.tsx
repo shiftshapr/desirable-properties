@@ -265,6 +265,14 @@ function turnIdFromMessageId(messageId: string): string | null {
   return turnId && turnId !== 'intro' ? turnId : null;
 }
 
+function newClientMessageId(suffix: 'u' | 'a'): string {
+  const base =
+    typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `local-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  return `${base}-${suffix}`;
+}
+
 function turnIdFromAssistantMessageId(messageId: string): string | null {
   if (!messageId.endsWith('-a')) return null;
   const turnId = messageId.slice(0, -2);
@@ -926,7 +934,7 @@ export default function HermesChat({
     if (!trimmed) return;
 
     const userMessage: Message = {
-      id: resendClientId || `${Date.now()}-u`,
+      id: resendClientId || newClientMessageId('u'),
       text: trimmed,
       sender: 'user',
       timestamp: new Date(),
@@ -1016,7 +1024,7 @@ export default function HermesChat({
 
       const memoryId = typeof data.memoryId === 'string' ? data.memoryId : null;
       const userId = memoryId ? `${memoryId}-u` : userMessage.id;
-      const assistantId = memoryId ? `${memoryId}-a` : `${Date.now()}-a`;
+      const assistantId = memoryId ? `${memoryId}-a` : newClientMessageId('a');
 
       setMessages((prev) => [
         ...prev.slice(0, -1),
@@ -1298,7 +1306,7 @@ export default function HermesChat({
     if (!text && attachments.length > 0) {
       // Document-only send keeps existing attachment flow
       const userMessage: Message = {
-        id: `${Date.now()}-u`,
+        id: newClientMessageId('u'),
         text: displayText,
         sender: 'user',
         timestamp: new Date(),
@@ -1355,7 +1363,7 @@ export default function HermesChat({
             turnId: memoryId || undefined,
           },
           {
-            id: memoryId ? `${memoryId}-a` : `${Date.now()}-a`,
+            id: memoryId ? `${memoryId}-a` : newClientMessageId('a'),
             text: data.response,
             sender: 'assistant',
             timestamp: new Date(),
@@ -2478,6 +2486,7 @@ export default function HermesChat({
           {!compact && promptStack.visible ? (
             <HermesPromptStackRail
               items={promptStack.items}
+              totalHeight={promptStack.totalHeight}
               activeIndex={promptStack.activeIndex}
               onJump={promptStack.jumpTo}
             />

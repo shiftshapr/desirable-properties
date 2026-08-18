@@ -8,6 +8,8 @@ export type PromptStackMessage = {
 };
 
 export type PromptStackItem = {
+  /** Stable React key; unique even if messageId collides. */
+  stackKey: string;
   messageId: string;
   turnId: string | null;
   label: string;
@@ -30,6 +32,7 @@ export function buildPromptStackItems(
     const firstLine = message.text.split('\n')[0].trim();
     const turnId = message.id.endsWith('-u') ? message.id.slice(0, -2) : null;
     items.push({
+      stackKey: `${message.id}:${index}`,
       messageId: message.id,
       turnId,
       label: firstLine.length > 80 ? `${firstLine.slice(0, 77)}…` : firstLine,
@@ -96,6 +99,11 @@ export function usePromptStack({
     [messages, messageOffsets],
   );
 
+  const totalHeight = useMemo(() => {
+    const container = scrollContainerRef.current;
+    return Math.max(container?.scrollHeight ?? 1, 1);
+  }, [scrollContainerRef, offsetsVersion, messages]);
+
   useEffect(() => {
     if (!enabled) return;
     const container = scrollContainerRef.current;
@@ -153,6 +161,7 @@ export function usePromptStack({
 
   return {
     items,
+    totalHeight,
     activeIndex,
     highlightId,
     jumpTo,

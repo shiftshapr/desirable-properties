@@ -13,6 +13,7 @@ function buildPromptStackItems(messages, messageOffsets = new Map()) {
     const firstLine = message.text.split('\n')[0].trim();
     const turnId = message.id.endsWith('-u') ? message.id.slice(0, -2) : null;
     items.push({
+      stackKey: `${message.id}:${index}`,
       messageId: message.id,
       turnId,
       label: firstLine.length > 80 ? `${firstLine.slice(0, 77)}…` : firstLine,
@@ -47,8 +48,22 @@ test('buildPromptStackItems excludes intro and contribution records', () => {
   const items = buildPromptStackItems(messages);
   assert.equal(items.length, 2);
   assert.equal(items[0].messageId, 'turn1-u');
+  assert.equal(items[0].stackKey, 'turn1-u:0');
   assert.equal(items[0].turnId, 'turn1');
   assert.equal(items[1].label, 'Second');
+});
+
+test('buildPromptStackItems keeps duplicate messageIds as separate stack entries', () => {
+  const messages = [
+    { id: 'dup-u', text: 'First prompt', sender: 'user' },
+    { id: 'dup-u', text: 'Second prompt', sender: 'user' },
+  ];
+  const items = buildPromptStackItems(messages);
+  assert.equal(items.length, 2);
+  assert.equal(items[0].stackKey, 'dup-u:0');
+  assert.equal(items[1].stackKey, 'dup-u:1');
+  assert.equal(items[0].label, 'First prompt');
+  assert.equal(items[1].label, 'Second prompt');
 });
 
 test('activePromptIndexFromOffsets tracks scroll midpoint', () => {
