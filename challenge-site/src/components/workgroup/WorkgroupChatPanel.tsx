@@ -9,6 +9,7 @@ import HermesAmbientHandBadge from '@/components/workgroup/HermesAmbientHandBadg
 import HermesAmbientSettingsPanel from '@/components/workgroup/HermesAmbientSettingsPanel';
 import WorkgroupHermesPanel from '@/components/workgroup/WorkgroupHermesPanel';
 import WorkgroupMessageBody from '@/components/workgroup/WorkgroupMessageBody';
+import WorkgroupMessageShareModal from '@/components/workgroup/WorkgroupMessageShareModal';
 import {
   assessHermesAmbient,
   fetchHermesHands,
@@ -57,6 +58,7 @@ export default function WorkgroupChatPanel({
   const [mobileHermesOpen, setMobileHermesOpen] = useState(false);
   const [adoptDraft, setAdoptDraft] = useState<{ key: number; text: string } | null>(null);
   const [hermesInstructionsOpen, setHermesInstructionsOpen] = useState(false);
+  const [shareMessage, setShareMessage] = useState<WorkgroupMessage | null>(null);
 
   useEffect(() => {
     if (!isHermesExperimentalInstructionsDismissed()) {
@@ -195,6 +197,12 @@ export default function WorkgroupChatPanel({
   return (
     <div className="relative">
       <DpDialogHost />
+      <WorkgroupMessageShareModal
+        open={Boolean(shareMessage)}
+        workgroupName={workgroupName}
+        messagePreview={shareMessage?.body || ''}
+        onClose={() => setShareMessage(null)}
+      />
       <HermesExperimentalInstructionsModal
         open={hermesInstructionsOpen}
         workgroupSlug={workgroupSlug}
@@ -249,7 +257,7 @@ export default function WorkgroupChatPanel({
                 return (
                   <article
                     key={msg.id}
-                    className="rounded-lg border border-slate-800/80 bg-slate-950/40 px-4 py-3"
+                    className="group rounded-lg border border-slate-800/80 bg-slate-950/40 px-4 py-3"
                   >
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
@@ -267,6 +275,17 @@ export default function WorkgroupChatPanel({
                         onOpen={handleOpenHand}
                       />
                     ))}
+                    {isMember ? (
+                      <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                        <button
+                          type="button"
+                          onClick={() => setShareMessage(msg)}
+                          className="rounded-md border border-slate-600 px-2 py-0.5 text-[10px] text-slate-300 hover:bg-slate-800/80"
+                        >
+                          Share
+                        </button>
+                      </div>
+                    ) : null}
                   </article>
                 );
               })

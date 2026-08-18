@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DpDialog } from '@/components/DpDialog';
 
 export type ThreadShareVisibility = 'full' | 'from_share_point';
@@ -10,6 +10,10 @@ type HermesShareWizardProps = {
   open: boolean;
   threadId: string;
   threadTitle: string;
+  /** When set, share history starts at this turn (per-message share). */
+  anchorTurnId?: string | null;
+  /** Short label for the anchor point shown in the modal. */
+  anchorLabel?: string | null;
   onClose: () => void;
   onShared?: (result: { linkUrl: string; shareId: string }) => void;
 };
@@ -18,18 +22,33 @@ export default function HermesShareWizard({
   open,
   threadId,
   threadTitle,
+  anchorTurnId = null,
+  anchorLabel = null,
   onClose,
   onShared,
 }: HermesShareWizardProps) {
-  const [visibility, setVisibility] = useState<ThreadShareVisibility>('full');
+  const [visibility, setVisibility] = useState<ThreadShareVisibility>(
+    anchorTurnId ? 'from_share_point' : 'full',
+  );
   const [sendeeRole, setSendeeRole] = useState<ThreadShareRole>('watcher');
   const [senderRetainsWatch, setSenderRetainsWatch] = useState(true);
   const [expiresInHours, setExpiresInHours] = useState(24);
+  const [recipient, setRecipient] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [linkUrl, setLinkUrl] = useState<string | null>(null);
   const [shareId, setShareId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    setVisibility(anchorTurnId ? 'from_share_point' : 'full');
+    setRecipient('');
+    setError(null);
+    setLinkUrl(null);
+    setShareId(null);
+    setCopied(false);
+  }, [open, anchorTurnId, threadId]);
 
   if (!open) return null;
 
@@ -49,6 +68,8 @@ export default function HermesShareWizard({
           sendeeRole,
           senderRetainsWatch,
           expiresInHours,
+          anchorTurnId: visibility === 'from_share_point' ? anchorTurnId : undefined,
+          recipientEmail: recipient.trim() || undefined,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -109,6 +130,11 @@ export default function HermesShareWizard({
             Share conversation
           </h2>
           <p className="mt-1 text-sm text-slate-400">{threadTitle || 'Hermes thread'}</p>
+          {anchorTurnId && anchorLabel ? (
+            <p className="mt-2 rounded-lg border border-cyan-800/50 bg-cyan-950/30 px-3 py-2 text-xs text-cyan-100">
+              Share point: {anchorLabel}
+            </p>
+          ) : null}
         </div>
 
         <div className="space-y-5 px-5 py-4">
@@ -120,6 +146,21 @@ export default function HermesShareWizard({
 
           {!linkUrl ? (
             <>
+              <label className="block text-sm text-slate-300">
+                Share with
+                <input
+                  type="text"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="Email or username"
+                  className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500"
+                  autoComplete="off"
+                />
+                <span className="mt-1 block text-xs text-slate-500">
+                  Optional for link-only sharing. We store the intended recipient for delivery and audit (invite email TODO).
+                </span>
+              </label>
+
               <fieldset className="space-y-2">
                 <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
                   History visibility
@@ -144,10 +185,15 @@ export default function HermesShareWizard({
                     checked={visibility === 'from_share_point'}
                     onChange={() => setVisibility('from_share_point')}
                     className="mt-1"
+                    disabled={!anchorTurnId}
                   />
                   <span>
                     <span className="block text-sm text-white">From share point forward</span>
-                    <span className="block text-xs text-slate-400">Hides earlier turns. Sets the anchor floor for edits.</span>
+                    <span className="block text-xs text-slate-400">
+                      {anchorTurnId
+                        ? 'Hides earlier turns from this message. Sets the anchor floor for edits.'
+                        : 'Open share from a specific message to anchor here.'}
+                    </span>
                   </span>
                 </label>
               </fieldset>
@@ -204,7 +250,10 @@ export default function HermesShareWizard({
             </>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm text-slate-300">Share link created. Copy and send it to your recipient.</p>
+              <p className="text-sm text-slate-300">
+                Share link created.
+                {recipient.trim() ? ` Intended for ${recipient.trim()}.` : ' Copy and send it to your recipient.'}
+              </p>
               <div className="flex gap-2">
                 <input
                   readOnly

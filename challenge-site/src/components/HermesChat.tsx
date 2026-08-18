@@ -271,6 +271,18 @@ function turnIdFromAssistantMessageId(messageId: string): string | null {
   return turnId && turnId !== 'intro' ? turnId : null;
 }
 
+function resolveShareAnchorFromMessage(message: Pick<Message, 'id' | 'text' | 'turnId'>): {
+  turnId: string | null;
+  label: string;
+} {
+  const turnId = message.turnId
+    ?? turnIdFromAssistantMessageId(message.id)
+    ?? turnIdFromMessageId(message.id);
+  const firstLine = message.text.split('\n')[0].trim();
+  const label = firstLine.length > 60 ? `${firstLine.slice(0, 57)}…` : firstLine || 'From this message';
+  return { turnId, label };
+}
+
 /** Hide draft CTA on assistant turns already filed in the ledger or with a record after them. */
 function suppressSubmittedContributionHints(
   messages: Message[],
@@ -444,6 +456,8 @@ export default function HermesChat({
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
+  const [shareAnchorTurnId, setShareAnchorTurnId] = useState<string | null>(null);
+  const [shareAnchorLabel, setShareAnchorLabel] = useState<string | null>(null);
   const [threadsLoading, setThreadsLoading] = useState(false);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
@@ -2017,6 +2031,18 @@ export default function HermesChat({
   const isThreadOwner = threadAccess?.roles?.includes('owner')
     ?? threads.some((t) => t.id === activeThreadId);
 
+  const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }) => {
+    setShareAnchorTurnId(anchor?.turnId ?? null);
+    setShareAnchorLabel(anchor?.label ?? null);
+    setShareWizardOpen(true);
+  }, []);
+
+  const closeShareWizard = useCallback(() => {
+    setShareWizardOpen(false);
+    setShareAnchorTurnId(null);
+    setShareAnchorLabel(null);
+  }, []);
+
   const promptStack = usePromptStack({
     messages,
     scrollContainerRef,
@@ -2100,7 +2126,7 @@ export default function HermesChat({
             {isThreadOwner ? (
               <button
                 type="button"
-                onClick={() => setShareWizardOpen(true)}
+                onClick={() => openShareWizard()}
                 className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-900"
               >
                 Share
@@ -2109,10 +2135,10 @@ export default function HermesChat({
           </div>
         ) : null}
 
-        <div className="relative min-h-0 flex-1">
+        <div className="group/promptstack relative min-h-0 flex-1">
           <div
             ref={scrollContainerRef}
-            className={`h-full overflow-y-auto ${!compact ? 'md:pr-14' : ''}`}
+            className="h-full overflow-y-auto"
           >
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">
             {threadLoadError ? (
@@ -2345,6 +2371,15 @@ export default function HermesChat({
                       >
                         {correctionBusyId === message.id ? 'Saving…' : 'Teach Hermes'}
                       </button>
+                      {isThreadOwner && activeThreadId ? (
+                        <button
+                          type="button"
+                          onClick={() => openShareWizard(resolveShareAnchorFromMessage(message))}
+                          className="rounded-md border border-slate-600 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-800/80"
+                        >
+                          Share
+                        </button>
+                      ) : null}
                     </div>
                   ) : null}
                   {message.sender === 'assistant'
@@ -2383,7 +2418,16 @@ export default function HermesChat({
                     && canControlThread
                     && !isLoading
                     && !message.contributionRecord ? (
-                    <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                    <div className="mt-2 flex justify-end gap-2 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                      {isThreadOwner && activeThreadId ? (
+                        <button
+                          type="button"
+                          onClick={() => openShareWizard(resolveShareAnchorFromMessage(message))}
+                          className="rounded-md border border-white/30 px-2 py-0.5 text-[10px] text-white/90 hover:bg-cyan-600/60"
+                        >
+                          Share
+                        </button>
+                      ) : null}
                       <button
                         type="button"
                         onClick={() => startEditMessage(message.id, message.text)}
@@ -2431,13 +2475,10 @@ export default function HermesChat({
             <div ref={messagesEndRef} />
           </div>
           </div>
-          {!compact ? (
+          {!compact && promptStack.visible ? (
             <HermesPromptStackRail
               items={promptStack.items}
-              totalHeight={promptStack.totalHeight}
               activeIndex={promptStack.activeIndex}
-              collapsed={promptStack.collapsed}
-              onCollapsedChange={promptStack.setCollapsed}
               onJump={promptStack.jumpTo}
             />
           ) : null}
@@ -2575,7 +2616,9 @@ export default function HermesChat({
           open={shareWizardOpen}
           threadId={activeThreadId}
           threadTitle={threads.find((t) => t.id === activeThreadId)?.title || 'Conversation'}
-          onClose={() => setShareWizardOpen(false)}
+          anchorTurnId={shareAnchorTurnId}
+          anchorLabel={shareAnchorLabel}
+          onClose={closeShareWizard}
           onShared={() => void loadSharedThreads()}
         />
       ) : null}

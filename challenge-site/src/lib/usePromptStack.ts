@@ -15,8 +15,6 @@ export type PromptStackItem = {
   offsetTop: number;
 };
 
-export const PROMPT_STACK_COLLAPSED_KEY = 'hermes:promptStackCollapsed';
-
 /** Derive prompt-stack items from chat messages (pure, testable). */
 export function buildPromptStackItems(
   messages: PromptStackMessage[],
@@ -59,15 +57,6 @@ export function activePromptIndexFromOffsets(
   return active;
 }
 
-function readCollapsedPreference(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return window.localStorage.getItem(PROMPT_STACK_COLLAPSED_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
 export function usePromptStack({
   messages,
   scrollContainerRef,
@@ -79,25 +68,11 @@ export function usePromptStack({
   messageRefs: React.MutableRefObject<Map<string, HTMLElement>>;
   enabled?: boolean;
 }) {
-  const [collapsed, setCollapsedState] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [offsetsVersion, setOffsetsVersion] = useState(0);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    setCollapsedState(readCollapsedPreference());
-  }, []);
-
-  const setCollapsed = useCallback((value: boolean) => {
-    setCollapsedState(value);
-    try {
-      window.localStorage.setItem(PROMPT_STACK_COLLAPSED_KEY, value ? '1' : '0');
-    } catch {
-      // ignore
-    }
-  }, []);
 
   const measureOffsets = useCallback((): Map<string, number> => {
     const container = scrollContainerRef.current;
@@ -120,11 +95,6 @@ export function usePromptStack({
     () => buildPromptStackItems(messages, messageOffsets),
     [messages, messageOffsets],
   );
-
-  const totalHeight = useMemo(() => {
-    const container = scrollContainerRef.current;
-    return container?.scrollHeight ?? 1;
-  }, [scrollContainerRef, offsetsVersion, messages]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -183,11 +153,8 @@ export function usePromptStack({
 
   return {
     items,
-    totalHeight,
     activeIndex,
     highlightId,
-    collapsed,
-    setCollapsed,
     jumpTo,
     visible: enabled && items.length > 0,
   };

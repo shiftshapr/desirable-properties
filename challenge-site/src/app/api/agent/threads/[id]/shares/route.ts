@@ -41,6 +41,8 @@ export async function POST(request: Request, { params }: RouteParams) {
         visibility: body.visibility || 'full',
         senderRetainsWatch: body.senderRetainsWatch !== false,
         expiresInHours: body.expiresInHours ?? 24,
+        anchorTurnId: body.anchorTurnId || undefined,
+        recipientEmail: body.recipientEmail || undefined,
       }),
       signal: AbortSignal.timeout(15000),
     },
