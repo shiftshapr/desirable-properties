@@ -265,14 +265,21 @@ def upsert_sync_marker(text: str, marker_line: str) -> str:
     return '\n'.join(lines) + '\n'
 
 
+GOVHUB_HTTP_USER_AGENT = 'desirable-properties-rail-sync/1.0'
+
+
+def _http_headers(*, accept: str) -> dict[str, str]:
+    return {'Accept': accept, 'User-Agent': GOVHUB_HTTP_USER_AGENT}
+
+
 def _http_json(url: str, *, timeout: float = 30.0) -> dict[str, Any]:
-    req = urllib.request.Request(url, headers={'Accept': 'application/json'})
+    req = urllib.request.Request(url, headers=_http_headers(accept='application/json'))
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode('utf-8'))
 
 
 def _http_text(url: str, *, timeout: float = 30.0) -> str:
-    req = urllib.request.Request(url, headers={'Accept': 'text/plain'})
+    req = urllib.request.Request(url, headers=_http_headers(accept='text/plain'))
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read().decode('utf-8')
 
@@ -286,7 +293,7 @@ _READER_REV_RE = re.compile(
 def _fetch_revision_from_reader(hub_url: str, ml_number: str, *, timeout: float = 30.0) -> str:
     """Best-effort revision label from the public reader page."""
     read_url = f'{hub_url.rstrip("/")}/doc/draft/{ml_number}/read/'
-    req = urllib.request.Request(read_url, headers={'Accept': 'text/html'})
+    req = urllib.request.Request(read_url, headers=_http_headers(accept='text/html'))
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             html = resp.read().decode('utf-8', errors='replace')
