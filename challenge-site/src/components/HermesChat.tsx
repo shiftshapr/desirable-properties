@@ -2135,7 +2135,7 @@ export default function HermesChat({
           </div>
         ) : null}
 
-        <div className="group/promptstack relative min-h-0 flex-1">
+        <div className="relative min-h-0 flex-1">
           <div
             ref={scrollContainerRef}
             className="h-full overflow-y-auto"

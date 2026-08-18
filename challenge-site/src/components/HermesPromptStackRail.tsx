@@ -1,6 +1,7 @@
 'use client';
 
 import type { PromptStackItem } from '@/lib/usePromptStack';
+import { useCursorActivityVisibility } from '@/lib/useCursorActivityVisibility';
 
 type HermesPromptStackRailProps = {
   items: PromptStackItem[];
@@ -17,14 +18,19 @@ export default function HermesPromptStackRail({
   activeIndex,
   onJump,
 }: HermesPromptStackRailProps) {
+  const { visible, targetPointerHandlers } = useCursorActivityVisibility(items.length > 0);
+
   if (!items.length) return null;
 
   return (
     <div
-      className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-8 opacity-0 transition-opacity duration-200 md:flex group-hover/promptstack:opacity-100 group-focus-within/promptstack:opacity-100"
-      aria-hidden
+      className={`pointer-events-none fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 transition-opacity duration-300 md:flex ${
+        visible ? 'opacity-100' : 'opacity-0'
+      }`}
+      aria-hidden={!visible}
+      {...targetPointerHandlers}
     >
-      <div className="pointer-events-auto flex h-full w-full items-center justify-end pr-1.5">
+      <div className="pointer-events-auto flex items-center justify-end">
         <div
           className="flex flex-col items-end"
           style={{ gap: BAR_GAP_PX }}
