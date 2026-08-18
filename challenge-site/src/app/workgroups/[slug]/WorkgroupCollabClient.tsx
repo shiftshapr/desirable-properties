@@ -287,6 +287,7 @@ export default function WorkgroupCollabClient({
                 workgroupName={workgroup.name}
                 dpId={dpId}
                 signedIn={signedIn}
+                sharerUserId={user?.id ?? null}
                 initialMessages={teaserMessages}
                 initialIsMember
                 initialCanPost={initialCanPost || isMember}

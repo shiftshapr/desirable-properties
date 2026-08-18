@@ -14,12 +14,15 @@ import {
   assessHermesAmbient,
   fetchHermesHands,
 } from '@/lib/hermes-ambient-api';
-import { fetchWorkgroupMessages, postWorkgroupMessage } from '@/lib/workgroup-collab-api';
+import { fetchWorkgroupMemberRoster, fetchWorkgroupMessages, postWorkgroupMessage } from '@/lib/workgroup-collab-api';
 import { isHermesExperimentalInstructionsDismissed } from '@/lib/hermes-experimental-instructions';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { HermesHand } from '@/lib/hermes-ambient-types';
 import UserDateTime from '@/components/UserDateTime';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
+import {
+  canMemberShareMessage,
+} from '@/lib/workgroup-share-restrictions';
 
 type Props = {
   workgroupId: string;
@@ -27,6 +30,7 @@ type Props = {
   workgroupName: string;
   dpId: string | null;
   signedIn: boolean;
+  sharerUserId?: string | null;
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
   initialCanPost?: boolean;
@@ -38,6 +42,7 @@ export default function WorkgroupChatPanel({
   workgroupName,
   dpId,
   signedIn,
+  sharerUserId = null,
   initialMessages = [],
   initialIsMember = false,
   initialCanPost = false,
@@ -59,6 +64,20 @@ export default function WorkgroupChatPanel({
   const [adoptDraft, setAdoptDraft] = useState<{ key: number; text: string } | null>(null);
   const [hermesInstructionsOpen, setHermesInstructionsOpen] = useState(false);
   const [shareMessage, setShareMessage] = useState<WorkgroupMessage | null>(null);
+  const [sharerPositions, setSharerPositions] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isMember || !sharerUserId) {
+      setSharerPositions([]);
+      return;
+    }
+    void fetchWorkgroupMemberRoster(workgroupId)
+      .then((data) => {
+        const self = (data.members || []).find((m) => m.user_id === sharerUserId);
+        setSharerPositions(self?.positions ?? []);
+      })
+      .catch(() => setSharerPositions([]));
+  }, [isMember, sharerUserId, workgroupId]);
 
   useEffect(() => {
     if (!isHermesExperimentalInstructionsDismissed()) {
@@ -199,8 +218,13 @@ export default function WorkgroupChatPanel({
       <DpDialogHost />
       <WorkgroupMessageShareModal
         open={Boolean(shareMessage)}
+        workgroupId={workgroupId}
         workgroupName={workgroupName}
+        messageId={shareMessage?.id || ''}
         messagePreview={shareMessage?.body || ''}
+        messageAuthorUserId={shareMessage?.author_user_id || ''}
+        sharerUserId={sharerUserId || ''}
+        sharerPositions={sharerPositions}
         onClose={() => setShareMessage(null)}
       />
       <HermesExperimentalInstructionsModal
@@ -275,7 +299,8 @@ export default function WorkgroupChatPanel({
                         onOpen={handleOpenHand}
                       />
                     ))}
-                    {isMember ? (
+                    {isMember && sharerUserId
+                    && canMemberShareMessage(msg, sharerUserId, sharerPositions) ? (
                       <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
                         <button
                           type="button"

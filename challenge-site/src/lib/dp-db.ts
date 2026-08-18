@@ -396,6 +396,21 @@ CREATE TABLE IF NOT EXISTS dp_hermes_hand (
 CREATE INDEX IF NOT EXISTS dp_hermes_hand_workgroup ON dp_hermes_hand (workgroup_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS dp_hermes_hand_owner ON dp_hermes_hand (owner_user_id, workgroup_id, status);
 CREATE INDEX IF NOT EXISTS dp_hermes_hand_message ON dp_hermes_hand (workgroup_id, trigger_message_id);
+
+CREATE TABLE IF NOT EXISTS dp_workgroup_message_share (
+  id UUID PRIMARY KEY,
+  workgroup_id TEXT NOT NULL,
+  anchor_message_id TEXT NOT NULL,
+  sharer_user_id TEXT NOT NULL,
+  recipient_user_id TEXT NOT NULL,
+  sendee_role TEXT NOT NULL DEFAULT 'watcher',
+  note TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS dp_wg_share_workgroup ON dp_workgroup_message_share (workgroup_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS dp_wg_share_recipient ON dp_workgroup_message_share (recipient_user_id, workgroup_id, status);
 `;
 
 let pool: pg.Pool | null = null;

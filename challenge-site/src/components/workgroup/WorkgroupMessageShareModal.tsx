@@ -1,38 +1,141 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { DpDialog } from '@/components/DpDialog';
+import {
+  fetchWorkgroupMemberRoster,
+  shareWorkgroupMessage,
+  type WorkgroupRosterMember,
+} from '@/lib/workgroup-collab-api';
+import type { WorkgroupShareRole } from '@/lib/workgroup-share-restrictions';
 
 type WorkgroupMessageShareModalProps = {
   open: boolean;
+  workgroupId: string;
   workgroupName: string;
+  messageId: string;
   messagePreview: string;
+  messageAuthorUserId: string;
+  sharerUserId: string;
+  sharerPositions: string[];
   onClose: () => void;
+  onShared?: () => void;
 };
 
+function isShareFacilitator(positions: string[]): boolean {
+  return positions.some((p) => ['chair', 'co_lead', 'facilitator'].includes(p));
+}
+
+function canShareMessage(
+  messageAuthorUserId: string,
+  sharerUserId: string,
+  messagePreview: string,
+  positions: string[],
+): boolean {
+  if (isShareFacilitator(positions)) return true;
+  if (messageAuthorUserId === sharerUserId) return true;
+  return /^✋\s+\*Hermes \([^)]+\)\*/.test(String(messagePreview ?? '').trimStart());
+}
+
+function canGrantControl(
+  messageAuthorUserId: string,
+  sharerUserId: string,
+  positions: string[],
+): boolean {
+  if (isShareFacilitator(positions)) return true;
+  return messageAuthorUserId === sharerUserId;
+}
+
 /**
- * MVP workgroup message share UI.
- * TODO(workgroup-share): Restrict recipients to workgroup members only; wire delivery API
- * (distinct from Hermes agent thread shares). Discuss whether guests / invitees get read-only links.
+ * Workgroup chat share: internal member-to-member only (no public links).
+ * See WORKGROUP-SHARE.md for restriction rules.
  */
 export default function WorkgroupMessageShareModal({
   open,
+  workgroupId,
   workgroupName,
+  messageId,
   messagePreview,
+  messageAuthorUserId,
+  sharerUserId,
+  sharerPositions,
   onClose,
+  onShared,
 }: WorkgroupMessageShareModalProps) {
-  const [recipient, setRecipient] = useState('');
+  const [members, setMembers] = useState<WorkgroupRosterMember[]>([]);
+  const [recipientQuery, setRecipientQuery] = useState('');
+  const [selectedRecipient, setSelectedRecipient] = useState<WorkgroupRosterMember | null>(null);
+  const [sendeeRole, setSendeeRole] = useState<WorkgroupShareRole>('watcher');
   const [note, setNote] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [rosterError, setRosterError] = useState<string | null>(null);
+
+  const allowShare = canShareMessage(
+    messageAuthorUserId,
+    sharerUserId,
+    messagePreview,
+    sharerPositions,
+  );
+  const allowControl = canGrantControl(messageAuthorUserId, sharerUserId, sharerPositions);
 
   useEffect(() => {
     if (!open) return;
-    setRecipient('');
+    setRecipientQuery('');
+    setSelectedRecipient(null);
+    setSendeeRole('watcher');
     setNote('');
-  }, [open]);
+    setError(null);
+    setRosterError(null);
+    void fetchWorkgroupMemberRoster(workgroupId)
+      .then((data) => setMembers(data.members || []))
+      .catch((err) => {
+        setMembers([]);
+        setRosterError(err instanceof Error ? err.message : 'Could not load members');
+      });
+  }, [open, workgroupId]);
+
+  const suggestions = useMemo(() => {
+    const q = recipientQuery.trim().toLowerCase();
+    const pool = members.filter((m) => m.user_id !== sharerUserId);
+    if (!q) return pool.slice(0, 8);
+    return pool
+      .filter((m) => m.user_name.toLowerCase().includes(q))
+      .slice(0, 8);
+  }, [members, recipientQuery, sharerUserId]);
 
   if (!open) return null;
 
   const preview = messagePreview.split('\n')[0].trim();
   const anchorLabel = preview.length > 80 ? `${preview.slice(0, 77)}…` : preview || 'This message';
+
+  const submitShare = async () => {
+    const recipient = selectedRecipient?.user_name || recipientQuery.trim();
+    if (!recipient) {
+      setError('Choose a workgroup member');
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      await shareWorkgroupMessage(workgroupId, messageId, {
+        recipient,
+        sendeeRole,
+        note: note.trim() || undefined,
+      });
+      await DpDialog.alert({
+        title: 'Shared with member',
+        message: `This thread point was shared with ${selectedRecipient?.user_name || recipient}. They receive watch access from this message forward.`,
+        variant: 'success',
+      });
+      onShared?.();
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Share failed');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
@@ -52,21 +155,99 @@ export default function WorkgroupMessageShareModal({
         </div>
 
         <div className="space-y-4 px-5 py-4">
-          <p className="text-xs text-slate-500">
-            Workgroup share MVP: intended for members of this workgroup. Delivery and permission rules are lighter than Hermes agent thread shares until the workgroup share API ships.
-          </p>
+          {!allowShare ? (
+            <p className="rounded-lg border border-amber-800/60 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
+              You can only share messages you authored or Hermes messages marked shareable.
+              Facilitators may share any visible message.
+            </p>
+          ) : null}
+
+          {error ? (
+            <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+              {error}
+            </p>
+          ) : null}
+
+          {rosterError ? (
+            <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+              {rosterError}
+            </p>
+          ) : null}
 
           <label className="block text-sm text-slate-300">
-            Share with
+            Share with (workgroup member)
             <input
               type="text"
-              value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
-              placeholder="Member email or username"
+              value={selectedRecipient ? selectedRecipient.user_name : recipientQuery}
+              onChange={(e) => {
+                setSelectedRecipient(null);
+                setRecipientQuery(e.target.value);
+              }}
+              placeholder="Start typing a member name"
               className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500"
               autoComplete="off"
+              list="wg-share-members"
+              disabled={!allowShare || busy}
             />
+            <datalist id="wg-share-members">
+              {members
+                .filter((m) => m.user_id !== sharerUserId)
+                .map((m) => (
+                  <option key={m.user_id} value={m.user_name} />
+                ))}
+            </datalist>
+            {suggestions.length > 0 && !selectedRecipient && recipientQuery.trim() ? (
+              <ul className="mt-1 max-h-32 overflow-y-auto rounded-lg border border-slate-700 bg-slate-950">
+                {suggestions.map((m) => (
+                  <li key={m.user_id}>
+                    <button
+                      type="button"
+                      className="block w-full px-3 py-2 text-left text-sm text-slate-200 hover:bg-slate-800"
+                      onClick={() => {
+                        setSelectedRecipient(m);
+                        setRecipientQuery(m.user_name);
+                      }}
+                    >
+                      {m.user_name}
+                      {m.is_facilitator ? (
+                        <span className="ml-2 text-xs text-violet-300">facilitator</span>
+                      ) : null}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </label>
+
+          <fieldset className="space-y-2" disabled={!allowShare || busy}>
+            <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
+              Recipient permissions
+            </legend>
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
+              <input
+                type="radio"
+                name="wg-share-role"
+                checked={sendeeRole === 'watcher'}
+                onChange={() => setSendeeRole('watcher')}
+              />
+              Watch only (default)
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
+              <input
+                type="radio"
+                name="wg-share-role"
+                checked={sendeeRole === 'controller'}
+                onChange={() => setSendeeRole('controller')}
+                disabled={!allowControl}
+              />
+              Control (can post from this anchor)
+            </label>
+            {!allowControl ? (
+              <p className="text-xs text-slate-500">
+                Control is limited to facilitators or the message author.
+              </p>
+            ) : null}
+          </fieldset>
 
           <label className="block text-sm text-slate-300">
             Optional note
@@ -76,27 +257,34 @@ export default function WorkgroupMessageShareModal({
               rows={2}
               className="mt-1.5 w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500"
               placeholder="Why you are sharing this point in the thread"
+              disabled={!allowShare || busy}
             />
           </label>
         </div>
 
-        <div className="flex flex-wrap justify-end gap-2 border-t border-slate-800 px-5 py-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            disabled={!recipient.trim()}
-            onClick={onClose}
-            className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
-            title="TODO: POST workgroup message share when API is available"
-          >
-            Share (coming soon)
-          </button>
+        <div className="space-y-2 border-t border-slate-800 px-5 py-4">
+          <p className="text-xs text-slate-500">
+            Internal workgroup collab only. Recipients must be active members. Public expiring
+            links are disabled. History starts at this message (anchor floor enforced).
+            Private Hermes notes stay within the workgroup roster.
+          </p>
+          <div className="flex flex-wrap justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              disabled={!allowShare || busy || (!selectedRecipient && !recipientQuery.trim())}
+              onClick={() => void submitShare()}
+              className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
+            >
+              {busy ? 'Sharing…' : 'Share with member'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

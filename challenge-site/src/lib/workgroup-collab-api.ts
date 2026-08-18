@@ -155,3 +155,44 @@ export async function fetchWorkgroupPositions(): Promise<{
 }
 
 export type { WorkgroupCollabSummary };
+
+export type WorkgroupRosterMember = {
+  user_id: string;
+  user_name: string;
+  positions: string[];
+  is_facilitator: boolean;
+};
+
+export async function fetchWorkgroupMemberRoster(
+  workgroupId: string,
+): Promise<{ members: WorkgroupRosterMember[] }> {
+  const res = await fetch(
+    `/api/workgroups/${encodeURIComponent(workgroupId)}/members/roster`,
+    { credentials: 'include', cache: 'no-store' },
+  );
+  return parseJson(res);
+}
+
+export async function shareWorkgroupMessage(
+  workgroupId: string,
+  messageId: string,
+  input: {
+    recipient: string;
+    sendeeRole?: 'watcher' | 'controller';
+    note?: string;
+  },
+): Promise<{
+  share: { id: string; sendeeRole: string };
+  recipient: { user_id: string; user_name: string };
+}> {
+  const res = await fetch(
+    `/api/workgroups/${encodeURIComponent(workgroupId)}/messages/${encodeURIComponent(messageId)}/shares`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    },
+  );
+  return parseJson(res);
+}
