@@ -99,11 +99,6 @@ export function usePromptStack({
     [messages, messageOffsets],
   );
 
-  const totalHeight = useMemo(() => {
-    const container = scrollContainerRef.current;
-    return Math.max(container?.scrollHeight ?? 1, 1);
-  }, [scrollContainerRef, offsetsVersion, messages]);
-
   useEffect(() => {
     if (!enabled) return;
     const container = scrollContainerRef.current;
@@ -161,7 +156,6 @@ export function usePromptStack({
 
   return {
     items,
-    totalHeight,
     activeIndex,
     highlightId,
     jumpTo,

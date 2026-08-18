@@ -2486,7 +2486,6 @@ export default function HermesChat({
           {!compact && promptStack.visible ? (
             <HermesPromptStackRail
               items={promptStack.items}
-              totalHeight={promptStack.totalHeight}
               activeIndex={promptStack.activeIndex}
               onJump={promptStack.jumpTo}
             />
