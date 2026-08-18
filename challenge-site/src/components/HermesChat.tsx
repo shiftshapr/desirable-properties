@@ -8,7 +8,9 @@ import HermesContributionCTA from '@/components/HermesContributionCTA';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
+import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
+import { usePromptStack } from '@/lib/usePromptStack';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
@@ -475,6 +477,8 @@ export default function HermesChat({
       : `sess-${Date.now()}`,
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const messageRefs = useRef<Map<string, HTMLElement>>(new Map());
   const contributionPanelRef = useRef<HTMLDivElement>(null);
   const draftingMessageIdRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1933,6 +1937,13 @@ export default function HermesChat({
     }
   };
 
+  const promptStack = usePromptStack({
+    messages,
+    scrollContainerRef,
+    messageRefs,
+    enabled: !compact,
+  });
+
   const shellClass = compact
     ? 'relative flex h-full min-h-[420px] w-full flex-col bg-slate-950'
     : 'relative flex h-full min-h-0 w-full flex-1 flex-col bg-slate-950 md:pl-[260px] lg:pl-[280px]';
@@ -1992,7 +2003,11 @@ export default function HermesChat({
           <p className="text-sm font-medium text-white">Hermes</p>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="relative min-h-0 flex-1">
+          <div
+            ref={scrollContainerRef}
+            className={`h-full overflow-y-auto ${!compact ? 'md:pr-14' : ''}`}
+          >
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">
             {threadLoadError ? (
               <p className="rounded-lg border border-rose-800/60 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
@@ -2031,7 +2046,16 @@ export default function HermesChat({
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`group flex w-full ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                id={`hermes-msg-${message.id}`}
+                ref={(el) => {
+                  if (el) messageRefs.current.set(message.id, el);
+                  else messageRefs.current.delete(message.id);
+                }}
+                className={`group flex w-full scroll-mt-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'} ${
+                  promptStack.highlightId === message.id
+                    ? 'rounded-2xl ring-2 ring-cyan-400/70 ring-offset-2 ring-offset-slate-950'
+                    : ''
+                }`}
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
@@ -2297,6 +2321,17 @@ export default function HermesChat({
             )}
             <div ref={messagesEndRef} />
           </div>
+          </div>
+          {!compact ? (
+            <HermesPromptStackRail
+              items={promptStack.items}
+              totalHeight={promptStack.totalHeight}
+              activeIndex={promptStack.activeIndex}
+              collapsed={promptStack.collapsed}
+              onCollapsedChange={promptStack.setCollapsed}
+              onJump={promptStack.jumpTo}
+            />
+          ) : null}
         </div>
 
         <div className="shrink-0 border-t border-slate-800 bg-slate-950">
