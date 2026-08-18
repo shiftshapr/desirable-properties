@@ -9,10 +9,14 @@ export interface HermesThreadSummary {
   surface?: string;
   pinned?: boolean;
   updatedAt?: string | null;
+  shared?: boolean;
+  shareRole?: string | null;
+  ownerName?: string | null;
 }
 
 interface HermesThreadSidebarProps {
   threads: HermesThreadSummary[];
+  sharedThreads?: HermesThreadSummary[];
   activeThreadId: string | null;
   loading?: boolean;
   signedIn: boolean;
@@ -52,6 +56,7 @@ function sortThreads(threads: HermesThreadSummary[]): HermesThreadSummary[] {
 
 export default function HermesThreadSidebar({
   threads,
+  sharedThreads = [],
   activeThreadId,
   loading = false,
   signedIn,
@@ -150,6 +155,164 @@ export default function HermesThreadSidebar({
 
   const threadActionsEnabled = signedIn && (onRename || onPin || onDelete);
 
+  const filteredShared = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const base = q
+      ? sharedThreads.filter((thread) =>
+        (thread.title || 'Conversation').toLowerCase().includes(q)
+        || (thread.ownerName || '').toLowerCase().includes(q),
+      )
+      : sharedThreads;
+    return sortThreads(base);
+  }, [query, sharedThreads]);
+
+  const renderThreadRow = (thread: HermesThreadSummary, opts?: { shared?: boolean }) => {
+    const active = thread.id === activeThreadId;
+    const dateLabel = formatThreadDate(thread.updatedAt);
+    const menuOpen = menuThreadId === thread.id;
+    const shared = opts?.shared;
+
+    if (renamingThreadId === thread.id) {
+      return (
+        <li key={thread.id} className="px-1 py-0.5">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void commitRename();
+            }}
+          >
+            <input
+              ref={renameInputRef}
+              type="text"
+              value={renameValue}
+              onChange={(e) => setRenameValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  setRenamingThreadId(null);
+                }
+              }}
+              onBlur={() => {
+                void commitRename();
+              }}
+              disabled={actionBusy}
+              maxLength={120}
+              className="w-full rounded-lg border border-cyan-700 bg-slate-950 px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-cyan-600"
+              aria-label="Conversation title"
+            />
+          </form>
+        </li>
+      );
+    }
+
+    return (
+      <li
+        key={thread.id}
+        className={`group relative ${menuOpen ? 'z-[100]' : 'z-0'}`}
+      >
+        <button
+          type="button"
+          onClick={() => {
+            onSelect(thread.id);
+            onClose?.();
+          }}
+          className={`w-full rounded-lg py-2.5 pl-3 pr-9 text-left transition ${
+            active
+              ? 'bg-slate-800 text-white'
+              : thread.pinned
+                ? 'bg-slate-800/40 text-slate-200 hover:bg-slate-800/70'
+                : 'text-slate-300 hover:bg-slate-800/70'
+          }`}
+        >
+          <span className="flex items-start gap-1.5">
+            {thread.pinned ? (
+              <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400" aria-hidden title="Pinned">
+                📌
+              </span>
+            ) : null}
+            {shared ? (
+              <span className="mt-0.5 shrink-0 text-[10px]" aria-hidden title={thread.shareRole || 'shared'}>
+                {thread.shareRole === 'controller' ? '✎' : '👁'}
+              </span>
+            ) : null}
+            <span className="line-clamp-2 text-sm leading-snug">
+              {thread.title || 'New conversation'}
+            </span>
+          </span>
+          {shared && thread.ownerName ? (
+            <span className="mt-0.5 block text-[10px] text-slate-500">from {thread.ownerName}</span>
+          ) : null}
+          {dateLabel ? (
+            <span className="mt-1 block text-[11px] text-slate-500 group-hover:text-slate-400">
+              {dateLabel}
+            </span>
+          ) : null}
+        </button>
+
+        {!shared && threadActionsEnabled ? (
+          <div className="absolute right-1 top-1/2 z-[110] -translate-y-1/2">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuThreadId(menuOpen ? null : thread.id);
+              }}
+              className={`rounded-md p-1 text-slate-500 transition hover:bg-slate-700 hover:text-slate-200 ${
+                menuOpen ? 'bg-slate-700 text-slate-200' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
+              }`}
+              aria-label="Conversation actions"
+              aria-expanded={menuOpen}
+            >
+              ⋯
+            </button>
+
+            {menuOpen ? (
+              <div
+                ref={menuRef}
+                className="absolute right-0 z-[120] mt-1 w-36 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
+                role="menu"
+              >
+                {onPin ? (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                    onClick={() => void togglePin(thread)}
+                  >
+                    {thread.pinned ? 'Unpin' : 'Pin'}
+                  </button>
+                ) : null}
+                {onRename ? (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                    onClick={() => startRename(thread)}
+                  >
+                    Rename
+                  </button>
+                ) : null}
+                {onDelete ? (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-rose-300 hover:bg-rose-950/50"
+                    onClick={() => {
+                      setMenuThreadId(null);
+                      setDeleteConfirmId(thread.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </li>
+    );
+  };
+
   return (
     <aside className="relative z-40 flex h-full min-h-0 w-full flex-col border-r border-slate-800 bg-slate-900">
       <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-3 py-3">
@@ -234,150 +397,33 @@ export default function HermesThreadSidebar({
           </div>
         ) : loading ? (
           <p className="px-2 py-3 text-xs text-slate-500">Loading conversations…</p>
-        ) : filteredThreads.length === 0 ? (
-          <p className="px-2 py-3 text-xs text-slate-500">
-            {query.trim() ? 'No conversations match your search.' : 'No conversations yet.'}
-          </p>
         ) : (
-          <ul className="space-y-0.5">
-            {filteredThreads.map((thread) => {
-              const active = thread.id === activeThreadId;
-              const dateLabel = formatThreadDate(thread.updatedAt);
-              const menuOpen = menuThreadId === thread.id;
-
-              if (renamingThreadId === thread.id) {
-                return (
-                  <li key={thread.id} className="px-1 py-0.5">
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        void commitRename();
-                      }}
-                    >
-                      <input
-                        ref={renameInputRef}
-                        type="text"
-                        value={renameValue}
-                        onChange={(e) => setRenameValue(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Escape') {
-                            e.preventDefault();
-                            setRenamingThreadId(null);
-                          }
-                        }}
-                        onBlur={() => {
-                          void commitRename();
-                        }}
-                        disabled={actionBusy}
-                        maxLength={120}
-                        className="w-full rounded-lg border border-cyan-700 bg-slate-950 px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-cyan-600"
-                        aria-label="Conversation title"
-                      />
-                    </form>
-                  </li>
-                );
-              }
-
-              return (
-                <li
-                  key={thread.id}
-                  className={`group relative ${menuOpen ? 'z-[100]' : 'z-0'}`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onSelect(thread.id);
-                      onClose?.();
-                    }}
-                    className={`w-full rounded-lg py-2.5 pl-3 pr-9 text-left transition ${
-                      active
-                        ? 'bg-slate-800 text-white'
-                        : thread.pinned
-                          ? 'bg-slate-800/40 text-slate-200 hover:bg-slate-800/70'
-                          : 'text-slate-300 hover:bg-slate-800/70'
-                    }`}
-                  >
-                    <span className="flex items-start gap-1.5">
-                      {thread.pinned ? (
-                        <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400" aria-hidden title="Pinned">
-                          📌
-                        </span>
-                      ) : null}
-                      <span className="line-clamp-2 text-sm leading-snug">
-                        {thread.title || 'New conversation'}
-                      </span>
-                    </span>
-                    {dateLabel ? (
-                      <span className="mt-1 block text-[11px] text-slate-500 group-hover:text-slate-400">
-                        {dateLabel}
-                      </span>
-                    ) : null}
-                  </button>
-
-                  {threadActionsEnabled ? (
-                    <div className="absolute right-1 top-1/2 z-[110] -translate-y-1/2">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMenuThreadId(menuOpen ? null : thread.id);
-                        }}
-                        className={`rounded-md p-1 text-slate-500 transition hover:bg-slate-700 hover:text-slate-200 ${
-                          menuOpen ? 'bg-slate-700 text-slate-200' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
-                        }`}
-                        aria-label="Conversation actions"
-                        aria-expanded={menuOpen}
-                      >
-                        ⋯
-                      </button>
-
-                      {menuOpen ? (
-                        <div
-                          ref={menuRef}
-                          className="absolute right-0 z-[120] mt-1 w-36 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
-                          role="menu"
-                        >
-                          {onPin ? (
-                            <button
-                              type="button"
-                              role="menuitem"
-                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
-                              onClick={() => void togglePin(thread)}
-                            >
-                              {thread.pinned ? 'Unpin' : 'Pin'}
-                            </button>
-                          ) : null}
-                          {onRename ? (
-                            <button
-                              type="button"
-                              role="menuitem"
-                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
-                              onClick={() => startRename(thread)}
-                            >
-                              Rename
-                            </button>
-                          ) : null}
-                          {onDelete ? (
-                            <button
-                              type="button"
-                              role="menuitem"
-                              className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-rose-300 hover:bg-rose-950/50"
-                              onClick={() => {
-                                setMenuThreadId(null);
-                                setDeleteConfirmId(thread.id);
-                              }}
-                            >
-                              Delete
-                            </button>
-                          ) : null}
-                        </div>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
+          <div className="space-y-4">
+            {filteredShared.length > 0 ? (
+              <div>
+                <p className="px-2 pb-1 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+                  Shared with me
+                </p>
+                <ul className="space-y-0.5">
+                  {filteredShared.map((thread) => renderThreadRow(thread, { shared: true }))}
+                </ul>
+              </div>
+            ) : null}
+            <div>
+              <p className="px-2 pb-1 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+                My conversations
+              </p>
+              {filteredThreads.length === 0 ? (
+                <p className="px-2 py-3 text-xs text-slate-500">
+                  {query.trim() ? 'No conversations match your search.' : 'No conversations yet.'}
+                </p>
+              ) : (
+                <ul className="space-y-0.5">
+                  {filteredThreads.map((thread) => renderThreadRow(thread))}
+                </ul>
+              )}
+            </div>
+          </div>
         )}
       </div>
 

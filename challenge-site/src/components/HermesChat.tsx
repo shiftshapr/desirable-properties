@@ -9,6 +9,7 @@ import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
+import HermesShareWizard from '@/components/HermesShareWizard';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { usePromptStack } from '@/lib/usePromptStack';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
@@ -93,6 +94,14 @@ interface Message {
   pendingSend?: boolean;
   sendError?: string | null;
 }
+
+type ThreadAccess = {
+  roles: string[];
+  canPrompt: boolean;
+  shareAnchorTurnId?: string | null;
+  visibilityAnchorTurnId?: string | null;
+  controllerContributorId?: string | null;
+};
 
 type SystemNotice = {
   text: string;
@@ -432,6 +441,9 @@ export default function HermesChat({
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
+  const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
+  const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
+  const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [threadsLoading, setThreadsLoading] = useState(false);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
@@ -521,19 +533,38 @@ export default function HermesChat({
     else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
   }, []);
 
+  const loadSharedThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
+    try {
+      const res = await fetch('/api/agent/shares');
+      if (!res.ok) return [];
+      const data = await res.json();
+      const list: HermesThreadSummary[] = (data.threads || []).map((t: HermesThreadSummary) => ({
+        ...t,
+        shared: true,
+      }));
+      setSharedThreads(list);
+      return list;
+    } catch {
+      return [];
+    }
+  }, []);
+
   const loadThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
     setThreadsLoading(true);
     try {
-      const res = await fetch('/api/agent/threads');
-      if (!res.ok) return [];
-      const data = await res.json();
+      const [ownedRes] = await Promise.all([
+        fetch('/api/agent/threads'),
+        loadSharedThreads(),
+      ]);
+      if (!ownedRes.ok) return [];
+      const data = await ownedRes.json();
       const threadList: HermesThreadSummary[] = data.threads || [];
       setThreads(threadList);
       return threadList;
     } finally {
       setThreadsLoading(false);
     }
-  }, []);
+  }, [loadSharedThreads]);
 
   const loadThread = useCallback(async (threadId: string) => {
     setThreadLoadError(null);
@@ -591,6 +622,7 @@ export default function HermesChat({
         sets,
       );
       setMessages(mergePendingUserMessagesIntoThread(hydrated, threadId));
+      setThreadAccess(data.thread?.access || null);
       const pending = loadPendingContributionDraft(threadId);
       if (pending?.draft) {
         const assistantTurnId = pending.assistantMessageId
@@ -650,6 +682,48 @@ export default function HermesChat({
   }, [signedIn, loadThreads, loadThread]);
 
   useEffect(() => {
+    if (!signedIn || typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const shareToken = params.get('share');
+    if (!shareToken) return;
+    void (async () => {
+      const res = await fetch('/api/agent/shares/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ linkToken: shareToken }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.threadId) {
+        await loadSharedThreads();
+        await loadThread(data.threadId);
+        setSystemNotice({
+          variant: 'success',
+          text: data.role === 'controller'
+            ? 'You now control this shared conversation.'
+            : 'You are watching this shared conversation.',
+        });
+        params.delete('share');
+        const next = `${window.location.pathname}${params.toString() ? `?${params}` : ''}`;
+        window.history.replaceState({}, '', next);
+      } else if (!res.ok) {
+        setSystemNotice({
+          variant: 'error',
+          text: data.error || 'Could not open shared conversation.',
+        });
+      }
+    })();
+  }, [signedIn, loadThread, loadSharedThreads]);
+
+  useEffect(() => {
+    if (!activeThreadId || threadAccess?.canPrompt) return;
+    if (!threadAccess?.roles?.includes('watcher') && !threadAccess?.roles?.includes('owner_watch')) return;
+    const interval = window.setInterval(() => {
+      void loadThread(activeThreadId);
+    }, 8000);
+    return () => window.clearInterval(interval);
+  }, [activeThreadId, threadAccess, loadThread]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading, contributionDraft]);
 
@@ -671,6 +745,7 @@ export default function HermesChat({
 
   const startNewConversation = () => {
     persistActiveThread(null);
+    setThreadAccess(null);
     clearPendingContributionDraft();
     setContributionSets([]);
     setContributionDraft(null);
@@ -1937,6 +2012,11 @@ export default function HermesChat({
     }
   };
 
+  const canControlThread = !threadAccess || threadAccess.canPrompt;
+  const isWatchingOnly = Boolean(threadAccess && !threadAccess.canPrompt);
+  const isThreadOwner = threadAccess?.roles?.includes('owner')
+    ?? threads.some((t) => t.id === activeThreadId);
+
   const promptStack = usePromptStack({
     messages,
     scrollContainerRef,
@@ -1951,6 +2031,7 @@ export default function HermesChat({
   const sidebar = (
     <HermesThreadSidebar
       threads={threads}
+      sharedThreads={sharedThreads}
       activeThreadId={activeThreadId}
       loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={signedIn}
@@ -2002,6 +2083,31 @@ export default function HermesChat({
           </button>
           <p className="text-sm font-medium text-white">Hermes</p>
         </div>
+
+        {activeThreadId && signedIn && !compact ? (
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-800 px-4 py-2">
+            <div className="min-w-0 text-sm text-slate-300">
+              {isWatchingOnly ? (
+                <span className="rounded-full border border-slate-600 bg-slate-900 px-2 py-0.5 text-[11px] text-slate-300">
+                  Watching
+                </span>
+              ) : threadAccess?.canPrompt && !isThreadOwner ? (
+                <span className="rounded-full border border-cyan-700/60 bg-cyan-950/40 px-2 py-0.5 text-[11px] text-cyan-200">
+                  Controlling
+                </span>
+              ) : null}
+            </div>
+            {isThreadOwner ? (
+              <button
+                type="button"
+                onClick={() => setShareWizardOpen(true)}
+                className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-900"
+              >
+                Share
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="relative min-h-0 flex-1">
           <div
@@ -2134,7 +2240,7 @@ export default function HermesChat({
                   ) : (
                     <>
                       <p className="whitespace-pre-wrap">{message.text}</p>
-                      {message.pendingSend ? (
+                      {message.pendingSend && canControlThread ? (
                         <div className="mt-2 space-y-1 border-t border-cyan-600/40 pt-2">
                           <p className="text-[11px] text-amber-100/90">
                             {message.sendError || 'Message not saved — Hermes did not receive this turn.'}
@@ -2204,7 +2310,7 @@ export default function HermesChat({
                           Response may be incomplete.
                         </p>
                       ) : null}
-                      {(message.truncated || looksTruncatedReply(message.text)) ? (
+                      {canControlThread && (message.truncated || looksTruncatedReply(message.text)) ? (
                         <button
                           type="button"
                           disabled={isLoading}
@@ -2214,6 +2320,7 @@ export default function HermesChat({
                           {assistantActionId === message.id && isLoading ? 'Continuing…' : 'Continue'}
                         </button>
                       ) : null}
+                      {canControlThread ? (
                       <button
                         type="button"
                         disabled={isLoading}
@@ -2222,6 +2329,7 @@ export default function HermesChat({
                       >
                         {assistantActionId === message.id && isLoading ? 'Regenerating…' : 'Regenerate'}
                       </button>
+                      ) : null}
                       <button
                         type="button"
                         onClick={() => void copyAssistantMarkdown(message.id, message.text)}
@@ -2272,6 +2380,7 @@ export default function HermesChat({
                   {message.sender === 'user'
                     && editingMessageId !== message.id
                     && signedIn
+                    && canControlThread
                     && !isLoading
                     && !message.contributionRecord ? (
                     <div className="mt-2 flex justify-end opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
@@ -2358,7 +2467,12 @@ export default function HermesChat({
               </ul>
             )}
             {attachError ? <p className="text-xs text-rose-300">{attachError}</p> : null}
-            <div className="flex items-end gap-2 rounded-2xl border border-slate-700 bg-slate-900/80 p-2 shadow-lg shadow-black/20">
+            {isWatchingOnly ? (
+              <p className="rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-xs text-slate-300">
+                Watching this conversation. You can fork from any visible message, but only the controller can send prompts.
+              </p>
+            ) : null}
+            <div className={`flex items-end gap-2 rounded-2xl border border-slate-700 bg-slate-900/80 p-2 shadow-lg shadow-black/20 ${isWatchingOnly ? 'opacity-60' : ''}`}>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -2370,7 +2484,7 @@ export default function HermesChat({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT}
+                disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT || isWatchingOnly}
                 className="flex h-10 shrink-0 items-center justify-center rounded-lg px-2 text-slate-400 hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                 title={`Upload ${HERMES_DOC_TYPES_LABEL}`}
                 aria-label="Attach file"
@@ -2386,13 +2500,15 @@ export default function HermesChat({
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={onKeyDown}
                   placeholder={
-                    signedIn
-                      ? 'Message Hermes…'
-                      : 'Sign in to send a message…'
+                    isWatchingOnly
+                      ? 'Watching — control required to send…'
+                      : signedIn
+                        ? 'Message Hermes…'
+                        : 'Sign in to send a message…'
                   }
                   className="max-h-40 min-h-10 w-full resize-none bg-transparent px-1 py-2.5 pb-10 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
                   rows={1}
-                  disabled={isLoading}
+                  disabled={isLoading || isWatchingOnly}
                 />
                 {signedIn ? (
                   <HermesComposerAiAssist
@@ -2410,7 +2526,8 @@ export default function HermesChat({
                 type="button"
                 onClick={signedIn ? (isLoading ? stopChat : () => void sendMessage()) : promptSignIn}
                 disabled={
-                  (!signedIn && loginBusy)
+                  isWatchingOnly
+                  || (!signedIn && loginBusy)
                   || (signedIn && !isLoading && !inputText.trim() && attachments.length === 0)
                 }
                 className={
@@ -2452,6 +2569,16 @@ export default function HermesChat({
         onCancel={closeTeachModal}
         onSave={saveTeaching}
       />
+
+      {activeThreadId && shareWizardOpen ? (
+        <HermesShareWizard
+          open={shareWizardOpen}
+          threadId={activeThreadId}
+          threadTitle={threads.find((t) => t.id === activeThreadId)?.title || 'Conversation'}
+          onClose={() => setShareWizardOpen(false)}
+          onShared={() => void loadSharedThreads()}
+        />
+      ) : null}
 
       <DpDialogHost />
     </div>
