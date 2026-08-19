@@ -37,6 +37,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       verifierId: session.verifierId,
       title: body.title,
       pinned: body.pinned,
+      archived: body.archived,
     }),
     signal: AbortSignal.timeout(15000),
   });

@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
 import HermesComposerAiAssist from '@/components/HermesComposerAiAssist';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
@@ -467,6 +468,8 @@ export default function HermesChat({
   starterLabel = null,
 }: HermesChatProps) {
   const { user: authUser, checked, login, loginBusy } = useAuth();
+  const searchParams = useSearchParams();
+  const archiveView = searchParams.get('archive') === '1';
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
@@ -587,9 +590,10 @@ export default function HermesChat({
   const loadThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
     setThreadsLoading(true);
     try {
+      const threadsUrl = archiveView ? '/api/agent/threads?archived=1' : '/api/agent/threads';
       const [ownedRes] = await Promise.all([
-        fetch('/api/agent/threads'),
-        loadSharedThreads(),
+        fetch(threadsUrl),
+        archiveView ? Promise.resolve(null) : loadSharedThreads(),
       ]);
       if (!ownedRes.ok) return [];
       const data = await ownedRes.json();
@@ -599,7 +603,7 @@ export default function HermesChat({
     } finally {
       setThreadsLoading(false);
     }
-  }, [loadSharedThreads]);
+  }, [archiveView, loadSharedThreads]);
 
   const loadThread = useCallback(async (threadId: string) => {
     setThreadLoadError(null);
@@ -859,6 +863,32 @@ export default function HermesChat({
       prev.map((thread) => (thread.id === threadId ? { ...thread, pinned } : thread)),
     );
   }, []);
+
+  const archiveThread = useCallback(async (threadId: string, archived: boolean) => {
+    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ archived }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setSystemNotice({
+        variant: 'error',
+        text: data.error || (archived ? 'Could not archive conversation' : 'Could not restore conversation'),
+      });
+      return;
+    }
+    setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
+    if (activeThreadIdRef.current === threadId) {
+      persistActiveThread(null);
+      setContributionDraft(null);
+      setAttachments([]);
+      setAttachError(null);
+      setMessages([
+        { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
+      ]);
+    }
+  }, [persistActiveThread]);
 
   const copyAssistantMarkdown = useCallback(async (messageId: string, text: string) => {
     try {
@@ -2089,17 +2119,30 @@ export default function HermesChat({
     ? 'relative flex h-full min-h-[420px] w-full flex-col bg-slate-950'
     : 'relative flex h-full min-h-0 w-full flex-1 flex-col bg-slate-950 md:pl-[260px] lg:pl-[280px]';
 
+  const sharedByMeThreads = useMemo(
+    () => threads.filter((thread) => (thread.activeShareCount || 0) > 0),
+    [threads],
+  );
+
+  const ownedSidebarThreads = useMemo(
+    () => threads.filter((thread) => (thread.activeShareCount || 0) === 0),
+    [threads],
+  );
+
   const sidebar = (
     <HermesThreadSidebar
-      threads={threads}
-      sharedThreads={sharedThreads}
+      threads={archiveView ? threads : ownedSidebarThreads}
+      sharedWithMeThreads={sharedThreads}
+      sharedByMeThreads={archiveView ? [] : sharedByMeThreads}
       activeThreadId={activeThreadId}
       loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={signedIn}
+      archiveView={archiveView}
       onSelect={loadThread}
       onCreate={startNewConversation}
       onRename={signedIn ? renameThread : undefined}
-      onPin={signedIn ? pinThread : undefined}
+      onPin={signedIn && !archiveView ? pinThread : undefined}
+      onArchive={signedIn ? archiveThread : undefined}
       onDelete={signedIn ? deleteThread : undefined}
       onSignIn={promptSignIn}
       onClose={() => setSidebarOpen(false)}

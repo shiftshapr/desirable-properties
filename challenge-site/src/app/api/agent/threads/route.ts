@@ -3,14 +3,18 @@ import { readSession } from '@/lib/auth-session';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await readSession();
   if (!session) {
     return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const archived = searchParams.get('archived');
+  const archivedQuery = archived === '1' || archived === 'true' ? '&archived=true' : '';
+
   const upstream = await fetch(
-    `${getHermesChatUrl()}/api/hermes/threads?verifierId=${encodeURIComponent(session.verifierId)}`,
+    `${getHermesChatUrl()}/api/hermes/threads?verifierId=${encodeURIComponent(session.verifierId)}${archivedQuery}`,
     { headers: hermesUpstreamHeaders(), signal: AbortSignal.timeout(15000) },
   );
   const data = await upstream.json();
