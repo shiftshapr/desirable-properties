@@ -244,6 +244,8 @@ function dpChipLabel(dpNum: number): string {
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 /** Matches Tailwind `max-h-40` on the composer textarea. */
 const COMPOSER_MAX_HEIGHT_PX = 160;
+/** Matches Tailwind `min-h-16` – keeps the AI FAB from overlapping the first text line. */
+const COMPOSER_MIN_HEIGHT_PX = 64;
 
 const CONTINUE_PROMPT =
   'Continue your previous reply from exactly where you stopped. Do not repeat content you already wrote. Complete any unfinished numbered items, tables, or sentences and end with proper punctuation.';
@@ -550,7 +552,10 @@ export default function HermesChat({
     const el = composerRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    const next = Math.min(el.scrollHeight, COMPOSER_MAX_HEIGHT_PX);
+    const next = Math.max(
+      COMPOSER_MIN_HEIGHT_PX,
+      Math.min(el.scrollHeight, COMPOSER_MAX_HEIGHT_PX),
+    );
     el.style.height = `${next}px`;
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
   }, []);
@@ -2625,7 +2630,7 @@ export default function HermesChat({
                         ? 'Message Hermes…'
                         : 'Sign in to send a message…'
                   }
-                  className="max-h-40 min-h-10 w-full resize-none bg-transparent px-1 py-2.5 pb-10 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
+                  className="max-h-40 min-h-16 w-full resize-none bg-transparent px-1 py-2.5 pr-14 pb-2 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
                   rows={1}
                   disabled={isLoading || isWatchingOnly}
                 />

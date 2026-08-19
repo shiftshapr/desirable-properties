@@ -79,6 +79,8 @@ type Props = {
   promptInfoContext?: { dpId?: string | null; isDiscovery?: boolean };
   /** When always, show the AI FAB without requiring textarea focus (e.g. rich editor body). */
   showFabWhen?: 'focused' | 'always';
+  /** FAB corner inside the field wrapper (right keeps the cursor start clear in chat composers). */
+  fabAlign?: 'left' | 'right';
 };
 
 function getSelection(textarea: HTMLTextAreaElement | null, fallbackValue: string): GenerateContext {
@@ -113,6 +115,7 @@ export default function ComposeFieldAiAssist({
   onEmbeddedClose,
   promptInfoContext,
   showFabWhen = 'focused',
+  fabAlign = 'left',
 }: Props) {
   const menuId = useId();
   const [focused, setFocused] = useState(embedded && defaultOpen);
@@ -507,10 +510,12 @@ export default function ComposeFieldAiAssist({
         aria-controls={menuId}
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => (panelOpen && !menuOpen ? closePanel() : openMenu())}
-        className={`absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900/95 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
+        className={`absolute bottom-2 z-10 inline-flex items-center gap-1 rounded-full border border-cyan-600/55 bg-slate-900/95 px-2.5 py-1 text-xs font-bold text-cyan-300 shadow-md transition-all duration-300 ${
+          fabAlign === 'right' ? 'right-2' : 'left-2'
+        } ${
           showFab
             ? fabFaded
-              ? 'pointer-events-auto translate-y-0 opacity-25'
+              ? 'pointer-events-none translate-y-0 opacity-25'
               : 'pointer-events-auto translate-y-0 opacity-100'
             : 'pointer-events-none translate-y-1 opacity-0'
         }`}

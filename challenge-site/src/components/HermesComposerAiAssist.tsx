@@ -67,6 +67,7 @@ export default function HermesComposerAiAssist({
       onValueChange={onValueChange}
       disabled={disabled}
       mode="chatReply"
+      fabAlign="right"
       onSendResponse={onSendResponse}
       promptOptions={COMPOSE_AI_INITIAL_PROMPTS}
       refinementOptions={[...COMPOSE_AI_REFINEMENTS, COMPOSE_AI_STRENGTHEN]}
