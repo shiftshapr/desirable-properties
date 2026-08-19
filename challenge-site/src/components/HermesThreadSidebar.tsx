@@ -99,6 +99,7 @@ export default function HermesThreadSidebar({
   const [renamingThreadId, setRenamingThreadId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [copiedThreadId, setCopiedThreadId] = useState<string | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
   const [headerInfoOpen, setHeaderInfoOpen] = useState(false);
   const renameInputRef = useRef<HTMLInputElement>(null);
@@ -210,6 +211,35 @@ export default function HermesThreadSidebar({
     }
   };
 
+  const copyChatId = async (thread: HermesThreadSummary) => {
+    const writeClipboard = async () => {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(thread.id);
+        return;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = thread.id;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (!ok) throw new Error('copy failed');
+    };
+
+    try {
+      await writeClipboard();
+      setCopiedThreadId(thread.id);
+      window.setTimeout(() => {
+        setCopiedThreadId((current) => (current === thread.id ? null : current));
+        setMenuThreadId((current) => (current === thread.id ? null : current));
+      }, 1500);
+    } catch {
+      setMenuThreadId(null);
+    }
+  };
+
   const threadActionsEnabled = signedIn && (onRename || onPin || onArchive || onDelete);
 
   const renderThreadRow = (
@@ -221,7 +251,8 @@ export default function HermesThreadSidebar({
     const menuOpen = menuThreadId === thread.id;
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
-    const showActions = threadActionsEnabled && (!shared || sharedByMe);
+    const showOwnerActions = threadActionsEnabled && (!shared || sharedByMe);
+    const showActions = signedIn;
 
     if (renamingThreadId === thread.id) {
       return (
@@ -335,7 +366,7 @@ export default function HermesThreadSidebar({
                 className="absolute right-0 z-[120] mt-1 w-36 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
                 role="menu"
               >
-                {!archiveView && onPin ? (
+                {showOwnerActions && !archiveView && onPin ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -345,7 +376,7 @@ export default function HermesThreadSidebar({
                     {thread.pinned ? 'Unpin' : 'Pin'}
                   </button>
                 ) : null}
-                {onRename ? (
+                {showOwnerActions && onRename ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -355,7 +386,7 @@ export default function HermesThreadSidebar({
                     Rename
                   </button>
                 ) : null}
-                {onArchive ? (
+                {showOwnerActions && onArchive ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -365,7 +396,7 @@ export default function HermesThreadSidebar({
                     {archiveView ? 'Restore' : 'Archive'}
                   </button>
                 ) : null}
-                {onDelete ? (
+                {showOwnerActions && onDelete ? (
                   <button
                     type="button"
                     role="menuitem"
@@ -378,6 +409,14 @@ export default function HermesThreadSidebar({
                     Delete
                   </button>
                 ) : null}
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800"
+                  onClick={() => void copyChatId(thread)}
+                >
+                  {copiedThreadId === thread.id ? 'Copied' : 'Copy Chat ID'}
+                </button>
               </div>
             ) : null}
           </div>
