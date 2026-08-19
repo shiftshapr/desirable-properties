@@ -3,10 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const DEFAULT_IDLE_MS = 1200;
 
 /**
- * Show UI on cursor movement; fade after idle timeout.
+ * Show UI on cursor movement inside an optional root element; fade after idle timeout.
  * Stays visible while the target element is hovered (e.g. prompt stack rail).
  */
-export function useCursorActivityVisibility(enabled = true, idleMs = DEFAULT_IDLE_MS) {
+export function useCursorActivityVisibility(
+  enabled = true,
+  idleMs = DEFAULT_IDLE_MS,
+  activityRootRef?: React.RefObject<HTMLElement | null>,
+) {
   const [activityVisible, setActivityVisible] = useState(false);
   const [targetHovered, setTargetHovered] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -33,17 +37,19 @@ export function useCursorActivityVisibility(enabled = true, idleMs = DEFAULT_IDL
       return;
     }
 
+    const root = activityRootRef?.current ?? document;
+
     const onMouseMove = () => {
       setActivityVisible(true);
       scheduleHide();
     };
 
-    document.addEventListener('mousemove', onMouseMove, { passive: true });
+    root.addEventListener('mousemove', onMouseMove, { passive: true });
     return () => {
-      document.removeEventListener('mousemove', onMouseMove);
+      root.removeEventListener('mousemove', onMouseMove);
       clearTimer();
     };
-  }, [enabled, scheduleHide, clearTimer]);
+  }, [enabled, scheduleHide, clearTimer, activityRootRef]);
 
   const onTargetEnter = useCallback(() => {
     setTargetHovered(true);

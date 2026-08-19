@@ -10,6 +10,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesShareWizard from '@/components/HermesShareWizard';
+import HermesShareStatus from '@/components/HermesShareStatus';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { usePromptStack } from '@/lib/usePromptStack';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
@@ -101,6 +102,7 @@ type ThreadAccess = {
   shareAnchorTurnId?: string | null;
   visibilityAnchorTurnId?: string | null;
   controllerContributorId?: string | null;
+  controllerDisplayName?: string | null;
 };
 
 type SystemNotice = {
@@ -2120,22 +2122,37 @@ export default function HermesChat({
 
         {activeThreadId && signedIn && !compact ? (
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-800 px-4 py-2">
-            <div className="min-w-0 text-sm text-slate-300">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-sm text-slate-300">
               {isWatchingOnly ? (
-                <span className="rounded-full border border-slate-600 bg-slate-900 px-2 py-0.5 text-[11px] text-slate-300">
+                <span className="shrink-0 rounded-full border border-slate-600 bg-slate-900 px-2 py-0.5 text-[11px] text-slate-300">
                   Watching
+                  {threadAccess?.controllerDisplayName
+                    ? ` · ${threadAccess.controllerDisplayName} has control`
+                    : ''}
                 </span>
               ) : threadAccess?.canPrompt && !isThreadOwner ? (
-                <span className="rounded-full border border-cyan-700/60 bg-cyan-950/40 px-2 py-0.5 text-[11px] text-cyan-200">
+                <span className="shrink-0 rounded-full border border-cyan-700/60 bg-cyan-950/40 px-2 py-0.5 text-[11px] text-cyan-200">
                   Controlling
                 </span>
+              ) : null}
+              {isThreadOwner ? (
+                <HermesShareStatus
+                  key={activeThreadId}
+                  threadId={activeThreadId}
+                  controllerName={
+                    threadAccess?.controllerContributorId && threadAccess?.controllerDisplayName
+                      ? threadAccess.controllerDisplayName
+                      : null
+                  }
+                  onManageShare={() => openShareWizard()}
+                />
               ) : null}
             </div>
             {isThreadOwner ? (
               <button
                 type="button"
                 onClick={() => openShareWizard()}
-                className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-900"
+                className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-900"
               >
                 Share
               </button>
@@ -2191,19 +2208,19 @@ export default function HermesChat({
                   if (el) messageRefs.current.set(message.id, el);
                   else messageRefs.current.delete(message.id);
                 }}
-                className={`group flex w-full scroll-mt-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'} ${
-                  promptStack.highlightId === message.id
-                    ? 'rounded-2xl ring-2 ring-cyan-400/70 ring-offset-2 ring-offset-slate-950'
-                    : ''
-                }`}
+                className={`group flex w-full scroll-mt-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
                     message.sender === 'user'
-                      ? 'bg-cyan-700 text-white'
+                      ? `bg-cyan-700 text-white${
+                          promptStack.highlightId === message.id ? ' outline outline-1 outline-cyan-300/60' : ''
+                        }`
                       : message.contributionRecord
                         ? 'border border-emerald-700/50 bg-emerald-950/25 text-slate-100'
-                        : 'text-slate-100'
+                        : `text-slate-100${
+                            promptStack.highlightId === message.id ? ' bg-slate-800/40 outline outline-1 outline-cyan-400/40' : ''
+                          }`
                   }`}
                   title={
                     message.sender === 'user' && editingMessageId !== message.id
@@ -2488,6 +2505,7 @@ export default function HermesChat({
               items={promptStack.items}
               activeIndex={promptStack.activeIndex}
               onJump={promptStack.jumpTo}
+              activityRootRef={scrollContainerRef}
             />
           ) : null}
         </div>

@@ -12,6 +12,8 @@ export interface HermesThreadSummary {
   shared?: boolean;
   shareRole?: string | null;
   ownerName?: string | null;
+  controllerName?: string | null;
+  activeShareCount?: number;
 }
 
 interface HermesThreadSidebarProps {
@@ -234,6 +236,10 @@ export default function HermesThreadSidebar({
               <span className="mt-0.5 shrink-0 text-[10px]" aria-hidden title={thread.shareRole || 'shared'}>
                 {thread.shareRole === 'controller' ? '✎' : '👁'}
               </span>
+            ) : thread.activeShareCount && thread.activeShareCount > 0 ? (
+              <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400/80" aria-hidden title="Shared with others">
+                ↗
+              </span>
             ) : null}
             <span className="line-clamp-2 text-sm leading-snug">
               {thread.title || 'New conversation'}
@@ -241,6 +247,11 @@ export default function HermesThreadSidebar({
           </span>
           {shared && thread.ownerName ? (
             <span className="mt-0.5 block text-[10px] text-slate-500">from {thread.ownerName}</span>
+          ) : null}
+          {shared && thread.controllerName && thread.shareRole !== 'controller' ? (
+            <span className="mt-0.5 block text-[10px] text-amber-400/80">
+              {thread.controllerName} has control
+            </span>
           ) : null}
           {dateLabel ? (
             <span className="mt-1 block text-[11px] text-slate-500 group-hover:text-slate-400">
