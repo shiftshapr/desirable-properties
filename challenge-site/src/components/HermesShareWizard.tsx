@@ -5,6 +5,7 @@ import { DpDialog } from '@/components/DpDialog';
 
 export type ThreadShareVisibility = 'full' | 'from_share_point';
 export type ThreadShareRole = 'watcher' | 'controller';
+export type ThreadShareKind = 'live' | 'fork_snapshot';
 
 type HermesShareWizardProps = {
   open: boolean;
@@ -15,7 +16,7 @@ type HermesShareWizardProps = {
   /** Short label for the anchor point shown in the modal. */
   anchorLabel?: string | null;
   onClose: () => void;
-  onShared?: (result: { linkUrl: string; shareId: string }) => void;
+  onShared?: (result: { linkUrl?: string; shareId: string; directDelivered?: boolean }) => void;
 };
 
 export default function HermesShareWizard({
@@ -38,6 +39,8 @@ export default function HermesShareWizard({
   const [error, setError] = useState<string | null>(null);
   const [linkUrl, setLinkUrl] = useState<string | null>(null);
   const [shareId, setShareId] = useState<string | null>(null);
+  const [shareThreadKind, setShareThreadKind] = useState<ThreadShareKind>('live');
+  const [directDelivered, setDirectDelivered] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -48,6 +51,8 @@ export default function HermesShareWizard({
     setLinkUrl(null);
     setShareId(null);
     setCopied(false);
+    setDirectDelivered(false);
+    setShareThreadKind(anchorTurnId ? 'live' : 'live');
   }, [open, anchorTurnId, threadId]);
 
   if (!open) return null;
@@ -70,13 +75,19 @@ export default function HermesShareWizard({
           expiresInHours,
           anchorTurnId: visibility === 'from_share_point' ? anchorTurnId : undefined,
           recipientEmail: recipient.trim() || undefined,
+          shareThreadKind: anchorTurnId && shareThreadKind === 'fork_snapshot' ? 'fork_snapshot' : 'live',
         }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Could not create share');
       setLinkUrl(data.linkUrl || null);
       setShareId(data.share?.id || null);
-      onShared?.({ linkUrl: data.linkUrl, shareId: data.share?.id });
+      setDirectDelivered(Boolean(data.directDelivered));
+      onShared?.({
+        linkUrl: data.linkUrl,
+        shareId: data.share?.id,
+        directDelivered: Boolean(data.directDelivered),
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Share failed');
     } finally {
@@ -144,7 +155,7 @@ export default function HermesShareWizard({
             </p>
           ) : null}
 
-          {!linkUrl ? (
+          {!shareId ? (
             <>
               <label className="block text-sm text-slate-300">
                 Share with
@@ -157,9 +168,43 @@ export default function HermesShareWizard({
                   autoComplete="off"
                 />
                 <span className="mt-1 block text-xs text-slate-500">
-                  Optional for link-only sharing. We store the intended recipient for delivery and audit (invite email TODO).
+                  Known Hermes users receive the share directly. Otherwise we create a link for you to copy.
                 </span>
               </label>
+
+              {anchorTurnId ? (
+                <fieldset className="space-y-2">
+                  <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                    Thread mode
+                  </legend>
+                  <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700 p-3 hover:border-slate-600">
+                    <input
+                      type="radio"
+                      name="shareKind"
+                      checked={shareThreadKind === 'live'}
+                      onChange={() => setShareThreadKind('live')}
+                      className="mt-1"
+                    />
+                    <span>
+                      <span className="block text-sm text-white">Live thread</span>
+                      <span className="block text-xs text-slate-400">Recipient follows new messages as you continue.</span>
+                    </span>
+                  </label>
+                  <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700 p-3 hover:border-slate-600">
+                    <input
+                      type="radio"
+                      name="shareKind"
+                      checked={shareThreadKind === 'fork_snapshot'}
+                      onChange={() => setShareThreadKind('fork_snapshot')}
+                      className="mt-1"
+                    />
+                    <span>
+                      <span className="block text-sm text-white">Fork snapshot</span>
+                      <span className="block text-xs text-slate-400">Frozen copy through the share point. Your live thread stays private.</span>
+                    </span>
+                  </label>
+                </fieldset>
+              ) : null}
 
               <fieldset className="space-y-2">
                 <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
@@ -218,7 +263,7 @@ export default function HermesShareWizard({
                     checked={sendeeRole === 'controller'}
                     onChange={() => setSendeeRole('controller')}
                   />
-                  Control (can send prompts)
+                  Control (can send prompts after accepting)
                 </label>
               </fieldset>
 
@@ -248,6 +293,15 @@ export default function HermesShareWizard({
                 No one can truncate or regenerate turns before the share anchor. To change earlier history, fork instead.
               </p>
             </>
+          ) : directDelivered ? (
+            <div className="space-y-3">
+              <p className="text-sm text-slate-300">
+                Shared directly with {recipient.trim()}.
+                {sendeeRole === 'controller'
+                  ? ' They must accept control before sending prompts.'
+                  : ' They can open it from Shared with me.'}
+              </p>
+            </div>
           ) : (
             <div className="space-y-3">
               <p className="text-sm text-slate-300">
@@ -280,7 +334,7 @@ export default function HermesShareWizard({
           >
             Close
           </button>
-          {linkUrl && shareId ? (
+          {shareId ? (
             <button
               type="button"
               disabled={busy}
@@ -296,7 +350,7 @@ export default function HermesShareWizard({
               onClick={() => void createShare()}
               className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
             >
-              {busy ? 'Creating…' : 'Create link'}
+              {busy ? 'Sharing…' : 'Share'}
             </button>
           )}
         </div>

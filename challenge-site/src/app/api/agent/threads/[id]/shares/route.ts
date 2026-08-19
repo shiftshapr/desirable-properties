@@ -46,6 +46,7 @@ export async function POST(request: Request, { params }: RouteParams) {
         workgroupId: body.workgroupId || undefined,
         shareMode: body.shareMode || undefined,
         recipientVerifierId: body.recipientVerifierId || undefined,
+        shareThreadKind: body.shareThreadKind === 'fork_snapshot' ? 'fork_snapshot' : 'live',
       }),
       signal: AbortSignal.timeout(15000),
     },

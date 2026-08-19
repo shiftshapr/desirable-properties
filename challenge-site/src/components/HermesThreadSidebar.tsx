@@ -234,7 +234,7 @@ export default function HermesThreadSidebar({
             ) : null}
             {shared ? (
               <span className="mt-0.5 shrink-0 text-[10px]" aria-hidden title={thread.shareRole || 'shared'}>
-                {thread.shareRole === 'controller' ? '✎' : '👁'}
+                {thread.shareRole === 'controller' ? '✎' : thread.shareRole === 'control_invited' ? '⏳' : '👁'}
               </span>
             ) : thread.activeShareCount && thread.activeShareCount > 0 ? (
               <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400/80" aria-hidden title="Shared with others">

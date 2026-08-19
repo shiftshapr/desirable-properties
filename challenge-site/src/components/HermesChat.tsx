@@ -11,6 +11,9 @@ import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesShareWizard from '@/components/HermesShareWizard';
 import HermesShareStatus from '@/components/HermesShareStatus';
+import HermesMessageShareNotice from '@/components/HermesMessageShareNotice';
+import HermesControlPanel from '@/components/HermesControlPanel';
+import { useThreadShares } from '@/lib/useThreadShares';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { usePromptStack } from '@/lib/usePromptStack';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
@@ -103,6 +106,8 @@ type ThreadAccess = {
   visibilityAnchorTurnId?: string | null;
   controllerContributorId?: string | null;
   controllerDisplayName?: string | null;
+  watchRole?: string | null;
+  controlInvitePending?: boolean;
 };
 
 type SystemNotice = {
@@ -468,6 +473,7 @@ export default function HermesChat({
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [shareAnchorTurnId, setShareAnchorTurnId] = useState<string | null>(null);
   const [shareAnchorLabel, setShareAnchorLabel] = useState<string | null>(null);
+  const [shareRefreshKey, setShareRefreshKey] = useState(0);
   const [threadsLoading, setThreadsLoading] = useState(false);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
@@ -722,9 +728,13 @@ export default function HermesChat({
         await loadThread(data.threadId);
         setSystemNotice({
           variant: 'success',
-          text: data.role === 'controller'
-            ? 'You now control this shared conversation.'
-            : 'You are watching this shared conversation.',
+          text: data.controlInvitePending
+            ? 'Shared conversation opened. Accept control to send prompts.'
+            : data.role === 'controller' || data.intendedRole === 'controller'
+              ? 'You now control this shared conversation.'
+              : data.role === 'control_invited'
+                ? 'Shared conversation opened. Accept control to send prompts.'
+                : 'You are watching this shared conversation.',
         });
         params.delete('share');
         const next = `${window.location.pathname}${params.toString() ? `?${params}` : ''}`;
@@ -2040,6 +2050,16 @@ export default function HermesChat({
   const isWatchingOnly = Boolean(threadAccess && !threadAccess.canPrompt);
   const isThreadOwner = threadAccess?.roles?.includes('owner')
     ?? threads.some((t) => t.id === activeThreadId);
+  const { activeShares: threadActiveShares, refresh: refreshThreadShares } = useThreadShares(
+    activeThreadId,
+    Boolean(isThreadOwner && activeThreadId && signedIn),
+  );
+
+  const bumpShareRefresh = useCallback(() => {
+    setShareRefreshKey((k) => k + 1);
+    void refreshThreadShares();
+    void loadSharedThreads();
+  }, [refreshThreadShares, loadSharedThreads]);
 
   const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }) => {
     setShareAnchorTurnId(anchor?.turnId ?? null);
@@ -2139,6 +2159,7 @@ export default function HermesChat({
                 <HermesShareStatus
                   key={activeThreadId}
                   threadId={activeThreadId}
+                  refreshKey={shareRefreshKey}
                   controllerName={
                     threadAccess?.controllerContributorId && threadAccess?.controllerDisplayName
                       ? threadAccess.controllerDisplayName
@@ -2158,6 +2179,19 @@ export default function HermesChat({
               </button>
             ) : null}
           </div>
+        ) : null}
+
+        {activeThreadId && signedIn && !compact ? (
+          <HermesControlPanel
+            threadId={activeThreadId}
+            controlInvitePending={Boolean(threadAccess?.controlInvitePending)}
+            isWatchingOnly={isWatchingOnly}
+            canModerateRequests={Boolean(isThreadOwner || (threadAccess?.canPrompt && !threadAccess?.controlInvitePending))}
+            onControlChanged={() => {
+              void loadThread(activeThreadId);
+              bumpShareRefresh();
+            }}
+          />
         ) : null}
 
         <div className="relative min-h-0 flex-1">
@@ -2355,6 +2389,7 @@ export default function HermesChat({
                   {message.sender === 'assistant'
                     && message.id !== 'intro'
                     && !isContributionRecordHint(message.contributionHint) ? (
+                    <>
                     <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-700/60 pt-2">
                       {(message.truncated || looksTruncatedReply(message.text)) ? (
                         <p className="mb-1 w-full text-[11px] text-amber-200/90">
@@ -2406,6 +2441,14 @@ export default function HermesChat({
                         </button>
                       ) : null}
                     </div>
+                    {isThreadOwner && activeThreadId ? (
+                      <HermesMessageShareNotice
+                        shares={threadActiveShares}
+                        turnId={resolveShareAnchorFromMessage(message).turnId}
+                        onManage={() => openShareWizard(resolveShareAnchorFromMessage(message))}
+                      />
+                    ) : null}
+                    </>
                   ) : null}
                   {message.sender === 'assistant'
                     && isContributionRecordHint(message.contributionHint) ? (
@@ -2443,7 +2486,8 @@ export default function HermesChat({
                     && canControlThread
                     && !isLoading
                     && !message.contributionRecord ? (
-                    <div className="mt-2 flex justify-end gap-2 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                    <div className="mt-2 flex flex-col items-end gap-2 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                      <div className="flex justify-end gap-2">
                       {isThreadOwner && activeThreadId ? (
                         <button
                           type="button"
@@ -2460,6 +2504,14 @@ export default function HermesChat({
                       >
                         Edit
                       </button>
+                      </div>
+                      {isThreadOwner && activeThreadId ? (
+                        <HermesMessageShareNotice
+                          shares={threadActiveShares}
+                          turnId={resolveShareAnchorFromMessage(message).turnId}
+                          onManage={() => openShareWizard(resolveShareAnchorFromMessage(message))}
+                        />
+                      ) : null}
                     </div>
                   ) : null}
                 </div>
@@ -2645,7 +2697,7 @@ export default function HermesChat({
           anchorTurnId={shareAnchorTurnId}
           anchorLabel={shareAnchorLabel}
           onClose={closeShareWizard}
-          onShared={() => void loadSharedThreads()}
+          onShared={() => bumpShareRefresh()}
         />
       ) : null}
 

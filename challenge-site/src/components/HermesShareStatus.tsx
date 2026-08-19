@@ -1,99 +1,38 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-
-export type ThreadShareActivity = {
-  id: string;
-  visibility: string;
-  anchorTurnId: string | null;
-  intendedRole: 'watcher' | 'controller';
-  senderRetainsWatch: boolean;
-  expiresAt: string | null;
-  createdAt: string | null;
-  status: string;
-  recipientEmail: string | null;
-  recipients: Array<{
-    displayName: string | null;
-    email: string | null;
-    role: string;
-    since: string | null;
-    hasControl: boolean;
-  }>;
-};
+import { useEffect } from 'react';
+import { describeShareActivity } from '@/lib/hermesShareActivity';
+import { useThreadShares } from '@/lib/useThreadShares';
 
 type HermesShareStatusProps = {
   threadId: string;
   controllerName?: string | null;
   onManageShare?: () => void;
+  /** Bump to force refresh after creating a share. */
+  refreshKey?: number;
 };
-
-function formatShareWhen(iso: string | null): string {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-}
-
-function recipientLabel(recipient: ThreadShareActivity['recipients'][number]): string {
-  return recipient.displayName || recipient.email || 'Someone';
-}
 
 export default function HermesShareStatus({
   threadId,
   controllerName,
   onManageShare,
+  refreshKey = 0,
 }: HermesShareStatusProps) {
-  const [shares, setShares] = useState<ThreadShareActivity[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { activeShares, loading, refresh } = useThreadShares(threadId, true);
 
-  const loadShares = useCallback(async () => {
-    if (!threadId) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/shares`);
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && Array.isArray(data.shares)) {
-        setShares(data.shares);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [threadId]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    void loadShares();
-    const timer = window.setInterval(() => {
-      void loadShares();
-    }, 12000);
-    return () => window.clearInterval(timer);
-  }, [loadShares]);
+    void refresh();
+  }, [refreshKey, refresh]);
 
-  const activeShares = shares.filter((s) => s.status === 'active');
   if (!loading && !activeShares.length && !controllerName) return null;
 
   const lines: string[] = [];
-
   if (controllerName) {
     lines.push(`${controllerName} has control`);
   }
-
   for (const share of activeShares) {
-    const opened = share.recipients.filter((r) => r.role !== 'owner_watch');
-    if (!opened.length) {
-      const target = share.recipientEmail ? ` · intended for ${share.recipientEmail}` : '';
-      const role = share.intendedRole === 'controller' ? 'control' : 'watch';
-      lines.push(`Share link active (${role})${target} · not opened yet`);
-      continue;
-    }
-    for (const recipient of opened) {
-      const roleLabel = recipient.hasControl
-        ? 'controlling'
-        : recipient.role === 'controller'
-          ? 'joined (control pending)'
-          : 'watching';
-      const since = recipient.since ? ` since ${formatShareWhen(recipient.since)}` : '';
-      lines.push(`${recipientLabel(recipient)} ${roleLabel}${since}`);
-    }
+    lines.push(...describeShareActivity(share));
   }
 
   if (!lines.length && loading) return null;
