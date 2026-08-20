@@ -33,7 +33,14 @@
         }
       ],
       "partners": ["project-liberty-institute", "project-liberty-labs"],
-      "externalPartners": []
+      "externalPartners": [],
+      "relatedDps": ["DP2", "DP4", "DP20", "DP8", "DP7"],
+      "pitch": {
+        "headline": "We made this page to ask whether we are thinking about Project Liberty's concerns in the right way.",
+        "lead": "You already published a mission: restore agency by giving people ownership and control of their personal data, and a people-centered internet rather than platform capture. We started from that public corpus. This is not a score of your work. It is a working draft so Alliance members can correct us, add sources, and weigh in on the Desirable Properties that sit next to what you already stand for.",
+        "ask": "Tell us what we missed. Then open the Desirable Properties tab, follow one interest, and leave a specific patch idea if the text is wrong or incomplete.",
+        "captureLine": "The commercial internet had no pause in which communities could write the rules before platforms arrived. We are treating this as that pause: get the people's coordination space right, then invite the commercial world to play by community rules."
+      }
     },
     {
       "slug": "project-liberty-institute",
@@ -73,7 +80,14 @@
           "url": "https://ethz.ch/",
           "note": "Named academic collaborator in Project Liberty public materials"
         }
-      ]
+      ],
+      "relatedDps": ["DP10", "DP14", "DP22", "DP12", "DP20", "DP4"],
+      "pitch": {
+        "headline": "Institute colleagues: we need your research and policy record in the properties, not a paraphrase of a press release.",
+        "lead": "Project Liberty Institute is named as the home of research, policy engagement, and DSNP stewardship with academic partners. This page is a request: does our reading of that public mandate line up with how you actually work? We will adjust the pitch as you correct it.",
+        "ask": "Point us at papers, hearings, and protocol notes we should treat as corpus. Then weigh in on the DPs below, especially where civic memory, transparency, and community AI governance are still too thin.",
+        "captureLine": "If research stays outside the rule-set, commercial products will write the defaults. Help us encode what you already know before that happens."
+      }
     },
     {
       "slug": "project-liberty-labs",
@@ -97,7 +111,14 @@
         }
       ],
       "partners": ["project-liberty", "project-liberty-institute"],
-      "externalPartners": []
+      "externalPartners": [],
+      "relatedDps": ["DP1", "DP5", "DP7", "DP4", "DP11", "DP13"],
+      "pitch": {
+        "headline": "Labs: we want Frequency and DSNP in the properties as infrastructure, not as a vendor story.",
+        "lead": "Your public mandate is decentralized identity infrastructure. This briefing asks whether the Desirable Properties currently protect the coordination space those protocols need, or whether they still sound like social-network policy. We will change the copy when you tell us it is wrong.",
+        "ask": "Confirm the public sources, then take one protocol concern into a DP and try a patch sentence. If the property would break Frequency or DSNP portability, that is exactly the comment we need.",
+        "captureLine": "Build the rails under community rules first. Invite commercial applications onto those rails after the export, naming, and containment tests are real."
+      }
     }
   ]
 }

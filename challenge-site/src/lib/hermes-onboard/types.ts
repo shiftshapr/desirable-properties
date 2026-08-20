@@ -9,6 +9,13 @@ export type ExternalPartner = {
   note?: string;
 };
 
+export type AlliancePitch = {
+  headline: string;
+  lead: string;
+  ask: string;
+  captureLine: string;
+};
+
 export type AllianceOrg = {
   slug: string;
   name: string;
@@ -23,6 +30,8 @@ export type AllianceOrg = {
   sources: AllianceSource[];
   partners: string[];
   externalPartners: ExternalPartner[];
+  relatedDps?: string[];
+  pitch?: AlliancePitch;
 };
 
 export type AllianceDirectory = {
@@ -75,6 +84,20 @@ export type NextStep = {
   status: 'open' | 'accepted' | 'done';
 };
 
+export type DpDirection = {
+  dpId: string;
+  dpName: string;
+  whyFromCorpus: string;
+  direction: string;
+  patchIdea: string;
+  hypothesis: boolean;
+  citations: Citation[];
+  chapterHref: string;
+  discussHref: string;
+  hermesHref: string;
+  workgroupHref: string;
+};
+
 export type BriefingVersion = {
   id: string;
   createdAt: string;
@@ -83,6 +106,7 @@ export type BriefingVersion = {
   ownLayer: { title: string; body: string };
   partnerLayer: { title: string; body: string };
   primitives: PrimitiveCopy[];
+  dpDirections: DpDirection[];
   nextSteps: NextStep[];
 };
 

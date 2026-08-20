@@ -39,7 +39,10 @@ async function payloadFor(slug: string, signedIn: boolean) {
   const org = requireOrg(slug);
   if (!org) return null;
   const session = await loadOnboardSession(slug);
-  const briefing = session.briefing || generateBriefing(org, session);
+  let briefing = session.briefing || generateBriefing(org, session);
+  if (!briefing.dpDirections?.length) {
+    briefing = generateBriefing(org, { ...session, briefing });
+  }
   const events = signedIn ? await listOnboardEvents(slug) : [];
   return {
     org: {

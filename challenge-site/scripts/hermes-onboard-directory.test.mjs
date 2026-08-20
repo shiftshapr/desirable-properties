@@ -29,7 +29,22 @@ test('Alliance directory is a valid public packet', () => {
     for (const partner of org.partners) {
       assert.ok(directory.orgs.some((row) => row.slug === partner), `missing partner ${partner}`);
     }
+    assert.ok(org.pitch?.headline);
+    assert.ok(org.pitch?.lead);
+    assert.ok(org.pitch?.ask);
+    assert.ok(org.pitch?.captureLine);
+    assert.ok(Array.isArray(org.relatedDps) && org.relatedDps.length > 0);
+    for (const dpId of org.relatedDps) {
+      assert.match(dpId, /^DP\d+$/);
+    }
   }
 
   assert.ok(slugs.has('project-liberty'));
+});
+
+test('onboard tab ids are linkable query values', () => {
+  const tabs = ['brief', 'dp', 'values', 'own', 'partners', 'primitives', 'rights', 'next', 'community'];
+  for (const tab of tabs) {
+    assert.equal(`/onboard/alliance/project-liberty?tab=${tab}`.includes(`tab=${tab}`), true);
+  }
 });

@@ -5,9 +5,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
 import { useAuth } from '@/lib/auth-context';
+import { defaultPitch } from '@/lib/hermes-onboard/dp-directions';
+import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
+import {
+  allianceTabHref,
+  ONBOARD_TABS,
+  parseOnboardTab,
+  type OnboardTabId,
+} from '@/lib/hermes-onboard/tabs';
 import type {
   AllianceOrg,
   BriefingMove,
+  DpDirection,
   ExternalPartner,
   NextStep,
   OnboardEvent,
@@ -25,27 +34,6 @@ type Payload = {
   signedIn: boolean;
 };
 
-type TabId =
-  | 'brief'
-  | 'values'
-  | 'own'
-  | 'partners'
-  | 'primitives'
-  | 'rights'
-  | 'next'
-  | 'community';
-
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'brief', label: 'Brief' },
-  { id: 'values', label: 'Values & mission' },
-  { id: 'own', label: 'Own layer' },
-  { id: 'partners', label: 'Partners' },
-  { id: 'primitives', label: 'Primitives' },
-  { id: 'rights', label: 'Rights & consent' },
-  { id: 'next', label: 'Next steps' },
-  { id: 'community', label: 'Community Chat' },
-];
-
 const LENS_LABEL: Record<string, string> = {
   capabilities: 'Capabilities',
   reach: 'Reach',
@@ -53,21 +41,40 @@ const LENS_LABEL: Record<string, string> = {
   impact: 'Impact',
 };
 
-export default function AllianceBriefingClient({ initial }: { initial: Payload }) {
+export default function AllianceBriefingClient({
+  initial,
+  initialTab = 'brief',
+}: {
+  initial: Payload;
+  initialTab?: OnboardTabId;
+}) {
   const { user, login, loginBusy } = useAuth();
   const [data, setData] = useState(initial);
-  const [tab, setTab] = useState<TabId>('brief');
+  const [tab, setTab] = useState<OnboardTabId>(initialTab);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.location.hash.replace('#', '') === 'community') setTab('community');
+    setTab(parseOnboardTab(new URLSearchParams(window.location.search).get('tab'), window.location.hash));
   }, []);
+
+  const selectTab = (id: OnboardTabId) => {
+    setTab(id);
+    if (typeof window === 'undefined') return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', id);
+    url.hash = '';
+    window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+  };
 
   const org = data.org;
   const session = data.session;
   const briefing = session.briefing;
+  const pitch = defaultPitch(org);
+  const dpDirections = briefing?.dpDirections?.length
+    ? briefing.dpDirections
+    : generateDpDirections(org);
   const signedIn = Boolean(user);
 
   const post = useCallback(
@@ -155,13 +162,19 @@ export default function AllianceBriefingClient({ initial }: { initial: Payload }
       </p>
       <header className="mt-4 border-b border-slate-800 pb-8">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
-          Alliance briefing
+          Invitation to weigh in
         </p>
         <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{org.name}</h1>
-        <p className="mt-3 max-w-3xl text-lg leading-relaxed text-slate-300">{org.mission}</p>
+        <p className="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-white">{pitch.headline}</p>
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300">{pitch.lead}</p>
+        <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300">{pitch.ask}</p>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">{pitch.captureLine}</p>
         <p className="mt-3 text-sm text-slate-500">
-          Public packet only. Hypothesis marks stay on generated moves until you confirm sources.
-          Hermes does not invent partners.
+          Public packet only. Hypothesis marks stay until you confirm sources. Each Alliance member
+          gets a different pitch so we can experiment. Direct link to this tab:{' '}
+          <Link href={allianceTabHref(org.slug, tab)} className="text-cyan-400 hover:text-cyan-200">
+            {allianceTabHref(org.slug, tab)}
+          </Link>
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <a
@@ -200,11 +213,14 @@ export default function AllianceBriefingClient({ initial }: { initial: Payload }
       {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
 
       <div className="mt-6 flex flex-wrap gap-2">
-        {TABS.map((item) => (
-          <button
+        {ONBOARD_TABS.map((item) => (
+          <Link
             key={item.id}
-            type="button"
-            onClick={() => setTab(item.id)}
+            href={allianceTabHref(org.slug, item.id)}
+            onClick={(e) => {
+              e.preventDefault();
+              selectTab(item.id);
+            }}
             className={`rounded-full px-3 py-1.5 text-sm ${
               tab === item.id
                 ? 'bg-cyan-800 text-white'
@@ -212,7 +228,7 @@ export default function AllianceBriefingClient({ initial }: { initial: Payload }
             }`}
           >
             {item.label}
-          </button>
+          </Link>
         ))}
       </div>
 
@@ -224,6 +240,14 @@ export default function AllianceBriefingClient({ initial }: { initial: Payload }
             onRegenerate={() => void run({ action: 'generate' })}
             onPin={(moveId) => void run({ action: 'pin-move', moveId })}
             onDismiss={(moveId) => void run({ action: 'dismiss-move', moveId })}
+          />
+        ) : null}
+        {tab === 'dp' ? (
+          <DpTab
+            org={org}
+            pitch={pitch}
+            directions={dpDirections}
+            onOpenCommunity={() => selectTab('community')}
           />
         ) : null}
         {tab === 'values' && briefing ? (
@@ -283,6 +307,92 @@ export default function AllianceBriefingClient({ initial }: { initial: Payload }
         ) : null}
       </div>
     </div>
+  );
+}
+
+function DpTab({
+  org,
+  pitch,
+  directions,
+  onOpenCommunity,
+}: {
+  org: AllianceOrg;
+  pitch: NonNullable<AllianceOrg['pitch']>;
+  directions: DpDirection[];
+  onOpenCommunity: () => void;
+}) {
+  return (
+    <section className="space-y-8">
+      <div>
+        <h2 className="text-xl font-semibold text-white">Weigh in on the Desirable Properties</h2>
+        <p className="mt-3 text-slate-300 leading-relaxed">{pitch.ask}</p>
+        <p className="mt-3 text-sm text-slate-400">
+          These directions are generated from {org.name}&apos;s public corpus, not from private
+          briefings. Each one is a hypothesis. Follow the interest that feels like your work. The
+          Hermes prompt and Discuss link are real contribution paths, not a brochure.
+        </p>
+      </div>
+      <div className="space-y-4">
+        {directions.map((row) => (
+          <article key={row.dpId} className="rounded-xl border border-slate-800 bg-slate-900/40 p-5">
+            <p className="text-xs uppercase tracking-wide text-cyan-400">
+              {row.dpId}
+              {row.hypothesis ? ' · hypothesis' : ''}
+            </p>
+            <h3 className="mt-1 text-lg font-semibold text-white">{row.dpName}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-300">{row.whyFromCorpus}</p>
+            <p className="mt-3 text-sm font-medium text-white">Direction to explore</p>
+            <p className="mt-1 text-sm leading-relaxed text-slate-300">{row.direction}</p>
+            <p className="mt-3 text-sm font-medium text-white">Candidate patch idea</p>
+            <p className="mt-1 text-sm leading-relaxed text-slate-300">{row.patchIdea}</p>
+            <ul className="mt-3 space-y-1 text-xs">
+              {row.citations.map((cite) => (
+                <li key={cite.url}>
+                  <a href={cite.url} className="text-cyan-400 hover:text-cyan-200" target="_blank" rel="noreferrer">
+                    Corpus: {cite.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href={row.hermesHref}
+                className="rounded-md bg-cyan-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-cyan-600"
+              >
+                Draft with Hermes
+              </Link>
+              <a
+                href={row.discussHref}
+                className="rounded-md border border-slate-600 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open chapter in Discuss
+              </a>
+              <Link
+                href={row.chapterHref}
+                className="rounded-md border border-slate-600 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800"
+              >
+                Challenge page
+              </Link>
+              <Link
+                href={row.workgroupHref}
+                className="rounded-md border border-slate-600 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800"
+              >
+                Workgroup
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p className="text-sm text-slate-400">
+        Want to work this as a group?{' '}
+        <button type="button" onClick={onOpenCommunity} className="text-cyan-300 hover:text-cyan-200">
+          Open Community Chat
+        </button>
+        .
+      </p>
+    </section>
   );
 }
 
@@ -457,7 +567,7 @@ function PartnersTab({
         {org.partnerOrgs.map((partner) => (
           <li key={partner.slug}>
             <Link
-              href={`/onboard/alliance/${partner.slug}`}
+              href={`/onboard/alliance/${partner.slug}?tab=dp`}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {partner.name}

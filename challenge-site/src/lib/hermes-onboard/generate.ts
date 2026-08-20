@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto';
+import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
 import { getAllianceOrg, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
+import { allianceTabHref } from '@/lib/hermes-onboard/tabs';
 import type {
   AllianceOrg,
   BriefingMove,
@@ -250,6 +252,7 @@ function nextStepsFor(
       title: 'Confirm the public source URLs Hermes may read',
       why: 'Hero cards stay marked hypothesis until sources are confirmed.',
       system: 'Subject packet',
+      href: allianceTabHref(org.slug, 'rights'),
       status: session?.confirmed.sources ? 'done' : 'open',
     },
     {
@@ -257,7 +260,16 @@ function nextStepsFor(
       title: 'Confirm or edit the partner list for the collaborative layer',
       why: 'The partner layer cannot be empty of names Hermes is allowed to cite.',
       system: 'Partners tab',
+      href: allianceTabHref(org.slug, 'partners'),
       status: session?.confirmed.partners ? 'done' : 'open',
+    },
+    {
+      id: 'weigh-in-dp',
+      title: `Weigh in on Desirable Properties tied to ${org.shortName}`,
+      why: 'Follow one interest to a specific patch idea. This is the invitation, not a finished score.',
+      system: 'DP tab',
+      href: allianceTabHref(org.slug, 'dp'),
+      status: prior.get('weigh-in-dp')?.status || 'open',
     },
     {
       id: 'community-chat',
@@ -294,7 +306,7 @@ export function generateBriefing(
   const partners = partnerNames(org);
   const communityHref = session?.communityThreadId
     ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}`
-    : `/onboard/alliance/${encodeURIComponent(org.slug)}#community`;
+    : allianceTabHref(org.slug, 'community');
   const steps = nextStepsFor(org, session, communityHref);
 
   return {
@@ -311,6 +323,7 @@ export function generateBriefing(
       body: `Shared space with ${partners}. Guild for coordination that does not require joining ${org.shortName}'s layer. Bridges between public sources. Co-signed MPA on data agency.`,
     },
     primitives: primitivesFor(org, session),
+    dpDirections: generateDpDirections(org),
     nextSteps: steps,
   };
 }

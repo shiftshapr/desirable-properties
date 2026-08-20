@@ -4,6 +4,7 @@ import AllianceBriefingClient from '@/components/onboard/AllianceBriefingClient'
 import { getAllianceOrg, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
 import { generateBriefing } from '@/lib/hermes-onboard/generate';
 import { listOnboardEvents, loadOnboardSession } from '@/lib/hermes-onboard/store';
+import { parseOnboardTab } from '@/lib/hermes-onboard/tabs';
 import { readSession } from '@/lib/auth-session';
 
 type Params = Promise<{ slug: string }>;
@@ -18,18 +19,37 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function AllianceBriefingPage({ params }: { params: Params }) {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function AllianceBriefingPage({
+  params,
+  searchParams,
+}: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
   const { slug } = await params;
   const org = getAllianceOrg(slug);
   if (!org) notFound();
 
+  const query = await searchParams;
+  const tabParam = query.tab;
+  const initialTab = parseOnboardTab(
+    Array.isArray(tabParam) ? tabParam[0] : tabParam,
+    null,
+  );
+
   const auth = await readSession();
   const session = await loadOnboardSession(slug);
-  const briefing = session.briefing || generateBriefing(org, session);
+  let briefing = session.briefing || generateBriefing(org, session);
+  if (!briefing.dpDirections?.length) {
+    briefing = generateBriefing(org, { ...session, briefing });
+  }
   const events = auth ? await listOnboardEvents(slug) : [];
 
   return (
     <AllianceBriefingClient
+      initialTab={initialTab}
       initial={{
         org: {
           ...org,
