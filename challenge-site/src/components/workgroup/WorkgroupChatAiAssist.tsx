@@ -193,7 +193,13 @@ export default function WorkgroupChatAiAssist({
       userDraft,
       instruction,
     });
-    return fetchComposeAiResponse({ message, surface, dpFocus, signal });
+    return fetchComposeAiResponse({
+      message,
+      surface,
+      dpFocus,
+      skipMemoryRecord: true,
+      signal,
+    });
   }
 
   function handleAskPromptClick(option: ComposeAiPromptOption) {
@@ -237,6 +243,7 @@ export default function WorkgroupChatAiAssist({
         message,
         surface,
         dpFocus,
+        skipMemoryRecord: true,
         signal: controller.signal,
       });
       if (controller.signal.aborted) return;

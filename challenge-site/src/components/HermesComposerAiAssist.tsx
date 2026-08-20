@@ -19,6 +19,7 @@ type Props = {
   onValueChange: (next: string) => void;
   surface?: string;
   dpFocus?: number | null;
+  threadId?: string | null;
   disabled?: boolean;
   onSendResponse?: (text: string) => void;
 };
@@ -29,6 +30,7 @@ export default function HermesComposerAiAssist({
   onValueChange,
   surface = 'desirableproperties.org/agent',
   dpFocus = null,
+  threadId = null,
   disabled,
   onSendResponse,
 }: Props) {
@@ -56,6 +58,8 @@ export default function HermesComposerAiAssist({
       message,
       surface,
       dpFocus,
+      threadId,
+      skipMemoryRecord: !threadId,
       signal,
     });
   }

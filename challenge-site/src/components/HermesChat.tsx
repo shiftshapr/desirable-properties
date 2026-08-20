@@ -1009,7 +1009,7 @@ export default function HermesChat({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            surface: `${surface}/agent`,
+            surface,
             title: trimmed.slice(0, 120) || 'New conversation',
           }),
           signal: abortController.signal,
@@ -1373,7 +1373,7 @@ export default function HermesChat({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              surface: `${surface}/agent`,
+              surface,
               title: displayText.slice(0, 120) || 'New conversation',
             }),
             signal: abortController.signal,
@@ -1528,7 +1528,7 @@ export default function HermesChat({
       const forkRes = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/fork`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ turnId, surface: `${surface}/agent` }),
+        body: JSON.stringify({ turnId, surface }),
       });
       const forkData = await forkRes.json().catch(() => ({}));
       if (!forkRes.ok || !forkData.thread?.id) {
@@ -2684,6 +2684,7 @@ export default function HermesChat({
                     onValueChange={setInputText}
                     surface={surface}
                     dpFocus={dpFocus}
+                    threadId={activeThreadId}
                     disabled={isLoading}
                     onSendResponse={(text) => void sendMessage(text)}
                   />

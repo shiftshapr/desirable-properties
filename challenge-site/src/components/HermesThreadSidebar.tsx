@@ -77,6 +77,21 @@ function filterByQuery(
   });
 }
 
+/** Parse workgroup collab origin from HermesThread.surface (handles /agent/agent legacy suffix). */
+function parseWorkgroupOrigin(surface?: string | null): { slug: string; href: string } | null {
+  const normalized = String(surface || '')
+    .replace(/\/agent\/agent$/i, '/agent')
+    .trim();
+  const match = normalized.match(/\/workgroups\/([^/?#]+)/i);
+  if (!match?.[1]) return null;
+  const slug = decodeURIComponent(match[1]);
+  if (!slug) return null;
+  return {
+    slug,
+    href: `/workgroups/${encodeURIComponent(slug)}?tab=chat`,
+  };
+}
+
 export default function HermesThreadSidebar({
   threads,
   sharedWithMeThreads = [],
@@ -251,6 +266,7 @@ export default function HermesThreadSidebar({
     const menuOpen = menuThreadId === thread.id;
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
+    const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
     const showOwnerActions = threadActionsEnabled && (!shared || sharedByMe);
     const showActions = signedIn;
 
@@ -330,6 +346,20 @@ export default function HermesThreadSidebar({
           ) : null}
           {sharedByMe ? (
             <span className="mt-0.5 block text-[10px] text-slate-500">shared by you</span>
+          ) : null}
+          {workgroupOrigin ? (
+            <span className="mt-1 flex flex-wrap items-center gap-1.5">
+              <span className="rounded bg-violet-900/50 px-1.5 py-0.5 text-[10px] font-medium text-violet-200">
+                Workgroup
+              </span>
+              <Link
+                href={workgroupOrigin.href}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[10px] text-cyan-400 hover:text-cyan-200"
+              >
+                Open in collab
+              </Link>
+            </span>
           ) : null}
           {shared && thread.controllerName && thread.shareRole !== 'controller' ? (
             <span className="mt-0.5 block text-[10px] text-amber-400/80">

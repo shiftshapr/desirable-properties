@@ -69,8 +69,12 @@ export async function fetchComposeAiResponse(options: {
   message: string;
   surface: string;
   dpFocus?: number | null;
+  threadId?: string | null;
+  /** Stateless assist defaults to true so one-off drafts do not create sidebar threads. */
+  skipMemoryRecord?: boolean;
   signal?: AbortSignal;
 }): Promise<string> {
+  const skipMemoryRecord = options.skipMemoryRecord ?? true;
   const res = await fetch('/api/agent/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -79,6 +83,8 @@ export async function fetchComposeAiResponse(options: {
       history: [],
       surface: options.surface,
       dpFocus: options.dpFocus ?? undefined,
+      threadId: options.threadId ?? undefined,
+      skipMemoryRecord,
     }),
     signal: options.signal,
   });
