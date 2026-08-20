@@ -28,7 +28,8 @@ echo "[1/5] Building Next.js app (prod stays online; build → ${PROD_BUILD_DIR}
 export DP_ENV=prod
 export NEXT_DIST_DIR="$PROD_BUILD_DIR"
 rm -rf "$PROD_BUILD_DIR"
-npm run build
+rm -rf .next-prod/types .next-staging/types 2>/dev/null || true
+npm run build -- --webpack
 
 echo "[2/5] Swapping ${PROD_BUILD_DIR} → ${PROD_LIVE_DIR} and restarting PM2..."
 if [[ ! -d "$PROD_BUILD_DIR" ]]; then

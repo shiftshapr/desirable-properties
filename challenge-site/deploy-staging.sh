@@ -35,6 +35,8 @@ echo "[1/5] Building Next.js app (staging stays online; build → ${STAGING_BUIL
 export DP_ENV=staging
 export NEXT_DIST_DIR="$STAGING_BUILD_DIR"
 rm -rf "$STAGING_BUILD_DIR"
+# Stale generated types from the other distDir can reference removed routes and break typecheck.
+rm -rf .next-prod/types .next-staging/types 2>/dev/null || true
 
 monitor_pid=""
 if pm2 pid desirableproperties-staging >/dev/null 2>&1; then
@@ -51,7 +53,7 @@ if pm2 pid desirableproperties-staging >/dev/null 2>&1; then
   monitor_pid=$!
 fi
 
-npm run build
+npm run build -- --webpack
 
 if [[ -n "$monitor_pid" ]]; then
   kill "$monitor_pid" 2>/dev/null || true
