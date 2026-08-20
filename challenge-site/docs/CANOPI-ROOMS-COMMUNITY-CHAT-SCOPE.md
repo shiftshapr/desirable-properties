@@ -2,9 +2,9 @@
 
 Product and engineering scope for binding **page-scoped Canopi Rooms** to **DP Community Chat (Hermes `thread_kind: group`)**, optionally via a **community room URL** that loads a target page and opens conversation in the Canopi sidebar.
 
-**Status:** Discussion doc only. No implementation committed here.
+**Status:** Phase 1 POC implemented (embed deep link + DP staging test path). Phase 2+ not started.
 
-**Related:** `HERMES-GROUP-CHAT-SCOPE.md` (Community Chat MVP on `/agent`), Canopi `docs-site/guide/sidebar-tabs.md` (Rooms tab), `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` (Discuss embed on DP pages).
+**Related:** `HERMES-GROUP-CHAT-SCOPE.md` (Community Chat MVP on `/agent`), Canopi `docs-site/guide/sidebar-tabs.md` (Rooms tab), `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` (Discuss embed on DP pages), `docs/CANOPI-EMBED-PERSPECTIVE.md` (embed admin + verify steps).
 
 ---
 
@@ -262,12 +262,42 @@ Room UI for `community_hermes`:
 
 ### Phase 1: POC – embed page + open Rooms (Option B)
 
-- [ ] Query param `canopiRoom={uuid}` handled in embed boot → `openRoomById`
-- [ ] DP page: enable Rooms tab by default for test embed instance
-- [ ] Room record with `page_id` matching page; manual create via API/admin
-- [ ] Document test URL on staging.desirableproperties.org
+- [x] Query param `canopiRoom={uuid}` handled in embed boot → `openRoomById` (`canopi/public/embed/v1.js`, `Sidepanel.ts` `OPEN_ROOM`)
+- [x] DP page: Rooms tab enabled for test embed instance (`migrations/026_dp_embed_rooms_tab.sql`; apply on api.canopi.live Postgres)
+- [x] Room record with `page_id` matching page; manual create via API (see **Phase 1 test** below)
+- [x] Document test URL on staging.desirableproperties.org
 
 **Success:** Land on perspective page, sidebar opens Rooms, correct room visible, page chip navigates in-place.
+
+#### Phase 1 test (staging)
+
+1. **Apply embed tab config** (once): run `canopi/migrations/026_dp_embed_rooms_tab.sql` on api.canopi.live Postgres (or set **Tab configuration** in canopi.live admin for embed `7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c` to include `rooms-tab`).
+2. **Create a page-scoped room** (signed-in Canopi user with DP embed access):
+
+```http
+POST https://api.canopi.live/v1/rooms
+Authorization: Bearer <canopi_session_token>
+Content-Type: application/json
+
+{
+  "name": "Fork perspective community (POC)",
+  "visibility": "public",
+  "joinPolicy": "open",
+  "pageId": "desirableproperties_org_perspectives_a_fork_in_the_web"
+}
+```
+
+Note the returned `room.id` UUID.
+
+3. **Open staging deep link** (replace `{uuid}`):
+
+`https://staging.desirableproperties.org/perspectives/a-fork-in-the-web?canopiRoom={uuid}`
+
+4. **Expected:** embed sidebar opens, **Rooms** tab is active, the room from step 2 is open. URL param is stripped after boot (`history.replaceState`).
+
+Helper in challenge-site: `perspectiveRoomHref(roomId)` in `src/lib/canopi-embed.ts`.
+
+**Deploy notes:** after canopi changes, deploy `public/embed/v1.js` + rebuilt presence/embed sidepanel; after DP frontend changes, prod/staging build + pm2 restart.
 
 ### Phase 2: Community Hermes room type (Option C)
 

@@ -89,7 +89,10 @@ After saving in canopi.live:
 4. Test auto-open:  
    `…/perspectives/a-fork-in-the-web?discuss=1`  
    Sidebar should open on load (after embed ready).
-5. Post a test comment; confirm it appears under the page context for  
+5. Test Rooms deep link (Phase 1): create a page-scoped room (see `challenge-site/docs/CANOPI-ROOMS-COMMUNITY-CHAT-SCOPE.md`), then open  
+   `…/perspectives/a-fork-in-the-web?canopiRoom={room-uuid}`  
+   Sidebar should open on **Rooms** with that room visible.
+6. Post a test comment; confirm it appears under the page context for  
    `https://desirableproperties.org/perspectives/a-fork-in-the-web`  
    (staging uses prod page URL for thread identity).
 
