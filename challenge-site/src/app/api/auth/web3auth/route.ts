@@ -3,7 +3,7 @@ import { decodeJwt } from 'jose';
 import { createSessionCookie } from '@/lib/auth-session';
 import { pickProfileImage } from '@/lib/auth-profile';
 import { fetchCanopiWeb3AuthUser } from '@/lib/canopi-api';
-import { getGovHubBaseUrl } from '@/lib/web3auth-config';
+import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
 import { identityFromWeb3AuthClaims } from '@/lib/web3auth-verify';
 
 /**
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'idToken required' }, { status: 400 });
     }
 
-    const ghRes = await fetch(`${getGovHubBaseUrl()}/api/auth/web3auth`, {
+    const ghRes = await fetch(`${getGovHubProxyBaseUrl()}/api/auth/web3auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -268,7 +268,11 @@ export function warmupWeb3Auth() {
   });
 }
 
-/** Gov Hub connectWeb3AuthProvider – social AUTH connector, not generic wallet connect(). */
+/**
+ * Gov Hub connectWeb3AuthProvider – default path uses connect() (in-page modal).
+ * connectTo('google') opens OAuth in a popup; Safari blocks that unless the site
+ * is on the popup allowlist, and async init before connect breaks the user gesture.
+ */
 async function connectWeb3AuthProvider(
   instance: Web3AuthInstance,
   mode: Web3AuthLoginMode,
@@ -276,10 +280,6 @@ async function connectWeb3AuthProvider(
 ) {
   const WC = window.Modal?.WALLET_CONNECTORS;
   const authConnector = WC?.AUTH || 'auth';
-
-  if (mode === 'google' && WC) {
-    return instance.connectTo(authConnector, { authConnection: 'google' });
-  }
 
   if (mode === 'email' && WC) {
     const hint = (emailHint || '').trim().toLowerCase();
@@ -291,10 +291,6 @@ async function connectWeb3AuthProvider(
       extraLoginOptions: { login_hint: hint },
       loginHint: hint,
     });
-  }
-
-  if (useSocialLoginOnly() && WC) {
-    return instance.connectTo(authConnector, { authConnection: 'google' });
   }
 
   return instance.connect();
@@ -387,7 +383,7 @@ async function finishServerSession(instance: Web3AuthInstance, idToken: string, 
   return me.user as AuthUser;
 }
 
-export async function loginWithWeb3Auth(mode: Web3AuthLoginMode = 'google'): Promise<AuthUser> {
+export async function loginWithWeb3Auth(mode: Web3AuthLoginMode = 'default'): Promise<AuthUser> {
   if (loginInProgress) {
     throw new Error('Sign-in already in progress');
   }
@@ -421,7 +417,7 @@ export async function loginWithWeb3Auth(mode: Web3AuthLoginMode = 'google'): Pro
 }
 
 export function loginWithGoogle() {
-  return loginWithWeb3Auth('google');
+  return loginWithWeb3Auth('default');
 }
 
 export function loginWithEmail(email: string) {
