@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
 import { getAllianceOrg, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
-import { allianceTabHref } from '@/lib/hermes-onboard/tabs';
+import { onHref } from '@/lib/hermes-onboard/tabs';
 import type {
   AllianceOrg,
   BriefingMove,
@@ -252,7 +252,7 @@ function nextStepsFor(
       title: 'Confirm the public source URLs Hermes may read',
       why: 'Hero cards stay marked hypothesis until sources are confirmed.',
       system: 'Subject packet',
-      href: allianceTabHref(org.slug, 'rights'),
+      href: onHref(org.slug, 'rights'),
       status: session?.confirmed.sources ? 'done' : 'open',
     },
     {
@@ -260,7 +260,7 @@ function nextStepsFor(
       title: 'Confirm or edit the partner list for the collaborative layer',
       why: 'The partner layer cannot be empty of names Hermes is allowed to cite.',
       system: 'Partners tab',
-      href: allianceTabHref(org.slug, 'partners'),
+      href: onHref(org.slug, 'partners'),
       status: session?.confirmed.partners ? 'done' : 'open',
     },
     {
@@ -268,7 +268,7 @@ function nextStepsFor(
       title: `Weigh in on Desirable Properties tied to ${org.shortName}`,
       why: 'Follow one interest to a specific patch idea. This is the invitation, not a finished score.',
       system: 'DP tab',
-      href: allianceTabHref(org.slug, 'dp'),
+      href: onHref(org.slug, 'dp'),
       status: prior.get('weigh-in-dp')?.status || 'open',
     },
     {
@@ -306,7 +306,7 @@ export function generateBriefing(
   const partners = partnerNames(org);
   const communityHref = session?.communityThreadId
     ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}`
-    : allianceTabHref(org.slug, 'community');
+    : onHref(org.slug, 'community');
   const steps = nextStepsFor(org, session, communityHref);
 
   return {

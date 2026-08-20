@@ -36,9 +36,24 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: '/workgroups/join',
-        destination: '/workgroups',
-        permanent: true,
+        source: '/onboard',
+        destination: '/on',
+        permanent: false,
+      },
+      {
+        source: '/onboard/alliance/:slug',
+        destination: '/on/:slug',
+        permanent: false,
+      },
+      {
+        source: '/api/onboard/alliance/:slug',
+        destination: '/api/on/:slug',
+        permanent: false,
+      },
+      {
+        source: '/api/onboard/alliance',
+        destination: '/api/on',
+        permanent: false,
       },
     ];
   },

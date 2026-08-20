@@ -4,6 +4,7 @@ import AllianceBriefingClient from '@/components/onboard/AllianceBriefingClient'
 import { getAllianceOrg, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
 import { generateBriefing } from '@/lib/hermes-onboard/generate';
 import { listOnboardEvents, loadOnboardSession } from '@/lib/hermes-onboard/store';
+import { getOnSettings } from '@/lib/hermes-onboard/settings';
 import { parseOnboardTab } from '@/lib/hermes-onboard/tabs';
 import { readSession } from '@/lib/auth-session';
 
@@ -34,9 +35,11 @@ export default async function AllianceBriefingPage({
 
   const query = await searchParams;
   const tabParam = query.tab;
+  const settings = await getOnSettings();
   const initialTab = parseOnboardTab(
     Array.isArray(tabParam) ? tabParam[0] : tabParam,
     null,
+    settings.defaultTab,
   );
 
   const auth = await readSession();

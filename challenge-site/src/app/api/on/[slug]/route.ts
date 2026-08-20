@@ -213,7 +213,7 @@ export async function POST(
         govHubUserId: auth.userId,
         displayName: auth.displayName,
         title,
-        surface: `desirableproperties.org/onboard/alliance/${org.slug}`,
+        surface: `desirableproperties.org/on/${org.slug}`,
         threadKind: 'group',
         groupTitle: title,
       }),

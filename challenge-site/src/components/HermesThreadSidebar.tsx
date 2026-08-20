@@ -96,14 +96,16 @@ function parseWorkgroupOrigin(surface?: string | null): { slug: string; href: st
   };
 }
 
-function parseAllianceOrigin(surface?: string | null): { slug: string; href: string } | null {
-  const match = String(surface || '').match(/\/onboard\/alliance\/([^/?#]+)/i);
+function parseOnOrigin(surface?: string | null): { slug: string; href: string } | null {
+  const text = String(surface || '');
+  const match =
+    text.match(/\/on\/([^/?#]+)/i) || text.match(/\/onboard\/alliance\/([^/?#]+)/i);
   if (!match?.[1]) return null;
   const slug = decodeURIComponent(match[1]);
   if (!slug) return null;
   return {
     slug,
-    href: `/onboard/alliance/${encodeURIComponent(slug)}`,
+    href: `/on/${encodeURIComponent(slug)}`,
   };
 }
 
@@ -296,7 +298,7 @@ export default function HermesThreadSidebar({
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
     const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
-    const allianceOrigin = parseAllianceOrigin(thread.surface);
+    const allianceOrigin = parseOnOrigin(thread.surface);
     const isCommunity = thread.threadKind === 'group';
     const displayTitle = isCommunity
       ? (thread.groupTitle || thread.title || 'Community Chat')

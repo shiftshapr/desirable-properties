@@ -475,8 +475,10 @@ export default function HermesChat({
   const createUrlParam = searchParams.get('create')?.trim() || null;
   const workgroupSlugParam = searchParams.get('wg')?.trim() || null;
   const fromWorkgroupParam = searchParams.get('from') === 'workgroup' && workgroupSlugParam;
-  const allianceSlugParam = searchParams.get('alliance')?.trim() || null;
-  const fromAllianceParam = searchParams.get('from') === 'alliance' && allianceSlugParam;
+  const onSlugParam =
+    searchParams.get('slug')?.trim() || searchParams.get('alliance')?.trim() || null;
+  const fromOnParam =
+    (searchParams.get('from') === 'on' || searchParams.get('from') === 'alliance') && onSlugParam;
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
@@ -586,11 +588,11 @@ export default function HermesChat({
     if (fromWorkgroupParam && workgroupSlugParam) {
       return `desirableproperties.org/workgroups/${workgroupSlugParam}`;
     }
-    if (fromAllianceParam && allianceSlugParam) {
-      return `desirableproperties.org/onboard/alliance/${allianceSlugParam}`;
+    if (fromOnParam && onSlugParam) {
+      return `desirableproperties.org/on/${onSlugParam}`;
     }
     return surface;
-  }, [fromWorkgroupParam, workgroupSlugParam, fromAllianceParam, allianceSlugParam, surface]);
+  }, [fromWorkgroupParam, workgroupSlugParam, fromOnParam, onSlugParam, surface]);
 
   const buildThreadCreateBody = useCallback(
     (title: string, kind: 'private' | 'group' = 'private', groupTitle?: string | null) => {

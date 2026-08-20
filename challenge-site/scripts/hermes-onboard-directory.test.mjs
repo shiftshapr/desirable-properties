@@ -45,6 +45,6 @@ test('Alliance directory is a valid public packet', () => {
 test('onboard tab ids are linkable query values', () => {
   const tabs = ['brief', 'dp', 'values', 'own', 'partners', 'primitives', 'rights', 'next', 'community'];
   for (const tab of tabs) {
-    assert.equal(`/onboard/alliance/project-liberty?tab=${tab}`.includes(`tab=${tab}`), true);
+    assert.equal(`/on/project-liberty?tab=${tab}`.includes(`tab=${tab}`), true);
   }
 });

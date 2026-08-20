@@ -24,6 +24,8 @@ export const ONBOARD_TABS: { id: OnboardTabId; label: string }[] = [
   { id: 'community', label: 'Community Chat' },
 ];
 
+export const ON_PATH = '/on';
+
 export function isOnboardTabId(value: string | null | undefined): value is OnboardTabId {
   return Boolean(value && (ONBOARD_TAB_IDS as readonly string[]).includes(value));
 }
@@ -31,14 +33,22 @@ export function isOnboardTabId(value: string | null | undefined): value is Onboa
 export function parseOnboardTab(
   searchTab?: string | string[] | null,
   hash?: string | null,
+  fallback: OnboardTabId = 'dp',
 ): OnboardTabId {
   const fromSearch = Array.isArray(searchTab) ? searchTab[0] : searchTab;
   if (isOnboardTabId(fromSearch)) return fromSearch;
   const fromHash = String(hash || '').replace(/^#/, '');
   if (isOnboardTabId(fromHash)) return fromHash;
-  return 'brief';
+  return isOnboardTabId(fallback) ? fallback : 'dp';
 }
 
+export function onHref(slug: string, tab?: OnboardTabId | null): string {
+  const base = `${ON_PATH}/${encodeURIComponent(slug)}`;
+  if (!tab) return base;
+  return `${base}?tab=${encodeURIComponent(tab)}`;
+}
+
+/** @deprecated Use onHref */
 export function allianceTabHref(slug: string, tab: OnboardTabId): string {
-  return `/onboard/alliance/${encodeURIComponent(slug)}?tab=${encodeURIComponent(tab)}`;
+  return onHref(slug, tab);
 }

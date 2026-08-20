@@ -8,9 +8,9 @@ import { useAuth } from '@/lib/auth-context';
 import { defaultPitch } from '@/lib/hermes-onboard/dp-directions';
 import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
 import {
-  allianceTabHref,
   ONBOARD_TABS,
   parseOnboardTab,
+  onHref,
   type OnboardTabId,
 } from '@/lib/hermes-onboard/tabs';
 import type {
@@ -56,8 +56,14 @@ export default function AllianceBriefingClient({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    setTab(parseOnboardTab(new URLSearchParams(window.location.search).get('tab'), window.location.hash));
-  }, []);
+    setTab(
+      parseOnboardTab(
+        new URLSearchParams(window.location.search).get('tab'),
+        window.location.hash,
+        initialTab,
+      ),
+    );
+  }, [initialTab]);
 
   const selectTab = (id: OnboardTabId) => {
     setTab(id);
@@ -82,7 +88,7 @@ export default function AllianceBriefingClient({
       setBusy(true);
       setError(null);
       try {
-        const res = await fetch(`/api/onboard/alliance/${encodeURIComponent(org.slug)}`, {
+        const res = await fetch(`/api/on/${encodeURIComponent(org.slug)}`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -148,14 +154,14 @@ export default function AllianceBriefingClient({
   };
 
   const agentChatHref = session.communityThreadId
-    ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}&from=alliance&alliance=${encodeURIComponent(org.slug)}`
-    : `/agent?create=community&from=alliance&alliance=${encodeURIComponent(org.slug)}`;
+    ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}&from=on&slug=${encodeURIComponent(org.slug)}`
+    : `/agent?create=community&from=on&slug=${encodeURIComponent(org.slug)}`;
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
       <DpDialogHost />
       <p className="text-sm text-cyan-300">
-        <Link href="/onboard" className="hover:text-cyan-200">
+        <Link href="/on" className="hover:text-cyan-200">
           Hermes Onboarding
         </Link>
         <span className="text-slate-500"> / Project Liberty Alliance</span>
@@ -172,8 +178,8 @@ export default function AllianceBriefingClient({
         <p className="mt-3 text-sm text-slate-500">
           Public packet only. Hypothesis marks stay until you confirm sources. Each Alliance member
           gets a different pitch so we can experiment. Direct link to this tab:{' '}
-          <Link href={allianceTabHref(org.slug, tab)} className="text-cyan-400 hover:text-cyan-200">
-            {allianceTabHref(org.slug, tab)}
+          <Link href={onHref(org.slug, tab)} className="text-cyan-400 hover:text-cyan-200">
+            {onHref(org.slug, tab)}
           </Link>
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
@@ -216,7 +222,7 @@ export default function AllianceBriefingClient({
         {ONBOARD_TABS.map((item) => (
           <Link
             key={item.id}
-            href={allianceTabHref(org.slug, item.id)}
+            href={onHref(org.slug, item.id)}
             onClick={(e) => {
               e.preventDefault();
               selectTab(item.id);
@@ -567,7 +573,7 @@ function PartnersTab({
         {org.partnerOrgs.map((partner) => (
           <li key={partner.slug}>
             <Link
-              href={`/onboard/alliance/${partner.slug}?tab=dp`}
+              href={onHref(partner.slug, 'dp')}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {partner.name}

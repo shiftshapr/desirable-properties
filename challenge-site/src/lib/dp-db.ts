@@ -437,6 +437,13 @@ CREATE TABLE IF NOT EXISTS hermes_onboard_event (
 );
 
 CREATE INDEX IF NOT EXISTS hermes_onboard_event_slug ON hermes_onboard_event (slug, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS hermes_on_settings (
+  property TEXT PRIMARY KEY,
+  default_tab TEXT NOT NULL DEFAULT 'dp',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by TEXT
+);
 `;
 
 let pool: pg.Pool | null = null;
