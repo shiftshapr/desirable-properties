@@ -9,7 +9,7 @@ Did we get your concerns right?
 ## Body (plain text)
 
 ```text
-We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Follow an interest until it becomes a patch idea.
+We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Unlike a landing page, a pad can learn from your choices (with consent) and invite you to refine how your perspective is captured. Follow an interest until it becomes a patch idea.
 
 Version 0.77 of The Layered Web is open for review now. Version 1.0 and the public launch of DP Studio are September 16, 2026.
 

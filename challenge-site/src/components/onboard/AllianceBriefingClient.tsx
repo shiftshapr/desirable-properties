@@ -172,8 +172,9 @@ export default function AllianceBriefingClient({
       </p>
       <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
         <span className="font-medium text-cyan-200">Desirable Properties Studio · Public beta.</span>{' '}
-        Version 0.77 is open for review. Version 1.0 of <em>The Layered Web</em> and the public
-        launch of DP Studio are September 16, 2026.
+        Pads learn from your confirms and choices (with consent), not silent profiling. Version 0.77
+        is open for review. Version 1.0 of <em>The Layered Web</em> and the public launch of DP
+        Studio are September 16, 2026.
       </div>
       <header className="mt-4 border-b border-slate-800 pb-8">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">

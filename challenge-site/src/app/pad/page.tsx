@@ -23,9 +23,15 @@ export default async function PadIndexPage() {
       </p>
       <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">{directory.cohortLabel}</h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-300">
+        Unlike a landing page, a landing pad is built for dialogue. Landing pads learn from your
+        choices (with consent), suggest how your perspective might be read, and let you refine how
+        you are captured.
+      </p>
+      <p className="mt-3 text-base leading-relaxed text-slate-400">
         Each member organization has a landing pad because the invitation has to be specific. We
         started from their public corpus and we are asking: did we hear your concerns correctly?
-        Follow an interest until it becomes a patch idea.
+        Follow an interest until it becomes a patch idea. Learning uses session memory, confirms,
+        and chosen sources, not silent profiling. Suppositions stay hypotheses until you confirm.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
         Version 0.77 is open for review now. Version 1.0 of <em>The Layered Web</em> and the public

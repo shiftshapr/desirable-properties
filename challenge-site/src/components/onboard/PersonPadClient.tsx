@@ -73,7 +73,13 @@ export default function PersonPadClient({ initial }: { initial: PersonPadRecord 
       <h1 className="mt-4 text-3xl font-bold text-white sm:text-4xl">{initial.displayName}</h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-300">
         We started from your public links and the sources you chose. This is not a score or ranking.
-        It is a place to review what we heard and follow your work into Desirable Properties.
+        Over time this pad can learn from what you choose and submit (with consent), suggest how your
+        perspective might be read, and invite you to refine that capture until it reflects what you
+        mean.
+      </p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-400">
+        Refine by correcting us, adding sources, or updating what you chose to share. Follow your
+        work into Desirable Properties when a direction feels like yours.
       </p>
       <p className="mt-2 font-mono text-xs text-slate-500">{padUrl}</p>
 

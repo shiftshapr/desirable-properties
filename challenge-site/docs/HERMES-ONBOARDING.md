@@ -4,6 +4,18 @@ Org landing pads in **Desirable Properties Studio** at `{estate-property}/pad/{s
 
 The Desirable Properties Challenge is the ongoing program. DP Studio is the tooling (landing pads, Hermes, workgroups, patches). Studio is in **public beta** now; **Version 1.0** of *The Layered Web* and the public Studio launch are **September 16, 2026**.
 
+## What is a landing pad?
+
+Unlike a landing page, a landing pad is built for dialogue. Over time it can learn from a visitor's choices and submissions, suggest how their perspective might be read, and invite them to refine that capture until it reflects what they actually mean.
+
+| Term | Meaning in DP Studio |
+| --- | --- |
+| **Learn** | Session memory, confirms, and chosen sources, not silent profiling |
+| **Suppositions** | Working hypotheses until the visitor confirms sources or mappings |
+| **Refine** | Correct us, add sources, patch text, or update consent |
+
+Generic marketing copy and landing page contrast: [`docs/LANDING-PAD.md`](LANDING-PAD.md).
+
 ## URLs
 
 - Index: `/pad` (org lookup form + directory list)
