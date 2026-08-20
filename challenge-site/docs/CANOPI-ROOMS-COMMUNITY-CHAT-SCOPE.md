@@ -2,11 +2,27 @@
 
 Product and engineering scope for binding **page-scoped Canopi Rooms** to **DP Community Chat (Hermes `thread_kind: group`)**, optionally via a **community room URL** that loads a target page and opens conversation in the Canopi sidebar.
 
-**Status:** Phase 1 POC implemented (embed deep link + DP staging test path). Phase 2+ not started.
+**Status:** Phase 1 POC implemented (embed deep link + DP staging test path). Phase 2+ not started. **Locked decisions:** see [Decisions (locked)](#decisions-locked).
 
 **Related:** `HERMES-GROUP-CHAT-SCOPE.md` (Community Chat MVP on `/agent`), Canopi `docs-site/guide/sidebar-tabs.md` (Rooms tab), `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` (Discuss embed on DP pages), `docs/CANOPI-EMBED-PERSPECTIVE.md` (embed admin + verify steps).
 
 ---
+
+---
+
+## Decisions (locked)
+
+Daveed locked the following on 2026-08-20:
+
+| # | Question | Decision |
+|---|----------|----------|
+| 1 | Source of truth for community Hermes rooms | **Hermes turns only.** Supabase `rooms` row is a **metadata shell** (page binding, `hermes_thread_id`, discover). **Community Chat** is the same product as `/agent` (Neo4j group threads), not a separate chat backend. |
+| 2 | Canopi Agent tab vs DP Hermes | **Not a global replace.** Whether the Agent tab uses Canopi page Q&A LLM vs DP Hermes is an **embed instance config** and/or **extension user preference** choice. **Community Hermes** lives in **Rooms** for `community_hermes` room type. |
+| 3 | Canonical share link | **Phase 1–2:** query param on the **publisher site** (DP-controlled pages first). **Phase 4:** **Canopi room URL** becomes the canonical share link. |
+| 4 | Mobile + PiP / floating | **Defer PiP/floating for Phase 2** desktop MVP. **Phase 3:** floating desktop polish + mobile UX. **Mobile caveat:** Canopi bar often consumes full screen height; horizontal layout is untested and may be too narrow. **Phase 3 mobile design direction (prototype):** full-screen with **swipe between Canopi panel and page** (not PiP). |
+
+**Still open:** meta-domain binding mechanics, full-page proxy scope, public discover policy, workgroup linkage badge, timeline.canopi.live overlap (see [Open questions](#open-questions-for-daveed)).
+
 
 ## What you are describing (plain language)
 
@@ -134,7 +150,7 @@ bound_page_id: string (Canopi page_id slug)
 
 Room UI for `community_hermes`:
 
-- Message list reads **Hermes turns** via DP API proxy (not `room_messages`), or dual-write during migration
+- Message list reads **Hermes turns** via DP API proxy only (not `room_messages`; Supabase room is metadata shell)
 - Member roster maps to **ThreadShare / WATCHES** graph
 - Invites reuse **Community Chat** share flows
 
@@ -189,8 +205,8 @@ Room UI for `community_hermes`:
 
 | Pattern | Behavior |
 |---------|----------|
-| `https://desirableproperties.org/path?discuss=1&canopiRoom={uuid}` | Existing page + embed; open Rooms tab + room (mirror `canopiOpen` / `canopiMsg` Discuss params) |
-| `https://app.canopi.live/r/{roomId}?page={encodedUrl}` | Landing shell (Option A) |
+| `https://desirableproperties.org/path?discuss=1&canopiRoom={uuid}` | **Canonical share link Phase 1–2:** existing page + embed; open Rooms tab + room (mirror `canopiOpen` / `canopiMsg` Discuss params) |
+| `https://app.canopi.live/r/{roomId}?page={encodedUrl}` | **Canonical share link Phase 4:** landing shell (Option A) |
 | `https://desirableproperties.org/agent?thread={id}` | Already planned in Community Chat v2; parallel entry, not room chrome |
 
 **Meta-domain note:** Meta-domain as a **DNS/Web4 concept** is not the same as Canopi `page_id`. Binding requires an explicit **registry row** (page URL, community id, default Hermes thread). Gov Hub `meta_domain` fields are coordination metadata, not embed keys.
@@ -207,11 +223,11 @@ Room UI for `community_hermes`:
 | `HermesThreadSidebar` | **Partial** – needs compact / embed variant; thread list UX |
 | `HermesChat.tsx` `compact` prop | **Starting point** – already hides some chrome; not yet used in production |
 | `/api/agent/threads/*`, `/api/agent/shares/*` | **Yes** – proxy layer unchanged |
-| `/api/embed/hermes/*` + `embed-session` | **Yes** – Canopi Agent tab could call DP Hermes instead of `/api/agent` (product decision) |
+| `/api/embed/hermes/*` + `embed-session` | **Yes** – optional DP Hermes for Agent tab per embed/user preference (**locked**); Community Hermes in Rooms |
 | Contribution filing (`hermesContribution.ts`) | **Yes** – same as `/agent` group threads |
 | Workgroup External Chat entry | **Pattern only** – deep link to create flow with `surface` context |
 
-**Do not reuse:** Supabase `room_messages` as source of truth for Hermes community rooms (unless dual-write during transition). Canopi generic Agent tab LLM path.
+**Do not reuse:** Supabase `room_messages` as source of truth for Hermes community rooms (**Hermes turns only; locked**). Canopi generic Agent tab LLM remains valid when embed/user config selects page Q&A.
 
 ---
 
@@ -221,7 +237,7 @@ Room UI for `community_hermes`:
 |-----------|--------|
 | **Width** | Canopi sidebar ~320–400px; `/agent` sidebar alone is 260–280px + main chat column |
 | **Layout** | Need stacked mode: room header → member strip → Hermes thread (single column) or tab toggle Room meta / Chat |
-| **Mobile** | Embed collapses on ≤480px; floating panel may be mandatory for usable Hermes |
+| **Mobile** | Full-height Canopi bar; horizontal layout untested (**locked:** defer PiP to Phase 3; prototype swipe between panel and page) |
 | **Sign-in** | Canopi Web3Auth embed session ≠ Hermes verifier session; may need unified handoff or embed Hermes with `skipMemoryRecord` + explicit thread join |
 | **Navigation** | Room page chips already navigate host in-place; Hermes context must refresh `pageUrl` on navigation |
 | **Contributions** | Filing to Discuss from narrow panel; reuse existing modals but test touch targets |
@@ -257,7 +273,7 @@ Room UI for `community_hermes`:
 
 ### Phase 0: Align terminology (now)
 
-- [ ] Confirm "Community Room" = Hermes `thread_kind: group` + page binding, not vanilla Supabase room chat
+- [x] Confirm "Community Room" = Hermes `thread_kind: group` + page binding; Supabase room = metadata shell (**locked**)
 - [ ] Finish Community Chat MVP on `/agent` (prerequisite for serious embed port)
 
 ### Phase 1: POC – embed page + open Rooms (Option B)
@@ -309,11 +325,12 @@ Helper in challenge-site: `perspectiveRoomHref(roomId)` in `src/lib/canopi-embed
 
 **Success:** Two users in same room see same Hermes turns, both can prompt, invite works.
 
-### Phase 3: Floating panel (Option D)
+### Phase 3: Floating panel + mobile polish (Option D)
 
-- [ ] Toggle: docked in room vs floating window
+- [ ] Desktop: toggle docked in room vs floating window (PiP-style; **deferred from Phase 2 MVP**)
 - [ ] Persist preference per room in localStorage / user prefs
 - [ ] z-index and pointer-events vs Canopi trigger
+- [ ] **Mobile:** prototype full-screen **swipe** between Canopi panel and host page (preferred over PiP on narrow viewports)
 
 ### Phase 4: Community room URL product (Option A)
 
@@ -325,15 +342,22 @@ Helper in challenge-site: `perspectiveRoomHref(roomId)` in `src/lib/canopi-embed
 
 ## Open questions for Daveed
 
-1. **Container of truth:** Should community rooms use **Hermes turns only**, **Supabase room_messages only**, or **dual-write** during transition?
-2. **Vanilla Rooms vs Community Hermes:** Keep classic Rooms for DMs/page chat and add a separate type, or migrate all "community" use cases to Hermes?
-3. **Agent tab on Canopi:** Replace Canopi `/api/agent` LLM with DP Hermes for DP embed instances, or keep separate "page Q&A" vs "Community Hermes"?
-4. **Entry URL:** Prefer **query param on publisher site** (Phase 1) or **first-party Canopi room URL** (Phase 4) as the canonical share link?
+### Resolved (see [Decisions (locked)](#decisions-locked))
+
+| # | Topic | Resolution |
+|---|-------|------------|
+| 1 | Container of truth | **Hermes turns only;** Supabase room = metadata shell |
+| 2 | Vanilla Rooms vs Community Hermes | **Separate type:** classic Rooms for DMs/page chat; **`community_hermes`** for Community Chat (same product as `/agent`) |
+| 3 | Agent tab on Canopi | **Per embed instance / extension user preference;** not a global Hermes replace |
+| 4 | Entry URL / share link | **Publisher query param** Phase 1–2; **Canopi room URL** canonical in Phase 4 |
+| 9 | Mobile / floating MVP | **Defer PiP/floating** for Phase 2 desktop MVP; Phase 3 swipe UX direction documented |
+
+### Still open
+
 5. **Meta-domain:** Is meta-domain a **marketing entry** that resolves to a normal HTTPS URL, or a distinct host that must be proxied?
 6. **Proxy scope:** Is full-page proxy in scope, or is "embed on the real page" sufficient for all target properties (DP, book, Gov Hub)?
 7. **Public discover:** Should community Hermes rooms appear in Canopi **Rooms discover** (`GET /v1/rooms/discover`) or invite-only?
 8. **Workgroup linkage:** Should a community room optionally reference a workgroup slug (badge + link) like `/agent` sidebar origin UX?
-9. **Mobile:** Is floating Hermes **required** for MVP, or acceptable to defer mobile community rooms?
 10. **Timeline vs Rooms:** Any overlap with timeline.canopi.live "room-scoped" timelines spec, or explicitly separate?
 
 ---
@@ -363,7 +387,7 @@ Helper in challenge-site: `perspectiveRoomHref(roomId)` in `src/lib/canopi-embed
 
 **The integration is substantial, not fantasy.** Expect **multi-repo work** (canopi + challenge-site + neo4j-knowledge-graph), **new embed-safe Hermes UI**, and **auth unification**. A focused POC (Phase 1) is **weeks**, not days; a solid community room type (Phase 2) is **roughly 4–8 weeks** after Community Chat MVP stabilizes, plus UI iteration for sidebar constraints.
 
-**Highest-risk bets:** iframe embedding `/agent`, proxying third-party pages, and running two chat backends in one room without a clear source of truth.
+**Highest-risk bets:** iframe embedding `/agent`, proxying third-party pages. **Source of truth is locked** (Hermes turns; Supabase metadata shell).
 
 **Lowest-risk path:** Finish Community Chat on `/agent`, then embed a **dedicated compact Hermes route** inside Canopi Rooms on DP origins only, with explicit `hermes_thread_id` on the room row and query-param deep links before building share.canopi-style landing pages.
 
