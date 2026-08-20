@@ -96,17 +96,24 @@ function parseWorkgroupOrigin(surface?: string | null): { slug: string; href: st
   };
 }
 
-function parseOnOrigin(surface?: string | null): { slug: string; href: string } | null {
+function parsePadOrigin(surface?: string | null): { slug: string; href: string } | null {
   const text = String(surface || '');
   const match =
-    text.match(/\/on\/([^/?#]+)/i) || text.match(/\/onboard\/alliance\/([^/?#]+)/i);
+    text.match(/\/pad\/([^/?#]+)/i) ||
+    text.match(/\/on\/([^/?#]+)/i) ||
+    text.match(/\/onboard\/alliance\/([^/?#]+)/i);
   if (!match?.[1]) return null;
   const slug = decodeURIComponent(match[1]);
   if (!slug) return null;
   return {
     slug,
-    href: `/on/${encodeURIComponent(slug)}`,
+    href: `/pad/${encodeURIComponent(slug)}`,
   };
+}
+
+/** @deprecated Use parsePadOrigin */
+function parseOnOrigin(surface?: string | null): { slug: string; href: string } | null {
+  return parsePadOrigin(surface);
 }
 
 export default function HermesThreadSidebar({
@@ -298,7 +305,7 @@ export default function HermesThreadSidebar({
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
     const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
-    const allianceOrigin = parseOnOrigin(thread.surface);
+    const allianceOrigin = parsePadOrigin(thread.surface);
     const isCommunity = thread.threadKind === 'group';
     const displayTitle = isCommunity
       ? (thread.groupTitle || thread.title || 'Community Chat')
@@ -407,7 +414,7 @@ export default function HermesThreadSidebar({
           {allianceOrigin ? (
             <span className="mt-1 flex flex-wrap items-center gap-1.5">
               <span className="rounded bg-cyan-900/50 px-1.5 py-0.5 text-[10px] font-medium text-cyan-200">
-                Alliance briefing
+                Landing pad
               </span>
               <Link
                 href={allianceOrigin.href}

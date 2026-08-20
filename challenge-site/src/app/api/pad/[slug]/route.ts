@@ -38,12 +38,12 @@ type ActionBody = {
 async function payloadFor(slug: string, signedIn: boolean) {
   const org = requireOrg(slug);
   if (!org) return null;
-  const session = await loadOnboardSession(slug);
+  const session = await loadOnboardSession(org.slug);
   let briefing = session.briefing || generateBriefing(org, session);
   if (!briefing.dpDirections?.length) {
     briefing = generateBriefing(org, { ...session, briefing });
   }
-  const events = signedIn ? await listOnboardEvents(slug) : [];
+  const events = signedIn ? await listOnboardEvents(org.slug) : [];
   return {
     org: {
       ...org,
@@ -81,6 +81,7 @@ export async function POST(
   const org = requireOrg(slug);
   if (!org) return NextResponse.json({ error: 'Unknown Alliance org' }, { status: 404 });
 
+  const padSlug = org.slug;
   const auth = await readSession();
   if (!auth) {
     return NextResponse.json({ error: 'Sign in required to save this briefing' }, { status: 401 });
@@ -88,7 +89,7 @@ export async function POST(
 
   const body = (await request.json().catch(() => ({}))) as ActionBody;
   const action = String(body.action || '');
-  let session = await loadOnboardSession(slug);
+  let session = await loadOnboardSession(padSlug);
   const actor = actorFromSession(auth);
 
   const persist = async (kind: string, payload: Record<string, unknown> = {}) => {
@@ -98,8 +99,9 @@ export async function POST(
         { status: 400 },
       );
     }
+    session.slug = padSlug;
     session = await saveOnboardSession(session);
-    await appendOnboardEvent({ slug, kind, actor, payload });
+    await appendOnboardEvent({ slug: padSlug, kind, actor, payload });
     return NextResponse.json(await payloadFor(slug, true));
   };
 
@@ -110,8 +112,9 @@ export async function POST(
       crossSubjectLearning: Boolean(body.consent?.crossSubjectLearning),
     };
     session.consent = next;
+    session.slug = padSlug;
     session = await saveOnboardSession(session);
-    await appendOnboardEvent({ slug, kind: 'consent', actor, payload: { consent: next } });
+    await appendOnboardEvent({ slug: padSlug, kind: 'consent', actor, payload: { consent: next } });
     return NextResponse.json(await payloadFor(slug, true));
   }
 
@@ -172,9 +175,10 @@ export async function POST(
     };
     session.briefing = generateBriefing(org, session);
     session.nextSteps = session.briefing.nextSteps;
+    session.slug = padSlug;
     session = await saveOnboardSession(session);
     await appendOnboardEvent({
-      slug,
+      slug: padSlug,
       kind: 'claim',
       actor,
       payload: { domainMatched },
@@ -204,7 +208,7 @@ export async function POST(
         { status: 400 },
       );
     }
-    const title = `${org.shortName} Alliance briefing`.slice(0, 120);
+    const title = `${org.shortName} landing pad`.slice(0, 120);
     const upstream = await fetch(`${getHermesChatUrl()}/api/hermes/threads`, {
       method: 'POST',
       headers: hermesUpstreamHeaders(),
@@ -213,7 +217,7 @@ export async function POST(
         govHubUserId: auth.userId,
         displayName: auth.displayName,
         title,
-        surface: `desirableproperties.org/on/${org.slug}`,
+        surface: `desirableproperties.org/pad/${org.slug}`,
         threadKind: 'group',
         groupTitle: title,
       }),

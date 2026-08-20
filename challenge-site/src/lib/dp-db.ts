@@ -444,6 +444,25 @@ CREATE TABLE IF NOT EXISTS hermes_on_settings (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_by TEXT
 );
+
+CREATE TABLE IF NOT EXISTS hermes_person_pad (
+  slug TEXT PRIMARY KEY,
+  display_name TEXT NOT NULL,
+  linkedin_url TEXT,
+  cv_url TEXT,
+  work_links JSONB NOT NULL DEFAULT '[]'::jsonb,
+  perspective_links JSONB NOT NULL DEFAULT '[]'::jsonb,
+  uploaded_docs JSONB NOT NULL DEFAULT '[]'::jsonb,
+  bio_text TEXT,
+  profile_paste TEXT,
+  selected_sources JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS bio_text TEXT;
+ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS profile_paste TEXT;
+ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS selected_sources JSONB NOT NULL DEFAULT '[]'::jsonb;
 `;
 
 let pool: pg.Pool | null = null;

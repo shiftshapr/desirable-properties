@@ -29,7 +29,7 @@ export default function SiteAdminPanel() {
       const [meRes, usersRes, onRes] = await Promise.all([
         fetch('/api/admin/me', { credentials: 'include' }),
         fetch('/api/admin/users', { credentials: 'include' }),
-        fetch('/api/admin/on-settings', { credentials: 'include' }),
+        fetch('/api/admin/pad-settings', { credentials: 'include' }),
       ]);
       const meData = await meRes.json();
       const usersData = await usersRes.json();
@@ -104,7 +104,7 @@ export default function SiteAdminPanel() {
     setFlash(null);
     setError(null);
     try {
-      const res = await fetch('/api/admin/on-settings', {
+      const res = await fetch('/api/admin/pad-settings', {
         method: 'PUT',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -112,7 +112,7 @@ export default function SiteAdminPanel() {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'Could not save default tab');
-      setFlash(`Default /on tab is now ${data.settings.defaultTab}.`);
+      setFlash(`Default /pad tab is now ${data.settings.defaultTab}.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
@@ -143,11 +143,11 @@ export default function SiteAdminPanel() {
       ) : null}
 
       <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">
-        /on default tab
+        /pad default tab
       </h3>
       <p className="mt-2 text-sm text-slate-400">
         Property <code className="text-slate-300">{onProperty}</code>. Visitors who open{' '}
-        <code className="text-slate-300">/on/{'{slug}'}</code> without <code className="text-slate-300">?tab=</code> land here.
+        <code className="text-slate-300">/pad/{'{slug}'}</code> without <code className="text-slate-300">?tab=</code> land here.
         Ops can also set <code className="text-slate-300">DP_ON_DEFAULT_TAB</code> (and{' '}
         <code className="text-slate-300">hermes_on.default_tab</code> in meta-console registry) as the fallback before this save.
       </p>

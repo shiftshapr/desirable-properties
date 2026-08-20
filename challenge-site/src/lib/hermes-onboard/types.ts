@@ -41,6 +41,31 @@ export type AllianceDirectory = {
   orgs: AllianceOrg[];
 };
 
+export type RosterOrg = {
+  slug: string;
+  name: string;
+  domain: string;
+  website: string;
+};
+
+export type AllianceRoster = {
+  cohort: string;
+  sourceUrl: string;
+  importedAt: string;
+  rosterNote: string;
+  orgs: RosterOrg[];
+};
+
+export type PadLookupStatus = 'found' | 'roster' | 'dynamic' | 'not_found';
+
+export type PadLookupResult = {
+  status: PadLookupStatus;
+  slug: string | null;
+  domain: string | null;
+  name: string | null;
+  href: string | null;
+};
+
 export type Lens = 'capabilities' | 'reach' | 'productivity' | 'impact';
 export type LayerKind = 'own' | 'collaborative';
 

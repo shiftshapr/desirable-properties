@@ -21,7 +21,7 @@ const DEFAULT_DPS = ['DP2', 'DP4', 'DP20', 'DP8'];
 
 function hermesPatchHref(org: AllianceOrg, dpId: string, patchIdea: string, dpName: string): string {
   const prompt = [
-    `I am looking at the Alliance briefing for ${org.name}.`,
+    `I am looking at the landing pad for ${org.name}.`,
     `Public mission we used: ${org.mission}`,
     `Desirable Property: ${dpId} (${dpName}).`,
     `Candidate patch direction (hypothesis until they confirm): ${patchIdea}`,

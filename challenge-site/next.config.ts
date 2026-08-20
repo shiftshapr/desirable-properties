@@ -37,22 +37,47 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/onboard',
-        destination: '/on',
+        destination: '/pad',
         permanent: false,
       },
       {
         source: '/onboard/alliance/:slug',
-        destination: '/on/:slug',
+        destination: '/pad/:slug',
+        permanent: false,
+      },
+      {
+        source: '/on',
+        destination: '/pad',
+        permanent: false,
+      },
+      {
+        source: '/on/:slug',
+        destination: '/pad/:slug',
         permanent: false,
       },
       {
         source: '/api/onboard/alliance/:slug',
-        destination: '/api/on/:slug',
+        destination: '/api/pad/:slug',
         permanent: false,
       },
       {
         source: '/api/onboard/alliance',
-        destination: '/api/on',
+        destination: '/api/pad',
+        permanent: false,
+      },
+      {
+        source: '/api/on/:slug',
+        destination: '/api/pad/:slug',
+        permanent: false,
+      },
+      {
+        source: '/api/on',
+        destination: '/api/pad',
+        permanent: false,
+      },
+      {
+        source: '/api/admin/on-settings',
+        destination: '/api/admin/pad-settings',
         permanent: false,
       },
     ];

@@ -1,0 +1,1256 @@
+{
+  "cohort": "project-liberty-alliance",
+  "sourceUrl": "https://www.projectliberty.io/alliance/",
+  "importedAt": "2026-08-20",
+  "rosterNote": "Prework roster from the public PLA alliance logo grid. Used for pad lookup before a full directory packet exists.",
+  "orgs": [
+    {
+      "slug": "aapti",
+      "name": "Aapti",
+      "domain": "aapti.in",
+      "website": "https://aapti.in/"
+    },
+    {
+      "slug": "advancedaisociety",
+      "name": "Advanced Aisociety",
+      "domain": "advancedaisociety.org",
+      "website": "https://www.advancedaisociety.org/"
+    },
+    {
+      "slug": "afchix",
+      "name": "Afchix",
+      "domain": "afchix.org",
+      "website": "https://afchix.org/"
+    },
+    {
+      "slug": "aigi",
+      "name": "Aigovernance Initiativeatthe Universityof Oxford",
+      "domain": "aigi.ox.ac.uk",
+      "website": "https://www.aigi.ox.ac.uk/"
+    },
+    {
+      "slug": "aiprc",
+      "name": "Aiprc",
+      "domain": "aiprc.org",
+      "website": "https://www.aiprc.org/"
+    },
+    {
+      "slug": "aisafety",
+      "name": "Aisafety Asia",
+      "domain": "aisafety.asia",
+      "website": "https://www.aisafety.asia/"
+    },
+    {
+      "slug": "aiwi",
+      "name": "Aiwhistleblower",
+      "domain": "aiwi.org",
+      "website": "https://aiwi.org/"
+    },
+    {
+      "slug": "anfhelp",
+      "name": "Alexander Neville Foundation Logo",
+      "domain": "anfhelp.org",
+      "website": "https://anfhelp.org"
+    },
+    {
+      "slug": "alltechishuman",
+      "name": "All Tech Is Human",
+      "domain": "alltechishuman.org",
+      "website": "https://alltechishuman.org/"
+    },
+    {
+      "slug": "theajp",
+      "name": "American Journalism Project",
+      "domain": "theajp.org",
+      "website": "https://www.theajp.org/"
+    },
+    {
+      "slug": "americansecurityfund",
+      "name": "American Security Foundation",
+      "domain": "americansecurityfund.com",
+      "website": "http://www.americansecurityfund.com/american-security-foundation"
+    },
+    {
+      "slug": "amplifier",
+      "name": "Amplifier",
+      "domain": "amplifier.org",
+      "website": "https://amplifier.org/"
+    },
+    {
+      "slug": "artificialityinstitute",
+      "name": "Artificiality",
+      "domain": "artificialityinstitute.org",
+      "website": "https://artificialityinstitute.org"
+    },
+    {
+      "slug": "ashoka",
+      "name": "Ashoka",
+      "domain": "ashoka.org",
+      "website": "https://www.ashoka.org/en-us"
+    },
+    {
+      "slug": "aspeninstitute",
+      "name": "Aspen Institute",
+      "domain": "aspeninstitute.org",
+      "website": "https://www.aspeninstitute.org/"
+    },
+    {
+      "slug": "atlanticcouncil",
+      "name": "Atlantic Council",
+      "domain": "atlanticcouncil.org",
+      "website": "https://www.atlanticcouncil.org"
+    },
+    {
+      "slug": "atlascomputing",
+      "name": "Atlas Computing Logo",
+      "domain": "atlascomputing.org",
+      "website": "https://atlascomputing.org/"
+    },
+    {
+      "slug": "backchan",
+      "name": "Back Channel",
+      "domain": "backchan.us",
+      "website": "https://www.backchan.us/"
+    },
+    {
+      "slug": "beccaschmillfdn",
+      "name": "Becca Schmill Foundation",
+      "domain": "beccaschmillfdn.org",
+      "website": "https://beccaschmillfdn.org/"
+    },
+    {
+      "slug": "bellingcat",
+      "name": "Bellingcat",
+      "domain": "bellingcat.com",
+      "website": "https://www.bellingcat.com/"
+    },
+    {
+      "slug": "berggruen",
+      "name": "Berggruen Institute",
+      "domain": "berggruen.org",
+      "website": "http://www.berggruen.org/"
+    },
+    {
+      "slug": "betaworks",
+      "name": "Betaworks",
+      "domain": "betaworks.com",
+      "website": "https://www.betaworks.com/"
+    },
+    {
+      "slug": "blockpartyapp",
+      "name": "Block Party Color Logo",
+      "domain": "blockpartyapp.com",
+      "website": "https://www.blockpartyapp.com/"
+    },
+    {
+      "slug": "theblockfound",
+      "name": "Blockchain Foundation Logo",
+      "domain": "theblockfound.com",
+      "website": "https://theblockfound.com"
+    },
+    {
+      "slug": "blockchaingov",
+      "name": "Blockchain Gov Color Logo.png",
+      "domain": "blockchaingov.eu",
+      "website": "https://blockchaingov.eu/"
+    },
+    {
+      "slug": "safe",
+      "name": "Center For Aisafety",
+      "domain": "safe.ai",
+      "website": "https://safe.ai/"
+    },
+    {
+      "slug": "counterhate",
+      "name": "Center For Countering Digital Hate Logo",
+      "domain": "counterhate.com",
+      "website": "https://counterhate.com/"
+    },
+    {
+      "slug": "cergic-lyon",
+      "name": "Center For Economic Research",
+      "domain": "cergic-lyon.fr",
+      "website": "https://www.cergic-lyon.fr/"
+    },
+    {
+      "slug": "humanetech",
+      "name": "Center For Humane Technology",
+      "domain": "humanetech.com",
+      "website": "https://www.humanetech.com/"
+    },
+    {
+      "slug": "mediatechdemocracy",
+      "name": "Center For Mtd",
+      "domain": "mediatechdemocracy.com",
+      "website": "https://www.mediatechdemocracy.com/"
+    },
+    {
+      "slug": "youth-ai",
+      "name": "Center For Youth And Ai Logo",
+      "domain": "youth-ai.org",
+      "website": "https://youth-ai.org/"
+    },
+    {
+      "slug": "caidp",
+      "name": "Centerfor Aiand Digital Policy",
+      "domain": "caidp.org",
+      "website": "https://www.caidp.org/"
+    },
+    {
+      "slug": "kcl",
+      "name": "Centre For Data Futures",
+      "domain": "kcl.ac.uk",
+      "website": "https://www.kcl.ac.uk/research/centre-for-data-futures"
+    },
+    {
+      "slug": "cigionline",
+      "name": "Centre For International Governance Innovation Logo",
+      "domain": "cigionline.org",
+      "website": "https://cigionline.org"
+    },
+    {
+      "slug": "cerre",
+      "name": "Centreon Regulationin Europe",
+      "domain": "cerre.eu",
+      "website": "https://cerre.eu/"
+    },
+    {
+      "slug": "centritechfdn",
+      "name": "Centritech Foundation",
+      "domain": "centritechfdn.org",
+      "website": "https://www.centritechfdn.org/"
+    },
+    {
+      "slug": "childrenandscreens",
+      "name": "Children And Screens",
+      "domain": "childrenandscreens.org",
+      "website": "https://www.childrenandscreens.org/"
+    },
+    {
+      "slug": "christchurchcall",
+      "name": "Christ Church Call",
+      "domain": "christchurchcall.org",
+      "website": "https://www.christchurchcall.org/"
+    },
+    {
+      "slug": "citizenuniversity",
+      "name": "Citizen University",
+      "domain": "citizenuniversity.us",
+      "website": "https://citizenuniversity.us/"
+    },
+    {
+      "slug": "civichealthproject",
+      "name": "Civic Health Project Logo",
+      "domain": "civichealthproject.org",
+      "website": "https://civichealthproject.org/"
+    },
+    {
+      "slug": "civicsunplugged",
+      "name": "Civics Unplugged",
+      "domain": "civicsunplugged.org",
+      "website": "https://www.civicsunplugged.org/"
+    },
+    {
+      "slug": "cip",
+      "name": "Collective Intelligence",
+      "domain": "cip.org",
+      "website": "https://www.cip.org"
+    },
+    {
+      "slug": "commonera",
+      "name": "Common Era",
+      "domain": "commonera.org",
+      "website": "https://www.commonera.org/"
+    },
+    {
+      "slug": "common-goal",
+      "name": "Common Goal",
+      "domain": "common-goal.org",
+      "website": "https://www.common-goal.org/"
+    },
+    {
+      "slug": "commonsensemedia",
+      "name": "Common Sense Media",
+      "domain": "commonsensemedia.org",
+      "website": "https://www.commonsensemedia.org/"
+    },
+    {
+      "slug": "compdemocracy",
+      "name": "Compdemproj",
+      "domain": "compdemocracy.org",
+      "website": "https://compdemocracy.org/"
+    },
+    {
+      "slug": "cefe",
+      "name": "Consortiumfor Evaluating Faithand Ethicsin Ai",
+      "domain": "cefe.ai",
+      "website": "https://www.cefe.ai/"
+    },
+    {
+      "slug": "consumerreports",
+      "name": "Consumer Reports",
+      "domain": "consumerreports.org",
+      "website": "https://www.consumerreports.org/homepage/"
+    },
+    {
+      "slug": "consumersinternational",
+      "name": "Consumers Int",
+      "domain": "consumersinternational.org",
+      "website": "https://www.consumersinternational.org/"
+    },
+    {
+      "slug": "creativecommons",
+      "name": "Creative Commons",
+      "domain": "creativecommons.org",
+      "website": "https://creativecommons.org/"
+    },
+    {
+      "slug": "creatorscoalitionai",
+      "name": "Creator Coalitionon Ai",
+      "domain": "creatorscoalitionai.com",
+      "website": "http://creatorscoalitionai.com/"
+    },
+    {
+      "slug": "cybercollective",
+      "name": "Cyber Collective",
+      "domain": "cybercollective.org",
+      "website": "https://www.cybercollective.org"
+    },
+    {
+      "slug": "cyberpeaceinstitute",
+      "name": "Cyber Peace Institute",
+      "domain": "cyberpeaceinstitute.org",
+      "website": "https://cyberpeaceinstitute.org/"
+    },
+    {
+      "slug": "datapopalliance",
+      "name": "Data Pop Alliance Logo",
+      "domain": "datapopalliance.org",
+      "website": "https://datapopalliance.org/"
+    },
+    {
+      "slug": "davidslegacy",
+      "name": "Davids Legacy",
+      "domain": "davidslegacy.org",
+      "website": "https://www.davidslegacy.org/"
+    },
+    {
+      "slug": "digitalcredentials",
+      "name": "Dcc",
+      "domain": "digitalcredentials.mit.edu",
+      "website": "https://digitalcredentials.mit.edu/"
+    },
+    {
+      "slug": "thedrcenter",
+      "name": "Decentralization Research Center Color Logo",
+      "domain": "thedrcenter.org",
+      "website": "https://thedrcenter.org/"
+    },
+    {
+      "slug": "decifer",
+      "name": "Decifer Studio",
+      "domain": "decifer.tech",
+      "website": "https://decifer.tech/"
+    },
+    {
+      "slug": "democracy4all",
+      "name": "Democracy4all Color Logo",
+      "domain": "democracy4all.barcelona",
+      "website": "https://www.democracy4all.barcelona/"
+    },
+    {
+      "slug": "digital-democracy",
+      "name": "Digital Democracy",
+      "domain": "digital-democracy.org",
+      "website": "https://www.digital-democracy.org/"
+    },
+    {
+      "slug": "dosomething",
+      "name": "Do Something Dot Org",
+      "domain": "dosomething.org",
+      "website": "https://dosomething.org/"
+    },
+    {
+      "slug": "domyn",
+      "name": "Domyn",
+      "domain": "domyn.com",
+      "website": "https://www.domyn.com/"
+    },
+    {
+      "slug": "dp",
+      "name": "Dpla",
+      "domain": "dp.la",
+      "website": "https://dp.la/"
+    },
+    {
+      "slug": "dream",
+      "name": "Dream Org",
+      "domain": "dream.org",
+      "website": "https://dream.org/"
+    },
+    {
+      "slug": "getdweb",
+      "name": "Dweb Color Logo",
+      "domain": "getdweb.net",
+      "website": "https://getdweb.net/"
+    },
+    {
+      "slug": "earthkindcollective",
+      "name": "Earthkind",
+      "domain": "earthkindcollective.org",
+      "website": "https://earthkindcollective.org/"
+    },
+    {
+      "slug": "eclipse",
+      "name": "Eclipse Foundation",
+      "domain": "eclipse.org",
+      "website": "https://www.eclipse.org/"
+    },
+    {
+      "slug": "eko",
+      "name": "Eko",
+      "domain": "eko.org",
+      "website": "https://www.eko.org/"
+    },
+    {
+      "slug": "encodejustice",
+      "name": "Encodejustice",
+      "domain": "encodejustice.org",
+      "website": "https://encodejustice.org/#what-we-do"
+    },
+    {
+      "slug": "engagemedia",
+      "name": "Engage Media Logotype Red Black 800px",
+      "domain": "engagemedia.org",
+      "website": "https://engagemedia.org"
+    },
+    {
+      "slug": "epic",
+      "name": "Epic",
+      "domain": "epic.org",
+      "website": "https://epic.org/"
+    },
+    {
+      "slug": "ens",
+      "name": "Ethereum Name Service",
+      "domain": "ens.domains",
+      "website": "https://ens.domains/"
+    },
+    {
+      "slug": "ethicalaialliance",
+      "name": "Ethical Aialliance",
+      "domain": "ethicalaialliance.org",
+      "website": "https://www.ethicalaialliance.org"
+    },
+    {
+      "slug": "eticas",
+      "name": "Eticas",
+      "domain": "eticas.ai",
+      "website": "https://eticas.ai/"
+    },
+    {
+      "slug": "buildexante",
+      "name": "Ex Ante",
+      "domain": "buildexante.com",
+      "website": "https://www.buildexante.com/"
+    },
+    {
+      "slug": "excelined",
+      "name": "Excelin Ed",
+      "domain": "excelined.org",
+      "website": "https://excelined.org/"
+    },
+    {
+      "slug": "fairplayforkids",
+      "name": "Fairplay Childhood Beyond Brands",
+      "domain": "fairplayforkids.org",
+      "website": "https://fairplayforkids.org/"
+    },
+    {
+      "slug": "faithwise",
+      "name": "Faith Wise Ai",
+      "domain": "faithwise.ai",
+      "website": "https://www.faithwise.ai/"
+    },
+    {
+      "slug": "ffwd",
+      "name": "Fast Forward",
+      "domain": "ffwd.org",
+      "website": "https://www.ffwd.org/"
+    },
+    {
+      "slug": "fathom",
+      "name": "Fathom",
+      "domain": "fathom.org",
+      "website": "http://www.fathom.org/"
+    },
+    {
+      "slug": "5rightsfoundation",
+      "name": "Five Rights Foundation",
+      "domain": "5rightsfoundation.com",
+      "website": "https://5rightsfoundation.com/"
+    },
+    {
+      "slug": "freeourfeeds",
+      "name": "Fof",
+      "domain": "freeourfeeds.com",
+      "website": "https://freeourfeeds.com/"
+    },
+    {
+      "slug": "forfreedoms",
+      "name": "Forfreedoms",
+      "domain": "forfreedoms.org",
+      "website": "https://www.forfreedoms.org/"
+    },
+    {
+      "slug": "thefai",
+      "name": "Foundation For American Innovation",
+      "domain": "thefai.org",
+      "website": "https://www.thefai.org/"
+    },
+    {
+      "slug": "freespoke",
+      "name": "Freespoke Logo",
+      "domain": "freespoke.com",
+      "website": "https://freespoke.com"
+    },
+    {
+      "slug": "futurecaucus",
+      "name": "Future Caucus Color Logo",
+      "domain": "futurecaucus.org",
+      "website": "https://futurecaucus.org/"
+    },
+    {
+      "slug": "futureoflife",
+      "name": "Future Of Life Institute",
+      "domain": "futureoflife.org",
+      "website": "https://futureoflife.org/"
+    },
+    {
+      "slug": "georgetown",
+      "name": "Georgetown University",
+      "domain": "georgetown.edu",
+      "website": "https://www.georgetown.edu/"
+    },
+    {
+      "slug": "ash",
+      "name": "Getting Plurality Research Network",
+      "domain": "ash.harvard.edu",
+      "website": "https://ash.harvard.edu/programs/getting-plurality/"
+    },
+    {
+      "slug": "glianetalliance",
+      "name": "Glia Net",
+      "domain": "glianetalliance.org",
+      "website": "https://www.glianetalliance.org/"
+    },
+    {
+      "slug": "disinformationindex",
+      "name": "Global Disinformation Index",
+      "domain": "disinformationindex.org",
+      "website": "https://www.disinformationindex.org/"
+    },
+    {
+      "slug": "data4sdgs",
+      "name": "Global Partnerships",
+      "domain": "data4sdgs.org",
+      "website": "https://www.data4sdgs.org/"
+    },
+    {
+      "slug": "global-solutions-initiative",
+      "name": "Global Solutions Initiative Logo",
+      "domain": "global-solutions-initiative.org",
+      "website": "https://www.global-solutions-initiative.org/"
+    },
+    {
+      "slug": "goodbot",
+      "name": "Good Bot",
+      "domain": "goodbot.ca",
+      "website": "http://www.goodbot.ca"
+    },
+    {
+      "slug": "goodlylabs",
+      "name": "Goodly Labs",
+      "domain": "goodlylabs.org",
+      "website": "https://www.goodlylabs.org/"
+    },
+    {
+      "slug": "grayarea",
+      "name": "Gray Area",
+      "domain": "grayarea.org",
+      "website": "https://grayarea.org/"
+    },
+    {
+      "slug": "heartlandforward",
+      "name": "Heartland Forward",
+      "domain": "heartlandforward.org",
+      "website": "https://heartlandforward.org/"
+    },
+    {
+      "slug": "heatinitiative",
+      "name": "Heat Initiative",
+      "domain": "heatinitiative.org",
+      "website": "https://heatinitiative.org/"
+    },
+    {
+      "slug": "hellohumanity",
+      "name": "Hello Humanity Hhlogostacked 6 Teal Black 10",
+      "domain": "hellohumanity.com",
+      "website": "https://hellohumanity.com"
+    },
+    {
+      "slug": "hiifoundation",
+      "name": "Hii Foundation",
+      "domain": "hiifoundation.org",
+      "website": "https://www.hiifoundation.org/"
+    },
+    {
+      "slug": "historycommunication",
+      "name": "History Communication Institute",
+      "domain": "historycommunication.com",
+      "website": "https://historycommunication.com/"
+    },
+    {
+      "slug": "hopelab",
+      "name": "Hopelab",
+      "domain": "hopelab.org",
+      "website": "https://hopelab.org/"
+    },
+    {
+      "slug": "hek",
+      "name": "House Of Electronic Art",
+      "domain": "hek.ch",
+      "website": "https://hek.ch/en/"
+    },
+    {
+      "slug": "humanchange",
+      "name": "Human Change",
+      "domain": "humanchange.com",
+      "website": "https://humanchange.com"
+    },
+    {
+      "slug": "humane-intelligence",
+      "name": "Human Intelligence",
+      "domain": "humane-intelligence.org",
+      "website": "https://humane-intelligence.org/"
+    },
+    {
+      "slug": "humansincontrol",
+      "name": "Humans In Control",
+      "domain": "humansincontrol.org",
+      "website": "https://humansincontrol.org/"
+    },
+    {
+      "slug": "identityvalley",
+      "name": "Identity Valley",
+      "domain": "identityvalley.eu",
+      "website": "https://identityvalley.eu/"
+    },
+    {
+      "slug": "theidi",
+      "name": "Inclusive Design Institute Logo",
+      "domain": "theidi.org",
+      "website": "https://www.theidi.org/"
+    },
+    {
+      "slug": "independentsector",
+      "name": "Independent Sector",
+      "domain": "independentsector.org",
+      "website": "https://independentsector.org/"
+    },
+    {
+      "slug": "instituteforfamiliesandtechnology",
+      "name": "Institute For Families And Technology",
+      "domain": "instituteforfamiliesandtechnology.org",
+      "website": "https://www.instituteforfamiliesandtechnology.org/"
+    },
+    {
+      "slug": "securityandtechnology",
+      "name": "Institute For Security Technology",
+      "domain": "securityandtechnology.org",
+      "website": "https://securityandtechnology.org/"
+    },
+    {
+      "slug": "itsrio",
+      "name": "Institute Of Technology And Society Logo",
+      "domain": "itsrio.org",
+      "website": "https://itsrio.org"
+    },
+    {
+      "slug": "isdglobal",
+      "name": "Institutefor Strategic Dialogue Us",
+      "domain": "isdglobal.org",
+      "website": "https://www.isdglobal.org/"
+    },
+    {
+      "slug": "integrityinstitute",
+      "name": "Integrity Institute",
+      "domain": "integrityinstitute.org",
+      "website": "https://integrityinstitute.org/"
+    },
+    {
+      "slug": "archive",
+      "name": "Internet Archive",
+      "domain": "archive.org",
+      "website": "https://archive.org/"
+    },
+    {
+      "slug": "issueone",
+      "name": "Issue One",
+      "domain": "issueone.org",
+      "website": "https://issueone.org/"
+    },
+    {
+      "slug": "jewishfederations",
+      "name": "Jewish Federations",
+      "domain": "jewishfederations.org",
+      "website": "https://www.jewishfederations.org/"
+    },
+    {
+      "slug": "keranaut",
+      "name": "Keranaut",
+      "domain": "keranaut.com",
+      "website": "https://www.keranaut.com"
+    },
+    {
+      "slug": "kinsoo",
+      "name": "Kin Soo",
+      "domain": "kinsoo.io",
+      "website": "https://www.kinsoo.io/"
+    },
+    {
+      "slug": "laplateforme",
+      "name": "La Plateforme",
+      "domain": "laplateforme.io",
+      "website": "https://laplateforme.io/entreprise/"
+    },
+    {
+      "slug": "lessthan3sc",
+      "name": "Less Than Three",
+      "domain": "lessthan3sc.org",
+      "website": "http://lessthan3sc.org/"
+    },
+    {
+      "slug": "lifewithmachines",
+      "name": "Life With Machines",
+      "domain": "lifewithmachines.media",
+      "website": "https://lifewithmachines.media/"
+    },
+    {
+      "slug": "logoffmovement",
+      "name": "Log Off",
+      "domain": "logoffmovement.org",
+      "website": "https://www.logoffmovement.org/"
+    },
+    {
+      "slug": "luma",
+      "name": "Luma Arles",
+      "domain": "luma.org",
+      "website": "https://www.luma.org/fr/arles.html"
+    },
+    {
+      "slug": "madewithblackculture",
+      "name": "Made Company Logo",
+      "domain": "madewithblackculture.com",
+      "website": "https://madewithblackculture.com"
+    },
+    {
+      "slug": "make",
+      "name": "Makeorg",
+      "domain": "make.org",
+      "website": "https://make.org/US"
+    },
+    {
+      "slug": "joinmama",
+      "name": "Mama",
+      "domain": "joinmama.org",
+      "website": "https://www.joinmama.org/"
+    },
+    {
+      "slug": "mapletestimony",
+      "name": "Maple",
+      "domain": "mapletestimony.org",
+      "website": "https://www.mapletestimony.org"
+    },
+    {
+      "slug": "massgeneralbrigham",
+      "name": "Mass General Birigham",
+      "domain": "massgeneralbrigham.org",
+      "website": "https://www.massgeneralbrigham.org/en"
+    },
+    {
+      "slug": "metagov",
+      "name": "Metagov",
+      "domain": "metagov.org",
+      "website": "https://metagov.org/"
+    },
+    {
+      "slug": "mctd",
+      "name": "Minderoo",
+      "domain": "mctd.ac.uk",
+      "website": "https://www.mctd.ac.uk/"
+    },
+    {
+      "slug": "minderoo",
+      "name": "Minderoo Foundation",
+      "domain": "minderoo.org",
+      "website": "https://www.minderoo.org/"
+    },
+    {
+      "slug": "mindbridgecenter",
+      "name": "Minebridge",
+      "domain": "mindbridgecenter.org",
+      "website": "https://www.mindbridgecenter.org/"
+    },
+    {
+      "slug": "ccc",
+      "name": "Mit Center For Constructive Communication",
+      "domain": "ccc.mit.edu",
+      "website": "https://www.ccc.mit.edu/"
+    },
+    {
+      "slug": "momsrising",
+      "name": "Moms Rising",
+      "domain": "momsrising.org",
+      "website": "https://www.momsrising.org/"
+    },
+    {
+      "slug": "moreincommon",
+      "name": "More In Common",
+      "domain": "moreincommon.com",
+      "website": "https://www.moreincommon.com/"
+    },
+    {
+      "slug": "mydata",
+      "name": "My Data Global",
+      "domain": "mydata.org",
+      "website": "https://mydata.org/"
+    },
+    {
+      "slug": "ncoc",
+      "name": "National Conferenc Citizenship",
+      "domain": "ncoc.org",
+      "website": "https://ncoc.org/"
+    },
+    {
+      "slug": "networkmessenger",
+      "name": "Network Messenger",
+      "domain": "networkmessenger.com",
+      "website": "https://networkmessenger.com/"
+    },
+    {
+      "slug": "newamerica",
+      "name": "New America",
+      "domain": "newamerica.org",
+      "website": "https://www.newamerica.org/"
+    },
+    {
+      "slug": "newimpact",
+      "name": "New Impact Logo",
+      "domain": "newimpact.care",
+      "website": "https://newimpact.care"
+    },
+    {
+      "slug": "newpublic",
+      "name": "New Public",
+      "domain": "newpublic.org",
+      "website": "https://newpublic.org/"
+    },
+    {
+      "slug": "newsguardtech",
+      "name": "News Guard Color Logo",
+      "domain": "newsguardtech.com",
+      "website": "https://www.newsguardtech.com/"
+    },
+    {
+      "slug": "noappforlife",
+      "name": "No App For Life",
+      "domain": "noappforlife.com",
+      "website": "https://www.noappforlife.com/"
+    },
+    {
+      "slug": "getnu",
+      "name": "Nu",
+      "domain": "getnu.ai",
+      "website": "https://www.getnu.ai"
+    },
+    {
+      "slug": "law",
+      "name": "Nyuinformation Law Institute",
+      "domain": "law.nyu.edu",
+      "website": "https://www.law.nyu.edu/centers/ili"
+    },
+    {
+      "slug": "opencollective",
+      "name": "Ocf",
+      "domain": "opencollective.com",
+      "website": "https://opencollective.com/"
+    },
+    {
+      "slug": "omidyar",
+      "name": "Omyidar Network",
+      "domain": "omidyar.com",
+      "website": "https://omidyar.com/"
+    },
+    {
+      "slug": "openmined",
+      "name": "Open Mined",
+      "domain": "openmined.org",
+      "website": "https://openmined.org/"
+    },
+    {
+      "slug": "amacad",
+      "name": "Our Common Purpose",
+      "domain": "amacad.org",
+      "website": "https://www.amacad.org/ourcommonpurpose"
+    },
+    {
+      "slug": "parentssos",
+      "name": "Parents Sos",
+      "domain": "parentssos.org",
+      "website": "https://www.parentssos.org/"
+    },
+    {
+      "slug": "parentstogetheraction",
+      "name": "Parents Together Action",
+      "domain": "parentstogetheraction.org",
+      "website": "https://parentstogetheraction.org/"
+    },
+    {
+      "slug": "partnershiponai",
+      "name": "Partnership On Ai",
+      "domain": "partnershiponai.org",
+      "website": "https://partnershiponai.org/"
+    },
+    {
+      "slug": "mcgovern",
+      "name": "Patrick Jmc Goven Foundation",
+      "domain": "mcgovern.org",
+      "website": "https://www.mcgovern.org/"
+    },
+    {
+      "slug": "peoplecentered",
+      "name": "People Centered Internet",
+      "domain": "peoplecentered.net",
+      "website": "https://peoplecentered.net/"
+    },
+    {
+      "slug": "pivo",
+      "name": "Pivo",
+      "domain": "pivo.org.br",
+      "website": "https://pivo.org.br/en/"
+    },
+    {
+      "slug": "policylink",
+      "name": "Policy Link",
+      "domain": "policylink.org",
+      "website": "https://www.policylink.org/"
+    },
+    {
+      "slug": "poptech",
+      "name": "Pop Tech",
+      "domain": "poptech.org",
+      "website": "https://poptech.org/"
+    },
+    {
+      "slug": "positivetechinstitute",
+      "name": "Positive Tech Inst",
+      "domain": "positivetechinstitute.org",
+      "website": "https://www.positivetechinstitute.org/"
+    },
+    {
+      "slug": "publicai",
+      "name": "Public Ai",
+      "domain": "publicai.co",
+      "website": "https://publicai.co/"
+    },
+    {
+      "slug": "publicknowledge",
+      "name": "Public Knowledge",
+      "domain": "publicknowledge.org",
+      "website": "https://publicknowledge.org/"
+    },
+    {
+      "slug": "radicalxchange",
+      "name": "Radical Xchange",
+      "domain": "radicalxchange.org",
+      "website": "https://www.radicalxchange.org/"
+    },
+    {
+      "slug": "restate",
+      "name": "Re State Foundation",
+      "domain": "restate.global",
+      "website": "https://restate.global/"
+    },
+    {
+      "slug": "reelworks",
+      "name": "Reel Works",
+      "domain": "reelworks.org",
+      "website": "https://www.reelworks.org/"
+    },
+    {
+      "slug": "rethinkwords",
+      "name": "Rethink",
+      "domain": "rethinkwords.com",
+      "website": "https://www.rethinkwords.com/"
+    },
+    {
+      "slug": "rsf",
+      "name": "Rsf Reporters Without Borders",
+      "domain": "rsf.org",
+      "website": "https://rsf.org/en"
+    },
+    {
+      "slug": "medialab",
+      "name": "Sciences Pro",
+      "domain": "medialab.sciencespo.fr",
+      "website": "https://medialab.sciencespo.fr/"
+    },
+    {
+      "slug": "sfcg",
+      "name": "Search For Common Ground",
+      "domain": "sfcg.org",
+      "website": "https://www.sfcg.org/"
+    },
+    {
+      "slug": "seismic",
+      "name": "Seismic Foundation",
+      "domain": "seismic.org",
+      "website": "https://www.seismic.org/"
+    },
+    {
+      "slug": "sideways",
+      "name": "Sideways",
+      "domain": "sideways.earth",
+      "website": "https://www.sideways.earth"
+    },
+    {
+      "slug": "siegelendowment",
+      "name": "Siegel Family Endowment",
+      "domain": "siegelendowment.org",
+      "website": "https://www.siegelendowment.org/"
+    },
+    {
+      "slug": "socialmediavictims",
+      "name": "Social Media Victims Law Center",
+      "domain": "socialmediavictims.org",
+      "website": "https://socialmediavictims.org/"
+    },
+    {
+      "slug": "stanford",
+      "name": "Stanford University",
+      "domain": "stanford.edu",
+      "website": "https://www.stanford.edu/"
+    },
+    {
+      "slug": "starlinglab",
+      "name": "Starling Lab",
+      "domain": "starlinglab.org",
+      "website": "https://www.starlinglab.org/"
+    },
+    {
+      "slug": "schoolofattention",
+      "name": "Strother School Of Radical Attention",
+      "domain": "schoolofattention.org",
+      "website": "https://www.schoolofattention.org/"
+    },
+    {
+      "slug": "sustainablemedia",
+      "name": "Sustainable Media Center",
+      "domain": "sustainablemedia.center",
+      "website": "https://sustainablemedia.center/"
+    },
+    {
+      "slug": "socialwebfoundation",
+      "name": "Swf",
+      "domain": "socialwebfoundation.org",
+      "website": "https://socialwebfoundation.org/"
+    },
+    {
+      "slug": "taketwomediaitiaitive",
+      "name": "Take Two",
+      "domain": "taketwomediaitiaitive.org",
+      "website": "http://www.taketwomediaitiaitive.org/"
+    },
+    {
+      "slug": "techjusticelaw",
+      "name": "Tech Justice Law",
+      "domain": "techjusticelaw.org",
+      "website": "https://techjusticelaw.org/"
+    },
+    {
+      "slug": "techmatters",
+      "name": "Tech Matters Logo",
+      "domain": "techmatters.org",
+      "website": "https://techmatters.org"
+    },
+    {
+      "slug": "techoversight",
+      "name": "Tech Oversight",
+      "domain": "techoversight.org",
+      "website": "https://www.techoversight.org"
+    },
+    {
+      "slug": "techsoup",
+      "name": "Techsoup",
+      "domain": "techsoup.org",
+      "website": "https://www.techsoup.org/"
+    },
+    {
+      "slug": "secureainow",
+      "name": "The Alliancefor Secure Ai",
+      "domain": "secureainow.org",
+      "website": "http://www.secureainow.org"
+    },
+    {
+      "slug": "anxiousgeneration",
+      "name": "The Anxious Generation",
+      "domain": "anxiousgeneration.com",
+      "website": "https://www.anxiousgeneration.com/"
+    },
+    {
+      "slug": "thecenterforartsandinnovation",
+      "name": "The Center For Ai",
+      "domain": "thecenterforartsandinnovation.org",
+      "website": "https://thecenterforartsandinnovation.org/"
+    },
+    {
+      "slug": "theelders",
+      "name": "The Elders",
+      "domain": "theelders.org",
+      "website": "https://www.theelders.org/"
+    },
+    {
+      "slug": "thefuturesociety",
+      "name": "The Future Society Logo",
+      "domain": "thefuturesociety.org",
+      "website": "https://thefuturesociety.org/"
+    },
+    {
+      "slug": "thehumanlineproject",
+      "name": "The Human Line Project",
+      "domain": "thehumanlineproject.org",
+      "website": "https://www.thehumanlineproject.org/"
+    },
+    {
+      "slug": "kempe",
+      "name": "The Kempe Foundation",
+      "domain": "kempe.org",
+      "website": "https://kempe.org/"
+    },
+    {
+      "slug": "themetalayer",
+      "name": "The Meta Layer Initiative",
+      "domain": "themetalayer.org",
+      "website": "https://themetalayer.org"
+    },
+    {
+      "slug": "thepolicycircle",
+      "name": "The Policy Circle",
+      "domain": "thepolicycircle.org",
+      "website": "https://www.thepolicycircle.org/"
+    },
+    {
+      "slug": "thesamehouse",
+      "name": "The Same House Color Logo",
+      "domain": "thesamehouse.org",
+      "website": "https://thesamehouse.org/"
+    },
+    {
+      "slug": "theshed",
+      "name": "The Shed",
+      "domain": "theshed.org",
+      "website": "https://www.theshed.org/"
+    },
+    {
+      "slug": "thesgnl",
+      "name": "The Signal",
+      "domain": "thesgnl.com",
+      "website": "https://www.thesgnl.com/"
+    },
+    {
+      "slug": "trust",
+      "name": "Thomson Reuters Foundation",
+      "domain": "trust.org",
+      "website": "https://www.trust.org/"
+    },
+    {
+      "slug": "thorn",
+      "name": "Thorn",
+      "domain": "thorn.org",
+      "website": "https://www.thorn.org/"
+    },
+    {
+      "slug": "dais",
+      "name": "Toronto Metropolitan University The Dais",
+      "domain": "dais.ca",
+      "website": "https://dais.ca/"
+    },
+    {
+      "slug": "mtotonews",
+      "name": "Toto News",
+      "domain": "mtotonews.com",
+      "website": "https://www.mtotonews.com/"
+    },
+    {
+      "slug": "transfer",
+      "name": "Transfer Logo Black Bg Square",
+      "domain": "transfer.art",
+      "website": "http://transfer.art"
+    },
+    {
+      "slug": "transparencycoalition",
+      "name": "Transparency Coalition",
+      "domain": "transparencycoalition.ai",
+      "website": "https://www.transparencycoalition.ai/"
+    },
+    {
+      "slug": "thetrustfoundation",
+      "name": "Trust Foundation",
+      "domain": "thetrustfoundation.org",
+      "website": "https://thetrustfoundation.org/"
+    },
+    {
+      "slug": "usercooperative",
+      "name": "User Cooperative",
+      "domain": "usercooperative.com",
+      "website": "https://www.usercooperative.com/"
+    },
+    {
+      "slug": "uxforgood",
+      "name": "Ux For Good",
+      "domain": "uxforgood.org",
+      "website": "https://www.uxforgood.org/"
+    },
+    {
+      "slug": "videovolunteers",
+      "name": "Video Volunteers",
+      "domain": "videovolunteers.org",
+      "website": "https://www.videovolunteers.org/"
+    },
+    {
+      "slug": "vito",
+      "name": "We Are Infrastructure",
+      "domain": "vito.be",
+      "website": "https://vito.be/nl"
+    },
+    {
+      "slug": "w3ws",
+      "name": "Web3web Society",
+      "domain": "w3ws.org",
+      "website": "https://www.w3ws.org/"
+    },
+    {
+      "slug": "youngpeoplesalliance",
+      "name": "Young People S Alliance Logo",
+      "domain": "youngpeoplesalliance.org",
+      "website": "https://youngpeoplesalliance.org/"
+    },
+    {
+      "slug": "youthmediafoundation",
+      "name": "Youth Media Foundation",
+      "domain": "youthmediafoundation.org",
+      "website": "https://www.youthmediafoundation.org/home"
+    }
+  ]
+}

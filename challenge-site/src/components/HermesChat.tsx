@@ -478,7 +478,10 @@ export default function HermesChat({
   const onSlugParam =
     searchParams.get('slug')?.trim() || searchParams.get('alliance')?.trim() || null;
   const fromOnParam =
-    (searchParams.get('from') === 'on' || searchParams.get('from') === 'alliance') && onSlugParam;
+    (searchParams.get('from') === 'pad' ||
+      searchParams.get('from') === 'on' ||
+      searchParams.get('from') === 'alliance') &&
+    onSlugParam;
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
@@ -589,7 +592,7 @@ export default function HermesChat({
       return `desirableproperties.org/workgroups/${workgroupSlugParam}`;
     }
     if (fromOnParam && onSlugParam) {
-      return `desirableproperties.org/on/${onSlugParam}`;
+      return `desirableproperties.org/pad/${onSlugParam}`;
     }
     return surface;
   }, [fromWorkgroupParam, workgroupSlugParam, fromOnParam, onSlugParam, surface]);

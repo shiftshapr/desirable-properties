@@ -1,7 +1,7 @@
 {
   "cohort": "project-liberty-alliance",
   "cohortLabel": "Project Liberty Alliance",
-  "directoryNote": "Curated public packet for Hermes Onboarding. Not the full Alliance roster (200+). Orgs correct fields after they claim a briefing. Every mission/value string cites a public URL.",
+  "directoryNote": "Curated public packet for DP Studio landing pads. Not the full Alliance roster (200+). Orgs correct fields after they claim a pad. Every mission/value string cites a public URL.",
   "orgs": [
     {
       "slug": "project-liberty",

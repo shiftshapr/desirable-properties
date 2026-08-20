@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
 import { getAllianceOrg, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
-import { onHref } from '@/lib/hermes-onboard/tabs';
+import { padHref } from '@/lib/hermes-onboard/tabs';
 import type {
   AllianceOrg,
   BriefingMove,
@@ -252,7 +252,7 @@ function nextStepsFor(
       title: 'Confirm the public source URLs Hermes may read',
       why: 'Hero cards stay marked hypothesis until sources are confirmed.',
       system: 'Subject packet',
-      href: onHref(org.slug, 'rights'),
+      href: padHref(org.slug, 'rights'),
       status: session?.confirmed.sources ? 'done' : 'open',
     },
     {
@@ -260,7 +260,7 @@ function nextStepsFor(
       title: 'Confirm or edit the partner list for the collaborative layer',
       why: 'The partner layer cannot be empty of names Hermes is allowed to cite.',
       system: 'Partners tab',
-      href: onHref(org.slug, 'partners'),
+      href: padHref(org.slug, 'partners'),
       status: session?.confirmed.partners ? 'done' : 'open',
     },
     {
@@ -268,7 +268,7 @@ function nextStepsFor(
       title: `Weigh in on Desirable Properties tied to ${org.shortName}`,
       why: 'Follow one interest to a specific patch idea. This is the invitation, not a finished score.',
       system: 'DP tab',
-      href: onHref(org.slug, 'dp'),
+      href: padHref(org.slug, 'dp'),
       status: prior.get('weigh-in-dp')?.status || 'open',
     },
     {
@@ -284,7 +284,7 @@ function nextStepsFor(
       title: 'Request an own layer on Gov Hub',
       why: 'Graduation from briefing to stewardship container.',
       system: 'Gov Hub',
-      href: 'https://hub.themetalayer.org/',
+      href: 'https://interfacehub.net/',
       status: prior.get('govhub-layer')?.status || 'open',
     },
     {
@@ -292,7 +292,7 @@ function nextStepsFor(
       title: 'Keep the MPA draft as a next-step commitment',
       why: 'Impact card becomes a filed requirement only after humans accept it.',
       system: 'Gov Hub ML-REQ (later)',
-      href: 'https://hub.themetalayer.org/',
+      href: 'https://interfacehub.net/',
       status: prior.get('mpa-draft')?.status || 'open',
     },
   ];
@@ -306,7 +306,7 @@ export function generateBriefing(
   const partners = partnerNames(org);
   const communityHref = session?.communityThreadId
     ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}`
-    : onHref(org.slug, 'community');
+    : padHref(org.slug, 'community');
   const steps = nextStepsFor(org, session, communityHref);
 
   return {

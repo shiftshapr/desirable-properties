@@ -10,7 +10,8 @@ import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
 import {
   ONBOARD_TABS,
   parseOnboardTab,
-  onHref,
+  padAbsoluteHref,
+  padHref,
   type OnboardTabId,
 } from '@/lib/hermes-onboard/tabs';
 import type {
@@ -88,7 +89,7 @@ export default function AllianceBriefingClient({
       setBusy(true);
       setError(null);
       try {
-        const res = await fetch(`/api/on/${encodeURIComponent(org.slug)}`, {
+        const res = await fetch(`/api/pad/${encodeURIComponent(org.slug)}`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -125,7 +126,7 @@ export default function AllianceBriefingClient({
   const ensureMemory = async () => {
     if (session.consent.sessionMemory) return true;
     const ok = await DpDialog.confirm({
-      title: 'Save this briefing?',
+      title: 'Save this landing pad?',
       message:
         'Hermes can only remember confirms, regenerations, and next steps if you allow session memory for this organization. You can turn it off later on the Rights tab.',
       variant: 'warning',
@@ -154,18 +155,26 @@ export default function AllianceBriefingClient({
   };
 
   const agentChatHref = session.communityThreadId
-    ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}&from=on&slug=${encodeURIComponent(org.slug)}`
-    : `/agent?create=community&from=on&slug=${encodeURIComponent(org.slug)}`;
+    ? `/agent?thread=${encodeURIComponent(session.communityThreadId)}&from=pad&slug=${encodeURIComponent(org.slug)}`
+    : `/agent?create=community&from=pad&slug=${encodeURIComponent(org.slug)}`;
+
+  const padLink = padHref(org.slug, tab);
+  const padAbsoluteLink = padAbsoluteHref(org.slug, tab);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
       <DpDialogHost />
       <p className="text-sm text-cyan-300">
-        <Link href="/on" className="hover:text-cyan-200">
-          Hermes Onboarding
+        <Link href="/pad" className="hover:text-cyan-200">
+          DP Studio landing pads
         </Link>
         <span className="text-slate-500"> / Project Liberty Alliance</span>
       </p>
+      <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
+        <span className="font-medium text-cyan-200">Desirable Properties Studio · Public beta.</span>{' '}
+        Version 0.77 is open for review. Version 1.0 of <em>The Layered Web</em> and the public
+        launch of DP Studio are September 16, 2026.
+      </div>
       <header className="mt-4 border-b border-slate-800 pb-8">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
           Invitation to weigh in
@@ -177,9 +186,13 @@ export default function AllianceBriefingClient({
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">{pitch.captureLine}</p>
         <p className="mt-3 text-sm text-slate-500">
           Public packet only. Hypothesis marks stay until you confirm sources. Each Alliance member
-          gets a different pitch so we can experiment. Direct link to this tab:{' '}
-          <Link href={onHref(org.slug, tab)} className="text-cyan-400 hover:text-cyan-200">
-            {onHref(org.slug, tab)}
+          gets a different pitch so we can experiment. Your pad is{' '}
+          <Link href={padLink} className="font-mono text-cyan-400 hover:text-cyan-200">
+            {padAbsoluteHref(org.slug)}
+          </Link>{' '}
+          (hyphens optional). Direct link to this tab:{' '}
+          <Link href={padLink} className="font-mono text-cyan-400 hover:text-cyan-200">
+            {padAbsoluteLink}
           </Link>
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
@@ -210,7 +223,7 @@ export default function AllianceBriefingClient({
               onClick={() => void run({ action: 'claim' })}
               className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
             >
-              {signedIn ? 'Claim this briefing' : 'Sign in to claim'}
+              {signedIn ? 'Claim this landing pad' : 'Sign in to claim'}
             </button>
           )}
         </div>
@@ -222,7 +235,7 @@ export default function AllianceBriefingClient({
         {ONBOARD_TABS.map((item) => (
           <Link
             key={item.id}
-            href={onHref(org.slug, item.id)}
+            href={padHref(org.slug, item.id)}
             onClick={(e) => {
               e.preventDefault();
               selectTab(item.id);
@@ -334,7 +347,7 @@ function DpTab({
         <p className="mt-3 text-slate-300 leading-relaxed">{pitch.ask}</p>
         <p className="mt-3 text-sm text-slate-400">
           These directions are generated from {org.name}&apos;s public corpus, not from private
-          briefings. Each one is a hypothesis. Follow the interest that feels like your work. The
+          landing pads. Each one is a hypothesis. Follow the interest that feels like your work. The
           Hermes prompt and Discuss link are real contribution paths, not a brochure.
         </p>
       </div>
@@ -573,7 +586,7 @@ function PartnersTab({
         {org.partnerOrgs.map((partner) => (
           <li key={partner.slug}>
             <Link
-              href={onHref(partner.slug, 'dp')}
+              href={padHref(partner.slug, 'dp')}
               className="text-cyan-300 hover:text-cyan-200"
             >
               {partner.name}
@@ -722,7 +735,7 @@ function RightsTab({
       <div>
         <h2 className="text-xl font-semibold text-white">Event ledger</h2>
         {events.length === 0 ? (
-          <p className="mt-2 text-sm text-slate-500">Sign in to see writes stored for this briefing.</p>
+          <p className="mt-2 text-sm text-slate-500">Sign in to see writes stored for this landing pad.</p>
         ) : (
           <ul className="mt-3 space-y-2 text-sm text-slate-400">
             {events.map((event) => (
@@ -813,7 +826,7 @@ function CommunityTab({
       <h2 className="text-xl font-semibold text-white">Hermes Community Chat</h2>
       <p className="mt-3 text-slate-300 leading-relaxed">
         Invite Alliance colleagues into a shared Hermes thread for {org.name}. Everyone invited can
-        prompt. The thread origin is this briefing, so it shows as an Alliance briefing in the
+        prompt. The thread origin is this landing pad, so it shows as a landing pad in the
         Hermes sidebar instead of a private orphan.
       </p>
       {session.communityThreadId ? (
@@ -821,7 +834,7 @@ function CommunityTab({
           Chat exists{session.communityThreadTitle ? `: ${session.communityThreadTitle}` : ''}.
         </p>
       ) : (
-        <p className="mt-4 text-sm text-slate-400">No Community Chat yet for this briefing.</p>
+        <p className="mt-4 text-sm text-slate-400">No Community Chat yet for this landing pad.</p>
       )}
       <div className="mt-5 flex flex-wrap gap-3">
         {session.communityThreadId ? (

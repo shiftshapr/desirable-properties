@@ -24,7 +24,26 @@ export const ONBOARD_TABS: { id: OnboardTabId; label: string }[] = [
   { id: 'community', label: 'Community Chat' },
 ];
 
-export const ON_PATH = '/on';
+export const PAD_PATH = '/pad';
+
+const DEFAULT_PAD_PUBLIC_BASE = 'https://desirableproperties.org';
+
+/** Public site origin for absolute pad links (email, copy, staging via env). */
+export function padPublicBase(): string {
+  const base =
+    process.env.NEXT_PUBLIC_DP_PUBLIC_BASE?.trim() ||
+    process.env.DP_PUBLIC_BASE?.trim() ||
+    DEFAULT_PAD_PUBLIC_BASE;
+  return base.replace(/\/$/, '');
+}
+
+/** Absolute URL for a landing pad (e.g. https://desirableproperties.org/pad/project-liberty). */
+export function padAbsoluteHref(slug: string, tab?: OnboardTabId | null): string {
+  return `${padPublicBase()}${padHref(slug, tab)}`;
+}
+
+/** @deprecated Use PAD_PATH */
+export const ON_PATH = PAD_PATH;
 
 export function isOnboardTabId(value: string | null | undefined): value is OnboardTabId {
   return Boolean(value && (ONBOARD_TAB_IDS as readonly string[]).includes(value));
@@ -42,13 +61,18 @@ export function parseOnboardTab(
   return isOnboardTabId(fallback) ? fallback : 'dp';
 }
 
-export function onHref(slug: string, tab?: OnboardTabId | null): string {
-  const base = `${ON_PATH}/${encodeURIComponent(slug)}`;
+export function padHref(slug: string, tab?: OnboardTabId | null): string {
+  const base = `${PAD_PATH}/${encodeURIComponent(slug)}`;
   if (!tab) return base;
   return `${base}?tab=${encodeURIComponent(tab)}`;
 }
 
-/** @deprecated Use onHref */
+/** @deprecated Use padHref */
+export function onHref(slug: string, tab?: OnboardTabId | null): string {
+  return padHref(slug, tab);
+}
+
+/** @deprecated Use padHref */
 export function allianceTabHref(slug: string, tab: OnboardTabId): string {
-  return onHref(slug, tab);
+  return padHref(slug, tab);
 }
