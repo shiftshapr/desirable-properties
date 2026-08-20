@@ -60,6 +60,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
       { href: '/participate', label: 'Participate' },
       { href: '/kickoff', label: 'Kickoff meeting' },
       { href: '/faq', label: 'FAQ' },
+      { href: '/on', label: 'On' },
     ],
   },
   {

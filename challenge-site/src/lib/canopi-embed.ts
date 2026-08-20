@@ -17,7 +17,7 @@ export function perspectiveDiscussHref(path: string = FORK_PERSPECTIVE_PATH): st
   return base.includes('discuss=1') ? base : `${base}${base.includes('?') ? '&' : '?'}discuss=1`;
 }
 
-/** Open Rooms on a challenge-site perspective page (Phase 1 deep link). */
+/** Open Rooms on a challenge-site perspective page (Phase 1+ deep link). */
 export function perspectiveRoomHref(roomId: string, path: string = FORK_PERSPECTIVE_PATH): string {
   const trimmed = String(roomId || '').trim();
   if (!trimmed) return path;

@@ -39,6 +39,10 @@ yarn-error.log*
 /data/support-tickets/*
 !/data/support-tickets/.gitkeep
 
+# Hermes onboarding session files (used when DP_DATABASE_URL is unset)
+/data/hermes-onboard/*
+!/data/hermes-onboard/.gitkeep
+
 # vercel
 .vercel
 

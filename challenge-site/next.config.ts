@@ -36,14 +36,39 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: '/workgroups/join',
-        destination: '/workgroups',
-        permanent: true,
+        source: '/onboard',
+        destination: '/on',
+        permanent: false,
+      },
+      {
+        source: '/onboard/alliance/:slug',
+        destination: '/on/:slug',
+        permanent: false,
+      },
+      {
+        source: '/api/onboard/alliance/:slug',
+        destination: '/api/on/:slug',
+        permanent: false,
+      },
+      {
+        source: '/api/onboard/alliance',
+        destination: '/api/on',
+        permanent: false,
       },
     ];
   },
   async headers() {
     return [
+      {
+        source: '/embed/hermes/community',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "frame-ancestors 'self' https://api.canopi.live https://app.canopi.live https://*.canopi.live https://desirableproperties.org https://staging.desirableproperties.org https://book.desirableproperties.org",
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [

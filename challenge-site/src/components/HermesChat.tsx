@@ -475,6 +475,10 @@ export default function HermesChat({
   const createUrlParam = searchParams.get('create')?.trim() || null;
   const workgroupSlugParam = searchParams.get('wg')?.trim() || null;
   const fromWorkgroupParam = searchParams.get('from') === 'workgroup' && workgroupSlugParam;
+  const onSlugParam =
+    searchParams.get('slug')?.trim() || searchParams.get('alliance')?.trim() || null;
+  const fromOnParam =
+    (searchParams.get('from') === 'on' || searchParams.get('from') === 'alliance') && onSlugParam;
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
@@ -584,8 +588,11 @@ export default function HermesChat({
     if (fromWorkgroupParam && workgroupSlugParam) {
       return `desirableproperties.org/workgroups/${workgroupSlugParam}`;
     }
+    if (fromOnParam && onSlugParam) {
+      return `desirableproperties.org/on/${onSlugParam}`;
+    }
     return surface;
-  }, [fromWorkgroupParam, workgroupSlugParam, surface]);
+  }, [fromWorkgroupParam, workgroupSlugParam, fromOnParam, onSlugParam, surface]);
 
   const buildThreadCreateBody = useCallback(
     (title: string, kind: 'private' | 'group' = 'private', groupTitle?: string | null) => {
@@ -760,6 +767,17 @@ export default function HermesChat({
     if (!signedIn || !threadUrlParam) return;
     void loadThread(threadUrlParam);
   }, [signedIn, threadUrlParam, loadThread]);
+
+  useEffect(() => {
+    if (!signedIn || typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('invite') !== 'community' || !threadUrlParam) return;
+    setShareCommunityInvite(true);
+    setShareWizardOpen(true);
+    params.delete('invite');
+    const next = `${window.location.pathname}?${params.toString()}`.replace(/\?$/, '');
+    window.history.replaceState({}, '', next || window.location.pathname);
+  }, [signedIn, threadUrlParam]);
 
   useEffect(() => {
     if (!signedIn || createUrlParam !== 'community') return;
