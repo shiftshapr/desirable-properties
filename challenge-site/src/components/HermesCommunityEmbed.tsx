@@ -237,7 +237,7 @@ export default function HermesCommunityEmbed({
                   {isUser ? (
                     <p className="whitespace-pre-wrap">{turnText(turn)}</p>
                   ) : (
-                    <HermesMarkdown content={turnText(turn)} />
+                    <HermesMarkdown text={turnText(turn)} />
                   )}
                 </div>
               );
