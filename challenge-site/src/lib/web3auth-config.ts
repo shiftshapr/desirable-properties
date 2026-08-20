@@ -24,7 +24,7 @@ export function getWeb3AuthPublicConfig() {
 }
 
 export function getGovHubBaseUrl() {
-  return String(process.env.GOVHUB_BASE_URL || 'https://hub.themetalayer.org').replace(/\/$/, '');
+  return String(process.env.GOVHUB_BASE_URL || 'https://interfacehub.net').replace(/\/$/, '');
 }
 
 /** Server-side Gov Hub proxy — prefer loopback to avoid nginx HTML 502 pages. */

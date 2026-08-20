@@ -1,4 +1,4 @@
-import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
 import { govhubInternalApiSecret } from '@/lib/support-hermes-auth';
 
 const GOVHUB_USER_ID_RE =
@@ -21,7 +21,7 @@ export async function fetchGovHubUserEmails(userIds: string[]): Promise<Map<stri
   if (!secret) return out;
 
   try {
-    const base = GOVHUB_PUBLIC_BASE_URL.replace(/\/$/, '');
+    const base = getGovHubProxyBaseUrl();
     const res = await fetch(`${base}/api/internal/dp/broadcast-user-emails`, {
       method: 'POST',
       headers: {

@@ -64,7 +64,7 @@ module.exports = {
         DP_ENV: 'prod',
         NEXT_DIST_DIR: '.next-prod',
         PORT: '3005',
-        GOVHUB_BASE_URL: 'https://hub.themetalayer.org',
+        GOVHUB_BASE_URL: 'https://interfacehub.net',
         GOVHUB_INTERNAL_BASE_URL: 'http://127.0.0.1:8000',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
         ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',

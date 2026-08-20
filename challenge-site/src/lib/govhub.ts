@@ -1,9 +1,9 @@
-/** Public Gov Hub URL (hub.themetalayer.org avoids networks that block "gov" in hostnames). */
+/** Public Gov Hub URL (interfacehub.net is canonical; legacy hub host 301s). */
 import { workgroupActivityHref } from '@/lib/workgroup-links';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 
 export const GOVHUB_PUBLIC_BASE_URL =
-  process.env.GOVHUB_BASE_URL ?? 'https://hub.themetalayer.org';
+  process.env.GOVHUB_BASE_URL ?? 'https://interfacehub.net';
 const GOVHUB_BASE = GOVHUB_PUBLIC_BASE_URL;
 
 /** ML-Draft-033 – book cover rail for The Layered Web */

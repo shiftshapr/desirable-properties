@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { buildDefaultProfileWelcome, type ProfileWelcomeLink } from '@/lib/dp-welcome-default';
-import { getGovHubBaseUrl } from '@/lib/web3auth-config';
+import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
 
 type UpstreamWelcome = {
   id?: unknown;
@@ -101,7 +101,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const res = await fetch(`${getGovHubBaseUrl()}/api/me/dp-welcome/`, {
+    const res = await fetch(`${getGovHubProxyBaseUrl()}/api/me/dp-welcome/`, {
       headers: { Authorization: `Bearer ${session.idToken}` },
       signal: AbortSignal.timeout(15000),
     });
