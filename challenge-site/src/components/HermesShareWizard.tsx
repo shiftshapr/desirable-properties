@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DpDialog } from '@/components/DpDialog';
 
 export type ThreadShareVisibility = 'full' | 'from_share_point';
-export type ThreadShareRole = 'watcher' | 'controller';
+export type ThreadShareRole = 'watcher' | 'controller' | 'member';
 export type ThreadShareKind = 'live' | 'fork_snapshot';
 
 type HermesShareWizardProps = {
@@ -15,6 +15,8 @@ type HermesShareWizardProps = {
   anchorTurnId?: string | null;
   /** Short label for the anchor point shown in the modal. */
   anchorLabel?: string | null;
+  /** Community Chat invite flow: default member role, simplified copy. */
+  communityInvite?: boolean;
   onClose: () => void;
   onShared?: (result: { linkUrl?: string; shareId: string; directDelivered?: boolean }) => void;
 };
@@ -25,13 +27,16 @@ export default function HermesShareWizard({
   threadTitle,
   anchorTurnId = null,
   anchorLabel = null,
+  communityInvite = false,
   onClose,
   onShared,
 }: HermesShareWizardProps) {
   const [visibility, setVisibility] = useState<ThreadShareVisibility>(
     anchorTurnId ? 'from_share_point' : 'full',
   );
-  const [sendeeRole, setSendeeRole] = useState<ThreadShareRole>('watcher');
+  const [sendeeRole, setSendeeRole] = useState<ThreadShareRole>(
+    communityInvite ? 'member' : 'watcher',
+  );
   const [senderRetainsWatch, setSenderRetainsWatch] = useState(true);
   const [expiresInHours, setExpiresInHours] = useState(24);
   const [recipient, setRecipient] = useState('');
@@ -46,6 +51,7 @@ export default function HermesShareWizard({
   useEffect(() => {
     if (!open) return;
     setVisibility(anchorTurnId ? 'from_share_point' : 'full');
+    setSendeeRole(communityInvite ? 'member' : 'watcher');
     setRecipient('');
     setError(null);
     setLinkUrl(null);
@@ -53,7 +59,7 @@ export default function HermesShareWizard({
     setCopied(false);
     setDirectDelivered(false);
     setShareThreadKind(anchorTurnId ? 'live' : 'live');
-  }, [open, anchorTurnId, threadId]);
+  }, [open, anchorTurnId, threadId, communityInvite]);
 
   if (!open) return null;
 
@@ -138,7 +144,7 @@ export default function HermesShareWizard({
       >
         <div className="border-b border-slate-800 px-5 py-4">
           <h2 id="hermes-share-title" className="text-lg font-semibold text-white">
-            Share conversation
+            {communityInvite ? 'Invite to Community Chat' : 'Share conversation'}
           </h2>
           <p className="mt-1 text-sm text-slate-400">{threadTitle || 'Hermes thread'}</p>
           {anchorTurnId && anchorLabel ? (
@@ -247,24 +253,41 @@ export default function HermesShareWizard({
                 <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
                   Recipient permissions
                 </legend>
-                <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
-                  <input
-                    type="radio"
-                    name="role"
-                    checked={sendeeRole === 'watcher'}
-                    onChange={() => setSendeeRole('watcher')}
-                  />
-                  Watch only (read-only)
-                </label>
-                <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
-                  <input
-                    type="radio"
-                    name="role"
-                    checked={sendeeRole === 'controller'}
-                    onChange={() => setSendeeRole('controller')}
-                  />
-                  Control (can send prompts after accepting)
-                </label>
+                {communityInvite ? (
+                  <p className="text-sm text-slate-300">
+                    Invitees join as members and can prompt Hermes in this Community Chat.
+                  </p>
+                ) : (
+                  <>
+                    <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
+                      <input
+                        type="radio"
+                        name="role"
+                        checked={sendeeRole === 'watcher'}
+                        onChange={() => setSendeeRole('watcher')}
+                      />
+                      Watch only (read-only)
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
+                      <input
+                        type="radio"
+                        name="role"
+                        checked={sendeeRole === 'controller'}
+                        onChange={() => setSendeeRole('controller')}
+                      />
+                      Control (can send prompts after accepting)
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-200">
+                      <input
+                        type="radio"
+                        name="role"
+                        checked={sendeeRole === 'member'}
+                        onChange={() => setSendeeRole('member')}
+                      />
+                      Member (can prompt without taking control)
+                    </label>
+                  </>
+                )}
               </fieldset>
 
               <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-300">
@@ -299,7 +322,9 @@ export default function HermesShareWizard({
                 Shared directly with {recipient.trim()}.
                 {sendeeRole === 'controller'
                   ? ' They must accept control before sending prompts.'
-                  : ' They can open it from Shared with me.'}
+                  : sendeeRole === 'member'
+                    ? ' They can open it from Shared with me and prompt Hermes.'
+                    : ' They can open it from Shared with me.'}
               </p>
             </div>
           ) : (
@@ -350,7 +375,7 @@ export default function HermesShareWizard({
               onClick={() => void createShare()}
               className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
             >
-              {busy ? 'Sharing…' : 'Share'}
+              {busy ? 'Sharing…' : communityInvite ? 'Invite' : 'Share'}
             </button>
           )}
         </div>

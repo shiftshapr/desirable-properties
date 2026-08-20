@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       displayName: session.displayName,
       title: body.title || 'New conversation',
       surface: body.surface || 'desirableproperties.org/agent',
+      threadKind: body.threadKind || body.thread_kind || 'private',
+      groupTitle: body.groupTitle || body.group_title || undefined,
     }),
     signal: AbortSignal.timeout(15000),
   });

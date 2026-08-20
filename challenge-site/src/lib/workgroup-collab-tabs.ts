@@ -1,6 +1,7 @@
 export const WORKGROUP_COLLAB_TABS = [
   { key: 'getting-started', label: 'Getting Started' },
   { key: 'chat', label: 'Workgroup Chat' },
+  { key: 'external-chat', label: 'External Chat' },
   { key: 'activity', label: 'Activity' },
   { key: 'invite', label: 'Invite with Email' },
 ] as const;

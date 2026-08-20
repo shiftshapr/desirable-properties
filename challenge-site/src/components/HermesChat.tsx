@@ -11,6 +11,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesShareWizard from '@/components/HermesShareWizard';
+import HermesCommunityCreateModal from '@/components/HermesCommunityCreateModal';
 import HermesShareStatus from '@/components/HermesShareStatus';
 import HermesMessageShareNotice from '@/components/HermesMessageShareNotice';
 import HermesControlPanel from '@/components/HermesControlPanel';
@@ -470,12 +471,20 @@ export default function HermesChat({
   const { user: authUser, checked, login, loginBusy } = useAuth();
   const searchParams = useSearchParams();
   const archiveView = searchParams.get('archive') === '1';
+  const threadUrlParam = searchParams.get('thread')?.trim() || null;
+  const createUrlParam = searchParams.get('create')?.trim() || null;
+  const workgroupSlugParam = searchParams.get('wg')?.trim() || null;
+  const fromWorkgroupParam = searchParams.get('from') === 'workgroup' && workgroupSlugParam;
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
+  const [shareCommunityInvite, setShareCommunityInvite] = useState(false);
+  const [communityCreateOpen, setCommunityCreateOpen] = useState(false);
+  const [communityCreateBusy, setCommunityCreateBusy] = useState(false);
+  const [communityCreateError, setCommunityCreateError] = useState<string | null>(null);
   const [shareAnchorTurnId, setShareAnchorTurnId] = useState<string | null>(null);
   const [shareAnchorLabel, setShareAnchorLabel] = useState<string | null>(null);
   const [shareRefreshKey, setShareRefreshKey] = useState(0);
@@ -570,6 +579,33 @@ export default function HermesChat({
     if (threadId) sessionStorage.setItem(ACTIVE_THREAD_KEY, threadId);
     else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
   }, []);
+
+  const threadCreateSurface = useMemo(() => {
+    if (fromWorkgroupParam && workgroupSlugParam) {
+      return `desirableproperties.org/workgroups/${workgroupSlugParam}`;
+    }
+    return surface;
+  }, [fromWorkgroupParam, workgroupSlugParam, surface]);
+
+  const buildThreadCreateBody = useCallback(
+    (title: string, kind: 'private' | 'group' = 'private', groupTitle?: string | null) => {
+      const trimmedTitle = title.slice(0, 120) || 'New conversation';
+      if (kind === 'group') {
+        const gt = (groupTitle || trimmedTitle).slice(0, 120);
+        return {
+          surface: threadCreateSurface,
+          title: gt,
+          threadKind: 'group',
+          groupTitle: gt,
+        };
+      }
+      return {
+        surface: threadCreateSurface,
+        title: trimmedTitle,
+      };
+    },
+    [threadCreateSurface],
+  );
 
   const loadSharedThreads = useCallback(async (): Promise<HermesThreadSummary[]> => {
     try {
@@ -721,6 +757,21 @@ export default function HermesChat({
   }, [signedIn, loadThreads, loadThread]);
 
   useEffect(() => {
+    if (!signedIn || !threadUrlParam) return;
+    void loadThread(threadUrlParam);
+  }, [signedIn, threadUrlParam, loadThread]);
+
+  useEffect(() => {
+    if (!signedIn || createUrlParam !== 'community') return;
+    setCommunityCreateOpen(true);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('create');
+      window.history.replaceState(null, '', url.toString());
+    }
+  }, [signedIn, createUrlParam]);
+
+  useEffect(() => {
     if (!signedIn || typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const shareToken = params.get('share');
@@ -799,6 +850,46 @@ export default function HermesChat({
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
   };
+
+  const openCommunityCreate = () => {
+    setCommunityCreateError(null);
+    setCommunityCreateOpen(true);
+  };
+
+  const closeCommunityCreate = () => {
+    if (communityCreateBusy) return;
+    setCommunityCreateOpen(false);
+    setCommunityCreateError(null);
+  };
+
+  const createCommunityChat = useCallback(async (groupTitle: string) => {
+    setCommunityCreateBusy(true);
+    setCommunityCreateError(null);
+    try {
+      const createRes = await fetch('/api/agent/threads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildThreadCreateBody(groupTitle, 'group', groupTitle)),
+      });
+      const createData = await createRes.json().catch(() => ({}));
+      if (!createRes.ok || !createData.thread?.id) {
+        throw new Error(createData.error || 'Could not create Community Chat');
+      }
+      setCommunityCreateOpen(false);
+      setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
+      await loadThread(createData.thread.id);
+      setShareCommunityInvite(true);
+      setShareWizardOpen(true);
+      setSystemNotice({
+        variant: 'success',
+        text: 'Community Chat created. Invite members by email or share a link.',
+      });
+    } catch (err) {
+      setCommunityCreateError(userFacingError(err));
+    } finally {
+      setCommunityCreateBusy(false);
+    }
+  }, [buildThreadCreateBody, loadThread]);
 
   const updateContributionDraft = useCallback((draft: ContributionDraft | null) => {
     setContributionDraft(draft);
@@ -1008,10 +1099,7 @@ export default function HermesChat({
         const createRes = await fetch('/api/agent/threads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            surface,
-            title: trimmed.slice(0, 120) || 'New conversation',
-          }),
+          body: JSON.stringify(buildThreadCreateBody(trimmed)),
           signal: abortController.signal,
         });
         const createData = await createRes.json();
@@ -1133,7 +1221,7 @@ export default function HermesChat({
       clearChatAbort(abortController);
       setIsLoading(false);
     }
-  }, [apiPath, beginChatAbort, clearChatAbort, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
+  }, [apiPath, beginChatAbort, buildThreadCreateBody, clearChatAbort, dpFocus, loadThreads, persistActiveThread, promptSignIn, sessionId, signedIn, surface]);
 
   const persistTurnAssistant = useCallback(async (
     turnId: string,
@@ -1372,10 +1460,7 @@ export default function HermesChat({
           const createRes = await fetch('/api/agent/threads', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              surface,
-              title: displayText.slice(0, 120) || 'New conversation',
-            }),
+            body: JSON.stringify(buildThreadCreateBody(displayText)),
             signal: abortController.signal,
           });
           const createData = await createRes.json();
@@ -2097,13 +2182,16 @@ export default function HermesChat({
   }, [refreshThreadShares, loadSharedThreads]);
 
   const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }) => {
+    const active = threads.find((t) => t.id === activeThreadIdRef.current);
+    setShareCommunityInvite(active?.threadKind === 'group');
     setShareAnchorTurnId(anchor?.turnId ?? null);
     setShareAnchorLabel(anchor?.label ?? null);
     setShareWizardOpen(true);
-  }, []);
+  }, [threads]);
 
   const closeShareWizard = useCallback(() => {
     setShareWizardOpen(false);
+    setShareCommunityInvite(false);
     setShareAnchorTurnId(null);
     setShareAnchorLabel(null);
   }, []);
@@ -2139,7 +2227,8 @@ export default function HermesChat({
       signedIn={signedIn}
       archiveView={archiveView}
       onSelect={loadThread}
-      onCreate={startNewConversation}
+      onCreatePersonal={startNewConversation}
+      onCreateCommunity={openCommunityCreate}
       onRename={signedIn ? renameThread : undefined}
       onPin={signedIn && !archiveView ? pinThread : undefined}
       onArchive={signedIn ? archiveThread : undefined}
@@ -2742,13 +2831,26 @@ export default function HermesChat({
         <HermesShareWizard
           open={shareWizardOpen}
           threadId={activeThreadId}
-          threadTitle={threads.find((t) => t.id === activeThreadId)?.title || 'Conversation'}
+          threadTitle={
+            threads.find((t) => t.id === activeThreadId)?.groupTitle
+            || threads.find((t) => t.id === activeThreadId)?.title
+            || 'Conversation'
+          }
           anchorTurnId={shareAnchorTurnId}
           anchorLabel={shareAnchorLabel}
+          communityInvite={shareCommunityInvite}
           onClose={closeShareWizard}
           onShared={() => bumpShareRefresh()}
         />
       ) : null}
+
+      <HermesCommunityCreateModal
+        open={communityCreateOpen}
+        busy={communityCreateBusy}
+        error={communityCreateError}
+        onClose={closeCommunityCreate}
+        onSubmit={(title) => void createCommunityChat(title)}
+      />
 
       <DpDialogHost />
     </div>

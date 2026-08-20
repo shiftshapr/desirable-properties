@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
+import WorkgroupExternalChatPanel from '@/components/workgroup/WorkgroupExternalChatPanel';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
 import WorkgroupInviteWelcomeModal from '@/components/workgroup/WorkgroupInviteWelcomeModal';
@@ -307,6 +308,14 @@ export default function WorkgroupCollabClient({
               workgroupSlug={workgroup.slug}
               dpId={dpId}
               initialItems={initialActivity}
+            />
+          ) : null}
+
+          {tab === 'external-chat' ? (
+            <WorkgroupExternalChatPanel
+              workgroupSlug={workgroup.slug}
+              workgroupName={workgroup.name}
+              signedIn={signedIn}
             />
           ) : null}
 

@@ -8,6 +8,8 @@ export interface HermesThreadSummary {
   id: string;
   title: string;
   surface?: string;
+  threadKind?: 'private' | 'group' | string;
+  groupTitle?: string | null;
   pinned?: boolean;
   archived?: boolean;
   updatedAt?: string | null;
@@ -27,7 +29,8 @@ interface HermesThreadSidebarProps {
   signedIn: boolean;
   archiveView?: boolean;
   onSelect: (threadId: string) => void;
-  onCreate: () => void;
+  onCreatePersonal: () => void;
+  onCreateCommunity: () => void;
   onRename?: (threadId: string, title: string) => Promise<void> | void;
   onPin?: (threadId: string, pinned: boolean) => Promise<void> | void;
   onArchive?: (threadId: string, archived: boolean) => Promise<void> | void;
@@ -71,6 +74,7 @@ function filterByQuery(
   return threads.filter((thread) => {
     const haystack = [
       thread.title || 'Conversation',
+      thread.groupTitle || '',
       ...extraFields.map((field) => field(thread)),
     ].join(' ').toLowerCase();
     return haystack.includes(q);
@@ -101,7 +105,8 @@ export default function HermesThreadSidebar({
   signedIn,
   archiveView = false,
   onSelect,
-  onCreate,
+  onCreatePersonal,
+  onCreateCommunity,
   onRename,
   onPin,
   onArchive,
@@ -117,9 +122,11 @@ export default function HermesThreadSidebar({
   const [copiedThreadId, setCopiedThreadId] = useState<string | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
   const [headerInfoOpen, setHeaderInfoOpen] = useState(false);
+  const [newMenuOpen, setNewMenuOpen] = useState(false);
   const renameInputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const headerInfoRef = useRef<HTMLDivElement>(null);
+  const newMenuRef = useRef<HTMLDivElement>(null);
 
   const filteredThreads = useMemo(() => {
     return sortThreads(filterByQuery(threads, query));
@@ -166,6 +173,17 @@ export default function HermesThreadSidebar({
     document.addEventListener('mousedown', onPointerDown);
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [headerInfoOpen]);
+
+  useEffect(() => {
+    if (!newMenuOpen) return;
+    const onPointerDown = (e: MouseEvent) => {
+      if (newMenuRef.current && !newMenuRef.current.contains(e.target as Node)) {
+        setNewMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [newMenuOpen]);
 
   const startRename = (thread: HermesThreadSummary) => {
     setMenuThreadId(null);
@@ -267,6 +285,10 @@ export default function HermesThreadSidebar({
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
     const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
+    const isCommunity = thread.threadKind === 'group';
+    const displayTitle = isCommunity
+      ? (thread.groupTitle || thread.title || 'Community Chat')
+      : (thread.title || 'New conversation');
     const showOwnerActions = threadActionsEnabled && (!shared || sharedByMe);
     const showActions = signedIn;
 
@@ -338,7 +360,7 @@ export default function HermesThreadSidebar({
               </span>
             ) : null}
             <span className="line-clamp-2 text-sm leading-snug">
-              {thread.title || 'New conversation'}
+              {displayTitle}
             </span>
           </span>
           {shared && !sharedByMe && thread.ownerName ? (
@@ -346,6 +368,13 @@ export default function HermesThreadSidebar({
           ) : null}
           {sharedByMe ? (
             <span className="mt-0.5 block text-[10px] text-slate-500">shared by you</span>
+          ) : null}
+          {isCommunity ? (
+            <span className="mt-1 flex flex-wrap items-center gap-1.5">
+              <span className="rounded bg-teal-900/50 px-1.5 py-0.5 text-[10px] font-medium text-teal-200">
+                Community
+              </span>
+            </span>
           ) : null}
           {workgroupOrigin ? (
             <span className="mt-1 flex flex-wrap items-center gap-1.5">
@@ -522,17 +551,74 @@ export default function HermesThreadSidebar({
 
       <div className="space-y-2 border-b border-slate-800 p-3">
         {!archiveView ? (
-          <button
-            type="button"
-            onClick={signedIn ? onCreate : onSignIn}
-            disabled={!signedIn && !onSignIn}
-            className="flex w-full items-center gap-2 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <span className="text-base leading-none" aria-hidden>
-              +
-            </span>
-            New chat
-          </button>
+          <div ref={newMenuRef} className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                if (!signedIn) {
+                  onSignIn?.();
+                  return;
+                }
+                setNewMenuOpen((open) => !open);
+              }}
+              disabled={!signedIn && !onSignIn}
+              className="flex w-full items-center gap-2 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm font-medium text-slate-200 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+              aria-expanded={newMenuOpen}
+              aria-haspopup="menu"
+            >
+              <span className="text-base leading-none" aria-hidden>
+                +
+              </span>
+              New
+              <svg
+                className="ml-auto h-4 w-4 text-slate-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+            {newMenuOpen && signedIn ? (
+              <div
+                className="absolute left-0 right-0 z-[150] mt-1 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
+                role="menu"
+              >
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="block w-full bg-slate-950 px-3 py-2 text-left text-sm text-slate-200 hover:bg-slate-800"
+                  onClick={() => {
+                    setNewMenuOpen(false);
+                    onCreatePersonal();
+                  }}
+                >
+                  <span className="font-medium text-white">Personal chat</span>
+                  <span className="mt-0.5 block text-xs text-slate-500">
+                    Private conversation with Hermes
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="block w-full bg-slate-950 px-3 py-2 text-left text-sm text-slate-200 hover:bg-slate-800"
+                  onClick={() => {
+                    setNewMenuOpen(false);
+                    onCreateCommunity();
+                  }}
+                >
+                  <span className="font-medium text-white">Community Chat</span>
+                  <span className="mt-0.5 block text-xs text-slate-500">
+                    Invite others to prompt together
+                  </span>
+                </button>
+              </div>
+            ) : null}
+          </div>
         ) : null}
 
         <label className="relative block">
