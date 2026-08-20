@@ -5,6 +5,7 @@ import DynamicPadClient from '@/components/onboard/DynamicPadClient';
 import {
   allianceSlugKey,
   getAllianceOrg,
+  isPadIndexAliasSlug,
   resolveAllianceSlug,
   resolvePartnerOrgs,
 } from '@/lib/hermes-onboard/directory';
@@ -65,6 +66,19 @@ export default async function AllianceBriefingPage({
 }) {
   const { slug } = await params;
   const query = await searchParams;
+
+  if (isPadIndexAliasSlug(slug)) {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (Array.isArray(value)) {
+        for (const item of value) params.append(key, item);
+      } else if (value !== undefined) {
+        params.set(key, value);
+      }
+    }
+    const qs = params.toString();
+    permanentRedirect(`/pad${qs ? `?${qs}` : ''}`);
+  }
 
   const directorySlug = resolveAllianceSlug(slug);
   if (directorySlug) {

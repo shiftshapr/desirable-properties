@@ -1,56 +1,48 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PadOrgLookup from '@/components/onboard/PadOrgLookup';
-import { getAllianceDirectory, listAllianceOrgs } from '@/lib/hermes-onboard/directory';
-import { getOnSettings } from '@/lib/hermes-onboard/settings';
+import { listAllianceOrgs } from '@/lib/hermes-onboard/directory';
 import { padAbsoluteHref, padHref, padPublicBase } from '@/lib/hermes-onboard/tabs';
 
 export const metadata: Metadata = {
   title: 'Landing pads – DP Studio',
   description:
-    'Org landing pads in Desirable Properties Studio (public beta): public corpus, Desirable Properties, own layer, partner layer, and Hermes Community Chat.',
+    'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
 };
 
 export default async function PadIndexPage() {
-  const directory = getAllianceDirectory();
   const orgs = listAllianceOrgs();
-  const settings = await getOnSettings();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         Desirable Properties Studio · Public beta
       </p>
-      <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">{directory.cohortLabel}</h1>
+      <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Welcome to our Pad!</h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-300">
-        Unlike a landing page, a landing pad is built for dialogue. Landing pads learn from your
-        choices (with consent), suggest how your perspective might be read, and let you refine how
-        you are captured.
+        A landing pad is built for dialogue. They learn from your choices (with consent), suggest how
+        your perspective might be read, and let you refine how your perspectives are captured.
       </p>
       <p className="mt-3 text-base leading-relaxed text-slate-400">
-        Each member organization has a landing pad because the invitation has to be specific. We
-        started from their public corpus and we are asking: did we hear your concerns correctly?
-        Follow an interest until it becomes a patch idea. Learning uses session memory, confirms,
-        and chosen sources, not silent profiling. Suppositions stay hypotheses until you confirm.
+        Everyone has a unique pad based on their public corpus. Our Community assistant Hermes
+        analyzes the information to which we have access and attempts to match it to the desirable
+        properties. We want to know if we characterized your perspectives correctly. Follow an
+        interest until it becomes a patch idea. Learning uses session memory, confirms, and chosen
+        sources, not silent profiling. Suppositions stay hypotheses until you confirm.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
         Version 0.77 is open for review now. Version 1.0 of <em>The Layered Web</em> and the public
         launch of DP Studio are September 16, 2026.
       </p>
-      <p className="mt-3 text-sm text-slate-500">
-        {directory.directoryNote} Default tab without a query string: {settings.defaultTab}.
+      <p className="mt-3 text-sm leading-relaxed text-slate-400">
+        Curated public packet for DP Studio landing pads.
       </p>
       <p className="mt-4 text-sm leading-relaxed text-slate-400">
         Each org has a direct link:{' '}
-        <span className="font-mono text-slate-300">{padPublicBase()}/pad/your-org-name</span> (hyphens
-        optional, e.g.{' '}
-        <Link href="/pad/projectliberty" className="font-mono text-cyan-400 hover:text-cyan-200">
-          {padAbsoluteHref('projectliberty')}
-        </Link>{' '}
-        or{' '}
-        <Link href="/pad/project-liberty" className="font-mono text-cyan-400 hover:text-cyan-200">
-          {padAbsoluteHref('project-liberty')}
-        </Link>
+        <span className="font-mono text-slate-300">{padPublicBase()}/pad/your-org-name</span>{' '}
+        (hyphens optional, e.g.{' '}
+        <span className="font-mono text-slate-300">{padPublicBase()}/pad/yourorgname</span> or{' '}
+        <span className="font-mono text-slate-300">{padPublicBase()}/pad/your-org-name</span>
         ). Person pads use{' '}
         <span className="font-mono text-slate-300">{padPublicBase()}/pad/person/your-name</span>.
       </p>

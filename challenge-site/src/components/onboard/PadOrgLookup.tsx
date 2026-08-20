@@ -245,8 +245,7 @@ export default function PadOrgLookup() {
         <>
           <h2 className="mt-5 text-lg font-semibold text-white">Find your org landing pad</h2>
           <p className="mt-2 text-sm leading-relaxed text-slate-400">
-            Enter your org website, name, or slug. We check Alliance pads first, then the public roster
-            (~200 members), then open a request page for any other valid website.
+            Enter your org website, name, or slug. We may open a request page for other valid websites.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-slate-500">
             Your pad URL looks like{' '}
@@ -447,9 +446,7 @@ export default function PadOrgLookup() {
             </fieldset>
 
             <fieldset>
-              <legend className="text-sm text-slate-300">
-                Perspective links (optional, internal or external)
-              </legend>
+              <legend className="text-sm text-slate-300">Perspective links (optional)</legend>
               <div className="mt-2 space-y-2">
                 {perspectiveLinks.map((row, index) => (
                   <input
