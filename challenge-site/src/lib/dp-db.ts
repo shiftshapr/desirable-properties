@@ -411,6 +411,32 @@ CREATE TABLE IF NOT EXISTS dp_workgroup_message_share (
 
 CREATE INDEX IF NOT EXISTS dp_wg_share_workgroup ON dp_workgroup_message_share (workgroup_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS dp_wg_share_recipient ON dp_workgroup_message_share (recipient_user_id, workgroup_id, status);
+
+CREATE TABLE IF NOT EXISTS hermes_onboard_session (
+  slug TEXT PRIMARY KEY,
+  confirmed JSONB NOT NULL DEFAULT '{}'::jsonb,
+  consent JSONB NOT NULL DEFAULT '{}'::jsonb,
+  briefing JSONB,
+  next_steps JSONB NOT NULL DEFAULT '[]'::jsonb,
+  pinned_move_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+  dismissed_move_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+  enabled_primitives JSONB,
+  claimed_by JSONB,
+  community_thread_id TEXT,
+  community_thread_title TEXT,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS hermes_onboard_event (
+  id UUID PRIMARY KEY,
+  slug TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  actor JSONB,
+  payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS hermes_onboard_event_slug ON hermes_onboard_event (slug, created_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

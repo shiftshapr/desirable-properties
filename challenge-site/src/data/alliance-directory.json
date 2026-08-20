@@ -1,0 +1,103 @@
+{
+  "cohort": "project-liberty-alliance",
+  "cohortLabel": "Project Liberty Alliance",
+  "directoryNote": "Curated public packet for Hermes Onboarding. Not the full Alliance roster (200+). Orgs correct fields after they claim a briefing. Every mission/value string cites a public URL.",
+  "orgs": [
+    {
+      "slug": "project-liberty",
+      "name": "Project Liberty",
+      "shortName": "Project Liberty",
+      "kind": "organization",
+      "website": "https://www.projectliberty.io/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": ["projectliberty.io"],
+      "tags": ["steward", "identity", "dsnp"],
+      "mission": "Restore agency in the digital age by giving people ownership and control of their personal data.",
+      "values": [
+        "People, not platforms, should hold digital agency",
+        "Open infrastructure for a people-centered internet",
+        "Collaboration across technology, policy, and movement-building"
+      ],
+      "sources": [
+        {
+          "label": "Project Liberty home",
+          "url": "https://www.projectliberty.io/"
+        },
+        {
+          "label": "Alliance page",
+          "url": "https://www.projectliberty.io/alliance/"
+        },
+        {
+          "label": "Leadership and Alliance update (Jan 2026)",
+          "url": "https://www.projectliberty.io/news/project-liberty-announces-leadership-and-organizational-updates-to-accelerate-adoption-and-advocacy-of-human-centric-digital-infrastructure-for-the-ai-era/"
+        }
+      ],
+      "partners": ["project-liberty-institute", "project-liberty-labs"],
+      "externalPartners": []
+    },
+    {
+      "slug": "project-liberty-institute",
+      "name": "Project Liberty Institute",
+      "shortName": "the Institute",
+      "kind": "organization",
+      "website": "https://www.projectliberty.io/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": ["projectliberty.io"],
+      "tags": ["institute", "research", "policy", "dsnp"],
+      "mission": "Advance research, policy engagement, and stewardship of open-source initiatives including the Decentralized Social Networking Protocol (DSNP), in collaboration with academic institutions.",
+      "values": [
+        "Independent research and policy for human-centric infrastructure",
+        "Stewardship of open protocols rather than platform lock-in",
+        "Academic collaboration as a public good"
+      ],
+      "sources": [
+        {
+          "label": "Organizational update naming the Institute",
+          "url": "https://www.projectliberty.io/news/project-liberty-announces-leadership-and-organizational-updates-to-accelerate-adoption-and-advocacy-of-human-centric-digital-infrastructure-for-the-ai-era/"
+        }
+      ],
+      "partners": ["project-liberty", "project-liberty-labs"],
+      "externalPartners": [
+        {
+          "name": "Georgetown University",
+          "url": "https://www.georgetown.edu/",
+          "note": "Named academic collaborator in Project Liberty public materials"
+        },
+        {
+          "name": "Stanford University",
+          "url": "https://www.stanford.edu/",
+          "note": "Named academic collaborator in Project Liberty public materials"
+        },
+        {
+          "name": "ETH Zurich",
+          "url": "https://ethz.ch/",
+          "note": "Named academic collaborator in Project Liberty public materials"
+        }
+      ]
+    },
+    {
+      "slug": "project-liberty-labs",
+      "name": "Project Liberty Labs",
+      "shortName": "Labs",
+      "kind": "organization",
+      "website": "https://www.projectliberty.io/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": ["projectliberty.io"],
+      "tags": ["labs", "protocol", "frequency", "dsnp"],
+      "mission": "Develop decentralized technologies that promote self-sovereign digital identity, including Frequency and the Decentralized Social Networking Protocol (DSNP).",
+      "values": [
+        "Open digital public infrastructure",
+        "Self-sovereign identity",
+        "Individual empowerment and the common good"
+      ],
+      "sources": [
+        {
+          "label": "Organizational update naming Labs, Frequency, and DSNP",
+          "url": "https://www.projectliberty.io/news/project-liberty-announces-leadership-and-organizational-updates-to-accelerate-adoption-and-advocacy-of-human-centric-digital-infrastructure-for-the-ai-era/"
+        }
+      ],
+      "partners": ["project-liberty", "project-liberty-institute"],
+      "externalPartners": []
+    }
+  ]
+}

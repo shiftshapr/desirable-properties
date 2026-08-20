@@ -96,6 +96,17 @@ function parseWorkgroupOrigin(surface?: string | null): { slug: string; href: st
   };
 }
 
+function parseAllianceOrigin(surface?: string | null): { slug: string; href: string } | null {
+  const match = String(surface || '').match(/\/onboard\/alliance\/([^/?#]+)/i);
+  if (!match?.[1]) return null;
+  const slug = decodeURIComponent(match[1]);
+  if (!slug) return null;
+  return {
+    slug,
+    href: `/onboard/alliance/${encodeURIComponent(slug)}`,
+  };
+}
+
 export default function HermesThreadSidebar({
   threads,
   sharedWithMeThreads = [],
@@ -285,6 +296,7 @@ export default function HermesThreadSidebar({
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
     const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
+    const allianceOrigin = parseAllianceOrigin(thread.surface);
     const isCommunity = thread.threadKind === 'group';
     const displayTitle = isCommunity
       ? (thread.groupTitle || thread.title || 'Community Chat')
@@ -387,6 +399,20 @@ export default function HermesThreadSidebar({
                 className="text-[10px] text-cyan-400 hover:text-cyan-200"
               >
                 Open in collab
+              </Link>
+            </span>
+          ) : null}
+          {allianceOrigin ? (
+            <span className="mt-1 flex flex-wrap items-center gap-1.5">
+              <span className="rounded bg-cyan-900/50 px-1.5 py-0.5 text-[10px] font-medium text-cyan-200">
+                Alliance briefing
+              </span>
+              <Link
+                href={allianceOrigin.href}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[10px] text-cyan-400 hover:text-cyan-200"
+              >
+                Open briefing
               </Link>
             </span>
           ) : null}
