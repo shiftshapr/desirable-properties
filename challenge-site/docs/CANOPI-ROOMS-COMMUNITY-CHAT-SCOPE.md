@@ -2,7 +2,7 @@
 
 Product and engineering scope for binding **page-scoped Canopi Rooms** to **DP Community Chat (Hermes `thread_kind: group`)**, optionally via a **community room URL** that loads a target page and opens conversation in the Canopi sidebar.
 
-**Status:** Phase 1 POC implemented (embed deep link + DP staging test path). Phase 2+ not started. **Locked decisions:** see [Decisions (locked)](#decisions-locked).
+**Status:** Phase 1 POC implemented (embed deep link + DP staging test path). **Phase 2 MVP implemented** (community_hermes room type + embed shell). Phase 3+ not started. **Locked decisions:** see [Decisions (locked)](#decisions-locked).
 
 **Related:** `HERMES-GROUP-CHAT-SCOPE.md` (Community Chat MVP on `/agent`), Canopi `docs-site/guide/sidebar-tabs.md` (Rooms tab), `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` (Discuss embed on DP pages), `docs/CANOPI-EMBED-PERSPECTIVE.md` (embed admin + verify steps).
 
@@ -317,13 +317,38 @@ Helper in challenge-site: `perspectiveRoomHref(roomId)` in `src/lib/canopi-embed
 
 ### Phase 2: Community Hermes room type (Option C)
 
-- [ ] Schema: `room_kind`, `hermes_thread_id`, canonical `bound_page_url`
-- [ ] Create flow: one action creates Neo4j group thread + Supabase room
-- [ ] Room UI: Hermes transcript via DP API (compact embed iframe or ported widget)
-- [ ] Invites: wire room header to `HermesShareWizard` community mode
-- [ ] Member list from thread access API
+- [x] Schema: `room_kind`, `hermes_thread_id`, canonical `bound_page_url` (`canopi/migrations/027_community_hermes_rooms.sql`)
+- [x] Create flow: one action creates Neo4j group thread + Supabase room (`POST /v1/rooms/community-hermes` + DP `/api/internal/canopi/community-hermes`)
+- [x] Room UI: Hermes transcript via DP embed iframe (`/embed/hermes/community?threadId=` in `RoomsModule.ts`)
+- [x] Invites: room header opens `/agent?thread={id}&share=community` on publisher origin (HermesShareWizard community mode)
+- [x] Member list: Hermes access API in embed + Canopi shell member strip
+- [x] Auth: Canopi embed token verified via `/v1/internal/metaweb/verify-embed-token` on DP embed API routes
 
 **Success:** Two users in same room see same Hermes turns, both can prompt, invite works.
+
+#### Phase 2 test (staging)
+
+1. **Apply migration** (once on api.canopi.live Postgres):
+
+```bash
+psql "$DATABASE_URL" -f canopi/migrations/027_community_hermes_rooms.sql
+```
+
+Ensure `METAWEB_OPS_SECRET` (or `CANOPI_DP_INTERNAL_SECRET`) matches between Canopi API and challenge-site. Set `DP_CHALLENGE_SITE_URL=https://staging.desirableproperties.org` on Canopi API when testing staging Hermes bridge.
+
+2. **Deploy** Canopi embed + API; DP staging build + pm2 restart (`desirable-properties-staging`).
+
+3. **Create Community Chat room** from Canopi Rooms tab on a signed-in DP page:
+   - Rooms → New room → **Community Chat** → name + link to current page → Create.
+   - Or `POST /v1/rooms/community-hermes` with Canopi bearer token.
+
+4. **Open room** in sidebar: Hermes iframe loads; prompt Hermes; member strip shows Canopi members + Hermes roster in iframe header.
+
+5. **Invite:** Room header **Invite** navigates host to `/agent?thread={hermesThreadId}&invite=community` (HermesShareWizard).
+
+6. **Deep link:** `perspectiveRoomHref(roomId)` → `?canopiRoom={uuid}` still opens the room shell (Phase 1).
+
+**Deferred to Phase 3:** PiP/floating panel, mobile swipe UX, in-sidebar HermesShareWizard React port (invite uses `/agent` entry today).
 
 ### Phase 3: Floating panel + mobile polish (Option D)
 

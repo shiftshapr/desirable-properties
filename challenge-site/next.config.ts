@@ -60,6 +60,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/embed/hermes/community',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "frame-ancestors 'self' https://api.canopi.live https://app.canopi.live https://*.canopi.live https://desirableproperties.org https://staging.desirableproperties.org https://book.desirableproperties.org",
+          },
+        ],
+      },
+      {
         source: '/:path*',
         headers: [
           {

@@ -17,6 +17,14 @@ export function perspectiveDiscussHref(path: string = FORK_PERSPECTIVE_PATH): st
   return base.includes('discuss=1') ? base : `${base}${base.includes('?') ? '&' : '?'}discuss=1`;
 }
 
+/** Open Rooms on a challenge-site perspective page (Phase 1+ deep link). */
+export function perspectiveRoomHref(roomId: string, path: string = FORK_PERSPECTIVE_PATH): string {
+  const trimmed = String(roomId || '').trim();
+  if (!trimmed) return path;
+  const joiner = path.includes('?') ? '&' : '?';
+  return `${path}${joiner}canopiRoom=${encodeURIComponent(trimmed)}`;
+}
+
 /** Canonical page URL passed to Canopi (prod host even on staging). */
 export function canopiPageUrlForPath(pathname: string): string {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
