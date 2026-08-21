@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import AllianceBriefingClient from '@/components/onboard/AllianceBriefingClient';
 import DynamicPadClient from '@/components/onboard/DynamicPadClient';
-import PadIndexContent from '@/components/onboard/PadIndexContent';
+import CohortPadClient from '@/components/onboard/CohortPadClient';
 import {
   allianceSlugKey,
   getAllianceOrg,
@@ -24,9 +24,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params;
   if (isPadIndexAliasSlug(slug)) {
     return {
-      title: 'Landing pads – DP Studio',
+      title: 'Project Liberty Alliance – DP Studio landing pad',
       description:
-        'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
+        'Welcome pad for Project Liberty Alliance members: find your org landing pad, review full briefings, and explore Desirable Properties Studio (public beta).',
     };
   }
   const org = getAllianceOrg(slug);
@@ -76,7 +76,7 @@ export default async function AllianceBriefingPage({
   const query = await searchParams;
 
   if (isPadIndexAliasSlug(slug)) {
-    return <PadIndexContent />;
+    return <CohortPadClient />;
   }
 
   const directorySlug = resolveAllianceSlug(slug);

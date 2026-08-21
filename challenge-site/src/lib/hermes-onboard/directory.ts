@@ -10,7 +10,7 @@ export function allianceSlugKey(slug: string): string {
   return slug.replace(/-/g, '');
 }
 
-/** Cohort slug is not an org pad; `/pad/{cohort}` shows the generic pad index. */
+/** Cohort slug is not an org pad; `/pad/{cohort}` shows the PLA cohort welcome pad. */
 export const PAD_INDEX_ALIAS_SLUG = directory.cohort;
 
 export function isPadIndexAliasSlug(slug: string): boolean {

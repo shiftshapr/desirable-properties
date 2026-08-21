@@ -18,14 +18,17 @@ Generic marketing copy and landing page contrast: [`docs/LANDING-PAD.md`](LANDIN
 
 ## URLs
 
-- Index: `/pad` (org lookup form + directory list)
+- Index: `/pad` (generic "Welcome to our Pad!" + org lookup + directory list)
+- PLA cohort: `/pad/project-liberty-alliance` (Alliance-specific welcome, roster lookup, links to the three full family pads; no redirect to `/pad`)
 - Member: `/pad/project-liberty` (default tab is admin-chosen)
 - Dashless alias: `/pad/projectliberty` (308 redirect to canonical slug; hyphen-insensitive lookup)
 - Explicit tab: `/pad/project-liberty?tab=dp`
 
 Visitors can enter an org website, name, or slug on `/pad` to resolve to the right landing pad. Switch to **Person** on the same form to create a person pad from LinkedIn, CV, work links, and perspectives.
 
-Lookup order: full directory pads (3 orgs today) → prework roster (`alliance-roster.json`, ~200 PLA members from [projectliberty.io/alliance](https://www.projectliberty.io/alliance/)) → dynamic request page for any other valid website domain.
+Lookup order: full directory pads (3 orgs today) → prework roster (`alliance-roster.json`, 208 PLA members imported from [projectliberty.io/alliance](https://www.projectliberty.io/alliance/); name, domain, and slug only, no full corpus or pitches yet) → dynamic request page for any other valid website domain.
+
+Roster import: `node scripts/import-pla-alliance-roster.mjs` → `src/data/alliance-roster.json`. Full briefing pads exist only for Project Liberty, Project Liberty Institute, and Project Liberty Labs in `alliance-directory.json`. Other roster orgs resolve to stub pages via `DynamicPadClient` until they claim and complete a packet.
 
 Person pads live at `/pad/person/{slug}` (slug from LinkedIn handle, CV path, or normalized name). POST `/api/pad/person` to create; GET `/api/pad/person/{slug}` to fetch.
 
@@ -38,7 +41,7 @@ Subject: Your DP Studio landing pad – review before September 16
 
 We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Version 0.77 is open for review now; Version 1.0 of The Layered Web and the public Studio launch are September 16, 2026.
 
-Find your pad at https://{estate-property}/pad or go directly:
+Find your pad at https://{estate-property}/pad/project-liberty-alliance or go directly:
 
 • Project Liberty – https://{estate-property}/pad/project-liberty
 • Project Liberty Institute – https://{estate-property}/pad/project-liberty-institute
@@ -47,7 +50,7 @@ Find your pad at https://{estate-property}/pad or go directly:
 You can also bookmark `/pad/your-org-name` (hyphens optional, e.g. `/pad/projectliberty`). Add `?tab=dp` only when you want to force the Desirable Properties tab regardless of the current default.
 ```
 
-Only three orgs have full pads in `alliance-directory.json`. Roster-only matches open a stub page at `/pad/{slug}` until the org claims and completes their packet. Re-import roster: `node scripts/import-pla-alliance-roster.mjs`.
+Only three orgs have full pads in `alliance-directory.json`. The other ~205 roster members have stub entries (name, domain, slug) only. Roster-only matches open a stub page at `/pad/{slug}` until the org claims and completes their packet.
 
 ## Default tab
 
@@ -71,7 +74,7 @@ Lookup order:
 
 API: `GET /api/pad/resolve?input=` returns the same JSON shape.
 
-UI: `src/components/onboard/PadOrgLookup.tsx` on `/pad` (Organization | Person tabs). Roster and dynamic org matches render `src/components/onboard/DynamicPadClient.tsx` on `/pad/[slug]`. Person pads render `src/components/onboard/PersonPadClient.tsx` on `/pad/person/[slug]`.
+UI: `src/components/onboard/PadOrgLookup.tsx` on `/pad` and `/pad/project-liberty-alliance` (Organization | Person tabs). PLA cohort welcome: `src/components/onboard/CohortPadClient.tsx`. Roster and dynamic org matches render `src/components/onboard/DynamicPadClient.tsx` on `/pad/[slug]`. Person pads render `src/components/onboard/PersonPadClient.tsx` on `/pad/person/[slug]`.
 
 Person lookup: `src/lib/hermes-onboard/person-pad-lookup.mjs` (`slugFromLinkedInUrl`, `resolvePersonPadSlug`, `validatePersonPadCreateInput`). Candidate discovery: `src/lib/hermes-onboard/person-pad-discovery.mjs` (local corpus grep; Open Graph for public work URLs in `person-pad-discovery.ts`). Storage: `src/lib/hermes-onboard/person-pad-store.ts` (Postgres `hermes_person_pad` or `data/hermes-person-pad/{slug}.json`). Perspective URL parsing: `src/lib/hermes-onboard/person-perspectives.ts`.
 
@@ -97,8 +100,6 @@ Person API:
 - `POST /api/pad/person/upload` – optional standalone doc upload
 
 Discovery limits (MVP): no paid APIs; no LinkedIn fetch; local JSON indexes only; Open Graph best-effort on user-supplied public URLs.
-
-Roster import: `scripts/import-pla-alliance-roster.mjs` → `src/data/alliance-roster.json`.
 
 ## Tests
 
