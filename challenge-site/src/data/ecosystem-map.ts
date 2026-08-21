@@ -14,6 +14,8 @@ export type EcosystemNode = {
   /** Book discuss links use DiscussPatchLink when rendered on-site. */
   discussPatch?: boolean;
   status: EcosystemNodeStatus;
+  /** When true, omit the status chip (conceptual architecture, not a live site). */
+  conceptual?: boolean;
   /** Extra status context (e.g. Canopi waitlist). */
   statusNote?: string;
   caption?: string;
@@ -99,9 +101,38 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
   hermes: {
     id: 'hermes',
     label: 'Hermes',
-    detail: 'DP Community AI',
+    detail: 'Assistant, not the place',
     href: '/agent',
     status: 'live',
+    caption:
+      'People and workgroups decide. Hermes helps organize conversation; it is not where community lives.',
+  },
+  aiMediatedAwareness: {
+    id: 'aiMediatedAwareness',
+    label: 'AI-mediated awareness',
+    detail: 'You → AI → Everything Else',
+    status: 'live',
+    conceptual: true,
+    caption:
+      'One interface, one conversational relationship, one personalized aperture onto civilization.',
+  },
+  agentMediation: {
+    id: 'agentMediation',
+    label: 'Agent-to-agent mediation',
+    detail: 'MCP-style protocols',
+    status: 'live',
+    conceptual: true,
+    caption:
+      'Machine-to-machine interoperability beneath the concierge. Agents communicate; humans may never enter shared space directly.',
+  },
+  personalizedAnswers: {
+    id: 'personalizedAnswers',
+    label: 'Personalized answers',
+    detail: 'Ephemeral, privatized context',
+    status: 'live',
+    conceptual: true,
+    caption:
+      'Intelligence is not a place. An answer generated for you is not the same resource others can encounter tomorrow.',
   },
   workgroups: {
     id: 'workgroups',
@@ -121,11 +152,13 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
   canopi: {
     id: 'canopi',
     label: 'Canopi',
+    detail: 'Shared presence above a page',
     href: 'https://app.canopi.live',
     external: true,
     status: 'in_progress',
     statusNote: 'Waitlist',
-    caption: 'Join the waitlist. Full product launch follows the book and Gov Hub path.',
+    caption:
+      'Discuss and context that persist around a Web resource. Join the waitlist; not Live yet.',
   },
   overwebSubstrate: {
     id: 'overwebSubstrate',
@@ -164,6 +197,11 @@ export type EcosystemViewConfig = {
   groups?: {
     title: string;
     subtitle?: string;
+    /** Short architecture stack (fast/mediation column). */
+    architecture?: string;
+    /** Pro-human principle quote (slow/place column). */
+    principle?: string;
+    body?: string;
     nodeIds: string[];
   }[];
   /** Highlighted node id (We are here). */
@@ -197,43 +235,56 @@ export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
     id: 'layers',
     label: 'Fast and slow layers',
     description:
-      'Some parts of the Meta-Layer stack move on multi-year horizons; others you can use this week.',
+      'From A Fork in the Web: two architectural tendencies that can coexist. Fast mediation collapses machine complexity into a concierge; slow / place builds persistent shared environments around Web resources.',
     groups: [
       {
-        title: 'Slow (years)',
+        title: 'Fast / mediation',
+        subtitle: 'AI-mediated awareness',
+        architecture: 'You → AI → Everything Else',
+        body:
+          'The machine world becomes multilayered; the human experience can collapse into one personalized aperture. Convenience, ephemeral responses, privatized context. Intelligence is not a place.',
+        nodeIds: ['aiMediatedAwareness', 'agentMediation', 'personalizedAnswers', 'hermes'],
+      },
+      {
+        title: 'Slow / place',
+        subtitle: 'Human-centered layered Web',
+        principle: 'AI should be an inhabitant, not the landlord.',
+        body:
+          'Persistent shared places around the same Web resource. Communities speak for themselves. Intellectual sovereignty and subsidiarity. A layer is not a space for layers.',
         nodeIds: [
-          'challenge',
-          'layeredWeb',
+          'dps',
           'govhub',
-          'mlReqs',
-          'mlAdrs',
+          'pads',
+          'workgroups',
+          'discuss',
+          'layeredWeb',
           'monument',
           'academy',
           'overwebSubstrate',
           'overwebStudio',
+          'canopi',
         ],
-      },
-      {
-        title: 'Fast (this week)',
-        nodeIds: ['pads', 'hermes', 'workgroups', 'discuss', 'canopi'],
       },
     ],
     nodeIds: [
-      'challenge',
-      'layeredWeb',
+      'aiMediatedAwareness',
+      'agentMediation',
+      'personalizedAnswers',
+      'hermes',
+      'dps',
       'govhub',
-      'mlReqs',
-      'mlAdrs',
+      'pads',
+      'workgroups',
+      'discuss',
+      'layeredWeb',
       'monument',
       'academy',
       'overwebSubstrate',
       'overwebStudio',
-      'pads',
-      'hermes',
-      'workgroups',
-      'discuss',
       'canopi',
     ],
+    footnote:
+      'These futures are not mutually exclusive. Neither does the first naturally lead to the second. Design choices influence which becomes dominant – not a deterministic binary, and not a moral cartoon.',
   },
   {
     id: 'loop',

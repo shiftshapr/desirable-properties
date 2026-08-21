@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Meta-Layer Ecosystem Map – Desirable Properties Challenge',
   description:
-    'Explore the Desirable Properties Challenge and the wider Meta-Layer stack: where we are today, fast and slow layers, and the living governance loop.',
+    'Explore the Desirable Properties Challenge and the wider Meta-Layer stack: where we are today, the architectural fork in fast and slow layers, and the living governance loop.',
 };
 
 export default function EcosystemMapPage() {

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import EcosystemNodeCard from '@/components/ecosystem/EcosystemNodeCard';
 import {
@@ -131,25 +132,88 @@ function LayersView() {
   const view = ECOSYSTEM_VIEWS.find((v) => v.id === 'layers');
   if (!view?.groups) return null;
 
+  const [fastGroup, slowGroup] = view.groups;
+
   return (
-    <div className="space-y-10">
-      {view.groups.map((group) => (
-        <section key={group.title}>
-          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
-            {group.title}
+    <div className="space-y-8">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
+            {fastGroup.title}
           </h3>
-          {group.subtitle ? (
-            <p className="mt-1 text-sm text-slate-400">{group.subtitle}</p>
+          {fastGroup.subtitle ? (
+            <p className="mt-2 text-lg font-semibold text-white">{fastGroup.subtitle}</p>
           ) : null}
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {group.nodeIds.map((id) => {
+          {fastGroup.architecture ? (
+            <div
+              className="mt-5 space-y-1 font-mono text-sm leading-relaxed text-cyan-200/90"
+              aria-hidden="true"
+            >
+              <p>You</p>
+              <p className="text-slate-500">↓</p>
+              <p>AI</p>
+              <p className="text-slate-500">↓</p>
+              <p className="text-slate-300">Everything Else</p>
+            </div>
+          ) : null}
+          {fastGroup.body ? (
+            <p className="mt-5 text-sm leading-relaxed text-slate-400">{fastGroup.body}</p>
+          ) : null}
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {fastGroup.nodeIds.map((id) => {
               const node = getEcosystemNode(id);
               if (!node) return null;
               return <EcosystemNodeCard key={id} node={node} compact />;
             })}
           </div>
         </section>
-      ))}
+
+        <section className="rounded-xl border border-cyan-900/40 bg-cyan-950/20 p-5 sm:p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400/90">
+            {slowGroup.title}
+          </h3>
+          {slowGroup.subtitle ? (
+            <p className="mt-2 text-lg font-semibold text-white">{slowGroup.subtitle}</p>
+          ) : null}
+          {slowGroup.principle ? (
+            <blockquote className="mt-4 border-l-2 border-cyan-600/70 pl-4 text-sm font-medium leading-relaxed text-slate-200">
+              {slowGroup.principle}
+            </blockquote>
+          ) : null}
+          {slowGroup.body ? (
+            <p className="mt-4 text-sm leading-relaxed text-slate-400">{slowGroup.body}</p>
+          ) : null}
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {slowGroup.nodeIds.map((id) => {
+              const node = getEcosystemNode(id);
+              if (!node) return null;
+              return <EcosystemNodeCard key={id} node={node} compact />;
+            })}
+          </div>
+        </section>
+      </div>
+
+      {view.footnote ? (
+        <p className="text-sm leading-relaxed text-slate-500">{view.footnote}</p>
+      ) : null}
+
+      <p className="text-sm text-slate-500">
+        Read the full argument in{' '}
+        <Link
+          href="/perspectives/a-fork-in-the-web"
+          className="font-medium text-cyan-300 hover:text-cyan-200"
+        >
+          A Fork in the Web
+        </Link>{' '}
+        and the{' '}
+        <Link
+          href="/pathways/ai-human-agency"
+          className="font-medium text-cyan-300 hover:text-cyan-200"
+        >
+          AI &amp; Human Agency pathway
+        </Link>
+        .
+      </p>
     </div>
   );
 }
@@ -269,12 +333,24 @@ export default function EcosystemMap() {
         <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
           Legend
         </h2>
-        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <dt className="text-sm font-semibold text-white">We are here</dt>
             <dd className="mt-1 text-sm leading-relaxed text-slate-400">
               The highlighted node marks where the Desirable Properties Challenge is focused today:
               refining Version 1.0 before ML-REQs and ML-ADRs gate what ships on the Overweb.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-semibold text-white">Fast and slow layers</dt>
+            <dd className="mt-1 text-sm leading-relaxed text-slate-400">
+              An architectural fork from{' '}
+              <Link href="/perspectives/a-fork-in-the-web" className="text-cyan-300 hover:text-cyan-200">
+                A Fork in the Web
+              </Link>
+              , not a product timeline. Fast / mediation is AI-mediated awareness (You → AI →
+              Everything Else). Slow / place is the human-centered layered Web where communities
+              speak for themselves. They can coexist.
             </dd>
           </div>
           <div>

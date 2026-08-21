@@ -34,11 +34,13 @@ function NodeInner({ node, highlighted, compact }: Props) {
         <p className={`font-semibold text-white ${compact ? 'text-sm' : 'text-base'}`}>
           {node.label}
         </p>
-        <span
-          className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${statusChipClass(node.status)}`}
-        >
-          {statusLabel}
-        </span>
+        {!node.conceptual ? (
+          <span
+            className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${statusChipClass(node.status)}`}
+          >
+            {statusLabel}
+          </span>
+        ) : null}
       </div>
       {node.detail ? (
         <p className={`mt-1 text-slate-400 ${compact ? 'text-xs' : 'text-sm'}`}>{node.detail}</p>
