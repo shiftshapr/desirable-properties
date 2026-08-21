@@ -150,6 +150,14 @@
       "description": "Stand up rewards for participants and builders who contribute to communities, implementations, and the public-good Meta-Layer stack."
     },
     {
+      "id": "overweb-app-requirements-contract",
+      "dateLabel": "November 2026",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-30",
+      "title": "Overweb sociotechnical contract",
+      "description": "Publish the sociotechnical contract on the Requirements to be an Overweb application, aligning builders with ML-REQ expectations for interoperable overlay apps."
+    },
+    {
       "id": "ml-adrs",
       "dateLabel": "December 2026",
       "startDate": "2026-12-01",
@@ -230,6 +238,14 @@
       "endDate": "2027-06-30",
       "title": "Metadomains",
       "description": "Introduce metadomains as named, interoperable community spaces that sit above today's sites and platforms."
+    },
+    {
+      "id": "overweb-book",
+      "dateLabel": "June 2027",
+      "startDate": "2027-06-01",
+      "endDate": "2027-06-30",
+      "title": "Publish The Overweb Book",
+      "description": "Publish The Overweb Book as the narrative companion to the live coordination layer, substrate, and community practices built after Desirable Properties launch."
     }
   ]
 }
