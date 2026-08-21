@@ -57,6 +57,18 @@ test('Alliance directory is a valid public packet', () => {
   assert.ok(slugs.has('project-liberty'));
 });
 
+test('mandatory research-pass stubs stay out of corpus', () => {
+  const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
+  const stubs = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'src/data/alliance-roster-corpus-stubs.json'), 'utf8'),
+  );
+  const promotedSlugs = new Set(corpus.orgs.map((org) => org.slug));
+  for (const slug of stubs.stubSlugs) {
+    assert.equal(promotedSlugs.has(slug), false, `stub slug ${slug} must not be promoted`);
+  }
+  assert.equal(stubs.stubSlugs.length, 37);
+});
+
 test('alliance roster corpus is a valid generated public-work packet', () => {
   const stewards = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
   const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));

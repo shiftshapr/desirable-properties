@@ -2,9 +2,9 @@
  * Shared fetch + HTML helpers for roster corpus generation.
  */
 
-export const FETCH_TIMEOUT_MS = 12_000;
+export const FETCH_TIMEOUT_MS = 15_000;
 export const USER_AGENT =
-  'DesirablePropertiesCorpusGenerator/1.0 (+https://desirableproperties.org/pad)';
+  'Mozilla/5.0 (compatible; DesirablePropertiesCorpusBot/1.0; +https://desirableproperties.org/pad)';
 
 const BLOCKED_HOST_RE =
   /(^|\.)((linkedin|twitter|x|facebook|instagram|youtube|youtu\.be|wikipedia|wikimedia|medium\.com|substack\.com))(\.|$)/i;
@@ -47,6 +47,18 @@ export const WORK_PATH_PATTERNS = [
   /\/updates?\b/i,
   /\/writing\b/i,
   /\/media\b/i,
+  /\/impact\b/i,
+  /\/advocacy\b/i,
+  /\/programs?\b/i,
+  /\/initiatives?\b/i,
+  /\/issues?\b/i,
+  /\/content-types\b/i,
+  /\/guides?\b/i,
+  /\/digital-library\b/i,
+  /\/community-reports?\b/i,
+  /\/campaigns?\b/i,
+  /\/toolkit\b/i,
+  /\/projects?\b/i,
 ];
 
 /** Marketing/about paths — never promote from these alone. */
@@ -116,6 +128,17 @@ export const PROBE_PATHS = [
   '/blog',
   '/writing',
   '/ideas',
+  '/impact',
+  '/advocacy',
+  '/programs',
+  '/initiatives',
+  '/issues',
+  '/analysis',
+  '/updates',
+  '/guides',
+  '/digital-library',
+  '/content-types',
+  '/community-reports',
 ];
 
 /**
@@ -225,6 +248,7 @@ export async function fetchResource(url) {
       redirect: 'follow',
       headers: {
         Accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
         'User-Agent': USER_AGENT,
       },
     });
@@ -395,6 +419,9 @@ function isBoilerplateSentence(sentence) {
   if (/^(home|about|contact|menu|search|skip to|buy|shop|best|most reliable)/i.test(sentence)) return true;
   if (/&#\d+;/.test(sentence)) return true;
   if ((sentence.match(/\|/g) || []).length >= 2) return true;
+  // Navigation/list dumps: many Title Case phrases in one sentence
+  const titleCaseWords = sentence.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){4,}/g);
+  if (titleCaseWords && titleCaseWords.length >= 1) return true;
   return false;
 }
 
@@ -403,12 +430,19 @@ export function isStrongWorkUrl(url) {
   try {
     const path = new URL(url).pathname;
     if (isMarketingPath(url)) return false;
-    if (/\/(publications?|reports?|papers?|research|insights?|articles?|essays?|perspectives?|commentary|briefs?|white-?papers?|policy|protocols?)\//i.test(path)) {
+    if (/\/(publications?|reports?|papers?|research|insights?|articles?|essays?|perspectives?|commentary|briefs?|white-?papers?|policy|protocols?|analysis|issues?|guides?|updates?|content-types|digital-library|community-reports?)\//i.test(path)) {
       return true;
     }
     if (/\/(blog|news|posts?)\/[^/]+/i.test(path)) return true;
     if (/\/\d{4}\/\d{2}\/[^/]+/.test(path)) return true;
     if (isPdfUrl(url)) return true;
+    // Deep slug paths often host articles (e.g. /cars/buying-a-car/article-slug)
+    const segments = path.split('/').filter(Boolean);
+    if (segments.length >= 3 && segments.join('/').length >= 24) return true;
+    // Single-segment report landing pages
+    if (segments.length === 1 && /report|guide|research|publication|analysis|brief|paper/i.test(segments[0])) {
+      return true;
+    }
     return false;
   } catch {
     return false;

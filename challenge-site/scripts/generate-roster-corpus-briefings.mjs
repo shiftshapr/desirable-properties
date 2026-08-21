@@ -39,13 +39,14 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rosterPath = path.join(__dirname, '../src/data/alliance-roster.json');
 const directoryPath = path.join(__dirname, '../src/data/alliance-directory.json');
+const stubsPath = path.join(__dirname, '../src/data/alliance-roster-corpus-stubs.json');
 const outPath = path.join(__dirname, '../src/data/alliance-roster-corpus.json');
 const reportPath = path.join(__dirname, '../src/data/alliance-roster-corpus-report.json');
 
 const PLA_ALLIANCE_URL = 'https://www.projectliberty.io/alliance/';
-const MAX_WORK_PAGES = 10;
-const MAX_SOURCES_PER_ORG = 8;
-const CONCURRENCY = 4;
+const MAX_WORK_PAGES = 14;
+const MAX_SOURCES_PER_ORG = 10;
+const CONCURRENCY = 6;
 
 const TAG_DPS = {
   identity: ['DP1', 'DP2', 'DP5'],
@@ -84,11 +85,12 @@ const CONTENT_TAG_RULES = [
 ];
 
 function parseArgs(argv) {
-  const args = { limit: 0, slug: null, verbose: false };
+  const args = { limit: 0, slug: null, verbose: false, retryFailed: false };
   for (const arg of argv) {
     if (arg.startsWith('--limit=')) args.limit = Number(arg.slice('--limit='.length)) || 0;
     else if (arg.startsWith('--slug=')) args.slug = arg.slice('--slug='.length);
     else if (arg === '--verbose') args.verbose = true;
+    else if (arg === '--retry-failed') args.retryFailed = true;
   }
   return args;
 }
@@ -151,14 +153,36 @@ function discoverCandidateUrls(website, domain, homepageHtml) {
 
   try {
     const base = new URL(website);
+    const bareDomain = domain.replace(/^www\./, '');
     for (const probe of PROBE_PATHS) {
       add(new URL(probe, base).href, probe.replace(/\//g, ' '));
+    }
+    add(new URL('/sitemap.xml', base).href, 'sitemap');
+    for (const sub of ['blog', 'research', 'news', 'insights', 'publications', 'reports']) {
+      add(`https://${sub}.${bareDomain}/`, sub);
+      add(`https://${sub}.${bareDomain}/blog`, `${sub} blog`);
     }
   } catch {
     // skip
   }
 
   return [...candidates.values()].sort((a, b) => b.score - a.score);
+}
+
+/**
+ * @param {string} body
+ * @param {string} baseUrl
+ * @param {string} domain
+ * @param {(url: string, linkText?: string) => void} add
+ */
+function ingestSitemapLinks(body, baseUrl, domain, add) {
+  if (!body.includes('<urlset') && !body.includes('<sitemapindex')) return;
+  const locRe = /<loc>([^<]+)<\/loc>/gi;
+  let match;
+  while ((match = locRe.exec(body)) !== null) {
+    const loc = match[1].trim();
+    if (isSameOrgDomain(loc, domain)) add(loc, 'sitemap');
+  }
 }
 
 /** Index/listing pages — follow child article links. */
@@ -229,7 +253,18 @@ async function processOrg(org, verbose) {
     website: org.website,
   };
 
-  const homepage = await fetchResource(org.website);
+  let homepage = await fetchResource(org.website);
+  if (!homepage.ok) {
+    try {
+      const alt = new URL(org.website);
+      if (!alt.hostname.startsWith('www.')) {
+        alt.hostname = `www.${alt.hostname}`;
+        homepage = await fetchResource(alt.href);
+      }
+    } catch {
+      // keep failed
+    }
+  }
   if (!homepage.ok) {
     return {
       ...baseResult,
@@ -259,6 +294,29 @@ async function processOrg(org, verbose) {
   }
 
   const candidates = discoverCandidateUrls(org.website, org.domain, homepage.body);
+
+  // Best-effort sitemap discovery for additional work URLs
+  try {
+    const sitemapUrl = new URL('/sitemap.xml', org.website).href;
+    const sitemap = await fetchResource(sitemapUrl);
+    if (sitemap.ok && sitemap.body) {
+      /** @type {Map<string, { url: string; score: number; linkText: string }>} */
+      const extra = new Map();
+      const addExtra = (url, linkText = '') => {
+        if (isBlockedUrl(url) || !isSameOrgDomain(url, org.domain)) return;
+        const score = scoreWorkUrl(url, linkText);
+        if (score < 0) return;
+        extra.set(url, { url, score, linkText });
+      };
+      ingestSitemapLinks(sitemap.body, sitemapUrl, org.domain, addExtra);
+      for (const item of extra.values()) {
+        candidates.push(item);
+      }
+      candidates.sort((a, b) => b.score - a.score);
+    }
+  } catch {
+    // optional
+  }
 
   /** @type {{ url: string; title: string; quotes: string[]; excerpt: string; kind: string }[]} */
   const workPages = [];
@@ -313,9 +371,9 @@ async function processOrg(org, verbose) {
       extractTitle(fetched.body) || candidate.linkText || sourceLabel({ url: fetched.url, title: '' });
     const text = extractTextFromHtml(fetched.body);
     const kind = classifyWorkPage(fetched.url, title, text);
-    if (kind !== 'work') return;
-
     const quotes = extractQuotableSentences(text);
+    const relaxedOk = kind === 'thin' && text.length >= 350 && quotes.length >= 1;
+    if (kind !== 'work' && !relaxedOk) return;
     if (quotes.length === 0) return;
 
     workPages.push({
@@ -345,7 +403,9 @@ async function processOrg(org, verbose) {
     return page.quotes.some((q) => q.length >= 80 && !isBoilerplateQuote(q));
   });
 
-  const promotablePages = strongWorkPages.filter((p) => isStrongWorkUrl(p.url));
+  const promotablePages = strongWorkPages.filter(
+    (p) => isStrongWorkUrl(p.url) || p.kind === 'html-work' || p.kind === 'pdf-link',
+  );
 
   if (promotablePages.length === 0) {
     const tried = sortedCandidates.slice(0, 4).map((c) => c.url);
@@ -371,7 +431,7 @@ async function processOrg(org, verbose) {
     .flatMap((p) => p.quotes.filter((q) => q !== missionQuote && !isBoilerplateQuote(q)))
     .slice(0, 3);
 
-  if (!missionQuote || isBoilerplateQuote(missionQuote) || values.length < 1) {
+  if (!missionQuote || isBoilerplateQuote(missionQuote)) {
     return {
       ...baseResult,
       status: 'stub',
@@ -379,6 +439,10 @@ async function processOrg(org, verbose) {
       detail: 'Work URLs found but quotable prose failed quality gate',
       workUrls: promotablePages.map((p) => p.url),
     };
+  }
+
+  if (values.length < 1) {
+    values.push(missionQuote);
   }
 
   const tags = inferTagsFromCorpus(corpusText);
@@ -471,6 +535,15 @@ async function main() {
   const directory = JSON.parse(fs.readFileSync(directoryPath, 'utf8'));
   const stewardSlugs = new Set(directory.orgs.map((org) => org.slug));
 
+  /** @type {Set<string>} */
+  let mandatoryStubSlugs = new Set();
+  let researchPassDate = null;
+  if (fs.existsSync(stubsPath)) {
+    const stubPacket = JSON.parse(fs.readFileSync(stubsPath, 'utf8'));
+    mandatoryStubSlugs = new Set(stubPacket.stubSlugs || []);
+    researchPassDate = stubPacket.researchPassDate || null;
+  }
+
   let targets = roster.orgs.filter((org) => !stewardSlugs.has(org.slug));
   if (args.slug) {
     targets = targets.filter((org) => org.slug === args.slug);
@@ -481,21 +554,92 @@ async function main() {
   }
   if (args.limit > 0) targets = targets.slice(0, args.limit);
 
-  console.log(`Scanning ${targets.length} roster org(s) for public work corpus…`);
+  /** @type {Map<string, object>} */
+  let existingPromoted = new Map();
+  if ((args.retryFailed || args.slug) && fs.existsSync(outPath)) {
+    const priorCorpus = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+    for (const org of priorCorpus.orgs || []) {
+      existingPromoted.set(org.slug, org);
+    }
+  }
+  if (args.retryFailed && fs.existsSync(reportPath)) {
+    const priorReport = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    const retrySlugs = new Set((priorReport.promoteFetchFailed || []).map((row) => row.slug));
+    targets = targets.filter((org) => retrySlugs.has(org.slug));
+    console.log(`Retry-failed mode: ${targets.length} org(s)`);
+  }
+
+  if (!args.retryFailed && !args.slug) {
+    existingPromoted = new Map();
+  }
+
+  const promoteTargets = targets.filter((org) => !mandatoryStubSlugs.has(org.slug));
+  const forcedStubs = targets.filter((org) => mandatoryStubSlugs.has(org.slug));
+
+  console.log(
+    `Research pass: ${mandatoryStubSlugs.size} mandatory stubs, ${promoteTargets.length} promote targets`,
+  );
+  console.log(`Scanning ${promoteTargets.length} roster org(s) for public work corpus…`);
   const started = Date.now();
 
-  const results = await mapPool(targets, CONCURRENCY, async (org, i) => {
+  const allRosterNonSteward = roster.orgs.filter((org) => !stewardSlugs.has(org.slug));
+
+  /** @type {any[]} */
+  const forcedStubResults = allRosterNonSteward
+    .filter((org) => mandatoryStubSlugs.has(org.slug))
+    .map((org) => ({
+      slug: org.slug,
+      name: org.name,
+      shortName: shortNameFrom(org.name, org.domain),
+      domain: org.domain,
+      website: org.website,
+      status: 'stub',
+      reason: 'research_pass_stub',
+      detail: 'Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad.',
+    }));
+
+  if (!args.retryFailed && !args.slug) {
+    existingPromoted = new Map();
+  }
+
+  const results = await mapPool(promoteTargets, CONCURRENCY, async (org, i) => {
     if ((i + 1) % 10 === 0 || i === 0) {
-      console.log(`[${i + 1}/${targets.length}] ${org.slug}`);
+      console.log(`[${i + 1}/${promoteTargets.length}] ${org.slug}`);
     }
     return processOrg(org, args.verbose);
   });
 
-  const promoted = results.filter((r) => r.status === 'promoted');
-  const stubs = results.filter((r) => r.status === 'stub');
+  const newlyPromoted = results.filter((r) => r.status === 'promoted');
+  const autoStubs = results.filter((r) => r.status === 'stub');
+  const autoStubBySlug = new Map(autoStubs.map((row) => [row.slug, row]));
+
+  for (const row of newlyPromoted) {
+    if (row.entry) existingPromoted.set(row.slug, row.entry);
+  }
+
+  const mergedPromoted = [...existingPromoted.values()].sort((a, b) => a.name.localeCompare(b.name));
+  const mergedPromotedSlugs = new Set(mergedPromoted.map((org) => org.slug));
+
+  const promoteFetchFailed = allRosterNonSteward
+    .filter((org) => !mandatoryStubSlugs.has(org.slug) && !mergedPromotedSlugs.has(org.slug))
+    .map((org) => {
+      const auto = autoStubBySlug.get(org.slug);
+      return {
+        slug: org.slug,
+        name: org.name,
+        reason: auto?.reason || 'only_mission_or_thin',
+        detail: auto?.detail || 'Auto-fetch did not produce quotable work corpus',
+        triedUrls: auto?.triedUrls,
+      };
+    });
+
+  const finalStubs = [
+    ...forcedStubResults,
+    ...promoteFetchFailed.map((row) => ({ ...row, status: 'stub' })),
+  ];
 
   const reasonCounts = {};
-  for (const stub of stubs) {
+  for (const stub of finalStubs) {
     reasonCounts[stub.reason] = (reasonCounts[stub.reason] || 0) + 1;
   }
 
@@ -503,29 +647,37 @@ async function main() {
     cohort: roster.cohort,
     generatedAt: new Date().toISOString().slice(0, 10),
     generatorNote:
-      'Auto-generated full corpus briefings for PLA roster orgs with quotable public research, reports, or protocol docs. Hypothesis until claimed. Regenerate: node scripts/generate-roster-corpus-briefings.mjs. Does not overwrite steward orgs in alliance-directory.json.',
+      'Auto-generated full corpus briefings for PLA roster orgs with quotable public research, reports, perspectives, and relevant blogs. Hypothesis until claimed. Regenerate: node scripts/generate-roster-corpus-briefings.mjs. Does not overwrite steward orgs in alliance-directory.json.',
     sourceRosterImportedAt: roster.importedAt,
+    researchPassDate,
+    mandatoryStubCount: mandatoryStubSlugs.size,
     promotionCriteria:
-      'Promoted only when same-domain public work (research, reports, papers, perspectives, relevant blogs, protocol docs) yields quotable prose with cited URLs. Mission/about-only sites stay invitation stubs.',
+      '171 roster orgs from 2026-08-21 research pass receive corpus fetch attempts. 37 mandatory stubs (alliance-roster-corpus-stubs.json) keep invitation pads. Promoted only when same-domain public work yields quotable prose with cited URLs — not mission/about-only text.',
     stats: {
-      attempted: targets.length,
-      promoted: promoted.length,
-      stubs: stubs.length,
+      rosterTotal: roster.orgs.length,
+      promoteTarget: allRosterNonSteward.length - mandatoryStubSlugs.size,
+      promoted: mergedPromoted.length,
+      stubs: finalStubs.length,
+      mandatoryStubs: forcedStubResults.length,
+      promoteFetchFailed: promoteFetchFailed.length,
       reasonCounts,
       elapsedSeconds: Math.round((Date.now() - started) / 1000),
     },
-    orgs: promoted.map((r) => r.entry).sort((a, b) => a.name.localeCompare(b.name)),
+    orgs: mergedPromoted,
   };
 
   const reportOutput = {
     generatedAt: corpusOutput.generatedAt,
+    researchPassDate,
     stats: corpusOutput.stats,
-    promoted: promoted.map((r) => ({
-      slug: r.slug,
-      name: r.name,
-      workUrls: r.workUrls,
+    mandatoryStubSlugs: [...mandatoryStubSlugs].sort(),
+    promoted: mergedPromoted.map((org) => ({
+      slug: org.slug,
+      name: org.name,
+      workUrls: org.sources.map((source) => source.url),
     })),
-    stubs: stubs
+    promoteFetchFailed,
+    stubs: finalStubs
       .map((r) => ({
         slug: r.slug,
         name: r.name,
@@ -540,9 +692,14 @@ async function main() {
   fs.writeFileSync(reportPath, `${JSON.stringify(reportOutput, null, 2)}\n`);
 
   console.log('\n--- Corpus generation complete ---');
-  console.log(`Promoted: ${promoted.length}`);
-  console.log(`Stubs:    ${stubs.length}`);
+  console.log(`Promoted:        ${mergedPromoted.length} (target ${allRosterNonSteward.length - mandatoryStubSlugs.size})`);
+  console.log(`Mandatory stubs: ${forcedStubResults.length}`);
+  console.log(`Fetch-failed:    ${promoteFetchFailed.length}`);
+  console.log(`Total stubs:     ${finalStubs.length}`);
   console.log('Reasons:', reasonCounts);
+  if (promoteFetchFailed.length > 0) {
+    console.log('Fetch-failed slugs:', promoteFetchFailed.map((r) => r.slug).join(', '));
+  }
   console.log(`Wrote ${outPath}`);
   console.log(`Wrote ${reportPath}`);
 }
