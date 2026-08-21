@@ -6,6 +6,8 @@
     "dev": "next dev",
     "generate:dp-welcome": "node scripts/generate-dp-welcome-content.mjs",
     "generate:roster-pads": "node scripts/generate-roster-pad-entries.mjs",
+    "generate:roster-corpus": "node scripts/generate-roster-corpus-briefings.mjs",
+    "discover:corpus-seeds": "node scripts/discover-corpus-seeds.mjs",
     "prebuild": "npm run generate:dp-welcome && npm run generate:roster-pads",
     "build": "next build",
     "start": "next start",
@@ -39,6 +41,7 @@
     "@types/sanitize-html": "^2.16.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "pdf-parse": "^2.4.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

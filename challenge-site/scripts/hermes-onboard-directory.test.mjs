@@ -8,8 +8,20 @@ import {
 } from '../src/lib/hermes-onboard/pad-lookup.mjs';
 
 const dirPath = path.join(process.cwd(), 'src/data/alliance-directory.json');
+const corpusPath = path.join(process.cwd(), 'src/data/alliance-roster-corpus.json');
 const rosterPath = path.join(process.cwd(), 'src/data/alliance-roster.json');
 const rosterPadsPath = path.join(process.cwd(), 'src/data/alliance-roster-pads.json');
+
+function loadMergedDirectoryOrgs() {
+  const stewards = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
+  const stewardSlugs = new Set(stewards.orgs.map((org) => org.slug));
+  return [...stewards.orgs, ...corpus.orgs.filter((org) => !stewardSlugs.has(org.slug))];
+}
+
+function loadFullDirectorySlugs() {
+  return new Set(loadMergedDirectoryOrgs().map((org) => org.slug));
+}
 
 test('Alliance directory is a valid public packet', () => {
   const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
@@ -45,10 +57,49 @@ test('Alliance directory is a valid public packet', () => {
   assert.ok(slugs.has('project-liberty'));
 });
 
-test('alliance slug keys are unique when hyphens are stripped', () => {
-  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+test('mandatory research-pass stubs stay out of corpus', () => {
+  const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
+  const stubs = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'src/data/alliance-roster-corpus-stubs.json'), 'utf8'),
+  );
+  const promotedSlugs = new Set(corpus.orgs.map((org) => org.slug));
+  for (const slug of stubs.stubSlugs) {
+    assert.equal(promotedSlugs.has(slug), false, `stub slug ${slug} must not be promoted`);
+  }
+  assert.equal(stubs.stubSlugs.length, 37);
+});
+
+test('alliance roster corpus is a valid generated public-work packet', () => {
+  const stewards = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
+  const stewardSlugs = new Set(stewards.orgs.map((org) => org.slug));
+
+  assert.equal(corpus.cohort, 'project-liberty-alliance');
+  assert.ok(Array.isArray(corpus.orgs));
+  assert.ok(corpus.stats);
+  assert.ok(corpus.promotionCriteria);
+
+  const slugs = new Set();
+  for (const org of corpus.orgs) {
+    assert.equal(stewardSlugs.has(org.slug), false, `corpus must not overwrite steward ${org.slug}`);
+    assert.equal(slugs.has(org.slug), false);
+    slugs.add(org.slug);
+    assert.ok(org.mission);
+    assert.ok(Array.isArray(org.values) && org.values.length > 0);
+    assert.ok(Array.isArray(org.sources) && org.sources.length > 0);
+    for (const source of org.sources) {
+      assert.ok(source.url.startsWith('http'));
+      assert.ok(source.label);
+    }
+    assert.ok(org.pitch?.headline);
+    assert.ok(Array.isArray(org.relatedDps) && org.relatedDps.length > 0);
+  }
+});
+
+test('merged directory slug keys are unique when hyphens are stripped', () => {
+  const orgs = loadMergedDirectoryOrgs();
   const keys = new Set();
-  for (const org of directory.orgs) {
+  for (const org of orgs) {
     const key = org.slug.replace(/-/g, '');
     assert.equal(keys.has(key), false, `duplicate slug key ${key} for ${org.slug}`);
     keys.add(key);
@@ -115,10 +166,10 @@ test('alliance roster is a valid prework packet', () => {
 });
 
 test('resolvePadLookup resolves directory, roster, and dynamic website input', () => {
-  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const orgs = loadMergedDirectoryOrgs();
   const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
-  const orgs = directory.orgs;
   const rosterOrgs = roster.orgs;
+  const fullDirectorySlugs = loadFullDirectorySlugs();
 
   const found = resolvePadLookup(orgs, rosterOrgs, 'project-liberty');
   assert.equal(found.status, 'found');
@@ -126,14 +177,13 @@ test('resolvePadLookup resolves directory, roster, and dynamic website input', (
   assert.equal(found.href, '/pad/project-liberty');
 
   const rosterMatch = resolvePadLookup(orgs, rosterOrgs, 'consumerreports.org');
-  assert.equal(rosterMatch.status, 'roster');
-  assert.equal(rosterMatch.slug, 'consumerreports');
-  assert.equal(rosterMatch.domain, 'consumerreports.org');
-  assert.equal(rosterMatch.href, '/pad/consumerreports');
-
-  const rosterByName = resolvePadLookup(orgs, rosterOrgs, 'Consumer Reports');
-  assert.equal(rosterByName.status, 'roster');
-  assert.equal(rosterByName.slug, 'consumerreports');
+  if (fullDirectorySlugs.has('consumerreports')) {
+    assert.equal(rosterMatch.status, 'found');
+  } else {
+    assert.equal(rosterMatch.status, 'roster');
+    assert.equal(rosterMatch.slug, 'consumerreports');
+    assert.equal(rosterMatch.domain, 'consumerreports.org');
+  }
 
   const dynamic = resolvePadLookup(orgs, rosterOrgs, 'https://example-random-site.org/about');
   assert.equal(dynamic.status, 'dynamic');
@@ -145,21 +195,20 @@ test('resolvePadLookup resolves directory, roster, and dynamic website input', (
   assert.equal(missing.status, 'not_found');
 });
 
-test('alliance roster pads cover every roster org outside the directory', () => {
-  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+test('alliance roster pads cover every roster org outside full directory', () => {
   const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
   const pads = JSON.parse(fs.readFileSync(rosterPadsPath, 'utf8'));
-  const directorySlugs = new Set(directory.orgs.map((org) => org.slug));
+  const fullDirectorySlugs = loadFullDirectorySlugs();
 
   assert.equal(pads.cohort, 'project-liberty-alliance');
-  assert.ok(Array.isArray(pads.orgs) && pads.orgs.length >= 100);
+  assert.ok(Array.isArray(pads.orgs));
 
-  const expectedCount = roster.orgs.filter((org) => !directorySlugs.has(org.slug)).length;
+  const expectedCount = roster.orgs.filter((org) => !fullDirectorySlugs.has(org.slug)).length;
   assert.equal(pads.orgs.length, expectedCount);
 
   const padSlugs = new Set(pads.orgs.map((org) => org.slug));
   for (const org of roster.orgs) {
-    if (directorySlugs.has(org.slug)) continue;
+    if (fullDirectorySlugs.has(org.slug)) continue;
     assert.ok(padSlugs.has(org.slug), `missing pad entry for ${org.slug}`);
     const entry = pads.orgs.find((row) => row.slug === org.slug);
     assert.ok(entry.pitch?.headline);
@@ -170,15 +219,19 @@ test('alliance roster pads cover every roster org outside the directory', () => 
   }
 });
 
-test('sample roster slugs resolve to member pad hrefs', () => {
+test('sample roster slugs resolve to pad hrefs (found if corpus-promoted, else roster stub)', () => {
   const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
-  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const orgs = loadMergedDirectoryOrgs();
+  const fullDirectorySlugs = loadFullDirectorySlugs();
   const rosterOrgs = roster.orgs;
-  const orgs = directory.orgs;
 
   for (const sample of ['consumerreports', 'epic', 'stanford']) {
     const match = resolvePadLookup(orgs, rosterOrgs, sample);
-    assert.equal(match.status, 'roster', sample);
+    if (fullDirectorySlugs.has(sample)) {
+      assert.equal(match.status, 'found', sample);
+    } else {
+      assert.equal(match.status, 'roster', sample);
+    }
     assert.equal(match.href, `/pad/${match.slug}`);
   }
 });

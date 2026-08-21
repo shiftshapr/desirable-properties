@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-08-21",
+  "note": "Candidate work URLs for promoteFetchFailed orgs. Used by generate-roster-corpus-briefings.mjs before generic probes.",
+  "orgs": {
+    "aspeninstitute": {
+      "workUrls": [
+        "https://www.aspeninstitute.org/publications/",
+        "https://www.aspeninstitute.org/programs/tech-policy-hub/"
+      ],
+      "source": "manual-research"
+    },
+    "counterhate": {
+      "workUrls": [
+        "https://counterhate.com/research/the-cost-of-weaker-moderation/",
+        "https://counterhate.com/research/up-next-anorexia-algorithm/",
+        "https://counterhate.com/blog/new-report-shows-youtube-still-recommends-eating-disorder-content-to-children-despite-safety-improvements/"
+      ],
+      "source": "manual-research"
+    },
+    "cigionline": {
+      "workUrls": [
+        "https://www.cigionline.org/publications/models-platform-governance/",
+        "https://www.cigionline.org/publications/data-governance-digital-age/",
+        "https://www.cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/"
+      ],
+      "source": "manual-research"
+    },
+    "earthkindcollective": {
+      "workUrls": [
+        "https://docs.earthkindcollective.org/"
+      ],
+      "source": "homepage-discovery"
+    },
+    "instituteforfamiliesandtechnology": {
+      "workUrls": [
+        "https://www.instituteforfamiliesandtechnology.org/blog-posts/press-release-national-poll-shows-overwhelming-bipartisan-support-for-holding-social-media-companies-accountable-for-harms-to-children",
+        "https://www.instituteforfamiliesandtechnology.org/blog-posts/new-report-grades-all-50-states-and-d-c-on-their-phone-free-schools-policies"
+      ],
+      "source": "manual-research"
+    },
+    "policylink": {
+      "workUrls": [
+        "https://www.policylink.org/resources/report",
+        "https://www.policylink.org/our-work/economy/reports",
+        "https://www.policylink.org/resources/tools"
+      ],
+      "source": "manual-research"
+    },
+    "rethinkwords": {
+      "workUrls": [
+        "https://rethinkwords.org/"
+      ],
+      "source": "manual-research"
+    }
+  }
+}

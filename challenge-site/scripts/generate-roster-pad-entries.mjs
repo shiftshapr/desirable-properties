@@ -127,7 +127,13 @@ function buildEntry(org) {
 function main() {
   const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
   const directory = JSON.parse(fs.readFileSync(directoryPath, 'utf8'));
-  const directorySlugs = new Set(directory.orgs.map((org) => org.slug));
+  const corpusPath = path.join(__dirname, '../src/data/alliance-roster-corpus.json');
+  let corpusSlugs = new Set();
+  if (fs.existsSync(corpusPath)) {
+    const corpus = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
+    corpusSlugs = new Set(corpus.orgs.map((org) => org.slug));
+  }
+  const directorySlugs = new Set([...directory.orgs.map((org) => org.slug), ...corpusSlugs]);
 
   const entries = roster.orgs
     .filter((org) => !directorySlugs.has(org.slug))

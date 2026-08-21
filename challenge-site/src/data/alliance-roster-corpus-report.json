@@ -1,0 +1,2439 @@
+{
+  "generatedAt": "2026-08-21",
+  "researchPassDate": "2026-08-21",
+  "stats": {
+    "rosterTotal": 208,
+    "promoteTarget": 171,
+    "promoted": 150,
+    "stubs": 58,
+    "mandatoryStubs": 37,
+    "promoteFetchFailed": 21,
+    "reasonCounts": {
+      "research_pass_stub": 37,
+      "only_mission_or_thin": 11,
+      "fetch_failed": 7,
+      "no_work_links": 3
+    },
+    "elapsedSeconds": 28
+  },
+  "mandatoryStubSlugs": [
+    "aiprc",
+    "backchan",
+    "betaworks",
+    "blockpartyapp",
+    "buildexante",
+    "civicsunplugged",
+    "commonera",
+    "democracy4all",
+    "domyn",
+    "dosomething",
+    "engagemedia",
+    "eticas",
+    "faithwise",
+    "freeourfeeds",
+    "freespoke",
+    "georgetown",
+    "getnu",
+    "goodlylabs",
+    "grayarea",
+    "hek",
+    "hellohumanity",
+    "hiifoundation",
+    "humansincontrol",
+    "kinsoo",
+    "laplateforme",
+    "lessthan3sc",
+    "mapletestimony",
+    "networkmessenger",
+    "noappforlife",
+    "opencollective",
+    "parentssos",
+    "parentstogetheraction",
+    "positivetechinstitute",
+    "taketwomediaitiaitive",
+    "thehumanlineproject",
+    "theidi",
+    "youthmediafoundation"
+  ],
+  "promoted": [
+    {
+      "slug": "aapti",
+      "name": "Aapti",
+      "workUrls": [
+        "https://aapti.in/blog/how-to-build-a-data-cooperative-a-practitioners-handbook/",
+        "https://aapti.in/blog/data-co-ops-in-action-launching-our-support-network/",
+        "https://aapti.in/blog/unlocking-data-cooperative-opportunities-in-south-east-asia/"
+      ]
+    },
+    {
+      "slug": "advancedaisociety",
+      "name": "Advanced Aisociety",
+      "workUrls": [
+        "https://advancedaisociety.org/briefing"
+      ]
+    },
+    {
+      "slug": "afchix",
+      "name": "Afchix",
+      "workUrls": [
+        "https://afchix.org/projects/"
+      ]
+    },
+    {
+      "slug": "aigi",
+      "name": "Aigovernance Initiativeatthe Universityof Oxford",
+      "workUrls": [
+        "https://aigi.ox.ac.uk/research-area/technical-ai-governance/",
+        "https://aigi.ox.ac.uk/publications/safety-frameworks-and-standards-a-comparative-analysis-to-advance-risk-management-of-frontier-ai/",
+        "https://aigi.ox.ac.uk/publications/financing-the-ai-triad-compute-data-and-algorithms/",
+        "https://aigi.ox.ac.uk/publications/automated-interpretability-driven-model-auditing-and-control-a-research-agenda/",
+        "https://aigi.ox.ac.uk/publications/ai-benefit-sharing-framework-balancing-access-and-safety/",
+        "https://aigi.ox.ac.uk/publications/the-annual-ai-governance-report-2025-steering-the-future-of-ai/",
+        "https://aigi.ox.ac.uk/publications/examining-ai-safety-as-a-global-public-good-implications-challenges-and-research-priorities/",
+        "https://aigi.ox.ac.uk/publications/structured-access-for-third-party-research-on-frontier-ai-models-investigating-researchers-model-access-requirements/",
+        "https://aigi.ox.ac.uk/technical-ai-governance-programme/",
+        "https://aigi.ox.ac.uk/research-area/frontier-ai-governance/"
+      ]
+    },
+    {
+      "slug": "aisafety",
+      "name": "Aisafety Asia",
+      "workUrls": [
+        "https://www.aisafety.asia/articles/ai-safety-governance",
+        "https://www.aisafety.asia/articles/raise-sea",
+        "https://www.aisafety.asia/articles/sea-observatory",
+        "https://www.aisafety.asia/insights/building-indonesias-ai-governance-capacity",
+        "https://www.aisafety.asia/insights/training-asias-cooperative-ai-leaders",
+        "https://www.aisafety.asia/insights/empowering-civil-society-ai-governance-training",
+        "https://www.aisafety.asia/insights/equipping-parliaments-for-the-ai-age",
+        "https://www.aisafety.asia/insights/reimagining-data-governance-for-an-ai-enabled-future",
+        "https://www.aisafety.asia/insights/building-southeast-asias-ai-governance-ecosystem"
+      ]
+    },
+    {
+      "slug": "aiwi",
+      "name": "Aiwhistleblower",
+      "workUrls": [
+        "https://aiwi.org/publication-commentary-whistleblower-protections-in-sb-53/",
+        "https://aiwi.org/publication-policy-analysis-the-ai-whistleblower-protection-act/",
+        "https://aiwi.org/eu-ai-office-whistleblowing-channel/",
+        "https://aiwi.org/publishyourpolicies/"
+      ]
+    },
+    {
+      "slug": "anfhelp",
+      "name": "Alexander Neville Foundation Logo",
+      "workUrls": [
+        "https://anfhelp.org/best-practices-to-rid-social-media-of-drug-trafficking/"
+      ]
+    },
+    {
+      "slug": "alltechishuman",
+      "name": "All Tech Is Human",
+      "workUrls": [
+        "https://alltechishuman.org/responsible-ai",
+        "https://alltechishuman.org/rai-courses",
+        "https://alltechishuman.org/responsible-tech-community-report",
+        "https://alltechishuman.org/all-tech-is-human-blog/ai-assessments-audits-and-public-oversight-methods-an-all-tech-is-human-and-ibm-collaborative-workshop",
+        "https://alltechishuman.org/all-tech-is-human-blog/balancing-privacy-and-child-safety-in-encrypted-environments",
+        "https://alltechishuman.org/all-tech-is-human-blog/responsible-tech-report-2024",
+        "https://alltechishuman.org/tech-democracy-report",
+        "https://alltechishuman.org/ai-human-rights-report",
+        "https://alltechishuman.org/better-tech-future",
+        "https://alltechishuman.org/aboutatih"
+      ]
+    },
+    {
+      "slug": "theajp",
+      "name": "American Journalism Project",
+      "workUrls": [
+        "https://theajp.org/research-in-action-how-newsrooms-can-use-ai-to-integrate-words-that-work-into-their-strategy/"
+      ]
+    },
+    {
+      "slug": "americansecurityfund",
+      "name": "American Security Foundation",
+      "workUrls": [
+        "https://www.americansecurityfund.com/resources"
+      ]
+    },
+    {
+      "slug": "amplifier",
+      "name": "Amplifier",
+      "workUrls": [
+        "https://amplifier.org/campaigns/amplifier-ar/",
+        "https://amplifier.org/campaigns/us-250-national-creative-assembly/",
+        "https://amplifier.org/campaigns/reparations-now/",
+        "https://amplifier.org/campaigns/intersections-of-our-lives/",
+        "https://amplifier.org/campaigns/not-for-sale/",
+        "https://amplifier.org/campaigns/campaign-for-nature/",
+        "https://amplifier.org/campaigns/revolutionary-love-tour/",
+        "https://amplifier.org/campaigns/planetary-guardians/",
+        "https://amplifier.org/campaigns/reset/",
+        "https://amplifier.org/campaigns/we-the-future/"
+      ]
+    },
+    {
+      "slug": "artificialityinstitute",
+      "name": "Artificiality",
+      "workUrls": [
+        "https://www.artificialityinstitute.org/news/research-update-trust-ai",
+        "https://www.artificialityinstitute.org/summit",
+        "https://www.artificialityinstitute.org/speaking",
+        "https://www.artificialityinstitute.org/community",
+        "https://journal.artificialityinstitute.org/",
+        "https://journal.artificialityinstitute.org/cognitive-sovereignty-authoring-your-mind-in-the-ai-age/",
+        "https://journal.artificialityinstitute.org/a-mind-for-our-minds/",
+        "https://journal.artificialityinstitute.org/how-we-think-and-live-with-ai-early-patterns-of-human-adaptation/",
+        "https://journal.artificialityinstitute.org/the-roles-we-give-ai-trust-presence-and-culture-in-a-symbiotic-age/"
+      ]
+    },
+    {
+      "slug": "ashoka",
+      "name": "Ashoka",
+      "workUrls": [
+        "https://www.ashoka.org/en-us/program/ashoka-young-changemakers",
+        "https://www.ashoka.org/en-us/program/ashoka-support-network",
+        "https://www.ashoka.org/en-us/program/ashoka-changemaker-schools",
+        "https://www.ashoka.org/en-us/collection/stories-early-changemaking",
+        "https://www.ashoka.org/en-us/program/ashoka-young-changemakers",
+        "https://www.ashoka.org/en-us/annual-reports",
+        "https://www.ashoka.org/en-us/ashoka-network-insights"
+      ]
+    },
+    {
+      "slug": "atlanticcouncil",
+      "name": "Atlantic Council",
+      "workUrls": [
+        "https://www.atlanticcouncil.org/issue/media/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/",
+        "https://www.atlanticcouncil.org/category/blogs/ukrainealert/",
+        "https://www.atlanticcouncil.org/programs/digital-forensic-research-lab/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/report/2025-annual-report/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/report/supporting-freedom-combating-anti-us-regimes-a-democracy-assistance-agenda-for-2026-2028/",
+        "https://www.atlanticcouncil.org/insights-impact/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/issue-brief/the-path-toward-sustainable-peace-in-colombia/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/report/mapeo-de-la-inversion-estadounidense-en-america-latina-y-el-caribe/",
+        "https://www.atlanticcouncil.org/in-depth-research-reports/issue-brief/reversing-mexicos-economic-and-democratic-decline/"
+      ]
+    },
+    {
+      "slug": "atlascomputing",
+      "name": "Atlas Computing Logo",
+      "workUrls": [
+        "https://atlascomputing.org/projects/",
+        "https://atlascomputing.org/terms/"
+      ]
+    },
+    {
+      "slug": "beccaschmillfdn",
+      "name": "Becca Schmill Foundation",
+      "workUrls": [
+        "https://beccaschmillfdn.org/advocacy/",
+        "https://beccaschmillfdn.org/our-research-collaborations/"
+      ]
+    },
+    {
+      "slug": "bellingcat",
+      "name": "Bellingcat",
+      "workUrls": [
+        "https://www.bellingcat.com/resources/how-tos/2026/06/30/burning-forests-tools-for-tracking-and-reporting-wildfire-damage/",
+        "https://www.bellingcat.com/news/us-canada/2026/08/20/satellite-imagery-documents-new-border-patrol-road-construction-in-big-bend-national-park/",
+        "https://www.bellingcat.com/news/2026/08/01/welcome-to-dubai-kinahan-cartels-visas-revealed/",
+        "https://www.bellingcat.com/news/2026/07/24/shahed-type-drones-filmed-during-attack-on-mali-villages/",
+        "https://www.bellingcat.com/news/2026/07/30/will-ronaldo-cry-world-cup-fans-bet-billions-through-prediction-markets/",
+        "https://www.bellingcat.com/news/2026/07/16/leakedbb-crypto-entrepreneur/",
+        "https://www.bellingcat.com/news/2026/07/06/between-graves-and-uncertainty-the-management-of-the-dead-after-venezuelas-earthquake/",
+        "https://www.bellingcat.com/news/2026/06/29/satellite-imagery-shows-scale-of-venezuela-earthquake-damage/",
+        "https://www.bellingcat.com/news/2026/06/27/poster-boy-sanctioned-kinahan-cartel-lieutenant-found-playing-padel-in-dubai/",
+        "https://www.bellingcat.com/news/2026/06/24/rhino-horn-leopard-skin-and-tiger-claws-sold-openly-on-facebook/"
+      ]
+    },
+    {
+      "slug": "berggruen",
+      "name": "Berggruen Institute",
+      "workUrls": [
+        "https://berggruen.org/library/category/project-report",
+        "https://berggruen.org/essay-competition-open",
+        "https://berggruen.org/library/in-search-of-greater-india",
+        "https://berggruen.org/library/what-is-universalism",
+        "https://berggruen.org/library/future-wunderkammer-i-iii",
+        "https://berggruen.org/library/a-field-guide-to-more-than-human-governance",
+        "https://berggruen.org/library/proxima-kosmos-volume-2",
+        "https://berggruen.org/library/the-planetary",
+        "https://berggruen.org/essay-competition-open"
+      ]
+    },
+    {
+      "slug": "theblockfound",
+      "name": "Blockchain Foundation Logo",
+      "workUrls": [
+        "https://theblockfound.com/financial-literacy-report"
+      ]
+    },
+    {
+      "slug": "blockchaingov",
+      "name": "Blockchain Gov Color Logo.png",
+      "workUrls": [
+        "https://blockchaingov.eu/research-report-blockchain-constitutionalism-the-role-of-legitimacy-in-polycentric-systems/",
+        "https://blockchaingov.eu/research-report-on-blockchain-governance-dynamics/",
+        "https://blockchaingov.eu/research-report-blockchain-constitutionalism-the-role-of-legitimacy-in-polycentric-systems/",
+        "https://blockchaingov.eu/blog-posts/",
+        "https://blockchaingov.eu/blog-posts-2022-2023/",
+        "https://blockchaingov.eu/blockchain-technology-and-polycentric-governance-a-research-report/",
+        "https://blockchaingov.eu/blockchaingov-scientific-publications-2024/",
+        "https://blockchaingov.eu/blockchaingov-observations-on-poh-dao-governance/",
+        "https://blockchaingov.eu/interim-report-on-blockchain-governance/",
+        "https://blockchaingov.eu/erc-scientific-report-18-months/"
+      ]
+    },
+    {
+      "slug": "safe",
+      "name": "Center For Aisafety",
+      "workUrls": [
+        "https://safe.ai/blog/a-birds-eye-view-of-the-ml-field",
+        "https://safe.ai/blog/ai-safety-ethics-and-society",
+        "https://safe.ai/blog/biosecurity-and-ai-risks-and-opportunities",
+        "https://safe.ai/blog/cybersecurity-and-ai-the-evolving-security-landscape",
+        "https://safe.ai/blog/devising-ml-metrics",
+        "https://safe.ai/blog/forecasting",
+        "https://safe.ai/blog/humanitys-last-exam",
+        "https://safe.ai/blog/josue-estrada-joins-center-for-ai-safety-as-chief-operating-officer",
+        "https://safe.ai/blog/leading-ai-companies-join-white-houses-voluntary-commitment-to-enhance-ai-safety",
+        "https://safe.ai/blog/representation-engineering-a-new-way-of-understanding-models"
+      ]
+    },
+    {
+      "slug": "cergic-lyon",
+      "name": "Center For Economic Research",
+      "workUrls": [
+        "https://www.cergic-lyon.fr/workingpapers",
+        "https://www.cergic-lyon.fr/opendata",
+        "https://www.cergic-lyon.fr/outreach",
+        "https://www.cergic-lyon.fr/seminars",
+        "https://www.cergic-lyon.fr/workshops",
+        "https://www.cergic-lyon.fr/phdevents",
+        "https://www.cergic-lyon.fr/other-scientific-events",
+        "https://www.cergic-lyon.fr/job-market",
+        "https://www.cergic-lyon.fr/summer-school"
+      ]
+    },
+    {
+      "slug": "humanetech",
+      "name": "Center For Humane Technology",
+      "workUrls": [
+        "https://www.humanetech.com/landing/the-social-dilemma",
+        "https://www.humanetech.com/podcast",
+        "https://www.humanetech.com/youth"
+      ]
+    },
+    {
+      "slug": "mediatechdemocracy",
+      "name": "Center For Mtd",
+      "workUrls": [
+        "https://mediatechdemocracy.com/en/publications/anatomy-election-gendered-perspective_2026/",
+        "https://mediatechdemocracy.com/en/publications/identity-politicization-shootings_2026/",
+        "https://mediatechdemocracy.com/en/publications/news-canadians-actually-see_2026/",
+        "https://mediatechdemocracy.com/en/publications/misinfo-polarization-trust-elections_2026/",
+        "https://mediatechdemocracy.com/en/publications/age-verification-online-platforms-policy-note_2026/",
+        "https://mediatechdemocracy.com/en/publications/digital-safety-act-four-things_2026/",
+        "https://mediatechdemocracy.com/en/publications/slopaganda-alberta-secession_2026/",
+        "https://mediatechdemocracy.com/en/publications/online-harms-ai-audit-technical-brief_2026/",
+        "https://mediatechdemocracy.com/en/publications/online-harms-ai-audit-policy-memo_2026/",
+        "https://mediatechdemocracy.com/en/publications/facebook-news-slop-economy_2026/"
+      ]
+    },
+    {
+      "slug": "caidp",
+      "name": "Centerfor Aiand Digital Policy",
+      "workUrls": [
+        "https://www.caidp.org/reports/caidp-index-2026/",
+        "https://www.caidp.org/reports/caidp-index-2025/",
+        "https://www.caidp.org/reports/aidv-2023/",
+        "https://www.caidp.org/reports/aidv-2023/caidp-index-maps-2023/",
+        "https://www.caidp.org/reports/caidp-index-2022/",
+        "https://www.caidp.org/reports/caidp-index-2022/caidp-index-maps-2022/",
+        "https://www.caidp.org/reports/caidp-index-2021/",
+        "https://www.caidp.org/resources/ai-policy-sourcebook/",
+        "https://www.caidp.org/resources/coe-ai-treaty/"
+      ]
+    },
+    {
+      "slug": "kcl",
+      "name": "Centre For Data Futures",
+      "workUrls": [
+        "https://www.kcl.ac.uk/policy-institute/research-analysis/impact-of-impact",
+        "https://www.kcl.ac.uk/policy-institute/research-analysis/post-brexit-migration",
+        "https://www.kcl.ac.uk/research/impact",
+        "https://self-service.kcl.ac.uk/article/KA-01913/en-us",
+        "https://www.kcl.ac.uk/research/research-environment",
+        "https://www.kcl.ac.uk/ecs/research/research-groups-and-centres-within-the-school",
+        "https://www.kcl.ac.uk/library/libraries/study-spaces",
+        "https://www.kcl.ac.uk/researchsupport/research-impact",
+        "https://www.kcl.ac.uk/research/facilities",
+        "https://www.kcl.ac.uk/research/partnerships"
+      ]
+    },
+    {
+      "slug": "cerre",
+      "name": "Centreon Regulationin Europe",
+      "workUrls": [
+        "https://cerre.eu/publications/perspectives-on-european-energy-resilience-and-policy-alignment/",
+        "https://cerre.eu/publications/agentic-ai-and-consumer-protection/",
+        "https://cerre.eu/areas-of-expertise/",
+        "https://cerre.eu/areas-of-expertise/energy-mobility-and-sustainability/",
+        "https://cerre.eu/areas-of-expertise/tech-media-telecom/",
+        "https://cerre.eu/areas-of-expertise/cross-sector-regulation/",
+        "https://cerre.eu/ambitions-for-eu/",
+        "https://cerre.eu/global-governance-for-the-digital-ecosystems/",
+        "https://cerre.eu/upcoming-events/",
+        "https://cerre.eu/past-events/"
+      ]
+    },
+    {
+      "slug": "centritechfdn",
+      "name": "Centritech Foundation",
+      "workUrls": [
+        "https://www.digitalintegrators.org/_files/ugd/fbbd27_e2e67672a7064439bc5404eea6a9f9a1.pdf",
+        "https://www.centritechfdn.org/_files/ugd/fbbd27_129f7332af304a949d18d65d1170a445.pdf"
+      ]
+    },
+    {
+      "slug": "childrenandscreens",
+      "name": "Children And Screens",
+      "workUrls": [
+        "https://www.childrenandscreens.org/research-grants/",
+        "https://www.childrenandscreens.org/newsroom/news-types/updates-from-the-field/",
+        "https://www.childrenandscreens.org/newsroom/media-inquiries/",
+        "https://www.childrenandscreens.org/learn-explore/research/social-media-and-youth-mental-health/",
+        "https://www.childrenandscreens.org/learn-explore/research/video-gaming-and-youth/",
+        "https://www.childrenandscreens.org/learn-explore/research/digital-devices-in-schools/",
+        "https://www.childrenandscreens.org/learn-explore/research/digital-media-and-youth-body-image/",
+        "https://www.childrenandscreens.org/learn-explore/research/lgbtq-youth-and-digital-media-use/",
+        "https://www.childrenandscreens.org/learn-explore/research/suicide-self-harm-and-digital-media-use/",
+        "https://www.childrenandscreens.org/learn-explore/research/research-at-a-glance-sleep-and-screens/"
+      ]
+    },
+    {
+      "slug": "christchurchcall",
+      "name": "Christ Church Call",
+      "workUrls": [
+        "https://www.christchurchcall.org/cciao-delphi-study-building-the-governance-foundation-for-tvec-algorithmic-research/",
+        "https://www.christchurchcall.org/auditing-proprietary-algorithms-while-preserving-privacy-is-possible-heres-how/",
+        "https://www.christchurchcall.org/significant-global-progress-made-under-christchurch-call/"
+      ]
+    },
+    {
+      "slug": "citizenuniversity",
+      "name": "Citizen University",
+      "workUrls": [
+        "https://citizenuniversity.us/news/civic-symphony/",
+        "https://citizenuniversity.us/programs/",
+        "https://citizenuniversity.us/programs/llac/",
+        "https://citizenuniversity.us/programs/power-character/",
+        "https://citizenuniversity.us/programs/civic-collaboratory/",
+        "https://citizenuniversity.us/programs/youth-collaboratory/",
+        "https://citizenuniversity.us/programs/alumni-network/",
+        "https://citizenuniversity.us/programs/special-projects/",
+        "https://citizenuniversity.us/programs/llac/"
+      ]
+    },
+    {
+      "slug": "civichealthproject",
+      "name": "Civic Health Project Logo",
+      "workUrls": [
+        "https://www.civichealthproject.org/insights/social-media-fellowship",
+        "https://www.civichealthproject.org/projects/social-cohesion-impact-measurement-framework"
+      ]
+    },
+    {
+      "slug": "cip",
+      "name": "Collective Intelligence",
+      "workUrls": [
+        "https://www.cip.org/whitepaper",
+        "https://www.cip.org/research/category/Policy+Brief",
+        "https://www.cip.org/research/category/Working+Paper",
+        "https://www.cip.org/research/participatory-ai-risk-prioritization",
+        "https://www.cip.org/research/category/Research+Brief",
+        "https://www.cip.org/research/aw3xt4x7anrrufs8x0bgkn4fsklsom",
+        "https://www.cip.org/funding-partnerships",
+        "https://www.cip.org/alignmentassemblies",
+        "https://www.cip.org/supermodular",
+        "https://www.cip.org/globaldialogues"
+      ]
+    },
+    {
+      "slug": "common-goal",
+      "name": "Common Goal",
+      "workUrls": [
+        "https://www.common-goal.org/post/three-lessons-from-the-2026-world-cup-worth-carrying-forward",
+        "https://www.common-goal.org/post/why-football-festivals-matter",
+        "https://www.common-goal.org/post/football-for-good-goes-to-checkout-with-adidas-and-adyen",
+        "https://www.common-goal.org/post/equal-play-effect-brazil-launches-ahead-of-fifa-women-s-world-cup-2027"
+      ]
+    },
+    {
+      "slug": "commonsensemedia",
+      "name": "Common Sense Media",
+      "workUrls": [
+        "https://www.commonsensemedia.org/articles/how-to-raise-a-reader",
+        "https://www.commonsensemedia.org/articles/parents-ultimate-guide-to-fortnite"
+      ]
+    },
+    {
+      "slug": "compdemocracy",
+      "name": "Compdemproj",
+      "workUrls": [
+        "https://compdemocracy.org/analysis/"
+      ]
+    },
+    {
+      "slug": "consumerreports",
+      "name": "Consumer Reports",
+      "workUrls": [
+        "https://www.consumerreports.org/community-reports/"
+      ]
+    },
+    {
+      "slug": "consumersinternational",
+      "name": "Consumers Int",
+      "workUrls": [
+        "https://www.consumersinternational.org/news-resources/blog/posts/digital-finance-why-we-must-close-the-protection-gap/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20161209-internet-connected-toys-a-toyfail-with-global-implications/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20170328-hacking-the-playroom-how-can-children-be-safe-and-protected-in-the-digital-world/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150119-how-consumer-protection-can-help-deliver-the-un-s-new-vision-of-shared-prosperity/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150226-framework-convention-on-tobacco-control-was-a-landmark-event-for-public-health/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150506-towards-a-magna-carta-for-the-internet/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150626-ci-priority-focus-on-trade-towards-a-positive-consumer-agenda-on-world-trade/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150716-un-guidelines-breakthrough-a-big-step-forward-for-consumer-protection/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150728-the-challenge-of-regulating-new-digital-services/",
+        "https://www.consumersinternational.org/news-resources/blog/posts/20150805-consumer-data-protection-and-the-need-for-alternative-new-responses/"
+      ]
+    },
+    {
+      "slug": "creativecommons",
+      "name": "Creative Commons",
+      "workUrls": [
+        "https://creativecommons.org/blog/archive/",
+        "https://creativecommons.org/2009/03/25/analysis-of-100m-cc-licensed-images-on-flickr/"
+      ]
+    },
+    {
+      "slug": "cyberpeaceinstitute",
+      "name": "Cyber Peace Institute",
+      "workUrls": [
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/",
+        "https://protect.ngo/"
+      ]
+    },
+    {
+      "slug": "datapopalliance",
+      "name": "Data Pop Alliance Logo",
+      "workUrls": [
+        "https://datapopalliance.org/publication_category/project-report-and-research-papers/",
+        "https://datapopalliance.org/resources/media/",
+        "https://datapopalliance.org/resources/annual-reports-and-newsletters/"
+      ]
+    },
+    {
+      "slug": "davidslegacy",
+      "name": "Davids Legacy",
+      "workUrls": [
+        "https://www.davidslegacy.org/2023/07/30/commentary-kids-online-safety-act-would-prevent-cyberbullying/"
+      ]
+    },
+    {
+      "slug": "digitalcredentials",
+      "name": "Dcc",
+      "workUrls": [
+        "https://dcconsortium.org/docs/white-paper-building-digital-credential-infrastructure-future.pdf",
+        "https://dcconsortium.org/docs/DCC-Making-Sense-of-Key-Data-Standards-for-Verifiable-LERs.pdf",
+        "https://dcconsortium.org/docs/Credential-Engine-and-Digital-Credentials-Consortium_-Issuer-Identity-Registry-Research-Report.pdf"
+      ]
+    },
+    {
+      "slug": "thedrcenter",
+      "name": "Decentralization Research Center Color Logo",
+      "workUrls": [
+        "https://thedrcenter.org/wp-content/uploads/2025/07/How_can_data_coops_help_build_a_fair_data_economy.pdf",
+        "https://thedrcenter.org/wp-content/uploads/2025/04/DRCxFlashbots-Leveraging-Blockchain-Final.pdf",
+        "https://thedrcenter.org/wp-content/uploads/2025/04/DRC-Flourishing-v2.pdf",
+        "https://thedrcenter.org/wp-content/uploads/2025/07/Practical_Data_Governance_Solutions_Report_v4.pdf",
+        "https://thedrcenter.org/2025-decentralized-tech-summit/",
+        "https://thedrcenter.org/advanced-search/"
+      ]
+    },
+    {
+      "slug": "decifer",
+      "name": "Decifer Studio",
+      "workUrls": [
+        "https://decifer.tech/The%20Algorithm%20-%20Report%20-%20V1.pdf",
+        "https://decifer.tech/projects/how_to_train_your_chatbot",
+        "https://decifer.tech/projects/The_Algorithm",
+        "https://decifer.tech/projects/Survival_of_the_Best_Fit",
+        "https://plausible.dev.decifer.tech/test.dev.decifer.tech/",
+        "https://decifer.tech/papers",
+        "https://decifer.tech/analysis",
+        "https://decifer.tech/community-reports"
+      ]
+    },
+    {
+      "slug": "dp",
+      "name": "Dpla",
+      "workUrls": [
+        "https://dp.la/guides/for-family-research-guide-to-dpla",
+        "https://dp.la/guides/the-scholarly-research-guide-to-dpla"
+      ]
+    },
+    {
+      "slug": "dream",
+      "name": "Dream Org",
+      "workUrls": [
+        "https://dream.org/news-articles/conservamerica-white-paper-data-center-development/",
+        "https://dream.org/impact/",
+        "https://dream.org/impact/"
+      ]
+    },
+    {
+      "slug": "getdweb",
+      "name": "Dweb Color Logo",
+      "workUrls": [
+        "https://getdweb.net/principles/"
+      ]
+    },
+    {
+      "slug": "eclipse",
+      "name": "Eclipse Foundation",
+      "workUrls": [
+        "https://www.eclipse.org/topics/ide/articles/theia-adopter-story-stmicroelectronics/",
+        "https://www.eclipse.org/topics/ide/articles/theia-adopter-story-samsung-sokatoa-gpu-profiling-and-debugging-for-android/",
+        "https://www.eclipse.org/topics/ide/articles/the-active-ecosystem-of-eclipse-theia-adopters/",
+        "https://www.eclipse.org/topics/ide/articles/how-lonti-created-a-unified-ide-for-apis-automation-and-application-development-with-eclipse-theia/",
+        "https://www.eclipse.org/research/projects/mosaico/",
+        "https://www.eclipse.org/research/projects/ocei/",
+        "https://www.eclipse.org/research/projects/rigoletto/",
+        "https://www.eclipse.org/research/projects/cybernemo/",
+        "https://www.eclipse.org/research/projects/hal4sdv/",
+        "https://www.eclipse.org/research/projects/hyper-ai/"
+      ]
+    },
+    {
+      "slug": "eko",
+      "name": "Eko",
+      "workUrls": [
+        "https://eko.org/en/campaigns"
+      ]
+    },
+    {
+      "slug": "encodejustice",
+      "name": "Encodejustice",
+      "workUrls": [
+        "https://encodejustice.org/wp-content/uploads/2024/10/White-Paper-Technological-Pitfalls-Encode-Justice.pdf"
+      ]
+    },
+    {
+      "slug": "epic",
+      "name": "Epic",
+      "workUrls": [
+        "https://epic.org/issues/privacy-laws/article-iii-standing/",
+        "https://epic.org/analysis/",
+        "https://epic.org/issues/ai/",
+        "https://epic.org/issues/ai/ai-in-the-criminal-justice-system/",
+        "https://epic.org/issues/ai/ai-policy/",
+        "https://epic.org/issues/ai/chatbots/",
+        "https://epic.org/issues/ai/commercial-ai-use/",
+        "https://epic.org/issues/ai/government-use-of-ai/",
+        "https://epic.org/issues/ai/risk-assessments/",
+        "https://epic.org/issues/ai/screening-scoring/"
+      ]
+    },
+    {
+      "slug": "ens",
+      "name": "Ethereum Name Service",
+      "workUrls": [
+        "https://ens.domains/blog/post/ens-immunefi-audit-competition",
+        "https://ens.domains/blog/post/what-makes-ens-a-protocol",
+        "https://ens.domains/blog/post/ensv2-beta-public-testing",
+        "https://ens.domains/blog/post/introducing-the-evolved-ens-foundation",
+        "https://ens.domains/blog/post/how-ens-normalization-works",
+        "https://ens.domains/blog/post/introducing-the-newest-ens-security-council",
+        "https://ens.domains/blog/post/how-ens-names-evolved",
+        "https://ens.domains/ecosystem",
+        "https://ens.domains/governance",
+        "https://discuss.ens.domains/"
+      ]
+    },
+    {
+      "slug": "ethicalaialliance",
+      "name": "Ethical Aialliance",
+      "workUrls": [
+        "https://ethicalaialliance.org/perspectives/ethical-ai-launch-a-collective-beginning",
+        "https://ethicalaialliance.org/perspectives/the-rise-of-the-conscious-employee-techs-new-ethical-dilemma",
+        "https://ethicalaialliance.org/perspectives/why-ai-safety-alone-isnt-enough-the-case-for-an-ethical-ai-charter",
+        "https://ethicalaialliance.org/perspectives/twenty-seconds-advances-in-ai-raise-ethical-concerns-particularly-in-conflict-zones",
+        "https://ethicalaialliance.org/opinion/Blog%20Post%20Title%20One-3zaa9-zlxng-n5tpp",
+        "https://ethicalaialliance.org/what-we-built-so-far",
+        "https://ethicalaialliance.org/statements",
+        "https://ethicalaialliance.org/clause-0"
+      ]
+    },
+    {
+      "slug": "excelined",
+      "name": "Excelin Ed",
+      "workUrls": [
+        "https://excelined.org/2018/06/04/research-finds-positive-outcomes-for-north-carolina-opportunity-scholarship-students/",
+        "https://excelined.org/2018/10/29/analysis-essa-state-plans-landscape-and-key-trends/"
+      ]
+    },
+    {
+      "slug": "fairplayforkids",
+      "name": "Fairplay Childhood Beyond Brands",
+      "workUrls": [
+        "https://fairplayforkids.org/research-on-instagram-and-teens-summaries-from-the-facebook-files/"
+      ]
+    },
+    {
+      "slug": "ffwd",
+      "name": "Fast Forward",
+      "workUrls": [
+        "https://www.ffwd.org/blog/impact-measurement-tech-nonprofit",
+        "https://www.ffwd.org/blog/evidence-of-a-growing-sector",
+        "https://www.ffwd.org/blog/meet-the-2026-accelerator-cohort",
+        "https://www.ffwd.org/blog/scaling-mission-driven-innovation-fast-forward-and-splunk-s-partnership",
+        "https://www.ffwd.org/blog/the-playbook-on-tech-nonprofit-marketing",
+        "https://www.ffwd.org/blog/what-s-good-in-tech-our-2024-impact-report-is-here",
+        "https://www.ffwd.org/blog/the-ai-powered-nonprofits-coding-a-greener-future",
+        "https://www.ffwd.org/blog/shabana-basij-rasikh-and-mati-amin-believe-ai-can-help-restore-afghan-girls-right-to-education",
+        "https://www.ffwd.org/blog/rodrigo-camarena-believes-ai-can-help-workers-access-justice",
+        "https://www.ffwd.org/blog/5-big-ideas-from-fund-ai"
+      ]
+    },
+    {
+      "slug": "fathom",
+      "name": "Fathom",
+      "workUrls": [
+        "https://fathom.org/insights/the-future-of-work-a-framework-for-action-under-uncertainty",
+        "https://fathom.org/insights/what-makes-a-country-ready-to-govern-ai",
+        "https://fathom.org/insights/project-glasswing-is-the-diagnosis-not-the-solution",
+        "https://fathom.org/insights/a-model-escapes.-your-business-is-on-the-hook.",
+        "https://fathom.org/insights/fathom-applauds-introduction-of-the-frontier-act-the-first-federal-blueprint-for-independent-ai-verification",
+        "https://fathom.org/insights/what-makes-a-country-ready-to-govern-ai",
+        "https://fathom.org/insights/a-model-escapes.-your-business-is-on-the-hook.",
+        "https://fathom.org/insights/fathom-applauds-introduction-of-the-frontier-act-the-first-federal-blueprint-for-independent-ai-verification",
+        "https://fathom.org/insights/who-evaluates-the-evaluators",
+        "https://fathom.org/insights/ai-and-work-the-case-for-acting-now"
+      ]
+    },
+    {
+      "slug": "5rightsfoundation",
+      "name": "Five Rights Foundation",
+      "workUrls": [
+        "https://5rightsfoundation.com/resource/impact-of-regulation-of-childrens-digital-lives-phase-ii/",
+        "https://5rightsfoundation.com/resource/analysis-of-the-guidelines-to-article-28-1-of-the-digital-services-act/",
+        "https://5rightsfoundation.com/resource/impact-of-regulation-on-childrens-lives/",
+        "https://5rightsfoundation.com/resource/the-best-interests-of-the-child-in-the-digital-age/",
+        "https://5rightsfoundation.com/resource/in-support-of-a-code-of-practice-for-education-technology/",
+        "https://5rightsfoundation.com/resource/smartphone-policies-in-schools-what-does-the-evidence-say/",
+        "https://5rightsfoundation.com/resource/updated-report-disrupted-childhood-the-cost-of-persuasive-design/",
+        "https://5rightsfoundation.com/resource/pathways-how-digital-design-puts-children-at-risk/",
+        "https://5rightsfoundation.com/resource/digital-childhood-updated-report/",
+        "https://5rightsfoundation.com/eaca/en-eu/"
+      ]
+    },
+    {
+      "slug": "forfreedoms",
+      "name": "Forfreedoms",
+      "workUrls": [
+        "https://forfreedoms.org/artworks/the-model-minority-is-a-myth",
+        "https://forfreedoms.org/artworks/becoming-a-citizen",
+        "https://forfreedoms.org/artworks/who-am-i-to-tell-the-story"
+      ]
+    },
+    {
+      "slug": "thefai",
+      "name": "Foundation For American Innovation",
+      "workUrls": [
+        "https://www.thefai.org/posts/standard-general-tegna-at-the-fcc-process-or-prejudice",
+        "https://www.thefai.org/posts/policy-hackers-fellowship-for-tech-professionals",
+        "https://www.thefai.org/posts/policy-update-for-october-december-2021",
+        "https://www.thefai.org/posts/policy-update-for-january-february-2020",
+        "https://www.thefai.org/posts/policy-hackers-fellowship-application-now-open-for-2021-2022",
+        "https://www.thefai.org/posts/policy-update-for-april-june-2021",
+        "https://www.thefai.org/posts/technical-disagreement-grounds-5g-rollout",
+        "https://www.thefai.org/posts/policy-update-for-march-april-2020",
+        "https://www.thefai.org/posts/policy-update-for-november-december-2020",
+        "https://www.thefai.org/posts/knowledge-navigator"
+      ]
+    },
+    {
+      "slug": "futurecaucus",
+      "name": "Future Caucus Color Logo",
+      "workUrls": [
+        "https://futurecaucus.org/policy-and-research/",
+        "https://futurecaucus.org/commentary-young-people-are-winning-elections-now-what/"
+      ]
+    },
+    {
+      "slug": "futureoflife",
+      "name": "Future Of Life Institute",
+      "workUrls": [
+        "https://futureoflife.org/project/traditional-religions-on-ai-futures/",
+        "https://futureoflife.org/report-a-broken-link/"
+      ]
+    },
+    {
+      "slug": "ash",
+      "name": "Getting Plurality Research Network",
+      "workUrls": [
+        "https://ash.harvard.edu/articles/the-past-present-and-future-of-democracy-a-summer-reading-list-from-the-allen-lab/",
+        "https://ash.harvard.edu/articles/work-in-the-age-of-ai-reflections-from-after-neoliberalism/",
+        "https://ash.harvard.edu/articles/q-a-crocodile-tears-can-the-ethical-moral-intelligence-of-ai-models-be-trusted/",
+        "https://ash.harvard.edu/articles/voter-experience-summit-recap/",
+        "https://ash.harvard.edu/articles/india-the-olympics-of-ai/",
+        "https://ash.harvard.edu/articles/transparency-is-insufficient-lessons-from-civic-technology-for-anticorruption/",
+        "https://ash.harvard.edu/research-and-resources/",
+        "https://ash.harvard.edu/programs/allen-lab-technology/",
+        "https://ash.harvard.edu/research-and-resources/",
+        "https://ash.harvard.edu/resources/when-democracy-breaks-studies-in-democratic-erosion-and-collapse-from-ancient-athens-to-the-present-day/"
+      ]
+    },
+    {
+      "slug": "glianetalliance",
+      "name": "Glia Net",
+      "workUrls": [
+        "https://www.glianetalliance.org/news/fiduciary-duties-ai-workshop"
+      ]
+    },
+    {
+      "slug": "disinformationindex",
+      "name": "Global Disinformation Index",
+      "workUrls": [
+        "https://www.disinformationindex.org/blog/2026-05-15-the-eus-democratic-resilience-funding-gap-follow-the-money/",
+        "https://www.disinformationindex.org/research/2026-04-17-monetisation-german-online-ecosystem/",
+        "https://www.disinformationindex.org/research/2025-09-15-hate-speech-bigotry-canada-august2025/",
+        "https://www.disinformationindex.org/blog/2026-7-14-a-milestone-for-gdi-free-speech/",
+        "https://www.disinformationindex.org/blog/2026-5-29-defunding-deception-economic-disruption-as-a-proactive-weapon-against-information-manipulation/",
+        "https://www.disinformationindex.org/blog/2026-01-29-eu-tech-policy-in-2026-from-paperwork-to-power-politics/",
+        "https://www.disinformationindex.org/blog/2026-04-20-very-large-online-platforms-decide-what-counts-as-systemic-risk-research-thats-self-regulation-failing/",
+        "https://www.disinformationindex.org/blog/2026-03-10-milano-cortina-2026-three-information-manipulation-playbooks-on-one-global-stage/",
+        "https://www.disinformationindex.org/blog/2026-02-06-giving-advertisers-choice-is-free-market-capitalism-not-censorship/",
+        "https://www.disinformationindex.org/blog/2024-10-09-new-outbreak-same-tactics-disinformation-narratives-around-the-mpox-virus/"
+      ]
+    },
+    {
+      "slug": "global-solutions-initiative",
+      "name": "Global Solutions Initiative Logo",
+      "workUrls": [
+        "https://www.global-solutions-initiative.org/resources/policy-briefs/",
+        "https://www.global-solutions-initiative.org/article/rebuilding-the-world-order/",
+        "https://www.global-solutions-initiative.org/article/weve-spent-four-years-talking-about-governing-ai-geneva-has-to-actually-do-it/",
+        "https://www.global-solutions-initiative.org/resources/g20-insights/",
+        "https://www.global-solutions-initiative.org/publication/building-digital-infrastructure-ready-for-the-ai-era/",
+        "https://www.global-solutions-initiative.org/programs/",
+        "https://www.global-solutions-initiative.org/programs/climate-action-and-sustainability/",
+        "https://www.global-solutions-initiative.org/programs/digital-and-ai-transformation/"
+      ]
+    },
+    {
+      "slug": "goodbot",
+      "name": "Good Bot",
+      "workUrls": [
+        "https://www.goodbot.ca/library/category/Policy",
+        "https://www.goodbot.ca/media",
+        "https://www.goodbot.ca/media",
+        "https://www.goodbot.ca/library/category/Books+-+Non-Fiction",
+        "https://www.goodbot.ca/library/custodians-of-the-internet",
+        "https://www.goodbot.ca/library/artificial-unintelligence",
+        "https://www.goodbot.ca/library/a-future-so-bright",
+        "https://www.goodbot.ca/library/rules-for-a-flat-world",
+        "https://www.goodbot.ca/library/the-age-of-ai",
+        "https://www.goodbot.ca/library/internet-for-the-people"
+      ]
+    },
+    {
+      "slug": "heartlandforward",
+      "name": "Heartland Forward",
+      "workUrls": [
+        "https://heartlandforward.org/research/building-clinically-integrated-network-infrastructure/",
+        "https://heartlandforward.org/research/ai-applications-in-health-care/",
+        "https://heartlandforward.org/research/economic-impacts-of-outdoor-recreation-in-arkansas/",
+        "https://heartlandforward.org/research/arkansas-department-of-parks-heritage-tourism-visitor-spending-fuels-17-4-billion-in-economic-activity-in-arkansas/",
+        "https://heartlandforward.org/research/heartland-forward-gallup-and-walton-family-foundation-gen-z-ai-poll/",
+        "https://heartlandforward.org/research/economic-contributions-of-medical-residencies-to-arkansas/",
+        "https://heartlandforward.org/research/heartlandoftalent/",
+        "https://heartlandforward.org/research/most-dynamic-metros-2024/",
+        "https://heartlandforward.org/research/visualizations-for-appendix-a-in-revitalizing-innovation-models-of-equitable-entrepreneurship-across-the-united-states/",
+        "https://heartlandforward.org/regional-competitiveness/"
+      ]
+    },
+    {
+      "slug": "heatinitiative",
+      "name": "Heat Initiative",
+      "workUrls": [
+        "https://heatinitiative.org/research-heat-initiative/",
+        "https://heatinitiative.org/research-heat-initiative/"
+      ]
+    },
+    {
+      "slug": "historycommunication",
+      "name": "History Communication Institute",
+      "workUrls": [
+        "https://historycommunication.com/community/",
+        "https://historycommunication.com/training/",
+        "https://historycommunication.com/consulting/"
+      ]
+    },
+    {
+      "slug": "hopelab",
+      "name": "Hopelab",
+      "workUrls": [
+        "https://hopelab.org/programs/policy-platform",
+        "https://hopelab.org/stories/teen-and-young-adult-perspectives-on-generative-ai",
+        "https://hopelab.org/stories/parasocial-relationships-ai-chatbots-and-joyful-online-interactions",
+        "https://hopelab.org/stories/demystifying-youth-engaged-research",
+        "https://hopelab.org/stories/spark",
+        "https://hopelab.org/stories/lessonsfromthefield-ai-mental-health",
+        "https://hopelab.org/stories/financial-strain",
+        "https://hopelab.org/stories/southern-youth",
+        "https://hopelab.org/stories/transgender-online-support",
+        "https://hopelab.org/stories/nationalpoll"
+      ]
+    },
+    {
+      "slug": "humanchange",
+      "name": "Human Change",
+      "workUrls": [
+        "https://humanchange.com/library/article-what-are-the-benefits-of-smartphone-free-schools/",
+        "https://humanchange.com/library/article-a-return-to-the-art-of-conversation/",
+        "https://humanchange.com/library/article-generative-ai-is-coming-for-our-students-and-now-is-the-moment-to-shape-it/",
+        "https://humanchange.com/library/article-kids-are-offloading-their-critical-thinking-to-ai-chatbots-heres-how-to-protect-them-experts-say/"
+      ]
+    },
+    {
+      "slug": "humane-intelligence",
+      "name": "Human Intelligence",
+      "workUrls": [
+        "https://humane-intelligence.org/post/updates-about-our-oss-ai-red-teaming-app-release/",
+        "https://humane-intelligence.org/post/knowledge-graph-ai-evaluations/",
+        "https://humane-intelligence.org/post/what-is-the-relationship-between-ai-safety-and-ai-evaluations/",
+        "https://humane-intelligence.org/post/linkedin-learning/",
+        "https://humane-intelligence.org/post/bias-bounties-on-zindi-preview-geospatial-data-and-climate-risk/",
+        "https://humane-intelligence.org/post/the-global-divide-over-data-governance/",
+        "https://humane-intelligence.org/post/folie-a-deux-in-the-machine-when-models-share-hallucinations/",
+        "https://humane-intelligence.org/post/mental-health-as-a-hidden-cost-of-ai-systems/",
+        "https://humane-intelligence.org/post/our-new-members-of-the-board-of-directors-and-advisory-group/",
+        "https://humane-intelligence.org/post/the-women-of-humane-intelligence-stories-behind-the-work/"
+      ]
+    },
+    {
+      "slug": "identityvalley",
+      "name": "Identity Valley",
+      "workUrls": [
+        "https://identityvalley.eu/solutions",
+        "https://identityvalley.eu/digital-responsibility-goals",
+        "https://identityvalley.eu/digital-responsibility-index",
+        "https://identityvalley.eu/drg4food-toolbox",
+        "https://identityvalley.eu/newsletter-suscription"
+      ]
+    },
+    {
+      "slug": "independentsector",
+      "name": "Independent Sector",
+      "workUrls": [
+        "https://independentsector.org/blog/bipartisan-amendment-to-protect-irs-due-process-for-nonprofits/",
+        "https://independentsector.org/blog/dc-download-still-waiting-for-the-main-dish/",
+        "https://independentsector.org/blog/charitable-sector-independent-by-design/",
+        "https://independentsector.org/nonprofit-advocacy-civic-engagement-research/",
+        "https://independentsector.org/research/financial-insecurity-in-the-nonprofit-workforce/",
+        "https://healthysector.org/",
+        "https://independentsector.org/resource/trust-in-civil-society/",
+        "https://independentsector.org/research/value-of-volunteer-time/",
+        "https://independentsector.org/policy/take-action/",
+        "https://independentsector.org/resource/earning-influence/"
+      ]
+    },
+    {
+      "slug": "instituteforfamiliesandtechnology",
+      "name": "Institute For Families And Technology",
+      "workUrls": [
+        "https://www.instituteforfamiliesandtechnology.org/blog-posts/new-report-grades-all-50-states-and-d-c-on-their-phone-free-schools-policies"
+      ]
+    },
+    {
+      "slug": "securityandtechnology",
+      "name": "Institute For Security Technology",
+      "workUrls": [
+        "https://securityandtechnology.org/blog/ist-launches-rsi-initative/",
+        "https://securityandtechnology.org/blog/what-we-knew-would-happen-is-happening/",
+        "https://securityandtechnology.org/blog/catalink-blueprint-video/",
+        "https://securityandtechnology.org/blog/mexico-ransomware-task-highlights-value-of-disrupting-criminal-infrastructure-commits-to-public-awareness-campaign/",
+        "https://securityandtechnology.org/blog/two-sandbox-escapes-one-coalition-and-622-patches-vulns-ai-oh-my/",
+        "https://securityandtechnology.org/blog/an-undeclared-war-criticaleffectdc26/",
+        "https://securityandtechnology.org/blog/revcon-ended-without-consensus-risk-reduction-did-not/",
+        "https://securityandtechnology.org/resource_type/white-paper/",
+        "https://securityandtechnology.org/virtual-library/white-paper/ai-agents-agency-in-the-internet-ecosystem/",
+        "https://securityandtechnology.org/virtual-library/report/comparative-analysis-of-product-cybersecurity/"
+      ]
+    },
+    {
+      "slug": "itsrio",
+      "name": "Institute Of Technology And Society Logo",
+      "workUrls": [
+        "https://itsrio.org/en/comunicados/research-launch-climate-change-and-public-perception-in-brazil/"
+      ]
+    },
+    {
+      "slug": "isdglobal",
+      "name": "Institutefor Strategic Dialogue Us",
+      "workUrls": [
+        "https://www.isdglobal.org/resource/researchers/",
+        "https://www.isdglobal.org/insights-newsletter/",
+        "https://www.isdglobal.org/media-mentions/",
+        "https://www.isdglobal.org/resource/business/",
+        "https://www.isdglobal.org/resource/educators/",
+        "https://www.isdglobal.org/resource/law-enforcement/",
+        "https://www.isdglobal.org/resource/parents/",
+        "https://www.isdglobal.org/resource/policymakers-and-officials/",
+        "https://www.isdglobal.org/publication/research-compilation-on-online-antisemitism-3/",
+        "https://www.isdglobal.org/insight/insights-26/"
+      ]
+    },
+    {
+      "slug": "integrityinstitute",
+      "name": "Integrity Institute",
+      "workUrls": [
+        "https://www.integrityinstitute.org/blog/research-team-goes-to-brussels-may-2024",
+        "https://www.integrityinstitute.org/blog/insights-from-data",
+        "https://www.integrityinstitute.org/blog/mapping-the-ethical-dimensions-of-trust-amp-safety-work",
+        "https://www.integrityinstitute.org/blog/claudes-ai-constitution-series-when-constitutional-ai-outpaces-the-technology",
+        "https://www.integrityinstitute.org/blog/examining-constitutional-ai",
+        "https://www.integrityinstitute.org/blog/managing-misinformation-in-large-language-models",
+        "https://www.integrityinstitute.org/blog/child-safety-mit-policy-hackathon",
+        "https://www.integrityinstitute.org/blog/escalations-of-digital-warfare-in-gaza",
+        "https://www.integrityinstitute.org/blog/why-the-cloud-should-be-a-public-utility",
+        "https://www.integrityinstitute.org/blog/control-for-whom-us-new-wearables-campaign"
+      ]
+    },
+    {
+      "slug": "archive",
+      "name": "Internet Archive",
+      "workUrls": [
+        "https://blog.archive.org/"
+      ]
+    },
+    {
+      "slug": "issueone",
+      "name": "Issue One",
+      "workUrls": [
+        "https://issueone.org/research-analysis/",
+        "https://issueone.org/articles/america-exposed/",
+        "https://issueone.org/articles/insights-into-public-attitudes-about-election-workers-and-voter-confidence/",
+        "https://issueone.org/articles/lobbying-disclosures-reveal-big-tech-spends-more-than-226000-per-day-to-buy-influence/",
+        "https://issueone.org/articles/reeling-from-major-lawsuit-losses-big-tech-injects-huge-sums-into-influence-operations/",
+        "https://issueone.org/articles/2026-election-health-check-the-safeguards-are-holding-but-under-growing-pressure/",
+        "https://issueone.org/articles/not-one-more-dollar-for-a-war-congress-hasnt-approved/",
+        "https://issueone.org/articles/top-super-pacs-raise-nearly-200-million-and-counting-ahead-of-the-2026-midterms/",
+        "https://issueone.org/articles/the-corruption-chronicles-july-2026-edition/",
+        "https://issueone.org/articles/vote-recommendation-vote-no-on-the-kids-act/"
+      ]
+    },
+    {
+      "slug": "jewishfederations",
+      "name": "Jewish Federations",
+      "workUrls": [
+        "https://www.jewishfederations.org/blog/all/report-hezbollah-refuses-to-comply-with-russian-demand-to-leave-syria",
+        "https://www.jewishfederations.org/blog/all/analysis-as-tensions-grow-palestinians-waiting-for-order-to-attack",
+        "https://www.jewishfederations.org/blog/all/opinion-turning-fear-of-cops-into-trust-orlando-focuses-on-safety-of-all",
+        "https://www.jewishfederations.org/blog/all/impact-of-closures-wreak-havoc-with-food-finances-institutionally--individually",
+        "https://www.jewishfederations.org/blog/all/impact-of-initial-jewish-federations-collective-allocations-for-ukraine",
+        "https://www.jewishfederations.org/blog/all/update-on-pm-netanyahus-appearance-at-the-israel-at-75-general-assembly",
+        "https://www.jewishfederations.org/blog/all/update-federations-raise-638m-allocate-175m-for-israel-emergency",
+        "https://www.jewishfederations.org/blog/all/update-federations-raise-711m-allocate-242m-for-israel-emergency",
+        "https://www.jewishfederations.org/blog/all/report-public-private-partnerships-needed-to-finance-long-term-insurance",
+        "https://www.jewishfederations.org/blog/all/update-on-operation-rising-lion-and-emergency-mobilization"
+      ]
+    },
+    {
+      "slug": "keranaut",
+      "name": "Keranaut",
+      "workUrls": [
+        "https://www.keranaut.com/updates-insights"
+      ]
+    },
+    {
+      "slug": "lifewithmachines",
+      "name": "Life With Machines",
+      "workUrls": [
+        "https://www.lifewithmachines.media/p/the-humans-behind-ai-are-speaking",
+        "https://www.lifewithmachines.media/p/ai-and-democracy-needs-you-verity"
+      ]
+    },
+    {
+      "slug": "logoffmovement",
+      "name": "Log Off",
+      "workUrls": [
+        "https://www.logoffmovement.org/campaigns/",
+        "http://www.logoffmovement.org/wp-content/uploads/2026/06/The-First-10-Method.pdf",
+        "https://www.logoffmovement.org/think-tank/",
+        "https://www.logoffmovement.org/think-tank/feed/",
+        "https://www.logoffmovement.org/think-tank/the-notification/",
+        "https://www.logoffmovement.org/community/"
+      ]
+    },
+    {
+      "slug": "luma",
+      "name": "Luma Arles",
+      "workUrls": [
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles",
+        "https://luma.org/arles"
+      ]
+    },
+    {
+      "slug": "madewithblackculture",
+      "name": "Made Company Logo",
+      "workUrls": [
+        "https://madewithblackculture.com/black-inventors-terminal.html"
+      ]
+    },
+    {
+      "slug": "make",
+      "name": "Makeorg",
+      "workUrls": [
+        "https://about.make.org/articles-be/eu-institution-recognise-panoramic-as-leading-ai-tool",
+        "https://about.make.org/articles-be/eighteen-months-in-democratic-commons-charts-a-path-for-bias-aware-ai-in-democratic-participation",
+        "https://about.make.org/articles-be/panoramic-for-democratic-digital-commons-is-now-live"
+      ]
+    },
+    {
+      "slug": "joinmama",
+      "name": "Mama",
+      "workUrls": [
+        "https://wearemama.org/resource/"
+      ]
+    },
+    {
+      "slug": "massgeneralbrigham",
+      "name": "Mass General Birigham",
+      "workUrls": [
+        "https://www.massgeneralbrigham.org/en/research-innovation"
+      ]
+    },
+    {
+      "slug": "metagov",
+      "name": "Metagov",
+      "workUrls": [
+        "https://metagov.org/cg-ai/",
+        "https://metagov.org/projects/groundwork-fellowship/documentation",
+        "https://metagov.org/projects/game-theory"
+      ]
+    },
+    {
+      "slug": "mctd",
+      "name": "Minderoo",
+      "workUrls": [
+        "https://www.mctd.ac.uk/research-fellow-clementine-collett-awarded-a-bridging-responsible-ai-divides-braid-fellowship/",
+        "https://www.mctd.ac.uk/insights-for-fostering-gender-equality-in-the-digital-world/"
+      ]
+    },
+    {
+      "slug": "minderoo",
+      "name": "Minderoo Foundation",
+      "workUrls": [
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/",
+        "https://www.minderoo.org/404/"
+      ]
+    },
+    {
+      "slug": "mindbridgecenter",
+      "name": "Minebridge",
+      "workUrls": [
+        "https://www.mindbridgecenter.org/research-evaluation-approach-and-methods",
+        "https://www.mindbridgecenter.org/red-department",
+        "https://www.mindbridgecenter.org/red-department"
+      ]
+    },
+    {
+      "slug": "ccc",
+      "name": "Mit Center For Constructive Communication",
+      "workUrls": [
+        "https://www.ccc.mit.edu/project/ccc-at-mit-chile/",
+        "https://www.ccc.mit.edu/project/realtalkmit/",
+        "https://www.ccc.mit.edu/project/narrativetrace/",
+        "https://www.ccc.mit.edu/project/ai-assisted-conversation-highlighting/",
+        "https://www.ccc.mit.edu/project/anthology/",
+        "https://www.ccc.mit.edu/project/squat-rack/",
+        "https://www.ccc.mit.edu/project/voice-to-vision/",
+        "https://www.ccc.mit.edu/project/dialogue-to-decision/",
+        "https://www.ccc.mit.edu/project/crossroads/",
+        "https://www.ccc.mit.edu/project/tolerance-lab/"
+      ]
+    },
+    {
+      "slug": "momsrising",
+      "name": "Moms Rising",
+      "workUrls": [
+        "https://www.momsrising.org/blog/celebrating-national-breastfeeding-month-rise",
+        "https://www.momsrising.org/blog/topics/breastfeeding",
+        "https://www.momsrising.org/blog/topics/maternal-justice",
+        "https://www.momsrising.org/blog/users/25590",
+        "https://www.momsrising.org/blog/kids-deserve-real-facts-not-fear-based-sex-ed",
+        "https://www.momsrising.org/blog/topics/politics-policy",
+        "https://www.momsrising.org/blog/topics/reproductive-justice",
+        "https://www.momsrising.org/blog/topics/social-emotional-development",
+        "https://www.momsrising.org/blog/users/26552",
+        "https://www.momsrising.org/blog/action-alert-stand-up-for-head-start-%E2%80%94-stop-proposed-rollbacks"
+      ]
+    },
+    {
+      "slug": "moreincommon",
+      "name": "More In Common",
+      "workUrls": [
+        "https://www.moreincommon.com/cookie-policy/",
+        "https://www.moreincommon.com/in-the-news/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-us/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-brazil/",
+        "https://www.moreincommon.com/where-we-work/destin-commun-france/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-germany/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-poland/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-spain/",
+        "https://www.moreincommon.org.uk/",
+        "https://www.moreincommon.com/where-we-work/more-in-common-us/"
+      ]
+    },
+    {
+      "slug": "mydata",
+      "name": "My Data Global",
+      "workUrls": [
+        "https://mydata.org/pub_type/white-paper/",
+        "https://mydata.org/2026/08/13/mydata-and-myterms-hub-position-paper-on-privacy-signals-and-eu-omnibus-article-88b/",
+        "https://mydata.org/projects/",
+        "https://mydata.org/publication/mydata-in-motion-evolving-empowerment-for-2025-and-beyond/",
+        "https://mydata.org/publication/understanding-mydata-operators/",
+        "https://mydata.org/publication/state-of-mydata-2021/",
+        "https://mydata.org/publication/people-first-playbook/",
+        "https://mydata.org/publication/a-human-centric-roadmap-for-europe/",
+        "https://mydata.org/2026/01/21/data-compliance-support-for-mydata-global-members/",
+        "https://mydata.org/participate/"
+      ]
+    },
+    {
+      "slug": "ncoc",
+      "name": "National Conferenc Citizenship",
+      "workUrls": [
+        "https://ncoc.org/new-ohio-report-shows-community-engagement-is-essential-to-economic-and-community-health/",
+        "https://ncoc.org/pathways-to-prosperity-releases-louisiana-focused-recovery-report-2/",
+        "https://ncoc.org/ncoc-awards/",
+        "https://ncoc.org/2026-conference/",
+        "https://ncoc.org/new-data-on-louisianas-economy-environment-and-health/",
+        "https://ncoc.org/2025-indiana-civic-health-index/",
+        "https://ncoc.org/2025-veterans-civic-health-index/",
+        "https://ncoc.org/2025-vermont-civic-health-index/",
+        "https://ncoc.org/2024-north-carolina-civic-health-index/"
+      ]
+    },
+    {
+      "slug": "newamerica",
+      "name": "New America",
+      "workUrls": [
+        "https://www.newamerica.org/insights/2026-national-parent-survey/",
+        "https://www.newamerica.org/insights/new-america-celebrates-2026-pulitzer-prizes/",
+        "https://www.newamerica.org/insights/the-care-disconnect/",
+        "https://www.newamerica.org/insights/associational-parties/",
+        "https://www.newamerica.org/insights/proportional-representation-poll/",
+        "https://www.newamerica.org/insights/congress-should-protect-kids-online-without-eroding-privacy-and-free-expression/",
+        "https://www.newamerica.org/insights/closing-the-adoption-gap/",
+        "https://www.newamerica.org/insights/living-up-to-its-promise/",
+        "https://www.newamerica.org/insights/who-applied-2027/",
+        "https://www.newamerica.org/insights/road-to-housing-act-affordability-crisis/"
+      ]
+    },
+    {
+      "slug": "newimpact",
+      "name": "New Impact Logo",
+      "workUrls": [
+        "https://www.newimpact.care/impact-orgs"
+      ]
+    },
+    {
+      "slug": "newpublic",
+      "name": "New Public",
+      "workUrls": [
+        "https://newpublic.org/uploads/2024/07/Front-Porch-Forum-report-2.pdf",
+        "https://newpublic.org/uploads/2021/03/Terra-Incognita.pdf"
+      ]
+    },
+    {
+      "slug": "newsguardtech",
+      "name": "News Guard Color Logo",
+      "workUrls": [
+        "https://www.newsguardtech.com/industries/media-literacy/",
+        "https://www.newsguardtech.com/media-coverage/",
+        "https://www.newsguardtech.com/solutions/subscribe-to-our-weekly-misinformation-risk-briefing/",
+        "https://www.newsguardtech.com/industries/researchers/",
+        "https://www.newsguardtech.com/solutions/newsguard-ai/",
+        "https://www.newsguardtech.com/solutions/news-reliability-ratings/",
+        "https://www.newsguardtech.com/solutions/false-claim-fingerprints/",
+        "https://www.newsguardtech.com/solutions/ai-safety-suite/",
+        "https://www.newsguardtech.com/insights/french-parliamentary-report-recommends-newsguards-data/",
+        "https://www.newsguardtech.com/insights/data-shows-advertising-on-news-brings-major-benefits-to-ad-performance-so-why-dont-brands-advertise-on-news/"
+      ]
+    },
+    {
+      "slug": "law",
+      "name": "Nyuinformation Law Institute",
+      "workUrls": [
+        "https://www.law.nyu.edu/centers/ili/research-areas",
+        "https://www.law.nyu.edu/academics/areasofstudy",
+        "https://www.law.nyu.edu/faculty",
+        "https://www.law.nyu.edu/tax",
+        "https://www.law.nyu.edu/students",
+        "https://www.law.nyu.edu/academics",
+        "https://www.law.nyu.edu/academics/degree-programs",
+        "https://www.law.nyu.edu/executive-programs",
+        "https://www.law.nyu.edu/academics/clinics",
+        "https://www.law.nyu.edu/lawbusiness"
+      ]
+    },
+    {
+      "slug": "omidyar",
+      "name": "Omyidar Network",
+      "workUrls": [
+        "https://omidyar.com/update/omidyar-network-appoints-michele-l-jawando-ceo/"
+      ]
+    },
+    {
+      "slug": "openmined",
+      "name": "Open Mined",
+      "workUrls": [
+        "https://openmined.org/blog/uk-frontier-ai-taskforce-partners-with-openmined-to-advance-ai-safety-research/",
+        "https://openmined.org/blog/from-privacy-to-partnership-the-royal-society-makes-the-case-for-pets-powered-collaboration/",
+        "https://openmined.org/blog/openmined-participates-in-white-house-event-on-opportunities-at-the-frontier-of-ai-research/",
+        "https://openmined.org/blog/openmined-joins-as-launch-partner-for-the-nairr-pilot-democratizing-access-to-ai-resources-in-the-us/",
+        "https://openmined.org/blog/announcing-our-partnership-with-reddit-to-expand-privacy-preserving-researcher-access/",
+        "https://openmined.org/blog/secure-enclaves-for-ai-evaluation/",
+        "https://openmined.org/blog/pysyft-featured-in-uk-dsit-portfolio-of-ai-assurance-techniques/",
+        "https://openmined.org/blog/openmined-deepmined-announced-as-a-winner-in-the-uk-us-pets-prize-challenge/",
+        "https://openmined.org/blog/openmineds-contributions-to-ai-transparency-and-explainability-in-u-s-senate-ai-policy-roadmap/",
+        "https://openmined.org/blog/pysyft-recognized-in-the-us-national-strategy-to-advance-privacy-preserving-data-sharing-and-analytics/"
+      ]
+    },
+    {
+      "slug": "amacad",
+      "name": "Our Common Purpose",
+      "workUrls": [
+        "https://www.amacad.org/news/publication-expanding-representation-congress",
+        "https://www.amacad.org/news/commentary-fixing-democracy",
+        "https://www.amacad.org/news/opinion-heintz-bidens-first-100-days",
+        "https://www.amacad.org/news/supreme-court-term-limits-proposal",
+        "https://www.amacad.org/news/law360-term-limits-supreme-court",
+        "https://www.amacad.org/news/new-academy-report-makes-case-enlarging-house-representatives",
+        "https://www.amacad.org/news/constitutional-amendment-limiting-influence-money-elections",
+        "https://www.amacad.org/news/enlarging-house-representatives-explainer-video",
+        "https://www.amacad.org/news/redistricting-voting-civics-state-policies",
+        "https://www.amacad.org/ourcommonpurpose/publication/congressional-reform-proportional-representation"
+      ]
+    },
+    {
+      "slug": "partnershiponai",
+      "name": "Partnership On Ai",
+      "workUrls": [
+        "https://partnershiponai.org/program/policy/",
+        "https://partnershiponai.org/researching-diversity-equity-and-inclusion-in-the-field-of-ai/"
+      ]
+    },
+    {
+      "slug": "mcgovern",
+      "name": "Patrick Jmc Goven Foundation",
+      "workUrls": [
+        "https://www.mcgovern.org/wp-content/uploads/2020/03/Untitled-design-8.mp4",
+        "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/",
+        "https://www.mcgovern.org/the-legacy-of-patrick-j-mcgovern/the-mcgovern-institute-for-brain-research/",
+        "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/"
+      ]
+    },
+    {
+      "slug": "peoplecentered",
+      "name": "People Centered Internet",
+      "workUrls": [
+        "https://peoplecentered.net/may-update-message-from-mei-lin/",
+        "https://peoplecentered.net/pcis-global-help-desk-and-the-vaccination-equity-consortium/"
+      ]
+    },
+    {
+      "slug": "pivo",
+      "name": "Pivo",
+      "workUrls": [
+        "https://pivo.org.br/en/programas/pivo-pesquisa/",
+        "https://pivo.org.br/en/publicacoes/",
+        "https://pivo.org.br/publicacoes/"
+      ]
+    },
+    {
+      "slug": "poptech",
+      "name": "Pop Tech",
+      "workUrls": [
+        "https://poptech.org/impact-portfolio/"
+      ]
+    },
+    {
+      "slug": "publicai",
+      "name": "Public Ai",
+      "workUrls": [
+        "https://publicai.co/stories/open-source-win",
+        "https://publicai.co/stories/utility"
+      ]
+    },
+    {
+      "slug": "publicknowledge",
+      "name": "Public Knowledge",
+      "workUrls": [
+        "https://publicknowledge.org/reports-indicate-fcc-chairman-carr-plans-to-reopen-complaints-against-broadcasters-jeopardizing-press-freedom/",
+        "https://publicknowledge.org/issue/broadband-access/",
+        "https://publicknowledge.org/issue/content-moderation/",
+        "https://publicknowledge.org/issue/copyright-reform/",
+        "https://publicknowledge.org/issue/free-expression/",
+        "https://publicknowledge.org/issue/net-neutrality/",
+        "https://publicknowledge.org/issue/platform-regulation/",
+        "https://publicknowledge.org/issue/spectrum-policy/",
+        "https://publicknowledge.org/issue/trustworthy-ai/"
+      ]
+    },
+    {
+      "slug": "radicalxchange",
+      "name": "Radical Xchange",
+      "workUrls": [
+        "https://www.radicalxchange.org/updates/blog/2018-11-26-4m9b8b/",
+        "https://www.radicalxchange.org/updates/blog/2018-11-27-0vdrny/",
+        "https://www.radicalxchange.org/updates/blog/2018-12-20-bhi7zy/",
+        "https://www.radicalxchange.org/updates/blog/2019-1-5-ydij2t/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-07-mgoyn1/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-09-cln57u/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-14-dzy62s/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-14-j73qnz/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-25-l76ehw/",
+        "https://www.radicalxchange.org/updates/blog/2019-01-28-5ixa34/"
+      ]
+    },
+    {
+      "slug": "restate",
+      "name": "Re State Foundation",
+      "workUrls": [
+        "https://restate.global/insights-from-the-policy-workshop-prosocial-tech-design-governance-exploring-policy-innovations/"
+      ]
+    },
+    {
+      "slug": "reelworks",
+      "name": "Reel Works",
+      "workUrls": [
+        "https://www.reelworks.org/blog/doc-fellows-visit-part2-pictures",
+        "https://www.reelworks.org/blog/category/Projects",
+        "https://www.reelworks.org/blog/tag/program",
+        "https://www.reelworks.org/blog/tag/media",
+        "https://www.reelworks.org/blog/2019/09/19/movie-of-the-week-the-journey-by-sarah-annor",
+        "https://www.reelworks.org/blog/2019/09/12/movie-of-the-week-the-invasion-of-the-culture-snatchers-by-jaire-marshall",
+        "https://www.reelworks.org/blog/2019/09/05/movie-of-the-week-milk-eggs-dont-mix-by-pearl-scott",
+        "https://www.reelworks.org/blog/2019/08/28/movie-of-the-week-in-the-dark-by-larry-cruz",
+        "https://www.reelworks.org/blog/2019/08/22/movie-of-the-week-who-is-it-by-marcus-cochran",
+        "https://www.reelworks.org/blog/2019/08/20/build-studios-nyc-field-trip"
+      ]
+    },
+    {
+      "slug": "rethinkwords",
+      "name": "Rethink",
+      "workUrls": [
+        "https://rethinkwords.com/"
+      ]
+    },
+    {
+      "slug": "rsf",
+      "name": "Rsf Reporters Without Borders",
+      "workUrls": [
+        "https://rsf.org/en/our-reports"
+      ]
+    },
+    {
+      "slug": "medialab",
+      "name": "Sciences Pro",
+      "workUrls": [
+        "https://medialab.sciencespo.fr/en/news/guide-pratique-des-fake-news/",
+        "https://medialab.sciencespo.fr/en/news/post-doc-researcher-position-24months/",
+        "https://medialab.sciencespo.fr/en/news/research-internship-in-computational-social-sciences/",
+        "https://medialab.sciencespo.fr/en/news/research-fellow-position-for-the-future-obs-project/",
+        "https://medialab.sciencespo.fr/en/news/impact-environnemental-du-numerique/",
+        "https://medialab.sciencespo.fr/en/news/opinion-dynamics-in-political-spaces/",
+        "https://medialab.sciencespo.fr/en/news/hiring-postdoctoral-researcher-pepr-transform-aesthetic-of-transformation/"
+      ]
+    },
+    {
+      "slug": "seismic",
+      "name": "Seismic Foundation",
+      "workUrls": [
+        "https://www.seismic.org/blog/the-wrong-messenger",
+        "https://www.seismic.org/blog/power-accountability-and-the-claude-mythos-question",
+        "https://www.seismic.org/blog/we-ve-seen-this-movie-before-what-history-tells-us-about-ai-s-%E2%80%98inevitability%E2%80%99-argument",
+        "https://www.seismic.org/blog/what-the-public-response-to-the-anthropic-pentagon-crisis-tells-us-about-ai-communication",
+        "https://www.seismic.org/blog/why-seismic-exists"
+      ]
+    },
+    {
+      "slug": "siegelendowment",
+      "name": "Siegel Family Endowment",
+      "workUrls": [
+        "https://www.siegelendowment.org/insights/sohyeon-hwang-on-the-challenge-and-promise-of-coordinating-governance-across-online-communities/",
+        "https://www.siegelendowment.org/insights/alexandra-mateescu-on-workers-experience-of-technology-worker-power-and-finding-hope-in-challenging-times/",
+        "https://www.siegelendowment.org/insights/ai-and-the-labor-market-megan-rivera-on-how-policymakers-can-regulate-ai-to-create-a-better-economy-for-all/",
+        "https://www.siegelendowment.org/insights/meet-our-2025-2026-siegel-research-fellows/",
+        "https://www.siegelendowment.org/insights/ai-and-the-search-for-truth-kylan-rutherford-on-data-voids-distrust-and-the-pathways-to-better-information/",
+        "https://www.siegelendowment.org/insights/reflections-from-our-2025-fellows-convening/",
+        "https://www.siegelendowment.org/insights/the-human-in-the-loop-pegah-moradi-on-automation-discretion-and-the-future-of-frontline-work/",
+        "https://www.siegelendowment.org/insights/qa-with-siegel-research-fellow-at-the-center-for-democracy-and-technology-ruchika-joshi/",
+        "https://www.siegelendowment.org/insights/from-oscilloscopes-to-ai-policy-building-a-foundation-of-public-ai-understanding-with-eleanor-tursman/",
+        "https://www.siegelendowment.org/insights/qa-with-siegel-research-fellow-at-the-university-of-north-carolinas-center-for-information-technology-and-public-life-yvonne-eadon/"
+      ]
+    },
+    {
+      "slug": "socialmediavictims",
+      "name": "Social Media Victims Law Center",
+      "workUrls": [
+        "https://socialmediavictims.org/blog/meta-ordered-to-pay-942-million-in-new-mexico-for-harming-kids-what-this-means-for-families/",
+        "https://socialmediavictims.org/blog/social-media-ban-australia-us-lawmakers-child-safety/",
+        "https://socialmediavictims.org/blog/matthew-p-bergman-featured-trial-lawyer-magazine-pioneering-social-media-accountability-litigation/"
+      ]
+    },
+    {
+      "slug": "stanford",
+      "name": "Stanford University",
+      "workUrls": [
+        "https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report"
+      ]
+    },
+    {
+      "slug": "starlinglab",
+      "name": "Starling Lab",
+      "workUrls": [
+        "https://starlinglab.org/case-studies/setting-the-record-straight-in-brazils-burning-wetlands/",
+        "https://starlinglab.org/starling-framework/"
+      ]
+    },
+    {
+      "slug": "schoolofattention",
+      "name": "Strother School Of Radical Attention",
+      "workUrls": [
+        "https://www.schoolofattention.org/study-corps",
+        "https://www.schoolofattention.org/sidewalk-study"
+      ]
+    },
+    {
+      "slug": "socialwebfoundation",
+      "name": "Swf",
+      "workUrls": [
+        "https://socialwebfoundation.org/2026/07/23/new-in-tech-policy-press-the-web-needs-a-context-layer-built-on-a-shared-protocol/",
+        "https://socialwebfoundation.org/projects/",
+        "https://socialwebfoundation.org/2026/08/13/new-york-fediverse-meetup-friday-14-aug-2026-7pm/",
+        "https://socialwebfoundation.org/2026/08/05/evan-prodromou-at-fedicon-2026/",
+        "https://socialwebfoundation.org/2026/07/27/help-hope-hackers-hop-onto-the-fediverse/",
+        "https://socialwebfoundation.org/2026/06/28/unsubscribing-tags-pub-from-open-registration-relays/",
+        "https://socialwebfoundation.org/program-protocol-e2ee/",
+        "https://socialwebfoundation.org/2026/06/21/swf-at-un-open-source-week/"
+      ]
+    },
+    {
+      "slug": "techjusticelaw",
+      "name": "Tech Justice Law",
+      "workUrls": [
+        "https://techjusticelaw.org/commentary/june-2026-tech-litigation-roundup-analysis-supreme-court-human-rights-abuse-cisco-china-international-law/",
+        "https://techjusticelaw.org/commentary/may-2026-tech-litigation-roundup-analysis-environmental-lawsuits-present-roadblock-for-the-ai-data-center-boom/",
+        "https://techjusticelaw.org/commentary/april-2026-tech-litigation-roundup-analysis-as-companies-monetize-ai-courts-will-weigh-in/",
+        "https://techjusticelaw.org/commentary/march-2026-tech-litigation-roundup-analysis-platform-design-litigation-yields-historic-verdicts/",
+        "https://techjusticelaw.org/commentary/february-2026-tech-litigation-roundup-analysis-trials-probe-tech-companies-responsibility/",
+        "https://techjusticelaw.org/commentary/january-2026-tech-litigation-roundup-analysis-social-media-giants-on-trial/",
+        "https://techjusticelaw.org/commentary/the-problem-with-ai-in-war-is-much-bigger-than-anthropics-fight-with-the-dod/",
+        "https://techjusticelaw.org/commentary/december-2025-tech-litigation-roundup/",
+        "https://techjusticelaw.org/commentary/november-2025-tech-litigation-roundup/",
+        "https://techjusticelaw.org/commentary/october-2025-tech-litigation-roundup/"
+      ]
+    },
+    {
+      "slug": "techmatters",
+      "name": "Tech Matters Logo",
+      "workUrls": [
+        "https://techmatters.org/project/a-better-deal-for-data/",
+        "https://techmatters.org/project/answers-for-good/",
+        "https://techmatters.org/project/building-the-tech-for-good-field/",
+        "https://techmatters.org/project/technology-for-good-how-nonprofit-leaders-are-using-software-and-data/",
+        "https://techmatters.org/project/aselo/",
+        "https://techmatters.org/project/terraso/"
+      ]
+    },
+    {
+      "slug": "techoversight",
+      "name": "Tech Oversight",
+      "workUrls": [
+        "https://www.techoversight.org/ai-super-pac-research-book/"
+      ]
+    },
+    {
+      "slug": "techsoup",
+      "name": "Techsoup",
+      "workUrls": [
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-microsoft",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-cisco",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-intuit",
+        "https://blog.techsoup.org/en-us/posts/topic/project-management-and-planning",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-symantec",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-adobe",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-arctera-veritas",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-autodesk",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-clicktime"
+      ]
+    },
+    {
+      "slug": "secureainow",
+      "name": "The Alliancefor Secure Ai",
+      "workUrls": [
+        "https://secureainow.org/issues/",
+        "https://secureainow.org/media/media-contact/",
+        "https://secureainow.org/action-center/",
+        "https://secureainow.org/action-center/faith/",
+        "https://secureainow.org/how-a-small-town-in-northern-maine-fought-back-against-ai-powered-surveillance-and-won/",
+        "https://secureainow.org/a-glimpse-of-ai-beyond-human-control/"
+      ]
+    },
+    {
+      "slug": "anxiousgeneration",
+      "name": "The Anxious Generation",
+      "workUrls": [
+        "https://www.anxiousgeneration.com/research/collaborative-review-docs",
+        "https://www.anxiousgeneration.com/research/the-evidence",
+        "https://www.anxiousgeneration.com/privacy"
+      ]
+    },
+    {
+      "slug": "thecenterforartsandinnovation",
+      "name": "The Center For Ai",
+      "workUrls": [
+        "https://thecenterforartsandinnovation.org/programs/",
+        "https://thecenterforartsandinnovation.org/program/what-do-you-see-short-film-fellowship/"
+      ]
+    },
+    {
+      "slug": "theelders",
+      "name": "The Elders",
+      "workUrls": [
+        "https://theelders.org/news/media-advisory-elders-visit-myanmar-and-thailand-24-28-march",
+        "https://theelders.org/news/report-elders-visit-cyprus-2008",
+        "https://theelders.org/news/report-elders-visit-myanmar-23-28-march-2014",
+        "https://theelders.org/news/media-advisory-elders-visit-myanmar-and-thailand-12-18-december",
+        "https://theelders.org/news/media-advisory-elders-visit-russia-27-29-april-2015",
+        "https://theelders.org/news/media-advisory-elders-visit-israel-palestine-29-april-2-may-2015",
+        "https://theelders.org/news/media-advisory-elders-visit-saudi-arabia-25-28-february-2018",
+        "https://theelders.org/news/media-advisory-elders-visit-kuwait-1-4-july-2018",
+        "https://theelders.org/news/media-advisory-elders-visit-zimbabwe-19-21-july",
+        "https://theelders.org/news/report-elders-visit-korean-peninsula-and-china-april-2011"
+      ]
+    },
+    {
+      "slug": "themetalayer",
+      "name": "The Meta Layer Initiative",
+      "workUrls": [
+        "https://interfacehub.net/doc/all/",
+        "https://themetalayer.org/lite-paper/",
+        "https://academy.themetalayer.org/",
+        "https://interfacehub.net/layers/",
+        "https://interfacehub.net/",
+        "https://themetalayer.org/what-is-a-meta-layer/",
+        "https://themetalayer.org/desirable-properties/",
+        "https://themetalayer.org/papers",
+        "https://themetalayer.org/analysis",
+        "https://themetalayer.org/community-reports"
+      ]
+    },
+    {
+      "slug": "thepolicycircle",
+      "name": "The Policy Circle",
+      "workUrls": [
+        "https://www.thepolicycircle.org/impact/",
+        "https://www.thepolicycircle.org/policy-circles/",
+        "https://www.thepolicycircle.org/how-to-research-your-ballot/",
+        "https://www.thepolicycircle.org/partners/",
+        "https://www.thepolicycircle.org/artificial-intelligence/",
+        "https://www.thepolicycircle.org/protecting-children-online-resources/",
+        "https://www.thepolicycircle.org/briefs/energy-and-the-environment/",
+        "https://www.thepolicycircle.org/briefs/data-centers/"
+      ]
+    },
+    {
+      "slug": "thesgnl",
+      "name": "The Signal",
+      "workUrls": [
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxiii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/national-security-us-domestic-politics/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxxi/",
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/public-intellectuals-media-influencers/",
+        "https://www.thesgnl.com/2026/08/tuesday-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxi-mmxxvi/",
+        "https://www.thesgnl.com/2026/07/thursday-week-xxxi-mmxxvi/"
+      ]
+    },
+    {
+      "slug": "trust",
+      "name": "Thomson Reuters Foundation",
+      "workUrls": [
+        "https://www.trust.org/resource/workforce-disclosure-initiative-2025-insights/",
+        "https://www.trust.org/resource/impact-of-ai-on-freedom-expression-eastern-southern-africa/",
+        "https://www.trust.org/resource/media-organisation-legal-structuring-guides/",
+        "https://www.trust.org/initiative/media-freedom-coalition-secretariat/",
+        "https://www.trust.org/resource/guide-to-legal-rights-in-the-us-spanish-version/",
+        "https://www.trust.org/resource/guide-to-legal-rights-in-the-u-s/",
+        "https://www.trust.org/resource/media-freedom-and-the-law-in-kenya-south-africa-and-zambia/",
+        "https://www.trust.org/resource/report-on-media-regulation-in-kenya-tanzania-uganda-and-zambia-and-its-implications-for-reporting-on-illicit-financial-flows-and-tax-abuse/",
+        "https://www.trust.org/resource/report-on-fgm-c-laws-in-nigeria-legislative-reforms-and-lessons-learnt-from-kenya-and-uganda/",
+        "https://www.trust.org/resource/analysis-of-16-tax-frameworks-for-donors-in-latin-america-analisis-de-16-marcos-fiscales-para-donantes-en-america-latina/"
+      ]
+    },
+    {
+      "slug": "thorn",
+      "name": "Thorn",
+      "workUrls": [
+        "https://www.thorn.org/blog/2026-mid-year-update-advancing-child-safety/",
+        "https://www.thorn.org/blog/youth-perspectives-survey-2025/",
+        "https://www.thorn.org/blog/thorn-supports-the-stop-csam-act/",
+        "https://www.thorn.org/blog/new-international-research-from-thorn-youth-perspectives-on-online-safety-in-france-and-germany/",
+        "https://www.thorn.org/blog/2024-youth-perspectives/",
+        "https://www.thorn.org/blog/the-state-of-sextortion-in-2025/",
+        "https://www.thorn.org/blog/commodified-sexual-interactions-how-money-and-clout-are-obscuring-risk-for-youth-online/",
+        "https://www.thorn.org/blog/deepfake-nudes-are-a-harmful-reality-for-youth-new-research-from-thorn/",
+        "https://www.thorn.org/blog/new-research-horizon-scanning-identifies-technology-evolutions-in-online-child-safety/",
+        "https://www.thorn.org/research/library/2025-youth-perspectives-on-online-safety/"
+      ]
+    },
+    {
+      "slug": "dais",
+      "name": "Toronto Metropolitan University The Dais",
+      "workUrls": [
+        "https://dais.ca/commentary/the-digital-safety-act-is-here-canada-must-get-this-done/",
+        "https://dais.ca/commentary/ottawa-should-not-bend-to-metas-conditions/",
+        "https://dais.ca/media-room/news-and-announcements/",
+        "https://dais.ca/reports/from-chalkboards-to-chatbots-the-ai-exposure-of-occupations-in-k-12-education/",
+        "https://dais.ca/reports/the-art-in-artificial-intelligence/",
+        "https://dais.ca/reports/banking-on-ai/",
+        "https://dais.ca/reports/yours-to-discover-earn-and-learn/",
+        "https://dais.ca/reports/submission-to-the-consultation-on-canadas-renewed-ai-strategy/",
+        "https://dais.ca/media-room/news-and-announcements/",
+        "https://dais.ca/learning/"
+      ]
+    },
+    {
+      "slug": "transfer",
+      "name": "Transfer Logo Black Bg Square",
+      "workUrls": [
+        "https://transfer.art/trust"
+      ]
+    },
+    {
+      "slug": "transparencycoalition",
+      "name": "Transparency Coalition",
+      "workUrls": [
+        "https://www.transparencycoalition.ai/news/guide-to-chatgpt-for-teens-the-good-the-bad-and-the-law",
+        "https://www.transparencycoalition.ai/news/guide-to-pope-leo-xiv-papal-encyclical-on-artificial-intelligence",
+        "https://www.transparencycoalition.ai/news/guide-to-nebraska-ai-chatbot-safety-bills-lb939-lb1185",
+        "https://www.transparencycoalition.ai/news/guide-to-oregon-ai-chatbot-safety-bill-sb1546",
+        "https://www.transparencycoalition.ai/news/guide-to-toys-and-ai-what-to-know-before-you-buy",
+        "https://www.transparencycoalition.ai/news/guide-to-washington-ai-training-data-transparency-bill-hb2503",
+        "https://www.transparencycoalition.ai/news/guide-to-washington-chatbot-bills-hb2225-sb5984",
+        "https://www.transparencycoalition.ai/news/guide-to-the-white-house-executive-order-on-state-ai-laws",
+        "https://www.transparencycoalition.ai/news/guide-americas-ai-action-plan-released-trump-administration",
+        "https://www.transparencycoalition.ai/news/guide-to-the-raise-act-the-new-york-responsible-ai-safety-and-education-bill"
+      ]
+    },
+    {
+      "slug": "usercooperative",
+      "name": "User Cooperative",
+      "workUrls": [
+        "https://usercooperative.com/articles-of-incorporation/"
+      ]
+    },
+    {
+      "slug": "videovolunteers",
+      "name": "Video Volunteers",
+      "workUrls": [
+        "https://www.videovolunteers.org/category/blog/vv-news/",
+        "https://www.videovolunteers.org/research_on_vv/",
+        "https://www.videovolunteers.org/research_on_vv/",
+        "https://www.videovolunteers.org/category/videos/impact-indiaunheard/",
+        "https://www.videovolunteers.org/changechitra/",
+        "https://www.videovolunteers.org/accountability-and-safeguarding/",
+        "https://www.videovolunteers.org/buland-bol-free-media-training/"
+      ]
+    },
+    {
+      "slug": "vito",
+      "name": "We Are Infrastructure",
+      "workUrls": [
+        "https://vito.be/en/jobs/blog/true-cost-calculator",
+        "https://vito.be/en/jobs/blog/smart-charging",
+        "https://vito.be/en/jobs/blog/smart-water-solutions",
+        "https://vito.be/en/jobs/blog/satellite-technology-agriculture",
+        "https://vito.be/en/news/guide-clothing-design-longevity-aims-promote-sustainability-fashion-industry",
+        "https://vito.be/en/news/research-deep-geothermal-energy-balmatt-site",
+        "https://vito.be/en/news/impact-circular-economy-biodiversity-climate-and-well-being-belgium-exploratory-study-vito",
+        "https://vito.be/en/news/policy-paper-how-can-renovation-requirement-make-housing-flanders-more-resilient"
+      ]
+    },
+    {
+      "slug": "w3ws",
+      "name": "Web3web Society",
+      "workUrls": [
+        "https://www.w3ws.org/projects",
+        "https://www.w3ws.org/projects/new-europe",
+        "https://www.w3ws.org/projects/international-finance",
+        "https://www.w3ws.org/projects/geopolitical-ai",
+        "https://www.w3ws.org/projects/secure-migration",
+        "https://www.w3ws.org/projects/new-space-order"
+      ]
+    },
+    {
+      "slug": "youngpeoplesalliance",
+      "name": "Young People S Alliance Logo",
+      "workUrls": [
+        "https://youngpeoplesalliance.org/api/blob/humanlike-ai.pdf"
+      ]
+    }
+  ],
+  "promoteFetchFailed": [
+    {
+      "slug": "aspeninstitute",
+      "name": "Aspen Institute",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.aspeninstitute.org/publications/",
+        "https://www.aspeninstitute.org/programs/tech-policy-hub/"
+      ]
+    },
+    {
+      "slug": "counterhate",
+      "name": "Center For Countering Digital Hate Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://counterhate.com/research/the-cost-of-weaker-moderation/",
+        "https://counterhate.com/research/up-next-anorexia-algorithm/",
+        "https://counterhate.com/blog/new-report-shows-youtube-still-recommends-eating-disorder-content-to-children-despite-safety-improvements/"
+      ]
+    },
+    {
+      "slug": "youth-ai",
+      "name": "Center For Youth And Ai Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://youth-ai.org/research",
+        "https://youth-ai.org/publications",
+        "https://youth-ai.org/reports",
+        "https://youth-ai.org/papers"
+      ]
+    },
+    {
+      "slug": "cigionline",
+      "name": "Centre For International Governance Innovation Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.cigionline.org/publications/models-platform-governance/",
+        "https://www.cigionline.org/publications/data-governance-digital-age/",
+        "https://www.cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/",
+        "https://cigionline.org/articles/essays/"
+      ]
+    },
+    {
+      "slug": "cefe",
+      "name": "Consortiumfor Evaluating Faithand Ethicsin Ai",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (The operation was aborted due to timeout)"
+    },
+    {
+      "slug": "creatorscoalitionai",
+      "name": "Creator Coalitionon Ai",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "http://creatorscoalitionai.com/research",
+        "http://creatorscoalitionai.com/publications",
+        "http://creatorscoalitionai.com/reports",
+        "http://creatorscoalitionai.com/papers"
+      ]
+    },
+    {
+      "slug": "cybercollective",
+      "name": "Cyber Collective",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "digital-democracy",
+      "name": "Digital Democracy",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "earthkindcollective",
+      "name": "Earthkind",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://docs.earthkindcollective.org/",
+        "https://earthkindcollective.org/research",
+        "https://earthkindcollective.org/publications",
+        "https://earthkindcollective.org/reports"
+      ]
+    },
+    {
+      "slug": "data4sdgs",
+      "name": "Global Partnerships",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "policylink",
+      "name": "Policy Link",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.policylink.org/resources/report",
+        "https://www.policylink.org/our-work/economy/reports",
+        "https://www.policylink.org/resources/tools"
+      ]
+    },
+    {
+      "slug": "sfcg",
+      "name": "Search For Common Ground",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "sideways",
+      "name": "Sideways",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "sustainablemedia",
+      "name": "Sustainable Media Center",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "thefuturesociety",
+      "name": "The Future Society Logo",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "kempe",
+      "name": "The Kempe Foundation",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://kempe.org/research",
+        "https://kempe.org/publications",
+        "https://kempe.org/reports",
+        "https://kempe.org/papers"
+      ]
+    },
+    {
+      "slug": "thesamehouse",
+      "name": "The Same House Color Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://thesamehouse.org/research",
+        "https://thesamehouse.org/publications",
+        "https://thesamehouse.org/reports",
+        "https://thesamehouse.org/papers"
+      ]
+    },
+    {
+      "slug": "theshed",
+      "name": "The Shed",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (fetch failed)"
+    },
+    {
+      "slug": "mtotonews",
+      "name": "Toto News",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "thetrustfoundation",
+      "name": "Trust Foundation",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://thetrustfoundation.org/research",
+        "https://thetrustfoundation.org/publications",
+        "https://thetrustfoundation.org/reports",
+        "https://thetrustfoundation.org/papers"
+      ]
+    },
+    {
+      "slug": "uxforgood",
+      "name": "Ux For Good",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.uxforgood.org/research",
+        "https://www.uxforgood.org/publications",
+        "https://www.uxforgood.org/reports",
+        "https://www.uxforgood.org/papers"
+      ]
+    }
+  ],
+  "stubs": [
+    {
+      "slug": "aiprc",
+      "name": "Aiprc",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "aspeninstitute",
+      "name": "Aspen Institute",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.aspeninstitute.org/publications/",
+        "https://www.aspeninstitute.org/programs/tech-policy-hub/"
+      ]
+    },
+    {
+      "slug": "backchan",
+      "name": "Back Channel",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "betaworks",
+      "name": "Betaworks",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "blockpartyapp",
+      "name": "Block Party Color Logo",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "buildexante",
+      "name": "Ex Ante",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "cefe",
+      "name": "Consortiumfor Evaluating Faithand Ethicsin Ai",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (The operation was aborted due to timeout)"
+    },
+    {
+      "slug": "cigionline",
+      "name": "Centre For International Governance Innovation Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.cigionline.org/publications/models-platform-governance/",
+        "https://www.cigionline.org/publications/data-governance-digital-age/",
+        "https://www.cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/",
+        "https://cigionline.org/articles/essays/"
+      ]
+    },
+    {
+      "slug": "civicsunplugged",
+      "name": "Civics Unplugged",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "commonera",
+      "name": "Common Era",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "counterhate",
+      "name": "Center For Countering Digital Hate Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://counterhate.com/research/the-cost-of-weaker-moderation/",
+        "https://counterhate.com/research/up-next-anorexia-algorithm/",
+        "https://counterhate.com/blog/new-report-shows-youtube-still-recommends-eating-disorder-content-to-children-despite-safety-improvements/"
+      ]
+    },
+    {
+      "slug": "creatorscoalitionai",
+      "name": "Creator Coalitionon Ai",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "http://creatorscoalitionai.com/research",
+        "http://creatorscoalitionai.com/publications",
+        "http://creatorscoalitionai.com/reports",
+        "http://creatorscoalitionai.com/papers"
+      ]
+    },
+    {
+      "slug": "cybercollective",
+      "name": "Cyber Collective",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "data4sdgs",
+      "name": "Global Partnerships",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "democracy4all",
+      "name": "Democracy4all Color Logo",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "digital-democracy",
+      "name": "Digital Democracy",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "domyn",
+      "name": "Domyn",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "dosomething",
+      "name": "Do Something Dot Org",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "earthkindcollective",
+      "name": "Earthkind",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://docs.earthkindcollective.org/",
+        "https://earthkindcollective.org/research",
+        "https://earthkindcollective.org/publications",
+        "https://earthkindcollective.org/reports"
+      ]
+    },
+    {
+      "slug": "engagemedia",
+      "name": "Engage Media Logotype Red Black 800px",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "eticas",
+      "name": "Eticas",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "faithwise",
+      "name": "Faith Wise Ai",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "freeourfeeds",
+      "name": "Fof",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "freespoke",
+      "name": "Freespoke Logo",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "georgetown",
+      "name": "Georgetown University",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "getnu",
+      "name": "Nu",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "goodlylabs",
+      "name": "Goodly Labs",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "grayarea",
+      "name": "Gray Area",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "hek",
+      "name": "House Of Electronic Art",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "hellohumanity",
+      "name": "Hello Humanity Hhlogostacked 6 Teal Black 10",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "hiifoundation",
+      "name": "Hii Foundation",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "humansincontrol",
+      "name": "Humans In Control",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "kempe",
+      "name": "The Kempe Foundation",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://kempe.org/research",
+        "https://kempe.org/publications",
+        "https://kempe.org/reports",
+        "https://kempe.org/papers"
+      ]
+    },
+    {
+      "slug": "kinsoo",
+      "name": "Kin Soo",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "laplateforme",
+      "name": "La Plateforme",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "lessthan3sc",
+      "name": "Less Than Three",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "mapletestimony",
+      "name": "Maple",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "mtotonews",
+      "name": "Toto News",
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
+    },
+    {
+      "slug": "networkmessenger",
+      "name": "Network Messenger",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "noappforlife",
+      "name": "No App For Life",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "opencollective",
+      "name": "Ocf",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "parentssos",
+      "name": "Parents Sos",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "parentstogetheraction",
+      "name": "Parents Together Action",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "policylink",
+      "name": "Policy Link",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.policylink.org/resources/report",
+        "https://www.policylink.org/our-work/economy/reports",
+        "https://www.policylink.org/resources/tools"
+      ]
+    },
+    {
+      "slug": "positivetechinstitute",
+      "name": "Positive Tech Inst",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "sfcg",
+      "name": "Search For Common Ground",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "sideways",
+      "name": "Sideways",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "sustainablemedia",
+      "name": "Sustainable Media Center",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "taketwomediaitiaitive",
+      "name": "Take Two",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "thefuturesociety",
+      "name": "The Future Society Logo",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (403)"
+    },
+    {
+      "slug": "thehumanlineproject",
+      "name": "The Human Line Project",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "theidi",
+      "name": "Inclusive Design Institute Logo",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    },
+    {
+      "slug": "thesamehouse",
+      "name": "The Same House Color Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://thesamehouse.org/research",
+        "https://thesamehouse.org/publications",
+        "https://thesamehouse.org/reports",
+        "https://thesamehouse.org/papers"
+      ]
+    },
+    {
+      "slug": "theshed",
+      "name": "The Shed",
+      "reason": "fetch_failed",
+      "detail": "Homepage fetch failed (fetch failed)"
+    },
+    {
+      "slug": "thetrustfoundation",
+      "name": "Trust Foundation",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://thetrustfoundation.org/research",
+        "https://thetrustfoundation.org/publications",
+        "https://thetrustfoundation.org/reports",
+        "https://thetrustfoundation.org/papers"
+      ]
+    },
+    {
+      "slug": "uxforgood",
+      "name": "Ux For Good",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://www.uxforgood.org/research",
+        "https://www.uxforgood.org/publications",
+        "https://www.uxforgood.org/reports",
+        "https://www.uxforgood.org/papers"
+      ]
+    },
+    {
+      "slug": "youth-ai",
+      "name": "Center For Youth And Ai Logo",
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://youth-ai.org/research",
+        "https://youth-ai.org/publications",
+        "https://youth-ai.org/reports",
+        "https://youth-ai.org/papers"
+      ]
+    },
+    {
+      "slug": "youthmediafoundation",
+      "name": "Youth Media Foundation",
+      "reason": "research_pass_stub",
+      "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
+    }
+  ]
+}
