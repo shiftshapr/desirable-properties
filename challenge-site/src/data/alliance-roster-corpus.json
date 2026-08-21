@@ -1,0 +1,15 @@
+{
+  "cohort": "project-liberty-alliance",
+  "generatedAt": "2026-08-21",
+  "generatorNote": "Auto-generated full corpus briefings for PLA roster orgs with quotable public work. Regenerate: node scripts/generate-roster-corpus-briefings.mjs",
+  "sourceRosterImportedAt": "2026-08-20",
+  "promotionCriteria": "Promoted only when same-domain public work yields quotable prose with cited URLs.",
+  "stats": {
+    "attempted": 0,
+    "promoted": 0,
+    "stubs": 0,
+    "reasonCounts": {},
+    "elapsedSeconds": 0
+  },
+  "orgs": []
+}

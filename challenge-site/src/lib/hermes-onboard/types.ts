@@ -78,6 +78,23 @@ export type AllianceRosterPads = {
   orgs: RosterPadEntry[];
 };
 
+/** Generated corpus briefings for roster orgs with citable public work. */
+export type AllianceRosterCorpus = {
+  cohort: string;
+  generatedAt: string;
+  generatorNote: string;
+  sourceRosterImportedAt: string;
+  promotionCriteria: string;
+  stats: {
+    attempted: number;
+    promoted: number;
+    stubs: number;
+    reasonCounts: Record<string, number>;
+    elapsedSeconds?: number;
+  };
+  orgs: AllianceOrg[];
+};
+
 export type PadLookupStatus = 'found' | 'roster' | 'dynamic' | 'not_found';
 
 export type PadLookupResult = {

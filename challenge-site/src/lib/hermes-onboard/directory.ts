@@ -1,7 +1,28 @@
 import directoryJson from '@/data/alliance-directory.json';
-import type { AllianceDirectory, AllianceOrg } from '@/lib/hermes-onboard/types';
+import corpusJson from '@/data/alliance-roster-corpus.json';
+import type { AllianceDirectory, AllianceOrg, AllianceRosterCorpus } from '@/lib/hermes-onboard/types';
 
-const directory = directoryJson as AllianceDirectory;
+const stewards = directoryJson as AllianceDirectory;
+const corpus = corpusJson as AllianceRosterCorpus;
+
+/** Steward orgs (hand-curated) — never overwritten by generated corpus. */
+export const STEWARD_DIRECTORY_SLUGS = new Set(stewards.orgs.map((org) => org.slug));
+
+/** Generated corpus org slugs (roster members promoted from public work). */
+export const CORPUS_DIRECTORY_SLUGS = new Set(
+  corpus.orgs.filter((org) => !STEWARD_DIRECTORY_SLUGS.has(org.slug)).map((org) => org.slug),
+);
+
+const mergedOrgs: AllianceOrg[] = [
+  ...stewards.orgs,
+  ...corpus.orgs.filter((org) => !STEWARD_DIRECTORY_SLUGS.has(org.slug)),
+];
+
+const directory: AllianceDirectory = {
+  ...stewards,
+  directoryNote: `${stewards.directoryNote} Generated corpus briefings for ${corpus.stats.promoted} additional roster org(s) with citable public work live in alliance-roster-corpus.json.`,
+  orgs: mergedOrgs,
+};
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -25,8 +46,32 @@ export function getAllianceDirectory(): AllianceDirectory {
   return directory;
 }
 
+export function getStewardDirectory(): AllianceDirectory {
+  return stewards;
+}
+
+export function getRosterCorpusPacket(): AllianceRosterCorpus {
+  return corpus;
+}
+
+export function isStewardOrg(slug: string): boolean {
+  return STEWARD_DIRECTORY_SLUGS.has(slug);
+}
+
+export function isCorpusGeneratedOrg(slug: string): boolean {
+  return CORPUS_DIRECTORY_SLUGS.has(slug);
+}
+
 export function listAllianceOrgs(): AllianceOrg[] {
   return directory.orgs;
+}
+
+export function listStewardOrgs(): AllianceOrg[] {
+  return stewards.orgs;
+}
+
+export function listCorpusOrgs(): AllianceOrg[] {
+  return corpus.orgs.filter((org) => !STEWARD_DIRECTORY_SLUGS.has(org.slug));
 }
 
 export function getAllianceOrg(slug: string): AllianceOrg | null {

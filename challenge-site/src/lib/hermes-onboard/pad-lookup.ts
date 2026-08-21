@@ -1,4 +1,5 @@
 import directoryJson from '@/data/alliance-directory.json';
+import corpusJson from '@/data/alliance-roster-corpus.json';
 import rosterJson from '@/data/alliance-roster.json';
 import {
   resolvePadLookup as resolveLookup,
@@ -8,11 +9,20 @@ import type {
   AllianceDirectory,
   AllianceOrg,
   AllianceRoster,
+  AllianceRosterCorpus,
   PadLookupResult,
 } from '@/lib/hermes-onboard/types';
 
-const directory = directoryJson as AllianceDirectory;
+const stewards = directoryJson as AllianceDirectory;
+const corpus = corpusJson as AllianceRosterCorpus;
 const roster = rosterJson as AllianceRoster;
+
+const mergedOrgs: AllianceOrg[] = [
+  ...stewards.orgs,
+  ...corpus.orgs.filter((org) => !stewards.orgs.some((s) => s.slug === org.slug)),
+];
+
+const directory: AllianceDirectory = { ...stewards, orgs: mergedOrgs };
 
 export type PadLookupOrgRef = Pick<
   AllianceOrg,
