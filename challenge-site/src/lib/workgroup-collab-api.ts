@@ -178,6 +178,7 @@ export async function shareWorkgroupMessage(
   messageId: string,
   input: {
     recipient: string;
+    recipientUserId?: string;
     sendeeRole?: 'watcher' | 'controller';
     note?: string;
   },

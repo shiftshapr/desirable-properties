@@ -1,12 +1,18 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import WorkgroupRosterRecipientField from '@/components/workgroup/WorkgroupRosterRecipientField';
 import { DpDialog } from '@/components/DpDialog';
 import {
   fetchWorkgroupMemberRoster,
   shareWorkgroupMessage,
   type WorkgroupRosterMember,
 } from '@/lib/workgroup-collab-api';
+import {
+  recipientLabelFromWorkgroupShare,
+  recipientTokenFromWorkgroupShare,
+  type WorkgroupShareRecipient,
+} from '@/lib/workgroup-share-recipient-types';
 import type { WorkgroupShareRole } from '@/lib/workgroup-share-restrictions';
 
 type WorkgroupMessageShareModalProps = {
@@ -63,8 +69,10 @@ export default function WorkgroupMessageShareModal({
   onShared,
 }: WorkgroupMessageShareModalProps) {
   const [members, setMembers] = useState<WorkgroupRosterMember[]>([]);
-  const [recipientQuery, setRecipientQuery] = useState('');
-  const [selectedRecipient, setSelectedRecipient] = useState<WorkgroupRosterMember | null>(null);
+  const [recipient, setRecipient] = useState<WorkgroupShareRecipient>({
+    member: null,
+    queryHint: '',
+  });
   const [sendeeRole, setSendeeRole] = useState<WorkgroupShareRole>('watcher');
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
@@ -81,8 +89,7 @@ export default function WorkgroupMessageShareModal({
 
   useEffect(() => {
     if (!open) return;
-    setRecipientQuery('');
-    setSelectedRecipient(null);
+    setRecipient({ member: null, queryHint: '' });
     setSendeeRole('watcher');
     setNote('');
     setError(null);
@@ -95,23 +102,16 @@ export default function WorkgroupMessageShareModal({
       });
   }, [open, workgroupId]);
 
-  const suggestions = useMemo(() => {
-    const q = recipientQuery.trim().toLowerCase();
-    const pool = members.filter((m) => m.user_id !== sharerUserId);
-    if (!q) return pool.slice(0, 8);
-    return pool
-      .filter((m) => m.user_name.toLowerCase().includes(q))
-      .slice(0, 8);
-  }, [members, recipientQuery, sharerUserId]);
-
   if (!open) return null;
 
   const preview = messagePreview.split('\n')[0].trim();
   const anchorLabel = preview.length > 80 ? `${preview.slice(0, 77)}…` : preview || 'This message';
 
+  const recipientReady = Boolean(recipient.member || recipient.queryHint.trim());
+
   const submitShare = async () => {
-    const recipient = selectedRecipient?.user_name || recipientQuery.trim();
-    if (!recipient) {
+    const token = recipientTokenFromWorkgroupShare(recipient);
+    if (!token) {
       setError('Choose a workgroup member');
       return;
     }
@@ -119,13 +119,15 @@ export default function WorkgroupMessageShareModal({
     setError(null);
     try {
       await shareWorkgroupMessage(workgroupId, messageId, {
-        recipient,
+        recipient: recipient.member ? recipient.member.user_name : token,
+        recipientUserId: recipient.member?.user_id,
         sendeeRole,
         note: note.trim() || undefined,
       });
+      const label = recipientLabelFromWorkgroupShare(recipient);
       await DpDialog.alert({
         title: 'Shared with member',
-        message: `This thread point was shared with ${selectedRecipient?.user_name || recipient}. They receive watch access from this message forward.`,
+        message: `This thread point was shared with ${label}. They receive watch access from this message forward.`,
         variant: 'success',
       });
       onShared?.();
@@ -174,50 +176,15 @@ export default function WorkgroupMessageShareModal({
             </p>
           ) : null}
 
-          <label className="block text-sm text-slate-300">
-            Share with (workgroup member)
-            <input
-              type="text"
-              value={selectedRecipient ? selectedRecipient.user_name : recipientQuery}
-              onChange={(e) => {
-                setSelectedRecipient(null);
-                setRecipientQuery(e.target.value);
-              }}
-              placeholder="Start typing a member name"
-              className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500"
-              autoComplete="off"
-              list="wg-share-members"
-              disabled={!allowShare || busy}
-            />
-            <datalist id="wg-share-members">
-              {members
-                .filter((m) => m.user_id !== sharerUserId)
-                .map((m) => (
-                  <option key={m.user_id} value={m.user_name} />
-                ))}
-            </datalist>
-            {suggestions.length > 0 && !selectedRecipient && recipientQuery.trim() ? (
-              <ul className="mt-1 max-h-32 overflow-y-auto rounded-lg border border-slate-700 bg-slate-950">
-                {suggestions.map((m) => (
-                  <li key={m.user_id}>
-                    <button
-                      type="button"
-                      className="block w-full px-3 py-2 text-left text-sm text-slate-200 hover:bg-slate-800"
-                      onClick={() => {
-                        setSelectedRecipient(m);
-                        setRecipientQuery(m.user_name);
-                      }}
-                    >
-                      {m.user_name}
-                      {m.is_facilitator ? (
-                        <span className="ml-2 text-xs text-violet-300">facilitator</span>
-                      ) : null}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </label>
+          <WorkgroupRosterRecipientField
+            members={members}
+            sharerUserId={sharerUserId}
+            value={recipient}
+            onChange={setRecipient}
+            disabled={!allowShare || busy}
+            label="Share with (workgroup member)"
+            helperText="Pick someone on this workgroup roster (@handle or name). External emails are not allowed."
+          />
 
           <fieldset className="space-y-2" disabled={!allowShare || busy}>
             <legend className="text-xs font-medium uppercase tracking-wide text-slate-400">
@@ -278,7 +245,7 @@ export default function WorkgroupMessageShareModal({
             </button>
             <button
               type="button"
-              disabled={!allowShare || busy || (!selectedRecipient && !recipientQuery.trim())}
+              disabled={!allowShare || busy || !recipientReady}
               onClick={() => void submitShare()}
               className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
             >

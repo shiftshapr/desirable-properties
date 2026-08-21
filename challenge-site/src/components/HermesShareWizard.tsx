@@ -1,7 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import GovHubInviteRecipientField from '@/components/GovHubInviteRecipientField';
 import { DpDialog } from '@/components/DpDialog';
+import type { GovHubShareRecipient } from '@/lib/govhub-user-search-types';
+import {
+  recipientEmailFromShareSelection,
+  recipientLabelFromShareSelection,
+  recipientVerifierIdFromShareSelection,
+} from '@/lib/govhub-user-search-types';
 
 export type ThreadShareVisibility = 'full' | 'from_share_point';
 export type ThreadShareRole = 'watcher' | 'controller' | 'member';
@@ -39,7 +46,10 @@ export default function HermesShareWizard({
   );
   const [senderRetainsWatch, setSenderRetainsWatch] = useState(true);
   const [expiresInHours, setExpiresInHours] = useState(24);
-  const [recipient, setRecipient] = useState('');
+  const [recipient, setRecipient] = useState<GovHubShareRecipient>({
+    user: null,
+    emailHint: '',
+  });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [linkUrl, setLinkUrl] = useState<string | null>(null);
@@ -52,7 +62,7 @@ export default function HermesShareWizard({
     if (!open) return;
     setVisibility(anchorTurnId ? 'from_share_point' : 'full');
     setSendeeRole(communityInvite ? 'member' : 'watcher');
-    setRecipient('');
+    setRecipient({ user: null, emailHint: '' });
     setError(null);
     setLinkUrl(null);
     setShareId(null);
@@ -71,6 +81,8 @@ export default function HermesShareWizard({
     setBusy(true);
     setError(null);
     try {
+      const recipientEmail = recipientEmailFromShareSelection(recipient);
+      const recipientVerifierId = recipientVerifierIdFromShareSelection(recipient);
       const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}/shares`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +92,8 @@ export default function HermesShareWizard({
           senderRetainsWatch,
           expiresInHours,
           anchorTurnId: visibility === 'from_share_point' ? anchorTurnId : undefined,
-          recipientEmail: recipient.trim() || undefined,
+          recipientEmail: recipientEmail || undefined,
+          recipientVerifierId: recipientVerifierId || undefined,
           shareThreadKind: anchorTurnId && shareThreadKind === 'fork_snapshot' ? 'fork_snapshot' : 'live',
         }),
       });
@@ -163,20 +176,12 @@ export default function HermesShareWizard({
 
           {!shareId ? (
             <>
-              <label className="block text-sm text-slate-300">
-                Share with
-                <input
-                  type="text"
-                  value={recipient}
-                  onChange={(e) => setRecipient(e.target.value)}
-                  placeholder="Email or username"
-                  className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500"
-                  autoComplete="off"
-                />
-                <span className="mt-1 block text-xs text-slate-500">
-                  Known Hermes users receive the share directly. Otherwise we create a link for you to copy.
-                </span>
-              </label>
+              <GovHubInviteRecipientField
+                value={recipient}
+                onChange={setRecipient}
+                disabled={busy}
+                helperText="Pick someone connected on Gov Hub (@handle) for direct delivery. Otherwise leave an email hint and we create a link to copy."
+              />
 
               {anchorTurnId ? (
                 <fieldset className="space-y-2">
@@ -319,7 +324,7 @@ export default function HermesShareWizard({
           ) : directDelivered ? (
             <div className="space-y-3">
               <p className="text-sm text-slate-300">
-                Shared directly with {recipient.trim()}.
+                Shared directly with {recipientLabelFromShareSelection(recipient)}.
                 {sendeeRole === 'controller'
                   ? ' They must accept control before sending prompts.'
                   : sendeeRole === 'member'
@@ -331,7 +336,9 @@ export default function HermesShareWizard({
             <div className="space-y-3">
               <p className="text-sm text-slate-300">
                 Share link created.
-                {recipient.trim() ? ` Intended for ${recipient.trim()}.` : ' Copy and send it to your recipient.'}
+                {recipientEmailFromShareSelection(recipient)
+                  ? ` Intended for ${recipientLabelFromShareSelection(recipient)}.`
+                  : ' Copy and send it to your recipient.'}
               </p>
               <div className="flex gap-2">
                 <input
