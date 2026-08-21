@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import AllianceBriefingClient from '@/components/onboard/AllianceBriefingClient';
 import DynamicPadClient from '@/components/onboard/DynamicPadClient';
+import PadIndexContent from '@/components/onboard/PadIndexContent';
 import {
   allianceSlugKey,
   getAllianceOrg,
@@ -21,6 +22,13 @@ type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
+  if (isPadIndexAliasSlug(slug)) {
+    return {
+      title: 'Landing pads – DP Studio',
+      description:
+        'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
+    };
+  }
   const org = getAllianceOrg(slug);
   if (org) {
     return {
@@ -68,16 +76,7 @@ export default async function AllianceBriefingPage({
   const query = await searchParams;
 
   if (isPadIndexAliasSlug(slug)) {
-    const params = new URLSearchParams();
-    for (const [key, value] of Object.entries(query)) {
-      if (Array.isArray(value)) {
-        for (const item of value) params.append(key, item);
-      } else if (value !== undefined) {
-        params.set(key, value);
-      }
-    }
-    const qs = params.toString();
-    permanentRedirect(`/pad${qs ? `?${qs}` : ''}`);
+    return <PadIndexContent />;
   }
 
   const directorySlug = resolveAllianceSlug(slug);
