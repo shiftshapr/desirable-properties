@@ -105,6 +105,130 @@
       "description": "Launch of The Layered Web and permanent Ordinal edition–preserving the first mature community-developed version as part of the Digital Monument.",
       "href": "https://desirableproperties.org/book",
       "linkLabel": "Read the book"
+    },
+    {
+      "id": "ml-reqs",
+      "dateLabel": "October 2026",
+      "startDate": "2026-10-01",
+      "endDate": "2026-10-31",
+      "title": "Define ML-REQs",
+      "description": "Turn Version 1 Desirable Properties into Meta-Layer requirements (ML-REQs) that can gate architecture, implementations, and partner integrations."
+    },
+    {
+      "id": "metaweb-book-2e",
+      "dateLabel": "October 2026",
+      "startDate": "2026-10-01",
+      "endDate": "2026-10-31",
+      "title": "Metaweb book 2nd edition",
+      "description": "Publish the second edition of The Metaweb, updating the foundational narrative for the post-launch Meta-Layer path.",
+      "href": "https://metawebbook.com",
+      "linkLabel": "Visit Metaweb Book"
+    },
+    {
+      "id": "canopi-sdk-embed-beta",
+      "dateLabel": "November 2026",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-30",
+      "title": "Canopi, communities, SDK, and web embed beta",
+      "description": "Open a shared beta for Canopi, community layers, the Canopi SDK, and web embed so builders and site partners can ship overlay applications."
+    },
+    {
+      "id": "proof-of-unique-humanity",
+      "dateLabel": "November 2026",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-30",
+      "title": "Proof of Unique Humanity integration",
+      "description": "Integrate Proof of Unique Humanity so participation, accountability, and rewards can rest on unique-human verification rather than platform-owned identity."
+    },
+    {
+      "id": "rewards-participants-builders",
+      "dateLabel": "November 2026",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-30",
+      "title": "Rewards for participants and builders",
+      "description": "Stand up rewards for participants and builders who contribute to communities, implementations, and the public-good Meta-Layer stack."
+    },
+    {
+      "id": "ml-adrs",
+      "dateLabel": "December 2026",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-31",
+      "title": "Develop ML-ADRs",
+      "description": "Develop Meta-Layer Architecture Decision Records (ML-ADRs) that turn ML-REQs into concrete technical choices for the Overweb."
+    },
+    {
+      "id": "overweb-substrate-beta",
+      "dateLabel": "March 2027",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-31",
+      "title": "Overweb Substrate beta",
+      "description": "Release an Overweb Substrate beta so implementations can run against a shared coordination layer rather than one-off overlays."
+    },
+    {
+      "id": "extend-federated-auth",
+      "dateLabel": "March 2027",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-31",
+      "title": "Extend federated auth to decentralized platforms",
+      "description": "Extend federated authentication beyond today's web apps so decentralized platforms can participate in the same accountability frame."
+    },
+    {
+      "id": "decentralized-storage",
+      "dateLabel": "March 2027",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-31",
+      "title": "Decentralized storage",
+      "description": "Bring decentralized storage into the stack so community records and overlays are not locked to a single host."
+    },
+    {
+      "id": "provenance-all-posts",
+      "dateLabel": "March 2027",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-31",
+      "title": "Provenance of all posts",
+      "description": "Require provenance for posts so origin, authorship, and context travel with content across layers."
+    },
+    {
+      "id": "moltlayer-raise",
+      "dateLabel": "May 2027",
+      "startDate": "2027-05-01",
+      "endDate": "2027-05-31",
+      "title": "MoltLayer raise",
+      "description": "MoltLayer fundraising to resource the next build cycle for Overweb infrastructure and aligned products."
+    },
+    {
+      "id": "dp-book-v2",
+      "dateLabel": "May 2027",
+      "startDate": "2027-05-01",
+      "endDate": "2027-05-31",
+      "title": "Desirable Properties book V2",
+      "description": "Publish Version 2 of the Desirable Properties book, incorporating post-launch requirements, ADRs, and implementation learning.",
+      "href": "/book",
+      "linkLabel": "Read the current book"
+    },
+    {
+      "id": "agents-tees",
+      "dateLabel": "June 2027",
+      "startDate": "2027-06-01",
+      "endDate": "2027-06-30",
+      "title": "Agents and TEEs",
+      "description": "Advance agent capabilities with Trusted Execution Environments (TEEs) so autonomous work can run with stronger integrity and accountability."
+    },
+    {
+      "id": "community-governance",
+      "dateLabel": "June 2027",
+      "startDate": "2027-06-01",
+      "endDate": "2027-06-30",
+      "title": "Community governance",
+      "description": "Operationalize community governance so Meta-Layer rules, membership, and stewardship can evolve in the open."
+    },
+    {
+      "id": "metadomains",
+      "dateLabel": "June 2027",
+      "startDate": "2027-06-01",
+      "endDate": "2027-06-30",
+      "title": "Metadomains",
+      "description": "Introduce metadomains as named, interoperable community spaces that sit above today's sites and platforms."
     }
   ]
 }
