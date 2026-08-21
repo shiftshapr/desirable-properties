@@ -3,7 +3,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { AuthUser } from '@/lib/auth-types';
 import { formatAuthError, isUserDismissedAuthError } from '@/lib/auth-errors';
-import { loginWithGoogle, logoutWeb3Auth, warmupWeb3Auth } from '@/lib/web3auth-login';
+import {
+  clearStaleWeb3AuthClientState,
+  loginWithGoogle,
+  logoutWeb3Auth,
+  warmupWeb3Auth,
+} from '@/lib/web3auth-login';
 
 type AuthContextValue = {
   user: AuthUser | null;
@@ -47,10 +52,16 @@ export function AuthProvider({
   }, []);
 
   useEffect(() => {
-    warmupWeb3Auth();
-  }, []);
+    if (initialUser) {
+      warmupWeb3Auth();
+      return;
+    }
+    clearStaleWeb3AuthClientState();
+  }, [initialUser]);
 
   useEffect(() => {
+    if (initialChecked) return;
+
     let cancelled = false;
 
     (async () => {
@@ -70,7 +81,7 @@ export function AuthProvider({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialChecked]);
 
   const login = useCallback(async () => {
     if (loginBusy) return;

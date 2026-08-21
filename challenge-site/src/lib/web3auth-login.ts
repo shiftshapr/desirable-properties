@@ -55,6 +55,20 @@ function clearWeb3AuthStorage() {
   }
 }
 
+function isStaleWeb3AuthError(message: string): boolean {
+  return /session expired|invalid public key|not ready|project configurations|connector is not ready/i.test(
+    message,
+  );
+}
+
+/** Clear stale Web3Auth client storage without loading modal scripts. */
+export function clearStaleWeb3AuthClientState() {
+  clearWeb3AuthStorage();
+  dismissWeb3AuthModal(web3auth);
+  web3auth = null;
+  web3authInitPromise = null;
+}
+
 function validatePublicConfig(cfg: Partial<Web3AuthPublicConfig>): Web3AuthPublicConfig {
   const clientId = String(cfg.clientId || '').trim();
   const web3AuthNetwork = String(cfg.web3AuthNetwork || '').trim();
@@ -207,7 +221,21 @@ async function createWeb3AuthInstance(cfg: Web3AuthPublicConfig) {
     modalConfig: modalConfig(),
   });
 
-  await instance.init();
+  try {
+    await instance.init();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!isStaleWeb3AuthError(message)) {
+      throw error;
+    }
+    clearWeb3AuthStorage();
+    try {
+      await instance.logout({ cleanup: true });
+    } catch {
+      // ignore
+    }
+    await instance.init();
+  }
   return instance;
 }
 
@@ -260,10 +288,14 @@ async function initWeb3Auth() {
   return web3authInitPromise;
 }
 
-/** Pre-load Web3Auth on page load. */
+/** Pre-load Web3Auth for signed-in users (token refresh). Anonymous pages should not call this. */
 export function warmupWeb3Auth() {
   if (typeof window === 'undefined') return;
-  void initWeb3Auth().catch(() => {
+  void initWeb3Auth().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    if (isStaleWeb3AuthError(message)) {
+      clearStaleWeb3AuthClientState();
+    }
     // Non-fatal – user can retry on Sign In
   });
 }

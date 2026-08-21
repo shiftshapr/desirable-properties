@@ -97,7 +97,10 @@ function errorResponse(status: number, code: string, authenticated: boolean) {
 export async function GET(request: Request) {
   const session = await readSession();
   if (!session?.idToken) {
-    return errorResponse(401, 'AUTHENTICATION_REQUIRED', false);
+    return NextResponse.json(
+      { authenticated: false, status: 'unauthenticated', code: 'AUTHENTICATION_REQUIRED', welcomes: [], count: 0 },
+      { status: 200, headers: { 'Cache-Control': 'no-store' } },
+    );
   }
 
   try {

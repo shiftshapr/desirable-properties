@@ -31,6 +31,11 @@ export default function SiteAuthNav() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!user?.id) {
+      setIsSiteAdmin(false);
+      return;
+    }
+
     const controller = new AbortController();
     (async () => {
       try {
@@ -44,7 +49,7 @@ export default function SiteAuthNav() {
       }
     })();
     return () => controller.abort();
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     if (!user?.id) return;
