@@ -186,6 +186,24 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
     conceptual: true,
     caption: 'Connections that let living context reach across anchors without collapsing them.',
   },
+  paceAiConcierge: {
+    id: 'paceAiConcierge',
+    label: 'AI / concierge',
+    detail: 'Fast inhabitant',
+    href: '/agent',
+    status: 'live',
+    caption: 'Same pace as human conversation; a different inhabitant – not the only aperture.',
+  },
+  paceH2hConversation: {
+    id: 'paceH2hConversation',
+    label: 'Human-to-human conversation',
+    detail: 'Fast inhabitant',
+    href: bookDiscussHref(),
+    external: true,
+    discussPatch: true,
+    status: 'live',
+    caption: 'Same pace as AI assistance; communities speak for themselves. Not the Meta-Layer.',
+  },
   paceDiscussion: {
     id: 'paceDiscussion',
     label: 'Discussion',
@@ -199,15 +217,6 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
     detail: 'On the book',
     href: 'https://book.desirableproperties.org',
     external: true,
-    status: 'live',
-  },
-  paceConversation: {
-    id: 'paceConversation',
-    label: 'Conversation',
-    detail: 'Discuss on chapters',
-    href: bookDiscussHref(),
-    external: true,
-    discussPatch: true,
     status: 'live',
   },
   paceInterfaces: {
@@ -254,6 +263,8 @@ export type EcosystemViewConfig = {
   footnote?: string;
   /** Pace view: Meta-Layer is capability, not the slow band. */
   metaLayerNote?: string;
+  /** Pace view: AI/concierge and H2H – same pace, different inhabitant. */
+  fastInhabitantIds?: string[];
 };
 
 export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
@@ -337,7 +348,7 @@ export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
       body:
         'One interface. One conversational relationship. One personalized aperture onto civilization.',
       warning:
-        'If Hermes or Canopi becomes that aperture, the architecture failed. The fast layer becomes the only aperture; the slow layer hides behind a concierge.',
+        'The fork is when the concierge fast layer crowds out human-to-human conversation and hides the slow anchors – monuments, reality anchors, and bridges – behind one aperture. If Hermes or Canopi becomes that sole concierge, the architecture failed.',
     },
     footnote:
       'These futures are not mutually exclusive. Neither does the first naturally lead to the second. Design choices influence which becomes dominant – not a deterministic binary, and not a moral cartoon.',
@@ -358,28 +369,29 @@ export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
         title: 'Fast living context',
         subtitle: 'What the Meta-Layer enables',
         body:
-          'Discussion, annotations, conversation, interfaces, and updates help communities respond – gathering around the slow anchors, not replacing them.',
+          'Discussion, annotations, conversation, interfaces, and updates – including both AI / concierge and human-to-human conversation at the same pace, as different inhabitants. Fast context gathers around slow anchors; it does not replace them.',
         nodeIds: [
           'paceDiscussion',
           'paceAnnotations',
-          'paceConversation',
           'paceInterfaces',
           'paceUpdates',
         ],
       },
     ],
+    fastInhabitantIds: ['paceAiConcierge', 'paceH2hConversation'],
     nodeIds: [
       'paceDigitalMonuments',
       'paceRealityAnchors',
       'paceBridges',
+      'paceAiConcierge',
+      'paceH2hConversation',
       'paceDiscussion',
       'paceAnnotations',
-      'paceConversation',
       'paceInterfaces',
       'paceUpdates',
     ],
     metaLayerNote:
-      'The Meta-Layer is the space and capability that makes fast living context possible around slow durable anchors. It is not itself the slow layer.',
+      'The Meta-Layer is the space and capability that makes fast living context possible around slow durable anchors. It is not itself a speed, and not the slow layer.',
     tagline:
       'A normal website collapses memory into one speed. A monument separates living context from durable anchors.',
     footnote:

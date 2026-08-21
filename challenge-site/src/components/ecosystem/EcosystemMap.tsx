@@ -317,6 +317,22 @@ function PaceView() {
         {fastGroup.body ? (
           <p className="mt-3 text-sm leading-relaxed text-slate-400">{fastGroup.body}</p>
         ) : null}
+
+        {view.fastInhabitantIds && view.fastInhabitantIds.length > 0 ? (
+          <div className="mt-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-violet-300/90">
+              Same pace, different inhabitant
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {view.fastInhabitantIds.map((id) => {
+                const node = getEcosystemNode(id);
+                if (!node) return null;
+                return <EcosystemNodeCard key={id} node={node} compact />;
+              })}
+            </div>
+          </div>
+        ) : null}
+
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {(fastGroup.nodeIds ?? []).map((id) => {
             const node = getEcosystemNode(id);
@@ -472,17 +488,18 @@ export default function EcosystemMap() {
               <Link href="/perspectives/a-fork-in-the-web" className="text-cyan-300 hover:text-cyan-200">
                 A Fork in the Web
               </Link>
-              : substrate, architectural space, and particular layers as inhabitants. Not a speed
-              axis. AI-mediated awareness is shown as a failure mode – not a product.
+              : substrate, architectural space, and particular layers as inhabitants. Failure mode:
+              when the concierge crowds out human-to-human conversation and hides slow anchors
+              behind You → AI → Everything Else.
             </dd>
           </div>
           <div>
             <dt className="text-sm font-semibold text-white">Pace layers</dt>
             <dd className="mt-1 text-sm leading-relaxed text-slate-400">
-              A monument stack: slow durable anchors (monuments, reality anchors, bridges) with
-              fast living context (discussion, annotations, conversation, interfaces, updates)
-              gathering around them. The Meta-Layer enables the fast layers; it is not the slow
-              layer.
+              Slow durable anchors (monuments, reality anchors, bridges) with fast living context
+              gathering around them – including both AI / concierge and human-to-human conversation
+              at the same pace. The Meta-Layer enables fast layers; it is not a speed and not the
+              slow layer.
             </dd>
           </div>
           <div>
