@@ -68,6 +68,11 @@ export const MARKETING_PATH_PATTERNS = [
   /\/staff\b/i,
   /\/board\b/i,
   /\/leadership\b/i,
+  /\/what-we-do\b/i,
+  /\/our-work\b/i,
+  /\/meettheteam\b/i,
+  /\/meet-the-team\b/i,
+  /\/homepage\b/i,
 ];
 
 export const WORK_LINK_TEXT_PATTERNS = [
@@ -103,8 +108,6 @@ export const PROBE_PATHS = [
   '/insights',
   '/policy',
   '/library',
-  '/our-work',
-  '/what-we-do',
   '/studies',
   '/outputs',
   '/perspectives',
@@ -305,20 +308,26 @@ export function extractTextFromHtml(html) {
  * @param {string} raw
  */
 export function stripTags(raw) {
-  return raw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return decodeEntities(raw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
 }
 
 /**
  * @param {string} raw
  */
-function decodeEntities(raw) {
+export function decodeEntities(raw) {
   return raw
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ');
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
@@ -369,10 +378,55 @@ function isBoilerplateSentence(sentence) {
     'donate now',
     'copyright',
     'javascript',
+    'skip to main',
+    'skip to content',
+    'dismiss message',
+    'buy, own',
+    'lab-tested',
+    'best deals',
+    'shop for',
+    'join our',
+    'media room',
+    'press release',
+    'read more',
+    'view all',
   ];
   if (boilerplate.some((term) => lower.includes(term))) return true;
-  if (/^(home|about|contact|menu|search|skip to)/i.test(sentence)) return true;
+  if (/^(home|about|contact|menu|search|skip to|buy|shop|best|most reliable)/i.test(sentence)) return true;
+  if (/&#\d+;/.test(sentence)) return true;
+  if ((sentence.match(/\|/g) || []).length >= 2) return true;
   return false;
+}
+
+/** Strong work URL — publication, report, paper, or named article/blog post. */
+export function isStrongWorkUrl(url) {
+  try {
+    const path = new URL(url).pathname;
+    if (isMarketingPath(url)) return false;
+    if (/\/(publications?|reports?|papers?|research|insights?|articles?|essays?|perspectives?|commentary|briefs?|white-?papers?|policy|protocols?)\//i.test(path)) {
+      return true;
+    }
+    if (/\/(blog|news|posts?)\/[^/]+/i.test(path)) return true;
+    if (/\/\d{4}\/\d{2}\/[^/]+/.test(path)) return true;
+    if (isPdfUrl(url)) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * @param {string} url
+ */
+export function isHomepageUrl(url, website) {
+  try {
+    const a = new URL(url);
+    const b = new URL(website);
+    const path = a.pathname.replace(/\/$/, '') || '/';
+    return a.hostname.replace(/^www\./, '') === b.hostname.replace(/^www\./, '') && (path === '/' || /\/home(page)?$/i.test(path));
+  } catch {
+    return false;
+  }
 }
 
 /**

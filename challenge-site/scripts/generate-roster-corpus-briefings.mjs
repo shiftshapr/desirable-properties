@@ -22,14 +22,17 @@ import {
   PROBE_PATHS,
   MARKETING_PATH_PATTERNS,
   classifyWorkPage,
+  decodeEntities,
   extractLinks,
   extractQuotableSentences,
   extractTextFromHtml,
   extractTitle,
   fetchResource,
   isBlockedUrl,
+  isHomepageUrl,
   isPdfUrl,
   isSameOrgDomain,
+  isStrongWorkUrl,
   scoreWorkUrl,
 } from './lib/corpus-fetch.mjs';
 
@@ -317,9 +320,9 @@ async function processOrg(org, verbose) {
 
     workPages.push({
       url: fetched.url,
-      title,
-      quotes,
-      excerpt: quotes[0],
+      title: decodeEntities(title),
+      quotes: quotes.map((q) => decodeEntities(q)),
+      excerpt: decodeEntities(quotes[0]),
       kind: 'html-work',
     });
   }
@@ -329,7 +332,22 @@ async function processOrg(org, verbose) {
     await tryWorkUrl(candidate);
   }
 
-  if (workPages.length === 0) {
+  // Drop weak pages: homepage, marketing paths, thin press indexes
+  const strongWorkPages = workPages.filter((page) => {
+    if (isHomepageUrl(page.url, org.website)) return false;
+    if (isMarketingPath(page.url)) return false;
+    try {
+      const path = new URL(page.url).pathname;
+      if (/\/press\/?$/i.test(path)) return false;
+    } catch {
+      return false;
+    }
+    return page.quotes.some((q) => q.length >= 80 && !isBoilerplateQuote(q));
+  });
+
+  const promotablePages = strongWorkPages.filter((p) => isStrongWorkUrl(p.url));
+
+  if (promotablePages.length === 0) {
     const tried = sortedCandidates.slice(0, 4).map((c) => c.url);
     return {
       ...baseResult,
@@ -338,31 +356,28 @@ async function processOrg(org, verbose) {
       detail:
         candidates.length === 0
           ? 'No research/publications/reports/perspectives/blog links found'
-          : 'Found candidate links but none yielded quotable work prose',
+          : 'No strong publication/report/article URLs with quotable work prose',
       triedUrls: tried,
     };
   }
 
-  const corpusText = workPages.map((p) => `${p.title} ${p.excerpt} ${p.quotes.join(' ')}`).join(' ');
-  const missionQuote = workPages[0].quotes[0];
-  const values = workPages
-    .flatMap((p) => p.quotes.slice(1, 3))
-    .filter(Boolean)
+  const workPagesForEntry = promotablePages.slice(0, MAX_SOURCES_PER_ORG);
+
+  const corpusText = workPagesForEntry
+    .map((p) => `${p.title} ${p.excerpt} ${p.quotes.join(' ')}`)
+    .join(' ');
+  const missionQuote = workPagesForEntry[0].quotes.find((q) => !isBoilerplateQuote(q)) || workPagesForEntry[0].quotes[0];
+  const values = workPagesForEntry
+    .flatMap((p) => p.quotes.filter((q) => q !== missionQuote && !isBoilerplateQuote(q)))
     .slice(0, 3);
 
-  while (values.length < 2 && workPages.length > values.length) {
-    const extra = workPages[values.length]?.quotes[0];
-    if (extra && extra !== missionQuote && !values.includes(extra)) values.push(extra);
-    else break;
-  }
-
-  if (values.length < 1) {
+  if (!missionQuote || isBoilerplateQuote(missionQuote) || values.length < 1) {
     return {
       ...baseResult,
       status: 'stub',
       reason: 'insufficient_quotes',
-      detail: 'Work pages found but not enough quotable sentences',
-      workUrls: workPages.map((p) => p.url),
+      detail: 'Work URLs found but quotable prose failed quality gate',
+      workUrls: promotablePages.map((p) => p.url),
     };
   }
 
@@ -378,32 +393,60 @@ async function processOrg(org, verbose) {
     tags,
     mission: missionQuote,
     values: values.slice(0, 3),
-    sources: workPages.map((page) => ({
+    sources: workPagesForEntry.map((page) => ({
       label: sourceLabel(page),
       url: page.url,
     })),
     partners: [],
     externalPartners: [],
     relatedDps: relatedDpsFromTags(tags),
-    pitch: pitchFor({ ...org, shortName }, workPages),
+    pitch: pitchFor({ ...org, shortName }, workPagesForEntry),
     corpusMeta: {
       generatedFrom: 'public-work',
       hypothesis: true,
-      workPageCount: workPages.length,
+      workPageCount: workPagesForEntry.length,
     },
   };
 
   if (verbose) {
-    console.log(`  ✓ promoted ${org.slug} (${workPages.length} work sources)`);
+    console.log(`  ✓ promoted ${org.slug} (${workPagesForEntry.length} work sources)`);
   }
 
   return {
     ...baseResult,
     status: 'promoted',
     reason: 'public_work_corpus',
-    workUrls: workPages.map((p) => p.url),
+    workUrls: workPagesForEntry.map((p) => p.url),
     entry,
   };
+}
+
+function isBoilerplateQuote(sentence) {
+  const lower = sentence.toLowerCase();
+  if (sentence.length < 80) return true;
+  const bad = [
+    'skip to',
+    'dismiss message',
+    'buy, own',
+    'lab-tested',
+    'best deals',
+    'shop for',
+    'media room',
+    'join ',
+    'sign up',
+    'subscribe',
+    'click here',
+  ];
+  return bad.some((term) => lower.includes(term));
+}
+
+function isMarketingPath(url) {
+  try {
+    const path = new URL(url).pathname;
+    return MARKETING_PATH_PATTERNS.some((re) => re.test(path));
+  } catch {
+    return true;
+  }
 }
 
 async function mapPool(items, concurrency, worker) {
