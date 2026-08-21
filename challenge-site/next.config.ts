@@ -80,6 +80,11 @@ const nextConfig: NextConfig = {
         destination: '/api/admin/pad-settings',
         permanent: false,
       },
+      {
+        source: '/ecosystem',
+        destination: '/map',
+        permanent: false,
+      },
     ];
   },
   async headers() {
