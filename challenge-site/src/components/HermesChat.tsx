@@ -18,6 +18,7 @@ import HermesControlPanel from '@/components/HermesControlPanel';
 import { useThreadShares } from '@/lib/useThreadShares';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { usePromptStack } from '@/lib/usePromptStack';
+import { copyTextToClipboard } from '@/lib/copy-to-clipboard';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
@@ -548,6 +549,9 @@ export default function HermesChat({
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const activeThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
+  const stickToBottomRef = useRef(true);
+  const prevMessageCountRef = useRef(0);
+  const prevLoadingRef = useRef(false);
 
   const beginChatAbort = useCallback(() => {
     chatAbortRef.current?.abort();
@@ -570,6 +574,8 @@ export default function HermesChat({
   const syncComposerHeight = useCallback(() => {
     const el = composerRef.current;
     if (!el) return;
+    const selectionStart = el.selectionStart;
+    const selectionEnd = el.selectionEnd;
     el.style.height = 'auto';
     const next = Math.max(
       COMPOSER_MIN_HEIGHT_PX,
@@ -577,7 +583,15 @@ export default function HermesChat({
     );
     el.style.height = `${next}px`;
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
+    if (document.activeElement === el && typeof selectionStart === 'number' && typeof selectionEnd === 'number') {
+      el.setSelectionRange(selectionStart, selectionEnd);
+    }
   }, []);
+
+  const handleComposerChange = useCallback((next: string) => {
+    setInputText(next);
+    requestAnimationFrame(() => syncComposerHeight());
+  }, [syncComposerHeight]);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -839,12 +853,47 @@ export default function HermesChat({
   }, [activeThreadId, threadAccess, loadThread]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoading, contributionDraft]);
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const updateStickToBottom = () => {
+      const distanceFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+      stickToBottomRef.current = distanceFromBottom < 96;
+    };
+
+    updateStickToBottom();
+    container.addEventListener('scroll', updateStickToBottom, { passive: true });
+    return () => container.removeEventListener('scroll', updateStickToBottom);
+  }, [activeThreadId]);
+
+  const chatHasActiveTextSelection = useCallback(() => {
+    const container = scrollContainerRef.current;
+    const sel = typeof document !== 'undefined' ? document.getSelection() : null;
+    if (!container || !sel || sel.isCollapsed || sel.rangeCount === 0) return false;
+    const anchor = sel.anchorNode;
+    return Boolean(anchor && container.contains(anchor));
+  }, []);
+
+  useEffect(() => {
+    if (chatHasActiveTextSelection()) return;
+
+    const countGrew = messages.length > prevMessageCountRef.current;
+    const loadingStarted = isLoading && !prevLoadingRef.current;
+    prevMessageCountRef.current = messages.length;
+    prevLoadingRef.current = isLoading;
+
+    const shouldScroll = stickToBottomRef.current || countGrew || loadingStarted || Boolean(contributionDraft);
+    if (!shouldScroll) return;
+
+    requestAnimationFrame(() => {
+      if (chatHasActiveTextSelection()) return;
+      messagesEndRef.current?.scrollIntoView({ behavior: countGrew || loadingStarted ? 'smooth' : 'auto' });
+    });
+  }, [messages, isLoading, contributionDraft, chatHasActiveTextSelection]);
 
   useEffect(() => {
     syncComposerHeight();
-  }, [inputText, syncComposerHeight]);
+  }, [activeThreadId, syncComposerHeight]);
 
   useEffect(() => {
     const onResize = () => syncComposerHeight();
@@ -1003,18 +1052,18 @@ export default function HermesChat({
   }, [persistActiveThread]);
 
   const copyAssistantMarkdown = useCallback(async (messageId: string, text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedMessageId(messageId);
-      window.setTimeout(() => {
-        setCopiedMessageId((current) => (current === messageId ? null : current));
-      }, 1800);
-    } catch {
+    const ok = await copyTextToClipboard(text);
+    if (!ok) {
       setSystemNotice({
         variant: 'error',
         text: 'Could not copy to clipboard',
       });
+      return;
     }
+    setCopiedMessageId(messageId);
+    window.setTimeout(() => {
+      setCopiedMessageId((current) => (current === messageId ? null : current));
+    }, 1800);
   }, []);
 
   const deleteThread = useCallback(async (threadId: string) => {
@@ -1070,7 +1119,7 @@ export default function HermesChat({
   };
 
   const applyStarter = (prompt: string) => {
-    setInputText(prompt);
+    handleComposerChange(prompt);
     if (!signedIn) {
       promptSignIn();
       return;
@@ -1469,7 +1518,7 @@ export default function HermesChat({
         attachments: attachmentNames,
       };
       setMessages((prev) => [...prev, userMessage]);
-      setInputText('');
+      handleComposerChange('');
       const docsToSend = attachments;
       setAttachments([]);
       setIsLoading(true);
@@ -1542,7 +1591,7 @@ export default function HermesChat({
       return;
     }
 
-    setInputText('');
+    handleComposerChange('');
     setAttachments([]);
     await submitChatMessage({ text, priorMessages: messages });
   };
@@ -2403,7 +2452,7 @@ export default function HermesChat({
                 className={`group flex w-full scroll-mt-4 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
+                  className={`max-w-[85%] select-text rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:text-base ${
                     message.sender === 'user'
                       ? `bg-cyan-700 text-white${
                           promptStack.highlightId === message.id ? ' outline outline-1 outline-cyan-300/60' : ''
@@ -2774,7 +2823,7 @@ export default function HermesChat({
                 <textarea
                   ref={composerRef}
                   value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
+                  onChange={(e) => handleComposerChange(e.target.value)}
                   onKeyDown={onKeyDown}
                   placeholder={
                     isWatchingOnly
@@ -2791,7 +2840,7 @@ export default function HermesChat({
                   <HermesComposerAiAssist
                     textareaRef={composerRef}
                     value={inputText}
-                    onValueChange={setInputText}
+                    onValueChange={handleComposerChange}
                     surface={surface}
                     dpFocus={dpFocus}
                     threadId={activeThreadId}

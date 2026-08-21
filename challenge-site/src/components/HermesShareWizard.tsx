@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import GovHubInviteRecipientField from '@/components/GovHubInviteRecipientField';
+import CanopiInviteRecipientField from '@/components/CanopiInviteRecipientField';
 import { DpDialog } from '@/components/DpDialog';
-import type { GovHubShareRecipient } from '@/lib/govhub-user-search-types';
+import type { CanopiShareRecipient } from '@/lib/canopi-user-search-types';
 import {
   recipientEmailFromShareSelection,
   recipientLabelFromShareSelection,
   recipientVerifierIdFromShareSelection,
-} from '@/lib/govhub-user-search-types';
+} from '@/lib/canopi-user-search-types';
 
 export type ThreadShareVisibility = 'full' | 'from_share_point';
 export type ThreadShareRole = 'watcher' | 'controller' | 'member';
@@ -46,7 +46,7 @@ export default function HermesShareWizard({
   );
   const [senderRetainsWatch, setSenderRetainsWatch] = useState(true);
   const [expiresInHours, setExpiresInHours] = useState(24);
-  const [recipient, setRecipient] = useState<GovHubShareRecipient>({
+  const [recipient, setRecipient] = useState<CanopiShareRecipient>({
     user: null,
     emailHint: '',
   });
@@ -176,11 +176,11 @@ export default function HermesShareWizard({
 
           {!shareId ? (
             <>
-              <GovHubInviteRecipientField
+              <CanopiInviteRecipientField
                 value={recipient}
                 onChange={setRecipient}
                 disabled={busy}
-                helperText="Pick someone connected on Gov Hub (@handle) for direct delivery. Otherwise leave an email hint and we create a link to copy."
+                helperText="Search any Canopi member by @handle or email for direct delivery. Otherwise leave an email hint and we create a link to copy."
               />
 
               {anchorTurnId ? (

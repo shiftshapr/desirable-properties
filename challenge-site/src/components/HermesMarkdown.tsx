@@ -49,6 +49,7 @@ export default function HermesMarkdown({ text, variant = 'dark' }: HermesMarkdow
 
   return (
     <>
+      <div className="select-text">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -104,6 +105,7 @@ export default function HermesMarkdown({ text, variant = 'dark' }: HermesMarkdow
       >
         {preprocessHermesMarkdown(text)}
       </ReactMarkdown>
+      </div>
 
       <DpReferenceModal
         open={activeRefLabel !== null}

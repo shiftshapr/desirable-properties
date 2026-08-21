@@ -84,11 +84,17 @@ export type AllianceRosterCorpus = {
   generatedAt: string;
   generatorNote: string;
   sourceRosterImportedAt: string;
+  researchPassDate?: string;
+  mandatoryStubCount?: number;
   promotionCriteria: string;
   stats: {
-    attempted: number;
+    attempted?: number;
+    rosterTotal?: number;
+    promoteTarget?: number;
     promoted: number;
     stubs: number;
+    mandatoryStubs?: number;
+    promoteFetchFailed?: number;
     reasonCounts: Record<string, number>;
     elapsedSeconds?: number;
   };
