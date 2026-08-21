@@ -6,7 +6,6 @@ import {
   DESIRABLE_PROPERTIES_BOOK_TITLE,
   GOVHUB_DP_PATCHES_URL,
   GOVHUB_PUBLIC_BASE_URL,
-  META_LAYER_SUMMIT_LUMA_URL,
   govhubUrl,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
@@ -472,7 +471,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               See the live phase on the{' '}
               <Link href="/challenge#timeline">Challenge timeline</Link>. Key upcoming milestones
               include community review (August 2026), workgroup synthesis toward Version 1.0, and
-              the September 16 book and summit launch.
+              the September 16 book launch.
             </p>
           </>
         ),
@@ -484,12 +483,10 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Workgroups target Version 1.0 synthesis in early September 2026.{' '}
               <strong className="font-semibold text-white">September 16, 2026</strong> is the book
-              and Digital Monument launch, coinciding with the Meta-Layer Summit.
+              and Digital Monument launch.
             </p>
             <p>
-              <a href={META_LAYER_SUMMIT_LUMA_URL} target="_blank" rel="noopener noreferrer">
-                RSVP for September 16 on Luma →
-              </a>
+              <Link href="/book">Read the book →</Link>
             </p>
           </>
         ),
@@ -516,11 +513,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Use the <strong className="font-semibold text-white">Events</strong> item in the site
               navigation and the <Link href="/events">Events index</Link> for series, pathways, and
-              sessions—including the Meta-Layer Summit on{' '}
-              <a href={META_LAYER_SUMMIT_LUMA_URL} target="_blank" rel="noopener noreferrer">
-                Luma
-              </a>
-              .
+              sessions.
             </p>
           </>
         ),

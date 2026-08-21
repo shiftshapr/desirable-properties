@@ -17,7 +17,7 @@ export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈8 hours total';
 
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
-/** Single event — no badge; Sept 16, 2026 summit (challenge-timeline.json). */
+/** Single event — no badge; Sept 16, 2026 book launch (challenge-timeline.json). */
 export const BOOK_LAUNCH_SEED = {
   title: 'Book Launch: The Layered Web',
   subtitle: 'Desirable Properties Book Launch',
