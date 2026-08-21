@@ -81,7 +81,7 @@ function HereView() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-stretch">
         <div className="flex min-w-0 flex-[3] flex-wrap items-stretch gap-2 sm:gap-3">
-          {defineGroup.nodeIds.map((id, index) => {
+          {(defineGroup.nodeIds ?? []).map((id, index) => {
             const node = getEcosystemNode(id);
             if (!node) return null;
             return (
@@ -92,7 +92,7 @@ function HereView() {
                     highlighted={view.highlightId === id}
                   />
                 </div>
-                {index < defineGroup.nodeIds.length - 1 ? (
+                {index < (defineGroup.nodeIds ?? []).length - 1 ? (
                   <FlowArrow className="hidden lg:flex" />
                 ) : null}
               </div>
@@ -110,7 +110,7 @@ function HereView() {
             <p className="mt-1 text-sm text-slate-400">{buildGroup.subtitle}</p>
           ) : null}
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {buildGroup.nodeIds.map((id) => {
+            {(buildGroup.nodeIds ?? []).map((id) => {
               const node = getEcosystemNode(id);
               if (!node) return null;
               return <EcosystemNodeCard key={id} node={node} compact />;
@@ -128,70 +128,103 @@ function HereView() {
   );
 }
 
-function LayersView() {
-  const view = ECOSYSTEM_VIEWS.find((v) => v.id === 'layers');
+function ForkView() {
+  const view = ECOSYSTEM_VIEWS.find((v) => v.id === 'fork');
   if (!view?.groups) return null;
 
-  const [fastGroup, slowGroup] = view.groups;
+  const [substrateGroup, spaceGroup, particularGroup] = view.groups;
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
-            {fastGroup.title}
-          </h3>
-          {fastGroup.subtitle ? (
-            <p className="mt-2 text-lg font-semibold text-white">{fastGroup.subtitle}</p>
-          ) : null}
-          {fastGroup.architecture ? (
-            <div
-              className="mt-5 space-y-1 font-mono text-sm leading-relaxed text-cyan-200/90"
-              aria-hidden="true"
-            >
-              <p>You</p>
-              <p className="text-slate-500">↓</p>
-              <p>AI</p>
-              <p className="text-slate-500">↓</p>
-              <p className="text-slate-300">Everything Else</p>
-            </div>
-          ) : null}
-          {fastGroup.body ? (
-            <p className="mt-5 text-sm leading-relaxed text-slate-400">{fastGroup.body}</p>
-          ) : null}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {fastGroup.nodeIds.map((id) => {
-              const node = getEcosystemNode(id);
-              if (!node) return null;
-              return <EcosystemNodeCard key={id} node={node} compact />;
-            })}
-          </div>
-        </section>
+      <section className="rounded-xl border border-slate-800 bg-slate-900/30 p-5 sm:p-6">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
+          {substrateGroup.title}
+        </h3>
+        {substrateGroup.body ? (
+          <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
+            {substrateGroup.body}
+          </p>
+        ) : null}
+      </section>
 
-        <section className="rounded-xl border border-cyan-900/40 bg-cyan-950/20 p-5 sm:p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400/90">
-            {slowGroup.title}
-          </h3>
-          {slowGroup.subtitle ? (
-            <p className="mt-2 text-lg font-semibold text-white">{slowGroup.subtitle}</p>
-          ) : null}
-          {slowGroup.principle ? (
-            <blockquote className="mt-4 border-l-2 border-cyan-600/70 pl-4 text-sm font-medium leading-relaxed text-slate-200">
-              {slowGroup.principle}
-            </blockquote>
-          ) : null}
-          {slowGroup.body ? (
-            <p className="mt-4 text-sm leading-relaxed text-slate-400">{slowGroup.body}</p>
-          ) : null}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {slowGroup.nodeIds.map((id) => {
+      <div className="flex justify-center" aria-hidden>
+        <FlowArrow className="rotate-90" />
+      </div>
+
+      <section className="rounded-xl border border-cyan-900/40 bg-cyan-950/20 p-5 sm:p-6">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
+          {spaceGroup.title}
+        </h3>
+        {spaceGroup.subtitle ? (
+          <p className="mt-2 text-lg font-semibold text-white">{spaceGroup.subtitle}</p>
+        ) : null}
+        {spaceGroup.body ? (
+          <p className="mt-4 text-sm leading-relaxed text-slate-400">{spaceGroup.body}</p>
+        ) : null}
+        {spaceGroup.nodeIds && spaceGroup.nodeIds.length > 0 ? (
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {spaceGroup.nodeIds.map((id) => {
               const node = getEcosystemNode(id);
               if (!node) return null;
               return <EcosystemNodeCard key={id} node={node} compact />;
             })}
           </div>
-        </section>
+        ) : null}
+      </section>
+
+      <div className="flex justify-center" aria-hidden>
+        <FlowArrow className="rotate-90" />
       </div>
+
+      <section className="rounded-xl border border-violet-900/40 bg-violet-950/20 p-5 sm:p-6">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-violet-400">
+          {particularGroup.title}
+        </h3>
+        {particularGroup.subtitle ? (
+          <p className="mt-2 text-lg font-semibold text-white">{particularGroup.subtitle}</p>
+        ) : null}
+        {particularGroup.principle ? (
+          <blockquote className="mt-4 border-l-2 border-violet-600/70 pl-4 text-sm font-medium leading-relaxed text-slate-200">
+            {particularGroup.principle}
+          </blockquote>
+        ) : null}
+        {particularGroup.body ? (
+          <p className="mt-3 text-sm leading-relaxed text-slate-400">{particularGroup.body}</p>
+        ) : null}
+        {particularGroup.nodeIds && particularGroup.nodeIds.length > 0 ? (
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {particularGroup.nodeIds.map((id) => {
+              const node = getEcosystemNode(id);
+              if (!node) return null;
+              return <EcosystemNodeCard key={id} node={node} compact />;
+            })}
+          </div>
+        ) : null}
+      </section>
+
+      {view.failureMode ? (
+        <section className="rounded-xl border border-amber-900/50 border-dashed bg-amber-950/10 p-5 sm:p-6">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-amber-400/90">
+            {view.failureMode.title}
+          </h3>
+          <p className="mt-2 text-lg font-semibold text-white">{view.failureMode.subtitle}</p>
+          <div
+            className="mt-5 space-y-1 font-mono text-sm leading-relaxed text-amber-200/90"
+            aria-hidden="true"
+          >
+            <p>You</p>
+            <p className="text-slate-500">↓</p>
+            <p>AI</p>
+            <p className="text-slate-500">↓</p>
+            <p className="text-slate-300">Everything Else</p>
+          </div>
+          <p className="sr-only">{view.failureMode.architecture}</p>
+          <p className="mt-4 text-sm leading-relaxed text-slate-300">{view.failureMode.body}</p>
+          <p className="mt-4 text-sm font-medium leading-relaxed text-amber-200/90">
+            {view.failureMode.warning}
+          </p>
+        </section>
+      ) : null}
 
       {view.footnote ? (
         <p className="text-sm leading-relaxed text-slate-500">{view.footnote}</p>
@@ -231,7 +264,7 @@ function LoopView() {
           {inputGroup.title}
         </h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          {inputGroup.nodeIds.map((id) => {
+          {(inputGroup.nodeIds ?? []).map((id) => {
             const node = getEcosystemNode(id);
             if (!node) return null;
             return <EcosystemNodeCard key={id} node={node} compact />;
@@ -247,7 +280,7 @@ function LoopView() {
         <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
           {governGroup.title}
         </h3>
-        <NodeRow nodeIds={governGroup.nodeIds} compact />
+        <NodeRow nodeIds={governGroup.nodeIds ?? []} compact />
       </section>
 
       <div className="flex justify-center">
@@ -259,7 +292,7 @@ function LoopView() {
           {publishGroup.title}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {publishGroup.nodeIds.map((id) => {
+          {(publishGroup.nodeIds ?? []).map((id) => {
             const node = getEcosystemNode(id);
             if (!node) return null;
             return <EcosystemNodeCard key={id} node={node} />;
@@ -325,7 +358,7 @@ export default function EcosystemMap() {
         className="mt-8 rounded-xl border border-slate-800 bg-slate-950/40 p-5 sm:p-8"
       >
         {activeView === 'here' ? <HereView /> : null}
-        {activeView === 'layers' ? <LayersView /> : null}
+        {activeView === 'fork' ? <ForkView /> : null}
         {activeView === 'loop' ? <LoopView /> : null}
       </div>
 
@@ -342,15 +375,14 @@ export default function EcosystemMap() {
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-semibold text-white">Fast and slow layers</dt>
+            <dt className="text-sm font-semibold text-white">Space for layers</dt>
             <dd className="mt-1 text-sm leading-relaxed text-slate-400">
-              An architectural fork from{' '}
+              The fork from{' '}
               <Link href="/perspectives/a-fork-in-the-web" className="text-cyan-300 hover:text-cyan-200">
                 A Fork in the Web
               </Link>
-              , not a product timeline. Fast / mediation is AI-mediated awareness (You → AI →
-              Everything Else). Slow / place is the human-centered layered Web where communities
-              speak for themselves. They can coexist.
+              : substrate, architectural space, and particular layers as inhabitants. Not a speed
+              axis. AI-mediated awareness is shown as a failure mode – not a product.
             </dd>
           </div>
           <div>

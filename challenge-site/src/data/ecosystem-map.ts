@@ -2,7 +2,7 @@ import { bookDiscussHref } from '@/lib/govhub';
 
 export type EcosystemNodeStatus = 'live' | 'in_progress' | 'coming';
 
-export type EcosystemMapViewId = 'here' | 'layers' | 'loop';
+export type EcosystemMapViewId = 'here' | 'fork' | 'loop';
 
 export type EcosystemNode = {
   id: string;
@@ -101,38 +101,17 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
   hermes: {
     id: 'hermes',
     label: 'Hermes',
-    detail: 'Assistant, not the place',
+    detail: 'DP Community AI',
     href: '/agent',
     status: 'live',
-    caption:
-      'People and workgroups decide. Hermes helps organize conversation; it is not where community lives.',
   },
-  aiMediatedAwareness: {
-    id: 'aiMediatedAwareness',
-    label: 'AI-mediated awareness',
-    detail: 'You → AI → Everything Else',
+  brc333: {
+    id: 'brc333',
+    label: 'BRC333',
+    detail: 'Ordinal layer',
+    href: 'https://brc333.xyz',
+    external: true,
     status: 'live',
-    conceptual: true,
-    caption:
-      'One interface, one conversational relationship, one personalized aperture onto civilization.',
-  },
-  agentMediation: {
-    id: 'agentMediation',
-    label: 'Agent-to-agent mediation',
-    detail: 'MCP-style protocols',
-    status: 'live',
-    conceptual: true,
-    caption:
-      'Machine-to-machine interoperability beneath the concierge. Agents communicate; humans may never enter shared space directly.',
-  },
-  personalizedAnswers: {
-    id: 'personalizedAnswers',
-    label: 'Personalized answers',
-    detail: 'Ephemeral, privatized context',
-    status: 'live',
-    conceptual: true,
-    caption:
-      'Intelligence is not a place. An answer generated for you is not the same resource others can encounter tomorrow.',
   },
   workgroups: {
     id: 'workgroups',
@@ -193,17 +172,22 @@ export type EcosystemViewConfig = {
   description: string;
   /** Node ids in display order for this view. */
   nodeIds: string[];
-  /** Optional grouping for swimlanes or clusters. */
+  /** Optional grouping for bands or clusters. */
   groups?: {
     title: string;
     subtitle?: string;
-    /** Short architecture stack (fast/mediation column). */
-    architecture?: string;
-    /** Pro-human principle quote (slow/place column). */
-    principle?: string;
     body?: string;
-    nodeIds: string[];
+    principle?: string;
+    nodeIds?: string[];
   }[];
+  /** AI-mediated awareness – failure mode, not a product band. */
+  failureMode?: {
+    title: string;
+    subtitle: string;
+    architecture: string;
+    body: string;
+    warning: string;
+  };
   /** Highlighted node id (We are here). */
   highlightId?: string;
   tagline?: string;
@@ -232,57 +216,66 @@ export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
     tagline: 'We are here to define the next level of the internet.',
   },
   {
-    id: 'layers',
-    label: 'Fast and slow layers',
+    id: 'fork',
+    label: 'Space for layers',
     description:
-      'From A Fork in the Web: two architectural tendencies that can coexist. Fast mediation collapses machine complexity into a concierge; slow / place builds persistent shared environments around Web resources.',
+      'The fork from A Fork in the Web: today\'s Web as substrate, an architectural space for independent layers to coexist, and particular layers as inhabitants. AI-mediated awareness is the failure mode to avoid – not a product timeline.',
     groups: [
       {
-        title: 'Fast / mediation',
-        subtitle: 'AI-mediated awareness',
-        architecture: 'You → AI → Everything Else',
+        title: 'Substrate',
         body:
-          'The machine world becomes multilayered; the human experience can collapse into one personalized aperture. Convenience, ephemeral responses, privatized context. Intelligence is not a place.',
-        nodeIds: ['aiMediatedAwareness', 'agentMediation', 'personalizedAnswers', 'hermes'],
+          'Today\'s Web resources as common reference points – pages, documents, media, applications, datasets, and other digital objects underneath.',
+        nodeIds: [],
       },
       {
-        title: 'Slow / place',
-        subtitle: 'Human-centered layered Web',
-        principle: 'AI should be an inhabitant, not the landlord.',
+        title: 'Space for layers',
+        subtitle: 'Human-centered layered Web (architectural category, not an app)',
         body:
-          'Persistent shared places around the same Web resource. Communities speak for themselves. Intellectual sovereignty and subsidiarity. A layer is not a space for layers.',
+          'Desirable Properties, The Layered Web, Gov Hub, ML-REQs, ML-ADRs, monument, and Academy name what must be true so many layers can coexist without one owning the others. Building a layer is different from creating an architectural space in which independent layers can coexist. A human-centered layered Web is therefore not another application category. It is an architectural category.',
+        nodeIds: ['dps', 'layeredWeb', 'govhub', 'mlReqs', 'mlAdrs', 'monument', 'academy'],
+      },
+      {
+        title: 'Particular layers',
+        subtitle: 'Inhabitants – each is a layer; none is the space',
+        principle: 'AI should be an inhabitant, not the landlord.',
+        body: 'Intelligence and place are different things.',
         nodeIds: [
-          'dps',
-          'govhub',
+          'canopi',
           'pads',
-          'workgroups',
+          'hermes',
           'discuss',
-          'layeredWeb',
-          'monument',
-          'academy',
+          'workgroups',
           'overwebSubstrate',
           'overwebStudio',
-          'canopi',
+          'brc333',
         ],
       },
     ],
     nodeIds: [
-      'aiMediatedAwareness',
-      'agentMediation',
-      'personalizedAnswers',
-      'hermes',
       'dps',
-      'govhub',
-      'pads',
-      'workgroups',
-      'discuss',
       'layeredWeb',
+      'govhub',
+      'mlReqs',
+      'mlAdrs',
       'monument',
       'academy',
+      'canopi',
+      'pads',
+      'hermes',
+      'discuss',
+      'workgroups',
       'overwebSubstrate',
       'overwebStudio',
-      'canopi',
+      'brc333',
     ],
+    failureMode: {
+      title: 'Failure mode (not a product)',
+      subtitle: 'AI-mediated awareness',
+      architecture: 'You → AI → Everything Else',
+      body:
+        'One interface. One conversational relationship. One personalized aperture onto civilization.',
+      warning: 'If Hermes or Canopi becomes that aperture, the architecture failed.',
+    },
     footnote:
       'These futures are not mutually exclusive. Neither does the first naturally lead to the second. Design choices influence which becomes dominant – not a deterministic binary, and not a moral cartoon.',
   },
