@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
@@ -548,6 +548,7 @@ export default function HermesChat({
   const draftingMessageIdRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
+  const composerSelectionRef = useRef<{ start: number; end: number } | null>(null);
   const activeThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
   const stickToBottomRef = useRef(true);
@@ -592,10 +593,26 @@ export default function HermesChat({
     }
   }, []);
 
-  const handleComposerChange = useCallback((next: string) => {
+  const handleComposerChange = useCallback((
+    next: string,
+    selection?: { start: number; end: number },
+  ) => {
+    if (selection) {
+      composerSelectionRef.current = selection;
+    }
     setInputText(next);
     requestAnimationFrame(() => syncComposerHeight());
   }, [syncComposerHeight]);
+
+  useLayoutEffect(() => {
+    const pending = composerSelectionRef.current;
+    const el = composerRef.current;
+    if (!pending || !el) return;
+    composerSelectionRef.current = null;
+    if (document.activeElement === el) {
+      el.setSelectionRange(pending.start, pending.end);
+    }
+  }, [inputText]);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -2866,7 +2883,10 @@ export default function HermesChat({
                 <textarea
                   ref={composerRef}
                   value={inputText}
-                  onChange={(e) => handleComposerChange(e.target.value)}
+                  onChange={(e) => handleComposerChange(e.target.value, {
+                    start: e.target.selectionStart ?? e.target.value.length,
+                    end: e.target.selectionEnd ?? e.target.value.length,
+                  })}
                   onKeyDown={onKeyDown}
                   placeholder={
                     isWatchingOnly
