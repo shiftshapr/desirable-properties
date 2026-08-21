@@ -4,7 +4,11 @@ import PadOrgLookup from '@/components/onboard/PadOrgLookup';
 import { listAllianceOrgs } from '@/lib/hermes-onboard/directory';
 import { padAbsoluteHref, padHref, padPublicBase } from '@/lib/hermes-onboard/tabs';
 
-export default async function PadIndexContent() {
+export default async function PadIndexContent({
+  initialLookupMode = 'organization',
+}: {
+  initialLookupMode?: 'organization' | 'person';
+}) {
   const orgs = listAllianceOrgs();
 
   return (
@@ -42,7 +46,7 @@ export default async function PadIndexContent() {
         ). Person pads use{' '}
         <span className="font-mono text-slate-300">{padPublicBase()}/pad/person/your-name</span>.
       </p>
-      <PadOrgLookup />
+      <PadOrgLookup initialMode={initialLookupMode} />
       <ul className="mt-10 space-y-4">
         {orgs.map((org) => (
           <li key={org.slug} className="rounded-xl border border-slate-800 bg-slate-900/30 p-5">

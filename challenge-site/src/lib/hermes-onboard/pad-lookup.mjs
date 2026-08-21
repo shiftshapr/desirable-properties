@@ -203,7 +203,7 @@ function emptyPadLookupResult() {
  * @returns {string | null}
  */
 export function resolvePadSlugFromInput(orgs, input) {
-  const result = resolvePadLookup(orgs, [], input);
+  const result = resolvePadLookupWithCorpus(orgs, [], input);
   return result.status === 'found' ? result.slug : null;
 }
 
@@ -215,7 +215,7 @@ export function resolvePadSlugFromInput(orgs, input) {
  * @param {string} input
  * @returns {PadLookupResult}
  */
-export function resolvePadLookup(orgs, roster, input) {
+export function resolvePadLookupWithCorpus(orgs, roster, input) {
   const trimmed = input.trim();
   if (!trimmed) return emptyPadLookupResult();
 
@@ -299,6 +299,22 @@ export function resolvePadLookup(orgs, roster, input) {
       domain: rosterByName.domain,
       name: rosterByName.name,
       href: buildPadLookupHref(rosterByName.slug),
+    };
+  }
+
+  // Unknown slug-shaped input (no spaces): reserve a request page instead of 404.
+  if (isAllianceSlug(slugCandidate) && !/\s/.test(trimmed)) {
+    const name = slugCandidate
+      .split('-')
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+    return {
+      status: 'dynamic',
+      slug: slugCandidate,
+      domain: null,
+      name,
+      href: buildPadLookupHref(slugCandidate),
     };
   }
 

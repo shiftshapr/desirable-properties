@@ -7,6 +7,15 @@ export const metadata: Metadata = {
     'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
 };
 
-export default async function PadIndexPage() {
-  return <PadIndexContent />;
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default async function PadIndexPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const params = await searchParams;
+  const modeParam = Array.isArray(params.mode) ? params.mode[0] : params.mode;
+  const initialLookupMode = modeParam === 'person' ? 'person' : 'organization';
+  return <PadIndexContent initialLookupMode={initialLookupMode} />;
 }

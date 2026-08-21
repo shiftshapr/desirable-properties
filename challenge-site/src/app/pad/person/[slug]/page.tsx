@@ -1,8 +1,17 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import PersonPadClient from '@/components/onboard/PersonPadClient';
+import PersonPadRequestClient from '@/components/onboard/PersonPadRequestClient';
 import { isPersonSlug } from '@/lib/hermes-onboard/person-pad-lookup';
 import { loadPersonPad } from '@/lib/hermes-onboard/person-pad-store';
+
+function displayNameFromSlug(slug: string): string {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 type Params = Promise<{ slug: string }>;
 
@@ -21,7 +30,11 @@ export default async function PersonPadPage({ params }: { params: Params }) {
   if (!isPersonSlug(slug)) notFound();
 
   const record = await loadPersonPad(slug);
-  if (!record) notFound();
+  if (!record) {
+    return (
+      <PersonPadRequestClient slug={slug} displayName={displayNameFromSlug(slug)} />
+    );
+  }
 
   return <PersonPadClient initial={record} />;
 }

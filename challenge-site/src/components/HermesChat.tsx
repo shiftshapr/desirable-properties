@@ -19,6 +19,7 @@ import { useThreadShares } from '@/lib/useThreadShares';
 import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/HermesThreadSidebar';
 import { usePromptStack } from '@/lib/usePromptStack';
 import { copyTextToClipboard } from '@/lib/copy-to-clipboard';
+import { isTextSelectionInElement } from '@/lib/chat-text-selection';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
@@ -298,7 +299,7 @@ function resolveShareAnchorFromMessage(message: Pick<Message, 'id' | 'text' | 't
   const turnId = message.turnId
     ?? turnIdFromAssistantMessageId(message.id)
     ?? turnIdFromMessageId(message.id);
-  const firstLine = message.text.split('\n')[0].trim();
+  const firstLine = String(message.text ?? '').split('\n')[0].trim();
   const label = firstLine.length > 60 ? `${firstLine.slice(0, 57)}…` : firstLine || 'From this message';
   return { turnId, label };
 }
@@ -552,6 +553,9 @@ export default function HermesChat({
   const stickToBottomRef = useRef(true);
   const prevMessageCountRef = useRef(0);
   const prevLoadingRef = useRef(false);
+  const prevHadContributionDraftRef = useRef(false);
+  const selectingInChatRef = useRef(false);
+  const messagesFingerprintRef = useRef('');
 
   const beginChatAbort = useCallback(() => {
     chatAbortRef.current?.abort();
@@ -720,7 +724,17 @@ export default function HermesChat({
         dpFocus,
         sets,
       );
-      setMessages(mergePendingUserMessagesIntoThread(hydrated, threadId));
+      const merged = mergePendingUserMessagesIntoThread(hydrated, threadId);
+      const nextFingerprint = merged
+        .filter((m) => m.id !== 'intro')
+        .map((m) => `${m.id}:${m.text.length}:${m.sender}`)
+        .join('|');
+      const preserveSelection = isTextSelectionInElement(scrollContainerRef.current)
+        || selectingInChatRef.current;
+      if (!preserveSelection && nextFingerprint !== messagesFingerprintRef.current) {
+        setMessages(merged);
+        messagesFingerprintRef.current = nextFingerprint;
+      }
       setThreadAccess(data.thread?.access || null);
       const pending = loadPendingContributionDraft(threadId);
       if (pending?.draft) {
@@ -847,10 +861,30 @@ export default function HermesChat({
     if (!activeThreadId || threadAccess?.canPrompt) return;
     if (!threadAccess?.roles?.includes('watcher') && !threadAccess?.roles?.includes('owner_watch')) return;
     const interval = window.setInterval(() => {
+      if (selectingInChatRef.current || isTextSelectionInElement(scrollContainerRef.current)) return;
       void loadThread(activeThreadId);
     }, 8000);
     return () => window.clearInterval(interval);
   }, [activeThreadId, threadAccess, loadThread]);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const syncSelecting = () => {
+      selectingInChatRef.current = isTextSelectionInElement(container);
+    };
+
+    syncSelecting();
+    document.addEventListener('selectionchange', syncSelecting);
+    container.addEventListener('mouseup', syncSelecting);
+    container.addEventListener('keyup', syncSelecting);
+    return () => {
+      document.removeEventListener('selectionchange', syncSelecting);
+      container.removeEventListener('mouseup', syncSelecting);
+      container.removeEventListener('keyup', syncSelecting);
+    };
+  }, [activeThreadId]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -867,11 +901,7 @@ export default function HermesChat({
   }, [activeThreadId]);
 
   const chatHasActiveTextSelection = useCallback(() => {
-    const container = scrollContainerRef.current;
-    const sel = typeof document !== 'undefined' ? document.getSelection() : null;
-    if (!container || !sel || sel.isCollapsed || sel.rangeCount === 0) return false;
-    const anchor = sel.anchorNode;
-    return Boolean(anchor && container.contains(anchor));
+    return selectingInChatRef.current || isTextSelectionInElement(scrollContainerRef.current);
   }, []);
 
   useEffect(() => {
@@ -879,15 +909,17 @@ export default function HermesChat({
 
     const countGrew = messages.length > prevMessageCountRef.current;
     const loadingStarted = isLoading && !prevLoadingRef.current;
+    const draftAppeared = Boolean(contributionDraft) && !prevHadContributionDraftRef.current;
     prevMessageCountRef.current = messages.length;
     prevLoadingRef.current = isLoading;
+    prevHadContributionDraftRef.current = Boolean(contributionDraft);
 
-    const shouldScroll = stickToBottomRef.current || countGrew || loadingStarted || Boolean(contributionDraft);
+    const shouldScroll = stickToBottomRef.current || countGrew || loadingStarted || draftAppeared;
     if (!shouldScroll) return;
 
     requestAnimationFrame(() => {
       if (chatHasActiveTextSelection()) return;
-      messagesEndRef.current?.scrollIntoView({ behavior: countGrew || loadingStarted ? 'smooth' : 'auto' });
+      messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
     });
   }, [messages, isLoading, contributionDraft, chatHasActiveTextSelection]);
 
@@ -1814,8 +1846,10 @@ export default function HermesChat({
       variant: 'info',
       text: 'Draft opened for editing — choose Update draft or Replace live post when you submit.',
     });
-    contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [promptSignIn, signedIn]);
+    if (!chatHasActiveTextSelection()) {
+      contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+    }
+  }, [promptSignIn, signedIn, chatHasActiveTextSelection]);
 
   const startRevision = useCallback((
     set: ContributionSet,
@@ -1842,8 +1876,10 @@ export default function HermesChat({
       variant: 'info',
       text: 'Revision opened — choose Save revision draft or Replace published post when you submit.',
     });
-    contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [promptSignIn, signedIn]);
+    if (!chatHasActiveTextSelection()) {
+      contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+    }
+  }, [promptSignIn, signedIn, chatHasActiveTextSelection]);
 
   const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
     if (!signedIn) {
@@ -2204,7 +2240,9 @@ export default function HermesChat({
       });
       draftingMessageIdRef.current = null;
       setDraftingMessageId(null);
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      if (!chatHasActiveTextSelection()) {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+      }
     } catch (err) {
       const message = userFacingError(err);
       const needsSignIn = /sign in again|session expired/i.test(message);
@@ -2216,7 +2254,9 @@ export default function HermesChat({
         );
         saveStagedProposal(contributionDraft);
       }
-      contributionPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (!chatHasActiveTextSelection()) {
+        contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+      }
       await DpDialog.alert({
         title: isDraft ? 'Could not save drafts' : 'Could not publish',
         message: `${message}\n\nYour draft is still open below — nothing was lost. Try Save to my drafts, or edit and retry.`,
@@ -2271,6 +2311,7 @@ export default function HermesChat({
     scrollContainerRef,
     messageRefs,
     enabled: !compact,
+    pauseWhileSelectingRef: selectingInChatRef,
   });
 
   const shellClass = compact
@@ -2404,7 +2445,7 @@ export default function HermesChat({
         <div className="relative min-h-0 flex-1">
           <div
             ref={scrollContainerRef}
-            className="h-full overflow-y-auto"
+            className="h-full overflow-y-auto overscroll-y-contain"
           >
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 sm:px-6">
             {threadLoadError ? (
@@ -2487,7 +2528,9 @@ export default function HermesChat({
                           </p>
                         </>
                       ) : null}
-                      <HermesMarkdown text={message.text} variant="dark" />
+                      <div className="select-text">
+                        <HermesMarkdown text={message.text} variant="dark" />
+                      </div>
                     </>
                   ) : editingMessageId === message.id ? (
                     <div className="space-y-2">

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { isTextSelectionInElement } from '@/lib/chat-text-selection';
 
 export type PromptStackMessage = {
   id: string;
@@ -28,8 +29,9 @@ export function buildPromptStackItems(
     if (message.sender !== 'user') continue;
     if (message.id === 'intro') continue;
     if (message.contributionRecord) continue;
-    if (!message.text.trim()) continue;
-    const firstLine = message.text.split('\n')[0].trim();
+    const messageText = String(message.text ?? '');
+    if (!messageText.trim()) continue;
+    const firstLine = messageText.split('\n')[0].trim();
     const turnId = message.id.endsWith('-u') ? message.id.slice(0, -2) : null;
     items.push({
       stackKey: `${message.id}:${index}`,
@@ -65,17 +67,24 @@ export function usePromptStack({
   scrollContainerRef,
   messageRefs,
   enabled = true,
+  pauseWhileSelectingRef,
 }: {
   messages: PromptStackMessage[];
   scrollContainerRef: React.RefObject<HTMLElement | null>;
   messageRefs: React.MutableRefObject<Map<string, HTMLElement>>;
   enabled?: boolean;
+  pauseWhileSelectingRef?: RefObject<boolean>;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [offsetsVersion, setOffsetsVersion] = useState(0);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number | null>(null);
+
+  const selectionPaused = useCallback(() => {
+    if (pauseWhileSelectingRef?.current) return true;
+    return isTextSelectionInElement(scrollContainerRef.current);
+  }, [pauseWhileSelectingRef, scrollContainerRef]);
 
   const measureOffsets = useCallback((): Map<string, number> => {
     const container = scrollContainerRef.current;
@@ -104,7 +113,10 @@ export function usePromptStack({
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const bump = () => setOffsetsVersion((v) => v + 1);
+    const bump = () => {
+      if (selectionPaused()) return;
+      setOffsetsVersion((v) => v + 1);
+    };
     bump();
 
     const ro = typeof ResizeObserver !== 'undefined'
@@ -116,9 +128,11 @@ export function usePromptStack({
     }
 
     const onScroll = () => {
+      if (selectionPaused()) return;
       if (rafRef.current !== null) return;
       rafRef.current = window.requestAnimationFrame(() => {
         rafRef.current = null;
+        if (selectionPaused()) return;
         const next = activePromptIndexFromOffsets(
           items,
           container.scrollTop,
@@ -136,7 +150,7 @@ export function usePromptStack({
       ro?.disconnect();
       if (rafRef.current !== null) window.cancelAnimationFrame(rafRef.current);
     };
-  }, [enabled, items, scrollContainerRef, messageRefs, messages]);
+  }, [enabled, items, scrollContainerRef, messageRefs, messages, selectionPaused]);
 
   const jumpTo = useCallback((messageId: string) => {
     const el = messageRefs.current.get(messageId)

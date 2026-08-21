@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { DpDialog } from '@/components/DpDialog';
-import { resolvePadLookup } from '@/lib/hermes-onboard/pad-lookup';
 import { padPublicBase } from '@/lib/hermes-onboard/tabs';
 import type { PersonPadSelectedSource } from '@/lib/hermes-onboard/person-pad-lookup';
 import type { PadLookupResult } from '@/lib/hermes-onboard/types';
@@ -32,11 +31,16 @@ function hasPasteOrUpload(input: {
   return Boolean(input.bioText.trim() || input.profilePaste.trim() || input.papers.length);
 }
 
-export default function PadOrgLookup() {
+export default function PadOrgLookup({
+  initialMode = 'organization',
+}: {
+  initialMode?: LookupMode;
+}) {
   const router = useRouter();
-  const [mode, setMode] = useState<LookupMode>('organization');
+  const [mode, setMode] = useState<LookupMode>(initialMode);
 
   const [orgInput, setOrgInput] = useState('');
+  const [orgLookupBusy, setOrgLookupBusy] = useState(false);
   const [orgError, setOrgError] = useState<string | null>(null);
   const [orgHint, setOrgHint] = useState<string | null>(null);
 
@@ -58,19 +62,43 @@ export default function PadOrgLookup() {
   const [personBusy, setPersonBusy] = useState(false);
   const [personError, setPersonError] = useState<string | null>(null);
 
-  function handleOrgSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleOrgSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOrgError(null);
     setOrgHint(null);
-    const result = resolvePadLookup(orgInput);
-    if (result.status === 'not_found' || !result.href) {
-      setOrgError(
-        'No matching org found. Try your org website (e.g. consumerreports.org), Alliance member name, or pad slug.',
+    const trimmedInput = orgInput.trim();
+    if (!trimmedInput) return;
+
+    setOrgLookupBusy(true);
+    try {
+      const res = await fetch(
+        `/api/pad/resolve?input=${encodeURIComponent(trimmedInput)}`,
       );
-      return;
+      const result = (await res.json().catch(() => null)) as PadLookupResult | null;
+      if (!res.ok || !result) {
+        setOrgError('Could not look up that organization. Try again in a moment.');
+        return;
+      }
+      if (result.status === 'not_found' || !result.href) {
+        setOrgError(
+          'No matching org found. Try your org website (e.g. consumerreports.org), a member name, or a slug like your-org-name.',
+        );
+        return;
+      }
+      if (
+        result.status === 'dynamic'
+        && !result.href.includes('?domain=')
+        && !trimmedInput.includes('.')
+      ) {
+        setOrgHint('No published pad yet. Opening the request page for this slug…');
+      }
+      setOrgHint(ORG_STATUS_HINT[result.status]);
+      router.push(result.href);
+    } catch {
+      setOrgError('Could not look up that organization. Try again in a moment.');
+    } finally {
+      setOrgLookupBusy(false);
     }
-    setOrgHint(ORG_STATUS_HINT[result.status]);
-    router.push(result.href);
   }
 
   function discoveryPayload() {
@@ -278,10 +306,10 @@ export default function PadOrgLookup() {
             </div>
             <button
               type="submit"
-              disabled={!orgInput.trim()}
+              disabled={!orgInput.trim() || orgLookupBusy}
               className="rounded-lg bg-cyan-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Go
+              {orgLookupBusy ? 'Looking up…' : 'Go'}
             </button>
           </form>
         </>

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import {
-  resolvePadLookup,
+  resolvePadLookupWithCorpus,
   resolvePadSlugFromInput,
 } from '../src/lib/hermes-onboard/pad-lookup.mjs';
 
@@ -165,18 +165,18 @@ test('alliance roster is a valid prework packet', () => {
   }
 });
 
-test('resolvePadLookup resolves directory, roster, and dynamic website input', () => {
+test('resolvePadLookupWithCorpus resolves directory, roster, and dynamic website input', () => {
   const orgs = loadMergedDirectoryOrgs();
   const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
   const rosterOrgs = roster.orgs;
   const fullDirectorySlugs = loadFullDirectorySlugs();
 
-  const found = resolvePadLookup(orgs, rosterOrgs, 'project-liberty');
+  const found = resolvePadLookupWithCorpus(orgs, rosterOrgs, 'project-liberty');
   assert.equal(found.status, 'found');
   assert.equal(found.slug, 'project-liberty');
   assert.equal(found.href, '/pad/project-liberty');
 
-  const rosterMatch = resolvePadLookup(orgs, rosterOrgs, 'consumerreports.org');
+  const rosterMatch = resolvePadLookupWithCorpus(orgs, rosterOrgs, 'consumerreports.org');
   if (fullDirectorySlugs.has('consumerreports')) {
     assert.equal(rosterMatch.status, 'found');
   } else {
@@ -185,14 +185,19 @@ test('resolvePadLookup resolves directory, roster, and dynamic website input', (
     assert.equal(rosterMatch.domain, 'consumerreports.org');
   }
 
-  const dynamic = resolvePadLookup(orgs, rosterOrgs, 'https://example-random-site.org/about');
+  const dynamic = resolvePadLookupWithCorpus(orgs, rosterOrgs, 'https://example-random-site.org/about');
   assert.equal(dynamic.status, 'dynamic');
   assert.equal(dynamic.slug, 'example-random-site');
   assert.equal(dynamic.domain, 'example-random-site.org');
   assert.match(dynamic.href, /^\/pad\/example-random-site\?domain=/);
 
-  const missing = resolvePadLookup(orgs, rosterOrgs, 'not a real org name at all');
+  const missing = resolvePadLookupWithCorpus(orgs, rosterOrgs, 'not a real org name at all');
   assert.equal(missing.status, 'not_found');
+
+  const slugOnly = resolvePadLookupWithCorpus(orgs, rosterOrgs, 'no-such-org-xyz');
+  assert.equal(slugOnly.status, 'dynamic');
+  assert.equal(slugOnly.slug, 'no-such-org-xyz');
+  assert.equal(slugOnly.href, '/pad/no-such-org-xyz');
 });
 
 test('alliance roster pads cover every roster org outside full directory', () => {
@@ -226,7 +231,7 @@ test('sample roster slugs resolve to pad hrefs (found if corpus-promoted, else r
   const rosterOrgs = roster.orgs;
 
   for (const sample of ['consumerreports', 'epic', 'stanford']) {
-    const match = resolvePadLookup(orgs, rosterOrgs, sample);
+    const match = resolvePadLookupWithCorpus(orgs, rosterOrgs, sample);
     if (fullDirectorySlugs.has(sample)) {
       assert.equal(match.status, 'found', sample);
     } else {

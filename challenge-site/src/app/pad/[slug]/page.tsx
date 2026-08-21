@@ -11,7 +11,7 @@ import {
   resolveAllianceSlug,
   resolvePartnerOrgs,
 } from '@/lib/hermes-onboard/directory';
-import { resolvePadLookup } from '@/lib/hermes-onboard/pad-lookup';
+import { resolvePadLookup } from '@/lib/hermes-onboard/pad-lookup-server';
 import { generateBriefing } from '@/lib/hermes-onboard/generate';
 import { findRosterByDomain, getRosterOrg } from '@/lib/hermes-onboard/roster';
 import { getRosterPadEntry } from '@/lib/hermes-onboard/roster-pads';
@@ -182,6 +182,19 @@ export default async function AllianceBriefingPage({
         );
       }
     }
+  }
+
+  const fallbackLookup = resolvePadLookup(slug);
+  if (fallbackLookup.status === 'dynamic' && fallbackLookup.slug) {
+    return (
+      <DynamicPadClient
+        status="dynamic"
+        slug={fallbackLookup.slug}
+        name={fallbackLookup.name ?? fallbackLookup.slug}
+        domain={fallbackLookup.domain}
+        website={fallbackLookup.domain ? `https://${fallbackLookup.domain}/` : null}
+      />
+    );
   }
 
   notFound();
