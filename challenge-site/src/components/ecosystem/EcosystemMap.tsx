@@ -251,6 +251,96 @@ function ForkView() {
   );
 }
 
+function PaceView() {
+  const view = ECOSYSTEM_VIEWS.find((v) => v.id === 'pace');
+  if (!view?.groups) return null;
+
+  const [slowGroup, fastGroup] = view.groups;
+
+  return (
+    <div className="space-y-8">
+      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
+        Pace layers
+      </p>
+      <blockquote className="border-l-2 border-cyan-700/60 pl-4 text-base leading-relaxed text-slate-200">
+        Monuments separate fast living context from slow durable anchors.
+      </blockquote>
+      <p className="text-center text-sm font-medium text-slate-400">
+        The question: what can evolve and what must endure.
+      </p>
+
+      <section className="rounded-xl border border-slate-800 bg-slate-900/40 p-5 sm:p-6">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-400">
+          {slowGroup.title}
+        </h3>
+        {slowGroup.subtitle ? (
+          <p className="mt-2 text-lg font-semibold text-white">{slowGroup.subtitle}</p>
+        ) : null}
+        {slowGroup.body ? (
+          <p className="mt-3 text-sm leading-relaxed text-slate-400">{slowGroup.body}</p>
+        ) : null}
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {(slowGroup.nodeIds ?? []).map((id) => {
+            const node = getEcosystemNode(id);
+            if (!node) return null;
+            return <EcosystemNodeCard key={id} node={node} compact />;
+          })}
+        </div>
+      </section>
+
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+        Fast gathers around the slow anchors
+      </p>
+
+      {view.metaLayerNote ? (
+        <section className="rounded-xl border border-cyan-900/40 bg-cyan-950/20 p-5 sm:p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-400">
+            Meta-Layer (space for capability)
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
+            {view.metaLayerNote}
+          </p>
+        </section>
+      ) : null}
+
+      <div className="flex justify-center" aria-hidden>
+        <FlowArrow className="rotate-90" />
+      </div>
+
+      <section className="rounded-xl border border-violet-900/40 bg-violet-950/20 p-5 sm:p-6">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-violet-400">
+          {fastGroup.title}
+        </h3>
+        {fastGroup.subtitle ? (
+          <p className="mt-2 text-lg font-semibold text-white">{fastGroup.subtitle}</p>
+        ) : null}
+        {fastGroup.body ? (
+          <p className="mt-3 text-sm leading-relaxed text-slate-400">{fastGroup.body}</p>
+        ) : null}
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {(fastGroup.nodeIds ?? []).map((id) => {
+            const node = getEcosystemNode(id);
+            if (!node) return null;
+            return <EcosystemNodeCard key={id} node={node} compact />;
+          })}
+        </div>
+      </section>
+
+      {view.tagline ? (
+        <blockquote className="border-l-2 border-slate-700 pl-4 text-sm leading-relaxed text-slate-300 sm:text-base">
+          {view.tagline}
+        </blockquote>
+      ) : null}
+
+      {view.footnote ? (
+        <p className="rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm leading-relaxed text-slate-400">
+          {view.footnote}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 function LoopView() {
   const view = ECOSYSTEM_VIEWS.find((v) => v.id === 'loop');
   if (!view?.groups) return null;
@@ -359,6 +449,7 @@ export default function EcosystemMap() {
       >
         {activeView === 'here' ? <HereView /> : null}
         {activeView === 'fork' ? <ForkView /> : null}
+        {activeView === 'pace' ? <PaceView /> : null}
         {activeView === 'loop' ? <LoopView /> : null}
       </div>
 
@@ -366,7 +457,7 @@ export default function EcosystemMap() {
         <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-cyan-400">
           Legend
         </h2>
-        <dl className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           <div>
             <dt className="text-sm font-semibold text-white">We are here</dt>
             <dd className="mt-1 text-sm leading-relaxed text-slate-400">
@@ -383,6 +474,15 @@ export default function EcosystemMap() {
               </Link>
               : substrate, architectural space, and particular layers as inhabitants. Not a speed
               axis. AI-mediated awareness is shown as a failure mode – not a product.
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm font-semibold text-white">Pace layers</dt>
+            <dd className="mt-1 text-sm leading-relaxed text-slate-400">
+              A monument stack: slow durable anchors (monuments, reality anchors, bridges) with
+              fast living context (discussion, annotations, conversation, interfaces, updates)
+              gathering around them. The Meta-Layer enables the fast layers; it is not the slow
+              layer.
             </dd>
           </div>
           <div>

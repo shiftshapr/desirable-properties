@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Meta-Layer Ecosystem Map – Desirable Properties Challenge',
   description:
-    'Explore the Desirable Properties Challenge and the wider Meta-Layer stack: where we are today, the fork in space for layers, and the living governance loop.',
+    'Explore the Desirable Properties Challenge and the wider Meta-Layer stack: where we are today, the fork in space for layers, pace layers around monuments, and the living governance loop.',
 };
 
 export default function EcosystemMapPage() {
@@ -23,10 +23,11 @@ export default function EcosystemMapPage() {
             Meta-Layer ecosystem map
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            The Meta-Layer is not one product. It is a stack of community governance, living drafts,
-            monuments, learning, and tools you can use now. Toggle between three experimental views
-            of the same nodes to see how the pieces connect – including the fork between
-            AI-mediated awareness and a human-centered layered Web.
+            The Meta-Layer is not one product. Toggle between four views on two axes: the{' '}
+            <strong className="font-semibold text-white">fork</strong> (space for layers vs
+            AI-mediated failure) and <strong className="font-semibold text-white">pace</strong>{' '}
+            (what endures vs what evolves around a monument), plus where we are today and the living
+            governance loop.
           </p>
         </div>
       </section>

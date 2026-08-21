@@ -2,7 +2,7 @@ import { bookDiscussHref } from '@/lib/govhub';
 
 export type EcosystemNodeStatus = 'live' | 'in_progress' | 'coming';
 
-export type EcosystemMapViewId = 'here' | 'fork' | 'loop';
+export type EcosystemMapViewId = 'here' | 'fork' | 'pace' | 'loop';
 
 export type EcosystemNode = {
   id: string;
@@ -31,7 +31,7 @@ export const ECOSYSTEM_STATUS_LABELS: Record<EcosystemNodeStatus, string> = {
 const ML_REQ_CAPTION =
   'People set the rules on Gov Hub. Software proves it meets them before it scales.';
 
-/** Shared node catalog – same nodes across all three views. */
+/** Shared node catalog – products, functions, and pace-layer roles across views. */
 export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
   challenge: {
     id: 'challenge',
@@ -164,6 +164,66 @@ export const ECOSYSTEM_NODES: Record<string, EcosystemNode> = {
     caption:
       'Chapter comments are live on the book. Passage-level patching on the book is coming soon; patch drafts on Gov Hub today.',
   },
+  /** Pace-layer functions – monument stack roles, not product catalog entries. */
+  paceDigitalMonuments: {
+    id: 'paceDigitalMonuments',
+    label: 'Digital monuments',
+    detail: 'On-chain inscriptions',
+    href: '/onchain',
+    status: 'live',
+  },
+  paceRealityAnchors: {
+    id: 'paceRealityAnchors',
+    label: 'Reality anchors',
+    status: 'live',
+    conceptual: true,
+    caption: 'Durable reference points that outlive any single interface or session.',
+  },
+  paceBridges: {
+    id: 'paceBridges',
+    label: 'Bridges',
+    status: 'live',
+    conceptual: true,
+    caption: 'Connections that let living context reach across anchors without collapsing them.',
+  },
+  paceDiscussion: {
+    id: 'paceDiscussion',
+    label: 'Discussion',
+    detail: 'Workgroup deliberation',
+    href: '/workgroups',
+    status: 'live',
+  },
+  paceAnnotations: {
+    id: 'paceAnnotations',
+    label: 'Annotations',
+    detail: 'On the book',
+    href: 'https://book.desirableproperties.org',
+    external: true,
+    status: 'live',
+  },
+  paceConversation: {
+    id: 'paceConversation',
+    label: 'Conversation',
+    detail: 'Discuss on chapters',
+    href: bookDiscussHref(),
+    external: true,
+    discussPatch: true,
+    status: 'live',
+  },
+  paceInterfaces: {
+    id: 'paceInterfaces',
+    label: 'Interfaces',
+    detail: 'Landing pads',
+    href: '/pad',
+    status: 'live',
+  },
+  paceUpdates: {
+    id: 'paceUpdates',
+    label: 'Updates',
+    status: 'live',
+    conceptual: true,
+    caption: 'Living context that evolves around a durable anchor.',
+  },
 };
 
 export type EcosystemViewConfig = {
@@ -192,6 +252,8 @@ export type EcosystemViewConfig = {
   highlightId?: string;
   tagline?: string;
   footnote?: string;
+  /** Pace view: Meta-Layer is capability, not the slow band. */
+  metaLayerNote?: string;
 };
 
 export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
@@ -274,10 +336,54 @@ export const ECOSYSTEM_VIEWS: EcosystemViewConfig[] = [
       architecture: 'You → AI → Everything Else',
       body:
         'One interface. One conversational relationship. One personalized aperture onto civilization.',
-      warning: 'If Hermes or Canopi becomes that aperture, the architecture failed.',
+      warning:
+        'If Hermes or Canopi becomes that aperture, the architecture failed. The fast layer becomes the only aperture; the slow layer hides behind a concierge.',
     },
     footnote:
       'These futures are not mutually exclusive. Neither does the first naturally lead to the second. Design choices influence which becomes dominant – not a deterministic binary, and not a moral cartoon.',
+  },
+  {
+    id: 'pace',
+    label: 'Pace layers',
+    description:
+      'Monuments separate fast living context from slow durable anchors. Fast living context is what the Meta-Layer enables; slow durable anchors are monuments, reality anchors, and bridges. Not a product catalog sorted by ship speed.',
+    groups: [
+      {
+        title: 'Slow durable anchors',
+        subtitle: 'What must endure',
+        body: 'Digital monuments, reality anchors, and bridges preserve continuity beneath living context.',
+        nodeIds: ['paceDigitalMonuments', 'paceRealityAnchors', 'paceBridges'],
+      },
+      {
+        title: 'Fast living context',
+        subtitle: 'What the Meta-Layer enables',
+        body:
+          'Discussion, annotations, conversation, interfaces, and updates help communities respond – gathering around the slow anchors, not replacing them.',
+        nodeIds: [
+          'paceDiscussion',
+          'paceAnnotations',
+          'paceConversation',
+          'paceInterfaces',
+          'paceUpdates',
+        ],
+      },
+    ],
+    nodeIds: [
+      'paceDigitalMonuments',
+      'paceRealityAnchors',
+      'paceBridges',
+      'paceDiscussion',
+      'paceAnnotations',
+      'paceConversation',
+      'paceInterfaces',
+      'paceUpdates',
+    ],
+    metaLayerNote:
+      'The Meta-Layer is the space and capability that makes fast living context possible around slow durable anchors. It is not itself the slow layer.',
+    tagline:
+      'A normal website collapses memory into one speed. A monument separates living context from durable anchors.',
+    footnote:
+      'The monument remains stable while annotations, summaries, lessons, and debates evolve around it. The result is not a frozen archive; it is living orientation around durable memory.',
   },
   {
     id: 'loop',
