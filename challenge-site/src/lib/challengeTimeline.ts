@@ -1,6 +1,12 @@
 import timelineData from '@/data/challenge-timeline.json';
 import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 
+/**
+ * challenge-timeline.json is generated from meta-console/estate-timeline.yaml
+ * (tag: desirable-properties). Edit the YAML, then run:
+ *   python3 meta-console/scripts/export-estate-timeline.py
+ */
+
 export type MilestoneStatus = 'past' | 'current' | 'upcoming';
 
 export type ChallengeMilestone = {
@@ -23,6 +29,7 @@ export type ChallengeTimelineMeta = {
   target_version: string;
   book_launch_date: string;
   book_launch_title: string;
+  source?: string;
 };
 
 const milestones = timelineData.milestones as ChallengeMilestone[];

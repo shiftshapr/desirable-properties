@@ -3,7 +3,8 @@
     "current_draft_version": "0.77",
     "target_version": "1.0",
     "book_launch_date": "2026-09-16T09:00:00-07:00",
-    "book_launch_title": "The Layered Web & Ordinal edition"
+    "book_launch_title": "The Layered Web & Ordinal edition",
+    "source": "meta-console/estate-timeline.yaml"
   },
   "milestones": [
     {
