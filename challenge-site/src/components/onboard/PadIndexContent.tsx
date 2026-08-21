@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PadHero from '@/components/onboard/PadHero';
 import PadOrgLookup from '@/components/onboard/PadOrgLookup';
 import { listAllianceOrgs } from '@/lib/hermes-onboard/directory';
 import { padAbsoluteHref, padHref, padPublicBase } from '@/lib/hermes-onboard/tabs';
@@ -7,7 +8,9 @@ export default async function PadIndexContent() {
   const orgs = listAllianceOrgs();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <PadHero />
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         Desirable Properties Studio · Public beta
       </p>
@@ -72,6 +75,7 @@ export default async function PadIndexContent() {
           </li>
         ))}
       </ul>
-    </div>
+      </div>
+    </>
   );
 }

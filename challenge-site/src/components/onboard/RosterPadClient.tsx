@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import PadHero from '@/components/onboard/PadHero';
 import PadOrgLookup from '@/components/onboard/PadOrgLookup';
 import { getDpRegistryEntry } from '@/lib/dp-registry';
 import { padAbsoluteHref, padHref } from '@/lib/hermes-onboard/tabs';
@@ -23,7 +24,9 @@ export default function RosterPadClient({ entry }: Props) {
     .filter((row): row is { id: string; name: string; href: string } => Boolean(row));
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <PadHero />
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         Project Liberty Alliance · Desirable Properties Studio · Public beta
       </p>
@@ -159,6 +162,7 @@ export default function RosterPadClient({ entry }: Props) {
           </span>
         ))}
       </p>
-    </div>
+      </div>
+    </>
   );
 }

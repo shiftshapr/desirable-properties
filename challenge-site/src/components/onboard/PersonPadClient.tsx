@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import PadHero from '@/components/onboard/PadHero';
 import { padPublicBase } from '@/lib/hermes-onboard/tabs';
 import type { PersonPadRecord } from '@/lib/hermes-onboard/person-pad-store';
 
@@ -63,7 +64,9 @@ export default function PersonPadClient({ initial }: { initial: PersonPadRecord 
     initial.selectedSources.length > 0;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <PadHero />
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         Desirable Properties Studio · Public beta
       </p>
@@ -345,6 +348,7 @@ export default function PersonPadClient({ initial }: { initial: PersonPadRecord 
           Back to pad lookup
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

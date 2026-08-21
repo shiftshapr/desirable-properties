@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
+import PadHero from '@/components/onboard/PadHero';
 import { useAuth } from '@/lib/auth-context';
 import { defaultPitch } from '@/lib/hermes-onboard/dp-directions';
 import { generateDpDirections } from '@/lib/hermes-onboard/dp-directions';
@@ -162,7 +163,9 @@ export default function AllianceBriefingClient({
   const padAbsoluteLink = padAbsoluteHref(org.slug, tab);
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+    <>
+      <PadHero />
+      <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
       <DpDialogHost />
       <p className="text-sm text-cyan-300">
         <Link href="/pad" className="hover:text-cyan-200">
@@ -326,7 +329,8 @@ export default function AllianceBriefingClient({
           />
         ) : null}
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

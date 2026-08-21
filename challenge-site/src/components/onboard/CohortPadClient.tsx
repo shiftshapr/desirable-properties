@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import CohortRosterList from '@/components/onboard/CohortRosterList';
+import PadHero from '@/components/onboard/PadHero';
 import PadOrgLookup from '@/components/onboard/PadOrgLookup';
 import { getAllianceDirectory, listAllianceOrgs } from '@/lib/hermes-onboard/directory';
 import { listRosterPadEntries } from '@/lib/hermes-onboard/roster-pads';
@@ -15,7 +16,9 @@ export default async function CohortPadClient() {
   const rosterPads = listRosterPadEntries();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <PadHero />
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         {directory.cohortLabel} · Desirable Properties Studio · Public beta
       </p>
@@ -123,6 +126,7 @@ export default async function CohortPadClient() {
           projectliberty.io/alliance
         </a>
       </p>
-    </div>
+      </div>
+    </>
   );
 }

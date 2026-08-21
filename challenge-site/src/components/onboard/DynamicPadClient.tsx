@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import PadHero from '@/components/onboard/PadHero';
 import type { PadLookupStatus } from '@/lib/hermes-onboard/types';
 import { padHref, padPublicBase } from '@/lib/hermes-onboard/tabs';
 
@@ -37,7 +38,9 @@ export default function DynamicPadClient({ status, slug, name, domain, website }
   const padUrl = `${padPublicBase()}${padHref(slug)}`;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <>
+      <PadHero />
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
         Desirable Properties Studio · Public beta
       </p>
@@ -104,6 +107,7 @@ export default function DynamicPadClient({ status, slug, name, domain, website }
           . If you belong there, tell us and we will add you to the roster.
         </p>
       ) : null}
-    </div>
+      </div>
+    </>
   );
 }
