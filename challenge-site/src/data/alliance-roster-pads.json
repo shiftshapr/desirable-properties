@@ -5,108 +5,6 @@
   "sourceRosterImportedAt": "2026-08-20",
   "orgs": [
     {
-      "slug": "aapti",
-      "name": "Aapti",
-      "shortName": "Aapti",
-      "domain": "aapti.in",
-      "website": "https://aapti.in/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Aapti is a Project Liberty Alliance member organization (aapti.in). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Aapti. Did we hear your concerns correctly?",
-        "lead": "Aapti appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Aapti, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Aapti can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Aapti website",
-          "url": "https://aapti.in/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "advancedaisociety",
-      "name": "Advanced Aisociety",
-      "shortName": "Advanced Aisociety",
-      "domain": "advancedaisociety.org",
-      "website": "https://www.advancedaisociety.org/",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Advanced Aisociety is a Project Liberty Alliance member organization (advancedaisociety.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Advanced Aisociety. Did we hear your concerns correctly?",
-        "lead": "Advanced Aisociety appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Advanced Aisociety, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Advanced Aisociety can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Advanced Aisociety website",
-          "url": "https://www.advancedaisociety.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "afchix",
-      "name": "Afchix",
-      "shortName": "Afchix",
-      "domain": "afchix.org",
-      "website": "https://afchix.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Afchix is a Project Liberty Alliance member organization (afchix.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Afchix. Did we hear your concerns correctly?",
-        "lead": "Afchix appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Afchix, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Afchix can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Afchix website",
-          "url": "https://afchix.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "aiprc",
       "name": "Aiprc",
       "shortName": "Aiprc",
@@ -135,140 +33,6 @@
         {
           "label": "Aiprc website",
           "url": "https://www.aiprc.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "anfhelp",
-      "name": "Alexander Neville Foundation Logo",
-      "shortName": "Anfhelp",
-      "domain": "anfhelp.org",
-      "website": "https://anfhelp.org",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Alexander Neville Foundation Logo is a Project Liberty Alliance member organization (anfhelp.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Anfhelp. Did we hear your concerns correctly?",
-        "lead": "Alexander Neville Foundation Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Anfhelp, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Anfhelp can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Alexander Neville Foundation Logo website",
-          "url": "https://anfhelp.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "americansecurityfund",
-      "name": "American Security Foundation",
-      "shortName": "American Security Foundation",
-      "domain": "americansecurityfund.com",
-      "website": "http://www.americansecurityfund.com/american-security-foundation",
-      "tags": [
-        "nonprofit",
-        "security"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP4",
-        "DP13",
-        "DP2"
-      ],
-      "mission": "American Security Foundation is a Project Liberty Alliance member organization (americansecurityfund.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for American Security Foundation. Did we hear your concerns correctly?",
-        "lead": "American Security Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent American Security Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where American Security Foundation can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "American Security Foundation website",
-          "url": "http://www.americansecurityfund.com/american-security-foundation"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "amplifier",
-      "name": "Amplifier",
-      "shortName": "Amplifier",
-      "domain": "amplifier.org",
-      "website": "https://amplifier.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Amplifier is a Project Liberty Alliance member organization (amplifier.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Amplifier. Did we hear your concerns correctly?",
-        "lead": "Amplifier appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Amplifier, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Amplifier can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Amplifier website",
-          "url": "https://amplifier.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "ashoka",
-      "name": "Ashoka",
-      "shortName": "Ashoka",
-      "domain": "ashoka.org",
-      "website": "https://www.ashoka.org/en-us",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Ashoka is a Project Liberty Alliance member organization (ashoka.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Ashoka. Did we hear your concerns correctly?",
-        "lead": "Ashoka appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Ashoka, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ashoka can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Ashoka website",
-          "url": "https://www.ashoka.org/en-us"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -313,39 +77,6 @@
       ]
     },
     {
-      "slug": "atlascomputing",
-      "name": "Atlas Computing Logo",
-      "shortName": "Atlas Computing Logo",
-      "domain": "atlascomputing.org",
-      "website": "https://atlascomputing.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Atlas Computing Logo is a Project Liberty Alliance member organization (atlascomputing.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Atlas Computing Logo. Did we hear your concerns correctly?",
-        "lead": "Atlas Computing Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Atlas Computing Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Atlas Computing Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Atlas Computing Logo website",
-          "url": "https://atlascomputing.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "backchan",
       "name": "Back Channel",
       "shortName": "Back Channel",
@@ -371,39 +102,6 @@
         {
           "label": "Back Channel website",
           "url": "https://www.backchan.us/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "beccaschmillfdn",
-      "name": "Becca Schmill Foundation",
-      "shortName": "Becca Schmill Foundation",
-      "domain": "beccaschmillfdn.org",
-      "website": "https://beccaschmillfdn.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Becca Schmill Foundation is a Project Liberty Alliance member organization (beccaschmillfdn.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Becca Schmill Foundation. Did we hear your concerns correctly?",
-        "lead": "Becca Schmill Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Becca Schmill Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Becca Schmill Foundation can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Becca Schmill Foundation website",
-          "url": "https://beccaschmillfdn.org/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -478,42 +176,6 @@
       ]
     },
     {
-      "slug": "theblockfound",
-      "name": "Blockchain Foundation Logo",
-      "shortName": "Blockchain Foundation Logo",
-      "domain": "theblockfound.com",
-      "website": "https://theblockfound.com",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Blockchain Foundation Logo is a Project Liberty Alliance member organization (theblockfound.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Blockchain Foundation Logo. Did we hear your concerns correctly?",
-        "lead": "Blockchain Foundation Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Blockchain Foundation Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Blockchain Foundation Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Blockchain Foundation Logo website",
-          "url": "https://theblockfound.com"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "counterhate",
       "name": "Center For Countering Digital Hate Logo",
       "shortName": "Counterhate",
@@ -539,39 +201,6 @@
         {
           "label": "Center For Countering Digital Hate Logo website",
           "url": "https://counterhate.com/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "humanetech",
-      "name": "Center For Humane Technology",
-      "shortName": "Center For Humane Technology",
-      "domain": "humanetech.com",
-      "website": "https://www.humanetech.com/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Center For Humane Technology is a Project Liberty Alliance member organization (humanetech.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Center For Humane Technology. Did we hear your concerns correctly?",
-        "lead": "Center For Humane Technology appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Center For Humane Technology, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Center For Humane Technology can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Center For Humane Technology website",
-          "url": "https://www.humanetech.com/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -645,109 +274,6 @@
         {
           "label": "Centre For International Governance Innovation Logo website",
           "url": "https://cigionline.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "centritechfdn",
-      "name": "Centritech Foundation",
-      "shortName": "Centritech Foundation",
-      "domain": "centritechfdn.org",
-      "website": "https://www.centritechfdn.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Centritech Foundation is a Project Liberty Alliance member organization (centritechfdn.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Centritech Foundation. Did we hear your concerns correctly?",
-        "lead": "Centritech Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Centritech Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Centritech Foundation can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Centritech Foundation website",
-          "url": "https://www.centritechfdn.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "christchurchcall",
-      "name": "Christ Church Call",
-      "shortName": "Christ Church Call",
-      "domain": "christchurchcall.org",
-      "website": "https://www.christchurchcall.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Christ Church Call is a Project Liberty Alliance member organization (christchurchcall.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Christ Church Call. Did we hear your concerns correctly?",
-        "lead": "Christ Church Call appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Christ Church Call, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Christ Church Call can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Christ Church Call website",
-          "url": "https://www.christchurchcall.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "citizenuniversity",
-      "name": "Citizen University",
-      "shortName": "Citizen University",
-      "domain": "citizenuniversity.us",
-      "website": "https://citizenuniversity.us/",
-      "tags": [
-        "nonprofit",
-        "academic",
-        "education"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP10",
-        "DP22",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Citizen University is a Project Liberty Alliance member organization (citizenuniversity.us). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Citizen University. Did we hear your concerns correctly?",
-        "lead": "Citizen University appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Citizen University, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Citizen University can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Citizen University website",
-          "url": "https://citizenuniversity.us/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -929,43 +455,6 @@
       ]
     },
     {
-      "slug": "digitalcredentials",
-      "name": "Dcc",
-      "shortName": "Dcc",
-      "domain": "digitalcredentials.mit.edu",
-      "website": "https://digitalcredentials.mit.edu/",
-      "tags": [
-        "nonprofit",
-        "academic",
-        "education"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP10",
-        "DP22",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Dcc is a Project Liberty Alliance member organization (digitalcredentials.mit.edu). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Dcc. Did we hear your concerns correctly?",
-        "lead": "Dcc appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Dcc, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Dcc can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Dcc website",
-          "url": "https://digitalcredentials.mit.edu/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "democracy4all",
       "name": "Democracy4all Color Logo",
       "shortName": "Democracy4all Color Logo",
@@ -1098,72 +587,6 @@
       ]
     },
     {
-      "slug": "dream",
-      "name": "Dream Org",
-      "shortName": "Dream Org",
-      "domain": "dream.org",
-      "website": "https://dream.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Dream Org is a Project Liberty Alliance member organization (dream.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Dream Org. Did we hear your concerns correctly?",
-        "lead": "Dream Org appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Dream Org, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Dream Org can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Dream Org website",
-          "url": "https://dream.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "getdweb",
-      "name": "Dweb Color Logo",
-      "shortName": "Dweb Color Logo",
-      "domain": "getdweb.net",
-      "website": "https://getdweb.net/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Dweb Color Logo is a Project Liberty Alliance member organization (getdweb.net). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Dweb Color Logo. Did we hear your concerns correctly?",
-        "lead": "Dweb Color Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Dweb Color Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Dweb Color Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Dweb Color Logo website",
-          "url": "https://getdweb.net/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "earthkindcollective",
       "name": "Earthkind",
       "shortName": "Earthkind",
@@ -1189,39 +612,6 @@
         {
           "label": "Earthkind website",
           "url": "https://earthkindcollective.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "encodejustice",
-      "name": "Encodejustice",
-      "shortName": "Encodejustice",
-      "domain": "encodejustice.org",
-      "website": "https://encodejustice.org/#what-we-do",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Encodejustice is a Project Liberty Alliance member organization (encodejustice.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Encodejustice. Did we hear your concerns correctly?",
-        "lead": "Encodejustice appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Encodejustice, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Encodejustice can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Encodejustice website",
-          "url": "https://encodejustice.org/#what-we-do"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -1257,42 +647,6 @@
         {
           "label": "Engage Media Logotype Red Black 800px website",
           "url": "https://engagemedia.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "ens",
-      "name": "Ethereum Name Service",
-      "shortName": "Ethereum Name Service",
-      "domain": "ens.domains",
-      "website": "https://ens.domains/",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Ethereum Name Service is a Project Liberty Alliance member organization (ens.domains). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Ethereum Name Service. Did we hear your concerns correctly?",
-        "lead": "Ethereum Name Service appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Ethereum Name Service, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ethereum Name Service can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Ethereum Name Service website",
-          "url": "https://ens.domains/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -1439,39 +793,6 @@
       ]
     },
     {
-      "slug": "forfreedoms",
-      "name": "Forfreedoms",
-      "shortName": "Forfreedoms",
-      "domain": "forfreedoms.org",
-      "website": "https://www.forfreedoms.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Forfreedoms is a Project Liberty Alliance member organization (forfreedoms.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Forfreedoms. Did we hear your concerns correctly?",
-        "lead": "Forfreedoms appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Forfreedoms, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Forfreedoms can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Forfreedoms website",
-          "url": "https://www.forfreedoms.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "freespoke",
       "name": "Freespoke Logo",
       "shortName": "Freespoke Logo",
@@ -1534,39 +855,6 @@
         {
           "label": "Georgetown University website",
           "url": "https://www.georgetown.edu/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "glianetalliance",
-      "name": "Glia Net",
-      "shortName": "Glia Net",
-      "domain": "glianetalliance.org",
-      "website": "https://www.glianetalliance.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Glia Net is a Project Liberty Alliance member organization (glianetalliance.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Glia Net. Did we hear your concerns correctly?",
-        "lead": "Glia Net appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Glia Net, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Glia Net can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Glia Net website",
-          "url": "https://www.glianetalliance.org/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -1846,75 +1134,6 @@
       ]
     },
     {
-      "slug": "instituteforfamiliesandtechnology",
-      "name": "Institute For Families And Technology",
-      "shortName": "Instituteforfamiliesandtechnology",
-      "domain": "instituteforfamiliesandtechnology.org",
-      "website": "https://www.instituteforfamiliesandtechnology.org/",
-      "tags": [
-        "nonprofit",
-        "research"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP10",
-        "DP22",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Institute For Families And Technology is a Project Liberty Alliance member organization (instituteforfamiliesandtechnology.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Instituteforfamiliesandtechnology. Did we hear your concerns correctly?",
-        "lead": "Institute For Families And Technology appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Instituteforfamiliesandtechnology, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Instituteforfamiliesandtechnology can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Institute For Families And Technology website",
-          "url": "https://www.instituteforfamiliesandtechnology.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "archive",
-      "name": "Internet Archive",
-      "shortName": "Internet Archive",
-      "domain": "archive.org",
-      "website": "https://archive.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Internet Archive is a Project Liberty Alliance member organization (archive.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Internet Archive. Did we hear your concerns correctly?",
-        "lead": "Internet Archive appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Internet Archive, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Internet Archive can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Internet Archive website",
-          "url": "https://archive.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "kinsoo",
       "name": "Kin Soo",
       "shortName": "Kin Soo",
@@ -2014,140 +1233,6 @@
       ]
     },
     {
-      "slug": "lifewithmachines",
-      "name": "Life With Machines",
-      "shortName": "Life With Machines",
-      "domain": "lifewithmachines.media",
-      "website": "https://lifewithmachines.media/",
-      "tags": [
-        "nonprofit",
-        "media"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP14",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Life With Machines is a Project Liberty Alliance member organization (lifewithmachines.media). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Life With Machines. Did we hear your concerns correctly?",
-        "lead": "Life With Machines appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Life With Machines, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Life With Machines can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Life With Machines website",
-          "url": "https://lifewithmachines.media/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "logoffmovement",
-      "name": "Log Off",
-      "shortName": "Log Off",
-      "domain": "logoffmovement.org",
-      "website": "https://www.logoffmovement.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Log Off is a Project Liberty Alliance member organization (logoffmovement.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Log Off. Did we hear your concerns correctly?",
-        "lead": "Log Off appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Log Off, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Log Off can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Log Off website",
-          "url": "https://www.logoffmovement.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "madewithblackculture",
-      "name": "Made Company Logo",
-      "shortName": "Made Company Logo",
-      "domain": "madewithblackculture.com",
-      "website": "https://madewithblackculture.com",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Made Company Logo is a Project Liberty Alliance member organization (madewithblackculture.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Made Company Logo. Did we hear your concerns correctly?",
-        "lead": "Made Company Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Made Company Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Made Company Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Made Company Logo website",
-          "url": "https://madewithblackculture.com"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "joinmama",
-      "name": "Mama",
-      "shortName": "Mama",
-      "domain": "joinmama.org",
-      "website": "https://www.joinmama.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Mama is a Project Liberty Alliance member organization (joinmama.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Mama. Did we hear your concerns correctly?",
-        "lead": "Mama appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Mama, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Mama can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Mama website",
-          "url": "https://www.joinmama.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "mapletestimony",
       "name": "Maple",
       "shortName": "Maple",
@@ -2173,76 +1258,6 @@
         {
           "label": "Maple website",
           "url": "https://www.mapletestimony.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "metagov",
-      "name": "Metagov",
-      "shortName": "Metagov",
-      "domain": "metagov.org",
-      "website": "https://metagov.org/",
-      "tags": [
-        "nonprofit",
-        "policy",
-        "governance"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP3",
-        "DP12",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Metagov is a Project Liberty Alliance member organization (metagov.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Metagov. Did we hear your concerns correctly?",
-        "lead": "Metagov appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Metagov, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Metagov can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Metagov website",
-          "url": "https://metagov.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "mindbridgecenter",
-      "name": "Minebridge",
-      "shortName": "Minebridge",
-      "domain": "mindbridgecenter.org",
-      "website": "https://www.mindbridgecenter.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Minebridge is a Project Liberty Alliance member organization (mindbridgecenter.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Minebridge. Did we hear your concerns correctly?",
-        "lead": "Minebridge appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Minebridge, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Minebridge can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Minebridge website",
-          "url": "https://www.mindbridgecenter.org/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -2277,72 +1292,6 @@
         {
           "label": "Network Messenger website",
           "url": "https://networkmessenger.com/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "newimpact",
-      "name": "New Impact Logo",
-      "shortName": "New Impact Logo",
-      "domain": "newimpact.care",
-      "website": "https://newimpact.care",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "New Impact Logo is a Project Liberty Alliance member organization (newimpact.care). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for New Impact Logo. Did we hear your concerns correctly?",
-        "lead": "New Impact Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent New Impact Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where New Impact Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "New Impact Logo website",
-          "url": "https://newimpact.care"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "newpublic",
-      "name": "New Public",
-      "shortName": "New Public",
-      "domain": "newpublic.org",
-      "website": "https://newpublic.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "New Public is a Project Liberty Alliance member organization (newpublic.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for New Public. Did we hear your concerns correctly?",
-        "lead": "New Public appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent New Public, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where New Public can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "New Public website",
-          "url": "https://newpublic.org/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -2453,40 +1402,6 @@
       ]
     },
     {
-      "slug": "omidyar",
-      "name": "Omyidar Network",
-      "shortName": "Omyidar Network",
-      "domain": "omidyar.com",
-      "website": "https://omidyar.com/",
-      "tags": [
-        "nonprofit",
-        "social"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Omyidar Network is a Project Liberty Alliance member organization (omidyar.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Omyidar Network. Did we hear your concerns correctly?",
-        "lead": "Omyidar Network appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Omyidar Network, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Omyidar Network can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Omyidar Network website",
-          "url": "https://omidyar.com/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "parentssos",
       "name": "Parents Sos",
       "shortName": "Parents Sos",
@@ -2556,109 +1471,6 @@
       ]
     },
     {
-      "slug": "mcgovern",
-      "name": "Patrick Jmc Goven Foundation",
-      "shortName": "Patrick Jmc Goven Foundation",
-      "domain": "mcgovern.org",
-      "website": "https://www.mcgovern.org/",
-      "tags": [
-        "nonprofit",
-        "policy",
-        "governance"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP3",
-        "DP12",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Patrick Jmc Goven Foundation is a Project Liberty Alliance member organization (mcgovern.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Patrick Jmc Goven Foundation. Did we hear your concerns correctly?",
-        "lead": "Patrick Jmc Goven Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Patrick Jmc Goven Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Patrick Jmc Goven Foundation can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Patrick Jmc Goven Foundation website",
-          "url": "https://www.mcgovern.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "peoplecentered",
-      "name": "People Centered Internet",
-      "shortName": "People Centered Internet",
-      "domain": "peoplecentered.net",
-      "website": "https://peoplecentered.net/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "People Centered Internet is a Project Liberty Alliance member organization (peoplecentered.net). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for People Centered Internet. Did we hear your concerns correctly?",
-        "lead": "People Centered Internet appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent People Centered Internet, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where People Centered Internet can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "People Centered Internet website",
-          "url": "https://peoplecentered.net/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "pivo",
-      "name": "Pivo",
-      "shortName": "Pivo",
-      "domain": "pivo.org.br",
-      "website": "https://pivo.org.br/en/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Pivo is a Project Liberty Alliance member organization (pivo.org.br). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Pivo. Did we hear your concerns correctly?",
-        "lead": "Pivo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Pivo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Pivo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Pivo website",
-          "url": "https://pivo.org.br/en/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "policylink",
       "name": "Policy Link",
       "shortName": "Policy Link",
@@ -2696,39 +1508,6 @@
       ]
     },
     {
-      "slug": "poptech",
-      "name": "Pop Tech",
-      "shortName": "Pop Tech",
-      "domain": "poptech.org",
-      "website": "https://poptech.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Pop Tech is a Project Liberty Alliance member organization (poptech.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Pop Tech. Did we hear your concerns correctly?",
-        "lead": "Pop Tech appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Pop Tech, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Pop Tech can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Pop Tech website",
-          "url": "https://poptech.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "positivetechinstitute",
       "name": "Positive Tech Inst",
       "shortName": "Positive Tech Inst",
@@ -2757,75 +1536,6 @@
         {
           "label": "Positive Tech Inst website",
           "url": "https://www.positivetechinstitute.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "publicai",
-      "name": "Public Ai",
-      "shortName": "Public Ai",
-      "domain": "publicai.co",
-      "website": "https://publicai.co/",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Public Ai is a Project Liberty Alliance member organization (publicai.co). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Public Ai. Did we hear your concerns correctly?",
-        "lead": "Public Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Public Ai, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Public Ai can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Public Ai website",
-          "url": "https://publicai.co/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "rethinkwords",
-      "name": "Rethink",
-      "shortName": "Rethink",
-      "domain": "rethinkwords.com",
-      "website": "https://www.rethinkwords.com/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Rethink is a Project Liberty Alliance member organization (rethinkwords.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Rethink. Did we hear your concerns correctly?",
-        "lead": "Rethink appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Rethink, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Rethink can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Rethink website",
-          "url": "https://www.rethinkwords.com/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -2900,79 +1610,6 @@
       ]
     },
     {
-      "slug": "starlinglab",
-      "name": "Starling Lab",
-      "shortName": "Starling Lab",
-      "domain": "starlinglab.org",
-      "website": "https://www.starlinglab.org/",
-      "tags": [
-        "nonprofit",
-        "research"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP10",
-        "DP22",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "Starling Lab is a Project Liberty Alliance member organization (starlinglab.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Starling Lab. Did we hear your concerns correctly?",
-        "lead": "Starling Lab appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Starling Lab, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Starling Lab can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Starling Lab website",
-          "url": "https://www.starlinglab.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "schoolofattention",
-      "name": "Strother School Of Radical Attention",
-      "shortName": "Schoolofattention",
-      "domain": "schoolofattention.org",
-      "website": "https://www.schoolofattention.org/",
-      "tags": [
-        "nonprofit",
-        "academic",
-        "education"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP10",
-        "DP22",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Strother School Of Radical Attention is a Project Liberty Alliance member organization (schoolofattention.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Schoolofattention. Did we hear your concerns correctly?",
-        "lead": "Strother School Of Radical Attention appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Schoolofattention, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Schoolofattention can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Strother School Of Radical Attention website",
-          "url": "https://www.schoolofattention.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "sustainablemedia",
       "name": "Sustainable Media Center",
       "shortName": "Sustainable Media Center",
@@ -3010,40 +1647,6 @@
       ]
     },
     {
-      "slug": "socialwebfoundation",
-      "name": "Swf",
-      "shortName": "Swf",
-      "domain": "socialwebfoundation.org",
-      "website": "https://socialwebfoundation.org/",
-      "tags": [
-        "nonprofit",
-        "social"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Swf is a Project Liberty Alliance member organization (socialwebfoundation.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Swf. Did we hear your concerns correctly?",
-        "lead": "Swf appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Swf, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Swf can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Swf website",
-          "url": "https://socialwebfoundation.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "taketwomediaitiaitive",
       "name": "Take Two",
       "shortName": "Take Two",
@@ -3073,177 +1676,6 @@
         {
           "label": "Take Two website",
           "url": "http://www.taketwomediaitiaitive.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "techmatters",
-      "name": "Tech Matters Logo",
-      "shortName": "Tech Matters Logo",
-      "domain": "techmatters.org",
-      "website": "https://techmatters.org",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Tech Matters Logo is a Project Liberty Alliance member organization (techmatters.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Tech Matters Logo. Did we hear your concerns correctly?",
-        "lead": "Tech Matters Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Tech Matters Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Tech Matters Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Tech Matters Logo website",
-          "url": "https://techmatters.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "techoversight",
-      "name": "Tech Oversight",
-      "shortName": "Tech Oversight",
-      "domain": "techoversight.org",
-      "website": "https://www.techoversight.org",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Tech Oversight is a Project Liberty Alliance member organization (techoversight.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Tech Oversight. Did we hear your concerns correctly?",
-        "lead": "Tech Oversight appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Tech Oversight, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Tech Oversight can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Tech Oversight website",
-          "url": "https://www.techoversight.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "techsoup",
-      "name": "Techsoup",
-      "shortName": "Techsoup",
-      "domain": "techsoup.org",
-      "website": "https://www.techsoup.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Techsoup is a Project Liberty Alliance member organization (techsoup.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Techsoup. Did we hear your concerns correctly?",
-        "lead": "Techsoup appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Techsoup, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Techsoup can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Techsoup website",
-          "url": "https://www.techsoup.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "secureainow",
-      "name": "The Alliancefor Secure Ai",
-      "shortName": "The Alliancefor Secure Ai",
-      "domain": "secureainow.org",
-      "website": "http://www.secureainow.org",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "The Alliancefor Secure Ai is a Project Liberty Alliance member organization (secureainow.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for The Alliancefor Secure Ai. Did we hear your concerns correctly?",
-        "lead": "The Alliancefor Secure Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent The Alliancefor Secure Ai, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Alliancefor Secure Ai can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "The Alliancefor Secure Ai website",
-          "url": "http://www.secureainow.org"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "thecenterforartsandinnovation",
-      "name": "The Center For Ai",
-      "shortName": "The Center For Ai",
-      "domain": "thecenterforartsandinnovation.org",
-      "website": "https://thecenterforartsandinnovation.org/",
-      "tags": [
-        "nonprofit",
-        "ai"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP11",
-        "DP13",
-        "DP14",
-        "DP2"
-      ],
-      "mission": "The Center For Ai is a Project Liberty Alliance member organization (thecenterforartsandinnovation.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for The Center For Ai. Did we hear your concerns correctly?",
-        "lead": "The Center For Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent The Center For Ai, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Center For Ai can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "The Center For Ai website",
-          "url": "https://thecenterforartsandinnovation.org/"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -3351,43 +1783,6 @@
       ]
     },
     {
-      "slug": "thepolicycircle",
-      "name": "The Policy Circle",
-      "shortName": "The Policy Circle",
-      "domain": "thepolicycircle.org",
-      "website": "https://www.thepolicycircle.org/",
-      "tags": [
-        "nonprofit",
-        "policy",
-        "governance"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP3",
-        "DP12",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "The Policy Circle is a Project Liberty Alliance member organization (thepolicycircle.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for The Policy Circle. Did we hear your concerns correctly?",
-        "lead": "The Policy Circle appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent The Policy Circle, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Policy Circle can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "The Policy Circle website",
-          "url": "https://www.thepolicycircle.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "thesamehouse",
       "name": "The Same House Color Logo",
       "shortName": "The Same House Color Logo",
@@ -3454,39 +1849,6 @@
       ]
     },
     {
-      "slug": "thesgnl",
-      "name": "The Signal",
-      "shortName": "The Signal",
-      "domain": "thesgnl.com",
-      "website": "https://www.thesgnl.com/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "The Signal is a Project Liberty Alliance member organization (thesgnl.com). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for The Signal. Did we hear your concerns correctly?",
-        "lead": "The Signal appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent The Signal, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Signal can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "The Signal website",
-          "url": "https://www.thesgnl.com/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
       "slug": "mtotonews",
       "name": "Toto News",
       "shortName": "Toto News",
@@ -3514,39 +1876,6 @@
         {
           "label": "Toto News website",
           "url": "https://www.mtotonews.com/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "transfer",
-      "name": "Transfer Logo Black Bg Square",
-      "shortName": "Transfer Logo Black Bg Square",
-      "domain": "transfer.art",
-      "website": "http://transfer.art",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Transfer Logo Black Bg Square is a Project Liberty Alliance member organization (transfer.art). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Transfer Logo Black Bg Square. Did we hear your concerns correctly?",
-        "lead": "Transfer Logo Black Bg Square appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Transfer Logo Black Bg Square, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Transfer Logo Black Bg Square can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Transfer Logo Black Bg Square website",
-          "url": "http://transfer.art"
         },
         {
           "label": "Project Liberty Alliance roster",
@@ -3615,39 +1944,6 @@
         {
           "label": "Ux For Good website",
           "url": "https://www.uxforgood.org/"
-        },
-        {
-          "label": "Project Liberty Alliance roster",
-          "url": "https://www.projectliberty.io/alliance/"
-        }
-      ]
-    },
-    {
-      "slug": "youngpeoplesalliance",
-      "name": "Young People S Alliance Logo",
-      "shortName": "Young People S Alliance Logo",
-      "domain": "youngpeoplesalliance.org",
-      "website": "https://youngpeoplesalliance.org/",
-      "tags": [
-        "nonprofit"
-      ],
-      "relatedDps": [
-        "DP8",
-        "DP20",
-        "DP2",
-        "DP4"
-      ],
-      "mission": "Young People S Alliance Logo is a Project Liberty Alliance member organization (youngpeoplesalliance.org). We are inviting them to confirm how their public work connects to a people-centered internet and Desirable Properties Studio.",
-      "pitch": {
-        "headline": "We opened a landing pad for Young People S Alliance Logo. Did we hear your concerns correctly?",
-        "lead": "Young People S Alliance Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
-        "ask": "If you represent Young People S Alliance Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Young People S Alliance Logo can refine how their perspective is captured before Version 1.0 launches."
-      },
-      "sources": [
-        {
-          "label": "Young People S Alliance Logo website",
-          "url": "https://youngpeoplesalliance.org/"
         },
         {
           "label": "Project Liberty Alliance roster",

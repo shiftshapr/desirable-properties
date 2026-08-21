@@ -4,17 +4,17 @@
   "stats": {
     "rosterTotal": 208,
     "promoteTarget": 171,
-    "promoted": 100,
-    "stubs": 108,
+    "promoted": 150,
+    "stubs": 58,
     "mandatoryStubs": 37,
-    "promoteFetchFailed": 71,
+    "promoteFetchFailed": 21,
     "reasonCounts": {
       "research_pass_stub": 37,
-      "only_mission_or_thin": 56,
-      "empty_homepage": 5,
-      "fetch_failed": 10
+      "only_mission_or_thin": 11,
+      "fetch_failed": 7,
+      "no_work_links": 3
     },
-    "elapsedSeconds": 162
+    "elapsedSeconds": 28
   },
   "mandatoryStubSlugs": [
     "aiprc",
@@ -57,6 +57,29 @@
   ],
   "promoted": [
     {
+      "slug": "aapti",
+      "name": "Aapti",
+      "workUrls": [
+        "https://aapti.in/blog/how-to-build-a-data-cooperative-a-practitioners-handbook/",
+        "https://aapti.in/blog/data-co-ops-in-action-launching-our-support-network/",
+        "https://aapti.in/blog/unlocking-data-cooperative-opportunities-in-south-east-asia/"
+      ]
+    },
+    {
+      "slug": "advancedaisociety",
+      "name": "Advanced Aisociety",
+      "workUrls": [
+        "https://advancedaisociety.org/briefing"
+      ]
+    },
+    {
+      "slug": "afchix",
+      "name": "Afchix",
+      "workUrls": [
+        "https://afchix.org/projects/"
+      ]
+    },
+    {
       "slug": "aigi",
       "name": "Aigovernance Initiativeatthe Universityof Oxford",
       "workUrls": [
@@ -98,6 +121,13 @@
       ]
     },
     {
+      "slug": "anfhelp",
+      "name": "Alexander Neville Foundation Logo",
+      "workUrls": [
+        "https://anfhelp.org/best-practices-to-rid-social-media-of-drug-trafficking/"
+      ]
+    },
+    {
       "slug": "alltechishuman",
       "name": "All Tech Is Human",
       "workUrls": [
@@ -121,6 +151,29 @@
       ]
     },
     {
+      "slug": "americansecurityfund",
+      "name": "American Security Foundation",
+      "workUrls": [
+        "https://www.americansecurityfund.com/resources"
+      ]
+    },
+    {
+      "slug": "amplifier",
+      "name": "Amplifier",
+      "workUrls": [
+        "https://amplifier.org/campaigns/amplifier-ar/",
+        "https://amplifier.org/campaigns/us-250-national-creative-assembly/",
+        "https://amplifier.org/campaigns/reparations-now/",
+        "https://amplifier.org/campaigns/intersections-of-our-lives/",
+        "https://amplifier.org/campaigns/not-for-sale/",
+        "https://amplifier.org/campaigns/campaign-for-nature/",
+        "https://amplifier.org/campaigns/revolutionary-love-tour/",
+        "https://amplifier.org/campaigns/planetary-guardians/",
+        "https://amplifier.org/campaigns/reset/",
+        "https://amplifier.org/campaigns/we-the-future/"
+      ]
+    },
+    {
       "slug": "artificialityinstitute",
       "name": "Artificiality",
       "workUrls": [
@@ -133,6 +186,19 @@
         "https://journal.artificialityinstitute.org/a-mind-for-our-minds/",
         "https://journal.artificialityinstitute.org/how-we-think-and-live-with-ai-early-patterns-of-human-adaptation/",
         "https://journal.artificialityinstitute.org/the-roles-we-give-ai-trust-presence-and-culture-in-a-symbiotic-age/"
+      ]
+    },
+    {
+      "slug": "ashoka",
+      "name": "Ashoka",
+      "workUrls": [
+        "https://www.ashoka.org/en-us/program/ashoka-young-changemakers",
+        "https://www.ashoka.org/en-us/program/ashoka-support-network",
+        "https://www.ashoka.org/en-us/program/ashoka-changemaker-schools",
+        "https://www.ashoka.org/en-us/collection/stories-early-changemaking",
+        "https://www.ashoka.org/en-us/program/ashoka-young-changemakers",
+        "https://www.ashoka.org/en-us/annual-reports",
+        "https://www.ashoka.org/en-us/ashoka-network-insights"
       ]
     },
     {
@@ -149,6 +215,22 @@
         "https://www.atlanticcouncil.org/in-depth-research-reports/issue-brief/the-path-toward-sustainable-peace-in-colombia/",
         "https://www.atlanticcouncil.org/in-depth-research-reports/report/mapeo-de-la-inversion-estadounidense-en-america-latina-y-el-caribe/",
         "https://www.atlanticcouncil.org/in-depth-research-reports/issue-brief/reversing-mexicos-economic-and-democratic-decline/"
+      ]
+    },
+    {
+      "slug": "atlascomputing",
+      "name": "Atlas Computing Logo",
+      "workUrls": [
+        "https://atlascomputing.org/projects/",
+        "https://atlascomputing.org/terms/"
+      ]
+    },
+    {
+      "slug": "beccaschmillfdn",
+      "name": "Becca Schmill Foundation",
+      "workUrls": [
+        "https://beccaschmillfdn.org/advocacy/",
+        "https://beccaschmillfdn.org/our-research-collaborations/"
       ]
     },
     {
@@ -180,6 +262,13 @@
         "https://berggruen.org/library/proxima-kosmos-volume-2",
         "https://berggruen.org/library/the-planetary",
         "https://berggruen.org/essay-competition-open"
+      ]
+    },
+    {
+      "slug": "theblockfound",
+      "name": "Blockchain Foundation Logo",
+      "workUrls": [
+        "https://theblockfound.com/financial-literacy-report"
       ]
     },
     {
@@ -227,6 +316,15 @@
         "https://www.cergic-lyon.fr/other-scientific-events",
         "https://www.cergic-lyon.fr/job-market",
         "https://www.cergic-lyon.fr/summer-school"
+      ]
+    },
+    {
+      "slug": "humanetech",
+      "name": "Center For Humane Technology",
+      "workUrls": [
+        "https://www.humanetech.com/landing/the-social-dilemma",
+        "https://www.humanetech.com/podcast",
+        "https://www.humanetech.com/youth"
       ]
     },
     {
@@ -293,6 +391,14 @@
       ]
     },
     {
+      "slug": "centritechfdn",
+      "name": "Centritech Foundation",
+      "workUrls": [
+        "https://www.digitalintegrators.org/_files/ugd/fbbd27_e2e67672a7064439bc5404eea6a9f9a1.pdf",
+        "https://www.centritechfdn.org/_files/ugd/fbbd27_129f7332af304a949d18d65d1170a445.pdf"
+      ]
+    },
+    {
       "slug": "childrenandscreens",
       "name": "Children And Screens",
       "workUrls": [
@@ -306,6 +412,30 @@
         "https://www.childrenandscreens.org/learn-explore/research/lgbtq-youth-and-digital-media-use/",
         "https://www.childrenandscreens.org/learn-explore/research/suicide-self-harm-and-digital-media-use/",
         "https://www.childrenandscreens.org/learn-explore/research/research-at-a-glance-sleep-and-screens/"
+      ]
+    },
+    {
+      "slug": "christchurchcall",
+      "name": "Christ Church Call",
+      "workUrls": [
+        "https://www.christchurchcall.org/cciao-delphi-study-building-the-governance-foundation-for-tvec-algorithmic-research/",
+        "https://www.christchurchcall.org/auditing-proprietary-algorithms-while-preserving-privacy-is-possible-heres-how/",
+        "https://www.christchurchcall.org/significant-global-progress-made-under-christchurch-call/"
+      ]
+    },
+    {
+      "slug": "citizenuniversity",
+      "name": "Citizen University",
+      "workUrls": [
+        "https://citizenuniversity.us/news/civic-symphony/",
+        "https://citizenuniversity.us/programs/",
+        "https://citizenuniversity.us/programs/llac/",
+        "https://citizenuniversity.us/programs/power-character/",
+        "https://citizenuniversity.us/programs/civic-collaboratory/",
+        "https://citizenuniversity.us/programs/youth-collaboratory/",
+        "https://citizenuniversity.us/programs/alumni-network/",
+        "https://citizenuniversity.us/programs/special-projects/",
+        "https://citizenuniversity.us/programs/llac/"
       ]
     },
     {
@@ -421,6 +551,15 @@
       ]
     },
     {
+      "slug": "digitalcredentials",
+      "name": "Dcc",
+      "workUrls": [
+        "https://dcconsortium.org/docs/white-paper-building-digital-credential-infrastructure-future.pdf",
+        "https://dcconsortium.org/docs/DCC-Making-Sense-of-Key-Data-Standards-for-Verifiable-LERs.pdf",
+        "https://dcconsortium.org/docs/Credential-Engine-and-Digital-Credentials-Consortium_-Issuer-Identity-Registry-Research-Report.pdf"
+      ]
+    },
+    {
       "slug": "thedrcenter",
       "name": "Decentralization Research Center Color Logo",
       "workUrls": [
@@ -455,6 +594,22 @@
       ]
     },
     {
+      "slug": "dream",
+      "name": "Dream Org",
+      "workUrls": [
+        "https://dream.org/news-articles/conservamerica-white-paper-data-center-development/",
+        "https://dream.org/impact/",
+        "https://dream.org/impact/"
+      ]
+    },
+    {
+      "slug": "getdweb",
+      "name": "Dweb Color Logo",
+      "workUrls": [
+        "https://getdweb.net/principles/"
+      ]
+    },
+    {
       "slug": "eclipse",
       "name": "Eclipse Foundation",
       "workUrls": [
@@ -478,6 +633,13 @@
       ]
     },
     {
+      "slug": "encodejustice",
+      "name": "Encodejustice",
+      "workUrls": [
+        "https://encodejustice.org/wp-content/uploads/2024/10/White-Paper-Technological-Pitfalls-Encode-Justice.pdf"
+      ]
+    },
+    {
       "slug": "epic",
       "name": "Epic",
       "workUrls": [
@@ -491,6 +653,22 @@
         "https://epic.org/issues/ai/government-use-of-ai/",
         "https://epic.org/issues/ai/risk-assessments/",
         "https://epic.org/issues/ai/screening-scoring/"
+      ]
+    },
+    {
+      "slug": "ens",
+      "name": "Ethereum Name Service",
+      "workUrls": [
+        "https://ens.domains/blog/post/ens-immunefi-audit-competition",
+        "https://ens.domains/blog/post/what-makes-ens-a-protocol",
+        "https://ens.domains/blog/post/ensv2-beta-public-testing",
+        "https://ens.domains/blog/post/introducing-the-evolved-ens-foundation",
+        "https://ens.domains/blog/post/how-ens-normalization-works",
+        "https://ens.domains/blog/post/introducing-the-newest-ens-security-council",
+        "https://ens.domains/blog/post/how-ens-names-evolved",
+        "https://ens.domains/ecosystem",
+        "https://ens.domains/governance",
+        "https://discuss.ens.domains/"
       ]
     },
     {
@@ -571,6 +749,15 @@
       ]
     },
     {
+      "slug": "forfreedoms",
+      "name": "Forfreedoms",
+      "workUrls": [
+        "https://forfreedoms.org/artworks/the-model-minority-is-a-myth",
+        "https://forfreedoms.org/artworks/becoming-a-citizen",
+        "https://forfreedoms.org/artworks/who-am-i-to-tell-the-story"
+      ]
+    },
+    {
       "slug": "thefai",
       "name": "Foundation For American Innovation",
       "workUrls": [
@@ -616,6 +803,13 @@
         "https://ash.harvard.edu/programs/allen-lab-technology/",
         "https://ash.harvard.edu/research-and-resources/",
         "https://ash.harvard.edu/resources/when-democracy-breaks-studies-in-democratic-erosion-and-collapse-from-ancient-athens-to-the-present-day/"
+      ]
+    },
+    {
+      "slug": "glianetalliance",
+      "name": "Glia Net",
+      "workUrls": [
+        "https://www.glianetalliance.org/news/fiduciary-duties-ai-workshop"
       ]
     },
     {
@@ -767,6 +961,13 @@
       ]
     },
     {
+      "slug": "instituteforfamiliesandtechnology",
+      "name": "Institute For Families And Technology",
+      "workUrls": [
+        "https://www.instituteforfamiliesandtechnology.org/blog-posts/new-report-grades-all-50-states-and-d-c-on-their-phone-free-schools-policies"
+      ]
+    },
+    {
       "slug": "securityandtechnology",
       "name": "Institute For Security Technology",
       "workUrls": [
@@ -822,6 +1023,13 @@
       ]
     },
     {
+      "slug": "archive",
+      "name": "Internet Archive",
+      "workUrls": [
+        "https://blog.archive.org/"
+      ]
+    },
+    {
       "slug": "issueone",
       "name": "Issue One",
       "workUrls": [
@@ -861,6 +1069,26 @@
       ]
     },
     {
+      "slug": "lifewithmachines",
+      "name": "Life With Machines",
+      "workUrls": [
+        "https://www.lifewithmachines.media/p/the-humans-behind-ai-are-speaking",
+        "https://www.lifewithmachines.media/p/ai-and-democracy-needs-you-verity"
+      ]
+    },
+    {
+      "slug": "logoffmovement",
+      "name": "Log Off",
+      "workUrls": [
+        "https://www.logoffmovement.org/campaigns/",
+        "http://www.logoffmovement.org/wp-content/uploads/2026/06/The-First-10-Method.pdf",
+        "https://www.logoffmovement.org/think-tank/",
+        "https://www.logoffmovement.org/think-tank/feed/",
+        "https://www.logoffmovement.org/think-tank/the-notification/",
+        "https://www.logoffmovement.org/community/"
+      ]
+    },
+    {
       "slug": "luma",
       "name": "Luma Arles",
       "workUrls": [
@@ -877,6 +1105,13 @@
       ]
     },
     {
+      "slug": "madewithblackculture",
+      "name": "Made Company Logo",
+      "workUrls": [
+        "https://madewithblackculture.com/black-inventors-terminal.html"
+      ]
+    },
+    {
       "slug": "make",
       "name": "Makeorg",
       "workUrls": [
@@ -886,10 +1121,26 @@
       ]
     },
     {
+      "slug": "joinmama",
+      "name": "Mama",
+      "workUrls": [
+        "https://wearemama.org/resource/"
+      ]
+    },
+    {
       "slug": "massgeneralbrigham",
       "name": "Mass General Birigham",
       "workUrls": [
         "https://www.massgeneralbrigham.org/en/research-innovation"
+      ]
+    },
+    {
+      "slug": "metagov",
+      "name": "Metagov",
+      "workUrls": [
+        "https://metagov.org/cg-ai/",
+        "https://metagov.org/projects/groundwork-fellowship/documentation",
+        "https://metagov.org/projects/game-theory"
       ]
     },
     {
@@ -914,6 +1165,15 @@
         "https://www.minderoo.org/404/",
         "https://www.minderoo.org/404/",
         "https://www.minderoo.org/404/"
+      ]
+    },
+    {
+      "slug": "mindbridgecenter",
+      "name": "Minebridge",
+      "workUrls": [
+        "https://www.mindbridgecenter.org/research-evaluation-approach-and-methods",
+        "https://www.mindbridgecenter.org/red-department",
+        "https://www.mindbridgecenter.org/red-department"
       ]
     },
     {
@@ -1012,6 +1272,21 @@
       ]
     },
     {
+      "slug": "newimpact",
+      "name": "New Impact Logo",
+      "workUrls": [
+        "https://www.newimpact.care/impact-orgs"
+      ]
+    },
+    {
+      "slug": "newpublic",
+      "name": "New Public",
+      "workUrls": [
+        "https://newpublic.org/uploads/2024/07/Front-Porch-Forum-report-2.pdf",
+        "https://newpublic.org/uploads/2021/03/Terra-Incognita.pdf"
+      ]
+    },
+    {
       "slug": "newsguardtech",
       "name": "News Guard Color Logo",
       "workUrls": [
@@ -1041,6 +1316,13 @@
         "https://www.law.nyu.edu/executive-programs",
         "https://www.law.nyu.edu/academics/clinics",
         "https://www.law.nyu.edu/lawbusiness"
+      ]
+    },
+    {
+      "slug": "omidyar",
+      "name": "Omyidar Network",
+      "workUrls": [
+        "https://omidyar.com/update/omidyar-network-appoints-michele-l-jawando-ceo/"
       ]
     },
     {
@@ -1081,6 +1363,48 @@
       "workUrls": [
         "https://partnershiponai.org/program/policy/",
         "https://partnershiponai.org/researching-diversity-equity-and-inclusion-in-the-field-of-ai/"
+      ]
+    },
+    {
+      "slug": "mcgovern",
+      "name": "Patrick Jmc Goven Foundation",
+      "workUrls": [
+        "https://www.mcgovern.org/wp-content/uploads/2020/03/Untitled-design-8.mp4",
+        "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/",
+        "https://www.mcgovern.org/the-legacy-of-patrick-j-mcgovern/the-mcgovern-institute-for-brain-research/",
+        "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/"
+      ]
+    },
+    {
+      "slug": "peoplecentered",
+      "name": "People Centered Internet",
+      "workUrls": [
+        "https://peoplecentered.net/may-update-message-from-mei-lin/",
+        "https://peoplecentered.net/pcis-global-help-desk-and-the-vaccination-equity-consortium/"
+      ]
+    },
+    {
+      "slug": "pivo",
+      "name": "Pivo",
+      "workUrls": [
+        "https://pivo.org.br/en/programas/pivo-pesquisa/",
+        "https://pivo.org.br/en/publicacoes/",
+        "https://pivo.org.br/publicacoes/"
+      ]
+    },
+    {
+      "slug": "poptech",
+      "name": "Pop Tech",
+      "workUrls": [
+        "https://poptech.org/impact-portfolio/"
+      ]
+    },
+    {
+      "slug": "publicai",
+      "name": "Public Ai",
+      "workUrls": [
+        "https://publicai.co/stories/open-source-win",
+        "https://publicai.co/stories/utility"
       ]
     },
     {
@@ -1135,6 +1459,13 @@
         "https://www.reelworks.org/blog/2019/08/28/movie-of-the-week-in-the-dark-by-larry-cruz",
         "https://www.reelworks.org/blog/2019/08/22/movie-of-the-week-who-is-it-by-marcus-cochran",
         "https://www.reelworks.org/blog/2019/08/20/build-studios-nyc-field-trip"
+      ]
+    },
+    {
+      "slug": "rethinkwords",
+      "name": "Rethink",
+      "workUrls": [
+        "https://rethinkwords.com/"
       ]
     },
     {
@@ -1201,6 +1532,36 @@
       ]
     },
     {
+      "slug": "starlinglab",
+      "name": "Starling Lab",
+      "workUrls": [
+        "https://starlinglab.org/case-studies/setting-the-record-straight-in-brazils-burning-wetlands/",
+        "https://starlinglab.org/starling-framework/"
+      ]
+    },
+    {
+      "slug": "schoolofattention",
+      "name": "Strother School Of Radical Attention",
+      "workUrls": [
+        "https://www.schoolofattention.org/study-corps",
+        "https://www.schoolofattention.org/sidewalk-study"
+      ]
+    },
+    {
+      "slug": "socialwebfoundation",
+      "name": "Swf",
+      "workUrls": [
+        "https://socialwebfoundation.org/2026/07/23/new-in-tech-policy-press-the-web-needs-a-context-layer-built-on-a-shared-protocol/",
+        "https://socialwebfoundation.org/projects/",
+        "https://socialwebfoundation.org/2026/08/13/new-york-fediverse-meetup-friday-14-aug-2026-7pm/",
+        "https://socialwebfoundation.org/2026/08/05/evan-prodromou-at-fedicon-2026/",
+        "https://socialwebfoundation.org/2026/07/27/help-hope-hackers-hop-onto-the-fediverse/",
+        "https://socialwebfoundation.org/2026/06/28/unsubscribing-tags-pub-from-open-registration-relays/",
+        "https://socialwebfoundation.org/program-protocol-e2ee/",
+        "https://socialwebfoundation.org/2026/06/21/swf-at-un-open-source-week/"
+      ]
+    },
+    {
       "slug": "techjusticelaw",
       "name": "Tech Justice Law",
       "workUrls": [
@@ -1217,12 +1578,67 @@
       ]
     },
     {
+      "slug": "techmatters",
+      "name": "Tech Matters Logo",
+      "workUrls": [
+        "https://techmatters.org/project/a-better-deal-for-data/",
+        "https://techmatters.org/project/answers-for-good/",
+        "https://techmatters.org/project/building-the-tech-for-good-field/",
+        "https://techmatters.org/project/technology-for-good-how-nonprofit-leaders-are-using-software-and-data/",
+        "https://techmatters.org/project/aselo/",
+        "https://techmatters.org/project/terraso/"
+      ]
+    },
+    {
+      "slug": "techoversight",
+      "name": "Tech Oversight",
+      "workUrls": [
+        "https://www.techoversight.org/ai-super-pac-research-book/"
+      ]
+    },
+    {
+      "slug": "techsoup",
+      "name": "Techsoup",
+      "workUrls": [
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-microsoft",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-cisco",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-intuit",
+        "https://blog.techsoup.org/en-us/posts/topic/project-management-and-planning",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-symantec",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-adobe",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-arctera-veritas",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-autodesk",
+        "https://blog.techsoup.org/en-us/posts/topic/impact-stories-clicktime"
+      ]
+    },
+    {
+      "slug": "secureainow",
+      "name": "The Alliancefor Secure Ai",
+      "workUrls": [
+        "https://secureainow.org/issues/",
+        "https://secureainow.org/media/media-contact/",
+        "https://secureainow.org/action-center/",
+        "https://secureainow.org/action-center/faith/",
+        "https://secureainow.org/how-a-small-town-in-northern-maine-fought-back-against-ai-powered-surveillance-and-won/",
+        "https://secureainow.org/a-glimpse-of-ai-beyond-human-control/"
+      ]
+    },
+    {
       "slug": "anxiousgeneration",
       "name": "The Anxious Generation",
       "workUrls": [
         "https://www.anxiousgeneration.com/research/collaborative-review-docs",
         "https://www.anxiousgeneration.com/research/the-evidence",
         "https://www.anxiousgeneration.com/privacy"
+      ]
+    },
+    {
+      "slug": "thecenterforartsandinnovation",
+      "name": "The Center For Ai",
+      "workUrls": [
+        "https://thecenterforartsandinnovation.org/programs/",
+        "https://thecenterforartsandinnovation.org/program/what-do-you-see-short-film-fellowship/"
       ]
     },
     {
@@ -1255,6 +1671,36 @@
         "https://themetalayer.org/papers",
         "https://themetalayer.org/analysis",
         "https://themetalayer.org/community-reports"
+      ]
+    },
+    {
+      "slug": "thepolicycircle",
+      "name": "The Policy Circle",
+      "workUrls": [
+        "https://www.thepolicycircle.org/impact/",
+        "https://www.thepolicycircle.org/policy-circles/",
+        "https://www.thepolicycircle.org/how-to-research-your-ballot/",
+        "https://www.thepolicycircle.org/partners/",
+        "https://www.thepolicycircle.org/artificial-intelligence/",
+        "https://www.thepolicycircle.org/protecting-children-online-resources/",
+        "https://www.thepolicycircle.org/briefs/energy-and-the-environment/",
+        "https://www.thepolicycircle.org/briefs/data-centers/"
+      ]
+    },
+    {
+      "slug": "thesgnl",
+      "name": "The Signal",
+      "workUrls": [
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxiii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/national-security-us-domestic-politics/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxxi/",
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/thursday-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/public-intellectuals-media-influencers/",
+        "https://www.thesgnl.com/2026/08/tuesday-week-xxxii-mmxxvi/",
+        "https://www.thesgnl.com/2026/08/members-despatch-week-xxxi-mmxxvi/",
+        "https://www.thesgnl.com/2026/07/thursday-week-xxxi-mmxxvi/"
       ]
     },
     {
@@ -1303,6 +1749,13 @@
         "https://dais.ca/reports/submission-to-the-consultation-on-canadas-renewed-ai-strategy/",
         "https://dais.ca/media-room/news-and-announcements/",
         "https://dais.ca/learning/"
+      ]
+    },
+    {
+      "slug": "transfer",
+      "name": "Transfer Logo Black Bg Square",
+      "workUrls": [
+        "https://transfer.art/trust"
       ]
     },
     {
@@ -1366,145 +1819,35 @@
         "https://www.w3ws.org/projects/secure-migration",
         "https://www.w3ws.org/projects/new-space-order"
       ]
+    },
+    {
+      "slug": "youngpeoplesalliance",
+      "name": "Young People S Alliance Logo",
+      "workUrls": [
+        "https://youngpeoplesalliance.org/api/blob/humanlike-ai.pdf"
+      ]
     }
   ],
   "promoteFetchFailed": [
     {
-      "slug": "aapti",
-      "name": "Aapti",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://aapti.in/research",
-        "https://aapti.in/publications",
-        "https://aapti.in/reports",
-        "https://aapti.in/papers"
-      ]
-    },
-    {
-      "slug": "advancedaisociety",
-      "name": "Advanced Aisociety",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.advancedaisociety.org/research",
-        "https://www.advancedaisociety.org/publications",
-        "https://www.advancedaisociety.org/reports",
-        "https://www.advancedaisociety.org/papers"
-      ]
-    },
-    {
-      "slug": "afchix",
-      "name": "Afchix",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://afchix.org/research",
-        "https://afchix.org/publications",
-        "https://afchix.org/reports",
-        "https://afchix.org/papers"
-      ]
-    },
-    {
-      "slug": "anfhelp",
-      "name": "Alexander Neville Foundation Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://anfhelp.org/research",
-        "https://anfhelp.org/publications",
-        "https://anfhelp.org/reports",
-        "https://anfhelp.org/papers"
-      ]
-    },
-    {
-      "slug": "americansecurityfund",
-      "name": "American Security Foundation",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "amplifier",
-      "name": "Amplifier",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://amplifier.org/research",
-        "https://amplifier.org/publications",
-        "https://amplifier.org/reports",
-        "https://amplifier.org/papers"
-      ]
-    },
-    {
-      "slug": "ashoka",
-      "name": "Ashoka",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.ashoka.org/research",
-        "https://www.ashoka.org/publications",
-        "https://www.ashoka.org/reports",
-        "https://www.ashoka.org/papers"
-      ]
-    },
-    {
       "slug": "aspeninstitute",
       "name": "Aspen Institute",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "atlascomputing",
-      "name": "Atlas Computing Logo",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://atlascomputing.org/research",
-        "https://atlascomputing.org/publications",
-        "https://atlascomputing.org/reports",
-        "https://atlascomputing.org/papers"
-      ]
-    },
-    {
-      "slug": "beccaschmillfdn",
-      "name": "Becca Schmill Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://beccaschmillfdn.org/research",
-        "https://beccaschmillfdn.org/publications",
-        "https://beccaschmillfdn.org/reports",
-        "https://beccaschmillfdn.org/papers"
-      ]
-    },
-    {
-      "slug": "theblockfound",
-      "name": "Blockchain Foundation Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://theblockfound.com/research",
-        "https://theblockfound.com/publications",
-        "https://theblockfound.com/reports",
-        "https://theblockfound.com/papers"
+        "https://www.aspeninstitute.org/publications/",
+        "https://www.aspeninstitute.org/programs/tech-policy-hub/"
       ]
     },
     {
       "slug": "counterhate",
       "name": "Center For Countering Digital Hate Logo",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "humanetech",
-      "name": "Center For Humane Technology",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://www.humanetech.com/research",
-        "https://www.humanetech.com/publications",
-        "https://www.humanetech.com/reports",
-        "https://www.humanetech.com/papers"
+        "https://counterhate.com/research/the-cost-of-weaker-moderation/",
+        "https://counterhate.com/research/up-next-anorexia-algorithm/",
+        "https://counterhate.com/blog/new-report-shows-youtube-still-recommends-eating-disorder-content-to-children-despite-safety-improvements/"
       ]
     },
     {
@@ -1525,46 +1868,10 @@
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://cigionline.org/articles/essays/",
-        "https://cigionline.org/publications/essay-series/",
-        "https://cigionline.org/publications/policy-briefs/",
-        "https://cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/"
-      ]
-    },
-    {
-      "slug": "centritechfdn",
-      "name": "Centritech Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.centritechfdn.org/research",
-        "https://www.centritechfdn.org/publications",
-        "https://www.centritechfdn.org/reports",
-        "https://www.centritechfdn.org/papers"
-      ]
-    },
-    {
-      "slug": "christchurchcall",
-      "name": "Christ Church Call",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.christchurchcall.org/research",
-        "https://www.christchurchcall.org/publications",
-        "https://www.christchurchcall.org/reports",
-        "https://www.christchurchcall.org/papers"
-      ]
-    },
-    {
-      "slug": "citizenuniversity",
-      "name": "Citizen University",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://citizenuniversity.us/research",
-        "https://citizenuniversity.us/publications",
-        "https://citizenuniversity.us/reports",
-        "https://citizenuniversity.us/papers"
+        "https://www.cigionline.org/publications/models-platform-governance/",
+        "https://www.cigionline.org/publications/data-governance-digital-age/",
+        "https://www.cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/",
+        "https://cigionline.org/articles/essays/"
       ]
     },
     {
@@ -1588,50 +1895,16 @@
     {
       "slug": "cybercollective",
       "name": "Cyber Collective",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "digitalcredentials",
-      "name": "Dcc",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://digitalcredentials.mit.edu/research",
-        "https://digitalcredentials.mit.edu/publications",
-        "https://digitalcredentials.mit.edu/reports",
-        "https://digitalcredentials.mit.edu/papers"
-      ]
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "digital-democracy",
       "name": "Digital Democracy",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "dream",
-      "name": "Dream Org",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://dream.org/research",
-        "https://dream.org/publications",
-        "https://dream.org/reports",
-        "https://dream.org/papers"
-      ]
-    },
-    {
-      "slug": "getdweb",
-      "name": "Dweb Color Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://getdweb.net/wp-content/uploads/2021/02/DWeb-Become-a-global-Sponsor.pdf",
-        "https://getdweb.net/research",
-        "https://getdweb.net/publications",
-        "https://getdweb.net/reports"
-      ]
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "earthkindcollective",
@@ -1639,58 +1912,10 @@
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
+        "https://docs.earthkindcollective.org/",
         "https://earthkindcollective.org/research",
         "https://earthkindcollective.org/publications",
-        "https://earthkindcollective.org/reports",
-        "https://earthkindcollective.org/papers"
-      ]
-    },
-    {
-      "slug": "encodejustice",
-      "name": "Encodejustice",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://encodejustice.org/research",
-        "https://encodejustice.org/publications",
-        "https://encodejustice.org/reports",
-        "https://encodejustice.org/papers"
-      ]
-    },
-    {
-      "slug": "ens",
-      "name": "Ethereum Name Service",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://ens.domains/research",
-        "https://ens.domains/publications",
-        "https://ens.domains/reports",
-        "https://ens.domains/papers"
-      ]
-    },
-    {
-      "slug": "forfreedoms",
-      "name": "Forfreedoms",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.forfreedoms.org/research",
-        "https://www.forfreedoms.org/publications",
-        "https://www.forfreedoms.org/reports",
-        "https://www.forfreedoms.org/papers"
-      ]
-    },
-    {
-      "slug": "glianetalliance",
-      "name": "Glia Net",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.glianetalliance.org/research",
-        "https://www.glianetalliance.org/publications",
-        "https://www.glianetalliance.org/reports",
-        "https://www.glianetalliance.org/papers"
+        "https://earthkindcollective.org/reports"
       ]
     },
     {
@@ -1700,213 +1925,14 @@
       "detail": "Homepage fetch failed (403)"
     },
     {
-      "slug": "instituteforfamiliesandtechnology",
-      "name": "Institute For Families And Technology",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.instituteforfamiliesandtechnology.org/research",
-        "https://www.instituteforfamiliesandtechnology.org/publications",
-        "https://www.instituteforfamiliesandtechnology.org/reports",
-        "https://www.instituteforfamiliesandtechnology.org/papers"
-      ]
-    },
-    {
-      "slug": "archive",
-      "name": "Internet Archive",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://archive.org/research",
-        "https://archive.org/publications",
-        "https://archive.org/reports",
-        "https://archive.org/papers"
-      ]
-    },
-    {
-      "slug": "lifewithmachines",
-      "name": "Life With Machines",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://lifewithmachines.media/research",
-        "https://lifewithmachines.media/publications",
-        "https://lifewithmachines.media/reports",
-        "https://lifewithmachines.media/papers"
-      ]
-    },
-    {
-      "slug": "logoffmovement",
-      "name": "Log Off",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.logoffmovement.org/research",
-        "https://www.logoffmovement.org/publications",
-        "https://www.logoffmovement.org/reports",
-        "https://www.logoffmovement.org/papers"
-      ]
-    },
-    {
-      "slug": "madewithblackculture",
-      "name": "Made Company Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://madewithblackculture.com/research",
-        "https://madewithblackculture.com/publications",
-        "https://madewithblackculture.com/reports",
-        "https://madewithblackculture.com/papers"
-      ]
-    },
-    {
-      "slug": "joinmama",
-      "name": "Mama",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.joinmama.org/research",
-        "https://www.joinmama.org/publications",
-        "https://www.joinmama.org/reports",
-        "https://www.joinmama.org/papers"
-      ]
-    },
-    {
-      "slug": "metagov",
-      "name": "Metagov",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://metagov.org/project-categories/standards",
-        "https://metagov.org/research",
-        "https://metagov.org/publications",
-        "https://metagov.org/reports"
-      ]
-    },
-    {
-      "slug": "mindbridgecenter",
-      "name": "Minebridge",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.mindbridgecenter.org/research",
-        "https://www.mindbridgecenter.org/publications",
-        "https://www.mindbridgecenter.org/reports",
-        "https://www.mindbridgecenter.org/papers"
-      ]
-    },
-    {
-      "slug": "newimpact",
-      "name": "New Impact Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://newimpact.care/research",
-        "https://newimpact.care/publications",
-        "https://newimpact.care/reports",
-        "https://newimpact.care/papers"
-      ]
-    },
-    {
-      "slug": "newpublic",
-      "name": "New Public",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://newpublic.org/research",
-        "https://newpublic.org/publications",
-        "https://newpublic.org/reports",
-        "https://newpublic.org/papers"
-      ]
-    },
-    {
-      "slug": "omidyar",
-      "name": "Omyidar Network",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://omidyar.com/research",
-        "https://omidyar.com/publications",
-        "https://omidyar.com/reports",
-        "https://omidyar.com/papers"
-      ]
-    },
-    {
-      "slug": "mcgovern",
-      "name": "Patrick Jmc Goven Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.mcgovern.org/research",
-        "https://www.mcgovern.org/publications",
-        "https://www.mcgovern.org/reports",
-        "https://www.mcgovern.org/papers"
-      ]
-    },
-    {
-      "slug": "peoplecentered",
-      "name": "People Centered Internet",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://peoplecentered.net/research",
-        "https://peoplecentered.net/publications",
-        "https://peoplecentered.net/reports",
-        "https://peoplecentered.net/papers"
-      ]
-    },
-    {
-      "slug": "pivo",
-      "name": "Pivo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://pivo.org.br/research",
-        "https://pivo.org.br/publications",
-        "https://pivo.org.br/reports",
-        "https://pivo.org.br/papers"
-      ]
-    },
-    {
       "slug": "policylink",
       "name": "Policy Link",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "poptech",
-      "name": "Pop Tech",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://poptech.org/research",
-        "https://poptech.org/publications",
-        "https://poptech.org/reports",
-        "https://poptech.org/papers"
-      ]
-    },
-    {
-      "slug": "publicai",
-      "name": "Public Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://publicai.co/research",
-        "https://publicai.co/publications",
-        "https://publicai.co/reports",
-        "https://publicai.co/papers"
-      ]
-    },
-    {
-      "slug": "rethinkwords",
-      "name": "Rethink",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.rethinkwords.com/research",
-        "https://www.rethinkwords.com/publications",
-        "https://www.rethinkwords.com/reports",
-        "https://www.rethinkwords.com/papers"
+        "https://www.policylink.org/resources/report",
+        "https://www.policylink.org/our-work/economy/reports",
+        "https://www.policylink.org/resources/tools"
       ]
     },
     {
@@ -1922,100 +1948,10 @@
       "detail": "Homepage fetch failed (403)"
     },
     {
-      "slug": "starlinglab",
-      "name": "Starling Lab",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.starlinglab.org/research",
-        "https://www.starlinglab.org/publications",
-        "https://www.starlinglab.org/reports",
-        "https://www.starlinglab.org/papers"
-      ]
-    },
-    {
-      "slug": "schoolofattention",
-      "name": "Strother School Of Radical Attention",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.schoolofattention.org/s/toolkit-12.pdf",
-        "https://www.schoolofattention.org/publications",
-        "https://www.schoolofattention.org/research",
-        "https://www.schoolofattention.org/reports"
-      ]
-    },
-    {
       "slug": "sustainablemedia",
       "name": "Sustainable Media Center",
       "reason": "fetch_failed",
       "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "socialwebfoundation",
-      "name": "Swf",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://socialwebfoundation.org/research",
-        "https://socialwebfoundation.org/publications",
-        "https://socialwebfoundation.org/reports",
-        "https://socialwebfoundation.org/papers"
-      ]
-    },
-    {
-      "slug": "techmatters",
-      "name": "Tech Matters Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://techmatters.org/research",
-        "https://techmatters.org/publications",
-        "https://techmatters.org/reports",
-        "https://techmatters.org/papers"
-      ]
-    },
-    {
-      "slug": "techoversight",
-      "name": "Tech Oversight",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.techoversight.org/research",
-        "https://www.techoversight.org/publications",
-        "https://www.techoversight.org/reports",
-        "https://www.techoversight.org/papers"
-      ]
-    },
-    {
-      "slug": "techsoup",
-      "name": "Techsoup",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "secureainow",
-      "name": "The Alliancefor Secure Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "http://www.secureainow.org/research",
-        "http://www.secureainow.org/publications",
-        "http://www.secureainow.org/reports",
-        "http://www.secureainow.org/papers"
-      ]
-    },
-    {
-      "slug": "thecenterforartsandinnovation",
-      "name": "The Center For Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://thecenterforartsandinnovation.org/wp-content/uploads/2025/10/VolunteerTerms.pdf",
-        "https://thecenterforartsandinnovation.org/wp-content/uploads/2025/09/ContestTerms.pdf",
-        "https://thecenterforartsandinnovation.org/research",
-        "https://thecenterforartsandinnovation.org/publications"
-      ]
     },
     {
       "slug": "thefuturesociety",
@@ -2033,18 +1969,6 @@
         "https://kempe.org/publications",
         "https://kempe.org/reports",
         "https://kempe.org/papers"
-      ]
-    },
-    {
-      "slug": "thepolicycircle",
-      "name": "The Policy Circle",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.thepolicycircle.org/policy-hub",
-        "https://www.thepolicycircle.org/research",
-        "https://www.thepolicycircle.org/publications",
-        "https://www.thepolicycircle.org/reports"
       ]
     },
     {
@@ -2066,34 +1990,11 @@
       "detail": "Homepage fetch failed (fetch failed)"
     },
     {
-      "slug": "thesgnl",
-      "name": "The Signal",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.thesgnl.com/research",
-        "https://www.thesgnl.com/publications",
-        "https://www.thesgnl.com/reports",
-        "https://www.thesgnl.com/papers"
-      ]
-    },
-    {
       "slug": "mtotonews",
       "name": "Toto News",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "transfer",
-      "name": "Transfer Logo Black Bg Square",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "http://transfer.art/research",
-        "http://transfer.art/publications",
-        "http://transfer.art/reports",
-        "http://transfer.art/papers"
-      ]
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "thetrustfoundation",
@@ -2118,57 +2019,9 @@
         "https://www.uxforgood.org/reports",
         "https://www.uxforgood.org/papers"
       ]
-    },
-    {
-      "slug": "youngpeoplesalliance",
-      "name": "Young People S Alliance Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://youngpeoplesalliance.org/research",
-        "https://youngpeoplesalliance.org/publications",
-        "https://youngpeoplesalliance.org/reports",
-        "https://youngpeoplesalliance.org/papers"
-      ]
     }
   ],
   "stubs": [
-    {
-      "slug": "aapti",
-      "name": "Aapti",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://aapti.in/research",
-        "https://aapti.in/publications",
-        "https://aapti.in/reports",
-        "https://aapti.in/papers"
-      ]
-    },
-    {
-      "slug": "advancedaisociety",
-      "name": "Advanced Aisociety",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.advancedaisociety.org/research",
-        "https://www.advancedaisociety.org/publications",
-        "https://www.advancedaisociety.org/reports",
-        "https://www.advancedaisociety.org/papers"
-      ]
-    },
-    {
-      "slug": "afchix",
-      "name": "Afchix",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://afchix.org/research",
-        "https://afchix.org/publications",
-        "https://afchix.org/reports",
-        "https://afchix.org/papers"
-      ]
-    },
     {
       "slug": "aiprc",
       "name": "Aiprc",
@@ -2176,75 +2029,13 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "americansecurityfund",
-      "name": "American Security Foundation",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "amplifier",
-      "name": "Amplifier",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://amplifier.org/research",
-        "https://amplifier.org/publications",
-        "https://amplifier.org/reports",
-        "https://amplifier.org/papers"
-      ]
-    },
-    {
-      "slug": "anfhelp",
-      "name": "Alexander Neville Foundation Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://anfhelp.org/research",
-        "https://anfhelp.org/publications",
-        "https://anfhelp.org/reports",
-        "https://anfhelp.org/papers"
-      ]
-    },
-    {
-      "slug": "archive",
-      "name": "Internet Archive",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://archive.org/research",
-        "https://archive.org/publications",
-        "https://archive.org/reports",
-        "https://archive.org/papers"
-      ]
-    },
-    {
-      "slug": "ashoka",
-      "name": "Ashoka",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.ashoka.org/research",
-        "https://www.ashoka.org/publications",
-        "https://www.ashoka.org/reports",
-        "https://www.ashoka.org/papers"
-      ]
-    },
-    {
       "slug": "aspeninstitute",
       "name": "Aspen Institute",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "atlascomputing",
-      "name": "Atlas Computing Logo",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://atlascomputing.org/research",
-        "https://atlascomputing.org/publications",
-        "https://atlascomputing.org/reports",
-        "https://atlascomputing.org/papers"
+        "https://www.aspeninstitute.org/publications/",
+        "https://www.aspeninstitute.org/programs/tech-policy-hub/"
       ]
     },
     {
@@ -2252,18 +2043,6 @@
       "name": "Back Channel",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "beccaschmillfdn",
-      "name": "Becca Schmill Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://beccaschmillfdn.org/research",
-        "https://beccaschmillfdn.org/publications",
-        "https://beccaschmillfdn.org/reports",
-        "https://beccaschmillfdn.org/papers"
-      ]
     },
     {
       "slug": "betaworks",
@@ -2290,51 +2069,15 @@
       "detail": "Homepage fetch failed (The operation was aborted due to timeout)"
     },
     {
-      "slug": "centritechfdn",
-      "name": "Centritech Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.centritechfdn.org/research",
-        "https://www.centritechfdn.org/publications",
-        "https://www.centritechfdn.org/reports",
-        "https://www.centritechfdn.org/papers"
-      ]
-    },
-    {
-      "slug": "christchurchcall",
-      "name": "Christ Church Call",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.christchurchcall.org/research",
-        "https://www.christchurchcall.org/publications",
-        "https://www.christchurchcall.org/reports",
-        "https://www.christchurchcall.org/papers"
-      ]
-    },
-    {
       "slug": "cigionline",
       "name": "Centre For International Governance Innovation Logo",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://cigionline.org/articles/essays/",
-        "https://cigionline.org/publications/essay-series/",
-        "https://cigionline.org/publications/policy-briefs/",
-        "https://cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/"
-      ]
-    },
-    {
-      "slug": "citizenuniversity",
-      "name": "Citizen University",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://citizenuniversity.us/research",
-        "https://citizenuniversity.us/publications",
-        "https://citizenuniversity.us/reports",
-        "https://citizenuniversity.us/papers"
+        "https://www.cigionline.org/publications/models-platform-governance/",
+        "https://www.cigionline.org/publications/data-governance-digital-age/",
+        "https://www.cigionline.org/articles/smaller-than-advertised-canadas-real-trade-risk-with-the-united-states/",
+        "https://cigionline.org/articles/essays/"
       ]
     },
     {
@@ -2352,8 +2095,13 @@
     {
       "slug": "counterhate",
       "name": "Center For Countering Digital Hate Logo",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
+      "reason": "only_mission_or_thin",
+      "detail": "No strong publication/report/article URLs with quotable work prose",
+      "triedUrls": [
+        "https://counterhate.com/research/the-cost-of-weaker-moderation/",
+        "https://counterhate.com/research/up-next-anorexia-algorithm/",
+        "https://counterhate.com/blog/new-report-shows-youtube-still-recommends-eating-disorder-content-to-children-despite-safety-improvements/"
+      ]
     },
     {
       "slug": "creatorscoalitionai",
@@ -2370,8 +2118,9 @@
     {
       "slug": "cybercollective",
       "name": "Cyber Collective",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "data4sdgs",
@@ -2388,20 +2137,9 @@
     {
       "slug": "digital-democracy",
       "name": "Digital Democracy",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "digitalcredentials",
-      "name": "Dcc",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://digitalcredentials.mit.edu/research",
-        "https://digitalcredentials.mit.edu/publications",
-        "https://digitalcredentials.mit.edu/reports",
-        "https://digitalcredentials.mit.edu/papers"
-      ]
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "domyn",
@@ -2416,39 +2154,15 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "dream",
-      "name": "Dream Org",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://dream.org/research",
-        "https://dream.org/publications",
-        "https://dream.org/reports",
-        "https://dream.org/papers"
-      ]
-    },
-    {
       "slug": "earthkindcollective",
       "name": "Earthkind",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
+        "https://docs.earthkindcollective.org/",
         "https://earthkindcollective.org/research",
         "https://earthkindcollective.org/publications",
-        "https://earthkindcollective.org/reports",
-        "https://earthkindcollective.org/papers"
-      ]
-    },
-    {
-      "slug": "encodejustice",
-      "name": "Encodejustice",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://encodejustice.org/research",
-        "https://encodejustice.org/publications",
-        "https://encodejustice.org/reports",
-        "https://encodejustice.org/papers"
+        "https://earthkindcollective.org/reports"
       ]
     },
     {
@@ -2456,18 +2170,6 @@
       "name": "Engage Media Logotype Red Black 800px",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "ens",
-      "name": "Ethereum Name Service",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://ens.domains/research",
-        "https://ens.domains/publications",
-        "https://ens.domains/reports",
-        "https://ens.domains/papers"
-      ]
     },
     {
       "slug": "eticas",
@@ -2480,18 +2182,6 @@
       "name": "Faith Wise Ai",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "forfreedoms",
-      "name": "Forfreedoms",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.forfreedoms.org/research",
-        "https://www.forfreedoms.org/publications",
-        "https://www.forfreedoms.org/reports",
-        "https://www.forfreedoms.org/papers"
-      ]
     },
     {
       "slug": "freeourfeeds",
@@ -2512,34 +2202,10 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "getdweb",
-      "name": "Dweb Color Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://getdweb.net/wp-content/uploads/2021/02/DWeb-Become-a-global-Sponsor.pdf",
-        "https://getdweb.net/research",
-        "https://getdweb.net/publications",
-        "https://getdweb.net/reports"
-      ]
-    },
-    {
       "slug": "getnu",
       "name": "Nu",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "glianetalliance",
-      "name": "Glia Net",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.glianetalliance.org/research",
-        "https://www.glianetalliance.org/publications",
-        "https://www.glianetalliance.org/reports",
-        "https://www.glianetalliance.org/papers"
-      ]
     },
     {
       "slug": "goodlylabs",
@@ -2572,46 +2238,10 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "humanetech",
-      "name": "Center For Humane Technology",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.humanetech.com/research",
-        "https://www.humanetech.com/publications",
-        "https://www.humanetech.com/reports",
-        "https://www.humanetech.com/papers"
-      ]
-    },
-    {
       "slug": "humansincontrol",
       "name": "Humans In Control",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "instituteforfamiliesandtechnology",
-      "name": "Institute For Families And Technology",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.instituteforfamiliesandtechnology.org/research",
-        "https://www.instituteforfamiliesandtechnology.org/publications",
-        "https://www.instituteforfamiliesandtechnology.org/reports",
-        "https://www.instituteforfamiliesandtechnology.org/papers"
-      ]
-    },
-    {
-      "slug": "joinmama",
-      "name": "Mama",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.joinmama.org/research",
-        "https://www.joinmama.org/publications",
-        "https://www.joinmama.org/reports",
-        "https://www.joinmama.org/papers"
-      ]
     },
     {
       "slug": "kempe",
@@ -2644,88 +2274,17 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "lifewithmachines",
-      "name": "Life With Machines",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://lifewithmachines.media/research",
-        "https://lifewithmachines.media/publications",
-        "https://lifewithmachines.media/reports",
-        "https://lifewithmachines.media/papers"
-      ]
-    },
-    {
-      "slug": "logoffmovement",
-      "name": "Log Off",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.logoffmovement.org/research",
-        "https://www.logoffmovement.org/publications",
-        "https://www.logoffmovement.org/reports",
-        "https://www.logoffmovement.org/papers"
-      ]
-    },
-    {
-      "slug": "madewithblackculture",
-      "name": "Made Company Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://madewithblackculture.com/research",
-        "https://madewithblackculture.com/publications",
-        "https://madewithblackculture.com/reports",
-        "https://madewithblackculture.com/papers"
-      ]
-    },
-    {
       "slug": "mapletestimony",
       "name": "Maple",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "mcgovern",
-      "name": "Patrick Jmc Goven Foundation",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.mcgovern.org/research",
-        "https://www.mcgovern.org/publications",
-        "https://www.mcgovern.org/reports",
-        "https://www.mcgovern.org/papers"
-      ]
-    },
-    {
-      "slug": "metagov",
-      "name": "Metagov",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://metagov.org/project-categories/standards",
-        "https://metagov.org/research",
-        "https://metagov.org/publications",
-        "https://metagov.org/reports"
-      ]
-    },
-    {
-      "slug": "mindbridgecenter",
-      "name": "Minebridge",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.mindbridgecenter.org/research",
-        "https://www.mindbridgecenter.org/publications",
-        "https://www.mindbridgecenter.org/reports",
-        "https://www.mindbridgecenter.org/papers"
-      ]
-    },
-    {
       "slug": "mtotonews",
       "name": "Toto News",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
+      "reason": "no_work_links",
+      "detail": "No research/publications/reports/perspectives/blog links found",
+      "triedUrls": []
     },
     {
       "slug": "networkmessenger",
@@ -2734,46 +2293,10 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "newimpact",
-      "name": "New Impact Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://newimpact.care/research",
-        "https://newimpact.care/publications",
-        "https://newimpact.care/reports",
-        "https://newimpact.care/papers"
-      ]
-    },
-    {
-      "slug": "newpublic",
-      "name": "New Public",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://newpublic.org/research",
-        "https://newpublic.org/publications",
-        "https://newpublic.org/reports",
-        "https://newpublic.org/papers"
-      ]
-    },
-    {
       "slug": "noappforlife",
       "name": "No App For Life",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "omidyar",
-      "name": "Omyidar Network",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://omidyar.com/research",
-        "https://omidyar.com/publications",
-        "https://omidyar.com/reports",
-        "https://omidyar.com/papers"
-      ]
     },
     {
       "slug": "opencollective",
@@ -2794,45 +2317,14 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "peoplecentered",
-      "name": "People Centered Internet",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://peoplecentered.net/research",
-        "https://peoplecentered.net/publications",
-        "https://peoplecentered.net/reports",
-        "https://peoplecentered.net/papers"
-      ]
-    },
-    {
-      "slug": "pivo",
-      "name": "Pivo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://pivo.org.br/research",
-        "https://pivo.org.br/publications",
-        "https://pivo.org.br/reports",
-        "https://pivo.org.br/papers"
-      ]
-    },
-    {
       "slug": "policylink",
       "name": "Policy Link",
-      "reason": "fetch_failed",
-      "detail": "Homepage fetch failed (403)"
-    },
-    {
-      "slug": "poptech",
-      "name": "Pop Tech",
       "reason": "only_mission_or_thin",
       "detail": "No strong publication/report/article URLs with quotable work prose",
       "triedUrls": [
-        "https://poptech.org/research",
-        "https://poptech.org/publications",
-        "https://poptech.org/reports",
-        "https://poptech.org/papers"
+        "https://www.policylink.org/resources/report",
+        "https://www.policylink.org/our-work/economy/reports",
+        "https://www.policylink.org/resources/tools"
       ]
     },
     {
@@ -2840,54 +2332,6 @@
       "name": "Positive Tech Inst",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "publicai",
-      "name": "Public Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://publicai.co/research",
-        "https://publicai.co/publications",
-        "https://publicai.co/reports",
-        "https://publicai.co/papers"
-      ]
-    },
-    {
-      "slug": "rethinkwords",
-      "name": "Rethink",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.rethinkwords.com/research",
-        "https://www.rethinkwords.com/publications",
-        "https://www.rethinkwords.com/reports",
-        "https://www.rethinkwords.com/papers"
-      ]
-    },
-    {
-      "slug": "schoolofattention",
-      "name": "Strother School Of Radical Attention",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.schoolofattention.org/s/toolkit-12.pdf",
-        "https://www.schoolofattention.org/publications",
-        "https://www.schoolofattention.org/research",
-        "https://www.schoolofattention.org/reports"
-      ]
-    },
-    {
-      "slug": "secureainow",
-      "name": "The Alliancefor Secure Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "http://www.secureainow.org/research",
-        "http://www.secureainow.org/publications",
-        "http://www.secureainow.org/reports",
-        "http://www.secureainow.org/papers"
-      ]
     },
     {
       "slug": "sfcg",
@@ -2902,30 +2346,6 @@
       "detail": "Homepage fetch failed (403)"
     },
     {
-      "slug": "socialwebfoundation",
-      "name": "Swf",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://socialwebfoundation.org/research",
-        "https://socialwebfoundation.org/publications",
-        "https://socialwebfoundation.org/reports",
-        "https://socialwebfoundation.org/papers"
-      ]
-    },
-    {
-      "slug": "starlinglab",
-      "name": "Starling Lab",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.starlinglab.org/research",
-        "https://www.starlinglab.org/publications",
-        "https://www.starlinglab.org/reports",
-        "https://www.starlinglab.org/papers"
-      ]
-    },
-    {
       "slug": "sustainablemedia",
       "name": "Sustainable Media Center",
       "reason": "fetch_failed",
@@ -2936,60 +2356,6 @@
       "name": "Take Two",
       "reason": "research_pass_stub",
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
-    },
-    {
-      "slug": "techmatters",
-      "name": "Tech Matters Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://techmatters.org/research",
-        "https://techmatters.org/publications",
-        "https://techmatters.org/reports",
-        "https://techmatters.org/papers"
-      ]
-    },
-    {
-      "slug": "techoversight",
-      "name": "Tech Oversight",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.techoversight.org/research",
-        "https://www.techoversight.org/publications",
-        "https://www.techoversight.org/reports",
-        "https://www.techoversight.org/papers"
-      ]
-    },
-    {
-      "slug": "techsoup",
-      "name": "Techsoup",
-      "reason": "empty_homepage",
-      "detail": "Homepage returned little or no readable HTML text"
-    },
-    {
-      "slug": "theblockfound",
-      "name": "Blockchain Foundation Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://theblockfound.com/research",
-        "https://theblockfound.com/publications",
-        "https://theblockfound.com/reports",
-        "https://theblockfound.com/papers"
-      ]
-    },
-    {
-      "slug": "thecenterforartsandinnovation",
-      "name": "The Center For Ai",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://thecenterforartsandinnovation.org/wp-content/uploads/2025/10/VolunteerTerms.pdf",
-        "https://thecenterforartsandinnovation.org/wp-content/uploads/2025/09/ContestTerms.pdf",
-        "https://thecenterforartsandinnovation.org/research",
-        "https://thecenterforartsandinnovation.org/publications"
-      ]
     },
     {
       "slug": "thefuturesociety",
@@ -3010,18 +2376,6 @@
       "detail": "Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad."
     },
     {
-      "slug": "thepolicycircle",
-      "name": "The Policy Circle",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.thepolicycircle.org/policy-hub",
-        "https://www.thepolicycircle.org/research",
-        "https://www.thepolicycircle.org/publications",
-        "https://www.thepolicycircle.org/reports"
-      ]
-    },
-    {
       "slug": "thesamehouse",
       "name": "The Same House Color Logo",
       "reason": "only_mission_or_thin",
@@ -3031,18 +2385,6 @@
         "https://thesamehouse.org/publications",
         "https://thesamehouse.org/reports",
         "https://thesamehouse.org/papers"
-      ]
-    },
-    {
-      "slug": "thesgnl",
-      "name": "The Signal",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://www.thesgnl.com/research",
-        "https://www.thesgnl.com/publications",
-        "https://www.thesgnl.com/reports",
-        "https://www.thesgnl.com/papers"
       ]
     },
     {
@@ -3064,18 +2406,6 @@
       ]
     },
     {
-      "slug": "transfer",
-      "name": "Transfer Logo Black Bg Square",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "http://transfer.art/research",
-        "http://transfer.art/publications",
-        "http://transfer.art/reports",
-        "http://transfer.art/papers"
-      ]
-    },
-    {
       "slug": "uxforgood",
       "name": "Ux For Good",
       "reason": "only_mission_or_thin",
@@ -3085,18 +2415,6 @@
         "https://www.uxforgood.org/publications",
         "https://www.uxforgood.org/reports",
         "https://www.uxforgood.org/papers"
-      ]
-    },
-    {
-      "slug": "youngpeoplesalliance",
-      "name": "Young People S Alliance Logo",
-      "reason": "only_mission_or_thin",
-      "detail": "No strong publication/report/article URLs with quotable work prose",
-      "triedUrls": [
-        "https://youngpeoplesalliance.org/research",
-        "https://youngpeoplesalliance.org/publications",
-        "https://youngpeoplesalliance.org/reports",
-        "https://youngpeoplesalliance.org/papers"
       ]
     },
     {

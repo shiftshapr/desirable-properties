@@ -2,6 +2,8 @@
  * Shared fetch + HTML helpers for roster corpus generation.
  */
 
+import { PDFParse } from 'pdf-parse';
+
 export const FETCH_TIMEOUT_MS = 15_000;
 export const USER_AGENT =
   'Mozilla/5.0 (compatible; DesirablePropertiesCorpusBot/1.0; +https://desirableproperties.org/pad)';
@@ -423,6 +425,37 @@ function isBoilerplateSentence(sentence) {
   const titleCaseWords = sentence.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){4,}/g);
   if (titleCaseWords && titleCaseWords.length >= 1) return true;
   return false;
+}
+
+/**
+ * Extract readable text from a PDF URL.
+ * @param {string} url
+ */
+export async function extractPdfText(url) {
+  try {
+    const parser = new PDFParse({ url });
+    const result = await parser.getText();
+    return (result.text || '').replace(/\s+/g, ' ').trim();
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Derive a short title from a PDF URL path when HTML metadata is unavailable.
+ * @param {string} url
+ */
+export function pdfTitleFromUrl(url) {
+  try {
+    const base = decodeURIComponent(new URL(url).pathname.split('/').pop() || '')
+      .replace(/\.pdf$/i, '')
+      .replace(/[-_]+/g, ' ')
+      .trim();
+    if (base.length >= 8) return base;
+  } catch {
+    // ignore
+  }
+  return 'Publication PDF';
 }
 
 /** Strong work URL — publication, report, paper, or named article/blog post. */

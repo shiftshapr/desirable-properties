@@ -9,7 +9,8 @@
  * Usage:
  *   node scripts/generate-roster-corpus-briefings.mjs
  *   node scripts/generate-roster-corpus-briefings.mjs --limit=20
- *   node scripts/generate-roster-corpus-briefings.mjs --slug=consumerreports
+ *   node scripts/generate-roster-corpus-briefings.mjs --retry-failed
+ *   node scripts/discover-corpus-seeds.mjs
  *
  * Output:
  *   src/data/alliance-roster-corpus.json
@@ -24,10 +25,12 @@ import {
   classifyWorkPage,
   decodeEntities,
   extractLinks,
+  extractPdfText,
   extractQuotableSentences,
   extractTextFromHtml,
   extractTitle,
   fetchResource,
+  pdfTitleFromUrl,
   isBlockedUrl,
   isHomepageUrl,
   isPdfUrl,
@@ -40,6 +43,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rosterPath = path.join(__dirname, '../src/data/alliance-roster.json');
 const directoryPath = path.join(__dirname, '../src/data/alliance-directory.json');
 const stubsPath = path.join(__dirname, '../src/data/alliance-roster-corpus-stubs.json');
+const seedsPath = path.join(__dirname, '../src/data/alliance-roster-corpus-seeds.json');
 const outPath = path.join(__dirname, '../src/data/alliance-roster-corpus.json');
 const reportPath = path.join(__dirname, '../src/data/alliance-roster-corpus-report.json');
 
@@ -242,8 +246,9 @@ function pitchFor(org, workPages) {
 /**
  * @param {import('../src/data/alliance-roster.json').orgs[0]} org
  * @param {boolean} verbose
+ * @param {string[]} [seedUrls]
  */
-async function processOrg(org, verbose) {
+async function processOrg(org, verbose, seedUrls = []) {
   const shortName = shortNameFrom(org.name, org.domain);
   const baseResult = {
     slug: org.slug,
@@ -265,26 +270,53 @@ async function processOrg(org, verbose) {
       // keep failed
     }
   }
-  if (!homepage.ok) {
-    return {
-      ...baseResult,
-      status: 'stub',
-      reason: 'fetch_failed',
-      detail: `Homepage fetch failed (${homepage.status || homepage.error || 'unknown'})`,
-    };
+
+  /** @type {{ url: string; score: number; linkText: string }[]} */
+  let candidates = [];
+
+  if (seedUrls.length > 0) {
+    for (const url of seedUrls) {
+      candidates.push({ url, score: 1000, linkText: 'research seed' });
+    }
   }
 
-  if (homepage.isPdf) {
-    return {
-      ...baseResult,
-      status: 'stub',
-      reason: 'only_pdf_homepage',
-      detail: 'Homepage resolves to PDF without HTML work index',
-    };
-  }
-
-  const homepageText = extractTextFromHtml(homepage.body);
-  if (homepageText.length < 120) {
+  if (homepage.ok && !homepage.isPdf) {
+    const homepageText = extractTextFromHtml(homepage.body);
+    if (homepageText.length >= 120) {
+      candidates.push(...discoverCandidateUrls(org.website, org.domain, homepage.body));
+      try {
+        const sitemapUrl = new URL('/sitemap.xml', org.website).href;
+        const sitemap = await fetchResource(sitemapUrl);
+        if (sitemap.ok && sitemap.body) {
+          const addExtra = (url, linkText = '') => {
+            if (isBlockedUrl(url) || !isSameOrgDomain(url, org.domain)) return;
+            const score = scoreWorkUrl(url, linkText);
+            if (score < 0) return;
+            candidates.push({ url, score, linkText });
+          };
+          ingestSitemapLinks(sitemap.body, sitemapUrl, org.domain, addExtra);
+        }
+      } catch {
+        // optional
+      }
+    }
+  } else if (seedUrls.length === 0) {
+    if (!homepage.ok) {
+      return {
+        ...baseResult,
+        status: 'stub',
+        reason: 'fetch_failed',
+        detail: `Homepage fetch failed (${homepage.status || homepage.error || 'unknown'})`,
+      };
+    }
+    if (homepage.isPdf) {
+      return {
+        ...baseResult,
+        status: 'stub',
+        reason: 'only_pdf_homepage',
+        detail: 'Homepage resolves to PDF without HTML work index',
+      };
+    }
     return {
       ...baseResult,
       status: 'stub',
@@ -293,30 +325,13 @@ async function processOrg(org, verbose) {
     };
   }
 
-  const candidates = discoverCandidateUrls(org.website, org.domain, homepage.body);
-
-  // Best-effort sitemap discovery for additional work URLs
-  try {
-    const sitemapUrl = new URL('/sitemap.xml', org.website).href;
-    const sitemap = await fetchResource(sitemapUrl);
-    if (sitemap.ok && sitemap.body) {
-      /** @type {Map<string, { url: string; score: number; linkText: string }>} */
-      const extra = new Map();
-      const addExtra = (url, linkText = '') => {
-        if (isBlockedUrl(url) || !isSameOrgDomain(url, org.domain)) return;
-        const score = scoreWorkUrl(url, linkText);
-        if (score < 0) return;
-        extra.set(url, { url, score, linkText });
-      };
-      ingestSitemapLinks(sitemap.body, sitemapUrl, org.domain, addExtra);
-      for (const item of extra.values()) {
-        candidates.push(item);
-      }
-      candidates.sort((a, b) => b.score - a.score);
-    }
-  } catch {
-    // optional
+  // Dedupe candidates by URL, keep highest score
+  const candidateMap = new Map();
+  for (const c of candidates) {
+    const existing = candidateMap.get(c.url);
+    if (!existing || c.score > existing.score) candidateMap.set(c.url, c);
   }
+  candidates = [...candidateMap.values()];
 
   /** @type {{ url: string; title: string; quotes: string[]; excerpt: string; kind: string }[]} */
   const workPages = [];
@@ -332,16 +347,17 @@ async function processOrg(org, verbose) {
 
     // If this looks like an index page, collect child article links first
     if (!fetched.isPdf && !isPdfUrl(fetched.url)) {
+      const fromSeed = seedUrls.includes(candidate.url);
       try {
         const path = new URL(fetched.url).pathname;
-        if (INDEX_PATH_RE.test(path)) {
+        if (INDEX_PATH_RE.test(path) && !fromSeed) {
           const children = extractIndexChildLinks(fetched.body, fetched.url, org.domain);
           for (const child of children) {
             if (!visited.has(child.href)) {
               await tryWorkUrl({ url: child.href, score: child.score, linkText: child.text });
             }
           }
-          return;
+          if (children.length > 0) return;
         }
       } catch {
         // continue as leaf page
@@ -349,8 +365,28 @@ async function processOrg(org, verbose) {
     }
 
     if (fetched.isPdf || isPdfUrl(fetched.url)) {
+      const fromSeed = seedUrls.includes(candidate.url);
+      const pdfText = await extractPdfText(fetched.url);
+      const pdfQuotes = pdfText ? extractQuotableSentences(pdfText) : [];
+      if (pdfQuotes.length > 0) {
+        const title =
+          candidate.linkText.trim() && candidate.linkText.trim() !== 'research seed'
+            ? candidate.linkText.trim().slice(0, 120)
+            : pdfTitleFromUrl(fetched.url);
+        workPages.push({
+          url: fetched.url,
+          title,
+          quotes: pdfQuotes.map((q) => decodeEntities(q)),
+          excerpt: decodeEntities(pdfQuotes[0]),
+          kind: 'pdf-work',
+          fromSeed,
+        });
+        return;
+      }
+
       const linkContext = candidate.linkText.trim();
       if (
+        fromSeed &&
         linkContext.length >= 40 &&
         /report|paper|research|study|brief|publication|protocol|perspective|essay|article|blog|insight|analysis/i.test(
           linkContext,
@@ -372,8 +408,16 @@ async function processOrg(org, verbose) {
     const text = extractTextFromHtml(fetched.body);
     const kind = classifyWorkPage(fetched.url, title, text);
     const quotes = extractQuotableSentences(text);
-    const relaxedOk = kind === 'thin' && text.length >= 350 && quotes.length >= 1;
-    if (kind !== 'work' && !relaxedOk) return;
+    const fromSeed = seedUrls.includes(candidate.url);
+    const relaxedOk =
+      fromSeed && quotes.length >= 1 && text.length >= 250 && !isMarketingPath(fetched.url);
+    if (kind !== 'work' && !relaxedOk) {
+      if (kind === 'thin' && quotes.length >= 2 && text.length >= 400) {
+        // allow substantive thin pages
+      } else {
+        return;
+      }
+    }
     if (quotes.length === 0) return;
 
     workPages.push({
@@ -382,17 +426,20 @@ async function processOrg(org, verbose) {
       quotes: quotes.map((q) => decodeEntities(q)),
       excerpt: decodeEntities(quotes[0]),
       kind: 'html-work',
+      fromSeed: seedUrls.includes(candidate.url),
     });
   }
 
-  const sortedCandidates = candidates.sort((a, b) => b.score - a.score).slice(0, MAX_WORK_PAGES);
+  const sortedCandidates = candidates
+    .sort((a, b) => b.score - a.score)
+    .slice(0, seedUrls.length > 0 ? Math.max(MAX_WORK_PAGES, seedUrls.length + 8) : MAX_WORK_PAGES);
   for (const candidate of sortedCandidates) {
     await tryWorkUrl(candidate);
   }
 
   // Drop weak pages: homepage, marketing paths, thin press indexes
   const strongWorkPages = workPages.filter((page) => {
-    if (isHomepageUrl(page.url, org.website)) return false;
+    if (isHomepageUrl(page.url, org.website) && !page.fromSeed) return false;
     if (isMarketingPath(page.url)) return false;
     try {
       const path = new URL(page.url).pathname;
@@ -404,7 +451,12 @@ async function processOrg(org, verbose) {
   });
 
   const promotablePages = strongWorkPages.filter(
-    (p) => isStrongWorkUrl(p.url) || p.kind === 'html-work' || p.kind === 'pdf-link',
+    (p) =>
+      isStrongWorkUrl(p.url) ||
+      p.kind === 'html-work' ||
+      p.kind === 'pdf-link' ||
+      p.kind === 'pdf-work' ||
+      seedUrls.includes(p.url),
   );
 
   if (promotablePages.length === 0) {
@@ -573,11 +625,19 @@ async function main() {
     existingPromoted = new Map();
   }
 
+  /** @type {Record<string, string[]>} */
+  const seedMap = {};
+  if (fs.existsSync(seedsPath)) {
+    const seedPacket = JSON.parse(fs.readFileSync(seedsPath, 'utf8'));
+    for (const [slug, entry] of Object.entries(seedPacket.orgs || {})) {
+      seedMap[slug] = entry.workUrls || [];
+    }
+  }
+
   const promoteTargets = targets.filter((org) => !mandatoryStubSlugs.has(org.slug));
-  const forcedStubs = targets.filter((org) => mandatoryStubSlugs.has(org.slug));
 
   console.log(
-    `Research pass: ${mandatoryStubSlugs.size} mandatory stubs, ${promoteTargets.length} promote targets`,
+    `Research pass: ${mandatoryStubSlugs.size} mandatory stubs, ${promoteTargets.length} promote targets, ${Object.keys(seedMap).length} seed orgs`,
   );
   console.log(`Scanning ${promoteTargets.length} roster org(s) for public work corpus…`);
   const started = Date.now();
@@ -598,15 +658,11 @@ async function main() {
       detail: 'Manual research pass (2026-08-21): no findable public work corpus; keep invitation pad.',
     }));
 
-  if (!args.retryFailed && !args.slug) {
-    existingPromoted = new Map();
-  }
-
   const results = await mapPool(promoteTargets, CONCURRENCY, async (org, i) => {
     if ((i + 1) % 10 === 0 || i === 0) {
       console.log(`[${i + 1}/${promoteTargets.length}] ${org.slug}`);
     }
-    return processOrg(org, args.verbose);
+    return processOrg(org, args.verbose, seedMap[org.slug] || []);
   });
 
   const newlyPromoted = results.filter((r) => r.status === 'promoted');

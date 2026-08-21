@@ -9,19 +9,174 @@
   "stats": {
     "rosterTotal": 208,
     "promoteTarget": 171,
-    "promoted": 100,
-    "stubs": 108,
+    "promoted": 150,
+    "stubs": 58,
     "mandatoryStubs": 37,
-    "promoteFetchFailed": 71,
+    "promoteFetchFailed": 21,
     "reasonCounts": {
       "research_pass_stub": 37,
-      "only_mission_or_thin": 56,
-      "empty_homepage": 5,
-      "fetch_failed": 10
+      "only_mission_or_thin": 11,
+      "fetch_failed": 7,
+      "no_work_links": 3
     },
-    "elapsedSeconds": 162
+    "elapsedSeconds": 28
   },
   "orgs": [
+    {
+      "slug": "aapti",
+      "name": "Aapti",
+      "shortName": "Aapti",
+      "kind": "organization",
+      "website": "https://aapti.in/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "aapti.in"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "data",
+        "social"
+      ],
+      "mission": "While they have the potential to revolutionise the way data is governed and even generated for large scale use, there are a limited number of real world examples of successful data cooperatives.",
+      "values": [
+        "To promote and guide the establishment of data cooperatives, Aapti Institute, Data 2X and Open Data Manchester have published a handbook on ‘How to Build a Data Cooperative’.",
+        "The handbook details the process of establishing a data cooperative and offers guidance on the various aspects to take into consideration in this process.",
+        "Using this handbook, groups interested to organise themselves as data cooperatives can create a roadmap to help them along the journey."
+      ],
+      "sources": [
+        {
+          "label": "blog · how-to-build-a-data-cooperative-a-practitioners-handbook",
+          "url": "https://aapti.in/blog/how-to-build-a-data-cooperative-a-practitioners-handbook/"
+        },
+        {
+          "label": "Aapti Institute | Data Co-ops in Action: Launching our Support Network",
+          "url": "https://aapti.in/blog/data-co-ops-in-action-launching-our-support-network/"
+        },
+        {
+          "label": "Aapti Institute | Unlocking Data Cooperative Opportunities in South East Asia",
+          "url": "https://aapti.in/blog/unlocking-data-cooperative-opportunities-in-south-east-asia/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Aapti from public work, not a mission paraphrase.",
+        "lead": "Aapti publishes citable work we could quote (blog · how-to-build-a-data-cooperative-a-practitioners-handbook). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Aapti, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
+      "slug": "advancedaisociety",
+      "name": "Advanced Aisociety",
+      "shortName": "Advanced Aisociety",
+      "kind": "organization",
+      "website": "https://www.advancedaisociety.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "advancedaisociety.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai"
+      ],
+      "mission": "First name * Last name * Email * LinkedIn Company * Company website * Anything you&#x27;d like to share Request briefing →",
+      "values": [
+        "First name * Last name * Email * LinkedIn Company * Company website * Anything you&#x27;d like to share Request briefing →"
+      ],
+      "sources": [
+        {
+          "label": "Advanced AI Society",
+          "url": "https://advancedaisociety.org/briefing"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Advanced Aisociety from public work, not a mission paraphrase.",
+        "lead": "Advanced Aisociety publishes citable work we could quote (Advanced AI Society). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Advanced Aisociety, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
+      "slug": "afchix",
+      "name": "Afchix",
+      "shortName": "Afchix",
+      "kind": "organization",
+      "website": "https://afchix.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "afchix.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "social"
+      ],
+      "mission": "Supported by As one of the winners in the first and then third rounds of the WomenConnect Challenge , funded by the United States Agency for International Development , AFCHIX is using community networks to help women in rural communities in Africa overcome the barriers that keep them from benefitting from the internet.",
+      "values": [
+        "WomenConnect is a global call for solutions to improve women’s participation in everyday life by meaningfully changing the ways women access and use technology.",
+        "As a winner in the first round of the Challenge, launched in 2018, AFCHIX worked with four rural communities in Kenya, Senegal, Namibia, and Morocco to install communications infrastructure and connect several schools and a limited number of households to the internet.",
+        "We used a gender-sensitive approach and deliberately involved women as leaders in the design, installation, and maintenance of the networks."
+      ],
+      "sources": [
+        {
+          "label": "Projects – AFCHIX – Africa Women in Technology",
+          "url": "https://afchix.org/projects/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Afchix from public work, not a mission paraphrase.",
+        "lead": "Afchix publishes citable work we could quote (Projects – AFCHIX – Africa Women in Technology). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Afchix, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
     {
       "slug": "aigi",
       "name": "Aigovernance Initiativeatthe Universityof Oxford",
@@ -269,6 +424,54 @@
       }
     },
     {
+      "slug": "anfhelp",
+      "name": "Alexander Neville Foundation Logo",
+      "shortName": "Anfhelp",
+      "kind": "organization",
+      "website": "https://anfhelp.org",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "anfhelp.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "social",
+        "media"
+      ],
+      "mission": "Social media has become a comfortable way for online traffickers to discover and market to new customers.",
+      "values": [
+        "Because social media users trend young, the victims of these traffickers are trending younger too.",
+        "Drug traffickers use all of the tools and platforms of social media, from still images to video, with the same ease that others use them to post adorable kitten videos.",
+        "Like any other kind of business, dealers use social media to recruit customers, advertise products, and drive sales."
+      ],
+      "sources": [
+        {
+          "label": "Best Practices to Rid Social Media of Drug Trafficking",
+          "url": "https://anfhelp.org/best-practices-to-rid-social-media-of-drug-trafficking/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP14",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Anfhelp from public work, not a mission paraphrase.",
+        "lead": "Alexander Neville Foundation Logo publishes citable work we could quote (Best Practices to Rid Social Media of Drug Trafficking). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Anfhelp, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "alltechishuman",
       "name": "All Tech Is Human",
       "shortName": "All Tech Is Human",
@@ -410,6 +613,145 @@
       }
     },
     {
+      "slug": "americansecurityfund",
+      "name": "American Security Foundation",
+      "shortName": "American Security Foundation",
+      "kind": "organization",
+      "website": "http://www.americansecurityfund.com/american-security-foundation",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "americansecurityfund.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai",
+        "security"
+      ],
+      "mission": "ASF Welcomes America's AI Action Plan ASF welcomes the White House's \"America's AI Action Plan\" to advance America's tech leadership in the AI age.",
+      "values": [
+        "Joint Statement on AI Ethics American Security Foundation's Statement on AI Ethics from the Rome Summit on AI Ethics ASFund's Public Comments on AI Action Plan ASFund submitted public comments in response to the Request for Information on ideas for the White House's development of its AI Action Plan."
+      ],
+      "sources": [
+        {
+          "label": "Resources | ASF",
+          "url": "https://www.americansecurityfund.com/resources"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for American Security Foundation from public work, not a mission paraphrase.",
+        "lead": "American Security Foundation publishes citable work we could quote (Resources | ASF). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent American Security Foundation, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
+      "slug": "amplifier",
+      "name": "Amplifier",
+      "shortName": "Amplifier",
+      "kind": "organization",
+      "website": "https://amplifier.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "amplifier.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "security",
+        "social",
+        "media",
+        "health",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "Amplifier AR Amplifier’s first ever activist-driven Augmented Reality app transforms the analog 2-D posters, stickers, and murals we are known for into art that literally comes to life to deliver a call to action.",
+      "values": [
+        "Hearing messages straight from movement leaders exposes the heart of the most important movement of our times, and reveals the deeper conversations that have always been just beneath the surface of our artwork.",
+        "Download the app for free and point it to any of our AR activated artworks to watch it come to life with animation and storytelling.",
+        "Hear Shepard Fairey’s portrait of Indigenous movement leader Xiuhtezcatl Martinez come to life as he talks about the work ahead of all young people in their fight for climate action and climate justice."
+      ],
+      "sources": [
+        {
+          "label": "Amplifier AR &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/amplifier-ar/"
+        },
+        {
+          "label": "US@250: National Creative Assembly &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/us-250-national-creative-assembly/"
+        },
+        {
+          "label": "Reparations Now &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/reparations-now/"
+        },
+        {
+          "label": "Intersections Of Our Lives &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/intersections-of-our-lives/"
+        },
+        {
+          "label": "Not for Sale &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/not-for-sale/"
+        },
+        {
+          "label": "Campaign For Nature &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/campaign-for-nature/"
+        },
+        {
+          "label": "Revolutionary Love Is The Call Of Our Times &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/revolutionary-love-tour/"
+        },
+        {
+          "label": "Planetary Guardians &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/planetary-guardians/"
+        },
+        {
+          "label": "Reset Capitalism &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/reset/"
+        },
+        {
+          "label": "We The Future &#x2d; Amplifier",
+          "url": "https://amplifier.org/campaigns/we-the-future/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Amplifier from public work, not a mission paraphrase.",
+        "lead": "Amplifier publishes citable work we could quote (Amplifier AR &#x2d; Amplifier). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Amplifier, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 10
+      }
+    },
+    {
       "slug": "artificialityinstitute",
       "name": "Artificiality",
       "shortName": "Artificiality",
@@ -492,6 +834,81 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 9
+      }
+    },
+    {
+      "slug": "ashoka",
+      "name": "Ashoka",
+      "shortName": "Ashoka",
+      "kind": "organization",
+      "website": "https://www.ashoka.org/en-us",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "ashoka.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "social",
+        "media",
+        "health"
+      ],
+      "mission": "Now, they are stepping up to shape a global conversation in redefining what it means to be a young person growing up in today’s world.",
+      "values": [
+        "Ashoka Young Changemakers: Answering the Call Ashoka Young Changemakers are a carefully selected network of young people who have found their power to create change for the good of all around them.",
+        "They engage their peers and societies in realizing a world where everyone is a changemaker.",
+        "The Ashoka Young Changemakers program launched in the US in 2018, and is currently accepting applications in Brazil, Bangladesh, India, Indonesia, Nigeria, and the US."
+      ],
+      "sources": [
+        {
+          "label": "Ashoka Young Changemakers | Ashoka",
+          "url": "https://www.ashoka.org/en-us/program/ashoka-young-changemakers"
+        },
+        {
+          "label": "The Ashoka Support Network | Ashoka",
+          "url": "https://www.ashoka.org/en-us/program/ashoka-support-network"
+        },
+        {
+          "label": "Ashoka Changemaker Schools | Ashoka",
+          "url": "https://www.ashoka.org/en-us/program/ashoka-changemaker-schools"
+        },
+        {
+          "label": "Stories for Early Changemaking | Ashoka",
+          "url": "https://www.ashoka.org/en-us/collection/stories-early-changemaking"
+        },
+        {
+          "label": "Ashoka Young Changemakers | Ashoka",
+          "url": "https://www.ashoka.org/en-us/program/ashoka-young-changemakers"
+        },
+        {
+          "label": "Annual Reports | Ashoka",
+          "url": "https://www.ashoka.org/en-us/annual-reports"
+        },
+        {
+          "label": "NETWORK INSIGHTS | Ashoka",
+          "url": "https://www.ashoka.org/en-us/ashoka-network-insights"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Ashoka from public work, not a mission paraphrase.",
+        "lead": "Ashoka publishes citable work we could quote (Ashoka Young Changemakers | Ashoka). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Ashoka, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 7
       }
     },
     {
@@ -585,6 +1002,121 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "atlascomputing",
+      "name": "Atlas Computing Logo",
+      "shortName": "Atlas Computing Logo",
+      "kind": "organization",
+      "website": "https://atlascomputing.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "atlascomputing.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "ai",
+        "security",
+        "social",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "Advancing a new architecture requires increasing the number of people aware of and working on this architecture until it's a ubiquitous mechanism for assuring safety.",
+      "values": [
+        "Spreadsheet Neglected catastrophic risks from AI We've started a list of potential risks that would noticably and negatively affect most humans if they came to pass.",
+        "We consider a problem neglected if there isn't someone full-time focused solving it.",
+        "We'll announce the launch on our blog Mailing List Community mailing list on Guaranteed Safe AI We started a public google group mailing list dedicated to discussing AI architectures designed to have provable safety properties."
+      ],
+      "sources": [
+        {
+          "label": "Projects | Atlas Computing",
+          "url": "https://atlascomputing.org/projects/"
+        },
+        {
+          "label": "Terms of Service",
+          "url": "https://atlascomputing.org/terms/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP11"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Atlas Computing Logo from public work, not a mission paraphrase.",
+        "lead": "Atlas Computing Logo publishes citable work we could quote (Projects | Atlas Computing). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Atlas Computing Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "beccaschmillfdn",
+      "name": "Becca Schmill Foundation",
+      "shortName": "Becca Schmill Foundation",
+      "kind": "organization",
+      "website": "https://beccaschmillfdn.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "beccaschmillfdn.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "security",
+        "social",
+        "media",
+        "health"
+      ],
+      "mission": "We advocate for policies that promote online safety, support overdose prevention, and prevent sexual exploitation.",
+      "values": [
+        "Received BSF Funding Social media platforms generate billions of dollars in revenue from U.S. youth : Findings from a simulated revenue model Raffoul, A., Ward, Z.",
+        "ALGORITHMS, ADDICTION, AND ADOLESCENT MENTAL HEALTH : An Interdisciplinary Study to Inform State-level Policy Action to Protect Youth from the Dangers of Social MediaCostello, N., Sutton, R., Jones, M., Almassian, M., Raffoul, A., Ojumu, O., Salvia, M., Santoso, M., Kavanaugh, J.",
+        "Gender-targeted substance use interventions for young cisgender women and transgender women – A Scoping Review ."
+      ],
+      "sources": [
+        {
+          "label": "Advocacy",
+          "url": "https://beccaschmillfdn.org/advocacy/"
+        },
+        {
+          "label": "Research Collaborations and Publications",
+          "url": "https://beccaschmillfdn.org/our-research-collaborations/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Becca Schmill Foundation from public work, not a mission paraphrase.",
+        "lead": "Becca Schmill Foundation publishes citable work we could quote (Advocacy). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Becca Schmill Foundation, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
       }
     },
     {
@@ -758,6 +1290,53 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 9
+      }
+    },
+    {
+      "slug": "theblockfound",
+      "name": "Blockchain Foundation Logo",
+      "shortName": "Blockchain Foundation Logo",
+      "kind": "organization",
+      "website": "https://theblockfound.com",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "theblockfound.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance"
+      ],
+      "mission": "Financial &#x27;illiteracy&#x27; cost Americans $415 billion in 2020 Click to Read Report White paper calls on cities and states to lead the way with legislation to codify financial literacy requirements across all 50 states.",
+      "values": [
+        "The forum featured experts and industry leaders who discussed best practices to educate and empower the public to mitigate risk."
+      ],
+      "sources": [
+        {
+          "label": "The Blockchain Foundation",
+          "url": "https://theblockfound.com/financial-literacy-report"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Blockchain Foundation Logo from public work, not a mission paraphrase.",
+        "lead": "Blockchain Foundation Logo publishes citable work we could quote (The Blockchain Foundation). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Blockchain Foundation Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     },
     {
@@ -1027,6 +1606,64 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 9
+      }
+    },
+    {
+      "slug": "humanetech",
+      "name": "Center For Humane Technology",
+      "shortName": "Center For Humane Technology",
+      "kind": "organization",
+      "website": "https://www.humanetech.com/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "humanetech.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai",
+        "social",
+        "media"
+      ],
+      "mission": "Never before have a handful of tech designers had such control over the way billions of us think, act, and live our lives.",
+      "values": [
+        "Featuring CHT&rsquo;s core analysis on the race for user attention, &ldquo;The Social Dilemma&rdquo; sparked a global conversation around the influence of social media and engagement-based design &mdash; with impact that continues to this day.",
+        "Learn more Coded Bias You may also be interested in the award-winning documentary film Coded Bias .",
+        "Coded Bias follows MIT Media Lab researcher Joy Buolamwini through her investigation of algorithmic discrimination after she accidentally discovers that facial recognition technologies do not detect darker-skinned faces."
+      ],
+      "sources": [
+        {
+          "label": "The Social Dilemma",
+          "url": "https://www.humanetech.com/landing/the-social-dilemma"
+        },
+        {
+          "label": "Your Undivided Attention",
+          "url": "https://www.humanetech.com/podcast"
+        },
+        {
+          "label": "Youth Toolkit",
+          "url": "https://www.humanetech.com/youth"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Center For Humane Technology from public work, not a mission paraphrase.",
+        "lead": "Center For Humane Technology publishes citable work we could quote (The Social Dilemma). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Center For Humane Technology, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
       }
     },
     {
@@ -1396,6 +2033,60 @@
       }
     },
     {
+      "slug": "centritechfdn",
+      "name": "Centritech Foundation",
+      "shortName": "Centritech Foundation",
+      "kind": "organization",
+      "website": "https://www.centritechfdn.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "centritechfdn.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "ai",
+        "social"
+      ],
+      "mission": "Community-Based Solutions for Digital Advancement Findings from the Digital Integrators Pilot Program by Colin Rhinesmith, Ph.D.",
+      "values": [
+        "EXECUTIVE SUMMARY This report presents findings from a qualitative study of the Centri Tech Foundation’s Digital Integrators pilot program that took place between April and November 2022.",
+        "The goal of the pilot program was to foster innovation within motivated digital equity community organizations.",
+        "The research presented in this report highlights individual organizations1 in five cities across the United States that received support from the Centri Tech Foundation to participate in the DI pilot program."
+      ],
+      "sources": [
+        {
+          "label": "fbbd27 e2e67672a7064439bc5404eea6a9f9a1",
+          "url": "https://www.digitalintegrators.org/_files/ugd/fbbd27_e2e67672a7064439bc5404eea6a9f9a1.pdf"
+        },
+        {
+          "label": "fbbd27 129f7332af304a949d18d65d1170a445",
+          "url": "https://www.centritechfdn.org/_files/ugd/fbbd27_129f7332af304a949d18d65d1170a445.pdf"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP11"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Centritech Foundation from public work, not a mission paraphrase.",
+        "lead": "Centritech Foundation publishes citable work we could quote (fbbd27 e2e67672a7064439bc5404eea6a9f9a1). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Centritech Foundation, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
       "slug": "childrenandscreens",
       "name": "Children And Screens",
       "shortName": "Children And Screens",
@@ -1485,6 +2176,155 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "christchurchcall",
+      "name": "Christ Church Call",
+      "shortName": "Christ Church Call",
+      "kind": "organization",
+      "website": "https://www.christchurchcall.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "christchurchcall.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "privacy",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "social",
+        "media"
+      ],
+      "mission": "When those systems intersect with terrorist and violent extremist content , they can potentially expose users to unfiltered, extreme violence and, in some circumstances, that exposure may contribute to radicalisation to violence.",
+      "values": [
+        "Yet independent, cross-platform research into these dynamics has been prohibitively complex and often limited in scope.",
+        "The Christchurch Call Initiative on Algorithmic Outcomes is designed to close that gap.",
+        "The Approach Research of this sensitivity requires governance and ethics frameworks built on genuine multistakeholder consensus."
+      ],
+      "sources": [
+        {
+          "label": "cciao-delphi-study-building-the-governance-foundation-for-tvec-algorithmic-research",
+          "url": "https://www.christchurchcall.org/cciao-delphi-study-building-the-governance-foundation-for-tvec-algorithmic-research/"
+        },
+        {
+          "label": "auditing-proprietary-algorithms-while-preserving-privacy-is-possible-heres-how",
+          "url": "https://www.christchurchcall.org/auditing-proprietary-algorithms-while-preserving-privacy-is-possible-heres-how/"
+        },
+        {
+          "label": "Significant global progress made under Christchurch Call",
+          "url": "https://www.christchurchcall.org/significant-global-progress-made-under-christchurch-call/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP2",
+        "DP3",
+        "DP12"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Christ Church Call from public work, not a mission paraphrase.",
+        "lead": "Christ Church Call publishes citable work we could quote (cciao-delphi-study-building-the-governance-foundation-for-tvec-algorithmic-research). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Christ Church Call, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
+      "slug": "citizenuniversity",
+      "name": "Citizen University",
+      "shortName": "Citizen University",
+      "kind": "organization",
+      "website": "https://citizenuniversity.us/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "citizenuniversity.us"
+      ],
+      "tags": [
+        "nonprofit",
+        "identity",
+        "policy",
+        "governance",
+        "academic",
+        "education",
+        "security",
+        "social",
+        "health"
+      ],
+      "mission": "Civic Symphony (A rehearsal for “the real thing”) By Hakim Bellamy Watch: Listen: https://citizenuniversity.us/wp-content/uploads/2022/03/Civic-Symphony_audio.mp3 There's a familiar saying that goes something like this: What makes music, music is not the notes themselves …but actually the spaces between them.",
+      "values": [
+        "Those bodybags of battlefield bugles could never replace the sound of a single beating heart.",
+        "And unlike the nature of modern day politics it is incredibly easy to tell the difference between a concerto or one person just making noise.",
+        "In fact, it's sometimes easier to play for the audience of one we have in our mind."
+      ],
+      "sources": [
+        {
+          "label": "Civic Symphony &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/news/civic-symphony/"
+        },
+        {
+          "label": "Programs &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/"
+        },
+        {
+          "label": "Live Like A Citizen &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/llac/"
+        },
+        {
+          "label": "Power + Character Educator Training &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/power-character/"
+        },
+        {
+          "label": "National Civic Collaboratory &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/civic-collaboratory/"
+        },
+        {
+          "label": "Youth Collaboratory &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/youth-collaboratory/"
+        },
+        {
+          "label": "Alumni Network &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/alumni-network/"
+        },
+        {
+          "label": "Special Projects &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/special-projects/"
+        },
+        {
+          "label": "Live Like A Citizen &#8902; Citizen University",
+          "url": "https://citizenuniversity.us/programs/llac/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP1",
+        "DP2",
+        "DP5",
+        "DP3"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Citizen University from public work, not a mission paraphrase.",
+        "lead": "Citizen University publishes citable work we could quote (Civic Symphony &#8902; Citizen University). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Citizen University, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 9
       }
     },
     {
@@ -2190,6 +3030,71 @@
       }
     },
     {
+      "slug": "digitalcredentials",
+      "name": "Dcc",
+      "shortName": "Dcc",
+      "kind": "organization",
+      "website": "https://digitalcredentials.mit.edu/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "digitalcredentials.mit.edu"
+      ],
+      "tags": [
+        "nonprofit",
+        "identity",
+        "research",
+        "academic",
+        "education",
+        "security",
+        "data",
+        "social",
+        "media",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "Building the digital credential infrastructure for the future A White Paper by the Digital Credentials Consortium -- 1 of 38 -- This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License 1 Editors : • Kim Hamilton Duffy (Chair, W3C Credentials Community Group) • Hans Pongratz • J.",
+      "values": [
+        "Philipp Schmidt (Director, Learning Initiative, MIT Media Lab) Contributing Authors: • James Chartrand • Stuart Freeman (Applications Developer, C21U, Georgia Tech) • Ulrich Gallersdörfer • Matt Lisle (Director of Digital Learning Technologies, C21U, Georgia Tech) • Alexander Mühle (Hasso Plattner Institute, University of Potsdam) • Sélinde van Engelenburg Lead Reviewing Author: • Krishna Rajagopal (William A.",
+        "Together, we are designing an infrastructure for digital credentials of academic achievement.",
+        "As the question of trusted verification and authentication of learning and credentials poses itself with increased urgency we need to redesign the way we issue, recognize and transact with academic credentials."
+      ],
+      "sources": [
+        {
+          "label": "Building the Digital Credential Infrastructure for the Future",
+          "url": "https://dcconsortium.org/docs/white-paper-building-digital-credential-infrastructure-future.pdf"
+        },
+        {
+          "label": "Making Sense of Key Standards for Verifiable LERs",
+          "url": "https://dcconsortium.org/docs/DCC-Making-Sense-of-Key-Data-Standards-for-Verifiable-LERs.pdf"
+        },
+        {
+          "label": "docs · Credential-Engine-and-Digital-Credentials-Consortium_-Issuer-Identity-Registry-Research-Report.pdf",
+          "url": "https://dcconsortium.org/docs/Credential-Engine-and-Digital-Credentials-Consortium_-Issuer-Identity-Registry-Research-Report.pdf"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP1",
+        "DP2",
+        "DP5",
+        "DP10"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Dcc from public work, not a mission paraphrase.",
+        "lead": "Dcc publishes citable work we could quote (Building the Digital Credential Infrastructure for the Future). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Dcc, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
       "slug": "thedrcenter",
       "name": "Decentralization Research Center Color Logo",
       "shortName": "Thedrcenter",
@@ -2398,6 +3303,117 @@
       }
     },
     {
+      "slug": "dream",
+      "name": "Dream Org",
+      "shortName": "Dream Org",
+      "kind": "organization",
+      "website": "https://dream.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "dream.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "security",
+        "data",
+        "social"
+      ],
+      "mission": "Community opposition is now one of the most significant practical obstacles to data center development in the United States, and it is also largely preventable.",
+      "values": [
+        "The white paper identifies voluntary practices that consistently reduce opposition, improve project outcomes, and support continued deployment of critical digital infrastructure.",
+        "“We’ve partnered with ConservAmerica to offer up a pragmatic, bipartisan approach to data center development,” says Loralei HoJay, Dream.Org’s Policy Associate .",
+        "“Data centers can be productive neighbors if developers are able to follow a set of practices that allow for buildout without boxing out communities."
+      ],
+      "sources": [
+        {
+          "label": "news-articles · conservamerica-white-paper-data-center-development",
+          "url": "https://dream.org/news-articles/conservamerica-white-paper-data-center-development/"
+        },
+        {
+          "label": "Impact: Justice, Green Jobs & Economic Equity | Dream.Org",
+          "url": "https://dream.org/impact/"
+        },
+        {
+          "label": "Impact: Justice, Green Jobs & Economic Equity | Dream.Org",
+          "url": "https://dream.org/impact/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Dream Org from public work, not a mission paraphrase.",
+        "lead": "Dream Org publishes citable work we could quote (news-articles · conservamerica-white-paper-data-center-development). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Dream Org, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
+      "slug": "getdweb",
+      "name": "Dweb Color Logo",
+      "shortName": "Dweb Color Logo",
+      "kind": "organization",
+      "website": "https://getdweb.net/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "getdweb.net"
+      ],
+      "tags": [
+        "nonprofit",
+        "privacy",
+        "security",
+        "social"
+      ],
+      "mission": "DWeb DWeb Principles PURPOSE AND ORIGIN These principles define the values of a decentralized web based on enabling agency of all peoples.",
+      "values": [
+        "These principles originate from members of the DWeb Community — those involved with and convened by the Internet Archive&#x27;s work on the decentralized web.",
+        "These stand alongside other sets of principles that share or expand upon these values, in recognition that our efforts to build a more just and equitable world are interdependent.",
+        "Technology for Human Agency We stand for technology that enables the primacy of people as beneficiaries of the technology, by upholding their security, privacy and self-determination."
+      ],
+      "sources": [
+        {
+          "label": "DWeb",
+          "url": "https://getdweb.net/principles/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP2",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Dweb Color Logo from public work, not a mission paraphrase.",
+        "lead": "Dweb Color Logo publishes citable work we could quote (DWeb). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Dweb Color Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "eclipse",
       "name": "Eclipse Foundation",
       "shortName": "Eclipse Foundation",
@@ -2539,6 +3555,56 @@
       }
     },
     {
+      "slug": "encodejustice",
+      "name": "Encodejustice",
+      "shortName": "Encodejustice",
+      "kind": "organization",
+      "website": "https://encodejustice.org/#what-we-do",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "encodejustice.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai",
+        "security",
+        "data"
+      ],
+      "mission": "Proposed advantages of AWS can only be achieved through objectification and classification, but a range of systematic risks limit the reliability and predictability of classifying algorithms.",
+      "values": [
+        "These systematic risks include the black-box nature of AI decision-making, susceptibility to reward hacking, goal misgeneralization and potential for emergent behaviors that escape human control.",
+        "AWS could act in ways that are not just unexpected but also uncontrollable, undermining mission objectives and potentially escalating conflicts.",
+        "Even rigorously tested systems may behave unpredictably and harmfully in real-world conditions, jeopardizing both strategic stability and humanitarian principles."
+      ],
+      "sources": [
+        {
+          "label": "White Paper Technological Pitfalls Encode Justice",
+          "url": "https://encodejustice.org/wp-content/uploads/2024/10/White-Paper-Technological-Pitfalls-Encode-Justice.pdf"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Encodejustice from public work, not a mission paraphrase.",
+        "lead": "Encodejustice publishes citable work we could quote (White Paper Technological Pitfalls Encode Justice). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Encodejustice, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "epic",
       "name": "Epic",
       "shortName": "Epic",
@@ -2623,6 +3689,95 @@
         "headline": "We opened a landing pad for Epic from public work, not a mission paraphrase.",
         "lead": "Epic publishes citable work we could quote (Article III Standing). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
         "ask": "If you represent Epic, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 10
+      }
+    },
+    {
+      "slug": "ens",
+      "name": "Ethereum Name Service",
+      "shortName": "Ethereum Name Service",
+      "kind": "organization",
+      "website": "https://ens.domains/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "ens.domains"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "security",
+        "social",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "The ENS Audit Competition with Immunefi Is Now Live | ENS Blog The ENS audit competition with Immunefi is now live, inviting security researchers to review the new ENS Manager, Explorer, and supporting application infrastructure.",
+      "values": [
+        "The competition runs through September 14, with a maximum reward pool of $70,000.",
+        "The ENS audit competition with Immunefi is now live, and we&#x27;re inviting security researchers to take a close look at the new ENS application stack.",
+        "From August 18 through September 14, 2026 , researchers can review the code behind the new ENS App , ENS Explorer , and supporting application infrastructure, with a maximum reward pool of $70,000 ."
+      ],
+      "sources": [
+        {
+          "label": "The ENS Audit Competition with Immunefi Is Now Live | ENS Blog",
+          "url": "https://ens.domains/blog/post/ens-immunefi-audit-competition"
+        },
+        {
+          "label": "What Makes ENS a Protocol | ENS Blog",
+          "url": "https://ens.domains/blog/post/what-makes-ens-a-protocol"
+        },
+        {
+          "label": "The ENS App and Explorer Are Now in Beta | ENS Blog",
+          "url": "https://ens.domains/blog/post/ensv2-beta-public-testing"
+        },
+        {
+          "label": "Introducing the Evolved ENS Foundation | ENS Blog",
+          "url": "https://ens.domains/blog/post/introducing-the-evolved-ens-foundation"
+        },
+        {
+          "label": "How ENS Normalization Works | ENS Blog",
+          "url": "https://ens.domains/blog/post/how-ens-normalization-works"
+        },
+        {
+          "label": "Introducing the Newest ENS Security Council | ENS Blog",
+          "url": "https://ens.domains/blog/post/introducing-the-newest-ens-security-council"
+        },
+        {
+          "label": "How ENS Names Evolved | ENS Blog",
+          "url": "https://ens.domains/blog/post/how-ens-names-evolved"
+        },
+        {
+          "label": "ENS",
+          "url": "https://ens.domains/ecosystem"
+        },
+        {
+          "label": "ENS",
+          "url": "https://ens.domains/governance"
+        },
+        {
+          "label": "ENS DAO Governance Forum",
+          "url": "https://discuss.ens.domains/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP4",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Ethereum Name Service from public work, not a mission paraphrase.",
+        "lead": "Ethereum Name Service publishes citable work we could quote (The ENS Audit Competition with Immunefi Is Now Live | ENS Blog). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Ethereum Name Service, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
         "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
       },
       "corpusMeta": {
@@ -3093,6 +4248,60 @@
       }
     },
     {
+      "slug": "forfreedoms",
+      "name": "Forfreedoms",
+      "shortName": "Forfreedoms",
+      "kind": "organization",
+      "website": "https://www.forfreedoms.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "forfreedoms.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "social"
+      ],
+      "mission": "2021 Pittsburgh, PA THE MODEL MINORITY IS A MYTH! is an interactive billboard inspired by the Gospel Billboards that are placed alongside roads across America that loudly encourage those who drive by to call the displayed number “FOR TRUTH.” While driving cross country in 2018, I passed so many gospel billboards that eventually I gave in and decided to try calling one.",
+      "values": [
+        "Although I didn’t agree with all of Ralph’s views, I left the call with a deeper understanding of where he might be coming from.",
+        "So, when For Freedoms approached me to contribute a billboard design in celebration of AAPI Heritage month, I considered the billboard’s original purpose.",
+        "Billboards are a medium for manipulating the mind, they clamor for the attention of those driving by in hopes of convincing them to do, buy, or think about what is advertised."
+      ],
+      "sources": [
+        {
+          "label": "For Freedoms: THE MODEL MINORITY IS A MYTH!",
+          "url": "https://forfreedoms.org/artworks/the-model-minority-is-a-myth"
+        },
+        {
+          "label": "For Freedoms: Becoming a Citizen",
+          "url": "https://forfreedoms.org/artworks/becoming-a-citizen"
+        },
+        {
+          "label": "For Freedoms: Who am I to tell the story?",
+          "url": "https://forfreedoms.org/artworks/who-am-i-to-tell-the-story"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Forfreedoms from public work, not a mission paraphrase.",
+        "lead": "Forfreedoms publishes citable work we could quote (For Freedoms: THE MODEL MINORITY IS A MYTH!). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Forfreedoms, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
       "slug": "thefai",
       "name": "Foundation For American Innovation",
       "shortName": "Thefai",
@@ -3387,6 +4596,57 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "glianetalliance",
+      "name": "Glia Net",
+      "shortName": "Glia Net",
+      "kind": "organization",
+      "website": "https://www.glianetalliance.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "glianetalliance.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "ai",
+        "health"
+      ],
+      "mission": "There, on June 4th and 5th, the GliaNet Alliance and the Information Law Institute co-hosted Fiduciary Duties and AI: Legal Frameworks, Technical Implementation, and Governance, with the generous sponsorship of the Future of Life Foundation.",
+      "values": [
+        "The storied Vanderbilt Hall conference room held a select group of legal scholars, computer scientists, entrepreneurs, civil society organizations, and policy practitioners.",
+        "All were there for a question that grows more urgent by the month: as AI agents act on our behalf in high-stakes domains like health, finance, education, and consumer life, who owes us loyalty and care, and how do we make those duties real?",
+        "The energy in the room confirmed what we've been seeing all year: the fiduciary AI conversation is no longer a niche."
+      ],
+      "sources": [
+        {
+          "label": "Fiduciary Duties & AI Workshop",
+          "url": "https://www.glianetalliance.org/news/fiduciary-duties-ai-workshop"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP11",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Glia Net from public work, not a mission paraphrase.",
+        "lead": "Glia Net publishes citable work we could quote (Fiduciary Duties & AI Workshop). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Glia Net, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     },
     {
@@ -4281,6 +5541,49 @@
       }
     },
     {
+      "slug": "instituteforfamiliesandtechnology",
+      "name": "Institute For Families And Technology",
+      "shortName": "Instituteforfamiliesandtechnology",
+      "kind": "organization",
+      "website": "https://www.instituteforfamiliesandtechnology.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "instituteforfamiliesandtechnology.org"
+      ],
+      "tags": [
+        "nonprofit"
+      ],
+      "mission": "View the report card at phonefreeschoolsreport.org today and access resources to set your state&#x27;s students up for success.",
+      "values": [
+        "View the report card at phonefreeschoolsreport.org today and access resources to set your state&#x27;s students up for success."
+      ],
+      "sources": [
+        {
+          "label": "New Report Grades all 50 States and D.C. on their Phone-Free Schools Policies",
+          "url": "https://www.instituteforfamiliesandtechnology.org/blog-posts/new-report-grades-all-50-states-and-d-c-on-their-phone-free-schools-policies"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Instituteforfamiliesandtechnology from public work, not a mission paraphrase.",
+        "lead": "Institute For Families And Technology publishes citable work we could quote (New Report Grades all 50 States and D.C. on their Phone-Free Schools Policies). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Instituteforfamiliesandtechnology, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "securityandtechnology",
       "name": "Institute For Security Technology",
       "shortName": "Securityandtechnology",
@@ -4612,6 +5915,51 @@
       }
     },
     {
+      "slug": "archive",
+      "name": "Internet Archive",
+      "shortName": "Internet Archive",
+      "kind": "organization",
+      "website": "https://archive.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "archive.org"
+      ],
+      "tags": [
+        "nonprofit"
+      ],
+      "mission": "Tim, who turned 40, made that decision and decided it was time to think about the organizations that reflect what matters most to him and how he could help sustain their work.",
+      "values": [
+        "He named the Internet Archive as one of his primary beneficiaries, making him a member of the Internet Archive Legacy Circle.",
+        "He built homepages, joined web rings, learned HTML, and eventually turned that early curiosity into a career working with Linux and open-source technology.",
+        "“The internet, for me, is like a forest that I’ve grown up in, and I’ve seen change over time.” Today, the Wayback Machine allows Tim to revisit some of the websites, blogs, and projects he created when he was younger."
+      ],
+      "sources": [
+        {
+          "label": "Internet Archive Blogs | Updates from the Internet Archive",
+          "url": "https://blog.archive.org/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Internet Archive from public work, not a mission paraphrase.",
+        "lead": "Internet Archive publishes citable work we could quote (Internet Archive Blogs | Updates from the Internet Archive). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Internet Archive, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "issueone",
       "name": "Issue One",
       "shortName": "Issue One",
@@ -4834,6 +6182,131 @@
       }
     },
     {
+      "slug": "lifewithmachines",
+      "name": "Life With Machines",
+      "shortName": "Life With Machines",
+      "kind": "organization",
+      "website": "https://lifewithmachines.media/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "lifewithmachines.media"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai",
+        "data"
+      ],
+      "mission": "Life With Machines Jul 09, 2025 14 3 12 Share Hey you, If you missed our episode with indigenous technologist Michael Running Wolf go back and watch it .",
+      "values": [
+        "In the 1973 film Soylent Green, the miracle food of the future is revealed to be made of people.",
+        "It’s a horrifying twist whose memes you likely know better than the original film.",
+        "And not just the petabytes of vacuumed up human creativity in the training data."
+      ],
+      "sources": [
+        {
+          "label": "The humans behind A.I. are speaking out… with Milagros Miceli",
+          "url": "https://www.lifewithmachines.media/p/the-humans-behind-ai-are-speaking"
+        },
+        {
+          "label": "AI (and Democracy) Needs You | Verity Harding",
+          "url": "https://www.lifewithmachines.media/p/ai-and-democracy-needs-you-verity"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Life With Machines from public work, not a mission paraphrase.",
+        "lead": "Life With Machines publishes citable work we could quote (The humans behind A.I. are speaking out… with Milagros Miceli). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Life With Machines, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "logoffmovement",
+      "name": "Log Off",
+      "shortName": "Log Off",
+      "kind": "organization",
+      "website": "https://www.logoffmovement.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "logoffmovement.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "academic",
+        "education",
+        "social",
+        "media",
+        "health"
+      ],
+      "mission": "We believe that prioritizing human connections will enable us to form better relationships with ourselves and with technology.",
+      "values": [
+        "June 15, 2026 Resources The First 10 Method Activity Co-Founder Emma Lembke participates in \"power scrolls.\" It's a brief reflection where users open a social media app, review the first few pieces of content, and reflect on how they make them feel. The First 10 Method adds a written element to the power scroll, making it perfect for individual or group reflection.",
+        "The Think Tank consists of LOG OFF’s online Substack publication, The Feed , and our newsletter, The Notification .",
+        "Substack Blog The Feed LOG OFF’s Online Blog hosted on Substack works to develop and share stories from diverse voices, ranging from experts in the tech-wellness sector, youth from the LOG OFF community, and individuals with something to say regarding their online experience."
+      ],
+      "sources": [
+        {
+          "label": "Campaigns - LOG OFF",
+          "url": "https://www.logoffmovement.org/campaigns/"
+        },
+        {
+          "label": "wp-content · uploads · 2026 · 06 · The-First-10-Method.pdf",
+          "url": "http://www.logoffmovement.org/wp-content/uploads/2026/06/The-First-10-Method.pdf"
+        },
+        {
+          "label": "Think Tank Archives - LOG OFF",
+          "url": "https://www.logoffmovement.org/think-tank/"
+        },
+        {
+          "label": "The Feed Archives - LOG OFF",
+          "url": "https://www.logoffmovement.org/think-tank/feed/"
+        },
+        {
+          "label": "The Notification Archives - LOG OFF",
+          "url": "https://www.logoffmovement.org/think-tank/the-notification/"
+        },
+        {
+          "label": "Community - LOG OFF",
+          "url": "https://www.logoffmovement.org/community/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP2",
+        "DP14"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Log Off from public work, not a mission paraphrase.",
+        "lead": "Log Off publishes citable work we could quote (Campaigns - LOG OFF). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Log Off, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 6
+      }
+    },
+    {
       "slug": "luma",
       "name": "Luma Arles",
       "shortName": "Luma Arles",
@@ -4915,6 +6388,52 @@
       }
     },
     {
+      "slug": "madewithblackculture",
+      "name": "Made Company Logo",
+      "shortName": "Made Company Logo",
+      "kind": "organization",
+      "website": "https://madewithblackculture.com",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "madewithblackculture.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "data"
+      ],
+      "mission": "BLK:INV — The Golden Era of Black Invention Terminal BLK:INV · EXPLORE BLACK INVENTIONS LIVE 1870–1940 · ☽ ○ BLACK CREATIVE DATA EXPLORER The Golden Era of Black Invention Census-linked patent records from the Golden Age of American Invention.",
+      "values": [
+        "DATA: ICPSR 120556 / 109970 / 193421 · BROOKINGS 2020 · COOK 2014 · LIVE — PATENT ACTIVITY 1870–1940 EST.",
+        "ODDS N vs S % OF TOTAL BAR LINE AREA NORTH vs SOUTH RELATIVE ODDS ● NORTH — 2.10× odds ● SOUTH — 0.30× odds Black Northerners were 8× more likely to patent than Southerners.",
+        "Jim Crow, racial violence, and exclusion from patent resources created measurable suppression."
+      ],
+      "sources": [
+        {
+          "label": "BLK:INV — The Golden Era of Black Invention Terminal",
+          "url": "https://madewithblackculture.com/black-inventors-terminal.html"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Made Company Logo from public work, not a mission paraphrase.",
+        "lead": "Made Company Logo publishes citable work we could quote (BLK:INV — The Golden Era of Black Invention Terminal). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Made Company Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "make",
       "name": "Makeorg",
       "shortName": "Makeorg",
@@ -4979,6 +6498,55 @@
       }
     },
     {
+      "slug": "joinmama",
+      "name": "Mama",
+      "shortName": "Mama",
+      "kind": "organization",
+      "website": "https://www.joinmama.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "joinmama.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "ai"
+      ],
+      "mission": "Get the facts, find resources, and hear from experts—everything you need to keep your kids safe online, all in one place.",
+      "values": [
+        "Download MAMA's House Rules A simple step-by-step guide to bring peace, connection and focus into your home.",
+        "Download Why Smartphones Don't Belong in Schools One-page resource to help you advocate for smartphone-free school policies at your child's school.",
+        "Download AI & Kids: What Parents Need to Know A growing body of evidence suggests many generative artificial intelligence tools pose a danger to vulnerable users, especially kids."
+      ],
+      "sources": [
+        {
+          "label": "Resources – MAMA",
+          "url": "https://wearemama.org/resource/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP11"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Mama from public work, not a mission paraphrase.",
+        "lead": "Mama publishes citable work we could quote (Resources – MAMA). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Mama, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
       "slug": "massgeneralbrigham",
       "name": "Mass General Birigham",
       "shortName": "Mass General Birigham",
@@ -5027,6 +6595,68 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 1
+      }
+    },
+    {
+      "slug": "metagov",
+      "name": "Metagov",
+      "shortName": "Metagov",
+      "kind": "organization",
+      "website": "https://metagov.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "metagov.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "social",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "Collective Governance for AI: Points of Intervention Collective Governance for AI: Points of Intervention Made for by Metagov Invitation People often speak about AI as if it is one thing.",
+      "values": [
+        "It can seem like that when we use today’s most popular interfaces: a single product, packaged by an unfathomably big company.",
+        "It implies that only the big companies could possibly create and control this technology, because only they can handle its immensity.",
+        "The best way to solve a hard math problem is to break it up into smaller, easier problems."
+      ],
+      "sources": [
+        {
+          "label": "Collective Governance for AI: Points of Intervention",
+          "url": "https://metagov.org/cg-ai/"
+        },
+        {
+          "label": "The Groundwork Fellowship Documentation | Metagov",
+          "url": "https://metagov.org/projects/groundwork-fellowship/documentation"
+        },
+        {
+          "label": "Composing Games into Complex Institutions | Metagov",
+          "url": "https://metagov.org/projects/game-theory"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Metagov from public work, not a mission paraphrase.",
+        "lead": "Metagov publishes citable work we could quote (Collective Governance for AI: Points of Intervention). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Metagov, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
       }
     },
     {
@@ -5167,6 +6797,66 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "mindbridgecenter",
+      "name": "Minebridge",
+      "shortName": "Minebridge",
+      "kind": "organization",
+      "website": "https://www.mindbridgecenter.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "mindbridgecenter.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "academic",
+        "education",
+        "data",
+        "social"
+      ],
+      "mission": "Mindbridge Research & Evaluation | Behavioral Science Research for Social Change &mdash; Mindbridge 0 Our Approach + Methods Where curiosity meets credibility , that’s where our research begins.",
+      "values": [
+        "At the Research and Evaluation Department , our team of PhD-level scientists applies rigorous, inclusive, and adaptable research methods to help organizations, communities, and policymakers generate meaningful insights and drive impact.",
+        "Our process includes designing inclusive, well-structured questions, developing effective data collection strategies, and delivering insights through user-friendly reports.",
+        "Program Evaluation Our evaluations assess program impact and effectiveness using both qualitative and quantitative tools."
+      ],
+      "sources": [
+        {
+          "label": "research-evaluation-approach-and-methods",
+          "url": "https://www.mindbridgecenter.org/research-evaluation-approach-and-methods"
+        },
+        {
+          "label": "red-department",
+          "url": "https://www.mindbridgecenter.org/red-department"
+        },
+        {
+          "label": "red-department",
+          "url": "https://www.mindbridgecenter.org/red-department"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Minebridge from public work, not a mission paraphrase.",
+        "lead": "Minebridge publishes citable work we could quote (research-evaluation-approach-and-methods). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Minebridge, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
       }
     },
     {
@@ -5723,6 +7413,107 @@
       }
     },
     {
+      "slug": "newimpact",
+      "name": "New Impact Logo",
+      "shortName": "New Impact Logo",
+      "kind": "organization",
+      "website": "https://newimpact.care",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "newimpact.care"
+      ],
+      "tags": [
+        "nonprofit",
+        "social"
+      ],
+      "mission": "Impact Orgs &mdash; New Impact 0 Social Impact Organizations Create impact that lasts and grows Too many promising efforts stall when the grant ends—or never scale because of how they’re built.",
+      "values": [
+        "Even with the right vision and leadership, the models behind societal impact work are often fragile: dependent on continuous funding, siloed from other sectors, and disconnected from resources that could sustain and grow them.",
+        "Tri-Sector Innovation is an approach that builds durability in from day one—designing smarter, more resilient solutions: programs, initiatives, and organizations that unlock lasting societal impact.",
+        "The TSI difference: Sustainable by design – Embed financial viability from the start Resource multiplier – Tap into underutilized assets across sectors Scale-ready – Create models that grow naturally with success TSI isn’t a grant mechanism or a program."
+      ],
+      "sources": [
+        {
+          "label": "Impact Orgs &mdash; New Impact",
+          "url": "https://www.newimpact.care/impact-orgs"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for New Impact Logo from public work, not a mission paraphrase.",
+        "lead": "New Impact Logo publishes citable work we could quote (Impact Orgs &mdash; New Impact). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent New Impact Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
+      "slug": "newpublic",
+      "name": "New Public",
+      "shortName": "New Public",
+      "kind": "organization",
+      "website": "https://newpublic.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "newpublic.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "academic",
+        "education",
+        "social",
+        "media"
+      ],
+      "mission": "The Center for Media Engagement at The University of Texas at Austin works to understand and improve the information ecosystem for the bene- fit of democracy.",
+      "values": [
+        "Just as urban designers figured out strategies for creating public spaces where people could co-exist harmoniously, New_ Public looks to iden- tify strategies to create thriving digital public spaces.",
+        "This work builds on our Civic Signals, a collaboration between the Center for Media Engagement and New_ Public .",
+        "We found that, with few exceptions, many popular platforms did not live up to the ideals of public-friendly digital space in the eyes of their users."
+      ],
+      "sources": [
+        {
+          "label": "Front Porch Forum report 2",
+          "url": "https://newpublic.org/uploads/2024/07/Front-Porch-Forum-report-2.pdf"
+        },
+        {
+          "label": "Terra Incognita",
+          "url": "https://newpublic.org/uploads/2021/03/Terra-Incognita.pdf"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP2",
+        "DP14"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for New Public from public work, not a mission paraphrase.",
+        "lead": "New Public publishes citable work we could quote (Front Porch Forum report 2). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent New Public, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
       "slug": "newsguardtech",
       "name": "News Guard Color Logo",
       "shortName": "News Guard Color Logo",
@@ -5903,6 +7694,57 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "omidyar",
+      "name": "Omyidar Network",
+      "shortName": "Omyidar Network",
+      "kind": "organization",
+      "website": "https://omidyar.com/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "omidyar.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "ai",
+        "social"
+      ],
+      "mission": "Jawando has been appointed Chief Executive Officer, succeeding Mike Kubzansky , who has served in the role for more than eight years.",
+      "values": [
+        "The planned transition comes at a defining moment in the evolution of AI – as markets, policymakers, and communities grapple with its accelerating impact – and reflects the organization’s growing role at the intersection of AI, technology, and the public good.",
+        "The result of a carefully planned succession, Jawando joined Omidyar Network in 2021 as Senior Vice President of Programs, was elevated to President in 2025, and now steps into the CEO role carrying a rare synthesis of technology industry leadership, legal authority, public policy experience, and coalition-building power.",
+        "A lawyer by training, she has dedicated her career to advancing justice, democracy, and the responsible development of technology."
+      ],
+      "sources": [
+        {
+          "label": "update · omidyar-network-appoints-michele-l-jawando-ceo",
+          "url": "https://omidyar.com/update/omidyar-network-appoints-michele-l-jawando-ceo/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP11",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Omyidar Network from public work, not a mission paraphrase.",
+        "lead": "Omyidar Network publishes citable work we could quote (update · omidyar-network-appoints-michele-l-jawando-ceo). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Omyidar Network, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     },
     {
@@ -6138,6 +7980,292 @@
         "headline": "We opened a landing pad for Partnership On Ai from public work, not a mission paraphrase.",
         "lead": "Partnership On Ai publishes citable work we could quote (Public Policy - Partnership on AI). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
         "ask": "If you represent Partnership On Ai, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "mcgovern",
+      "name": "Patrick Jmc Goven Foundation",
+      "shortName": "Patrick Jmc Goven Foundation",
+      "kind": "organization",
+      "website": "https://www.mcgovern.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "mcgovern.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "security",
+        "data",
+        "social",
+        "media"
+      ],
+      "mission": "Xh\\\u0013j\u001f7_y�.j�!�m�h\u000f���w-#/\u00147����F\u0003f\u0015 >��K�\u001dMﬅ�j \u0003\u0018ۦ\u001d��\u000f �P�?(�JV��~b�#�-��Z�f�\u0010=a�At�ހ}��\u001al���\u0017�T \b\u001f \u0017`�\u0011?",
+      "values": [
+        "X>�8w�\b!�\u001e� �}���D���t� Y �\u001dC���H�v�b>v��ǚ�����;� *Mfʁ9\u0015���y����\u0013y�\u0003H�a�\u0010�\u001cgL��~��ն�o�V6 ���q]Byl�Py�?�_.\u0018��Q�+Uw����� ���\u0004�4\u001cE,N\u0019�%n� ;Ԝ��.W�_\u0001 |����f\u0017�~��ÿ�\u0006o\u000fhL΍G΁�����g��Y�c\u0003\u000f�h\bt��$@~\u0003�g\u0010��\u0005�e����8w�J����\u0019����\u0019B+�A����`����\u0007�BD�S��\u001eŤ P��u�\u0004Цs�cS\u001d�\u0017�&�\u0019����˜Ciי N��9\u0017�u��vt#�U\u0010$5g4;���\u0002?LeC~\u0010�x���xҚ�؀��o�\u0001D�OaG��O=`�����.�k>�T� ����\\?���6�!�v�4�Ri~>>8�w\u001b��GE\u0003�Y�/� ��arY�\u0011!(_���:A�+1:.��O���sy� �˷��l&��T �\u0001�ť\u0006.",
+        "Z��\u001a��&OQ�>�(�a��LK�(J�WG��\u001b���q��D�;��Mv.�Wo~n��c2��Y����\"s\u0013*ڭ�EȪ��\u0014,�\u0002�����\u0000� \u001a��} �jE��{qb@��\u0019��@��X�Lzru\u0004=� ��j���Ah#��k*#\u000f�\u0002���Q �#�3ΰ��~�e5�&^�}\u001c\u0001t�4 �$h\"��8\\g6$v��X�cu��o:D��58�3�y]�ƧCW\u0018|\u000e_���\u0002/\u001a\u0001VM���5�?",
+        "G ��`��ˀ�R� Ō(�29\"DG�2W��F� ؄�\b����Jp*�Т@B���hR�ꚽ�qO߽��$��mV\u0001Ey��9��� y�K���-lO(B8�j�\u001f�����~���ݔ뷼\u000f\u0002���'�3��MQ9��\u0010\u0013&��\u0000\u0000�a��\u0002$VOD�jjNY�9\u001c\u0018ج8]�����VA��?"
+      ],
+      "sources": [
+        {
+          "label": "research seed",
+          "url": "https://www.mcgovern.org/wp-content/uploads/2020/03/Untitled-design-8.mp4"
+        },
+        {
+          "label": "News & Insights",
+          "url": "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/"
+        },
+        {
+          "label": "The McGovern Institute for Brain Research",
+          "url": "https://www.mcgovern.org/the-legacy-of-patrick-j-mcgovern/the-mcgovern-institute-for-brain-research/"
+        },
+        {
+          "label": "News & Insights",
+          "url": "https://www.mcgovern.org/patrick-j-mcgovern-foundation-news-and-insights/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Patrick Jmc Goven Foundation from public work, not a mission paraphrase.",
+        "lead": "Patrick Jmc Goven Foundation publishes citable work we could quote (research seed). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Patrick Jmc Goven Foundation, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 4
+      }
+    },
+    {
+      "slug": "peoplecentered",
+      "name": "People Centered Internet",
+      "shortName": "People Centered Internet",
+      "kind": "organization",
+      "website": "https://peoplecentered.net/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "peoplecentered.net"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "data",
+        "social",
+        "health"
+      ],
+      "mission": "We at PCI — along with everyone around the world – are making our adjustments, realizing that \"BC\" will not return.",
+      "values": [
+        "The Internet has been an extraordinary tool during this time of social distancing, allowing remote work, online learning and family get-togethers, even dating over Zoom and Skype.",
+        "Unfortunately, this time has also exacerbated the digital divide for those who are not connected, and illustrated the importance of continued efforts to close that gap.",
+        "This month, we celebrate our founding chairman, Vint Cerf's, election to the National Academy of Science and are thankful for his recovery from COVID-19."
+      ],
+      "sources": [
+        {
+          "label": "May Update: Message from Mei Lin - People-Centered Internet",
+          "url": "https://peoplecentered.net/may-update-message-from-mei-lin/"
+        },
+        {
+          "label": "pcis-global-help-desk-and-the-vaccination-equity-consortium",
+          "url": "https://peoplecentered.net/pcis-global-help-desk-and-the-vaccination-equity-consortium/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for People Centered Internet from public work, not a mission paraphrase.",
+        "lead": "People Centered Internet publishes citable work we could quote (May Update: Message from Mei Lin - People-Centered Internet). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent People Centered Internet, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "pivo",
+      "name": "Pivo",
+      "shortName": "Pivo",
+      "kind": "organization",
+      "website": "https://pivo.org.br/en/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "pivo.org.br"
+      ],
+      "tags": [
+        "nonprofit",
+        "research",
+        "social"
+      ],
+      "mission": "Pivô Research - Pivô SP Exhibitions SP Pivô Research Pivô Hosts Library Pivô Satellite SSA Exhibitions SSA Pivô Residence Pivô Public Programs Pivô Projects Reading Room Pivô SSA Hosts Language: Português English Pivô is an autonomous contemporary art platform founded in 2011, opened to the public in 2012, dedicated to artistic exchange, research, and experimentation.",
+      "values": [
+        "At its core, the institution seeks to reflect on artistic practice and advance its understanding as a distinct form of thought and active participation in visual culture, society, and politics—operating as a space for proposing, investigating, exploring, and experimenting.",
+        "This purpose unfolds through an ongoing program that includes commissioned projects, exhibitions, artist residencies, publications, and public programs, creating conditions for the creation and circulation of ideas in direct collaboration with artists, curators, and publics, both nationally and internationally.",
+        "Pivô Copan , the institution's first venue, is housed within the iconic Copan building in downtown São Paulo, where it has consolidated this experimental and collaborative approach."
+      ],
+      "sources": [
+        {
+          "label": "[:pt]Pivô Pesquisa[:en]Pivô Research[:] - Pivô",
+          "url": "https://pivo.org.br/en/programas/pivo-pesquisa/"
+        },
+        {
+          "label": "[:pt]Publicações[:] - Pivô",
+          "url": "https://pivo.org.br/en/publicacoes/"
+        },
+        {
+          "label": "[:pt]Publicações[:] - Pivô",
+          "url": "https://pivo.org.br/publicacoes/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Pivo from public work, not a mission paraphrase.",
+        "lead": "Pivo publishes citable work we could quote ([:pt]Pivô Pesquisa[:en]Pivô Research[:] - Pivô). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Pivo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 3
+      }
+    },
+    {
+      "slug": "poptech",
+      "name": "Pop Tech",
+      "shortName": "Pop Tech",
+      "kind": "organization",
+      "website": "https://poptech.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "poptech.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "academic",
+        "education",
+        "social"
+      ],
+      "mission": "Our Action PopTech is creating dynamic partnerships to explore nuclear risk and deterrence through the lens of human and cognition.",
+      "values": [
+        "Our Impact In partnership with Northwestern University, Nuclear Threat Initiative, Duke University, N Square Collaborative, and the Rhode Island School of Design, we are conducting research to gain a deeper understanding of how breakthroughs in behavioral science can help shape the next generation of nuclear deterrence policy and practice.",
+        "Presentation Archive Future of Food Our Motivation Can the planet support the nutritional needs of a growing population in the context of climate change?",
+        "Our Action PopTech convened stakeholders from Big Agriculture, Agriculture Tech, the culinary art, as well as community activists to explore how dynamic intersectional partnerships might address global food insecurity."
+      ],
+      "sources": [
+        {
+          "label": "Impact Portfolio – PopTech",
+          "url": "https://poptech.org/impact-portfolio/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Pop Tech from public work, not a mission paraphrase.",
+        "lead": "Pop Tech publishes citable work we could quote (Impact Portfolio – PopTech). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Pop Tech, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
+      "slug": "publicai",
+      "name": "Public Ai",
+      "shortName": "Public Ai",
+      "kind": "organization",
+      "website": "https://publicai.co/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "publicai.co"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai",
+        "social"
+      ],
+      "mission": "If open source is to win, it must go public If open source is to win, it must go public Open source AI must be complemented by public AI: infrastructure and institutions that ensure models are accessible, sustainable, and governed in the public interest.",
+      "values": [
+        "July 12, 2025 Open source projects have made incredible progress in producing transparent and widely usable machine learning models and systems.",
+        "From PyTorch to Hugging Face, from EleutherAI to BigScience, the ML community has embraced openness as both a cultural and technical norm.",
+        "Unlike traditional software, AI models require substantial resources for activation\u0014compute, post-training, deployment, and oversight\u0014which only a few actors can currently provide."
+      ],
+      "sources": [
+        {
+          "label": "If open source is to win, it must go public",
+          "url": "https://publicai.co/stories/open-source-win"
+        },
+        {
+          "label": "We launched the Inference Utility!",
+          "url": "https://publicai.co/stories/utility"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Public Ai from public work, not a mission paraphrase.",
+        "lead": "Public Ai publishes citable work we could quote (If open source is to win, it must go public). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Public Ai, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
         "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
       },
       "corpusMeta": {
@@ -6464,6 +8592,52 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "rethinkwords",
+      "name": "Rethink",
+      "shortName": "Rethink",
+      "kind": "organization",
+      "website": "https://www.rethinkwords.com/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "rethinkwords.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "health"
+      ],
+      "mission": "ReThink - Before the Damage is Done ReThink - Invented by responsible technology advocate Trisha Prabhu when she was just 13, ReThink is an innovative, patented technology that aims to proactively stop cyberbullying.",
+      "values": [
+        "ReThink has sparked a global rallying cry to reclaim our intentionality and humanity online Get the ReThink technology At age 13, I dreamed of digital design that brought out the best in us, not the worst in us.",
+        "ReThink was the result. - Trisha Prabhu Inventor of ReThink Learn about Trisha's journey WebMD names Trisha their Health Hero prodigy in 2016 Trisha was just 16 years old The U.S."
+      ],
+      "sources": [
+        {
+          "label": "ReThink - Before the Damage is Done",
+          "url": "https://rethinkwords.com/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP12",
+        "DP4",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Rethink from public work, not a mission paraphrase.",
+        "lead": "Rethink publishes citable work we could quote (ReThink - Before the Damage is Done). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Rethink, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     },
     {
@@ -6881,6 +9055,193 @@
       }
     },
     {
+      "slug": "starlinglab",
+      "name": "Starling Lab",
+      "shortName": "Starling Lab",
+      "kind": "organization",
+      "website": "https://www.starlinglab.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "starlinglab.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "security",
+        "data"
+      ],
+      "mission": "More than a quarter of the Pantanal burned in 2020 alone, devastating subsistence farmers, small ranchers, and fishers.",
+      "values": [
+        "For years, Bolsonaro downplayed the crisis as “disinformation,” even in speeches to the United Nations General Assembly .",
+        "The October 2022 Brazilian presidential election captured the world’s attention with concerns about misinformation as Bolsonaro sought a second term.",
+        "The incumbent had continued to spread his own disinformation about the cause and effects that threatened his country’s rare habitats."
+      ],
+      "sources": [
+        {
+          "label": "Setting the Record Straight in Brazil’s Burning Wetlands – Starling Lab",
+          "url": "https://starlinglab.org/case-studies/setting-the-record-straight-in-brazils-burning-wetlands/"
+        },
+        {
+          "label": "Starling Framework – Starling Lab",
+          "url": "https://starlinglab.org/starling-framework/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP13",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Starling Lab from public work, not a mission paraphrase.",
+        "lead": "Starling Lab publishes citable work we could quote (Setting the Record Straight in Brazil’s Burning Wetlands – Starling Lab). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Starling Lab, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "schoolofattention",
+      "name": "Strother School Of Radical Attention",
+      "shortName": "Schoolofattention",
+      "kind": "organization",
+      "website": "https://www.schoolofattention.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "schoolofattention.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "research"
+      ],
+      "mission": "The Strother School of Radical Attention OUR STUDY CORPS STUDY CORPS is a wing of SoRA’s NATIONAL ORGANIZING INITIATIVE.",
+      "values": [
+        "Our STUDY CORPS team consists of organizers, researchers, and facilitators for ATTENTION ACTIVISM who design, organize, and lead a diverse range of experimental study gatherings in NYC and across the country.",
+        "Our NYC & USA cohorts convene twice a month (at SoRA's Sanctuary in Dumbo and online, respectively) to research facilitation techniques, develop Practices of Attention, and experiment with new forms of grassroots study.",
+        "STUDY CORPS members facilitate SIDEWALK STUDY , SoRA’s program in street-level pedagogy."
+      ],
+      "sources": [
+        {
+          "label": "The Strother School of Radical Attention",
+          "url": "https://www.schoolofattention.org/study-corps"
+        },
+        {
+          "label": "The Strother School of Radical Attention",
+          "url": "https://www.schoolofattention.org/sidewalk-study"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Schoolofattention from public work, not a mission paraphrase.",
+        "lead": "Strother School Of Radical Attention publishes citable work we could quote (The Strother School of Radical Attention). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Schoolofattention, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
+      }
+    },
+    {
+      "slug": "socialwebfoundation",
+      "name": "Swf",
+      "shortName": "Swf",
+      "kind": "organization",
+      "website": "https://socialwebfoundation.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "socialwebfoundation.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "privacy",
+        "policy",
+        "governance",
+        "security",
+        "social",
+        "media",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "With Evan Friedman from FABRIC, this is our contribution to the solution space—a standardized protocol suite to facilitate an opt-in way of seeing how different communities understand the same story, where they disagree, and where they find common ground.",
+      "values": [
+        "In a new piece for Tech Policy Press , Social Web Foundation and FABRIC argue that context should not remain a proprietary feature trapped inside dominant platforms: it should become an open, provider-agnostic, standardized protocol that works across browsers, publishers, and social networks.",
+        "Read “The Web Needs a Context Layer Built on a Shared Protocol.” Share this: Share on Threads Threads Share on Mastodon Mastodon Like this: Like Loading…",
+        "People : We help the general public understand the Fediverse, and provide targeted info for companies, government, start-ups and media to help the network grow."
+      ],
+      "sources": [
+        {
+          "label": "2026 · 07 · 23 · new-in-tech-policy-press-the-web-needs-a-context-layer-built-on-a-shared-protocol",
+          "url": "https://socialwebfoundation.org/2026/07/23/new-in-tech-policy-press-the-web-needs-a-context-layer-built-on-a-shared-protocol/"
+        },
+        {
+          "label": "Projects",
+          "url": "https://socialwebfoundation.org/projects/"
+        },
+        {
+          "label": "New York Fediverse Meetup Friday 14 Aug 2026 7PM",
+          "url": "https://socialwebfoundation.org/2026/08/13/new-york-fediverse-meetup-friday-14-aug-2026-7pm/"
+        },
+        {
+          "label": "Evan Prodromou at Fedicon 2026",
+          "url": "https://socialwebfoundation.org/2026/08/05/evan-prodromou-at-fedicon-2026/"
+        },
+        {
+          "label": "Help HOPE Hackers Hop Onto the Fediverse",
+          "url": "https://socialwebfoundation.org/2026/07/27/help-hope-hackers-hop-onto-the-fediverse/"
+        },
+        {
+          "label": "Unsubscribing tags.pub from Open Registration Relays",
+          "url": "https://socialwebfoundation.org/2026/06/28/unsubscribing-tags-pub-from-open-registration-relays/"
+        },
+        {
+          "label": "End-to-end Encryption (E2EE) over ActivityPub",
+          "url": "https://socialwebfoundation.org/program-protocol-e2ee/"
+        },
+        {
+          "label": "SWF at UN Open Source Week",
+          "url": "https://socialwebfoundation.org/2026/06/21/swf-at-un-open-source-week/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP2",
+        "DP3",
+        "DP12"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Swf from public work, not a mission paraphrase.",
+        "lead": "Swf publishes citable work we could quote (2026 · 07 · 23 · new-in-tech-policy-press-the-web-needs-a-context-layer-built-on-a-shared-protocol). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Swf, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 8
+      }
+    },
+    {
       "slug": "techjusticelaw",
       "name": "Tech Justice Law",
       "shortName": "Tech Justice Law",
@@ -6973,6 +9334,295 @@
       }
     },
     {
+      "slug": "techmatters",
+      "name": "Tech Matters Logo",
+      "shortName": "Tech Matters Logo",
+      "kind": "organization",
+      "website": "https://techmatters.org",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "techmatters.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "security",
+        "data",
+        "social",
+        "health",
+        "protocol",
+        "dsnp"
+      ],
+      "mission": "Based on a set of seven commitments made to individuals and organizations by those who collect, use, and share their data, our goal is to co-create a clear, trustworthy standard that brings accountability to organizations holding sensitive data, and provide practical tools to support its adoption.",
+      "values": [
+        "Yet data in the social sector is often locked in silos, leading to a fragmented understanding of complex systems.",
+        "Many nonprofits collect data from vulnerable people about that which makes them vulnerable–sensitive data which should not be made open.",
+        "Data now used for major AI models lacks representation of humanity’s diversity, and benefits only a few."
+      ],
+      "sources": [
+        {
+          "label": "Better Deal For Data - Practical Data Governance from Tech Matters",
+          "url": "https://techmatters.org/project/a-better-deal-for-data/"
+        },
+        {
+          "label": "Answers for Good - Tech Matters Projects",
+          "url": "https://techmatters.org/project/answers-for-good/"
+        },
+        {
+          "label": "Building the Tech for Good Field - Tech Matters",
+          "url": "https://techmatters.org/project/building-the-tech-for-good-field/"
+        },
+        {
+          "label": "Technology for Good: How Nonprofit Leaders Are Using Software and Data",
+          "url": "https://techmatters.org/project/technology-for-good-how-nonprofit-leaders-are-using-software-and-data/"
+        },
+        {
+          "label": "Aselo: Connecting Crisis to Care - Tech Matters Projects",
+          "url": "https://techmatters.org/project/aselo/"
+        },
+        {
+          "label": "Terraso: Building a Sustainable Future - Tech Matters",
+          "url": "https://techmatters.org/project/terraso/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Tech Matters Logo from public work, not a mission paraphrase.",
+        "lead": "Tech Matters Logo publishes citable work we could quote (Better Deal For Data - Practical Data Governance from Tech Matters). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Tech Matters Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 6
+      }
+    },
+    {
+      "slug": "techoversight",
+      "name": "Tech Oversight",
+      "shortName": "Tech Oversight",
+      "kind": "organization",
+      "website": "https://www.techoversight.org",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "techoversight.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "security",
+        "social",
+        "media"
+      ],
+      "mission": "AI Super PAC Research Book - Tech Oversight Project Election 2026 AI Super PACs: Research Book Big Tech executives are pouring hundreds of millions of dollars into super PACs and dark money organizations to influence lawmakers and push a dangerous agenda &#x2013; enriching themselves at the expense of our jobs, children's safety, environment, and civil rights.",
+      "values": [
+        "These are the Big Tech CEOs and Executives behind the campaigns: Total Raised $188M+ Total Spent $74M+ PACs Tracked 17 Last Updated August 20, 2026 The Watchlist One Agenda: Buy the Politicians.",
+        "Stance reflects each organization's stated position on federal and state AI regulation.",
+        "This is your weekly digest for Big Tech's biggest harms and the effort to hold them accountable in Congress and statehouses across the country."
+      ],
+      "sources": [
+        {
+          "label": "Tech Oversight Project | AI Super PAC Research Book",
+          "url": "https://www.techoversight.org/ai-super-pac-research-book/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Tech Oversight from public work, not a mission paraphrase.",
+        "lead": "Tech Oversight publishes citable work we could quote (Tech Oversight Project | AI Super PAC Research Book). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Tech Oversight, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
+      }
+    },
+    {
+      "slug": "techsoup",
+      "name": "Techsoup",
+      "shortName": "Techsoup",
+      "kind": "organization",
+      "website": "https://www.techsoup.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "techsoup.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "privacy",
+        "security",
+        "data",
+        "social"
+      ],
+      "mission": "We get a firsthand look at the work of Grupo Suno, an NGO that works to connect communities in Paraguay's Gran Chaco region.",
+      "values": [
+        "April 21, 2026 Location Intelligence for Social Good Learn how nonprofits can use Esri's geographic information system software to plan, collaborate, and respond to complex challenges.",
+        "February 12, 2026 How the DRP Strengthened an Organization’s Digital Foundations See how Hunger Network modernized its security, systems, and staff capacity through TechSoup’s Digital Resilience Program to build a stronger, safer future.",
+        "December 18, 2025 The Environmental Impact of TechSoup's Refurbished Hardware Program TechSoup's Refurbished Hardware Program has been going strong since 2006."
+      ],
+      "sources": [
+        {
+          "label": "TechSoup Blog | Impact Stories",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Microsoft",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-microsoft"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Cisco",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-cisco"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Intuit",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-intuit"
+        },
+        {
+          "label": "TechSoup Blog | Project Management and Planning",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/project-management-and-planning"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Symantec",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-symantec"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Adobe",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-adobe"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Arctera (Veritas)",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-arctera-veritas"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories Autodesk",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-autodesk"
+        },
+        {
+          "label": "TechSoup Blog | Impact Stories ClickTime",
+          "url": "https://blog.techsoup.org/en-us/posts/topic/impact-stories-clicktime"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP2",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Techsoup from public work, not a mission paraphrase.",
+        "lead": "Techsoup publishes citable work we could quote (TechSoup Blog | Impact Stories). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Techsoup, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 10
+      }
+    },
+    {
+      "slug": "secureainow",
+      "name": "The Alliancefor Secure Ai",
+      "shortName": "The Alliancefor Secure Ai",
+      "kind": "organization",
+      "website": "http://www.secureainow.org",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "secureainow.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "privacy",
+        "ai",
+        "security",
+        "social",
+        "media"
+      ],
+      "mission": "Safeguards do not stifle innovation; they are necessary to build the public trust required to ensure this technology reaches its full potential.",
+      "values": [
+        "There is still no national baseline requirement to show that the most capable systems behave as intended before they are released.",
+        "We need clear standards for evaluating advanced models before and after deployment, independent scrutiny of dangerous capabilities, and meaningful human control over consequential decisions.",
+        "This is not about slowing innovation; it is about ensuring America leads in building both cutting-edge AI and the methods that prove it works as promised."
+      ],
+      "sources": [
+        {
+          "label": "Priorities - The Alliance for Secure AI Action",
+          "url": "https://secureainow.org/issues/"
+        },
+        {
+          "label": "Media Contact",
+          "url": "https://secureainow.org/media/media-contact/"
+        },
+        {
+          "label": "Action Center - The Alliance for Secure AI Action",
+          "url": "https://secureainow.org/action-center/"
+        },
+        {
+          "label": "Faith Leaders - The Alliance for Secure AI Action",
+          "url": "https://secureainow.org/action-center/faith/"
+        },
+        {
+          "label": "how-a-small-town-in-northern-maine-fought-back-against-ai-powered-surveillance-and-won",
+          "url": "https://secureainow.org/how-a-small-town-in-northern-maine-fought-back-against-ai-powered-surveillance-and-won/"
+        },
+        {
+          "label": "A Glimpse of AI Beyond Human Control - The Alliance for Secure AI Action",
+          "url": "https://secureainow.org/a-glimpse-of-ai-beyond-human-control/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP4",
+        "DP2",
+        "DP11",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for The Alliancefor Secure Ai from public work, not a mission paraphrase.",
+        "lead": "The Alliancefor Secure Ai publishes citable work we could quote (Priorities - The Alliance for Secure AI Action). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent The Alliancefor Secure Ai, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 6
+      }
+    },
+    {
       "slug": "anxiousgeneration",
       "name": "The Anxious Generation",
       "shortName": "The Anxious Generation",
@@ -7034,6 +9684,57 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 3
+      }
+    },
+    {
+      "slug": "thecenterforartsandinnovation",
+      "name": "The Center For Ai",
+      "shortName": "The Center For Ai",
+      "kind": "organization",
+      "website": "https://thecenterforartsandinnovation.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "thecenterforartsandinnovation.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "media"
+      ],
+      "mission": "Whether you’re nurturing a creative child, rediscovering your own spark, or simply curious to try something new, you’ll find opportunities happening throughout South Florida below.",
+      "values": [
+        "Workshop Series was created for adults who are ready to try something new, not because they have to, but because something inside them is asking “I wonder what it would be like?” View Details ADULTS SOLD OUT!",
+        "Hosted in partnership with Pottery Studio 1 Miami, this immersive workshop introduces participants to the full pottery-making process, from shaping raw clay to understanding how a finished piece is fired and transformed.",
+        "View Details INTERGENERATIONAL Fort Lauderdale September 2026 \"What If?\" 2026 Challenge Kick-Off A family-friendly day of imagination, building, and big ideas."
+      ],
+      "sources": [
+        {
+          "label": "Creative Programs, Workshops & Events &#8226; The Center",
+          "url": "https://thecenterforartsandinnovation.org/programs/"
+        },
+        {
+          "label": "\"What Do You See?\" Short Film Fellowship &#8226; The Center",
+          "url": "https://thecenterforartsandinnovation.org/program/what-do-you-see-short-film-fellowship/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP14",
+        "DP2",
+        "DP4"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for The Center For Ai from public work, not a mission paraphrase.",
+        "lead": "The Center For Ai publishes citable work we could quote (Creative Programs, Workshops & Events &#8226; The Center). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent The Center For Ai, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 2
       }
     },
     {
@@ -7211,6 +9912,178 @@
         "headline": "We opened a landing pad for The Meta Layer Initiative from public work, not a mission paraphrase.",
         "lead": "The Meta Layer Initiative publishes citable work we could quote (Documents - GovHub). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
         "ask": "If you represent The Meta Layer Initiative, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 10
+      }
+    },
+    {
+      "slug": "thepolicycircle",
+      "name": "The Policy Circle",
+      "shortName": "The Policy Circle",
+      "kind": "organization",
+      "website": "https://www.thepolicycircle.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "thepolicycircle.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "research",
+        "ai",
+        "security",
+        "data",
+        "social",
+        "media",
+        "health"
+      ],
+      "mission": "Collaborating with colleagues and legislators, she helped craft legislation to limit excessive waivers—highlighting how some districts reported 90% graduation rates while up to 30% of students hadn’t earned a true diploma.",
+      "values": [
+        "Anne’s work strengthens accountability and raises educational standards, driving better outcomes for over 1 million Indiana students.",
+        "Advocating for Policy Change Tonya Cariker CLER 1.0 & 2.0 GRAD Tonya joined CLER after attending Austin Day at the Capitol, driven by concerns over policies impacting her small business.",
+        "This spring, she met with the TX Dept. of Licensing & Regulation to propose an apprenticeship program for estheticians, inspired by other states."
+      ],
+      "sources": [
+        {
+          "label": "Our Impact",
+          "url": "https://www.thepolicycircle.org/impact/"
+        },
+        {
+          "label": "Policy Circles",
+          "url": "https://www.thepolicycircle.org/policy-circles/"
+        },
+        {
+          "label": "How to Research Your Ballot Before You Vote",
+          "url": "https://www.thepolicycircle.org/how-to-research-your-ballot/"
+        },
+        {
+          "label": "Our Partners",
+          "url": "https://www.thepolicycircle.org/partners/"
+        },
+        {
+          "label": "Artificial Intelligence",
+          "url": "https://www.thepolicycircle.org/artificial-intelligence/"
+        },
+        {
+          "label": "Protecting Children Online",
+          "url": "https://www.thepolicycircle.org/protecting-children-online-resources/"
+        },
+        {
+          "label": "Energy and the Environment",
+          "url": "https://www.thepolicycircle.org/briefs/energy-and-the-environment/"
+        },
+        {
+          "label": "Data Centers",
+          "url": "https://www.thepolicycircle.org/briefs/data-centers/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP10",
+        "DP22"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for The Policy Circle from public work, not a mission paraphrase.",
+        "lead": "The Policy Circle publishes citable work we could quote (Our Impact). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent The Policy Circle, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 8
+      }
+    },
+    {
+      "slug": "thesgnl",
+      "name": "The Signal",
+      "shortName": "The Signal",
+      "kind": "organization",
+      "website": "https://www.thesgnl.com/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "thesgnl.com"
+      ],
+      "tags": [
+        "nonprofit",
+        "academic",
+        "education",
+        "ai",
+        "security",
+        "media"
+      ],
+      "mission": "The wrong machine Developments The U.S. government has signed up private firms to hack criminal networks abroad.",
+      "values": [
+        "In Colombia, the last four people missing since the earthquake turn up alive, and the governor calls off the search. … In Ecuador, a gunman kills the prosecutor who was working on the drone attacks against three fishing boats. … & Biologists explore one of Africa’s last biological dark zones and find some 70 creatures science had no record of.",
+        "From the files How did a criminal industry worth tens of billions entrench itself in Cambodia?",
+        "Rachel Cleetus on rising temperatures, billions in damages, and the climate’s uncertain future."
+      ],
+      "sources": [
+        {
+          "label": "The wrong machine",
+          "url": "https://www.thesgnl.com/2026/08/members-despatch-week-xxxiii-mmxxvi/"
+        },
+        {
+          "label": "A mailbox in Virginia",
+          "url": "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxvi/"
+        },
+        {
+          "label": "‘The world is the sphere of influence’",
+          "url": "https://www.thesgnl.com/2026/08/national-security-us-domestic-politics/"
+        },
+        {
+          "label": "Leave your phone at home",
+          "url": "https://www.thesgnl.com/2026/08/thursday-week-xxxiii-mmxxxi/"
+        },
+        {
+          "label": "‘A shield of peace’",
+          "url": "https://www.thesgnl.com/2026/08/members-despatch-week-xxxii-mmxxvi/"
+        },
+        {
+          "label": "Overdrawn",
+          "url": "https://www.thesgnl.com/2026/08/thursday-week-xxxii-mmxxvi/"
+        },
+        {
+          "label": "Tracks of uncertainty",
+          "url": "https://www.thesgnl.com/2026/08/public-intellectuals-media-influencers/"
+        },
+        {
+          "label": "Just passing through",
+          "url": "https://www.thesgnl.com/2026/08/tuesday-week-xxxii-mmxxvi/"
+        },
+        {
+          "label": "Buying time",
+          "url": "https://www.thesgnl.com/2026/08/members-despatch-week-xxxi-mmxxvi/"
+        },
+        {
+          "label": "‘The Kingdom … does not seek escalation’",
+          "url": "https://www.thesgnl.com/2026/07/thursday-week-xxxi-mmxxvi/"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP10",
+        "DP22",
+        "DP11",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for The Signal from public work, not a mission paraphrase.",
+        "lead": "The Signal publishes citable work we could quote (The wrong machine). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent The Signal, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
         "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
       },
       "corpusMeta": {
@@ -7493,6 +10366,59 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 10
+      }
+    },
+    {
+      "slug": "transfer",
+      "name": "Transfer Logo Black Bg Square",
+      "shortName": "Transfer Logo Black Bg Square",
+      "kind": "organization",
+      "website": "http://transfer.art",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "transfer.art"
+      ],
+      "tags": [
+        "nonprofit",
+        "policy",
+        "governance",
+        "security",
+        "data",
+        "social",
+        "media"
+      ],
+      "mission": "Our mission is to cooperatively maintain artworks in perpetuity, ensuring their preservation and access across generations.",
+      "values": [
+        "We manage and grow the value of digital assets by leveraging decentralized storage and encryption.",
+        "Backed by a network of care, our model offers a new approach to media art valuation, conservation and governance.",
+        "Many of the works have been placed in collections, and we hold and maintain the artist proofs in trust."
+      ],
+      "sources": [
+        {
+          "label": "TRANSFER — Trust",
+          "url": "https://transfer.art/trust"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP3",
+        "DP12",
+        "DP4",
+        "DP13"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Transfer Logo Black Bg Square from public work, not a mission paraphrase.",
+        "lead": "Transfer Logo Black Bg Square publishes citable work we could quote (TRANSFER — Trust). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Transfer Logo Black Bg Square, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     },
     {
@@ -7862,6 +10788,54 @@
         "generatedFrom": "public-work",
         "hypothesis": true,
         "workPageCount": 6
+      }
+    },
+    {
+      "slug": "youngpeoplesalliance",
+      "name": "Young People S Alliance Logo",
+      "shortName": "Young People S Alliance Logo",
+      "kind": "organization",
+      "website": "https://youngpeoplesalliance.org/",
+      "allianceUrl": "https://www.projectliberty.io/alliance/",
+      "claimDomains": [
+        "youngpeoplesalliance.org"
+      ],
+      "tags": [
+        "nonprofit",
+        "ai"
+      ],
+      "mission": "Introduction AI companions are quietly reshaping American life, especially for young adults and kids.",
+      "values": [
+        "Apps like Replika, Snapchat’s My AI, and Character.ai present themselves as harmless productivity tools or solutions to loneliness.",
+        "In reality, they simulate intimacy and friendship to create emotional dependence and drive engagement—especially in young, lonely users.",
+        "They are already widespread, with 25 million Replika users, 150 million Snapchat AI users, and 20 million monthly active Character.ai users."
+      ],
+      "sources": [
+        {
+          "label": "humanlike ai",
+          "url": "https://youngpeoplesalliance.org/api/blob/humanlike-ai.pdf"
+        }
+      ],
+      "partners": [],
+      "externalPartners": [],
+      "relatedDps": [
+        "DP8",
+        "DP20",
+        "DP11",
+        "DP13",
+        "DP14",
+        "DP2"
+      ],
+      "pitch": {
+        "headline": "We opened a landing pad for Young People S Alliance Logo from public work, not a mission paraphrase.",
+        "lead": "Young People S Alliance Logo publishes citable work we could quote (humanlike ai). This briefing is a hypothesis built from those sources. Tell us if we misread the research, add papers we missed, and weigh in on Desirable Properties tied to that work.",
+        "ask": "If you represent Young People S Alliance Logo, confirm the source URLs, then open the Desirable Properties tab and leave a patch idea where the property text misses what your public work already argues.",
+        "captureLine": "Research and policy only change the rule-set when it is linked to original sources. Help us keep this pad tied to your papers and reports, not a press-release summary."
+      },
+      "corpusMeta": {
+        "generatedFrom": "public-work",
+        "hypothesis": true,
+        "workPageCount": 1
       }
     }
   ]
