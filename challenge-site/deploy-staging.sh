@@ -74,7 +74,7 @@ probe_prod_css() {
     return 0
   fi
 
-  prod_css=$(echo "$prod_html" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
+  prod_css=$(echo "$prod_html" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//' || true)
   if [[ -z "$prod_css" ]]; then
     echo "WARNING: could not extract prod CSS href from homepage"
     return 0
