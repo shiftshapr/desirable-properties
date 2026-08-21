@@ -3,6 +3,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import AllianceBriefingClient from '@/components/onboard/AllianceBriefingClient';
 import DynamicPadClient from '@/components/onboard/DynamicPadClient';
 import CohortPadClient from '@/components/onboard/CohortPadClient';
+import RosterPadClient from '@/components/onboard/RosterPadClient';
 import {
   allianceSlugKey,
   getAllianceOrg,
@@ -13,6 +14,7 @@ import {
 import { resolvePadLookup } from '@/lib/hermes-onboard/pad-lookup';
 import { generateBriefing } from '@/lib/hermes-onboard/generate';
 import { findRosterByDomain, getRosterOrg } from '@/lib/hermes-onboard/roster';
+import { getRosterPadEntry } from '@/lib/hermes-onboard/roster-pads';
 import { listOnboardEvents, loadOnboardSession } from '@/lib/hermes-onboard/store';
 import { getOnSettings } from '@/lib/hermes-onboard/settings';
 import { parseOnboardTab } from '@/lib/hermes-onboard/tabs';
@@ -38,9 +40,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
   const rosterOrg = getRosterOrg(slug);
   if (rosterOrg) {
+    const padEntry = getRosterPadEntry(rosterOrg.slug);
     return {
       title: `${rosterOrg.name} – DP Studio landing pad`,
-      description: 'Alliance roster match. Full briefing pad in progress.',
+      description: padEntry?.pitch.lead || 'Project Liberty Alliance member landing pad.',
     };
   }
   return { title: 'Landing pad' };
@@ -130,6 +133,10 @@ export default async function AllianceBriefingPage({
 
   const domainParam = Array.isArray(query.domain) ? query.domain[0] : query.domain;
   if (rosterOrg) {
+    const padEntry = getRosterPadEntry(rosterOrg.slug);
+    if (padEntry) {
+      return <RosterPadClient entry={padEntry} />;
+    }
     return (
       <DynamicPadClient
         status="roster"
@@ -149,6 +156,10 @@ export default async function AllianceBriefingPage({
     ) {
       const rosterFromDomain = findRosterByDomain(domainParam) ?? findRosterByDomain(lookup.domain ?? '');
       if (lookup.status === 'roster' && rosterFromDomain) {
+        const padEntry = getRosterPadEntry(rosterFromDomain.slug);
+        if (padEntry) {
+          return <RosterPadClient entry={padEntry} />;
+        }
         return (
           <DynamicPadClient
             status="roster"

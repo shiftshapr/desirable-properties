@@ -15,7 +15,7 @@ type PersonPadCandidate = PersonPadSelectedSource;
 
 const ORG_STATUS_HINT: Record<PadLookupResult['status'], string> = {
   found: 'Full landing pad found. Opening briefing…',
-  roster: 'Alliance roster match. Opening your reserved pad (briefing in progress)…',
+  roster: 'Alliance roster match. Opening your member landing pad…',
   dynamic: 'No roster match yet. Opening a request page for this website…',
   not_found: '',
 };

@@ -9,6 +9,7 @@ import {
 
 const dirPath = path.join(process.cwd(), 'src/data/alliance-directory.json');
 const rosterPath = path.join(process.cwd(), 'src/data/alliance-roster.json');
+const rosterPadsPath = path.join(process.cwd(), 'src/data/alliance-roster-pads.json');
 
 test('Alliance directory is a valid public packet', () => {
   const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
@@ -142,4 +143,42 @@ test('resolvePadLookup resolves directory, roster, and dynamic website input', (
 
   const missing = resolvePadLookup(orgs, rosterOrgs, 'not a real org name at all');
   assert.equal(missing.status, 'not_found');
+});
+
+test('alliance roster pads cover every roster org outside the directory', () => {
+  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
+  const pads = JSON.parse(fs.readFileSync(rosterPadsPath, 'utf8'));
+  const directorySlugs = new Set(directory.orgs.map((org) => org.slug));
+
+  assert.equal(pads.cohort, 'project-liberty-alliance');
+  assert.ok(Array.isArray(pads.orgs) && pads.orgs.length >= 100);
+
+  const expectedCount = roster.orgs.filter((org) => !directorySlugs.has(org.slug)).length;
+  assert.equal(pads.orgs.length, expectedCount);
+
+  const padSlugs = new Set(pads.orgs.map((org) => org.slug));
+  for (const org of roster.orgs) {
+    if (directorySlugs.has(org.slug)) continue;
+    assert.ok(padSlugs.has(org.slug), `missing pad entry for ${org.slug}`);
+    const entry = pads.orgs.find((row) => row.slug === org.slug);
+    assert.ok(entry.pitch?.headline);
+    assert.ok(entry.pitch?.lead);
+    assert.ok(Array.isArray(entry.relatedDps) && entry.relatedDps.length > 0);
+    assert.ok(entry.website.startsWith('http'));
+    assert.ok(entry.domain);
+  }
+});
+
+test('sample roster slugs resolve to member pad hrefs', () => {
+  const roster = JSON.parse(fs.readFileSync(rosterPath, 'utf8'));
+  const directory = JSON.parse(fs.readFileSync(dirPath, 'utf8'));
+  const rosterOrgs = roster.orgs;
+  const orgs = directory.orgs;
+
+  for (const sample of ['consumerreports', 'epic', 'stanford']) {
+    const match = resolvePadLookup(orgs, rosterOrgs, sample);
+    assert.equal(match.status, 'roster', sample);
+    assert.equal(match.href, `/pad/${match.slug}`);
+  }
 });

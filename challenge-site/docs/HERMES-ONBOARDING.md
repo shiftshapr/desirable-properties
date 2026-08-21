@@ -26,9 +26,9 @@ Generic marketing copy and landing page contrast: [`docs/LANDING-PAD.md`](LANDIN
 
 Visitors can enter an org website, name, or slug on `/pad` to resolve to the right landing pad. Switch to **Person** on the same form to create a person pad from LinkedIn, CV, work links, and perspectives.
 
-Lookup order: full directory pads (3 orgs today) → prework roster (`alliance-roster.json`, 208 PLA members imported from [projectliberty.io/alliance](https://www.projectliberty.io/alliance/); name, domain, and slug only, no full corpus or pitches yet) → dynamic request page for any other valid website domain.
+Lookup order: full directory pads (3 orgs today) → prework roster (`alliance-roster.json`, 208 PLA members imported from [projectliberty.io/alliance](https://www.projectliberty.io/alliance/); name, domain, and slug only) with generated member pads (`alliance-roster-pads.json`) → dynamic request page for any other valid website domain.
 
-Roster import: `node scripts/import-pla-alliance-roster.mjs` → `src/data/alliance-roster.json`. Full briefing pads exist only for Project Liberty, Project Liberty Institute, and Project Liberty Labs in `alliance-directory.json`. Other roster orgs resolve to stub pages via `DynamicPadClient` until they claim and complete a packet.
+Roster import: `node scripts/import-pla-alliance-roster.mjs` → `src/data/alliance-roster.json`. Generated member pads: `node scripts/generate-roster-pad-entries.mjs` → `src/data/alliance-roster-pads.json` (runs on `prebuild`). Full corpus briefings exist only for Project Liberty, Project Liberty Institute, and Project Liberty Labs in `alliance-directory.json`. All other roster orgs resolve to `RosterPadClient` member pads with invitation copy, inferred Desirable Properties, and claim/enrich CTAs.
 
 Person pads live at `/pad/person/{slug}` (slug from LinkedIn handle, CV path, or normalized name). POST `/api/pad/person` to create; GET `/api/pad/person/{slug}` to fetch.
 
@@ -50,7 +50,7 @@ Find your pad at https://{estate-property}/pad/project-liberty-alliance or go di
 You can also bookmark `/pad/your-org-name` (hyphens optional, e.g. `/pad/projectliberty`). Add `?tab=dp` only when you want to force the Desirable Properties tab regardless of the current default.
 ```
 
-Only three orgs have full pads in `alliance-directory.json`. The other ~205 roster members have stub entries (name, domain, slug) only. Roster-only matches open a stub page at `/pad/{slug}` until the org claims and completes their packet.
+Only three orgs have full pads in `alliance-directory.json`. The other 208 roster members have generated member pads at `/pad/{slug}` (invitation copy, inferred DPs, claim/enrich). Full corpus briefings per org remain future enrichment work.
 
 ## Default tab
 
@@ -74,7 +74,7 @@ Lookup order:
 
 API: `GET /api/pad/resolve?input=` returns the same JSON shape.
 
-UI: `src/components/onboard/PadOrgLookup.tsx` on `/pad` and `/pad/project-liberty-alliance` (Organization | Person tabs). PLA cohort welcome: `src/components/onboard/CohortPadClient.tsx`. Roster and dynamic org matches render `src/components/onboard/DynamicPadClient.tsx` on `/pad/[slug]`. Person pads render `src/components/onboard/PersonPadClient.tsx` on `/pad/person/[slug]`.
+UI: `src/components/onboard/PadOrgLookup.tsx` on `/pad` and `/pad/project-liberty-alliance` (Organization | Person tabs). PLA cohort welcome: `src/components/onboard/CohortPadClient.tsx` with searchable roster list (`CohortRosterList.tsx`). Roster org matches render `src/components/onboard/RosterPadClient.tsx` on `/pad/[slug]`. Dynamic (non-roster) org matches render `src/components/onboard/DynamicPadClient.tsx`. Person pads render `src/components/onboard/PersonPadClient.tsx` on `/pad/person/[slug]`.
 
 Person lookup: `src/lib/hermes-onboard/person-pad-lookup.mjs` (`slugFromLinkedInUrl`, `resolvePersonPadSlug`, `validatePersonPadCreateInput`). Candidate discovery: `src/lib/hermes-onboard/person-pad-discovery.mjs` (local corpus grep; Open Graph for public work URLs in `person-pad-discovery.ts`). Storage: `src/lib/hermes-onboard/person-pad-store.ts` (Postgres `hermes_person_pad` or `data/hermes-person-pad/{slug}.json`). Perspective URL parsing: `src/lib/hermes-onboard/person-perspectives.ts`.
 

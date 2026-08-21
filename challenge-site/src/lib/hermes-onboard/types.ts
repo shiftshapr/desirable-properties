@@ -56,6 +56,28 @@ export type AllianceRoster = {
   orgs: RosterOrg[];
 };
 
+/** Minimal generated pad packet for roster orgs without a full directory entry. */
+export type RosterPadEntry = {
+  slug: string;
+  name: string;
+  shortName: string;
+  domain: string;
+  website: string;
+  tags: string[];
+  relatedDps: string[];
+  mission: string;
+  pitch: AlliancePitch;
+  sources: AllianceSource[];
+};
+
+export type AllianceRosterPads = {
+  cohort: string;
+  generatedAt: string;
+  generatorNote: string;
+  sourceRosterImportedAt: string;
+  orgs: RosterPadEntry[];
+};
+
 export type PadLookupStatus = 'found' | 'roster' | 'dynamic' | 'not_found';
 
 export type PadLookupResult = {

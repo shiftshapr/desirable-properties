@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import CohortRosterList from '@/components/onboard/CohortRosterList';
 import PadOrgLookup from '@/components/onboard/PadOrgLookup';
 import { getAllianceDirectory, listAllianceOrgs } from '@/lib/hermes-onboard/directory';
+import { listRosterPadEntries } from '@/lib/hermes-onboard/roster-pads';
 import { listRosterOrgs } from '@/lib/hermes-onboard/roster';
 import { padAbsoluteHref, padHref } from '@/lib/hermes-onboard/tabs';
 
@@ -10,6 +12,7 @@ export default async function CohortPadClient() {
   const directory = getAllianceDirectory();
   const orgs = listAllianceOrgs();
   const rosterCount = listRosterOrgs().length;
+  const rosterPads = listRosterPadEntries();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
@@ -80,7 +83,7 @@ export default async function CohortPadClient() {
       </section>
 
       <section className="mt-10 rounded-xl border border-slate-800 bg-slate-900/30 p-5">
-        <h2 className="text-lg font-semibold text-white">Alliance roster lookup</h2>
+        <h2 className="text-lg font-semibold text-white">All Alliance member pads</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
           We imported {rosterCount} member names and domains from the public{' '}
           <a
@@ -91,13 +94,14 @@ export default async function CohortPadClient() {
           >
             Project Liberty Alliance page
           </a>
-          . Roster matches open a reserved stub pad while we build a full briefing from your public
-          corpus. Only the three orgs above have full pitches and briefing content so far.
+          . Every roster member has a working landing pad at{' '}
+          <span className="font-mono text-slate-300">/pad/&#123;slug&#125;</span>. Three steward
+          orgs above have full corpus briefings; the rest use generated invitation pads you can
+          claim and enrich.
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-slate-500">
-          Use the lookup form above with your org website or name (for example{' '}
-          <span className="font-mono text-slate-400">consumerreports.org</span>) to find your pad.
-        </p>
+        <div className="mt-6">
+          <CohortRosterList entries={rosterPads} />
+        </div>
       </section>
 
       <p className="mt-8 text-sm leading-relaxed text-slate-500">
