@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import UserDateTime from '@/components/UserDateTime';
 
@@ -23,8 +22,6 @@ export type ContributionActivityRow = {
   proposalCount: number;
   proposalLabels: string[];
   filedAt: string | null;
-  threadId: string | null;
-  threadTitle: string | null;
   discussLinks: ContributionActivityDiscussLink[];
   status: string;
   orphan: boolean;
@@ -282,7 +279,6 @@ export default function ContributionActivityClient({
               <th className="px-4 py-3">Mode</th>
               <th className="px-4 py-3">Proposals</th>
               <th className="px-4 py-3">Filed at</th>
-              <th className="px-4 py-3">Thread title</th>
               <th className="px-4 py-3">Discuss links</th>
             </tr>
           </thead>
@@ -290,7 +286,7 @@ export default function ContributionActivityClient({
             {filteredRows.length === 0 ? (
               <tr>
                 <td
-                  colSpan={isAdmin ? (scope === 'all' ? 8 : 7) : scope === 'all' ? 7 : 6}
+                  colSpan={isAdmin ? (scope === 'all' ? 7 : 6) : scope === 'all' ? 6 : 5}
                   className="px-4 py-10 text-center text-slate-400"
                 >
                   No {scope === 'all' ? 'Discuss posts' : 'contribution filings'} match these filters yet.
@@ -343,20 +339,6 @@ export default function ContributionActivityClient({
                       <UserDateTime value={row.filedAt} mode="datetime" />
                     ) : (
                       '—'
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    {row.threadTitle ? (
-                      <div>
-                        <div className="text-white">{row.threadTitle}</div>
-                        {row.threadId ? (
-                          <Link href="/agent" className="text-xs text-cyan-400 hover:underline">
-                            Open Hermes
-                          </Link>
-                        ) : null}
-                      </div>
-                    ) : (
-                      <span className="text-slate-500">—</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
