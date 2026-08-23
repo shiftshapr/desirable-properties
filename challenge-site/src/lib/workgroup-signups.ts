@@ -38,6 +38,15 @@ export type WorkgroupSignupsPayload = {
   total_people: number;
 };
 
+/** Workgroups that have at least one member (empty groups stay in the list). */
+export function occupiedWorkgroupCount(
+  workgroups: Array<{ member_count?: number; members?: unknown[] }>,
+): number {
+  return workgroups.filter(
+    (group) => (group.member_count ?? 0) > 0 || (group.members?.length ?? 0) > 0,
+  ).length;
+}
+
 export async function fetchWorkgroupSignups(opts?: {
   /** Bypass Next.js fetch cache (use when resolving live membership for a signed-in user). */
   fresh?: boolean;

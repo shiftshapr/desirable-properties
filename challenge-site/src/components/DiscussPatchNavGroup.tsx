@@ -1,35 +1,47 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import DiscussPatchHelpModal from '@/components/DiscussPatchHelpModal';
 import { isDiscussPatchHelpDismissed } from '@/lib/discuss-patch-help';
 import type { SiteNavLink } from '@/lib/siteNav';
 
-function ExternalLink({
+function ChildNavLink({
   href,
   label,
+  external,
   className,
   onNavigate,
 }: {
   href: string;
   label: string;
+  external?: boolean;
   className: string;
   onNavigate?: () => void;
 }) {
+  const isExternal = Boolean(external) || /^https?:\/\//i.test(href);
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        onClick={onNavigate}
+      >
+        {label}
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={className}
-      onClick={onNavigate}
-    >
+    <Link href={href} className={className} onClick={onNavigate}>
       {label}
-    </a>
+    </Link>
   );
 }
 
-/** Header nav group: primary click opens discuss/patch help modal; chevron reveals Gov Hub patch link. */
+/** Header nav group: primary click opens discuss/patch help modal; chevron reveals submenu. */
 export function DiscussPatchDesktopNav({ item }: { item: SiteNavLink }) {
   const discussHref = item.href ?? '#';
   const [open, setOpen] = useState(false);
@@ -114,9 +126,10 @@ export function DiscussPatchDesktopNav({ item }: { item: SiteNavLink }) {
         >
           {(item.children ?? []).map((child) => (
             <li key={child.href ?? child.label} role="none">
-              <ExternalLink
+              <ChildNavLink
                 href={child.href ?? '#'}
                 label={child.label}
+                external={child.external}
                 className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
                 onNavigate={() => setOpen(false)}
               />
@@ -202,9 +215,10 @@ export function DiscussPatchMobileNav({
         <ul className="mb-2 ml-3 border-l border-slate-800 pl-3">
           {(item.children ?? []).map((child) => (
             <li key={child.href ?? child.label}>
-              <ExternalLink
+              <ChildNavLink
                 href={child.href ?? '#'}
                 label={child.label}
+                external={child.external}
                 className="block py-2 text-sm text-slate-400 hover:text-white"
                 onNavigate={onNavigate}
               />

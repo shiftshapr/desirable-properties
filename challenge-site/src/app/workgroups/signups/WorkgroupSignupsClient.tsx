@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import UserDateTime from '@/components/UserDateTime';
 import { govhubUrl } from '@/lib/govhub';
-import type { WorkgroupSignupsPayload } from '@/lib/workgroup-signups';
+import { occupiedWorkgroupCount, type WorkgroupSignupsPayload } from '@/lib/workgroup-signups';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 type TabKey = 'workgroups' | 'people';
@@ -56,6 +56,11 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
     );
   }, [data.people, normalizedQuery]);
 
+  const occupiedWorkgroups = useMemo(
+    () => occupiedWorkgroupCount(data.workgroups),
+    [data.workgroups],
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="mb-8">
@@ -71,7 +76,7 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
           </span>
           <span>
             <strong className="text-white">{data.total_memberships}</strong> memberships across{' '}
-            <strong className="text-white">{data.workgroups.length}</strong> workgroups
+            <strong className="text-white">{occupiedWorkgroups}</strong> workgroups
           </span>
         </div>
       </div>
