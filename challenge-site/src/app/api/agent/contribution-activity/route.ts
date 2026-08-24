@@ -6,30 +6,36 @@ import { getHermesChatUrl } from '@/lib/web3auth-config';
 
 export async function GET(request: Request) {
   const session = await readSession();
-  if (!session) {
-    return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
-  }
-
   const { searchParams } = new URL(request.url);
   const adminRequested = searchParams.get('admin') === '1';
   const scopeParam = String(searchParams.get('scope') || 'hermes').trim().toLowerCase();
   const scope = scopeParam === 'all' ? 'all' : 'hermes';
+
   const isAdmin =
-    adminRequested && session.email ? await isEmailAdmin(session.email) : false;
+    session && adminRequested && session.email ? await isEmailAdmin(session.email) : false;
 
   if (adminRequested && !isAdmin) {
     return NextResponse.json({ error: 'Admin required' }, { status: 403 });
   }
 
   const upstreamUrl = new URL(`${getHermesChatUrl()}/api/hermes/contribution-activity`);
-  upstreamUrl.searchParams.set('verifierId', session.verifierId);
   upstreamUrl.searchParams.set('scope', scope);
-  if (isAdmin) upstreamUrl.searchParams.set('admin', '1');
 
   const headers: Record<string, string> = { ...hermesUpstreamHeaders() };
-  if (isAdmin && session.email && session.idToken) {
-    headers['X-Hermes-Admin-Email'] = session.email;
-    headers['X-Hermes-Id-Token'] = session.idToken;
+
+  if (session) {
+    upstreamUrl.searchParams.set('verifierId', session.verifierId);
+    if (isAdmin) {
+      upstreamUrl.searchParams.set('admin', '1');
+      if (session.email && session.idToken) {
+        headers['X-Hermes-Admin-Email'] = session.email;
+        headers['X-Hermes-Id-Token'] = session.idToken;
+      }
+    } else {
+      upstreamUrl.searchParams.set('public', '1');
+    }
+  } else {
+    upstreamUrl.searchParams.set('public', '1');
   }
 
   try {

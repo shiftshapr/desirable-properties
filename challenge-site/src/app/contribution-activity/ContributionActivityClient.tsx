@@ -42,6 +42,7 @@ type Props = {
   initialRows: ContributionActivityRow[];
   initialSummary: ContributionActivitySummary;
   isAdmin: boolean;
+  showContributors?: boolean;
   initialScope?: ContributionActivityScope;
 };
 
@@ -53,6 +54,7 @@ export default function ContributionActivityClient({
   initialRows,
   initialSummary,
   isAdmin,
+  showContributors = false,
   initialScope = 'hermes',
 }: Props) {
   const [scope, setScope] = useState<ContributionActivityScope>(initialScope);
@@ -71,7 +73,11 @@ export default function ContributionActivityClient({
     setLoadingScope(nextScope);
     try {
       const params = new URLSearchParams({ scope: nextScope });
-      if (isAdmin) params.set('admin', '1');
+      if (isAdmin) {
+        params.set('admin', '1');
+      } else {
+        params.set('public', '1');
+      }
       const response = await fetch(`/api/agent/contribution-activity?${params.toString()}`, {
         cache: 'no-store',
       });
@@ -147,8 +153,8 @@ export default function ContributionActivityClient({
         <h1 className="mt-2 text-3xl font-bold text-white">Contribution activity</h1>
         <p className="mt-3 max-w-3xl text-slate-300">
           {scope === 'all'
-            ? 'All published Discuss patches, inserts, and comments on Desirable Properties book pages — Hermes filings and direct Discuss posts.'
-            : 'Hermes contribution filings across Discuss — your published sets and any orphan hermes-dp posts not yet linked to a thread record.'}
+            ? 'Published Discuss patches, inserts, and comments on Desirable Properties book pages — Hermes filings and direct Discuss posts.'
+            : 'Hermes contribution filings across Discuss — published sets filed through Hermes.'}
         </p>
       </div>
 
@@ -273,7 +279,7 @@ export default function ContributionActivityClient({
         <table className="min-w-full divide-y divide-slate-700 text-sm">
           <thead className="bg-slate-900/80 text-left text-xs uppercase tracking-wide text-slate-400">
             <tr>
-              {isAdmin ? <th className="px-4 py-3">Contributor</th> : null}
+              {showContributors ? <th className="px-4 py-3">Contributor</th> : null}
               <th className="px-4 py-3">Round</th>
               {scope === 'all' ? <th className="px-4 py-3">Source</th> : null}
               <th className="px-4 py-3">Mode</th>
@@ -286,7 +292,7 @@ export default function ContributionActivityClient({
             {filteredRows.length === 0 ? (
               <tr>
                 <td
-                  colSpan={isAdmin ? (scope === 'all' ? 7 : 6) : scope === 'all' ? 6 : 5}
+                  colSpan={showContributors ? (scope === 'all' ? 7 : 6) : scope === 'all' ? 6 : 5}
                   className="px-4 py-10 text-center text-slate-400"
                 >
                   No {scope === 'all' ? 'Discuss posts' : 'contribution filings'} match these filters yet.
@@ -295,7 +301,7 @@ export default function ContributionActivityClient({
             ) : (
               filteredRows.map((row) => (
                 <tr key={row.id} className="align-top text-slate-200">
-                  {isAdmin ? (
+                  {showContributors ? (
                     <td className="px-4 py-3">
                       <div className="font-medium text-white">{contributorLabel(row)}</div>
                       <div className="text-xs text-slate-500">{row.contributorEmail}</div>
@@ -303,11 +309,6 @@ export default function ContributionActivityClient({
                   ) : null}
                   <td className="px-4 py-3">
                     <span className="font-medium text-cyan-300">{row.draftRef || '—'}</span>
-                    {row.orphan ? (
-                      <span className="ml-2 rounded-full border border-amber-700/60 bg-amber-950/40 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-200">
-                        Orphan
-                      </span>
-                    ) : null}
                   </td>
                   {scope === 'all' ? (
                     <td className="px-4 py-3">

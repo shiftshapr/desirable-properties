@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 import ContributionActivityClient from './ContributionActivityClient';
 import { readSession } from '@/lib/auth-session';
 import { isEmailAdmin } from '@/lib/dp-admin-auth';
@@ -10,27 +9,35 @@ import { getHermesChatUrl } from '@/lib/web3auth-config';
 export const metadata: Metadata = {
   title: 'Contribution activity · Desirable Properties Challenge',
   description:
-    'Track Hermes contribution filings across Discuss — your published sets and layer-wide activity for admins.',
+    'Published Discuss patches, inserts, and comments across Desirable Properties book pages.',
 };
 
 export const dynamic = 'force-dynamic';
 
-async function fetchContributionActivity(session: {
+async function fetchContributionActivity(session?: {
   verifierId: string;
   email?: string | null;
   idToken: string;
-}) {
-  const email = String(session.email || session.verifierId || '').trim().toLowerCase();
-  const isAdmin = email ? await isEmailAdmin(email) : false;
+} | null) {
   const upstreamUrl = new URL(`${getHermesChatUrl()}/api/hermes/contribution-activity`);
-  upstreamUrl.searchParams.set('verifierId', session.verifierId);
-  upstreamUrl.searchParams.set('scope', 'hermes');
-  if (isAdmin) upstreamUrl.searchParams.set('admin', '1');
+  upstreamUrl.searchParams.set('scope', 'all');
 
   const headers: Record<string, string> = { ...hermesUpstreamHeaders() };
-  if (isAdmin) {
-    headers['X-Hermes-Admin-Email'] = email;
-    headers['X-Hermes-Id-Token'] = session.idToken;
+  let isAdmin = false;
+
+  if (session) {
+    upstreamUrl.searchParams.set('verifierId', session.verifierId);
+    const email = String(session.email || session.verifierId || '').trim().toLowerCase();
+    isAdmin = email ? await isEmailAdmin(email) : false;
+    if (isAdmin) {
+      upstreamUrl.searchParams.set('admin', '1');
+      headers['X-Hermes-Admin-Email'] = email;
+      headers['X-Hermes-Id-Token'] = session.idToken;
+    } else {
+      upstreamUrl.searchParams.set('public', '1');
+    }
+  } else {
+    upstreamUrl.searchParams.set('public', '1');
   }
 
   const upstream = await fetch(upstreamUrl.toString(), {
@@ -51,16 +58,13 @@ async function fetchContributionActivity(session: {
       dpsTouched: 0,
       threadsWithFiling: 0,
     },
-    isAdmin: Boolean(data.admin),
+    isAdmin,
+    showContributors: true,
   };
 }
 
 export default async function ContributionActivityPage() {
   const session = await readSession();
-  if (!session) {
-    redirect('/login?next=/contribution-activity');
-  }
-
   const data = await fetchContributionActivity(session);
 
   if (!data.ok) {
@@ -68,8 +72,8 @@ export default async function ContributionActivityPage() {
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <h1 className="text-2xl font-bold text-white">Contribution activity unavailable</h1>
         <p className="mt-3 text-slate-300">{data.error}</p>
-        <Link href="/agent" className="mt-6 inline-block text-cyan-300 hover:text-cyan-200">
-          Back to Hermes →
+        <Link href="/" className="mt-6 inline-block text-cyan-300 hover:text-cyan-200">
+          Back to home →
         </Link>
       </div>
     );
@@ -80,7 +84,8 @@ export default async function ContributionActivityPage() {
       initialRows={data.rows}
       initialSummary={data.summary}
       isAdmin={data.isAdmin}
-      initialScope="hermes"
+      showContributors={data.showContributors}
+      initialScope="all"
     />
   );
 }
