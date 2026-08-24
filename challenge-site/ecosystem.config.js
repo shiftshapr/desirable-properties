@@ -26,6 +26,38 @@ function loadEnvLocal() {
 
 const localEnv = loadEnvLocal();
 
+const ESTATE_HERMES_ENV_PATHS = [
+  '/home/ubuntu/neo4j-knowledge-graph/.env',
+  '/home/ubuntu/metaweb-book/stripe-server/.env',
+  '/home/ubuntu/canopi/.env',
+];
+
+/** Match neo4j-knowledge-graph/src/hermes/env.js secret resolution. */
+function loadHermesSharedSecret() {
+  for (const filePath of ESTATE_HERMES_ENV_PATHS) {
+    if (!fs.existsSync(filePath)) continue;
+    for (const line of fs.readFileSync(filePath, 'utf8').split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx <= 0) continue;
+      const key = trimmed.slice(0, idx).trim();
+      if (key !== 'HERMES_CHAT_SECRET' && key !== 'METAWEB_OPS_SECRET') continue;
+      let value = trimmed.slice(idx + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"'))
+        || (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      if (value) return value;
+    }
+  }
+  return localEnv.HERMES_CHAT_SECRET || localEnv.METAWEB_OPS_SECRET || '';
+}
+
+const hermesSharedSecret = loadHermesSharedSecret();
+
 /** Resend keys — prefer challenge-site .env.local, then metaweb-book, then stripe-server. */
 function loadResendEnv() {
   const out = {};
@@ -69,14 +101,15 @@ module.exports = {
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
         ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',
         HERMES_CHAT_URL: 'http://127.0.0.1:8790',
+        CANOPI_API_BASE: localEnv.CANOPI_API_BASE || 'http://127.0.0.1:3002',
         AUTH_SESSION_SECRET: localEnv.AUTH_SESSION_SECRET || '',
-        HERMES_CHAT_SECRET: localEnv.HERMES_CHAT_SECRET || localEnv.METAWEB_OPS_SECRET || '',
-        METAWEB_OPS_SECRET: localEnv.METAWEB_OPS_SECRET || '',
+        HERMES_CHAT_SECRET: hermesSharedSecret,
+        METAWEB_OPS_SECRET: hermesSharedSecret,
         METAWEB_GOVHUB_INTERNAL_SECRET:
           localEnv.METAWEB_GOVHUB_INTERNAL_SECRET || localEnv.DP_AUTH_HANDOFF_SECRET || '',
         DP_AUTH_HANDOFF_SECRET: localEnv.DP_AUTH_HANDOFF_SECRET || '',
-        DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || localEnv.METAWEB_OPS_SECRET || '',
-        DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || localEnv.METAWEB_OPS_SECRET || '',
+        DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || hermesSharedSecret || '',
+        DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || hermesSharedSecret || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
         RESEND_API_KEY: localEnv.RESEND_API_KEY || resendEnv.RESEND_API_KEY || '',
         DP_SUPPORT_FROM:
