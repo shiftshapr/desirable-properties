@@ -27,7 +27,7 @@ export default function HermesAmbientHandBadge({ hand, onOpen, compact }: Props)
       className={`mt-2 flex w-full items-start gap-2 rounded-lg border border-violet-800/50 bg-violet-950/30 px-3 py-2 text-left transition hover:border-violet-600/60 hover:bg-violet-950/50 ${
         compact ? 'text-xs' : 'text-sm'
       }`}
-      aria-label={`Open Hermes ${modeLabel} note`}
+      aria-label={`Open Deepi ${modeLabel} note`}
     >
       <span className="text-base leading-none" aria-hidden>
         ✋

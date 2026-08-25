@@ -51,7 +51,21 @@ export function describeShareActivity(share: ThreadShareActivity): string[] {
   });
 }
 
-/** Active shares anchored at this turn (per-message share point). */
+/** Deduplicated human-readable lines for active share participants. */
+export function listShareParticipantLines(shares: ThreadShareActivity[]): string[] {
+  const seen = new Set<string>();
+  const lines: string[] = [];
+  for (const share of shares) {
+    if (share.status !== 'active') continue;
+    for (const line of describeShareActivity(share)) {
+      if (seen.has(line)) continue;
+      seen.add(line);
+      lines.push(line);
+    }
+  }
+  return lines;
+}
+
 export function sharesForTurn(
   shares: ThreadShareActivity[],
   turnId: string | null,

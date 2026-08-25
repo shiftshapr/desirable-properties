@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import NamedTabLink from '@/components/NamedTabLink';
 import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
 
@@ -53,14 +54,9 @@ export default function SiteFooter() {
           <Link href="/support" className="text-slate-400 hover:text-slate-200">
             Support
           </Link>
-          <a
-            href="/agent"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-slate-200"
-          >
-            Agent
-          </a>
+          <NamedTabLink href="/agent" className="text-slate-400 hover:text-slate-200">
+            Deepi
+          </NamedTabLink>
         </nav>
       </div>
     </footer>

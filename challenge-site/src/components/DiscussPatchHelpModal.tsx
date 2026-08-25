@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { dismissDiscussPatchHelp } from '@/lib/discuss-patch-help';
+import { NAMED_TAB_TARGETS, openNamedTab } from '@/lib/named-tab';
 
 type Props = {
   open: boolean;
@@ -45,7 +46,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
 
   function openDiscuss() {
     if (doNotShowAgain) dismissDiscussPatchHelp();
-    window.open(discussHref, '_blank', 'noopener,noreferrer');
+    openNamedTab(discussHref, NAMED_TAB_TARGETS.DP_BOOK);
     onClose();
   }
 

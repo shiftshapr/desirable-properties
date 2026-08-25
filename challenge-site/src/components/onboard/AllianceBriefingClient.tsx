@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
+import NamedTabLink from '@/components/NamedTabLink';
 import PadHero from '@/components/onboard/PadHero';
 import { useAuth } from '@/lib/auth-context';
 import { defaultPitch } from '@/lib/hermes-onboard/dp-directions';
@@ -129,7 +130,7 @@ export default function AllianceBriefingClient({
     const ok = await DpDialog.confirm({
       title: 'Save this landing pad?',
       message:
-        'Hermes can only remember confirms, regenerations, and next steps if you allow session memory for this organization. You can turn it off later on the Rights tab.',
+        'Deepi can only remember confirms, regenerations, and next steps if you allow session memory for this organization. You can turn it off later on the Rights tab.',
       variant: 'warning',
       confirmLabel: 'Allow session memory',
       cancelLabel: 'Not now',
@@ -353,7 +354,7 @@ function DpTab({
         <p className="mt-3 text-sm text-slate-400">
           These directions are generated from {org.name}&apos;s public corpus, not from private
           landing pads. Each one is a hypothesis. Follow the interest that feels like your work. The
-          Hermes prompt and Discuss link are real contribution paths, not a brochure.
+          Deepi prompt and Discuss link are real contribution paths, not a brochure.
         </p>
       </div>
       <div className="space-y-4">
@@ -379,20 +380,18 @@ function DpTab({
               ))}
             </ul>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link
+              <NamedTabLink
                 href={row.hermesHref}
                 className="rounded-md bg-cyan-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-cyan-600"
               >
-                Draft with Hermes
-              </Link>
-              <a
+                Draft with Deepi
+              </NamedTabLink>
+              <NamedTabLink
                 href={row.discussHref}
                 className="rounded-md border border-slate-600 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800"
-                target="_blank"
-                rel="noreferrer"
               >
                 Open chapter in Discuss
-              </a>
+              </NamedTabLink>
               <Link
                 href={row.chapterHref}
                 className="rounded-md border border-slate-600 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-800"
@@ -645,7 +644,7 @@ function PrimitivesTab({
     <section>
       <h2 className="text-xl font-semibold text-white">Overweb primitives in your vocabulary</h2>
       <p className="mt-2 text-sm text-slate-400">
-        Toggle what is in scope. Hermes rewrites the top three using only enabled primitives.
+        Toggle what is in scope. Deepi rewrites the top three using only enabled primitives.
       </p>
       <ul className="mt-4 space-y-2">
         {primitives.map((row) => (
@@ -727,7 +726,7 @@ function RightsTab({
         </ul>
       </div>
       <div>
-        <h2 className="text-xl font-semibold text-white">Sources Hermes may cite</h2>
+        <h2 className="text-xl font-semibold text-white">Sources Deepi may cite</h2>
         <button
           type="button"
           disabled={busy || session.confirmed.sources}
@@ -770,7 +769,7 @@ function NextTab({
 }) {
   return (
     <section>
-      <h2 className="text-xl font-semibold text-white">Next steps Hermes ranked</h2>
+      <h2 className="text-xl font-semibold text-white">Next steps Deepi ranked</h2>
       <p className="mt-2 text-sm text-slate-400">
         Accepting a step is a commitment on this record, not a PDF. Community Chat and claim
         complete themselves when you do those actions.
@@ -828,11 +827,11 @@ function CommunityTab({
 }) {
   return (
     <section>
-      <h2 className="text-xl font-semibold text-white">Hermes Community Chat</h2>
+      <h2 className="text-xl font-semibold text-white">Deepi Community Chat</h2>
       <p className="mt-3 text-slate-300 leading-relaxed">
-        Invite Alliance colleagues into a shared Hermes thread for {org.name}. Everyone invited can
+        Invite Alliance colleagues into a shared Deepi thread for {org.name}. Everyone invited can
         prompt. The thread origin is this landing pad, so it shows as a landing pad in the
-        Hermes sidebar instead of a private orphan.
+        Deepi sidebar instead of a private orphan.
       </p>
       {session.communityThreadId ? (
         <p className="mt-4 text-sm text-emerald-300">
@@ -843,12 +842,12 @@ function CommunityTab({
       )}
       <div className="mt-5 flex flex-wrap gap-3">
         {session.communityThreadId ? (
-          <Link
+          <NamedTabLink
             href={agentHref}
             className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
           >
-            Open in Hermes
-          </Link>
+            Open Deepi
+          </NamedTabLink>
         ) : (
           <button
             type="button"
@@ -859,12 +858,12 @@ function CommunityTab({
             Create Community Chat
           </button>
         )}
-        <Link
+        <NamedTabLink
           href={agentHref}
           className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800"
         >
-          {session.communityThreadId ? 'Invite more people' : 'Create from Hermes instead'}
-        </Link>
+          {session.communityThreadId ? 'Invite more people' : 'Create from Deepi instead'}
+        </NamedTabLink>
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import {
   updateHermesHand,
 } from '@/lib/dp-hermes-ambient-store';
 import { HERMES_MODE_LABELS } from '@/lib/hermes-ambient-types';
+import { SHARED_DEEPI_MESSAGE_PREFIX } from '@/lib/workgroup-hermes-share';
 import { proxyGovHubJson } from '@/lib/govhub-proxy';
 import { fetchWorkgroupMessagesServer } from '@/lib/workgroup-membership.server';
 
@@ -46,7 +47,7 @@ export async function POST(_request: Request, ctx: RouteCtx) {
   }
 
   const modeLabel = HERMES_MODE_LABELS[hand.mode] || hand.mode;
-  const shareBody = `✋ *Hermes (${modeLabel})*\n\n${hand.fullReply}`;
+  const shareBody = `${SHARED_DEEPI_MESSAGE_PREFIX}${modeLabel})*\n\n${hand.fullReply}`;
 
   const posted = await proxyGovHubJson(
     `/api/workgroups/${encodeURIComponent(workgroupId)}/messages/`,

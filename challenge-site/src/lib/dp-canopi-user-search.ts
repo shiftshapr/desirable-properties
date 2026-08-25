@@ -59,7 +59,12 @@ export async function searchCanopiUsersServer(
       signal: AbortSignal.timeout(10000),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok || !data?.ok) return [];
+    if (!res.ok || !data?.ok) {
+      if (res.status === 401) {
+        throw new Error('Canopi search unauthorized (METAWEB_OPS_SECRET mismatch)');
+      }
+      return [];
+    }
     const rows = Array.isArray(data.users) ? data.users : [];
     const users: CanopiSearchUserRow[] = [];
     for (const row of rows) {
@@ -68,7 +73,10 @@ export async function searchCanopiUsersServer(
       if (mapped) users.push(mapped);
     }
     return users;
-  } catch {
+  } catch (err) {
+    if (err instanceof Error && /unauthorized|mismatch/i.test(err.message)) {
+      throw err;
+    }
     return [];
   }
 }

@@ -6,9 +6,9 @@ import { getCivicChallenge } from '@/lib/civic-challenges';
 import { getDpRegistryEntry } from '@/lib/dp-registry';
 
 export const metadata: Metadata = {
-  title: 'Hermes – Desirable Properties',
+  title: 'Deepi – Desirable Properties',
   description:
-    'Hermes helps the community refine the Desirable Properties – coherence, impact, and governance continuity.',
+    'Deepi helps the community refine the Desirable Properties: coherence, impact, and governance continuity.',
   robots: { index: false, follow: false },
 };
 

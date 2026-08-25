@@ -153,7 +153,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               supports chapter-level Discuss, Patch, and Insert.
             </p>
             <p>
-              People make decisions. AI tools like Hermes help organize conversation—they do not
+              People make decisions. AI tools like Deepi help organize conversation—they do not
               replace community judgment.
             </p>
           </>
@@ -223,7 +223,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               <li>
                 <strong className="font-semibold text-white">Integrate your ideas</strong> (~10
                 min) – use the DP Community AI to compare your notes, papers, or projects with
-                current DPs. <Link href="/agent">Open Hermes →</Link>
+                current DPs. <Link href="/agent">Open Deepi →</Link>
               </li>
               <li>
                 <strong className="font-semibold text-white">Review the Desirable Properties</strong>{' '}
@@ -284,17 +284,17 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         ),
       },
       {
-        q: 'What is the DP Community AI (Hermes)?',
+        q: 'What is Deepi (the DP Community AI)?',
         a: (
           <>
             <p>
-              Hermes is the DP Community AI. It helps clarify what Desirable Properties mean,
+              Deepi is the DP Community AI. It helps clarify what Desirable Properties mean,
               surface tensions, compare your ideas with existing DPs, identify gaps, and draft
               suggested patches—preparing your thinking for community discussion.
             </p>
             <p>
               Sign in to chat at <Link href="/agent">desirableproperties.org/agent</Link>. Your
-              conversations are saved in the sidebar. Hermes assists; people and workgroups make
+              conversations are saved in the sidebar. Deepi assists; people and workgroups make
               decisions.
             </p>
           </>
@@ -368,7 +368,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <ul>
               <li>
                 <strong className="font-semibold text-white">desirableproperties.org</strong> – the
-                Challenge hub: timeline, DPs, workgroups, Hermes, badges, activity, and events.
+                Challenge hub: timeline, DPs, workgroups, Deepi, badges, activity, and events.
               </li>
               <li>
                 <strong className="font-semibold text-white">{DESIRABLE_PROPERTIES_BOOK_HOST}</strong>{' '}
@@ -450,7 +450,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             </p>
             <p>
               <strong className="font-semibold text-white">Important:</strong> actions on staging—
-              support tickets, signups, Hermes sessions, broadcasts, and other stored data—can
+              support tickets, signups, Deepi sessions, broadcasts, and other stored data—can
               affect your real account and appear on production. Treat staging as a shared platform,
               not an isolated sandbox.
             </p>
@@ -673,7 +673,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               interface-level governance.
             </p>
             <p>
-              Hermes assists the DP Challenge; workgroup and editorial decisions remain human-led.{' '}
+              Deepi assists the DP Challenge; workgroup and editorial decisions remain human-led.{' '}
               <Link href="/pathways/ai-human-agency">AI & Human Agency pathway →</Link>
             </p>
           </>

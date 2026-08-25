@@ -243,7 +243,7 @@ export default function WorkgroupChatPanel({
           <div className="flex items-end justify-between gap-3">
             <p className="text-sm text-slate-400">
               {isMember ? 'Member view – refreshes every 30s.' : 'Loading membership…'}
-              {ambientConfigured ? ' Hermes may raise its hand after messages.' : ''}
+              {ambientConfigured ? ' Deepi may raise its hand after messages.' : ''}
             </p>
             <div className="flex items-center gap-3">
               <button
@@ -251,7 +251,7 @@ export default function WorkgroupChatPanel({
                 onClick={() => setMobileHermesOpen(true)}
                 className="inline-flex items-center gap-1 text-xs text-violet-300 hover:text-violet-200 lg:hidden"
               >
-                Hermes
+                Deepi
                 {hermesBadgeCount > 0 ? (
                   <span className="rounded-full bg-violet-800 px-1.5 py-0.5 text-[10px] font-bold text-white">
                     {hermesBadgeCount}

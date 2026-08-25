@@ -106,7 +106,7 @@ export async function POST(request: Request, ctx: RouteCtx) {
     ownerUserId: session.userId,
     mode: assessment.mode as HermesAmbientMode,
     confidence: assessment.confidence,
-    teaser: assessment.teaser || 'Hermes has a note for you.',
+    teaser: assessment.teaser || 'Deepi has a note for you.',
     requestedExplicitly: Boolean(explicitRequest?.explicit),
   });
 

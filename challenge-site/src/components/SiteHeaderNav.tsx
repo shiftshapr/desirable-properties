@@ -7,6 +7,7 @@ import {
   DiscussPatchDesktopNav,
   DiscussPatchMobileNav,
 } from '@/components/DiscussPatchNavGroup';
+import NamedTabLink from '@/components/NamedTabLink';
 import { SITE_NAV_LINKS, type SiteNavLink } from '@/lib/siteNav';
 
 function NavLink({
@@ -279,14 +280,12 @@ export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: Site
             />
           ),
         )}
-        <a
+        <NamedTabLink
           href="/agent"
-          target="_blank"
-          rel="noopener noreferrer"
           className="whitespace-nowrap rounded-md bg-cyan-700 px-3 py-1.5 font-medium text-white hover:bg-cyan-600"
         >
-          Hermes
-        </a>
+          Deepi
+        </NamedTabLink>
       </nav>
 
       <button
@@ -343,15 +342,13 @@ export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: Site
                 ),
               )}
               <li>
-                <a
+                <NamedTabLink
                   href="/agent"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="mt-3 inline-flex rounded-md bg-cyan-700 px-3 py-2 text-sm font-medium text-white hover:bg-cyan-600"
                   onClick={closeMenu}
                 >
-                  Hermes
-                </a>
+                  Deepi
+                </NamedTabLink>
               </li>
             </ul>
           </nav>

@@ -4,6 +4,7 @@ import {
 } from '@/lib/compose-ai-prompts';
 import { dpFocusFromPageUrl, embedHermesSurface } from '@/lib/embed-hermes-context';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
+import { DP_COMMUNITY_AI, DP_COMMUNITY_AI_ERRORS, DP_COMMUNITY_AI_REALM } from '@/lib/dp-community-ai';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
 import type { EmbedCanopiUser } from '@/lib/embed-hermes-proxy-auth';
 
@@ -116,10 +117,8 @@ export function buildAgentHermesMessage(options: {
     contextBlock,
     contextBlock ? '' : null,
     `User question:\n${String(options.message || '').trim()}`,
-    '',
-    'Answer as Hermes, the DP Community AI advisor. Use Markdown when helpful.',
   ]
-    .filter((line) => line !== null)
+    .filter((line) => line !== null && line !== '')
     .join('\n');
 
   return {
@@ -146,6 +145,7 @@ export async function callHermesForEmbed(options: {
     body: JSON.stringify({
       message: options.message,
       history: [],
+      realm: DP_COMMUNITY_AI_REALM,
       surface: options.surface,
       dpFocus: options.dpFocus,
       verifierId: skipMemory ? null : embedUserId,
@@ -161,11 +161,11 @@ export async function callHermesForEmbed(options: {
     try {
       data = JSON.parse(raw);
     } catch {
-      throw new Error(upstream.ok ? 'Invalid Hermes response' : 'Hermes unavailable');
+      throw new Error(upstream.ok ? DP_COMMUNITY_AI_ERRORS.invalid_response : DP_COMMUNITY_AI_ERRORS.unavailable);
     }
   }
   if (!upstream.ok) {
-    throw new Error(data.error || 'Hermes unavailable');
+    throw new Error(data.error || DP_COMMUNITY_AI_ERRORS.unavailable);
   }
   return clampDraft(data.response || '');
 }

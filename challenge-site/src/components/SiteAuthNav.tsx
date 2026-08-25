@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import { resolveAvatarUrl, avatarInitials } from '@/lib/avatar';
+import NamedTabLink from '@/components/NamedTabLink';
 import { govhubUrl } from '@/lib/govhub';
 
 type DpWelcomeLink = {
@@ -244,16 +245,14 @@ export default function SiteAuthNav() {
             </a>
           </li>
           <li role="none">
-            <a
+            <NamedTabLink
               role="menuitem"
               href="/agent"
-              target="_blank"
-              rel="noopener noreferrer"
               className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
               onClick={() => setMenuOpen(false)}
             >
               DP Community AI
-            </a>
+            </NamedTabLink>
           </li>
           {isSiteAdmin ? (
             <li role="none">

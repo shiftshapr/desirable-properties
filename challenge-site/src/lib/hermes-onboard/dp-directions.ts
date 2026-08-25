@@ -90,7 +90,7 @@ function patchSeed(org: AllianceOrg, dpId: string): { direction: string; patchId
       };
     case 'DP14':
       return {
-        direction: `How should ${name} show when Hermes inferred from public pages versus when a human confirmed?`,
+        direction: `How should ${name} show when Deepi inferred from public pages versus when a human confirmed?`,
         patchIdea: `Require provenance on AI-assisted governance artifacts: source URLs, confirmations, and remaining hypotheses.`,
       };
     case 'DP20':

@@ -114,7 +114,7 @@
     {
       "id": "companion",
       "label": "Talk with the AI Companion",
-      "intent": "Explore the challenge and draft a position with Hermes."
+      "intent": "Explore the challenge and draft a position with Deepi."
     },
     {
       "id": "improve",

@@ -52,7 +52,7 @@ const PRIMITIVE_COPY: Record<(typeof PRIMITIVE_IDS)[number], { name: string; tra
     translation: 'Rights you already claim, written so software can prove them',
   },
   'community-chat': {
-    name: 'Hermes Community Chat',
+    name: 'Deepi Community Chat',
     translation: 'Shared clerk for this briefing; everyone invited can prompt',
   },
 };
@@ -104,7 +104,7 @@ function buildMoves(org: AllianceOrg, session: OnboardSession | null): BriefingM
       primitives: ['community-layer', 'guild', 'bridges', 'tags'],
       citations,
       hypothesis,
-      why: 'Reach compounds only when named partners share a layer. Hermes will not invent partners you did not list or confirm.',
+      why: 'Reach compounds only when named partners share a layer. Deepi will not invent partners you did not list or confirm.',
     },
     {
       id: 'mpa-cosign',
@@ -119,8 +119,8 @@ function buildMoves(org: AllianceOrg, session: OnboardSession | null): BriefingM
     },
     {
       id: 'overlay-productivity',
-      title: 'Put Canopi and Hermes on the pages staff already maintain',
-      summary: `Pilot overlay + Community Chat on ${org.website} so coordination does not start in a new silo. Hermes clerks the briefing; staff keep the CMS they have.`,
+      title: 'Put Canopi and Deepi on the pages staff already maintain',
+      summary: `Pilot overlay + Community Chat on ${org.website} so coordination does not start in a new silo. Deepi clerks the briefing; staff keep the CMS they have.`,
       lens: 'productivity',
       layer: 'own',
       primitives: ['canopi-overlay', 'community-chat', 'tags'],
@@ -195,7 +195,7 @@ function valuesMappings(org: AllianceOrg, session: OnboardSession | null): Value
     {
       match: 'research',
       dp: 'Transparency of AI and human roles in inquiry',
-      mpa: 'Show when Hermes drafted vs when humans confirmed',
+      mpa: 'Show when Deepi drafted vs when humans confirmed',
     },
     {
       match: 'self-sovereign',
@@ -249,7 +249,7 @@ function nextStepsFor(
     },
     {
       id: 'confirm-sources',
-      title: 'Confirm the public source URLs Hermes may read',
+      title: 'Confirm the public source URLs Deepi may read',
       why: 'Hero cards stay marked hypothesis until sources are confirmed.',
       system: 'Subject packet',
       href: padHref(org.slug, 'rights'),
@@ -258,7 +258,7 @@ function nextStepsFor(
     {
       id: 'confirm-partners',
       title: 'Confirm or edit the partner list for the collaborative layer',
-      why: 'The partner layer cannot be empty of names Hermes is allowed to cite.',
+      why: 'The partner layer cannot be empty of names Deepi is allowed to cite.',
       system: 'Partners tab',
       href: padHref(org.slug, 'partners'),
       status: session?.confirmed.partners ? 'done' : 'open',
@@ -273,9 +273,9 @@ function nextStepsFor(
     },
     {
       id: 'community-chat',
-      title: 'Open a Hermes Community Chat for this briefing',
+      title: 'Open a Deepi Community Chat for this briefing',
       why: 'Invite colleagues; everyone can prompt; origin badges back here.',
-      system: 'Hermes group thread',
+      system: 'Deepi group thread',
       href: communityHref,
       status: session?.communityThreadId ? 'done' : 'open',
     },

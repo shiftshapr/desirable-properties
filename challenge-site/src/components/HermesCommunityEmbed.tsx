@@ -221,7 +221,7 @@ export default function HermesCommunityEmbed({
           <p className="text-center text-sm text-slate-500">Loading conversation…</p>
         ) : turns.length === 0 ? (
           <p className="text-center text-sm text-slate-500">
-            Community Chat is ready. Everyone invited can prompt Hermes.
+            Community Chat is ready. Everyone invited can prompt Deepi.
           </p>
         ) : (
           <div className="space-y-3">

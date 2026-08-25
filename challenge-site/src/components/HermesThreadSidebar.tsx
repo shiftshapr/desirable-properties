@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SiteAuthNav from '@/components/SiteAuthNav';
 
@@ -31,6 +32,7 @@ interface HermesThreadSidebarProps {
   onSelect: (threadId: string) => void;
   onCreatePersonal: () => void;
   onCreateCommunity: () => void;
+  onInviteCommunity?: (threadId: string) => void;
   onRename?: (threadId: string, title: string) => Promise<void> | void;
   onPin?: (threadId: string, pinned: boolean) => Promise<void> | void;
   onArchive?: (threadId: string, archived: boolean) => Promise<void> | void;
@@ -127,6 +129,7 @@ export default function HermesThreadSidebar({
   onSelect,
   onCreatePersonal,
   onCreateCommunity,
+  onInviteCommunity,
   onRename,
   onPin,
   onArchive,
@@ -445,13 +448,13 @@ export default function HermesThreadSidebar({
                 e.stopPropagation();
                 setMenuThreadId(menuOpen ? null : thread.id);
               }}
-              className={`rounded-md p-1 text-slate-500 transition hover:bg-slate-700 hover:text-slate-200 ${
+              className={`rounded-md px-1 py-0.5 text-lg leading-none text-slate-500 transition hover:bg-slate-700 hover:text-slate-200 ${
                 menuOpen ? 'bg-slate-700 text-slate-200' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
               }`}
               aria-label="Conversation actions"
               aria-expanded={menuOpen}
             >
-              ⋯
+              ⋮
             </button>
 
             {menuOpen ? (
@@ -460,6 +463,20 @@ export default function HermesThreadSidebar({
                 className="absolute right-0 z-[120] mt-1 w-36 overflow-hidden rounded-lg border border-slate-600 bg-slate-950 py-1 shadow-2xl ring-1 ring-black/40"
                 role="menu"
               >
+                {showOwnerActions && isCommunity && onInviteCommunity ? (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="block w-full bg-slate-950 px-3 py-1.5 text-left text-xs text-cyan-200 hover:bg-slate-800"
+                    onClick={() => {
+                      setMenuThreadId(null);
+                      onInviteCommunity(thread.id);
+                      onClose?.();
+                    }}
+                  >
+                    Invite
+                  </button>
+                ) : null}
                 {showOwnerActions && !archiveView && onPin ? (
                   <button
                     type="button"
@@ -526,7 +543,7 @@ export default function HermesThreadSidebar({
       <div className="flex items-center justify-between gap-2 border-b border-slate-800 px-3 py-3">
         <div ref={headerInfoRef} className="relative min-w-0">
           <div className="flex items-center gap-1.5">
-            <p className="text-sm font-semibold text-white">Hermes</p>
+            <p className="text-sm font-semibold text-white">{DP_COMMUNITY_AI.name}</p>
             <button
               type="button"
               className="rounded p-0.5 text-slate-500 hover:bg-slate-800 hover:text-cyan-300 focus:text-cyan-300 focus:outline-none focus:ring-1 focus:ring-cyan-600"
@@ -543,11 +560,11 @@ export default function HermesThreadSidebar({
               </svg>
             </button>
           </div>
-          <p className="text-[11px] text-slate-500">DP Community AI</p>
+          <p className="text-[11px] text-slate-500">{DP_COMMUNITY_AI.tagline}</p>
           {headerInfoOpen ? (
             <div className="absolute left-0 top-full z-[140] mt-1 w-56 rounded-lg border border-slate-600 bg-slate-950 p-3 text-xs text-slate-300 shadow-2xl ring-1 ring-black/40">
               <p>
-                Hermes helps you explore Desirable Properties, draft patches, and prepare
+                {DP_COMMUNITY_AI.name} helps you explore Desirable Properties, draft patches, and prepare
                 contributions for community discussion.
               </p>
               <div className="mt-2 flex flex-col gap-1">
@@ -634,7 +651,7 @@ export default function HermesThreadSidebar({
                 >
                   <span className="font-medium text-white">Personal chat</span>
                   <span className="mt-0.5 block text-xs text-slate-500">
-                    Private conversation with Hermes
+                    Private conversation with Deepi
                   </span>
                 </button>
                 <button

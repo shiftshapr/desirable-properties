@@ -77,13 +77,13 @@ export function buildAskHermesMessage(opts: {
 }): string {
   const modeLine =
     opts.mode === 'facilitator'
-      ? 'Respond as Hermes in Facilitator mode: clarify decisions, surface options, keep the room moving.'
+      ? `Respond as Deepi in Facilitator mode: clarify decisions, surface options, keep the room moving.`
       : opts.mode === 'devils_advocate'
-        ? "Respond as Hermes in Devil's advocate mode: steelman the opposite view fairly and constructively."
-        : 'Respond as Hermes in Observer mode: observe the thread and offer grounded insight without taking sides.';
+        ? "Respond as Deepi in Devil's advocate mode: steelman the opposite view fairly and constructively."
+        : 'Respond as Deepi in Observer mode: observe the thread and offer grounded insight without taking sides.';
 
   return [
-    'Workgroup Ask Hermes – private reply for the participant only.',
+    'Workgroup Ask Deepi: private reply for the participant only.',
     modeLine,
     '',
     opts.contextBlock,

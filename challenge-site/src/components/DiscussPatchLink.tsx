@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DiscussPatchHelpModal from '@/components/DiscussPatchHelpModal';
 import { isDiscussPatchHelpDismissed } from '@/lib/discuss-patch-help';
+import { NAMED_TAB_TARGETS, openNamedTab } from '@/lib/named-tab';
 
 type Props = {
   href: string;
@@ -19,8 +20,16 @@ export default function DiscussPatchLink({ href, className, children }: Props) {
     setDismissed(isDiscussPatchHelpDismissed());
   }, []);
 
+  function openBookTab(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    openNamedTab(event.currentTarget.href, NAMED_TAB_TARGETS.DP_BOOK);
+  }
+
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    if (dismissed) return;
+    if (dismissed) {
+      openBookTab(e);
+      return;
+    }
     e.preventDefault();
     setModalOpen(true);
   }
@@ -34,13 +43,7 @@ export default function DiscussPatchLink({ href, className, children }: Props) {
 
   return (
     <>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        onClick={handleClick}
-      >
+      <a href={href} className={className} onClick={handleClick} rel="noreferrer">
         {children}
       </a>
       <DiscussPatchHelpModal open={modalOpen} discussHref={href} onClose={handleClose} />

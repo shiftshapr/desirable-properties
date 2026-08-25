@@ -11,6 +11,8 @@ import {
   shareHermesHand,
 } from '@/lib/hermes-ambient-api';
 import { HERMES_MODE_LABELS, type HermesHand } from '@/lib/hermes-ambient-types';
+import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
+import { SHARED_DEEPI_MESSAGE_PREFIX } from '@/lib/workgroup-hermes-share';
 import { markdownToPlainText } from '@/lib/markdown-to-plain-text';
 import { postWorkgroupMessage } from '@/lib/workgroup-collab-api';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
@@ -95,7 +97,7 @@ export default function WorkgroupHermesPanel({
   const collapsedRail = (
     <nav
       className="flex flex-1 flex-col items-center gap-2 py-3"
-      aria-label="Hermes private panel"
+      aria-label={`${DP_COMMUNITY_AI.name} private panel`}
     >
       {onToggleCollapse ? (
         <button
@@ -113,8 +115,8 @@ export default function WorkgroupHermesPanel({
         type="button"
         onClick={onToggleCollapse}
         className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-violet-300 hover:bg-violet-950/50 hover:text-violet-200"
-        aria-label="Hermes private panel"
-        title="Hermes private panel"
+        aria-label={`${DP_COMMUNITY_AI.name} private panel`}
+        title={`${DP_COMMUNITY_AI.name} private panel`}
       >
         <span className="text-base" aria-hidden="true">✦</span>
         {railBadgeCount > 0 ? (
@@ -156,8 +158,8 @@ export default function WorkgroupHermesPanel({
             onSelectAskNote(pendingAskNotes[0]);
           }}
           className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-cyan-200 hover:bg-cyan-950/40"
-          aria-label={`Ask Hermes replies (${pendingAskNotes.length})`}
-          title={`Ask Hermes replies (${pendingAskNotes.length})`}
+          aria-label={`Ask ${DP_COMMUNITY_AI.name} replies (${pendingAskNotes.length})`}
+          title={`Ask ${DP_COMMUNITY_AI.name} replies (${pendingAskNotes.length})`}
         >
           <span className="text-sm font-bold" aria-hidden="true">✦</span>
           <span
@@ -174,8 +176,8 @@ export default function WorkgroupHermesPanel({
           type="button"
           onClick={onOpenHermesInstructions}
           className="mt-auto inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-xs font-bold text-slate-400 hover:border-slate-600 hover:text-white"
-          aria-label="How Hermes works"
-          title="How Hermes works"
+          aria-label={`How ${DP_COMMUNITY_AI.name} works`}
+          title={`How ${DP_COMMUNITY_AI.name} works`}
         >
           ?
         </button>
@@ -188,11 +190,11 @@ export default function WorkgroupHermesPanel({
       <header className="flex items-start justify-between gap-3 border-b border-slate-800 px-4 py-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-violet-400">Hermes</p>
+            <p className="text-xs font-medium uppercase tracking-wide text-violet-400">{DP_COMMUNITY_AI.name}</p>
             <HermesExperimentalBadge />
           </div>
           <h2 className="text-base font-semibold text-white">Private panel</h2>
-          <p className="mt-1 text-xs text-slate-500">Raised hands &amp; Ask Hermes replies</p>
+          <p className="mt-1 text-xs text-slate-500">Raised hands &amp; Ask {DP_COMMUNITY_AI.name} replies</p>
         </div>
         <div className="flex items-center gap-1">
           {onOpenHermesInstructions ? (
@@ -200,8 +202,8 @@ export default function WorkgroupHermesPanel({
               type="button"
               onClick={onOpenHermesInstructions}
               className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-600 text-xs font-bold text-slate-300 hover:border-slate-500 hover:text-white"
-              aria-label="How Hermes works"
-              title="How Hermes works"
+              aria-label="How Deepi works"
+              title="How Deepi works"
             >
               ?
             </button>
@@ -211,8 +213,8 @@ export default function WorkgroupHermesPanel({
               type="button"
               onClick={onToggleCollapse}
               className="hidden rounded p-1 text-slate-400 hover:bg-slate-800 hover:text-white lg:inline-flex"
-              aria-label="Collapse Hermes panel"
-              title="Collapse Hermes panel"
+              aria-label={`Collapse ${DP_COMMUNITY_AI.name} panel`}
+              title={`Collapse ${DP_COMMUNITY_AI.name} panel`}
             >
               <HermesPanelChevron direction="right" />
             </button>
@@ -267,7 +269,7 @@ export default function WorkgroupHermesPanel({
           <div className="flex-1 overflow-y-auto px-4 py-4">
             {!hasContent ? (
               <p className="text-sm text-slate-500">
-                Hermes notes appear here – raised hands after messages, or replies from Ask Hermes.
+                {DP_COMMUNITY_AI.name} notes appear here: raised hands after messages, or replies from Ask {DP_COMMUNITY_AI.name}.
                 Nothing posts until you choose.
               </p>
             ) : null}
@@ -326,7 +328,7 @@ export default function WorkgroupHermesPanel({
                   }
                   const ok = await DpDialog.confirm({
                     title: 'Share with workgroup?',
-                    message: "This will post Hermes's note to the main chat thread with clear attribution.",
+                    message: `This will post ${DP_COMMUNITY_AI.name}'s note to the main chat thread with clear attribution.`,
                     variant: 'warning',
                     confirmLabel: 'Share',
                   });
@@ -340,7 +342,7 @@ export default function WorkgroupHermesPanel({
                     onMessagePosted?.();
                     await DpDialog.alert({
                       title: 'Shared with group',
-                      message: "Hermes's note was posted to the workgroup chat.",
+                      message: `${DP_COMMUNITY_AI.name}'s note was posted to the workgroup chat.`,
                       variant: 'success',
                     });
                   } catch (err) {
@@ -352,7 +354,7 @@ export default function WorkgroupHermesPanel({
                 onDismiss={async () => {
                   const ok = await DpDialog.confirm({
                     title: 'Dismiss note?',
-                    message: 'This private Hermes note will be hidden.',
+                    message: `This private ${DP_COMMUNITY_AI.name} note will be hidden.`,
                     variant: 'info',
                     confirmLabel: 'Dismiss',
                   });
@@ -376,7 +378,7 @@ export default function WorkgroupHermesPanel({
                   if (activeAskNote.shared) return;
                   const ok = await DpDialog.confirm({
                     title: 'Share with workgroup?',
-                    message: "This will post Hermes's reply to the main chat thread with clear attribution.",
+                    message: `This will post ${DP_COMMUNITY_AI.name}'s reply to the main chat thread with clear attribution.`,
                     variant: 'warning',
                     confirmLabel: 'Share',
                   });
@@ -385,13 +387,13 @@ export default function WorkgroupHermesPanel({
                   setError(null);
                   try {
                     const modeLabel = HERMES_MODE_LABELS[activeAskNote.mode];
-                    const shareBody = `✋ *Hermes (${modeLabel})*\n\n${activeAskNote.reply}`;
+                    const shareBody = `${SHARED_DEEPI_MESSAGE_PREFIX}${modeLabel})*\n\n${activeAskNote.reply}`;
                     await postWorkgroupMessage(workgroupId, shareBody);
                     onAskNoteUpdated({ ...activeAskNote, shared: true });
                     onMessagePosted?.();
                     await DpDialog.alert({
                       title: 'Shared with group',
-                      message: "Hermes's reply was posted to the workgroup chat.",
+                      message: `${DP_COMMUNITY_AI.name}'s reply was posted to the workgroup chat.`,
                       variant: 'success',
                     });
                   } catch (err) {
@@ -429,7 +431,7 @@ export default function WorkgroupHermesPanel({
           <button
             type="button"
             className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
-            aria-label="Close Hermes panel"
+            aria-label={`Close ${DP_COMMUNITY_AI.name} panel`}
             onClick={onMobileClose}
           />
           <aside className="absolute inset-x-0 bottom-0 flex max-h-[75vh] flex-col rounded-t-xl border-t border-violet-900/50 bg-slate-950 shadow-2xl">

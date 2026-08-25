@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import DiscussPatchHelpModal from '@/components/DiscussPatchHelpModal';
 import { isDiscussPatchHelpDismissed } from '@/lib/discuss-patch-help';
+import { NAMED_TAB_TARGETS, openNamedTab } from '@/lib/named-tab';
 import type { SiteNavLink } from '@/lib/siteNav';
 
 function ChildNavLink({
@@ -75,7 +76,7 @@ export function DiscussPatchDesktopNav({ item }: { item: SiteNavLink }) {
 
   function openDiscuss(e: React.MouseEvent) {
     if (dismissed) {
-      window.open(discussHref, '_blank', 'noopener,noreferrer');
+      openNamedTab(discussHref, NAMED_TAB_TARGETS.DP_BOOK);
       return;
     }
     e.preventDefault();
@@ -162,7 +163,7 @@ export function DiscussPatchMobileNav({
 
   function openDiscuss() {
     if (dismissed) {
-      window.open(discussHref, '_blank', 'noopener,noreferrer');
+      openNamedTab(discussHref, NAMED_TAB_TARGETS.DP_BOOK);
       onNavigate();
       return;
     }

@@ -79,7 +79,7 @@ export default function HermesAmbientSidePanel({
     }
     const ok = await DpDialog.confirm({
       title: 'Share with workgroup?',
-      message: 'This will post Hermes\'s note to the main chat thread with clear attribution.',
+      message: 'This will post Deepi\'s note to the main chat thread with clear attribution.',
       variant: 'warning',
       confirmLabel: 'Share',
     });
@@ -93,7 +93,7 @@ export default function HermesAmbientSidePanel({
       onUpdated(result.hand);
       await DpDialog.alert({
         title: 'Shared with group',
-        message: 'Hermes\'s note was posted to the workgroup chat.',
+        message: 'Deepi\'s note was posted to the workgroup chat.',
         variant: 'success',
       });
     } catch (err) {
@@ -106,7 +106,7 @@ export default function HermesAmbientSidePanel({
   async function handleDismiss() {
     const ok = await DpDialog.confirm({
       title: 'Dismiss note?',
-      message: 'This private Hermes note will be hidden.',
+      message: 'This private Deepi note will be hidden.',
       variant: 'info',
       confirmLabel: 'Dismiss',
     });
@@ -124,7 +124,7 @@ export default function HermesAmbientSidePanel({
     <aside className="fixed inset-y-0 right-0 z-[9999] flex w-full max-w-md flex-col border-l border-violet-900/50 bg-slate-950 shadow-2xl">
       <header className="flex items-start justify-between gap-3 border-b border-slate-800 px-4 py-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-violet-400">Hermes</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-violet-400">Deepi</p>
           <h2 className="text-base font-semibold text-white">{modeLabel}</h2>
           <p className="mt-1 text-xs text-slate-500">Private until you share</p>
         </div>

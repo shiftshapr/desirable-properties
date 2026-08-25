@@ -2,6 +2,7 @@
 
 import type { ContributionRecordHint, ContributionSet, LedgerProposal } from '@/lib/hermesContribution';
 import { ledgerSetForRecord, proposalStatusBadge } from '@/lib/hermesContribution';
+import NamedTabLink from '@/components/NamedTabLink';
 
 interface HermesContributionLedgerProps {
   recordHint: ContributionRecordHint;
@@ -63,14 +64,9 @@ export default function HermesContributionLedger({
               </button>
             ) : null}
             {proposal.href ? (
-              <a
-                href={proposal.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-cyan-400 hover:underline"
-              >
+              <NamedTabLink href={proposal.href} className="text-cyan-400 hover:underline">
                 Open in Discuss
-              </a>
+              </NamedTabLink>
             ) : null}
           </li>
         ))}

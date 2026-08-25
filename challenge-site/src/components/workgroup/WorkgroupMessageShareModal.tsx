@@ -40,7 +40,7 @@ function canShareMessage(
 ): boolean {
   if (isShareFacilitator(positions)) return true;
   if (messageAuthorUserId === sharerUserId) return true;
-  return /^✋\s+\*Hermes \([^)]+\)\*/.test(String(messagePreview ?? '').trimStart());
+  return /^✋\s+\*(?:Hermes|Deepi) \([^)]+\)\*/.test(String(messagePreview ?? '').trimStart());
 }
 
 function canGrantControl(
@@ -159,7 +159,7 @@ export default function WorkgroupMessageShareModal({
         <div className="space-y-4 px-5 py-4">
           {!allowShare ? (
             <p className="rounded-lg border border-amber-800/60 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
-              You can only share messages you authored or Hermes messages marked shareable.
+              You can only share messages you authored or Deepi messages marked shareable.
               Facilitators may share any visible message.
             </p>
           ) : null}
@@ -233,7 +233,7 @@ export default function WorkgroupMessageShareModal({
           <p className="text-xs text-slate-500">
             Internal workgroup collab only. Recipients must be active members. Public expiring
             links are disabled. History starts at this message (anchor floor enforced).
-            Private Hermes notes stay within the workgroup roster.
+            Private Deepi notes stay within the workgroup roster.
           </p>
           <div className="flex flex-wrap justify-end gap-2">
             <button

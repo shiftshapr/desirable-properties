@@ -76,6 +76,11 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: '/deepi',
+        destination: '/agent',
+        permanent: false,
+      },
+      {
         source: '/api/admin/on-settings',
         destination: '/api/admin/pad-settings',
         permanent: false,

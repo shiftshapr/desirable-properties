@@ -74,7 +74,7 @@ export default function HermesContributionCTA({
       <p className="text-xs text-amber-100/90">{reason}</p>
       {scope === 'ambiguous' ? (
         <p className="mt-1 text-[11px] text-slate-400">
-          Hermes wasn&apos;t sure which you meant – pick one.
+          Deepi wasn&apos;t sure which you meant – pick one.
         </p>
       ) : null}
       <div className="mt-2">{renderButtons()}</div>

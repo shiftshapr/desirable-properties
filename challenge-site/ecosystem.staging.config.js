@@ -32,6 +32,35 @@ const ESTATE_HERMES_ENV_PATHS = [
   '/home/ubuntu/canopi/.env',
 ];
 
+function loadDotenvValue(filePath, key) {
+  if (!fs.existsSync(filePath)) return '';
+  for (const line of fs.readFileSync(filePath, 'utf8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const idx = trimmed.indexOf('=');
+    if (idx <= 0) continue;
+    if (trimmed.slice(0, idx).trim() !== key) continue;
+    let value = trimmed.slice(idx + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"'))
+      || (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    return value;
+  }
+  return '';
+}
+
+/** Must match canopi metawebInternal opsSecretOk (not neo4j hermes secret). */
+function loadCanopiOpsSecret(role = 'prod') {
+  const filePath =
+    role === 'staging' ? '/home/ubuntu/canopi-staging/.env' : '/home/ubuntu/canopi-prod/.env';
+  return loadDotenvValue(filePath, 'METAWEB_OPS_SECRET') || localEnv.METAWEB_OPS_SECRET || '';
+}
+
+const canopiOpsSecretStaging = loadCanopiOpsSecret('staging');
+
 /** Match neo4j-knowledge-graph/src/hermes/env.js secret resolution. */
 function loadHermesSharedSecret() {
   for (const filePath of ESTATE_HERMES_ENV_PATHS) {
@@ -103,11 +132,11 @@ module.exports = {
           localEnv.CANOPI_API_BASE_STAGING || localEnv.CANOPI_API_BASE || 'http://127.0.0.1:3003',
         AUTH_SESSION_SECRET: localEnv.AUTH_SESSION_SECRET || '',
         HERMES_CHAT_SECRET: hermesSharedSecret,
-        METAWEB_OPS_SECRET: hermesSharedSecret,
+        METAWEB_OPS_SECRET: canopiOpsSecretStaging,
         METAWEB_GOVHUB_INTERNAL_SECRET:
           localEnv.METAWEB_GOVHUB_INTERNAL_SECRET || localEnv.DP_AUTH_HANDOFF_SECRET || '',
         DP_AUTH_HANDOFF_SECRET: localEnv.DP_AUTH_HANDOFF_SECRET || '',
-        DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || hermesSharedSecret || '',
+        DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || canopiOpsSecretStaging || '',
         DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || hermesSharedSecret || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
         RESEND_API_KEY: localEnv.RESEND_API_KEY || resendEnv.RESEND_API_KEY || '',

@@ -31,7 +31,7 @@ export async function callHermesAmbientAssess(input: {
 
   const data = await upstream.json().catch(() => ({}));
   if (!upstream.ok) {
-    throw new Error(typeof data.error === 'string' ? data.error : 'Hermes assess failed');
+    throw new Error(typeof data.error === 'string' ? data.error : 'Deepi assess failed');
   }
   return (data.assessment as AmbientAssessResult) || null;
 }
@@ -62,7 +62,7 @@ export async function callHermesAmbientReply(input: {
 
   const data = await upstream.json().catch(() => ({}));
   if (!upstream.ok) {
-    throw new Error(typeof data.error === 'string' ? data.error : 'Hermes reply failed');
+    throw new Error(typeof data.error === 'string' ? data.error : 'Deepi reply failed');
   }
   return data as { reply: string; mode: HermesAmbientMode; modeLabel: string };
 }

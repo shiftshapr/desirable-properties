@@ -41,11 +41,11 @@ export async function callHermesCommunityChatForEmbed(options: {
     try {
       data = JSON.parse(raw);
     } catch {
-      throw new Error(upstream.ok ? 'Invalid Hermes response' : 'Hermes unavailable');
+      throw new Error(upstream.ok ? 'Invalid Deepi response' : 'Deepi unavailable');
     }
   }
   if (!upstream.ok) {
-    throw new Error(data.error || 'Hermes unavailable');
+    throw new Error(data.error || 'Deepi unavailable');
   }
   return {
     response: String(data.response || ''),

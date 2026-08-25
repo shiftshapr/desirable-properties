@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
+import { DP_COMMUNITY_AI_ERRORS, DP_COMMUNITY_AI_REALM } from '@/lib/dp-community-ai';
 import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
 
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
         message: body.message,
         history: body.history || [],
         dpFocus: body.dpFocus ?? null,
+        realm: body.realm || DP_COMMUNITY_AI_REALM,
         surface: body.surface || 'desirableproperties.org/agent',
         sessionId: body.sessionId || null,
         threadId: body.threadId || null,
@@ -47,14 +49,14 @@ export async function POST(request: Request) {
         data = JSON.parse(raw);
       } catch {
         return NextResponse.json(
-          { error: upstream.ok ? 'Invalid response from Hermes' : 'Hermes unavailable' },
+          { error: upstream.ok ? DP_COMMUNITY_AI_ERRORS.invalid_response : DP_COMMUNITY_AI_ERRORS.unavailable },
           { status: upstream.ok ? 502 : upstream.status || 502 },
         );
       }
     }
     if (!upstream.ok) {
       return NextResponse.json(
-        { error: data.error || 'Hermes unavailable' },
+        { error: data.error || DP_COMMUNITY_AI_ERRORS.unavailable },
         { status: upstream.status },
       );
     }

@@ -44,7 +44,9 @@
     ".next-prod-build/types/**/*.ts",
     ".next-prod-build/dev/types/**/*.ts",
     ".next-verify-build/types/**/*.ts",
-    ".next-verify-build/dev/types/**/*.ts"
+    ".next-verify-build/dev/types/**/*.ts",
+    ".next-staging-build-retry/types/**/*.ts",
+    ".next-staging-build-retry/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

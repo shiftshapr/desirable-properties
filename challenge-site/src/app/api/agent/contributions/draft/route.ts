@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         data = JSON.parse(raw);
       } catch {
         return NextResponse.json(
-          { error: upstream.ok ? 'Invalid response from Hermes' : 'Hermes unavailable' },
+          { error: upstream.ok ? 'Invalid response from Deepi' : 'Deepi unavailable' },
           { status: upstream.ok ? 502 : upstream.status || 502 },
         );
       }

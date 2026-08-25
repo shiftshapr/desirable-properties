@@ -6,8 +6,10 @@ import { useSearchParams } from 'next/navigation';
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
 import HermesComposerAiAssist from '@/components/HermesComposerAiAssist';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
+import HermesContributionLedger from '@/components/HermesContributionLedger';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
+import NamedTabLink from '@/components/NamedTabLink';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesShareWizard from '@/components/HermesShareWizard';
@@ -20,7 +22,13 @@ import HermesThreadSidebar, { type HermesThreadSummary } from '@/components/Herm
 import { usePromptStack } from '@/lib/usePromptStack';
 import { copyTextToClipboard } from '@/lib/copy-to-clipboard';
 import { isTextSelectionInElement } from '@/lib/chat-text-selection';
-import HermesContributionLedger from '@/components/HermesContributionLedger';
+import {
+  DP_COMMUNITY_AI,
+  DP_COMMUNITY_AI_ERRORS,
+  DP_COMMUNITY_AI_INTRO,
+  DP_COMMUNITY_AI_REALM,
+  dpCommunityAiErrorFromMessage,
+} from '@/lib/dp-community-ai';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
   buildEditDraftFromProposal,
@@ -135,8 +143,7 @@ interface HermesChatProps {
   starterLabel?: string | null;
 }
 
-const INTRO =
-  "I'm Hermes, the DP Community AI. I help this community improve the Desirable Properties of a layered web – clarifying what they mean, surfacing tensions, and turning good arguments into patches. Sign in to chat. Your conversations are saved in the sidebar for future reference and continuing dialog.";
+const INTRO = DP_COMMUNITY_AI_INTRO;
 
 const DEFAULT_STARTER_PROMPTS = [
   'What does DP7 mean by bridge?',
@@ -145,23 +152,10 @@ const DEFAULT_STARTER_PROMPTS = [
 ];
 
 function userFacingError(err: unknown): string {
-  const msg = err instanceof Error ? err.message : String(err);
   if (isAbortError(err)) {
     return 'Stopped.';
   }
-  if (/did not match the expected pattern/i.test(msg)) {
-    return "Hermes couldn't reach the server. Hard-refresh the page and try again — if it keeps failing, the reply may be timing out.";
-  }
-  if (/^LLM\b/.test(msg) || /fetch failed|network|timeout|aborted|load failed/i.test(msg)) {
-    return "Hermes couldn't respond right now. Your message wasn't lost – try sending again.";
-  }
-  if (/jwt expired|session expired|sign in again/i.test(msg)) {
-    return msg;
-  }
-  if (/internal server error/i.test(msg)) {
-    return 'Publish failed on Canopi Discuss. Your sign-in may have expired — sign in again and retry. If it persists, try Save to my drafts first.';
-  }
-  return msg;
+  return dpCommunityAiErrorFromMessage(err);
 }
 
 async function ensureFreshCanopiSession(): Promise<void> {
@@ -176,7 +170,7 @@ function isAbortError(err: unknown): boolean {
   return false;
 }
 
-const STOPPED_BEFORE_REPLY = 'Stopped before Hermes replied.';
+const STOPPED_BEFORE_REPLY = DP_COMMUNITY_AI_ERRORS.stopped;
 
 function isStoppedChatRequest(
   err: unknown,
@@ -490,6 +484,7 @@ export default function HermesChat({
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
+  const [shareWizardThreadId, setShareWizardThreadId] = useState<string | null>(null);
   const [shareCommunityInvite, setShareCommunityInvite] = useState(false);
   const [communityCreateOpen, setCommunityCreateOpen] = useState(false);
   const [communityCreateBusy, setCommunityCreateBusy] = useState(false);
@@ -820,6 +815,7 @@ export default function HermesChat({
     if (!signedIn || typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('invite') !== 'community' || !threadUrlParam) return;
+    setShareWizardThreadId(threadUrlParam);
     setShareCommunityInvite(true);
     setShareWizardOpen(true);
     params.delete('invite');
@@ -997,6 +993,7 @@ export default function HermesChat({
       setCommunityCreateOpen(false);
       setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
       await loadThread(createData.thread.id);
+      setShareWizardThreadId(createData.thread.id);
       setShareCommunityInvite(true);
       setShareWizardOpen(true);
       setSystemNotice({
@@ -1243,6 +1240,7 @@ export default function HermesChat({
           message: trimmed,
           documents: [],
           history: historyFromMessages(priorMessages),
+          realm: DP_COMMUNITY_AI_REALM,
           surface,
           sessionId,
           threadId: threadIdToSend,
@@ -1669,7 +1667,7 @@ export default function HermesChat({
     if (!threadId || !turnId) {
       setSystemNotice({
         variant: 'error',
-        text: 'Wait for Hermes to finish replying before editing this message.',
+        text: DP_COMMUNITY_AI_ERRORS.wait_for_reply,
       });
       return;
     }
@@ -1721,7 +1719,7 @@ export default function HermesChat({
     if (!threadId || !turnId) {
       setSystemNotice({
         variant: 'error',
-        text: 'Wait for Hermes to finish replying before forking from this message.',
+        text: DP_COMMUNITY_AI_ERRORS.wait_for_reply_fork,
       });
       return;
     }
@@ -1811,8 +1809,8 @@ export default function HermesChat({
       setSystemNotice({
         variant: 'success',
         text: noteStatus === 'verified'
-          ? 'Teaching saved and active – Hermes will use this on future turns about the same DPs.'
-          : 'Suggestion saved for layer admin review. Hermes will only use it after approval.',
+          ? `Teaching saved and active. ${DP_COMMUNITY_AI.name} will use this on future turns about the same DPs.`
+          : `Suggestion saved for layer admin review. ${DP_COMMUNITY_AI.name} will only use it after approval.`,
       });
     } catch (err) {
       setSystemNotice({
@@ -2308,16 +2306,27 @@ export default function HermesChat({
     void loadSharedThreads();
   }, [refreshThreadShares, loadSharedThreads]);
 
-  const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }) => {
-    const active = threads.find((t) => t.id === activeThreadIdRef.current);
+  const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }, threadId?: string) => {
+    const targetThreadId = threadId || activeThreadIdRef.current;
+    if (!targetThreadId) return;
+    const active = threads.find((t) => t.id === targetThreadId)
+      || sharedThreads.find((t) => t.id === targetThreadId);
+    setShareWizardThreadId(targetThreadId);
     setShareCommunityInvite(active?.threadKind === 'group');
     setShareAnchorTurnId(anchor?.turnId ?? null);
     setShareAnchorLabel(anchor?.label ?? null);
     setShareWizardOpen(true);
-  }, [threads]);
+  }, [threads, sharedThreads]);
+
+  const openCommunityInvite = useCallback((threadId: string) => {
+    void loadThread(threadId);
+    openShareWizard(undefined, threadId);
+    setShareCommunityInvite(true);
+  }, [loadThread, openShareWizard]);
 
   const closeShareWizard = useCallback(() => {
     setShareWizardOpen(false);
+    setShareWizardThreadId(null);
     setShareCommunityInvite(false);
     setShareAnchorTurnId(null);
     setShareAnchorLabel(null);
@@ -2345,6 +2354,19 @@ export default function HermesChat({
     [threads],
   );
 
+  const activeThreadSummary = useMemo(
+    () => threads.find((t) => t.id === activeThreadId)
+      || sharedThreads.find((t) => t.id === activeThreadId),
+    [threads, sharedThreads, activeThreadId],
+  );
+  const isActiveCommunityChat = activeThreadSummary?.threadKind === 'group';
+
+  const shareWizardThread = useMemo(() => {
+    if (!shareWizardThreadId) return null;
+    return threads.find((t) => t.id === shareWizardThreadId)
+      || sharedThreads.find((t) => t.id === shareWizardThreadId);
+  }, [threads, sharedThreads, shareWizardThreadId]);
+
   const sidebar = (
     <HermesThreadSidebar
       threads={archiveView ? threads : ownedSidebarThreads}
@@ -2357,6 +2379,7 @@ export default function HermesChat({
       onSelect={loadThread}
       onCreatePersonal={startNewConversation}
       onCreateCommunity={openCommunityCreate}
+      onInviteCommunity={signedIn ? openCommunityInvite : undefined}
       onRename={signedIn ? renameThread : undefined}
       onPin={signedIn && !archiveView ? pinThread : undefined}
       onArchive={signedIn ? archiveThread : undefined}
@@ -2402,7 +2425,7 @@ export default function HermesChat({
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <p className="text-sm font-medium text-white">Hermes</p>
+          <p className="text-sm font-medium text-white">{DP_COMMUNITY_AI.name}</p>
         </div>
 
         {activeThreadId && signedIn && !compact ? (
@@ -2420,7 +2443,7 @@ export default function HermesChat({
                   Controlling
                 </span>
               ) : null}
-              {isThreadOwner ? (
+              {isThreadOwner && !isActiveCommunityChat ? (
                 <HermesShareStatus
                   key={activeThreadId}
                   threadId={activeThreadId}
@@ -2440,7 +2463,7 @@ export default function HermesChat({
                 onClick={() => openShareWizard()}
                 className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-900"
               >
-                Share
+                {isActiveCommunityChat ? 'Invite' : 'Share'}
               </button>
             ) : null}
           </div>
@@ -2485,14 +2508,12 @@ export default function HermesChat({
                   <ul className="mt-2 space-y-1">
                     {systemNotice.links.map((link) => (
                       <li key={link.id}>
-                        <a
+                        <NamedTabLink
                           href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="font-medium text-cyan-300 underline decoration-cyan-600/60 underline-offset-2 hover:text-cyan-200"
                         >
                           {link.label}
-                        </a>
+                        </NamedTabLink>
                       </li>
                     ))}
                   </ul>
@@ -2595,7 +2616,7 @@ export default function HermesChat({
                       {message.pendingSend && canControlThread ? (
                         <div className="mt-2 space-y-1 border-t border-cyan-600/40 pt-2">
                           <p className="text-[11px] text-amber-100/90">
-                            {message.sendError || 'Message not saved — Hermes did not receive this turn.'}
+                            {message.sendError || DP_COMMUNITY_AI_ERRORS.send_failed}
                           </p>
                           <button
                             type="button"
@@ -2696,7 +2717,7 @@ export default function HermesChat({
                         onClick={() => openTeachModal(message.id)}
                         className="rounded-md border border-cyan-700/60 px-2 py-1 text-[11px] text-cyan-200 hover:bg-cyan-950/40 disabled:opacity-50"
                       >
-                        {correctionBusyId === message.id ? 'Saving…' : 'Teach Hermes'}
+                        {correctionBusyId === message.id ? 'Saving…' : `Teach ${DP_COMMUNITY_AI.name}`}
                       </button>
                       {isThreadOwner && activeThreadId ? (
                         <button
@@ -2892,7 +2913,7 @@ export default function HermesChat({
                     isWatchingOnly
                       ? 'Watching — control required to send…'
                       : signedIn
-                        ? 'Message Hermes…'
+                        ? `Message ${DP_COMMUNITY_AI.name}…`
                         : 'Sign in to send a message…'
                   }
                   className="max-h-40 min-h-16 w-full resize-none bg-transparent px-1 py-2.5 pr-14 pb-2 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
@@ -2960,18 +2981,19 @@ export default function HermesChat({
         onSave={saveTeaching}
       />
 
-      {activeThreadId && shareWizardOpen ? (
+      {shareWizardThreadId && shareWizardOpen ? (
         <HermesShareWizard
           open={shareWizardOpen}
-          threadId={activeThreadId}
+          threadId={shareWizardThreadId}
           threadTitle={
-            threads.find((t) => t.id === activeThreadId)?.groupTitle
-            || threads.find((t) => t.id === activeThreadId)?.title
+            shareWizardThread?.groupTitle
+            || shareWizardThread?.title
             || 'Conversation'
           }
           anchorTurnId={shareAnchorTurnId}
           anchorLabel={shareAnchorLabel}
           communityInvite={shareCommunityInvite}
+          shareRefreshKey={shareRefreshKey}
           onClose={closeShareWizard}
           onShared={() => bumpShareRefresh()}
         />

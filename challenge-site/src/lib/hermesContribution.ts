@@ -2,7 +2,7 @@ export type ContributionScope = 'message' | 'thread';
 
 export type ContributionDestination = 'canopi' | 'govhub';
 
-export type PatchMode = 'replace' | 'insert';
+export type PatchMode = 'replace' | 'insert' | 'insert_after';
 
 export interface ContributionHint {
   contributionReady: boolean;
@@ -397,12 +397,22 @@ export function defaultDestination(): ContributionDestination {
 }
 
 export function patchModeFromPayload(payload: Record<string, unknown>): PatchMode {
-  return String(payload.patch_mode || 'replace').toLowerCase() === 'insert' ? 'insert' : 'replace';
+  const raw = String(payload.patch_mode || 'replace').toLowerCase();
+  if (raw === 'insert_after' || raw === 'insert-below' || raw === 'insert_below') {
+    return 'insert_after';
+  }
+  return raw === 'insert' ? 'insert' : 'replace';
+}
+
+export function patchModeLabel(mode: PatchMode): string {
+  if (mode === 'insert') return 'Insert above';
+  if (mode === 'insert_after') return 'Insert after';
+  return 'Patch';
 }
 
 export function proposalLabel(proposal: ContributionProposal): string {
   if (proposal.kind === 'comment') return 'Comment';
-  return patchModeFromPayload(proposal.payload) === 'insert' ? 'Insert' : 'Patch';
+  return patchModeLabel(patchModeFromPayload(proposal.payload));
 }
 
 function findLedgerProposal(
@@ -490,7 +500,7 @@ export function contributionEditContextCopy(
       return {
         headline: 'Review before submitting',
         detail:
-          'Edits stay in Hermes until you submit. They do not auto-sync to Canopi Discuss.',
+          'Edits stay in Deepi until you submit. They do not auto-sync to Canopi Discuss.',
         draftOption: {
           title: 'Save to my drafts',
           detail: 'Recommended — opens in Canopi Discuss for review before publishing.',

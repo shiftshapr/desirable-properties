@@ -330,8 +330,8 @@ export default function WorkgroupChatAiAssist({
                   type="button"
                   onClick={openInstructions}
                   className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-600 text-xs font-bold text-slate-300 hover:border-slate-500 hover:text-white"
-                  aria-label="How Hermes works"
-                  title="How Hermes works"
+                  aria-label="How Deepi works"
+                  title="How Deepi works"
                 >
                   ?
                 </button>
@@ -367,7 +367,7 @@ export default function WorkgroupChatAiAssist({
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                Ask Hermes
+                Ask Deepi
               </button>
             </div>
 
@@ -386,7 +386,7 @@ export default function WorkgroupChatAiAssist({
             ) : (
               <div>
                 <p className="mb-3 text-sm text-slate-400">
-                  Hermes replies in your private panel. Nothing posts until you choose.
+                  Deepi replies in your private panel. Nothing posts until you choose.
                 </p>
 
                 <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -441,7 +441,7 @@ export default function WorkgroupChatAiAssist({
 
                 {askGenerating ? (
                   <p className="mt-4 text-sm text-amber-200" aria-live="polite">
-                    Hermes is thinking…
+                    Deepi is thinking…
                   </p>
                 ) : null}
 

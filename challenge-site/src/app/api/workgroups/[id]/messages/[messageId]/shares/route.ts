@@ -76,7 +76,7 @@ export async function POST(request: Request, ctx: RouteCtx) {
     return NextResponse.json(
       {
         error:
-          'You can only share your own messages or Hermes messages marked shareable. Facilitators may share any visible message.',
+          'You can only share your own messages or Deepi messages marked shareable. Facilitators may share any visible message.',
       },
       { status: 403 },
     );

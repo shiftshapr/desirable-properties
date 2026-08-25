@@ -42,7 +42,7 @@ export default function HermesCommunityCreateModal({
             New Community Chat
           </h2>
           <p className="mt-1 text-sm text-slate-400">
-            Invite people by email or link. Everyone you invite can prompt Hermes.
+            Invite people by email or link. Everyone you invite can prompt Deepi.
           </p>
         </div>
 

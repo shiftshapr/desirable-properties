@@ -18,6 +18,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Canopi search is not configured' }, { status: 503 });
   }
 
-  const users = await searchCanopiUsersServer(q, 20);
-  return NextResponse.json({ ok: true, users, count: users.length });
+  try {
+    const users = await searchCanopiUsersServer(q, 20);
+    return NextResponse.json({ ok: true, users, count: users.length });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Canopi search failed';
+    if (/unauthorized|mismatch/i.test(message)) {
+      return NextResponse.json({ error: 'Canopi member search is misconfigured' }, { status: 503 });
+    }
+    return NextResponse.json({ error: message }, { status: 502 });
+  }
 }

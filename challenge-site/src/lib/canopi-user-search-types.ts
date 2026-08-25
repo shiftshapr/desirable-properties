@@ -7,7 +7,7 @@ export type CanopiSearchUser = {
 };
 
 export type CanopiShareRecipient = {
-  user: CanopiSearchUser | null;
+  users: CanopiSearchUser[];
   emailHint: string;
 };
 
@@ -19,9 +19,17 @@ function safeTrim(value: string | null | undefined): string {
   return String(value ?? '').trim();
 }
 
+export function canopiUserVerifierId(user: CanopiSearchUser): string {
+  const email = safeTrim(user.email).toLowerCase();
+  if (email && email.includes('@')) return email;
+  return user.id;
+}
+
 export function recipientEmailFromShareSelection(selection: CanopiShareRecipient): string {
-  const picked = safeTrim(selection.user?.email);
-  if (picked && picked.includes('@')) return picked;
+  if (selection.users.length === 1) {
+    const picked = safeTrim(selection.users[0]?.email);
+    if (picked && picked.includes('@')) return picked;
+  }
   return safeTrim(selection.emailHint);
 }
 
@@ -29,19 +37,38 @@ export function recipientEmailFromShareSelection(selection: CanopiShareRecipient
 export function recipientVerifierIdFromShareSelection(
   selection: CanopiShareRecipient,
 ): string | undefined {
-  if (selection.user) {
-    const email = safeTrim(selection.user.email).toLowerCase();
-    if (email && email.includes('@')) return email;
-    return selection.user.id;
+  if (selection.users.length === 1) {
+    return canopiUserVerifierId(selection.users[0]);
   }
   const hint = safeTrim(selection.emailHint).toLowerCase();
   if (hint.includes('@')) return hint;
   return undefined;
 }
 
-export function recipientLabelFromShareSelection(selection: CanopiShareRecipient): string {
-  if (selection.user) {
-    return canopiUserDisplayName(selection.user);
+export function recipientsPayloadFromShareSelection(
+  selection: CanopiShareRecipient,
+): Array<{ recipientEmail?: string; recipientVerifierId: string }> {
+  return selection.users.map((user) => {
+    const email = safeTrim(user.email);
+    return {
+      recipientEmail: email.includes('@') ? email : undefined,
+      recipientVerifierId: canopiUserVerifierId(user),
+    };
+  });
+}
+
+export function recipientLabelsFromShareSelection(selection: CanopiShareRecipient): string[] {
+  if (selection.users.length > 0) {
+    return selection.users.map((user) => canopiUserDisplayName(user));
   }
-  return safeTrim(selection.emailHint);
+  const hint = safeTrim(selection.emailHint);
+  return hint ? [hint] : [];
+}
+
+export function recipientLabelFromShareSelection(selection: CanopiShareRecipient): string {
+  const labels = recipientLabelsFromShareSelection(selection);
+  if (labels.length === 0) return '';
+  if (labels.length === 1) return labels[0];
+  if (labels.length === 2) return `${labels[0]} and ${labels[1]}`;
+  return `${labels.slice(0, -1).join(', ')}, and ${labels[labels.length - 1]}`;
 }

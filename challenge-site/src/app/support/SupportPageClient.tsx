@@ -86,7 +86,7 @@ export default function SupportPageClient() {
 
     setFeedbackMode(true);
     setCategory('general');
-    setSubject((prev) => prev || 'Hermes experimental feature feedback');
+    setSubject((prev) => prev || 'Deepi experimental feature feedback');
 
     const workgroup = searchParams.get('workgroup')?.trim();
     const context = searchParams.get('context')?.trim();
@@ -94,7 +94,7 @@ export default function SupportPageClient() {
     setBody((prev) => {
       if (prev.trim()) return prev;
       const lines = [
-        'Feedback about the experimental workgroup Hermes feature:',
+        'Feedback about the experimental workgroup Deepi feature:',
         '',
         workgroupLabel ? `Workgroup: ${workgroupLabel}` : null,
         typeof window !== 'undefined' ? `Page: ${window.location.href}` : null,

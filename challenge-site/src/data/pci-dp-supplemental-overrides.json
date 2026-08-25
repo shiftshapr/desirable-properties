@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "description": "Human-reviewed DP links when pci-dp-provenance.json has empty dp_links after Opus review. Phase 2 must still process these submissions.",
+    "status": "active"
+  },
+  "overrides": [
+    {
+      "pci_id": "3d7bc5d5e4c9dedc8e27d5bde7792266af194eeb99013edeec1ef0be0f0ec879i0",
+      "title": "Cross-Cultural and Multilingual AI Tools",
+      "author": "David Michaelis",
+      "dp_links": [
+        {
+          "dp_id": "DP23",
+          "relationship": "aligned",
+          "confidence": "high",
+          "summary": "Calls for cross-cultural and multilingual AI tools; maps directly to universal participation and linguistic interoperability."
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "aligned",
+          "confidence": "high",
+          "summary": "Multilingual, culturally aware AI tooling is a safe-and-ethical-AI requirement for global participation."
+        }
+      ]
+    },
+    {
+      "pci_id": "69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0",
+      "title": "Critique of Decentralization and Bitcoin in Meta-Layer Principles",
+      "author": "Dave Troy",
+      "dp_links": [
+        {
+          "dp_id": "DP3",
+          "relationship": "informed",
+          "confidence": "high",
+          "summary": "Challenges treating decentralization as an unalloyed good; governance must accommodate principled dissent."
+        },
+        {
+          "dp_id": "DP14",
+          "relationship": "informed",
+          "confidence": "medium",
+          "summary": "Warns that Bitcoin linkage can undermine trust and reach of meta-layer principles."
+        },
+        {
+          "dp_id": "DP17",
+          "relationship": "informed",
+          "confidence": "medium",
+          "summary": "Critiques zero-sum economic designs in token systems; relevant to sustainable funding models."
+        }
+      ]
+    },
+    {
+      "pci_id": "6b4dd9afb7932c40c894094542050066e77e1ee4140a740608d4c92922493bc6i0",
+      "title": "Metalevel Initiative: Challenges and Opportunities",
+      "author": "Paul Werbos",
+      "dp_links": [
+        {
+          "dp_id": "DP16",
+          "relationship": "informed",
+          "confidence": "high",
+          "summary": "Skepticism about translating meta-level aspirations into implementation; roadmap realism."
+        },
+        {
+          "dp_id": "DP3",
+          "relationship": "informed",
+          "confidence": "medium",
+          "summary": "Institutional follow-through and governance difficulty analogized to climate policy."
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "informed",
+          "confidence": "low",
+          "summary": "References AGI and Sustainable Intelligent Internet challenges in meta-layer context."
+        }
+      ]
+    },
+    {
+      "pci_id": "2642be9222683a9c6457fb85a0a24a951449332f982e5057a6062554a24e9928i0",
+      "title": "Visualizing Customizable Software Agents as Guardrails",
+      "author": "Cindy Mason",
+      "dp_links": [
+        {
+          "dp_id": "DP15",
+          "relationship": "aligned",
+          "confidence": "high",
+          "summary": "Visual guardrail-agent pattern extends security and privacy-by-design (paired with prior agents email)."
+        },
+        {
+          "dp_id": "DP11",
+          "relationship": "aligned",
+          "confidence": "medium",
+          "summary": "Customizable software agents as ethical guardrails for AI interaction."
+        },
+        {
+          "dp_id": "DP4",
+          "relationship": "aligned",
+          "confidence": "medium",
+          "summary": "User-controlled agent guardrails support data sovereignty in the same thread as eefa98bf."
+        }
+      ]
+    }
+  ]
+}

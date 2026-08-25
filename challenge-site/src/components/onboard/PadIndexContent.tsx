@@ -24,7 +24,7 @@ export default async function PadIndexContent({
         your perspective might be read, and let you refine how your perspectives are captured.
       </p>
       <p className="mt-3 text-base leading-relaxed text-slate-400">
-        Everyone has a unique pad based on their public corpus. Our Community assistant Hermes
+        Everyone has a unique pad based on their public corpus. Deepi, our DP Community AI assistant,
         analyzes the information to which we have access and attempts to match it to the desirable
         properties. We want to know if we characterized your perspectives correctly. Follow an
         interest until it becomes a patch idea. Learning uses session memory, confirms, and chosen

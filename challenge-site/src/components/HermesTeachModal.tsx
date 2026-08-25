@@ -1,5 +1,7 @@
 'use client';
 
+import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
+
 interface HermesTeachModalProps {
   open: boolean;
   busy?: boolean;
@@ -32,11 +34,11 @@ export default function HermesTeachModal({
     >
       <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-xl">
         <h2 id="hermes-teach-title" className="text-lg font-semibold text-white">
-          Teach Hermes
+          Teach {DP_COMMUNITY_AI.name}
         </h2>
         <p className="mt-2 text-sm text-slate-300">
-          Hermes missed something here. Write what it should know next time – we save your
-          teaching, not the bad reply. A layer admin reviews it first; once approved, Hermes
+          {DP_COMMUNITY_AI.name} missed something here. Write what it should know next time. We save your
+          teaching, not the bad reply. A layer admin reviews it first; once approved, {DP_COMMUNITY_AI.name}{' '}
           uses it when answering about the same DPs.
         </p>
 
@@ -52,7 +54,7 @@ export default function HermesTeachModal({
         {wrongReply ? (
           <details className="mt-3 rounded-lg border border-slate-800 bg-slate-950/50 px-3 py-2">
             <summary className="cursor-pointer text-xs text-slate-500">
-              What Hermes said (wrong – not saved)
+              What {DP_COMMUNITY_AI.name} said (wrong, not saved)
             </summary>
             <p className="mt-2 max-h-32 overflow-y-auto text-sm text-slate-400">
               {wrongReply.slice(0, 1200)}
@@ -62,7 +64,7 @@ export default function HermesTeachModal({
 
         <label className="mt-4 block">
           <span className="text-sm font-medium text-slate-200">
-            What Hermes should say instead
+            What {DP_COMMUNITY_AI.name} should say instead
           </span>
           <textarea
             value={value}

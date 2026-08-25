@@ -2,6 +2,7 @@ import Link from 'next/link';
 import BlueberriesWidget from '@/components/BlueberriesWidget';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DpBadgeCarousel from '@/components/DpBadgeCarousel';
+import NamedTabLink from '@/components/NamedTabLink';
 import localData from '@/data/desirable-properties.json';
 import {
   bookDiscussHref,
@@ -9,6 +10,7 @@ import {
   GOVHUB_DP_PATCHES_URL,
   govhubUrl,
 } from '@/lib/govhub';
+import { resolveNamedTabTarget } from '@/lib/named-tab';
 import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
@@ -31,7 +33,14 @@ function PageLink({
       </DiscussPatchLink>
     );
   }
-  if (href === '/agent' || href.startsWith('http://') || href.startsWith('https://')) {
+  if (resolveNamedTabTarget(href)) {
+    return (
+      <NamedTabLink href={href} className={className}>
+        {children}
+      </NamedTabLink>
+    );
+  }
+  if (href.startsWith('http://') || href.startsWith('https://')) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         {children}

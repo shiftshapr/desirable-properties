@@ -259,9 +259,13 @@ html.dp-header-above-canopi #canopi-overlay-root .canopi-sidebar-frame.canopi-si
   z-index: 2147483647 !important;
 }
 
-/* Push layout: header spans full viewport width above the docked sidebar */
-html.dp-header-above-canopi.canopi-embed-push-open .header,
-html.dp-header-above-canopi.dp-canopi-push-open .header {
-  width: 100%;
-  max-width: 100%;
+/* Push layout: Canopi trigger.css already narrows body via margin-right.
+   Header band should fill that inset, not subtract sidebar width again. */
+@media (min-width: 481px) {
+  html.dp-header-above-canopi.canopi-embed-push-open .header,
+  html.dp-header-above-canopi.dp-canopi-push-open .header {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
 }

@@ -37,7 +37,7 @@ export default function HermesAmbientSettingsPanel({ workgroupId }: Props) {
           },
         );
       } catch {
-        setMessage('Could not load Hermes settings');
+        setMessage('Could not load Deepi settings');
       }
     })();
   }, [open, workgroupId]);
@@ -80,7 +80,7 @@ export default function HermesAmbientSettingsPanel({ workgroupId }: Props) {
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-slate-300 hover:text-white"
       >
-        <span>Hermes ambient settings</span>
+        <span>Deepi ambient settings</span>
         <span className="text-xs text-slate-500">{open ? '▲' : '▼'}</span>
       </button>
 
@@ -145,7 +145,7 @@ export default function HermesAmbientSettingsPanel({ workgroupId }: Props) {
               }
               className="mt-1 block rounded border border-slate-700 bg-slate-950 px-2 py-1 text-white"
             >
-              <option value="request_only">Request only (@Hermes)</option>
+              <option value="request_only">Request only (@Deepi)</option>
               <option value="facilitator_enabled">Allow ambient when enabled</option>
             </select>
           </label>

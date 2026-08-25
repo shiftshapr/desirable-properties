@@ -103,9 +103,9 @@ export default function HermesTeachingAdminClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `${action} failed`);
       if (action === 'verify') {
-        setFlash('Teaching verified – Hermes can use it now.');
+        setFlash('Teaching verified – Deepi can use it now.');
       } else if (action === 'revoke') {
-        setFlash('Verified teaching revoked – Hermes will no longer use it.');
+        setFlash('Verified teaching revoked – Deepi will no longer use it.');
       } else {
         setFlash('Suggestion rejected.');
       }
@@ -122,10 +122,10 @@ export default function HermesTeachingAdminClient() {
       <div className="border-b border-slate-800 bg-slate-950/90">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
           <div>
-            <p className="text-xs uppercase tracking-wide text-slate-500">Hermes admin</p>
+            <p className="text-xs uppercase tracking-wide text-slate-500">Deepi admin</p>
             <h1 className="text-xl font-semibold text-white">Teaching review</h1>
             <p className="mt-1 text-sm text-slate-400">
-              Approve community teaching before it can change Hermes answers.
+              Approve community teaching before it can change Deepi answers.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -133,7 +133,7 @@ export default function HermesTeachingAdminClient() {
               href="/agent"
               className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:bg-slate-900"
             >
-              Open Hermes
+              Open Deepi
             </Link>
             <button
               type="button"
@@ -274,7 +274,7 @@ export default function HermesTeachingAdminClient() {
               {selected.wrongReply ? (
                 <details className="rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3">
                   <summary className="cursor-pointer text-xs text-slate-500">
-                    What Hermes said (wrong – audit only)
+                    What Deepi said (wrong – audit only)
                   </summary>
                   <p className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap text-sm text-slate-400">
                     {selected.wrongReply}
@@ -295,7 +295,7 @@ export default function HermesTeachingAdminClient() {
                 <p className="text-sm text-emerald-300">
                   Verified {shortDate(selected.verifiedAt)}
                   {selected.verifiedBy ? ` by ${selected.verifiedBy}` : ''}.
-                  Hermes can inject this on matching DP turns.
+                  Deepi can inject this on matching DP turns.
                 </p>
               ) : null}
               {selected.status === 'rejected' ? (
