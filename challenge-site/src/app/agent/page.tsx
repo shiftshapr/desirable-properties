@@ -64,7 +64,7 @@ export default async function AgentPage({
       : null;
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col bg-slate-950">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden bg-slate-950">
       <HermesChat
         surface="desirableproperties.org/agent"
         initialSignedIn={Boolean(session)}

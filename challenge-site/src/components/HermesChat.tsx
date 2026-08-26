@@ -12,6 +12,7 @@ import HermesMarkdown from '@/components/HermesMarkdown';
 import NamedTabLink from '@/components/NamedTabLink';
 import HermesTeachModal from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
+import HermesCommunityCollabHeader from '@/components/HermesCommunityCollabHeader';
 import HermesShareWizard from '@/components/HermesShareWizard';
 import HermesCommunityCreateModal from '@/components/HermesCommunityCreateModal';
 import HermesShareStatus from '@/components/HermesShareStatus';
@@ -29,6 +30,11 @@ import {
   DP_COMMUNITY_AI_REALM,
   dpCommunityAiErrorFromMessage,
 } from '@/lib/dp-community-ai';
+import {
+  communityCollabTitle,
+  communityParticipantsFromShares,
+  isCommunityCollabThread,
+} from '@/lib/hermes-community-collab';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
   buildEditDraftFromProposal,
@@ -2359,7 +2365,13 @@ export default function HermesChat({
       || sharedThreads.find((t) => t.id === activeThreadId),
     [threads, sharedThreads, activeThreadId],
   );
-  const isActiveCommunityChat = activeThreadSummary?.threadKind === 'group';
+  const isActiveCommunityChat = isCommunityCollabThread(activeThreadSummary);
+  const communityCollabTitleLabel = communityCollabTitle(activeThreadSummary);
+  const communityParticipants = useMemo(
+    () => communityParticipantsFromShares(threadActiveShares),
+    [threadActiveShares],
+  );
+  const isCommunityMember = Boolean(threadAccess?.roles?.includes('member'));
 
   const shareWizardThread = useMemo(() => {
     if (!shareWizardThreadId) return null;
@@ -2430,6 +2442,15 @@ export default function HermesChat({
 
         {activeThreadId && signedIn && !compact ? (
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-800 px-4 py-2">
+            {isActiveCommunityChat ? (
+              <HermesCommunityCollabHeader
+                title={communityCollabTitleLabel}
+                participants={communityParticipants}
+                isOwner={Boolean(isThreadOwner)}
+                isMember={isCommunityMember}
+                onInvite={isThreadOwner ? () => openShareWizard() : undefined}
+              />
+            ) : (
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-sm text-slate-300">
               {isWatchingOnly ? (
                 <span className="shrink-0 rounded-full border border-slate-600 bg-slate-900 px-2 py-0.5 text-[11px] text-slate-300">
@@ -2443,7 +2464,7 @@ export default function HermesChat({
                   Controlling
                 </span>
               ) : null}
-              {isThreadOwner && !isActiveCommunityChat ? (
+              {isThreadOwner ? (
                 <HermesShareStatus
                   key={activeThreadId}
                   threadId={activeThreadId}
@@ -2457,6 +2478,7 @@ export default function HermesChat({
                 />
               ) : null}
             </div>
+            )}
             {isThreadOwner ? (
               <button
                 type="button"
@@ -2469,7 +2491,7 @@ export default function HermesChat({
           </div>
         ) : null}
 
-        {activeThreadId && signedIn && !compact ? (
+        {activeThreadId && signedIn && !compact && !isActiveCommunityChat ? (
           <HermesControlPanel
             threadId={activeThreadId}
             controlInvitePending={Boolean(threadAccess?.controlInvitePending)}
@@ -2719,7 +2741,7 @@ export default function HermesChat({
                       >
                         {correctionBusyId === message.id ? 'Saving…' : `Teach ${DP_COMMUNITY_AI.name}`}
                       </button>
-                      {isThreadOwner && activeThreadId ? (
+                      {isThreadOwner && activeThreadId && !isActiveCommunityChat ? (
                         <button
                           type="button"
                           onClick={() => openShareWizard(resolveShareAnchorFromMessage(message))}
@@ -2728,8 +2750,17 @@ export default function HermesChat({
                           Share
                         </button>
                       ) : null}
+                      {isThreadOwner && activeThreadId && isActiveCommunityChat ? (
+                        <button
+                          type="button"
+                          onClick={() => openShareWizard(resolveShareAnchorFromMessage(message))}
+                          className="rounded-md border border-slate-600 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-800/80"
+                        >
+                          Invite
+                        </button>
+                      ) : null}
                     </div>
-                    {isThreadOwner && activeThreadId ? (
+                    {isThreadOwner && activeThreadId && !isActiveCommunityChat ? (
                       <HermesMessageShareNotice
                         shares={threadActiveShares}
                         turnId={resolveShareAnchorFromMessage(message).turnId}
@@ -2776,7 +2807,7 @@ export default function HermesChat({
                     && !message.contributionRecord ? (
                     <div className="mt-2 flex flex-col items-end gap-2 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
                       <div className="flex justify-end gap-2">
-                      {isThreadOwner && activeThreadId ? (
+                      {isThreadOwner && activeThreadId && !isActiveCommunityChat ? (
                         <button
                           type="button"
                           onClick={() => openShareWizard(resolveShareAnchorFromMessage(message))}
@@ -2793,7 +2824,7 @@ export default function HermesChat({
                         Edit
                       </button>
                       </div>
-                      {isThreadOwner && activeThreadId ? (
+                      {isThreadOwner && activeThreadId && !isActiveCommunityChat ? (
                         <HermesMessageShareNotice
                           shares={threadActiveShares}
                           turnId={resolveShareAnchorFromMessage(message).turnId}
@@ -2874,9 +2905,14 @@ export default function HermesChat({
               </ul>
             )}
             {attachError ? <p className="text-xs text-rose-300">{attachError}</p> : null}
-            {isWatchingOnly ? (
+            {isWatchingOnly && !isActiveCommunityChat ? (
               <p className="rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-xs text-slate-300">
                 Watching this conversation. You can fork from any visible message, but only the controller can send prompts.
+              </p>
+            ) : null}
+            {isWatchingOnly && isActiveCommunityChat ? (
+              <p className="rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-xs text-slate-300">
+                You can read this Community Chat. Ask the owner for a member invite to prompt Deepi.
               </p>
             ) : null}
             <div className={`flex items-end gap-2 rounded-2xl border border-slate-700 bg-slate-900/80 p-2 shadow-lg shadow-black/20 ${isWatchingOnly ? 'opacity-60' : ''}`}>
@@ -2911,9 +2947,13 @@ export default function HermesChat({
                   onKeyDown={onKeyDown}
                   placeholder={
                     isWatchingOnly
-                      ? 'Watching — control required to send…'
+                      ? isActiveCommunityChat
+                        ? 'Member invite required to send…'
+                        : 'Watching — control required to send…'
                       : signedIn
-                        ? `Message ${DP_COMMUNITY_AI.name}…`
+                        ? isActiveCommunityChat
+                          ? DP_COMMUNITY_AI_ERRORS.communityChatPlaceholder
+                          : DP_COMMUNITY_AI_ERRORS.messagePlaceholder
                         : 'Sign in to send a message…'
                   }
                   className="max-h-40 min-h-16 w-full resize-none bg-transparent px-1 py-2.5 pr-14 pb-2 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"

@@ -20,6 +20,7 @@ export const DP_COMMUNITY_AI_ERRORS = {
   wait_for_reply_fork: 'Wait for Deepi to finish replying before forking from this message.',
   teach: 'Teach Deepi',
   messagePlaceholder: 'Message Deepi…',
+  communityChatPlaceholder: 'Message Community Chat…',
 } as const;
 
 export const DP_COMMUNITY_AI_INTRO =

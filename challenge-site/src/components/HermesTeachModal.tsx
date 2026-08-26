@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
 
 interface HermesTeachModalProps {
@@ -23,16 +25,28 @@ export default function HermesTeachModal({
   onCancel,
   onSave,
 }: HermesTeachModalProps) {
-  if (!open) return null;
+  useEffect(() => {
+    if (!open || typeof document === 'undefined') return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
-  return (
+  if (!open || typeof document === 'undefined') return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"
+      className="fixed inset-0 z-[80] flex items-end justify-center overflow-y-auto bg-black/60 p-4 sm:items-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="hermes-teach-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !busy) onCancel();
+      }}
     >
-      <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-xl">
+      <div className="my-auto w-full max-w-lg max-h-[min(90dvh,calc(100dvh-2rem))] overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-xl">
         <h2 id="hermes-teach-title" className="text-lg font-semibold text-white">
           Teach {DP_COMMUNITY_AI.name}
         </h2>
@@ -47,7 +61,7 @@ export default function HermesTeachModal({
             <p className="text-[11px] font-medium uppercase tracking-wide text-slate-500">
               Your question
             </p>
-            <p className="mt-1 text-sm text-slate-300">{userQuestion}</p>
+            <p className="mt-1 max-h-40 overflow-y-auto text-sm text-slate-300">{userQuestion}</p>
           </div>
         ) : null}
 
@@ -56,8 +70,8 @@ export default function HermesTeachModal({
             <summary className="cursor-pointer text-xs text-slate-500">
               What {DP_COMMUNITY_AI.name} said (wrong, not saved)
             </summary>
-            <p className="mt-2 max-h-32 overflow-y-auto text-sm text-slate-400">
-              {wrongReply.slice(0, 1200)}
+            <p className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap text-sm text-slate-400">
+              {wrongReply.slice(0, 4000)}
             </p>
           </details>
         ) : null}
@@ -95,6 +109,7 @@ export default function HermesTeachModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
