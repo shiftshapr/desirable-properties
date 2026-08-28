@@ -50,5 +50,9 @@ export function resolveNamedTabTarget(href: string): NamedTabTarget | null {
 export function openNamedTab(url: string, tabName: NamedTabTarget): void {
   if (typeof window === 'undefined') return;
   const win = window.open(url, tabName);
-  win?.focus();
+  if (!win) {
+    window.location.assign(url);
+    return;
+  }
+  win.focus();
 }
