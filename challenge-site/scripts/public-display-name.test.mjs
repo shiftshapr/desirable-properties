@@ -58,7 +58,7 @@ test('isEmailLike detects common addresses', () => {
 });
 
 test('publicDisplayName never returns raw email', () => {
-  const masked = publicDisplayName('alex.nassarius@gmail.com');
+  const masked = publicDisplayName('alex.nassarius@example.com');
   assert.ok(!masked.includes('@'));
   assert.equal(masked, 'Alex Nassarius');
 });
@@ -69,7 +69,7 @@ test('publicDisplayName keeps real names', () => {
 
 test('publicDisplayName prefers alt human name over email primary', () => {
   assert.equal(
-    publicDisplayName('noreply@themetalayer.org', { alt: 'Anon' }),
+    publicDisplayName('admin@example.com', { alt: 'Anon' }),
     'Anon',
   );
 });

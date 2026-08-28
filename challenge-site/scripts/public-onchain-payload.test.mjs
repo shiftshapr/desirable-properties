@@ -72,8 +72,8 @@ test('public onchain submissions omit email field', () => {
     {
       source_file: '1.json',
       title: 'Example',
-      author: 'Javier',
-      email: 'Jamagax@gmail.com',
+      author: 'Example Author',
+      email: 'author@example.com',
       dp_count: 3,
     },
   ]);
@@ -84,5 +84,5 @@ test('public onchain submissions omit email field', () => {
     'source_file',
     'title',
   ]);
-  assert.equal(rows[0].author, 'Javier');
+  assert.equal(rows[0].author, 'Example Author');
 });
