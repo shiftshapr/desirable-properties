@@ -53,7 +53,7 @@ export type ComposeAiAssistMode = 'compose' | 'chatReply';
 type Props = {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
   value: string;
-  onValueChange: (next: string) => void;
+  onValueChange: (next: string, selection?: { start: number; end: number }) => void;
   disabled?: boolean;
   promptOptions: ComposeAiPromptOption[];
   /** Shown after generation to refine the preview (Expand, Clarify, etc.). */
@@ -304,14 +304,11 @@ export default function ComposeFieldAiAssist({
       cursor = pos + draft.length;
     }
 
-    onValueChange(next);
+    onValueChange(next, { start: cursor, end: cursor });
     onAiApplied?.();
     closePanel();
     requestAnimationFrame(() => {
       textarea?.focus();
-      if (textarea && typeof textarea.setSelectionRange === 'function') {
-        textarea.setSelectionRange(cursor, cursor);
-      }
     });
   }
 

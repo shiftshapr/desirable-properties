@@ -575,13 +575,19 @@ export default function HermesChat({
   const stopChat = useCallback(() => {
     chatAbortRef.current?.abort();
     chatAbortRef.current = null;
+    setIsLoading(false);
   }, []);
 
-  const syncComposerHeight = useCallback(() => {
+  const syncComposerHeight = useCallback((selection?: { start: number; end: number } | null) => {
     const el = composerRef.current;
     if (!el) return;
-    const selectionStart = el.selectionStart;
-    const selectionEnd = el.selectionEnd;
+    const pending = selection ?? composerSelectionRef.current;
+    const preserveFromDom = !pending
+      && document.activeElement === el
+      && typeof el.selectionStart === 'number'
+      && typeof el.selectionEnd === 'number';
+    const selectionStart = pending?.start ?? (preserveFromDom ? el.selectionStart : null);
+    const selectionEnd = pending?.end ?? (preserveFromDom ? el.selectionEnd : null);
     el.style.height = 'auto';
     const next = Math.max(
       COMPOSER_MIN_HEIGHT_PX,
@@ -589,9 +595,14 @@ export default function HermesChat({
     );
     el.style.height = `${next}px`;
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
-    if (document.activeElement === el && typeof selectionStart === 'number' && typeof selectionEnd === 'number') {
+    if (
+      document.activeElement === el
+      && typeof selectionStart === 'number'
+      && typeof selectionEnd === 'number'
+    ) {
       el.setSelectionRange(selectionStart, selectionEnd);
     }
+    if (pending) composerSelectionRef.current = null;
   }, []);
 
   const handleComposerChange = useCallback((
@@ -602,18 +613,20 @@ export default function HermesChat({
       composerSelectionRef.current = selection;
     }
     setInputText(next);
-    requestAnimationFrame(() => syncComposerHeight());
-  }, [syncComposerHeight]);
+  }, []);
 
   useLayoutEffect(() => {
-    const pending = composerSelectionRef.current;
+    syncComposerHeight();
+  }, [inputText, syncComposerHeight]);
+
+  const captureComposerSelection = useCallback(() => {
     const el = composerRef.current;
-    if (!pending || !el) return;
-    composerSelectionRef.current = null;
-    if (document.activeElement === el) {
-      el.setSelectionRange(pending.start, pending.end);
-    }
-  }, [inputText]);
+    if (!el) return;
+    composerSelectionRef.current = {
+      start: el.selectionStart ?? el.value.length,
+      end: el.selectionEnd ?? el.value.length,
+    };
+  }, []);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -1145,7 +1158,13 @@ export default function HermesChat({
   const onFilesSelected = async (files: FileList | null) => {
     if (!files?.length) return;
     if (!signedIn) {
+      setAttachError('Sign in to attach PDFs and other files.');
       promptSignIn();
+      return;
+    }
+    if (isWatchingOnly) {
+      setAttachError('You need control of this conversation to attach files.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
     setAttachError(null);
@@ -2944,6 +2963,10 @@ export default function HermesChat({
                     start: e.target.selectionStart ?? e.target.value.length,
                     end: e.target.selectionEnd ?? e.target.value.length,
                   })}
+                  onSelect={captureComposerSelection}
+                  onPaste={() => {
+                    requestAnimationFrame(captureComposerSelection);
+                  }}
                   onKeyDown={onKeyDown}
                   placeholder={
                     isWatchingOnly
