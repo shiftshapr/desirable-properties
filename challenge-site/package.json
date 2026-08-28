@@ -18,7 +18,8 @@
     "test:dp-broadcast-draft": "node --test scripts/dp-broadcast-draft.test.mjs",
     "test:dp-broadcast-audience-filter": "node --test scripts/dp-broadcast-audience-filter.test.mjs",
     "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs",
-    "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs"
+    "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs",
+    "test:public-display-name": "node --test scripts/public-display-name.test.mjs scripts/public-onchain-payload.test.mjs"
   },
   "dependencies": {
     "jose": "^6.2.4",

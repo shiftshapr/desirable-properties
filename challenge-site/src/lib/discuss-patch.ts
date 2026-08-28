@@ -3,6 +3,7 @@
  * Prefers API `tag_type` (patch | insert); falls back to legacy PATCH:/INSERT: first-line prefixes.
  * Does not mutate Canopi storage.
  */
+import { publicDisplayName } from '@/lib/public-display-name';
 
 export type DiscussPatchKind = 'patch' | 'insert' | 'comment';
 
@@ -96,7 +97,7 @@ export function discussPatchActivityText(opts: {
   tagType?: string | null;
 }): { kind: DiscussPatchKind; text: string; badge: string | null } {
   const parsed = classifyDiscussPost({ body: opts.body, tagType: opts.tagType });
-  const who = (opts.authorName || 'Someone').trim() || 'Someone';
+  const who = publicDisplayName(opts.authorName, { fallback: 'Someone' });
   const chapter = opts.pageId ? ` (${opts.pageId})` : '';
   const snippetSource = parsed.kind === 'comment' ? opts.body : parsed.content || opts.body;
   const snippet = snippetSource.replace(/\s+/g, ' ').trim().slice(0, 80);

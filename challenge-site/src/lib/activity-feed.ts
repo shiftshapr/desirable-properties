@@ -1,3 +1,5 @@
+import { maskActivityFeedItems } from '@/lib/public-payload';
+import { publicDisplayName } from '@/lib/public-display-name';
 import { canopiPageIdsForDp } from '@/lib/dp-canopi-chapters';
 import { classifyDiscussPost, discussPatchActivityText } from '@/lib/discuss-patch';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
@@ -170,7 +172,7 @@ export async function fetchUnifiedActivity(limit = 24): Promise<ActivityFeedItem
     out.push(item);
     if (out.length >= limit) break;
   }
-  return out;
+  return maskActivityFeedItems(out);
 }
 
 function draftViewerHref(draftRef: string | null | undefined): string {
@@ -178,6 +180,7 @@ function draftViewerHref(draftRef: string | null | undefined): string {
   if (!ref) return govhubUrl('/doc/all/?collection=desirable-properties');
   return govhubUrl(`/doc/draft/${encodeURIComponent(ref)}/read/`);
 }
+
 function proposalToFeedItem(
   proposal: GovHubDraftProposal,
   draftRef: string,
@@ -186,7 +189,7 @@ function proposalToFeedItem(
   const mode = String(proposal.patch_mode || 'replace').toLowerCase() === 'insert'
     ? 'insert'
     : 'replace';
-  const who = (proposal.author_name || 'Someone').trim() || 'Someone';
+  const who = publicDisplayName(proposal.author_name, { fallback: 'Someone' });
   // Non-pending proposals count as resolved (accepted, declined, incorporated, …).
   const resolved = status !== 'pending';
   const badge = mode === 'insert' ? 'Insert' : 'Patch';
@@ -405,7 +408,7 @@ export async function fetchWorkgroupDpActivity(
     out.push(item);
     if (out.length >= limit) break;
   }
-  return out;
+  return maskActivityFeedItems(out);
 }
 
 export function isActivityResolved(item: ActivityFeedItem): boolean {
