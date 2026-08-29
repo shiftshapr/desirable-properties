@@ -1,6 +1,17 @@
-/** Canopi API base (embed + auth). */
+/** Server-to-server Canopi API base (PM2 may use loopback). */
 export function getCanopiApiBase() {
   return String(process.env.CANOPI_API_BASE || 'https://api.canopi.live').replace(/\/$/, '');
+}
+
+/** Browser-facing Canopi API base for avatar-proxy and other public URLs. */
+export function getCanopiPublicApiBase() {
+  const explicit = (
+    process.env.CANOPI_PUBLIC_API_BASE
+    || process.env.NEXT_PUBLIC_CANOPI_API_BASE
+    || ''
+  ).trim();
+  if (explicit) return explicit.replace(/\/$/, '');
+  return 'https://api.canopi.live';
 }
 
 export type CanopiAuthUser = {

@@ -1,5 +1,5 @@
 import type { HermesSession } from '@/lib/auth-session';
-import { isSyntheticAvatarUrl } from '@/lib/avatar';
+import { isSyntheticAvatarUrl, normalizeProfileImageForSession } from '@/lib/avatar';
 import {
   fetchCanopiUserProfile,
   fetchCanopiWeb3AuthUser,
@@ -26,10 +26,16 @@ export function pickProfileImage(
   const canopi = String(canopiAvatarUrl || '').trim();
   const fallback = String(fallbackImage || '').trim();
 
-  if (canopi && !isPlaceholderAvatar(canopi)) return canopi;
-  if (isUploadedProfileAvatar(fallback)) return fallback;
-  if (fallback && !isPlaceholderAvatar(fallback)) return fallback;
-  return canopi || fallback || null;
+  if (canopi && !isPlaceholderAvatar(canopi)) {
+    return normalizeProfileImageForSession(canopi);
+  }
+  if (isUploadedProfileAvatar(fallback)) {
+    return normalizeProfileImageForSession(fallback);
+  }
+  if (fallback && !isPlaceholderAvatar(fallback)) {
+    return normalizeProfileImageForSession(fallback);
+  }
+  return normalizeProfileImageForSession(canopi || fallback || null);
 }
 
 async function resolveCanopiUser(session: HermesSession): Promise<CanopiAuthUser | null> {
@@ -81,8 +87,9 @@ export async function refreshSessionFromCanopi(session: HermesSession): Promise<
 
   const profileImage = pickProfileImage(canopiUser.avatarUrl, session.profileImage);
   const canopiUserId = canopiUser.id;
+  const previousImage = normalizeProfileImageForSession(session.profileImage);
   const changed =
-    profileImage !== (session.profileImage ?? null) ||
+    profileImage !== previousImage ||
     canopiUserId !== (session.canopiUserId ?? null);
 
   return { profileImage, canopiUserId, changed };

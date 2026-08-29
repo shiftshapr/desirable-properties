@@ -1,6 +1,7 @@
 import { createHash } from 'crypto';
 import { EncryptJWT, jwtDecrypt } from 'jose';
 import { cookies } from 'next/headers';
+import { normalizeProfileImageForSession } from '@/lib/avatar';
 import type { AuthUser } from '@/lib/auth-types';
 
 export const SESSION_COOKIE = 'hermes_session';
@@ -62,7 +63,9 @@ export async function readSessionFromCookieValue(
       userId,
       username: String(payload.username || ''),
       displayName: payload.displayName ? String(payload.displayName) : null,
-      profileImage: payload.profileImage ? String(payload.profileImage) : null,
+      profileImage: normalizeProfileImageForSession(
+        payload.profileImage ? String(payload.profileImage) : null,
+      ),
       canopiUserId: payload.canopiUserId ? String(payload.canopiUserId) : null,
       idToken,
       email: payload.email ? String(payload.email) : null,
