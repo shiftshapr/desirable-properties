@@ -14,6 +14,7 @@ type TeachingNote = {
   wrongReply?: string | null;
   userQuestion?: string | null;
   signal?: string | null;
+  noteKind?: string | null;
   createdAt?: string | null;
   verifiedAt?: string | null;
   verifiedBy?: string | null;
@@ -181,9 +182,16 @@ export default function HermesTeachingAdminClient() {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className={`rounded-full border px-2 py-0.5 text-[10px] ${statusBadge(note.status)}`}>
-                      {note.status}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className={`rounded-full border px-2 py-0.5 text-[10px] ${statusBadge(note.status)}`}>
+                        {note.status}
+                      </span>
+                      {note.noteKind === 'style' ? (
+                        <span className="rounded-full border border-violet-700/70 bg-violet-950/40 px-2 py-0.5 text-[10px] text-violet-200">
+                          style
+                        </span>
+                      ) : null}
+                    </div>
                     <span className="text-[11px] text-slate-500">{shortDate(note.createdAt)}</span>
                   </div>
                   <p className="mt-2 line-clamp-3 text-sm text-slate-200">{note.text}</p>
@@ -223,6 +231,7 @@ export default function HermesTeachingAdminClient() {
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
                     DPs: {(selected.dpIds || []).join(', ') || 'general'}
+                    {selected.noteKind === 'style' ? ' · kind: style/process' : ' · kind: content'}
                     {selected.signal ? ` · signal: ${selected.signal}` : ''}
                   </p>
                 </div>

@@ -10,7 +10,7 @@ import HermesContributionLedger from '@/components/HermesContributionLedger';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import NamedTabLink from '@/components/NamedTabLink';
-import HermesTeachModal from '@/components/HermesTeachModal';
+import HermesTeachModal, { type HermesTeachMode } from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesCommunityCollabHeader from '@/components/HermesCommunityCollabHeader';
 import HermesShareWizard from '@/components/HermesShareWizard';
@@ -30,6 +30,7 @@ import {
   DP_COMMUNITY_AI_REALM,
   dpCommunityAiErrorFromMessage,
 } from '@/lib/dp-community-ai';
+import { shouldOfferSaveLearning } from '@/lib/hermes-introspect';
 import {
   communityCollabTitle,
   communityParticipantsFromShares,
@@ -563,6 +564,7 @@ export default function HermesChat({
   const [editText, setEditText] = useState('');
   const [editBusy, setEditBusy] = useState(false);
   const [teachOpen, setTeachOpen] = useState(false);
+  const [teachMode, setTeachMode] = useState<HermesTeachMode>('content');
   const [teachTargetId, setTeachTargetId] = useState<string | null>(null);
   const [teachText, setTeachText] = useState('');
   const [teachUserQuestion, setTeachUserQuestion] = useState<string | undefined>();
@@ -1834,7 +1836,7 @@ export default function HermesChat({
     }
   };
 
-  const openTeachModal = (assistantMessageId: string) => {
+  const openTeachModal = (assistantMessageId: string, mode: HermesTeachMode = 'content') => {
     if (!signedIn) {
       promptSignIn();
       return;
@@ -1848,15 +1850,17 @@ export default function HermesChat({
       .find((m) => m.sender === 'user');
     const assistantMessage = messages[assistantIdx];
 
+    setTeachMode(mode);
     setTeachTargetId(assistantMessageId);
     setTeachUserQuestion(userMessage?.text);
     setTeachWrongReply(assistantMessage.text);
-    setTeachText('');
+    setTeachText(mode === 'style' ? assistantMessage.text : '');
     setTeachOpen(true);
   };
 
   const closeTeachModal = () => {
     setTeachOpen(false);
+    setTeachMode('content');
     setTeachTargetId(null);
     setTeachText('');
     setTeachUserQuestion(undefined);
@@ -1877,6 +1881,7 @@ export default function HermesChat({
           userQuestion: teachUserQuestion || null,
           threadId: activeThreadId,
           dpIds: dpFocus ? [`DP${dpFocus}`] : [],
+          noteKind: teachMode,
         }),
       });
       const data = await res.json();
@@ -1884,11 +1889,16 @@ export default function HermesChat({
 
       closeTeachModal();
       const noteStatus = data.note?.status;
+      const isStyle = teachMode === 'style';
       setSystemNotice({
         variant: 'success',
         text: noteStatus === 'verified'
-          ? `Teaching saved and active. ${DP_COMMUNITY_AI.name} will use this on future turns about the same DPs.`
-          : `Suggestion saved for layer admin review. ${DP_COMMUNITY_AI.name} will only use it after approval.`,
+          ? isStyle
+            ? `Learning saved and active. ${DP_COMMUNITY_AI.name} will apply this style guidance on future turns.`
+            : `Teaching saved and active. ${DP_COMMUNITY_AI.name} will use this on future turns about the same DPs.`
+          : isStyle
+            ? `Learning saved for layer admin review. ${DP_COMMUNITY_AI.name} will only apply it after approval.`
+            : `Suggestion saved for layer admin review. ${DP_COMMUNITY_AI.name} will only use it after approval.`,
       });
     } catch (err) {
       setSystemNotice({
@@ -2813,6 +2823,19 @@ export default function HermesChat({
                       >
                         {correctionBusyId === message.id ? 'Saving…' : `Teach ${DP_COMMUNITY_AI.name}`}
                       </button>
+                      {shouldOfferSaveLearning(
+                        message.text,
+                        messages.slice(0, messages.findIndex((m) => m.id === message.id)),
+                      ) ? (
+                        <button
+                          type="button"
+                          disabled={correctionBusyId === message.id}
+                          onClick={() => openTeachModal(message.id, 'style')}
+                          className="rounded-md border border-violet-700/60 px-2 py-1 text-[11px] text-violet-200 hover:bg-violet-950/40 disabled:opacity-50"
+                        >
+                          {correctionBusyId === message.id ? 'Saving…' : 'Save learning'}
+                        </button>
+                      ) : null}
                       {isThreadOwner && activeThreadId && !isActiveCommunityChat ? (
                         <button
                           type="button"
@@ -3090,6 +3113,7 @@ export default function HermesChat({
       <HermesTeachModal
         open={teachOpen}
         busy={Boolean(correctionBusyId)}
+        mode={teachMode}
         userQuestion={teachUserQuestion}
         wrongReply={teachWrongReply}
         value={teachText}

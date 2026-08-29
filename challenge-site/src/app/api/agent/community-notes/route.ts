@@ -59,6 +59,7 @@ export async function POST(request: Request) {
         userQuestion: body.userQuestion || null,
         dpIds: body.dpIds || [],
         threadId: body.threadId || null,
+        noteKind: body.noteKind || body.note_kind || null,
         verifierId: session.verifierId,
         idToken: session.idToken,
         email: session.email || null,
