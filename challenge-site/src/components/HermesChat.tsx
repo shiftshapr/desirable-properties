@@ -96,6 +96,8 @@ import {
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
 import {
+  clampComposerSelection,
+  composerSelectionAtEnd,
   deleteComposerSelection,
   normalizeComposerSelectionAfterEdit,
   resolveComposerSelection,
@@ -591,6 +593,7 @@ export default function HermesChat({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const composerSelectionRef = useRef<{ start: number; end: number } | null>(null);
+  const composerComposingRef = useRef(false);
   const activeThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
   const stickToBottomRef = useRef(true);
@@ -653,10 +656,18 @@ export default function HermesChat({
     next: string,
     selection?: { start: number; end: number },
   ) => {
-    if (selection) {
-      composerSelectionRef.current = normalizeComposerSelectionAfterEdit(selection);
+    const capped = capComposerText(next);
+    composerSelectionRef.current = selection
+      ? clampComposerSelection(normalizeComposerSelectionAfterEdit(selection), capped.length)
+      : composerSelectionAtEnd(capped.length);
+    setInputText(capped);
+  }, []);
+
+  useLayoutEffect(() => {
+    const end = inputText.length;
+    if (end > 0 && typeof initialPrompt === 'string' && initialPrompt.trim()) {
+      composerSelectionRef.current = composerSelectionAtEnd(end);
     }
-    setInputText(capComposerText(next));
   }, []);
 
   useLayoutEffect(() => {
@@ -2379,6 +2390,7 @@ export default function HermesChat({
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -3051,10 +3063,23 @@ export default function HermesChat({
                 <textarea
                   ref={composerRef}
                   value={inputText}
-                  onChange={(e) => handleComposerChange(e.target.value, {
-                    start: e.target.selectionStart ?? e.target.value.length,
-                    end: e.target.selectionEnd ?? e.target.value.length,
-                  })}
+                  onChange={(e) => {
+                    if (composerComposingRef.current) return;
+                    handleComposerChange(e.target.value, {
+                      start: e.target.selectionStart ?? e.target.value.length,
+                      end: e.target.selectionEnd ?? e.target.value.length,
+                    });
+                  }}
+                  onCompositionStart={() => {
+                    composerComposingRef.current = true;
+                  }}
+                  onCompositionEnd={(e) => {
+                    composerComposingRef.current = false;
+                    handleComposerChange(e.currentTarget.value, {
+                      start: e.currentTarget.selectionStart ?? e.currentTarget.value.length,
+                      end: e.currentTarget.selectionEnd ?? e.currentTarget.value.length,
+                    });
+                  }}
                   onSelect={captureComposerSelection}
                   onPaste={() => {
                     requestAnimationFrame(captureComposerSelection);

@@ -8,6 +8,23 @@ export function normalizeComposerSelectionAfterEdit(
   return { start: selection.start, end: selection.start };
 }
 
+/** Keep caret indices valid after capComposerText truncates pasted or typed input. */
+export function clampComposerSelection(
+  selection: ComposerSelection,
+  maxLen: number,
+): ComposerSelection {
+  const len = Math.max(0, maxLen);
+  return {
+    start: Math.max(0, Math.min(selection.start, len)),
+    end: Math.max(0, Math.min(selection.end, len)),
+  };
+}
+
+export function composerSelectionAtEnd(textLen: number): ComposerSelection {
+  const end = Math.max(0, textLen);
+  return { start: end, end: end };
+}
+
 /** Remove highlighted range; returns null when there is no selection to delete. */
 export function deleteComposerSelection(
   value: string,

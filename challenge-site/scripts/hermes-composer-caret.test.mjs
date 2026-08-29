@@ -10,6 +10,19 @@ function normalizeComposerSelectionAfterEdit(selection) {
   return { start: selection.start, end: selection.start };
 }
 
+function clampComposerSelection(selection, maxLen) {
+  const len = Math.max(0, maxLen);
+  return {
+    start: Math.max(0, Math.min(selection.start, len)),
+    end: Math.max(0, Math.min(selection.end, len)),
+  };
+}
+
+function composerSelectionAtEnd(textLen) {
+  const end = Math.max(0, textLen);
+  return { start: end, end: end };
+}
+
 function deleteComposerSelection(value, selection) {
   const { start, end } = selection;
   if (start === end) return null;
@@ -93,4 +106,23 @@ test('bulk delete caret restore does not re-expand highlight from onSelect ref',
   });
   assert.equal(result.start, 2);
   assert.equal(result.end, 2);
+});
+
+test('clampComposerSelection caps indices after maxLength truncate', () => {
+  const clamped = clampComposerSelection({ start: 50_000, end: 50_000 }, 48_000);
+  assert.deepEqual(clamped, { start: 48_000, end: 48_000 });
+});
+
+test('programmatic clear uses end caret instead of stale highlight ref', () => {
+  const staleHighlight = { start: 5, end: 11 };
+  const capped = 'hello';
+  const nextRef = composerSelectionAtEnd(capped.length);
+  assert.notDeepEqual(nextRef, staleHighlight);
+  const result = resolveComposerSelection({
+    pendingRef: nextRef,
+    domSelection: staleHighlight,
+    isFocused: true,
+  });
+  assert.equal(result.start, 5);
+  assert.equal(result.end, 5);
 });
