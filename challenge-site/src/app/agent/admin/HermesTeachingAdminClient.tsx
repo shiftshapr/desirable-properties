@@ -22,11 +22,13 @@ type TeachingNote = {
   rejectedBy?: string | null;
 };
 
+/** suggestion = manual Teach/Save submissions; pending = legacy auto-captured corrections. */
 const FILTERS = [
-  { value: 'suggestion', label: 'Pending review' },
+  { value: 'suggestion,pending', label: 'Awaiting review' },
+  { value: 'suggestion', label: 'New submissions' },
   { value: 'verified', label: 'Verified' },
   { value: 'rejected', label: 'Rejected' },
-  { value: 'suggestion,pending', label: 'All pending' },
+  { value: 'pending', label: 'Legacy auto-captured' },
 ] as const;
 
 function statusBadge(status: string) {
@@ -43,7 +45,7 @@ function shortDate(value?: string | null) {
 }
 
 export default function HermesTeachingAdminClient() {
-  const [statusFilter, setStatusFilter] = useState<string>('suggestion');
+  const [statusFilter, setStatusFilter] = useState<string>('suggestion,pending');
   const [notes, setNotes] = useState<TeachingNote[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -163,6 +165,10 @@ export default function HermesTeachingAdminClient() {
               </option>
             ))}
           </select>
+          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+            Awaiting review includes Save learning (style) and Teach Deepi (content) submissions,
+            plus legacy auto-captured corrections.
+          </p>
 
           <div className="mt-3 max-h-[70vh] space-y-2 overflow-y-auto">
             {loading ? (
