@@ -1,19 +1,41 @@
 import { getCanopiApiBase } from '@/lib/canopi-api';
 import { govhubUrl } from '@/lib/govhub';
 
-function isSyntheticAvatarUrl(url: string): boolean {
+function isSyntheticAvatarHost(host: string, pathname: string, search: string): boolean {
+  const normalizedHost = host.toLowerCase();
+  if (/^ui-avatars\.com$/i.test(normalizedHost)) return true;
+  if (
+    /(^|\.)googleusercontent\.com$/i.test(normalizedHost) &&
+    /default-user/i.test(pathname + search)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/** Placeholder or generated avatars that should not render as profile photos. */
+export function isSyntheticAvatarUrl(url: string): boolean {
   const trimmed = url.trim();
   if (!trimmed) return true;
   try {
     const absolute = trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
     const parsed = new URL(absolute);
-    const host = parsed.hostname.toLowerCase();
-    if (/^ui-avatars\.com$/i.test(host)) return true;
-    if (
-      /(^|\.)googleusercontent\.com$/i.test(host) &&
-      /default-user/i.test(parsed.pathname + parsed.search)
-    ) {
+    if (isSyntheticAvatarHost(parsed.hostname, parsed.pathname, parsed.search)) {
       return true;
+    }
+    // Legacy sessions may store Canopi proxy URLs wrapping ui-avatars placeholders.
+    if (/\/avatar-proxy/i.test(parsed.pathname)) {
+      const proxied = parsed.searchParams.get('url');
+      if (proxied) {
+        try {
+          const inner = new URL(decodeURIComponent(proxied));
+          if (isSyntheticAvatarHost(inner.hostname, inner.pathname, inner.search)) {
+            return true;
+          }
+        } catch {
+          if (/ui-avatars\.com|default-user/i.test(proxied)) return true;
+        }
+      }
     }
     return false;
   } catch {

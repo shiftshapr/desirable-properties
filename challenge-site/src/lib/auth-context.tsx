@@ -60,8 +60,6 @@ export function AuthProvider({
   }, [initialUser]);
 
   useEffect(() => {
-    if (initialChecked) return;
-
     let cancelled = false;
 
     (async () => {
@@ -72,7 +70,7 @@ export function AuthProvider({
           setUser(data.authenticated && data.user ? data.user : null);
         }
       } catch {
-        if (!cancelled) setUser(null);
+        if (!cancelled && !initialChecked) setUser(null);
       } finally {
         if (!cancelled) setChecked(true);
       }

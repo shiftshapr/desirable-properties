@@ -3,7 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import SiteShell from '@/components/SiteShell';
 import CanonicalHostScript from '@/components/CanonicalHostScript';
 import Web3AuthConfigScript from '@/components/Web3AuthConfigScript';
-import { readSession, sessionToAuthUser } from '@/lib/auth-session';
+import { refreshSessionFromCanopi } from '@/lib/auth-profile';
+import { createSessionCookie, readSession, sessionToAuthUser } from '@/lib/auth-session';
+import { cookies } from 'next/headers';
 import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
 import './globals.css';
@@ -31,7 +33,26 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await readSession();
-  const initialUser = sessionToAuthUser(session);
+  let initialUser = sessionToAuthUser(session);
+  if (session) {
+    const refreshed = await refreshSessionFromCanopi(session);
+    if (refreshed) {
+      initialUser = {
+        ...sessionToAuthUser(session)!,
+        profileImage: refreshed.profileImage,
+      };
+      if (refreshed.changed) {
+        const store = await cookies();
+        store.set(
+          await createSessionCookie({
+            ...session,
+            profileImage: refreshed.profileImage,
+            canopiUserId: refreshed.canopiUserId,
+          }),
+        );
+      }
+    }
+  }
   const upcoming = await listUpcomingEventEntries();
   const navLinks = buildSiteNavLinks(
     upcoming.map((event) => ({

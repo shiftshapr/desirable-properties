@@ -1,4 +1,5 @@
 import type { HermesSession } from '@/lib/auth-session';
+import { isSyntheticAvatarUrl } from '@/lib/avatar';
 import {
   fetchCanopiUserProfile,
   fetchCanopiWeb3AuthUser,
@@ -14,7 +15,7 @@ export function isUploadedProfileAvatar(url: string | null | undefined): boolean
 export function isPlaceholderAvatar(url: string | null | undefined): boolean {
   const raw = String(url || '').trim();
   if (!raw) return true;
-  return /ui-avatars\.com/i.test(raw);
+  return isSyntheticAvatarUrl(raw);
 }
 
 /** Prefer Canopi avatarUrl; keep Gov Hub uploads as fallback only. */
