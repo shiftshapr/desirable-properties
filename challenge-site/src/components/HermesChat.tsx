@@ -95,6 +95,11 @@ import {
   readHermesDocument,
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
+import {
+  deleteComposerSelection,
+  normalizeComposerSelectionAfterEdit,
+  resolveComposerSelection,
+} from '@/lib/hermesComposerCaret';
 import { useAuth } from '@/lib/auth-context';
 import { refreshSessionIdToken } from '@/lib/web3auth-login';
 import type { AuthUser } from '@/lib/auth-types';
@@ -620,12 +625,13 @@ export default function HermesChat({
     const el = composerRef.current;
     if (!el) return;
     const pending = selection ?? composerSelectionRef.current;
-    const preserveFromDom = !pending
-      && document.activeElement === el
-      && typeof el.selectionStart === 'number'
-      && typeof el.selectionEnd === 'number';
-    const selectionStart = pending?.start ?? (preserveFromDom ? el.selectionStart : null);
-    const selectionEnd = pending?.end ?? (preserveFromDom ? el.selectionEnd : null);
+    const resolved = resolveComposerSelection({
+      pendingRef: pending,
+      domSelection: typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number'
+        ? { start: el.selectionStart, end: el.selectionEnd }
+        : null,
+      isFocused: document.activeElement === el,
+    });
     el.style.height = 'auto';
     const next = Math.max(
       COMPOSER_MIN_HEIGHT_PX,
@@ -635,12 +641,12 @@ export default function HermesChat({
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
     if (
       document.activeElement === el
-      && typeof selectionStart === 'number'
-      && typeof selectionEnd === 'number'
+      && typeof resolved.start === 'number'
+      && typeof resolved.end === 'number'
     ) {
-      el.setSelectionRange(selectionStart, selectionEnd);
+      el.setSelectionRange(resolved.start, resolved.end);
     }
-    if (pending) composerSelectionRef.current = null;
+    if (resolved.clearRef) composerSelectionRef.current = null;
   }, []);
 
   const handleComposerChange = useCallback((
@@ -648,7 +654,7 @@ export default function HermesChat({
     selection?: { start: number; end: number },
   ) => {
     if (selection) {
-      composerSelectionRef.current = selection;
+      composerSelectionRef.current = normalizeComposerSelectionAfterEdit(selection);
     }
     setInputText(capComposerText(next));
   }, []);
@@ -2376,6 +2382,16 @@ export default function HermesChat({
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
+      return;
+    }
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      const start = e.currentTarget.selectionStart ?? 0;
+      const end = e.currentTarget.selectionEnd ?? 0;
+      const deleted = deleteComposerSelection(inputText, { start, end });
+      if (deleted) {
+        e.preventDefault();
+        handleComposerChange(deleted.value, deleted.selection);
+      }
     }
   };
 

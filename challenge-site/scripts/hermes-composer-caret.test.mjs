@@ -2,9 +2,23 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 /**
- * Mirrors HermesChat composer caret preservation: selection ref should drive
- * setSelectionRange after controlled value updates, not a stale rAF read.
+ * Mirrors src/lib/hermesComposerCaret.ts – keep in sync when editing caret logic.
  */
+
+function normalizeComposerSelectionAfterEdit(selection) {
+  if (selection.start === selection.end) return selection;
+  return { start: selection.start, end: selection.start };
+}
+
+function deleteComposerSelection(value, selection) {
+  const { start, end } = selection;
+  if (start === end) return null;
+  return {
+    value: value.slice(0, start) + value.slice(end),
+    selection: { start, end: start },
+  };
+}
+
 function resolveComposerSelection({
   pendingRef,
   domSelection,
@@ -47,6 +61,35 @@ test('does not restore selection when textarea is not focused', () => {
     pendingRef: { start: 2, end: 2 },
     domSelection: { start: 0, end: 0 },
     isFocused: false,
+  });
+  assert.equal(result.start, 2);
+  assert.equal(result.end, 2);
+});
+
+test('deleteComposerSelection removes highlighted range in one step', () => {
+  const result = deleteComposerSelection('hello world', { start: 5, end: 11 });
+  assert.deepEqual(result, {
+    value: 'hello',
+    selection: { start: 5, end: 5 },
+  });
+});
+
+test('deleteComposerSelection returns null when caret is collapsed', () => {
+  assert.equal(deleteComposerSelection('hello', { start: 2, end: 2 }), null);
+});
+
+test('normalizeComposerSelectionAfterEdit collapses stale highlight after bulk delete', () => {
+  const normalized = normalizeComposerSelectionAfterEdit({ start: 5, end: 11 });
+  assert.deepEqual(normalized, { start: 5, end: 5 });
+});
+
+test('bulk delete caret restore does not re-expand highlight from onSelect ref', () => {
+  const deleted = deleteComposerSelection('abcdef', { start: 2, end: 5 });
+  assert.ok(deleted);
+  const result = resolveComposerSelection({
+    pendingRef: normalizeComposerSelectionAfterEdit(deleted.selection),
+    domSelection: { start: 2, end: 5 },
+    isFocused: true,
   });
   assert.equal(result.start, 2);
   assert.equal(result.end, 2);
