@@ -840,15 +840,15 @@ export default function HermesChat({
         : null;
       if (loadedSummary) {
         setActiveThreadMeta(loadedSummary);
-        const mergeLoadedSummary = (list: HermesThreadSummary[]) => {
+        const upsertLoadedSummary = (list: HermesThreadSummary[]) => {
           const idx = list.findIndex((row) => row.id === loadedSummary.id);
-          if (idx < 0) return list;
+          if (idx < 0) return [loadedSummary, ...list];
           const next = [...list];
           next[idx] = { ...next[idx], ...loadedSummary };
           return next;
         };
-        setThreads((prev) => mergeLoadedSummary(prev));
-        setSharedThreads((prev) => mergeLoadedSummary(prev));
+        setThreads((prev) => upsertLoadedSummary(prev));
+        setSharedThreads((prev) => upsertLoadedSummary(prev));
       }
       const turns = loadedThread?.turns || [];
       const sets: ContributionSet[] = Array.isArray(loadedThread?.contributionSets)
@@ -962,22 +962,25 @@ export default function HermesChat({
   }, [persistActiveThread, dpFocus]);
 
   useEffect(() => {
-    if (!signedIn || threadUrlParam) return;
+    if (!signedIn) return;
+    void loadThreads();
+  }, [signedIn, loadThreads]);
+
+  useEffect(() => {
+    if (!signedIn || threadUrlParam || userPickedThreadRef.current) return;
     void (async () => {
-      const threadList = await loadThreads();
-      const sharedList = await loadSharedThreads();
-      if (userPickedThreadRef.current) return;
       const saved = normalizeHermesThreadId(
         typeof sessionStorage !== 'undefined'
           ? sessionStorage.getItem(ACTIVE_THREAD_KEY)
           : null,
       );
+      if (!saved) return;
+      const threadList = await loadThreads();
+      const sharedList = await loadSharedThreads();
+      if (userPickedThreadRef.current) return;
       if (
-        saved
-        && (
-          threadList.some((thread) => thread.id === saved)
-          || sharedList.some((thread) => thread.id === saved)
-        )
+        threadList.some((thread) => thread.id === saved)
+        || sharedList.some((thread) => thread.id === saved)
       ) {
         await loadThread(saved);
       }
