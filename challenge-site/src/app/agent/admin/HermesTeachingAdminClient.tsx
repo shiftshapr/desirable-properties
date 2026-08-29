@@ -1,7 +1,29 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+
+type FlashVariant = 'success' | 'info' | 'warning' | 'danger';
+
+type FlashMessage = {
+  message: string;
+  variant: FlashVariant;
+};
+
+const FLASH_AUTO_DISMISS_MS = 5000;
+
+function flashStyles(variant: FlashVariant) {
+  if (variant === 'danger') {
+    return 'border-rose-800/60 bg-rose-950/30 text-rose-200';
+  }
+  if (variant === 'warning') {
+    return 'border-amber-800/60 bg-amber-950/30 text-amber-200';
+  }
+  if (variant === 'info') {
+    return 'border-cyan-800/60 bg-cyan-950/30 text-cyan-200';
+  }
+  return 'border-emerald-800/60 bg-emerald-950/30 text-emerald-200';
+}
 
 type TeachingNote = {
   id: string;
@@ -51,11 +73,38 @@ export default function HermesTeachingAdminClient() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [flash, setFlash] = useState<string | null>(null);
+  const [flash, setFlash] = useState<FlashMessage | null>(null);
+  const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearFlash = useCallback(() => {
+    if (flashTimerRef.current) {
+      clearTimeout(flashTimerRef.current);
+      flashTimerRef.current = null;
+    }
+    setFlash(null);
+  }, []);
+
+  const showFlash = useCallback((message: string, variant: FlashVariant) => {
+    if (flashTimerRef.current) {
+      clearTimeout(flashTimerRef.current);
+    }
+    setFlash({ message, variant });
+    flashTimerRef.current = setTimeout(() => {
+      setFlash(null);
+      flashTimerRef.current = null;
+    }, FLASH_AUTO_DISMISS_MS);
+  }, []);
+
+  useEffect(() => () => {
+    if (flashTimerRef.current) {
+      clearTimeout(flashTimerRef.current);
+    }
+  }, []);
 
   const selected = notes.find((n) => n.id === selectedId) || null;
 
-  const loadQueue = useCallback(async () => {
+  const loadQueue = useCallback(async (opts?: { clearFlash?: boolean }) => {
+    if (opts?.clearFlash) clearFlash();
     setLoading(true);
     setError(null);
     try {
@@ -84,17 +133,21 @@ export default function HermesTeachingAdminClient() {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter]);
+  }, [statusFilter, clearFlash]);
 
   useEffect(() => {
     void loadQueue();
   }, [loadQueue]);
 
+  useEffect(() => {
+    clearFlash();
+  }, [statusFilter, clearFlash]);
+
   async function act(action: 'verify' | 'reject' | 'revoke') {
     if (!selectedId) return;
     setBusy(true);
     setError(null);
-    setFlash(null);
+    clearFlash();
     try {
       const res = await fetch(
         `/api/agent/admin/community-notes/${encodeURIComponent(selectedId)}/${action}`,
@@ -106,11 +159,11 @@ export default function HermesTeachingAdminClient() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || `${action} failed`);
       if (action === 'verify') {
-        setFlash('Teaching verified – Deepi can use it now.');
+        showFlash('Teaching verified – Deepi can use it now.', 'success');
       } else if (action === 'revoke') {
-        setFlash('Verified teaching revoked – Deepi will no longer use it.');
+        showFlash('Verified teaching revoked – Deepi will no longer use it.', 'warning');
       } else {
-        setFlash('Suggestion rejected.');
+        showFlash('Suggestion rejected.', 'danger');
       }
       await loadQueue();
     } catch (err) {
@@ -140,7 +193,7 @@ export default function HermesTeachingAdminClient() {
             </Link>
             <button
               type="button"
-              onClick={() => void loadQueue()}
+              onClick={() => void loadQueue({ clearFlash: true })}
               className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-200 hover:bg-slate-900"
             >
               Refresh
@@ -180,7 +233,10 @@ export default function HermesTeachingAdminClient() {
                 <button
                   key={note.id}
                   type="button"
-                  onClick={() => setSelectedId(note.id)}
+                  onClick={() => {
+                    clearFlash();
+                    setSelectedId(note.id);
+                  }}
                   className={`w-full rounded-xl border px-3 py-3 text-left transition ${
                     selectedId === note.id
                       ? 'border-cyan-700 bg-cyan-950/30'
@@ -217,8 +273,8 @@ export default function HermesTeachingAdminClient() {
             </p>
           ) : null}
           {flash ? (
-            <p className="mb-4 rounded-lg border border-emerald-800/60 bg-emerald-950/30 px-3 py-2 text-sm text-emerald-200">
-              {flash}
+            <p className={`mb-4 rounded-lg border px-3 py-2 text-sm ${flashStyles(flash.variant)}`}>
+              {flash.message}
             </p>
           ) : null}
 
@@ -232,8 +288,8 @@ export default function HermesTeachingAdminClient() {
                     {selected.status}
                   </span>
                   <p className="mt-2 text-xs text-slate-500">
-                    Saved {shortDate(selected.createdAt)}
-                    {selected.verifierId ? ` · by ${selected.verifierId.slice(0, 24)}` : ''}
+                    Submitted {shortDate(selected.createdAt)}
+                    {selected.verifierId ? ` · by ${selected.verifierId}` : ''}
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
                     DPs: {(selected.dpIds || []).join(', ') || 'general'}
@@ -307,11 +363,16 @@ export default function HermesTeachingAdminClient() {
               </div>
 
               {selected.status === 'verified' ? (
-                <p className="text-sm text-emerald-300">
-                  Verified {shortDate(selected.verifiedAt)}
-                  {selected.verifiedBy ? ` by ${selected.verifiedBy}` : ''}.
-                  Deepi can inject this on matching DP turns.
-                </p>
+                <div className="rounded-xl border border-emerald-900/50 bg-emerald-950/20 px-4 py-3">
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-emerald-500/90">
+                    Verification
+                  </p>
+                  <p className="mt-2 text-sm text-emerald-200">
+                    Verified {shortDate(selected.verifiedAt)}
+                    {selected.verifiedBy ? ` by ${selected.verifiedBy}` : ''}.
+                    Deepi can inject this on matching DP turns.
+                  </p>
+                </div>
               ) : null}
               {selected.status === 'rejected' ? (
                 <p className="text-sm text-rose-300">
