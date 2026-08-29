@@ -131,7 +131,20 @@ export function resolveAgentStarter(params: {
   intent?: string | null;
   starter?: string | null;
   slug?: string | null;
+  /** When opening an existing thread, ignore campaign/pathway starter params. */
+  thread?: string | null;
+  create?: string | null;
 }): ResolvedAgentStarter {
+  const threadParam = params.thread?.trim() || null;
+  const createParam = params.create?.trim() || null;
+  if (threadParam || createParam) {
+    return {
+      initialPrompt: null,
+      starterPrompts: null,
+      starterLabel: null,
+    };
+  }
+
   const promptParam = params.prompt?.trim() || null;
   const dpParam = params.dp?.trim() || null;
   const intentParam = params.intent?.trim() || null;

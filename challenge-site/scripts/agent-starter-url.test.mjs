@@ -49,3 +49,40 @@ test('short URLs avoid embedding prompt text', () => {
   assert.equal(href.includes('prompt='), false);
   assert.ok(href.length < 80);
 });
+
+/** Mirrors resolveAgentStarter thread/create guard in src/lib/agent-starter.ts */
+function resolveAgentStarter(params) {
+  const threadParam = params.thread?.trim() || null;
+  const createParam = params.create?.trim() || null;
+  if (threadParam || createParam) {
+    return { initialPrompt: null, starterPrompts: null, starterLabel: null };
+  }
+  if (params.intent?.trim() && params.dp?.trim()) {
+    return {
+      initialPrompt: 'campaign prompt',
+      starterPrompts: ['campaign prompt'],
+      starterLabel: 'DP campaign',
+    };
+  }
+  return { initialPrompt: null, starterPrompts: null, starterLabel: null };
+}
+
+test('thread param suppresses dp intent starter', () => {
+  const resolved = resolveAgentStarter({
+    dp: 'DP1',
+    intent: 'submit_problem',
+    thread: 'hermes:thread:aabbadde-fe92-4a9d-acff-c2f5f17eec57',
+  });
+  assert.equal(resolved.initialPrompt, null);
+  assert.equal(resolved.starterPrompts, null);
+  assert.equal(resolved.starterLabel, null);
+});
+
+test('create=community suppresses dp intent starter', () => {
+  const resolved = resolveAgentStarter({
+    dp: 'DP1',
+    intent: 'submit_problem',
+    create: 'community',
+  });
+  assert.equal(resolved.initialPrompt, null);
+});

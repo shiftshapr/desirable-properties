@@ -257,6 +257,42 @@ function dpChipLabel(dpNum: number): string {
 }
 
 const ACTIVE_THREAD_KEY = 'hermes-active-thread';
+
+const AGENT_STARTER_URL_KEYS = ['dp', 'intent', 'prompt', 'starter', 'slug'] as const;
+
+/** Strip campaign/pathway query params once a thread is active. */
+function clearAgentStarterUrlParams() {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  let changed = false;
+  for (const key of AGENT_STARTER_URL_KEYS) {
+    if (url.searchParams.has(key)) {
+      url.searchParams.delete(key);
+      changed = true;
+    }
+  }
+  if (!changed) return;
+  const next = `${url.pathname}${url.search}${url.hash}`;
+  window.history.replaceState(null, '', next);
+}
+
+/** Keep ?thread= in sync with sidebar selection for reload and deep links. */
+function syncThreadUrlParam(threadId: string | null) {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  const normalized = threadId ? normalizeHermesThreadId(threadId) : null;
+  const current = normalizeHermesThreadId(url.searchParams.get('thread'));
+  if (normalized === current && !AGENT_STARTER_URL_KEYS.some((key) => url.searchParams.has(key))) {
+    return;
+  }
+  if (normalized) url.searchParams.set('thread', normalized);
+  else url.searchParams.delete('thread');
+  for (const key of AGENT_STARTER_URL_KEYS) {
+    url.searchParams.delete(key);
+  }
+  const next = `${url.pathname}${url.search}${url.hash}`;
+  window.history.replaceState(null, '', next);
+}
 /** Matches Tailwind `max-h-40` on the composer textarea. */
 const COMPOSER_MAX_HEIGHT_PX = 160;
 /** Matches Tailwind `min-h-16` – keeps the AI FAB from overlapping the first text line. */
@@ -557,7 +593,13 @@ export default function HermesChat({
     },
   ]);
   const [inputText, setInputText] = useState(() =>
-    capComposerText(typeof initialPrompt === 'string' ? initialPrompt : ''),
+    capComposerText(
+      threadUrlParam || !initialPrompt
+        ? ''
+        : typeof initialPrompt === 'string'
+          ? initialPrompt
+          : '',
+    ),
   );
   const visibleStarters =
     starterPrompts && starterPrompts.length > 0
@@ -610,6 +652,8 @@ export default function HermesChat({
   const messagesFingerprintRef = useRef('');
   const messagesThreadIdRef = useRef<string | null>(null);
   const loadThreadSeqRef = useRef(0);
+  const userPickedThreadRef = useRef(false);
+  const showAgentStarters = !threadUrlParam && !activeThreadId;
 
   const beginChatAbort = useCallback(() => {
     chatAbortRef.current?.abort();
@@ -692,6 +736,7 @@ export default function HermesChat({
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
     setActiveThreadId(threadId);
+    syncThreadUrlParam(threadId);
     if (typeof sessionStorage === 'undefined') return;
     if (threadId) sessionStorage.setItem(ACTIVE_THREAD_KEY, threadId);
     else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
@@ -905,6 +950,9 @@ export default function HermesChat({
       }
       setAttachments([]);
       setAttachError(null);
+      setInputText('');
+      composerSelectionRef.current = composerSelectionAtEnd(0);
+      clearAgentStarterUrlParams();
       persistActiveThread(canonicalThreadId);
     } finally {
       if (requestSeq === loadThreadSeqRef.current) {
@@ -914,22 +962,31 @@ export default function HermesChat({
   }, [persistActiveThread, dpFocus]);
 
   useEffect(() => {
-    if (!signedIn) return;
+    if (!signedIn || threadUrlParam) return;
     void (async () => {
       const threadList = await loadThreads();
+      const sharedList = await loadSharedThreads();
+      if (userPickedThreadRef.current) return;
       const saved = normalizeHermesThreadId(
         typeof sessionStorage !== 'undefined'
           ? sessionStorage.getItem(ACTIVE_THREAD_KEY)
           : null,
       );
-      if (saved && threadList.some((thread) => thread.id === saved)) {
+      if (
+        saved
+        && (
+          threadList.some((thread) => thread.id === saved)
+          || sharedList.some((thread) => thread.id === saved)
+        )
+      ) {
         await loadThread(saved);
       }
     })();
-  }, [signedIn, loadThreads, loadThread]);
+  }, [signedIn, threadUrlParam, loadThreads, loadSharedThreads, loadThread]);
 
   useEffect(() => {
     if (!signedIn || !threadUrlParam) return;
+    clearAgentStarterUrlParams();
     void loadThread(threadUrlParam);
   }, [signedIn, threadUrlParam, loadThread]);
 
@@ -1072,6 +1129,11 @@ export default function HermesChat({
       // Web3Auth modal closed or failed
     });
   };
+
+  const selectSidebarThread = useCallback((threadId: string) => {
+    userPickedThreadRef.current = true;
+    void loadThread(threadId);
+  }, [loadThread]);
 
   const startNewConversation = () => {
     persistActiveThread(null);
@@ -2564,7 +2626,7 @@ export default function HermesChat({
       loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={signedIn}
       archiveView={archiveView}
-      onSelect={(threadId) => void loadThread(threadId)}
+      onSelect={selectSidebarThread}
       onCreatePersonal={startNewConversation}
       onCreateCommunity={openCommunityCreate}
       onInviteCommunity={signedIn ? openCommunityInvite : undefined}
@@ -2830,7 +2892,8 @@ export default function HermesChat({
                   )}
                   {message.sender === 'assistant'
                     && message.id === 'intro'
-                    && messages.length === 1 ? (
+                    && messages.length === 1
+                    && showAgentStarters ? (
                     <div className="mt-3 space-y-2">
                       {starterLabel ? (
                         <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-cyan-400/90">

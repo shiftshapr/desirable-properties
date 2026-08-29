@@ -31,6 +31,8 @@ export default async function AgentPage({
     intent: firstParam(params.intent),
     starter: firstParam(params.starter),
     slug: firstParam(params.slug),
+    thread: firstParam(params.thread),
+    create: firstParam(params.create),
   });
 
   return (
