@@ -258,6 +258,33 @@ function capComposerText(text: string): string {
   return text.slice(0, COMPOSER_MAX_CHARS);
 }
 
+function threadMessagesFingerprint(threadId: string, messages: Message[]): string {
+  const body = messages
+    .filter((m) => m.id !== 'intro')
+    .map((m) => `${m.id}:${m.text.length}:${m.sender}`)
+    .join('|');
+  return `${threadId}|${body}`;
+}
+
+/** Apply sidebar thread switches always; preserve chat selection only on same-thread refresh. */
+function shouldApplyThreadMessages({
+  threadId,
+  displayedThreadId,
+  nextFingerprint,
+  currentFingerprint,
+  preserveSelection,
+}: {
+  threadId: string;
+  displayedThreadId: string | null;
+  nextFingerprint: string;
+  currentFingerprint: string;
+  preserveSelection: boolean;
+}): boolean {
+  if (threadId !== displayedThreadId) return true;
+  if (preserveSelection) return false;
+  return nextFingerprint !== currentFingerprint;
+}
+
 const CONTINUE_PROMPT =
   'Continue your previous reply from exactly where you stopped. Do not repeat content you already wrote. Complete any unfinished numbered items, tables, or sentences and end with proper punctuation.';
 
@@ -565,6 +592,8 @@ export default function HermesChat({
   const prevHadContributionDraftRef = useRef(false);
   const selectingInChatRef = useRef(false);
   const messagesFingerprintRef = useRef('');
+  const messagesThreadIdRef = useRef<string | null>(null);
+  const loadThreadSeqRef = useRef(0);
 
   const beginChatAbort = useCallback(() => {
     chatAbortRef.current?.abort();
@@ -708,11 +737,19 @@ export default function HermesChat({
   }, [archiveView, loadSharedThreads]);
 
   const loadThread = useCallback(async (threadId: string) => {
+    const requestSeq = ++loadThreadSeqRef.current;
+    const isThreadSwitch = threadId !== messagesThreadIdRef.current;
+    if (isThreadSwitch) {
+      window.getSelection()?.removeAllRanges();
+      selectingInChatRef.current = false;
+    }
+
     setThreadLoadError(null);
     setThreadLoadingId(threadId);
     try {
       const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`);
       const data = await res.json().catch(() => ({}));
+      if (requestSeq !== loadThreadSeqRef.current) return;
       if (!res.ok) {
         setThreadLoadError(data.error || 'Could not load this conversation');
         return;
@@ -763,16 +800,21 @@ export default function HermesChat({
         sets,
       );
       const merged = mergePendingUserMessagesIntoThread(hydrated, threadId);
-      const nextFingerprint = merged
-        .filter((m) => m.id !== 'intro')
-        .map((m) => `${m.id}:${m.text.length}:${m.sender}`)
-        .join('|');
+      const nextFingerprint = threadMessagesFingerprint(threadId, merged);
       const preserveSelection = isTextSelectionInElement(scrollContainerRef.current)
         || selectingInChatRef.current;
-      if (!preserveSelection && nextFingerprint !== messagesFingerprintRef.current) {
+      if (shouldApplyThreadMessages({
+        threadId,
+        displayedThreadId: messagesThreadIdRef.current,
+        nextFingerprint,
+        currentFingerprint: messagesFingerprintRef.current,
+        preserveSelection,
+      })) {
         setMessages(merged);
         messagesFingerprintRef.current = nextFingerprint;
+        messagesThreadIdRef.current = threadId;
       }
+      if (requestSeq !== loadThreadSeqRef.current) return;
       setThreadAccess(data.thread?.access || null);
       const pending = loadPendingContributionDraft(threadId);
       if (pending?.draft) {
@@ -814,7 +856,9 @@ export default function HermesChat({
       setAttachError(null);
       persistActiveThread(threadId);
     } finally {
-      setThreadLoadingId(null);
+      if (requestSeq === loadThreadSeqRef.current) {
+        setThreadLoadingId(null);
+      }
     }
   }, [persistActiveThread, dpFocus]);
 
@@ -987,6 +1031,8 @@ export default function HermesChat({
     setAttachments([]);
     setAttachError(null);
     setSystemNotice(null);
+    messagesFingerprintRef.current = '';
+    messagesThreadIdRef.current = null;
     setMessages([
       { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
     ]);
@@ -2414,7 +2460,7 @@ export default function HermesChat({
       loading={threadsLoading || Boolean(threadLoadingId)}
       signedIn={signedIn}
       archiveView={archiveView}
-      onSelect={loadThread}
+      onSelect={(threadId) => void loadThread(threadId)}
       onCreatePersonal={startNewConversation}
       onCreateCommunity={openCommunityCreate}
       onInviteCommunity={signedIn ? openCommunityInvite : undefined}
