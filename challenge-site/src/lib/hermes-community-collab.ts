@@ -6,6 +6,18 @@ export type CommunityCollabParticipant = {
   role: string;
 };
 
+const HERMES_THREAD_ID_PREFIX = 'hermes:thread:';
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Canonical Hermes thread id (sidebar lists use hermes:thread:{uuid}). */
+export function normalizeHermesThreadId(threadId?: string | null): string | null {
+  const trimmed = String(threadId || '').trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith(HERMES_THREAD_ID_PREFIX)) return trimmed;
+  if (UUID_RE.test(trimmed)) return `${HERMES_THREAD_ID_PREFIX}${trimmed}`;
+  return trimmed;
+}
+
 /** Community Chat uses the group collab pattern: everyone invited can prompt Deepi. */
 export function isCommunityCollabThread(
   thread?: Pick<HermesThreadSummary, 'threadKind'> | null,

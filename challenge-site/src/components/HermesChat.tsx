@@ -35,6 +35,7 @@ import {
   communityCollabTitle,
   communityParticipantsFromShares,
   isCommunityCollabThread,
+  normalizeHermesThreadId,
 } from '@/lib/hermes-community-collab';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
 import {
@@ -515,7 +516,7 @@ export default function HermesChat({
   const { user: authUser, checked, login, loginBusy } = useAuth();
   const searchParams = useSearchParams();
   const archiveView = searchParams.get('archive') === '1';
-  const threadUrlParam = searchParams.get('thread')?.trim() || null;
+  const threadUrlParam = normalizeHermesThreadId(searchParams.get('thread')?.trim() || null);
   const createUrlParam = searchParams.get('create')?.trim() || null;
   const workgroupSlugParam = searchParams.get('wg')?.trim() || null;
   const fromWorkgroupParam = searchParams.get('from') === 'workgroup' && workgroupSlugParam;
@@ -530,6 +531,7 @@ export default function HermesChat({
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
+  const [activeThreadMeta, setActiveThreadMeta] = useState<HermesThreadSummary | null>(null);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [shareWizardThreadId, setShareWizardThreadId] = useState<string | null>(null);
@@ -755,7 +757,10 @@ export default function HermesChat({
     }
   }, [archiveView, loadSharedThreads]);
 
-  const loadThread = useCallback(async (threadId: string) => {
+  const loadThread = useCallback(async (rawThreadId: string) => {
+    const threadId = normalizeHermesThreadId(rawThreadId);
+    if (!threadId) return;
+
     const requestSeq = ++loadThreadSeqRef.current;
     const isThreadSwitch = threadId !== messagesThreadIdRef.current;
     if (isThreadSwitch) {
@@ -773,13 +778,36 @@ export default function HermesChat({
         setThreadLoadError(data.error || 'Could not load this conversation');
         return;
       }
-      const turns = data.thread?.turns || [];
-      const sets: ContributionSet[] = Array.isArray(data.thread?.contributionSets)
-        ? data.thread.contributionSets
+      const loadedThread = data.thread;
+      const canonicalThreadId = loadedThread?.id || threadId;
+      const loadedSummary: HermesThreadSummary | null = loadedThread?.id
+        ? {
+            id: loadedThread.id,
+            title: loadedThread.title,
+            surface: loadedThread.surface,
+            threadKind: loadedThread.threadKind || 'private',
+            groupTitle: loadedThread.groupTitle ?? null,
+          }
+        : null;
+      if (loadedSummary) {
+        setActiveThreadMeta(loadedSummary);
+        const mergeLoadedSummary = (list: HermesThreadSummary[]) => {
+          const idx = list.findIndex((row) => row.id === loadedSummary.id);
+          if (idx < 0) return list;
+          const next = [...list];
+          next[idx] = { ...next[idx], ...loadedSummary };
+          return next;
+        };
+        setThreads((prev) => mergeLoadedSummary(prev));
+        setSharedThreads((prev) => mergeLoadedSummary(prev));
+      }
+      const turns = loadedThread?.turns || [];
+      const sets: ContributionSet[] = Array.isArray(loadedThread?.contributionSets)
+        ? loadedThread.contributionSets
         : [];
       setContributionSets(sets);
       clearStagedProposalsForFiledRefs(sets);
-      clearPendingDraftIfFiledOnThread(sets, threadId);
+      clearPendingDraftIfFiledOnThread(sets, canonicalThreadId);
       const restored: Message[] = [
         {
           id: 'intro',
@@ -818,12 +846,12 @@ export default function HermesChat({
         dpFocus,
         sets,
       );
-      const merged = mergePendingUserMessagesIntoThread(hydrated, threadId);
-      const nextFingerprint = threadMessagesFingerprint(threadId, merged);
+      const merged = mergePendingUserMessagesIntoThread(hydrated, canonicalThreadId);
+      const nextFingerprint = threadMessagesFingerprint(canonicalThreadId, merged);
       const preserveSelection = isTextSelectionInElement(scrollContainerRef.current)
         || selectingInChatRef.current;
       if (shouldApplyThreadMessages({
-        threadId,
+        threadId: canonicalThreadId,
         displayedThreadId: messagesThreadIdRef.current,
         nextFingerprint,
         currentFingerprint: messagesFingerprintRef.current,
@@ -831,11 +859,11 @@ export default function HermesChat({
       })) {
         setMessages(merged);
         messagesFingerprintRef.current = nextFingerprint;
-        messagesThreadIdRef.current = threadId;
+        messagesThreadIdRef.current = canonicalThreadId;
       }
       if (requestSeq !== loadThreadSeqRef.current) return;
-      setThreadAccess(data.thread?.access || null);
-      const pending = loadPendingContributionDraft(threadId);
+      setThreadAccess(loadedThread?.access || null);
+      const pending = loadPendingContributionDraft(canonicalThreadId);
       if (pending?.draft) {
         const assistantTurnId = pending.assistantMessageId
           ? turnIdFromAssistantMessageId(pending.assistantMessageId)
@@ -873,7 +901,7 @@ export default function HermesChat({
       }
       setAttachments([]);
       setAttachError(null);
-      persistActiveThread(threadId);
+      persistActiveThread(canonicalThreadId);
     } finally {
       if (requestSeq === loadThreadSeqRef.current) {
         setThreadLoadingId(null);
@@ -885,10 +913,11 @@ export default function HermesChat({
     if (!signedIn) return;
     void (async () => {
       const threadList = await loadThreads();
-      const saved =
+      const saved = normalizeHermesThreadId(
         typeof sessionStorage !== 'undefined'
           ? sessionStorage.getItem(ACTIVE_THREAD_KEY)
-          : null;
+          : null,
+      );
       if (saved && threadList.some((thread) => thread.id === saved)) {
         await loadThread(saved);
       }
@@ -1043,6 +1072,7 @@ export default function HermesChat({
 
   const startNewConversation = () => {
     persistActiveThread(null);
+    setActiveThreadMeta(null);
     setThreadAccess(null);
     clearPendingContributionDraft();
     setContributionSets([]);
@@ -2422,17 +2452,24 @@ export default function HermesChat({
     void loadSharedThreads();
   }, [refreshThreadShares, loadSharedThreads]);
 
+  const resolveThreadSummary = useCallback((threadId: string) => {
+    const normalizedId = normalizeHermesThreadId(threadId);
+    if (!normalizedId) return undefined;
+    return threads.find((t) => t.id === normalizedId)
+      || sharedThreads.find((t) => t.id === normalizedId)
+      || (activeThreadMeta?.id === normalizedId ? activeThreadMeta : undefined);
+  }, [threads, sharedThreads, activeThreadMeta]);
+
   const openShareWizard = useCallback((anchor?: { turnId: string | null; label: string }, threadId?: string) => {
-    const targetThreadId = threadId || activeThreadIdRef.current;
+    const targetThreadId = normalizeHermesThreadId(threadId || activeThreadIdRef.current);
     if (!targetThreadId) return;
-    const active = threads.find((t) => t.id === targetThreadId)
-      || sharedThreads.find((t) => t.id === targetThreadId);
+    const active = resolveThreadSummary(targetThreadId);
     setShareWizardThreadId(targetThreadId);
     setShareCommunityInvite(active?.threadKind === 'group');
     setShareAnchorTurnId(anchor?.turnId ?? null);
     setShareAnchorLabel(anchor?.label ?? null);
     setShareWizardOpen(true);
-  }, [threads, sharedThreads]);
+  }, [resolveThreadSummary]);
 
   const openCommunityInvite = useCallback((threadId: string) => {
     void loadThread(threadId);
@@ -2470,11 +2507,12 @@ export default function HermesChat({
     [threads],
   );
 
-  const activeThreadSummary = useMemo(
-    () => threads.find((t) => t.id === activeThreadId)
-      || sharedThreads.find((t) => t.id === activeThreadId),
-    [threads, sharedThreads, activeThreadId],
-  );
+  const activeThreadSummary = useMemo(() => {
+    if (!activeThreadId) return null;
+    return threads.find((t) => t.id === activeThreadId)
+      || sharedThreads.find((t) => t.id === activeThreadId)
+      || (activeThreadMeta?.id === activeThreadId ? activeThreadMeta : null);
+  }, [threads, sharedThreads, activeThreadId, activeThreadMeta]);
   const isActiveCommunityChat = isCommunityCollabThread(activeThreadSummary);
   const communityCollabTitleLabel = communityCollabTitle(activeThreadSummary);
   const communityParticipants = useMemo(
@@ -2485,9 +2523,8 @@ export default function HermesChat({
 
   const shareWizardThread = useMemo(() => {
     if (!shareWizardThreadId) return null;
-    return threads.find((t) => t.id === shareWizardThreadId)
-      || sharedThreads.find((t) => t.id === shareWizardThreadId);
-  }, [threads, sharedThreads, shareWizardThreadId]);
+    return resolveThreadSummary(shareWizardThreadId) || null;
+  }, [shareWizardThreadId, resolveThreadSummary]);
 
   const sidebar = (
     <HermesThreadSidebar
