@@ -17,11 +17,7 @@ export const AI_HUMAN_AGENCY_META: PathwayMeta = {
     'What properties should the digital world possess if AI becomes our primary interface to the Internet? Explore intellectual sovereignty, intellectual subsidiarity, human agency, shared context, and the Desirable Properties of a human-centered layered Web.',
   hermesPrompt:
     'Help me evaluate the Desirable Properties from a pro-human AI perspective. I am particularly interested in intellectual sovereignty, intellectual subsidiarity, persistent human context, freedom from mandatory AI mediation, community autonomy, and the ability for humans to encounter one another directly. Show me what the current Desirable Properties already address, where tensions exist, and where there may be gaps.',
-  hermesHref:
-    '/agent?starter=ai-human-agency&prompt=' +
-    encodeURIComponent(
-      'Help me evaluate the Desirable Properties from a pro-human AI perspective. I am particularly interested in intellectual sovereignty, intellectual subsidiarity, persistent human context, freedom from mandatory AI mediation, community autonomy, and the ability for humans to encounter one another directly. Show me what the current Desirable Properties already address, where tensions exist, and where there may be gaps.',
-    ),
+  hermesHref: '/agent?starter=ai-human-agency',
 };
 
 export const AI_HUMAN_AGENCY_PRINCIPLES: PathwayPrinciple[] = [

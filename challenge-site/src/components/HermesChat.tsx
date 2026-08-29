@@ -141,7 +141,7 @@ interface HermesChatProps {
   compact?: boolean;
   initialSignedIn?: boolean;
   initialUser?: AuthUser | null;
-  /** Prefill the composer (e.g. from /agent?prompt=…). */
+  /** Prefill the composer (resolved server-side from short /agent links). */
   initialPrompt?: string | null;
   /** Optional pathway-specific starters shown above the defaults. */
   starterPrompts?: string[] | null;
@@ -250,6 +250,13 @@ const ACTIVE_THREAD_KEY = 'hermes-active-thread';
 const COMPOSER_MAX_HEIGHT_PX = 160;
 /** Matches Tailwind `min-h-16` – keeps the AI FAB from overlapping the first text line. */
 const COMPOSER_MIN_HEIGHT_PX = 64;
+/** Keep URL prefill and paste from freezing the tab on huge blobs. */
+const COMPOSER_MAX_CHARS = 48_000;
+
+function capComposerText(text: string): string {
+  if (text.length <= COMPOSER_MAX_CHARS) return text;
+  return text.slice(0, COMPOSER_MAX_CHARS);
+}
 
 const CONTINUE_PROMPT =
   'Continue your previous reply from exactly where you stopped. Do not repeat content you already wrote. Complete any unfinished numbered items, tables, or sentences and end with proper punctuation.';
@@ -509,7 +516,7 @@ export default function HermesChat({
     },
   ]);
   const [inputText, setInputText] = useState(() =>
-    typeof initialPrompt === 'string' ? initialPrompt : '',
+    capComposerText(typeof initialPrompt === 'string' ? initialPrompt : ''),
   );
   const visibleStarters =
     starterPrompts && starterPrompts.length > 0
@@ -612,7 +619,7 @@ export default function HermesChat({
     if (selection) {
       composerSelectionRef.current = selection;
     }
-    setInputText(next);
+    setInputText(capComposerText(next));
   }, []);
 
   useLayoutEffect(() => {
@@ -2948,7 +2955,7 @@ export default function HermesChat({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isLoading || attachments.length >= HERMES_DOC_MAX_COUNT || isWatchingOnly}
                 className="flex h-10 shrink-0 items-center justify-center rounded-lg px-2 text-slate-400 hover:bg-slate-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
-                title={`Upload ${HERMES_DOC_TYPES_LABEL}`}
+                title={`Attach ${HERMES_DOC_TYPES_LABEL}. Paste website URLs in the message box.`}
                 aria-label="Attach file"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -2981,6 +2988,7 @@ export default function HermesChat({
                   }
                   className="max-h-40 min-h-16 w-full resize-none bg-transparent px-1 py-2.5 pr-14 pb-2 text-sm leading-5 text-white placeholder:text-slate-500 focus:outline-none"
                   rows={1}
+                  maxLength={COMPOSER_MAX_CHARS}
                   disabled={isLoading || isWatchingOnly}
                 />
                 {signedIn ? (

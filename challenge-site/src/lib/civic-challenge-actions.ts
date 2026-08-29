@@ -1,4 +1,5 @@
 import type { CivicChallenge, CivicChallengeAction } from '@/data/civic-challenges/schema';
+import { buildAgentHref } from '@/lib/agent-starter';
 import { bookDiscussHref } from '@/lib/govhub';
 import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { workgroupPrimaryHref } from '@/lib/workgroup-links';
@@ -31,14 +32,12 @@ export function resolveCivicChallengeActions(
       case 'submit_problem':
         return {
           ...action,
-          href: `/agent?dp=${encodeURIComponent(catalogId)}&prompt=${encodeURIComponent(
-            `I want to submit a real-world problem related to ${catalogId} (${challenge.title}). Guiding question: ${challenge.guidingQuestion}`,
-          )}`,
+          href: buildAgentHref({ dp: catalogId, intent: 'submit_problem' }),
         };
       case 'companion':
         return {
           ...action,
-          href: `/agent?dp=${encodeURIComponent(catalogId)}`,
+          href: buildAgentHref({ dp: catalogId }),
         };
       case 'improve':
         return {
@@ -54,9 +53,7 @@ export function resolveCivicChallengeActions(
       case 'curate':
         return {
           ...action,
-          href: `/agent?dp=${encodeURIComponent(catalogId)}&prompt=${encodeURIComponent(
-            `Help me curate community submissions related to ${catalogId} (${challenge.title}).`,
-          )}`,
+          href: buildAgentHref({ dp: catalogId, intent: 'curate' }),
         };
       default:
         return {

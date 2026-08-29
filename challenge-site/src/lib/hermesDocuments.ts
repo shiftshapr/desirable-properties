@@ -25,6 +25,21 @@ export interface PendingHermesDocument {
   contentBase64: string;
 }
 
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        reject(new Error('Could not read file'));
+        return;
+      }
+      resolve(reader.result);
+    };
+    reader.onerror = () => reject(new Error('Could not read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function readHermesDocument(file: File): Promise<PendingHermesDocument> {
   if (file.size > HERMES_DOC_MAX_BYTES) {
     throw new Error(`${file.name} is too large (max 2MB)`);
@@ -35,17 +50,17 @@ export async function readHermesDocument(file: File): Promise<PendingHermesDocum
     throw new Error(`${file.name}: use ${HERMES_DOC_TYPES_LABEL}`);
   }
 
-  const buffer = await file.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  let binary = '';
-  for (let i = 0; i < bytes.length; i += 1) {
-    binary += String.fromCharCode(bytes[i]);
+  const dataUrl = await readFileAsDataUrl(file);
+  const comma = dataUrl.indexOf(',');
+  const contentBase64 = comma >= 0 ? dataUrl.slice(comma + 1) : '';
+  if (!contentBase64) {
+    throw new Error(`Could not read ${file.name}`);
   }
 
   return {
     id: `${Date.now()}-${file.name}`,
     name: file.name,
-    contentBase64: btoa(binary),
+    contentBase64,
   };
 }
 

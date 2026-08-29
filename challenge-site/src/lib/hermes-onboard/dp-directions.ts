@@ -1,7 +1,8 @@
+import { buildAgentHref } from '@/lib/agent-starter';
 import { getCivicChallenge } from '@/lib/civic-challenges';
 import { getDpRegistryEntry } from '@/lib/dp-registry';
-import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { bookDiscussHref } from '@/lib/govhub';
+import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { workgroupPrimaryHref } from '@/lib/workgroup-links';
 import type { AllianceOrg, DpDirection } from '@/lib/hermes-onboard/types';
 
@@ -19,18 +20,15 @@ const TAG_DPS: Record<string, string[]> = {
 
 const DEFAULT_DPS = ['DP2', 'DP4', 'DP20', 'DP8'];
 
-function hermesPatchHref(org: AllianceOrg, dpId: string, patchIdea: string, dpName: string): string {
-  const prompt = [
-    `I am looking at the landing pad for ${org.name}.`,
-    `Public mission we used: ${org.mission}`,
-    `Desirable Property: ${dpId} (${dpName}).`,
-    `Candidate patch direction (hypothesis until they confirm): ${patchIdea}`,
-    `Ask me what this org's public corpus already covers that the DP text is missing, then help me turn one concrete sentence into a Discuss patch.`,
-  ].join(' ');
-  return `/agent?dp=${encodeURIComponent(dpId)}&prompt=${encodeURIComponent(prompt)}`;
+function hermesPatchHref(org: AllianceOrg, dpId: string): string {
+  return buildAgentHref({
+    dp: dpId,
+    intent: 'alliance_patch',
+    slug: org.slug,
+  });
 }
 
-function patchSeed(org: AllianceOrg, dpId: string): { direction: string; patchIdea: string } {
+export function patchSeed(org: AllianceOrg, dpId: string): { direction: string; patchIdea: string } {
   const name = org.shortName;
   switch (dpId) {
     case 'DP1':
@@ -145,7 +143,7 @@ export function generateDpDirections(org: AllianceOrg): DpDirection[] {
       citations,
       chapterHref: entry.siteUrl,
       discussHref: bookDiscussHref({ dpId: entry.id }),
-      hermesHref: hermesPatchHref(org, entry.id, seed.patchIdea, entry.name),
+      hermesHref: hermesPatchHref(org, entry.id),
       workgroupHref: slug ? workgroupPrimaryHref(slug) : '/workgroups',
     });
   }
