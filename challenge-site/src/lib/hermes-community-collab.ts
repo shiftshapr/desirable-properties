@@ -25,6 +25,13 @@ export function isCommunityCollabThread(
   return thread?.threadKind === 'group';
 }
 
+/** Community invites use member grants, not private share-out sidebar semantics. */
+export function isCommunityOwnedThread(
+  thread?: Pick<HermesThreadSummary, 'threadKind' | 'shared'> | null,
+): boolean {
+  return isCommunityCollabThread(thread) && !thread?.shared;
+}
+
 export function communityCollabTitle(
   thread?: Pick<HermesThreadSummary, 'groupTitle' | 'title'> | null,
 ): string {

@@ -378,7 +378,7 @@ export default function HermesThreadSidebar({
               <span className="mt-0.5 shrink-0 text-[10px]" aria-hidden title={thread.shareRole || 'shared'}>
                 {thread.shareRole === 'controller' ? '✎' : thread.shareRole === 'control_invited' ? '⏳' : '👁'}
               </span>
-            ) : sharedByMe || (thread.activeShareCount && thread.activeShareCount > 0) ? (
+            ) : sharedByMe && !isCommunity ? (
               <span className="mt-0.5 shrink-0 text-[10px] text-cyan-400/80" aria-hidden title="Shared with others">
                 ↗
               </span>
@@ -390,7 +390,7 @@ export default function HermesThreadSidebar({
           {shared && !sharedByMe && thread.ownerName ? (
             <span className="mt-0.5 block text-[10px] text-slate-500">from {thread.ownerName}</span>
           ) : null}
-          {sharedByMe ? (
+          {sharedByMe && !isCommunity ? (
             <span className="mt-0.5 block text-[10px] text-slate-500">shared by you</span>
           ) : null}
           {isCommunity ? (
@@ -398,6 +398,11 @@ export default function HermesThreadSidebar({
               <span className="rounded bg-teal-900/50 px-1.5 py-0.5 text-[10px] font-medium text-teal-200">
                 Community
               </span>
+              {(thread.activeShareCount || 0) > 0 ? (
+                <span className="text-[10px] text-slate-500">
+                  {thread.activeShareCount} invited
+                </span>
+              ) : null}
             </span>
           ) : null}
           {workgroupOrigin ? (

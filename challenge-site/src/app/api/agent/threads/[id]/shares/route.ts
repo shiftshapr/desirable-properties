@@ -72,7 +72,7 @@ export async function POST(request: Request, { params }: RouteParams) {
       headers: hermesUpstreamHeaders(),
       body: JSON.stringify({
         verifierId: session.verifierId,
-        sendeeRole: body.sendeeRole || 'watcher',
+        sendeeRole: body.sendeeRole || (body.communityInvite ? 'member' : 'watcher'),
         visibility: body.visibility || 'full',
         senderRetainsWatch: body.senderRetainsWatch !== false,
         expiresInHours: body.expiresInHours ?? 24,

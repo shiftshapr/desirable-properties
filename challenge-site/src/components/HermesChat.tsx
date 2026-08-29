@@ -13,6 +13,7 @@ import NamedTabLink from '@/components/NamedTabLink';
 import HermesTeachModal, { type HermesTeachMode } from '@/components/HermesTeachModal';
 import HermesPromptStackRail from '@/components/HermesPromptStackRail';
 import HermesCommunityCollabHeader from '@/components/HermesCommunityCollabHeader';
+import HermesCommunityInviteModal from '@/components/HermesCommunityInviteModal';
 import HermesShareWizard from '@/components/HermesShareWizard';
 import HermesCommunityCreateModal from '@/components/HermesCommunityCreateModal';
 import HermesShareStatus from '@/components/HermesShareStatus';
@@ -35,6 +36,7 @@ import {
   communityCollabTitle,
   communityParticipantsFromShares,
   isCommunityCollabThread,
+  isCommunityOwnedThread,
   normalizeHermesThreadId,
 } from '@/lib/hermes-community-collab';
 import { bookDiscussDraftHref, bookDiscussHref, bookDiscussPostHref } from '@/lib/govhub';
@@ -536,6 +538,8 @@ export default function HermesChat({
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [shareWizardThreadId, setShareWizardThreadId] = useState<string | null>(null);
   const [shareCommunityInvite, setShareCommunityInvite] = useState(false);
+  const [communityInviteOpen, setCommunityInviteOpen] = useState(false);
+  const [communityInviteThreadId, setCommunityInviteThreadId] = useState<string | null>(null);
   const [communityCreateOpen, setCommunityCreateOpen] = useState(false);
   const [communityCreateBusy, setCommunityCreateBusy] = useState(false);
   const [communityCreateError, setCommunityCreateError] = useState<string | null>(null);
@@ -933,9 +937,8 @@ export default function HermesChat({
     if (!signedIn || typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('invite') !== 'community' || !threadUrlParam) return;
-    setShareWizardThreadId(threadUrlParam);
-    setShareCommunityInvite(true);
-    setShareWizardOpen(true);
+    setCommunityInviteThreadId(threadUrlParam);
+    setCommunityInviteOpen(true);
     params.delete('invite');
     const next = `${window.location.pathname}?${params.toString()}`.replace(/\?$/, '');
     window.history.replaceState({}, '', next || window.location.pathname);
@@ -1111,12 +1114,17 @@ export default function HermesChat({
       if (!createRes.ok || !createData.thread?.id) {
         throw new Error(createData.error || 'Could not create Community Chat');
       }
+      const createdThread = {
+        ...createData.thread,
+        threadKind: createData.thread.threadKind || 'group',
+        groupTitle: createData.thread.groupTitle || groupTitle,
+      };
       setCommunityCreateOpen(false);
-      setThreads((prev) => [createData.thread, ...prev.filter((t) => t.id !== createData.thread.id)]);
-      await loadThread(createData.thread.id);
-      setShareWizardThreadId(createData.thread.id);
-      setShareCommunityInvite(true);
-      setShareWizardOpen(true);
+      setActiveThreadMeta(createdThread);
+      setThreads((prev) => [createdThread, ...prev.filter((t) => t.id !== createdThread.id)]);
+      await loadThread(createdThread.id);
+      setCommunityInviteThreadId(createdThread.id);
+      setCommunityInviteOpen(true);
       setSystemNotice({
         variant: 'success',
         text: 'Community Chat created. Invite members by email or share a link.',
@@ -2464,6 +2472,11 @@ export default function HermesChat({
     const targetThreadId = normalizeHermesThreadId(threadId || activeThreadIdRef.current);
     if (!targetThreadId) return;
     const active = resolveThreadSummary(targetThreadId);
+    if (isCommunityCollabThread(active) && !anchor?.turnId) {
+      setCommunityInviteThreadId(targetThreadId);
+      setCommunityInviteOpen(true);
+      return;
+    }
     setShareWizardThreadId(targetThreadId);
     setShareCommunityInvite(active?.threadKind === 'group');
     setShareAnchorTurnId(anchor?.turnId ?? null);
@@ -2472,10 +2485,17 @@ export default function HermesChat({
   }, [resolveThreadSummary]);
 
   const openCommunityInvite = useCallback((threadId: string) => {
-    void loadThread(threadId);
-    openShareWizard(undefined, threadId);
-    setShareCommunityInvite(true);
-  }, [loadThread, openShareWizard]);
+    const normalizedId = normalizeHermesThreadId(threadId);
+    if (!normalizedId) return;
+    void loadThread(normalizedId);
+    setCommunityInviteThreadId(normalizedId);
+    setCommunityInviteOpen(true);
+  }, [loadThread]);
+
+  const closeCommunityInvite = useCallback(() => {
+    setCommunityInviteOpen(false);
+    setCommunityInviteThreadId(null);
+  }, []);
 
   const closeShareWizard = useCallback(() => {
     setShareWizardOpen(false);
@@ -2498,12 +2518,16 @@ export default function HermesChat({
     : 'relative flex h-full min-h-0 w-full flex-1 flex-col bg-slate-950 md:pl-[260px] lg:pl-[280px]';
 
   const sharedByMeThreads = useMemo(
-    () => threads.filter((thread) => (thread.activeShareCount || 0) > 0),
+    () => threads.filter(
+      (thread) => (thread.activeShareCount || 0) > 0 && !isCommunityOwnedThread(thread),
+    ),
     [threads],
   );
 
   const ownedSidebarThreads = useMemo(
-    () => threads.filter((thread) => (thread.activeShareCount || 0) === 0),
+    () => threads.filter(
+      (thread) => (thread.activeShareCount || 0) === 0 || isCommunityOwnedThread(thread),
+    ),
     [threads],
   );
 
@@ -2525,6 +2549,11 @@ export default function HermesChat({
     if (!shareWizardThreadId) return null;
     return resolveThreadSummary(shareWizardThreadId) || null;
   }, [shareWizardThreadId, resolveThreadSummary]);
+
+  const communityInviteThread = useMemo(() => {
+    if (!communityInviteThreadId) return null;
+    return resolveThreadSummary(communityInviteThreadId) || null;
+  }, [communityInviteThreadId, resolveThreadSummary]);
 
   const sidebar = (
     <HermesThreadSidebar
@@ -3215,6 +3244,21 @@ export default function HermesChat({
           shareRefreshKey={shareRefreshKey}
           onClose={closeShareWizard}
           onShared={() => bumpShareRefresh()}
+        />
+      ) : null}
+
+      {communityInviteThreadId && communityInviteOpen ? (
+        <HermesCommunityInviteModal
+          open={communityInviteOpen}
+          threadId={communityInviteThreadId}
+          threadTitle={
+            communityInviteThread?.groupTitle
+            || communityInviteThread?.title
+            || 'Community Chat'
+          }
+          shareRefreshKey={shareRefreshKey}
+          onClose={closeCommunityInvite}
+          onInvited={() => bumpShareRefresh()}
         />
       ) : null}
 
