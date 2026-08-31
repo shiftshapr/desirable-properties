@@ -9,8 +9,9 @@ This document is the canonical source for welcome-page copy. After editing Messa
 **Key dates**
 
 - Community review begins: **August 10, 2026**
-- Workgroup synthesis target: **September 1, 2026** (v1.0 editorial window)
-- Book and monument launch: **September 16, 2026**
+- Workgroup synthesis target: **September 1, 2026** (Community Review Draft editorial window)
+- Community Review Draft milestone: **September 16, 2026**
+- Version 1.0 release target: **November 13, 2026**
 
 These dates are exported as `CHALLENGE_KEY_DATES` by `npm run generate:dp-welcome` and consumed by the challenge timeline (book launch countdown).
 
@@ -18,7 +19,7 @@ These dates are exported as `CHALLENGE_KEY_DATES` by `npm run generate:dp-welcom
 
 ## Legacy routes
 
-- `/welcome/lead` — kept as a permanent redirect to `/welcome/coordinator` for welcome emails sent before the coordinator rename. Target removal after the **September 16, 2026** launch.
+- `/welcome/lead` — kept as a permanent redirect to `/welcome/coordinator` for welcome emails sent before the coordinator rename. Target removal after the **September 16, 2026** Community Review Draft milestone.
 
 ---
 
@@ -49,8 +50,9 @@ Your workgroup is helping refine one or more **Desirable Properties** – the co
 **Time & deadline**
 
 - **August 10, 2026** – Community review begins. Plan **1–3 hours per Desirable Property** for a thorough review.
-- **September 1, 2026** – Workgroup synthesis (v1.0 editorial window).
-- **September 16, 2026** – The Layered Web and monument launch.
+- **September 1, 2026** – Workgroup synthesis (Community Review Draft editorial window).
+- **September 16, 2026** – Community Review Draft milestone and governance feedback workflow demonstration.
+- **November 13, 2026** – Version 1.0 release target.
 
 **Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [hub.themetalayer.org/support](https://hub.themetalayer.org/support).
 
@@ -106,7 +108,7 @@ You're approved as workgroup coordinator. In addition to the member duties above
 
 ## Copy notes
 
-1. **Sept 1 vs Sept 16** — Sept 1 opens the v1 synthesis window; Sept 16 is book/monument launch. Member deadline for synthesis work: **Sept 1**.
+1. **Sept 1 vs Sept 16 vs Nov 13** – Sept 1 opens the Community Review Draft editorial window; Sept 16 is the public Community Review Draft milestone; Nov 13 is the Version 1.0 release target. Member deadline for synthesis work: **Sept 1**.
 2. **Overweb framing** — Step 4 can read “Build the Meta-Layer (Overweb)” if you prefer that wording.
 3. **Nomination vs join** — Same mission text (Message A) for both; coordinators get Message B's extra coordination block in **one combined** welcome after admin approval (not at nominee accept, and not as two separate messages).
 4. **Arc image** — `challenge-site/public/images/dp-challenge-arc.jpg` (1024×479). To swap the artwork, replace that file or change the image path in Message A and re-run `npm run generate:dp-welcome`; the width/height in `DpWelcomeView` set the intrinsic aspect ratio and should match the new file.

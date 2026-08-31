@@ -31,8 +31,8 @@ export default async function PadIndexContent({
         sources, not silent profiling. Suppositions stay hypotheses until you confirm.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
-        Version 0.77 is open for review now. Version 1.0 of <em>The Layered Web</em> and the public
-        launch of DP Studio are September 16, 2026.
+        Version 0.77 is open for review now. The Community Review Draft milestone is September 16,
+        2026; Version 1.0 of <em>The Layered Web</em> targets November 13, 2026.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
         Curated public packet for DP Studio landing pads.

@@ -17,12 +17,13 @@ export const FORK_SERIES_TOTAL_ESTIMATE_LABEL = '≈8 hours total';
 
 export const BOOK_LAUNCH_SLUG = 'desirable-properties-book-launch';
 
-/** Single event — no badge; Sept 16, 2026 book launch (estate-timeline.yaml). */
+/** Single event – Sept 16, 2026 Community Review Draft milestone (estate-timeline.yaml). */
 export const BOOK_LAUNCH_SEED = {
-  title: 'Book Launch: The Layered Web',
-  subtitle: 'Desirable Properties Book Launch',
+  title:
+    'The Layered Web: Desirable Properties of a Meta-Layer – Community Review Draft and Governance Feedback Workflow',
+  subtitle: 'Community Review Draft and governance feedback workflow',
   descriptionMd:
-    'The culmination of two years of work on the meta-layer. We will release the V1 Desirable Properties Meta-Layer (DPML) and feature speakers working on meta-layer aligned initiatives.',
+    'Join us for a public milestone marking the two-year anniversary of the Meta-Layer Initiative kickoff and Vint Cerf\'s challenge. We will share the Community Review Draft of The Layered Web (23 Desirable Properties) and demonstrate the governance, patching, feedback, and update workflow on the path toward Version 1.0.',
   liveUrl: 'https://luma.com/wfi1z9lv',
   /** Sept 16, 2026 · 9:00 AM–12:00 PM Pacific (PDT). */
   startsAt: '2026-09-16T16:00:00.000Z' as string | null,

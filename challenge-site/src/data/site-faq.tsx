@@ -133,8 +133,10 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             </p>
             <p>
               <strong className="font-semibold text-white">Version 1.0</strong> is the
-              community-synthesized foundation targeted for editorial completion in early September
-              2026, ahead of the September 16 book and monument launch.
+              community-synthesized foundation targeted for release on{' '}
+              <strong className="font-semibold text-white">November 13, 2026</strong>.{' '}
+              <strong className="font-semibold text-white">September 16, 2026</strong> marks the
+              Community Review Draft milestone and governance feedback workflow demonstration.
             </p>
           </>
         ),
@@ -396,8 +398,10 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               Discuss, Patch, Insert, and Gov Hub revisions.
             </p>
             <p>
-              Version 1.0 targets September 2026, with a permanent Ordinal edition as part of the
-              Digital Monument. <Link href="/onchain">Browse on-chain →</Link>
+              Version 1.0 targets <strong className="font-semibold text-white">November 13, 2026</strong>,
+              with a permanent Ordinal edition as part of the Digital Monument. The{' '}
+              <strong className="font-semibold text-white">September 16, 2026</strong> milestone
+              shares the Community Review Draft. <Link href="/onchain">Browse on-chain →</Link>
             </p>
           </>
         ),
@@ -470,20 +474,23 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               See the live phase on the{' '}
               <Link href="/challenge#timeline">Challenge timeline</Link>. Key upcoming milestones
-              include community review (August 2026), workgroup synthesis toward Version 1.0, and
-              the September 16 book launch.
+              include community review (August 2026), Community Review Draft preparation (early
+              September 2026), the September 16 Community Review Draft milestone, and Version 1.0
+              release on November 13, 2026.
             </p>
           </>
         ),
       },
       {
-        q: 'When is Version 1.0 and the book launch?',
+        q: 'When is Version 1.0 and the Community Review Draft milestone?',
         a: (
           <>
             <p>
-              Workgroups target Version 1.0 synthesis in early September 2026.{' '}
-              <strong className="font-semibold text-white">September 16, 2026</strong> is the book
-              and Digital Monument launch.
+              Workgroups prepare the Community Review Draft in early September 2026.{' '}
+              <strong className="font-semibold text-white">September 16, 2026</strong> is the public
+              Community Review Draft milestone and governance feedback workflow demonstration.{' '}
+              <strong className="font-semibold text-white">November 13, 2026</strong> is the target
+              Version 1.0 release and Digital Monument publication.
             </p>
             <p>
               <Link href="/book">Read the book →</Link>

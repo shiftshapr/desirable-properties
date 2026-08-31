@@ -14,12 +14,18 @@ export const CHALLENGE_KEY_DATES = {
     "title": "Workgroup synthesis target",
     "label": "September 1, 2026",
     "iso": "2026-09-01",
-    "note": "v1.0 editorial window"
+    "note": "Community Review Draft editorial window"
   },
   "bookLaunch": {
-    "title": "Book and monument launch",
+    "title": "Community Review Draft milestone",
     "label": "September 16, 2026",
     "iso": "2026-09-16",
+    "note": null
+  },
+  "v1Release": {
+    "title": "Version 1.0 release target",
+    "label": "November 13, 2026",
+    "iso": "2026-11-13",
     "note": null
   }
 } as const;
@@ -44,8 +50,9 @@ export const MESSAGE_A_SECTIONS = {
   "timeTitle": "Time & deadline",
   "timeItems": [
     "August 10, 2026 – Community review begins. Plan 1–3 hours per Desirable Property for a thorough review.",
-    "September 1, 2026 – Workgroup synthesis (v1.0 editorial window).",
-    "September 16, 2026 – The Layered Web and monument launch."
+    "September 1, 2026 – Workgroup synthesis (Community Review Draft editorial window).",
+    "September 16, 2026 – Community Review Draft milestone and governance feedback workflow demonstration.",
+    "November 13, 2026 – Version 1.0 release target."
   ],
   "support": {
     "prefix": "Submit a support request at",

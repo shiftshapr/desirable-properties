@@ -39,13 +39,15 @@ function captureItems(source, expression, label) {
 const KEY_DATE_ISO = {
   'Community review begins': '2026-08-10',
   'Workgroup synthesis target': '2026-09-01',
-  'Book and monument launch': '2026-09-16',
+  'Community Review Draft milestone': '2026-09-16',
+  'Version 1.0 release target': '2026-11-13',
 };
 
 const KEY_DATE_IDS = {
   'Community review begins': 'communityReviewBegins',
   'Workgroup synthesis target': 'workgroupSynthesis',
-  'Book and monument launch': 'bookLaunch',
+  'Community Review Draft milestone': 'bookLaunch',
+  'Version 1.0 release target': 'v1Release',
 };
 
 function captureKeyDates(markdown) {

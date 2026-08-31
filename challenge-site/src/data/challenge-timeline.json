@@ -3,7 +3,9 @@
     "current_draft_version": "0.77",
     "target_version": "1.0",
     "book_launch_date": "2026-09-16T09:00:00-07:00",
-    "book_launch_title": "The Layered Web & Ordinal edition",
+    "book_launch_title": "The Layered Web: Community Review Draft and Governance Feedback Workflow",
+    "v1_release_date": "2026-11-13T09:00:00-07:00",
+    "v1_release_title": "Desirable Properties Version 1.0 release",
     "source": "meta-console/estate-timeline.yaml"
   },
   "milestones": [
@@ -92,8 +94,8 @@
       "dateLabel": "September 1–15, 2026",
       "startDate": "2026-09-01",
       "endDate": "2026-09-15",
-      "title": "Version 1 synthesis",
-      "description": "Synthesis of Version 1 of the Desirable Properties of a Meta-Layer–the first mature community-developed edition advancing toward rough consensus.",
+      "title": "Community Review Draft preparation",
+      "description": "Workgroups integrate community feedback and editorial revisions to prepare the Community Review Draft of The Layered Web: Desirable Properties of a Meta-Layer (23 DPs) for the September 16 public milestone.",
       "href": "/workgroups#workgroups",
       "linkLabel": "Join a Workgroup"
     },
@@ -102,28 +104,38 @@
       "dateLabel": "September 16, 2026",
       "startDate": "2026-09-16",
       "endDate": "2026-09-16",
-      "title": "The Layered Web & Monument launch",
-      "description": "Launch of The Layered Web and permanent Ordinal edition–preserving the first mature community-developed version as part of the Digital Monument.",
+      "title": "The Layered Web: Desirable Properties of a Meta-Layer – Community Review Draft and Governance Feedback Workflow",
+      "description": "Join us for a public milestone marking the two-year anniversary of the Meta-Layer Initiative kickoff and Vint Cerf's challenge to define the desirable properties of a meta-layer. We will share the Community Review Draft of The Layered Web: Desirable Properties of a Meta-Layer, now organized around 23 Desirable Properties, and demonstrate the governance, patching, feedback, and update workflow that will guide the path toward Version 1.0.",
+      "href": "https://desirableproperties.org/book",
+      "linkLabel": "Read the Community Review Draft"
+    },
+    {
+      "id": "metaweb-book-2e",
+      "dateLabel": "November 13, 2026",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "title": "Metaweb book 2nd edition",
+      "description": "Publish the second edition of The Metaweb alongside the Version 1.0 Desirable Properties release, updating the foundational narrative for the post-launch Meta-Layer path.",
+      "href": "https://metawebbook.com",
+      "linkLabel": "Visit Metaweb Book"
+    },
+    {
+      "id": "dp-v1-release",
+      "dateLabel": "November 13, 2026",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "title": "Desirable Properties Version 1.0 release",
+      "description": "Target release of Version 1.0 of The Layered Web: Desirable Properties of a Meta-Layer – the first mature community-developed edition, published with a permanent Ordinal edition as part of the Digital Monument.",
       "href": "https://desirableproperties.org/book",
       "linkLabel": "Read the book"
     },
     {
       "id": "ml-reqs",
-      "dateLabel": "October 2026",
-      "startDate": "2026-10-01",
-      "endDate": "2026-10-31",
+      "dateLabel": "December 2026",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-31",
       "title": "Define ML-REQs",
-      "description": "Turn Version 1 Desirable Properties into Meta-Layer requirements (ML-REQs) that can gate architecture, implementations, and partner integrations."
-    },
-    {
-      "id": "metaweb-book-2e",
-      "dateLabel": "October 2026",
-      "startDate": "2026-10-01",
-      "endDate": "2026-10-31",
-      "title": "Metaweb book 2nd edition",
-      "description": "Publish the second edition of The Metaweb, updating the foundational narrative for the post-launch Meta-Layer path.",
-      "href": "https://metawebbook.com",
-      "linkLabel": "Visit Metaweb Book"
+      "description": "Turn Version 1.0 Desirable Properties into Meta-Layer requirements (ML-REQs) that can gate architecture, implementations, and partner integrations."
     },
     {
       "id": "canopi-sdk-embed-beta",
