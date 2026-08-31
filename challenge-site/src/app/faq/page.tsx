@@ -48,8 +48,10 @@ export default function FaqPage() {
                 </p>
               )}
               <p>
-                Key upcoming milestones include workgroup synthesis toward Version 1.0 and the{' '}
-                <Link href="/challenge#timeline">September 16 book and summit launch</Link>.
+                Key upcoming milestones include Community Review Draft preparation in early
+                September and the{' '}
+                <Link href="/challenge#timeline">September 16 Community Review Draft milestone</Link>
+                , with Version 1.0 targeted for November 13, 2026.
               </p>
             </>
           ),

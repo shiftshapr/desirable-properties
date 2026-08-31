@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { challengeMeta } from '@/lib/challengeTimeline';
+import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
 
 const LUMA_WAITLIST_URL = 'https://luma.com/wfi1z9lv';
@@ -75,7 +76,7 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
         }}
         role="button"
         tabIndex={0}
-        aria-label="Countdown to book launch – hover or tap to join the waitlist"
+        aria-label="Countdown to Community Review Draft milestone – hover or tap to join the waitlist"
       >
         <div
           className={`relative overflow-hidden rounded-xl border border-violet-500/40 bg-gradient-to-br from-violet-950/80 via-slate-950/90 to-slate-900/80 px-4 py-5 shadow-[0_0_32px_rgba(139,92,246,0.25)] transition-all duration-700 ease-out ${
@@ -137,13 +138,13 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
                 Join the waitlist
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                {challengeMeta.book_launch_title} · September 16, 2026
+                {challengeMeta.book_launch_title} · {CHALLENGE_KEY_DATES.bookLaunch.label}
               </p>
             </div>
 
             <div className="space-y-4 px-6 py-5">
               <p className="text-sm leading-relaxed text-slate-300">
-                Be first to know when The Layered Web and Digital Monument launch.
+                Be first to know when the Community Review Draft milestone opens.
               </p>
 
               {submitted ? (

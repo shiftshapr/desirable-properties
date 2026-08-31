@@ -21,7 +21,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
           {challengeMeta.book_launch_title} is live
         </p>
         <p className="mt-2 text-sm text-slate-400">
-          Explore the online book and Ordinal edition below.
+          Explore the Community Review Draft and governance workflow below.
         </p>
       </div>
     );
@@ -53,7 +53,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
   return (
     <div className="rounded-xl border border-violet-800/50 bg-gradient-to-br from-violet-950/40 to-slate-900/60 p-4 sm:p-6">
       <p className="text-center text-sm font-medium uppercase tracking-[0.15em] text-violet-300">
-        Countdown to launch
+        Countdown to milestone
       </p>
       <p className="mt-2 text-center text-lg font-semibold text-white">
         {challengeMeta.book_launch_title}
