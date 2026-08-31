@@ -94,7 +94,7 @@ function pitchFor(name, shortName) {
     headline: `We opened a landing pad for ${shortName}. Did we hear your concerns correctly?`,
     lead: `${name} appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.`,
     ask: `If you represent ${shortName}, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.`,
-    captureLine: `Alliance members advance their own goals while strengthening shared objectives. This pad is where ${shortName} can refine how their perspective is captured before Version 1.0 launches.`,
+    captureLine: `Alliance members advance their own goals while strengthening shared objectives. This pad is where ${shortName} can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release.`,
   };
 }
 

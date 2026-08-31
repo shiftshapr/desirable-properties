@@ -1,8 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { challengeMeta } from '@/lib/challengeTimeline';
-import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
+import { getCountdownMilestone } from '@/lib/challengeTimeline';
 import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
 
 const LUMA_WAITLIST_URL = 'https://luma.com/wfi1z9lv';
@@ -15,6 +14,7 @@ type Props = {
 
 export default function WorkgroupCountdownOverlay({ initialNow, className = '' }: Props) {
   const parts = useChallengeCountdown(initialNow, 60_000);
+  const milestone = parts ? getCountdownMilestone(new Date()) : null;
   const [revealed, setRevealed] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [email, setEmail] = useState('');
@@ -59,7 +59,7 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
     window.open(LUMA_WAITLIST_URL, '_blank', 'noopener,noreferrer');
   };
 
-  if (!parts) return null;
+  if (!parts || !milestone) return null;
 
   return (
     <>
@@ -76,7 +76,7 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
         }}
         role="button"
         tabIndex={0}
-        aria-label="Countdown to Community Review Draft milestone – hover or tap to join the waitlist"
+        aria-label={`Countdown to ${milestone.title} – hover or tap to join the waitlist`}
       >
         <div
           className={`relative overflow-hidden rounded-xl border border-violet-500/40 bg-gradient-to-br from-violet-950/80 via-slate-950/90 to-slate-900/80 px-4 py-5 shadow-[0_0_32px_rgba(139,92,246,0.25)] transition-all duration-700 ease-out ${
@@ -138,13 +138,13 @@ export default function WorkgroupCountdownOverlay({ initialNow, className = '' }
                 Join the waitlist
               </h2>
               <p className="mt-1 text-sm text-slate-400">
-                {challengeMeta.book_launch_title} · {CHALLENGE_KEY_DATES.bookLaunch.label}
+                {milestone.title} · {milestone.dateLabel}
               </p>
             </div>
 
             <div className="space-y-4 px-6 py-5">
               <p className="text-sm leading-relaxed text-slate-300">
-                Be first to know when the Community Review Draft milestone opens.
+                Be first to know when the {milestone.title.toLowerCase()} opens.
               </p>
 
               {submitted ? (

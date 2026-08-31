@@ -1,8 +1,7 @@
 'use client';
 
 import {
-  challengeMeta,
-  getBookLaunchDate,
+  getCountdownMilestone,
 } from '@/lib/challengeTimeline';
 import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
 
@@ -13,22 +12,22 @@ type Props = {
 
 export default function ChallengeCountdown({ initialNow }: Props) {
   const parts = useChallengeCountdown(initialNow, 1000);
+  const milestone = parts ? getCountdownMilestone(new Date()) : null;
 
-  if (!parts) {
+  if (!parts || !milestone) {
     return (
       <div className="rounded-xl border border-violet-800/50 bg-violet-950/30 p-6 text-center">
         <p className="text-lg font-semibold text-violet-200">
-          {challengeMeta.book_launch_title} is live
+          Desirable Properties milestones are live
         </p>
         <p className="mt-2 text-sm text-slate-400">
-          Explore the Community Review Draft and governance workflow below.
+          Explore the Community Review Draft and Version 1.0 release below.
         </p>
       </div>
     );
   }
 
-  const launch = getBookLaunchDate();
-  const launchLabel = launch.toLocaleDateString('en-US', {
+  const launchLabel = milestone.target.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -36,7 +35,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
     timeZone: 'America/Los_Angeles',
   });
 
-  const launchTime = launch.toLocaleTimeString('en-US', {
+  const launchTime = milestone.target.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
@@ -56,7 +55,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
         Countdown to milestone
       </p>
       <p className="mt-2 text-center text-lg font-semibold text-white">
-        {challengeMeta.book_launch_title}
+        {milestone.title}
       </p>
       <p className="mt-1 text-center text-sm text-slate-400">
         {launchLabel} · {launchTime}

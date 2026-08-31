@@ -1,6 +1,6 @@
 {
   "cohort": "project-liberty-alliance",
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-08-31",
   "generatorNote": "Deterministic minimal pad entries for PLA roster orgs without a full alliance-directory packet. Regenerate with node scripts/generate-roster-pad-entries.mjs after roster import.",
   "sourceRosterImportedAt": "2026-08-20",
   "orgs": [
@@ -27,7 +27,7 @@
         "headline": "We opened a landing pad for Aiprc. Did we hear your concerns correctly?",
         "lead": "Aiprc appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Aiprc, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Aiprc can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Aiprc can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -63,7 +63,7 @@
         "headline": "We opened a landing pad for Aspen Institute. Did we hear your concerns correctly?",
         "lead": "Aspen Institute appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Aspen Institute, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Aspen Institute can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Aspen Institute can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -96,7 +96,7 @@
         "headline": "We opened a landing pad for Back Channel. Did we hear your concerns correctly?",
         "lead": "Back Channel appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Back Channel, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Back Channel can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Back Channel can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -129,7 +129,7 @@
         "headline": "We opened a landing pad for Betaworks. Did we hear your concerns correctly?",
         "lead": "Betaworks appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Betaworks, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Betaworks can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Betaworks can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -162,7 +162,7 @@
         "headline": "We opened a landing pad for Block Party Color Logo. Did we hear your concerns correctly?",
         "lead": "Block Party Color Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Block Party Color Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Block Party Color Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Block Party Color Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -195,7 +195,7 @@
         "headline": "We opened a landing pad for Counterhate. Did we hear your concerns correctly?",
         "lead": "Center For Countering Digital Hate Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Counterhate, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Counterhate can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Counterhate can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -231,7 +231,7 @@
         "headline": "We opened a landing pad for Center For Youth And Ai Logo. Did we hear your concerns correctly?",
         "lead": "Center For Youth And Ai Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Center For Youth And Ai Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Center For Youth And Ai Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Center For Youth And Ai Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -268,7 +268,7 @@
         "headline": "We opened a landing pad for Cigionline. Did we hear your concerns correctly?",
         "lead": "Centre For International Governance Innovation Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Cigionline, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cigionline can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cigionline can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -301,7 +301,7 @@
         "headline": "We opened a landing pad for Civics Unplugged. Did we hear your concerns correctly?",
         "lead": "Civics Unplugged appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Civics Unplugged, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Civics Unplugged can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Civics Unplugged can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -334,7 +334,7 @@
         "headline": "We opened a landing pad for Common Era. Did we hear your concerns correctly?",
         "lead": "Common Era appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Common Era, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Common Era can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Common Era can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -370,7 +370,7 @@
         "headline": "We opened a landing pad for Cefe. Did we hear your concerns correctly?",
         "lead": "Consortiumfor Evaluating Faithand Ethicsin Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Cefe, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cefe can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cefe can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -406,7 +406,7 @@
         "headline": "We opened a landing pad for Creator Coalitionon Ai. Did we hear your concerns correctly?",
         "lead": "Creator Coalitionon Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Creator Coalitionon Ai, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Creator Coalitionon Ai can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Creator Coalitionon Ai can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -441,7 +441,7 @@
         "headline": "We opened a landing pad for Cyber Collective. Did we hear your concerns correctly?",
         "lead": "Cyber Collective appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Cyber Collective, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cyber Collective can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Cyber Collective can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -474,7 +474,7 @@
         "headline": "We opened a landing pad for Democracy4all Color Logo. Did we hear your concerns correctly?",
         "lead": "Democracy4all Color Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Democracy4all Color Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Democracy4all Color Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Democracy4all Color Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -507,7 +507,7 @@
         "headline": "We opened a landing pad for Digital Democracy. Did we hear your concerns correctly?",
         "lead": "Digital Democracy appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Digital Democracy, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Digital Democracy can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Digital Democracy can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -540,7 +540,7 @@
         "headline": "We opened a landing pad for Do Something Dot Org. Did we hear your concerns correctly?",
         "lead": "Do Something Dot Org appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Do Something Dot Org, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Do Something Dot Org can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Do Something Dot Org can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -573,7 +573,7 @@
         "headline": "We opened a landing pad for Domyn. Did we hear your concerns correctly?",
         "lead": "Domyn appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Domyn, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Domyn can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Domyn can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -606,7 +606,7 @@
         "headline": "We opened a landing pad for Earthkind. Did we hear your concerns correctly?",
         "lead": "Earthkind appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Earthkind, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Earthkind can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Earthkind can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -641,7 +641,7 @@
         "headline": "We opened a landing pad for Engagemedia. Did we hear your concerns correctly?",
         "lead": "Engage Media Logotype Red Black 800px appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Engagemedia, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Engagemedia can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Engagemedia can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -677,7 +677,7 @@
         "headline": "We opened a landing pad for Eticas. Did we hear your concerns correctly?",
         "lead": "Eticas appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Eticas, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Eticas can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Eticas can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -710,7 +710,7 @@
         "headline": "We opened a landing pad for Ex Ante. Did we hear your concerns correctly?",
         "lead": "Ex Ante appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Ex Ante, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ex Ante can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ex Ante can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -746,7 +746,7 @@
         "headline": "We opened a landing pad for Faith Wise Ai. Did we hear your concerns correctly?",
         "lead": "Faith Wise Ai appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Faith Wise Ai, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Faith Wise Ai can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Faith Wise Ai can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -779,7 +779,7 @@
         "headline": "We opened a landing pad for Fof. Did we hear your concerns correctly?",
         "lead": "Fof appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Fof, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Fof can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Fof can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -812,7 +812,7 @@
         "headline": "We opened a landing pad for Freespoke Logo. Did we hear your concerns correctly?",
         "lead": "Freespoke Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Freespoke Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Freespoke Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Freespoke Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -849,7 +849,7 @@
         "headline": "We opened a landing pad for Georgetown University. Did we hear your concerns correctly?",
         "lead": "Georgetown University appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Georgetown University, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Georgetown University can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Georgetown University can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -883,7 +883,7 @@
         "headline": "We opened a landing pad for Global Partnerships. Did we hear your concerns correctly?",
         "lead": "Global Partnerships appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Global Partnerships, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Global Partnerships can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Global Partnerships can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -919,7 +919,7 @@
         "headline": "We opened a landing pad for Goodly Labs. Did we hear your concerns correctly?",
         "lead": "Goodly Labs appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Goodly Labs, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Goodly Labs can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Goodly Labs can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -952,7 +952,7 @@
         "headline": "We opened a landing pad for Gray Area. Did we hear your concerns correctly?",
         "lead": "Gray Area appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Gray Area, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Gray Area can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Gray Area can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -985,7 +985,7 @@
         "headline": "We opened a landing pad for Hellohumanity. Did we hear your concerns correctly?",
         "lead": "Hello Humanity Hhlogostacked 6 Teal Black 10 appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Hellohumanity, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Hellohumanity can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Hellohumanity can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1018,7 +1018,7 @@
         "headline": "We opened a landing pad for Hii Foundation. Did we hear your concerns correctly?",
         "lead": "Hii Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Hii Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Hii Foundation can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Hii Foundation can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1051,7 +1051,7 @@
         "headline": "We opened a landing pad for House Of Electronic Art. Did we hear your concerns correctly?",
         "lead": "House Of Electronic Art appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent House Of Electronic Art, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where House Of Electronic Art can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where House Of Electronic Art can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1084,7 +1084,7 @@
         "headline": "We opened a landing pad for Humans In Control. Did we hear your concerns correctly?",
         "lead": "Humans In Control appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Humans In Control, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Humans In Control can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Humans In Control can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1120,7 +1120,7 @@
         "headline": "We opened a landing pad for Inclusive Design Institute Logo. Did we hear your concerns correctly?",
         "lead": "Inclusive Design Institute Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Inclusive Design Institute Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Inclusive Design Institute Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Inclusive Design Institute Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1153,7 +1153,7 @@
         "headline": "We opened a landing pad for Kin Soo. Did we hear your concerns correctly?",
         "lead": "Kin Soo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Kin Soo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Kin Soo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Kin Soo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1186,7 +1186,7 @@
         "headline": "We opened a landing pad for La Plateforme. Did we hear your concerns correctly?",
         "lead": "La Plateforme appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent La Plateforme, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where La Plateforme can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where La Plateforme can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1219,7 +1219,7 @@
         "headline": "We opened a landing pad for Less Than Three. Did we hear your concerns correctly?",
         "lead": "Less Than Three appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Less Than Three, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Less Than Three can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Less Than Three can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1252,7 +1252,7 @@
         "headline": "We opened a landing pad for Maple. Did we hear your concerns correctly?",
         "lead": "Maple appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Maple, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Maple can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Maple can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1286,7 +1286,7 @@
         "headline": "We opened a landing pad for Network Messenger. Did we hear your concerns correctly?",
         "lead": "Network Messenger appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Network Messenger, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Network Messenger can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Network Messenger can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1319,7 +1319,7 @@
         "headline": "We opened a landing pad for No App For Life. Did we hear your concerns correctly?",
         "lead": "No App For Life appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent No App For Life, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where No App For Life can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where No App For Life can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1355,7 +1355,7 @@
         "headline": "We opened a landing pad for Nu. Did we hear your concerns correctly?",
         "lead": "Nu appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Nu, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Nu can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Nu can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1388,7 +1388,7 @@
         "headline": "We opened a landing pad for Ocf. Did we hear your concerns correctly?",
         "lead": "Ocf appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Ocf, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ocf can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ocf can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1424,7 +1424,7 @@
         "headline": "We opened a landing pad for Parents Sos. Did we hear your concerns correctly?",
         "lead": "Parents Sos appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Parents Sos, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Parents Sos can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Parents Sos can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1457,7 +1457,7 @@
         "headline": "We opened a landing pad for Parents Together Action. Did we hear your concerns correctly?",
         "lead": "Parents Together Action appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Parents Together Action, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Parents Together Action can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Parents Together Action can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1494,7 +1494,7 @@
         "headline": "We opened a landing pad for Policy Link. Did we hear your concerns correctly?",
         "lead": "Policy Link appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Policy Link, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Policy Link can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Policy Link can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1530,7 +1530,7 @@
         "headline": "We opened a landing pad for Positive Tech Inst. Did we hear your concerns correctly?",
         "lead": "Positive Tech Inst appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Positive Tech Inst, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Positive Tech Inst can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Positive Tech Inst can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1563,7 +1563,7 @@
         "headline": "We opened a landing pad for Search For Common Ground. Did we hear your concerns correctly?",
         "lead": "Search For Common Ground appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Search For Common Ground, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Search For Common Ground can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Search For Common Ground can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1596,7 +1596,7 @@
         "headline": "We opened a landing pad for Sideways. Did we hear your concerns correctly?",
         "lead": "Sideways appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Sideways, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Sideways can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Sideways can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1633,7 +1633,7 @@
         "headline": "We opened a landing pad for Sustainable Media Center. Did we hear your concerns correctly?",
         "lead": "Sustainable Media Center appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Sustainable Media Center, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Sustainable Media Center can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Sustainable Media Center can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1670,7 +1670,7 @@
         "headline": "We opened a landing pad for Take Two. Did we hear your concerns correctly?",
         "lead": "Take Two appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Take Two, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Take Two can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Take Two can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1703,7 +1703,7 @@
         "headline": "We opened a landing pad for The Future Society Logo. Did we hear your concerns correctly?",
         "lead": "The Future Society Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent The Future Society Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Future Society Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Future Society Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1736,7 +1736,7 @@
         "headline": "We opened a landing pad for The Human Line Project. Did we hear your concerns correctly?",
         "lead": "The Human Line Project appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent The Human Line Project, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Human Line Project can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Human Line Project can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1769,7 +1769,7 @@
         "headline": "We opened a landing pad for The Kempe Foundation. Did we hear your concerns correctly?",
         "lead": "The Kempe Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent The Kempe Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Kempe Foundation can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Kempe Foundation can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1802,7 +1802,7 @@
         "headline": "We opened a landing pad for The Same House Color Logo. Did we hear your concerns correctly?",
         "lead": "The Same House Color Logo appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent The Same House Color Logo, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Same House Color Logo can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Same House Color Logo can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1835,7 +1835,7 @@
         "headline": "We opened a landing pad for The Shed. Did we hear your concerns correctly?",
         "lead": "The Shed appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent The Shed, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Shed can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where The Shed can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1870,7 +1870,7 @@
         "headline": "We opened a landing pad for Toto News. Did we hear your concerns correctly?",
         "lead": "Toto News appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Toto News, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Toto News can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Toto News can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1905,7 +1905,7 @@
         "headline": "We opened a landing pad for Trust Foundation. Did we hear your concerns correctly?",
         "lead": "Trust Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Trust Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Trust Foundation can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Trust Foundation can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1938,7 +1938,7 @@
         "headline": "We opened a landing pad for Ux For Good. Did we hear your concerns correctly?",
         "lead": "Ux For Good appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Ux For Good, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ux For Good can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Ux For Good can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {
@@ -1973,7 +1973,7 @@
         "headline": "We opened a landing pad for Youth Media Foundation. Did we hear your concerns correctly?",
         "lead": "Youth Media Foundation appears on the public Project Liberty Alliance roster. We have not yet built a full briefing from their public corpus. This pad is a working invitation: confirm who you are, add sources, and weigh in on Desirable Properties related to your domain.",
         "ask": "If you represent Youth Media Foundation, tell us what we missed. Open the Desirable Properties section, follow one interest, and leave a patch idea if the text is wrong or incomplete.",
-        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Youth Media Foundation can refine how their perspective is captured before Version 1.0 launches."
+        "captureLine": "Alliance members advance their own goals while strengthening shared objectives. This pad is where Youth Media Foundation can refine how their perspective is captured ahead of the September 16, 2026 Community Review Draft milestone and the November 13, 2026 Version 1.0 release."
       },
       "sources": [
         {

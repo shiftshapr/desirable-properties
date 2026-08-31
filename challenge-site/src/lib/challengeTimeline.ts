@@ -29,6 +29,8 @@ export type ChallengeTimelineMeta = {
   target_version: string;
   book_launch_date: string;
   book_launch_title: string;
+  v1_release_date?: string;
+  v1_release_title?: string;
   source?: string;
 };
 
@@ -86,10 +88,44 @@ export function getBookLaunchDate(): Date {
   return new Date(`${CHALLENGE_KEY_DATES.bookLaunch.iso}T09:00:00-07:00`);
 }
 
+export function getV1ReleaseDate(): Date {
+  const fromMeta = challengeMeta.v1_release_date;
+  if (fromMeta) {
+    return new Date(fromMeta);
+  }
+  return new Date(`${CHALLENGE_KEY_DATES.v1Release.iso}T09:00:00-07:00`);
+}
+
+export type CountdownMilestone = {
+  target: Date;
+  title: string;
+  dateLabel: string;
+};
+
+export function getCountdownMilestone(now: Date = new Date()): CountdownMilestone | null {
+  const communityDraft = getBookLaunchDate();
+  if (now < communityDraft) {
+    return {
+      target: communityDraft,
+      title: challengeMeta.book_launch_title,
+      dateLabel: CHALLENGE_KEY_DATES.bookLaunch.label,
+    };
+  }
+
+  const v1Release = getV1ReleaseDate();
+  if (now < v1Release) {
+    return {
+      target: v1Release,
+      title: challengeMeta.v1_release_title ?? CHALLENGE_KEY_DATES.v1Release.title,
+      dateLabel: CHALLENGE_KEY_DATES.v1Release.label,
+    };
+  }
+
+  return null;
+}
+
 export function getCountdownTarget(now: Date = new Date()): Date | null {
-  const launch = getBookLaunchDate();
-  if (now >= launch) return null;
-  return launch;
+  return getCountdownMilestone(now)?.target ?? null;
 }
 
 export function formatCountdownParts(target: Date, now: Date = new Date()) {
