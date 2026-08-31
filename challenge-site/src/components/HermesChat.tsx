@@ -35,6 +35,7 @@ import { shouldOfferSaveLearning } from '@/lib/hermes-introspect';
 import {
   communityCollabTitle,
   communityParticipantsFromShares,
+  excludeOwnedFromSharedSidebar,
   isCommunityCollabThread,
   isCommunityOwnedThread,
   normalizeHermesThreadId,
@@ -847,8 +848,22 @@ export default function HermesChat({
           next[idx] = { ...next[idx], ...loadedSummary };
           return next;
         };
-        setThreads((prev) => upsertLoadedSummary(prev));
-        setSharedThreads((prev) => upsertLoadedSummary(prev));
+        const isOwner = Array.isArray(loadedThread?.access?.roles)
+          && loadedThread.access.roles.includes('owner');
+        if (isOwner) {
+          setThreads((prev) => upsertLoadedSummary(prev));
+          setSharedThreads((prev) => prev.filter((row) => row.id !== loadedSummary.id));
+        } else {
+          const sharedSummary: HermesThreadSummary = { ...loadedSummary, shared: true };
+          setSharedThreads((prev) => {
+            const idx = prev.findIndex((row) => row.id === sharedSummary.id);
+            if (idx < 0) return [sharedSummary, ...prev];
+            const next = [...prev];
+            next[idx] = { ...next[idx], ...sharedSummary };
+            return next;
+          });
+          setThreads((prev) => prev.filter((row) => row.id !== loadedSummary.id));
+        }
       }
       const turns = loadedThread?.turns || [];
       const sets: ContributionSet[] = Array.isArray(loadedThread?.contributionSets)
@@ -2596,6 +2611,11 @@ export default function HermesChat({
     [threads],
   );
 
+  const sidebarSharedWithMeThreads = useMemo(
+    () => excludeOwnedFromSharedSidebar(sharedThreads, threads),
+    [sharedThreads, threads],
+  );
+
   const activeThreadSummary = useMemo(() => {
     if (!activeThreadId) return null;
     return threads.find((t) => t.id === activeThreadId)
@@ -2623,7 +2643,7 @@ export default function HermesChat({
   const sidebar = (
     <HermesThreadSidebar
       threads={archiveView ? threads : ownedSidebarThreads}
-      sharedWithMeThreads={sharedThreads}
+      sharedWithMeThreads={sidebarSharedWithMeThreads}
       sharedByMeThreads={archiveView ? [] : sharedByMeThreads}
       activeThreadId={activeThreadId}
       loading={threadsLoading || Boolean(threadLoadingId)}

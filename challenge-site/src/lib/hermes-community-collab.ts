@@ -39,6 +39,15 @@ export function communityCollabTitle(
 }
 
 /** Active invitees from share grants (owner sees via shares API). */
+/** Shared-with-me rows must not repeat threads the user owns (loadThread used to upsert both lists). */
+export function excludeOwnedFromSharedSidebar<T extends { id: string }>(
+  sharedThreads: T[],
+  ownedThreads: Array<Pick<HermesThreadSummary, 'id'>>,
+): T[] {
+  const ownedIds = new Set(ownedThreads.map((thread) => thread.id));
+  return sharedThreads.filter((thread) => !ownedIds.has(thread.id));
+}
+
 export function communityParticipantsFromShares(
   shares: ThreadShareActivity[],
 ): CommunityCollabParticipant[] {

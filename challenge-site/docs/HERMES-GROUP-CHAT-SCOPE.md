@@ -26,6 +26,17 @@ Separately, the product wants **Community Chat**: invite several people into one
 
 Community Chat threads use `thread_kind: group`, support multi-member prompt, and are reachable from `/agent` plus the **External Chat** tab in workgroup collab.
 
+### UX model (not workgroup collab split)
+
+Community Chat is **not** the workgroup Collab split layout (human member chat + Deepi side panel). It is a **single shared Deepi thread** where every invited member can prompt Hermes in the same transcript.
+
+| Surface | Main area | Side panel |
+|---------|-----------|------------|
+| **Workgroup Chat** (Collab tab) | Human-to-human Postgres messages | `WorkgroupHermesPanel` private Deepi (Ask Hermes, ambient hands) |
+| **Community Chat** (`/agent`, `thread_kind: group`) | Shared Deepi thread (all members prompt) | **None** – no `HermesAmbientSidePanel` equivalent |
+
+The Community Chat header (badge, participant count, Invite) replaces private share controls. Composer placeholder: "Message Community Chat…". There is no separate human chat lane in MVP; member-to-member discussion happens through Deepi turns or off-platform.
+
 ---
 
 ## Decisions (locked)
