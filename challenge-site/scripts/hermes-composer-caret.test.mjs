@@ -34,6 +34,38 @@ function applyComposerPaste(value, selection, pasted, maxChars) {
   };
 }
 
+function inferComposerCaretFromDiff(prev, next) {
+  if (prev === next) return null;
+  let start = 0;
+  while (start < prev.length && start < next.length && prev[start] === next[start]) {
+    start += 1;
+  }
+  let prevEnd = prev.length;
+  let nextEnd = next.length;
+  while (prevEnd > start && nextEnd > start && prev[prevEnd - 1] === next[nextEnd - 1]) {
+    prevEnd -= 1;
+    nextEnd -= 1;
+  }
+  if (nextEnd > prevEnd) {
+    return { start: nextEnd, end: nextEnd };
+  }
+  if (nextEnd < prevEnd) {
+    return { start, end: start };
+  }
+  if (nextEnd > start) {
+    return { start: nextEnd, end: nextEnd };
+  }
+  return { start, end: start };
+}
+
+function resolveCaretAfterNativeEdit(prev, next, reported) {
+  const inferred = inferComposerCaretFromDiff(prev, next);
+  if (inferred) {
+    return clampComposerSelection(inferred, next.length);
+  }
+  return clampComposerSelection(normalizeComposerSelectionAfterEdit(reported), next.length);
+}
+
 function deleteComposerSelection(value, selection) {
   const { start, end } = selection;
   if (start === end) return null;
@@ -200,4 +232,28 @@ test('paste: mid-text insertion preserves prefix and suffix', () => {
   const result = applyComposerPaste('abef', { start: 2, end: 2 }, 'cd', 48_000);
   assert.equal(result.value, 'abcdef');
   assert.deepEqual(result.selection, { start: 4, end: 4 });
+});
+
+test('inferComposerCaretFromDiff: mid-field typing keeps caret in place', () => {
+  const caret = inferComposerCaretFromDiff('hello world', 'hellox world');
+  assert.deepEqual(caret, { start: 6, end: 6 });
+});
+
+test('inferComposerCaretFromDiff: Shift+Enter at beginning inserts newline before text', () => {
+  const caret = inferComposerCaretFromDiff('hello', '\nhello');
+  assert.deepEqual(caret, { start: 1, end: 1 });
+});
+
+test('inferComposerCaretFromDiff: append at end', () => {
+  const caret = inferComposerCaretFromDiff('hi', 'hi!');
+  assert.deepEqual(caret, { start: 3, end: 3 });
+});
+
+test('resolveCaretAfterNativeEdit prefers diff over stale DOM at end', () => {
+  const caret = resolveCaretAfterNativeEdit(
+    'hello world',
+    'hellox world',
+    { start: 11, end: 11 },
+  );
+  assert.deepEqual(caret, { start: 6, end: 6 });
 });

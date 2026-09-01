@@ -25,6 +25,53 @@ export function composerSelectionAtEnd(textLen: number): ComposerSelection {
   return { start: end, end: end };
 }
 
+/**
+ * Infer collapsed caret after a native edit by diffing prev/next strings.
+ * Works for mid-field typing, Shift+Enter newlines, and single-character deletes.
+ */
+export function inferComposerCaretFromDiff(
+  prev: string,
+  next: string,
+): ComposerSelection | null {
+  if (prev === next) return null;
+  let start = 0;
+  while (start < prev.length && start < next.length && prev[start] === next[start]) {
+    start += 1;
+  }
+  let prevEnd = prev.length;
+  let nextEnd = next.length;
+  while (prevEnd > start && nextEnd > start && prev[prevEnd - 1] === next[nextEnd - 1]) {
+    prevEnd -= 1;
+    nextEnd -= 1;
+  }
+  if (nextEnd > prevEnd) {
+    return { start: nextEnd, end: nextEnd };
+  }
+  if (nextEnd < prevEnd) {
+    return { start, end: start };
+  }
+  if (nextEnd > start) {
+    return { start: nextEnd, end: nextEnd };
+  }
+  return { start, end: start };
+}
+
+/** Prefer diff-inferred caret; fall back to the browser-reported selection. */
+export function resolveCaretAfterNativeEdit(
+  prev: string,
+  next: string,
+  reported: ComposerSelection,
+): ComposerSelection {
+  const inferred = inferComposerCaretFromDiff(prev, next);
+  if (inferred) {
+    return clampComposerSelection(inferred, next.length);
+  }
+  return clampComposerSelection(
+    normalizeComposerSelectionAfterEdit(reported),
+    next.length,
+  );
+}
+
 /** Apply clipboard text at the current selection on a controlled composer. */
 export function applyComposerPaste(
   value: string,

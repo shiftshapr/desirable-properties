@@ -105,7 +105,7 @@ import {
   composerSelectionAtEnd,
   deleteComposerSelection,
   normalizeComposerSelectionAfterEdit,
-  resolveComposerSelection,
+  resolveCaretAfterNativeEdit,
 } from '@/lib/hermesComposerCaret';
 import { useAuth } from '@/lib/auth-context';
 import { refreshSessionIdToken } from '@/lib/web3auth-login';
@@ -643,6 +643,9 @@ export default function HermesChat({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const composerSelectionRef = useRef<{ start: number; end: number } | null>(null);
+  const composerRestoreCaretRef = useRef(false);
+  const inputTextRef = useRef(inputText);
+  inputTextRef.current = inputText;
   const composerComposingRef = useRef(false);
   const activeThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
@@ -676,17 +679,9 @@ export default function HermesChat({
     setIsLoading(false);
   }, []);
 
-  const syncComposerHeight = useCallback((selection?: { start: number; end: number } | null) => {
+  const syncComposerHeight = useCallback(() => {
     const el = composerRef.current;
     if (!el) return;
-    const pending = selection ?? composerSelectionRef.current;
-    const resolved = resolveComposerSelection({
-      pendingRef: pending,
-      domSelection: typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number'
-        ? { start: el.selectionStart, end: el.selectionEnd }
-        : null,
-      isFocused: document.activeElement === el,
-    });
     el.style.height = 'auto';
     const next = Math.max(
       COMPOSER_MIN_HEIGHT_PX,
@@ -695,13 +690,15 @@ export default function HermesChat({
     el.style.height = `${next}px`;
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
     if (
-      document.activeElement === el
-      && typeof resolved.start === 'number'
-      && typeof resolved.end === 'number'
+      composerRestoreCaretRef.current
+      && document.activeElement === el
+      && composerSelectionRef.current
     ) {
-      el.setSelectionRange(resolved.start, resolved.end);
+      const { start, end } = composerSelectionRef.current;
+      el.setSelectionRange(start, end);
+      composerSelectionRef.current = null;
+      composerRestoreCaretRef.current = false;
     }
-    if (resolved.clearRef) composerSelectionRef.current = null;
   }, []);
 
   const handleComposerChange = useCallback((
@@ -712,28 +709,24 @@ export default function HermesChat({
     composerSelectionRef.current = selection
       ? clampComposerSelection(normalizeComposerSelectionAfterEdit(selection), capped.length)
       : composerSelectionAtEnd(capped.length);
+    composerRestoreCaretRef.current = true;
     setInputText(capped);
   }, []);
 
-  useLayoutEffect(() => {
-    const end = inputText.length;
-    if (end > 0 && typeof initialPrompt === 'string' && initialPrompt.trim()) {
-      composerSelectionRef.current = composerSelectionAtEnd(end);
-    }
+  const handleNativeComposerChange = useCallback((
+    next: string,
+    reported: { start: number; end: number },
+  ) => {
+    const prev = inputTextRef.current;
+    const capped = capComposerText(next);
+    composerSelectionRef.current = resolveCaretAfterNativeEdit(prev, capped, reported);
+    composerRestoreCaretRef.current = true;
+    setInputText(capped);
   }, []);
 
   useLayoutEffect(() => {
     syncComposerHeight();
   }, [inputText, syncComposerHeight]);
-
-  const captureComposerSelection = useCallback(() => {
-    const el = composerRef.current;
-    if (!el) return;
-    composerSelectionRef.current = {
-      start: el.selectionStart ?? el.value.length,
-      end: el.selectionEnd ?? el.value.length,
-    };
-  }, []);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -966,8 +959,7 @@ export default function HermesChat({
       }
       setAttachments([]);
       setAttachError(null);
-      setInputText('');
-      composerSelectionRef.current = composerSelectionAtEnd(0);
+      handleComposerChange('');
       clearAgentStarterUrlParams();
       persistActiveThread(canonicalThreadId);
     } finally {
@@ -3218,7 +3210,7 @@ export default function HermesChat({
                   value={inputText}
                   onChange={(e) => {
                     if (composerComposingRef.current) return;
-                    handleComposerChange(e.target.value, {
+                    handleNativeComposerChange(e.target.value, {
                       start: e.target.selectionStart ?? e.target.value.length,
                       end: e.target.selectionEnd ?? e.target.value.length,
                     });
@@ -3228,12 +3220,11 @@ export default function HermesChat({
                   }}
                   onCompositionEnd={(e) => {
                     composerComposingRef.current = false;
-                    handleComposerChange(e.currentTarget.value, {
+                    handleNativeComposerChange(e.currentTarget.value, {
                       start: e.currentTarget.selectionStart ?? e.currentTarget.value.length,
                       end: e.currentTarget.selectionEnd ?? e.currentTarget.value.length,
                     });
                   }}
-                  onSelect={captureComposerSelection}
                   onPaste={(e) => {
                     const pasted = e.clipboardData.getData('text/plain');
                     if (!pasted) return;
