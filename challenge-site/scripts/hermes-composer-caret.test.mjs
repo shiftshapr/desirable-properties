@@ -23,6 +23,17 @@ function composerSelectionAtEnd(textLen) {
   return { start: end, end: end };
 }
 
+function applyComposerPaste(value, selection, pasted, maxChars) {
+  const { start, end } = selection;
+  const merged = value.slice(0, start) + pasted + value.slice(end);
+  const capped = merged.length <= maxChars ? merged : merged.slice(0, maxChars);
+  const cursor = Math.min(start + pasted.length, capped.length);
+  return {
+    value: capped,
+    selection: clampComposerSelection({ start: cursor, end: cursor }, capped.length),
+  };
+}
+
 function deleteComposerSelection(value, selection) {
   const { start, end } = selection;
   if (start === end) return null;
@@ -125,4 +136,68 @@ test('programmatic clear uses end caret instead of stale highlight ref', () => {
   });
   assert.equal(result.start, 5);
   assert.equal(result.end, 5);
+});
+
+// --- Paste scenarios (test matrix) ---
+
+test('paste: empty field without prior keypress', () => {
+  const result = applyComposerPaste('', { start: 0, end: 0 }, 'hello world', 48_000);
+  assert.equal(result.value, 'hello world');
+  assert.deepEqual(result.selection, { start: 11, end: 11 });
+});
+
+test('paste: after typing inserts at caret', () => {
+  const result = applyComposerPaste('hi ', { start: 3, end: 3 }, 'there', 48_000);
+  assert.equal(result.value, 'hi there');
+  assert.deepEqual(result.selection, { start: 8, end: 8 });
+});
+
+test('paste: replaces highlighted selection', () => {
+  const result = applyComposerPaste('hello world', { start: 6, end: 11 }, 'earth', 48_000);
+  assert.equal(result.value, 'hello earth');
+  assert.deepEqual(result.selection, { start: 11, end: 11 });
+});
+
+test('paste: select all + paste replaces entire value', () => {
+  const result = applyComposerPaste('old text', { start: 0, end: 8 }, 'new text', 48_000);
+  assert.equal(result.value, 'new text');
+  assert.deepEqual(result.selection, { start: 8, end: 8 });
+});
+
+test('paste then backspace removes last pasted character', () => {
+  const pasted = applyComposerPaste('', { start: 0, end: 0 }, 'abc', 48_000);
+  const deleted = deleteComposerSelection(pasted.value, {
+    start: pasted.selection.start - 1,
+    end: pasted.selection.start,
+  });
+  assert.ok(deleted);
+  assert.equal(deleted.value, 'ab');
+  assert.deepEqual(deleted.selection, { start: 2, end: 2 });
+});
+
+test('paste: long paste truncates at 48k cap', () => {
+  const existing = 'x'.repeat(47_990);
+  const paste = 'y'.repeat(20);
+  const result = applyComposerPaste(existing, { start: 47_990, end: 47_990 }, paste, 48_000);
+  assert.equal(result.value.length, 48_000);
+  assert.equal(result.value, existing + 'y'.repeat(10));
+  assert.deepEqual(result.selection, { start: 48_000, end: 48_000 });
+});
+
+test('paste: caret restore after controlled update', () => {
+  const pasted = applyComposerPaste('', { start: 0, end: 0 }, 'hello', 48_000);
+  const resolved = resolveComposerSelection({
+    pendingRef: pasted.selection,
+    domSelection: { start: 0, end: 0 },
+    isFocused: true,
+  });
+  assert.equal(resolved.start, 5);
+  assert.equal(resolved.end, 5);
+  assert.equal(resolved.clearRef, true);
+});
+
+test('paste: mid-text insertion preserves prefix and suffix', () => {
+  const result = applyComposerPaste('abef', { start: 2, end: 2 }, 'cd', 48_000);
+  assert.equal(result.value, 'abcdef');
+  assert.deepEqual(result.selection, { start: 4, end: 4 });
 });

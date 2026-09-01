@@ -25,6 +25,23 @@ export function composerSelectionAtEnd(textLen: number): ComposerSelection {
   return { start: end, end: end };
 }
 
+/** Apply clipboard text at the current selection on a controlled composer. */
+export function applyComposerPaste(
+  value: string,
+  selection: ComposerSelection,
+  pasted: string,
+  maxChars: number,
+): { value: string; selection: ComposerSelection } {
+  const { start, end } = selection;
+  const merged = value.slice(0, start) + pasted + value.slice(end);
+  const capped = merged.length <= maxChars ? merged : merged.slice(0, maxChars);
+  const cursor = Math.min(start + pasted.length, capped.length);
+  return {
+    value: capped,
+    selection: clampComposerSelection({ start: cursor, end: cursor }, capped.length),
+  };
+}
+
 /** Remove highlighted range; returns null when there is no selection to delete. */
 export function deleteComposerSelection(
   value: string,

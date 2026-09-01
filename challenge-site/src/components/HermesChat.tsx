@@ -100,6 +100,7 @@ import {
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
 import {
+  applyComposerPaste,
   clampComposerSelection,
   composerSelectionAtEnd,
   deleteComposerSelection,
@@ -3233,8 +3234,20 @@ export default function HermesChat({
                     });
                   }}
                   onSelect={captureComposerSelection}
-                  onPaste={() => {
-                    requestAnimationFrame(captureComposerSelection);
+                  onPaste={(e) => {
+                    const pasted = e.clipboardData.getData('text/plain');
+                    if (!pasted) return;
+                    e.preventDefault();
+                    const el = e.currentTarget;
+                    const start = el.selectionStart ?? inputText.length;
+                    const end = el.selectionEnd ?? inputText.length;
+                    const result = applyComposerPaste(
+                      inputText,
+                      { start, end },
+                      pasted,
+                      COMPOSER_MAX_CHARS,
+                    );
+                    handleComposerChange(result.value, result.selection);
                   }}
                   onKeyDown={onKeyDown}
                   placeholder={
