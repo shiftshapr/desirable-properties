@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
@@ -100,12 +100,8 @@ import {
   toDocumentPayload,
 } from '@/lib/hermesDocuments';
 import {
-  applyComposerPaste,
   clampComposerSelection,
-  composerSelectionAtEnd,
-  deleteComposerSelection,
   normalizeComposerSelectionAfterEdit,
-  resolveCaretAfterNativeEdit,
 } from '@/lib/hermesComposerCaret';
 import { useAuth } from '@/lib/auth-context';
 import { refreshSessionIdToken } from '@/lib/web3auth-login';
@@ -642,10 +638,6 @@ export default function HermesChat({
   const draftingMessageIdRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
-  const composerSelectionRef = useRef<{ start: number; end: number } | null>(null);
-  const composerRestoreCaretRef = useRef(false);
-  const inputTextRef = useRef(inputText);
-  inputTextRef.current = inputText;
   const composerComposingRef = useRef(false);
   const activeThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
@@ -689,44 +681,41 @@ export default function HermesChat({
     );
     el.style.height = `${next}px`;
     el.style.overflowY = el.scrollHeight > COMPOSER_MAX_HEIGHT_PX ? 'auto' : 'hidden';
-    if (
-      composerRestoreCaretRef.current
-      && document.activeElement === el
-      && composerSelectionRef.current
-    ) {
-      const { start, end } = composerSelectionRef.current;
-      el.setSelectionRange(start, end);
-      composerSelectionRef.current = null;
-      composerRestoreCaretRef.current = false;
-    }
   }, []);
+
+  const getComposerText = useCallback(() => composerRef.current?.value ?? '', []);
 
   const handleComposerChange = useCallback((
     next: string,
     selection?: { start: number; end: number },
   ) => {
     const capped = capComposerText(next);
-    composerSelectionRef.current = selection
-      ? clampComposerSelection(normalizeComposerSelectionAfterEdit(selection), capped.length)
-      : composerSelectionAtEnd(capped.length);
-    composerRestoreCaretRef.current = true;
+    const el = composerRef.current;
+    if (el && el.value !== capped) {
+      el.value = capped;
+    }
+    if (el && selection) {
+      const resolved = clampComposerSelection(
+        normalizeComposerSelectionAfterEdit(selection),
+        capped.length,
+      );
+      el.setSelectionRange(resolved.start, resolved.end);
+    }
     setInputText(capped);
-  }, []);
-
-  const handleNativeComposerChange = useCallback((
-    next: string,
-    reported: { start: number; end: number },
-  ) => {
-    const prev = inputTextRef.current;
-    const capped = capComposerText(next);
-    composerSelectionRef.current = resolveCaretAfterNativeEdit(prev, capped, reported);
-    composerRestoreCaretRef.current = true;
-    setInputText(capped);
-  }, []);
-
-  useLayoutEffect(() => {
     syncComposerHeight();
-  }, [inputText, syncComposerHeight]);
+  }, [syncComposerHeight]);
+
+  const handleComposerInput = useCallback(() => {
+    const el = composerRef.current;
+    if (!el || composerComposingRef.current) return;
+    let next = el.value;
+    if (next.length > COMPOSER_MAX_CHARS) {
+      next = capComposerText(next);
+      el.value = next;
+    }
+    setInputText(next);
+    syncComposerHeight();
+  }, [syncComposerHeight]);
 
   const persistActiveThread = useCallback((threadId: string | null) => {
     activeThreadIdRef.current = threadId;
@@ -1749,7 +1738,7 @@ export default function HermesChat({
   ]);
 
   const sendMessage = async (overrideText?: string) => {
-    const text = (typeof overrideText === 'string' ? overrideText : inputText).trim();
+    const text = (typeof overrideText === 'string' ? overrideText : getComposerText()).trim();
     if ((!text && attachments.length === 0) || isLoading) return;
 
     if (!signedIn) {
@@ -2505,16 +2494,6 @@ export default function HermesChat({
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
-      return;
-    }
-    if (e.key === 'Backspace' || e.key === 'Delete') {
-      const start = e.currentTarget.selectionStart ?? 0;
-      const end = e.currentTarget.selectionEnd ?? 0;
-      const deleted = deleteComposerSelection(inputText, { start, end });
-      if (deleted) {
-        e.preventDefault();
-        handleComposerChange(deleted.value, deleted.selection);
-      }
     }
   };
 
@@ -3207,38 +3186,14 @@ export default function HermesChat({
               <div className="relative min-h-10 flex-1">
                 <textarea
                   ref={composerRef}
-                  value={inputText}
-                  onChange={(e) => {
-                    if (composerComposingRef.current) return;
-                    handleNativeComposerChange(e.target.value, {
-                      start: e.target.selectionStart ?? e.target.value.length,
-                      end: e.target.selectionEnd ?? e.target.value.length,
-                    });
-                  }}
+                  defaultValue={inputText}
+                  onInput={handleComposerInput}
                   onCompositionStart={() => {
                     composerComposingRef.current = true;
                   }}
-                  onCompositionEnd={(e) => {
+                  onCompositionEnd={() => {
                     composerComposingRef.current = false;
-                    handleNativeComposerChange(e.currentTarget.value, {
-                      start: e.currentTarget.selectionStart ?? e.currentTarget.value.length,
-                      end: e.currentTarget.selectionEnd ?? e.currentTarget.value.length,
-                    });
-                  }}
-                  onPaste={(e) => {
-                    const pasted = e.clipboardData.getData('text/plain');
-                    if (!pasted) return;
-                    e.preventDefault();
-                    const el = e.currentTarget;
-                    const start = el.selectionStart ?? inputText.length;
-                    const end = el.selectionEnd ?? inputText.length;
-                    const result = applyComposerPaste(
-                      inputText,
-                      { start, end },
-                      pasted,
-                      COMPOSER_MAX_CHARS,
-                    );
-                    handleComposerChange(result.value, result.selection);
+                    handleComposerInput();
                   }}
                   onKeyDown={onKeyDown}
                   placeholder={
