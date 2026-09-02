@@ -25,12 +25,19 @@ export async function fetchCommunityThreadAccessServer(
   if (!upstream.ok) return null;
 
   const data = await upstream.json().catch(() => ({})) as {
+    access?: {
+      roles?: string[];
+      canPrompt?: boolean;
+      isOwner?: boolean;
+    };
     roles?: string[];
     canPrompt?: boolean;
+    isOwner?: boolean;
   };
-  const roles = Array.isArray(data.roles) ? data.roles : [];
-  const isOwner = roles.includes('owner');
-  const canPrompt = Boolean(data.canPrompt);
+  const accessPayload = data.access ?? data;
+  const roles = Array.isArray(accessPayload.roles) ? accessPayload.roles : [];
+  const isOwner = Boolean(accessPayload.isOwner) || roles.includes('owner');
+  const canPrompt = Boolean(accessPayload.canPrompt);
   const canRead = isOwner || roles.length > 0;
   const canPost = isOwner || canPrompt;
 
