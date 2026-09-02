@@ -2,6 +2,7 @@ import type { HermesSession } from '@/lib/auth-session';
 import {
   createCommunityChatMessage,
   listCommunityChatMessages,
+  updateCommunityChatMessage,
   type CommunityChatMessage,
 } from '@/lib/community-chat-store';
 import { fetchCommunityThreadAccessServer } from '@/lib/community-thread-access.server';
@@ -87,6 +88,45 @@ export async function postCommunityMessageServer(
     body: trimmed,
     source: 'human',
   });
+
+  return { message };
+}
+
+export async function patchCommunityMessageServer(
+  rawThreadId: string,
+  messageId: string,
+  body: string,
+  session: HermesSession,
+): Promise<{ message: CommunityChatMessage } | { error: string; status: number }> {
+  const threadId = normalizeHermesThreadId(rawThreadId);
+  const trimmed = body.trim();
+  if (!threadId) {
+    return { error: 'thread id required', status: 400 };
+  }
+  if (!messageId) {
+    return { error: 'message id required', status: 400 };
+  }
+  if (!trimmed) {
+    return { error: 'Message body required', status: 400 };
+  }
+
+  const access = await fetchCommunityThreadAccessServer(threadId, session);
+  if (!access?.canRead) {
+    return { error: 'Access denied', status: 403 };
+  }
+  if (!access.canPost) {
+    return { error: 'Member invite required to edit', status: 403 };
+  }
+
+  const message = await updateCommunityChatMessage({
+    messageId,
+    communityThreadId: threadId,
+    authorUserId: session.userId,
+    body: trimmed,
+  });
+  if (!message) {
+    return { error: 'Message not found or not editable', status: 404 };
+  }
 
   return { message };
 }

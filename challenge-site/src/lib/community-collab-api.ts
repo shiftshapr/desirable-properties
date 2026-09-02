@@ -40,4 +40,21 @@ export async function postCommunityMessage(
   return parseJson(res);
 }
 
+export async function patchCommunityMessage(
+  threadId: string,
+  messageId: string,
+  body: string,
+): Promise<{ message?: CommunityChatMessage }> {
+  const res = await fetch(
+    `/api/agent/community-threads/${encodeURIComponent(threadId)}/messages/${encodeURIComponent(messageId)}`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+    },
+  );
+  return parseJson(res);
+}
+
 export type { CommunityChatMessage, CommunityMessagesPayload };

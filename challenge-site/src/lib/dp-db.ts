@@ -407,8 +407,11 @@ CREATE TABLE IF NOT EXISTS dp_community_chat_message (
   author_name TEXT NOT NULL DEFAULT '',
   body TEXT NOT NULL,
   source TEXT NOT NULL DEFAULT 'human',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  edited_at TIMESTAMPTZ
 );
+
+ALTER TABLE dp_community_chat_message ADD COLUMN IF NOT EXISTS edited_at TIMESTAMPTZ;
 
 CREATE INDEX IF NOT EXISTS dp_community_chat_thread ON dp_community_chat_message (community_thread_id, created_at ASC);
 CREATE INDEX IF NOT EXISTS dp_community_chat_thread_id ON dp_community_chat_message (community_thread_id, id);

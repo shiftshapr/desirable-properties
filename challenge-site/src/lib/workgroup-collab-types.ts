@@ -7,6 +7,8 @@ export type WorkgroupMessage = {
   author_name: string;
   body: string;
   created_at: string | null;
+  edited_at?: string | null;
+  source?: 'human' | 'deepi_shared';
 };
 
 export type WorkgroupMessagesResponse = {

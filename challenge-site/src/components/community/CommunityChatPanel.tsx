@@ -3,29 +3,29 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DpDialogHost } from '@/components/DpDialog';
 import CommunityChatComposer from '@/components/community/CommunityChatComposer';
+import CommunityChatMessageItem from '@/components/community/CommunityChatMessageItem';
 import HermesExperimentalInstructionsModal from '@/components/workgroup/HermesExperimentalInstructionsModal';
 import HermesAmbientFacilitatorQueue from '@/components/workgroup/HermesAmbientFacilitatorQueue';
-import HermesAmbientHandBadge from '@/components/workgroup/HermesAmbientHandBadge';
 import WorkgroupHermesPanel from '@/components/workgroup/WorkgroupHermesPanel';
-import WorkgroupMessageBody from '@/components/workgroup/WorkgroupMessageBody';
 import {
   assessCommunityHermesAmbient,
   fetchCommunityHermesHands,
 } from '@/lib/community-ambient-api';
 import {
   fetchCommunityMessages,
+  patchCommunityMessage,
   postCommunityMessage,
 } from '@/lib/community-collab-api';
 import { communityMessageAsWorkgroup } from '@/lib/community-collab-types';
 import { isHermesExperimentalInstructionsDismissed } from '@/lib/hermes-experimental-instructions';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { HermesHand } from '@/lib/hermes-ambient-types';
-import UserDateTime from '@/components/UserDateTime';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
   communityThreadId: string;
   communityTitle: string;
+  currentUserId?: string | null;
   dpFocus?: number | null;
   signedIn: boolean;
   canPrompt: boolean;
@@ -35,6 +35,7 @@ type Props = {
 export default function CommunityChatPanel({
   communityThreadId,
   communityTitle,
+  currentUserId = null,
   dpFocus = null,
   signedIn,
   canPrompt,
@@ -55,6 +56,8 @@ export default function CommunityChatPanel({
   const [mobileHermesOpen, setMobileHermesOpen] = useState(false);
   const [adoptDraft, setAdoptDraft] = useState<{ key: number; text: string } | null>(null);
   const [hermesInstructionsOpen, setHermesInstructionsOpen] = useState(false);
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+  const [editBusy, setEditBusy] = useState(false);
 
   useEffect(() => {
     if (!isHermesExperimentalInstructionsDismissed()) {
@@ -190,6 +193,31 @@ export default function CommunityChatPanel({
     });
   }
 
+  async function handleSaveEdit(messageId: string, body: string) {
+    setEditBusy(true);
+    try {
+      const result = await patchCommunityMessage(communityThreadId, messageId, body);
+      if (result.message) {
+        const updated = communityMessageAsWorkgroup(result.message);
+        setMessages((prev) => prev.map((m) => (m.id === messageId ? updated : m)));
+      } else {
+        await refresh();
+      }
+      setEditingMessageId(null);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save edit');
+    } finally {
+      setEditBusy(false);
+    }
+  }
+
+  function canEditMessage(msg: WorkgroupMessage): boolean {
+    if (!canPost || !currentUserId) return false;
+    if (msg.source === 'deepi_shared') return false;
+    return msg.author_user_id === currentUserId;
+  }
+
   const hermesBadgeCount =
     hands.filter((h) => h.status !== 'dismissed' && h.status !== 'shared').length
     + askNotes.filter((n) => !n.shared).length;
@@ -216,7 +244,8 @@ export default function CommunityChatPanel({
           <div className="flex items-end justify-between gap-3">
             <p className="text-sm text-slate-400">
               Member chat – refreshes every 30s.
-              {canPrompt && ambientConfigured ? ' Deepi may raise its hand after messages.' : ''}
+              {canPrompt ? ' Use Ask Deepi (✦) in the composer for private replies anytime.' : ''}
+              {canPrompt && ambientConfigured ? ' Deepi may also raise its hand after messages.' : ''}
             </p>
             <div className="flex items-center gap-3">
               <button
@@ -256,29 +285,19 @@ export default function CommunityChatPanel({
               messages.map((msg) => {
                 const msgHands = handsByMessage.get(msg.id) || [];
                 return (
-                  <article
+                  <CommunityChatMessageItem
                     key={msg.id}
-                    className="rounded-lg border border-slate-800/80 bg-slate-950/40 px-4 py-3"
-                  >
-                    <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
-                      <UserDateTime
-                        value={msg.created_at}
-                        mode="short"
-                        className="text-xs text-slate-500"
-                      />
-                    </div>
-                    <WorkgroupMessageBody body={msg.body} />
-                    {canPrompt
-                      ? msgHands.map((hand) => (
-                          <HermesAmbientHandBadge
-                            key={hand.id}
-                            hand={hand}
-                            onOpen={handleOpenHand}
-                          />
-                        ))
-                      : null}
-                  </article>
+                    message={msg}
+                    hands={msgHands}
+                    canPrompt={canPrompt}
+                    canEdit={canEditMessage(msg)}
+                    editing={editingMessageId === msg.id}
+                    editBusy={editBusy}
+                    onStartEdit={() => setEditingMessageId(msg.id)}
+                    onCancelEdit={() => setEditingMessageId(null)}
+                    onSaveEdit={(body) => handleSaveEdit(msg.id, body)}
+                    onOpenHand={handleOpenHand}
+                  />
                 );
               })
             )}

@@ -72,3 +72,20 @@ export function communityParticipantsFromShares(
 
   return participants;
 }
+
+/** Invitees plus the thread owner (owner is not in share recipient lists). */
+export function communityParticipantsForHeader(
+  shares: ThreadShareActivity[],
+  owner?: { label: string } | null,
+): CommunityCollabParticipant[] {
+  const participants = communityParticipantsFromShares(shares);
+  const ownerLabel = owner?.label?.trim();
+  if (!ownerLabel) return participants;
+
+  const ownerKey = ownerLabel.toLowerCase();
+  if (participants.some((p) => p.label.toLowerCase() === ownerKey)) {
+    return participants;
+  }
+
+  return [{ label: ownerLabel, role: 'owner' }, ...participants];
+}

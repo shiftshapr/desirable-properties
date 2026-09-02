@@ -9,6 +9,7 @@ export type CommunityChatMessage = {
   body: string;
   source: 'human' | 'deepi_shared';
   created_at: string;
+  edited_at: string | null;
 };
 
 export type CommunityMessagesPayload = {
@@ -27,5 +28,7 @@ export function communityMessageAsWorkgroup(msg: CommunityChatMessage): Workgrou
     author_name: msg.author_name,
     body: msg.body,
     created_at: msg.created_at,
+    edited_at: msg.edited_at,
+    source: msg.source,
   };
 }

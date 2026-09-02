@@ -320,8 +320,11 @@ export default function WorkgroupHermesPanel({
           <div className="flex-1 overflow-y-auto px-4 py-4">
             {!hasContent ? (
               <p className="text-sm text-slate-500">
-                {DP_COMMUNITY_AI.name} notes appear here: raised hands after messages, or replies from Ask {DP_COMMUNITY_AI.name}.
-                Nothing posts until you choose.
+                Use Ask {DP_COMMUNITY_AI.name} in the composer (✦ button) anytime for a private reply here.
+                {isCommunity
+                  ? ' After others post in Community Chat, Deepi may also raise its hand.'
+                  : ' After others post, Deepi may also raise its hand.'}{' '}
+                Nothing posts to the group until you choose.
               </p>
             ) : null}
 

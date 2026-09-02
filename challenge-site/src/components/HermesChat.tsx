@@ -35,7 +35,7 @@ import {
 import { shouldOfferSaveLearning } from '@/lib/hermes-introspect';
 import {
   communityCollabTitle,
-  communityParticipantsFromShares,
+  communityParticipantsForHeader,
   excludeOwnedFromSharedSidebar,
   isCommunityCollabThread,
   isCommunityOwnedThread,
@@ -2614,10 +2614,15 @@ export default function HermesChat({
   }, [threads, sharedThreads, activeThreadId, activeThreadMeta]);
   const isActiveCommunityChat = isCommunityCollabThread(activeThreadSummary);
   const communityCollabTitleLabel = communityCollabTitle(activeThreadSummary);
-  const communityParticipants = useMemo(
-    () => communityParticipantsFromShares(threadActiveShares),
-    [threadActiveShares],
-  );
+  const communityParticipants = useMemo(() => {
+    const ownerLabel = authUser?.displayName?.trim()
+      || authUser?.username?.trim()
+      || null;
+    return communityParticipantsForHeader(
+      threadActiveShares,
+      isThreadOwner && ownerLabel ? { label: ownerLabel } : null,
+    );
+  }, [threadActiveShares, isThreadOwner, authUser?.displayName, authUser?.username]);
   const isCommunityMember = Boolean(threadAccess?.roles?.includes('member'));
 
   const shareWizardThread = useMemo(() => {
@@ -2761,6 +2766,7 @@ export default function HermesChat({
               <CommunityChatPanel
                 communityThreadId={activeThreadId}
                 communityTitle={communityCollabTitleLabel}
+                currentUserId={authUser?.id ?? null}
                 dpFocus={dpFocus}
                 signedIn={signedIn}
                 canPrompt={Boolean(threadAccess?.canPrompt || isThreadOwner)}
