@@ -19,6 +19,7 @@ export type HermesWorkgroupSettings = {
 export type HermesHand = {
   id: string;
   workgroupId: string;
+  communityThreadId: string | null;
   triggerMessageId: string;
   triggerMessageBody: string;
   triggerAuthorUserId: string;

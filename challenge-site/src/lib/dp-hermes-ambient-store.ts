@@ -36,7 +36,8 @@ function rowToHand(row: Record<string, unknown>): HermesHand {
   const mode = String(row.mode || 'observer') as HermesAmbientMode;
   return {
     id: String(row.id),
-    workgroupId: String(row.workgroup_id),
+    workgroupId: row.workgroup_id ? String(row.workgroup_id) : '',
+    communityThreadId: row.community_thread_id ? String(row.community_thread_id) : null,
     triggerMessageId: String(row.trigger_message_id),
     triggerMessageBody: String(row.trigger_message_body || ''),
     triggerAuthorUserId: String(row.trigger_author_user_id),
@@ -314,4 +315,100 @@ export async function findHandForMessage(
     [workgroupId, messageId, ownerUserId],
   );
   return res.rows[0] ? rowToHand(res.rows[0]) : null;
+}
+
+export async function getLastCommunityAmbientHandAt(
+  communityThreadId: string,
+): Promise<Date | null> {
+  const pool = await ensureDpSchema();
+  if (!pool) return null;
+  const res = await pool.query(
+    `SELECT created_at FROM dp_hermes_hand
+     WHERE community_thread_id = $1 AND requested_explicitly = false
+     ORDER BY created_at DESC LIMIT 1`,
+    [communityThreadId],
+  );
+  if (!res.rows[0]) return null;
+  return new Date(String(res.rows[0].created_at));
+}
+
+export async function createCommunityHermesHand(input: {
+  communityThreadId: string;
+  triggerMessageId: string;
+  triggerMessageBody: string;
+  triggerAuthorUserId: string;
+  ownerUserId: string;
+  mode: HermesAmbientMode;
+  confidence: number;
+  teaser: string;
+  requestedExplicitly: boolean;
+}): Promise<HermesHand> {
+  const pool = await ensureDpSchema();
+  if (!pool) throw new Error('Database not configured');
+
+  const id = crypto.randomUUID();
+  const res = await pool.query(
+    `INSERT INTO dp_hermes_hand (
+      id, community_thread_id, trigger_message_id, trigger_message_body,
+      trigger_author_user_id, mode, confidence, teaser,
+      requested_explicitly, owner_user_id
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+    RETURNING *`,
+    [
+      id,
+      input.communityThreadId,
+      input.triggerMessageId,
+      input.triggerMessageBody.slice(0, 8000),
+      input.triggerAuthorUserId,
+      input.mode,
+      input.confidence,
+      input.teaser.slice(0, 240),
+      input.requestedExplicitly,
+      input.ownerUserId,
+    ],
+  );
+  return rowToHand(res.rows[0]);
+}
+
+export async function listCommunityHermesHandsForUser(
+  communityThreadId: string,
+  userId: string,
+  opts?: { includeShared?: boolean },
+): Promise<HermesHand[]> {
+  const pool = await ensureDpSchema();
+  if (!pool) return [];
+
+  const res = await pool.query(
+    `SELECT * FROM dp_hermes_hand
+     WHERE community_thread_id = $1
+       AND (
+         owner_user_id = $2
+         OR ($3::boolean AND visibility = 'shared')
+       )
+       AND status != 'dismissed'
+     ORDER BY created_at DESC
+     LIMIT 50`,
+    [communityThreadId, userId, Boolean(opts?.includeShared)],
+  );
+  return res.rows.map(rowToHand);
+}
+
+export async function listPendingCommunityShareHands(
+  communityThreadId: string,
+  viewerUserId: string,
+): Promise<HermesHand[]> {
+  const pool = await ensureDpSchema();
+  if (!pool) return [];
+
+  const res = await pool.query(
+    `SELECT * FROM dp_hermes_hand
+     WHERE community_thread_id = $1
+       AND status = 'opened'
+       AND visibility = 'private'
+       AND owner_user_id = $2
+     ORDER BY opened_at DESC NULLS LAST
+     LIMIT 20`,
+    [communityThreadId, viewerUserId],
+  );
+  return res.rows.map(rowToHand);
 }

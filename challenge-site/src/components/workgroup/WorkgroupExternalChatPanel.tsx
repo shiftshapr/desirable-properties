@@ -21,17 +21,16 @@ export default function WorkgroupExternalChatPanel({
       <div>
         <h2 className="text-lg font-semibold text-white">External Chat</h2>
         <p className="mt-2 text-sm text-slate-400">
-          Community Chats use the same group Deepi pattern as workgroup collaboration, but you
-          choose the participants instead of the roster. Invite people outside the workgroup by
-          email or link. This is separate from Workgroup Chat, which stays inside the member thread.
+          Community Chats match workgroup Collab: human messages in the main panel and private Deepi in the right sidebar.
+          Invite people outside the workgroup by email or link. This is separate from Workgroup Chat, which stays inside the member thread.
         </p>
       </div>
 
       <div className="rounded-xl border border-slate-700 bg-slate-950/60 p-4">
         <p className="text-sm text-slate-300">
           Start a Community Chat for <span className="font-medium text-white">{workgroupName}</span>.
-          You pick who joins. Everyone invited can prompt Deepi. The chat appears in your Deepi
-          sidebar with a Community badge.
+          You pick who joins. Everyone invited can post in the member chat and use private Deepi in the sidebar.
+          The chat appears in your Deepi sidebar with a Community badge.
         </p>
         {signedIn ? (
           <NamedTabLink

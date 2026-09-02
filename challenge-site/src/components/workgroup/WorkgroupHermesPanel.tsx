@@ -10,6 +10,11 @@ import {
   openHermesHand,
   shareHermesHand,
 } from '@/lib/hermes-ambient-api';
+import {
+  dismissCommunityHermesHand,
+  openCommunityHermesHand,
+  shareCommunityHermesHand,
+} from '@/lib/community-ambient-api';
 import { HERMES_MODE_LABELS, type HermesHand } from '@/lib/hermes-ambient-types';
 import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
 import { SHARED_DEEPI_MESSAGE_PREFIX } from '@/lib/workgroup-hermes-share';
@@ -19,8 +24,10 @@ import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 type Props = {
-  workgroupId: string;
-  workgroupSlug: string;
+  workgroupId?: string;
+  workgroupSlug?: string;
+  communityThreadId?: string;
+  postToChat?: (body: string) => Promise<void>;
   dpId: string | null;
   recentMessages: WorkgroupMessage[];
   hands: HermesHand[];
@@ -56,8 +63,10 @@ function HermesPanelChevron({ direction }: { direction: 'left' | 'right' }) {
 }
 
 export default function WorkgroupHermesPanel({
-  workgroupId,
-  workgroupSlug,
+  workgroupId = '',
+  workgroupSlug = '',
+  communityThreadId,
+  postToChat,
   dpId,
   recentMessages,
   hands,
@@ -76,6 +85,48 @@ export default function WorkgroupHermesPanel({
   onMobileClose,
   onOpenHermesInstructions,
 }: Props) {
+  const isCommunity = Boolean(communityThreadId);
+  const scopeId = communityThreadId || workgroupId;
+
+  async function openScopedHand(
+    handId: string,
+    input: {
+      dpFocus?: number | null;
+      recentMessages: Array<{ author_name?: string; body: string }>;
+    },
+  ) {
+    if (isCommunity && communityThreadId) {
+      return openCommunityHermesHand(communityThreadId, handId, input);
+    }
+    return openHermesHand(workgroupId, handId, {
+      workgroupSlug,
+      dpFocus: input.dpFocus,
+      recentMessages: input.recentMessages,
+    });
+  }
+
+  async function shareScopedHand(handId: string) {
+    if (isCommunity && communityThreadId) {
+      return shareCommunityHermesHand(communityThreadId, handId);
+    }
+    return shareHermesHand(workgroupId, handId);
+  }
+
+  async function dismissScopedHand(handId: string) {
+    if (isCommunity && communityThreadId) {
+      return dismissCommunityHermesHand(communityThreadId, handId);
+    }
+    return dismissHermesHand(workgroupId, handId);
+  }
+
+  async function postSharedMessage(body: string) {
+    if (postToChat) {
+      await postToChat(body);
+      return;
+    }
+    await postWorkgroupMessage(workgroupId, body);
+  }
+
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -293,8 +344,7 @@ export default function WorkgroupHermesPanel({
                   setError(null);
                   try {
                     const dpFocus = dpId ? Number(dpId.replace(/\D/g, '')) || null : null;
-                    const result = await openHermesHand(workgroupId, display.id, {
-                      workgroupSlug,
+                    const result = await openScopedHand(display.id, {
                       dpFocus,
                       recentMessages: recentMessages.map((m) => ({
                         author_name: m.author_name,
@@ -315,8 +365,7 @@ export default function WorkgroupHermesPanel({
                   const display = localHand || activeHand;
                   let hand = display;
                   if (!hand.fullReply) {
-                    hand = (await openHermesHand(workgroupId, hand.id, {
-                      workgroupSlug,
+                    hand = (await openScopedHand(hand.id, {
                       dpFocus: dpId ? Number(dpId.replace(/\D/g, '')) || null : null,
                       recentMessages: recentMessages.map((m) => ({
                         author_name: m.author_name,
@@ -327,7 +376,7 @@ export default function WorkgroupHermesPanel({
                     onHandUpdated(hand);
                   }
                   const ok = await DpDialog.confirm({
-                    title: 'Share with workgroup?',
+                    title: isCommunity ? 'Share with Community Chat?' : 'Share with workgroup?',
                     message: `This will post ${DP_COMMUNITY_AI.name}'s note to the main chat thread with clear attribution.`,
                     variant: 'warning',
                     confirmLabel: 'Share',
@@ -336,13 +385,15 @@ export default function WorkgroupHermesPanel({
                   setSharing(true);
                   setError(null);
                   try {
-                    const result = await shareHermesHand(workgroupId, hand.id);
+                    const result = await shareScopedHand(hand.id);
                     setLocalHand(result.hand);
                     onHandUpdated(result.hand);
                     onMessagePosted?.();
                     await DpDialog.alert({
                       title: 'Shared with group',
-                      message: `${DP_COMMUNITY_AI.name}'s note was posted to the workgroup chat.`,
+                      message: isCommunity
+                        ? `${DP_COMMUNITY_AI.name}'s note was posted to Community Chat.`
+                        : `${DP_COMMUNITY_AI.name}'s note was posted to the workgroup chat.`,
                       variant: 'success',
                     });
                   } catch (err) {
@@ -360,7 +411,7 @@ export default function WorkgroupHermesPanel({
                   });
                   if (!ok) return;
                   try {
-                    await dismissHermesHand(workgroupId, activeHand.id);
+                    await dismissScopedHand(activeHand.id);
                     onHandUpdated({ ...activeHand, status: 'dismissed' });
                   } catch (err) {
                     setError(err instanceof Error ? err.message : 'Failed to dismiss');
@@ -377,7 +428,7 @@ export default function WorkgroupHermesPanel({
                 onShare={async () => {
                   if (activeAskNote.shared) return;
                   const ok = await DpDialog.confirm({
-                    title: 'Share with workgroup?',
+                    title: isCommunity ? 'Share with Community Chat?' : 'Share with workgroup?',
                     message: `This will post ${DP_COMMUNITY_AI.name}'s reply to the main chat thread with clear attribution.`,
                     variant: 'warning',
                     confirmLabel: 'Share',
@@ -388,12 +439,14 @@ export default function WorkgroupHermesPanel({
                   try {
                     const modeLabel = HERMES_MODE_LABELS[activeAskNote.mode];
                     const shareBody = `${SHARED_DEEPI_MESSAGE_PREFIX}${modeLabel})*\n\n${activeAskNote.reply}`;
-                    await postWorkgroupMessage(workgroupId, shareBody);
+                    await postSharedMessage(shareBody);
                     onAskNoteUpdated({ ...activeAskNote, shared: true });
                     onMessagePosted?.();
                     await DpDialog.alert({
                       title: 'Shared with group',
-                      message: `${DP_COMMUNITY_AI.name}'s reply was posted to the workgroup chat.`,
+                      message: isCommunity
+                        ? `${DP_COMMUNITY_AI.name}'s reply was posted to Community Chat.`
+                        : `${DP_COMMUNITY_AI.name}'s reply was posted to the workgroup chat.`,
                       variant: 'success',
                     });
                   } catch (err) {

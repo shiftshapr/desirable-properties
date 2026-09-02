@@ -16,6 +16,7 @@ import HermesCommunityCollabHeader from '@/components/HermesCommunityCollabHeade
 import HermesCommunityInviteModal from '@/components/HermesCommunityInviteModal';
 import HermesShareWizard from '@/components/HermesShareWizard';
 import HermesCommunityCreateModal from '@/components/HermesCommunityCreateModal';
+import CommunityChatPanel from '@/components/community/CommunityChatPanel';
 import HermesShareStatus from '@/components/HermesShareStatus';
 import HermesMessageShareNotice from '@/components/HermesMessageShareNotice';
 import HermesControlPanel from '@/components/HermesControlPanel';
@@ -568,6 +569,7 @@ export default function HermesChat({
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [activeThreadMeta, setActiveThreadMeta] = useState<HermesThreadSummary | null>(null);
+  const [communityLegacyTurns, setCommunityLegacyTurns] = useState(false);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [shareWizardThreadId, setShareWizardThreadId] = useState<string | null>(null);
@@ -847,6 +849,22 @@ export default function HermesChat({
           });
           setThreads((prev) => prev.filter((row) => row.id !== loadedSummary.id));
         }
+      }
+      const isGroupThread = loadedThread?.threadKind === 'group';
+      setCommunityLegacyTurns(isGroupThread && (loadedThread?.turns || []).length > 0);
+      if (isGroupThread) {
+        setThreadAccess(loadedThread?.access || null);
+        setContributionDraft(null);
+        setContributionSets([]);
+        setAttachments([]);
+        setAttachError(null);
+        handleComposerChange('');
+        setMessages([]);
+        messagesFingerprintRef.current = '';
+        messagesThreadIdRef.current = canonicalThreadId;
+        clearAgentStarterUrlParams();
+        persistActiveThread(canonicalThreadId);
+        return;
       }
       const turns = loadedThread?.turns || [];
       const sets: ContributionSet[] = Array.isArray(loadedThread?.contributionSets)
@@ -2738,6 +2756,19 @@ export default function HermesChat({
         ) : null}
 
         <div className="relative min-h-0 flex-1">
+          {isActiveCommunityChat && activeThreadId ? (
+            <div className="h-full overflow-y-auto overscroll-y-contain px-4 py-4 sm:px-6">
+              <CommunityChatPanel
+                communityThreadId={activeThreadId}
+                communityTitle={communityCollabTitleLabel}
+                dpFocus={dpFocus}
+                signedIn={signedIn}
+                canPrompt={Boolean(threadAccess?.canPrompt || isThreadOwner)}
+                legacySharedTurns={communityLegacyTurns}
+              />
+            </div>
+          ) : (
+          <>
           <div
             ref={scrollContainerRef}
             className="h-full overflow-y-auto overscroll-y-contain"
@@ -3126,8 +3157,11 @@ export default function HermesChat({
               activityRootRef={scrollContainerRef}
             />
           ) : null}
+          </>
+          )}
         </div>
 
+        {!isActiveCommunityChat ? (
         <div className="shrink-0 border-t border-slate-800 bg-slate-950">
           <div className="mx-auto w-full max-w-3xl px-4 py-3 sm:px-6">
             <div className="space-y-2">
@@ -3260,6 +3294,7 @@ export default function HermesChat({
             </div>
           </div>
         </div>
+        ) : null}
       </div>
 
       <HermesTeachModal

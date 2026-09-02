@@ -397,6 +397,25 @@ CREATE INDEX IF NOT EXISTS dp_hermes_hand_workgroup ON dp_hermes_hand (workgroup
 CREATE INDEX IF NOT EXISTS dp_hermes_hand_owner ON dp_hermes_hand (owner_user_id, workgroup_id, status);
 CREATE INDEX IF NOT EXISTS dp_hermes_hand_message ON dp_hermes_hand (workgroup_id, trigger_message_id);
 
+ALTER TABLE dp_hermes_hand ADD COLUMN IF NOT EXISTS community_thread_id TEXT;
+ALTER TABLE dp_hermes_hand ALTER COLUMN workgroup_id DROP NOT NULL;
+
+CREATE TABLE IF NOT EXISTS dp_community_chat_message (
+  id UUID PRIMARY KEY,
+  community_thread_id TEXT NOT NULL,
+  author_user_id TEXT NOT NULL,
+  author_name TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL,
+  source TEXT NOT NULL DEFAULT 'human',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS dp_community_chat_thread ON dp_community_chat_message (community_thread_id, created_at ASC);
+CREATE INDEX IF NOT EXISTS dp_community_chat_thread_id ON dp_community_chat_message (community_thread_id, id);
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_community ON dp_hermes_hand (community_thread_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_community_owner ON dp_hermes_hand (owner_user_id, community_thread_id, status);
+CREATE INDEX IF NOT EXISTS dp_hermes_hand_community_message ON dp_hermes_hand (community_thread_id, trigger_message_id);
+
 CREATE TABLE IF NOT EXISTS dp_workgroup_message_share (
   id UUID PRIMARY KEY,
   workgroup_id TEXT NOT NULL,
