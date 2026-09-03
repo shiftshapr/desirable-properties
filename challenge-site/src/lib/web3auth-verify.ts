@@ -8,12 +8,8 @@ const DEFAULT_DEVNET_CLIENT_ID =
 
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 
+/** Must stay in sync with getWeb3AuthPublicConfig: devnet only, never sapphire_mainnet. */
 function web3authClientId() {
-  const useMainnet = ['1', 'true', 'yes', 'on'].includes(
-    String(process.env.WEB3AUTH_USE_MAINNET || '').trim().toLowerCase(),
-  );
-  const mainnetId = String(process.env.WEB3AUTH_CLIENT_ID || '').trim();
-  if (useMainnet && mainnetId) return mainnetId;
   return String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || DEFAULT_DEVNET_CLIENT_ID).trim();
 }
 

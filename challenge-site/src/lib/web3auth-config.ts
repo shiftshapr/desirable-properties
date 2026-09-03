@@ -1,23 +1,10 @@
 const DEFAULT_DEVNET_CLIENT_ID =
   'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk';
 
+/** Devnet only by design: Web3Auth sapphire_mainnet is a paid plan we do not hold. */
 export function getWeb3AuthPublicConfig() {
-  const useMainnet = ['1', 'true', 'yes', 'on'].includes(
-    String(process.env.WEB3AUTH_USE_MAINNET || '').trim().toLowerCase(),
-  );
-  const mainnetId = String(process.env.WEB3AUTH_CLIENT_ID || '').trim();
-  const devnetId = String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || DEFAULT_DEVNET_CLIENT_ID).trim();
-
-  if (useMainnet && mainnetId) {
-    return {
-      clientId: mainnetId,
-      web3AuthNetwork: 'sapphire_mainnet',
-      googleVerifier: 'web3auth-google-sapphire',
-    };
-  }
-
   return {
-    clientId: devnetId,
+    clientId: String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || DEFAULT_DEVNET_CLIENT_ID).trim(),
     web3AuthNetwork: 'sapphire_devnet',
     googleVerifier: 'web3auth-google-sapphire-devnet',
   };

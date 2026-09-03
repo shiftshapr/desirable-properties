@@ -6,6 +6,9 @@ export function formatAuthError(message: string): string {
       '(Safari: address bar → Website Settings → Pop-up Windows → Allow), then click Sign in again.'
     );
   }
+  if (/session expired|invalid public key/i.test(message)) {
+    return 'Your previous sign-in session expired. Click Sign in again to continue.';
+  }
   return message;
 }
 

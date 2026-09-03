@@ -328,26 +328,46 @@ async function connectWeb3AuthProvider(
   return instance.connect();
 }
 
+/**
+ * A stale browser session makes connect() throw "Session Expired or Invalid public key".
+ * That state only clears by wiping Web3Auth storage and rebuilding the instance, so the
+ * live instance is returned with the provider: the caller's original reference is dead
+ * after recovery and cannot mint an identity token.
+ */
 async function connectWeb3AuthProviderWithRetry(
-  instance: Web3AuthInstance,
+  initialInstance: Web3AuthInstance,
   mode: Web3AuthLoginMode,
   emailHint?: string,
-) {
+): Promise<{ provider: unknown; instance: Web3AuthInstance }> {
+  let instance = initialInstance;
+  let staleRecoveryUsed = false;
   let lastError: unknown;
+
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
       if (attempt > 0) {
         await new Promise((resolve) => setTimeout(resolve, 350 * attempt));
       }
-      return await connectWeb3AuthProvider(instance, mode, emailHint);
+      const provider = await connectWeb3AuthProvider(instance, mode, emailHint);
+      return { provider, instance };
     } catch (error) {
       lastError = error;
       const message = error instanceof Error ? error.message : String(error);
       if (/user closed|closed popup|user rejected/i.test(message)) {
         throw error;
       }
-      if (!/not ready|connector is not ready|clientId|project configurations/i.test(message)) {
+      if (!isStaleWeb3AuthError(message)) {
         throw error;
+      }
+
+      if (/session expired|invalid public key/i.test(message)) {
+        // Reopening the modal repeatedly is worse than a clear retry prompt.
+        if (staleRecoveryUsed) {
+          throw new Error('Your previous sign-in session expired. Click Sign in again.');
+        }
+        staleRecoveryUsed = true;
+        clearStaleWeb3AuthClientState();
+        instance = await initWeb3Auth();
       }
     }
   }
@@ -424,7 +444,9 @@ export async function loginWithWeb3Auth(mode: Web3AuthLoginMode = 'default'): Pr
   let instance: Web3AuthInstance | null = null;
   try {
     instance = await initWeb3Auth();
-    const provider = await connectWeb3AuthProviderWithRetry(instance, mode);
+    const connected = await connectWeb3AuthProviderWithRetry(instance, mode);
+    instance = connected.instance;
+    const provider = connected.provider;
     dismissWeb3AuthModal(instance);
 
     const idToken = await resolveIdentityToken(instance);
@@ -462,7 +484,9 @@ export function loginWithEmail(email: string) {
     let instance: Web3AuthInstance | null = null;
     try {
       instance = await initWeb3Auth();
-      const provider = await connectWeb3AuthProviderWithRetry(instance, 'email', email);
+      const connected = await connectWeb3AuthProviderWithRetry(instance, 'email', email);
+      instance = connected.instance;
+      const provider = connected.provider;
       dismissWeb3AuthModal(instance);
       const idToken = await resolveIdentityToken(instance);
       if (!idToken) throw new Error('Sign-in verification failed: no identity token');
