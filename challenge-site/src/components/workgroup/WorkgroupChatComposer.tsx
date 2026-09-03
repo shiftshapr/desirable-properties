@@ -12,6 +12,7 @@ type Props = {
   workgroupName: string;
   dpId: string | null;
   recentMessages: WorkgroupMessage[];
+  recentAskNotes?: WorkgroupAskNote[];
   canPost: boolean;
   signedIn: boolean;
   busy?: boolean;
@@ -26,6 +27,7 @@ export default function WorkgroupChatComposer({
   workgroupName,
   dpId,
   recentMessages,
+  recentAskNotes,
   canPost,
   signedIn,
   busy,
@@ -112,6 +114,7 @@ export default function WorkgroupChatComposer({
           workgroupName={workgroupName}
           dpId={dpId}
           recentMessages={recentMessages}
+          recentAskNotes={recentAskNotes}
           disabled={busy}
           onSendAsMessage={async (text) => {
             if (!text.trim() || busy) return;

@@ -11,6 +11,7 @@ type Props = {
   communityTitle: string;
   dpFocus?: number | null;
   recentMessages: WorkgroupMessage[];
+  recentAskNotes?: WorkgroupAskNote[];
   canPost: boolean;
   signedIn: boolean;
   busy?: boolean;
@@ -25,6 +26,7 @@ export default function CommunityChatComposer({
   communityTitle,
   dpFocus = null,
   recentMessages,
+  recentAskNotes,
   canPost,
   signedIn,
   busy,
@@ -96,6 +98,7 @@ export default function CommunityChatComposer({
           workgroupName={communityTitle}
           dpId={dpId}
           recentMessages={recentMessages}
+          recentAskNotes={recentAskNotes}
           disabled={busy}
           onHermesReply={onHermesReply}
           onOpenHermesInstructions={onOpenHermesInstructions}

@@ -323,6 +323,7 @@ export default function WorkgroupChatPanel({
               workgroupName={workgroupName}
               dpId={dpId}
               recentMessages={messages}
+              recentAskNotes={askNotes}
               canPost={canPost}
               signedIn={signedIn}
               busy={posting}

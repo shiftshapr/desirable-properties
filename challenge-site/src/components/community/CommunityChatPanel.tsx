@@ -309,6 +309,7 @@ export default function CommunityChatPanel({
               communityTitle={communityTitle}
               dpFocus={dpFocus}
               recentMessages={messages}
+              recentAskNotes={askNotes}
               canPost={canPost}
               signedIn={signedIn}
               busy={posting}

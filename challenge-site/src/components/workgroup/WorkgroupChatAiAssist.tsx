@@ -25,10 +25,12 @@ import { getAiPromptInfo } from '@/lib/ai-prompt-info';
 import { isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { HERMES_MODE_LABELS, type HermesAmbientMode } from '@/lib/hermes-ambient-types';
 import {
+  ASK_HERMES_CUSTOM_INSTRUCTION,
   WORKGROUP_ASK_HERMES_INSTRUCTIONS,
   WORKGROUP_ASK_HERMES_PROMPTS,
   WORKGROUP_ASSIST_INSTRUCTION_OVERRIDES,
   buildAskHermesMessage,
+  formatPriorDeepiReply,
   workgroupAssistPromptOptions,
 } from '@/lib/workgroup-ai-prompts';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
@@ -44,6 +46,8 @@ type Props = {
   workgroupName: string;
   dpId: string | null;
   recentMessages: WorkgroupMessage[];
+  /** Prior private Deepi replies, newest first, so follow-ups like "Yes" have an antecedent. */
+  recentAskNotes?: WorkgroupAskNote[];
   disabled?: boolean;
   onSendAsMessage?: (text: string) => void;
   onHermesReply?: (note: WorkgroupAskNote) => void;
@@ -86,6 +90,7 @@ export default function WorkgroupChatAiAssist({
   workgroupName,
   dpId,
   recentMessages,
+  recentAskNotes,
   disabled,
   onSendAsMessage,
   onHermesReply,
@@ -202,6 +207,13 @@ export default function WorkgroupChatAiAssist({
     });
   }
 
+  const priorDeepiReply = useMemo(() => {
+    const newestFirst = [...(recentAskNotes || [])].sort((a, b) =>
+      String(b.createdAt || '').localeCompare(String(a.createdAt || '')),
+    );
+    return formatPriorDeepiReply(newestFirst[0]?.reply || '');
+  }, [recentAskNotes]);
+
   function handleAskPromptClick(option: ComposeAiPromptOption) {
     const info = getAiPromptInfo(option, promptInfoContext);
     if (info) {
@@ -213,6 +225,23 @@ export default function WorkgroupChatAiAssist({
   }
 
   async function runAskHermes(option: ComposeAiPromptOption) {
+    await askDeepi({
+      instruction: WORKGROUP_ASK_HERMES_INSTRUCTIONS[option.id] ?? option.label,
+      promptLabel: option.label,
+    });
+  }
+
+  /** Free-typed ask with no pill, so "Yes" or "Yes and ..." can answer Deepi directly. */
+  async function runCustomAsk() {
+    const question = askQuestion.trim();
+    if (!question) return;
+    await askDeepi({
+      instruction: ASK_HERMES_CUSTOM_INSTRUCTION,
+      promptLabel: question.length > 60 ? `${question.slice(0, 57)}…` : question,
+    });
+  }
+
+  async function askDeepi(opts: { instruction: string; promptLabel: string }) {
     if (disabled || askGenerating) return;
 
     askAbortRef.current?.abort();
@@ -222,17 +251,21 @@ export default function WorkgroupChatAiAssist({
     setAskGenerating(true);
     setAskError(null);
 
-    const threadContext = value.trim()
-      ? `Composer draft:\n${value.trim()}`
-      : latestThreadMessage(recentMessages)
-        ? `Latest thread message:\n${latestThreadMessage(recentMessages)}`
-        : contextBlock;
-
-    const instruction =
-      WORKGROUP_ASK_HERMES_INSTRUCTIONS[option.id] ?? option.label;
+    const threadContext = [
+      value.trim()
+        ? `Composer draft:\n${value.trim()}`
+        : latestThreadMessage(recentMessages)
+          ? `Latest thread message:\n${latestThreadMessage(recentMessages)}`
+          : contextBlock,
+      priorDeepiReply
+        ? `Your most recent private reply to this participant:\n${priorDeepiReply}`
+        : '',
+    ]
+      .filter(Boolean)
+      .join('\n\n');
 
     const message = buildAskHermesMessage({
-      instruction,
+      instruction: opts.instruction,
       mode: askMode,
       contextBlock: threadContext,
       userQuestion: askQuestion,
@@ -252,12 +285,13 @@ export default function WorkgroupChatAiAssist({
         id: `ask-${Date.now()}`,
         mode: askMode,
         reply: reply || '',
-        promptLabel: option.label,
+        promptLabel: opts.promptLabel,
         shared: false,
         createdAt: new Date().toISOString(),
       };
 
       onHermesReply?.(note);
+      setAskQuestion('');
       closePanel();
     } catch (err) {
       if (controller.signal.aborted) return;
@@ -409,22 +443,47 @@ export default function WorkgroupChatAiAssist({
                   ))}
                 </div>
 
-                <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-                  Optional question
+                <label
+                  htmlFor={`${menuId}-ask-question`}
+                  className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500"
+                >
+                  Your reply or question
                 </label>
                 <textarea
+                  id={`${menuId}-ask-question`}
                   value={askQuestion}
                   onChange={(e) => setAskQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      void runCustomAsk();
+                    }
+                  }}
                   rows={2}
-                  placeholder="Paste context or ask a specific question…"
-                  className="mb-4 w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-violet-600 focus:outline-none"
+                  placeholder='Answer Deepi directly, e.g. "Yes" or "Yes, and keep it to one table"…'
+                  className="mb-2 w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-violet-600 focus:outline-none"
                   disabled={askGenerating}
                 />
 
-                <p className="mb-2 text-xs text-slate-500">
+                <div className="mb-4 flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => void runCustomAsk()}
+                    disabled={askGenerating || !askQuestion.trim()}
+                    className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-600 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {askGenerating ? 'Asking…' : 'Ask Deepi'}
+                  </button>
+                </div>
+
+                <p className="mb-3 text-xs text-slate-500">
                   Context: {value.trim() ? 'composer draft' : recentMessages.length ? 'latest thread message' : 'workgroup'}
+                  {priorDeepiReply ? " plus Deepi's last reply to you" : ''}
                 </p>
 
+                <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+                  Or start from a prompt
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {WORKGROUP_ASK_HERMES_PROMPTS.map((option) => (
                     <button

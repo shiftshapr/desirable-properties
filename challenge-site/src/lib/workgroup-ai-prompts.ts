@@ -69,6 +69,26 @@ export const WORKGROUP_ASSIST_INSTRUCTION_OVERRIDES: Record<string, string> = {
   'wg-next': 'What should this workgroup propose or patch next?',
 };
 
+/**
+ * Instruction for a free-typed ask with no pill. The question carries the intent, so this
+ * only tells Deepi how to read it: a bare "Yes" is an acceptance of Deepi's own last offer,
+ * which is why the ask context includes the previous reply.
+ */
+export const ASK_HERMES_CUSTOM_INSTRUCTION = [
+  'Answer the participant question above.',
+  'It may be a short reply such as "Yes", "Yes and ...", or "No" that responds to an offer',
+  'in your own most recent reply shown in the context. In that case, resolve what was accepted',
+  'and carry it out directly rather than asking the participant to restate it.',
+].join(' ');
+
+/** Tail of Deepi's last private reply, so short follow-ups have something to attach to. */
+export function formatPriorDeepiReply(reply: string, maxChars = 1800): string {
+  const text = String(reply || '').trim();
+  if (!text) return '';
+  if (text.length <= maxChars) return text;
+  return `…${text.slice(-maxChars)}`;
+}
+
 export function buildAskHermesMessage(opts: {
   instruction: string;
   mode: HermesAmbientMode;
