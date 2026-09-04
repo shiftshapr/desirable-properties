@@ -3,7 +3,7 @@ import { fetchUnifiedActivity } from '@/lib/activity-feed';
 
 export async function GET() {
   const items = await fetchUnifiedActivity(8);
-  // Public-safe copy only (unified feed already avoids emails/PII).
+  // Public-safe copy; unified feed masks email-like actor names before respond.
   return NextResponse.json(
     { items },
     {

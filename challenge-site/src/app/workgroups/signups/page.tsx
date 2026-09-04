@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import WorkgroupSignupsClient from './WorkgroupSignupsClient';
+import { toPublicWorkgroupSignupsPayload } from '@/lib/public-payload';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
@@ -32,7 +33,7 @@ export default async function WorkgroupSignupsPage() {
 
   return (
     <WorkgroupSignupsClient
-      data={data}
+      data={toPublicWorkgroupSignupsPayload(data)}
       collabEnabled={await isWorkgroupCollabEnabled()}
     />
   );

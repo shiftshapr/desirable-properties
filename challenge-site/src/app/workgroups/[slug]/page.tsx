@@ -7,7 +7,8 @@ import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { resolveAdminEmail } from '@/lib/dp-admin-auth';
 import { readSession } from '@/lib/auth-session';
-import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { extractDpId, fetchChallengeWorkgroups, GOVHUB_PUBLIC_BASE_URL, govhubUrl } from '@/lib/govhub';
+import { maskWorkgroupMessageAuthors } from '@/lib/public-payload';
 import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
@@ -55,7 +56,7 @@ async function fetchTeaserMessages(workgroupId: string): Promise<WorkgroupMessag
     );
     if (!res.ok) return [];
     const data = (await res.json()) as { messages?: WorkgroupMessage[] };
-    return data.messages || [];
+    return maskWorkgroupMessageAuthors(data.messages || []);
   } catch {
     return [];
   }

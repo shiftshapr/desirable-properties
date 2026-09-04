@@ -2,6 +2,10 @@ import Link from 'next/link';
 import OrdinalLink from '@/components/OrdinalLink';
 import OnchainClaimableLists from '@/components/OnchainClaimableLists';
 import SatplicationEmbed from '@/components/SatplicationEmbed';
+import {
+  toPublicOnchainPciEmails,
+  toPublicOnchainSubmissions,
+} from '@/lib/public-payload';
 import localData from '../../data/desirable-properties.json';
 import articlesData from '../../data/call-for-input-articles.json';
 import submissionIndex from '../../data/submission-index.json';
@@ -17,8 +21,8 @@ const CALL_FOR_INPUT_INSCRIPTION =
 const HOW_TO_INSCRIBE = articlesData.meta.how_to_inscribe;
 
 export default async function OnchainPage() {
-  const pciEmails = articlesData.pci_emails;
-  const submissions = submissionIndex.submissions;
+  const pciEmails = toPublicOnchainPciEmails(articlesData.pci_emails);
+  const submissions = toPublicOnchainSubmissions(submissionIndex.submissions);
   const dpInscriptions = Object.entries(dpInscriptionMap.by_dp_id ?? {}).sort(
     ([a], [b]) => parseInt(a.replace('DP', ''), 10) - parseInt(b.replace('DP', ''), 10),
   );

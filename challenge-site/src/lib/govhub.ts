@@ -1,4 +1,5 @@
 /** Public Gov Hub URL (interfacehub.net is canonical; legacy hub host 301s). */
+import { publicDisplayName } from '@/lib/public-display-name';
 import { workgroupActivityHref } from '@/lib/workgroup-links';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 
@@ -292,7 +293,9 @@ function formatActivityEvent(
   const type = event.event_type;
   if (!CHALLENGE_ACTIVITY_TYPES.has(type)) return null;
 
-  const who = event.actor_display_name?.trim() || 'A participant';
+  const who = publicDisplayName(event.actor_display_name, {
+    fallback: 'A participant',
+  });
   const payload = event.payload ?? {};
   const docHref = draftHref(payload);
   const docLabel =
@@ -385,8 +388,10 @@ function formatActivityEvent(
         'a workgroup';
       const slug =
         (payload.slug as string) || (payload.workgroup_slug as string) || '';
-      const actor =
-        (payload.display_name as string) || who;
+      const actor = publicDisplayName(payload.display_name as string, {
+        alt: who,
+        fallback: 'A participant',
+      });
       text = `${actor} joined ${wgName}`;
       return {
         id: event.id,
@@ -402,8 +407,10 @@ function formatActivityEvent(
         'a workgroup';
       const slug =
         (payload.slug as string) || (payload.workgroup_slug as string) || '';
-      const actor =
-        (payload.display_name as string) || who;
+      const actor = publicDisplayName(payload.display_name as string, {
+        alt: who,
+        fallback: 'A participant',
+      });
       text = `${actor} left ${wgName}`;
       return {
         id: event.id,

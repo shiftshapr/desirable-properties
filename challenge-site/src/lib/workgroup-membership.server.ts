@@ -1,5 +1,6 @@
 import { readSession, type HermesSession } from '@/lib/auth-session';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { maskWorkgroupMessageAuthors } from '@/lib/public-payload';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import type { WorkgroupMessagesResponse } from '@/lib/workgroup-collab-types';
 
@@ -84,12 +85,22 @@ async function fetchGovHubMessages(
   }
 }
 
+function maskMessagesResponse(
+  payload: WorkgroupMessagesResponse,
+): WorkgroupMessagesResponse {
+  return {
+    ...payload,
+    messages: maskWorkgroupMessageAuthors(payload.messages || []),
+  };
+}
+
 function emptyMessagesResponse(
   isMember: boolean,
   full: boolean,
   teaserMessages: WorkgroupMessagesResponse['messages'] = [],
 ): WorkgroupMessagesResponse {
-  const messages = isMember && full ? [] : teaserMessages.slice(0, TEASER_LIMIT);
+  const messages =
+    isMember && full ? [] : maskWorkgroupMessageAuthors(teaserMessages).slice(0, TEASER_LIMIT);
   return {
     messages,
     is_member: isMember,
@@ -128,13 +139,13 @@ export async function fetchWorkgroupMessagesServer(
 
   if (upstream) {
     if (signupsMember && !upstream.is_member) {
-      return {
+      return maskMessagesResponse({
         ...upstream,
         is_member: true,
         can_post: upstream.can_post || true,
-      };
+      });
     }
-    return upstream;
+    return maskMessagesResponse(upstream);
   }
 
   return emptyMessagesResponse(signupsMember, full, teaser);
@@ -156,7 +167,7 @@ export async function fetchWorkgroupMembershipSnapshot(
       isMember: false,
       canPost: false,
       membershipResolved: true,
-      messages: teaser,
+      messages: maskWorkgroupMessageAuthors(teaser),
     };
   }
 
@@ -168,15 +179,16 @@ export async function fetchWorkgroupMembershipSnapshot(
       isMember: signupsMember,
       canPost: signupsMember,
       membershipResolved: true,
-      messages: teaser,
+      messages: maskWorkgroupMessageAuthors(teaser),
     };
   }
 
   const isMember = Boolean(data.is_member) || signupsMember;
+  const rawMessages = isMember ? data.messages || [] : data.messages || teaser;
   return {
     isMember,
     canPost: Boolean(data.can_post) || signupsMember,
     membershipResolved: true,
-    messages: isMember ? data.messages || [] : data.messages || teaser,
+    messages: maskWorkgroupMessageAuthors(rawMessages),
   };
 }
