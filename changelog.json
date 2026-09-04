@@ -25,7 +25,7 @@
       ],
       "intent": "Start a human and machine changelog for challenge-site deploys",
       "git": {
-        "sha": "f76b496c4a5e9a1341a9bc09327ca592f500ae8e"
+        "sha": "90babc3606476dd9562ba143b5a31f2ce0abfb6a"
       },
       "verify": "curl -sf https://desirableproperties.org/changelog.json"
     }
