@@ -1,0 +1,33 @@
+{
+  "schema": "estate-changelog/v1",
+  "project": "desirable-properties",
+  "site": "desirableproperties.org",
+  "entries": [
+    {
+      "id": "bootstrap",
+      "date": "2026-09-04",
+      "status": "open",
+      "title": "Estate changelog adopted",
+      "summary": "Desirable Properties now keeps a volunteer-readable change log that agents and meta-console can parse.",
+      "changes": [
+        "Added changelog.json in estate-changelog/v1 form",
+        "CI fails PRs that change watched paths without a changelog entry"
+      ],
+      "files": [
+        {
+          "path": "changelog.json",
+          "label": "Changelog"
+        }
+      ],
+      "surfaces": [
+        "docs",
+        "ci"
+      ],
+      "intent": "Start a human and machine changelog for challenge-site deploys",
+      "git": {
+        "sha": "e671ca9ffc79fc47db4bfc6fd6d56fb7a5b8f9a1"
+      },
+      "verify": "curl -sf https://desirableproperties.org/changelog.json"
+    }
+  ]
+}
