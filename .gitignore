@@ -7,6 +7,12 @@ pnpm-debug.log*
 
 # Next.js
 .next/
+.next-prod/
+.next-prod-build/
+.next-staging/
+.next-staging-build/
+.next-staging-build-test/
+.next-staging-build-test2/
 out/
 build/
 dist/
