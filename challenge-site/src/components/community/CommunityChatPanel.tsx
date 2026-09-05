@@ -29,7 +29,6 @@ type Props = {
   dpFocus?: number | null;
   signedIn: boolean;
   canPrompt: boolean;
-  legacySharedTurns?: boolean;
 };
 
 export default function CommunityChatPanel({
@@ -39,7 +38,6 @@ export default function CommunityChatPanel({
   dpFocus = null,
   signedIn,
   canPrompt,
-  legacySharedTurns = false,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>([]);
   const [canPost, setCanPost] = useState(false);
@@ -231,13 +229,6 @@ export default function CommunityChatPanel({
         workgroupName={communityTitle}
         onClose={() => setHermesInstructionsOpen(false)}
       />
-
-      {legacySharedTurns ? (
-        <p className="mb-4 rounded-lg border border-amber-800/50 bg-amber-950/20 px-3 py-2 text-sm text-amber-100">
-          Community Chat now uses member chat plus private Deepi in the sidebar, like workgroup Collab.
-          Earlier shared Deepi messages in this room are archived and no longer appear here.
-        </p>
-      ) : null}
 
       <div className="lg:flex lg:min-h-[32rem] lg:items-stretch">
         <div className="min-w-0 flex-1">

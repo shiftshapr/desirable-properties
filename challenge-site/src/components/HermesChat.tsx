@@ -569,7 +569,6 @@ export default function HermesChat({
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [activeThreadMeta, setActiveThreadMeta] = useState<HermesThreadSummary | null>(null);
-  const [communityLegacyTurns, setCommunityLegacyTurns] = useState(false);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
   const [shareWizardOpen, setShareWizardOpen] = useState(false);
   const [shareWizardThreadId, setShareWizardThreadId] = useState<string | null>(null);
@@ -851,7 +850,6 @@ export default function HermesChat({
         }
       }
       const isGroupThread = loadedThread?.threadKind === 'group';
-      setCommunityLegacyTurns(isGroupThread && (loadedThread?.turns || []).length > 0);
       if (isGroupThread) {
         setThreadAccess(loadedThread?.access || null);
         setContributionDraft(null);
@@ -2770,7 +2768,6 @@ export default function HermesChat({
                 dpFocus={dpFocus}
                 signedIn={signedIn}
                 canPrompt={Boolean(threadAccess?.canPrompt || isThreadOwner)}
-                legacySharedTurns={communityLegacyTurns}
               />
             </div>
           ) : (
