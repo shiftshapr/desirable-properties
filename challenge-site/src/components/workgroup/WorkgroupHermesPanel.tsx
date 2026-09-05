@@ -17,7 +17,7 @@ import {
 } from '@/lib/community-ambient-api';
 import { HERMES_MODE_LABELS, type HermesHand } from '@/lib/hermes-ambient-types';
 import { DP_COMMUNITY_AI } from '@/lib/dp-community-ai';
-import { SHARED_DEEPI_MESSAGE_PREFIX } from '@/lib/workgroup-hermes-share';
+import { buildSharedAskBody } from '@/lib/workgroup-hermes-share';
 import { markdownToPlainText } from '@/lib/markdown-to-plain-text';
 import { postWorkgroupMessage } from '@/lib/workgroup-collab-api';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
@@ -430,9 +430,12 @@ export default function WorkgroupHermesPanel({
                 sharing={sharing}
                 onShare={async () => {
                   if (activeAskNote.shared) return;
+                  const askedText = (activeAskNote.question || activeAskNote.promptLabel || '').trim();
                   const ok = await DpDialog.confirm({
                     title: isCommunity ? 'Share with Community Chat?' : 'Share with workgroup?',
-                    message: `This will post ${DP_COMMUNITY_AI.name}'s reply to the main chat thread with clear attribution.`,
+                    message: askedText
+                      ? `This will post your question and ${DP_COMMUNITY_AI.name}'s reply to the main chat thread with clear attribution.`
+                      : `This will post ${DP_COMMUNITY_AI.name}'s reply to the main chat thread with clear attribution.`,
                     variant: 'warning',
                     confirmLabel: 'Share',
                   });
@@ -441,7 +444,12 @@ export default function WorkgroupHermesPanel({
                   setError(null);
                   try {
                     const modeLabel = HERMES_MODE_LABELS[activeAskNote.mode];
-                    const shareBody = `${SHARED_DEEPI_MESSAGE_PREFIX}${modeLabel})*\n\n${activeAskNote.reply}`;
+                    const shareBody = buildSharedAskBody({
+                      modeLabel,
+                      reply: activeAskNote.reply,
+                      question: activeAskNote.question,
+                      promptLabel: activeAskNote.promptLabel,
+                    });
                     await postSharedMessage(shareBody);
                     onAskNoteUpdated({ ...activeAskNote, shared: true });
                     onMessagePosted?.();
@@ -612,7 +620,14 @@ function AskNoteDetail({
       <div>
         <UserDateTime value={note.createdAt} mode="short" className="text-xs text-slate-500" />
         <h3 className="text-sm font-semibold text-cyan-200">{modeLabel}</h3>
-        <p className="text-xs text-slate-500">{note.promptLabel}</p>
+        {note.question?.trim() ? (
+          <p className="text-xs text-slate-400">
+            <span className="text-slate-500">You asked: </span>
+            {note.question.trim()}
+          </p>
+        ) : (
+          <p className="text-xs text-slate-500">{note.promptLabel}</p>
+        )}
       </div>
 
       <div className="prose prose-invert max-w-none text-sm">

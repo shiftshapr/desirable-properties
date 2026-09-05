@@ -281,11 +281,13 @@ export default function WorkgroupChatAiAssist({
       });
       if (controller.signal.aborted) return;
 
+      // Falls back to the composer draft: with no typed question that is what was asked about.
       const note: WorkgroupAskNote = {
         id: `ask-${Date.now()}`,
         mode: askMode,
         reply: reply || '',
         promptLabel: opts.promptLabel,
+        question: askQuestion.trim() || value.trim() || undefined,
         shared: false,
         createdAt: new Date().toISOString(),
       };

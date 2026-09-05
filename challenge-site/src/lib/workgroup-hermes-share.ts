@@ -12,3 +12,32 @@ const SHARED_DEEPI_MESSAGE_RE = /^✋\s+\*(?:Hermes|Deepi) \([^)]+\)\*/;
 export function isSharedHermesWorkgroupMessage(body: string): boolean {
   return SHARED_DEEPI_MESSAGE_RE.test(String(body ?? '').trimStart());
 }
+
+const SHARED_QUESTION_MAX_CHARS = 600;
+
+/**
+ * Body for a shared Ask Deepi reply. The room sees the answer without the prompt otherwise,
+ * so the participant's question leads as a blockquote.
+ */
+export function buildSharedAskBody(opts: {
+  modeLabel: string;
+  reply: string;
+  question?: string | null;
+  promptLabel?: string | null;
+}): string {
+  const header = `${SHARED_DEEPI_MESSAGE_PREFIX}${opts.modeLabel})*`;
+  const asked = String(opts.question || opts.promptLabel || '').trim();
+  const reply = String(opts.reply || '').trim();
+  if (!asked) return `${header}\n\n${reply}`;
+
+  const trimmed =
+    asked.length > SHARED_QUESTION_MAX_CHARS
+      ? `${asked.slice(0, SHARED_QUESTION_MAX_CHARS).trimEnd()}…`
+      : asked;
+  const quoted = trimmed
+    .split('\n')
+    .map((line) => `> ${line}`.trimEnd())
+    .join('\n');
+
+  return `${header}\n\n> **Asked:**\n${quoted}\n\n${reply}`;
+}

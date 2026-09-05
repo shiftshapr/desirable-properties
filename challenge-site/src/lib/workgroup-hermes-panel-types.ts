@@ -6,6 +6,8 @@ export type WorkgroupAskNote = {
   mode: HermesAmbientMode;
   reply: string;
   promptLabel: string;
+  /** What the participant actually asked, shown alongside the reply when shared to the room. */
+  question?: string;
   shared: boolean;
   createdAt: string;
 };
