@@ -1,0 +1,109 @@
+{
+  "chapterId": "DP16",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-020",
+  "baselineSha256": "8756ec7b155b5a0104250a08d33c2c7e073cbd2dec012b33c2e34a9425295f04",
+  "finalSha256": "7fdefb071ebefd7301b0c379426caefbdd5e0060ecd7e6e57cb9435cecaa1d2f",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp16-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 7.6 Federated civic pilots\n\nMunicipal pilots can test civic feedback, participatory governance, youth literacy, and cross-regional collaboration across different local conditions. European municipal frameworks are one proposed starting context, with city/citizen ownership arrangements addressed in DP20.\n\nFederated trials should share reusable development and evidence rather than repeat isolated setup. Cohort selection should document actual participation, funding, and governance conditions, and what risks earlier cohorts absorb relative to benefits later cohorts receive. Reuse should preserve differences among contexts, not imply that one city’s result automatically generalizes.\n\n##",
+      "finalRange": {
+        "start": 16936,
+        "end": 17630
+      },
+      "contextAnchor": "section:7.6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp16-hold0",
+          "label": "CFI 39:dp16-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp16-hold1",
+          "label": "CFI 39:dp16-hold1"
+        }
+      ],
+      "attribution": [
+        "Eric Schneider",
+        "Astra"
+      ],
+      "rationale": "Combines municipal scoping and federated investment proposals while preserving the existing cohort-fairness requirements.",
+      "originalRange": {
+        "start": 16936,
+        "end": 16936
+      }
+    },
+    {
+      "id": "dp16-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Roadmap reviews should examine conflicts among the people selecting, funding, and evaluating work. Linked incentives can cause errors to compound across dependencies, so material relationships belong alongside the existing dependency disclosures and retrospective record.\n\n## ",
+      "finalRange": {
+        "start": 20591,
+        "end": 20865
+      },
+      "contextAnchor": "section:9",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2"
+        }
+      ],
+      "attribution": [
+        "Paul Werbos",
+        "Astra"
+      ],
+      "rationale": "Keeps the roadmap-specific application of networked conflict of interest concise.",
+      "originalRange": {
+        "start": 19897,
+        "end": 19897
+      }
+    },
+    {
+      "id": "dp16-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Cross-browser overlay work could use an open standards venue, such as a proposed W3C Community Group, to develop registration and tray-coordination specifications. This is a route for collaboration, not evidence of W3C endorsement or a prerequisite for independent conforming implementations.\n\n## 19",
+      "finalRange": {
+        "start": 35257,
+        "end": 35552
+      },
+      "contextAnchor": "section:18",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp16-hold0",
+          "label": "CFI 2:dp16-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp16-hold1",
+          "label": "CFI 2:dp16-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Combines standards-track proposals without creating an external approval gate.",
+      "originalRange": {
+        "start": 34289,
+        "end": 34289
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold0",
+      "reason": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one."
+    }
+  ]
+}

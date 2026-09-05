@@ -1,0 +1,184 @@
+{
+  "chapterId": "DP2",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-009",
+  "baselineSha256": "06a83d393c9bd8f5b4d089ac38c71d782edf28bc4aa2445e4a45261adf771bbc",
+  "finalSha256": "b106bd8508d33ddeacc4f7a44ec988a27fd7d1a4b7596ee594174e1d37723b5b",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp02-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Protective friction should invite reflection on consequences and reaffirmation of intent. Its design should be assessed as part of the experience of agency: participants need to understand the prompt and retain the ability to exercise their own judgment.\n\n##",
+      "finalRange": {
+        "start": 13034,
+        "end": 13291
+      },
+      "contextAnchor": "section:8.2",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:8:dp2-hold0",
+          "label": "CFI 8:dp2-hold0"
+        }
+      ],
+      "attribution": [
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Retains the experiential contribution without repeating the entire protective-friction distinction.",
+      "originalRange": {
+        "start": 13034,
+        "end": 13034
+      }
+    },
+    {
+      "id": "dp02-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "# 8.4 Focus and attention controls\n\nInterfaces should offer focus-enabling modes that reduce interruption and cognitive burden. These modes should make control understandable and accessible, with defaults oriented to participant attention and intent rather than engagement maximization.\n\n---",
+      "finalRange": {
+        "start": 13515,
+        "end": 13806
+      },
+      "contextAnchor": "section:8.4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:41:dp2-p0",
+          "label": "CFI 41:dp2-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds the specific focus-mode capability beyond existing progressive disclosure.",
+      "originalRange": {
+        "start": 13258,
+        "end": 13258
+      }
+    },
+    {
+      "id": "dp02-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Emotional and affective inference should be an explicit domain of consent. Participants should be able to understand and revoke the authorization, while the baseline protections for dignity and sensitive data continue to apply.\n\nA failure",
+      "finalRange": {
+        "start": 15596,
+        "end": 15825
+      },
+      "contextAnchor": "section:9.3",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:13:dp2-p0",
+          "label": "CFI 13:dp2-p0"
+        }
+      ],
+      "attribution": [
+        "Alex Nassarius",
+        "Astra"
+      ],
+      "rationale": "Makes affective consent explicit rather than assuming general consent language resolves it.",
+      "originalRange": {
+        "start": 15048,
+        "end": 15048
+      }
+    },
+    {
+      "id": "dp02-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Community agency includes the epistemologies and protocols embodied in its tools: which categories, evidence practices, and ways of organizing knowledge a community can author and revise. Shared interface compatibility should not require every community to adopt the same framework for knowing.\n\nFailure",
+      "finalRange": {
+        "start": 21082,
+        "end": 21378
+      },
+      "contextAnchor": "section:12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:1:dp2-hold0",
+          "label": "CFI 1:dp2-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Connects community control to the assumptions embodied in tooling.",
+      "originalRange": {
+        "start": 20305,
+        "end": 20305
+      }
+    },
+    {
+      "id": "dp02-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 13.1 Participant-controlled interface tools\n\nParticipants should be able to choose how multiple overlays coexist, including which tools are pinned, expanded, reordered, or available on demand. A shared tray can expose these choices without imposing a fixed screen position or allowing a tool’s priority claim to override participant preferences. DP7 specifies the shared-interface pattern.\n\nParticipants should also be able to author, share, and remix navigational flows for tasks, learning, and collaborative work. A Navigator User Interface can provide a shared panel through which people choose those flows and adapt AI-guided exploration to their purposes.\n\n---\n",
+      "finalRange": {
+        "start": 23989,
+        "end": 24656
+      },
+      "contextAnchor": "section:13.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp2-hold0",
+          "label": "CFI 2:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp2-hold1",
+          "label": "CFI 2:dp2-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp2-p0",
+          "label": "CFI 2:dp2-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:9:dp2-p0",
+          "label": "CFI 9:dp2-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp8-hold0",
+          "label": "CFI 2:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp14-hold1",
+          "label": "CFI 2:dp14-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp19-hold1",
+          "label": "CFI 2:dp19-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Consolidates repeated tray controls while retaining the distinct capability to author navigation flows.",
+      "originalRange": {
+        "start": 22916,
+        "end": 22916
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:24:dp2-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:24:dp2-hold0",
+      "reason": "I do not recommend adding this version: the complete DP1 §11 already treats human and artificial agents as first-class participants with visible roles and bounded accountability. Adding the label advanced does not supply a further mechanism or useful example here."
+    }
+  ]
+}

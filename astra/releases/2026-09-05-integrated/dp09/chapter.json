@@ -1,0 +1,68 @@
+{
+  "chapterId": "DP9",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-016",
+  "baselineSha256": "17e6209c71f32a388251f4010d495447c8a1c0da8cb20e79e7d247a6bc936be0",
+  "finalSha256": "8b6c2f3ed18925b49047cf52af76a66d2ffe5b188b1d1f4acde59dbd023ee280",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp09-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 12.12 Creating and verifying connections\n\nPeople who create or verify useful connections among artifacts should be eligible for compensation and recognition. Those connections can make existing information navigable and support shared understanding, rather than requiring every contributor to produce a new standalone artifact.\n\nAssessment should consider the connection’s contextual value and evidence, not simply the number of links created. Verifiers, curators, and application-substrate designers are part of this contribution economy. Payment is neither proof that a connection is true nor a substitute for contestable quality assessment.\n\n--",
+      "finalRange": {
+        "start": 34697,
+        "end": 35347
+      },
+      "contextAnchor": "section:12.12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold2",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold0",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold1",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp14-hold0",
+          "label": "CFI b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold0",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp18-hold0",
+          "label": "CFI b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp18-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold2",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold2"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Combines connection-reward variants and quiet infrastructure roles into one incentive mechanism.",
+      "originalRange": {
+        "start": 34697,
+        "end": 34697
+      }
+    }
+  ],
+  "omitted": []
+}

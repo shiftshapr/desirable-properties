@@ -69,6 +69,7 @@ describe('textDiff contract', () => {
   it('source exports buildDiffHtml', () => {
     assert.match(src, /export function buildDiffHtml/);
     assert.match(src, /export function changeCounts/);
+    assert.match(src, /export function buildMarkdownSectionDiffs/);
   });
 
   it('buildDiffHtml marks one-word change harm→hurt', () => {

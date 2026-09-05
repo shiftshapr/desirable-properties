@@ -1,0 +1,297 @@
+{
+  "chapterId": "DP15",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-019",
+  "baselineSha256": "b42db729d3ec0720da72df459a7e840b0635e2526f986a5dbe5058afd257452c",
+  "finalSha256": "9b39b7eb16df7aa8285110b24ee4094b11778802336b5034a2b7887947797ebe",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp15-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 3.11 Coercion against communities\n\nStates and powerful platforms may threaten communities through surveillance, censorship, deplatforming, or targeted coercion as well as technical compromise. A threat model should examine the conditions under which people can discover one another, communicate, host data, and exchange value under sustained pressure. Decentralized components do not remove the need to assess well-resourced adversaries and combined social and technical attacks.\n\n##",
+      "finalRange": {
+        "start": 5791,
+        "end": 6277
+      },
+      "contextAnchor": "section:3.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp15-hold0",
+          "label": "CFI 5:dp15-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp15-p0",
+          "label": "CFI 5:dp15-p0"
+        }
+      ],
+      "attribution": [
+        "Liz Sweigart",
+        "Astra"
+      ],
+      "rationale": "Unifies vulnerable-community resilience and state/platform-pressure variants into an explicit threat scenario.",
+      "originalRange": {
+        "start": 5791,
+        "end": 5791
+      }
+    },
+    {
+      "id": "dp15-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Security and privacy should receive the same architectural attention as performance and usability. Tradeoffs should be explicit from initial design rather than relegating protection to a later retrofit.\n\n## ",
+      "finalRange": {
+        "start": 6842,
+        "end": 7047
+      },
+      "contextAnchor": "section:4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold1",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-p0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold1",
+          "label": "CFI a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold2",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold2"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Vandana Upadhyay",
+        "Astra"
+      ],
+      "rationale": "Consolidates structural-priority proposals in the security core, rather than repeating them across identity and trust chapters.",
+      "originalRange": {
+        "start": 6356,
+        "end": 6356
+      }
+    },
+    {
+      "id": "dp15-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Training provenance should distinguish versions and lineages of distributed datasets, including copies that share a name but differ in content. Such differences are a foreseeable source of divergence to investigate, not proof of why a particular output occurred.\n\nFailure",
+      "finalRange": {
+        "start": 9237,
+        "end": 9501
+      },
+      "contextAnchor": "section:5.4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0:dp13-hold0",
+          "label": "CFI 40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0:dp13-hold0"
+        }
+      ],
+      "attribution": [
+        "Cindy Mason",
+        "Astra"
+      ],
+      "rationale": "Retains training-version integrity while omitting undefined system labels and unverified dataset counts.",
+      "originalRange": {
+        "start": 8546,
+        "end": 8546
+      }
+    },
+    {
+      "id": "dp15-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Multiple custodians may still share incentives or dependencies. Key-management and recovery reviews should examine conflicts of interest among the people exercising custody, rather than treating the number of parties as proof of independence.\n\nFailure",
+      "finalRange": {
+        "start": 10471,
+        "end": 10715
+      },
+      "contextAnchor": "section:5.6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold1",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold1"
+        }
+      ],
+      "attribution": [
+        "Paul Werbos",
+        "Astra"
+      ],
+      "rationale": "Adds a specific application of network-level COI to key custody.",
+      "originalRange": {
+        "start": 9516,
+        "end": 9516
+      }
+    },
+    {
+      "id": "dp15-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Disclosure should address ethical and community consequences alongside technical remediation. Affected communities need an understandable account of what happened and how it was handled, subject to the existing limits on personal-data exposure and exploitable details.\n\nFailure",
+      "finalRange": {
+        "start": 11217,
+        "end": 11487
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:13:dp14-hold0",
+          "label": "CFI 13:dp14-hold0"
+        }
+      ],
+      "attribution": [
+        "Alex Nassarius",
+        "Astra"
+      ],
+      "rationale": "Preserves the ethical/community disclosure delta within the existing coordinated process.",
+      "originalRange": {
+        "start": 10018,
+        "end": 10018
+      }
+    },
+    {
+      "id": "dp15-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Attestations should be able to identify individual subresources or media elements, so an excerpt or embedded component does not lose its origin and transformation history when separated from a larger artifact. The signed scope must be explicit; a top-level signature does not automatically endorse every component.\n\nFailure",
+      "finalRange": {
+        "start": 11979,
+        "end": 12295
+      },
+      "contextAnchor": "section:5.8",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:33:dp15-p0",
+          "label": "CFI 33:dp15-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds subresource granularity without equating embedding with endorsement.",
+      "originalRange": {
+        "start": 10510,
+        "end": 10510
+      }
+    },
+    {
+      "id": "dp15-change-007",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Content-addressable storage, including IPFS, can identify content and verify that retrieved bytes match an expected address. Authorship, origin claims, and continuing availability require the accompanying attestations and retention arrangements. Content addressing alone establishes none of those additional guarantees.\n\nFailure",
+      "finalRange": {
+        "start": 17437,
+        "end": 17758
+      },
+      "contextAnchor": "section:7.2",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp15-p0",
+          "label": "CFI 12:dp15-p0"
+        }
+      ],
+      "attribution": [
+        "Stephanie Hervey",
+        "Astra"
+      ],
+      "rationale": "Retains the archive implementation example while correcting the proposed authenticity and permanence claims.",
+      "originalRange": {
+        "start": 15652,
+        "end": 15652
+      }
+    },
+    {
+      "id": "dp15-change-008",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Provenance should not require public disclosure of sensitive origin paths. Where routing logs are needed, retention should be minimized and participant inspection supported without granting others blanket access. Systems should state which records they control and what other operators may independently retain; they need not create new logs merely to satisfy an audit interface.\n\nFailure",
+      "finalRange": {
+        "start": 18734,
+        "end": 19115
+      },
+      "contextAnchor": "section:7.5",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-p0",
+          "label": "CFI 45:dp2-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold4",
+          "label": "CFI 45:dp4-hold4"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold4",
+          "label": "CFI 45:dp15-hold4"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold5",
+          "label": "CFI 45:dp15-hold5"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates origin-path and ephemeral-log variants with realistic boundaries on retention control.",
+      "originalRange": {
+        "start": 16628,
+        "end": 16628
+      }
+    },
+    {
+      "id": "dp15-change-009",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Deployment can stall when organizations treat security as a cost with no visible benefit. Implementation planning should make the value of protection and trusted operation concrete, alongside the costs and duties involved, without making respect for participants contingent on a promised financial return.\n\nFailure",
+      "finalRange": {
+        "start": 22530,
+        "end": 22837
+      },
+      "contextAnchor": "section:9",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp15-hold0",
+          "label": "CFI a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp15-hold0"
+        }
+      ],
+      "attribution": [
+        "Vandana Upadhyay",
+        "Astra"
+      ],
+      "rationale": "Retains the contributor’s practical investment barrier while preserving the ethical basis of security.",
+      "originalRange": {
+        "start": 20043,
+        "end": 20043
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold0",
+      "reason": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one."
+    }
+  ]
+}

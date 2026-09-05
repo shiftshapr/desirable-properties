@@ -1,0 +1,169 @@
+{
+  "chapterId": "DP19",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-023",
+  "baselineSha256": "b7064872027cf7b15430f3453be274d9a4201ca99fb58c967dfd25d894eefbaf",
+  "finalSha256": "f337feb0bc8554be8a2437e4efb1b77040f4311962cc03ce12002641d117a88a",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp19-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Participatory research can connect gamified contributions and role recognition to protocol development. The design should recognize expertise gained through experience and show how feedback informs changes, without rewarding favorable answers or sheer completion volume.\n\nFailure",
+      "finalRange": {
+        "start": 17063,
+        "end": 17335
+      },
+      "contextAnchor": "section:5.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:3:dp19-hold0",
+          "label": "CFI 3:dp19-hold0"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Retains the distinctive protocol-research application and protects the integrity of feedback.",
+      "originalRange": {
+        "start": 17063,
+        "end": 17063
+      }
+    },
+    {
+      "id": "dp19-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Family-media outreach can use press kits, parenting articles, and youth-oriented features to connect the project to care, creativity, and practical digital choices. Pilots should measure reach, cost, and trust in the selected outlets rather than assume every family-media channel is inexpensive or trusted.\n\nFailure",
+      "finalRange": {
+        "start": 18577,
+        "end": 18885
+      },
+      "contextAnchor": "section:5.13",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:37:dp19-hold0",
+          "label": "CFI 37:dp19-hold0"
+        }
+      ],
+      "attribution": [
+        "Eric Schneider",
+        "Astra"
+      ],
+      "rationale": "Keeps concrete outreach materials beyond the existing family-media bullet and qualifies the proposed marketing claims.",
+      "originalRange": {
+        "start": 18305,
+        "end": 18305
+      }
+    },
+    {
+      "id": "dp19-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Civic overlays described in DP8 can keep participation close to the material people are discussing, while DP20’s municipal commons model makes ownership and institutional responsibility explicit. These are adoption paths to test, not evidence that a campaign, city, or community has endorsed the system.\n\nFailure",
+      "finalRange": {
+        "start": 19472,
+        "end": 19777
+      },
+      "contextAnchor": "section:5.14",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp2-hold0",
+          "label": "CFI 39:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold1",
+          "label": "CFI 44:dp19-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold2",
+          "label": "CFI 44:dp19-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold3",
+          "label": "CFI 44:dp19-hold3"
+        }
+      ],
+      "attribution": [
+        "Eric Schneider",
+        "Michelle Thuo",
+        "Astra"
+      ],
+      "rationale": "Connects the civic-adoption proposals to their architectural and ownership homes rather than repeating their mechanisms.",
+      "originalRange": {
+        "start": 18892,
+        "end": 18892
+      }
+    },
+    {
+      "id": "dp19-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 14.11 Reading, learning, and newsroom pilots\n\nParticipant-controlled annotation can make the Meta-Layer understandable through familiar web use. A pilot could begin with Shakespeare, placing attributed footnotes and glosses beside public web editions and supporting distinct interpretations. It can extend to other public-domain works while respecting rights in particular editions and modern commentary.\n\nA complementary adoption route pairs purpose-driven school projects with newsroom verification and source-tracing pilots. European schools and newsrooms in Denmark or Sweden are proposed starting contexts, not confirmed partners or inherently representative test populations. Pilot selection should examine actual local conditions and whether the results transfer to other settings.\n\n--",
+      "finalRange": {
+        "start": 34932,
+        "end": 35727
+      },
+      "contextAnchor": "section:14.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp6-hold0",
+          "label": "CFI 7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp6-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:14:dp14-hold0",
+          "label": "CFI 14:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:36:dp14-hold0",
+          "label": "CFI 36:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:36:dp14-hold1",
+          "label": "CFI 36:dp14-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:14:dp19-hold0",
+          "label": "CFI 14:dp19-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:36:dp19-hold0",
+          "label": "CFI 36:dp19-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Michael Witmore",
+        "Eric Schneider",
+        "Astra"
+      ],
+      "rationale": "Combines familiar-web, canonical-text, and paired education/journalism proposals as related but distinct demonstrations rather than promotional promises.",
+      "originalRange": {
+        "start": 34047,
+        "end": 34047
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:34:dp19-p0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:34:dp19-p0",
+      "reason": "The complete naming section and §3.1 already cover this confusion and the Overweb candidate. No further mechanism or example remains beyond the existing naming guidance."
+    }
+  ]
+}

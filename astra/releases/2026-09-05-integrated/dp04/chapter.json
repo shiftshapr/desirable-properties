@@ -1,0 +1,1065 @@
+{
+  "chapterId": "DP4",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-011",
+  "baselineSha256": "45d4b70a99adb8f0e50f5d21747fd243cf3505bbf42906fa22273c41b8b984a7",
+  "finalSha256": "fbfdafcb64940d194bef472a38358f5ddf5da6079b638a39e39b2e141c412448",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp04-change-001",
+      "operation": "replace",
+      "beforeText": " – the Meta-Layer is designed to give you full control over how your data is used, shared, and protected, without compromise",
+      "afterText": ": meaningful control over use, sharing, and protection, with visible limits and accountable follow-through",
+      "finalRange": {
+        "start": 60,
+        "end": 166
+      },
+      "contextAnchor": "section:title",
+      "sources": [
+        {
+          "type": "astra",
+          "id": "astra:editorial",
+          "label": "Astra editorial synthesis"
+        }
+      ],
+      "attribution": [
+        "Astra"
+      ],
+      "rationale": "The original tagline promised uncompromised control while the chapter explicitly recognizes deletion, inference, and jurisdictional limits. Astra aligns the opening promise with those boundaries.",
+      "originalRange": {
+        "start": 60,
+        "end": 184
+      }
+    },
+    {
+      "id": "dp04-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Failed data sovereignty can also encourage retreat into silos, fabricated accounts, or manufactured activity while extraction continues. That response can damage the social signals on which others rely; privacy protection should not depend on fabricating a digital presence. Pseudonymity itself is not evidence of deception.\n\n###",
+      "finalRange": {
+        "start": 3469,
+        "end": 3796
+      },
+      "contextAnchor": "section:3",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0:dp4-hold0",
+          "label": "CFI 977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0:dp4-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Retains the defensive-fragmentation failure scenario without treating all pseudonymous participation as fabrication.",
+      "originalRange": {
+        "start": 3487,
+        "end": 3487
+      }
+    },
+    {
+      "id": "dp04-change-003",
+      "operation": "replace",
+      "beforeText": "Interfaces bundle unrelated processing into a single act of acceptance",
+      "afterText": "person may agree to one use of their data without realizing that the same action authorizes several unrelated uses.\n\n*",
+      "finalRange": {
+        "start": 3822,
+        "end": 3938
+      },
+      "contextAnchor": "section:3.1",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:7f71ed3a-04e8-4de2-ae2a-7697deb6db5f",
+          "label": "Canopi canopi:7f71ed3a-04e8-4de2-ae2a-7697deb6db5f"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 3513,
+        "end": 3583
+      }
+    },
+    {
+      "id": "dp04-change-004",
+      "operation": "replace",
+      "beforeText": "Data collected for one function expands into new products, ranking systems, partner programs, or model behaviors without a fresh social contract",
+      "afterText": "Information collected for one purpose is later used for another without giving the participant a meaningful choice about the change.\n\n*",
+      "finalRange": {
+        "start": 4369,
+        "end": 4500
+      },
+      "contextAnchor": "section:3.2",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:5a7e8c39-5de6-4f66-9d92-ce0ccee12eed",
+          "label": "Canopi canopi:5a7e8c39-5de6-4f66-9d92-ce0ccee12eed"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 4014,
+        "end": 4158
+      }
+    },
+    {
+      "id": "dp04-change-005",
+      "operation": "replace",
+      "beforeText": "Export exists formally but fails functionally",
+      "afterText": "person can download their data but cannot use it to continue their activities elsewhere.\n\n*",
+      "finalRange": {
+        "start": 4810,
+        "end": 4899
+      },
+      "contextAnchor": "section:3.3",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:083d2a43-57b1-4d2d-896a-54e6a6016269",
+          "label": "Canopi canopi:083d2a43-57b1-4d2d-896a-54e6a6016269"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 4468,
+        "end": 4513
+      }
+    },
+    {
+      "id": "dp04-change-006",
+      "operation": "replace",
+      "beforeText": "derive high-stakes conclusions from behavioral traces without clearly governing how those inferences are created, used, challenged, or removed",
+      "afterText": "create consequential information about people from their behavior, including information they never directly supplied, without clear rules for its creation, use, challenge, or removal.\n\n*",
+      "finalRange": {
+        "start": 5339,
+        "end": 5522
+      },
+      "contextAnchor": "section:3.4",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:d4b24167-1cc9-4d51-98f1-fb3777ff8c4a",
+          "label": "Canopi canopi:d4b24167-1cc9-4d51-98f1-fb3777ff8c4a"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 4953,
+        "end": 5095
+      }
+    },
+    {
+      "id": "dp04-change-007",
+      "operation": "replace",
+      "beforeText": "persists because retention is cheap, deletion is operationally inconvenient, and analytics cultures prefer indefinite memory",
+      "afterText": "remain long after the reason for keeping it has ended. Deleting an account may leave related copies and derived information in other systems.\n\n*",
+      "finalRange": {
+        "start": 5882,
+        "end": 6026
+      },
+      "contextAnchor": "section:3.5",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:9d28b4c9-5387-4bcf-81f2-b23ffd0a27fd",
+          "label": "Canopi canopi:9d28b4c9-5387-4bcf-81f2-b23ffd0a27fd"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 5455,
+        "end": 5579
+      }
+    },
+    {
+      "id": "dp04-change-008",
+      "operation": "replace",
+      "beforeText": "dentifiers, device graphs, and fingerprinting techniques merge activity across settings that participants experienced as distinct",
+      "afterText": "Information from different parts of a person’s life is quietly linked through identifiers, device graphs, or fingerprinting, even when the person expected those activities to remain separate.\n\n*",
+      "finalRange": {
+        "start": 6421,
+        "end": 6610
+      },
+      "contextAnchor": "section:3.6",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:9a1f8cc9-5fd1-4566-b032-7e418e40e7b2",
+          "label": "Canopi canopi:9a1f8cc9-5fd1-4566-b032-7e418e40e7b2"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 5974,
+        "end": 6103
+      }
+    },
+    {
+      "id": "dp04-change-009",
+      "operation": "replace",
+      "beforeText": "Organizations describe datasets as anonymized even where re-identification remains plausible or contractually enabled downstream",
+      "afterText": "Removing names does not necessarily make a dataset anonymous. Routines, context, or outside knowledge may still allow someone to identify the people it describes.\n\n*",
+      "finalRange": {
+        "start": 6982,
+        "end": 7143
+      },
+      "contextAnchor": "section:3.7",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:2017592d-32bc-4119-975a-918a0f501851",
+          "label": "Canopi canopi:2017592d-32bc-4119-975a-918a0f501851"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 6475,
+        "end": 6603
+      }
+    },
+    {
+      "id": "dp04-change-010",
+      "operation": "replace",
+      "beforeText": "on, revocation, and correction stop at the first layer of control",
+      "afterText": "correcting, or withdrawing permission in one service does not necessarily change the copies held by its partners.\n\n*",
+      "finalRange": {
+        "start": 7508,
+        "end": 7624
+      },
+      "contextAnchor": "section:3.8",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:cd80d71a-903d-4bb4-93ca-cb9fc5e0cee8",
+          "label": "Canopi canopi:cd80d71a-903d-4bb4-93ca-cb9fc5e0cee8"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 6968,
+        "end": 7033
+      }
+    },
+    {
+      "id": "dp04-change-011",
+      "operation": "replace",
+      "beforeText": "Separate contexts a participant deliberately kept apart are merged, either through shared infrastructure, an integration that resolves both to one account, or a vault whose contents are exposed as a single undifferentiated store",
+      "afterText": "Different parts of a person’s life can be combined despite their deliberate separation. Shared infrastructure, account-level integrations, or an undifferentiated vault can expose information from one persona to another.\n\n*",
+      "finalRange": {
+        "start": 8397,
+        "end": 8615
+      },
+      "contextAnchor": "section:3.10",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:a3f2c850-65d7-4b60-9ca6-3a34ca9e2d1d",
+          "label": "Canopi canopi:a3f2c850-65d7-4b60-9ca6-3a34ca9e2d1d"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community plain-language explanation into the existing threat description while preserving the technical example and consequence.",
+      "originalRange": {
+        "start": 7806,
+        "end": 8034
+      }
+    },
+    {
+      "id": "dp04-change-012",
+      "operation": "replace",
+      "beforeText": "In today's web, these conditions rarely hold together. A system may disclose collection without limiting reuse, provide deletion without propagation, or offer export without restoration value. DP4 treats such partial compliance as insufficient",
+      "afterText": "These conditions form a coordinated system of protections. Consent without useful portability can still create lock-in; deletion without propagation leaves downstream copies unresolved; transparency without accountability leaves participants unable to act on what they learn. Each mechanism protects a different aspect of control, and partial compliance is insufficient when another mechanism fails.\n\nThe",
+      "finalRange": {
+        "start": 9927,
+        "end": 10325
+      },
+      "contextAnchor": "section:4",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:4cfe373d-238f-4871-b092-c7fa28d1d741",
+          "label": "Canopi canopi:4cfe373d-238f-4871-b092-c7fa28d1d741"
+        },
+        {
+          "type": "canopi",
+          "id": "canopi:3928a6f0-c016-4549-819e-8d5f7525fffb",
+          "label": "Canopi canopi:3928a6f0-c016-4549-819e-8d5f7525fffb"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Reconciles the community core-principle patch and explainer as one explanation of dependency among privacy mechanisms, without replacing the whole section with a partial excerpt.",
+      "originalRange": {
+        "start": 9346,
+        "end": 9589
+      }
+    },
+    {
+      "id": "dp04-change-013",
+      "operation": "replace",
+      "beforeText": "declare its purpose in terms legible to both participants and communities. Material changes in purpose require visible reauthorization, reclassification, or zone-level review",
+      "afterText": "state why information is needed in terms participants and communities can understand. A material change in purpose requires visible reauthorization, reclassification, or zone-level review before the new use begins.\n\n*",
+      "finalRange": {
+        "start": 11193,
+        "end": 11406
+      },
+      "contextAnchor": "section:5.1",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:2aaf0d7e-5780-4d97-a51f-04d12e54477f",
+          "label": "Canopi canopi:2aaf0d7e-5780-4d97-a51f-04d12e54477f"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Uses the community explanation to make purpose and timing understandable while retaining the existing governance pathways.",
+      "originalRange": {
+        "start": 10457,
+        "end": 10631
+      }
+    },
+    {
+      "id": "dp04-change-014",
+      "operation": "replace",
+      "beforeText": "begin from the least collection, retention, and sharing compatible with the function being offered, and expand only through visible, justified choices",
+      "afterText": "collect, retain, and share only the information needed for the function being offered. Additional collection must follow visible, justified choices rather than become the default merely because the system can collect more.\n\n*",
+      "finalRange": {
+        "start": 11703,
+        "end": 11924
+      },
+      "contextAnchor": "section:5.2",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:cdcc2625-a31f-4aa3-991f-2c54652cc657",
+          "label": "Canopi canopi:cdcc2625-a31f-4aa3-991f-2c54652cc657"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Makes minimization legible using the community explanation without adding a second copy of the contacts example.",
+      "originalRange": {
+        "start": 10928,
+        "end": 11078
+      }
+    },
+    {
+      "id": "dp04-change-015",
+      "operation": "replace",
+      "beforeText": "ermission must be layered, granular, and revocable, with separate scopes for distinct categories of data use",
+      "afterText": "Participants must be able to approve, decline, and later change permissions for distinct categories of data use separately. Agreeing to a wanted feature should not require blanket permission for unrelated uses.\n\nThis",
+      "finalRange": {
+        "start": 12218,
+        "end": 12426
+      },
+      "contextAnchor": "section:5.3",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:0caafb4e-c07e-4494-a8ad-7405d42bebc6",
+          "label": "Canopi canopi:0caafb4e-c07e-4494-a8ad-7405d42bebc6"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Replaces abstract consent terminology with the community’s concrete account of independent choices.",
+      "originalRange": {
+        "start": 11372,
+        "end": 11480
+      }
+    },
+    {
+      "id": "dp04-change-016",
+      "operation": "replace",
+      "beforeText": "preserve enough structure to support continuity, not just compliance",
+      "afterText": "people and communities continue their activities elsewhere, preserving the information, context, and relationships that make their data useful rather than merely providing downloadable files.\n\nThis",
+      "finalRange": {
+        "start": 12997,
+        "end": 13191
+      },
+      "contextAnchor": "section:5.4",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:0ec3fcb0-b4fb-4a8f-8552-b36fd93fd928",
+          "label": "Canopi canopi:0ec3fcb0-b4fb-4a8f-8552-b36fd93fd928"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community’s continuity explanation while retaining the precise fields and migration example below.",
+      "originalRange": {
+        "start": 12051,
+        "end": 12119
+      }
+    },
+    {
+      "id": "dp04-change-017",
+      "operation": "replace",
+      "beforeText": "Retention must be bounded by event-driven or purpose-bound clocks, not indefinite convenience. Deletion, correction, and revocation",
+      "afterText": "People should be able to see how long their information will be kept and what happens after they request deletion, correction, or withdrawal of permission. Retention must be bounded by events or stated purposes, and requests",
+      "finalRange": {
+        "start": 13748,
+        "end": 13963
+      },
+      "contextAnchor": "section:5.5",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:f6cfe393-b794-46ec-95c1-aca782a9ae80",
+          "label": "Canopi canopi:f6cfe393-b794-46ec-95c1-aca782a9ae80"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Adds the participant’s practical question to retention rules while preserving honest limits on downstream erasure.",
+      "originalRange": {
+        "start": 12676,
+        "end": 12807
+      }
+    },
+    {
+      "id": "dp04-change-018",
+      "operation": "replace",
+      "beforeText": "Derived data can be more consequential than submitted data. High-risk inferences therefore require stronger conditions than ordinary processing",
+      "afterText": "Information a system infers about a person can be more consequential than the information they supplied. High-risk inferences therefore require stronger protections, including meaningful opportunities to understand, challenge, and limit their use.\n\nThis",
+      "finalRange": {
+        "start": 14677,
+        "end": 14923
+      },
+      "contextAnchor": "section:5.6",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:3bfe1803-b2a9-4d1f-8aa7-0a94556a6761",
+          "label": "Canopi canopi:3bfe1803-b2a9-4d1f-8aa7-0a94556a6761"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Uses the community explainer to connect inference governance to participant rights, without presenting an inferred condition as a diagnosis.",
+      "originalRange": {
+        "start": 13521,
+        "end": 13664
+      }
+    },
+    {
+      "id": "dp04-change-019",
+      "operation": "replace",
+      "beforeText": "define stricter privacy norms within their zones while remaining interoperable with",
+      "afterText": "and enforce stronger privacy rules for the spaces they govern rather than rely only on platform defaults. These rules should reflect the community’s context while remaining interoperable with the broader",
+      "finalRange": {
+        "start": 15511,
+        "end": 15710
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:fe50d4f5-dd87-45d3-910d-0cabfede4fbf",
+          "label": "Canopi canopi:fe50d4f5-dd87-45d3-910d-0cabfede4fbf"
+        },
+        {
+          "type": "canopi",
+          "id": "canopi:f20a2d47-86df-49ba-a915-759e62b93303",
+          "label": "Canopi canopi:f20a2d47-86df-49ba-a915-759e62b93303"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Combines the two near-identical zone-profile explainers in one readable statement, preserving both source IDs.",
+      "originalRange": {
+        "start": 14252,
+        "end": 14335
+      }
+    },
+    {
+      "id": "dp04-change-020",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Profiles should be evaluated against concrete harms to marginalized participants, including LGBTQ+ erasure or unwanted disclosure through automated moderation and cross-context inference. Relevant identity and context must not disappear merely because a system applies a generic category of vulnerability.\n\nProfiles",
+      "finalRange": {
+        "start": 16476,
+        "end": 16784
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:38:dp4-hold0",
+          "label": "CFI 38:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:38:dp14-hold0",
+          "label": "CFI 38:dp14-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Restores the contributor’s specific affected community without importing the entire external report.",
+      "originalRange": {
+        "start": 15101,
+        "end": 15101
+      }
+    },
+    {
+      "id": "dp04-change-021",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Profiles may use privacy-preserving lookup and attestation methods suited to the task. Anonymizing proxies and hash-prefix lookups reduce particular disclosures but are not, for that reason alone, zero-knowledge proofs. Civic participation can instead use appropriate zero-knowledge proofs or selective disclosure to attest a limited fact; real-time presence and support signals still need participant control and scrutiny for re-identification in small groups.\n\n### ",
+      "finalRange": {
+        "start": 16784,
+        "end": 17248
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:33:dp4-p0",
+          "label": "CFI 33:dp4-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp4-hold0",
+          "label": "CFI 44:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp4-hold3",
+          "label": "CFI 44:dp4-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp4-p0",
+          "label": "CFI 44:dp4-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp7-hold0",
+          "label": "CFI 44:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp8-hold3",
+          "label": "CFI 44:dp8-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold0",
+          "label": "CFI 44:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp15-hold0",
+          "label": "CFI 44:dp15-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp18-hold2",
+          "label": "CFI 44:dp18-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold0",
+          "label": "CFI 44:dp19-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Michelle Thuo",
+        "Astra"
+      ],
+      "rationale": "Reconciles the proof and participation proposals while correcting the source’s privacy-method taxonomy and avoiding guarantees of anonymity.",
+      "originalRange": {
+        "start": 15101,
+        "end": 15101
+      }
+    },
+    {
+      "id": "dp04-change-022",
+      "operation": "replace",
+      "beforeText": "Significant data access, transfer, and inference events must be inspectable in participant-legible and community-legible forms",
+      "afterText": "Participants and communities must be able to understand significant uses of their data: what happened, why it happened, and who or what performed the action. Records of access, transfer, and inference should make those questions answerable.\n\nThis",
+      "finalRange": {
+        "start": 17294,
+        "end": 17533
+      },
+      "contextAnchor": "section:5.8",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:be972800-2705-48ff-9e1b-71c9c5b849a7",
+          "label": "Canopi canopi:be972800-2705-48ff-9e1b-71c9c5b849a7"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Integrates the community’s concrete accountability questions into the existing audit mechanism.",
+      "originalRange": {
+        "start": 15147,
+        "end": 15273
+      }
+    },
+    {
+      "id": "dp04-change-023",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Allowing others to read or search a contribution does not by itself authorize its use to train or improve an AI system. Participants and communities should be able to distinguish those permissions without losing unrelated participation capabilities.\n\n### 5",
+      "finalRange": {
+        "start": 18556,
+        "end": 18808
+      },
+      "contextAnchor": "section:5.9",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:916a0e86-ce97-4bec-9f92-3eccfc6e681b",
+          "label": "Canopi canopi:916a0e86-ce97-4bec-9f92-3eccfc6e681b"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Retains the community explainer’s useful distinction between reading and training rather than repeating the existing pipeline example.",
+      "originalRange": {
+        "start": 16296,
+        "end": 16296
+      }
+    },
+    {
+      "id": "dp04-change-024",
+      "operation": "replace",
+      "beforeText": "Cross-border transfers and legal regime changes must be visible as part of the participant's risk surface",
+      "afterText": "and communities must be able to see when their data crosses into another legal jurisdiction and understand how that affects applicable protections and routes for redress.\n\n**Example",
+      "finalRange": {
+        "start": 18856,
+        "end": 19032
+      },
+      "contextAnchor": "section:5.10",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:4e1495f8-3bcc-4e7a-80c5-31b8ed7050b4",
+          "label": "Canopi canopi:4e1495f8-3bcc-4e7a-80c5-31b8ed7050b4"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Replaces risk-surface jargon with the community explanation of why location and legal context matter.",
+      "originalRange": {
+        "start": 16344,
+        "end": 16449
+      }
+    },
+    {
+      "id": "dp04-change-025",
+      "operation": "replace",
+      "beforeText": "Beyond individual mechanisms, DP4 requires a coherent data system layer that preserves **lineage, semantics, and permissions** across pipelines, services, and time. This layer ensures that data remains trustworthy under transformation, scale,",
+      "afterText": "coherent data system layer must preserve **lineage, semantics, and permissions** across pipelines, services, and time. In practical terms, information should retain where it came from, what it means, what changed, and which uses remain authorized as people or AI transform and move it. Those claims must remain verifiable under scale and adversarial",
+      "finalRange": {
+        "start": 19426,
+        "end": 19761
+      },
+      "contextAnchor": "section:5.11",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:5d81a4ae-919f-49a5-9fb0-32cda9278ae2",
+          "label": "Canopi canopi:5d81a4ae-919f-49a5-9fb0-32cda9278ae2"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Combines the community’s data-keeps-its-rules explanation with the existing technical invariant; replaces an unqualified trust guarantee with verifiability.",
+      "originalRange": {
+        "start": 16843,
+        "end": 17085
+      }
+    },
+    {
+      "id": "dp04-change-026",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": ".12 Private community coordination\n\nCommunities should be able to coordinate through encrypted group communication and participant- or community-controlled hosting, reducing dependence on a single platform for their data and continuity. For high-stakes disclosure, including whistleblowing, tools should support deliberate control of identity exposure, storage, and disclosure timing.\n\nDeletion or anonymization requests should be available within the systems’ actual control, with explicit limits once information has been shared or copied. Encrypted transport and decentralized storage are useful mechanisms, not guarantees that every adversary or downstream recipient loses access. DP15 addresses the threat model and DP18 closes the reporting feedback loop.\n\n---\n\n#",
+      "finalRange": {
+        "start": 21620,
+        "end": 22389
+      },
+      "contextAnchor": "section:5.12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:16:dp4-p0",
+          "label": "CFI 16:dp4-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp4-hold0",
+          "label": "CFI 5:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp4-hold1",
+          "label": "CFI 5:dp4-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Liz Sweigart",
+        "Astra"
+      ],
+      "rationale": "Combines coordination and disclosure-actor proposals into one mechanism, qualified by existing deletion honesty.",
+      "originalRange": {
+        "start": 18944,
+        "end": 18944
+      }
+    },
+    {
+      "id": "dp04-change-027",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "structures preserve familiar social boundaries. A person may share different information with a healthcare provider, an employer, a neighborhood association, and a support group. The vault provides control over custody and use; personas govern what is presented and linkable in each setting. Digital participation should not require those contexts to collapse into one profile.\n\n### 6.1",
+      "finalRange": {
+        "start": 23155,
+        "end": 23541
+      },
+      "contextAnchor": "section:6",
+      "sources": [
+        {
+          "type": "canopi",
+          "id": "canopi:9cc9c33b-af69-4ba7-9c66-dd717d99e480",
+          "label": "Canopi canopi:9cc9c33b-af69-4ba7-9c66-dd717d99e480"
+        },
+        {
+          "type": "canopi",
+          "id": "canopi:7f2bf0fc-2f2b-4d9d-a9b8-fb8c5765c5ca",
+          "label": "Canopi canopi:7f2bf0fc-2f2b-4d9d-a9b8-fb8c5765c5ca"
+        },
+        {
+          "type": "canopi",
+          "id": "canopi:b9b17e7a-24ed-494a-901f-874c9a281c42",
+          "label": "Canopi canopi:b9b17e7a-24ed-494a-901f-874c9a281c42"
+        }
+      ],
+      "attribution": [
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Reconciles the community vault/persona patch and both explainers as one contextual bridge while preserving the original two-structure definition.",
+      "originalRange": {
+        "start": 19710,
+        "end": 19710
+      }
+    },
+    {
+      "id": "dp04-change-028",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "can also support participant-directed AI activity rather than act only as a passive container. The VeMe proposal illustrates a vault-as-agent pattern in which memory, outputs, and inferences remain governed by participant choices and the vault’s existing consent, purpose, and retention controls.\n\nThe characteristic",
+      "finalRange": {
+        "start": 25458,
+        "end": 25764
+      },
+      "contextAnchor": "section:6.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:30:dp4-p0",
+          "label": "CFI 30:dp4-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Preserves the distinctive active-vault concept without granting it independent authority.",
+      "originalRange": {
+        "start": 21627,
+        "end": 21627
+      }
+    },
+    {
+      "id": "dp04-change-029",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "should support anonymous, pseudonymous, or authenticated interactions where the relevant zone permits them. Authentication should not automatically disclose a public identity or link other personas. Connected-device identities also need contextual boundaries, since a device can otherwise become the bridge that silently reconnects separated activity.\n\nThe characteristic",
+      "finalRange": {
+        "start": 27478,
+        "end": 27840
+      },
+      "contextAnchor": "section:6.2",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold1",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold3",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold3"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Combines device identity and persona-mode proposals without adding a third structure to the vault/persona definition.",
+      "originalRange": {
+        "start": 23341,
+        "end": 23341
+      }
+    },
+    {
+      "id": "dp04-change-030",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " Personal privacy intermediaries\n\nA participant-configured agent can mediate interactions with networks, applications, forms, and connected devices. It can help apply permissions to differently sensitive flows, filter incoming material according to stated preferences, and restrict device interactions to networks the participant trusts. Its actions and filters should remain visible, inspectable, and revocable.\n\nA browser or embedded data lens can complement that intermediary by showing collection and tracking while an interaction is happening. The lens should distinguish observed activity from inferred activity, so participants can act on useful evidence without mistaking the tool for a complete inventory of hidden processing.\n\n---\n\n## ",
+      "finalRange": {
+        "start": 30837,
+        "end": 31582
+      },
+      "contextAnchor": "section:7.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:27:dp2-hold0",
+          "label": "CFI 27:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold0",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold1",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:27:dp4-hold0",
+          "label": "CFI 27:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-hold0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:27:dp14-hold0",
+          "label": "CFI 27:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold1",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Wojak K",
+        "Cindy Mason",
+        "Astra"
+      ],
+      "rationale": "Consolidates personal guardian, IoT intermediary, and live data-lens variants into an actionable agency pattern; observation limits are Astra’s editorial qualification of the implementation example.",
+      "originalRange": {
+        "start": 26338,
+        "end": 26338
+      }
+    },
+    {
+      "id": "dp04-change-031",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " Privacy transport and civic sandbox trials\n\nA decentralized privacy-routing mesh is one implementation option for reducing exposure of interaction, contribution, and identity-resolution traffic. Multiparty relays and onion routing are candidate approaches. Trials should keep routing optional and evaluate protection, operator dependencies, accessibility, and performance before wider adoption. DP7 addresses compatibility with participant-chosen privacy infrastructure, and DP17 addresses possible relay funding.\n\nLocal, multi-sector civic sandboxes, including the proposed UMi Insecurity Initiatives and Sandbox environments, can test whether privacy mechanisms are understandable, equitable, and effective in practice. A pilot’s institutional setting is evidence to examine, not proof of the mechanism’s success.\n\n---\n\n## 16",
+      "finalRange": {
+        "start": 46646,
+        "end": 47473
+      },
+      "contextAnchor": "section:15.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold2",
+          "label": "CFI 45:dp2-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold5",
+          "label": "CFI 45:dp2-hold5"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:3:dp4-hold0",
+          "label": "CFI 3:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold0",
+          "label": "CFI 45:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold2",
+          "label": "CFI 45:dp4-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold3",
+          "label": "CFI 45:dp4-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold7",
+          "label": "CFI 45:dp4-hold7"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-hold0",
+          "label": "CFI 45:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-hold1",
+          "label": "CFI 45:dp7-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-hold2",
+          "label": "CFI 45:dp7-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold2",
+          "label": "CFI 45:dp15-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold3",
+          "label": "CFI 45:dp15-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp17-hold1",
+          "label": "CFI 45:dp17-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Phahsa Ras",
+        "Astra"
+      ],
+      "rationale": "Combines repeated VPN proposals as a bounded implementation option and connects the separate civic-sandbox proposal to actual evaluation.",
+      "originalRange": {
+        "start": 41402,
+        "end": 41402
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp4-p0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp4-p0",
+      "reason": "The complete privacy core already establishes participant and community control. The proposal does not add a mechanism, example, or boundary beyond the existing core."
+    },
+    {
+      "sourceId": "4b94d052-6c42-4d16-a5a8-24d2b92dc1be",
+      "sourceType": "cfi",
+      "label": "gov-hub:4b94d052-6c42-4d16-a5a8-24d2b92dc1be",
+      "reason": "The requested deletion removes the explicit lifecycle scope that introduces the controls below. Reconciliation of the following explanation addresses repetition without losing that scope."
+    }
+  ]
+}

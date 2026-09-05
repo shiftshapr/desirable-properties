@@ -1,0 +1,107 @@
+{
+  "chapterId": "DP20",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-024",
+  "baselineSha256": "0bfd1cd2bde7ff0a54fe3f0c6fd7d1d729d6cdf4002521f6cb854517fc7cb5d8",
+  "finalSha256": "62ea78189c649938723c604690ff0bc058d2c0395c626da38a044790e199b551",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp20-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Collective data governance should also examine who can concentrate information flow or expose members to institutional surveillance. Ownership arrangements need to make those powers visible and contestable, not treat consent to individual uses as sufficient control over the shared corpus.\n\nFailure",
+      "finalRange": {
+        "start": 11504,
+        "end": 11795
+      },
+      "contextAnchor": "section:5.8",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp20-hold0",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp20-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Retains the information-power dimension of collective ownership.",
+      "originalRange": {
+        "start": 11504,
+        "end": 11504
+      }
+    },
+    {
+      "id": "dp20-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Operational independence should be evaluated against dependence on a government’s continuing funding, permission, or goodwill as the sole support for the substrate. Public partnerships can contribute while communities retain practical control, continuity, and exit; independence is not exemption from applicable law.\n\nFailure",
+      "finalRange": {
+        "start": 14294,
+        "end": 14612
+      },
+      "contextAnchor": "section:7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp20-hold0",
+          "label": "CFI 7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp20-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Reconciles governmental independence with municipal partnerships and community control.",
+      "originalRange": {
+        "start": 14003,
+        "end": 14003
+      }
+    },
+    {
+      "id": "dp20-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 15.1 Municipal digital commons\n\nA municipal digital commons can be co-owned by cities and their citizens, supporting civic feedback, participatory governance, youth digital literacy, and cross-regional collaboration. European municipalities are one proposed pilot context.\n\nThe ownership arrangement should specify who holds decision rights, how residents are represented, what public funding does and does not control, and how participants retain continuity and exit. Municipal sponsorship alone does not establish community ownership. DP16 describes a federated pilot route for testing these commitments across local settings.\n\n##",
+      "finalRange": {
+        "start": 31271,
+        "end": 31906
+      },
+      "contextAnchor": "section:15.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp2-hold0",
+          "label": "CFI 39:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp6-hold0",
+          "label": "CFI 39:dp6-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp8-hold0",
+          "label": "CFI 39:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:39:dp20-p0",
+          "label": "CFI 39:dp20-p0"
+        }
+      ],
+      "attribution": [
+        "Eric Schneider",
+        "Astra"
+      ],
+      "rationale": "Consolidates repeated municipal proposals into a specific ownership model with a testable distinction between sponsorship and control.",
+      "originalRange": {
+        "start": 30662,
+        "end": 30662
+      }
+    }
+  ],
+  "omitted": []
+}

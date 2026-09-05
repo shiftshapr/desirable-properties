@@ -1,0 +1,255 @@
+{
+  "chapterId": "DP1",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-008",
+  "baselineSha256": "aba2a3e01c4a7a5219d19c5cc47925c17348570a34a7a4eaca6144688b4fa91a",
+  "finalSha256": "959fa76f51381a6d5c449a25ac1a81a11f300b6c9699990051750159452362fb",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp01-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Authentication and public identification are different acts. A person or device should be able to prove what an interaction requires without making unrelated identity attributes public or linking other personas. A SIM authenticating to a network illustrates the distinction, not anonymity from the network operator. Anonymous participation remains subject to the zone-specific boundaries in §§7 and 18.\n\n##",
+      "finalRange": {
+        "start": 14137,
+        "end": 14542
+      },
+      "contextAnchor": "section:6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp1-hold0",
+          "label": "CFI a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp1-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-p0",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold0",
+          "label": "CFI a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold1",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold1"
+        }
+      ],
+      "attribution": [
+        "Vandana Upadhyay",
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Clarifies authentication without weakening differentiated zone entry requirements; reconciles the repeated anonymity and DID proposals.",
+      "originalRange": {
+        "start": 14137,
+        "end": 14137
+      }
+    },
+    {
+      "id": "dp01-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "# 7.5 Privacy-preserving community discovery\n\nParticipants should be able to discover communities and consenting members without depending on a central public directory. Discovery mechanisms should minimize unnecessary exposure of membership and origin metadata, particularly where association itself places people at risk. Participants should control whether, where, and to whom they are discoverable.\n\n---",
+      "finalRange": {
+        "start": 19863,
+        "end": 20270
+      },
+      "contextAnchor": "section:7.5",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp1-hold0",
+          "label": "CFI 5:dp1-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp1-hold1",
+          "label": "CFI 5:dp1-hold1"
+        }
+      ],
+      "attribution": [
+        "Liz Sweigart",
+        "Astra"
+      ],
+      "rationale": "Provides one coherent private-discovery capability from the overlapping identity proposals.",
+      "originalRange": {
+        "start": 19458,
+        "end": 19458
+      }
+    },
+    {
+      "id": "dp01-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "These bindings also apply to advanced AI and complex systems managing critical infrastructure, including physical or hybrid systems. Greater capability does not remove the need for an identifiable responsible entity.\n\n### ",
+      "finalRange": {
+        "start": 30860,
+        "end": 31079
+      },
+      "contextAnchor": "section:11.3",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:24:dp1-hold0",
+          "label": "CFI 24:dp1-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Makes the critical-infrastructure scope explicit without inventing a separate legal status for advanced agents.",
+      "originalRange": {
+        "start": 30048,
+        "end": 30048
+      }
+    },
+    {
+      "id": "dp01-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "11.4 Contextual agent registration\n\nAgents acting on behalf of people, services, or other agents should be identifiable in the context where they act. Registration can use mechanisms analogous to software identification to connect the acting agent, its mandate, and its responsible entity. It should not require a single central registry or indiscriminate public disclosure of the represented participant.\n\n---\n\n",
+      "finalRange": {
+        "start": 31079,
+        "end": 31491
+      },
+      "contextAnchor": "section:11.4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold2",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold0",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold0"
+        }
+      ],
+      "attribution": [
+        "Cindy Mason",
+        "Astra"
+      ],
+      "rationale": "Adds registration as an implementation mechanism while preserving federation and contextual privacy.",
+      "originalRange": {
+        "start": 30048,
+        "end": 30048
+      }
+    },
+    {
+      "id": "dp01-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Anonymity from other participants can coexist with extensive visibility to an operator or institution. Identity-system review should distinguish public disclosure, operator observation, and inferred linkage rather than treating a pseudonym as evidence that all three are controlled.\n\n---\n\n#",
+      "finalRange": {
+        "start": 38804,
+        "end": 39089
+      },
+      "contextAnchor": "section:14",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold2",
+          "label": "CFI a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold2"
+        }
+      ],
+      "attribution": [
+        "Vandana Upadhyay",
+        "Astra"
+      ],
+      "rationale": "Adds the contributor’s specific asymmetry between peer anonymity and institutional visibility.",
+      "originalRange": {
+        "start": 37361,
+        "end": 37361
+      }
+    },
+    {
+      "id": "dp01-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " should preserve a path to responsible human and organizational actors rather than treating the machine artifact as a substitute for responsibility; legal allocation remains subject to the applicable framework.\n- **Thresholds",
+      "finalRange": {
+        "start": 60877,
+        "end": 61095
+      },
+      "contextAnchor": "section:20",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp3-hold0",
+          "label": "CFI 97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp3-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp14-hold0",
+          "label": "CFI 97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp14-hold0"
+        }
+      ],
+      "attribution": [
+        "Brian Donohue",
+        "Astra"
+      ],
+      "rationale": "Preserves the liability contributor’s accountability concern without asserting a universal legal allocation.",
+      "originalRange": {
+        "start": 59149,
+        "end": 59149
+      }
+    },
+    {
+      "id": "dp01-change-007",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "minimal protocol for personal and corporate agents should specify observable traces, exchange formats, and distributed authentication across websites, interfaces, and independently operated agents (DP7).\n\nFurther",
+      "finalRange": {
+        "start": 62080,
+        "end": 62286
+      },
+      "contextAnchor": "section:20",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp1-p0",
+          "label": "CFI 10:dp1-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp1-p1",
+          "label": "CFI 10:dp1-p1"
+        }
+      ],
+      "attribution": [
+        "Ruben Diaz",
+        "Astra"
+      ],
+      "rationale": "Makes the existing coordination question concrete and consolidates its repeated CFI formulations.",
+      "originalRange": {
+        "start": 60134,
+        "end": 60134
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:23:dp1-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:23:dp1-hold0",
+      "reason": "I do not recommend the AI driver’s-licence insert yet. The source supplies an appealing analogy but no issuing authority, credential scope, enforcement model, or distinction from the draft’s existing risk-dependent proof thresholds."
+    },
+    {
+      "sourceId": "7aecb8d7-54cb-4838-a58a-023616598a2f",
+      "sourceType": "cfi",
+      "label": "gov-hub:7aecb8d7-54cb-4838-a58a-023616598a2f",
+      "reason": "Adding true to an already clear sentence does not improve meaning or readability."
+    },
+    {
+      "sourceId": "eb450977-af32-4c33-98c3-d8d1ed3738e5",
+      "sourceType": "cfi",
+      "label": "gov-hub:eb450977-af32-4c33-98c3-d8d1ed3738e5",
+      "reason": "Harm includes institutional and systemic consequences; hurt narrows and personalizes the meaning without a compensating benefit."
+    }
+  ]
+}

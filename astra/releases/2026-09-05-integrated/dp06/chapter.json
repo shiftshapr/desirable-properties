@@ -1,0 +1,235 @@
+{
+  "chapterId": "DP6",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-013",
+  "baselineSha256": "69493c428846faf6d81fc8c143b80a40fd84d8b43cacd6102d834847d24ef3bd",
+  "finalSha256": "62fa62a7d1d441aff3e9368beb37b120e35d64fc88b89148b2a9264aa041327b",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp06-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Payment privacy should also be evaluated at the transport carrying a transaction. Optional decentralized routing can reduce exposure of transaction metadata, but its limits and dependencies must remain visible. DP4 treats a privacy mesh as an implementation option rather than a guarantee of anonymity.\n\n##",
+      "finalRange": {
+        "start": 15177,
+        "end": 15482
+      },
+      "contextAnchor": "section:5.4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-hold1",
+          "label": "CFI 45:dp6-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-hold4",
+          "label": "CFI 45:dp6-hold4"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-p0",
+          "label": "CFI 45:dp6-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Retains the commerce-specific consequence of transport privacy without repeating the mesh specification.",
+      "originalRange": {
+        "start": 15177,
+        "end": 15177
+      }
+    },
+    {
+      "id": "dp06-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Community economic surfaces should support mutual aid and private peer-to-peer value exchange, including for people excluded from or poorly served by conventional financial infrastructure. Privacy of communication supports that use case but does not by itself resolve settlement, fraud recourse, or access to the necessary services.\n\n###",
+      "finalRange": {
+        "start": 17408,
+        "end": 17743
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:5:dp6-hold0",
+          "label": "CFI 5:dp6-hold0"
+        }
+      ],
+      "attribution": [
+        "Liz Sweigart",
+        "Astra"
+      ],
+      "rationale": "Adds mutual aid and financially excluded communities as concrete economic uses while maintaining realistic boundaries.",
+      "originalRange": {
+        "start": 17103,
+        "end": 17103
+      }
+    },
+    {
+      "id": "dp06-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Economic accessibility also includes affordability. Participants should be able to see fees, surcharges, and minimum commitments for core participation, so a technically available capability does not become accessible only to affluent users. This does not require every optional transaction or service to be free.\n\nA failure",
+      "finalRange": {
+        "start": 19673,
+        "end": 19988
+      },
+      "contextAnchor": "section:5.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:15:dp6-p0",
+          "label": "CFI 15:dp6-p0"
+        }
+      ],
+      "attribution": [
+        "Scott Frankum",
+        "Astra"
+      ],
+      "rationale": "Adds the cost dimension missing from the technical accessibility account.",
+      "originalRange": {
+        "start": 19033,
+        "end": 19033
+      }
+    },
+    {
+      "id": "dp06-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " includes creating and verifying connections and designing or implementing the application substrate. Contributors should be able to inspect how those records relate to fiat or token rewards; on-chain recording is one option, not a requirement.\n- **",
+      "finalRange": {
+        "start": 23740,
+        "end": 23989
+      },
+      "contextAnchor": "section:6.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold0",
+          "label": "CFI b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold1",
+          "label": "CFI b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Expands the existing accounting mechanism with specific contributor roles and an inspectable relation to compensation.",
+      "originalRange": {
+        "start": 22785,
+        "end": 22785
+      }
+    },
+    {
+      "id": "dp06-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 6.6 Optional infrastructure service markets\n\nWhere a privacy-routing service charges for use, it could offer session- or bandwidth-based pricing, including token-based microtransactions, with visible shares for operators and a community treasury. Participant-chosen third-party services could use opt-in revenue-sharing agreements without making such agreements a prerequisite for interoperability.\n\nThe choice between public funding, participant payment, and mixed models should preserve access and avoid surveillance-based monetization. DP17 addresses whether relay revenue can cover continuing costs.\n\n---\n",
+      "finalRange": {
+        "start": 28579,
+        "end": 29189
+      },
+      "contextAnchor": "section:6.6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold1",
+          "label": "CFI 45:dp2-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-hold3",
+          "label": "CFI 45:dp6-hold3"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates the conditional VPN service-market variants while preserving free access, non-token funding, and provider choice.",
+      "originalRange": {
+        "start": 27375,
+        "end": 27375
+      }
+    },
+    {
+      "id": "dp06-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Economic design should be evaluated for entry barriers and concentration of control, not assumed to be competitive because it is decentralized. Privacy-respecting services can compete on participant control rather than extraction, supported by incentives alongside regulation, without requiring people to monetize their personal data.\n\n---\n\n",
+      "finalRange": {
+        "start": 32745,
+        "end": 33082
+      },
+      "contextAnchor": "section:8",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold2",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold2",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold4",
+          "label": "CFI 6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold4"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Connects open entry, resilience, and privacy incentives while avoiding an unsupported claim that decentralization prevents monopoly.",
+      "originalRange": {
+        "start": 30931,
+        "end": 30931
+      }
+    },
+    {
+      "id": "dp06-change-007",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "should automated markets be evaluated for their effects on human participation and access to value, alongside efficiency? Game-theoretic analysis can help examine whether stable outcomes sustain livelihoods and community contribution, but no particular equilibrium or distributional guarantee is assumed.\n\n---\n\n#",
+      "finalRange": {
+        "start": 42772,
+        "end": 43083
+      },
+      "contextAnchor": "section:14",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold2",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold1",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold1"
+        }
+      ],
+      "attribution": [
+        "Paul Werbos",
+        "Astra"
+      ],
+      "rationale": "Retains the economic inclusion question while declining the source’s universal Pareto-optimality prescription.",
+      "originalRange": {
+        "start": 40621,
+        "end": 40621
+      }
+    }
+  ],
+  "omitted": []
+}

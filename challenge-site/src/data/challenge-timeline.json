@@ -106,8 +106,18 @@
       "endDate": "2026-09-16",
       "title": "The Layered Web: Desirable Properties of a Meta-Layer – Community Review Draft and Governance Feedback Workflow",
       "description": "Join us for a public milestone marking the two-year anniversary of the Meta-Layer Initiative kickoff and Vint Cerf's challenge to define the desirable properties of a meta-layer. We will share the Community Review Draft of The Layered Web: Desirable Properties of a Meta-Layer, now organized around 23 Desirable Properties, and demonstrate the governance, patching, feedback, and update workflow that will guide the path toward Version 1.0.",
-      "href": "https://desirableproperties.org/book",
-      "linkLabel": "Read the Community Review Draft"
+      "href": "https://luma.com/wfi1z9lv",
+      "linkLabel": "RSVP on Luma",
+      "links": [
+        {
+          "href": "https://luma.com/wfi1z9lv",
+          "label": "RSVP on Luma"
+        },
+        {
+          "href": "https://desirableproperties.org/book",
+          "label": "Read the Community Review Draft"
+        }
+      ]
     },
     {
       "id": "metaweb-book-2e",

@@ -1,0 +1,76 @@
+{
+  "chapterId": "DP13",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-004",
+  "baselineSha256": "6b9ccb646d61a8af09162f87aca366f03fc793a2c045c3e095085503c2a4a54e",
+  "finalSha256": "23a43ff56e40634a677d3775a7e3418bdff5fb3cea0d02cd428365d5c07d237a",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp13-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 6.10 Local boundaries without automatic global disconnection\n\nWebsites and communities should be able to constrain an agent within their own governed context without automatically severing its access everywhere. The affected participant, operator, and relevant downstream systems should be able to see the scope and authority of the restriction. Wider escalation, when justified, requires its own declared basis.\n\nParticipant-controlled guardian agents, described in DP4, can provide an additional local boundary for incoming and outgoing interactions. They complement platform containment rather than exempt themselves from inspection, permissions, or community rules.\n\n--",
+      "finalRange": {
+        "start": 14603,
+        "end": 15279
+      },
+      "contextAnchor": "section:6.10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1",
+          "label": "CFI eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp13-p0",
+          "label": "CFI 10:dp13-p0"
+        }
+      ],
+      "attribution": [
+        "Cindy Mason",
+        "Ruben Diaz",
+        "Astra"
+      ],
+      "rationale": "Preserves local containment as a distinct mechanism and ties the personal guardian to the primary privacy treatment.",
+      "originalRange": {
+        "start": 14603,
+        "end": 14603
+      }
+    },
+    {
+      "id": "dp13-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "The loop can also fail upstream when the people authorizing containment share conflicts of interest or face capture. Reviews should examine those dependencies rather than assume that technically correct enforcement makes its governing instruction legitimate.\n\n---",
+      "finalRange": {
+        "start": 18170,
+        "end": 18431
+      },
+      "contextAnchor": "section:8.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp13-hold0",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp13-hold0"
+        }
+      ],
+      "attribution": [
+        "Paul Werbos",
+        "Astra"
+      ],
+      "rationale": "Adds human governance failure to the execution-loop analysis.",
+      "originalRange": {
+        "start": 17494,
+        "end": 17494
+      }
+    }
+  ],
+  "omitted": []
+}

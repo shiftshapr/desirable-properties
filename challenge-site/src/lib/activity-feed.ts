@@ -1,4 +1,4 @@
-import { canopiPageIdsForDp } from '@/lib/dp-canopi-chapters';
+import { canopiPageIdsForDp, canopiPageIdsForWorkgroup } from '@/lib/dp-canopi-chapters';
 import { classifyDiscussPost, discussPatchActivityText } from '@/lib/discuss-patch';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import {
@@ -13,37 +13,12 @@ import {
   type LayerActivityEvent,
 } from '@/lib/govhub';
 import { workgroupActivityHref } from '@/lib/workgroup-links';
+import { fetchLocalWorkgroupActivity } from '@/lib/workgroup-local-activity';
+import { readAstraChapterBundle } from '@/lib/astra-corpus.server';
+import { dpIdToAstraKey } from '@/lib/astra-utils';
 
-export type ActivityFeedKind =
-  | 'govhub'
-  | 'workgroup_message'
-  | 'workgroup_invite'
-  | 'workgroup_member'
-  | 'canopi'
-  | 'canopi_patch'
-  | 'canopi_insert'
-  | 'govhub_proposal';
-
-export type ActivityDiff = {
-  removed?: string | null;
-  added?: string | null;
-  mode?: 'replace' | 'insert' | 'patch' | 'comment';
-};
-
-export type ActivityFeedItem = {
-  id: string;
-  createdAt: string;
-  text: string;
-  href: string;
-  kind: ActivityFeedKind;
-  /** Optional badge for discuss patch/insert (or other typed events). */
-  badge?: string | null;
-  /** Resolved = accepted/declined/etc. Gov Hub patches; non-pending proposals. */
-  resolved?: boolean;
-  status?: string | null;
-  diff?: ActivityDiff | null;
-  source?: 'govhub' | 'canopi';
-};
+import type { ActivityDiff, ActivityFeedItem, ActivityFeedKind } from '@/lib/activity-feed-types';
+export type { ActivityDiff, ActivityFeedItem, ActivityFeedKind } from '@/lib/activity-feed-types';
 
 const WORKGROUP_EVENT_TYPES = [
   'workgroup_message_posted',
@@ -264,9 +239,13 @@ function eventToWorkgroupFeedItem(
 
 async function fetchCanopiItemsForDp(
   dpId: string | null,
+  workgroupSlug: string,
   limit: number,
 ): Promise<ActivityFeedItem[]> {
-  const pageIds = canopiPageIdsForDp(dpId);
+  const pageIds = [
+    ...canopiPageIdsForDp(dpId),
+    ...canopiPageIdsForWorkgroup(workgroupSlug),
+  ];
   if (!pageIds.length) return [];
 
   const result = await searchCanopiPosts({
@@ -348,12 +327,24 @@ export async function fetchWorkgroupDpActivity(
   if (mlMatch) draftRefs.push(mlMatch[0]);
 
   const uniqueDraftRefs = [...new Set(draftRefs)];
+  const dpKey = opts.dpId ? dpIdToAstraKey(opts.dpId) : null;
+  const baseBundle = dpKey ? readAstraChapterBundle(dpKey) : null;
+  const baseMarkdownByDpKey = baseBundle?.markdown && dpKey
+    ? { [dpKey]: baseBundle.markdown }
+    : {};
 
-  const [wgEvents, draftEvents, proposals, canopi] = await Promise.all([
+  const [wgEvents, draftEvents, proposals, canopi, local] = await Promise.all([
     fetchLayerActivityEvents({ limit: 100, eventTypes: WORKGROUP_EVENT_TYPES }),
     fetchLayerActivityEvents({ limit: 100, eventTypes: DRAFT_EVENT_TYPES }),
     uniqueDraftRefs[0] ? fetchDraftProposals(uniqueDraftRefs[0]) : Promise.resolve([]),
-    fetchCanopiItemsForDp(opts.dpId || null, Math.min(30, limit)),
+    fetchCanopiItemsForDp(opts.dpId || null, opts.workgroupSlug, Math.min(30, limit)),
+    fetchLocalWorkgroupActivity({
+      workgroupId: opts.workgroupId,
+      workgroupSlug: opts.workgroupSlug,
+      dpId: opts.dpId || null,
+      baseMarkdownByDpKey,
+      limit: Math.min(30, limit),
+    }),
   ]);
 
   const matchOpts = {
@@ -394,6 +385,7 @@ export async function fetchWorkgroupDpActivity(
   }
 
   items.push(...canopi);
+  items.push(...local);
 
   items.sort((a, b) => Date.parse(b.createdAt || '0') - Date.parse(a.createdAt || '0'));
 
@@ -418,32 +410,4 @@ export function isActivityResolved(item: ActivityFeedItem): boolean {
   return false;
 }
 
-/** Draft / discuss comment & patch kinds for the Comments & patches filter. */
-const COMMENT_PATCH_EVENT_TYPES = new Set([
-  'dp_proposal_submitted',
-  'dp_proposal_accepted',
-  'dp_proposal_declined',
-  'draft_comment_added',
-  'workgroup_message_posted',
-]);
-
-/**
- * Comments & patches filter:
- * - Canopi discuss (comments + PATCH/INSERT)
- * - Gov Hub draft proposals / patch items
- * - Workgroup chat messages
- * Excludes: joins/leaves, invites, generic draft lifecycle noise (created/approved/published).
- */
-export function isActivityCommentOrPatch(item: ActivityFeedItem): boolean {
-  if (
-    item.kind === 'canopi'
-    || item.kind === 'canopi_patch'
-    || item.kind === 'canopi_insert'
-    || item.kind === 'govhub_proposal'
-    || item.kind === 'workgroup_message'
-  ) {
-    return true;
-  }
-  if (item.status && COMMENT_PATCH_EVENT_TYPES.has(item.status)) return true;
-  return false;
-}
+export { isActivityCommentOrPatch } from '@/lib/activity-feed-filters';

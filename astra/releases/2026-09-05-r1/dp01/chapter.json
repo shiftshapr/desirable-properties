@@ -1,0 +1,78 @@
+{
+  "chapterId": "DP1",
+  "releaseId": "2026-09-05-r1",
+  "baselineMlDraft": "ML-Draft-008",
+  "baselineSha256": "9d7e9a5eb472a9667dc5f6b132a9702da60c6f5c95eb51f75379e0273a4a4d1c",
+  "finalSha256": "16f76f23e09e7a5f9ae76783dd386ac43bcf91d9daed9cf230d86ba8618dea37",
+  "verified": true,
+  "changes": [
+    {
+      "id": "astra:dp1:c0001",
+      "operation": "replace",
+      "beforeText": "federated authentication so participants can prove who they are without surrendering control to a single gatekeeper",
+      "afterText": "federated authentication that lets participants assert identity across sites while keeping credential sovereignty with the individual, not a single platform gatekeeper",
+      "finalRange": { "start": 171, "end": 338 },
+      "originalRange": { "start": 171, "end": 286 },
+      "contextAnchor": "section:introduction",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:r2:8",
+          "label": "CFI round 2 submission 8 (DP1)"
+        },
+        {
+          "type": "canopi",
+          "id": "canopi:dp1:discuss-142",
+          "label": "Canopi Discuss #142 (published)"
+        }
+      ],
+      "attribution": ["Ruben Diaz", "Astra"],
+      "rationale": "Merged two overlapping proposals that both asked for credential sovereignty language. Chose cross-site assertion wording from CFI-8 and dropped redundant gatekeeper phrasing."
+    },
+    {
+      "id": "astra:dp1:c0002",
+      "operation": "replace",
+      "beforeText": "Accountability mechanisms must bind actions to identities in ways that communities can audit and challenge.",
+      "afterText": "Accountability mechanisms must bind actions to identities in ways that communities can audit, challenge, and remediate through governed processes.",
+      "finalRange": { "start": 473, "end": 619 },
+      "originalRange": { "start": 421, "end": 528 },
+      "contextAnchor": "section:core-requirements",
+      "sources": [
+        {
+          "type": "govhub",
+          "id": "gh:dp1:prop-0192",
+          "label": "Gov Hub dp_proposal #192",
+          "url": "https://interfacehub.net/doc/draft/ML-Draft-008/read/"
+        }
+      ],
+      "attribution": ["Community workgroup patch author", "Astra"],
+      "rationale": "Adds remediation path requested in Gov Hub proposal 192 without expanding scope beyond accountability already in the baseline draft."
+    },
+    {
+      "id": "astra:dp1:c0003",
+      "operation": "delete",
+      "beforeText": "How do we balance privacy with the need for accountable speech in public governance forums?",
+      "afterText": "",
+      "finalRange": { "start": 638, "end": 638 },
+      "attachmentRange": { "start": 638, "end": 638 },
+      "contextAnchor": "section:open-questions",
+      "sources": [
+        {
+          "type": "astra",
+          "id": "astra:editorial",
+          "label": "Astra editorial synthesis"
+        }
+      ],
+      "attribution": ["Astra"],
+      "rationale": "Removed a standalone open question that duplicated privacy/accountability tension already covered in the Introduction. Kept the Open questions section heading for future community additions."
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "cfi:r2:31",
+      "sourceType": "cfi",
+      "label": "CFI round 2 submission 31 (DP1)",
+      "reason": "Near-duplicate of c0001 after normalization; no additional semantic contribution."
+    }
+  ]
+}

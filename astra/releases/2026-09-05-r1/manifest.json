@@ -1,0 +1,31 @@
+{
+  "releaseId": "2026-09-05-r1",
+  "publishedAt": "2026-09-05T15:00:00.000Z",
+  "description": "Initial Astra editorial synthesis release (sample DP1 chapter for UI integration)",
+  "verified": true,
+  "chapters": [
+    { "chapterId": "DP1", "dpKey": "dp01", "status": "available", "baselineMlDraft": "ML-Draft-008", "changeCount": 3, "omittedCount": 1 },
+    { "chapterId": "DP2", "dpKey": "dp02", "status": "pending", "baselineMlDraft": "ML-Draft-009", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP3", "dpKey": "dp03", "status": "pending", "baselineMlDraft": "ML-Draft-010", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP4", "dpKey": "dp04", "status": "pending", "baselineMlDraft": "ML-Draft-011", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP5", "dpKey": "dp05", "status": "pending", "baselineMlDraft": "ML-Draft-012", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP6", "dpKey": "dp06", "status": "pending", "baselineMlDraft": "ML-Draft-013", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP7", "dpKey": "dp07", "status": "pending", "baselineMlDraft": "ML-Draft-014", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP8", "dpKey": "dp08", "status": "pending", "baselineMlDraft": "ML-Draft-015", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP9", "dpKey": "dp09", "status": "pending", "baselineMlDraft": "ML-Draft-016", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP10", "dpKey": "dp10", "status": "pending", "baselineMlDraft": "ML-Draft-017", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP11", "dpKey": "dp11", "status": "pending", "baselineMlDraft": "ML-Draft-002", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP12", "dpKey": "dp12", "status": "pending", "baselineMlDraft": "ML-Draft-003", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP13", "dpKey": "dp13", "status": "pending", "baselineMlDraft": "ML-Draft-004", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP14", "dpKey": "dp14", "status": "pending", "baselineMlDraft": "ML-Draft-018", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP15", "dpKey": "dp15", "status": "pending", "baselineMlDraft": "ML-Draft-019", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP16", "dpKey": "dp16", "status": "pending", "baselineMlDraft": "ML-Draft-020", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP17", "dpKey": "dp17", "status": "pending", "baselineMlDraft": "ML-Draft-021", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP18", "dpKey": "dp18", "status": "pending", "baselineMlDraft": "ML-Draft-022", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP19", "dpKey": "dp19", "status": "pending", "baselineMlDraft": "ML-Draft-023", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP20", "dpKey": "dp20", "status": "pending", "baselineMlDraft": "ML-Draft-024", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP21", "dpKey": "dp21", "status": "pending", "baselineMlDraft": "ML-Draft-025", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP22", "dpKey": "dp22", "status": "pending", "baselineMlDraft": "ML-Draft-028", "changeCount": 0, "omittedCount": 0 },
+    { "chapterId": "DP23", "dpKey": "dp23", "status": "pending", "baselineMlDraft": "ML-Draft-030", "changeCount": 0, "omittedCount": 0 }
+  ]
+}

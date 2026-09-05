@@ -1,0 +1,10 @@
+{
+  "chapterId": "DP23",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-030",
+  "baselineSha256": "0edaff4ff98b1cc152aa6ead3e3f55bf878b49aadeebe688d8bbce922f4b2b98",
+  "finalSha256": "fe6938e8d3c2d050fc6255ea4b8ecd2b58bf161960b826f1d18d484ad03b71c5",
+  "verified": true,
+  "changes": [],
+  "omitted": []
+}

@@ -1,0 +1,38 @@
+{
+  "chapterId": "DP22",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-028",
+  "baselineSha256": "06b224f3b81846f4474924f88718b3e464a7e58054609e612bb1059cc183205d",
+  "finalSha256": "b39aa315b4d997b4d3112af1529cb89b0929c03e0ca5c5099fe50b37836940bb",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp22-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 24.1 Typed relationships and reviewed connections\n\nCivic memory graphs should distinguish relationships such as support, contradiction, and citation at the appropriate artifact or subresource granularity. AI can suggest connections, but human review should precede their acceptance into the community’s recorded interpretive structure.\n\nThe record should preserve who proposed, accepted, challenged, or rejected a connection, and the evidence and context behind that judgment. Accepted edges remain contestable and versioned; they are interpretations rather than automatic proof of truth. Participants and AI can use the graph to trace reasoning without replacing the underlying artifacts or suppressing alternative readings. DP23’s influence labels provide a related distinction between citation, evidence, and similarity.\n\n##",
+      "finalRange": {
+        "start": 52362,
+        "end": 53192
+      },
+      "contextAnchor": "section:24.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp22-p0",
+          "label": "CFI 958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp22-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Preserves the source’s typed, human-reviewed information ecology while reconciling it with existing memory and influence semantics.",
+      "originalRange": {
+        "start": 52362,
+        "end": 52362
+      }
+    }
+  ],
+  "omitted": []
+}

@@ -1,6 +1,6 @@
 {
   "cohort": "project-liberty-alliance",
-  "generatedAt": "2026-08-31",
+  "generatedAt": "2026-09-05",
   "generatorNote": "Deterministic minimal pad entries for PLA roster orgs without a full alliance-directory packet. Regenerate with node scripts/generate-roster-pad-entries.mjs after roster import.",
   "sourceRosterImportedAt": "2026-08-20",
   "orgs": [

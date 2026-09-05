@@ -159,8 +159,13 @@ export type { WorkgroupCollabSummary };
 export type WorkgroupRosterMember = {
   user_id: string;
   user_name: string;
+  username?: string | null;
+  joined_at?: string | null;
   positions: string[];
   is_facilitator: boolean;
+  canopi_handle?: string | null;
+  canopi_profile_url?: string | null;
+  canopi_avatar_url?: string | null;
 };
 
 export async function fetchWorkgroupMemberRoster(

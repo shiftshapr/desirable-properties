@@ -4,7 +4,9 @@ Product and engineering scope for (1) fixing `/agent` sidebar duplicates and mis
 
 **Status:** Phase 0 complete. Community Chat MVP in progress (backend foundations landed). **Locked decisions:** see [Decisions (locked)](#decisions-locked).
 
-Related: `HERMES-SHARE.md` (agent thread sharing), `WORKGROUP-SHARE.md` (workgroup chat share restrictions), `docs/WORKGROUP-REVIEW-TAB.md` (workgroup Hermes integration patterns), `docs/DP-COMMUNITY-AI-BRIEFING.md` if present.
+> **Community Chat UX correction (2026-08-31):** The section [UX model (not workgroup collab split)](#ux-model-not-workgroup-collab-split) below described an interim **shared Deepi thread** MVP. That model is **wrong**. The target product is **collab-parity**: human main chat + private Deepi right sidebar on `/agent`, membership from invites. Authoritative spec: [`HERMES-COMMUNITY-CHAT-COLLAB-SPEC.md`](./HERMES-COMMUNITY-CHAT-COLLAB-SPEC.md).
+
+Related: `HERMES-COMMUNITY-CHAT-COLLAB-SPEC.md` (Community Chat collab-parity spec), `HERMES-SHARE.md` (agent thread sharing), `WORKGROUP-SHARE.md` (workgroup chat share restrictions), `docs/WORKGROUP-REVIEW-TAB.md` (workgroup Hermes integration patterns), `docs/DP-COMMUNITY-AI-BRIEFING.md` if present.
 
 ---
 
@@ -26,16 +28,16 @@ Separately, the product wants **Community Chat**: invite several people into one
 
 Community Chat threads use `thread_kind: group`, support multi-member prompt, and are reachable from `/agent` plus the **External Chat** tab in workgroup collab.
 
-### UX model (not workgroup collab split)
+### UX model (not workgroup collab split) — **SUPERSEDED**
 
-Community Chat is **not** the workgroup Collab split layout (human member chat + Deepi side panel). It is a **single shared Deepi thread** where every invited member can prompt Hermes in the same transcript.
+**Do not implement this section.** It recorded an interim shared-Deepi-thread MVP that is **not** the product target.
 
 | Surface | Main area | Side panel |
 |---------|-----------|------------|
 | **Workgroup Chat** (Collab tab) | Human-to-human Postgres messages | `WorkgroupHermesPanel` private Deepi (Ask Hermes, ambient hands) |
-| **Community Chat** (`/agent`, `thread_kind: group`) | Shared Deepi thread (all members prompt) | **None** – no `HermesAmbientSidePanel` equivalent |
+| **Community Chat** (`/agent`, `thread_kind: group`) — **wrong MVP** | Shared Deepi thread (all members prompt) | **None** |
 
-The Community Chat header (badge, participant count, Invite) replaces private share controls. Composer placeholder: "Message Community Chat…". There is no separate human chat lane in MVP; member-to-member discussion happens through Deepi turns or off-platform.
+**Correct model:** Community Chat matches the Workgroup Chat row (human main + Deepi sidebar); only membership and route differ. See [`HERMES-COMMUNITY-CHAT-COLLAB-SPEC.md`](./HERMES-COMMUNITY-CHAT-COLLAB-SPEC.md).
 
 ---
 

@@ -1,0 +1,4574 @@
+[
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold0",
+    "patch_number": 1,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp1-hold1",
+    "patch_number": 2,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp1-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp1-hold0",
+    "patch_number": 3,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp1-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp1-p0",
+    "patch_number": 4,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp1-p1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp1-p1",
+    "patch_number": 5,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:23:dp1-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:23:dp1-hold0",
+    "patch_number": 6,
+    "original_chapter": "DP1",
+    "status": "not_integrated",
+    "rationale": "I do not recommend the AI driver’s-licence insert yet. The source supplies an appealing analogy but no issuing authority, credential scope, enforcement model, or distinction from the draft’s existing risk-dependent proof thresholds.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:24:dp1-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:24:dp1-hold0",
+    "patch_number": 7,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp1-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp1-hold0",
+    "patch_number": 8,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp1-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp1-hold1",
+    "patch_number": 9,
+    "original_chapter": "DP1",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp2-hold0",
+    "patch_number": 10,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:13:dp2-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:13:dp2-p0",
+    "patch_number": 11,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:17:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:17:dp2-hold0",
+    "patch_number": 12,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:1:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:1:dp2-hold0",
+    "patch_number": 13,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:1:dp2-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:1:dp2-hold1",
+    "patch_number": 14,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:24:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:24:dp2-hold0",
+    "patch_number": 15,
+    "original_chapter": "DP2",
+    "status": "not_integrated",
+    "rationale": "I do not recommend adding this version: the complete DP1 §11 already treats human and artificial agents as first-class participants with visible roles and bounded accountability. Adding the label advanced does not supply a further mechanism or useful example here.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:27:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:27:dp2-hold0",
+    "patch_number": 16,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp2-hold0",
+    "patch_number": 17,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp2-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp2-hold1",
+    "patch_number": 18,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp2-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp2-p0",
+    "patch_number": 19,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:31:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:31:dp2-hold0",
+    "patch_number": 20,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp2-hold0",
+    "patch_number": 21,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-003"
+      },
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:41:dp2-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:41:dp2-p0",
+    "patch_number": 22,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold0",
+    "patch_number": 23,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold1",
+    "patch_number": 24,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold2",
+    "patch_number": 25,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold3",
+    "patch_number": 26,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold4",
+    "patch_number": 27,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-hold5",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-hold5",
+    "patch_number": 28,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp2-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp2-p0",
+    "patch_number": 29,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-008"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:8:dp2-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:8:dp2-hold0",
+    "patch_number": 30,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:9:dp2-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:9:dp2-p0",
+    "patch_number": 31,
+    "original_chapter": "DP2",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold0",
+    "patch_number": 32,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold1",
+    "patch_number": 33,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold2",
+    "patch_number": 34,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-p0",
+    "patch_number": 35,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0:dp3-p0",
+    "patch_number": 36,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold0",
+    "patch_number": 37,
+    "original_chapter": "DP3",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold1",
+    "patch_number": 38,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold2",
+    "patch_number": 39,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-p0",
+    "patch_number": 40,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold0",
+    "patch_number": 41,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold1",
+    "patch_number": 42,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold2",
+    "patch_number": 43,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold3",
+    "patch_number": 44,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp3-hold0",
+    "patch_number": 45,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp3-hold0",
+    "patch_number": 46,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:11:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:11:dp3-hold0",
+    "patch_number": 47,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP12",
+        "change_id": "dp12-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:24:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:24:dp3-p0",
+    "patch_number": 48,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:46:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:46:dp3-p0",
+    "patch_number": 49,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:46:dp3-p1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:46:dp3-p1",
+    "patch_number": 50,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp3-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp3-hold0",
+    "patch_number": 51,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp3-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp3-hold1",
+    "patch_number": 52,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp3-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp3-p0",
+    "patch_number": 53,
+    "original_chapter": "DP3",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp4-p0",
+    "patch_number": 54,
+    "original_chapter": "DP4",
+    "status": "already_covered",
+    "rationale": "The complete privacy core already establishes participant and community control. The proposal does not add a mechanism, example, or boundary beyond the existing core.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold0",
+    "patch_number": 55,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-029"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-hold1",
+    "patch_number": 56,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-029"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp4-p0",
+    "patch_number": 57,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:977928768d12b50b7499b18cf4b8f62be21dccea47df1c6b6e74a357bde6ec46i0:dp4-hold0",
+    "patch_number": 58,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold0",
+    "patch_number": 59,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold1",
+    "patch_number": 60,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp4-hold2",
+    "patch_number": 61,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp4-hold0",
+    "patch_number": 62,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:16:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:16:dp4-p0",
+    "patch_number": 63,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-026"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:27:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:27:dp4-hold0",
+    "patch_number": 64,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:30:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:30:dp4-p0",
+    "patch_number": 65,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-028"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:33:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:33:dp4-p0",
+    "patch_number": 66,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:35:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:35:dp4-hold0",
+    "patch_number": 67,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:38:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:38:dp4-hold0",
+    "patch_number": 68,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-020"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:3:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:3:dp4-hold0",
+    "patch_number": 69,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp4-hold0",
+    "patch_number": 70,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp4-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp4-hold1",
+    "patch_number": 71,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp4-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp4-hold2",
+    "patch_number": 72,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp4-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp4-hold3",
+    "patch_number": 73,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp4-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp4-p0",
+    "patch_number": 74,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold0",
+    "patch_number": 75,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold1",
+    "patch_number": 76,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold2",
+    "patch_number": 77,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold3",
+    "patch_number": 78,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold4",
+    "patch_number": 79,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-008"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold5",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold5",
+    "patch_number": 80,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold6",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold6",
+    "patch_number": 81,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp4-hold7",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp4-hold7",
+    "patch_number": 82,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp4-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp4-hold0",
+    "patch_number": 83,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-026"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp4-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp4-hold1",
+    "patch_number": 84,
+    "original_chapter": "DP4",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-026"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-hold0",
+    "patch_number": 85,
+    "original_chapter": "DP5",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp5-p0",
+    "patch_number": 86,
+    "original_chapter": "DP5",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:9:dp5-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:9:dp5-hold0",
+    "patch_number": 87,
+    "original_chapter": "DP5",
+    "status": "already_covered",
+    "rationale": "Posts, paths, and navigation components are already named artifact identifiers. The same objects and reuse purpose already occur in the complete namespace chapter.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp6-hold0",
+    "patch_number": 88,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold0",
+    "patch_number": 89,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp6-hold1",
+    "patch_number": 90,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:15:dp6-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:15:dp6-p0",
+    "patch_number": 91,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp6-hold0",
+    "patch_number": 92,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-hold0",
+    "patch_number": 93,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-hold1",
+    "patch_number": 94,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-hold2",
+    "patch_number": 95,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-hold3",
+    "patch_number": 96,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-hold4",
+    "patch_number": 97,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp6-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp6-p0",
+    "patch_number": 98,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:46:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:46:dp6-hold0",
+    "patch_number": 99,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp6-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp6-hold0",
+    "patch_number": 100,
+    "original_chapter": "DP6",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0:dp7-hold0",
+    "patch_number": 101,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp7-hold0",
+    "patch_number": 102,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp7-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp7-hold1",
+    "patch_number": 103,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp7-hold0",
+    "patch_number": 104,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:15:dp7-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:15:dp7-p0",
+    "patch_number": 105,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:24:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:24:dp7-hold0",
+    "patch_number": 106,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp7-hold0",
+    "patch_number": 107,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp7-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp7-hold1",
+    "patch_number": 108,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp7-hold0",
+    "patch_number": 109,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp7-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp7-p0",
+    "patch_number": 110,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp7-p1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp7-p1",
+    "patch_number": 111,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-hold0",
+    "patch_number": 112,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-hold1",
+    "patch_number": 113,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-hold2",
+    "patch_number": 114,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-hold3",
+    "patch_number": 115,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-hold4",
+    "patch_number": 116,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp7-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp7-p0",
+    "patch_number": 117,
+    "original_chapter": "DP7",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold0",
+    "patch_number": 118,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold1",
+    "patch_number": 119,
+    "original_chapter": "DP8",
+    "status": "already_covered",
+    "rationale": "The complete privacy core already establishes participant and community control. The proposal does not add a mechanism, example, or boundary beyond the existing core.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold2",
+    "patch_number": 120,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0:dp8-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0:dp8-p0",
+    "patch_number": 121,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0:dp8-hold0",
+    "patch_number": 122,
+    "original_chapter": "DP8",
+    "status": "not_integrated",
+    "rationale": "I do not recommend the neural-network collective-intelligence modeling insert yet. The available claim does not specify the proposed model, its relation to human cooperation, or what explanatory value it adds; naming a model family alone does not enrich this chapter enough.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold0",
+    "patch_number": 123,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold1",
+    "patch_number": 124,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold2",
+    "patch_number": 125,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp8-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp8-p0",
+    "patch_number": 126,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp8-hold0",
+    "patch_number": 127,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp8-hold0",
+    "patch_number": 128,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp8-hold1",
+    "patch_number": 129,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:17:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:17:dp8-hold0",
+    "patch_number": 130,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:17:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:17:dp8-hold1",
+    "patch_number": 131,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp8-hold0",
+    "patch_number": 132,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp8-hold1",
+    "patch_number": 133,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:35:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:35:dp8-hold0",
+    "patch_number": 134,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp8-hold0",
+    "patch_number": 135,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp8-hold0",
+    "patch_number": 136,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp8-hold1",
+    "patch_number": 137,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp8-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp8-hold2",
+    "patch_number": 138,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp8-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp8-hold3",
+    "patch_number": 139,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp8-hold0",
+    "patch_number": 140,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp8-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp8-hold1",
+    "patch_number": 141,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:9:dp8-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:9:dp8-hold0",
+    "patch_number": 142,
+    "original_chapter": "DP8",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold0",
+    "patch_number": 143,
+    "original_chapter": "DP9",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold1",
+    "patch_number": 144,
+    "original_chapter": "DP9",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:1:dp10-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:1:dp10-hold0",
+    "patch_number": 145,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:1:dp10-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:1:dp10-hold1",
+    "patch_number": 146,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:31:dp10-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:31:dp10-p0",
+    "patch_number": 147,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:35:dp10-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:35:dp10-hold0",
+    "patch_number": 148,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:37:dp10-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:37:dp10-hold0",
+    "patch_number": 149,
+    "original_chapter": "DP10",
+    "status": "already_covered",
+    "rationale": "The complete section already covers home, family, peer, and community learning beyond institutions. The source adds no concrete mechanism beyond these existing pathways.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:6:dp10-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:6:dp10-hold0",
+    "patch_number": 150,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:9:dp10-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:9:dp10-hold0",
+    "patch_number": 151,
+    "original_chapter": "DP10",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold0",
+    "patch_number": 152,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold1",
+    "patch_number": 153,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0:dp11-p0",
+    "patch_number": 154,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold0",
+    "patch_number": 155,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold1",
+    "patch_number": 156,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold2",
+    "patch_number": 157,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp11-hold0",
+    "patch_number": 158,
+    "original_chapter": "DP11",
+    "status": "already_covered",
+    "rationale": "Community-defined boundaries are already explicit in the constitutional provisions. The proposal repeats the existing baseline-plus-zone constraints.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp11-p0",
+    "patch_number": 159,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:11:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:11:dp11-p0",
+    "patch_number": 160,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:19:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:19:dp11-hold0",
+    "patch_number": 161,
+    "original_chapter": "DP11",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating the trusted quartet and seven-point Creed in their current form. The systems, trust relationships, and seven principles are not supplied; naming them as future work would ask the reader to evaluate labels rather than a substantive proposal.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:19:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:19:dp11-p0",
+    "patch_number": 162,
+    "original_chapter": "DP11",
+    "status": "already_covered",
+    "rationale": "The constitutional baseline already applies everywhere and cannot be lowered by zones. The proposed universal preservation of normative constraints adds no operational detail.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:42:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:42:dp11-hold0",
+    "patch_number": 163,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:6:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:6:dp11-p0",
+    "patch_number": 164,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:7:dp11-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:7:dp11-p0",
+    "patch_number": 165,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:8:dp11-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:8:dp11-hold0",
+    "patch_number": 166,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:8:dp11-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:8:dp11-hold1",
+    "patch_number": 167,
+    "original_chapter": "DP11",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold0",
+    "patch_number": 168,
+    "original_chapter": "DP12",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold1",
+    "patch_number": 169,
+    "original_chapter": "DP12",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold2",
+    "patch_number": 170,
+    "original_chapter": "DP12",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold3",
+    "patch_number": 171,
+    "original_chapter": "DP12",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP12",
+        "change_id": "dp12-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold4",
+    "patch_number": 172,
+    "original_chapter": "DP12",
+    "status": "already_covered",
+    "rationale": "The complete privacy core already establishes participant and community control. The proposal does not add a mechanism, example, or boundary beyond the existing core.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:4:dp12-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:4:dp12-hold0",
+    "patch_number": 173,
+    "original_chapter": "DP12",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:8:dp12-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:8:dp12-p0",
+    "patch_number": 174,
+    "original_chapter": "DP12",
+    "status": "already_covered",
+    "rationale": "The complete section expressly requires norm-adaptive mediation and reviewable soft interventions. Real-time responsiveness repeats the existing dynamic norm-mediation requirement.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0:dp13-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:40ed20f0f7fb29118db4573c859a034dac5262eed595a91d0fbb2eb97a61e31ei0:dp13-hold0",
+    "patch_number": 175,
+    "original_chapter": "DP13",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp13-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp13-hold0",
+    "patch_number": 176,
+    "original_chapter": "DP13",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP13",
+        "change_id": "dp13-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold0",
+    "patch_number": 177,
+    "original_chapter": "DP13",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      },
+      {
+        "chapter": "DP13",
+        "change_id": "dp13-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp13-hold1",
+    "patch_number": 178,
+    "original_chapter": "DP13",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      },
+      {
+        "chapter": "DP13",
+        "change_id": "dp13-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:10:dp13-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:10:dp13-p0",
+    "patch_number": 179,
+    "original_chapter": "DP13",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP13",
+        "change_id": "dp13-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-hold0",
+    "patch_number": 180,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-p1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-p1",
+    "patch_number": 181,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold0",
+    "patch_number": 182,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP12",
+        "change_id": "dp12-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold1",
+    "patch_number": 183,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold2",
+    "patch_number": 184,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:97f70fcc11adaef1d6ebeb4b68d7724f4bfaf64141083d2b896fdc7d9934dfe8i0:dp14-hold0",
+    "patch_number": 185,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold0",
+    "patch_number": 186,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold1",
+    "patch_number": 187,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp14-hold2",
+    "patch_number": 188,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp14-hold0",
+    "patch_number": 189,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0:dp14-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0:dp14-p0",
+    "patch_number": 190,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP21",
+        "change_id": "dp21-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:11:dp14-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:11:dp14-p0",
+    "patch_number": 191,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP18",
+        "change_id": "dp18-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:13:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:13:dp14-hold0",
+    "patch_number": 192,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:14:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:14:dp14-hold0",
+    "patch_number": 193,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:16:dp14-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:16:dp14-p0",
+    "patch_number": 194,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP18",
+        "change_id": "dp18-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:17:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:17:dp14-hold0",
+    "patch_number": 195,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:19:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:19:dp14-hold0",
+    "patch_number": 196,
+    "original_chapter": "DP14",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating the trusted quartet and seven-point Creed in their current form. The systems, trust relationships, and seven principles are not supplied; naming them as future work would ask the reader to evaluate labels rather than a substantive proposal.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:26:dp14-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:26:dp14-p0",
+    "patch_number": 197,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:27:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:27:dp14-hold0",
+    "patch_number": 198,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp14-hold0",
+    "patch_number": 199,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp14-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp14-hold1",
+    "patch_number": 200,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:31:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:31:dp14-hold0",
+    "patch_number": 201,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:31:dp14-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:31:dp14-p0",
+    "patch_number": 202,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:36:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:36:dp14-hold0",
+    "patch_number": 203,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:36:dp14-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:36:dp14-hold1",
+    "patch_number": 204,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:38:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:38:dp14-hold0",
+    "patch_number": 205,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-020"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:42:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:42:dp14-hold0",
+    "patch_number": 206,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp14-hold0",
+    "patch_number": 207,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp14-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp14-hold1",
+    "patch_number": 208,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp14-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp14-hold2",
+    "patch_number": 209,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      },
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp14-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp14-hold3",
+    "patch_number": 210,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      },
+      {
+        "chapter": "DP14",
+        "change_id": "dp14-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:46:dp14-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:46:dp14-hold0",
+    "patch_number": 211,
+    "original_chapter": "DP14",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold0",
+    "patch_number": 212,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-029"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold1",
+    "patch_number": 213,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold2",
+    "patch_number": 214,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold3",
+    "patch_number": 215,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-029"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6bf626d256cf3917841e4ee6bc50e870c8143786bbbcbd85a204161228ef6bdci0:dp15-hold4",
+    "patch_number": 216,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold0",
+    "patch_number": 217,
+    "original_chapter": "DP15",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp15-hold1",
+    "patch_number": 218,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:a145b6c41574bdbedccce2c740a25e09656445bfd6a9924e1b8d55980271caebi0:dp15-hold0",
+    "patch_number": 219,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-009"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold0",
+    "patch_number": 220,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP1",
+        "change_id": "dp01-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:eefa98bf93d8d4313f83ff3e22cbf61989229caf6915c4e3d4ac4afecad94b28i0:dp15-hold1",
+    "patch_number": 221,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-030"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp15-hold0",
+    "patch_number": 222,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:12:dp15-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:12:dp15-p0",
+    "patch_number": 223,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:33:dp15-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:33:dp15-p0",
+    "patch_number": 224,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp15-hold0",
+    "patch_number": 225,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp15-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp15-hold1",
+    "patch_number": 226,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp15-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp15-p0",
+    "patch_number": 227,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold0",
+    "patch_number": 228,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold1",
+    "patch_number": 229,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold2",
+    "patch_number": 230,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold3",
+    "patch_number": 231,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold4",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold4",
+    "patch_number": 232,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-008"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp15-hold5",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp15-hold5",
+    "patch_number": 233,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-008"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:47:dp15-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:47:dp15-p0",
+    "patch_number": 234,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP5",
+        "change_id": "dp05-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp15-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp15-hold0",
+    "patch_number": 235,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:5:dp15-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:5:dp15-p0",
+    "patch_number": 236,
+    "original_chapter": "DP15",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP15",
+        "change_id": "dp15-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold0",
+    "patch_number": 237,
+    "original_chapter": "DP16",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold1",
+    "patch_number": 238,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP6",
+        "change_id": "dp06-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2",
+    "patch_number": 239,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-001"
+      },
+      {
+        "chapter": "DP16",
+        "change_id": "dp16-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp16-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp16-hold0",
+    "patch_number": 240,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP16",
+        "change_id": "dp16-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp16-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp16-hold1",
+    "patch_number": 241,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP16",
+        "change_id": "dp16-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp16-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp16-hold0",
+    "patch_number": 242,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP16",
+        "change_id": "dp16-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp16-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp16-hold1",
+    "patch_number": 243,
+    "original_chapter": "DP16",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP16",
+        "change_id": "dp16-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp17-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp17-hold0",
+    "patch_number": 244,
+    "original_chapter": "DP17",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp17-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp17-hold1",
+    "patch_number": 245,
+    "original_chapter": "DP17",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-031"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:45:dp17-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:45:dp17-p0",
+    "patch_number": 246,
+    "original_chapter": "DP17",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP17",
+        "change_id": "dp17-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold0",
+    "patch_number": 247,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold1",
+    "patch_number": 248,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:b36e9ebc12029aae158c9ada879003ded7f455d62fe33887082aad8d97427198i0:dp18-hold0",
+    "patch_number": 249,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:18:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:18:dp18-hold0",
+    "patch_number": 250,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP18",
+        "change_id": "dp18-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:30:dp18-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:30:dp18-p0",
+    "patch_number": 251,
+    "original_chapter": "DP18",
+    "status": "not_integrated",
+    "rationale": "I do not recommend integrating psychometric fingerprinting into this draft on the current evidence. The proposal does not establish validity, a usable measure, or a credible path from inferred traits to fairer opportunities; the privacy and exclusion risks are material to the claimed benefit.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:42:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:42:dp18-hold0",
+    "patch_number": 252,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp18-hold0",
+    "patch_number": 253,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp18-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp18-hold1",
+    "patch_number": 254,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp18-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp18-hold2",
+    "patch_number": 255,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:46:dp18-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:46:dp18-hold0",
+    "patch_number": 256,
+    "original_chapter": "DP18",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-005"
+      },
+      {
+        "chapter": "DP18",
+        "change_id": "dp18-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:14:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:14:dp19-hold0",
+    "patch_number": 257,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp19-hold0",
+    "patch_number": 258,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp19-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp19-hold1",
+    "patch_number": 259,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP2",
+        "change_id": "dp02-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:2:dp19-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:2:dp19-hold2",
+    "patch_number": 260,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:34:dp19-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:34:dp19-p0",
+    "patch_number": 261,
+    "original_chapter": "DP19",
+    "status": "already_covered",
+    "rationale": "The complete naming section and §3.1 already cover this confusion and the Overweb candidate. No further mechanism or example remains beyond the existing naming guidance.",
+    "changes": []
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:36:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:36:dp19-hold0",
+    "patch_number": 262,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:37:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:37:dp19-hold0",
+    "patch_number": 263,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:3:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:3:dp19-hold0",
+    "patch_number": 264,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp19-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp19-hold0",
+    "patch_number": 265,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-021"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp19-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp19-hold1",
+    "patch_number": 266,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      },
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp19-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp19-hold2",
+    "patch_number": 267,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      },
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:44:dp19-hold3",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:44:dp19-hold3",
+    "patch_number": 268,
+    "original_chapter": "DP19",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP8",
+        "change_id": "dp08-change-003"
+      },
+      {
+        "chapter": "DP19",
+        "change_id": "dp19-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp20-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp20-hold0",
+    "patch_number": 269,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp20-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:7db0083a405c8de4f577d1812715d8c1000fd3300af778483e43ba03a90ca6b6i0:dp20-hold0",
+    "patch_number": 270,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-002"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold0",
+    "patch_number": 271,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold1",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold1",
+    "patch_number": 272,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP3",
+        "change_id": "dp03-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold2",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold2",
+    "patch_number": 273,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP9",
+        "change_id": "dp09-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r2:39:dp20-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r2:39:dp20-p0",
+    "patch_number": 274,
+    "original_chapter": "DP20",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP20",
+        "change_id": "dp20-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "cfi:opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp22-p0",
+    "kind": "cfi",
+    "id": "opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp22-p0",
+    "patch_number": 275,
+    "original_chapter": "DP22",
+    "status": "integrated_reconciled",
+    "rationale": "The useful substance is integrated into the linked change(s), with overlapping formulations consolidated and attribution retained.",
+    "changes": [
+      {
+        "chapter": "DP22",
+        "change_id": "dp22-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "gov-hub:7aecb8d7-54cb-4838-a58a-023616598a2f",
+    "kind": "non_cfi",
+    "id": "7aecb8d7-54cb-4838-a58a-023616598a2f",
+    "source": "gov-hub",
+    "original_chapter": "DP1",
+    "status": "not_integrated",
+    "contributor_workflow_status": "pending",
+    "rationale": "Adding true to an already clear sentence does not improve meaning or readability.",
+    "changes": []
+  },
+  {
+    "source_ref": "gov-hub:eb450977-af32-4c33-98c3-d8d1ed3738e5",
+    "kind": "non_cfi",
+    "id": "eb450977-af32-4c33-98c3-d8d1ed3738e5",
+    "source": "gov-hub",
+    "original_chapter": "DP1",
+    "status": "not_integrated",
+    "contributor_workflow_status": "pending",
+    "rationale": "Harm includes institutional and systemic consequences; hurt narrows and personalizes the meaning without a compensating benefit.",
+    "changes": []
+  },
+  {
+    "source_ref": "canopi:7f71ed3a-04e8-4de2-ae2a-7697deb6db5f",
+    "kind": "non_cfi",
+    "id": "7f71ed3a-04e8-4de2-ae2a-7697deb6db5f",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-003"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:5a7e8c39-5de6-4f66-9d92-ce0ccee12eed",
+    "kind": "non_cfi",
+    "id": "5a7e8c39-5de6-4f66-9d92-ce0ccee12eed",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-004"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:083d2a43-57b1-4d2d-896a-54e6a6016269",
+    "kind": "non_cfi",
+    "id": "083d2a43-57b1-4d2d-896a-54e6a6016269",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-005"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:d4b24167-1cc9-4d51-98f1-fb3777ff8c4a",
+    "kind": "non_cfi",
+    "id": "d4b24167-1cc9-4d51-98f1-fb3777ff8c4a",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-006"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:9d28b4c9-5387-4bcf-81f2-b23ffd0a27fd",
+    "kind": "non_cfi",
+    "id": "9d28b4c9-5387-4bcf-81f2-b23ffd0a27fd",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-007"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:9a1f8cc9-5fd1-4566-b032-7e418e40e7b2",
+    "kind": "non_cfi",
+    "id": "9a1f8cc9-5fd1-4566-b032-7e418e40e7b2",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-008"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:2017592d-32bc-4119-975a-918a0f501851",
+    "kind": "non_cfi",
+    "id": "2017592d-32bc-4119-975a-918a0f501851",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-009"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:cd80d71a-903d-4bb4-93ca-cb9fc5e0cee8",
+    "kind": "non_cfi",
+    "id": "cd80d71a-903d-4bb4-93ca-cb9fc5e0cee8",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-010"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:a3f2c850-65d7-4b60-9ca6-3a34ca9e2d1d",
+    "kind": "non_cfi",
+    "id": "a3f2c850-65d7-4b60-9ca6-3a34ca9e2d1d",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-011"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:4cfe373d-238f-4871-b092-c7fa28d1d741",
+    "kind": "non_cfi",
+    "id": "4cfe373d-238f-4871-b092-c7fa28d1d741",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-012"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:2aaf0d7e-5780-4d97-a51f-04d12e54477f",
+    "kind": "non_cfi",
+    "id": "2aaf0d7e-5780-4d97-a51f-04d12e54477f",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-013"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:cdcc2625-a31f-4aa3-991f-2c54652cc657",
+    "kind": "non_cfi",
+    "id": "cdcc2625-a31f-4aa3-991f-2c54652cc657",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-014"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:0caafb4e-c07e-4494-a8ad-7405d42bebc6",
+    "kind": "non_cfi",
+    "id": "0caafb4e-c07e-4494-a8ad-7405d42bebc6",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-015"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:0ec3fcb0-b4fb-4a8f-8552-b36fd93fd928",
+    "kind": "non_cfi",
+    "id": "0ec3fcb0-b4fb-4a8f-8552-b36fd93fd928",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-016"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:f6cfe393-b794-46ec-95c1-aca782a9ae80",
+    "kind": "non_cfi",
+    "id": "f6cfe393-b794-46ec-95c1-aca782a9ae80",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-017"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:3bfe1803-b2a9-4d1f-8aa7-0a94556a6761",
+    "kind": "non_cfi",
+    "id": "3bfe1803-b2a9-4d1f-8aa7-0a94556a6761",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-018"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:fe50d4f5-dd87-45d3-910d-0cabfede4fbf",
+    "kind": "non_cfi",
+    "id": "fe50d4f5-dd87-45d3-910d-0cabfede4fbf",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-019"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:f20a2d47-86df-49ba-a915-759e62b93303",
+    "kind": "non_cfi",
+    "id": "f20a2d47-86df-49ba-a915-759e62b93303",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-019"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:be972800-2705-48ff-9e1b-71c9c5b849a7",
+    "kind": "non_cfi",
+    "id": "be972800-2705-48ff-9e1b-71c9c5b849a7",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-022"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:916a0e86-ce97-4bec-9f92-3eccfc6e681b",
+    "kind": "non_cfi",
+    "id": "916a0e86-ce97-4bec-9f92-3eccfc6e681b",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-023"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:4e1495f8-3bcc-4e7a-80c5-31b8ed7050b4",
+    "kind": "non_cfi",
+    "id": "4e1495f8-3bcc-4e7a-80c5-31b8ed7050b4",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-024"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:5d81a4ae-919f-49a5-9fb0-32cda9278ae2",
+    "kind": "non_cfi",
+    "id": "5d81a4ae-919f-49a5-9fb0-32cda9278ae2",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-025"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:9cc9c33b-af69-4ba7-9c66-dd717d99e480",
+    "kind": "non_cfi",
+    "id": "9cc9c33b-af69-4ba7-9c66-dd717d99e480",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-027"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:7f2bf0fc-2f2b-4d9d-a9b8-fb8c5765c5ca",
+    "kind": "non_cfi",
+    "id": "7f2bf0fc-2f2b-4d9d-a9b8-fb8c5765c5ca",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-027"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:b9b17e7a-24ed-494a-901f-874c9a281c42",
+    "kind": "non_cfi",
+    "id": "b9b17e7a-24ed-494a-901f-874c9a281c42",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-027"
+      }
+    ]
+  },
+  {
+    "source_ref": "canopi:3928a6f0-c016-4549-819e-8d5f7525fffb",
+    "kind": "non_cfi",
+    "id": "3928a6f0-c016-4549-819e-8d5f7525fffb",
+    "source": "canopi",
+    "original_chapter": "DP4",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "published",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP4",
+        "change_id": "dp04-change-012"
+      }
+    ]
+  },
+  {
+    "source_ref": "gov-hub:4b94d052-6c42-4d16-a5a8-24d2b92dc1be",
+    "kind": "non_cfi",
+    "id": "4b94d052-6c42-4d16-a5a8-24d2b92dc1be",
+    "source": "gov-hub",
+    "original_chapter": "DP4",
+    "status": "not_integrated",
+    "contributor_workflow_status": "pending",
+    "rationale": "The requested deletion removes the explicit lifecycle scope that introduces the controls below. Reconciliation of the following explanation addresses repetition without losing that scope.",
+    "changes": []
+  },
+  {
+    "source_ref": "gov-hub:202ea843-4bac-4a10-9909-31d1e3ddfd44",
+    "kind": "non_cfi",
+    "id": "202ea843-4bac-4a10-9909-31d1e3ddfd44",
+    "source": "gov-hub",
+    "original_chapter": "DP7",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "pending",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP7",
+        "change_id": "dp07-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "gov-hub:7f0121ec-4096-4c3b-86f4-9bcbf0c0e06d",
+    "kind": "non_cfi",
+    "id": "7f0121ec-4096-4c3b-86f4-9bcbf0c0e06d",
+    "source": "gov-hub",
+    "original_chapter": "DP10",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "pending",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP10",
+        "change_id": "dp10-change-001"
+      }
+    ]
+  },
+  {
+    "source_ref": "gov-hub:2bc46fdc-1a40-445e-bacc-490a808a7091",
+    "kind": "non_cfi",
+    "id": "2bc46fdc-1a40-445e-bacc-490a808a7091",
+    "source": "gov-hub",
+    "original_chapter": "DP11",
+    "status": "integrated_revised",
+    "contributor_workflow_status": "pending",
+    "rationale": "Integrated through the linked chapter edit(s). Formatting and overlap were reconciled; publication in discussion was not treated as prior editorial adoption.",
+    "changes": [
+      {
+        "chapter": "DP11",
+        "change_id": "dp11-change-001"
+      }
+    ]
+  }
+]

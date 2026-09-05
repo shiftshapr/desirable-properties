@@ -1,0 +1,45 @@
+{
+  "chapterId": "DP5",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-012",
+  "baselineSha256": "52556854078102d33b614d8e8af016d9db715179fbab2b52409d88fe2aa374c4",
+  "finalSha256": "195da5b5c85242de450b5a14dd5cfedadfe8ea31ac96e49a9d1908114fec2572",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp05-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Publisher-controlled declarations can express relationships among publishers and associations and may carry extensions for AI-training permissions or social identifiers. Verification should distinguish the publisher’s declaration from independent evidence that a claimed relationship is valid. Declared permissions also need an interpretable scope; publishing a field alone does not establish enforcement or universal adoption.\n\n--",
+      "finalRange": {
+        "start": 18613,
+        "end": 19043
+      },
+      "contextAnchor": "section:11.5",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:47:dp15-p0",
+          "label": "CFI 47:dp15-p0"
+        }
+      ],
+      "attribution": [
+        "Scott Yates",
+        "Astra"
+      ],
+      "rationale": "Extends the existing trust.txt home with the contributor’s concrete relationship and field examples rather than duplicating the namespace mechanism.",
+      "originalRange": {
+        "start": 18613,
+        "end": 18613
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:9:dp5-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:9:dp5-hold0",
+      "reason": "Posts, paths, and navigation components are already named artifact identifiers. The same objects and reuse purpose already occur in the complete namespace chapter."
+    }
+  ]
+}

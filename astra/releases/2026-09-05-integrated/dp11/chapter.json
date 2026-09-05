@@ -1,0 +1,240 @@
+{
+  "chapterId": "DP11",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-002",
+  "baselineSha256": "bcb270455087f201e1bf61859fdf105a408b8a8e25e9e3659dfa36eb777f00c8",
+  "finalSha256": "9bf6627e12fad706e740a81599fbbfd2cb75831dd6c687194c9c2d5723c3cc52",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp11-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "and a shared basis for understanding what systems mean and do becomes harder to sustain.\n\n",
+      "finalRange": {
+        "start": 1260,
+        "end": 1348
+      },
+      "contextAnchor": "section:1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "gov-hub:2bc46fdc-1a40-445e-bacc-490a808a7091",
+          "label": "CFI gov-hub:2bc46fdc-1a40-445e-bacc-490a808a7091"
+        }
+      ],
+      "attribution": [
+        "Daveed",
+        "Astra"
+      ],
+      "rationale": "Retains the Gov Hub proposal’s semantic-disorientation concern with a more concrete explanation than an unqualified reality-collapse claim.",
+      "originalRange": {
+        "start": 1260,
+        "end": 1260
+      }
+    },
+    {
+      "id": "dp11-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Reflective interaction can include explainable adjustments to tone, timing, or amplification, helping participants pause and consider an exchange before it escalates. These cues should remain visible and contestable; they do not replace the community’s authority to set and review mediation rules under DP12.\n\n--",
+      "finalRange": {
+        "start": 16364,
+        "end": 16675
+      },
+      "contextAnchor": "section:5.9",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:8:dp11-hold0",
+          "label": "CFI 8:dp11-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:8:dp11-hold1",
+          "label": "CFI 8:dp11-hold1"
+        }
+      ],
+      "attribution": [
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Combines the conversational-friction variants as an interaction pattern rather than another moderation regime.",
+      "originalRange": {
+        "start": 16276,
+        "end": 16276
+      }
+    },
+    {
+      "id": "dp11-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Evaluation thresholds should account for foreseeable harms to vulnerable populations, not only average system performance. Behavioral testing should examine what the system does in context rather than make covert profiling of participants a prerequisite for safety.\n\nFailure",
+      "finalRange": {
+        "start": 23965,
+        "end": 24232
+      },
+      "contextAnchor": "section:5.14",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:11:dp11-p0",
+          "label": "CFI 11:dp11-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Clarifies proactive group-sensitive evaluation and resolves the ambiguity in behavioral profiling.",
+      "originalRange": {
+        "start": 23566,
+        "end": 23566
+      }
+    },
+    {
+      "id": "dp11-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Bridge-based reasoning graphs can make an inference’s evidence path inspectable. A trace should preserve which sources and interpreted relationships support the inference, including disagreement and uncertainty. A graph connection or human review does not by itself establish truth or justify increased confidence.\n\n###",
+      "finalRange": {
+        "start": 27516,
+        "end": 27833
+      },
+      "contextAnchor": "section:5.16",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:6:dp11-p0",
+          "label": "CFI 6:dp11-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds the concrete graph-based reasoning pattern while retaining the property’s stricter confidence rules.",
+      "originalRange": {
+        "start": 26850,
+        "end": 26850
+      }
+    },
+    {
+      "id": "dp11-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Claims of being human-centered or people-centered should be assessed against the actor’s actual practices and incentives, including what happens to participant data. Using data about people is not equivalent to exercising care for them. In deliberation, an agent should help participants understand one another rather than treat their attention as a channel for advertising or indiscriminate broadcasting.\n\n### ",
+      "finalRange": {
+        "start": 34195,
+        "end": 34603
+      },
+      "contextAnchor": "section:7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold0",
+          "label": "CFI 0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold1",
+          "label": "CFI 0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp11-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0:dp11-p0",
+          "label": "CFI 29f4bf588375190ac861a1845c545dd7cf835b823d809a494dec90c404457954i0:dp11-p0"
+        }
+      ],
+      "attribution": [
+        "Cindy Mason",
+        "David Bray, PhD",
+        "Astra"
+      ],
+      "rationale": "Combines the contributor’s critique of human-centered labels with the listening-oriented AI proposal, without creating a categorical advertising ban.",
+      "originalRange": {
+        "start": 33212,
+        "end": 33212
+      }
+    },
+    {
+      "id": "dp11-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Communities may explore culturally situated scaffolds for ethical deliberation. The ten Sefirot from Kabbalah are one proposed example for considering balance, empathy, and responsibility without reducing judgment to a single utility measure. Such use should preserve its provenance, remain optional and contestable, and neither impose a spiritual framework on others nor substitute for baseline protections.\n\n**Failure",
+      "finalRange": {
+        "start": 38646,
+        "end": 39056
+      },
+      "contextAnchor": "section:10.2",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:7:dp11-p0",
+          "label": "CFI 7:dp11-p0"
+        }
+      ],
+      "attribution": [
+        "Paul Carpenter",
+        "Astra"
+      ],
+      "rationale": "Restores the source’s distinctive optional ethical example without presenting it as a validated alignment technique.",
+      "originalRange": {
+        "start": 37255,
+        "end": 37255
+      }
+    },
+    {
+      "id": "dp11-change-007",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 11.1.1 On-device safety and wellbeing support\n\nA participant-controlled personal agent can offer on-device warnings about suspected scams or other digital threats and optional support for habits such as prolonged doomscrolling. Its observations should be presented with uncertainty, not as a diagnosis, and sensitive inferences should follow DP4’s disclosure, consent, and purpose constraints.\n\nLocal processing can reduce disclosure but is not a complete privacy guarantee. Any employer-compliance function should be distinguishable from personal assistance, with visible data-use boundaries and control over what leaves the device.\n\n### 11",
+      "finalRange": {
+        "start": 44179,
+        "end": 44820
+      },
+      "contextAnchor": "section:11.1.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:42:dp11-hold0",
+          "label": "CFI 42:dp11-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:42:dp18-hold0",
+          "label": "CFI 42:dp18-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates the OS-level safety and wellbeing proposals as bounded personal assistance, retaining useful examples without asserting medical effectiveness.",
+      "originalRange": {
+        "start": 42378,
+        "end": 42378
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:10:dp11-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:10:dp11-hold0",
+      "reason": "Community-defined boundaries are already explicit in the constitutional provisions. The proposal repeats the existing baseline-plus-zone constraints."
+    },
+    {
+      "sourceId": "opus5:cfi:r2:19:dp11-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:19:dp11-hold0",
+      "reason": "I do not recommend integrating the trusted quartet and seven-point Creed in their current form. The systems, trust relationships, and seven principles are not supplied; naming them as future work would ask the reader to evaluate labels rather than a substantive proposal."
+    },
+    {
+      "sourceId": "opus5:cfi:r2:19:dp11-p0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:19:dp11-p0",
+      "reason": "The constitutional baseline already applies everywhere and cannot be lowered by zones. The proposed universal preservation of normative constraints adds no operational detail."
+    }
+  ]
+}

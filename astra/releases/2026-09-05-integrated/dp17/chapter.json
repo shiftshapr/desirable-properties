@@ -1,0 +1,68 @@
+{
+  "chapterId": "DP17",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-021",
+  "baselineSha256": "3842a80850e49abd60457f7f61cb6535b21e6f4cf07611430c3337ecf4149029",
+  "finalSha256": "9d21e6f3e397cbd3c19d3752772a9da016e545988724a5610aebb6e85cf63e9d",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp17-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 6.7 Compensated privacy relay operation\n\nPrivacy-enhancing relay operation can be a compensated contribution to shared infrastructure. Optional payments, community funding, or mixed arrangements may help sustain a routing mesh without surveillance revenue or coercive monetization.\n\nThe model’s viability must be demonstrated through costs, service quality, and resistance to operator concentration or incentive gaming. Relay participation is a possible revenue-generating role, not a guarantee that the mesh can support itself without external funding. DP6 addresses optional service pricing and DP4 evaluates the protection delivered.\n\n##",
+      "finalRange": {
+        "start": 14313,
+        "end": 14956
+      },
+      "contextAnchor": "section:6.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold0",
+          "label": "CFI 45:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold4",
+          "label": "CFI 45:dp2-hold4"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold1",
+          "label": "CFI 45:dp4-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold6",
+          "label": "CFI 45:dp4-hold6"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-hold2",
+          "label": "CFI 45:dp6-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp17-hold0",
+          "label": "CFI 45:dp17-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp17-p0",
+          "label": "CFI 45:dp17-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates repeated relay-revenue proposals into one financial model with explicit viability limits.",
+      "originalRange": {
+        "start": 14313,
+        "end": 14313
+      }
+    }
+  ],
+  "omitted": []
+}

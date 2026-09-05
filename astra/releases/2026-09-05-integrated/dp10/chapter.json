@@ -1,0 +1,215 @@
+{
+  "chapterId": "DP10",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-017",
+  "baselineSha256": "71ba0624cdc23926173a265e4d4266f6ba68bfc52354b678239b84cbcf417752",
+  "finalSha256": "7a82f68286589719a3e3133371551ec063cef2e3d9319307b4e226916931cb3a",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp10-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "connect, and",
+      "finalRange": {
+        "start": 379,
+        "end": 388
+      },
+      "contextAnchor": "section:1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "gov-hub:7f0121ec-4096-4c3b-86f4-9bcbf0c0e06d",
+          "label": "CFI gov-hub:7f0121ec-4096-4c3b-86f4-9bcbf0c0e06d"
+        }
+      ],
+      "attribution": [
+        "deefrewert@gmail.com",
+        "Astra"
+      ],
+      "rationale": "Adopts the community proposal to name connecting as part of learning and co-creation.",
+      "originalRange": {
+        "start": 379,
+        "end": 379
+      }
+    },
+    {
+      "id": "dp10-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Recognition of Prior Learning can use interoperable badges that carry validated achievements across jurisdictions while preserving learner agency and decentralized verification. Academic accreditation bodies may co-sign a credential or attestation, provided the scope of their endorsement is clear. Verifiability and institutional trust can support recognition, but do not guarantee academic credit or universal acceptance.\n\nFailure",
+      "finalRange": {
+        "start": 19385,
+        "end": 19810
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:31:dp2-hold0",
+          "label": "CFI 31:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:31:dp10-p0",
+          "label": "CFI 31:dp10-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:31:dp14-hold0",
+          "label": "CFI 31:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:31:dp14-p0",
+          "label": "CFI 31:dp14-p0"
+        }
+      ],
+      "attribution": [
+        "Sandeep Chakravartty",
+        "Astra"
+      ],
+      "rationale": "Combines RPL portability and accreditor co-signing as a concrete bridge to institutions, with recognition limits explicit.",
+      "originalRange": {
+        "start": 19376,
+        "end": 19376
+      }
+    },
+    {
+      "id": "dp10-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Purpose-driven projects can introduce truth-marking and bridge tools through cultural heritage, local youth leadership, and cross-border collaboration alongside the curriculum uses above. European school projects are one proposed starting context. The purpose is meaningful inquiry and participation, not recruitment measured by student account creation.\n\nFailure",
+      "finalRange": {
+        "start": 20373,
+        "end": 20729
+      },
+      "contextAnchor": "section:5.8",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:35:dp4-hold0",
+          "label": "CFI 35:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:35:dp8-hold0",
+          "label": "CFI 35:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:35:dp10-hold0",
+          "label": "CFI 35:dp10-hold0"
+        }
+      ],
+      "attribution": [
+        "Eric Schneider",
+        "Astra"
+      ],
+      "rationale": "Retains specific project domains and the proposed starting context without replacing education with adoption marketing.",
+      "originalRange": {
+        "start": 19939,
+        "end": 19939
+      }
+    },
+    {
+      "id": "dp10-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "### 5.10.1 Knowledge lineage in building environments\n\nLearning environments should be part of the development stack, where participants build, maintain, and pass systems on. Lineage-based learning and nonlinear exploration can connect present work to the decisions, experiments, and people that preceded it. This treats education as a long-term community practice rather than only a sequence of marketable skills.\n\n--",
+      "finalRange": {
+        "start": 21942,
+        "end": 22360
+      },
+      "contextAnchor": "section:5.10.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:1:dp2-hold1",
+          "label": "CFI 1:dp2-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:1:dp10-hold0",
+          "label": "CFI 1:dp10-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:1:dp10-hold1",
+          "label": "CFI 1:dp10-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates lineage, slow-knowledge, and intergenerational development-stack proposals.",
+      "originalRange": {
+        "start": 21152,
+        "end": 21152
+      }
+    },
+    {
+      "id": "dp10-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Learners should be able to trace epistemic trails and collaboratively construct the maps, preserving the evidence and differing interpretations behind their connections.\n\n##",
+      "finalRange": {
+        "start": 31261,
+        "end": 31431
+      },
+      "contextAnchor": "section:9.6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:6:dp10-hold0",
+          "label": "CFI 6:dp10-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Expands the brief existing learning-map pattern with the source’s collaborative and epistemic-trail detail.",
+      "originalRange": {
+        "start": 30053,
+        "end": 30053
+      }
+    },
+    {
+      "id": "dp10-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Navigation-standard work should test shareable and remixable educational flows, including the Navigator User Interface panel pattern in DP7. Evaluation should ask whether learners and communities can author their own pathways and carry them between tools.\n\n---",
+      "finalRange": {
+        "start": 40382,
+        "end": 40640
+      },
+      "contextAnchor": "section:16",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:9:dp10-hold0",
+          "label": "CFI 9:dp10-hold0"
+        }
+      ],
+      "attribution": [
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Keeps the education-specific NUI advancement criterion as a concise reference to the primary interface pattern.",
+      "originalRange": {
+        "start": 39004,
+        "end": 39004
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:37:dp10-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:37:dp10-hold0",
+      "reason": "The complete section already covers home, family, peer, and community learning beyond institutions. The source adds no concrete mechanism beyond these existing pathways."
+    }
+  ]
+}

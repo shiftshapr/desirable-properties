@@ -3,6 +3,9 @@ export const DP_CANOPI_COMMUNITY_ID = 'c0f30bc5-de17-4328-80d9-ff8f364907da';
 /** Prod book host for Canopi pageId hashing (staging book uses prod pageUrlOrigin). */
 export const DP_CANOPI_BOOK_ORIGIN = 'https://book.desirableproperties.org';
 
+/** Challenge-site origin for workgroup / DP page Canopi threads. */
+export const DP_CANOPI_SITE_ORIGIN = 'https://desirableproperties.org';
+
 export const DP_CANOPI_CHAPTERS = [
   { value: '', label: 'All chapters' },
   { value: 'intro', label: 'Intro' },
@@ -35,7 +38,22 @@ export function canopiPageIdsForDp(dpId: string | null | undefined): string[] {
   const padded = n.padStart(2, '0');
   const short = `dp${padded}`;
   const hashed = canopiPageIdFromUrl(`${DP_CANOPI_BOOK_ORIGIN}/viewer/${short}`);
-  const out = [hashed, short];
+  const dpPageHashed = canopiPageIdFromUrl(
+    `${DP_CANOPI_SITE_ORIGIN.replace(/\/$/, '')}/dp/dp${Number(n)}`,
+  );
+  const out = [hashed, short, dpPageHashed];
   if (Number(n) !== Number(padded)) out.push(`dp${Number(n)}`);
   return [...new Set(out)];
+}
+
+/** Hashed pageIds for Canopi threads on challenge-site workgroup collab pages. */
+export function canopiPageIdsForWorkgroup(workgroupSlug: string | null | undefined): string[] {
+  const slug = String(workgroupSlug || '').trim();
+  if (!slug) return [];
+  const origin = DP_CANOPI_SITE_ORIGIN.replace(/\/$/, '');
+  return [
+    canopiPageIdFromUrl(`${origin}/workgroups/${slug}`),
+    canopiPageIdFromUrl(`${origin}/workgroups/${slug}?tab=astra`),
+    canopiPageIdFromUrl(`${origin}/workgroups/${slug}?tab=edit`),
+  ].filter(Boolean);
 }

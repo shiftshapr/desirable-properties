@@ -485,6 +485,59 @@ CREATE TABLE IF NOT EXISTS hermes_person_pad (
 ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS bio_text TEXT;
 ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS profile_paste TEXT;
 ALTER TABLE hermes_person_pad ADD COLUMN IF NOT EXISTS selected_sources JSONB NOT NULL DEFAULT '[]'::jsonb;
+
+CREATE TABLE IF NOT EXISTS astra_change_applause (
+  workgroup_id TEXT NOT NULL,
+  change_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  count INTEGER NOT NULL DEFAULT 0 CHECK (count >= 0 AND count <= 10),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (workgroup_id, change_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS astra_change_applause_change ON astra_change_applause (workgroup_id, change_id);
+
+CREATE TABLE IF NOT EXISTS astra_change_revocation (
+  workgroup_id TEXT NOT NULL,
+  change_id TEXT NOT NULL,
+  revoked_by TEXT NOT NULL,
+  revoked_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (workgroup_id, change_id)
+);
+
+CREATE INDEX IF NOT EXISTS astra_change_revocation_wg ON astra_change_revocation (workgroup_id);
+
+CREATE TABLE IF NOT EXISTS workgroup_chapter_edit (
+  id TEXT PRIMARY KEY,
+  workgroup_id TEXT NOT NULL,
+  dp_key TEXT NOT NULL,
+  astra_release_id TEXT NOT NULL,
+  markdown TEXT NOT NULL,
+  rationale TEXT,
+  author_user_id TEXT NOT NULL,
+  author_name TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'revoked')),
+  revoked_by TEXT,
+  revoked_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS workgroup_chapter_edit_wg_dp ON workgroup_chapter_edit (workgroup_id, dp_key, created_at);
+
+CREATE TABLE IF NOT EXISTS workgroup_activity_event (
+  id TEXT PRIMARY KEY,
+  workgroup_id TEXT NOT NULL,
+  dp_key TEXT,
+  event_type TEXT NOT NULL,
+  actor_user_id TEXT,
+  actor_name TEXT,
+  summary TEXT NOT NULL,
+  detail_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS workgroup_activity_event_wg ON workgroup_activity_event (workgroup_id, created_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

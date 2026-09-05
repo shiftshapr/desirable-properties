@@ -12,6 +12,8 @@ import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
 import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
+import { fetchWorkgroupRoster } from '@/lib/workgroup-members-roster.server';
+import { enrichWorkgroupRosterWithCanopi } from '@/lib/workgroup-roster-canopi.server';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
 
 /** Membership is session-specific; never ISR-cache this page shell. */
@@ -109,6 +111,9 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
     draftLabel: workgroup.document_label || null,
     limit: 40,
   });
+  const roster = await enrichWorkgroupRosterWithCanopi(
+    await fetchWorkgroupRoster(workgroup.id),
+  );
 
   return (
     <main className="border-b border-slate-800">
@@ -129,7 +134,9 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             initialMembershipResolved={membership.membershipResolved}
             initialCanPost={membership.canPost}
             initialIsDpAdmin={isDpAdmin}
+            initialCanEdit={Boolean(workgroup.can_edit)}
             justJoined={justJoined}
+            initialMembers={roster}
           />
         </Suspense>
       </div>

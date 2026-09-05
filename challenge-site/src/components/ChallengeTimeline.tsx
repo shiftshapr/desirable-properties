@@ -33,23 +33,46 @@ const STATUS_STYLES: Record<
   },
 };
 
-function MilestoneLink({ milestone }: { milestone: EnrichedMilestone }) {
-  if (!milestone.href) return null;
-  const isExternal = milestone.href.startsWith('http');
-  const className =
-    'mt-3 inline-flex items-center text-sm font-medium text-cyan-300 hover:text-cyan-200';
-
-  if (isExternal) {
-    return (
-      <a href={milestone.href} target="_blank" rel="noopener noreferrer" className={className}>
-        {milestone.linkLabel ?? 'Learn more'} →
-      </a>
-    );
+function milestoneLinks(milestone: EnrichedMilestone) {
+  if (milestone.links?.length) {
+    return milestone.links;
   }
+  if (milestone.href) {
+    return [{ href: milestone.href, label: milestone.linkLabel ?? 'Learn more' }];
+  }
+  return [];
+}
+
+function MilestoneLinks({ milestone }: { milestone: EnrichedMilestone }) {
+  const links = milestoneLinks(milestone);
+  if (!links.length) return null;
+  const className =
+    'inline-flex items-center text-sm font-medium text-cyan-300 hover:text-cyan-200';
+
   return (
-    <Link href={milestone.href} className={className}>
-      {milestone.linkLabel ?? 'Learn more'} →
-    </Link>
+    <div className="mt-3 flex flex-col items-start gap-2">
+      {links.map((link) => {
+        const isExternal = link.href.startsWith('http');
+        if (isExternal) {
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={className}
+            >
+              {link.label} →
+            </a>
+          );
+        }
+        return (
+          <Link key={link.href} href={link.href} className={className}>
+            {link.label} →
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 
@@ -86,7 +109,7 @@ function MilestoneItem({ milestone }: { milestone: EnrichedMilestone }) {
         </div>
         <h3 className="mt-2 text-lg font-semibold text-white">{milestone.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">{milestone.description}</p>
-        <MilestoneLink milestone={milestone} />
+        <MilestoneLinks milestone={milestone} />
       </div>
     </li>
   );

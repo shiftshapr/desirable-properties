@@ -9,6 +9,11 @@ import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 
 export type MilestoneStatus = 'past' | 'current' | 'upcoming';
 
+export type ChallengeMilestoneLink = {
+  href: string;
+  label: string;
+};
+
 export type ChallengeMilestone = {
   id: string;
   dateLabel: string;
@@ -18,6 +23,7 @@ export type ChallengeMilestone = {
   description: string;
   href?: string;
   linkLabel?: string;
+  links?: ChallengeMilestoneLink[];
 };
 
 export type EnrichedMilestone = ChallengeMilestone & {

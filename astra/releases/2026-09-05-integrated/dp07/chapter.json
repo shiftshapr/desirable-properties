@@ -1,0 +1,260 @@
+{
+  "chapterId": "DP7",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-014",
+  "baselineSha256": "78cbf867722574ef7e41b3988f8ed35e1d44ae783587e95b296b3c4161b115f6",
+  "finalSha256": "27db0f5cc3a6d7b2c35978d3a939e34344343a3bbb19d7b2b031db54a175754d",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp07-change-001",
+      "operation": "replace",
+      "beforeText": "These failures are structural. Interoperability is treated as data transfer rather than continuity of meaning, enforceability, and legitimacy",
+      "afterText": "Interoperability is often reduced to data transfer rather than continuity of meaning, enforceability, legitimacy, and coordinated participation across systems.\n\n",
+      "finalRange": {
+        "start": 2697,
+        "end": 2855
+      },
+      "contextAnchor": "section:2",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "gov-hub:202ea843-4bac-4a10-9909-31d1e3ddfd44",
+          "label": "CFI gov-hub:202ea843-4bac-4a10-9909-31d1e3ddfd44"
+        }
+      ],
+      "attribution": [
+        "Micah Nyatindo",
+        "Astra"
+      ],
+      "rationale": "Adopts the Gov Hub proposal’s coordinated-participation emphasis and restores sentence punctuation.",
+      "originalRange": {
+        "start": 2697,
+        "end": 2838
+      }
+    },
+    {
+      "id": "dp07-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Standards-setting should include meaningful Global South participation in the decisions that create technical dependencies. Plural needs should shape the specification from the outset, rather than be treated only as localization after corporate defaults have been settled.\n\n--",
+      "finalRange": {
+        "start": 13182,
+        "end": 13457
+      },
+      "contextAnchor": "section:6",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:15:dp7-p0",
+          "label": "CFI 15:dp7-p0"
+        }
+      ],
+      "attribution": [
+        "Scott Frankum",
+        "Astra"
+      ],
+      "rationale": "Retains the source’s governance concern about who defines interoperability.",
+      "originalRange": {
+        "start": 13165,
+        "end": 13165
+      }
+    },
+    {
+      "id": "dp07-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "# 10.11 Shared overlay trays and navigation panels\n\nAn open tray interface can let assistants, wallets, chat tools, and other overlays coexist without competing for the same page space. Registration should declare a tool’s name, role, permissions, and availability; claimed priority should not override the participant’s choices about display, pinning, expansion, or ordering. Placement should remain adaptable across browsers, devices, and assistive technologies.\n\nNavigator User Interfaces provide a related pattern for shareable, remixable task and learning flows through a regular panel. Shared interface contracts should let plural tools and community-authored workflows coexist without imposing one navigation scheme. DP2 defines the participant’s control over those choices.\n\n###",
+      "finalRange": {
+        "start": 21702,
+        "end": 22488
+      },
+      "contextAnchor": "section:10.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp7-hold0",
+          "label": "CFI 2:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp7-hold1",
+          "label": "CFI 2:dp7-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:9:dp8-hold0",
+          "label": "CFI 9:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp14-hold0",
+          "label": "CFI 2:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp19-hold0",
+          "label": "CFI 2:dp19-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp19-hold2",
+          "label": "CFI 2:dp19-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:2:dp8-hold1",
+          "label": "CFI 2:dp8-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Synthesizes tray-registration, cross-browser consistency, and NUI proposals while separating protocol coordination from visual branding.",
+      "originalRange": {
+        "start": 21410,
+        "end": 21410
+      }
+    },
+    {
+      "id": "dp07-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 10.12 Familiar storage and privacy choices\n\nFamiliar save and export interfaces should offer participant-selected storage destinations, including decentralized options such as IPFS. The interface should explain the chosen custody, retention, and retrieval arrangements; selecting a content-addressed destination does not by itself establish confidentiality or durable availability.\n\nPrivacy transport should be similarly usable across supported protocols. An interoperable interface should let participants retain VPNs or anonymity layers they already trust, with minimal configuration and explicit compatibility limits. A native routing option should not make external alternatives second-class or imply that routing alone keeps all data local and untracked.\n\n---\n",
+      "finalRange": {
+        "start": 22488,
+        "end": 23254
+      },
+      "contextAnchor": "section:10.12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp2-hold3",
+          "label": "CFI 45:dp2-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp4-hold0",
+          "label": "CFI 12:dp4-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp4-hold5",
+          "label": "CFI 45:dp4-hold5"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp6-hold0",
+          "label": "CFI 45:dp6-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp7-hold0",
+          "label": "CFI 12:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-hold3",
+          "label": "CFI 45:dp7-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-hold4",
+          "label": "CFI 45:dp7-hold4"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp7-p0",
+          "label": "CFI 45:dp7-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp8-hold1",
+          "label": "CFI 12:dp8-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp15-hold0",
+          "label": "CFI 12:dp15-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold0",
+          "label": "CFI 45:dp15-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:45:dp15-hold1",
+          "label": "CFI 45:dp15-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Stephanie Hervey",
+        "Astra"
+      ],
+      "rationale": "Consolidates save-as, plug-and-play routing, and bring-your-own-privacy proposals into practical interface choices.",
+      "originalRange": {
+        "start": 21410,
+        "end": 21410
+      }
+    },
+    {
+      "id": "dp07-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 12.9.1 Agent interaction contracts\n\nInterfaces should support visible, responsible, and semantically coherent interaction among independently operated agents, websites, and other services. A minimal interaction contract should specify exchange formats, observable traces, and distributed authentication, with the permissions and governance constraints already required here.\n\nThe scope includes non-page media, agents without a shared central host, and systems in physical or hybrid settings. Interoperability does not certify a physical system’s safety; identity, authority, and containment must remain legible across the boundary.\n\n---\n\n",
+      "finalRange": {
+        "start": 30119,
+        "end": 30759
+      },
+      "contextAnchor": "section:12.9.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp2-hold0",
+          "label": "CFI 10:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0:dp7-hold0",
+          "label": "CFI 205989194f8adac5f123ab97668ae9a43a4805e8df7d38ae6936f57efa11d43ci0:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp7-hold0",
+          "label": "CFI 10:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp7-hold1",
+          "label": "CFI 10:dp7-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:24:dp7-hold0",
+          "label": "CFI 24:dp7-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:10:dp11-p0",
+          "label": "CFI 10:dp11-p0"
+        }
+      ],
+      "attribution": [
+        "Ruben Diaz",
+        "David Bray, PhD",
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Combines repeated inter-agent protocol proposals and non-page scope extensions into one bounded contract.",
+      "originalRange": {
+        "start": 28275,
+        "end": 28275
+      }
+    }
+  ],
+  "omitted": []
+}

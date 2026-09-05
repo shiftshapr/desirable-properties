@@ -11,6 +11,7 @@ import {
 export type WorkgroupRosterMember = {
   user_id: string;
   user_name: string;
+  username?: string | null;
   joined_at: string | null;
   positions: string[];
   is_facilitator: boolean;
@@ -20,6 +21,7 @@ type GovHubMemberRow = {
   user_id?: string | null;
   user_name?: string | null;
   joined_at?: string | null;
+  username?: string | null;
 };
 
 type GovHubChairRow = {
@@ -73,6 +75,7 @@ export async function fetchWorkgroupRoster(workgroupId: string): Promise<Workgro
     roster.push({
       user_id: userId,
       user_name: String(member.user_name || 'Member').trim() || 'Member',
+      username: member.username ? String(member.username).trim() : null,
       joined_at: member.joined_at ? String(member.joined_at) : null,
       positions,
       is_facilitator: isWorkgroupShareFacilitator(positions),

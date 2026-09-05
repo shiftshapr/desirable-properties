@@ -1,0 +1,311 @@
+{
+  "chapterId": "DP8",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-015",
+  "baselineSha256": "ad7c562c19ae6c339d74d4e52608c579f3a3644658c16b9ff10724c4bd36e1b6",
+  "finalSha256": "cd4f047d7e3d0aca9a53064b39015f03e046aebfaad2400efd64ec62fe5b2d5f",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp08-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Shared decentralized storage can support collaborative editing and distributed knowledge bases under participant- or community-chosen custody. Storage, concurrent editing, permissions, and retention remain distinct responsibilities; the choice of storage topology does not settle them all.\n\n###",
+      "finalRange": {
+        "start": 21575,
+        "end": 21867
+      },
+      "contextAnchor": "section:10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:12:dp8-hold0",
+          "label": "CFI 12:dp8-hold0"
+        }
+      ],
+      "attribution": [
+        "Stephanie Hervey",
+        "Astra"
+      ],
+      "rationale": "Keeps the collaborative-storage pattern without attributing unrelated guarantees to decentralization.",
+      "originalRange": {
+        "start": 21575,
+        "end": 21575
+      }
+    },
+    {
+      "id": "dp08-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 10.3.1 Plural discovery and community formation\n\nCommunity-maintained, viewpoint-rich directories can support discovery outside a single ranking system or fixed canon. Participants should be able to grow communities around shared explorations and serendipitous encounters rather than compete only for placement in a central index. Listing identifiable members should remain voluntary; resource curation and member discovery are different functions. DP1 addresses safe member discovery.\n\n###",
+      "finalRange": {
+        "start": 22397,
+        "end": 22890
+      },
+      "contextAnchor": "section:10.3.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:17:dp2-hold0",
+          "label": "CFI 17:dp2-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0:dp8-p0",
+          "label": "CFI 5044b4840e261ffc5be10a78d8696530af82d4c5abf5f4d14cff37cc78d2e4eei0:dp8-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:17:dp8-hold0",
+          "label": "CFI 17:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:17:dp8-hold1",
+          "label": "CFI 17:dp8-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:17:dp14-hold0",
+          "label": "CFI 17:dp14-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Consolidates human-directory and organic-discovery proposals while separating resource curation from exposing membership.",
+      "originalRange": {
+        "start": 22105,
+        "end": 22105
+      }
+    },
+    {
+      "id": "dp08-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 10.5 Civic overlays across platforms\n\nA composable civic overlay, such as the MetaBridge proposal, can attach a shared topic to a page, forum thread, or social post and carry translated summaries, verifiable endorsements, deadlines, and decision status alongside the relevant material. Supported actions may include signing, donating, commenting, or voting, with the appropriate authorization and participant-selected wallet or decentralized identifier.\n\nYouth groups, NGOs, municipalities, and DAOs can use the pattern to coordinate across existing platforms, with modular AI assistance and transparent campaign processes. A shared tag does not establish common authority or endorsement. Supported surfaces and integration limits should be stated rather than promising access to every platform.\n\nParticipation and presence signals inherit the disclosure limits in DP4 and the provenance and reputation constraints in DP15 and DP18. Campaign transparency must not require public personal participation records or turn portability into global identity linkage.\n\n---\n",
+      "finalRange": {
+        "start": 24852,
+        "end": 25918
+      },
+      "contextAnchor": "section:10.5",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp4-hold1",
+          "label": "CFI 44:dp4-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp4-hold2",
+          "label": "CFI 44:dp4-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp7-p0",
+          "label": "CFI 44:dp7-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp7-p1",
+          "label": "CFI 44:dp7-p1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp8-hold0",
+          "label": "CFI 44:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp8-hold1",
+          "label": "CFI 44:dp8-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp8-hold2",
+          "label": "CFI 44:dp8-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold2",
+          "label": "CFI 44:dp14-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold3",
+          "label": "CFI 44:dp14-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp15-hold1",
+          "label": "CFI 44:dp15-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp15-p0",
+          "label": "CFI 44:dp15-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp18-hold0",
+          "label": "CFI 44:dp18-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp18-hold1",
+          "label": "CFI 44:dp18-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold1",
+          "label": "CFI 44:dp19-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold2",
+          "label": "CFI 44:dp19-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp19-hold3",
+          "label": "CFI 44:dp19-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold1",
+          "label": "CFI 44:dp14-hold1"
+        }
+      ],
+      "attribution": [
+        "Michelle Thuo",
+        "Astra"
+      ],
+      "rationale": "Reconciles the many civic-overlay variants into one understandable architectural pattern, preserving concrete actions and privacy constraints.",
+      "originalRange": {
+        "start": 24067,
+        "end": 24067
+      }
+    },
+    {
+      "id": "dp08-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Civic participation should make public discussion, proposals, and feedback accessible without unnecessary institutional or platform gatekeeping. Access to discussion remains distinct from the credentials, standing, or mandate needed for consequential actions under a zone’s rules.\n\n### 11",
+      "finalRange": {
+        "start": 26180,
+        "end": 26463
+      },
+      "contextAnchor": "section:11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold2",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold0",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold1",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold1",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Reconciles civic-access variants with the existing capability tiers rather than abolishing them.",
+      "originalRange": {
+        "start": 24329,
+        "end": 24329
+      }
+    },
+    {
+      "id": "dp08-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " of association includes forming and sustaining communities across platform boundaries. Moving between those contexts should not require surrendering community continuity, but neither should association in one place automatically confer decision authority elsewhere.\n\nFailure",
+      "finalRange": {
+        "start": 28497,
+        "end": 28772
+      },
+      "contextAnchor": "section:11.4",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold1",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold0",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp12-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold2",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp14-hold2"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Gives cross-zone participation a clear human purpose while retaining bounded standing.",
+      "originalRange": {
+        "start": 26363,
+        "end": 26363
+      }
+    },
+    {
+      "id": "dp08-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " augmented conversation involving people and AI, changes to a shared simulation, dataset, or system state should be reflected consistently for those authorized to view it. Staleness or divergence should be visible so participants do not unknowingly reason from different versions. Shared state does not establish the truth of its contents; DP21 addresses continuity across representations.\n\n### 12",
+      "finalRange": {
+        "start": 29398,
+        "end": 29795
+      },
+      "contextAnchor": "section:12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp8-p0",
+          "label": "CFI 958a79d80874a73c67b19782e31570f95b4be63a0287778ad38dd77a1a337df2i0:dp8-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Preserves the augmented-conversation contribution while distinguishing state consistency from epistemic truth.",
+      "originalRange": {
+        "start": 26989,
+        "end": 26989
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold1",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp8-hold1",
+      "reason": "The complete privacy core already establishes participant and community control. The proposal does not add a mechanism, example, or boundary beyond the existing core."
+    },
+    {
+      "sourceId": "opus5:cfi:r1:9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0:dp8-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:9157f643d37d1e9763159212f83b1680760e61d5a9a9efcf579381e4d08d5d90i0:dp8-hold0",
+      "reason": "I do not recommend the neural-network collective-intelligence modeling insert yet. The available claim does not specify the proposed model, its relation to human cooperation, or what explanatory value it adds; naming a model family alone does not enrich this chapter enough."
+    }
+  ]
+}

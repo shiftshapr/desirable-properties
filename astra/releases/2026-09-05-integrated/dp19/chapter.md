@@ -1,0 +1,1077 @@
+# DP19 – Amplifying Presence and Community Engagement
+
+*The Conditions for Public Presence Without Capture*
+
+![Illustration for Desirable Property DP19: Amplifying Presence and Community Engagement](/content/local/assets/dp/DP19.webp)
+
+## 1. Purpose of This Draft
+
+This draft articulates Desirable Property 19 (DP19) as the condition under which the meta-layer becomes visible, inviting, culturally resonant, and socially adopted without collapsing into extractive growth, hype cycles, influencer capture, or engagement theater.
+
+DP19 defines how the Metaweb, Overweb, and broader meta-layer ecosystem cultivate awareness, shared identity, community-led promotion, and durable participation. It treats amplification not as advertising alone, but as the public-facing expression of a civic substrate.
+
+The meta-layer cannot become trustworthy civic infrastructure if people do not understand it, recognize themselves in it, and feel invited to participate. Presence must be amplified through symbols, narratives, tools, communities, public relations, education, and lived experiences that make the meta-layer legible.
+
+If DP19 is weak, predictable failures follow: the meta-layer remains technically compelling but culturally invisible; public language becomes confused with the metaverse, Web3 speculation, or AI hype; community energy dissipates; early supporters lack ways to help; growth depends on centralized marketing; and adoption becomes shallow because the public never develops emotional or practical familiarity.
+
+DP19 connects directly to:
+
+- DP2, participant agency and empowerment
+- DP3, adaptive governance
+- DP5, decentralized namespace
+- DP7, interoperability
+- DP8, community-defined participation and governance zones
+- DP9, developer and community incentives
+- DP10, education and onboarding
+- DP14, trust and transparency
+- DP16, roadmap and milestones
+- DP18, feedback loops and reputation
+- DP20, ownership and stewardship
+
+DP19 does not prescribe a single brand, campaign, influencer strategy, or communications calendar. It defines the minimum conditions under which amplification and engagement remain participatory, truthful, inclusive, and aligned with the meta-layer’s purpose.
+
+---
+
+## 2. Problem Statement
+
+Infrastructure does not become public infrastructure merely by existing.
+
+The web itself became powerful because people learned to recognize its patterns, tell stories about it, build on it, link to it, invite others into it, and imagine themselves inside it. The meta-layer requires a similar cultural threshold. People must be able to name it, describe it, share it, experience it, and see why it matters.
+
+Today’s web, however, has trained people to associate digital growth with extractive dynamics:
+
+- social media virality
+- influencer-driven attention
+- engagement farming
+- opaque recommendation systems
+- growth hacking
+- brand performance without substance
+- communities treated as marketing funnels
+- platform metrics mistaken for public legitimacy
+
+This creates a dilemma. The meta-layer must reach people where attention already lives, but it cannot adopt the same attention-extractive patterns it seeks to transcend.
+
+DP19 addresses this by reframing amplification as community presence. The goal is not merely to promote the meta-layer, but to help communities recognize, inhabit, and extend it.
+
+A healthy DP19 implementation must be able to answer:
+
+- What is the meta-layer called in public language?
+- What symbols, stories, and experiences make it memorable?
+- How can participants share it without becoming unpaid ad labor?
+- How can communities grow adoption while preserving trust?
+- How can public relations establish narrative clarity without centralizing control?
+- How can youth, families, educators, civic leaders, developers, journalists, and local communities each find a meaningful entry point?
+- How can incentives support community-led amplification without rewarding spam or manipulation?
+- How can engagement be measured by meaningful participation rather than shallow reach?
+
+Without DP19, the meta-layer risks becoming a brilliant architecture with no cultural surface.
+
+---
+
+## 3. Threats and Failure Modes
+
+### 3.1 Narrative confusion
+
+The public cannot distinguish the meta-layer from the metaverse, Web3 speculation, browser extensions, social media, AI agents, or generic digital trust projects.
+
+**Example:** A journalist describes the Metaweb as “another metaverse platform,” obscuring its role as an interface-level civic layer above the existing web.
+
+**Why this matters:** Names and narratives shape adoption. Confusion blocks participation before people encounter the architecture.
+
+### 3.2 Brand vacuum
+
+The ecosystem lacks memorable names, symbols, metaphors, and public language.
+
+**Example:** Builders can explain the architecture technically but cannot offer a phrase, image, or story that ordinary people remember.
+
+**Why this matters:** Public infrastructure needs cultural handles. Without them, people cannot share the idea.
+
+### 3.3 Hype without substance
+
+Amplification promises more than the system can currently deliver.
+
+**Example:** A campaign claims the meta-layer will “fix the internet” while usable tools, governance pathways, or safety guarantees remain early-stage.
+
+**Why this matters:** Overclaiming converts early curiosity into later distrust. DP19 must align with DP16 roadmap honesty.
+
+### 3.4 Influencer capture
+
+Public narrative becomes dependent on a few high-visibility personalities.
+
+**Example:** A thought leader becomes the de facto voice of the meta-layer, shaping public perception without accountability to participating communities.
+
+**Why this matters:** Civic infrastructure cannot rely on celebrity mediation.
+
+### 3.5 Community-as-funnel extraction
+
+Participants are treated primarily as growth channels.
+
+**Example:** Ambassadors are asked to generate posts, referrals, and events but receive little agency over strategy, messaging, governance, or value flows.
+
+**Why this matters:** Community-led promotion must be reciprocal, not extractive.
+
+### 3.6 Spammy bounty dynamics
+
+Incentives reward volume over quality.
+
+**Example:** A bounty pays for social posts, producing low-effort threads, duplicate graphics, or misleading claims.
+
+**Why this matters:** Amplification incentives can degrade trust if they reward noise.
+
+### 3.7 Platform dependency
+
+Engagement depends too heavily on proprietary social platforms.
+
+**Example:** A movement grows on one platform’s algorithm, then loses reach when rules, APIs, ranking, or moderation policies change.
+
+**Why this matters:** A meta-layer committed to agency and interoperability cannot depend entirely on rented attention.
+
+### 3.8 Exclusionary adoption pathways
+
+The public face of the meta-layer appeals only to technical, crypto, policy, or AI governance audiences.
+
+**Example:** Parents, teachers, youth, local communities, artists, journalists, and non-technical civic actors cannot find themselves in the story.
+
+**Why this matters:** Public legitimacy requires plural entry points.
+
+### 3.9 Gamified engagement without civic depth
+
+Leaderboards, badges, and rewards stimulate activity without building understanding, trust, or stewardship.
+
+**Example:** Participants chase ambassador points but cannot explain the values, risks, or governance responsibilities of the meta-layer.
+
+**Why this matters:** Engagement is not the same as orientation.
+
+### 3.10 Public relations centralization
+
+Media and partnership strategy is controlled by a narrow group without transparent accountability.
+
+**Example:** Official messaging changes to satisfy funders or partners without community visibility or review.
+
+**Why this matters:** Narrative power is governance power.
+
+### 3.11 Adoption without retention
+
+People encounter the meta-layer once but do not develop ongoing presence, practice, or identity.
+
+**Example:** A viral campaign drives signups, but participants do not return because the onboarding path is unclear or the experience lacks immediate relevance.
+
+**Why this matters:** DP19 must produce durable engagement, not only awareness spikes.
+
+---
+
+## 4. Core Principle
+
+Amplifying presence and community engagement in the meta-layer means helping people recognize, share, inhabit, and steward a new civic layer of digital life through truthful narratives, resonant identity, participatory campaigns, reciprocal incentives, and durable engagement pathways.
+
+Amplification is legitimate only when it increases agency, understanding, and accountable participation.
+
+Engagement is healthy only when it deepens belonging, contribution, and stewardship.
+
+**Example:** A family-facing campaign introduces the meta-layer as a safer, co-creative layer above the web, provides parent and youth guides, invites local workshops, offers badges for meaningful participation, and routes community feedback into governance.
+
+**What this feels like:** People do not feel marketed to. They feel invited into a shared project.
+
+**Without this:** The meta-layer remains either obscure infrastructure or another brand shouting for attention.
+
+---
+
+## 5. Primary Mechanisms and Structural Conditions
+
+### 5.1 Presence and Engagement Layer: Narrative, Identity, Participation, and Continuity
+
+DP19 requires a presence and engagement layer that makes the meta-layer recognizable and participatory across cultural, civic, technical, educational, and local contexts.
+
+This layer includes:
+
+- naming and brand systems
+- public narratives
+- community-led promotion
+- ambassador programs
+- social sharing tools
+- press and partnership pathways
+- bounties and rewards
+- educational engagement
+- events and rituals
+- participation badges
+- onboarding journeys
+- feedback loops from public engagement into governance
+
+The purpose of this layer is not to manufacture attention. It is to make presence discoverable and meaningful.
+
+Failure mode: **growth skin**, where branding and marketing sit on top of the system without shaping participation, governance, or trust.
+
+---
+
+### 5.2 Naming, branding, and memetic clarity
+
+The meta-layer requires memorable, symbolic public language that conveys its mission of agency, transparency, trust, and new layers of digital interaction.
+
+Naming systems SHOULD be:
+
+- easy to say
+- easy to explain
+- visually memorable
+- culturally adaptable
+- distinct from extractive or dystopian digital narratives
+- compatible with decentralized namespace patterns
+- capable of supporting both technical and public-facing meaning
+
+Candidate or ecosystem terms may include Metaweb, Overweb, Sky-Web, Canopi, or other community-developed language.
+
+The chosen terms must help people understand that this is a layer above today’s web, not a replacement world that pulls them away from reality.
+
+Failure mode: **semantic fog**, where no one can explain what the project is in one sentence.
+
+---
+
+### 5.3 Iconic presence and visual identity
+
+The meta-layer needs recognizable visual language that can travel across tools, events, documents, interfaces, campaigns, and community spaces.
+
+Visual identity SHOULD support:
+
+- trust without institutional stiffness
+- openness without vagueness
+- civic seriousness without bureaucracy
+- youth resonance without pandering
+- global adaptability
+- accessibility and readability
+- remixability by communities
+
+Visual identity MAY include marks, icons, badges, color systems, mascots, interface motifs, overlay metaphors, and ritual objects.
+
+Failure mode: **corporate flattening**, where the public identity feels like another platform brand rather than a shared civic substrate.
+
+---
+
+### 5.4 Narrative architecture
+
+DP19 requires a coherent set of stories for different audiences.
+
+Narratives SHOULD be tailored for:
+
+- general public
+- youth and students
+- parents and families
+- educators
+- civic technologists
+- journalists
+- municipalities
+- developers
+- AI governance communities
+- artists and creators
+- funders and institutional partners
+- local organizers
+
+Each narrative should preserve the same core claim while meeting the audience where it is.
+
+Example core claim:
+
+The meta-layer lets people and communities add trust, context, presence, and governance above the web they already use.
+
+Failure mode: **audience collapse**, where one technical narrative is expected to work for everyone.
+
+---
+
+### 5.5 Community-driven marketing
+
+Participants should be able to help amplify the meta-layer through meaningful, governed contribution pathways.
+
+Community-driven marketing MAY include:
+
+- ambassador programs
+- local organizer kits
+- event hosting
+- explainers and videos
+- memes and cultural artifacts
+- translation and localization
+- youth-led campaigns
+- school and university clubs
+- community showcases
+- civic workshops
+- creator collaborations
+- onboarding circles
+
+These efforts SHOULD be reciprocal. Contributors should receive recognition, feedback, learning opportunities, and where appropriate, compensation.
+
+Failure mode: **volunteer extraction**, where enthusiasm is used without support, recognition, or voice.
+
+---
+
+### 5.6 Ambassador and steward programs
+
+Ambassador programs can help the meta-layer travel across regions, languages, sectors, and communities.
+
+An ambassador program SHOULD define:
+
+- role expectations
+- community accountability
+- messaging guidelines
+- onboarding curriculum
+- escalation paths
+- recognition systems
+- conflict-of-interest rules
+- renewal or sunset processes
+- feedback responsibilities
+
+Ambassadors should not merely promote. They should listen, translate, connect, and help communities enter governance pathways.
+
+Failure mode: **brand reps without governance**, where ambassadors broadcast messages but cannot shape the system.
+
+---
+
+### 5.7 Social media integration
+
+Participants may need tools to share Metaweb experiences and insights on existing social platforms such as X, Instagram, LinkedIn, TikTok, YouTube, Mastodon, Bluesky, and others.
+
+Cross-posting tools SHOULD support:
+
+- participant consent
+- context preservation
+- source links
+- provenance markers
+- audience selection
+- platform-specific formatting
+- privacy review before posting
+- clear distinction between personal expression and official messaging
+
+Social sharing should bring people into deeper context, not strip context for reach.
+
+Failure mode: **context collapse marketing**, where meaningful Metaweb activity becomes flattened into promotional snippets.
+
+---
+
+### 5.8 Public relations and media strategy
+
+DP19 requires proactive public narrative work.
+
+Public relations MAY include:
+
+- press kits
+- explainers
+- op-eds
+- interviews
+- journalist briefings
+- public demos
+- media partnerships
+- family media outreach
+- civic technology features
+- education-sector stories
+- thought-leader engagement
+- crisis communication protocols
+
+PR materials SHOULD be truthful about maturity, limitations, and roadmap status. They should distinguish aspiration from operational reality.
+
+Failure mode: **PR overclaiming**, where media attention creates expectations the system cannot yet satisfy.
+
+---
+
+### 5.9 Partnerships with trusted messengers
+
+The meta-layer can grow through partnerships with trusted communities and institutions.
+
+Potential partners include:
+
+- educators
+- libraries
+- municipalities
+- newsrooms
+- parent networks
+- youth organizations
+- civic tech groups
+- internet governance communities
+- digital safety organizations
+- creator communities
+- open-source networks
+- local cultural institutions
+
+Partnerships SHOULD preserve community agency and avoid converting trusted messengers into sales channels.
+
+Failure mode: **borrowed trust abuse**, where institutions lend legitimacy to systems they cannot meaningfully govern or understand.
+
+---
+
+### 5.10 Bounties, badges, and rewards
+
+Incentives may support amplification, onboarding, content creation, translation, event organization, and public education.
+
+Reward systems SHOULD:
+
+- define valuable contributions clearly
+- reward quality over volume
+- distinguish official, community, and experimental materials
+- avoid misleading claims
+- include review processes
+- disclose conflicts of interest
+- connect to DP18 reputation logic
+- support non-monetary recognition where appropriate
+- avoid leaderboards that reward spam
+
+Examples of rewardable actions:
+
+- high-quality explainer video
+- local workshop
+- multilingual translation
+- school onboarding guide
+- trusted press contact development
+- civic demo night
+- documentation improvement
+- community case study
+- accessibility adaptation
+
+Failure mode: **bounty spam**, where incentives produce noise instead of understanding.
+
+---
+
+### 5.11 Gamification with guardrails
+
+Gamification can motivate participation, but it must be carefully bounded.
+
+Healthy gamification MAY include:
+
+- learning quests
+- contribution badges
+- local chapter milestones
+- collaborative challenges
+- public good achievements
+- stewardship streaks
+- peer recognition
+- community showcase unlocks
+
+Gamification SHOULD NOT reward harassment, spam, superficial virality, or unhealthy attention competition.
+
+Participatory research can connect gamified contributions and role recognition to protocol development. The design should recognize expertise gained through experience and show how feedback informs changes, without rewarding favorable answers or sheer completion volume.
+
+Failure mode: **casino engagement**, where the system trains people to chase points rather than build civic capacity.
+
+---
+
+### 5.12 Youth and educational familiarity
+
+Long-term adoption depends on familiarity during formative learning contexts.
+
+DP19 SHOULD support youth and education pathways through:
+
+- school-safe explainers
+- classroom activities
+- youth ambassador programs
+- digital literacy curricula
+- annotation and bridge-building exercises
+- civic internet labs
+- student-led showcases
+- family-facing onboarding
+- partnerships with educators and youth media
+
+The goal is not to recruit children into a product. The goal is to cultivate agency, trust literacy, and co-creative expectations for the web.
+
+Failure mode: **youth capture**, where young people are targeted for growth instead of empowered as future stewards.
+
+---
+
+### 5.13 Family-centered engagement
+
+Families can become trusted entry points into the meta-layer when the story emphasizes safety, creativity, agency, and shared digital care.
+
+Family-centered engagement MAY include:
+
+- parent guides
+- youth safety explainers
+- co-creation activities
+- family media outreach
+- community workshops
+- safer web campaigns
+- intergenerational digital literacy sessions
+
+Family-media outreach can use press kits, parenting articles, and youth-oriented features to connect the project to care, creativity, and practical digital choices. Pilots should measure reach, cost, and trust in the selected outlets rather than assume every family-media channel is inexpensive or trusted.
+
+Failure mode: **tech abstraction**, where families cannot see practical relevance to everyday internet life.
+
+---
+
+### 5.14 Municipal and civic engagement
+
+Cities, towns, and civic institutions can use the meta-layer to transform public engagement from complaint intake into participatory co-creation.
+
+Municipal engagement MAY include:
+
+- civic overlays above public service pages
+- participatory planning annotations
+- public meeting context layers
+- local issue maps
+- real-time dialogue tools
+- citizen proposal pathways
+- community event overlays
+- participatory design dashboards
+
+Civic overlays described in DP8 can keep participation close to the material people are discussing, while DP20’s municipal commons model makes ownership and institutional responsibility explicit. These are adoption paths to test, not evidence that a campaign, city, or community has endorsed the system.
+
+Failure mode: **complaint-system trap**, where engagement channels collect grievances without resolution, collaboration, or visible adaptation.
+
+---
+
+### 5.15 Cultural production and remix
+
+The meta-layer needs cultural artifacts, not only documentation.
+
+Communities SHOULD be encouraged to create:
+
+- memes
+- shorts
+- songs
+- posters
+- zines
+- games
+- rituals
+- visual metaphors
+- local stories
+- public demos
+- speculative futures
+- civic myths
+
+Cultural production helps the meta-layer become imaginable.
+
+Failure mode: **documentation-only adoption**, where only experts can understand or care about the system.
+
+---
+
+### 5.16 Events, rituals, and gathering grounds
+
+Community engagement grows through repeated gatherings and shared practices.
+
+DP19 MAY support:
+
+- demo days
+- build nights
+- annotation jams
+- bridge walks
+- civic salons
+- local chapter meetings
+- online town halls
+- contributor onboarding waves
+- youth showcases
+- press briefings
+- public retrospectives
+- seasonal campaigns
+
+Events should create continuity and contribution pathways, not one-off spectacle.
+
+Failure mode: **event evaporation**, where gatherings generate excitement but no durable roles, artifacts, or next steps.
+
+---
+
+## 6. Engagement Metrics and Community Health
+
+DP19 must distinguish meaningful engagement from attention metrics.
+
+### 6.1 Healthy engagement indicators
+
+Healthy engagement MAY include:
+
+- repeat participation
+- successful onboarding
+- contribution diversity
+- local chapter formation
+- multilingual participation
+- participant retention
+- quality of public explanations
+- number of community-led events
+- feedback routed into governance
+- cross-community collaboration
+- stewardship roles filled
+- creator and educator adoption
+- civic use cases launched
+
+### 6.2 Risk indicators
+
+Risk indicators MAY include:
+
+- high reach with low retention
+- bounty-driven spam
+- audience confusion
+- misleading public claims
+- concentration of narrative power
+- ambassador burnout
+- platform dependency
+- hostile media framing
+- exclusion of non-technical audiences
+- social posts disconnected from participation pathways
+
+### 6.3 Engagement receipts
+
+Major campaigns SHOULD generate engagement receipts.
+
+An engagement receipt MAY include:
+
+- campaign purpose
+- intended audience
+- claims made
+- materials used
+- responsible stewards
+- incentives offered
+- participation outcomes
+- feedback received
+- lessons learned
+- governance follow-up
+
+Failure mode: **metrics without memory**, where campaigns are repeated without learning.
+
+---
+
+## 7. Governance of Public Narrative
+
+Narrative power must be governed because public language shapes legitimacy, funding, adoption, and expectation.
+
+Communities SHOULD define:
+
+- who can speak officially
+- what counts as official messaging
+- how community materials are labeled
+- how claims are reviewed
+- how mistakes are corrected
+- how media inquiries are handled
+- how partnerships are approved
+- how ambassador conduct is governed
+- how public feedback affects strategy
+
+Public narrative governance should balance coherence with pluralism.
+
+Failure mode: **message authoritarianism**, where one voice controls the story and suppresses community creativity.
+
+Opposite failure mode: **narrative fragmentation**, where conflicting claims make the project incoherent.
+
+---
+
+## 8. Inclusion and Localization
+
+DP19 requires global and local resonance.
+
+Amplification and engagement systems SHOULD support:
+
+- multilingual materials
+- regional leadership
+- culturally specific metaphors
+- youth participation
+- gender inclusion
+- accessibility
+- low-bandwidth participation
+- non-Western civic contexts
+- local governance traditions
+- community translation rather than literal language substitution
+
+Localization is not only translation. It is meaning-making in context.
+
+Failure mode: **global English default**, where the meta-layer claims universality while speaking to a narrow audience.
+
+---
+
+## 9. Relationship to Existing Platforms
+
+The meta-layer should use existing platforms without becoming dependent on them.
+
+DP19-aligned strategy SHOULD include:
+
+- platform-specific sharing practices
+- decentralized community channels
+- owned knowledge bases
+- interoperable contact lists where consented
+- portable contributor records
+- open archives of public materials
+- RSS, email, and web-native distribution
+- bridges between social platforms and meta-layer spaces
+
+Failure mode: **rented movement**, where the public presence of the meta-layer can be throttled, erased, or distorted by one platform’s policies.
+
+---
+
+## 10. Governance, Accountability, and Agency Surfaces
+
+Public presence is a governed function, not a communications afterthought. Someone always decides which claims are made, which partnerships are accepted, which voices are amplified, and which campaigns receive resources. DP19 requires those decisions to have named surfaces and reachable levers.
+
+### 10.1 Accountability surfaces
+
+- **A public claims register.** Statements about capability, adoption, security, and readiness are recorded with maturity labels and dates, so that later drift is visible (DP14, DP16).
+- **A correction log.** When a public claim proves wrong, the correction is published in the same channels at comparable prominence, with the original preserved rather than quietly edited.
+- **A partnership record.** Partners, sponsors, and trusted messengers are disclosed along with what they receive and what they were asked to say.
+- **An ambassador roster and conduct record.** People who speak with delegated legitimacy are identifiable, and their mandate has scope and expiry.
+- **A resource ledger for engagement spend.** Bounties, campaigns, and promotional budgets are visible enough for communities to see whose participation is being purchased (DP17).
+- **A named steward for public narrative.** Responsibility for coherence sits with an accountable role rather than with whoever posted last.
+
+### 10.2 Participant agency surfaces
+
+Engagement without agency is audience management. DP19 expects participants to hold controls over their own presence and their community's story:
+
+- opt in and out of promotional visibility, including having their contributions featured
+- withdraw consent for use of their name, likeness, quotes, or community materials, with propagation to derived assets
+- publish community materials under a community label that is not subordinate to official messaging
+- contest a public claim made about their community and receive a dated response
+- propose, amend, or veto campaigns that target their zone, school, family context, or municipality
+- exit a campaign, program, or ambassador role without losing standing elsewhere (DP18)
+
+**Example:** A local chapter objects to a national campaign that describes their neighborhood as "underserved." They file a narrative challenge, the phrasing is revised with attribution to the objection, and the correction is logged.
+
+**What this feels like:** The story about you is something you can help write and something you can dispute.
+
+**Without this:** Communities become material for someone else's growth narrative.
+
+Failure mode: **spokesperson drift**, where informal voices accumulate representational authority that no community actually delegated.
+
+---
+
+## 11. Incentives and Power Analysis
+
+Amplification allocates attention, and attention is a form of power. DP19 assumes that anyone funding, measuring, or distributing engagement will shape what participation becomes.
+
+### 11.1 Where power concentrates
+
+- **Distribution owners.** Platforms, newsletters, and search surfaces decide reach. Dependence on them converts community presence into a leased asset.
+- **Budget holders.** Whoever funds bounties and campaigns sets the effective definition of valuable participation (DP9, DP17).
+- **Metric definers.** If growth is measured in signups, the system will produce signups rather than stewards.
+- **Trusted messengers.** Influencers and institutional partners can transfer legitimacy quickly, and can withdraw it just as fast.
+- **Language and cultural defaults.** Whoever writes the canonical framing determines which communities must translate themselves to be heard (DP23).
+
+### 11.2 Predictable incentive distortions
+
+- **Extraction disguised as onboarding:** funnels optimized for conversion rather than comprehension, producing participants who cannot yet govern anything.
+- **Bounty farming:** rewards attract volume over care, and low-quality contributions crowd out mentorship capacity.
+- **Hype debt:** early overclaiming creates expectations that later delivery cannot meet, and the correction cost lands on community trust.
+- **Ambassador dependency:** programs that concentrate visibility in a few people make the project fragile to their departure or misconduct.
+- **Local labor, central credit:** chapters do the organizing while attribution and fundraising accrue upward.
+- **Engagement ratchets:** gamified mechanics that are easy to add and politically hard to remove, even after they stop serving the community.
+
+### 11.3 Counter-incentives DP19 expects
+
+- reward learning and stewardship outcomes rather than raw activity, with reputation credited under DP18
+- fund maintenance of community media commons, not only launch campaigns
+- cap the share of promotional reach that any single messenger or platform may carry
+- attribute campaign results to the local groups that produced them, including in funding narratives
+- publish sunset dates for gamified mechanics and require review to renew them
+- pair every growth target with a retention, comprehension, or governance-participation target
+- keep a portable, community-owned channel of record so that presence survives platform decisions (DP7, DP20)
+
+**Example:** A bounty program shifts from paying per referral to paying for completed peer-mentoring cycles, and publishes both cost per participant and six-month retention.
+
+Failure mode: **growth capture**, where the incentive to expand overrides the community's ability to absorb, govern, and retain new participants.
+
+---
+
+## 12. Community Signals Informing DP19
+
+DP19 reflects concerns raised repeatedly by organizers, educators, families, municipal staff, and contributors who have been on both sides of platform growth campaigns.
+
+Recurring signals include:
+
+- "Nobody can explain what this is." Participants ask for one honest sentence before they ask for features.
+- "It sounds like every other project." Undifferentiated language reads as either hype or vapor.
+- "We were used for a case study." Communities contribute and then find themselves as marketing evidence without consent.
+- "The rewards attracted the wrong people." Organizers describe bounty programs that increased volume and decreased trust.
+- "Our chapter did the work; the announcement didn't mention us." Attribution asymmetry is a common source of burnout.
+- "We can't reach our own members." Platform algorithm changes cut communities off from lists they built.
+- "Parents need something different than developers." Audience-specific explanation is requested consistently, not as an accessibility nicety.
+- "Youth want to make things, not consume campaigns." Creative and remix participation outperforms broadcast messaging.
+- "Local government needs procurement-legible language." Civic adoption stalls when materials do not fit institutional processes.
+- "Tell us what is real and what is planned." Participants tolerate incompleteness far better than they tolerate ambiguity about maturity.
+
+These signals point toward presence that is legible, plural, locally credited, and honest about its stage of development. DP19 encodes them as structural conditions rather than as communications style preferences.
+
+Community signals inform DP19; they do not by themselves establish consensus. They are recorded so that future revisions can be tested against the concerns that motivated the property.
+
+---
+
+## 13. Evaluation Criteria
+
+A DP19-aligned implementation should be evaluated against the following questions.
+
+### 13.1 Narrative clarity
+
+- Can different audiences explain the meta-layer in their own words?
+- Are Metaweb, Overweb, and related terms clearly distinguished?
+- Does public language avoid confusion with extractive or dystopian digital narratives?
+
+### 13.2 Truthfulness
+
+- Do campaigns distinguish current capabilities from aspirations?
+- Are roadmap dependencies and limitations visible?
+- Are public claims corrected when they become inaccurate?
+
+### 13.3 Community agency
+
+- Can participants shape amplification strategy?
+- Are ambassadors accountable to communities, not only central teams?
+- Are community-generated materials recognized and supported?
+
+### 13.4 Incentive alignment
+
+- Do bounties reward quality, care, and learning rather than volume?
+- Are rewards transparent and fair?
+- Are spam, duplicate content, and misleading claims discouraged?
+
+### 13.5 Inclusion
+
+- Are materials accessible across language, region, age, ability, and technical literacy?
+- Do youth, families, educators, local communities, and non-technical participants have real entry points?
+- Are trusted messengers supported without being exploited?
+
+### 13.6 Retention and continuity
+
+- Do campaigns lead to durable participation pathways?
+- Are events connected to roles, artifacts, or governance channels?
+- Can participants move from awareness to contribution?
+
+### 13.7 Governance and accountability
+
+- Is official messaging governed?
+- Are errors corrected transparently?
+- Are media and partnership strategies accountable to the ecosystem?
+
+---
+
+## 14. Implementation Patterns
+
+### 14.1 One-sentence public anchor
+
+Every campaign should be able to use a clear public anchor.
+
+Example:
+
+The meta-layer lets people and communities add trust, context, presence, and governance above the web they already use.
+
+### 14.2 Audience-specific explainers
+
+Develop tailored explainers for parents, students, developers, journalists, municipalities, creators, and AI governance audiences.
+
+### 14.3 Ambassador kits
+
+Provide ambassadors with slide decks, FAQs, demo scripts, visual assets, local event templates, ethical messaging guidelines, and feedback forms.
+
+### 14.4 Community media commons
+
+Create a shared repository of approved, remixable, versioned public materials.
+
+### 14.5 Press kits with maturity labels
+
+Press materials should label what is live, experimental, conceptual, and proposed.
+
+### 14.6 Learning-first bounties
+
+Reward explainers, translations, workshops, demos, and case studies that help people understand and participate.
+
+### 14.7 Local chapter campaigns
+
+Support city, campus, school, library, and community chapter pilots with lightweight governance and reporting.
+
+### 14.8 Youth-led creative campaigns
+
+Invite youth to create shorts, memes, zines, and demos that translate meta-layer values into native cultural formats.
+
+### 14.9 Cross-posting with context
+
+Sharing tools should preserve provenance, links, and consent while adapting format to each platform.
+
+### 14.10 Engagement retrospectives
+
+After major campaigns, publish what worked, what failed, what was learned, and what changes next.
+
+### 14.11 Reading, learning, and newsroom pilots
+
+Participant-controlled annotation can make the Meta-Layer understandable through familiar web use. A pilot could begin with Shakespeare, placing attributed footnotes and glosses beside public web editions and supporting distinct interpretations. It can extend to other public-domain works while respecting rights in particular editions and modern commentary.
+
+A complementary adoption route pairs purpose-driven school projects with newsroom verification and source-tracing pilots. European schools and newsrooms in Denmark or Sweden are proposed starting contexts, not confirmed partners or inherently representative test populations. Pilot selection should examine actual local conditions and whether the results transfer to other settings.
+
+---
+
+## 15. Relationship to Other Desirable Properties
+
+### 15.1 DP2 – Participant Agency and Empowerment
+
+DP19 must amplify agency rather than manipulate attention. Participants should understand how to join, shape, and leave engagement pathways.
+
+### 15.2 DP3 – Adaptive Governance
+
+Public feedback from campaigns must route into governance. Narrative strategy should evolve based on community learning.
+
+### 15.3 DP5 – Decentralized Namespace
+
+Names, symbols, handles, badges, and community identities should be portable and resistant to capture.
+
+### 15.4 DP7 – Interoperability
+
+Engagement should move across platforms, communities, and tools without losing context or continuity.
+
+### 15.5 DP8 – Community-Defined Participation and Governance Zones
+
+Communities should be able to define their own engagement practices, ambassador roles, and public presence.
+
+### 15.6 DP9 – Developer and Community Incentives
+
+Bounties, badges, and rewards for amplification must align with contribution quality, transparency, and anti-gaming safeguards.
+
+### 15.7 DP10 – Education and Onboarding
+
+DP19 depends on learning pathways that convert curiosity into practical literacy.
+
+### 15.8 DP14 – Trust and Transparency
+
+Public narrative must be honest, auditable, and corrigible.
+
+### 15.9 DP16 – Roadmap and Milestones
+
+Amplification claims must align with real roadmap status and maturity.
+
+### 15.10 DP18 – Feedback Loops and Reputation
+
+Community engagement must feed back into learning systems, and public contribution should be recognized without devolving into popularity scoring.
+
+### 15.11 DP20 – Ownership and Stewardship
+
+Communities should own and steward their narratives, symbols, materials, and engagement histories where appropriate.
+
+---
+
+## 16. Non-Goals and Explicit Boundaries
+
+DP19 is the property most easily misused, because growth language can be attached to almost anything. The following boundaries are explicit so that DP19 cannot be cited to justify the dynamics it exists to constrain.
+
+**DP19 is not a marketing mandate.** It does not authorize persuasion techniques, urgency manufacturing, engagement optimization, or attention capture. Amplification is legitimate only where it increases understanding and agency.
+
+**DP19 does not centralize the story.** There is no single authorized narrative, brand voice, or approved vocabulary that communities must adopt. Coherence is a shared asset; uniformity is a governance failure.
+
+**DP19 does not make reach a success metric.** Impressions, followers, and signups are not evidence of DP19 alignment. Retention, comprehension, stewardship, and governance participation are the relevant measures.
+
+**DP19 does not license claims beyond maturity.** Public presence must track actual system state under DP16 and DP14. Aspirational description presented as capability is an alignment failure, not enthusiastic communication.
+
+**DP19 does not authorize use of community labor or likeness by default.** Featuring people, quoting them, or turning their work into promotional material requires consent that can be withdrawn (DP2, DP4).
+
+**DP19 does not convert participation into consent to solicitation.** Joining a community is not opting into fundraising, recruitment, or partner messaging.
+
+**DP19 does not endorse gamification as such.** Points, streaks, and leaderboards are permitted only with published purpose, guardrails, and sunset review. Mechanics that manufacture compulsion are out of scope.
+
+**DP19 does not replace governance with community management.** Engagement programs cannot substitute for decision rights under DP3, DP8, and DP20. An active community that cannot decide anything is an audience.
+
+**DP19 does not require presence on any particular platform.** Using commercial platforms is permitted; depending on them for continuity of identity, memory, or reach is not.
+
+**DP19 does not target children as a growth channel.** Youth and family engagement is educational and creative in purpose, governed with heightened protections, and never optimized for acquisition.
+
+**DP19 does not measure people to manage them.** Engagement analytics operate under DP4 minimization and DP18 proportionality; engagement receipts describe what the system did, not surveillance of what participants felt.
+
+---
+
+## 17. Minimum DP19 Alignment (Non-Normative)
+
+A system, campaign, or community program claiming DP19 alignment SHOULD be able to demonstrate the following. These statements are non-normative and are offered as an assessment aid rather than a conformance test.
+
+### 17.1 Honest public anchor
+
+There is a short, plain-language description of what the meta-layer is, what it is not yet, and who it is for, published where newcomers actually arrive, and maintained as the system changes.
+
+### 17.2 Maturity labeling
+
+Public claims carry maturity labels such as concept, draft, prototype, pilot, or deployed, with dates. Press materials and demos distinguish what exists from what is planned.
+
+### 17.3 Correction practice
+
+There is a published route for challenging a public claim, an owner for corrections, and a visible log of corrections issued at comparable prominence to the original claim.
+
+### 17.4 Community-labeled materials
+
+Community-produced explanations, translations, and remixes exist, are labeled as community work rather than official messaging, and are reachable from official surfaces.
+
+### 17.5 Consent-bound promotion
+
+Featuring participants, quoting them, or using community artifacts requires recorded consent with scope, duration, and a withdrawal path that propagates to derived materials.
+
+### 17.6 Non-extractive incentives
+
+Bounties, badges, and rewards are tied to learning, contribution quality, or stewardship outcomes, with published criteria, anti-spam safeguards, and reputation effects governed under DP18.
+
+### 17.7 Delegated voice with limits
+
+Ambassador and steward roles have written mandates, scope, term limits, conduct expectations, and a public roster, so that delegated legitimacy is traceable.
+
+### 17.8 Platform independence floor
+
+At least one channel of record for reaching participants is owned or federated rather than platform-dependent, and public materials are archived in an exportable form.
+
+### 17.9 Localization beyond translation
+
+Materials exist in more than one language, produced or reviewed by speakers within the relevant community, with local metaphors and civic contexts rather than literal substitution (DP23).
+
+### 17.10 Engagement receipts
+
+Campaigns publish what was done, what it cost, what happened, and what was learned, including outcomes that fell short, so that engagement remains accountable to the community it addressed.
+
+---
+
+## 18. Open Questions and Future Work
+
+1. What minimum standards should define official versus community-generated messaging?
+2. What public terminology should be standardized across the meta-layer ecosystem?
+3. How should brand assets be governed in a decentralized ecosystem?
+4. What claims require evidence, maturity labels, or review before publication?
+5. How should ambassador programs be structured across regions and languages?
+6. What reward schemas prevent bounty spam while supporting public education?
+7. How should campaign materials preserve provenance and version history?
+8. What engagement metrics best reflect civic participation rather than attention capture?
+9. How should youth-centered engagement be governed ethically?
+10. What rules should govern cross-posting from meta-layer spaces to social platforms?
+11. How should public relations strategy remain accountable to community governance?
+12. What local chapter model best supports global inclusion without central bottlenecks?
+13. How should public mistakes, overclaims, or misleading media coverage be corrected?
+14. What interoperability standards are needed for badges, ambassador credentials, and engagement receipts?
+
+---
+
+## 19. Path Toward ML-RFC
+
+DP19 is currently an ML-Draft and serves as exploratory scaffolding for how public presence, community engagement, branding, amplification, and adoption pathways can operate as part of meta-layer infrastructure.
+
+Advancement toward ML-RFC status SHOULD require:
+
+- convergence on terminology for public-facing meta-layer concepts
+- a governed distinction between official, community, experimental, and partner messaging
+- a minimal schema for engagement receipts
+- a minimal schema for ambassador or community steward credentials
+- tested bounty and badge systems that reward quality over volume
+- evidence from community-led campaigns across multiple audiences or regions
+- accessible onboarding materials for non-technical participants
+- documented feedback loops from public engagement into governance
+- demonstrated safeguards against hype, spam, and misleading claims
+- at least one localization or multilingual engagement pilot
+
+ML-RFC promotion SHOULD be contingent on:
+
+- rough consensus among participating communities
+- demonstrated use of DP19 mechanisms in real outreach or adoption settings
+- clear alignment with DP9 incentive safeguards and DP18 reputation logic
+- transparent handling of public claims, corrections, and campaign outcomes
+- evidence that engagement pathways increase agency and stewardship, not only reach
+
+Early ML-RFC candidates may focus on:
+
+- public terminology and maturity-label standards
+- engagement receipt formats
+- ambassador credential standards
+- ethical bounty and badge guidelines
+- campaign transparency requirements
+- community media commons governance
+
+DP19 is likely to evolve through multiple partial RFCs rather than one monolithic specification because brand, narrative, engagement, and public participation each have distinct governance and implementation needs.
+
+---
+
+## 20. Closing Orientation
+
+DP19 gives the meta-layer a public face and a living community presence.
+
+It ensures that the Metaweb is not only built, but recognized; not only explained, but shared; not only promoted, but inhabited.
+
+A DP19-aligned meta-layer grows through resonance rather than manipulation. It invites people into agency, context, trust, and co-creation without reducing them to metrics or marketing channels.
+
+Brand becomes symbolic orientation.
+Engagement becomes participatory belonging.
+Amplification becomes civic invitation.
+Presence becomes shared infrastructure.
+
+This is how the meta-layer becomes something people can name, join, steward, and carry into the world.
+
+---

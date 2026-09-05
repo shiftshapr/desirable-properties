@@ -36,6 +36,8 @@ export type WorkgroupCollabSummary = {
   document_draft_ref?: string | null;
   can_invite_members?: boolean;
   can_edit?: boolean;
+  coordinator_id?: string | null;
+  coordinator_name?: string | null;
 };
 
 export type InviteCandidate = {

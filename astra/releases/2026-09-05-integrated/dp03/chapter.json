@@ -1,0 +1,334 @@
+{
+  "chapterId": "DP3",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-010",
+  "baselineSha256": "cba756e3b97948aa2e4856e67cee138fad84cdabf6003c4d827989c4c5c27637",
+  "finalSha256": "ac00e3514304f9a61f726d4ad369da5b01176a99fa31a413ba61e311e0304448",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp03-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Foresight should examine who controls information channels and whose incentives shape the evidence reaching decision-makers. Conflicts of interest can compound across networks of institutions, even when individual conflicts are disclosed. Independent information and foresight channels help make those patterns contestable; centralized filtering of human speech is not by itself a remedy for conflicted governance.\n\nThe governance framework should update its model of changing circumstances and available courses of action as intelligent systems proliferate. Learning about the environment should inform human deliberation, not silently acquire the authority to ratify changes.\n\nA failure",
+      "finalRange": {
+        "start": 12803,
+        "end": 13482
+      },
+      "contextAnchor": "section:5.7",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-p0",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold1",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold2",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-p0",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold0",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold1",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp11-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2",
+          "label": "CFI 6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp16-hold2"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Paul Werbos",
+        "Astra"
+      ],
+      "rationale": "Reconciles information bottlenecks, network-level conflicts, and adaptive learning without importing unverified political or technical claims.",
+      "originalRange": {
+        "start": 12803,
+        "end": 12803
+      }
+    },
+    {
+      "id": "dp03-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Governance scale depends on agent speed, reach, and interacting capabilities as well as participant count. Advanced systems may support analysis, monitoring, and infrastructure under defined mandates, while the boundary between assistance and legitimate governing authority remains explicit.\n\nA failure",
+      "finalRange": {
+        "start": 14984,
+        "end": 15277
+      },
+      "contextAnchor": "section:5.10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:24:dp3-p0",
+          "label": "CFI 24:dp3-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds capability complexity as a distinct scaling concern.",
+      "originalRange": {
+        "start": 14305,
+        "end": 14305
+      }
+    },
+    {
+      "id": "dp03-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Freedom of expression depends in part on open information infrastructure through which people can contribute without a few actors monopolizing access or visibility. Protection of voice should operate alongside visible community rules and contestable moderation, rather than depend on a promise of an entirely ungoverned space.\n\nA failure",
+      "finalRange": {
+        "start": 15799,
+        "end": 16127
+      },
+      "contextAnchor": "section:5.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold0",
+          "label": "CFI 0d89c52f64ae2f27c9964ecce23a6489870775f54cefe578a26daf8cfef23773i0:dp3-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Connects expression to representation while respecting community governance.",
+      "originalRange": {
+        "start": 14827,
+        "end": 14827
+      }
+    },
+    {
+      "id": "dp03-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "## 6.9 Innovation studios and shared-goal design\n\nInnovation studios can apply collective intelligence to the design of identity, security, privacy, data sovereignty, rewards, and other system functions. Periodic public calls should identify a topic and invite participants to help define the overarching goals before work begins. Disagreement about the goal itself should remain visible.\n\nOne proposed studio pattern uses groups of three to five participants, including at least one person aged 25 or younger and one aged 50 or older, working independently over weeks to months. These are example composition choices, not universal conditions of participation. Recruitment should also seek cognitive and neurological diversity, which age diversity alone does not establish.\n\nMultiple groups can develop proposals on the same topic. Facilitators, designated experts, and the wider community can support synthesis while preserving the lineage of competing proposals and recognizing contributions through badges or rewards. DP9 addresses incentives for that work.\n\n##",
+      "finalRange": {
+        "start": 22500,
+        "end": 23565
+      },
+      "contextAnchor": "section:6.9",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold0",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold1",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold3",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp3-hold3"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp3-hold0",
+          "label": "CFI d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp3-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold1",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold2",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp8-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp8-hold0",
+          "label": "CFI d55f9a5c0d1a319840b27a4bbfa791638a9ac1456c359f0a0a55bfcf211de90ei0:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold0",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp9-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold1",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp18-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold0",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold1",
+          "label": "CFI 94f1f8721c3ba0433d906b27b93769d7e35de01b1befef126552aec7434e942bi0:dp20-hold1"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "David Bray, PhD",
+        "Astra"
+      ],
+      "rationale": "Combines studio, composition, goal-setting, and parallel-synthesis proposals into one usable pattern rather than many overlapping subsections.",
+      "originalRange": {
+        "start": 21200,
+        "end": 21200
+      }
+    },
+    {
+      "id": "dp03-change-005",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "# 6.10 Opt-in experimentation across the substrate\n\nThe substrate should support opt-in A/B testing by core maintainers and third-party developers. Defined cohorts can compare interfaces, governance models, incentives, or application logic using participant feedback and transparent promotion or reversion criteria, without requiring network-wide deployment.\n\nShared test interfaces and permissions should allow responsible experimentation across modules. Each trial remains subject to the staged-rollout conditions in §6.5, with visible participation, bounded authority, and a way to revert. DP18 preserves the resulting learning and DP14 makes experiment status legible.\n\n###",
+      "finalRange": {
+        "start": 23565,
+        "end": 24242
+      },
+      "contextAnchor": "section:6.10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp3-p0",
+          "label": "CFI 46:dp3-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp3-p1",
+          "label": "CFI 46:dp3-p1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp6-hold0",
+          "label": "CFI 46:dp6-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp14-hold0",
+          "label": "CFI 46:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp18-hold0",
+          "label": "CFI 46:dp18-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds an explicit shared testing capability while reusing existing rollout and feedback controls.",
+      "originalRange": {
+        "start": 21200,
+        "end": 21200
+      }
+    },
+    {
+      "id": "dp03-change-006",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " 6.11 Vicariance and protected incubation\n\nVicariance is temporary, partial separation that gives fragile social, technical, or cultural designs room to develop before confronting dominant actors and wider competition. Communities should be able to incubate alternatives and choose gradual integration, preserving diverse paths of emergence.\n\nAI-mediated recommendation, translation, or outreach should respect the community’s chosen dissemination boundaries instead of silently dissolving its incubation conditions. Insulation should remain reviewable and compatible with exit and accountability; it is not a justification for permanent enclosure. DP8 provides the zone setting and DP12 governs its enforceable boundaries.\n\n---\n",
+      "finalRange": {
+        "start": 24242,
+        "end": 24971
+      },
+      "contextAnchor": "section:6.11",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp3-hold0",
+          "label": "CFI 4:dp3-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp3-hold1",
+          "label": "CFI 4:dp3-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp3-p0",
+          "label": "CFI 4:dp3-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp8-hold0",
+          "label": "CFI 4:dp8-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp8-hold1",
+          "label": "CFI 4:dp8-hold1"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:4:dp12-hold0",
+          "label": "CFI 4:dp12-hold0"
+        }
+      ],
+      "attribution": [
+        "Chris Santos-Lang",
+        "Astra"
+      ],
+      "rationale": "Distinguishes incubation from staged deployment and reconciles its governance, AI-reach, and zone variants in one primary home.",
+      "originalRange": {
+        "start": 21200,
+        "end": 21200
+      }
+    },
+    {
+      "id": "dp03-change-007",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Decentralization should be evaluated by its effects on participants and communities. Incentive review should ask whether a proposed economic or token design rewards zero-sum behavior, concentrates control, or undermines the shared purpose, rather than treating distributed architecture alone as evidence of benefit.\n\n---\n\n",
+      "finalRange": {
+        "start": 27527,
+        "end": 27845
+      },
+      "contextAnchor": "section:8",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0:dp3-p0",
+          "label": "CFI 69051ea36631092d6e726fa9dcb41acf84e9deb557960a010bbe628f37ffd35di0:dp3-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Retains the incentive critique without presenting blanket claims about cryptocurrency as established findings.",
+      "originalRange": {
+        "start": 23756,
+        "end": 23756
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r1:6f6cdef64abafe3189619dd70d375415cea89d401c6b794aed2ca31fbf1413dbi0:dp3-hold0",
+      "reason": "I do not recommend integrating the RLADP restriction proposal from the material supplied. Neither the specific information-flow constraint nor its derivation is available, so the proposed research sentence mainly advertises an unspecified architecture rather than helping the reader assess one."
+    }
+  ]
+}

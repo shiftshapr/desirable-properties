@@ -1,0 +1,104 @@
+{
+  "chapterId": "DP18",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-022",
+  "baselineSha256": "139bfba4fc24294271886df6fbe64aaa10e2816a82fa0fade4ad58fff03de90f",
+  "finalSha256": "616d6e47b243916439c9d9d06f464af065e3adfa97ca55ddc4ac4942abfd6b72",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp18-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Feedback can change what a system remembers and foregrounds, not only a visible reputation score. Relevance decay and changes to a memory graph should remain inspectable so that adaptation does not silently erase inconvenient evidence. DP22 governs continuity and accountable resurfacing.\n\nFailure",
+      "finalRange": {
+        "start": 12516,
+        "end": 12806
+      },
+      "contextAnchor": "section:5.5",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:18:dp18-hold0",
+          "label": "CFI 18:dp18-hold0"
+        }
+      ],
+      "attribution": [
+        "Patrick Hoagland",
+        "Astra"
+      ],
+      "rationale": "Adds the distinct link between feedback, memory emphasis, and relevance decay.",
+      "originalRange": {
+        "start": 12516,
+        "end": 12516
+      }
+    },
+    {
+      "id": "dp18-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Reporting channels should offer anonymous AI-interaction risk flags for people who cannot safely identify themselves, with a confidential follow-up route where feasible. Reporters should receive status updates, and communities should be able to inspect anonymized outcome information where safe. Reporting privacy and visible follow-through must coexist with safeguards against weaponized reports.\n\nFailure",
+      "finalRange": {
+        "start": 16351,
+        "end": 16750
+      },
+      "contextAnchor": "section:5.10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:11:dp14-p0",
+          "label": "CFI 11:dp14-p0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:16:dp14-p0",
+          "label": "CFI 16:dp14-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Combines whistleblower reporting and outcome-update proposals without duplicating the existing reporting workflow.",
+      "originalRange": {
+        "start": 16061,
+        "end": 16061
+      }
+    },
+    {
+      "id": "dp18-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "shared opt-in A/B capability, described in DP3, should let maintainers and third-party developers compare defined variants and feed the results into this learning record. Real-time feedback does not authorize unrestricted collection of participant activity.\n\nFailure",
+      "finalRange": {
+        "start": 19794,
+        "end": 20055
+      },
+      "contextAnchor": "section:5.15",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:46:dp18-hold0",
+          "label": "CFI 46:dp18-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Connects experiment learning to the concrete substrate capability while avoiding a second full test specification.",
+      "originalRange": {
+        "start": 19105,
+        "end": 19105
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:30:dp18-p0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:30:dp18-p0",
+      "reason": "I do not recommend integrating psychometric fingerprinting into this draft on the current evidence. The proposal does not establish validity, a usable measure, or a credible path from inferred traits to fairer opportunities; the privacy and exclusion risks are material to the claimed benefit."
+    }
+  ]
+}

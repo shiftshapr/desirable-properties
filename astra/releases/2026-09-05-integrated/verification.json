@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "chapters": 23,
+  "changes": 117,
+  "source_proposals": 307,
+  "checks": [
+    "baseline hashes",
+    "forward replay",
+    "reverse replay",
+    "final hashes",
+    "codepoint/UTF-16/UTF-8 ranges",
+    "highlight selectors",
+    "source references and reverse links",
+    "existing headings preserved",
+    "no new heading-number collisions",
+    "no inserted proposal wrappers"
+  ]
+}

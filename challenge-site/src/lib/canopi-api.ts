@@ -14,6 +14,15 @@ export function getCanopiPublicApiBase() {
   return 'https://api.canopi.live';
 }
 
+/** Canopi web app (main product UI). */
+export function getCanopiAppBase(): string {
+  return String(
+    process.env.NEXT_PUBLIC_CANOPI_APP_BASE
+    || process.env.CANOPI_APP_BASE
+    || 'https://app.canopi.live',
+  ).replace(/\/$/, '');
+}
+
 export type CanopiAuthUser = {
   id: string;
   handle?: string | null;

@@ -2,30 +2,43 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
+import WorkgroupAstraPanel from '@/components/workgroup/WorkgroupAstraPanel';
+import WorkgroupCanopiEmbed from '@/components/workgroup/WorkgroupCanopiEmbed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
+import WorkgroupEditPanel from '@/components/workgroup/WorkgroupEditPanel';
 import WorkgroupExternalChatPanel from '@/components/workgroup/WorkgroupExternalChatPanel';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
 import WorkgroupInviteWelcomeModal from '@/components/workgroup/WorkgroupInviteWelcomeModal';
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
+import WorkgroupMembersPanel from '@/components/workgroup/WorkgroupMembersPanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
-import { govhubDraftReadHref, govhubUrl, isDpDiscoveryWorkgroup } from '@/lib/govhub';
+import { isLaunchBriefingEnabled } from '@/lib/dp-launch-briefing';
+import LaunchBriefingLink from '@/components/workgroup/LaunchBriefingLink';
+import {
+  govhubDraftReadHref,
+  govhubUrl,
+  isDpChallengeWorkgroup,
+  isDpDiscoveryWorkgroup,
+} from '@/lib/govhub';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import {
   normalizeWorkgroupCollabTab,
-  WORKGROUP_COLLAB_TABS,
+  visibleWorkgroupCollabTabs,
+  WORKGROUP_CANOPI_TAB_KEYS,
   type WorkgroupCollabTabKey,
 } from '@/lib/workgroup-collab-tabs';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
+import type { WorkgroupRosterMember } from '@/lib/workgroup-collab-api';
 
 type Props = {
   workgroup: WorkgroupCollabSummary;
@@ -39,8 +52,10 @@ type Props = {
   initialCanPost?: boolean;
   /** DP site admin may invite to any workgroup without joining first. */
   initialIsDpAdmin?: boolean;
+  initialCanEdit?: boolean;
   /** Set when redirected here immediately after a successful join. */
   justJoined?: boolean;
+  initialMembers?: WorkgroupRosterMember[];
 };
 
 export default function WorkgroupCollabClient({
@@ -54,10 +69,14 @@ export default function WorkgroupCollabClient({
   initialMembershipResolved = false,
   initialCanPost = false,
   initialIsDpAdmin = false,
+  initialCanEdit = false,
   justJoined = false,
+  initialMembers = [],
 }: Props) {
   const searchParams = useSearchParams();
   const inviteToken = searchParams.get('invite')?.trim() || null;
+  const deepLinkChangeId = searchParams.get('change')?.trim() || null;
+  const deepLinkProposalId = searchParams.get('proposal')?.trim() || null;
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
   const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
@@ -78,10 +97,28 @@ export default function WorkgroupCollabClient({
     setTab(normalizeWorkgroupCollabTab(searchParams.get('tab')));
   }, [searchParams]);
 
+  useEffect(() => {
+    if (deepLinkChangeId || deepLinkProposalId) {
+      setTab('astra');
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('tab') !== 'astra') {
+        url.searchParams.set('tab', 'astra');
+        window.history.replaceState(null, '', url.toString());
+      }
+    }
+  }, [deepLinkChangeId, deepLinkProposalId]);
+
   const selectTab = useCallback((next: WorkgroupCollabTabKey) => {
     setTab(next);
     const url = new URL(window.location.href);
     url.searchParams.set('tab', next);
+    window.history.replaceState(null, '', url.toString());
+  }, []);
+
+  const clearAstraDeepLinks = useCallback(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('change');
+    url.searchParams.delete('proposal');
     window.history.replaceState(null, '', url.toString());
   }, []);
 
@@ -162,6 +199,20 @@ export default function WorkgroupCollabClient({
   const artAlt = isDpDiscoveryWorkgroup(workgroup.slug)
     ? dpDiscoveryImageAlt(workgroup.name)
     : dpImageAlt(dpId || '', workgroup.name);
+  const showLaunchBriefing =
+    isLaunchBriefingEnabled() && isDpChallengeWorkgroup(workgroup);
+
+  const collabTabs = useMemo(
+    () => visibleWorkgroupCollabTabs({ dpId, workgroup }),
+    [dpId, workgroup],
+  );
+
+  const canopiEmbedActive = WORKGROUP_CANOPI_TAB_KEYS.has(tab);
+
+  useEffect(() => {
+    if (collabTabs.some((item) => item.key === tab)) return;
+    setTab('getting-started');
+  }, [collabTabs, tab]);
 
   return (
     <div className="space-y-8">
@@ -174,6 +225,7 @@ export default function WorkgroupCollabClient({
           onAccepted={() => void refreshMembership()}
         />
       ) : null}
+      <WorkgroupCanopiEmbed active={canopiEmbedActive} />
       <header className="rounded-xl border border-slate-800 bg-slate-900/40 p-6">
         <div className={`flex flex-col gap-6 ${artSrc ? 'md:flex-row md:items-start' : ''}`}>
           {artSrc ? (
@@ -195,6 +247,13 @@ export default function WorkgroupCollabClient({
               <p className="mt-4 max-w-3xl text-slate-300">{workgroup.description}</p>
             ) : null}
             <div className="mt-5 flex flex-wrap items-start gap-3 text-sm">
+              {showLaunchBriefing ? (
+                <LaunchBriefingLink
+                  workgroupSlug={workgroup.slug}
+                  label="Pre-launch briefing"
+                  className="rounded-lg border border-amber-700/60 bg-amber-950/40 px-4 py-2 text-sm font-medium text-amber-100 hover:border-amber-500 hover:bg-amber-950/60"
+                />
+              ) : null}
               {membershipChecked && !isMember ? (
                 <WorkgroupJoinPanel
                   workgroupId={workgroup.id}
@@ -248,7 +307,7 @@ export default function WorkgroupCollabClient({
           role="tablist"
           aria-label="Workgroup sections"
         >
-          {WORKGROUP_COLLAB_TABS.map((item) => {
+          {collabTabs.map((item) => {
             const active = tab === item.key;
             return (
               <button
@@ -277,6 +336,16 @@ export default function WorkgroupCollabClient({
               dpId={dpId}
               dpDetailHref={dpDetailHref}
               documentHref={workgroup.document_href}
+              showLaunchBriefing={showLaunchBriefing}
+            />
+          ) : null}
+
+          {tab === 'members' ? (
+            <WorkgroupMembersPanel
+              workgroupName={workgroup.name}
+              members={initialMembers}
+              coordinatorId={workgroup.coordinator_id}
+              coordinatorName={workgroup.coordinator_name}
             />
           ) : null}
 
@@ -301,6 +370,28 @@ export default function WorkgroupCollabClient({
                 isMember={isMember}
               />
             )
+          ) : null}
+
+          {tab === 'astra' ? (
+            <WorkgroupAstraPanel
+              workgroupId={workgroup.id}
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              deepLinkChangeId={deepLinkChangeId}
+              deepLinkProposalId={deepLinkProposalId}
+              onDeepLinkHandled={clearAstraDeepLinks}
+            />
+          ) : null}
+
+          {tab === 'edit' ? (
+            <WorkgroupEditPanel
+              workgroupId={workgroup.id}
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              canEdit={Boolean(workgroup.can_edit || initialCanEdit)}
+              isMember={isMember}
+              signedIn={signedIn}
+            />
           ) : null}
 
           {tab === 'activity' ? (

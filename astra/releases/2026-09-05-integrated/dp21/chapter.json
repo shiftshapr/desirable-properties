@@ -1,0 +1,38 @@
+{
+  "chapterId": "DP21",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-025",
+  "baselineSha256": "a62167a0699783a65b2a0816d6d34435dc6e4860aa2a442195de0b826900fc6c",
+  "finalSha256": "d17e762129281034fd4d438e0616ac7daa21c53c1f99c3de798c452eeccfb10b",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp21-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " annotations, anchors should identify the relevant content version and, where necessary, its presentation or environment context. A video segment encountered in a browser, an AI interface, or a virtual environment should resolve to the intended material and its annotations. Hashes help detect byte-level change; segment mappings and contextual identifiers are still needed when encodings or presentations differ.\n\nFailure",
+      "finalRange": {
+        "start": 21338,
+        "end": 21756
+      },
+      "contextAnchor": "section:5.12",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0:dp14-p0",
+          "label": "CFI d2436db6144b1fa5974285f1972fd196d27954b07033743f95db9c08a8ea0e77i0:dp14-p0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Integrates the cross-media hashing proposal while distinguishing byte identity from semantic equivalence.",
+      "originalRange": {
+        "start": 21338,
+        "end": 21338
+      }
+    }
+  ],
+  "omitted": []
+}

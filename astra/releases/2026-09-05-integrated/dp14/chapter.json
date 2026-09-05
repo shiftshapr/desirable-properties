@@ -1,0 +1,137 @@
+{
+  "chapterId": "DP14",
+  "releaseId": "2026-09-05-integrated",
+  "baselineMlDraft": "ML-Draft-018",
+  "baselineSha256": "171ba4411277cf5df87a46f7f70654a62fa8b2fa081edd3d0a80f31727ba4871",
+  "finalSha256": "a38c00c55f12fb5fe360f61849004ec47be92e2f097109206163822c1e1b87a1",
+  "verified": true,
+  "changes": [
+    {
+      "id": "dp14-change-001",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": " human-centered label should not stand alone as a trust signal. Participants should be able to identify who makes the claim, what happens to their data, and what practical power they have to inspect, contest, or change that use.\n\n##",
+      "finalRange": {
+        "start": 6659,
+        "end": 6891
+      },
+      "contextAnchor": "section:5.1",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-hold0",
+          "label": "CFI 0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-hold0"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r1:0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-p1",
+          "label": "CFI 0bbbc6353606a289626a63622bed44a7e0db5c03ac74e8a2517d07ff03741053i0:dp14-p1"
+        }
+      ],
+      "attribution": [
+        "Cindy Mason",
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Makes the branding critique an operational test of an interface claim.",
+      "originalRange": {
+        "start": 6659,
+        "end": 6659
+      }
+    },
+    {
+      "id": "dp14-change-002",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Generative systems should attach clear, machine-readable generation metadata to the text, image, audio, and video artifacts they produce, so disclosure can travel beyond the originating interface. Missing or stripped metadata should not be interpreted as proof of human authorship.\n\n###",
+      "finalRange": {
+        "start": 7397,
+        "end": 7681
+      },
+      "contextAnchor": "section:5.3",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:26:dp14-p0",
+          "label": "CFI 26:dp14-p0"
+        }
+      ],
+      "attribution": [
+        "Ruben Diaz",
+        "Astra"
+      ],
+      "rationale": "Adds artifact-level generation disclosure; the missing-metadata qualification is Astra’s editorial clarification of the guarantee.",
+      "originalRange": {
+        "start": 7165,
+        "end": 7165
+      }
+    },
+    {
+      "id": "dp14-change-003",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Warnings about suspected fraudulent or malicious activity should state assessed risk and uncertainty promptly enough to inform the participant’s next action. A warning should help someone decide, not turn an uncertain signal into apparent certainty.\n\n### ",
+      "finalRange": {
+        "start": 9092,
+        "end": 9344
+      },
+      "contextAnchor": "section:5.9",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:42:dp14-hold0",
+          "label": "CFI 42:dp14-hold0"
+        }
+      ],
+      "attribution": [
+        "BridgeDAO",
+        "Astra"
+      ],
+      "rationale": "Adds actionable warning semantics while preserving the existing uncertainty requirement.",
+      "originalRange": {
+        "start": 8576,
+        "end": 8576
+      }
+    },
+    {
+      "id": "dp14-change-004",
+      "operation": "insert",
+      "beforeText": "",
+      "afterText": "Civic overlays should preserve the context needed to interpret an action across systems, including relevant summaries, endorsements, deadlines, and decision status. DP8 describes the participation pattern; showing a shared topic or a wallet-linked action must not imply endorsement by the host platform or authority that the participant does not hold.\n\n### 5",
+      "finalRange": {
+        "start": 9584,
+        "end": 9938
+      },
+      "contextAnchor": "section:5.10",
+      "sources": [
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold2",
+          "label": "CFI 44:dp14-hold2"
+        },
+        {
+          "type": "cfi",
+          "id": "cfi:opus5:cfi:r2:44:dp14-hold3",
+          "label": "CFI 44:dp14-hold3"
+        }
+      ],
+      "attribution": [
+        "Michelle Thuo",
+        "Astra"
+      ],
+      "rationale": "Retains the transparency-specific consequence of civic overlays without duplicating the full toolkit proposal.",
+      "originalRange": {
+        "start": 8816,
+        "end": 8816
+      }
+    }
+  ],
+  "omitted": [
+    {
+      "sourceId": "opus5:cfi:r2:19:dp14-hold0",
+      "sourceType": "cfi",
+      "label": "cfi:opus5:cfi:r2:19:dp14-hold0",
+      "reason": "I do not recommend integrating the trusted quartet and seven-point Creed in their current form. The systems, trust relationships, and seven principles are not supplied; naming them as future work would ask the reader to evaluate labels rather than a substantive proposal."
+    }
+  ]
+}

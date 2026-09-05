@@ -27,6 +27,7 @@ export async function GET(_request: Request, ctx: RouteCtx) {
     members: members.map((m) => ({
       user_id: m.user_id,
       user_name: m.user_name,
+      joined_at: m.joined_at,
       positions: m.positions,
       is_facilitator: m.is_facilitator,
     })),
