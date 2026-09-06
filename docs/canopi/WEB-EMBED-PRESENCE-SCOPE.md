@@ -19,8 +19,9 @@ Examples:
 - A strip at the top of the page showing avatars of active visitors (Google Docs style)
 - A count badge: “3 people reading this”
 - Optional room/status badges: “2 in Community Room”
+- **Phase 3+:** hover an avatar → Visibility profile card or **room overlay** (mini chat outside the sidebar)
 
-This is **ambient presence**, distinct from Discuss (async comments) and Rooms (chat). Presence is ephemeral session state keyed to the same `page_id` Discuss and Rooms already use.
+This is **ambient presence**, distinct from Discuss (async comments) and Rooms (chat). Presence is ephemeral session state keyed to the same `page_id` Discuss and Rooms already use. Hover overlay reuses **Rooms** as the conversation backend — new shell, not new data model.
 
 ---
 
@@ -64,6 +65,8 @@ Sites are **not proxied** by Canopi today; embed runs on the **real page origin*
 | Real-time updates | No WebSocket channel exposed (or SDK-mediated) |
 | Privacy / opt-in visibility | DP2 specifies per-zone controls; no runtime implementation |
 | Default strip UI | No injectable strip component in `v1.js` |
+| Hover → Visibility profile card on avatar | No host-page overlay; Visibility tab is sidebar-only |
+| Hover → room overlay (chat outside sidebar) | No floating room shell; Rooms UI lives in sidebar iframe only |
 | Cloud page shells (`app.canopi.live/r/…`) | Future; strip easier in Canopi chrome, harder for iframe-only targets |
 
 **Bottom line:** Page-scoped **conversation** exists (Discuss, Rooms). Page-scoped **co-presence** does not.
@@ -192,6 +195,31 @@ CanopiEmbed.setMyPresenceStatus({ state: 'viewing', label: 'Reading §4' });
 ```javascript
 CanopiEmbed.renderPresenceStrip({ target: '#site-header', theme: 'dark' });
 CanopiEmbed.destroyPresenceStrip();
+
+// Hover overlay (Phase 3+; requires presence.hover.enabled)
+CanopiEmbed.openPresenceOverlay({
+  userId,
+  surface: 'auto',       // 'profile' | 'room' | 'auto' (respects embed config + room state)
+  anchor: avatarElement, // positions overlay near avatar
+});
+CanopiEmbed.closePresenceOverlay();
+
+CanopiEmbed.onAvatarHover((user, surface) => { /* … */ });
+```
+
+**Enriched `PresenceUser` payload** (for hover branching):
+
+```javascript
+viewer: {
+  userId,
+  displayName,
+  avatarUrl,
+  visibilityTier,
+  roomId,              // existing DM / page-room if any
+  unreadCount,
+  lastMessagePreview,
+  hoverDefault: 'profile' | 'room'  // server-resolved from config + state
+}
 ```
 
 **Events**
@@ -201,6 +229,8 @@ window.addEventListener('canopi:presence-update', (e) => { /* … */ });
 window.addEventListener('canopi:presence-user-joined', …);
 window.addEventListener('canopi:presence-user-left', …);
 window.addEventListener('canopi:presence-unavailable', …); // debug only; non-fatal
+window.addEventListener('canopi:presence-overlay-open', …);
+window.addEventListener('canopi:presence-overlay-close', …);
 ```
 
 **Design rule:** one WebSocket per embed instance, owned inside `v1.js`. Hosts subscribe via SDK methods — not raw WS — unless an explicit escape hatch is added later.
@@ -245,10 +275,21 @@ Extend `GET /api/embeds/config/:id`:
     "enabled": false,
     "defaultVisibility": "community",
     "hostApiAccess": "aggregate_only",
-    "strip": { "position": "top", "maxAvatars": 5, "autoMount": false }
+    "strip": { "position": "top", "maxAvatars": 5, "autoMount": false },
+    "hover": {
+      "enabled": false,
+      "defaultSurface": "room_if_exists",
+      "profileAlwaysAvailable": true
+    }
   }
 }
 ```
+
+| `hover.defaultSurface` | Behavior |
+|------------------------|----------|
+| `profile_always` | Hover always opens Visibility-style profile card first |
+| `room_if_exists` | Hover opens **room overlay** when a shared room/messages exist; otherwise profile card |
+| `room_if_unread` | Room overlay only when `unreadCount > 0`; else profile card |
 
 ### Tier 3: Realtime (SDK-internal)
 
@@ -358,9 +399,133 @@ Presence on ephemeral store + dedicated WS namespace. Outage must not affect `v1
 | Tab | Relationship |
 |-----|--------------|
 | **Discuss** | Same `page_id`; strip click may call `openSidebar({ tab: 'discuss' })` |
-| **Rooms** | Optional `viewers[].activeRoomId`; click → `openSidebar({ tab: 'rooms', roomId })` |
-| **Visibility** | Settings UI for defaults; presence API is runtime read/write |
+| **Rooms** | Same room backend as sidebar; hover overlay is an alternate shell for `roomId` |
+| **Visibility** | Profile card on avatar hover reuses Visibility tab avatar model (compact subset) |
 | **Agent** | Independent |
+
+---
+
+## Hover overlay + room shell (Phase 3+)
+
+Extension of in-page presence: **conversation outside the sidebar**, triggered by hovering (desktop) or tapping (mobile) an avatar embedded in the page.
+
+### Product intent
+
+A visitor sees avatars in the presence strip. On hover:
+
+1. **Default (no prior conversation):** show a **Visibility-style profile card** — name, status, visibility tier, trust signals, and a **Message** action.
+2. **When a shared room exists or they have sent a message:** show a **room overlay** instead — compact chat (recent messages + composer) anchored to that avatar.
+3. **Configurable:** embed admin chooses whether room overlay is the default hover surface when a conversation exists (`hover.defaultSurface: 'room_if_exists'`).
+
+This turns presence from “who’s here” into “talk to them here” without opening the sidebar.
+
+### Interaction model
+
+```
+Page presence strip
+  [Avatar A] [Avatar B] [Avatar C]
+       │
+       └── hover / tap ──► Floating overlay (host DOM, NOT sidebar)
+                             ├── Profile card (Visibility model, compact)
+                             │     └── "Message" → create/open room
+                             └── Room overlay (when roomId exists)
+                                   ├── last N messages
+                                   ├── composer (send in overlay)
+                                   └── header: avatar + "View profile" → profile card
+```
+
+**Desktop:** hover opens overlay; pointer leave starts dismiss timer unless pinned.  
+**Mobile:** tap opens and pins overlay; tap outside dismisses. Hover-only UX is not available on touch devices.
+
+### Hover state machine
+
+```
+onAvatarHover(userId):
+  1. Resolve visibility → server filters fields (DP2); hidden users are not hover targets
+  2. Resolve room → find existing DM / page-scoped room for (viewer, userId, page_id)
+  3. Pick surface (config + state):
+     - No room, no messages     → Visibility profile card
+     - roomId exists            → Room overlay (default when hover.defaultSurface = room_if_exists)
+     - unreadCount > 0          → Room overlay (when hover.defaultSurface = room_if_unread)
+     - Config profile_always    → Profile card; room via explicit "Message" or "Open chat"
+```
+
+**Unread badge on avatar:** optional indicator; when present, hover always lands in room overlay regardless of other defaults.
+
+### Room overlay vs sidebar room
+
+Same room, different presentation shell:
+
+```
+┌──────────────────────────────────────┐
+│  Publisher page                       │
+│  [presence strip: avatars]            │
+│       ┌─────────────────────┐         │
+│       │ Room overlay        │ ← NEW  │
+│       │ (anchored to avatar)│         │
+│       │ recent messages     │         │
+│       │ [ composer ]        │         │
+│       └─────────────────────┘         │
+│              [Canopi sidebar closed]  │
+└──────────────────────────────────────┘
+```
+
+| Concern | Approach |
+|---------|----------|
+| **Data** | Reuse Supabase `rooms` + `room_messages`; no new conversation store |
+| **DM resolution** | Same find-or-create as sidebar Rooms (two-member or page-scoped room) |
+| **Sync** | Message sent in overlay appears in sidebar Rooms tab if opened later |
+| **API** | `POST /v1/rooms/:id/messages` — overlay is another client |
+
+### Implementation options
+
+1. **Canopi-native floating panel** in `presence.js` — calls Rooms API directly; positioned near avatar (preferred for “easy for hosts”).
+2. **Compact iframe** to e.g. `embed/canopi.live/room-overlay.html?roomId=…` — reuses `RoomsModule` UI in narrow mode.
+3. **Host-built overlay** — host renders UI from enriched presence payload + Rooms REST (heaviest integration).
+
+Options 1–2 keep publisher integration at one script tag; hosts do not implement chat UI.
+
+### Visibility tab integration
+
+The Visibility tab’s **avatar model** becomes a reusable component, not sidebar-exclusive:
+
+| Context | Surface |
+|---------|---------|
+| Sidebar Visibility tab | Full settings + browsing others on page |
+| Avatar hover (no room) | Compact profile card — subset of Visibility data |
+| Room overlay header | Avatar + name; “View profile” expands card or opens sidebar Visibility |
+
+Visibility rules apply **before** hover renders: server omits disallowed fields from the payload. Hidden users do not appear as hover targets (or appear as count-only without avatar).
+
+### Room scope (open design choice)
+
+| Model | Use case |
+|-------|----------|
+| **Page-scoped DM** | “Met on this page” — room keyed by `(community, page_id, user pair)` |
+| **Global DM** | Conversation follows users across pages |
+| **Active page room** | Hover shows public room they’re in, not a DM |
+
+**Recommendation for MVP:** page-scoped DM find-or-create, aligned with existing Rooms `page_id` binding.
+
+### UX and accessibility
+
+| Topic | Requirement |
+|-------|-------------|
+| **Focus** | Focus trap in overlay; ESC dismisses |
+| **Single overlay** | At most one hover overlay open at a time |
+| **Pin** | Click/tap pin icon to keep overlay open after pointer leave |
+| **Keyboard** | Tab to composer; Enter to send |
+| **Z-index** | Coordinate with `#canopi-overlay-root`, push sidebar, host header (`dp-header-above-canopi`) |
+| **iframe nesting** | Prefer native panel over iframe where possible to reduce focus-trap stacking |
+
+### Stability (hover module)
+
+Hover overlay remains non-destabilizing if:
+
+- Loaded only when `presence.hover.enabled` (nested under lazy `presence.js`)
+- Room fetch failure → fall back to profile card or dismiss; sidebar unaffected
+- Overlay mount failure → no-op; strip and sidebar unchanged
+- Sites with presence strip but `hover.enabled: false` never load room overlay code
 
 ---
 
@@ -394,12 +559,33 @@ Presence on ephemeral store + dedicated WS namespace. Outage must not affect `v1
 - [ ] `renderPresenceStrip()` opt-in helper
 - [ ] DP staging opt-in on one test page
 
-### Phase 3 — Rich presence + cloud shells
+### Phase 3 — Hover → Visibility profile card
 
-- [ ] Room/status badges in payload
+- [ ] Embed config `presence.hover.enabled` (default `false`)
+- [ ] Reusable compact Visibility avatar model component
+- [ ] Hover/tap on strip avatar → profile card overlay
+- [ ] “Message” action → open room in **sidebar** (existing Rooms path)
+- [ ] Mobile tap-to-pin overlay model
+
+**Success:** Hover shows profile; messaging still via sidebar — validates overlay positioning and visibility rules.
+
+### Phase 4 — Room overlay on hover (conversation outside sidebar)
+
+- [ ] Enriched presence payload: `roomId`, `unreadCount`, `lastMessagePreview`, `hoverDefault`
+- [ ] `hover.defaultSurface: room_if_exists` — room overlay when shared room/messages exist
+- [ ] Compact room overlay: message list + composer anchored to avatar
+- [ ] `openPresenceOverlay()`, `canopi:presence-overlay-open/close`
+- [ ] Overlay ↔ sidebar Rooms sync (same `roomId`)
+
+**Success:** Two users with an existing DM hover each other’s avatars and continue chat without opening the sidebar.
+
+### Phase 5 — Rich presence + polish
+
+- [ ] Compose and realtime receive in overlay (WS or poll)
+- [ ] Unread badge on avatar; `room_if_unread` surface mode
 - [ ] Persistent user visibility defaults in Canopi app
-- [ ] Click handlers → sidebar navigation
-- [ ] Cloud page shell strip in Canopi chrome
+- [ ] Cloud page shell strip + overlay in Canopi chrome
+- [ ] Extension parity with web embed hover contract
 
 ---
 
@@ -410,6 +596,9 @@ Presence on ephemeral store + dedicated WS namespace. Outage must not affect `v1
 3. **Cross-page presence:** Same community, different pages — ever aggregate?
 4. **Rate limits:** Per embed instance vs per IP for anonymous aggregate?
 5. **Extension parity timeline:** Ship web embed first or simultaneously?
+6. **Hover room scope:** Page-scoped DM vs global DM vs active public room?
+7. **Hover dismiss timing:** Delay before close on pointer leave; pin by default on mobile?
+8. **Profile card depth:** Which Visibility tab fields appear in compact hover card vs sidebar-only?
 
 ---
 
@@ -419,7 +608,8 @@ Presence on ephemeral store + dedicated WS namespace. Outage must not affect `v1
 |------|------|
 | Embed loader | `canopi/public/embed/v1.js` |
 | Presence module (new) | `canopi/public/embed/presence.js` (proposed) |
-| Sidepanel / tabs | `canopi/presence/src/features/` |
+| Room overlay shell (new) | `canopi/public/embed/room-overlay.js` or `room-overlay.html` (proposed) |
+| Sidepanel / tabs | `canopi/presence/src/features/RoomsModule.ts`, etc. |
 | Embed config API | embed instance admin + `GET /api/embeds/config/:id` |
 | Presence API (new) | `canopi/routes/presence.js` (proposed) |
 | DP integration reference | `desirableproperties-book/assets/dp-canopi-bridge.js`, `challenge-site/src/components/canopi/CanopiWebEmbed.tsx` |
@@ -436,5 +626,6 @@ To make in-page presence easy for web embed host pages:
 4. **Config:** opt-in per embed instance; off by default
 5. **Stability:** core embed reaches `canopi:embed-ready` before presence starts; presence fails silently
 6. **Privacy:** server-enforced visibility rules (DP2)
+7. **Hover overlay (Phase 3+):** Visibility profile card on avatar hover; room overlay when conversation exists — same Rooms backend, floating shell outside sidebar
 
-Publisher sites that never enable presence behave exactly as they do today.
+Publisher sites that never enable presence behave exactly as they do today. Sites with presence but `hover.enabled: false` get the strip only, no overlay.
