@@ -17,11 +17,12 @@ cp /home/ubuntu/meta-console/agent-drop/Meta-Layer_Initiative_Kickoff.Audio.mp3 
 ## PLA / DP Studio hero (Be part of 1.0)
 
 - Public URL: `/media/be-part-of-1.0-hero.png`
-- Source: `/home/ubuntu/meta-console/agent-drop/7._Be_part_of_1.0-2.png`
-- Agent-drop UUID: `ee393e27-b4de-473e-b8f2-9037d80b795e`
+- Source: `/home/ubuntu/meta-console/agent-drop/be-part-of-v-1.0.png`
+- Agent-drop UUID: `eeae3245-4c6a-41de-a399-ced015bc5ead`
+- Prior art (Sept 16 V1.0 date): `ee393e27-b4de-473e-b8f2-9037d80b795e` (`7._Be_part_of_1.0-2.png`)
 
 ```bash
-cp /home/ubuntu/meta-console/agent-drop/7._Be_part_of_1.0-2.png \
+cp /home/ubuntu/meta-console/agent-drop/be-part-of-v-1.0.png \
   challenge-site/public/media/be-part-of-1.0-hero.png
 ```
 
