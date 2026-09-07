@@ -7,6 +7,7 @@ import AstraChapterReader from '@/components/workgroup/AstraChapterReader';
 import WorkgroupCanopiStrip from '@/components/workgroup/WorkgroupCanopiStrip';
 import WorkgroupChapterEditor from '@/components/workgroup/WorkgroupChapterEditor';
 import WorkgroupMemberChapterView from '@/components/workgroup/WorkgroupMemberChapterView';
+import WorkgroupPendingSuggestions from '@/components/workgroup/WorkgroupPendingSuggestions';
 import { ASTRA_OPERATION_LABELS } from '@/lib/astra-types';
 import type { AstraChapterBundle, AstraChange, AstraReleaseManifest } from '@/lib/astra-types';
 import { fetchAstraChapter, fetchAstraReleaseManifest } from '@/lib/astra-api';
@@ -37,6 +38,7 @@ const EMPTY_EDIT_STATE: WorkgroupChapterEditList = {
   effectiveMarkdown: '',
   baseMarkdown: '',
   hasMemberEdits: false,
+  pendingCount: 0,
 };
 
 function mlDraftLabel(dpId: string): string {
@@ -199,13 +201,23 @@ export default function WorkgroupEditPanel({
 
   const handleEditUpdate = useCallback((next: WorkgroupChapterEditList) => {
     setEditState(next);
+    setEditRevision((value) => value + 1);
     if (next.hasMemberEdits) {
-      setEditRevision((value) => value + 1);
       window.requestAnimationFrame(() => {
         document.getElementById('read-chapter')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
   }, []);
+
+  const reloadChapterEdits = useCallback(async () => {
+    if (!dpKey) return;
+    try {
+      const next = await fetchWorkgroupChapterEditsClient(workgroupId, dpKey);
+      handleEditUpdate(next);
+    } catch {
+      /* ignore refresh errors */
+    }
+  }, [dpKey, handleEditUpdate, workgroupId]);
 
   const handleRevokeToggle = useCallback(
     async (change: AstraChange, restore: boolean) => {
@@ -385,6 +397,17 @@ export default function WorkgroupEditPanel({
               <WorkgroupMemberChapterView editState={editState} editRevision={editRevision} />
             )}
           </article>
+
+          {editState.pendingCount > 0 ? (
+            <WorkgroupPendingSuggestions
+              workgroupId={workgroupId}
+              dpKey={dpKey}
+              edits={editState.edits}
+              effectiveMarkdown={editState.effectiveMarkdown}
+              canReview={canEdit}
+              onUpdate={() => void reloadChapterEdits()}
+            />
+          ) : null}
 
           <div id="propose-edit" className="scroll-mt-24">
             <WorkgroupChapterEditor

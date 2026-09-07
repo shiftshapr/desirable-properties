@@ -1,4 +1,7 @@
 import type { WorkgroupChapterEditList } from '@/lib/workgroup-chapter-edit-types';
+import type { ChapterPatchMode } from '@/lib/workgroup-chapter-patch';
+
+export type ChapterEditReviewAction = 'approve' | 'reject' | 'revoke' | 'restore';
 
 export async function fetchWorkgroupChapterEditsClient(
   workgroupId: string,
@@ -15,12 +18,14 @@ export async function fetchWorkgroupChapterEditsClient(
   return res.json() as Promise<WorkgroupChapterEditList>;
 }
 
-export async function submitWorkgroupChapterEditClient(
+export async function submitWorkgroupChapterSuggestionClient(
   workgroupId: string,
   input: {
     dpKey: string;
     astraReleaseId: string;
-    markdown: string;
+    patchMode: ChapterPatchMode;
+    originalText: string;
+    proposedText: string;
     rationale?: string;
   },
 ): Promise<WorkgroupChapterEditList> {
@@ -36,15 +41,15 @@ export async function submitWorkgroupChapterEditClient(
     error?: string;
   };
   if (!res.ok) {
-    throw new Error(payload.error || 'Failed to save chapter edit');
+    throw new Error(payload.error || 'Failed to submit chapter suggestion');
   }
   return payload;
 }
 
-export async function setWorkgroupChapterEditStatusClient(
+export async function reviewWorkgroupChapterEditClient(
   workgroupId: string,
   editId: string,
-  action: 'revoke' | 'restore',
+  action: ChapterEditReviewAction,
   dpKey: string,
 ): Promise<WorkgroupChapterEditList> {
   const res = await fetch(
@@ -59,7 +64,37 @@ export async function setWorkgroupChapterEditStatusClient(
     error?: string;
   };
   if (!res.ok) {
-    throw new Error(payload.error || 'Failed to update chapter edit');
+    throw new Error(payload.error || 'Failed to update chapter suggestion');
   }
   return payload;
+}
+
+/** @deprecated Use submitWorkgroupChapterSuggestionClient */
+export async function submitWorkgroupChapterEditClient(
+  workgroupId: string,
+  input: {
+    dpKey: string;
+    astraReleaseId: string;
+    patchMode: ChapterPatchMode;
+    originalText: string;
+    proposedText: string;
+    rationale?: string;
+  },
+): Promise<WorkgroupChapterEditList> {
+  return submitWorkgroupChapterSuggestionClient(workgroupId, input);
+}
+
+/** @deprecated Use reviewWorkgroupChapterEditClient */
+export async function setWorkgroupChapterEditStatusClient(
+  workgroupId: string,
+  editId: string,
+  action: 'revoke' | 'restore',
+  dpKey: string,
+): Promise<WorkgroupChapterEditList> {
+  return reviewWorkgroupChapterEditClient(
+    workgroupId,
+    editId,
+    action === 'revoke' ? 'revoke' : 'restore',
+    dpKey,
+  );
 }

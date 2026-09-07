@@ -3,6 +3,9 @@ import { ensureDpSchema, isDpDatabaseConfigured } from '@/lib/dp-db';
 
 export type WorkgroupActivityEventType =
   | 'member_chapter_edit'
+  | 'member_chapter_edit_submitted'
+  | 'member_chapter_edit_approved'
+  | 'member_chapter_edit_rejected'
   | 'member_chapter_edit_revoked'
   | 'member_chapter_edit_restored'
   | 'astra_patch_revoked'

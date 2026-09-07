@@ -199,7 +199,7 @@ export default function WorkgroupMemberChapterView({ editState, editRevision = 0
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300/90">
-                Member edit applied
+                Approved member edit
               </p>
               <p className="mt-1 text-sm font-medium text-white">
                 {latestEdit.authorName}

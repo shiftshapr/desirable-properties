@@ -98,8 +98,9 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
           </li>
           <li>
             Propose chapter edits on the <strong className="font-semibold text-white">Edit</strong>{' '}
-            tab once you join the workgroup. Saved edits show with track-changes (green add / red
-            strikeout) or clean read, with your name on the attribution banner.
+            tab once you join the workgroup. Suggestions require coordinator approval before they
+            go live. Approved edits show with track-changes (green add / red strikeout) or clean
+            read, with your name on the attribution banner.
           </li>
           <li>Discuss proposals and reactions in workgroup chat.</li>
           <li>
@@ -121,7 +122,12 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             fit your chapter.
           </li>
           <li>
-            Revoke member chapter edits that miss the mark; members can propose new versions from
+            Approve or reject member chapter suggestions on the{' '}
+            <strong className="font-semibold text-white">Edit</strong> tab before they appear in
+            the live chapter.
+          </li>
+          <li>
+            Revoke approved member edits that miss the mark; members can submit new suggestions from
             the effective chapter baseline.
           </li>
           <li>Curate the most effective chapter text for your Desirable Property.</li>

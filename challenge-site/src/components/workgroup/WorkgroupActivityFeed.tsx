@@ -21,6 +21,9 @@ function badgeClass(badge: string): string {
   if (b === 'patch') return 'border-amber-800/60 bg-amber-950/40 text-amber-200';
   if (b === 'insert') return 'border-violet-800/60 bg-violet-950/40 text-violet-200';
   if (b === 'edit') return 'border-cyan-800/60 bg-cyan-950/40 text-cyan-200';
+  if (b === 'pending') return 'border-amber-800/60 bg-amber-950/40 text-amber-200';
+  if (b === 'approved') return 'border-emerald-800/60 bg-emerald-950/40 text-emerald-200';
+  if (b === 'rejected') return 'border-rose-800/60 bg-rose-950/40 text-rose-200';
   if (b === 'revoked') return 'border-rose-800/60 bg-rose-950/40 text-rose-200';
   if (b === 'restored') return 'border-emerald-800/60 bg-emerald-950/40 text-emerald-200';
   if (b === 'download') return 'border-violet-800/60 bg-violet-950/40 text-violet-200';
@@ -30,7 +33,7 @@ function badgeClass(badge: string): string {
 function sourceLabel(item: ActivityFeedItem): string {
   if (item.source === 'canopi') return 'Canopi';
   if (item.kind === 'govhub_proposal') return 'Gov Hub patch';
-  if (item.kind === 'member_edit' || item.kind === 'member_edit_revoked') return 'Member edit';
+  if (item.kind === 'member_edit' || item.kind === 'member_edit_pending' || item.kind === 'member_edit_rejected' || item.kind === 'member_edit_revoked') return 'Member edit';
   if (item.kind === 'astra_revoke' || item.kind === 'astra_restore') return 'Astra edit';
   if (item.kind === 'download') return 'Download';
   if (item.kind.startsWith('workgroup_')) return 'Workgroup';

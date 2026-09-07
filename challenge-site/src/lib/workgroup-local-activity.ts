@@ -3,7 +3,7 @@ import { ensureDpSchema, isDpDatabaseConfigured } from '@/lib/dp-db';
 import { dpIdToAstraKey } from '@/lib/astra-utils';
 import { fetchWorkgroupActivityEvents } from '@/lib/workgroup-activity-event-store';
 import { workgroupActivityHref } from '@/lib/workgroup-links';
-import { summarizeMarkdownEdit } from '@/lib/workgroup-chapter-edit-types';
+import { editSummaryText, isLegacyFullChapterEdit, type WorkgroupChapterEdit } from '@/lib/workgroup-chapter-edit-types';
 
 function dpKeyFromChangeId(changeId: string): string | null {
   const match = String(changeId || '').trim().match(/^(dp\d{2})-/i);
@@ -22,9 +22,13 @@ function chapterEditToItems(
     author_name: string;
     rationale: string | null;
     status: string;
+    base_markdown: string | null;
     revoked_at: Date | null;
     created_at: Date;
-    markdown: string;
+    markdown: string | null;
+    patch_mode: string | null;
+    original_text: string | null;
+    proposed_text: string | null;
   },
   baseMarkdown: string,
   workgroupSlug: string,
@@ -32,24 +36,95 @@ function chapterEditToItems(
   const items: ActivityFeedItem[] = [];
   const dpLabel = row.dp_key.toUpperCase();
   const editHref = editTabHref(workgroupSlug, '#read-chapter');
+  const compareBase = row.base_markdown || baseMarkdown;
+  const editLike: WorkgroupChapterEdit = {
+    id: row.id,
+    workgroupId: '',
+    dpKey: row.dp_key,
+    astraReleaseId: '',
+    markdown: row.markdown,
+    baseMarkdown: row.base_markdown,
+    patchMode: row.patch_mode === 'insert' ? 'insert' : row.patch_mode === 'replace' ? 'replace' : null,
+    originalText: row.original_text,
+    proposedText: row.proposed_text,
+    anchorHash: null,
+    rationale: row.rationale,
+    authorUserId: '',
+    authorName: row.author_name,
+    status: row.status as WorkgroupChapterEdit['status'],
+    reviewedBy: null,
+    reviewedAt: null,
+    revokedBy: null,
+    revokedAt: null,
+    createdAt: new Date(row.created_at).toISOString(),
+  };
+  const patchLabel = editLike.patchMode === 'insert' ? 'passage insert' : editLike.patchMode === 'replace' ? 'patch' : 'chapter edit';
+  const diff: ActivityDiff | null = row.rationale
+    ? { mode: 'comment', removed: null, added: row.rationale }
+    : isLegacyFullChapterEdit(editLike) && editLike.markdown
+      ? {
+          mode: 'patch',
+          removed: null,
+          added: editSummaryText(editLike, compareBase),
+        }
+      : editLike.originalText && editLike.proposedText
+        ? {
+            mode: editLike.patchMode === 'insert' ? 'insert' : 'patch',
+            removed: editLike.originalText.slice(0, 120),
+            added: editLike.proposedText.slice(0, 120),
+          }
+        : {
+            mode: 'patch',
+            removed: null,
+            added: editSummaryText(editLike, compareBase),
+          };
+
+  if (row.status === 'pending') {
+    items.push({
+      id: `member-edit-pending-${row.id}`,
+      createdAt: new Date(row.created_at).toISOString(),
+      text: `${row.author_name} suggested a ${patchLabel} on ${dpLabel} (awaiting coordinator approval)`,
+      href: editTabHref(workgroupSlug, '#pending-suggestions'),
+      kind: 'member_edit_pending',
+      badge: 'Pending',
+      resolved: false,
+      status: 'pending',
+      source: 'govhub',
+      diff,
+    });
+    return items;
+  }
+
+  if (row.status === 'rejected') {
+    items.push({
+      id: `member-edit-rejected-${row.id}`,
+      createdAt: new Date(row.created_at).toISOString(),
+      text: `${row.author_name}'s chapter edit on ${dpLabel} was rejected`,
+      href: editTabHref(workgroupSlug, '#propose-edit'),
+      kind: 'member_edit_rejected',
+      badge: 'Rejected',
+      resolved: true,
+      status: 'rejected',
+      source: 'govhub',
+      diff,
+    });
+    return items;
+  }
 
   items.push({
     id: `member-edit-${row.id}`,
     createdAt: new Date(row.created_at).toISOString(),
-    text: `${row.author_name} proposed a chapter edit on ${dpLabel}`,
+    text:
+      row.status === 'active'
+        ? `${row.author_name}'s chapter edit on ${dpLabel} is approved and live`
+        : `${row.author_name} proposed a chapter edit on ${dpLabel}`,
     href: editHref,
     kind: 'member_edit',
-    badge: 'Edit',
-    resolved: row.status === 'revoked',
+    badge: row.status === 'active' ? 'Approved' : 'Edit',
+    resolved: row.status !== 'pending',
     status: row.status,
     source: 'govhub',
-    diff: row.rationale
-      ? { mode: 'comment', removed: null, added: row.rationale }
-      : {
-          mode: 'patch',
-          removed: null,
-          added: summarizeMarkdownEdit(baseMarkdown, row.markdown),
-        },
+    diff,
   });
 
   if (row.status === 'revoked' && row.revoked_at) {
@@ -110,8 +185,17 @@ function loggedEventToItem(
 
   switch (event.eventType) {
     case 'member_chapter_edit':
+    case 'member_chapter_edit_submitted':
+      kind = 'member_edit_pending';
+      badge = 'Pending';
+      break;
+    case 'member_chapter_edit_approved':
       kind = 'member_edit';
-      badge = 'Edit';
+      badge = 'Approved';
+      break;
+    case 'member_chapter_edit_rejected':
+      kind = 'member_edit_rejected';
+      badge = 'Rejected';
       break;
     case 'member_chapter_edit_revoked':
       kind = 'member_edit_revoked';
@@ -174,12 +258,14 @@ export async function fetchLocalWorkgroupActivity(opts: {
   const items: ActivityFeedItem[] = [];
 
   const editQuery = dpKeyFilter
-    ? `SELECT id, dp_key, author_name, rationale, status, revoked_at, created_at, markdown
+    ? `SELECT id, dp_key, author_name, rationale, status, base_markdown, revoked_at, created_at,
+              markdown, patch_mode, original_text, proposed_text
        FROM workgroup_chapter_edit
        WHERE workgroup_id = $1 AND dp_key = $2
        ORDER BY created_at DESC
        LIMIT $3`
-    : `SELECT id, dp_key, author_name, rationale, status, revoked_at, created_at, markdown
+    : `SELECT id, dp_key, author_name, rationale, status, base_markdown, revoked_at, created_at,
+              markdown, patch_mode, original_text, proposed_text
        FROM workgroup_chapter_edit
        WHERE workgroup_id = $1
        ORDER BY created_at DESC
@@ -192,9 +278,13 @@ export async function fetchLocalWorkgroupActivity(opts: {
     author_name: string;
     rationale: string | null;
     status: string;
+    base_markdown: string | null;
     revoked_at: Date | null;
     created_at: Date;
-    markdown: string;
+    markdown: string | null;
+    patch_mode: string | null;
+    original_text: string | null;
+    proposed_text: string | null;
   }>(editQuery, editParams);
 
   for (const row of editRes.rows) {

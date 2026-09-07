@@ -517,13 +517,48 @@ CREATE TABLE IF NOT EXISTS workgroup_chapter_edit (
   rationale TEXT,
   author_user_id TEXT NOT NULL,
   author_name TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'revoked')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'active', 'rejected', 'revoked')),
+  base_markdown TEXT,
+  reviewed_by TEXT,
+  reviewed_at TIMESTAMPTZ,
   revoked_by TEXT,
   revoked_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS workgroup_chapter_edit_wg_dp ON workgroup_chapter_edit (workgroup_id, dp_key, created_at);
+
+-- Chapter-edit workflow migrations (pending suggestions + coordinator review)
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS base_markdown TEXT;
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS reviewed_by TEXT;
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
+
+DO $$
+DECLARE
+  cname text;
+BEGIN
+  SELECT con.conname INTO cname
+  FROM pg_constraint con
+  INNER JOIN pg_class rel ON rel.oid = con.conrelid
+  WHERE rel.relname = 'workgroup_chapter_edit'
+    AND con.contype = 'c'
+    AND pg_get_constraintdef(con.oid) LIKE '%status%';
+  IF cname IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE workgroup_chapter_edit DROP CONSTRAINT %I', cname);
+  END IF;
+END $$;
+
+ALTER TABLE workgroup_chapter_edit DROP CONSTRAINT IF EXISTS workgroup_chapter_edit_status_check;
+ALTER TABLE workgroup_chapter_edit
+  ADD CONSTRAINT workgroup_chapter_edit_status_check
+  CHECK (status IN ('pending', 'active', 'rejected', 'revoked'));
+
+-- Passage-level patch columns (replace full-chapter snapshots for new suggestions)
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS patch_mode TEXT;
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS original_text TEXT;
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS proposed_text TEXT;
+ALTER TABLE workgroup_chapter_edit ADD COLUMN IF NOT EXISTS anchor_hash TEXT;
+ALTER TABLE workgroup_chapter_edit ALTER COLUMN markdown DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS workgroup_activity_event (
   id TEXT PRIMARY KEY,

@@ -8,6 +8,8 @@ export type ActivityFeedKind =
   | 'canopi_insert'
   | 'govhub_proposal'
   | 'member_edit'
+  | 'member_edit_pending'
+  | 'member_edit_rejected'
   | 'member_edit_revoked'
   | 'astra_revoke'
   | 'astra_restore'

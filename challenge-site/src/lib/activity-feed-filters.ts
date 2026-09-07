@@ -34,6 +34,8 @@ export function isActivityCommentOrPatch(item: ActivityFeedItem): boolean {
     || item.kind === 'govhub_proposal'
     || item.kind === 'workgroup_message'
     || item.kind === 'member_edit'
+    || item.kind === 'member_edit_pending'
+    || item.kind === 'member_edit_rejected'
     || item.kind === 'member_edit_revoked'
     || item.kind === 'astra_revoke'
     || item.kind === 'astra_restore'

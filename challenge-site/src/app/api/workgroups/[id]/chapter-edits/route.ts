@@ -6,8 +6,10 @@ import {
   createWorkgroupChapterEdit,
   fetchWorkgroupChapterEdits,
   isWorkgroupChapterEditDbConfigured,
-  setWorkgroupChapterEditStatus,
+  reviewWorkgroupChapterEdit,
 } from '@/lib/workgroup-chapter-edit-store';
+import { passageExistsInMarkdown, summarizePatch } from '@/lib/workgroup-chapter-patch';
+import type { ChapterPatchMode } from '@/lib/workgroup-chapter-patch';
 import { recordWorkgroupActivityEvent } from '@/lib/workgroup-activity-event-store';
 import { resolveWorkgroupMembership } from '@/lib/workgroup-membership.server';
 
@@ -65,6 +67,7 @@ export async function GET(request: Request, ctx: RouteContext) {
       effectiveMarkdown: baseMarkdown,
       baseMarkdown,
       hasMemberEdits: false,
+      pendingCount: 0,
     });
   }
 
@@ -95,7 +98,9 @@ export async function POST(request: Request, ctx: RouteContext) {
   let body: {
     dpKey?: string;
     astraReleaseId?: string;
-    markdown?: string;
+    patchMode?: string;
+    originalText?: string;
+    proposedText?: string;
     rationale?: string;
   } = {};
   try {
@@ -106,33 +111,62 @@ export async function POST(request: Request, ctx: RouteContext) {
 
   const dpKey = parseDpKey(body.dpKey || null);
   const astraReleaseId = String(body.astraReleaseId || '').trim();
-  const markdown = String(body.markdown || '');
+  const patchModeRaw = String(body.patchMode || 'replace').trim().toLowerCase();
+  const patchMode: ChapterPatchMode | null =
+    patchModeRaw === 'insert' ? 'insert' : patchModeRaw === 'replace' ? 'replace' : null;
+  const originalText = String(body.originalText || '').trim();
+  const proposedText = String(body.proposedText || '').trim();
   const rationale = String(body.rationale || '').trim();
 
-  if (!dpKey || !astraReleaseId || !markdown.trim()) {
+  if (!dpKey || !astraReleaseId || !patchMode || !originalText || !proposedText) {
     return NextResponse.json(
-      { error: 'dpKey, astraReleaseId, and markdown required' },
+      { error: 'dpKey, astraReleaseId, patchMode (replace|insert), originalText, and proposedText required' },
       { status: 400 },
     );
   }
 
-  if (markdown.length > 500_000) {
-    return NextResponse.json({ error: 'Chapter markdown too large' }, { status: 400 });
+  if (originalText.length > 50_000 || proposedText.length > 50_000) {
+    return NextResponse.json({ error: 'Passage text too large' }, { status: 400 });
+  }
+
+  const beforeList = await loadEditList(workgroupId, dpKey);
+  const baseMarkdown = beforeList.effectiveMarkdown;
+
+  if (!passageExistsInMarkdown(baseMarkdown, originalText)) {
+    return NextResponse.json(
+      { error: 'Anchor passage not found in the current chapter. Copy the exact text from the chapter reader.' },
+      { status: 409 },
+    );
   }
 
   const created = await createWorkgroupChapterEdit({
     workgroupId,
     dpKey,
     astraReleaseId,
-    markdown,
+    patchMode,
+    originalText,
+    proposedText,
+    baseMarkdown,
     rationale: rationale || null,
     authorUserId: session.userId,
     authorName: session.displayName || session.username || 'Member',
   });
 
   if (!created) {
-    return NextResponse.json({ error: 'Unable to save chapter edit' }, { status: 503 });
+    return NextResponse.json({ error: 'Unable to save chapter suggestion' }, { status: 503 });
   }
+
+  const actorName = session.displayName || session.username || 'Member';
+  const patchSummary = summarizePatch({ patchMode, originalText, proposedText });
+  await recordWorkgroupActivityEvent({
+    workgroupId,
+    dpKey,
+    eventType: 'member_chapter_edit_submitted',
+    actorUserId: session.userId,
+    actorName,
+    summary: `${actorName} suggested a ${patchMode === 'insert' ? 'passage insert' : 'patch'} on ${dpKey.toUpperCase()} (awaiting approval)`,
+    detail: { editId: created.id, rationale: rationale || null, patchMode, patchSummary },
+  });
 
   const list = await loadEditList(workgroupId, dpKey);
   return NextResponse.json(list);
@@ -172,33 +206,63 @@ export async function PATCH(request: Request, ctx: RouteContext) {
   const action = String(body.action || '').trim().toLowerCase();
   const dpKey = parseDpKey(body.dpKey || null);
 
-  if (!editId || !dpKey || (action !== 'revoke' && action !== 'restore')) {
+  if (!editId || !dpKey || !['approve', 'reject', 'revoke', 'restore'].includes(action)) {
     return NextResponse.json(
-      { error: 'editId, dpKey, and action (revoke|restore) required' },
+      { error: 'editId, dpKey, and action (approve|reject|revoke|restore) required' },
       { status: 400 },
     );
   }
 
-  const ok = await setWorkgroupChapterEditStatus(
+  const result = await reviewWorkgroupChapterEdit({
     editId,
     workgroupId,
-    action === 'revoke' ? 'revoked' : 'active',
-    action === 'revoke' ? session.userId : null,
-  );
+    dpKey,
+    baseMarkdown: (await loadEditList(workgroupId, dpKey)).baseMarkdown,
+    action: action as 'approve' | 'reject' | 'revoke' | 'restore',
+    reviewerUserId: session.userId,
+  });
 
-  if (!ok) {
-    return NextResponse.json({ error: 'Unable to update chapter edit' }, { status: 503 });
+  if (!result.ok) {
+    const status =
+      result.error === 'edit_not_found' ? 404
+      : result.error === 'anchor_missing' ? 409
+      : result.error === 'not_pending' || result.error === 'not_active' || result.error === 'not_revoked'
+        ? 409
+        : 503;
+    return NextResponse.json({ error: result.error }, { status });
   }
 
   const actorName = session.displayName || session.username || 'Coordinator';
-  if (action === 'restore') {
+  const dpLabel = dpKey.toUpperCase();
+
+  if (action === 'approve') {
+    await recordWorkgroupActivityEvent({
+      workgroupId,
+      dpKey,
+      eventType: 'member_chapter_edit_approved',
+      actorUserId: session.userId,
+      actorName,
+      summary: `${actorName} approved a member chapter edit on ${dpLabel}`,
+      detail: { editId },
+    });
+  } else if (action === 'reject') {
+    await recordWorkgroupActivityEvent({
+      workgroupId,
+      dpKey,
+      eventType: 'member_chapter_edit_rejected',
+      actorUserId: session.userId,
+      actorName,
+      summary: `${actorName} rejected a member chapter edit on ${dpLabel}`,
+      detail: { editId },
+    });
+  } else if (action === 'restore') {
     await recordWorkgroupActivityEvent({
       workgroupId,
       dpKey,
       eventType: 'member_chapter_edit_restored',
       actorUserId: session.userId,
       actorName,
-      summary: `${actorName} restored a member chapter edit on ${dpKey.toUpperCase()}`,
+      summary: `${actorName} restored a member chapter edit on ${dpLabel}`,
       detail: { editId },
     });
   }
