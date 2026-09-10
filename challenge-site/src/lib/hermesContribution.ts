@@ -164,6 +164,15 @@ export interface ContributionProposal {
   payload: Record<string, unknown>;
   /** Existing Canopi Discuss draft row — re-save PATCHes instead of creating duplicates. */
   canopiDraftId?: string;
+  judge?: {
+    verdict?: string;
+    failedCriterion?: string | null;
+    reasons?: Record<string, string>;
+  } | null;
+  judgeBlocked?: boolean;
+  judgeCoaching?: string | null;
+  judgeAttempts?: number;
+  judgeRevised?: boolean;
 }
 
 export interface ContributionDraft {
@@ -175,6 +184,19 @@ export interface ContributionDraft {
   proposals?: ContributionProposal[];
   scope?: ContributionScope;
   destination?: ContributionDestination;
+  /** Contributor words used by the quality judge. */
+  claimVerbatim?: string;
+  judgeSummary?: {
+    passed?: number;
+    failed?: number;
+    errors?: number;
+    totalPatches?: number;
+    allPassed?: boolean;
+    revisionRounds?: number;
+    revised?: boolean;
+    revisionError?: string;
+    rubricVersion?: string;
+  };
   /** True when Hermes recovered the draft heuristically after JSON failure. */
   recovered?: boolean;
   /** Revision of a published Canopi message — skips original CTA flow. */
@@ -190,6 +212,10 @@ export interface ContributionDraft {
   editSetId?: string;
   /** Proposal ids the user changed — only these are re-staged to Canopi. */
   dirtyProposalIds?: string[];
+  /** Conversation where this draft was initiated (pins panel + submit). */
+  sourceThreadId?: string;
+  /** Assistant message id in sourceThreadId when draft was opened. */
+  sourceAssistantMessageId?: string;
 }
 
 export interface DiscussDeepLink {
@@ -213,6 +239,7 @@ export type ContributionEditContext =
 
 const STAGED_KEY = 'hermes-staged-proposals-v1';
 const PENDING_DRAFT_KEY = 'hermes-pending-contribution-draft-v1';
+const PENDING_DRAFT_KEY_PREFIX = `${PENDING_DRAFT_KEY}:`;
 const PENDING_USER_MESSAGES_KEY = 'hermes-pending-user-messages-v1';
 const PENDING_THREAD_DRAFT = '__draft__';
 
@@ -339,21 +366,44 @@ export interface PendingContributionDraft {
   savedAt: string;
 }
 
+function pendingDraftStorageKey(threadId: string | null | undefined): string | null {
+  const id = String(threadId || '').trim();
+  if (!id) return null;
+  return `${PENDING_DRAFT_KEY_PREFIX}${id}`;
+}
+
 export function savePendingContributionDraft(
   draft: ContributionDraft,
   threadId: string | null,
   assistantMessageId?: string | null,
 ): void {
   if (typeof window === 'undefined') return;
+  const key = pendingDraftStorageKey(threadId);
+  if (!key) return;
   try {
     const payload: PendingContributionDraft = {
       threadId,
       assistantMessageId: assistantMessageId || null,
-      draft,
+      draft: {
+        ...draft,
+        sourceThreadId: threadId || draft.sourceThreadId,
+        sourceAssistantMessageId: assistantMessageId || draft.sourceAssistantMessageId || undefined,
+      },
       savedAt: new Date().toISOString(),
     };
-    sessionStorage.setItem(PENDING_DRAFT_KEY, JSON.stringify(payload));
-    saveStagedProposal(draft);
+    sessionStorage.setItem(key, JSON.stringify(payload));
+    try {
+      const legacyRaw = sessionStorage.getItem(PENDING_DRAFT_KEY);
+      if (legacyRaw) {
+        const legacy = JSON.parse(legacyRaw) as PendingContributionDraft;
+        if (!legacy?.threadId || legacy.threadId === threadId) {
+          sessionStorage.removeItem(PENDING_DRAFT_KEY);
+        }
+      }
+    } catch {
+      /* ignore malformed legacy */
+    }
+    saveStagedProposal(payload.draft, threadId);
   } catch {
     /* ignore quota errors */
   }
@@ -361,9 +411,19 @@ export function savePendingContributionDraft(
 
 export function loadPendingContributionDraft(threadId: string | null): PendingContributionDraft | null {
   if (typeof window === 'undefined') return null;
+  const key = pendingDraftStorageKey(threadId);
+  if (!key) return null;
   try {
-    const raw = sessionStorage.getItem(PENDING_DRAFT_KEY);
-    if (!raw) return null;
+    const raw = sessionStorage.getItem(key);
+    if (!raw) {
+      // Legacy single-key draft (pre thread-scoped storage)
+      const legacyRaw = sessionStorage.getItem(PENDING_DRAFT_KEY);
+      if (!legacyRaw) return null;
+      const legacy = JSON.parse(legacyRaw) as PendingContributionDraft;
+      if (!legacy?.draft) return null;
+      if (!legacy.threadId || legacy.threadId !== threadId) return null;
+      return legacy;
+    }
     const parsed = JSON.parse(raw) as PendingContributionDraft;
     if (!parsed?.draft) return null;
     if (threadId && parsed.threadId && parsed.threadId !== threadId) return null;
@@ -373,9 +433,25 @@ export function loadPendingContributionDraft(threadId: string | null): PendingCo
   }
 }
 
-export function clearPendingContributionDraft(): void {
+export function clearPendingContributionDraft(threadId?: string | null): void {
   if (typeof window === 'undefined') return;
   try {
+    if (threadId) {
+      const key = pendingDraftStorageKey(threadId);
+      if (key) sessionStorage.removeItem(key);
+      try {
+        const legacyRaw = sessionStorage.getItem(PENDING_DRAFT_KEY);
+        if (legacyRaw) {
+          const legacy = JSON.parse(legacyRaw) as PendingContributionDraft;
+          if (!legacy?.threadId || legacy.threadId === threadId) {
+            sessionStorage.removeItem(PENDING_DRAFT_KEY);
+          }
+        }
+      } catch {
+        sessionStorage.removeItem(PENDING_DRAFT_KEY);
+      }
+      return;
+    }
     sessionStorage.removeItem(PENDING_DRAFT_KEY);
   } catch {
     /* ignore */
@@ -503,7 +579,7 @@ export function contributionEditContextCopy(
           'Edits stay in Deepi until you submit. They do not auto-sync to Canopi Discuss.',
         draftOption: {
           title: 'Save to my drafts',
-          detail: 'Recommended — opens in Canopi Discuss for review before publishing.',
+          detail: 'Recommended: opens in Canopi Discuss for review before publishing.',
         },
         publishOption: {
           title: 'Publish now',
@@ -511,6 +587,15 @@ export function contributionEditContextCopy(
         },
       };
   }
+}
+
+/** Publish stays judge-gated; Save to my drafts can proceed (Discuss drafts are reviewable). */
+export function contributionSubmitBlockedByJudge(
+  mode: ContributionSubmitMode,
+  judgeBlocked: boolean,
+): boolean {
+  if (!judgeBlocked) return false;
+  return mode === 'publish' || mode === 'replace';
 }
 
 export function isReplaceSubmitMode(
@@ -622,16 +707,33 @@ export function loadStagedProposals(): ContributionDraft[] {
   }
 }
 
-export function saveStagedProposal(draft: ContributionDraft): void {
+/** Staged backups scoped to one conversation (never cross-thread restore). */
+export function loadStagedProposalsForThread(threadId: string | null | undefined): ContributionDraft[] {
+  const id = String(threadId || '').trim();
+  if (!id) return [];
+  return loadStagedProposals().filter((row) => String(row.sourceThreadId || '').trim() === id);
+}
+
+export function saveStagedProposal(
+  draft: ContributionDraft,
+  threadId?: string | null,
+): void {
   if (typeof window === 'undefined') return;
+  const sourceThreadId = String(threadId || draft.sourceThreadId || '').trim() || null;
   const existing = loadStagedProposals();
   const next = [
     {
       ...draft,
+      sourceThreadId,
       title: draft.title || 'Staged proposals',
       savedAt: new Date().toISOString(),
     },
-    ...existing,
+    ...existing.filter((row) => {
+      if (!sourceThreadId) return true;
+      return String(row.sourceThreadId || '').trim() !== sourceThreadId
+        || String(row.draftRef || '').trim().toUpperCase()
+          !== String(draft.draftRef || '').trim().toUpperCase();
+    }),
   ].slice(0, 20);
   localStorage.setItem(STAGED_KEY, JSON.stringify(next));
 }
@@ -1151,7 +1253,7 @@ export function clearPendingDraftIfFiledOnThread(
     : null;
   if (sourceTurnHasFiledSet(sets, assistantTurnId)
     || isDraftDuplicateOfLedgerByLabels(pending.draft, sets)) {
-    clearPendingContributionDraft();
+    clearPendingContributionDraft(threadId);
   }
 }
 
@@ -1269,6 +1371,11 @@ const PATCH_SIGNALS = [
   /\bspecific revision to\b/i,
   /\bturn this into a (?:dp )?contribution\b/i,
   /\bsubmit (?:this|as)\b/i,
+  /\bchange record\b/i,
+  /\|\s*location\s*\|\s*before\s*\|\s*after\s*\|/i,
+  /\|\s*before\s*\|\s*after\s*\|/i,
+  /\*\*anchor passage\*\*/i,
+  /\*\*proposed (?:text|revision|addition)\*\*/i,
 ];
 
 /** Client-side fallback when stored/API readiness is missing. */
@@ -1298,6 +1405,9 @@ export function inferContributionHint(
 
   const suggestedKind: 'comment' | 'patch' =
     /\bproposed (?:addition|revision|text|clause|sentence)\b/i.test(assistantText)
+    || /\bchange record\b/i.test(assistantText)
+    || /\|\s*before\s*\|\s*after\s*\|/i.test(assistantText)
+    || /\*\*anchor passage\*\*/i.test(assistantText)
     || /\binsert\b/i.test(assistantText)
     || /\breplace\b/i.test(assistantText)
     || /\brevision to\b/i.test(userText)
@@ -1309,7 +1419,7 @@ export function inferContributionHint(
   return {
     contributionReady: true,
     recommendedScope,
-    reason: 'This exchange includes concrete edit language — ready to draft for Canopi Discuss.',
+    reason: 'This exchange includes concrete edit language: ready to draft for Canopi Discuss.',
     suggestedKind,
     draftRefHint,
     defaultScope: recommendedScope === 'ambiguous' ? 'message' : recommendedScope,
