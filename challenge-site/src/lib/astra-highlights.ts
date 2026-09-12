@@ -117,6 +117,100 @@ export function isBlockLevelMarkdownFragment(text: string): boolean {
   return false;
 }
 
+/** Lone asterisk line left by Astra integration renders as an empty bullet in ReactMarkdown. */
+export function stripOrphanTrailingListMarker(text: string): string {
+  return String(text || '').replace(/\n\n\*$/, '\n\n');
+}
+
+/**
+ * Integration ranges sometimes end on the first `*` of `**Example:**`, leaving a highlight
+ * that ends `\n\n*` and plain text that starts `*Example:**`. Repair both sides.
+ */
+export function repairSplitBoldAcrossSegments(
+  highlightText: string,
+  plainText: string,
+): { highlightText: string; plainText: string } {
+  let highlight = highlightText;
+  let plain = plainText;
+  if (/\n\n\*$/.test(highlight) && plain.startsWith('*')) {
+    highlight = stripOrphanTrailingListMarker(highlight);
+    plain = `*${plain}`;
+  } else {
+    highlight = stripOrphanTrailingListMarker(highlight);
+  }
+  return { highlightText: highlight, plainText: plain };
+}
+
+/**
+ * Word-boundary expansion can leave a trailing article ("A ") in the preceding plain
+ * segment when the highlight starts mid-word on "person", "participant", etc.
+ */
+export function mergeTrailingArticleFromPlain(
+  plainText: string,
+  highlightText: string,
+): { plainText: string; highlightText: string } | null {
+  const plain = String(plainText || '');
+  const highlight = String(highlightText || '');
+  const match = plain.match(/(?:^|\n\n)([A-Z]) $/);
+  if (!match || !/^[a-z]/.test(highlight)) return null;
+  const article = `${match[1]} `;
+  return {
+    plainText: plain.slice(0, plain.length - article.length),
+    highlightText: `${article}${highlight}`,
+  };
+}
+
+function mergeArticleSegments(segments: AstraHighlightSegment[]): AstraHighlightSegment[] {
+  const out: AstraHighlightSegment[] = [];
+  for (let i = 0; i < segments.length; i += 1) {
+    const segment = segments[i];
+    if (segment.kind === 'plain') {
+      const next = segments[i + 1];
+      if (next?.kind === 'highlight') {
+        const merged = mergeTrailingArticleFromPlain(segment.text, next.text);
+        if (merged) {
+          out.push({ ...segment, text: merged.plainText });
+          out.push({ ...next, text: merged.highlightText });
+          i += 1;
+          continue;
+        }
+      }
+    }
+    out.push(segment);
+  }
+  return out;
+}
+
+function repairBoldSplitSegments(segments: AstraHighlightSegment[]): AstraHighlightSegment[] {
+  const out: AstraHighlightSegment[] = [];
+  for (let i = 0; i < segments.length; i += 1) {
+    const segment = segments[i];
+    if (segment.kind === 'highlight') {
+      const next = segments[i + 1];
+      if (next?.kind === 'plain') {
+        const repaired = repairSplitBoldAcrossSegments(segment.text, next.text);
+        out.push({ ...segment, text: repaired.highlightText });
+        if (repaired.plainText !== next.text) {
+          out.push({ ...next, text: repaired.plainText });
+          i += 1;
+        }
+        continue;
+      }
+      out.push({ ...segment, text: stripOrphanTrailingListMarker(segment.text) });
+      continue;
+    }
+    out.push(segment);
+  }
+  return out;
+}
+
+/** Clean highlight/plain boundaries produced by integrated Astra range alignment. */
+export function normalizeAstraHighlightSegments(
+  segments: AstraHighlightSegment[],
+): AstraHighlightSegment[] {
+  return repairBoldSplitSegments(mergeArticleSegments(segments));
+}
+
 export function buildAstraHighlightSegments(
   markdown: string,
   changes: AstraChange[],
@@ -153,7 +247,7 @@ export function buildAstraHighlightSegments(
     segments.push({ kind: 'plain', text: markdown.slice(cursor) });
   }
 
-  return segments;
+  return normalizeAstraHighlightSegments(segments);
 }
 
 /** Group adjacent inline plain/highlight segments so one paragraph is not split across blocks. */

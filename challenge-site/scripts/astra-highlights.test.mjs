@@ -21,6 +21,14 @@ const integratedMdPath = path.resolve(
   __dirname,
   '../../astra/releases/2026-09-05-integrated/dp01/chapter.md',
 );
+const dp04JsonPath = path.resolve(
+  __dirname,
+  '../../astra/releases/2026-09-05-integrated/dp04/chapter.json',
+);
+const dp04MdPath = path.resolve(
+  __dirname,
+  '../../astra/releases/2026-09-05-integrated/dp04/chapter.md',
+);
 
 function compareRange(a, b) {
   return a.finalRange.start - b.finalRange.start || a.finalRange.end - b.finalRange.end;
@@ -43,6 +51,75 @@ function expandRangeToWordBoundaries(markdown, start, end) {
     expandedEnd += 1;
   }
   return { start: expandedStart, end: expandedEnd };
+}
+
+function stripOrphanTrailingListMarker(text) {
+  return String(text || '').replace(/\n\n\*$/, '\n\n');
+}
+
+function repairSplitBoldAcrossSegments(highlightText, plainText) {
+  let highlight = highlightText;
+  let plain = plainText;
+  if (/\n\n\*$/.test(highlight) && plain.startsWith('*')) {
+    highlight = stripOrphanTrailingListMarker(highlight);
+    plain = `*${plain}`;
+  } else {
+    highlight = stripOrphanTrailingListMarker(highlight);
+  }
+  return { highlightText: highlight, plainText: plain };
+}
+
+function mergeTrailingArticleFromPlain(plainText, highlightText) {
+  const plain = String(plainText || '');
+  const highlight = String(highlightText || '');
+  const match = plain.match(/(?:^|\n\n)([A-Z]) $/);
+  if (!match || !/^[a-z]/.test(highlight)) return null;
+  const article = `${match[1]} `;
+  return {
+    plainText: plain.slice(0, plain.length - article.length),
+    highlightText: `${article}${highlight}`,
+  };
+}
+
+function normalizeAstraHighlightSegments(segments) {
+  const merged = [];
+  for (let i = 0; i < segments.length; i += 1) {
+    const segment = segments[i];
+    if (segment.kind === 'plain') {
+      const next = segments[i + 1];
+      if (next?.kind === 'highlight') {
+        const article = mergeTrailingArticleFromPlain(segment.text, next.text);
+        if (article) {
+          merged.push({ ...segment, text: article.plainText });
+          merged.push({ ...next, text: article.highlightText });
+          i += 1;
+          continue;
+        }
+      }
+    }
+    merged.push(segment);
+  }
+
+  const out = [];
+  for (let i = 0; i < merged.length; i += 1) {
+    const segment = merged[i];
+    if (segment.kind === 'highlight') {
+      const next = merged[i + 1];
+      if (next?.kind === 'plain') {
+        const repaired = repairSplitBoldAcrossSegments(segment.text, next.text);
+        out.push({ ...segment, text: repaired.highlightText });
+        if (repaired.plainText !== next.text) {
+          out.push({ ...next, text: repaired.plainText });
+          i += 1;
+        }
+        continue;
+      }
+      out.push({ ...segment, text: stripOrphanTrailingListMarker(segment.text) });
+      continue;
+    }
+    out.push(segment);
+  }
+  return out;
 }
 
 function buildAstraHighlightSegments(markdown, changes) {
@@ -78,7 +155,7 @@ function buildAstraHighlightSegments(markdown, changes) {
     segments.push({ kind: 'plain', text: markdown.slice(cursor) });
   }
 
-  return segments;
+  return normalizeAstraHighlightSegments(segments);
 }
 
 function validateAstraHighlights(markdown, changes) {
@@ -169,10 +246,30 @@ test('integrated DP1 inserts expand mid-word highlight boundaries', () => {
 
   for (const segment of segments) {
     if (segment.kind !== 'highlight') continue;
+    if (/\n\n\*$/.test(segment.text)) {
+      assert.fail(`highlight ${segment.change?.id} still ends with orphan list marker`);
+    }
     const idx = markdown.indexOf(segment.text);
     assert.ok(idx >= 0, `highlight not found in markdown for ${segment.change?.id}`);
     if (idx > 0 && WORD_CHAR.test(markdown[idx - 1]) && WORD_CHAR.test(segment.text[0])) {
       assert.fail(`highlight ${segment.change?.id} still splits a leading word`);
     }
   }
+});
+
+test('integrated DP4 consent theater highlight does not orphan bullets or split A', () => {
+  const markdown = fs.readFileSync(dp04MdPath, 'utf8');
+  const manifest = JSON.parse(fs.readFileSync(dp04JsonPath, 'utf8'));
+  const change = manifest.changes.find((row) => row.id === 'dp04-change-003');
+  assert.ok(change);
+  const segments = buildAstraHighlightSegments(markdown, [change]);
+
+  const highlight = segments.find((segment) => segment.kind === 'highlight');
+  assert.ok(highlight);
+  assert.match(highlight.text, /^A person may agree/);
+  assert.doesNotMatch(highlight.text, /\n\n\*$/);
+
+  const followingPlain = segments[segments.indexOf(highlight) + 1];
+  assert.ok(followingPlain && followingPlain.kind === 'plain');
+  assert.match(followingPlain.text, /^\*\*Example:\*\*/);
 });
