@@ -48,6 +48,14 @@ export default function CommunityReviewEventPage() {
         ← Home
       </Link>
 
+      <p className="mt-6 text-sm text-slate-500">
+        Historical: Sept 16 event.{' '}
+        <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
+          Start Here
+        </Link>{' '}
+        is the current onboarding path.
+      </p>
+
       <header className="mt-8 border-b border-slate-800 pb-10">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
           {COMMUNITY_REVIEW_EVENT.dateLabel}
