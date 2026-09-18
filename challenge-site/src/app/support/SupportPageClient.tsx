@@ -489,11 +489,15 @@ export default function SupportPageClient() {
         >
           {DESIRABLE_PROPERTIES_BOOK_HOST}
         </DiscussPatchLink>
-        . To patch draft text, use Gov Hub. Or open{' '}
-        <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
-          Participate
-        </Link>{' '}
-        to join a workgroup.
+        . To patch draft text, use Gov Hub. New here?{' '}
+        <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
+          Start Here
+        </Link>
+        . Join a workgroup from{' '}
+        <Link href="/workgroups#workgroups" className="text-cyan-300 hover:text-cyan-200">
+          Workgroups
+        </Link>
+        .
       </p>
     </div>
   );

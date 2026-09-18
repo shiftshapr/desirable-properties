@@ -28,7 +28,7 @@ const DP_GENERAL: AiPromptInfo = {
     'Pills that mention DPs help map discussion to the framework – they do not post on your behalf.',
   ],
   links: [
-    { label: 'Browse all DPs', href: '/participate' },
+    { label: 'Browse all DPs', href: '/#dps' },
     { label: 'Framing chapter', href: '/dp/dp1' },
   ],
 };
@@ -57,7 +57,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
       ctx.dpId ? `This workgroup is scoped to ${ctx.dpId}.` : 'Discovery workgroups consider the full DP set.',
     ],
     relatedDps: ctx.dpId ? [ctx.dpId] : undefined,
-    links: [{ label: 'What are DPs?', href: '/participate' }],
+    links: [{ label: 'What are DPs?', href: '/start-here' }],
   }),
   strengthen: () => ({
     title: 'Strengthen for submission',
@@ -75,7 +75,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
       'Uses latest ML-Draft text from Gov Hub rails.',
       'Reply appears in your private Hermes panel – nothing posts until you share or adopt.',
     ],
-    links: [{ label: 'DP framework overview', href: '/participate' }],
+    links: [{ label: 'DP framework overview', href: '/start-here' }],
   }),
   'new-dp': () => ({
     title: 'Should we consider a new DP?',

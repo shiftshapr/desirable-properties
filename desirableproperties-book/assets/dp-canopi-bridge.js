@@ -22,6 +22,9 @@
 
   var SDK_ORIGIN = global.DP_CANOPI_CONFIG.apiBase.replace(/\/$/, '');
 
+  /** Book bridge opens auth popups on the host (sync) before v1.js async handlers. */
+  global.__CANOPI_DP_BOOK_AUTH_BRIDGE__ = true;
+
   var ALLOWED_ORIGINS = new Set([
     SDK_ORIGIN,
     'https://api.canopi.live',
@@ -112,16 +115,57 @@
     if (!data || typeof data !== 'object') return;
     if (data.__canopiOpenAuthPopup) {
       markReopenDiscussAfterAuth();
-      if (embedSdkOwnsAuthPopup()) return;
       if (!isCanopiEmbedOrigin(String(ev.origin || ''))) return;
       var popupUrl = normalizeAuthPopupUrl(data.url);
       var win = openHostAuthPopup(popupUrl);
+      if (!win) showAuthPopupBlockedBanner(popupUrl);
       if (ev.source) {
         try {
           ev.source.postMessage({ __canopiAuthPopupOpened: true, ok: !!win }, ev.origin || '*');
         } catch (e) {}
       }
+      return;
     }
+  });
+
+  function showAuthPopupBlockedBanner(authUrl) {
+    var existing = document.getElementById('dp-canopi-auth-blocked-banner');
+    if (existing) existing.remove();
+    var bar = document.createElement('div');
+    bar.id = 'dp-canopi-auth-blocked-banner';
+    bar.setAttribute('role', 'status');
+    bar.style.cssText = [
+      'position:fixed',
+      'bottom:24px',
+      'left:50%',
+      'transform:translateX(-50%)',
+      'z-index:2147483646',
+      'max-width:min(92vw,520px)',
+      'padding:12px 16px',
+      'border-radius:10px',
+      'background:#1a1a1a',
+      'color:#fff',
+      'font:14px/1.4 system-ui,sans-serif',
+      'box-shadow:0 8px 28px rgba(0,0,0,.35)',
+    ].join(';');
+    bar.innerHTML =
+      '<div style="margin-bottom:8px">Safari blocked the sign-in popup. Allow popups for this site, or use Sign in below.</div>';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = 'Sign in';
+    btn.style.cssText =
+      'background:#1d9bf0;color:#fff;border:none;border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer';
+    btn.addEventListener('click', function () {
+      openHostAuthPopup(normalizeAuthPopupUrl(authUrl));
+      bar.remove();
+    });
+    bar.appendChild(btn);
+    document.body.appendChild(bar);
+  }
+
+  global.addEventListener('canopi:auth-popup-blocked', function (ev) {
+    var url = ev && ev.detail && ev.detail.url;
+    if (url) showAuthPopupBlockedBanner(url);
   });
 
   document.documentElement.classList.add('dp-header-above-canopi');

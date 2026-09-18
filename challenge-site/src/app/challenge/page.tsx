@@ -24,7 +24,7 @@ import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server
 export const metadata = {
   title: 'The Challenge – Desirable Properties',
   description:
-    'Timeline, milestones, and participation guide for the Desirable Properties Challenge–refining Version 0.77 toward Version 1 and the Digital Monument launch.',
+    'Timeline, milestones, and participation guide for the Desirable Properties Challenge. Community Review Draft on September 16, 2026; Version 1.0 and the Digital Monument target November 13, 2026.',
 };
 
 export const revalidate = 300;
@@ -76,6 +76,10 @@ export default async function ChallengePage() {
             <Link href="/about" className="text-cyan-300 hover:text-cyan-200">
               Read the full framing on About
             </Link>
+            . New to the site?{' '}
+            <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
+              Start Here
+            </Link>
             .
           </p>
           <p>
@@ -93,7 +97,8 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            Workgroups form July 21–August 30; The Layered Web launches September 16, 2026.{' '}
+            September 16 is the Community Review Draft milestone and governance demo. Version 1.0
+            and the Digital Monument target November 13, 2026.{' '}
             <Link
               href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"
@@ -128,8 +133,9 @@ export default async function ChallengePage() {
         <section id="timeline" className="scroll-mt-24">
           <h2 className="text-2xl font-bold text-white">Timeline</h2>
           <p className="mt-3 text-slate-400">
-            Follow the challenge from its origins through the launch of Version{' '}
-            {challengeMeta.target_version} and the Digital Monument on September 16, 2026.
+            Follow the challenge from its origins through the September 16 Community Review Draft,
+            then Version {challengeMeta.target_version} and the Digital Monument on November 13,
+            2026.
           </p>
           <div className="mt-8">
             <ChallengeTimeline activeAndUpcoming={activeAndUpcoming} past={past} />
@@ -203,7 +209,16 @@ export default async function ChallengePage() {
             that brought us here while inviting everyone to help shape what comes next. The
             Coordination Layer will not be built by a single organization or technology. It will
             emerge through many communities working together to define the conditions under which
-            trust, context, presence, and governance can flourish.
+            trust, context, presence, and governance can flourish. Public contributions are
+            accepted under the licenses in our{' '}
+            <Link href="/terms" className="text-cyan-300 hover:text-cyan-200">
+              Terms
+            </Link>
+            . We do not sell personal data or use it for advertising targeting. See{' '}
+            <Link href="/privacy" className="text-cyan-300 hover:text-cyan-200">
+              Privacy
+            </Link>
+            .
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

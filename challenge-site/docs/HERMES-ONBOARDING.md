@@ -2,7 +2,7 @@
 
 Org landing pads in **Desirable Properties Studio** at `{estate-property}/pad/{slug}` (first property: desirableproperties.org).
 
-The Desirable Properties Challenge is the ongoing program. DP Studio is the tooling (landing pads, Hermes, workgroups, patches). Studio is in **public beta** now; **Version 1.0** of *The Layered Web* and the public Studio launch are **September 16, 2026**.
+The Desirable Properties Challenge is the ongoing program. DP Studio is the tooling (landing pads, Hermes, workgroups, patches). Studio is in **public beta** now. **September 16, 2026** is the Community Review Draft milestone; **Version 1.0** of *The Layered Web* targets **November 13, 2026**.
 
 ## What is a landing pad?
 
@@ -39,7 +39,7 @@ Use this body for the generic Project Liberty Alliance list send. Replace `{esta
 ```text
 Subject: Your DP Studio landing pad – review before September 16
 
-We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Version 0.77 is open for review now; Version 1.0 of The Layered Web and the public Studio launch are September 16, 2026.
+We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Version 0.77 is open for review now. The Community Review Draft milestone is September 16, 2026; Version 1.0 of The Layered Web targets November 13, 2026.
 
 Find your pad at https://{estate-property}/pad/project-liberty-alliance or go directly:
 

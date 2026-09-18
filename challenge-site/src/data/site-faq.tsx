@@ -51,12 +51,62 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
     title: 'Start here',
     items: [
       {
+        q: 'I am new. Where do I start?',
+        a: (
+          <>
+            <p>
+              Open <Link href="/start-here">Start Here</Link>. It explains the initiative in short
+              form, then offers two paths: comment on a chapter, or open a workgroup{' '}
+              <strong className="font-semibold text-white">Collaborate</strong> page.
+            </p>
+          </>
+        ),
+      },
+      {
+        q: 'Book vs Collaborate vs Gov Hub vs Deepi vs On-Chain: where do I work?',
+        a: (
+          <>
+            <p>Use this map. You do not need every tool.</p>
+            <ul>
+              <li>
+                <strong className="font-semibold text-white">The book</strong> (
+                {DESIRABLE_PROPERTIES_BOOK_HOST}) – read a DP chapter and Discuss, Patch, or Insert.
+                Best for a 30–90 minute review. Nav: Discuss &amp; Patch.
+              </li>
+              <li>
+                <strong className="font-semibold text-white">Collaborate page</strong> – one page per
+                DP workgroup. Astra (editorial synthesis), Edit (chapter proposals), Canopi (post,
+                comment, review, like). Sign in first. Nav: Workgroups → Collaborate pages.
+              </li>
+              <li>
+                <strong className="font-semibold text-white">Gov Hub</strong> – passage-level patches
+                on the draft, plus formal workgroup membership records. Use it if you already patch
+                there, or when the book asks you to. Not the first stop for newbies.
+              </li>
+              <li>
+                <strong className="font-semibold text-white">Deepi</strong> – optional AI assist to
+                compare your notes or papers with the current DPs (~10 minutes). Nav: Deepi.
+              </li>
+              <li>
+                <strong className="font-semibold text-white">On-Chain</strong> – provenance and
+                memory (inscribed drafts, Call for Input archive, Digital Monument). Not required to
+                review or join a workgroup.{' '}
+                <Link href="/onchain">On-Chain →</Link>
+              </li>
+            </ul>
+            <p>
+              Newcomers: <Link href="/start-here">Start Here</Link>.
+            </p>
+          </>
+        ),
+      },
+      {
         q: 'What is the Desirable Properties Challenge?',
         a: (
           <>
             <p>
-              The Desirable Properties Challenge is a global community effort—launched by Vint
-              Cerf&apos;s September 2024 question—to define what qualities a new{' '}
+              The Desirable Properties Challenge is a global community effort, launched by Vint
+              Cerf&apos;s September 2024 question, to define what qualities a new{' '}
               <strong className="font-semibold text-white">Coordination Layer</strong> above
               today&apos;s Web should possess before it becomes everyday infrastructure.
             </p>
@@ -74,7 +124,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              The Meta-Layer is a community-governed coordination layer above today&apos;s Web—a
+              The Meta-Layer is a community-governed coordination layer above today&apos;s Web–a
               shared digital atmosphere that sustains context, presence, memory, and meaning without
               replacing existing content.
             </p>
@@ -92,8 +142,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               Desirable Properties are shared design criteria that describe what must be true for
-              the Meta-Layer to function—trust, agency, safety, accountability, contextual
-              integrity, collective intelligence, and human flourishing—without prescribing how
+              the Meta-Layer to function–trust, agency, safety, accountability, contextual
+              integrity, collective intelligence, and human flourishing–without prescribing how
               they must be built.
             </p>
             <p>
@@ -109,14 +159,15 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              DPs describe outcomes and conditions—the &ldquo;what&rdquo; humanity wants the
+              DPs describe outcomes and conditions–the &ldquo;what&rdquo; humanity wants the
               Meta-Layer to enable. Technical specifications, Architecture Decision Records (ADRs),
               and ML-RFCs follow once those outcomes are clear enough to guide implementation.
             </p>
             <p>
               Multiple implementations, governance models, and technical approaches can coexist while
               remaining aligned around shared outcomes. See{' '}
-              <Link href="/participate">Participate</Link> for how Version 1.0 becomes the
+              <Link href="/start-here">Start Here</Link> and the{' '}
+              <Link href="/challenge">Challenge timeline</Link> for how Version 1.0 becomes the
               foundation for substrate work.
             </p>
           </>
@@ -128,7 +179,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <strong className="font-semibold text-white">Version 0.77</strong> is the current
-              open working draft—developed through AI-assisted synthesis, two Calls for Input, and
+              open working draft–developed through AI-assisted synthesis, two Calls for Input, and
               community stewardship. It is open for public review now.
             </p>
             <p>
@@ -155,7 +206,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               supports chapter-level Discuss, Patch, and Insert.
             </p>
             <p>
-              People make decisions. AI tools like Deepi help organize conversation—they do not
+              People make decisions. AI tools like Deepi help organize conversation–they do not
               replace community judgment.
             </p>
           </>
@@ -172,8 +223,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               ideas.
             </p>
             <p>
-              Thoughtful critique, examples, and lived experience are as valuable as implementation
-              expertise. See <Link href="/participate">all the ways to contribute</Link>.
+              See <Link href="/start-here">Start Here</Link>. For Deepi, badges, and other optional
+              paths, see the <Link href="/participate">contribution catalog</Link>.
             </p>
           </>
         ),
@@ -182,29 +233,31 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         q: 'Where should I start?',
         a: (
           <>
-            <p>A practical path for newcomers:</p>
+            <p>
+              Use <Link href="/start-here">Start Here</Link>. A practical path:
+            </p>
             <ol className="mt-3 list-decimal space-y-2 pl-5">
               <li>
-                Read the framing on <Link href="/about">About</Link>.
+                Pick a DP that interests you on Start Here or the{' '}
+                <Link href="/#dps">homepage grid</Link>.
               </li>
               <li>
-                Browse the <Link href="/#dps">23 DPs</Link> and pick one chapter that interests
-                you.
+                If you will help take that DP to Version 1.0, open its{' '}
+                <strong className="font-semibold text-white">Collaborate</strong> page from{' '}
+                <Link href={WORKGROUPS_LIST_HREF}>Workgroups</Link> (Astra, Edit, Canopi). Groups
+                need at least three people.
               </li>
               <li>
-                Open the book and try <strong className="font-semibold text-white">Discuss</strong>
-                , <strong className="font-semibold text-white">Patch</strong>, or{' '}
-                <strong className="font-semibold text-white">Insert</strong> on a passage—or patch
-                the same draft on{' '}
+                If you only want to review, open the book and use Discuss, Patch, or Insert, or
+                patch the draft on{' '}
                 <a href={GOVHUB_DP_PATCHES_URL} target="_blank" rel="noopener noreferrer">
                   Gov Hub
                 </a>
                 .
               </li>
               <li>
-                Optional: use the <Link href="/agent">DP Community AI</Link> or{' '}
-                <Link href={WORKGROUPS_LIST_HREF}>join a workgroup</Link> when you want deeper
-                involvement.
+                Optional: <Link href="/about">About</Link> for framing,{' '}
+                <Link href="/agent">Deepi</Link> to integrate existing notes.
               </li>
             </ol>
           </>
@@ -214,36 +267,37 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
   },
   {
     id: 'participate',
-    title: 'How to participate',
+    title: 'Contribution catalog (beyond Start Here)',
     items: [
       {
         q: 'What are the main ways to contribute?',
         a: (
           <>
-            <p>Three paths, depending on how much time you have:</p>
+            <p>Two primary paths, plus optional AI assist:</p>
             <ul>
               <li>
-                <strong className="font-semibold text-white">Integrate your ideas</strong> (~10
-                min) – use the DP Community AI to compare your notes, papers, or projects with
-                current DPs. <Link href="/agent">Open Deepi →</Link>
+                <strong className="font-semibold text-white">Collaborate page</strong> (ongoing) –
+                join a DP workgroup workspace. Astra, Edit, and Canopi (post, comment, review,
+                like). Target: Version 1.0 on November 13, 2026.{' '}
+                <Link href={WORKGROUPS_LIST_HREF}>Browse Collaborate pages →</Link>
               </li>
               <li>
                 <strong className="font-semibold text-white">Review the Desirable Properties</strong>{' '}
-                (~1–3 hours) – read chapters on the book and contribute via Discuss, Patch, or
-                Insert; or submit passage-level patches on the Interface Governance Hub.{' '}
-                <Link href="/participate">Participate →</Link>
+                (~30–90 minutes) – read a chapter on the book and Discuss, Patch, or Insert; or
+                patch on Gov Hub.{' '}
+                <Link href="/start-here">Start Here →</Link>
               </li>
               <li>
-                <strong className="font-semibold text-white">Join a workgroup</strong> (~2–10+
-                hours) – help synthesize community feedback into Version 1.0 for one or more DPs.{' '}
-                <Link href={WORKGROUPS_LIST_HREF}>Browse workgroups →</Link>
+                <strong className="font-semibold text-white">Integrate your ideas</strong> (~10
+                min) – use Deepi to compare notes or papers with current DPs.{' '}
+                <Link href="/agent">Open Deepi →</Link>
               </li>
             </ul>
           </>
         ),
       },
       {
-        q: 'Discuss, Patch, and Insert—what\'s the difference?',
+        q: 'Discuss, Patch, and Insert–what\'s the difference?',
         a: (
           <>
             <p>
@@ -255,7 +309,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               <strong className="font-semibold text-white">On the Interface Governance Hub</strong>{' '}
               (Gov Hub), <strong className="font-semibold text-white">Patch</strong> means something
               slightly different: open an ML-Draft, select a passage, and submit a formal text
-              revision for community review—without using the book&apos;s Discuss / Patch / Insert
+              revision for community review–without using the book&apos;s Discuss / Patch / Insert
               widget. Both channels feed the same editorial process.{' '}
               <a href={GOVHUB_DP_PATCHES_URL} target="_blank" rel="noopener noreferrer">
                 Patch drafts on Gov Hub →
@@ -292,7 +346,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Deepi is the DP Community AI. It helps clarify what Desirable Properties mean,
               surface tensions, compare your ideas with existing DPs, identify gaps, and draft
-              suggested patches—preparing your thinking for community discussion.
+              suggested patches–preparing your thinking for community discussion.
             </p>
             <p>
               Sign in to chat at <Link href="/agent">desirableproperties.org/agent</Link>. Your
@@ -330,7 +384,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              Two coordinated Calls for Input shaped the current draft—first through People
+              Two coordinated Calls for Input shaped the current draft–first through People
               Centered Internet, Bridgit.io, and aligned partners; then through a broader public
               call whose submissions were preserved as Bitcoin Ordinal inscriptions.
             </p>
@@ -346,7 +400,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         ),
       },
       {
-        q: 'I have a question not covered here—where do I ask?',
+        q: 'I have a question not covered here–where do I ask?',
         a: (
           <>
             <p>
@@ -394,7 +448,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <em>{DESIRABLE_PROPERTIES_BOOK_TITLE}</em> is the formal title of the Desirable
-              Properties book—a working draft published as ML-Drafts and evolving through community
+              Properties book–a working draft published as ML-Drafts and evolving through community
               Discuss, Patch, Insert, and Gov Hub revisions.
             </p>
             <p>
@@ -432,7 +486,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               The challenge site, book reader, and Interface Governance Hub share a single sign-in
               (Web3Auth with Google). After you authenticate, you may be redirected to Gov Hub to
-              complete a join, nominate, or handoff flow—or returned to the page you started from.
+              complete a join, nominate, or handoff flow–or returned to the page you started from.
             </p>
             <p>
               Your session works across these surfaces so you do not need separate accounts.
@@ -446,15 +500,13 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               Yes. <strong className="font-semibold text-white">staging.desirableproperties.org</strong>{' '}
-              previews challenge-site changes before production deploy. It uses dev Gov Hub (
-              <code className="text-sm text-slate-400">dev.hub.themetalayer.org</code>) and staging
-              book hosts, but it shares the same challenge-site database as production (
-              <code className="text-sm text-slate-400">DP_DATABASE_URL</code> from{' '}
-              <code className="text-sm text-slate-400">.env.local</code>).
+              previews challenge-site changes before production deploy. It uses the development Gov
+              Hub and staging book hosts, and it shares the same challenge-site database as
+              production.
             </p>
             <p>
-              <strong className="font-semibold text-white">Important:</strong> actions on staging—
-              support tickets, signups, Deepi sessions, broadcasts, and other stored data—can
+              <strong className="font-semibold text-white">Important:</strong> actions on staging–
+              support tickets, signups, Deepi sessions, broadcasts, and other stored data–can
               affect your real account and appear on production. Treat staging as a shared platform,
               not an isolated sandbox.
             </p>
@@ -504,7 +556,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               On September 16, 2024, Vint Cerf joined the Meta-Layer community to discuss what
-              desirable properties a new coordination layer should possess—launching the challenge
+              desirable properties a new coordination layer should possess–launching the challenge
               and suggesting Federated Strong Authentication as an initial property (DP1).
             </p>
             <p>
@@ -537,12 +589,28 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               A Desirable Properties workgroup is a focused team that stewards one DP (or DP
-              Discovery) through synthesis—reviewing comments, patches, and proposals, building
-              rough consensus, and preparing recommended revisions for the editorial process
-              toward Version 1.0.
+              Discovery) toward Version 1.0. The live workspace is the{' '}
+              <strong className="font-semibold text-white">Collaborate</strong> page: Astra
+              (editorial synthesis), Edit (chapter proposals), and Canopi (post, comment, review,
+              like). Groups should have at least three people.
             </p>
             <p>
-              Most collaboration is async. <Link href={WORKGROUPS_LIST_HREF}>Browse workgroups →</Link>
+              Most collaboration is async.{' '}
+              <Link href={WORKGROUPS_LIST_HREF}>Browse Collaborate pages →</Link>
+            </p>
+          </>
+        ),
+      },
+      {
+        q: 'Is Collaborate different from Workgroups in the nav?',
+        a: (
+          <>
+            <p>
+              No. <strong className="font-semibold text-white">Workgroups</strong> is the program:
+              one group per DP, plus DP Discovery. A{' '}
+              <strong className="font-semibold text-white">Collaborate page</strong> is that
+              group&apos;s workspace on this site (the URL looks like /workgroups/dp2-…). The
+              Workgroups nav item lists them; Collaborate is the button on a specific DP.
             </p>
           </>
         ),
@@ -553,7 +621,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <strong className="font-semibold text-white">Join</strong> when you want to contribute
-              as a member—reviewing, discussing, drafting, or taking a flexible role like Recorder
+              as a member–reviewing, discussing, drafting, or taking a flexible role like Recorder
               or Liaison.
             </p>
             <p>
@@ -593,7 +661,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               Each Desirable Property has a base badge. When you contribute to a specific DP, you
-              can earn that property&apos;s badge—with optional role overlays (Member, Workgroup
+              can earn that property&apos;s badge–with optional role overlays (Member, Workgroup
               Coordinator, Patch Contributor, Steward, and others).
             </p>
             <p>
@@ -616,12 +684,29 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         ),
       },
       {
+        q: 'Do I need to use On-Chain to participate?',
+        a: (
+          <>
+            <p>
+              No. On-chain records are a memory and provenance layer: inscribed drafts, Call for
+              Input submissions, and the Digital Monument. They are not a required step to review a
+              chapter or join a Collaborate page.
+            </p>
+            <p>
+              If you want the permanent record, see <Link href="/onchain">On-Chain</Link>. Badges
+              and minting are optional recognition, not a gate.{' '}
+              <Link href="/badges">Badges →</Link>
+            </p>
+          </>
+        ),
+      },
+      {
         q: 'What is the on-chain book / Digital Monument?',
         a: (
           <>
             <p>
               <em>{DESIRABLE_PROPERTIES_BOOK_TITLE}</em> is inscribed as a BRC333 book on Bitcoin
-              Ordinals—a permanent record of the community-developed Desirable Properties. The
+              Ordinals–a permanent record of the community-developed Desirable Properties. The
               challenge site&apos;s <Link href="/onchain">On-Chain</Link> page indexes PCI emails,
               Call for Input submissions, and inscribed DP drafts.
             </p>
@@ -633,7 +718,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              Badge minting is tied to documented contribution—patches, workgroup participation,
+              Badge minting is tied to documented contribution–patches, workgroup participation,
               reviews, and similar public records. Claim and mint flows are rolling out with the
               Challenge; preview artwork and metadata on the badges ordinal project.
             </p>
@@ -659,7 +744,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Vint Cerf suggested <strong className="font-semibold text-white">Federated Strong
               Authentication</strong> as an intentionally foundational starting point. Trust is the
-              condition upon which other coordination depends—without it, higher-order properties
+              condition upon which other coordination depends–without it, higher-order properties
               cannot function reliably.
             </p>
             <p>
@@ -674,7 +759,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              AI systems are treated as cognitive amplifiers—extending perception and pattern
+              AI systems are treated as cognitive amplifiers–extending perception and pattern
               recognition without displacing human judgment. AI participation is differentiated
               from human participation, subject to asymmetric constraints, and embedded within
               interface-level governance.
@@ -693,7 +778,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Collective intelligence does not emerge automatically from connection or scale. It
               requires persistent context, shared memory, and legible governance as baseline
-              conditions—the environment the Meta-Layer is designed to support.
+              conditions–the environment the Meta-Layer is designed to support.
             </p>
             <p>
               <Link href="/about#collective-intelligence">Read more on About →</Link>
@@ -708,7 +793,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               Today&apos;s Web is often treated as a flat surface of pages and links, but it is
               better understood as layered. The Meta-Layer introduces context as
-              infrastructure—shared context that persists above individual pages and platforms so
+              infrastructure–shared context that persists above individual pages and platforms so
               trust, learning, and continuity can accumulate.
             </p>
             <p>
@@ -722,7 +807,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              No. DP chapters are published as ML-Drafts—works in progress meant to evolve through
+              No. DP chapters are published as ML-Drafts–works in progress meant to evolve through
               Discuss, Patch, Insert, critique, experimentation, and lived experience. Version 1.0
               is a milestone, not the end of iteration.
             </p>

@@ -62,7 +62,7 @@ import {
   isContributionRecordHint,
   isReplaceSubmitMode,
   loadPendingContributionDraft,
-  loadStagedProposals,
+  loadStagedProposalsForThread,
   markHintSubmitted,
   mergeContributionSetForPartialSave,
   mergePendingUserMessagesIntoThread,
@@ -608,8 +608,10 @@ export default function HermesChat({
   const [attachError, setAttachError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [contributionDraft, setContributionDraft] = useState<ContributionDraft | null>(null);
+  const [contributionDraftThreadId, setContributionDraftThreadId] = useState<string | null>(null);
   const [contributionSets, setContributionSets] = useState<ContributionSet[]>([]);
   const [contributionBusy, setContributionBusy] = useState(false);
+  const [revisingContribution, setRevisingContribution] = useState(false);
   const [draftingMessageId, setDraftingMessageId] = useState<string | null>(null);
   const [correctionBusyId, setCorrectionBusyId] = useState<string | null>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
@@ -641,6 +643,7 @@ export default function HermesChat({
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const composerComposingRef = useRef(false);
   const activeThreadIdRef = useRef<string | null>(null);
+  const contributionDraftThreadIdRef = useRef<string | null>(null);
   const chatAbortRef = useRef<AbortController | null>(null);
   const stickToBottomRef = useRef(true);
   const prevMessageCountRef = useRef(0);
@@ -727,6 +730,33 @@ export default function HermesChat({
     else sessionStorage.removeItem(ACTIVE_THREAD_KEY);
   }, []);
 
+  const clearOpenContributionDraft = useCallback((threadId?: string | null) => {
+    setContributionDraft(null);
+    setContributionDraftThreadId(null);
+    contributionDraftThreadIdRef.current = null;
+    draftingMessageIdRef.current = null;
+    setDraftingMessageId(null);
+    if (threadId) clearPendingContributionDraft(threadId);
+  }, []);
+
+  const bindContributionDraft = useCallback((
+    draft: ContributionDraft,
+    threadId: string,
+    assistantMessageId?: string | null,
+    contributionSetsForInit: ContributionSet[] = [],
+  ) => {
+    const initialized = initializeDraftForEditing({
+      ...draft,
+      sourceThreadId: threadId,
+      sourceAssistantMessageId: assistantMessageId || draft.sourceAssistantMessageId || undefined,
+    }, contributionSetsForInit);
+    setContributionDraft(initialized);
+    setContributionDraftThreadId(threadId);
+    contributionDraftThreadIdRef.current = threadId;
+    draftingMessageIdRef.current = assistantMessageId || null;
+    savePendingContributionDraft(initialized, threadId, assistantMessageId || null);
+  }, []);
+
   const threadCreateSurface = useMemo(() => {
     if (fromWorkgroupParam && workgroupSlugParam) {
       return `desirableproperties.org/workgroups/${workgroupSlugParam}`;
@@ -800,6 +830,11 @@ export default function HermesChat({
     if (isThreadSwitch) {
       window.getSelection()?.removeAllRanges();
       selectingInChatRef.current = false;
+      setContributionDraft(null);
+      setContributionDraftThreadId(null);
+      contributionDraftThreadIdRef.current = null;
+      draftingMessageIdRef.current = null;
+      setDraftingMessageId(null);
     }
 
     setThreadLoadError(null);
@@ -853,6 +888,8 @@ export default function HermesChat({
       if (isGroupThread) {
         setThreadAccess(loadedThread?.access || null);
         setContributionDraft(null);
+        setContributionDraftThreadId(null);
+        contributionDraftThreadIdRef.current = null;
         setContributionSets([]);
         setAttachments([]);
         setAttachError(null);
@@ -933,33 +970,37 @@ export default function HermesChat({
           : null;
         const filed = await shouldBlockDraftRestore(pending.draft, sets, assistantTurnId);
         if (!filed) {
-          setContributionDraft(initializeDraftForEditing(pending.draft, sets));
-          draftingMessageIdRef.current = pending.assistantMessageId || null;
+          bindContributionDraft(
+            pending.draft,
+            canonicalThreadId,
+            pending.assistantMessageId || null,
+            sets,
+          );
           setSystemNotice({
             variant: 'info',
             text: 'Restored your in-progress contribution draft from this session.',
           });
         } else {
-          setContributionDraft(null);
-          clearPendingContributionDraft();
+          clearOpenContributionDraft(canonicalThreadId);
           clearStagedProposalsForRef(pending.draft.draftRef);
         }
       } else {
         let restoredStaged: ContributionDraft | null = null;
-        for (const row of loadStagedProposals()) {
+        for (const row of loadStagedProposalsForThread(canonicalThreadId)) {
           if (await shouldBlockDraftRestore(row, sets)) continue;
           restoredStaged = row;
           break;
         }
         if (restoredStaged) {
-          setContributionDraft(initializeDraftForEditing(restoredStaged, sets));
-          draftingMessageIdRef.current = null;
+          bindContributionDraft(restoredStaged, canonicalThreadId, restoredStaged.sourceAssistantMessageId || null, sets);
           setSystemNotice({
             variant: 'info',
             text: 'Restored your last locally saved contribution draft. Review and submit when ready.',
           });
         } else {
           setContributionDraft(null);
+          setContributionDraftThreadId(null);
+          contributionDraftThreadIdRef.current = null;
         }
       }
       setAttachments([]);
@@ -972,7 +1013,7 @@ export default function HermesChat({
         setThreadLoadingId(null);
       }
     }
-  }, [persistActiveThread, dpFocus]);
+  }, [persistActiveThread, dpFocus, bindContributionDraft, clearOpenContributionDraft]);
 
   useEffect(() => {
     if (!signedIn) return;
@@ -1157,7 +1198,7 @@ export default function HermesChat({
     setThreadAccess(null);
     clearPendingContributionDraft();
     setContributionSets([]);
-    setContributionDraft(null);
+    clearOpenContributionDraft();
     setAttachments([]);
     setAttachError(null);
     setSystemNotice(null);
@@ -1217,9 +1258,11 @@ export default function HermesChat({
   const updateContributionDraft = useCallback((draft: ContributionDraft | null) => {
     setContributionDraft(draft);
     if (draft) {
+      const threadId = contributionDraftThreadIdRef.current || activeThreadIdRef.current;
+      if (!threadId) return;
       savePendingContributionDraft(
         draft,
-        activeThreadIdRef.current,
+        threadId,
         draftingMessageIdRef.current,
       );
     }
@@ -1236,9 +1279,8 @@ export default function HermesChat({
       });
       if (!ok) return;
     }
-    setContributionDraft(null);
-    clearPendingContributionDraft();
-  }, [contributionDraft]);
+    clearOpenContributionDraft(contributionDraftThreadIdRef.current);
+  }, [contributionDraft, clearOpenContributionDraft]);
 
   const renameThread = useCallback(async (threadId: string, title: string) => {
     const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, {
@@ -1295,14 +1337,14 @@ export default function HermesChat({
     setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
     if (activeThreadIdRef.current === threadId) {
       persistActiveThread(null);
-      setContributionDraft(null);
+      clearOpenContributionDraft();
       setAttachments([]);
       setAttachError(null);
       setMessages([
         { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
       ]);
     }
-  }, [persistActiveThread]);
+  }, [persistActiveThread, clearOpenContributionDraft]);
 
   const copyAssistantMarkdown = useCallback(async (messageId: string, text: string) => {
     const ok = await copyTextToClipboard(text);
@@ -1334,14 +1376,14 @@ export default function HermesChat({
     setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
     if (activeThreadIdRef.current === threadId) {
       persistActiveThread(null);
-      setContributionDraft(null);
+      clearOpenContributionDraft(threadId);
       setAttachments([]);
       setAttachError(null);
       setMessages([
         { id: 'intro', text: INTRO, sender: 'assistant', timestamp: new Date() },
       ]);
     }
-  }, [persistActiveThread]);
+  }, [persistActiveThread, clearOpenContributionDraft]);
 
   const onFilesSelected = async (files: FileList | null) => {
     if (!files?.length) return;
@@ -2074,18 +2116,23 @@ export default function HermesChat({
       });
       return;
     }
-    setContributionDraft(initializeDraftForEditing(draft, contributionSets));
-    draftingMessageIdRef.current = null;
-    setDraftingMessageId(null);
-    savePendingContributionDraft(draft, activeThreadIdRef.current, null);
+    const threadId = activeThreadIdRef.current;
+    if (!threadId) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Open a conversation before editing this draft.',
+      });
+      return;
+    }
+    bindContributionDraft(draft, threadId, null, contributionSets);
     setSystemNotice({
       variant: 'info',
-      text: 'Draft opened for editing — choose Update draft or Replace live post when you submit.',
+      text: 'Draft opened for editing. Choose Update draft or Replace live post when you submit.',
     });
     if (!chatHasActiveTextSelection()) {
       contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
     }
-  }, [promptSignIn, signedIn, chatHasActiveTextSelection]);
+  }, [promptSignIn, signedIn, chatHasActiveTextSelection, bindContributionDraft, contributionSets]);
 
   const startRevision = useCallback((
     set: ContributionSet,
@@ -2104,18 +2151,23 @@ export default function HermesChat({
       });
       return;
     }
-    setContributionDraft(initializeDraftForEditing(draft, contributionSets));
-    draftingMessageIdRef.current = null;
-    setDraftingMessageId(null);
-    savePendingContributionDraft(draft, activeThreadIdRef.current, null);
+    const threadId = activeThreadIdRef.current;
+    if (!threadId) {
+      setSystemNotice({
+        variant: 'error',
+        text: 'Open a conversation before revising this proposal.',
+      });
+      return;
+    }
+    bindContributionDraft(draft, threadId, null, contributionSets);
     setSystemNotice({
       variant: 'info',
-      text: 'Revision opened — choose Save revision draft or Replace published post when you submit.',
+      text: 'Revision opened. Choose Save revision draft or Replace published post when you submit.',
     });
     if (!chatHasActiveTextSelection()) {
       contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
     }
-  }, [promptSignIn, signedIn, chatHasActiveTextSelection]);
+  }, [promptSignIn, signedIn, chatHasActiveTextSelection, bindContributionDraft, contributionSets]);
 
   const draftContribution = async (scope: ContributionScope, assistantMessageId: string) => {
     if (!signedIn) {
@@ -2158,6 +2210,7 @@ export default function HermesChat({
       .slice(-10)
       .map((m) => ({ text: m.text, sender: m.sender }));
 
+    const sourceThreadId = activeThreadIdRef.current;
     const excludeProposals = submittedProposalExclusionsFromMessages(messages);
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
@@ -2180,15 +2233,31 @@ export default function HermesChat({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not draft contribution');
       if (!data.draft || typeof data.draft !== 'object') {
-        throw new Error('Draft response was empty — try again in a moment');
+        throw new Error('Draft response was empty. Try again in a moment');
       }
-      setContributionDraft(initializeDraftForEditing(data.draft, contributionSets));
-      savePendingContributionDraft(
-        data.draft,
-        activeThreadIdRef.current,
-        assistantMessageId,
-      );
-      setSystemNotice(null);
+      const draftWithSource: ContributionDraft = {
+        ...data.draft,
+        sourceThreadId: sourceThreadId || undefined,
+        sourceAssistantMessageId: assistantMessageId,
+      };
+      if (sourceThreadId) {
+        savePendingContributionDraft(draftWithSource, sourceThreadId, assistantMessageId);
+      }
+      const stillOnSource = Boolean(sourceThreadId) && activeThreadIdRef.current === sourceThreadId;
+      if (stillOnSource && sourceThreadId) {
+        bindContributionDraft(draftWithSource, sourceThreadId, assistantMessageId, contributionSets);
+        setSystemNotice(null);
+      } else if (sourceThreadId) {
+        setSystemNotice({
+          variant: 'info',
+          text: 'Your contribution draft is ready in the conversation where you started it.',
+        });
+      } else {
+        setContributionDraft(initializeDraftForEditing(draftWithSource, contributionSets));
+        setContributionDraftThreadId(null);
+        contributionDraftThreadIdRef.current = null;
+        setSystemNotice(null);
+      }
     } catch (err) {
       setSystemNotice({
         variant: 'error',
@@ -2202,7 +2271,7 @@ export default function HermesChat({
               contributionHint: {
                 ...m.contributionHint,
                 contributionReady: false,
-                reason: 'Draft failed — see notice above. Send a follow-up or try again later.',
+                reason: 'Draft failed. See notice above. Send a follow-up or try again later.',
               },
             }
             : m,
@@ -2214,10 +2283,91 @@ export default function HermesChat({
     }
   };
 
+  const reviseContributionDraft = async () => {
+    if (!contributionDraft || !signedIn) return;
+    setContributionBusy(true);
+    setRevisingContribution(true);
+
+    const assistantMessageId = contributionDraft.sourceAssistantMessageId
+      || draftingMessageIdRef.current;
+    const assistantIdx = assistantMessageId
+      ? messages.findIndex((m) => m.id === assistantMessageId)
+      : -1;
+    const assistantMessage = assistantIdx >= 0 ? messages[assistantIdx] : null;
+    const userMessage = assistantIdx >= 0
+      ? [...messages.slice(0, assistantIdx)]
+        .reverse()
+        .find((m) => m.sender === 'user')
+      : messages.filter((m) => m.sender === 'user').at(-1);
+    const history = assistantIdx >= 0
+      ? messages
+        .slice(0, assistantIdx)
+        .filter((m) => m.id !== 'intro' && m.id !== userMessage?.id)
+        .slice(-10)
+        .map((m) => ({ text: m.text, sender: m.sender }))
+      : messages
+        .filter((m) => m.id !== 'intro')
+        .slice(-10)
+        .map((m) => ({ text: m.text, sender: m.sender }));
+
+    try {
+      const res = await fetch('/api/agent/contributions/revise', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          proposals: proposalsFromContributionDraft(contributionDraft),
+          claimVerbatim: contributionDraft.claimVerbatim || '',
+          draftRef: contributionDraft.draftRef,
+          dpFocus,
+          message: userMessage?.text || '',
+          assistantReply: assistantMessage?.text || '',
+          history,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not revise contribution');
+      if (!data.draft || typeof data.draft !== 'object') {
+        throw new Error('Revise response was empty. Try again in a moment.');
+      }
+      const revisedProposals: ContributionProposal[] = Array.isArray(data.draft.proposals)
+        ? data.draft.proposals
+        : proposalsFromContributionDraft(contributionDraft);
+      const next: ContributionDraft = {
+        ...contributionDraft,
+        proposals: revisedProposals,
+        payload: data.draft.payload || revisedProposals[0]?.payload || contributionDraft.payload,
+        kind: data.draft.kind || contributionDraft.kind,
+        claimVerbatim: data.draft.claimVerbatim || contributionDraft.claimVerbatim,
+        judgeSummary: data.draft.judgeSummary || contributionDraft.judgeSummary,
+        dirtyProposalIds: revisedProposals.map((p) => p.id),
+      };
+      setContributionDraft(initializeDraftForEditing(next, contributionSets));
+      savePendingContributionDraft(
+        next,
+        activeThreadIdRef.current,
+        assistantMessageId,
+      );
+      setSystemNotice(null);
+    } catch (err) {
+      setSystemNotice({
+        variant: 'error',
+        text: userFacingError(err),
+      });
+    } finally {
+      setContributionBusy(false);
+      setRevisingContribution(false);
+    }
+  };
+
   const submitContribution = async (mode: ContributionSubmitMode) => {
     if (!contributionDraft || !signedIn) return;
     setContributionBusy(true);
     const draftRef = contributionDraft.draftRef;
+    const submitThreadId =
+      contributionDraft.sourceThreadId
+      || contributionDraftThreadIdRef.current
+      || activeThreadId
+      || activeThreadIdRef.current;
     const editContext: ContributionEditContext = resolveContributionEditContext(
       contributionDraft,
       contributionSets,
@@ -2273,7 +2423,8 @@ export default function HermesChat({
             draftRef,
             proposals: publishItems,
             editContext,
-            threadId: activeThreadId,
+            threadId: submitThreadId,
+            claimVerbatim: contributionDraft.claimVerbatim || undefined,
           }),
         });
         const data = await res.json();
@@ -2295,7 +2446,8 @@ export default function HermesChat({
           body: JSON.stringify({
             draftRef,
             proposals: itemsToSubmit,
-            threadId: activeThreadId,
+            threadId: submitThreadId,
+            claimVerbatim: contributionDraft.claimVerbatim || undefined,
           }),
         });
         const data = await res.json();
@@ -2313,7 +2465,7 @@ export default function HermesChat({
             if (link) links.push(link);
           });
         }
-        saveStagedProposal(draftWithContext);
+        saveStagedProposal(draftWithContext, submitThreadId);
       } else {
         const destination = defaultDestination();
         for (const item of itemsToSubmit) {
@@ -2325,9 +2477,10 @@ export default function HermesChat({
               draftRef,
               payload: item.payload,
               destination,
-              threadId: activeThreadId,
+              threadId: submitThreadId,
               proposalId: item.id,
               canopiDraftId: item.canopiDraftId || null,
+              claimVerbatim: contributionDraft.claimVerbatim || undefined,
             }),
           });
           const data = await res.json();
@@ -2337,15 +2490,16 @@ export default function HermesChat({
         }
       }
 
-      setContributionDraft(null);
-      clearPendingContributionDraft();
+      const sourceAssistantMessageId =
+        contributionDraft.sourceAssistantMessageId
+        || draftingMessageIdRef.current;
+      clearOpenContributionDraft(submitThreadId);
       clearStagedProposalsForRef(draftRef);
 
       const count = itemsToSubmit.length;
       const userSummary = formatContributionUserSummary(draftWithContext, mode, count);
       const bodyMarkdown = formatContributionSubmissionMarkdown(draftWithContext, mode, links);
-      const threadId = activeThreadIdRef.current;
-      const sourceAssistantMessageId = draftingMessageIdRef.current;
+      const threadId = submitThreadId;
       const sourceTurnId =
         messages.find((m) => m.id === sourceAssistantMessageId)?.turnId
         || (sourceAssistantMessageId ? turnIdFromAssistantMessageId(sourceAssistantMessageId) : null);
@@ -2419,16 +2573,18 @@ export default function HermesChat({
           const recordData = await recordRes.json().catch(() => ({}));
           if (recordRes.ok && recordData.turn?.id) {
             recordTurnId = recordData.turn.id;
-            if (recordData.turn.contributionSet) {
-              setContributionSets((prev) => {
-                const next = prev.filter((s) => s.id !== recordData.turn.contributionSet.id);
-                return [...next, recordData.turn.contributionSet];
-              });
-            } else if (contributionSet) {
-              setContributionSets((prev) => [
-                ...prev.filter((s) => s.id !== contributionSet.id),
-                { ...contributionSet, status: 'complete', recordTurnId },
-              ]);
+            if (activeThreadIdRef.current === submitThreadId) {
+              if (recordData.turn.contributionSet) {
+                setContributionSets((prev) => {
+                  const next = prev.filter((s) => s.id !== recordData.turn.contributionSet.id);
+                  return [...next, recordData.turn.contributionSet];
+                });
+              } else if (contributionSet) {
+                setContributionSets((prev) => [
+                  ...prev.filter((s) => s.id !== contributionSet.id),
+                  { ...contributionSet, status: 'complete', recordTurnId },
+                ]);
+              }
             }
           }
         } catch {
@@ -2442,60 +2598,67 @@ export default function HermesChat({
         ? messages.find((m) => m.id === sourceAssistantMessageId)?.contributionHint
         : null;
 
-      setMessages((prev) => {
-        const marked = sourceAssistantMessageId && submittedHint && !isContributionRecordHint(submittedHint)
-          ? prev.map((m) =>
-            m.id === sourceAssistantMessageId
-              ? {
-                ...m,
-                contributionHint: markHintSubmitted(submittedHint as ContributionHint, draftRef, mode),
-              }
-              : m,
-          )
-          : prev;
-        return [
-          ...marked,
-          {
-            id: `${turnKey}-u`,
-            text: userSummary,
-            sender: 'user',
-            timestamp: now,
-            turnId: recordTurnId || undefined,
-            contributionRecord: true,
-          },
-          {
-            id: `${turnKey}-a`,
-            text: bodyMarkdown,
-            sender: 'assistant',
-            timestamp: now,
-            turnId: recordTurnId || undefined,
-            contributionHint: recordHint,
-            contributionRecord: true,
-          },
-        ];
-      });
-      draftingMessageIdRef.current = null;
-      setDraftingMessageId(null);
-      if (!chatHasActiveTextSelection()) {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+      if (activeThreadIdRef.current === submitThreadId) {
+        setMessages((prev) => {
+          const marked = sourceAssistantMessageId && submittedHint && !isContributionRecordHint(submittedHint)
+            ? prev.map((m) =>
+              m.id === sourceAssistantMessageId
+                ? {
+                  ...m,
+                  contributionHint: markHintSubmitted(submittedHint as ContributionHint, draftRef, mode),
+                }
+                : m,
+            )
+            : prev;
+          return [
+            ...marked,
+            {
+              id: `${turnKey}-u`,
+              text: userSummary,
+              sender: 'user',
+              timestamp: now,
+              turnId: recordTurnId || undefined,
+              contributionRecord: true,
+            },
+            {
+              id: `${turnKey}-a`,
+              text: bodyMarkdown,
+              sender: 'assistant',
+              timestamp: now,
+              turnId: recordTurnId || undefined,
+              contributionHint: recordHint,
+              contributionRecord: true,
+            },
+          ];
+        });
+        draftingMessageIdRef.current = null;
+        setDraftingMessageId(null);
+        if (!chatHasActiveTextSelection()) {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
+        }
       }
     } catch (err) {
       const message = userFacingError(err);
       const needsSignIn = /sign in again|session expired/i.test(message);
       if (contributionDraft) {
+        const pinId =
+          contributionDraft.sourceThreadId
+          || contributionDraftThreadIdRef.current
+          || submitThreadId
+          || activeThreadIdRef.current;
         savePendingContributionDraft(
           contributionDraft,
-          activeThreadIdRef.current,
-          draftingMessageIdRef.current,
+          pinId,
+          draftingMessageIdRef.current || contributionDraft.sourceAssistantMessageId,
         );
-        saveStagedProposal(contributionDraft);
+        saveStagedProposal(contributionDraft, pinId);
       }
       if (!chatHasActiveTextSelection()) {
         contributionPanelRef.current?.scrollIntoView({ behavior: 'auto', block: 'nearest' });
       }
       await DpDialog.alert({
         title: isDraft ? 'Could not save drafts' : 'Could not publish',
-        message: `${message}\n\nYour draft is still open below — nothing was lost. Try Save to my drafts, or edit and retry.`,
+        message: `${message}\n\nYour draft is still open below. Nothing was lost. Try Save to my drafts, or edit and retry.`,
         variant: 'danger',
         confirmLabel: needsSignIn ? 'Sign in' : 'OK',
       });
@@ -3118,15 +3281,17 @@ export default function HermesChat({
               </div>
             ))}
 
-            {contributionDraft ? (
+            {contributionDraft && contributionDraftThreadId && contributionDraftThreadId === activeThreadId ? (
               <div ref={contributionPanelRef}>
                 <HermesContributionPanel
                   draft={contributionDraft}
                   contributionSets={contributionSets}
                   busy={contributionBusy}
+                  revising={revisingContribution}
                   onSubmit={submitContribution}
                   onCancel={() => void cancelContributionDraft()}
                   onDraftChange={updateContributionDraft}
+                  onRevise={() => void reviseContributionDraft()}
                 />
               </div>
             ) : null}
@@ -3237,7 +3402,7 @@ export default function HermesChat({
                     isWatchingOnly
                       ? isActiveCommunityChat
                         ? 'Member invite required to send…'
-                        : 'Watching — control required to send…'
+                        : 'Watching: control required to send…'
                       : signedIn
                         ? isActiveCommunityChat
                           ? DP_COMMUNITY_AI_ERRORS.communityChatPlaceholder

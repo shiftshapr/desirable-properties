@@ -43,6 +43,7 @@ export default function AboutPage() {
         </Link>
 
         <header className="mt-8 border-b border-slate-800 pb-10">
+          <p className="mb-6 text-base text-slate-300">Desirable Properties is a program of the <a href="https://themetalayer.org/" className="text-cyan-300 hover:text-cyan-200">Meta-Layer Initiative</a>, a Bridgit DAO project.</p>
           <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
             {FRAMING_CHAPTER_REF}
           </p>
@@ -67,6 +68,10 @@ export default function AboutPage() {
         </header>
 
         <div className="mt-12 space-y-14">
+          <Section id="relationships" title="Related programs">
+            <p>The Meta-Layer Initiative is a Bridgit DAO project. Desirable Properties is a program of the initiative.</p>
+            <p>Metaweb Academy is a program of the Meta-Layer Initiative.</p>
+          </Section>
           <Section id="purpose" title="Purpose of This Chapter">
             <p>
               This opening chapter frames the Desirable Properties (DPs) as a shared inquiry into

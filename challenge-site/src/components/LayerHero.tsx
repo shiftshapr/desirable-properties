@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
-import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
+import { bookDiscussHref } from '@/lib/govhub';
 
 type Frame = 'today' | 'wip' | 'coordination';
 
@@ -212,10 +212,16 @@ export default function LayerHero({ workgroupHref }: Props) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
+              href="/start-here"
+              className="rounded-lg border-2 border-cyan-300 bg-cyan-700 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-950/40 hover:bg-cyan-600"
+            >
+              Start Here →
+            </a>
+            <a
               href={workgroupHref}
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Join a Workgroup →
+              Collaborate →
             </a>
             <DiscussPatchLink
               href={bookDiscussHref()}
@@ -223,12 +229,6 @@ export default function LayerHero({ workgroupHref }: Props) {
             >
               Discuss &amp; Patch
             </DiscussPatchLink>
-            <a
-              href={GOVHUB_DP_PATCHES_URL}
-              className="rounded-lg border border-white/25 bg-black/30 px-5 py-3 text-sm font-medium text-white backdrop-blur-sm hover:border-white/40 hover:bg-black/45"
-            >
-              Patch on Gov Hub
-            </a>
           </div>
           <p
             aria-live="polite"

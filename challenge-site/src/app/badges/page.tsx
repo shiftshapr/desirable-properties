@@ -143,7 +143,7 @@ export default function BadgesPage() {
               href="/participate#badges"
               className="inline-flex items-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
             >
-              Participate narrative
+              Contribution catalog (badges)
             </Link>
             <Link
               href="/onchain"

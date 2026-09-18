@@ -129,11 +129,22 @@ export function slugFromHostname(hostname) {
  * @param {string} slug
  */
 export function getRosterOrg(roster, slug) {
-  if (!isAllianceSlug(slug)) return null;
-  const exact = roster.find((org) => org.slug === slug);
-  if (exact) return exact;
-  const key = allianceSlugKey(slug);
-  return roster.find((org) => allianceSlugKey(org.slug) === key) || null;
+  const raw = String(slug || '');
+  const candidates = [
+    normalizeToSlug(raw),
+    normalizeToSlug(raw.split('&')[0]),
+  ].filter((value, index, all) => value && all.indexOf(value) === index);
+  for (const cleaned of candidates) {
+    if (!isAllianceSlug(cleaned)) continue;
+    const exact = roster.find(
+      (org) => org.slug === cleaned || normalizeToSlug(org.slug) === cleaned,
+    );
+    if (exact) return exact;
+    const key = allianceSlugKey(cleaned);
+    const fuzzy = roster.find((org) => allianceSlugKey(normalizeToSlug(org.slug)) === key);
+    if (fuzzy) return fuzzy;
+  }
+  return null;
 }
 
 /**

@@ -12,6 +12,8 @@ export type SiteNavLink = {
   children?: SiteNavLink[];
   /** Opens DiscussPatchHelpModal on primary click (book discuss flow). */
   discussPatchModal?: boolean;
+  /** Leftmost onboarding item: border highlight in the header. */
+  highlight?: boolean;
 };
 
 export const EVENTS_INDEX_HREF = '/events';
@@ -52,14 +54,15 @@ export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): 
 }
 
 export const SITE_NAV_LINKS: SiteNavLink[] = [
+  { href: '/start-here', label: 'Start Here', highlight: true },
   {
     label: 'About',
     href: '/about',
     children: [
       { href: '/challenge', label: 'The Challenge' },
-      { href: '/participate', label: 'Participate' },
       { href: '/kickoff', label: 'Kickoff meeting' },
       { href: '/faq', label: 'FAQ' },
+      { href: '/participate', label: 'More contribution paths' },
       { href: '/pad', label: 'Landing pads' },
     ],
   },
@@ -67,7 +70,8 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     label: 'Workgroups',
     href: WORKGROUPS_JOIN_HREF,
     children: [
-      { href: WORKGROUPS_LIST_HREF, label: 'Browse workgroups' },
+      { href: WORKGROUPS_LIST_HREF, label: 'Collaborate pages' },
+      { href: WORKGROUPS_JOIN_HREF, label: 'About workgroups' },
       { href: WORKGROUPS_SIGNUPS_HREF, label: 'Signups' },
     ],
   },

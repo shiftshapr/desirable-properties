@@ -21,7 +21,8 @@ const USER_FACING_FILES = [
   'src/components/workgroup/HermesExperimentalBadge.tsx',
   'src/components/HermesComposerAiAssist.tsx',
   'src/app/events/page.tsx',
-  'src/components/pathways/FeaturedPathwayPanel.tsx',
+  'src/components/CommunityReviewEventPanel.tsx',
+  'src/components/pathways/_archived/FeaturedPathwayPanel.tsx',
   'src/app/support/SupportPageClient.tsx',
   'src/lib/dp-registry.ts',
 ];

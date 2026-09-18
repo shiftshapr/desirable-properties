@@ -168,7 +168,7 @@ function buildGraphInfo(label: string): DpReferenceInfo {
       'Graph excerpts complement local draft markdown — cite both when Hermes names them.',
       'ContextAnchor bridge count may be zero; Hermes should not imply graph traversal that is not present.',
     ],
-    links: [{ label: 'Browse DPs', href: '/participate' }],
+    links: [{ label: 'Browse DPs', href: '/#dps' }],
     sourceLabel: label,
   };
 }
@@ -241,7 +241,7 @@ export function getDpReferenceInfo(label: string): DpReferenceInfo {
         'Local ML-Draft markdown Hermes retrieved for this answer.',
         'Open the cited DP on desirableproperties.org or Gov Hub for the full draft.',
       ],
-      links: [{ label: 'Browse DPs', href: '/participate' }],
+      links: [{ label: 'Browse DPs', href: '/#dps' }],
       sourceLabel: trimmed,
     };
   }

@@ -6,13 +6,13 @@ APP_DIR="/home/ubuntu/desirable-properties/challenge-site"
 REPO_ROOT="/home/ubuntu/desirable-properties"
 NGINX_CONF="${APP_DIR}/nginx/staging.desirableproperties.org.conf"
 REQUIRED_BRANCH="main"
-PATHWAY_MARKER="${APP_DIR}/src/components/pathways/FeaturedPathwayPanel.tsx"
+PATHWAY_MARKER="${APP_DIR}/src/components/CommunityReviewEventPanel.tsx"
 
 cd "$APP_DIR"
 
 if [[ ! -f "$PATHWAY_MARKER" ]]; then
   echo "ERROR: Staging deploy blocked — missing ${PATHWAY_MARKER}"
-  echo "       Staging requires AI pathway content (FeaturedPathwayPanel, Fork in the Web, etc.)."
+  echo "       Staging requires Community Review Event panel content."
   echo "       Checkout: git checkout ${REQUIRED_BRANCH}"
   exit 1
 fi
@@ -25,7 +25,7 @@ if [[ "$current_branch" != "$REQUIRED_BRANCH" ]]; then
   exit 1
 fi
 
-echo "[0/5] Branch guard OK (${REQUIRED_BRANCH}, FeaturedPathwayPanel present)"
+echo "[0/5] Branch guard OK (${REQUIRED_BRANCH}, CommunityReviewEventPanel present)"
 
 # Build to a side directory so the live PM2 process keeps serving .next-staging (no 502 window).
 STAGING_BUILD_DIR=".next-staging-build"
@@ -143,8 +143,7 @@ sleep 2
 curl -fsS http://127.0.0.1:3006/ >/dev/null && echo "OK: staging app responding on :3006"
 HTML=$(curl -fsS http://127.0.0.1:3006/)
 echo "$HTML" | grep -q 'site-mobile-nav' && echo "OK: challenge-site markup (mobile nav) present"
-echo "$HTML" | grep -q 'featured-pathway-heading' && echo "OK: FeaturedPathwayPanel (AI & Human Agency) present"
-echo "$HTML" | grep -q 'a-fork-in-the-web' && echo "OK: Fork in the Web pathway content present"
+echo "$HTML" | grep -q 'community-review-event-heading' && echo "OK: CommunityReviewEventPanel present"
 echo "$HTML" | grep -q 'href="/badges"' && echo "OK: Badges nav link present"
 echo "$HTML" | grep -q '/images/dps/card/' && echo "OK: DP card image paths present"
 STAGING_CSS=$(echo "$HTML" | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')

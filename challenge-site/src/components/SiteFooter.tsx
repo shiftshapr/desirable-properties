@@ -8,8 +8,11 @@ export default function SiteFooter() {
   return (
     <footer className="border-t border-slate-800">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p>Desirable Properties Challenge · Meta-Layer Initiative</p>
+        <p>Desirable Properties · A program of the Meta-Layer Initiative</p>
         <nav className="flex flex-wrap gap-x-4 gap-y-2">
+          <Link href="/start-here" className="font-semibold text-cyan-200 hover:text-white">
+            Start Here
+          </Link>
           <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
             Workgroups
           </Link>
@@ -30,8 +33,8 @@ export default function SiteFooter() {
           >
             Patch on Gov Hub
           </a>
-          <Link href="/participate" className="text-slate-400 hover:text-slate-200">
-            Participate
+          <Link href="/participate" className="text-slate-500 hover:text-slate-300">
+            More paths
           </Link>
           <Link href="/challenge" className="text-slate-400 hover:text-slate-200">
             Challenge
@@ -50,6 +53,12 @@ export default function SiteFooter() {
           </Link>
           <Link href="/onchain" className="text-slate-400 hover:text-slate-200">
             Onchain
+          </Link>
+          <Link href="/privacy" className="text-slate-400 hover:text-slate-200">
+            Privacy
+          </Link>
+          <Link href="/terms" className="text-slate-400 hover:text-slate-200">
+            Terms
           </Link>
           <Link href="/support" className="text-slate-400 hover:text-slate-200">
             Support

@@ -220,14 +220,6 @@
       "description": "Require provenance for posts so origin, authorship, and context travel with content across layers."
     },
     {
-      "id": "moltlayer-raise",
-      "dateLabel": "May 2027",
-      "startDate": "2027-05-01",
-      "endDate": "2027-05-31",
-      "title": "MoltLayer raise",
-      "description": "MoltLayer fundraising to resource the next build cycle for Overweb infrastructure and aligned products."
-    },
-    {
       "id": "dp-book-v2",
       "dateLabel": "May 2027",
       "startDate": "2027-05-01",

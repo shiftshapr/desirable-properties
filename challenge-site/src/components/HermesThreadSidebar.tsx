@@ -574,11 +574,11 @@ export default function HermesThreadSidebar({
               </p>
               <div className="mt-2 flex flex-col gap-1">
                 <Link
-                  href="/participate"
+                  href="/start-here"
                   className="text-cyan-300 hover:text-cyan-200"
                   onClick={() => setHeaderInfoOpen(false)}
                 >
-                  How to participate
+                  Start Here
                 </Link>
                 <Link
                   href={archiveView ? '/agent' : '/agent?archive=1'}

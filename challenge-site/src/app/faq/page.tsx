@@ -74,8 +74,9 @@ export default function FaqPage() {
             Frequently asked questions
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
-            Answers about the Challenge, the Meta-Layer, participating on the book (Discuss, Patch,
-            and Insert), the Interface Governance Hub, workgroups, badges, and timeline.
+            Start with <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link>.
+            Then browse answers about the Challenge, Collaborate pages, the book, Gov Hub, workgroups,
+            badges, and on-chain provenance.
           </p>
           <p className="mt-4 text-sm text-slate-500">{SITE_FAQ_COUNT} questions</p>
         </div>
@@ -110,10 +111,10 @@ export default function FaqPage() {
               Contact support
             </Link>
             <Link
-              href="/participate"
+              href="/start-here"
               className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
             >
-              Ways to participate
+              Start Here
             </Link>
           </div>
         </div>

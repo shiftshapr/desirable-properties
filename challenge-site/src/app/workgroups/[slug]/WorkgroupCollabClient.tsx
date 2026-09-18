@@ -250,8 +250,8 @@ export default function WorkgroupCollabClient({
               {showLaunchBriefing ? (
                 <LaunchBriefingLink
                   workgroupSlug={workgroup.slug}
-                  label="Pre-launch briefing"
-                  className="rounded-lg border border-amber-700/60 bg-amber-950/40 px-4 py-2 text-sm font-medium text-amber-100 hover:border-amber-500 hover:bg-amber-950/60"
+                  label="What shipped September 16"
+                  className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
                 />
               ) : null}
               {membershipChecked && !isMember ? (
@@ -337,6 +337,8 @@ export default function WorkgroupCollabClient({
               dpDetailHref={dpDetailHref}
               documentHref={workgroup.document_href}
               showLaunchBriefing={showLaunchBriefing}
+              memberCount={initialMembers.length}
+              onSelectTab={selectTab}
             />
           ) : null}
 

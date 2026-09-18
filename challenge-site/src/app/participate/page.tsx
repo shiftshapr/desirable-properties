@@ -55,9 +55,9 @@ function PageLink({
 }
 
 export const metadata: Metadata = {
-  title: 'Participate – Desirable Properties Challenge',
+  title: 'More contribution paths – Desirable Properties Challenge',
   description:
-    'Help build the foundation of the Meta-Layer. Integrate your ideas with the DP Community AI, review Desirable Properties, or join a workgroup.',
+    'Extended catalog: Deepi, badges, workgroup roles, Gov Hub patching, and optional paths beyond Start Here.',
 };
 
 const FOUNDATION_USES = [
@@ -258,11 +258,16 @@ export default function ParticipatePage() {
           <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
             ← Back to the Challenge
           </Link>
+          <p className="mt-6 rounded-lg border border-cyan-800/50 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
+            New to the Challenge? Use <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link> for
+            the two contribution tracks. This page is the longer catalog (Deepi, badges, roles, and
+            extra paths).
+          </p>
           <p className="mt-6 text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
             Desirable Properties Challenge
           </p>
           <h1 className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl">
-            Help Build the Foundation of the Meta-Layer
+            More contribution paths
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             The Desirable Properties define what the Meta-Layer should make possible for humanity.
@@ -272,18 +277,18 @@ export default function ParticipatePage() {
             Meta-Layer substrate.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#contribute"
+            <Link
+              href="/start-here"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
             >
-              Three ways to contribute →
-            </a>
-            <Link
-              href="/about"
+              Start Here (recommended) →
+            </Link>
+            <a
+              href="#contribute"
               className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
             >
-              New here? Read About
-            </Link>
+              Browse this catalog
+            </a>
           </div>
         </div>
       </section>
@@ -467,7 +472,7 @@ export default function ParticipatePage() {
       {/* Why participate */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <Section title="Why Participate?">
+          <Section title="Why contribute?">
             <p>
               The Meta-Layer will shape how people collaborate, govern, coordinate, learn, create,
               and build trust online. The Desirable Properties are our opportunity to define the

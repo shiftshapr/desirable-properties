@@ -85,6 +85,11 @@ const nextConfig: NextConfig = {
         destination: '/api/admin/pad-settings',
         permanent: false,
       },
+      {
+        source: '/pad/americansecurityfund',
+        destination: '/pad/americansecurity',
+        permanent: true,
+      },
     ];
   },
   async headers() {

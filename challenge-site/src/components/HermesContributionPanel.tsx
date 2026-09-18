@@ -10,6 +10,7 @@ import type {
 } from '@/lib/hermesContribution';
 import {
   contributionEditContextCopy,
+  contributionSubmitBlockedByJudge,
   markProposalDirty,
   patchModeFromPayload,
   proposalLabel,
@@ -24,6 +25,8 @@ interface HermesContributionPanelProps {
   onSubmit: (mode: ContributionSubmitMode) => void;
   onCancel: () => void;
   onDraftChange?: (draft: ContributionDraft) => void;
+  onRevise?: () => void;
+  revising?: boolean;
 }
 
 function proposalsFromDraft(draft: ContributionDraft): ContributionProposal[] {
@@ -38,6 +41,8 @@ export default function HermesContributionPanel({
   onSubmit,
   onCancel,
   onDraftChange,
+  onRevise,
+  revising = false,
 }: HermesContributionPanelProps) {
   const editContext: ContributionEditContext = useMemo(
     () => (draft ? resolveContributionEditContext(draft, contributionSets) : 'new'),
@@ -55,9 +60,13 @@ export default function HermesContributionPanel({
 
   const updateProposal = (id: string, patch: Record<string, unknown>) => {
     if (!onDraftChange) return;
-    const next = proposals.map((p) =>
-      p.id === id ? { ...p, payload: { ...p.payload, ...patch } } : p,
-    );
+    const next = proposals.map((p) => {
+      if (p.id !== id) return p;
+      return {
+        ...p,
+        payload: { ...p.payload, ...patch },
+      };
+    });
     onDraftChange(markProposalDirty({
       ...draft,
       proposals: next,
@@ -76,15 +85,32 @@ export default function HermesContributionPanel({
     const text = String(p.payload.text || '').trim();
     return Boolean(text);
   });
+  const judgeBlocked = proposals.some((p) => p.kind === 'patch' && p.judgeBlocked);
+  const judgeRevisedPass = proposals.some((p) => p.judgeRevised && !p.judgeBlocked);
+  const blockedProposal = proposals.find((p) => p.kind === 'patch' && p.judgeBlocked);
+  const revisionRounds = Number(draft.judgeSummary?.revisionRounds || 0);
+  const revisionTried = revisionRounds > 0
+    || proposals.some((p) => Boolean(p.judgeRevised) || Number(p.judgeAttempts || 0) > 1);
+  const triedCount = revisionRounds > 0
+    ? revisionRounds
+    : Math.max(
+      0,
+      ...proposals.map((p) => Math.max(0, Number(p.judgeAttempts || 1) - 1)),
+    );
+  const blockReason = blockedProposal?.judgeCoaching
+    || blockedProposal?.judge?.failedCriterion
+    || draft.judgeSummary?.revisionError
+    || 'the quality judge still rejects this patch';
 
   const effectiveMode: ContributionSubmitMode = isEditing && submitMode === 'publish'
     ? 'replace'
     : submitMode;
+  const publishBlocked = contributionSubmitBlockedByJudge(effectiveMode, judgeBlocked);
   const stageCount = proposalsToStage(draft, proposals).length;
   const submitCount = isEditing ? stageCount : proposals.length;
 
   const submitLabel = (() => {
-    if (busy) return 'Submitting…';
+    if (busy && !revising) return 'Submitting…';
     if (editContext === 'edit_draft') {
       return effectiveMode === 'replace'
         ? `Replace live post (${submitCount})`
@@ -109,11 +135,33 @@ export default function HermesContributionPanel({
         <p className="mt-1 text-sm font-medium text-white">{draft.title}</p>
         {draft.recovered ? (
           <p className="mt-2 inline-flex rounded-full border border-amber-600/60 bg-amber-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200">
-            Draft recovered — please review
+            Draft recovered. Please review.
           </p>
         ) : null}
         <p className="mt-1 text-xs text-slate-300">{draft.summary}</p>
         <p className="mt-1 text-[11px] text-slate-400">Target: {draft.draftRef}</p>
+        {judgeRevisedPass ? (
+          <p className="mt-2 inline-flex rounded-full border border-cyan-600/60 bg-cyan-950/40 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-cyan-200">
+            Deepi revised after the judge rejected the first home
+          </p>
+        ) : null}
+        {judgeBlocked ? (
+          <div className="mt-2 space-y-1">
+            {revisionTried ? (
+              <p className="text-[11px] leading-relaxed text-rose-200/90">
+                Deepi tried {triedCount || revisionRounds || 1} time{(triedCount || revisionRounds || 1) === 1 ? '' : 's'}.
+                Reason: {blockReason}
+              </p>
+            ) : (
+              <p className="text-[11px] leading-relaxed text-rose-200/90">
+                The quality judge rejected one or more patches. Ask Deepi to fix this, or save as a Discuss draft to keep working.
+              </p>
+            )}
+            <p className="text-[11px] leading-relaxed text-slate-400">
+              Publish to Canopi stays blocked until the judge passes. Saving a Discuss draft is still available.
+            </p>
+          </div>
+        ) : null}
         {draft.isRevision && draft.supersedesMessageId ? (
           <p className="mt-2 inline-flex rounded-full border border-amber-600/60 bg-amber-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-200">
             Revision of published contribution
@@ -197,6 +245,29 @@ export default function HermesContributionPanel({
                   </span>
                 ) : null}
               </p>
+              {proposal.judgeRevised && !proposal.judgeBlocked ? (
+                <p className="mt-1 text-[11px] text-cyan-200/90">
+                  Deepi revised this after the judge objected
+                  {proposal.judgeAttempts && proposal.judgeAttempts > 1
+                    ? ` (${proposal.judgeAttempts} judged attempts)`
+                    : ''}
+                  .
+                </p>
+              ) : null}
+              {proposal.judgeRevised && proposal.judgeBlocked ? (
+                <p className="mt-1 text-[11px] text-amber-200/90">
+                  Deepi revised this and the judge still objected
+                  {proposal.judgeAttempts && proposal.judgeAttempts > 1
+                    ? ` (${proposal.judgeAttempts} judged attempts)`
+                    : ''}
+                  .
+                </p>
+              ) : null}
+              {proposal.judgeBlocked && proposal.judgeCoaching ? (
+                <p className="mt-1 text-[11px] leading-relaxed text-rose-200/90">
+                  Judge: {proposal.judge?.failedCriterion || 'quality'} – {proposal.judgeCoaching}
+                </p>
+              ) : null}
 
               {isPatch ? (
                 <label className="mt-2 block">
@@ -249,7 +320,7 @@ export default function HermesContributionPanel({
         <button
           type="button"
           onClick={() => onSubmit(effectiveMode)}
-          disabled={busy || !allValid || (isEditing && submitCount === 0)}
+          disabled={busy || !allValid || publishBlocked || (isEditing && submitCount === 0)}
           className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
             effectiveMode === 'draft'
               ? 'bg-violet-700 hover:bg-violet-600'
@@ -258,6 +329,16 @@ export default function HermesContributionPanel({
         >
           {submitLabel}
         </button>
+        {judgeBlocked && onRevise ? (
+          <button
+            type="button"
+            onClick={onRevise}
+            disabled={busy}
+            className="rounded-lg bg-amber-700 px-4 py-2 text-xs font-medium text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {busy || revising ? 'Deepi is revising…' : 'Ask Deepi to fix this'}
+          </button>
+        ) : null}
         <button
           type="button"
           onClick={onCancel}

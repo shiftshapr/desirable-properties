@@ -11,7 +11,7 @@ Did we get your concerns right?
 ```text
 We opened org landing pads in Desirable Properties Studio (public beta). Each pad starts from your public corpus and asks whether we heard your concerns correctly. Unlike a landing page, a pad can learn from your choices (with consent) and invite you to refine how your perspective is captured. Follow an interest until it becomes a patch idea.
 
-Version 0.77 of The Layered Web is open for review now. Version 1.0 and the public launch of DP Studio are September 16, 2026.
+Version 0.77 of The Layered Web is open for review now. The Community Review Draft milestone is September 16, 2026; Version 1.0 targets November 13, 2026. DP Studio is in public beta now.
 
 Find your pad at https://desirableproperties.org/pad (enter your org website, name, or slug). Three members have full briefing pads today; ~200 Alliance roster members get a reserved stub page; any other valid website opens a request page.
 
@@ -29,7 +29,7 @@ Only three Alliance members have full pads in this first packet. Roster matches 
 Use the hero image at the top:
 
 - Image URL: `https://desirableproperties.org/media/be-part-of-1.0-hero.png`
-- Alt text: Be part of 1.0 – Desirable Properties Studio public beta, September 16, 2026
+- Alt text: Be part of 1.0 – Desirable Properties Studio public beta. Community Review Draft September 16, 2026; Version 1.0 November 13, 2026
 
 Suggested structure:
 

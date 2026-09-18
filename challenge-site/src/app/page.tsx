@@ -3,17 +3,15 @@ import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
-import FeaturedPathwayPanel from '@/components/pathways/FeaturedPathwayPanel';
 import LayerHero from '@/components/LayerHero';
+import StartHereHomePanel from '@/components/StartHereHomePanel';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
-import { getPathwayParticipationBand } from '@/lib/dp-event-series-store';
 import {
   fetchChallengeWorkgroups,
   govhubUrl,
   bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
-  GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import localData from '../data/desirable-properties.json';
@@ -29,10 +27,9 @@ const MISSING_ITEMS = [
 
 export default async function Home() {
   const now = new Date();
-  const [activity, workgroups, participation] = await Promise.all([
+  const [activity, workgroups] = await Promise.all([
     fetchUnifiedActivity(12).catch(() => [] as Awaited<ReturnType<typeof fetchUnifiedActivity>>),
     fetchChallengeWorkgroups().catch(() => [] as Awaited<ReturnType<typeof fetchChallengeWorkgroups>>),
-    getPathwayParticipationBand('/pathways/ai-human-agency').catch(() => null),
   ]);
 
   const dps = localData.desirable_properties;
@@ -48,7 +45,7 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        <FeaturedPathwayPanel participation={participation} />
+        <StartHereHomePanel />
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
@@ -158,27 +155,28 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Three ways to get involved – maps directly to the three primary journeys */}
+        {/* Two primary journeys, plus optional AI assist */}
         <section>
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">Three Ways to Get Involved</h2>
+            <h2 className="text-3xl font-bold text-white">Two Ways to Get Involved</h2>
             <p className="mt-3 max-w-2xl text-slate-400">
-              Pick a path – or do all three.
+              New? Start on <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link>.
+              Pick a path, or do both.
             </p>
             <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-              <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
+              <li className="flex h-full flex-col rounded-xl border-2 border-violet-500/70 bg-violet-950/30 p-6">
                 <span className="text-2xl" aria-hidden>
                   🤝
                 </span>
-                <h3 className="mt-3 text-lg font-semibold text-white">Join a Workgroup</h3>
+                <h3 className="mt-3 text-lg font-semibold text-white">Collaborate page</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
-                  Help steward one or more Desirable Properties toward Version 1.0.
+                  Join a DP workgroup workspace: Astra, Edit, and Canopi toward Version 1.0.
                 </p>
                 <Link
                   href={WORKGROUPS_LIST_HREF}
-                  className="mt-5 inline-flex w-fit items-center rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
+                  className="mt-5 inline-flex w-fit items-center rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-violet-500"
                 >
-                  Browse DP workgroups →
+                  Browse Collaborate pages →
                 </Link>
               </li>
               <li className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/50 p-6">
@@ -201,22 +199,25 @@ export default async function Home() {
                 <span className="text-2xl" aria-hidden>
                   ✎
                 </span>
-                <h3 className="mt-3 text-lg font-semibold text-white">Patch a Draft on Gov Hub</h3>
+                <h3 className="mt-3 text-lg font-semibold text-white">Optional: Deepi</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
-                  Select a passage in any DP draft and submit a specific text revision today.
+                  Compare your notes or papers with the current DPs in about ten minutes.
                 </p>
-                <a
-                  href={GOVHUB_DP_PATCHES_URL}
+                <Link
+                  href="/agent"
                   className="mt-5 inline-flex w-fit items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
-                  Open Gov Hub →
-                </a>
+                  Open Deepi →
+                </Link>
               </li>
             </ul>
 
             <p className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500">
-              <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
-                More ways to contribute
+              <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
+                Start Here
+              </Link>
+              <Link href="/participate" className="text-slate-500 hover:text-slate-300">
+                More contribution paths
               </Link>
               <Link href="/challenge#timeline" className="hover:text-slate-300">
                 Challenge timeline

@@ -18,6 +18,8 @@ import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server';
+import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
+import { WORKGROUP_TARGET_MEMBER_COUNT, workgroupRosterNudge } from '@/lib/workgroup-roster-nudge';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import type { Metadata } from 'next';
 
@@ -27,7 +29,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
   description:
-    'Browse the 23 Desirable Property workgroups plus DP Discovery, and pick the one you want to join or nominate into.',
+    'Browse the 23 Desirable Property workgroups plus DP Discovery. Join a group toward Version 1.0 on November 13, 2026. We want at least 3 people in every workgroup.',
 };
 
 const DP_DISCOVERY_FALLBACK_DESCRIPTION =
@@ -97,6 +99,10 @@ type FaqItem = {
 
 const FAQ_ITEMS: FaqItem[] = [
   {
+    q: 'How many people should a workgroup have?',
+    a: 'We want at least three people in every workgroup for the Version 1.0 push (November 13, 2026). If a group has fewer, join it and invite others who care about that property.',
+  },
+  {
     q: 'How do I know which workgroup is right for me?',
     a: "Read each DP's short description and pick the one whose purpose resonates with your interests and skills. You can always join a different workgroup later.",
   },
@@ -164,10 +170,15 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
     description: discoveryLive?.description || DP_DISCOVERY_FALLBACK_DESCRIPTION,
   });
   const memberWorkgroupIds = collabEnabled ? await readSessionMemberWorkgroupIds() : new Set<string>();
+  const signups = await fetchWorkgroupSignups();
+  const memberCountBySlug = new Map(
+    (signups?.workgroups ?? []).map((group) => [group.slug, group.member_count]),
+  );
   const discoveryCollabHref = workgroupPrimaryHref(DP_DISCOVERY_SLUG);
   const discoveryJoinHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'join');
   const discoveryNominateHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'nominate');
   const discoveryCardSrc = dpDiscoveryCardImageSrc();
+  const discoveryRoster = workgroupRosterNudge(memberCountBySlug.get(DP_DISCOVERY_SLUG) ?? 0);
 
   return (
     <main className="border-b border-slate-800">
@@ -180,12 +191,22 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             Join a DP Workgroup
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup on Gov Hub,
-            plus DP Discovery for gaps the current set may have missed. Pick the group whose
-            purpose resonates with you, join as a member, or nominate yourself (or someone else)
-            for a coordinator or contributor role.
+            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup, plus DP
+            Discovery for gaps the current set may have missed. Help take the Community Review Draft
+            to Version 1.0 by November 13, 2026. We want at least {WORKGROUP_TARGET_MEMBER_COUNT}{' '}
+            people in every workgroup. If a group is smaller, join it and invite others.
+          </p>
+          <p className="mt-6 rounded-lg border border-slate-700/80 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">
+            <strong className="font-semibold text-slate-200">Sign in</strong> to join a workgroup or
+            open a Collaborate page (Astra, Edit, Canopi). Use <strong className="font-semibold text-slate-200">Sign In</strong> in the header, then return to your group.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/start-here"
+              className="rounded-lg border border-cyan-800/60 bg-cyan-950/30 px-5 py-3 text-sm font-medium text-cyan-100 hover:border-cyan-600"
+            >
+              New here? Start Here →
+            </Link>
             <a
               href="#workgroups"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
@@ -211,9 +232,13 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             <a href={govhubUrl('/layers/the-metaweb/')} className="text-cyan-300 hover:text-cyan-200">
               patch drafts directly on Gov Hub
             </a>
-            . See{' '}
-            <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
-              all the ways to contribute
+            . New here?{' '}
+            <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
+              Start Here
+            </Link>
+            . Extra paths:{' '}
+            <Link href="/participate" className="text-slate-400 hover:text-slate-200">
+              contribution catalog
             </Link>
             .
           </p>
@@ -225,10 +250,10 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">What is a DP workgroup</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             A Desirable Properties workgroup is a small, focused team that moves a single
-            Desirable Property from concept to working draft. Each workgroup has a charter,
-            a coordinator, and a flexible roster of members who contribute as their time
-            allows – most collaboration is async, with synchronous time reserved for moments
-            that need it.
+            Desirable Property from the Community Review Draft to Version 1.0. On the Collaborate
+            page, members work the Astra and Edit tabs and keep the conversation moving in Canopi
+            (post, comment, review, like). Each workgroup has a charter, a coordinator, and a
+            flexible roster. Most collaboration is async.
           </p>
           <p className="mt-3 max-w-3xl text-slate-400">
             There is no requirement to attend every meeting or write every line. Join for the
@@ -318,11 +343,11 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">The DP workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Twenty-three workgroups each steward one Desirable Property – drafting the canonical
-            text, reviewing contributions, and proposing updates. DP Discovery watches for
-            properties the current 23 may have missed.
+            Twenty-three workgroups each steward one Desirable Property. DP Discovery watches for
+            properties the current 23 may have missed. Groups need at least{' '}
+            {WORKGROUP_TARGET_MEMBER_COUNT} members for a working Version 1.0 push.
             {collabEnabled
-              ? ' Open the collaboration page for chat and invites, or join / nominate here without leaving the site.'
+              ? ' Open Collaborate for Astra, Edit, Canopi, chat, and invites.'
               : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
           </p>
 
@@ -337,6 +362,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
               const summary = shortDescription(dp);
               const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups');
               const cardSrc = dpCardImageSrc(dpId);
+              const roster = workgroupRosterNudge(memberCountBySlug.get(slug) ?? 0);
 
               return (
                 <li
@@ -380,6 +406,15 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                       {summary}
                     </p>
                   )}
+                  <p
+                    className={`mt-3 text-sm leading-relaxed ${
+                      roster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
+                    }`}
+                  >
+                    {roster.kind === 'recruit'
+                      ? `${roster.title} · needs ${roster.remaining} more for a working group`
+                      : `${roster.title} · on track for November 13`}
+                  </p>
                   <div className="mt-auto flex flex-col gap-3 pt-5">
                     <div className="flex flex-wrap gap-2">
                       {collabEnabled ? (
@@ -463,6 +498,15 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                     {discoveryDescription}
                   </p>
                 ) : null}
+                <p
+                  className={`mt-3 text-sm leading-relaxed ${
+                    discoveryRoster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
+                  }`}
+                >
+                  {discoveryRoster.kind === 'recruit'
+                    ? `${discoveryRoster.title} · needs ${discoveryRoster.remaining} more for a working group`
+                    : `${discoveryRoster.title} · on track for November 13`}
+                </p>
                 <div className="mt-auto flex flex-col gap-3 pt-5">
                   <div className="flex flex-wrap gap-2">
                     {collabEnabled ? (

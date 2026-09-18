@@ -10,6 +10,27 @@ import {
 import NamedTabLink from '@/components/NamedTabLink';
 import { SITE_NAV_LINKS, type SiteNavLink } from '@/lib/siteNav';
 
+function navLinkClass(link: SiteNavLink, pathname: string, mobile = false): string {
+  const path = (link.href || '').split('#')[0];
+  const active = Boolean(path && (pathname === path || pathname.startsWith(`${path}/`)));
+  if (link.highlight) {
+    if (mobile) {
+      return `mt-1 mb-2 block rounded-md border-2 border-cyan-400 bg-cyan-950/40 px-3 py-2.5 text-sm font-semibold text-cyan-50 hover:bg-cyan-900/50 ${
+        active ? 'ring-2 ring-cyan-300/70' : ''
+      }`;
+    }
+    return `whitespace-nowrap rounded-md border-2 border-cyan-400 px-2.5 py-1 font-semibold text-cyan-50 hover:bg-cyan-950/50 hover:text-white ${
+      active ? 'bg-cyan-950/70 ring-1 ring-cyan-300/80' : ''
+    }`;
+  }
+  if (mobile) {
+    return 'block py-3 text-sm text-slate-300 hover:text-white';
+  }
+  return `whitespace-nowrap hover:text-white${
+    link.href === '/badges' || link.href === '/onchain' ? ' site-nav-optional' : ''
+  }${active ? ' text-white' : ''}`;
+}
+
 function NavLink({
   href,
   label,
@@ -272,11 +293,7 @@ export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: Site
               href={link.href ?? '#'}
               label={link.label}
               external={link.external}
-              className={`whitespace-nowrap hover:text-white${
-                link.href === '/badges' || link.href === '/onchain'
-                  ? ' site-nav-optional'
-                  : ''
-              }`}
+              className={navLinkClass(link, pathname)}
             />
           ),
         )}
@@ -335,7 +352,7 @@ export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: Site
                       href={link.href ?? '#'}
                       label={link.label}
                       external={link.external}
-                      className="block py-3 text-sm text-slate-300 hover:text-white"
+                      className={navLinkClass(link, pathname, true)}
                       onNavigate={closeMenu}
                     />
                   </li>

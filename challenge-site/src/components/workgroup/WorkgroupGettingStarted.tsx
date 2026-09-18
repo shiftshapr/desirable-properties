@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import LaunchBriefingLink from '@/components/workgroup/LaunchBriefingLink';
@@ -13,6 +15,8 @@ import {
   isDpDiscoveryWorkgroup,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import type { WorkgroupCollabTabKey } from '@/lib/workgroup-collab-tabs';
+import { workgroupRosterNudge } from '@/lib/workgroup-roster-nudge';
 
 type Props = {
   workgroupName: string;
@@ -21,6 +25,8 @@ type Props = {
   dpDetailHref: string | null;
   documentHref?: string | null;
   showLaunchBriefing?: boolean;
+  memberCount?: number;
+  onSelectTab?: (tab: WorkgroupCollabTabKey) => void;
 };
 
 export default function WorkgroupGettingStarted({
@@ -30,6 +36,8 @@ export default function WorkgroupGettingStarted({
   dpDetailHref,
   documentHref,
   showLaunchBriefing = false,
+  memberCount = 0,
+  onSelectTab,
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
@@ -40,31 +48,73 @@ export default function WorkgroupGettingStarted({
   const patchHref = isDiscovery ? null : govhubDraftReadHref(documentHref);
   const a = MESSAGE_A_SECTIONS;
   const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
-
-  const launchLabel = CHALLENGE_KEY_DATES.bookLaunch.label;
+  const v1Label = CHALLENGE_KEY_DATES.v1Release.label;
+  const roster = workgroupRosterNudge(memberCount);
 
   return (
     <div>
-      {showLaunchBriefing ? (
-        <div className="mb-8 rounded-xl border border-amber-800/50 bg-amber-950/25 p-5 sm:p-6">
-          <p className="text-sm font-semibold uppercase tracking-wide text-amber-300">
-            {launchLabel} Community Review Draft
+      <div className="mb-8 rounded-xl border border-cyan-800/50 bg-cyan-950/20 p-5 sm:p-6">
+        <p className="text-sm font-semibold uppercase tracking-wide text-cyan-300">
+          {v1Label} · Version 1.0
+        </p>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-300">
+          This workgroup&apos;s job is to take the Community Review Draft to Version 1.0. Work in
+          the Astra and Edit tabs, or do the conversation work in Canopi: post, comment, review,
+          and like so decisions stay visible.
+        </p>
+        <div
+          className={`mt-4 rounded-lg border px-4 py-3 ${
+            roster.kind === 'recruit'
+              ? 'border-amber-800/60 bg-amber-950/30'
+              : 'border-emerald-800/50 bg-emerald-950/20'
+          }`}
+        >
+          <p
+            className={`text-sm font-semibold ${
+              roster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
+            }`}
+          >
+            {roster.title}
           </p>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
-            Astra editorial synthesis integrated 117 traceable changes across 22 chapters ahead of
-            the public launch. Members can now propose chapter edits on the Edit tab; coordinators
-            can revoke Astra patches or member edits. Read what is included and how to participate
-            before September 16.
-          </p>
-          <div className="mt-4">
+          <p className="mt-1 text-sm leading-relaxed text-slate-300">{roster.message}</p>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          {onSelectTab ? (
+            <>
+              <button
+                type="button"
+                onClick={() => onSelectTab('astra')}
+                className="rounded-lg bg-violet-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-violet-600"
+              >
+                Open Astra
+              </button>
+              {!isDiscovery ? (
+                <button
+                  type="button"
+                  onClick={() => onSelectTab('edit')}
+                  className="rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
+                >
+                  Open Edit
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => onSelectTab('invite')}
+                className="rounded-lg border border-amber-700/60 bg-amber-950/40 px-4 py-2.5 text-sm font-medium text-amber-100 hover:border-amber-500"
+              >
+                Invite someone
+              </button>
+            </>
+          ) : null}
+          {showLaunchBriefing ? (
             <LaunchBriefingLink
               workgroupSlug={workgroupSlug}
-              label="About this launch"
-              className="inline-flex rounded-lg bg-amber-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-amber-600"
+              label="What shipped September 16"
+              className="inline-flex items-center text-sm text-slate-400 underline decoration-slate-600 underline-offset-4 hover:text-slate-200"
             />
-          </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
 
       <WorkgroupCanopiStrip workgroupSlug={workgroupSlug} dpId={dpId} compact />
 
