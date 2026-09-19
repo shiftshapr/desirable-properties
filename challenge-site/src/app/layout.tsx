@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import SiteShell from '@/components/SiteShell';
 import CanonicalHostScript from '@/components/CanonicalHostScript';
+import CanopiAuthReturnScript from '@/components/CanopiAuthReturnScript';
 import Web3AuthConfigScript from '@/components/Web3AuthConfigScript';
 import { refreshSessionFromCanopi } from '@/lib/auth-profile';
 import { createSessionCookie, readSession, sessionToAuthUser } from '@/lib/auth-session';
@@ -66,6 +67,7 @@ export default async function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
       <head>
         <CanonicalHostScript />
+        <CanopiAuthReturnScript />
         <Web3AuthConfigScript />
       </head>
       <body className="flex min-h-dvh flex-col bg-slate-950 text-slate-100 antialiased">
