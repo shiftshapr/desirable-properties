@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { DpDialog, DpDialogHost } from '@/components/DpDialog';
 import HermesComposerAiAssist from '@/components/HermesComposerAiAssist';
 import HermesContributionCTA from '@/components/HermesContributionCTA';
+import HermesDraftingLoader from '@/components/HermesDraftingLoader';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
 import HermesMarkdown from '@/components/HermesMarkdown';
@@ -51,6 +52,7 @@ import {
   clearStagedProposalsForRef,
   clearPendingDraftIfFiledOnThread,
   clearStagedProposalsForFiledRefs,
+  claimVerbatimForSubmit,
   defaultDestination,
   discussLinkLabel,
   enrichProposalsWithLedgerDraftIds,
@@ -2215,6 +2217,10 @@ export default function HermesChat({
     setContributionBusy(true);
     setDraftingMessageId(assistantMessageId);
     draftingMessageIdRef.current = assistantMessageId;
+    requestAnimationFrame(() => {
+      document.getElementById(`hermes-contribution-cta-${assistantMessageId}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
     try {
       const res = await fetch('/api/agent/contributions/draft', {
         method: 'POST',
@@ -2259,24 +2265,18 @@ export default function HermesChat({
         setSystemNotice(null);
       }
     } catch (err) {
+      const text = userFacingError(err);
       setSystemNotice({
         variant: 'error',
-        text: userFacingError(err),
+        text,
       });
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === assistantMessageId && m.contributionHint?.contributionReady
-            ? {
-              ...m,
-              contributionHint: {
-                ...m.contributionHint,
-                contributionReady: false,
-                reason: 'Draft failed. See notice above. Send a follow-up or try again later.',
-              },
-            }
-            : m,
-        ),
-      );
+      scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      await DpDialog.alert({
+        title: 'Could not draft contribution',
+        message: text,
+        variant: 'warning',
+        confirmLabel: 'OK',
+      });
     } finally {
       setContributionBusy(false);
       setDraftingMessageId(null);
@@ -2316,7 +2316,7 @@ export default function HermesChat({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           proposals: proposalsFromContributionDraft(contributionDraft),
-          claimVerbatim: contributionDraft.claimVerbatim || '',
+          claimVerbatim: claimVerbatimForSubmit(contributionDraft),
           draftRef: contributionDraft.draftRef,
           dpFocus,
           message: userMessage?.text || '',
@@ -2424,7 +2424,7 @@ export default function HermesChat({
             proposals: publishItems,
             editContext,
             threadId: submitThreadId,
-            claimVerbatim: contributionDraft.claimVerbatim || undefined,
+            claimVerbatim: claimVerbatimForSubmit(contributionDraft) || undefined,
           }),
         });
         const data = await res.json();
@@ -2447,7 +2447,7 @@ export default function HermesChat({
             draftRef,
             proposals: itemsToSubmit,
             threadId: submitThreadId,
-            claimVerbatim: contributionDraft.claimVerbatim || undefined,
+            claimVerbatim: claimVerbatimForSubmit(contributionDraft) || undefined,
           }),
         });
         const data = await res.json();
@@ -2480,7 +2480,7 @@ export default function HermesChat({
               threadId: submitThreadId,
               proposalId: item.id,
               canopiDraftId: item.canopiDraftId || null,
-              claimVerbatim: contributionDraft.claimVerbatim || undefined,
+              claimVerbatim: claimVerbatimForSubmit(contributionDraft) || undefined,
             }),
           });
           const data = await res.json();
@@ -3234,6 +3234,7 @@ export default function HermesChat({
                       hint={message.contributionHint as ContributionHint}
                       busy={contributionBusy && draftingMessageId === message.id}
                       signedIn={signedIn}
+                      ctaId={`hermes-contribution-cta-${message.id}`}
                       onDraft={(scope) => draftContribution(scope, message.id)}
                       onSignIn={promptSignIn}
                     />
@@ -3293,6 +3294,12 @@ export default function HermesChat({
                   onDraftChange={updateContributionDraft}
                   onRevise={() => void reviseContributionDraft()}
                 />
+              </div>
+            ) : null}
+
+            {draftingMessageId && !contributionDraft ? (
+              <div className="rounded-2xl border border-amber-700/40 bg-amber-950/20 px-4 py-3">
+                <HermesDraftingLoader />
               </div>
             ) : null}
 

@@ -83,7 +83,11 @@ else
 fi
 
 echo "[4/5] Smoke test..."
-sleep 2
+sleep 3
 curl -fsS http://127.0.0.1:3005/ >/dev/null && echo "OK: app responding on :3005"
-CSS=$(curl -fsS http://127.0.0.1:3005/ | grep -oE 'href="/_next/static/chunks/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
+CSS=$(curl -fsS http://127.0.0.1:3005/ | grep -oE 'href="/_next/static/[^"]+\.css"' | head -1 | sed 's/href="//;s/"//')
+if [[ -z "$CSS" ]]; then
+  echo "ERROR: no CSS href found in homepage HTML"
+  exit 1
+fi
 curl -fsS "http://127.0.0.1:3005${CSS}" >/dev/null && echo "OK: CSS loads (${CSS})"

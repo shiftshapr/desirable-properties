@@ -5,7 +5,7 @@ import { hermesUpstreamHeaders } from '@/lib/hermes-proxy';
 import { getHermesChatUrl } from '@/lib/web3auth-config';
 
 function chatUpstreamSignal(clientSignal: AbortSignal): AbortSignal {
-  const timeout = AbortSignal.timeout(120000);
+  const timeout = AbortSignal.timeout(180000);
   if (typeof AbortSignal.any === 'function') {
     return AbortSignal.any([clientSignal, timeout]);
   }
@@ -63,8 +63,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data);
   } catch (err) {
-    if (err instanceof Error && err.name === 'AbortError') {
-      return NextResponse.json({ error: 'Aborted' }, { status: 499 });
+    if (err instanceof Error && (err.name === 'AbortError' || err.name === 'TimeoutError')) {
+      if (err.name === 'AbortError' && !/timeout/i.test(err.message)) {
+        return NextResponse.json({ error: 'Aborted' }, { status: 499 });
+      }
+      return NextResponse.json(
+        { error: 'Deepi timed out. Send the message again.' },
+        { status: 504 },
+      );
     }
     const message = err instanceof Error ? err.message : 'Chat request failed';
     return NextResponse.json({ error: message }, { status: 500 });

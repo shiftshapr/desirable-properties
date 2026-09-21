@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type {
   ContributionDraft,
   ContributionEditContext,
@@ -17,6 +17,7 @@ import {
   proposalsToStage,
   resolveContributionEditContext,
 } from '@/lib/hermesContribution';
+import HermesDraftingLoader from '@/components/HermesDraftingLoader';
 
 interface HermesContributionPanelProps {
   draft: ContributionDraft | null;
@@ -48,8 +49,6 @@ export default function HermesContributionPanel({
     () => (draft ? resolveContributionEditContext(draft, contributionSets) : 'new'),
     [draft, contributionSets],
   );
-  const [submitMode, setSubmitMode] = useState<ContributionSubmitMode>('draft');
-
   if (!draft) return null;
 
   const scopeLabel =
@@ -102,29 +101,79 @@ export default function HermesContributionPanel({
     || draft.judgeSummary?.revisionError
     || 'the quality judge still rejects this patch';
 
-  const effectiveMode: ContributionSubmitMode = isEditing && submitMode === 'publish'
-    ? 'replace'
-    : submitMode;
-  const publishBlocked = contributionSubmitBlockedByJudge(effectiveMode, judgeBlocked);
+  const publishMode: ContributionSubmitMode = isEditing ? 'replace' : 'publish';
+  const publishBlocked = contributionSubmitBlockedByJudge(publishMode, judgeBlocked);
   const stageCount = proposalsToStage(draft, proposals).length;
   const submitCount = isEditing ? stageCount : proposals.length;
+  const submitting = Boolean(busy && !revising);
+  const draftDisabled = busy || !allValid || (isEditing && submitCount === 0);
+  const publishDisabled = draftDisabled || publishBlocked;
 
-  const submitLabel = (() => {
-    if (busy && !revising) return 'Submitting…';
+  const publishLabel = (() => {
+    if (submitting) return 'Submitting…';
+    if (editContext === 'edit_draft') return `Replace live post (${submitCount})`;
+    if (editContext === 'edit_revision' || editContext === 'draft_id_already_published') {
+      return `Replace published post (${submitCount})`;
+    }
+    return `Publish ${proposals.length} to Canopi Discuss`;
+  })();
+
+  const draftLabel = (() => {
+    if (submitting) return 'Submitting…';
     if (editContext === 'edit_draft') {
-      return effectiveMode === 'replace'
-        ? `Replace live post (${submitCount})`
-        : `Update draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
+      return `Update draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
     }
     if (editContext === 'edit_revision' || editContext === 'draft_id_already_published') {
-      return effectiveMode === 'replace'
-        ? `Replace published post (${submitCount})`
-        : `Save revision draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
+      return `Save revision draft${submitCount === 1 ? '' : 's'} (${submitCount})`;
     }
-    return effectiveMode === 'draft'
-      ? `Save ${proposals.length} as Discuss draft${proposals.length === 1 ? '' : 's'}`
-      : `Publish ${proposals.length} to Canopi Discuss`;
+    return `Save ${proposals.length} as Discuss draft${proposals.length === 1 ? '' : 's'}`;
   })();
+
+  const actionRow = (sticky: boolean) => (
+    <div
+      className={`flex flex-wrap gap-2 ${
+        sticky
+          ? 'sticky bottom-0 z-10 -mx-4 mt-4 border-t border-amber-700/40 bg-amber-950/95 px-4 py-3 backdrop-blur'
+          : 'mt-4'
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => onSubmit(publishMode)}
+        disabled={publishDisabled}
+        title={publishBlocked ? 'Publish stays blocked until the quality judge passes' : undefined}
+        className="rounded-lg bg-cyan-700 px-4 py-2 text-xs font-medium text-white hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {publishLabel}
+      </button>
+      <button
+        type="button"
+        onClick={() => onSubmit('draft')}
+        disabled={draftDisabled}
+        className="rounded-lg bg-violet-700 px-4 py-2 text-xs font-medium text-white hover:bg-violet-600 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {draftLabel}
+      </button>
+      {judgeBlocked && onRevise ? (
+        <button
+          type="button"
+          onClick={onRevise}
+          disabled={busy}
+          className="rounded-lg bg-amber-700 px-4 py-2 text-xs font-medium text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {busy || revising ? 'Deepi is revising…' : 'Ask Deepi to fix this'}
+        </button>
+      ) : null}
+      <button
+        type="button"
+        onClick={onCancel}
+        disabled={busy}
+        className="rounded-lg border border-slate-600 px-4 py-2 text-xs text-slate-200 hover:border-slate-500 disabled:opacity-50"
+      >
+        Cancel
+      </button>
+    </div>
+  );
 
   return (
     <div className="rounded-xl border border-amber-700/50 bg-amber-950/30 p-4">
@@ -140,6 +189,11 @@ export default function HermesContributionPanel({
         ) : null}
         <p className="mt-1 text-xs text-slate-300">{draft.summary}</p>
         <p className="mt-1 text-[11px] text-slate-400">Target: {draft.draftRef}</p>
+        {revising ? (
+          <div className="mt-3 rounded-lg border border-amber-700/40 bg-amber-950/40 px-3 py-2">
+            <HermesDraftingLoader label="Deepi is revising the draft" compact />
+          </div>
+        ) : null}
         {judgeRevisedPass ? (
           <p className="mt-2 inline-flex rounded-full border border-cyan-600/60 bg-cyan-950/40 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-cyan-200">
             Deepi revised after the judge rejected the first home
@@ -184,43 +238,7 @@ export default function HermesContributionPanel({
         ) : null}
       </div>
 
-      <fieldset className="mt-4 space-y-2">
-        <legend className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-          When you submit
-        </legend>
-        <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700/80 bg-slate-950/60 px-3 py-2.5 has-[:checked]:border-violet-600/70 has-[:checked]:bg-violet-950/20">
-          <input
-            type="radio"
-            name="contribution-submit-mode"
-            value="draft"
-            checked={submitMode === 'draft'}
-            onChange={() => setSubmitMode('draft')}
-            className="mt-0.5"
-          />
-          <span>
-            <span className="block text-sm font-medium text-white">{copy.draftOption.title}</span>
-            <span className="mt-0.5 block text-[11px] text-slate-400">
-              {copy.draftOption.detail}
-            </span>
-          </span>
-        </label>
-        <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-700/80 bg-slate-950/60 px-3 py-2.5 has-[:checked]:border-cyan-600/70 has-[:checked]:bg-cyan-950/20">
-          <input
-            type="radio"
-            name="contribution-submit-mode"
-            value="publish"
-            checked={submitMode === 'publish'}
-            onChange={() => setSubmitMode('publish')}
-            className="mt-0.5"
-          />
-          <span>
-            <span className="block text-sm font-medium text-white">{copy.publishOption.title}</span>
-            <span className="mt-0.5 block text-[11px] text-slate-400">
-              {copy.publishOption.detail}
-            </span>
-          </span>
-        </label>
-      </fieldset>
+      {actionRow(false)}
 
       <div className="mt-4 space-y-4">
         {proposals.map((proposal, index) => {
@@ -242,6 +260,11 @@ export default function HermesContributionPanel({
                 {isPatch && patchMode === 'insert' ? (
                   <span className="ml-2 font-normal normal-case text-slate-400">
                     (above anchor passage)
+                  </span>
+                ) : null}
+                {isPatch && patchMode === 'insert_after' ? (
+                  <span className="ml-2 font-normal normal-case text-slate-400">
+                    (below last heading in this section)
                   </span>
                 ) : null}
               </p>
@@ -316,38 +339,7 @@ export default function HermesContributionPanel({
         })}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => onSubmit(effectiveMode)}
-          disabled={busy || !allValid || publishBlocked || (isEditing && submitCount === 0)}
-          className={`rounded-lg px-4 py-2 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 ${
-            effectiveMode === 'draft'
-              ? 'bg-violet-700 hover:bg-violet-600'
-              : 'bg-cyan-700 hover:bg-cyan-600'
-          }`}
-        >
-          {submitLabel}
-        </button>
-        {judgeBlocked && onRevise ? (
-          <button
-            type="button"
-            onClick={onRevise}
-            disabled={busy}
-            className="rounded-lg bg-amber-700 px-4 py-2 text-xs font-medium text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {busy || revising ? 'Deepi is revising…' : 'Ask Deepi to fix this'}
-          </button>
-        ) : null}
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={busy}
-          className="rounded-lg border border-slate-600 px-4 py-2 text-xs text-slate-200 hover:border-slate-500 disabled:opacity-50"
-        >
-          Cancel
-        </button>
-      </div>
+      {actionRow(true)}
     </div>
   );
 }

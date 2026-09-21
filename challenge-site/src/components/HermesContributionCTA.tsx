@@ -2,6 +2,7 @@
 
 import type { ContributionHint, ContributionScope } from '@/lib/hermesContribution';
 import { shouldShowContributionCTA } from '@/lib/hermesContribution';
+import HermesDraftingLoader from '@/components/HermesDraftingLoader';
 
 interface HermesContributionCTAProps {
   hint: ContributionHint;
@@ -9,6 +10,7 @@ interface HermesContributionCTAProps {
   signedIn: boolean;
   onDraft: (scope: ContributionScope) => void;
   onSignIn: () => void;
+  ctaId?: string;
 }
 
 export default function HermesContributionCTA({
@@ -17,6 +19,7 @@ export default function HermesContributionCTA({
   signedIn,
   onDraft,
   onSignIn,
+  ctaId,
 }: HermesContributionCTAProps) {
   if (!shouldShowContributionCTA(hint)) return null;
 
@@ -38,7 +41,7 @@ export default function HermesContributionCTA({
             onClick={() => (signedIn ? onDraft('message') : onSignIn())}
             className={primaryClass}
           >
-            {busy ? 'Drafting…' : 'Contribution from this message'}
+            Contribution from this message
           </button>
           <button
             type="button"
@@ -64,25 +67,34 @@ export default function HermesContributionCTA({
         onClick={() => (signedIn ? onDraft(scope) : onSignIn())}
         className={primaryClass}
       >
-        {busy ? 'Drafting…' : label}
+        {label}
       </button>
     );
   };
 
   return (
-    <div className="mt-3 rounded-xl border border-amber-700/40 bg-amber-950/20 px-3 py-3">
-      <p className="text-xs text-amber-100/90">{reason}</p>
-      {scope === 'ambiguous' ? (
-        <p className="mt-1 text-[11px] text-slate-400">
-          Deepi wasn&apos;t sure which you meant – pick one.
-        </p>
-      ) : null}
-      <div className="mt-2">{renderButtons()}</div>
-      {!signedIn ? (
-        <p className="mt-2 text-[11px] text-slate-400">
-          Sign in to draft and submit patches to Canopi Discuss on the book.
-        </p>
-      ) : null}
+    <div
+      id={ctaId}
+      className="mt-3 rounded-xl border border-amber-700/40 bg-amber-950/20 px-3 py-3"
+    >
+      {busy ? (
+        <HermesDraftingLoader />
+      ) : (
+        <>
+          <p className="text-xs text-amber-100/90">{reason}</p>
+          {scope === 'ambiguous' ? (
+            <p className="mt-1 text-[11px] text-slate-400">
+              Deepi wasn&apos;t sure which you meant – pick one.
+            </p>
+          ) : null}
+          <div className="mt-2">{renderButtons()}</div>
+          {!signedIn ? (
+            <p className="mt-2 text-[11px] text-slate-400">
+              Sign in to draft and submit patches to Canopi Discuss on the book.
+            </p>
+          ) : null}
+        </>
+      )}
     </div>
   );
 }

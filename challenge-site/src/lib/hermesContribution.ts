@@ -576,7 +576,7 @@ export function contributionEditContextCopy(
       return {
         headline: 'Review before submitting',
         detail:
-          'Edits stay in Deepi until you submit. They do not auto-sync to Canopi Discuss.',
+          'Publish posts live to Canopi Discuss on the book. Save as drafts keeps the work in Discuss for later.',
         draftOption: {
           title: 'Save to my drafts',
           detail: 'Recommended: opens in Canopi Discuss for review before publishing.',
@@ -616,6 +616,50 @@ export function discussLinkLabel(
 export function proposalsFromContributionDraft(draft: ContributionDraft): ContributionProposal[] {
   if (draft.proposals?.length) return draft.proposals;
   return [{ id: 'p0', kind: draft.kind, payload: draft.payload }];
+}
+
+/** Words the operator is actually filing: panel text first, then stored claim. */
+export function claimVerbatimForSubmit(draft: ContributionDraft): string {
+  const parts: string[] = [];
+  for (const proposal of proposalsFromContributionDraft(draft)) {
+    if (proposal.kind === 'patch') {
+      const proposed = String(proposal.payload?.proposed_text || '').trim();
+      const original = String(proposal.payload?.original_text || '').trim();
+      if (proposed) parts.push(proposed);
+      if (original) parts.push(original);
+    } else {
+      const text = String(proposal.payload?.text || '').trim();
+      if (text) parts.push(text);
+    }
+  }
+  const stored = String(draft.claimVerbatim || '').trim();
+  if (stored) parts.push(stored);
+  return parts.join('\n\n').slice(0, 8000);
+}
+
+export function applyJudgeGateToDraft(
+  draft: ContributionDraft,
+  proposalId: string | null | undefined,
+  judge: ContributionProposal['judge'],
+): ContributionDraft {
+  const criterion = String(judge?.failedCriterion || 'quality');
+  const reason = String(judge?.reasons?.[criterion] || '').trim();
+  const blocked = judge?.verdict !== 'pass';
+  const proposals = proposalsFromContributionDraft(draft).map((proposal) => {
+    if (proposalId && proposal.id !== proposalId) return proposal;
+    return {
+      ...proposal,
+      judge: judge || proposal.judge,
+      judgeBlocked: blocked,
+      judgeCoaching: blocked ? (reason || 'This patch did not pass the quality check.').slice(0, 400) : null,
+    };
+  });
+  return {
+    ...draft,
+    proposals,
+    payload: proposals[0]?.payload || draft.payload,
+    kind: proposals[0]?.kind || draft.kind,
+  };
 }
 
 export function formatContributionUserSummary(
@@ -1359,7 +1403,10 @@ export function proposalStatusBadge(status: ProposalLedgerStatus): string {
 
 const PATCH_SIGNALS = [
   /\bsuggest an edit\b/i,
+  /\bgov hub\b/i,
   /\bcanopi discuss\b/i,
+  /\bpatch:\b/i,
+  /\binsert:\b/i,
   /\bproposed (?:addition|revision|text|patch|clause|sentence)\b/i,
   /\binsert as a new\b/i,
   /\boriginal[_ ]text\b/i,
@@ -1371,14 +1418,24 @@ const PATCH_SIGNALS = [
   /\bspecific revision to\b/i,
   /\bturn this into a (?:dp )?contribution\b/i,
   /\bsubmit (?:this|as)\b/i,
+  /\b(?:other|remaining|next)\s+(?:submissions?|proposals?|patches?|inserts?)\b/i,
+  /\blet'?s do (?:the )?(?:other|remaining|next)\b/i,
   /\bchange record\b/i,
   /\|\s*location\s*\|\s*before\s*\|\s*after\s*\|/i,
   /\|\s*before\s*\|\s*after\s*\|/i,
   /\*\*anchor passage\*\*/i,
   /\*\*proposed (?:text|revision|addition)\*\*/i,
+  /\bcanopi-ready\b/i,
+  /\bto post on canopi\b/i,
+  /\bcannot post on canopi\b/i,
+  /\bpaste the post body\b/i,
+  /\banchored insertions?\b/i,
+  /\bmultipart (?:submission|contribution|draft)\b/i,
 ];
 
-/** Client-side fallback when stored/API readiness is missing. */
+/** Client-side fallback when stored/API readiness is missing.
+ *  Keep PATCH_SIGNALS in sync with neo4j-knowledge-graph/src/hermes/contribution-readiness.js
+ */
 export function inferContributionHint(
   userMessage: string,
   assistantReply: string,
@@ -1408,6 +1465,8 @@ export function inferContributionHint(
     || /\bchange record\b/i.test(assistantText)
     || /\|\s*before\s*\|\s*after\s*\|/i.test(assistantText)
     || /\*\*anchor passage\*\*/i.test(assistantText)
+    || /\bcanopi-ready\b/i.test(assistantText)
+    || /\banchored insertions?\b/i.test(assistantText)
     || /\binsert\b/i.test(assistantText)
     || /\breplace\b/i.test(assistantText)
     || /\brevision to\b/i.test(userText)
@@ -1419,7 +1478,7 @@ export function inferContributionHint(
   return {
     contributionReady: true,
     recommendedScope,
-    reason: 'This exchange includes concrete edit language: ready to draft for Canopi Discuss.',
+    reason: 'Ready to draft a multipart submission. Click Turn this into a DP contribution, then Publish to Canopi Discuss.',
     suggestedKind,
     draftRefHint,
     defaultScope: recommendedScope === 'ambiguous' ? 'message' : recommendedScope,
