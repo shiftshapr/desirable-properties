@@ -103,10 +103,10 @@ export default function WorkgroupActivityFeed({
               {' – '}
             </>
           ) : null}
-          Workgroup chat on this page, Gov Hub draft patches, Canopi discuss, member chapter
-          edits, Astra patch revocations, and PDF downloads. Comments &amp; patches filters to
-          discuss posts, draft proposals, edits, and chat – hides joins, leaves, invites, and
-          downloads.
+          Workgroup chat on this page, Gov Hub draft patches, Canopi discuss, Review queue
+          decisions, Astra patch review, and PDF downloads. Historical member chapter edits from
+          the retired Edit tab still appear here. Comments &amp; patches filters to discuss
+          posts, draft proposals, and chat – hides joins, leaves, invites, and downloads.
         </p>
         <div
           className="inline-flex shrink-0 rounded-lg border border-slate-700 bg-slate-950/60 p-0.5 text-sm"

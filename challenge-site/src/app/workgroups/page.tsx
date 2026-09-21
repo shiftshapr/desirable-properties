@@ -198,7 +198,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           </p>
           <p className="mt-6 rounded-lg border border-slate-700/80 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">
             <strong className="font-semibold text-slate-200">Sign in</strong> to join a workgroup or
-            open a Collaborate page (Astra, Edit, Canopi). Use <strong className="font-semibold text-slate-200">Sign In</strong> in the header, then return to your group.
+            open a Collaborate page (Astra, Review, Canopi). Use <strong className="font-semibold text-slate-200">Sign In</strong> in the header, then return to your group.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -251,7 +251,8 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <p className="mt-3 max-w-3xl text-slate-400">
             A Desirable Properties workgroup is a small, focused team that moves a single
             Desirable Property from the Community Review Draft to Version 1.0. On the Collaborate
-            page, members work the Astra and Edit tabs and keep the conversation moving in Canopi
+            page, members review Astra, propose passage changes on book Discuss (PATCH/INSERT) or
+            Gov Hub drafts, promote (then later publish) on the Review tab, and keep the conversation moving in Canopi
             (post, comment, review, like). Each workgroup has a charter, a coordinator, and a
             flexible roster. Most collaboration is async.
           </p>
@@ -347,7 +348,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             properties the current 23 may have missed. Groups need at least{' '}
             {WORKGROUP_TARGET_MEMBER_COUNT} members for a working Version 1.0 push.
             {collabEnabled
-              ? ' Open Collaborate for Astra, Edit, Canopi, chat, and invites.'
+              ? ' Open Collaborate for Astra, Review, Canopi, chat, and invites.'
               : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
           </p>
 

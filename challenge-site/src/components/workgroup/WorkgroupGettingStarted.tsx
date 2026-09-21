@@ -58,9 +58,11 @@ export default function WorkgroupGettingStarted({
           {v1Label} · Version 1.0
         </p>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-300">
-          This workgroup&apos;s job is to take the Community Review Draft to Version 1.0. Work in
-          the Astra and Edit tabs, or do the conversation work in Canopi: post, comment, review,
-          and like so decisions stay visible.
+          This workgroup&apos;s job is to take the Community Review Draft to Version 1.0. Review
+          synthesis on the Astra tab. Propose passage changes on book Discuss (PATCH/INSERT) or as
+          Gov Hub draft patches, then promote into a revision draft on the Review tab (publish is a
+          later release). Use Canopi to post,
+          comment, review, and like so decisions stay visible.
         </p>
         <div
           className={`mt-4 rounded-lg border px-4 py-3 ${
@@ -91,10 +93,10 @@ export default function WorkgroupGettingStarted({
               {!isDiscovery ? (
                 <button
                   type="button"
-                  onClick={() => onSelectTab('edit')}
+                  onClick={() => onSelectTab('review')}
                   className="rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-600"
                 >
-                  Open Edit
+                  Open Review
                 </button>
               ) : null}
               <button

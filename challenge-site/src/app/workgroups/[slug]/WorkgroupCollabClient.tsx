@@ -9,7 +9,6 @@ import WorkgroupAstraPanel from '@/components/workgroup/WorkgroupAstraPanel';
 import WorkgroupCanopiEmbed from '@/components/workgroup/WorkgroupCanopiEmbed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
-import WorkgroupEditPanel from '@/components/workgroup/WorkgroupEditPanel';
 import WorkgroupExternalChatPanel from '@/components/workgroup/WorkgroupExternalChatPanel';
 import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
@@ -18,6 +17,7 @@ import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupMembersPanel from '@/components/workgroup/WorkgroupMembersPanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
+import WorkgroupReviewPanel from '@/components/workgroup/WorkgroupReviewPanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
@@ -80,7 +80,10 @@ export default function WorkgroupCollabClient({
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
   const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
-    normalizeWorkgroupCollabTab(searchParams.get('tab')),
+    normalizeWorkgroupCollabTab(
+      searchParams.get('tab'),
+      typeof window !== 'undefined' ? window.location.hash : null,
+    ),
   );
   const [isMember, setIsMember] = useState(initialIsMember || justJoined);
   const [canInvite, setCanInvite] = useState(
@@ -94,7 +97,18 @@ export default function WorkgroupCollabClient({
   );
 
   useEffect(() => {
-    setTab(normalizeWorkgroupCollabTab(searchParams.get('tab')));
+    const rawTab = searchParams.get('tab');
+    const hash = window.location.hash;
+    const next = normalizeWorkgroupCollabTab(rawTab, hash);
+    setTab(next);
+    if (rawTab === 'edit') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', next);
+      if (next !== 'astra') {
+        url.hash = '';
+      }
+      window.history.replaceState(null, '', url.toString());
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -379,14 +393,15 @@ export default function WorkgroupCollabClient({
               workgroupId={workgroup.id}
               workgroupSlug={workgroup.slug}
               dpId={dpId}
+              canEdit={Boolean(workgroup.can_edit || initialCanEdit)}
               deepLinkChangeId={deepLinkChangeId}
               deepLinkProposalId={deepLinkProposalId}
               onDeepLinkHandled={clearAstraDeepLinks}
             />
           ) : null}
 
-          {tab === 'edit' ? (
-            <WorkgroupEditPanel
+          {tab === 'review' ? (
+            <WorkgroupReviewPanel
               workgroupId={workgroup.id}
               workgroupSlug={workgroup.slug}
               dpId={dpId}

@@ -10,9 +10,22 @@ function dpKeyFromChangeId(changeId: string): string | null {
   return match ? match[1]!.toLowerCase() : null;
 }
 
-function editTabHref(workgroupSlug: string, anchor?: string): string {
-  const base = `${workgroupActivityHref(workgroupSlug)}?tab=edit`;
+function collabTabHref(
+  workgroupSlug: string,
+  tab: 'astra' | 'getting-started' | 'activity' | 'review',
+  anchor?: string,
+): string {
+  const base = `${workgroupActivityHref(workgroupSlug)}?tab=${tab}`;
   return anchor ? `${base}${anchor}` : base;
+}
+
+/** Legacy Edit-tab deep links: Astra revoke stays on Astra; member suggestions go to Getting Started. */
+function sanitizeLegacyEditHref(href: string, workgroupSlug: string): string {
+  if (!href.includes('tab=edit')) return href;
+  if (href.includes('#astra-patches')) {
+    return collabTabHref(workgroupSlug, 'astra', '#astra-patches');
+  }
+  return collabTabHref(workgroupSlug, 'review');
 }
 
 function chapterEditToItems(
@@ -35,7 +48,7 @@ function chapterEditToItems(
 ): ActivityFeedItem[] {
   const items: ActivityFeedItem[] = [];
   const dpLabel = row.dp_key.toUpperCase();
-  const editHref = editTabHref(workgroupSlug, '#read-chapter');
+  const editHref = collabTabHref(workgroupSlug, 'review');
   const compareBase = row.base_markdown || baseMarkdown;
   const editLike: WorkgroupChapterEdit = {
     id: row.id,
@@ -84,7 +97,7 @@ function chapterEditToItems(
       id: `member-edit-pending-${row.id}`,
       createdAt: new Date(row.created_at).toISOString(),
       text: `${row.author_name} suggested a ${patchLabel} on ${dpLabel} (awaiting coordinator approval)`,
-      href: editTabHref(workgroupSlug, '#pending-suggestions'),
+      href: collabTabHref(workgroupSlug, 'review'),
       kind: 'member_edit_pending',
       badge: 'Pending',
       resolved: false,
@@ -100,7 +113,7 @@ function chapterEditToItems(
       id: `member-edit-rejected-${row.id}`,
       createdAt: new Date(row.created_at).toISOString(),
       text: `${row.author_name}'s chapter edit on ${dpLabel} was rejected`,
-      href: editTabHref(workgroupSlug, '#propose-edit'),
+      href: collabTabHref(workgroupSlug, 'review'),
       kind: 'member_edit_rejected',
       badge: 'Rejected',
       resolved: true,
@@ -132,7 +145,7 @@ function chapterEditToItems(
       id: `member-edit-revoked-${row.id}`,
       createdAt: new Date(row.revoked_at).toISOString(),
       text: `Member chapter edit by ${row.author_name} on ${dpLabel} was revoked`,
-      href: editTabHref(workgroupSlug, '#propose-edit'),
+      href: collabTabHref(workgroupSlug, 'review'),
       kind: 'member_edit_revoked',
       badge: 'Revoked',
       resolved: true,
@@ -154,7 +167,7 @@ function revocationToItem(
     id: `astra-revoke-${row.change_id}`,
     createdAt: new Date(row.revoked_at).toISOString(),
     text: `Astra patch ${row.change_id} on ${dpLabel} was revoked`,
-    href: editTabHref(workgroupSlug, '#astra-patches'),
+    href: collabTabHref(workgroupSlug, 'astra', '#astra-patches'),
     kind: 'astra_revoke',
     badge: 'Revoked',
     resolved: true,
@@ -173,12 +186,18 @@ function loggedEventToItem(
   workgroupSlug: string,
 ): ActivityFeedItem | null {
   const detail = event.detail || {};
-  const href =
+  const rawHref =
     typeof detail.href === 'string' && detail.href
       ? detail.href
       : event.eventType === 'download'
         ? String(detail.resourceHref || '#')
-        : editTabHref(workgroupSlug);
+        : event.eventType.startsWith('astra_')
+          ? collabTabHref(workgroupSlug, 'astra', '#astra-patches')
+          : event.eventType.includes('chapter_edit') ||
+              event.eventType.startsWith('review_')
+            ? collabTabHref(workgroupSlug, 'review')
+            : workgroupActivityHref(workgroupSlug);
+  const href = sanitizeLegacyEditHref(rawHref, workgroupSlug);
 
   let kind: ActivityFeedItem['kind'] = 'govhub';
   let badge: string | null = null;

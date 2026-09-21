@@ -75,8 +75,9 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               </li>
               <li>
                 <strong className="font-semibold text-white">Collaborate page</strong> – one page per
-                DP workgroup. Astra (editorial synthesis), Edit (chapter proposals), Canopi (post,
-                comment, review, like). Sign in first. Nav: Workgroups → Collaborate pages.
+                DP workgroup. Astra (editorial synthesis), Review (promote, then publish), Canopi
+                (post, comment, review, like). Passage changes go on book Discuss (PATCH/INSERT) or
+                Gov Hub drafts. Sign in first. Nav: Workgroups → Collaborate pages.
               </li>
               <li>
                 <strong className="font-semibold text-white">Gov Hub</strong> – passage-level patches
@@ -244,7 +245,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               <li>
                 If you will help take that DP to Version 1.0, open its{' '}
                 <strong className="font-semibold text-white">Collaborate</strong> page from{' '}
-                <Link href={WORKGROUPS_LIST_HREF}>Workgroups</Link> (Astra, Edit, Canopi). Groups
+                <Link href={WORKGROUPS_LIST_HREF}>Workgroups</Link> (Astra, Review, Canopi). Groups
                 need at least three people.
               </li>
               <li>
@@ -277,8 +278,10 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <ul>
               <li>
                 <strong className="font-semibold text-white">Collaborate page</strong> (ongoing) –
-                join a DP workgroup workspace. Astra, Edit, and Canopi (post, comment, review,
-                like). Target: Version 1.0 on November 13, 2026.{' '}
+                join a DP workgroup workspace. Astra, Review (promote, then publish), and Canopi
+                (post, comment, review, like). Propose passage changes on book Discuss
+                (PATCH/INSERT) or Gov Hub drafts. Target:
+                Version 1.0 on November 13, 2026.{' '}
                 <Link href={WORKGROUPS_LIST_HREF}>Browse Collaborate pages →</Link>
               </li>
               <li>
@@ -591,8 +594,9 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               A Desirable Properties workgroup is a focused team that stewards one DP (or DP
               Discovery) toward Version 1.0. The live workspace is the{' '}
               <strong className="font-semibold text-white">Collaborate</strong> page: Astra
-              (editorial synthesis), Edit (chapter proposals), and Canopi (post, comment, review,
-              like). Groups should have at least three people.
+              (editorial synthesis), Review (promote, then publish), and Canopi (post, comment, review,
+              like). Passage changes go on book Discuss (PATCH/INSERT) or Gov Hub drafts. Groups
+              should have at least three people.
             </p>
             <p>
               Most collaboration is async.{' '}

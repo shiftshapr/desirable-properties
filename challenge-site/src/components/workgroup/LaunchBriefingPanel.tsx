@@ -97,10 +97,9 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             workgroup to see synthesized chapter text and individual change records.
           </li>
           <li>
-            Propose chapter edits on the <strong className="font-semibold text-white">Edit</strong>{' '}
-            tab once you join the workgroup. Suggestions require coordinator approval before they
-            go live. Approved edits show with track-changes (green add / red strikeout) or clean
-            read, with your name on the attribution banner.
+            Propose passage changes on book Discuss (PATCH/INSERT) or as Gov Hub draft patches,
+            then evaluate them on the <strong className="font-semibold text-white">Review</strong>{' '}
+            tab (yes/no and optional comment, workgroup members only).
           </li>
           <li>Discuss proposals and reactions in workgroup chat.</li>
           <li>
@@ -110,7 +109,10 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             </DiscussPatchLink>
             ).
           </li>
-          <li>Suggest improvements through chat, book comments, Gov Hub patches, and Edit tab markdown.</li>
+          <li>
+            Suggest improvements through chat, book Discuss (PATCH/INSERT), and Gov Hub draft
+            patches.
+          </li>
         </ul>
       </BriefingSection>
 
@@ -118,19 +120,17 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
         <ul className="list-disc space-y-2 pl-5 marker:text-violet-500">
           <li>
             Revoke misfit Astra patches on the{' '}
-            <strong className="font-semibold text-white">Edit</strong> tab when a change does not
-            fit your chapter.
+            <strong className="font-semibold text-white">Astra</strong> tab when a change does not
+            fit your chapter. Restore a revoked patch from the same list.
           </li>
           <li>
-            Approve or reject member chapter suggestions on the{' '}
-            <strong className="font-semibold text-white">Edit</strong> tab before they appear in
-            the live chapter.
+            On the <strong className="font-semibold text-white">Review</strong> tab, two separate
+            actions: <strong className="font-semibold text-white">Promote to revision</strong> (or
+            drop / leave pending) composes the next revision draft and does not go live.{' '}
+            <strong className="font-semibold text-white">Publish revision</strong> is a later
+            release that makes that draft the live book / official text. Synthesize Approve is
+            neither.
           </li>
-          <li>
-            Revoke approved member edits that miss the mark; members can submit new suggestions from
-            the effective chapter baseline.
-          </li>
-          <li>Curate the most effective chapter text for your Desirable Property.</li>
           <li>Invite members and co-leads through workgroup invite tools.</li>
         </ul>
       </BriefingSection>

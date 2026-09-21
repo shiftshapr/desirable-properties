@@ -10,7 +10,11 @@ export type WorkgroupActivityEventType =
   | 'member_chapter_edit_restored'
   | 'astra_patch_revoked'
   | 'astra_patch_restored'
-  | 'download';
+  | 'download'
+  | 'review_include'
+  | 'review_promote'
+  | 'review_drop'
+  | 'review_publish';
 
 export type WorkgroupActivityEvent = {
   id: string;

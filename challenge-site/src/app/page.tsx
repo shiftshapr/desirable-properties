@@ -170,7 +170,8 @@ export default async function Home() {
                 </span>
                 <h3 className="mt-3 text-lg font-semibold text-white">Collaborate page</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
-                  Join a DP workgroup workspace: Astra, Edit, and Canopi toward Version 1.0.
+                  Join a DP workgroup workspace: Astra, Review (promote, then publish), and Canopi
+                  toward Version 1.0.
                 </p>
                 <Link
                   href={WORKGROUPS_LIST_HREF}

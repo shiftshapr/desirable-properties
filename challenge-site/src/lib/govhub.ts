@@ -208,6 +208,10 @@ export type GovHubDraftProposal = {
   reviewed_at?: string | null;
   rationale?: string | null;
   submission_id?: string | null;
+  anchor_hash?: string | null;
+  source_channel?: string | null;
+  external_id?: string | null;
+  canopi_overlay_id?: string | null;
 };
 
 type WorkgroupsResponse = {

@@ -2,7 +2,7 @@
 
 Product and UX plan for a **Review** tab on DP workgroup collab pages: passage-anchored proposals, preference voting, conflict sets, cross-DP implications, and Hermes as clerk (not decider). Phased MVP through v3.
 
-**Status:** Planning (no code yet). **Open decisions:** see [Open questions for Daveed](#open-questions-for-daveed).
+**Status:** v1 shipped 21 Sep 2026 (queue + member evals + coordinator include/drop + Gov Hub working-revision publish). **Open decisions:** see [Open questions for Daveed](#open-questions-for-daveed).
 
 ## Why this doc
 
@@ -21,7 +21,7 @@ DP workgroup members need a single place to deliberate on **specific passages** 
 
 **Challenge-site workgroup collab (shipped):**
 
-- Tabs: Getting Started, Workgroup Chat, Activity, Invite with Email (`workgroup-collab-tabs.ts`, `WorkgroupCollabClient.tsx`).
+- Tabs: Getting Started, Members, Workgroup Chat, Astra, Review, External Chat, Activity, Invite with Email (`workgroup-collab-tabs.ts`, `WorkgroupCollabClient.tsx`). The former Edit tab is retired; `?tab=edit` lands on Review (or Astra for `#astra-patches`). Passage work is book Discuss (PATCH/INSERT) and Gov Hub draft patches. Review has two coordinator actions: **Promote to revision** (`POST .../review/pick`, composes the unpublished draft) and **Publish revision** (`POST .../review/publish`, later release). Astra is synthesis plus coordinator Astra-patch revoke.
 - Member chat on Gov Hub; AI invite flow; message share with **anchor floor** (history cannot be truncated before share point).
 - Workgroup Hermes: Draft my message, Ask Hermes (private side panel), ambient raised hand (never auto-posts), Share/Adopt patterns.
 

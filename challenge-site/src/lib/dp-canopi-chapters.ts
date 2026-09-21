@@ -30,6 +30,17 @@ export function canopiPageIdFromUrl(url: string): string {
   }
 }
 
+/** Book viewer pageIds only (`book.desirableproperties.org/viewer/dpXX`), not workgroup embeds. */
+export function canopiBookPageIdsForDp(dpId: string | null | undefined): string[] {
+  if (!dpId) return [];
+  const n = String(dpId).replace(/^DP/i, '').trim();
+  if (!/^\d{1,2}$/.test(n)) return [];
+  const padded = n.padStart(2, '0');
+  const short = `dp${padded}`;
+  const hashed = canopiPageIdFromUrl(`${DP_CANOPI_BOOK_ORIGIN}/viewer/${short}`);
+  return [...new Set([hashed, short])];
+}
+
 /** Short chapter key (`dp01`) + hashed book viewer pageId for Canopi message lookup. */
 export function canopiPageIdsForDp(dpId: string | null | undefined): string[] {
   if (!dpId) return [];

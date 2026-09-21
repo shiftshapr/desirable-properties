@@ -28,8 +28,8 @@ export default function WorkgroupCanopiStrip({ workgroupSlug, dpId, compact = fa
       <p className={`mt-2 text-sm leading-relaxed text-slate-300 ${compact ? 'max-w-2xl' : 'max-w-3xl'}`}>
         Canopi is part of the work, not optional chrome. Post, comment, review, and like so the
         chapter does not stall. Use the <span className="font-medium text-violet-100">Go Meta</span>{' '}
-        tab (bottom-right) on Getting Started, Astra, or Edit, or discuss the chapter on the book.
-        You can live in Canopi, work the Astra and Edit tabs, or do both.
+        tab (bottom-right) on Getting Started or Astra, or discuss the chapter on the book.
+        You can live in Canopi, work the Astra tab, decide on Review, and discuss on the book.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         <DiscussPatchLink

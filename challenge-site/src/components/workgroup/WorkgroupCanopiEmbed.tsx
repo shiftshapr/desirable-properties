@@ -5,7 +5,7 @@ import CanopiWebEmbed from '@/components/canopi/CanopiWebEmbed';
 import { syncCanopiTriggerVisible, setCanopiEmbedHostActive, setCanopiTriggerVisible } from '@/lib/workgroup-canopi-trigger';
 
 type Props = {
-  /** When true, show Go Meta trigger and mark page as embed host (Getting Started, Astra, Edit). */
+  /** When true, show Go Meta trigger and mark page as embed host (Getting Started, Astra). */
   active: boolean;
 };
 

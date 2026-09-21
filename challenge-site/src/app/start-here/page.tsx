@@ -170,13 +170,15 @@ export default function StartHerePage() {
               <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-200 sm:text-lg">
                 Each DP has a Collaborate page. That is the workgroup workspace, not a side tab.
                 Use <strong className="font-semibold text-white">Astra</strong> to review editorial
-                synthesis, <strong className="font-semibold text-white">Edit</strong> to propose
-                chapter changes, and <strong className="font-semibold text-white">Canopi</strong> to
-                post, comment, review, and like. We want at least {WORKGROUP_TARGET_MEMBER_COUNT}{' '}
-                people per workgroup. If a group is smaller, invite others.
+                synthesis. Propose passage changes on book Discuss (PATCH/INSERT) or Gov Hub drafts,
+                then <strong className="font-semibold text-white">promote</strong> into a revision
+                draft on Review (publish is a later release). Use{' '}
+                <strong className="font-semibold text-white">Canopi</strong> to post, comment,
+                review, and like. We want at least {WORKGROUP_TARGET_MEMBER_COUNT} people per
+                workgroup. If a group is smaller, invite others.
               </p>
               <p className="mt-4 max-w-3xl rounded-lg border border-amber-800/50 bg-amber-950/30 px-4 py-3 text-sm leading-relaxed text-amber-100">
-                Sign in when you open Collaborate. Joining the workgroup, Astra, Edit, and Canopi
+                Sign in when you open Collaborate. Joining the workgroup, Astra, Review, and Canopi
                 (post, comment, review, like) need a session. Use Sign In in the header, then return
                 to the Collaborate page.
               </p>
@@ -529,7 +531,8 @@ export default function StartHerePage() {
               <li>
                 <p className="font-semibold text-white">Now through {v1Target}</p>
                 <p className="text-base text-slate-400">
-                  Book discussion, workgroup Astra and Edit work, Canopi conversation, and
+                  Book discussion (PATCH/INSERT), workgroup Astra and Review (promote, then publish),
+                  Canopi conversation, and
                   recruitment to at least {WORKGROUP_TARGET_MEMBER_COUNT} people per workgroup
                 </p>
               </li>

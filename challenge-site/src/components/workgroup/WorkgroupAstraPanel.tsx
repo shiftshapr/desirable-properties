@@ -10,9 +10,13 @@ import {
   AstraProvenanceSummary,
 } from '@/components/workgroup/AstraChangeDetail';
 import { ASTRA_OPERATION_LABELS } from '@/lib/astra-types';
-import type { AstraChapterBundle, AstraReleaseManifest } from '@/lib/astra-types';
+import type { AstraChange, AstraChapterBundle, AstraReleaseManifest } from '@/lib/astra-types';
 import { fetchAstraApplauseClient } from '@/lib/astra-applause-api';
 import { fetchAstraChapter, fetchAstraReleaseManifest } from '@/lib/astra-api';
+import {
+  fetchAstraRevocationsClient,
+  setAstraRevocationClient,
+} from '@/lib/astra-revocation-api';
 import { findAstraChangeById, findAstraChangesByProposalId } from '@/lib/astra-highlights';
 import { astraBookPdfHref, astraChapterPdfHref } from '@/lib/astra-pdf';
 import { trackWorkgroupDownloadClient } from '@/lib/workgroup-download-track';
@@ -24,6 +28,7 @@ type Props = {
   workgroupId: string;
   workgroupSlug: string;
   dpId: string | null;
+  canEdit?: boolean;
   deepLinkChangeId?: string | null;
   deepLinkProposalId?: string | null;
   onDeepLinkHandled?: () => void;
@@ -44,6 +49,7 @@ export default function WorkgroupAstraPanel({
   workgroupId,
   workgroupSlug,
   dpId,
+  canEdit = false,
   deepLinkChangeId = null,
   deepLinkProposalId = null,
   onDeepLinkHandled,
@@ -68,6 +74,8 @@ export default function WorkgroupAstraPanel({
   const [showOmitted, setShowOmitted] = useState(false);
   const [applauseTotals, setApplauseTotals] = useState<Record<string, number>>({});
   const [applauseMine, setApplauseMine] = useState<Record<string, number>>({});
+  const [revokedIds, setRevokedIds] = useState<Set<string>>(new Set());
+  const [revokeBusy, setRevokeBusy] = useState<string | null>(null);
 
   const dpKey = selectedDpId ? dpIdToAstraKey(selectedDpId) : '';
   const chapterIndex = releaseManifest?.chapters.find((entry) => entry.dpKey === dpKey) || null;
@@ -111,6 +119,7 @@ export default function WorkgroupAstraPanel({
       setBundle(null);
       setPinnedChangeId(null);
       setPreviewChangeId(null);
+      setRevokedIds(new Set());
 
       if (chapterIndex?.status !== 'available') {
         setLoading(false);
@@ -121,6 +130,14 @@ export default function WorkgroupAstraPanel({
         const loaded = await fetchAstraChapter(dpKey);
         if (cancelled) return;
         setBundle(loaded);
+
+        const changeIds = loaded.manifest.changes.map((change) => change.id);
+        if (changeIds.length) {
+          const snapshot = await fetchAstraRevocationsClient(workgroupId, changeIds);
+          if (!cancelled) {
+            setRevokedIds(new Set(Object.keys(snapshot.revoked)));
+          }
+        }
       } catch (loadError) {
         if (!cancelled) {
           setError(loadError instanceof Error ? loadError.message : 'Failed to load chapter');
@@ -133,9 +150,17 @@ export default function WorkgroupAstraPanel({
     return () => {
       cancelled = true;
     };
-  }, [releaseManifest, dpKey, chapterIndex?.status]);
+  }, [releaseManifest, dpKey, chapterIndex?.status, workgroupId]);
 
   const changes = bundle?.manifest.changes || [];
+  const activeChanges = useMemo(
+    () => changes.filter((change) => !revokedIds.has(change.id)),
+    [changes, revokedIds],
+  );
+  const revokedChanges = useMemo(
+    () => changes.filter((change) => revokedIds.has(change.id)),
+    [changes, revokedIds],
+  );
   const changeIdsKey = useMemo(
     () => changes.map((change) => change.id).join('\u0000'),
     [changes],
@@ -185,6 +210,35 @@ export default function WorkgroupAstraPanel({
     });
   }, [handlePinChange]);
 
+  const handleRevokeToggle = useCallback(
+    async (change: AstraChange, restore: boolean) => {
+      if (!canEdit || revokeBusy) return;
+      setRevokeBusy(change.id);
+      try {
+        const snapshot = await setAstraRevocationClient(
+          workgroupId,
+          change.id,
+          restore ? 'restore' : 'revoke',
+        );
+        const next = new Set(revokedIds);
+        if (snapshot.revoked[change.id]) {
+          next.add(change.id);
+        } else {
+          next.delete(change.id);
+        }
+        setRevokedIds(next);
+        if (restore && pinnedChangeId === change.id) {
+          setPinnedChangeId(null);
+        }
+      } catch (toggleError) {
+        setError(toggleError instanceof Error ? toggleError.message : 'Could not update patch');
+      } finally {
+        setRevokeBusy(null);
+      }
+    },
+    [canEdit, revokeBusy, workgroupId, revokedIds, pinnedChangeId],
+  );
+
   useEffect(() => {
     if (!bundle || !deepLinkChangeId) return;
     const match = findAstraChangeById(bundle.manifest.changes, deepLinkChangeId);
@@ -219,6 +273,18 @@ export default function WorkgroupAstraPanel({
     }, 120);
     return () => window.clearTimeout(timer);
   }, [bundle, deepLinkChangeId, deepLinkProposalId, onDeepLinkHandled]);
+
+  useEffect(() => {
+    if (!bundle || typeof window === 'undefined') return;
+    if (window.location.hash !== '#astra-patches') return;
+    const timer = window.setTimeout(() => {
+      document.getElementById('astra-patches')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [bundle]);
 
   const headerMeta = useMemo(() => {
     if (!selectedDpId || !chapterIndex || !releaseManifest) return null;
@@ -393,10 +459,16 @@ export default function WorkgroupAstraPanel({
             <p className="text-sm text-slate-400">No editorial changes in this chapter.</p>
           )}
 
+          {activeChanges.length === 0 && changes.length > 0 ? (
+            <p className="text-sm text-amber-200/90">
+              All Astra patches for this chapter are revoked.
+            </p>
+          ) : null}
+
           <article className="min-w-0 rounded-xl border border-slate-800 bg-slate-950/40 p-5">
             <AstraChapterReader
               markdown={bundle.markdown}
-              changes={bundle.manifest.changes}
+              changes={activeChanges}
               pinnedChangeId={pinnedChangeId}
               previewChangeId={previewChangeId}
               pulseChangeId={pulseChangeId}
@@ -408,6 +480,62 @@ export default function WorkgroupAstraPanel({
               onApplauseUpdate={handleApplauseUpdate}
             />
           </article>
+
+          {changes.length > 0 ? (
+            <section
+              id="astra-patches"
+              className="scroll-mt-24 rounded-xl border border-slate-800 bg-slate-950/50 p-4"
+            >
+              <h3 className="text-sm font-semibold text-slate-200">Manage Astra patches</h3>
+              <p className="mt-1 text-xs text-slate-500">
+                {activeChanges.length} active · {revokedChanges.length} revoked
+                {canEdit
+                  ? '. Coordinators can revoke a misfit synthesis change or restore it.'
+                  : '. Coordinators review and revoke patches here.'}
+              </p>
+              <ul className="mt-3 space-y-2">
+                {changes.map((change, index) => {
+                  const revoked = revokedIds.has(change.id);
+                  return (
+                    <li
+                      key={change.id}
+                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2 text-sm"
+                    >
+                      <button
+                        type="button"
+                        className="text-left text-slate-200 hover:text-cyan-200"
+                        onClick={() => jumpToChange(change.id)}
+                      >
+                        {index + 1}. {ASTRA_OPERATION_LABELS[change.operation]}
+                        <span className="ml-2 text-xs text-slate-500">{change.id}</span>
+                        {revoked ? (
+                          <span className="ml-2 text-xs text-rose-300">revoked</span>
+                        ) : null}
+                      </button>
+                      {canEdit ? (
+                        <button
+                          type="button"
+                          disabled={revokeBusy === change.id}
+                          onClick={() => void handleRevokeToggle(change, revoked)}
+                          className={`rounded-lg border px-3 py-1 text-xs font-medium transition ${
+                            revoked
+                              ? 'border-emerald-800/60 text-emerald-200 hover:border-emerald-600'
+                              : 'border-rose-800/60 text-rose-200 hover:border-rose-600'
+                          } disabled:opacity-50`}
+                        >
+                          {revokeBusy === change.id
+                            ? 'Saving…'
+                            : revoked
+                              ? 'Restore patch'
+                              : 'Revoke patch'}
+                        </button>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ) : null}
 
           <AstraProvenanceSummary
             manifest={bundle.manifest}

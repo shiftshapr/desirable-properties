@@ -7,7 +7,7 @@ type Props = {
   alt?: string;
 };
 
-/** Chapter illustration at fixed 600×600 for Astra and Edit readers. */
+/** Chapter illustration at fixed 600×600 for Astra chapter readers. */
 export default function AstraChapterImage({ src, alt }: Props) {
   const resolved = resolveAstraAssetUrl(src);
   if (!resolved) return null;

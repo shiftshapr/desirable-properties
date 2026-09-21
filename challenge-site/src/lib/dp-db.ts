@@ -573,6 +573,22 @@ CREATE TABLE IF NOT EXISTS workgroup_activity_event (
 );
 
 CREATE INDEX IF NOT EXISTS workgroup_activity_event_wg ON workgroup_activity_event (workgroup_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS workgroup_review_eval (
+  id TEXT PRIMARY KEY,
+  workgroup_id TEXT NOT NULL,
+  item_key TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  user_name TEXT NOT NULL,
+  vote TEXT NOT NULL CHECK (vote IN ('yes', 'no')),
+  comment TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (workgroup_id, item_key, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS workgroup_review_eval_item
+  ON workgroup_review_eval (workgroup_id, item_key, updated_at DESC);
 `;
 
 let pool: pg.Pool | null = null;
