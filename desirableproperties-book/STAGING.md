@@ -60,6 +60,8 @@ Apply on the Canopi API Postgres (see `canopi/migrations/023_dp_book_embed.sql` 
 
 `assets/dp-canopi-bridge.js` sets `pageUrlOrigin` to `https://book.desirableproperties.org` on the staging host so Canopi pageIds match prod.
 
+`/workgroups` on the book host 301-redirects to the challenge site workgroups list (`staging.desirableproperties.org/workgroups` on staging; prod book vhost uses `desirableproperties.org/workgroups`). Reload nginx after updating `staging.book.desirableproperties.org.nginx.conf`.
+
 ## Verify
 
 ```bash

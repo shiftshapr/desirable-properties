@@ -19,6 +19,7 @@
     "test:dp-broadcast-audience-filter": "node --test scripts/dp-broadcast-audience-filter.test.mjs",
     "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs",
     "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs",
+    "test:pad-slug-typo": "node --test scripts/pad-slug-typo.test.mjs",
     "test:astra": "node --test scripts/astra-highlights.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",
     "import:astra": "node scripts/import-astra-release.mjs",
