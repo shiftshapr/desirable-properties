@@ -4,6 +4,37 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "canopi-feed-cache",
+      "date": "2026-09-26",
+      "status": "open",
+      "title": "Canopi chapter feeds cached and rate-capped",
+      "summary": "Activity and search read every chapter's Canopi feed on each call. Those reads are now cached for 60 seconds and at most 4 run at once, so the site no longer floods Canopi (about 2,600 requests in 4 minutes on 2026-09-25) and Canopi's sidebar stays fast.",
+      "changes": [
+        "60 s cache per chapter feed, shared by concurrent callers; failed reads are not cached",
+        "At most 4 Canopi feed requests in flight per server process",
+        "Test: npm run test:canopi-feed-cache"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/canopi-feed-cache.ts",
+          "label": "Cache + concurrency cap"
+        },
+        {
+          "path": "challenge-site/src/lib/dp-canopi-search.ts",
+          "label": "Uses the cache"
+        },
+        {
+          "path": "challenge-site/scripts/canopi-feed-cache.test.mjs",
+          "label": "Test"
+        }
+      ],
+      "surfaces": [
+        "site"
+      ],
+      "intent": "Stop DP from slowing Canopi for everyone (canopi#32).",
+      "verify": "cd challenge-site && npm run test:canopi-feed-cache"
+    },
+    {
       "id": "bootstrap",
       "date": "2026-09-04",
       "status": "open",

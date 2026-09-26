@@ -4,6 +4,7 @@
  */
 
 import { DP_CANOPI_CHAPTERS, DP_CANOPI_COMMUNITY_ID } from '@/lib/dp-canopi-chapters';
+import { createFeedCache } from '@/lib/canopi-feed-cache';
 
 const DEFAULT_COMMUNITY_ID = DP_CANOPI_COMMUNITY_ID;
 
@@ -40,7 +41,19 @@ function normalizeCanopiMessage(m: Record<string, unknown>, fallbackPageId: stri
   };
 }
 
-async function fetchCanopiMessagesForPage({
+type CanopiPageFeed =
+  | { ok: true; items: Record<string, unknown>[]; pageId: string }
+  | { ok: false; items: Record<string, unknown>[]; error: string };
+
+/** 60 s cache, 4 concurrent Canopi feed reads per process (canopi#32). */
+const feedCache = createFeedCache<CanopiPageFeed>({ ttlMs: 60_000, maxConcurrent: 4 });
+
+function fetchCanopiMessagesForPage(args: { pageId: string; communityId: string; limit?: number }) {
+  const key = `${args.communityId}|${args.pageId}|${Math.min(args.limit ?? 100, 100)}`;
+  return feedCache.get(key, () => fetchCanopiMessagesForPageUncached(args));
+}
+
+async function fetchCanopiMessagesForPageUncached({
   pageId,
   communityId,
   limit = 100,
