@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
+import { padSlugTypoRedirectPath } from '@/lib/pad-slug-sanitize';
 
 const SESSION_COOKIE = 'hermes_session';
 
@@ -36,6 +37,13 @@ export async function middleware(request: NextRequest) {
   if (apex) return apex;
 
   const { pathname } = request.nextUrl;
+
+  const padTypoPath = padSlugTypoRedirectPath(pathname);
+  if (padTypoPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = padTypoPath;
+    return NextResponse.redirect(url, 308);
+  }
 
   if (pathname === '/onchain/admin/login') {
     const next = request.nextUrl.searchParams.get('next') || '/onchain/admin';

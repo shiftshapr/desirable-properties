@@ -618,6 +618,18 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
               ← Back to Challenge
             </Link>
           </div>
+          <p className="mx-auto mt-8 max-w-2xl text-sm text-slate-500">
+            Also explore{' '}
+            <a
+              href="https://prohumannatureai.com/r/north-star"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400/90 hover:text-cyan-300"
+            >
+              Pro-Human Nature AI – North Star recommendations
+            </a>
+            .
+          </p>
         </div>
       </section>
     </main>

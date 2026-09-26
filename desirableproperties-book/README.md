@@ -36,7 +36,7 @@ from `assets/data/desirable-properties.json` (top-level) and `assets/data/dp{n}.
 | `json/canopi-embed.json` | Canopi web-embed instance ID + whitelisted domains |
 | `assets/dp-canopi-bridge.js` | Canopi sidebar bridge (header layering + auth events) |
 | `json/graph-snapshot.json` | BRC333 §6.2 graph snapshot (placeholder – see BRC333 project) |
-| `nginx/book.desirableproperties.org.conf` | nginx vhost (port 80/443, ordinals proxy, asset caching) |
+| `nginx/book.desirableproperties.org.conf` | nginx vhost (port 80/443, ordinals proxy, asset caching; `/workgroups` → main site) |
 | `deploy.sh` | Deploy script (rsync to `/var/www/desirableproperties-book/`) |
 | `install-infra.sh` | First-time server setup (nginx, certbot) |
 

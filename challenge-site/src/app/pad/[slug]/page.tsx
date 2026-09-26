@@ -19,6 +19,7 @@ import { listOnboardEvents, loadOnboardSession } from '@/lib/hermes-onboard/stor
 import { getOnSettings } from '@/lib/hermes-onboard/settings';
 import { parseOnboardTab } from '@/lib/hermes-onboard/tabs';
 import { readSession } from '@/lib/auth-session';
+import { stripTrailingAmpSlugTypo } from '@/lib/pad-slug-sanitize';
 
 type Params = Promise<{ slug: string }>;
 
@@ -77,6 +78,11 @@ export default async function AllianceBriefingPage({
 }) {
   const { slug } = await params;
   const query = await searchParams;
+
+  const slugWithoutAmpTypo = stripTrailingAmpSlugTypo(slug);
+  if (slugWithoutAmpTypo !== slug) {
+    permanentRedirect(padRedirectPath(slugWithoutAmpTypo, query));
+  }
 
   if (isPadIndexAliasSlug(slug)) {
     return <CohortPadClient />;
