@@ -4,6 +4,45 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "deepi-comment-drafts",
+      "date": "2026-09-27",
+      "status": "open",
+      "title": "Turn a Deepi conversation into a Canopi comment",
+      "summary": "Under Deepi's latest reply you can now draft a Canopi comment from that turn or from the whole thread. Deepi offers three versions (builder, steward, skeptic); you edit one, choose page comment, reply or quote, and post it under your own name, marked AI-assisted.",
+      "changes": [
+        "Comment from this turn / from the whole thread buttons on Deepi's latest reply",
+        "Three perspective drafts, editable, with page / reply / quote targets",
+        "Posted as the signed-in person via their Canopi session, with aiAssist provenance"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/components/HermesCommentDraftsModal.tsx",
+          "label": "Drafts modal"
+        },
+        {
+          "path": "challenge-site/src/app/api/agent/comments/drafts/route.ts",
+          "label": "Drafts proxy"
+        },
+        {
+          "path": "challenge-site/src/app/api/agent/comments/post/route.ts",
+          "label": "Post as person"
+        },
+        {
+          "path": "challenge-site/src/lib/canopi-comment-body.ts",
+          "label": "Body builder"
+        },
+        {
+          "path": "challenge-site/scripts/canopi-comment-body.test.mjs",
+          "label": "Test"
+        }
+      ],
+      "surfaces": [
+        "site"
+      ],
+      "intent": "Help people bring what they worked out with Deepi into the community conversation, in their own words.",
+      "verify": "cd challenge-site && npm run test:canopi-comment-body"
+    },
+    {
       "id": "canopi-feed-cache",
       "date": "2026-09-26",
       "status": "open",
