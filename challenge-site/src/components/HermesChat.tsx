@@ -9,6 +9,7 @@ import HermesContributionCTA from '@/components/HermesContributionCTA';
 import HermesDraftingLoader from '@/components/HermesDraftingLoader';
 import HermesContributionLedger from '@/components/HermesContributionLedger';
 import HermesContributionPanel from '@/components/HermesContributionPanel';
+import HermesCommentDraftsModal from '@/components/HermesCommentDraftsModal';
 import HermesMarkdown from '@/components/HermesMarkdown';
 import NamedTabLink from '@/components/NamedTabLink';
 import HermesTeachModal, { type HermesTeachMode } from '@/components/HermesTeachModal';
@@ -569,6 +570,7 @@ export default function HermesChat({
   const fromPath = useCurrentFromPath();
   const signedIn = checked ? Boolean(authUser) : (initialSignedIn || Boolean(initialUser));
   const [threads, setThreads] = useState<HermesThreadSummary[]>([]);
+  const [commentDraftScope, setCommentDraftScope] = useState<'turn' | 'thread' | null>(null);
   const [sharedThreads, setSharedThreads] = useState<HermesThreadSummary[]>([]);
   const [activeThreadMeta, setActiveThreadMeta] = useState<HermesThreadSummary | null>(null);
   const [threadAccess, setThreadAccess] = useState<ThreadAccess | null>(null);
@@ -3157,6 +3159,24 @@ export default function HermesChat({
                         {assistantActionId === message.id && isLoading ? 'Regenerating…' : 'Regenerate'}
                       </button>
                       ) : null}
+                      {message.id === messages.filter((m) => m.sender === 'assistant' && m.id !== 'intro').slice(-1)[0]?.id ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => setCommentDraftScope('turn')}
+                            className="rounded-md border border-emerald-700/60 px-2 py-1 text-[11px] text-emerald-200 hover:bg-emerald-950/40"
+                          >
+                            Comment from this turn
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setCommentDraftScope('thread')}
+                            className="rounded-md border border-emerald-700/60 px-2 py-1 text-[11px] text-emerald-200 hover:bg-emerald-950/40"
+                          >
+                            Comment from the whole thread
+                          </button>
+                        </>
+                      ) : null}
                       <button
                         type="button"
                         onClick={() => void copyAssistantMarkdown(message.id, message.text)}
@@ -3281,6 +3301,15 @@ export default function HermesChat({
                 </div>
               </div>
             ))}
+
+            {commentDraftScope ? (
+              <HermesCommentDraftsModal
+                scope={commentDraftScope}
+                turns={messages.filter((m) => m.id !== 'intro' && m.text).map((m) => ({ sender: m.sender, text: m.text }))}
+                dpFocus={dpFocus ?? null}
+                onClose={() => setCommentDraftScope(null)}
+              />
+            ) : null}
 
             {contributionDraft && contributionDraftThreadId && contributionDraftThreadId === activeThreadId ? (
               <div ref={contributionPanelRef}>
