@@ -87,3 +87,4 @@ assets/dp-icons/raster/
 # Kickoff meeting audio (~12MB). Copy onto the host; do not commit the binary.
 # See challenge-site/public/media/README.md
 challenge-site/public/media/*.mp3
+data/loop/

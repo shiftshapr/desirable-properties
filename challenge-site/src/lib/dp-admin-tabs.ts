@@ -8,6 +8,8 @@ export const DP_ADMIN_TAB_LABELS = {
   'long-gap-send': 'Long-gap send',
   'event-series': 'Event series',
   site: 'Site admin',
+  'loop-book': 'DP → BRC333 → Book',
+  'loop-reqs': 'DP → REQ → ADR → Code',
 } as const;
 
 export type DpAdminTabKey = keyof typeof DP_ADMIN_TAB_LABELS;
@@ -27,6 +29,11 @@ export const DP_ADMIN_GROUPS = [
     key: 'events',
     label: 'Events',
     tabs: ['event-series'] as const satisfies readonly DpAdminTabKey[],
+  },
+  {
+    key: 'loop',
+    label: 'DP loop',
+    tabs: ['loop-book', 'loop-reqs'] as const satisfies readonly DpAdminTabKey[],
   },
   {
     key: 'ops',

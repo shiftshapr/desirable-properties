@@ -20,6 +20,7 @@ from govhub_dp_common import (  # noqa: E402
     local_rail_path,
     parse_sync_marker,
     strip_sync_marker,
+    sync_marker_is_stale,
     upsert_sync_marker,
 )
 
@@ -127,6 +128,15 @@ class GovhubSyncCommonTests(unittest.TestCase):
         assert parsed is not None
         self.assertEqual(parsed['revision'], '02')
         self.assertEqual(parsed['submission'], 'new-id')
+
+    def test_sync_marker_is_stale(self):
+        text = (
+            '# DP1\n\n<!-- govhub-sync: ml=ML-Draft-008 revision=04 submission=rev4 hash=abc synced=2026-08-08T21:35:00Z -->\n'
+        )
+        self.assertFalse(sync_marker_is_stale(text, 'rev4'))
+        self.assertTrue(sync_marker_is_stale(text, 'rev5'))
+        self.assertTrue(sync_marker_is_stale('# DP1 no stamp\n', 'rev5'))
+        self.assertFalse(sync_marker_is_stale(text, ''))
 
     def test_extract_image_urls(self):
         from govhub_rail_image_sync import extract_image_urls
