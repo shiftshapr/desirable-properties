@@ -212,6 +212,10 @@ export type GovHubDraftProposal = {
   source_channel?: string | null;
   external_id?: string | null;
   canopi_overlay_id?: string | null;
+  /** Gov Hub: does the target passage still exist in the served revision? */
+  applicability?: 'applies' | 'needs-review' | 'obsolete' | string | null;
+  applicability_hint?: string | null;
+  created_on_revision_label?: string | null;
 };
 
 type WorkgroupsResponse = {

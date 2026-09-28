@@ -227,7 +227,13 @@ export default function WorkgroupReviewPanel({
                   Conflict set · {item.conflictCount}
                 </span>
               ) : null}
-              <span className="text-slate-500">{item.status}</span>
+              <span className="text-slate-500">
+                {item.status === 'canopi_only'
+                  ? 'Canopi only'
+                  : item.status === 'filed_elsewhere'
+                    ? 'Filed in another chapter'
+                    : item.status}
+              </span>
             </div>
             <p className="mt-2 text-sm text-slate-200">
               {item.authorName} · member evals: yes {item.evals.yes} / no {item.evals.no}

@@ -7,7 +7,7 @@ const COLUMNS = [
   ['review', 'Review queue', 'Pending proposals and any promoted-but-unpublished working revision'],
   ['govhub', 'Gov Hub served', 'Latest approved ML-Draft revision (what Publish produces)'],
   ['rail', 'Book rail', 'content/local/dpN.md compared to the served Gov Hub body'],
-  ['staging', 'Staging book', 'staging.book.desirableproperties.org rail vs repo rail'],
+  ['staging', 'Staging sandbox', 'staging.book.desirableproperties.org vs DEV Gov Hub served revision (staging site Review → dev hub → staging book)'],
   ['prod', 'Prod book', 'book.desirableproperties.org rail vs repo rail'],
   ['brc333_web', 'BRC333 web', 'Ordinal reader Live mode via sources-sat localOverride'],
   ['brc333_chain', 'BRC333 on-chain', 'Inscribed copy vs rail. Reinscription is a separate Studio job, never part of Publish'],

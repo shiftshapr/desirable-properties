@@ -62,6 +62,31 @@ Promote and Publish are two clicks. Synthesize is neither; it is advisory input.
 - Bridgit-DAO/canopi#81: Synthesize advisory + UX
 - Bridgit-DAO/interface-gov-hub#1: Canopi intake keeps patch_mode
 
+## Staging sandbox (end-to-end rehearsal, built 2026-09-28)
+
+```
+staging.desirableproperties.org Review ──► DEV Gov Hub (dev.interfacehub.net, :8001)
+   (evals/events → Postgres desirable_properties_staging)        │ Publish
+                                                                  ▼
+             dispatch_dp_rail_sync → GH_BIN shim (scripts/staging_rail_sync_gh_shim.sh)
+                                                                  ▼
+             scripts/staging_rail_sync.sh → /home/ubuntu/desirableproperties-book-staging/content/local
+                                            (no git commit, never the prod book)
+```
+
+| Piece | Where |
+| --- | --- |
+| Staging site → dev hub | `challenge-site/ecosystem.staging.config.js` `GOVHUB_BASE_URL`, `GOVHUB_INTERNAL_BASE_URL` |
+| Staging DB | `.env.local` `DP_DATABASE_URL_STAGING` (snapshot of prod DP Postgres, 2026-09-28) |
+| Dev hub seeded from prod | `scripts/govhub_seed_dev_dp_loop.py` (additive; users, layers, DP workgroups, members, chairs, links, proposals; backups `instance_dev/*.backup_pre_dp_loop_seed_*`) |
+| Dev publish hook | `gov-hub-dev/.env`: `GOVHUB_DP_RAIL_SYNC_DISPATCH=true`, `DP_RAIL_SYNC_ENV=dev`, `GH_BIN=…/staging_rail_sync_gh_shim.sh`, `CANOPI_SIGNING_SECRET` (dev-only) |
+| Evidence | `data/loop/staging-rail-sync-dispatch.json`, `staging-rail-sync-last.json`, `logs/staging-rail-sync.log`; dashboard 1 "Staging sandbox" column = staging book vs dev served rev |
+| Web3Auth | dev and prod hub use the same devnet client id, so staging sign-in tokens verify on dev |
+
+Canopi → Gov Hub filing: `scripts/canopi_patch_file_to_govhub.py --env prod|staging --apply` (monitor runs both). Author = Canopi `AppUser.email` → Gov Hub user; inserts anchored on the markup-free edge sentence (must be in Gov Hub plain text *and* verbatim in markdown for Promote to splice). Report `data/loop/canopi-filing-<env>.json` feeds Review ("Filed in another chapter"). 2026-09-28: 10 prod posts filed (DP15 ×7 → ML-Draft-019, DP22 ×3 → ML-Draft-028).
+
+Review findings 2026-09-28: 14 prior pending prod proposals → 7 apply (all splice), 6 needs-review, 1 obsolete; Review now blocks Promote unless Gov Hub applicability = applies. Open policy question: approved co-leads get Review Promote/Publish buttons (Gov Hub `can_edit`) but Gov Hub accept/publish allow only coordinator / approved chair / layer admin / staff.
+
 ## Operating
 
 ```bash

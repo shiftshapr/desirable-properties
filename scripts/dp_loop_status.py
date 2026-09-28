@@ -28,6 +28,7 @@ from pathlib import Path
 HOME = Path("/home/ubuntu")
 DP_ROOT = HOME / "desirable-properties"
 GOVHUB_DB = HOME / "gov-hub-prod/instance/datatracker.db"
+GOVHUB_DEV_DB = HOME / "gov-hub-dev/instance_dev/datatracker_dev.db"  # staging sandbox hub
 BOOK = DP_ROOT / "desirableproperties-book"
 RAILS = BOOK / "content/local"
 ML_MAP = DP_ROOT / "challenge-site/src/data/dp-ml-draft-map.json"
@@ -82,15 +83,15 @@ def load_ml_map() -> dict[str, dict]:
 # ---------------------------------------------------------------- Gov Hub
 
 
-def govhub_state(ml_map: dict[str, dict]) -> tuple[dict[str, dict], list[str]]:
+def govhub_state(ml_map: dict[str, dict], db: Path = GOVHUB_DB) -> tuple[dict[str, dict], list[str]]:
     """Per DP: served revision, working revision, proposal counts by status/channel."""
     errors: list[str] = []
     out: dict[str, dict] = {}
     try:
-        con = sqlite3.connect(f"file:{GOVHUB_DB}?mode=ro", uri=True, timeout=5)
+        con = sqlite3.connect(f"file:{db}?mode=ro", uri=True, timeout=5)
         con.row_factory = sqlite3.Row
     except sqlite3.Error as e:
-        return {}, [f"govhub db: {e}"]
+        return {}, [f"govhub db {db.name}: {e}"]
     for dp_id, meta in ml_map.items():
         ml = meta["mlNumber"]
         row: dict = {"ml": ml, "label": meta.get("label"), "served": None, "working": None,
@@ -386,6 +387,7 @@ def build(skip_network: bool) -> dict:
     ml_map = load_ml_map()
     dp_ids = list(ml_map)
     gh, gh_err = govhub_state(ml_map)
+    gh_dev, _ = govhub_state(ml_map, GOVHUB_DEV_DB)
     rails = rail_stamps()
     brc, brc_err = brc333_state(skip_network)
     runs, runs_err = ([], "skipped") if skip_network else rail_sync_runs()
@@ -426,16 +428,21 @@ def build(skip_network: bool) -> dict:
         else:
             s_rail = stage("warn", f"body = rev {served['revision']}; stamp says rev {stamp_rev}")
         envs = {}
+        dev_served = (gh_dev.get(dp_id) or {}).get("served") or {}
+        dev_work = (gh_dev.get(dp_id) or {}).get("working")
         for env in BOOK_URLS:
             d = deployed[env].get(dp_id) if deployed[env] else None
+            # prod book follows the repo rail; the staging book is the sandbox and follows DEV Gov Hub
+            want = rail.get("body_key") if env == "prod" else dev_served.get("body_key")
+            label = "rail" if env == "prod" else f"dev hub rev {dev_served.get('revision', '?')}"
             if skip_network:
                 envs[env] = stage("na", "not checked")
             elif d is None:
                 envs[env] = stage("bad", "fetch failed")
-            elif d.get("body_key") == rail.get("body_key"):
-                envs[env] = stage("ok", f"= rail (stamp rev {(d.get('stamp') or {}).get('rev', '?')})")
+            elif d.get("body_key") == want:
+                envs[env] = stage("ok", f"= {label}" + (f" · dev working rev {dev_work['revision']} ({dev_work['applied']} promoted)" if env == "staging" and dev_work else ""))
             else:
-                envs[env] = stage("bad", f"serves stamp rev {(d.get('stamp') or {}).get('rev', '?')}, differs from rail")
+                envs[env] = stage("bad", f"serves stamp rev {(d.get('stamp') or {}).get('rev', '?')}, differs from {label}")
         b = brc.get(dp_id) or {}
         if b.get("localOverride"):
             s_brc_web = stage("ok", f"reads {b['localOverride']}")
