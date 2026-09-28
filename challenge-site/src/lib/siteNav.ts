@@ -70,6 +70,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     label: 'Workgroups',
     href: WORKGROUPS_JOIN_HREF,
     children: [
+      { href: '/roundups', label: 'DP Roundups' },
       { href: WORKGROUPS_LIST_HREF, label: 'Collaborate pages' },
       { href: WORKGROUPS_JOIN_HREF, label: 'About workgroups' },
       { href: WORKGROUPS_SIGNUPS_HREF, label: 'Signups' },

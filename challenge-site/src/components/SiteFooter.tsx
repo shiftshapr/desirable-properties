@@ -13,6 +13,7 @@ export default function SiteFooter() {
           <Link href="/start-here" className="font-semibold text-cyan-200 hover:text-white">
             Start Here
           </Link>
+          <Link href="/roundups" className="text-cyan-300 hover:text-cyan-200">DP Roundups</Link>
           <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
             Workgroups
           </Link>

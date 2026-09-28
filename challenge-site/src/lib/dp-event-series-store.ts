@@ -1,3 +1,4 @@
+import { DP_ROUNDUP_EVENTS, ROUNDUP_TIME_LABEL, roundupDateLabel } from '@/lib/dp-roundups';
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import {
@@ -924,10 +925,22 @@ function mapSessionEventEntry(
   return entry;
 }
 
+/** Public schedule is available even when the participation database is offline. */
+function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
+  return DP_ROUNDUP_EVENTS.filter(event => (new Date(event.endsAt) <= now) === past).map((event, index) => ({
+    id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
+    title: event.title, seriesType: event.launch ? 'single' : 'series',
+    href: event.href, detailHref: event.href, external: false,
+    startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${ROUNDUP_TIME_LABEL}`,
+    seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
+    seriesTitle: event.launch ? 'Desirable Properties Version 1.0' : 'Meta-Layer Monday', seriesHref: '/roundups',
+  }));
+}
+
 /** Past sessions, sorted by most recent session start. */
 export async function listPastEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
   const pool = await ensureDpSchema();
-  if (!pool) return [];
+  if (!pool) return roundupEventEntries(now, true);
   await ensureEventSeeds();
 
   const res = await pool.query(
@@ -956,13 +969,13 @@ export async function listPastEventEntries(now = new Date()): Promise<UpcomingEv
     [now.toISOString()],
   );
 
-  return res.rows.map((row) => mapSessionEventEntry(row, { past: true }));
+  return [...res.rows.map((row) => mapSessionEventEntry(row, { past: true })), ...roundupEventEntries(now, true)].sort((a, b) => -1 * ((a.startsAt ? Date.parse(a.startsAt) : Infinity) - (b.startsAt ? Date.parse(b.startsAt) : Infinity)));
 }
 
 /** Upcoming sessions, sorted by soonest session start. */
 export async function listUpcomingEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
   const pool = await ensureDpSchema();
-  if (!pool) return [];
+  if (!pool) return roundupEventEntries(now, false);
   await ensureEventSeeds();
 
   const res = await pool.query(
@@ -990,7 +1003,7 @@ export async function listUpcomingEventEntries(now = new Date()): Promise<Upcomi
     [now.toISOString()],
   );
 
-  return res.rows.map((row) => mapSessionEventEntry(row));
+  return [...res.rows.map((row) => mapSessionEventEntry(row)), ...roundupEventEntries(now, false)].sort((a, b) => ((a.startsAt ? Date.parse(a.startsAt) : Infinity) - (b.startsAt ? Date.parse(b.startsAt) : Infinity)));
 }
 
 /** Active event series linked to a pathway page (homepage participation band). */

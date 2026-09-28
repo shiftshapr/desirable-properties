@@ -1,3 +1,4 @@
+import { DP_V1_LAUNCH_START } from '@/lib/dp-roundups';
 import timelineData from '@/data/challenge-timeline.json';
 import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 
@@ -95,11 +96,8 @@ export function getBookLaunchDate(): Date {
 }
 
 export function getV1ReleaseDate(): Date {
-  const fromMeta = challengeMeta.v1_release_date;
-  if (fromMeta) {
-    return new Date(fromMeta);
-  }
-  return new Date(`${CHALLENGE_KEY_DATES.v1Release.iso}T09:00:00-07:00`);
+  // Keep the countdown and Roundup launch event on the same confirmed instant.
+  return new Date(DP_V1_LAUNCH_START);
 }
 
 export type CountdownMilestone = {

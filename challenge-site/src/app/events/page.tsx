@@ -7,6 +7,8 @@ import {
   type UpcomingEventEntry,
 } from '@/lib/dp-event-series-store';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Events | Desirable Properties',
   description: 'Upcoming workshops, launches, and gatherings for the Desirable Properties Challenge.',
@@ -95,9 +97,10 @@ export default async function EventsIndexPage() {
       <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">Events</p>
       <h1 className="mt-3 text-4xl font-bold text-white">Workshops and gatherings</h1>
       <p className="mt-4 max-w-2xl text-lg text-slate-400">
-        Individual sessions sorted by date. Date and title open the session page with questions.
+        Individual sessions sorted by date. Open a session for its details and participation instructions.
       </p>
 
+      <p className="mt-4"><Link href="/roundups" className="text-cyan-300 underline">DP Roundups: weekly workgroups and the November 13 V1 launch</Link></p>
       <section className="mt-10" aria-labelledby="events-upcoming-heading">
         <h2 id="events-upcoming-heading" className="text-2xl font-semibold text-white">
           Upcoming <span className="text-slate-500">({upcoming.length})</span>
