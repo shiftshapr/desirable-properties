@@ -36,8 +36,8 @@ Promote and Publish are two clicks. Synthesize is neither; it is advisory input.
 - [x] 4. Dashboard 1: `/admin?tab=loop-book` (`LoopBookPanel.tsx`)
 - [x] 5. Dashboard 2: `/admin?tab=loop-reqs` (`LoopReqsPanel.tsx`)
 - [x] 6. Cron `*/30` `scripts/dp_loop_monitor.py`: Gate-1 fallback regen, collector refresh, Telegram on alert transitions (meta-console alerts.env)
-- [~] 7. Canopi book patches → Gov Hub. Converter `challenge-site/src/lib/canopi-patch-to-govhub.ts` done + tested; Review "File as Gov Hub patch" route/queue/panel pending (needs permission to read Review store/panel files). Auto-filing under original author needs Canopi user emails (permission denied; user decision).
-- [ ] 8. Synthesize framed as optional input; staging UX (hidden editor modal, Approve live while signed out). Canopi presence code.
+- [~] 7. Canopi book patches → Gov Hub. Intake patch_mode bug fixed in Bridgit-DAO/interface-gov-hub#1. Converter `challenge-site/src/lib/canopi-patch-to-govhub.ts` done + tested; Review "File as Gov Hub patch" route/queue/panel pending (needs permission to read Review store/panel files). Auto-filing under original author needs Canopi user emails (permission denied; user decision).
+- [x] 8. Synthesize advisory copy + hidden-modal fix + sign-in gating: Bridgit-DAO/canopi#81 (verify signed-in path on staging after deploy).
 - [~] 9. Rail sync verified by dashboard 1 on every run; first real Publish not yet made (no `repository_dispatch` run ever). Stamp-refresh fix lands on next rail-sync after merge.
 - [x] 10. Gate 1: `scripts/ml_req_regen_on_publish.py` (rail-sync deploy step + monitor) writes unpublished clones to `overweb/intent/astra/pending/`; `--adopt DPn --human-confirmed` to adopt. Baseline in `data/loop/ml-req-baseline.json`.
 - [x] 11. BRC333 on-chain column is "idle" drift from inscribe-api inventory; never part of Publish.
@@ -55,6 +55,12 @@ Promote and Publish are two clicks. Synthesize is neither; it is advisory input.
 - gov-hub-dev `ml_req_generate.py`: `min_align_sha256_16` hashes the whole body.
 - `overweb/intent/plan.md:10` still names the Visibility-tab ADR; superseded by SDK overlay lock.
 - canopi-sdk `OVERLAY_CONFORMANCE.md` / `conforming-overlay.ts` untracked, so theoverweb.org `/adrs/sdk/` links 404.
+
+## Open PRs
+
+- shiftshapr/desirable-properties#10: dashboards, collector, Gate-1 hook, monitor, stamp fix
+- Bridgit-DAO/canopi#81: Synthesize advisory + UX
+- Bridgit-DAO/interface-gov-hub#1: Canopi intake keeps patch_mode
 
 ## Operating
 
