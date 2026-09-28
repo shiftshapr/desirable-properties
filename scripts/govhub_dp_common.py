@@ -221,6 +221,18 @@ def parse_sync_marker(text: str) -> dict[str, str] | None:
     return fields or None
 
 
+def sync_marker_is_stale(text: str, submission_id: str) -> bool:
+    """True when the rail's govhub-sync stamp does not name the served submission.
+
+    Bodies can be identical across Gov Hub revisions (a republish with no text change),
+    so body comparison alone leaves the stamp pointing at an older revision.
+    """
+    if not submission_id:
+        return False
+    fields = parse_sync_marker(text) or {}
+    return fields.get('submission') != submission_id
+
+
 def format_sync_marker(
     *,
     ml_number: str,

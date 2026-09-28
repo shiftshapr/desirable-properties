@@ -131,3 +131,8 @@ jobs:
 
             bash desirableproperties-book/scripts/deploy-staging-book.sh
             bash desirableproperties-book/deploy.sh
+
+            # Gate 1: a newly published DP revision opens an unpublished ML-REQ regeneration
+            # clone (overweb/intent/astra/pending/). Never publishes ML-REQ-NNN. Non-fatal.
+            python3 scripts/ml_req_regen_on_publish.py --trigger rail-sync || echo "ml-req regen failed (non-fatal)"
+            python3 scripts/dp_loop_status.py || echo "loop status refresh failed (non-fatal)"

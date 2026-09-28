@@ -11,6 +11,8 @@ import AdminInviteAiPanel from '@/app/admin/AdminInviteAiPanel';
 import AdminLongGapSendPanel from '@/components/admin/AdminLongGapSendPanel';
 import EventSeriesAdminPanel from '@/app/admin/EventSeriesAdminPanel';
 import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
+import LoopBookPanel from '@/app/admin/LoopBookPanel';
+import LoopReqsPanel from '@/app/admin/LoopReqsPanel';
 import { AdminToastProvider } from '@/components/AdminToastHost';
 import AdminAuthShell from '@/components/AdminAuthShell';
 import {
@@ -161,6 +163,8 @@ export default function DpAdminClient() {
           {tab === 'long-gap-send' ? <AdminLongGapSendPanel /> : null}
           {tab === 'event-series' ? <EventSeriesAdminPanel /> : null}
           {tab === 'site' ? <SiteAdminPanel /> : null}
+          {tab === 'loop-book' ? <LoopBookPanel /> : null}
+          {tab === 'loop-reqs' ? <LoopReqsPanel /> : null}
         </div>
       </AdminAuthShell>
     </AdminToastProvider>

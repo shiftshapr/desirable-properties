@@ -42,6 +42,7 @@ from govhub_dp_common import (
     load_sync_rails_manifest,
     local_rail_path,
     strip_sync_marker,
+    sync_marker_is_stale,
     upsert_sync_marker,
 )
 from govhub_rail_image_sync import sync_images_from_markdown
@@ -185,7 +186,9 @@ def main() -> int:
         new_text = upsert_sync_marker(body, marker)
         old_text = local_path.read_text(encoding='utf-8') if local_path.is_file() else ''
 
-        rail_changed = _normalize(new_text) != _normalize(old_text)
+        body_changed = _normalize(new_text) != _normalize(old_text)
+        stamp_stale = bool(old_text) and sync_marker_is_stale(old_text, submission_id)
+        rail_changed = body_changed or stamp_stale
         assets_changed = image_summary.assets_changed
         changed = rail_changed or assets_changed
         entry.update(
@@ -194,6 +197,8 @@ def main() -> int:
             content_hash=content_hash,
             changed=changed,
             rail_changed=rail_changed,
+            body_changed=body_changed,
+            stamp_stale=stamp_stale,
             assets_changed=assets_changed,
         )
 
@@ -214,7 +219,8 @@ def main() -> int:
             results.append(entry)
             parts = []
             if rail_changed:
-                parts.append(f'would update {local_path.name}')
+                parts.append(f'would update {local_path.name}'
+                             + ('' if body_changed else ' (stamp only)'))
             if assets_changed:
                 parts.append(f'would sync {image_summary.copied or len(image_summary.results)} image(s)')
             print(f'{display:<18} DRY   {ml} rev {revision} {"; ".join(parts)}{image_note}')
@@ -225,6 +231,8 @@ def main() -> int:
         entry['status'] = 'written'
         results.append(entry)
         action = local_path.name if rail_changed else 'images only'
+        if rail_changed and not body_changed:
+            action += ' (stamp only)'
         print(f'{display:<18} OK    {ml} rev {revision} -> {action}{image_note}')
 
     changed_rows = [r for r in results if r.get('changed')]
