@@ -6,6 +6,7 @@ import {
   govhubDraftReadHref,
   type GovHubDraftProposal,
 } from '@/lib/govhub';
+import { loadCanopiFilingReport } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
 
@@ -64,6 +65,8 @@ export async function buildWorkgroupReviewQueue(opts: {
     if (matchedCanopi) sources.push('canopi');
 
     const pending = String(proposal.status || 'pending').toLowerCase() === 'pending';
+    const applicability = String(proposal.applicability || 'applies').toLowerCase();
+    const anchored = applicability === 'applies';
     items.push({
       key: `govhub:${proposal.id}`,
       sources,
@@ -88,15 +91,24 @@ export async function buildWorkgroupReviewQueue(opts: {
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
-      canPromote: pending,
-      promoteBlockReason: pending
-        ? null
-        : `Already ${proposal.status}. Only pending Gov Hub proposals can be promoted into the next revision draft.`,
+      canPromote: pending && anchored,
+      promoteBlockReason: !pending
+        ? `Already ${proposal.status}. Only pending Gov Hub proposals can be promoted into the next revision draft.`
+        : anchored
+          ? null
+          : applicability === 'obsolete'
+            ? 'Obsolete: the passage this patch targets is gone from the current text. Drop it, or ask the author to re-propose against the current revision.'
+            : `Needs re-anchoring: written against ${proposal.created_on_revision_label || 'an older revision'} and the passage has changed since, so Promote would fail. Ask the author to re-propose on the current text, or Drop it.`,
     });
   }
 
+  const filing = await loadCanopiFilingReport();
+  const thisDp = opts.dpId ? `DP${String(opts.dpId).replace(/^DP/i, '')}` : null;
   for (const post of canopiPatches) {
     if (usedCanopiIds.has(post.id)) continue;
+    const filed = filing.get(post.id);
+    const filedElsewhere =
+      filed && (filed.status === 'filed' || filed.status === 'already_filed') && filed.home_dp && filed.home_dp !== thisDp;
     const parsed = classifyDiscussPost({ body: post.content, tagType: post.tagType });
     items.push({
       key: `canopi:${post.id}`,
@@ -109,7 +121,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       rationale: null,
       authorName: post.authorName || 'Someone',
       createdAt: post.createdAt || '',
-      status: 'canopi_only',
+      status: filedElsewhere ? 'filed_elsewhere' : 'canopi_only',
       anchorHash: null,
       conflictSetId: '',
       conflictCount: 1,
@@ -119,8 +131,11 @@ export async function buildWorkgroupReviewQueue(opts: {
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
       canPromote: false,
-      promoteBlockReason:
-        'This book Discuss patch is not a Gov Hub proposal yet, so it cannot be promoted into the revision draft. File or sync it as a Gov Hub patch first.',
+      promoteBlockReason: filedElsewhere
+        ? `Posted on this chapter's page, but the passage it targets is in ${filed!.home_dp}. It was filed there (${filed!.draft_ref}); review it on the ${filed!.home_dp} Review tab.`
+        : filed?.status === 'blocked' || filed?.status === 'error'
+          ? `Not filed to Gov Hub automatically: ${filed.reason || filed.status}.`
+          : 'Book patches are filed to Gov Hub automatically every 30 minutes. This one is not filed yet, so it cannot be promoted.',
     });
   }
 

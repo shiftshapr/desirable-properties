@@ -123,8 +123,9 @@ module.exports = {
         DP_ENV: 'staging',
         NEXT_DIST_DIR: '.next-staging',
         PORT: '3006',
-        GOVHUB_BASE_URL: 'https://interfacehub.net',
-        GOVHUB_INTERNAL_BASE_URL: 'http://127.0.0.1:8000',
+        // Staging sandbox: DEV Gov Hub so Review → Promote → Publish never touches prod.
+        GOVHUB_BASE_URL: localEnv.GOVHUB_BASE_URL_STAGING || 'https://dev.interfacehub.net',
+        GOVHUB_INTERNAL_BASE_URL: localEnv.GOVHUB_INTERNAL_BASE_URL_STAGING || 'http://127.0.0.1:8001',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
         ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',
         HERMES_CHAT_URL: 'http://127.0.0.1:8790',
@@ -152,9 +153,9 @@ module.exports = {
           localEnv.DP_BOOK_BASE_URL_STAGING
           || 'https://staging.book.desirableproperties.org',
         DP_COLLAB_ENABLED: 'true',
-        DP_DATABASE_URL:
-          localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',
-        DATABASE_URL: localEnv.DATABASE_URL || localEnv.DP_DATABASE_URL || '',
+        // Separate staging Postgres (snapshot of prod) so staging evals/events stay out of prod.
+        DP_DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
+        DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
         WEB3AUTH_CLIENT_ID_DEVNET:
           localEnv.WEB3AUTH_CLIENT_ID_DEVNET
           || 'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk',

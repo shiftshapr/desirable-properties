@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Scheduled DP loop monitor (cron, every 30 min).
 
+0. File new Canopi book patches into Gov Hub under their authors (prod and staging sandbox),
+   and re-sync the staging book from DEV Gov Hub (fallback for the DEV publish hook).
 1. Gate 1 fallback: open ML-REQ regeneration clones for DPs published since last run.
 2. Refresh data/loop/dp-loop-status.json (both /admin loop dashboards read it).
 3. Post new / cleared loop alerts to the meta-console Telegram transport
@@ -13,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import urllib.parse
@@ -55,6 +58,20 @@ def main() -> int:
     ap.add_argument("--no-send", action="store_true")
     args = ap.parse_args()
 
+    filing_alerts = []
+    for env in ("prod", "staging"):
+        f = subprocess.run([sys.executable, str(SCRIPTS / "canopi_patch_file_to_govhub.py"), "--env", env, "--apply"],
+                           capture_output=True, text=True, timeout=600)
+        print(f"canopi filing {env}: {(f.stdout.strip().splitlines() or [f.stderr.strip()[-200:]])[-1]}")
+        report = DP_ROOT / f"data/loop/canopi-filing-{env}.json"
+        if report.exists():
+            counts = json.loads(report.read_text()).get("counts", {})
+            if counts.get("blocked") or counts.get("error"):
+                filing_alerts.append(f"Canopi filing {env}: {counts.get('blocked', 0)} blocked, {counts.get('error', 0)} error(s)")
+    sync = subprocess.run(["bash", str(SCRIPTS / "staging_rail_sync.sh")], env={**os.environ, "TRIGGER": "monitor"},
+                          capture_output=True, text=True, timeout=600)
+    print(f"staging rail sync: {(sync.stdout.strip().splitlines() or [sync.stderr.strip()[-200:]])[-1]}")
+
     regen = subprocess.run([sys.executable, str(SCRIPTS / "ml_req_regen_on_publish.py"), "--trigger", "monitor"],
                            capture_output=True, text=True, timeout=300)
     print(regen.stdout.strip() or regen.stderr.strip())
@@ -64,7 +81,7 @@ def main() -> int:
         alerts = [f"loop collector failed: {col.stderr.strip()[-200:]}"]
     else:
         status = json.loads(STATUS.read_text())
-        alerts = list(status.get("alerts", [])) + [f"collector: {e}" for e in status.get("errors", [])]
+        alerts = list(status.get("alerts", [])) + [f"collector: {e}" for e in status.get("errors", [])] + filing_alerts
 
     prev = set(json.loads(ALERT_STATE.read_text())) if ALERT_STATE.exists() else None
     cur = set(alerts)
