@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP3: Adaptive Governance Supporting an Exponentially Growing Community](/content/local/assets/dp/DP3.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-010 revision=02 submission=6d233fad-a027-42e7-b7dc-adf111f7d237 hash=b078b8a8d59e28f4 synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-010 revision=03 submission=d6741aee-0174-4258-875b-7360f67f1bf6 hash=bd324491b0ffc41b synced=2026-09-29T11:48:37Z -->
 
 ---
 

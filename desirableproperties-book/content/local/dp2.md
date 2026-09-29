@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP2: Participant Agency and Empowerment](/content/local/assets/dp/DP2.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-009 revision=02 submission=57e8da1f-3b53-4063-9e36-04b3e2ace5b1 hash=500e4f4073dd5019 synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-009 revision=03 submission=62f7c1bb-a022-44fc-829e-a871d6d3bce5 hash=4cae502abe7b7f1d synced=2026-09-29T11:48:37Z -->
 
 ---
 

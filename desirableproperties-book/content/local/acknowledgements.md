@@ -1,3 +1,4 @@
+<!-- govhub-sync: ml=ML-Draft-032 revision=02 submission=f3cbb8df-51dd-4127-b6e5-853c7a0bca95 hash=70b0a85eceb99264 synced=2026-09-29T11:48:37Z -->
 # Acknowledgements
 
 This book exists because many people chose to treat the Meta-Layer not as a finished product but as a shared inquiry – one worth sustaining across meetings, drafts, inscriptions, and open challenge rounds.

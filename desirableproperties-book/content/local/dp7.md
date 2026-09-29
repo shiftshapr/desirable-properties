@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP7: Simplicity and Interoperability](/content/local/assets/dp/DP7.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-014 revision=02 submission=f5edfbd1-3c1d-41a9-9e56-d7527af091a6 hash=75969c8889ab4fbf synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-014 revision=03 submission=f9cf5d5a-2669-4874-9c0a-b1d7aa0ef225 hash=830534d3fffb98a5 synced=2026-09-29T11:48:37Z -->
 
 ---
 

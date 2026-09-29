@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP5: Decentralized Namespace](/content/local/assets/dp/DP5.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-012 revision=02 submission=997f0991-c23d-4386-9289-e590a27931ae hash=f0e7cbf3c1a8aad8 synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-012 revision=03 submission=efd1d316-cb3e-43c9-bf14-e9395698edce hash=13d7213ed5f6c23f synced=2026-09-29T11:48:37Z -->
 
 ---
 

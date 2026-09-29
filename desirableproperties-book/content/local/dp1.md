@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP1: Federated Authentication & Accountability](/content/local/assets/dp/DP1.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-008 revision=04 submission=fd4409c6-e71c-41ad-adbd-b8f28c724a07 hash=f043a3c764b3987c synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-008 revision=05 submission=70abde82-e313-4e4a-a763-f9dbb2efc9d4 hash=bb00a3e048c6ac0e synced=2026-09-29T11:48:37Z -->
 
 ---
 

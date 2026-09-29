@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP4: Data Sovereignty and Privacy](/content/local/assets/dp/DP4.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-011 revision=02 submission=a1674b2e-5138-49da-b7e3-b1b6072a22c8 hash=cd08184ec417a5f5 synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-011 revision=03 submission=6f8fc748-a78f-4921-844c-19c4bf7baefd hash=17f4f1405c4ae1e9 synced=2026-09-29T11:48:37Z -->
 
 ---
 

@@ -5,7 +5,7 @@
 ![Illustration for Desirable Property DP6: Commerce](/content/local/assets/dp/DP6.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-013 revision=02 submission=4319d3f8-7bab-42b6-b9c0-47628a60ed10 hash=c607d67e8e1644d0 synced=2026-08-08T21:35:00Z -->
+<!-- govhub-sync: ml=ML-Draft-013 revision=03 submission=11288927-b07c-4b99-839a-546ec53d77bc hash=a5be5b82b8b29445 synced=2026-09-29T11:48:37Z -->
 
 ---
 
