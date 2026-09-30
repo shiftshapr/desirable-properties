@@ -72,7 +72,7 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
           ) : null}
           {!event.recordingUrl && event.external ? (
             <a href={event.href} target="_blank" rel="noopener noreferrer" className={actionLinkClass}>
-              RSVP →
+              RSVP on Luma →
             </a>
           ) : null}
           {!event.recordingUrl && !event.external && event.seriesHref ? (

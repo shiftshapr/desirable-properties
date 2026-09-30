@@ -4,20 +4,20 @@ export const DP_V1_FREEZE = '2026-11-09T13:00:00-08:00';
 export const ROUNDUP_TIME_LABEL = '11:30 a.m.–1:00 p.m. Pacific Time';
 
 const sessions = [
-  ['2026-09-28', 'Find Your Workgroup', 'Get direction, meet collaborators, and choose a first contribution.'],
-  ['2026-10-05', 'Turn Feedback into Proposals', 'Turn chapter comments into specific proposals with owners and reviewers.'],
-  ['2026-10-12', 'Resolve the Hard Questions', 'Address competing wording, missing evidence, and substantive objections.'],
-  ['2026-10-19', 'Bring the Chapters Together', 'Integrate reviewed changes into coherent chapter drafts.'],
-  ['2026-10-26', 'Review Across Workgroups', 'Check terminology, overlaps, conflicts, and omissions across chapters.'],
-  ['2026-11-02', 'V1 Readiness Review', 'Review chapters against the adopted checklist and identify release blockers.'],
-  ['2026-11-09', 'Final Review Before Launch', 'Verify final corrections and acknowledgments before the 1 p.m. editorial freeze.'],
-  ['2026-11-13', 'Desirable Properties V1 Launch', 'Present Version 1.0, recognize contributions, and discuss the next phase.'],
+  ['2026-09-28', 'Find Your Workgroup', 'Get direction, meet collaborators, and choose a first contribution.', 'https://luma.com/5fjbcp9l'],
+  ['2026-10-05', 'Turn Feedback into Proposals', 'Turn chapter comments into specific proposals with owners and reviewers.', 'https://luma.com/9zl8o8n8'],
+  ['2026-10-12', 'Resolve the Hard Questions', 'Address competing wording, missing evidence, and substantive objections.', 'https://luma.com/tsgcml9c'],
+  ['2026-10-19', 'Bring the Chapters Together', 'Integrate reviewed changes into coherent chapter drafts.', 'https://luma.com/8aiegsj7'],
+  ['2026-10-26', 'Review Across Workgroups', 'Check terminology, overlaps, conflicts, and omissions across chapters.', 'https://luma.com/rxqag23s'],
+  ['2026-11-02', 'V1 Readiness Review', 'Review chapters against the adopted checklist and identify release blockers.', 'https://luma.com/377f2m3g'],
+  ['2026-11-09', 'Final Review Before Launch', 'Verify final corrections and acknowledgments before the 1 p.m. editorial freeze.', 'https://luma.com/ztjmzdiq'],
+  ['2026-11-13', 'Desirable Properties V1 Launch', 'Present Version 1.0, recognize contributions, and discuss the next phase.', 'https://luma.com/uhb8828e'],
 ] as const;
 
-export const DP_ROUNDUP_EVENTS = sessions.map(([date, focus, objective], index) => {
+export const DP_ROUNDUP_EVENTS = sessions.map(([date, focus, objective, lumaUrl], index) => {
   const offset = date < '2026-11-01' ? '-07:00' : '-08:00';
   return {
-    date, focus, objective,
+    date, focus, objective, lumaUrl,
     title: index === 7 ? focus : `DP Roundup: ${focus}`,
     startsAt: index === 7 ? DP_V1_LAUNCH_START : `${date}T11:30:00${offset}`,
     endsAt: `${date}T13:00:00${offset}`,
