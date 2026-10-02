@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import EstateSocialStrip from '@/components/EstateSocialStrip';
 import NamedTabLink from '@/components/NamedTabLink';
 import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
@@ -7,6 +8,7 @@ import { WORKGROUPS_LIST_HREF, WORKGROUPS_SIGNUPS_HREF } from '@/lib/routes';
 export default function SiteFooter() {
   return (
     <footer className="border-t border-slate-800">
+      <EstateSocialStrip />
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>Desirable Properties · A program of the Meta-Layer Initiative</p>
         <nav className="flex flex-wrap gap-x-4 gap-y-2">
