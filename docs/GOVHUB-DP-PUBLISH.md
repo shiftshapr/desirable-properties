@@ -15,8 +15,8 @@ Scripts live in `scripts/`:
 
 | | Host | Port | Git branch | `--env` | Flask env | SQLite |
 | --- | --- | --- | --- | --- | --- | --- |
-| DEV | `dev.hub.themetalayer.org` | 8001 | `development` | `dev` or `development` | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
-| LIVE | `hub.themetalayer.org` | 8000 | **`main`** (production) | `main` or `production` | `production` | `gov-hub-prod/instance/datatracker.db` |
+| DEV | `dev.interfacehub.net` | 8001 | `development` | `dev` or `development` | `development` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
+| LIVE | `interfacehub.net` | 8000 | **`main`** (production) | `main` or `production` | `production` | `gov-hub-prod/instance/datatracker.db` |
 
 Both run as user systemd units: `datatracker-dev.service` and `datatracker.service`.
 

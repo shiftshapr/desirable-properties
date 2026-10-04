@@ -45,7 +45,7 @@ On this VPS, always deploy with `./deploy.sh` (atomic `.next-prod-build` swap). 
 
 | Variable | Default |
 |----------|---------|
-| `GOVHUB_BASE_URL` | `https://hub.themetalayer.org` |
+| `GOVHUB_BASE_URL` | `https://interfacehub.net` |
 | `GOVHUB_METAWEB_LAYER_ID` | The Metaweb layer UUID |
 | `DP_DATABASE_URL` | Postgres for admin config (see [docs/DATABASE.md](docs/DATABASE.md)) |
 | `ONCHAIN_ADMIN_EMAILS` | Admin login allowlist |

@@ -22,8 +22,8 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 
 | | Hub URL | Local DB (optional) |
 | --- | --- | --- |
-| DEV | `https://dev.hub.themetalayer.org` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
-| LIVE (default) | `https://hub.themetalayer.org` | `gov-hub-prod/instance/datatracker.db` |
+| DEV | `https://dev.interfacehub.net` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
+| LIVE (default) | `https://interfacehub.net` | `gov-hub-prod/instance/datatracker.db` |
 
 Use `--env main` (default) or `--env dev` (`development` / `production` also accepted). Override
 with `--hub-url` if needed. With `--local-db`, `--env` also picks the default Gov Hub checkout and
@@ -233,7 +233,7 @@ flowchart LR
   E --> F[Book deploy staging + production]
 ```
 
-1. Edit and approve a DP revision on production Gov Hub (`https://hub.themetalayer.org`).
+1. Edit and approve a DP revision on production Gov Hub (`https://interfacehub.net`).
 2. Gov Hub dispatches → workflow syncs rails → commits with `[rail-sync]` → deploys book if changed.
 3. Daily cron catches anything missed by the webhook.
 4. Book preview reads updated rails via `localOverride`.

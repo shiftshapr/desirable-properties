@@ -61,8 +61,8 @@ export const MESSAGE_A_SECTIONS = {
       "href": "https://desirableproperties.org/support"
     },
     "hub": {
-      "label": "hub.themetalayer.org/support",
-      "href": "https://hub.themetalayer.org/support"
+      "label": "interfacehub.net/support",
+      "href": "https://interfacehub.net/support"
     }
   },
   "closing": "Welcome to the challenge."

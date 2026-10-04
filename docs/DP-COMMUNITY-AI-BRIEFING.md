@@ -61,7 +61,7 @@ Workgroup **human** messages live on **Gov Hub** (membership, posting rights, th
 |-----------|--------|----------------|
 | `hermes-chat` (PM2, port 8790) | `neo4j-knowledge-graph/scripts/hermes-server.js` | Chat, ambient assess/reply, threads, contribution ledger, community notes |
 | `desirableproperties` (PM2, 3005) | challenge-site | UI, auth, proxy, ambient store, workgroup collab client |
-| Gov Hub | `hub.themetalayer.org` | Workgroups, membership, chat messages, layer-admin for teaching |
+| Gov Hub | `interfacehub.net` | Workgroups, membership, chat messages, layer-admin for teaching |
 | Neo4j `neo4j-kg` | Docker 7474/7687 | DP memory graph + Hermes thread/memory namespaces |
 | `dp-memory-graph` | hourly cron | Syncs Gov Hub proposals / DP catalog into Neo4j (not the chat process) |
 | Canopi | `api.canopi.live` | Discuss comments, patches, staged proposals from contribution submit |

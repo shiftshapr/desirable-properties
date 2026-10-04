@@ -327,6 +327,10 @@ export async function fetchWorkgroupDpActivity(
   if (mlMatch) draftRefs.push(mlMatch[0]);
 
   const uniqueDraftRefs = [...new Set(draftRefs)];
+  // Link by ML number: Gov Hub serves its latest approved revision, while the
+  // stored workgroup ref is a row id that pins Rev 00. Row ids stay in
+  // uniqueDraftRefs for event matching.
+  const linkDraftRef = mlMatch?.[0] || uniqueDraftRefs[0] || null;
   const dpKey = opts.dpId ? dpIdToAstraKey(opts.dpId) : null;
   const baseBundle = dpKey ? readAstraChapterBundle(dpKey) : null;
   const baseMarkdownByDpKey = baseBundle?.markdown && dpKey
@@ -374,12 +378,12 @@ export async function fetchWorkgroupDpActivity(
     }
     const item = eventToWorkgroupFeedItem(event, opts.workgroupSlug);
     if (item) {
-      item.href = draftViewerHref(uniqueDraftRefs[0] || null);
+      item.href = draftViewerHref(linkDraftRef);
       items.push(item);
     }
   }
 
-  const primaryDraft = uniqueDraftRefs[0] || '';
+  const primaryDraft = linkDraftRef || '';
   for (const proposal of proposals) {
     items.push(proposalToFeedItem(proposal, primaryDraft));
   }

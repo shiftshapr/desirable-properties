@@ -13740,7 +13740,7 @@ It should preserve humanity’s capacity to remain historically intelligible to 
 
 ---
 
-<!-- DP23 | Universal Participation & Linguistic Interoperability | draft-only (no inscription) | https://hub.themetalayer.org/doc/draft/ML-Draft-030/ -->
+<!-- DP23 | Universal Participation & Linguistic Interoperability | draft-only (no inscription) | https://interfacehub.net/doc/draft/ML-Draft-030/ -->
 
 # DP23 – Universal Participation & Linguistic Interoperability
 

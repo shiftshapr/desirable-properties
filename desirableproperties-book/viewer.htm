@@ -1504,7 +1504,7 @@
       const r = RAILS[idx];
       const label = escapeHtml(r.dp || r.label || rail);
       const ml = r.mlNumber ? escapeHtml(r.mlNumber) : 'working draft';
-      const govhubHref = 'https://hub.themetalayer.org/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
+      const govhubHref = 'https://interfacehub.net/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
       return (
         '<div class="not-onchain-notice" role="status">' +
           '<h2>Not onchain yet</h2>' +
@@ -1602,7 +1602,7 @@
         );
       }
       if (railIsDraftOnly(r)) {
-        const govhubHref = 'https://hub.themetalayer.org/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
+        const govhubHref = 'https://interfacehub.net/doc/draft/' + encodeURIComponent(r.mlNumber || r.railKey) + '/';
         return (
           '<div class="ordinal-meta">' +
             'Not inscribed · ' + escapeHtml(r.mlNumber || 'draft') +

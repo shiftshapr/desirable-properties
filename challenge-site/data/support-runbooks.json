@@ -30,7 +30,7 @@
       "id": "dp-workgroup",
       "title": "Workgroup join or Gov Hub link",
       "category": "workgroup_help",
-      "symptoms": ["workgroup", "gov hub", "join", "hub.themetalayer.org", "ssl"],
+      "symptoms": ["workgroup", "gov hub", "join", "interfacehub.net", "ssl"],
       "steps": [
         "Point user to workgroups page for canonical DP slugs.",
         "If SSL/network error on Gov Hub, explain home router/DNS blocking is common.",
@@ -52,7 +52,7 @@
   "faq": {
     "where_submit": "https://desirableproperties.org/support",
     "book": "https://book.desirableproperties.org/",
-    "govhub": "https://hub.themetalayer.org/"
+    "govhub": "https://interfacehub.net/"
   },
   "escalationRules": [
     { "when": "urgency critical or blocking", "action": "escalate_human" },

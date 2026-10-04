@@ -15,8 +15,8 @@ FRONT_MATTER_RAIL_KEYS = frozenset({'about', 'acknowledgements'})
 FRONT_MATTER_ORDER = ('about', 'acknowledgements')
 
 HUB_URLS: dict[str, str] = {
-    'dev': 'https://dev.hub.themetalayer.org',
-    'main': 'https://hub.themetalayer.org',
+    'dev': 'https://dev.interfacehub.net',
+    'main': 'https://interfacehub.net',
 }
 
 # Canonical env keys shared by rail sync / publish scripts.

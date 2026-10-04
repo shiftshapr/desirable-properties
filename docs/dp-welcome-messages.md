@@ -54,7 +54,7 @@ Your workgroup is helping refine one or more **Desirable Properties** – the co
 - **September 16, 2026** – Community Review Draft milestone and governance feedback workflow demonstration.
 - **November 13, 2026** – Version 1.0 release target.
 
-**Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [hub.themetalayer.org/support](https://hub.themetalayer.org/support).
+**Questions?** Submit a support request at [desirableproperties.org/support](https://desirableproperties.org/support) or [interfacehub.net/support](https://interfacehub.net/support).
 
 Welcome to the challenge.
 
