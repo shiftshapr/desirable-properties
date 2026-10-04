@@ -22,7 +22,7 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 
 | | Hub URL | Local DB (optional) |
 | --- | --- | --- |
-| DEV | `https://dev.hub.themetalayer.org` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
+| DEV | `https://dev.interfacehub.net` | `gov-hub-dev/instance_dev/datatracker_dev.db` |
 | LIVE (default) | `https://hub.themetalayer.org` | `gov-hub-prod/instance/datatracker.db` |
 
 Use `--env main` (default) or `--env dev` (`development` / `production` also accepted). Override
