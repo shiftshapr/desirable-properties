@@ -4,6 +4,41 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "govhub-latest-revision-links",
+      "date": "2026-10-04",
+      "status": "open",
+      "title": "Gov Hub links open the current draft, on interfacehub.net",
+      "summary": "Workgroup activity links now open the latest approved revision of each DP draft on Gov Hub instead of the original Revision 00. Every remaining hub.themetalayer.org link now points to interfacehub.net.",
+      "changes": [
+        "Workgroup activity feed links drafts by ML number, so Gov Hub serves the current revision",
+        "hub.themetalayer.org and dev.hub.themetalayer.org replaced with interfacehub.net and dev.interfacehub.net across the site, book viewer, inscription data, welcome content, scripts and docs"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/activity-feed.ts",
+          "label": "Activity feed links"
+        },
+        {
+          "path": "challenge-site/src/data/dp-inscriptions.json",
+          "label": "DP23 Gov Hub link"
+        },
+        {
+          "path": "challenge-site/src/lib/dp-welcome-content.generated.ts",
+          "label": "Welcome support link"
+        },
+        {
+          "path": "desirableproperties-book/viewer.htm",
+          "label": "Book viewer Gov Hub links"
+        }
+      ],
+      "surfaces": [
+        "site",
+        "docs"
+      ],
+      "intent": "People who click through to patch a DP should land on the text the book shows, not an outdated revision.",
+      "verify": "Open a DP workgroup page and follow a draft link in its activity feed: it should open the current revision on interfacehub.net."
+    },
+    {
       "id": "deepi-comment-drafts",
       "date": "2026-09-27",
       "status": "open",
