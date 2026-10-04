@@ -1,4 +1,4 @@
-<!-- govhub-sync: ml=ML-Draft-031 revision=02 submission=19af47d9-b7f5-4f0c-8e7f-f1dd7d2c7ff0 hash=1c997cf81d8d4510 synced=2026-08-09T06:38:16Z -->
+<!-- govhub-sync: ml=ML-Draft-031 revision=03 submission=7a106e39-1bdd-4405-bb74-f38ac7c1bb33 hash=512aaef64eed8bc8 synced=2026-10-04T23:15:21Z -->
 # About This Digital Monument
 
 This edition of *The Layered Web: The Desirable Properties of a Meta-Layer* is not a conventional ebook. It is a digital monument – a civic record inscribed on Bitcoin and intended to be read by people who were not in the room when the work began, including generations not yet born.
@@ -41,7 +41,7 @@ This book is built with the BRC333 protocol – specifically the BRC333-BOOK mod
 
 A BRC333 monument is organized as a satplication: a graph of dedicated satoshis, each assigned a role in the work – configuration, sources inventory, layout shell, shared scripts, oracle data, and individual chapter rails. Content on a sat can be reinscribed when the community updates a chapter or policy, preserving history while allowing the monument to evolve in the open.
 
-That structure is what lets this book behave like a living edition rather than a frozen PDF. The Desirable Properties Challenge, workgroups on [hub.themetalayer.org](https://hub.themetalayer.org), and future reinscriptions can refine the text while the chain retains a trace of how the work changed over time.
+That structure is what lets this book behave like a living edition rather than a frozen PDF. The Desirable Properties Challenge, workgroups on [interfacehub.net](https://interfacehub.net), and future reinscriptions can refine the text while the chain retains a trace of how the work changed over time.
 
 Press `i` while viewing any chapter to inspect inscription metadata and explore the satplication graph that connects this monument's parts.
 
@@ -56,5 +56,5 @@ We expect future generations to encounter this work – to judge what proved dur
 Explore further
 
 - Desirable Properties Challenge: [desirableproperties.org](https://desirableproperties.org)
-- Open collaboration: [hub.themetalayer.org](https://hub.themetalayer.org)
+- Open collaboration: [interfacehub.net](https://interfacehub.net)
 - BRC333 protocol: [brc333.xyz](https://brc333.xyz)
