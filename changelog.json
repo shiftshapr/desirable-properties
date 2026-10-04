@@ -11,7 +11,8 @@
       "summary": "Workgroup activity links now open the latest approved revision of each DP draft on Gov Hub instead of the original Revision 00. Every remaining hub.themetalayer.org link now points to interfacehub.net.",
       "changes": [
         "Workgroup activity feed links drafts by ML number, so Gov Hub serves the current revision",
-        "hub.themetalayer.org and dev.hub.themetalayer.org replaced with interfacehub.net and dev.interfacehub.net across the site, book viewer, inscription data, welcome content, scripts and docs"
+        "hub.themetalayer.org and dev.hub.themetalayer.org replaced with interfacehub.net and dev.interfacehub.net across the site, book viewer, inscription data, welcome content, scripts and docs",
+        "Framing chapter link uses ML-Draft-026 instead of a pinned row id, so it follows new revisions"
       ],
       "files": [
         {
@@ -29,6 +30,10 @@
         {
           "path": "desirableproperties-book/viewer.htm",
           "label": "Book viewer Gov Hub links"
+        },
+        {
+          "path": "challenge-site/src/lib/govhub.ts",
+          "label": "Framing chapter link"
         }
       ],
       "surfaces": [

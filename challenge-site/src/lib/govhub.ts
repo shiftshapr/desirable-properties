@@ -13,7 +13,7 @@ export const BOOK_COVER_URL =
 
 /** ML-Draft-026 – opening chapter framing the Desirable Properties Challenge */
 export const FRAMING_CHAPTER_URL =
-  `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/z41gtb59/read/?return_to=%2Fdoc%2Fdraft%2Fz41gtb59%2F`;
+  `${GOVHUB_PUBLIC_BASE_URL}/doc/draft/ML-Draft-026/read/?return_to=%2Fdoc%2Fdraft%2FML-Draft-026%2F`;
 export const FRAMING_CHAPTER_TITLE =
   'The Desirable Properties of a Meta-Layer';
 
