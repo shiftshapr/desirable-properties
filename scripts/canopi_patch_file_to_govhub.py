@@ -18,6 +18,10 @@ Per post:
   python3 scripts/canopi_patch_file_to_govhub.py --env staging --dry-run
   python3 scripts/canopi_patch_file_to_govhub.py --env prod --apply
 
+Skipped: posts carrying payload.aiAssist.cfiPatchId (CFI / Astra reconciled posts, tracked in
+Gov Hub's CFI graph) and Canopi posts an Astra release already decided (proposal-dispositions).
+Deleted posts never appear: the Canopi messages API excludes message_deletions.
+
 Report: data/loop/canopi-filing-<env>.json (read by the loop dashboard).
 """
 from __future__ import annotations
@@ -38,13 +42,19 @@ from pathlib import Path
 
 HOME = Path("/home/ubuntu")
 DP_ROOT = HOME / "desirable-properties"
-COMMUNITY_ID = "c0f30bc5-de17-4328-80d9-ff8f364907da"
+# Book Discuss posts live in two communities: abe5ec85 (DP Discuss: human posts and the
+# Astra reconciled posts) and c0f30bc5 (older Hermes filings).
+COMMUNITY_IDS = (
+    "abe5ec85-4ba6-456f-adaf-03d7d51cecf4",
+    "c0f30bc5-de17-4328-80d9-ff8f364907da",
+)
 BOOK_ORIGIN = "book.desirableproperties.org"
 ML_MAP = DP_ROOT / "challenge-site/src/data/dp-ml-draft-map.json"
+ASTRA_RELEASES = DP_ROOT / "astra/releases"
 
 ENVS = {
     "prod": {
-        "canopi_api": "http://127.0.0.1:3002",
+        "canopi_api": "https://api.canopi.live",
         "canopi_env": HOME / "canopi-prod/.env",
         "govhub_api": "http://127.0.0.1:8000",
         "govhub_env": HOME / "gov-hub-prod/.env",
@@ -53,7 +63,7 @@ ENVS = {
         "book_url": "https://book.desirableproperties.org",
     },
     "staging": {
-        "canopi_api": "http://127.0.0.1:3003",
+        "canopi_api": "https://staging.api.canopi.live",
         "canopi_env": HOME / "canopi-staging/.env",
         "govhub_api": "http://127.0.0.1:8001",
         "govhub_env": HOME / "gov-hub-dev/.env",
@@ -150,10 +160,15 @@ def post_text(content: str) -> str:
 def fetch_posts(cfg) -> list[dict]:
     posts, seen = [], set()
     for n in range(1, 24):
-        for pid in (page_id(f"{BOOK_ORIGIN}/viewer/dp{n:02d}"), f"dp{n:02d}"):
-            url = f"{cfg['canopi_api']}/api/messages?communityId={COMMUNITY_ID}&pageId={pid}&limit=100"
+        for community_id, pid in (
+            (c, p) for c in COMMUNITY_IDS
+            for p in (page_id(f"{BOOK_ORIGIN}/viewer/dp{n:02d}"), f"dp{n:02d}")
+        ):
+            url = f"{cfg['canopi_api']}/api/messages?communityId={community_id}&pageId={pid}&limit=100"
             try:
-                with urllib.request.urlopen(url, timeout=15) as r:
+                # Cloudflare in front of the hosted API rejects urllib's default User-Agent.
+                req = urllib.request.Request(url, headers={"User-Agent": "dp-loop-canopi-filer/1.0", "Accept": "application/json"})
+                with urllib.request.urlopen(req, timeout=15) as r:
                     items = json.load(r).get("items", [])
             except Exception as e:
                 print(f"canopi fetch failed for {pid}: {e}", file=sys.stderr)
@@ -169,6 +184,24 @@ def fetch_posts(cfg) -> list[dict]:
                 m["_kind"] = tag or ("insert" if re.match(r"\s*insert", m.get("content") or "", re.I) else "patch")
                 posts.append(m)
     return posts
+
+
+def cfi_patch_id(post: dict) -> str:
+    """CFI / Astra posts carry payload.aiAssist.cfiPatchId; Gov Hub tracks those in its CFI graph."""
+    payload = as_obj(post.get("payload")) or {}
+    ai = as_obj(post.get("aiAssist")) or as_obj(payload.get("aiAssist")) or {}
+    return str(ai.get("cfiPatchId") or "").strip()
+
+
+def astra_canopi_dispositions() -> dict[str, str]:
+    """Canopi message id -> "<release>: <status>" for posts an Astra release already decided."""
+    out: dict[str, str] = {}
+    for f in sorted(ASTRA_RELEASES.glob("*/proposal-dispositions.json")):
+        for d in json.loads(f.read_text()):
+            ref = str(d.get("source_ref") or "")
+            if ref.startswith("canopi:"):
+                out[ref[len("canopi:"):]] = f"{f.parent.name}: {d.get('status')}"
+    return out
 
 
 def canopi_emails(cfg, author_ids: set[str]) -> dict[str, str]:
@@ -208,6 +241,7 @@ def main() -> int:
     genv = read_env(cfg["govhub_env"])
     api_key, signing = genv.get("GOV_HUB_API_KEY", ""), genv.get("CANOPI_SIGNING_SECRET", "")
 
+    astra_done = astra_canopi_dispositions()
     posts = fetch_posts(cfg)
     emails = canopi_emails(cfg, {str((p.get("author") or {}).get("id") or "") for p in posts} - {""})
     results = []
@@ -217,6 +251,13 @@ def main() -> int:
         results.append(row)
         if mid in filed_ext:
             row.update(status="already_filed")
+            continue
+        cfi_id = cfi_patch_id(p)
+        if cfi_id:
+            row.update(status="skipped_cfi", reason=f"CFI/Astra post ({cfi_id}); tracked in Gov Hub's CFI graph")
+            continue
+        if mid in astra_done:
+            row.update(status="skipped_astra", reason=f"already decided by Astra ({astra_done[mid]})")
             continue
         anchor = as_obj(p.get("contextAnchor")) or {}
         exact = (as_obj(anchor.get("textQuote")) or {}).get("exact") or ""

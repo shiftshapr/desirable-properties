@@ -59,10 +59,14 @@ def main() -> int:
     args = ap.parse_args()
 
     filing_alerts = []
+    # While this file exists the filer only dry-runs (report written, nothing filed).
+    filing_paused = (DP_ROOT / "data/loop/canopi-filing.paused").exists()
     for env in ("prod", "staging"):
-        f = subprocess.run([sys.executable, str(SCRIPTS / "canopi_patch_file_to_govhub.py"), "--env", env, "--apply"],
-                           capture_output=True, text=True, timeout=600)
-        print(f"canopi filing {env}: {(f.stdout.strip().splitlines() or [f.stderr.strip()[-200:]])[-1]}")
+        cmd = [sys.executable, str(SCRIPTS / "canopi_patch_file_to_govhub.py"), "--env", env]
+        if not filing_paused:
+            cmd.append("--apply")
+        f = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+        print(f"canopi filing {env}{' (paused: dry run)' if filing_paused else ''}: {(f.stdout.strip().splitlines() or [f.stderr.strip()[-200:]])[-1]}")
         report = DP_ROOT / f"data/loop/canopi-filing-{env}.json"
         if report.exists():
             counts = json.loads(report.read_text()).get("counts", {})
