@@ -51,6 +51,7 @@ COMMUNITY_IDS = (
 BOOK_ORIGIN = "book.desirableproperties.org"
 ML_MAP = DP_ROOT / "challenge-site/src/data/dp-ml-draft-map.json"
 ASTRA_RELEASES = DP_ROOT / "astra/releases"
+OVERRIDES = DP_ROOT / "scripts/canopi_filing_overrides.json"
 
 ENVS = {
     "prod": {
@@ -100,13 +101,33 @@ def as_obj(raw):
 
 
 def locate_anchor(markdown: str, exact: str) -> str | None:
-    tokens = [re.sub(r"^[*_`]+|[*_`]+$", "", t) for t in exact.replace(" ", " ").split()]
-    tokens = [t for t in tokens if t]
-    if not tokens or not markdown:
+    """Markdown span whose rendered text is `exact`, ignoring emphasis/code markers and whitespace.
+
+    Markers may sit anywhere, including against punctuation ("**frozen falsehood**,").
+    """
+    md = (markdown or "").replace("\r\n", "\n")
+    target = re.sub(r"[*_`]", "", " ".join(exact.replace("\u00a0", " ").split()))
+    if not target or not md:
         return None
-    pattern = r"[*_`]*" + r"[\s*_`]+".join(re.escape(t) for t in tokens) + r"[*_`]*"
-    m = re.search(pattern, markdown.replace("\r\n", "\n"))
-    return m.group(0).strip() if m else None
+    plain, index = [], []  # markup-free, whitespace-collapsed text and its source offsets
+    for i, ch in enumerate(md):
+        if ch in "*_`":
+            continue
+        if ch.isspace():
+            if plain and plain[-1] == " ":
+                continue
+            ch = " "
+        plain.append(ch)
+        index.append(i)
+    at = "".join(plain).find(target)
+    if at < 0:
+        return None
+    start, end = index[at], index[at + len(target) - 1] + 1
+    while start > 0 and md[start - 1] in "*_`":
+        start -= 1
+    while end < len(md) and md[end] in "*_`":
+        end += 1
+    return md[start:end].strip()
 
 
 MARKUP = re.compile(r"[*_`#>\[\]|]")
@@ -143,6 +164,63 @@ def splice_anchor(span: str, position: str) -> str | None:
         return None
     anchor = " ".join(picked if position == "above" else list(reversed(picked)))
     return anchor if anchor in span else None
+
+
+def narrow_patch(span: str, exact: str, text: str) -> tuple[str, str] | None:
+    """Re-anchor a patch whose anchor passage carries markdown markup.
+
+    Finds what the post actually changed (common prefix/suffix of the rendered anchor
+    and the post text), then grows that region word by word to the largest stretch of
+    the rendered anchor that is also verbatim, markup-free markdown in the span. Returns
+    (original, proposed) that Gov Hub can both match and splice, or None.
+    """
+    exact = " ".join(exact.split())
+    if not exact or not text:
+        return None
+    a = 0
+    while a < min(len(exact), len(text)) and exact[a] == text[a]:
+        a += 1
+    b = 0
+    while b < min(len(exact), len(text)) - a and exact[-1 - b] == text[-1 - b]:
+        b += 1
+    lo, hi = a, len(exact) - b
+
+    def ok(i: int, j: int) -> bool:
+        seg = exact[i:j].strip()
+        return bool(seg) and not MARKUP.search(seg) and seg in span
+
+    while lo > 0 and not exact[lo - 1].isspace():  # whole words around the change
+        lo -= 1
+    while hi < len(exact) and not exact[hi].isspace():
+        hi += 1
+    if lo == hi:  # pure insertion point: seed with the neighbouring word
+        if lo > 0:
+            lo = exact.rfind(" ", 0, lo - 1) + 1
+        else:
+            nxt = exact.find(" ", 1)
+            hi = len(exact) if nxt < 0 else nxt
+    if not ok(lo, hi):
+        return None
+    grew = True
+    while grew:
+        grew = False
+        if lo > 0:
+            nlo = exact.rfind(" ", 0, lo - 1) + 1
+            if ok(nlo, hi):
+                lo, grew = nlo, True
+        if hi < len(exact):
+            nhi = exact.find(" ", hi + 1)
+            nhi = len(exact) if nhi < 0 else nhi
+            if ok(lo, nhi):
+                hi, grew = nhi, True
+    seg = exact[lo:hi]
+    lo += len(seg) - len(seg.lstrip())
+    hi -= len(seg) - len(seg.rstrip())
+    original = exact[lo:hi]
+    proposed = text[lo:len(text) - (len(exact) - hi)].strip()
+    if not proposed or proposed == original:
+        return None
+    return original, proposed
 
 
 RATIONALE_RE = re.compile(r"^\s*(Why it fits|Why it is|Pre-flight|Rationale)\b", re.I)
@@ -242,6 +320,7 @@ def main() -> int:
     api_key, signing = genv.get("GOV_HUB_API_KEY", ""), genv.get("CANOPI_SIGNING_SECRET", "")
 
     astra_done = astra_canopi_dispositions()
+    overrides = {k: v for k, v in json.loads(OVERRIDES.read_text()).items() if not k.startswith("_")} if OVERRIDES.exists() else {}
     posts = fetch_posts(cfg)
     emails = canopi_emails(cfg, {str((p.get("author") or {}).get("id") or "") for p in posts} - {""})
     results = []
@@ -264,6 +343,15 @@ def main() -> int:
         payload_obj = as_obj(p.get("payload")) or {}
         ai = as_obj(p.get("aiAssist")) or as_obj(payload_obj.get("aiAssist")) or {}
         position = str(payload_obj.get("insertPosition") or anchor.get("insertPosition") or "").lower()
+        override = overrides.get(mid)
+        if override:
+            # Hand placement (scripts/canopi_filing_overrides.json): the post's own anchor
+            # cannot be filed as-is. The Canopi post itself is left untouched.
+            exact, position = override["anchor"], str(override.get("position") or position).lower()
+            p["_kind"] = override.get("kind") or p["_kind"]
+            p["_page_dp"] = int(override.get("dp") or p["_page_dp"])
+            anchor = {}
+            row["override"] = True
         home, span = p["_page_dp"], locate_anchor(rails.get(p["_page_dp"], ""), exact) if exact else None
         if not span and exact:
             for n, md in rails.items():
@@ -290,14 +378,18 @@ def main() -> int:
             span = edge
             proposed = f"{text}\n\n{span}" if position == "above" else f"{span}\n\n{text}"
         else:
-            if MARKUP.search(span):
-                row.update(status="blocked", reason="patch anchor spans markdown markup; file it on Gov Hub by hand")
-                continue
             proposed = text
+            if MARKUP.search(span):
+                narrowed = narrow_patch(span, exact, text)
+                if not narrowed:
+                    row.update(status="blocked", reason="patch anchor spans markdown markup and the change could not be narrowed")
+                    continue
+                span, proposed = narrowed
         credit = (f"Filed from Canopi book {p['_kind']} {mid}"
                   + (f" (insert {'above' if position == 'above' else 'below'} the anchor, encoded as replace)" if p["_kind"] == "insert" else "")
                   + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "") + ".")
-        rationale = "\n\n".join(x for x in (str(ai.get("patchRationale") or "").strip(), credit) if x)[:3900]
+        note = (override or {}).get("note") or ""
+        rationale = "\n\n".join(x for x in (str(ai.get("patchRationale") or "").strip(), credit, note) if x)[:3900]
         body = {
             "kind": "patch",
             "draft_ref": ml_map[home],

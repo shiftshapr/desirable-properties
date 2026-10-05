@@ -1,0 +1,17 @@
+{
+ "_doc": "Per-post placement for Canopi posts whose own anchor cannot be filed as-is. Keyed by Canopi message id. Fields: dp (home chapter number), kind (patch|insert), position (above|below, inserts), anchor (rendered text to anchor on), note (appended to the Gov Hub rationale). Added 2026-10-05.",
+ "489e6a28-408f-4fcb-960b-eb1c23b1e14d": {
+  "dp": 5,
+  "kind": "insert",
+  "position": "below",
+  "anchor": "6. Accept and register.",
+  "note": "Re-anchored on filing: the post (a new \u00a713.4a) was anchored above \u00a75 step 5 of the resolution flow; it belongs at the end of \u00a713.4 Recommended validation order."
+ },
+ "f80c9acf-0994-49ff-8e55-d2f9772366c8": {
+  "dp": 15,
+  "kind": "insert",
+  "position": "below",
+  "anchor": "where retracted material persists as apparently valid evidence.",
+  "note": "Filed as an insert below the frozen-falsehood failure mode: the post was tagged as a patch but its text does not restate the anchored line, so filing it as a replacement would have deleted that failure mode."
+ }
+}
