@@ -8,6 +8,14 @@ REQUIRED_BRANCH="main"
 
 cd "$APP_DIR"
 
+# One deploy at a time: prod and staging build from this checkout and share
+# node_modules, so a second concurrent build corrupts the first (2026-10-06).
+exec 9>/tmp/desirableproperties-challenge-site-deploy.lock
+if ! flock -n 9; then
+  echo "ERROR: another challenge-site deploy (prod or staging) is running. Wait for it to finish, then retry."
+  exit 1
+fi
+
 current_branch=$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 if [[ "$current_branch" != "$REQUIRED_BRANCH" ]]; then
   echo "ERROR: Production deploy blocked — on branch '${current_branch}', expected '${REQUIRED_BRANCH}'."

@@ -10,6 +10,14 @@ PATHWAY_MARKER="${APP_DIR}/src/components/CommunityReviewEventPanel.tsx"
 
 cd "$APP_DIR"
 
+# One deploy at a time: prod and staging build from this checkout and share
+# node_modules, so a second concurrent build corrupts the first (2026-10-06).
+exec 9>/tmp/desirableproperties-challenge-site-deploy.lock
+if ! flock -n 9; then
+  echo "ERROR: another challenge-site deploy (prod or staging) is running. Wait for it to finish, then retry."
+  exit 1
+fi
+
 if [[ ! -f "$PATHWAY_MARKER" ]]; then
   echo "ERROR: Staging deploy blocked — missing ${PATHWAY_MARKER}"
   echo "       Staging requires Community Review Event panel content."
