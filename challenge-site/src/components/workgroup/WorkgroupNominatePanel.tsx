@@ -14,12 +14,7 @@ type Props = {
 
 const DEFAULT_POSITIONS: Position[] = [
   { key: 'chair', label: 'Coordinator' },
-  { key: 'co_lead', label: 'Co-lead' },
-  { key: 'editor', label: 'Editor' },
-  { key: 'presenter', label: 'Presenter' },
-  { key: 'facilitator', label: 'Facilitator' },
-  { key: 'liaison', label: 'Liaison' },
-  { key: 'recorder', label: 'Recorder' },
+  { key: 'co_editor', label: 'Co-editor' },
 ];
 
 export default function WorkgroupNominatePanel({

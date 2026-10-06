@@ -186,7 +186,7 @@ const BADGE_SECTIONS = [
   },
   {
     title: 'Role overlays',
-    body: 'Badges can carry overlays such as Member, Workgroup Coordinator, Co-Lead, Reviewer, Patch Contributor, or Steward – reflecting how you participated.',
+    body: 'Badges can carry overlays such as Member, Co-editor, Workgroup Coordinator, Reviewer, Patch Contributor, or Steward – reflecting how you participated.',
   },
   {
     title: 'Contribution evidence',
@@ -405,8 +405,9 @@ export default function ParticipatePage() {
             </p>
             <p>
               Members read drafts, discuss on the book, patch on Gov Hub, and join workgroup
-              discussion at their own pace – no obligation to attend every meeting. Coordinators
-              and Co-Leads facilitate; they don&apos;t own a property or make unilateral calls.
+              discussion at their own pace – no obligation to attend every meeting. Each DP has two
+              co-editors, who must both approve a change before it is incorporated, and a
+              coordinator who runs the workgroup; nobody owns a property or makes unilateral calls.
             </p>
             <p>
               <Link

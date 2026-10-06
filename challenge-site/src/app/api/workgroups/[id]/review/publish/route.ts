@@ -25,7 +25,7 @@ export async function POST(request: Request, ctx: RouteContext) {
   const canEdit = await workgroupCanEdit(workgroupId, session.idToken);
   if (!canEdit) {
     return NextResponse.json(
-      { error: 'Workgroup coordinator or co-lead permission required' },
+      { error: 'Workgroup coordinator or co-editor permission required' },
       { status: 403 },
     );
   }

@@ -1,4 +1,5 @@
 import {
+  CO_EDITOR_ROLE,
   CO_LEAD_ROLE,
   COORDINATOR_ROLE,
   MEMBER_ROLE,
@@ -7,6 +8,8 @@ import {
 const POSITION_LABELS: Record<string, string> = {
   coordinator: COORDINATOR_ROLE.label,
   chair: COORDINATOR_ROLE.label,
+  co_editor: CO_EDITOR_ROLE.label,
+  'co-editor': CO_EDITOR_ROLE.label,
   co_lead: CO_LEAD_ROLE.label,
   'co-lead': CO_LEAD_ROLE.label,
   facilitator: 'Facilitator',

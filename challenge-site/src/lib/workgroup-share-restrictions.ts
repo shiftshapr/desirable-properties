@@ -4,6 +4,7 @@ import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 /** Approved positions that may share any visible workgroup chat message. */
 export const WORKGROUP_SHARE_FACILITATOR_POSITIONS = new Set([
   'chair',
+  'co_editor',
   'co_lead',
   'facilitator',
 ]);

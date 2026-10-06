@@ -1,5 +1,5 @@
 import localData from '@/data/desirable-properties.json';
-import { COORDINATOR_ROLE, CO_LEAD_ROLE } from '@/data/workgroup-roles';
+import { COORDINATOR_ROLE, CO_EDITOR_ROLE, MEMBER_ROLE } from '@/data/workgroup-roles';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -44,49 +44,22 @@ type Role = {
 
 const ROLES: Role[] = [
   {
+    key: MEMBER_ROLE.key,
+    label: MEMBER_ROLE.label,
+    description: MEMBER_ROLE.description,
+    glyph: '●',
+  },
+  {
+    key: CO_EDITOR_ROLE.key,
+    label: CO_EDITOR_ROLE.label,
+    description: CO_EDITOR_ROLE.description,
+    glyph: CO_EDITOR_ROLE.glyph!,
+  },
+  {
     key: COORDINATOR_ROLE.key,
     label: COORDINATOR_ROLE.label,
     description: COORDINATOR_ROLE.description,
     glyph: COORDINATOR_ROLE.glyph!,
-  },
-  {
-    key: CO_LEAD_ROLE.key,
-    label: CO_LEAD_ROLE.label,
-    description: CO_LEAD_ROLE.description,
-    glyph: CO_LEAD_ROLE.glyph!,
-  },
-  {
-    key: 'editor',
-    label: 'Editor',
-    description: 'Edits drafts, coordinates document revisions, and maintains quality.',
-    glyph: '✎',
-  },
-  {
-    key: 'presenter',
-    label: 'Presenter',
-    description:
-      'Presents workgroup output at meetings, webinars, or public sessions.',
-    glyph: '◉',
-  },
-  {
-    key: 'facilitator',
-    label: 'Facilitator',
-    description: 'Facilitates meetings and helps the group reach consensus.',
-    glyph: '✦',
-  },
-  {
-    key: 'liaison',
-    label: 'Liaison',
-    description:
-      'Coordinates with other workgroups, layers, or external partners.',
-    glyph: '⇄',
-  },
-  {
-    key: 'recorder',
-    label: 'Recorder',
-    description:
-      'Captures meeting notes, decisions, and action items.',
-    glyph: '☰',
   },
 ];
 
@@ -117,6 +90,10 @@ const FAQ_ITEMS: FaqItem[] = [
   {
     q: 'How are Coordinators chosen?',
     a: 'Coordinators can be nominated by anyone in the community, or you can nominate yourself. The layer admin reviews and approves each nomination.',
+  },
+  {
+    q: 'What do co-editors do, and how do I become one?',
+    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it with a reason. Claim an open seat on the workgroup page (account at least 7 days old, at most two DPs per person). The coordinator can revoke a claim within 7 days, and a super admin at any time, always with a reason.',
   },
 ];
 
@@ -323,9 +300,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                 Nominate a coordinator (or yourself)
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                Nominating puts someone forward for a named role – Coordinator, Editor,
-                Presenter, or another contributor position. You can nominate yourself or
-                someone else in the community.
+                Nominating puts someone forward as the workgroup&apos;s Coordinator. You can
+                nominate yourself or someone else in the community. Co-editor seats are not
+                nominated: any member can claim an open seat on the workgroup&apos;s Gov Hub page.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 The nominee reviews the nomination first and must accept it before the layer

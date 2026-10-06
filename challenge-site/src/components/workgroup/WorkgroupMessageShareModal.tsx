@@ -29,7 +29,7 @@ type WorkgroupMessageShareModalProps = {
 };
 
 function isShareFacilitator(positions: string[]): boolean {
-  return positions.some((p) => ['chair', 'co_lead', 'facilitator'].includes(p));
+  return positions.some((p) => ['chair', 'co_editor', 'co_lead', 'facilitator'].includes(p));
 }
 
 function canShareMessage(

@@ -324,6 +324,60 @@ def meta_console_records() -> dict:
     return recs
 
 
+GOVHUB_PUBLIC = "https://interfacehub.net"
+POSITION_LABELS = {"chair": "Coordinator", "co_editor": "Co-editor", "co_lead": "Co-lead"}
+
+
+def admin_queue(db: Path = GOVHUB_DB, now: dt.datetime | None = None) -> dict:
+    """What is waiting on a person in Gov Hub: nominations, co-editor claims, stale proposals.
+
+    Each item is one stable alert line, so the monitor posts it once when it appears
+    and once when it clears.
+    """
+    now = now or dt.datetime.utcnow()
+    out = {"nominations_awaiting_admin": [], "nominations_unanswered": [], "co_editor_claims": [],
+           "stale_proposal_dps": [], "alerts": [], "error": None}
+    try:
+        con = sqlite3.connect(f"file:{db}?mode=ro", uri=True, timeout=5)
+        con.row_factory = sqlite3.Row
+        cols = {r[1] for r in con.execute("pragma table_info(working_group_chair)")}
+        rows = con.execute("select * from working_group_chair").fetchall()
+        stale = con.execute(
+            "select s.ml_number as ml, count(*) as n from dp_proposal p join submission s on s.id = p.submission_id "
+            "where p.status = 'pending' and p.created_at < ? group by s.ml_number order by s.ml_number",
+            ((now - dt.timedelta(days=7)).isoformat(sep=" "),),
+        ).fetchall()
+        con.close()
+    except sqlite3.Error as e:
+        out["error"] = f"admin queue: {e}"
+        return out
+
+    def day(v):
+        return str(v or "")[:10]
+
+    review = f"{GOVHUB_PUBLIC}/admin/chair-nominations/"
+    for r in rows:
+        pos = POSITION_LABELS.get(r["position_key"] or "chair", r["position_key"])
+        who = f"{r['chair_name']}, {pos} in {r['group_acronym']}"
+        # StorageBoolean is stored as the text 'true' / 'false'
+        approved = str(r["approved"]).strip().lower() in ("1", "true") or r["status"] == "approved"
+        if r["status"] == "nominee_accepted" and not approved:
+            out["nominations_awaiting_admin"].append(who)
+            out["alerts"].append(f"Nomination awaiting admin approval: {who} (since {day(r['set_at'])}) {review}")
+        elif r["status"] == "pending_nominee" and r["set_at"] and str(r["set_at"]) < (now - dt.timedelta(days=14)).isoformat(sep=" "):
+            out["nominations_unanswered"].append(who)
+            out["alerts"].append(f"Nomination unanswered by the nominee since {day(r['set_at'])}: {who}")
+        elif ("claimed" in cols and r["claimed"] and approved and r["position_key"] == "co_editor"
+              and r["set_at"] and str(r["set_at"]) > (now - dt.timedelta(days=7)).isoformat(sep=" ")):
+            until = (dt.datetime.fromisoformat(str(r["set_at"])[:19]) + dt.timedelta(days=7)).date().isoformat()
+            out["co_editor_claims"].append(who)
+            out["alerts"].append(f"Co-editor seat claimed: {r['chair_name']} in {r['group_acronym']} (coordinator can revoke until {until})")
+    out["stale_proposal_dps"] = [f"{x['ml']} ({x['n']})" for x in stale if x["ml"]]
+    if out["stale_proposal_dps"]:
+        out["alerts"].append("Proposals pending over 7 days: " + ", ".join(x["ml"] for x in stale if x["ml"]))
+    return out
+
+
 def govhub_numbered_reqs() -> list[dict]:
     try:
         con = sqlite3.connect(f"file:{GOVHUB_DB}?mode=ro", uri=True, timeout=5)
@@ -530,11 +584,14 @@ def build(skip_network: bool) -> dict:
         alerts.append(f"ML-REQ working set differs from published DP: {', '.join(unequal)}")
     if totals["working_revisions"]:
         alerts.append(f"{totals['working_revisions']} working revision(s) promoted but unpublished")
+    queue = admin_queue()
+    alerts.extend(queue["alerts"])
     return {
         "schema": "dp-loop-status/v1",
         "generated_at": now_iso(),
         "totals": totals,
         "alerts": alerts,
+        "admin_queue": {k: v for k, v in queue.items() if k != "alerts"},
         "errors": gh_err + ([brc_err] if brc_err and brc_err != "skipped" else [])
                   + ([equiv["_error"]["error"]] if "_error" in equiv else []),
         "rail_sync": {"repo": RAIL_REPO, "workflow": RAIL_WORKFLOW, "runs": runs, "error": runs_err},

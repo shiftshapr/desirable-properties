@@ -26,7 +26,7 @@ export async function POST(request: Request, ctx: RouteContext) {
   const canEdit = await workgroupCanEdit(workgroupId, session.idToken);
   if (!canEdit) {
     return NextResponse.json(
-      { error: 'Workgroup coordinator or co-lead permission required' },
+      { error: 'Workgroup coordinator or co-editor permission required' },
       { status: 403 },
     );
   }
@@ -89,7 +89,9 @@ export async function POST(request: Request, ctx: RouteContext) {
     actorName,
     summary:
       action === 'promote'
-        ? `${actorName} promoted a Review proposal into the next revision draft (not live)`
+        ? result.data.incorporated === false
+          ? `${actorName} approved a Review proposal as co-editor (waiting for the second co-editor)`
+          : `${actorName} promoted a Review proposal into the next revision draft (not live)`
         : `${actorName} dropped a Review proposal`,
     detail: { proposalId, draftRef, href: `/workgroups/${workgroupId}?tab=review` },
   });

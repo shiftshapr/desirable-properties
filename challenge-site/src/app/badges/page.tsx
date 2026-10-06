@@ -32,7 +32,7 @@ const HOW_IT_WORKS: { title: string; body: ReactNode }[] = [
         <ul className="mt-3 list-disc space-y-1 pl-5">
           <li>Member</li>
           <li>Workgroup Coordinator</li>
-          <li>Co-Lead</li>
+          <li>Co-editor</li>
           <li>Reviewer</li>
           <li>Patch Contributor</li>
           <li>Steward</li>

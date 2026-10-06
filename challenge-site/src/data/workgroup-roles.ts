@@ -42,11 +42,26 @@ export const COORDINATOR_ROLE: WorkgroupRole = {
   ],
 };
 
+export const CO_EDITOR_ROLE: WorkgroupRole = {
+  key: 'co_editor',
+  label: 'Co-editor',
+  description:
+    'One of two co-editors per DP. Both co-editors must approve a proposal before it is incorporated into the next revision. Claim an open seat on the workgroup page.',
+  glyph: '◫',
+  duties: [
+    'approve or decline each proposal with a review note',
+    'agree with the other co-editor before anything is incorporated',
+    'keep no proposal waiting more than 7 days',
+    'publish integrated changes as a numbered revision',
+    'check the chapter against the V1 readiness checklist',
+  ],
+};
+
+/** Retired role (October 2026); label kept for existing records. */
 export const CO_LEAD_ROLE: WorkgroupRole = {
   key: 'co_lead',
   label: 'Co-lead',
-  description:
-    'Shares recruitment, member approvals, and contributor coordination with the coordinator.',
+  description: 'Retired role. Workgroups now have members, two co-editors, and a coordinator.',
   glyph: '◫',
-  duties: COORDINATOR_ROLE.duties,
+  duties: [],
 };

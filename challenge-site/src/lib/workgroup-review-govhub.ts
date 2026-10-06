@@ -33,8 +33,9 @@ export async function workgroupCanEdit(
       },
     );
     if (!res.ok) return false;
-    const data = (await res.json()) as { can_edit?: boolean };
-    return Boolean(data.can_edit);
+    // can_review = coordinator or co-editor (Gov Hub); older Gov Hub builds only send can_edit.
+    const data = (await res.json()) as { can_edit?: boolean; can_review?: boolean };
+    return Boolean(data.can_review ?? data.can_edit);
   } catch {
     return false;
   }

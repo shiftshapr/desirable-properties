@@ -625,8 +625,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <strong className="font-semibold text-white">Join</strong> when you want to contribute
-              as a member–reviewing, discussing, drafting, or taking a flexible role like Recorder
-              or Liaison.
+              as a member–reviewing, discussing, drafting, and proposing patches. Members can also
+              claim one of the DP&apos;s two co-editor seats, who approve changes together.
             </p>
             <p>
               <strong className="font-semibold text-white">Nominate</strong> when you want to propose
@@ -665,8 +665,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               Each Desirable Property has a base badge. When you contribute to a specific DP, you
-              can earn that property&apos;s badge–with optional role overlays (Member, Workgroup
-              Coordinator, Patch Contributor, Steward, and others).
+              can earn that property&apos;s badge–with optional role overlays (Member, Co-editor,
+              Workgroup Coordinator, Patch Contributor, Steward, and others).
             </p>
             <p>
               Minted badges can link to patches, discussions, workgroup docs, and other public
