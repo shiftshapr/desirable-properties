@@ -1,6 +1,7 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { refreshSessionFromCanopi } from '@/lib/auth-profile';
-import { createSessionCookie, readSession } from '@/lib/auth-session';
+import { readSession, setSessionCookies } from '@/lib/auth-session';
 
 export async function GET() {
   const session = await readSession();
@@ -31,12 +32,11 @@ export async function GET() {
   });
 
   if (sessionChanged) {
-    const cookie = await createSessionCookie({
-      ...session,
-      profileImage,
-      canopiUserId,
-    });
-    response.cookies.set(cookie);
+    await setSessionCookies(
+      response.cookies,
+      { ...session, profileImage, canopiUserId },
+      await cookies(),
+    );
   }
 
   return response;

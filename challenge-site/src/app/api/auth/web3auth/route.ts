@@ -1,6 +1,7 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
-import { createSessionCookie } from '@/lib/auth-session';
+import { setSessionCookies } from '@/lib/auth-session';
 import { pickProfileImage } from '@/lib/auth-profile';
 import { fetchCanopiWeb3AuthUser } from '@/lib/canopi-api';
 import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
       canopiUser?.avatarUrl,
       user.profileImage || identity.profileImage || null,
     );
-    const cookie = await createSessionCookie({
+    const sessionPayload = {
       verifierId: identity.verifierId,
       userId: String(user.id || ''),
       username: String(user.username || ''),
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
       canopiUserId: canopiUser?.id || null,
       idToken,
       email: identity.email,
-    });
+    };
 
     const response = NextResponse.json({
       ok: true,
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
         verifierId: identity.verifierId,
       },
     });
-    response.cookies.set(cookie);
+    await setSessionCookies(response.cookies, sessionPayload, await cookies());
     return response;
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Authentication failed';

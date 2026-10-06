@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { adminEmails, resolveAdminEmail } from '@/lib/dp-admin-auth';
-import { readSession, readSessionFromCookieValue, SESSION_COOKIE } from '@/lib/auth-session';
+import { readSession, readSessionFromCookies } from '@/lib/auth-session';
 import { listDbAdminEmails } from '@/lib/dp-admin-store';
 
 export async function requireDpAdmin() {
@@ -11,7 +11,7 @@ export async function requireDpAdmin() {
     return { ok: true as const, email };
   }
 
-  const session = await readSessionFromCookieValue(cookieStore.get(SESSION_COOKIE)?.value);
+  const session = await readSessionFromCookies(cookieStore);
   if (session) {
     return {
       ok: false as const,

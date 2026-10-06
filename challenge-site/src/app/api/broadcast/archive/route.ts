@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { readSessionFromCookieValue, SESSION_COOKIE } from '@/lib/auth-session';
+import { readSessionFromCookies } from '@/lib/auth-session';
 import {
   buildBroadcastAudience,
   isWorkgroupParticipant,
@@ -10,7 +10,7 @@ import { jsonError } from '@/lib/dp-admin-api';
 
 async function requireArchiveViewer() {
   const cookieStore = await cookies();
-  const session = await readSessionFromCookieValue(cookieStore.get(SESSION_COOKIE)?.value);
+  const session = await readSessionFromCookies(cookieStore);
   if (!session?.userId) {
     return {
       ok: false as const,

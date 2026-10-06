@@ -3,8 +3,24 @@ import { EncryptJWT, jwtDecrypt } from 'jose';
 import { cookies } from 'next/headers';
 import { normalizeProfileImageForSession } from '@/lib/avatar';
 import type { AuthUser } from '@/lib/auth-types';
+import {
+  clearedSessionCookies,
+  readRawSessionCookie,
+  splitSessionCookies,
+  type CookieGetter,
+  type CookieSetter,
+  type SessionCookie,
+} from '@/lib/auth-session-cookie';
 
-export const SESSION_COOKIE = 'hermes_session';
+export {
+  SESSION_COOKIE,
+  hasSessionCookie,
+  readRawSessionCookie,
+  type CookieGetter,
+  type CookieSetter,
+  type SessionCookie,
+} from '@/lib/auth-session-cookie';
+
 const MAX_AGE_SEC = 60 * 60 * 24;
 
 export interface HermesSession {
@@ -30,22 +46,39 @@ function sessionSecretKey() {
   return createHash('sha256').update(secret).digest();
 }
 
-export async function createSessionCookie(payload: HermesSession) {
-  const token = await new EncryptJWT({ ...payload })
+export async function encryptSession(payload: HermesSession): Promise<string> {
+  return new EncryptJWT({ ...payload })
     .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE_SEC}s`)
     .encrypt(sessionSecretKey());
+}
 
-  return {
-    name: SESSION_COOKIE,
-    value: token,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/',
-    maxAge: MAX_AGE_SEC,
-  };
+/**
+ * Cookies that store `payload`: one cookie when it fits, otherwise chunks.
+ * Every stale slot from the other layout is cleared in the same response so a
+ * reader never stitches old and new pieces together. Pass `existing` (the
+ * request's cookies) to only clear slots that are actually present.
+ */
+/** Encrypted `payload` as one cookie, or chunks when it would exceed the 4 KB limit. */
+export async function createSessionCookies(
+  payload: HermesSession,
+  existing?: CookieGetter,
+): Promise<SessionCookie[]> {
+  return splitSessionCookies(await encryptSession(payload), MAX_AGE_SEC, existing);
+}
+
+export function applySessionCookies(target: CookieSetter, sessionCookies: SessionCookie[]) {
+  for (const cookie of sessionCookies) target.set(cookie);
+}
+
+/** Encrypt `payload` and write it to `target` (response.cookies or cookies()). */
+export async function setSessionCookies(
+  target: CookieSetter,
+  payload: HermesSession,
+  existing?: CookieGetter,
+) {
+  applySessionCookies(target, await createSessionCookies(payload, existing));
 }
 
 export async function readSessionFromCookieValue(
@@ -75,9 +108,12 @@ export async function readSessionFromCookieValue(
   }
 }
 
+export async function readSessionFromCookies(store: CookieGetter): Promise<HermesSession | null> {
+  return readSessionFromCookieValue(readRawSessionCookie(store));
+}
+
 export async function readSession(): Promise<HermesSession | null> {
-  const store = await cookies();
-  return readSessionFromCookieValue(store.get(SESSION_COOKIE)?.value);
+  return readSessionFromCookies(await cookies());
 }
 
 export function sessionToAuthUser(session: HermesSession | null): AuthUser | null {
@@ -93,11 +129,5 @@ export function sessionToAuthUser(session: HermesSession | null): AuthUser | nul
 
 export async function clearSessionCookie() {
   const store = await cookies();
-  store.set(SESSION_COOKIE, '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 0,
-  });
+  applySessionCookies(store, clearedSessionCookies());
 }

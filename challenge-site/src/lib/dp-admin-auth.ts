@@ -1,4 +1,4 @@
-import { readSessionFromCookieValue, SESSION_COOKIE } from '@/lib/auth-session';
+import { readSessionFromCookies } from '@/lib/auth-session';
 import { listDbAdminEmails } from '@/lib/dp-admin-store';
 import {
   ADMIN_COOKIE,
@@ -30,7 +30,7 @@ export async function isEmailAdmin(email: string): Promise<boolean> {
 export async function hasSiteAuth(cookies: CookieReader): Promise<boolean> {
   const legacy = await parseAdminSession(cookies.get(ADMIN_COOKIE)?.value);
   if (legacy) return true;
-  const session = await readSessionFromCookieValue(cookies.get(SESSION_COOKIE)?.value);
+  const session = await readSessionFromCookies(cookies);
   return session !== null;
 }
 
@@ -39,7 +39,7 @@ export async function resolveAdminEmail(cookies: CookieReader): Promise<string |
   const legacy = await parseAdminSession(cookies.get(ADMIN_COOKIE)?.value);
   if (legacy) return legacy;
 
-  const session = await readSessionFromCookieValue(cookies.get(SESSION_COOKIE)?.value);
+  const session = await readSessionFromCookies(cookies);
   const email = session?.email?.trim().toLowerCase();
   if (!email) return null;
   if (!(await isEmailAdmin(email))) return null;

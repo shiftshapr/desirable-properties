@@ -21,6 +21,7 @@
     "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs",
     "test:canopi-comment-body": "node --experimental-strip-types --test scripts/canopi-comment-body.test.mjs",
     "test:canopi-feed-cache": "node --experimental-strip-types --test scripts/canopi-feed-cache.test.mjs",
+    "test:auth-session-cookie": "tsx --test scripts/auth-session-cookie.test.mjs",
     "test:pad-slug-typo": "node --test scripts/pad-slug-typo.test.mjs",
     "test:astra": "node --test scripts/astra-highlights.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",

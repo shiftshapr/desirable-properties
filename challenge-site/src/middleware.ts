@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
+import { hasSessionCookie } from '@/lib/auth-session-cookie';
 import { padSlugTypoRedirectPath } from '@/lib/pad-slug-sanitize';
-
-const SESSION_COOKIE = 'hermes_session';
 
 /** Admin HTML routes are client-gated (Web3Auth popup on 401). APIs stay server-protected. */
 const PROTECTED_API_PREFIXES = [
@@ -29,7 +28,7 @@ function apexRedirect(request: NextRequest) {
 async function hasSiteAuth(request: NextRequest): Promise<boolean> {
   const legacy = await parseAdminSession(request.cookies.get(ADMIN_COOKIE)?.value);
   if (legacy) return true;
-  return Boolean(request.cookies.get(SESSION_COOKIE)?.value);
+  return hasSessionCookie(request.cookies);
 }
 
 export async function middleware(request: NextRequest) {

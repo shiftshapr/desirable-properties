@@ -5,7 +5,7 @@ import CanonicalHostScript from '@/components/CanonicalHostScript';
 import CanopiAuthReturnScript from '@/components/CanopiAuthReturnScript';
 import Web3AuthConfigScript from '@/components/Web3AuthConfigScript';
 import { refreshSessionFromCanopi } from '@/lib/auth-profile';
-import { createSessionCookie, readSession, sessionToAuthUser } from '@/lib/auth-session';
+import { readSession, sessionToAuthUser, setSessionCookies } from '@/lib/auth-session';
 import { cookies } from 'next/headers';
 import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
@@ -44,12 +44,14 @@ export default async function RootLayout({
       };
       if (refreshed.changed) {
         const store = await cookies();
-        store.set(
-          await createSessionCookie({
+        await setSessionCookies(
+          store,
+          {
             ...session,
             profileImage: refreshed.profileImage,
             canopiUserId: refreshed.canopiUserId,
-          }),
+          },
+          store,
         );
       }
     }
