@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
 import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
+import DpReadinessCard from '@/components/readiness/DpReadinessCard';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { resolveAdminEmail } from '@/lib/dp-admin-auth';
 import { readSession } from '@/lib/auth-session';
@@ -139,6 +140,11 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             initialMembers={roster}
           />
         </Suspense>
+        {dpId ? (
+          <div className="mt-10">
+            <DpReadinessCard dpId={dpId} />
+          </div>
+        ) : null}
       </div>
     </main>
   );

@@ -80,6 +80,14 @@ export default async function ChallengePage() {
             <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
               Start Here
             </Link>
+            . Working toward Version 1.0?{' '}
+            <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
+              How V1 gets made
+            </Link>{' '}
+            and the{' '}
+            <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
+              readiness board
+            </Link>
             .
           </p>
           <p>

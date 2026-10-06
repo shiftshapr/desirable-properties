@@ -60,6 +60,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     href: '/about',
     children: [
       { href: '/challenge', label: 'The Challenge' },
+      { href: '/process', label: 'How V1 gets made' },
       { href: '/kickoff', label: 'Kickoff meeting' },
       { href: '/faq', label: 'FAQ' },
       { href: '/participate', label: 'More contribution paths' },
@@ -71,6 +72,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     href: WORKGROUPS_JOIN_HREF,
     children: [
       { href: '/roundups', label: 'DP Roundups' },
+      { href: '/v1-readiness', label: 'V1 readiness board' },
       { href: WORKGROUPS_LIST_HREF, label: 'Collaborate pages' },
       { href: WORKGROUPS_JOIN_HREF, label: 'About workgroups' },
       { href: WORKGROUPS_SIGNUPS_HREF, label: 'Signups' },

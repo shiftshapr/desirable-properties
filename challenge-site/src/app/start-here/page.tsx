@@ -533,7 +533,15 @@ export default function StartHerePage() {
                 <p className="text-base text-slate-400">
                   Book discussion (PATCH/INSERT), workgroup Astra and Review (promote, then publish),
                   Canopi conversation, and
-                  recruitment to at least {WORKGROUP_TARGET_MEMBER_COUNT} people per workgroup
+                  recruitment to at least {WORKGROUP_TARGET_MEMBER_COUNT} people per workgroup.
+                  Each DP needs two co-editors, who both approve a change before it is incorporated.{' '}
+                  <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
+                    How V1 gets made
+                  </Link>{' '}
+                  ·{' '}
+                  <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
+                    Readiness board
+                  </Link>
                 </p>
               </li>
               <li>

@@ -275,7 +275,16 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Two ways to get involved with a workgroup: join it as a member, or nominate
-            someone (including yourself) for a coordinator or contributor role.
+            someone (including yourself) as coordinator. Co-editor seats are claimed on the
+            workgroup page. The full process, roles and weekly tasks are on{' '}
+            <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
+              How V1 gets made
+            </Link>
+            ; progress per DP is on the{' '}
+            <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
+              readiness board
+            </Link>
+            .
           </p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2">

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import CivicChallengeCampaign from '@/components/CivicChallengeCampaign';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DpPageQuickActions from '@/components/dp/DpPageQuickActions';
+import DpReadinessCard from '@/components/readiness/DpReadinessCard';
 import DPProvenanceSection from '@/components/DPProvenanceSection';
 import RelatedPathway from '@/components/pathways/RelatedPathway';
 import PCIProvenanceSection from '@/components/PCIProvenanceSection';
@@ -385,6 +386,10 @@ export default async function DPPage({
         workgroupHref={workgroupHref}
         collabEnabled={collabEnabled}
       />
+
+      <div className="mt-8">
+        <DpReadinessCard dpId={dp.id} compact />
+      </div>
 
       {activeView === 'campaign' && challenge ? (
         <div className="mt-8">

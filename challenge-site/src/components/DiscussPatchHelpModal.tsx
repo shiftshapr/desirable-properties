@@ -100,6 +100,15 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
             Each opens the Discuss composer with the anchor attached. Hover a Patch or Insert pill in
             the feed to preview the change (strikeouts and +/− character counts).
           </p>
+          <p className="rounded-lg border border-slate-700/80 bg-slate-950/60 p-3 text-slate-300">
+            <span className="font-medium text-slate-200">What happens next.</span> Within 30 minutes
+            your patch or insert is filed into Gov Hub as a proposal under your name. It is
+            incorporated into the next revision only when both of the DP&apos;s two co-editors
+            approve it; either can decline it with a review note.{' '}
+            <a href="/process" className="text-cyan-300 hover:text-cyan-200">
+              How Version 1.0 gets made →
+            </a>
+          </p>
         </div>
 
         <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm text-slate-400">
