@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-08-15 15:50 UTC",
-  "count": 990,
+  "count": 989,
   "entries": [
     {
       "name": "bridgit-io",
@@ -430,11 +430,6 @@
     {
       "name": "Dropbox Paper",
       "email": "no-reply@dropbox.com",
-      "reason": "automated / noreply local part; role mailbox (no-reply@)"
-    },
-    {
-      "name": "Gov Hub",
-      "email": "no-reply@govhub.live",
       "reason": "automated / noreply local part; role mailbox (no-reply@)"
     },
     {
