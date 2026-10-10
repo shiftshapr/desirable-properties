@@ -107,32 +107,5 @@ jobs:
           git push
           echo "rails_changed=true" >> "$GITHUB_OUTPUT"
 
-  deploy:
-    needs: sync
-    if: needs.sync.outputs.rails_changed == 'true' && needs.sync.outputs.dry_run != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy book to VPS (staging then production)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-
-            REPO="/home/ubuntu/desirable-properties"
-            cd "$REPO"
-            # Always deploy from origin/main (VPS may be on a feature branch from manual work).
-            git fetch origin main
-            git checkout main
-            git merge --ff-only origin/main
-
-            bash desirableproperties-book/scripts/deploy-staging-book.sh
-            bash desirableproperties-book/deploy.sh
-
-            # Gate 1: a newly published DP revision opens an unpublished ML-REQ regeneration
-            # clone (overweb/intent/astra/pending/). Never publishes ML-REQ-NNN. Non-fatal.
-            python3 scripts/ml_req_regen_on_publish.py --trigger rail-sync || echo "ml-req regen failed (non-fatal)"
-            python3 scripts/dp_loop_status.py || echo "loop status refresh failed (non-fatal)"
+# Deploy: none here. Box #1 runs a pull deployer that publishes the book (desirableproperties-book/deploy.sh)
+# within a minute of the rail commit above landing on main. GitHub holds no key to the server.
