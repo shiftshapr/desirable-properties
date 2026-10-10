@@ -88,3 +88,8 @@ assets/dp-icons/raster/
 # See challenge-site/public/media/README.md
 challenge-site/public/media/*.mp3
 data/loop/
+
+# DP loop runtime state (written on the server, never committed)
+loop/*.json
+loop/logs/
+scripts/.cache/
