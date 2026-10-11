@@ -2,9 +2,13 @@ const { Resend } = require('resend');
 
 async function testResend() {
   console.log('🔍 Testing Resend API...');
+  if (!process.env.RESEND_API_KEY) {
+    console.error('❌ Set RESEND_API_KEY in your environment first.');
+    process.exit(1);
+  }
   
   try {
-    const resend = new Resend('re_P3kbFRcL_EchKFL9hKCLzxecwbwrefjKp');
+    const resend = new Resend(process.env.RESEND_API_KEY);
     
     console.log('🔍 Sending test email...');
     
