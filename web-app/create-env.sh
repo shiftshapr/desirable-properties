@@ -29,7 +29,7 @@ DATABASE_URL=postgresql://postgres:password@localhost:5432/desirable_properties
 # ============================================
 # EMAIL SERVICE (Resend)
 # ============================================
-RESEND_API_KEY=re_2EN3i37T_MuAL8reXuzueojVtmyWF6EbS
+# RESEND_API_KEY is appended below from your environment (never commit a key)
 EMAIL_FROM=noreply@themetalayer.org
 
 # ============================================
@@ -67,6 +67,10 @@ JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 # - Database uses Prisma with PostgreSQL (DATABASE_URL needed)
 # - Update DATABASE_URL with your actual database credentials
 EOF
+
+# Read the Resend key from the environment; leave it empty if unset.
+printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY" >> "$ENV_FILE"
+[ -n "$RESEND_API_KEY" ] || echo "⚠️  RESEND_API_KEY is not set in your environment; it was left empty in $ENV_FILE"
 
 echo "✅ Created $ENV_FILE"
 echo ""
