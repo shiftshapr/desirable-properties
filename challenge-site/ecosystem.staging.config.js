@@ -156,9 +156,11 @@ module.exports = {
         // Separate staging Postgres (snapshot of prod) so staging evals/events stay out of prod.
         DP_DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
         DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
-        WEB3AUTH_CLIENT_ID_DEVNET:
-          localEnv.WEB3AUTH_CLIENT_ID_DEVNET
-          || 'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk',
+        // Web3Auth Sapphire Devnet client ID for STAGING. Public, not a secret, and fixed
+        // per environment, so it lives here instead of the .env.local that prod and staging
+        // share on one checkout (production has its own ID). Do not read it from localEnv:
+        // that file can only hold one value. The app throws if this is ever unset.
+        WEB3AUTH_CLIENT_ID_DEVNET: 'BL4DIH0p1zqK3qT6GfVIL4V7YIuIlo5po89t5CgkyxnhRYAZOHg4Gs3huxO63UFloj9uJ9LRkbD8n8Ha3FhR2a4',
       },
       max_memory_restart: '512M',
     },

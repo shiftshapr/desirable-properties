@@ -4,6 +4,53 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "web3auth-no-prod-fallback",
+      "date": "2026-10-11",
+      "status": "open",
+      "title": "Sign-in uses each site's own Web3Auth ID",
+      "summary": "The site no longer falls back to production's Web3Auth client ID. Production and staging each name their own ID, and if the ID is missing, sign-in shows a clear error instead of quietly using production's.",
+      "changes": [
+        "Removed the hardcoded production client ID from the Web3Auth config and token check",
+        "Production and staging pm2 configs each set their own WEB3AUTH_CLIENT_ID_DEVNET",
+        "A missing ID now returns a clear error on sign-in; other pages still load"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/web3auth-config.ts",
+          "label": "Web3Auth config"
+        },
+        {
+          "path": "challenge-site/src/lib/web3auth-verify.ts",
+          "label": "Token check"
+        },
+        {
+          "path": "challenge-site/src/components/Web3AuthConfigScript.tsx",
+          "label": "Page config script"
+        },
+        {
+          "path": "challenge-site/src/app/api/auth/web3auth/config/route.ts",
+          "label": "Config endpoint"
+        },
+        {
+          "path": "challenge-site/src/lib/web3auth-login.ts",
+          "label": "Sign-in error message"
+        },
+        {
+          "path": "challenge-site/ecosystem.config.js",
+          "label": "Production pm2 config"
+        },
+        {
+          "path": "challenge-site/ecosystem.staging.config.js",
+          "label": "Staging pm2 config"
+        }
+      ],
+      "verify": "Open sign-in on staging.desirableproperties.org: the Web3Auth config endpoint returns the staging ID (BL4DIH…), and production returns BKvRj4….",
+      "intent": "Staging and production each use their own Web3Auth project; a missing ID must fail loudly, never fall back to production's.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "govhub-latest-revision-links",
       "date": "2026-10-04",
       "status": "open",

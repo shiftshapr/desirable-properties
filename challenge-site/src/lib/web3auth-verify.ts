@@ -1,17 +1,10 @@
 import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { getWeb3AuthClientId } from './web3auth-config';
 
 const WEB3AUTH_JWKS_URL = 'https://api-auth.web3auth.io/jwks';
 const WEB3AUTH_ISSUER = 'https://api-auth.web3auth.io';
 
-const DEFAULT_DEVNET_CLIENT_ID =
-  'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk';
-
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
-
-/** Must stay in sync with getWeb3AuthPublicConfig: devnet only, never sapphire_mainnet. */
-function web3authClientId() {
-  return String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || DEFAULT_DEVNET_CLIENT_ID).trim();
-}
 
 function getJwks() {
   if (!jwks) jwks = createRemoteJWKSet(new URL(WEB3AUTH_JWKS_URL));
@@ -22,7 +15,7 @@ export async function verifyWeb3AuthIdToken(idToken: string) {
   const token = String(idToken || '').trim();
   if (!token) throw new Error('idToken required');
 
-  const clientId = web3authClientId();
+  const clientId = getWeb3AuthClientId();
   const { payload } = await jwtVerify(token, getJwks(), {
     issuer: WEB3AUTH_ISSUER,
     audience: clientId,
