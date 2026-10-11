@@ -91,8 +91,10 @@ async function loadPublicConfig(): Promise<Web3AuthPublicConfig> {
   }
 
   const cfgRes = await fetch('/api/auth/web3auth/config');
-  if (!cfgRes.ok) throw new Error('Web3Auth config unavailable');
-  const cfg = await cfgRes.json();
+  const cfg = await cfgRes.json().catch(() => ({}));
+  if (!cfgRes.ok) {
+    throw new Error(`Web3Auth config unavailable${cfg?.error ? `: ${cfg.error}` : ''}`);
+  }
   return validatePublicConfig(cfg);
 }
 

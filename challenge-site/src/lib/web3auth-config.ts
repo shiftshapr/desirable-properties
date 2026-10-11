@@ -1,10 +1,24 @@
-const DEFAULT_DEVNET_CLIENT_ID =
-  'BKvRj4akAwrNHHk4UyYCC4zt9KWigdiuosCX5-idVNclsk9hPPQ4_b8grcl0JF4NhT26oLWb3O5K949SVv6lTGk';
+/**
+ * Web3Auth Sapphire Devnet client ID for this deployment. There is no default:
+ * production and staging use different client IDs, and a built-in fallback once
+ * let staging run on production's ID without anyone noticing. Set
+ * WEB3AUTH_CLIENT_ID_DEVNET at runtime (the PM2 ecosystem configs set it).
+ */
+export function getWeb3AuthClientId(): string {
+  const clientId = String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || '').trim();
+  if (!clientId) {
+    throw new Error(
+      'WEB3AUTH_CLIENT_ID_DEVNET is not set. Web3Auth sign-in is disabled until it is set '
+        + '(production and staging each need their own client ID; see ecosystem*.config.js).',
+    );
+  }
+  return clientId;
+}
 
 /** Devnet only by design: Web3Auth sapphire_mainnet is a paid plan we do not hold. */
 export function getWeb3AuthPublicConfig() {
   return {
-    clientId: String(process.env.WEB3AUTH_CLIENT_ID_DEVNET || DEFAULT_DEVNET_CLIENT_ID).trim(),
+    clientId: getWeb3AuthClientId(),
     web3AuthNetwork: 'sapphire_devnet',
     googleVerifier: 'web3auth-google-sapphire-devnet',
   };
