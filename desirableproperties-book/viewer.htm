@@ -25,6 +25,8 @@
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js?v=20260801"></script>
+  <!-- Deep links (post links, #:~:text=) and the phone Discuss button. Must run before the bridge and SDK read the URL. -->
+  <script src="/assets/dp-deep-link.js?v=20261012c"></script>
   <!-- Canopi sidebar – one embed for all /viewer/* chapters. Staging host mirrors prod API + pageUrlOrigin. -->
   <script src="/assets/dp-canopi-bridge.js"></script>
   <script>
@@ -801,6 +803,28 @@
     }
 
     /* Mobile responsive */
+    /* Deep links (assets/dp-deep-link.js) */
+    ::highlight(dp-deep-link) { background: rgba(212, 175, 55, 0.45); color: inherit; }
+    .dp-deep-link-block { outline: 2px solid rgba(212, 175, 55, 0.8); outline-offset: 4px; border-radius: 4px; }
+    [data-dp-deep-link] { scroll-margin-top: 96px; }
+    .dp-discuss-fab, .dp-back-to-chapter { display: none; }
+    @media (max-width: 767px) {
+      .dp-discuss-fab {
+        display: inline-flex; position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        z-index: 2147483000; padding: 12px 18px; border-radius: 999px; border: 0;
+        background: #d4af37; color: #111; font: 600 15px/1 system-ui, sans-serif;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); cursor: pointer;
+      }
+      .dp-back-to-chapter {
+        display: inline-flex; position: fixed; left: 12px; top: calc(12px + env(safe-area-inset-top, 0px));
+        z-index: 2147483647; padding: 10px 14px; border-radius: 999px; border: 0;
+        background: #111; color: #fff; font: 600 14px/1 system-ui, sans-serif;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4); cursor: pointer;
+      }
+      .dp-discuss-fab[hidden], .dp-back-to-chapter[hidden] { display: none; }
+      /* Phones: the chapter stays readable; Discuss (n) replaces the welcome banner. */
+      #canopi-overlay-root .canopi-welcome-banner { display: none !important; }
+    }
     @media (max-width: 880px) {
       .sidebar {
         position: fixed;
@@ -1039,6 +1063,8 @@
     }
 
     function readTocOpenPreference() {
+      // Below 1024px the contents and its overlay start closed, whatever was saved.
+      if (window.matchMedia('(max-width: 1023px)').matches) return false;
       try {
         const v = localStorage.getItem(STORAGE_TOC_OPEN);
         if (v === '1' || v === 'true') return true;
@@ -1689,6 +1715,7 @@
         updateHeaderProgress(rail);
         try { localStorage.setItem(STORAGE_LAST_CHAPTER, rail); } catch (e) { /* ignore */ }
         if (!o.skipUrl) syncUrlToRail(rail);
+        try { window.dispatchEvent(new CustomEvent('dp:chapter-rendered', { detail: { rail: rail } })); } catch (e) { /* ignore */ }
       } catch (err) {
         const msg = (err && err.message ? err.message : String(err))
           .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
