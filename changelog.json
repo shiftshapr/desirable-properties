@@ -51,6 +51,69 @@
       ]
     },
     {
+      "id": "resend-key-from-env",
+      "date": "2026-10-11",
+      "status": "merged",
+      "title": "Email key no longer kept in the code",
+      "summary": "The web app's setup and email-test scripts now read the Resend email key from the server environment instead of having it written into the code. The two keys that were in the code had already been switched off in Resend. No visible change on the site.",
+      "changes": [
+        "create-env.sh writes RESEND_API_KEY from the environment and warns if it is missing",
+        "test-resend.js reads RESEND_API_KEY from the environment and stops if it is missing",
+        "The old keys stay in git history but no longer work"
+      ],
+      "files": [
+        {
+          "path": "web-app/create-env.sh",
+          "label": "Environment setup script"
+        },
+        {
+          "path": "web-app/test-resend.js",
+          "label": "Email test script"
+        }
+      ],
+      "verify": "grep -n 're_' web-app/create-env.sh web-app/test-resend.js returns nothing",
+      "intent": "No secrets in the source of a public repo.",
+      "surfaces": [
+        "ops"
+      ],
+      "git": {
+        "sha": "7d557db44219c713240de0804390c2933dc483dd",
+        "pr": 16
+      }
+    },
+    {
+      "id": "deploy-by-merge-box1",
+      "date": "2026-10-10",
+      "status": "merged",
+      "title": "Merging to main now deploys the site",
+      "summary": "The site and the book are deployed by production itself when a change is merged, instead of by GitHub logging into the old server. The old deploy jobs pointed at a server that is being retired, so they were removed. No visible change on the site.",
+      "changes": [
+        "Removed the deploy-challenge-site and deploy-webapp workflows, which deployed to the retired server",
+        "The rail-sync workflow still syncs and commits; production publishes the book when that commit lands",
+        "Runtime files written on the server (loop state and logs, script cache) are ignored by git"
+      ],
+      "files": [
+        {
+          "path": ".github/workflows/govhub-rail-sync.yml",
+          "label": "Rail sync workflow"
+        },
+        {
+          "path": ".gitignore",
+          "label": "Ignored files"
+        }
+      ],
+      "verify": "After a merge to main, /var/log/pull-deploy/desirable-properties.log on production shows DEPLOY and OK for the new commit",
+      "intent": "Production deploys itself from main; GitHub holds no credential that reaches the server.",
+      "surfaces": [
+        "ci",
+        "ops"
+      ],
+      "git": {
+        "sha": "b594223d499c7abaf1d6b9484cb9a4b718fd393a",
+        "pr": 14
+      }
+    },
+    {
       "id": "govhub-latest-revision-links",
       "date": "2026-10-04",
       "status": "open",
