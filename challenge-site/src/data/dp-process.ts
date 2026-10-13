@@ -16,6 +16,13 @@ export const STALE_PROPOSAL_DAYS = 7;
 export const CO_EDITORS_PER_DP = 2;
 export const MIN_WORKGROUP_MEMBERS = 3;
 
+/** Shown at the top of /process. Update whenever a rule on this page changes. */
+export const RULES_UPDATED = {
+  date: '2026-10-13',
+  summary:
+    'Co-editors: the coordinator holds one seat; the other is claimed or filled by an accepted nomination. Two co-editors make a DP fully staffed. Every decline carries a note the author can read. Proposals are decided within 7 days.',
+};
+
 export const PROCESS_PRINCIPLES: ReadonlyArray<{ title: string; body: string }> = [
   {
     title: 'Synthesis, not stacking',

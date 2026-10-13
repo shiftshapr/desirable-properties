@@ -10,6 +10,8 @@ import {
   READINESS_ITEMS,
   V1_FREEZE_LABEL,
   shortDate,
+  countedReadinessItems,
+  RULES_UPDATED,
 } from '@/data/dp-process';
 import { DP_ROUNDUP_EVENTS, roundupDateLabel } from '@/lib/dp-roundups';
 import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
@@ -49,6 +51,10 @@ export default function ProcessPage() {
           {V1_FREEZE_LABEL}. This page is the guide for the weeks in between: the principles that decide
           close calls, the route a change takes, who decides, what members can do each week, and the
           checklist every chapter is reviewed against.
+        </p>
+        <p className="mt-4 max-w-3xl rounded-lg border border-cyan-900/60 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
+          <strong className="font-semibold text-cyan-200">Rules last updated {shortDate(RULES_UPDATED.date)}.</strong>{' '}
+          {RULES_UPDATED.summary}
         </p>
         <nav className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
           {[
@@ -198,7 +204,7 @@ export default function ProcessPage() {
       <Section
         id="checklist"
         title="V1 readiness checklist"
-        lead="A chapter is ready for Version 1.0 when all twelve items pass. Eight are checked automatically from Gov Hub and Canopi data; four are ticked by a co-editor or the coordinator."
+        lead={`A chapter is ready for Version 1.0 when all ${countedReadinessItems(READINESS_ITEMS).length} counted items pass. Most are checked automatically from Gov Hub and Canopi data; the manual ones are ticked by a co-editor or the coordinator. Member count is shown for context and not counted.`}
       >
         <ol className="grid gap-2 text-sm sm:grid-cols-2">
           {READINESS_ITEMS.map((item, i) => (
@@ -208,6 +214,7 @@ export default function ProcessPage() {
                 {item.label}
                 <span className={`block text-xs ${item.check === 'manual' ? 'text-violet-300' : 'text-slate-500'}`}>
                   {item.check === 'manual' ? 'manual' : 'automatic'} · due {shortDate(item.due)}
+                  {item.advisory ? ' · for context, not counted' : ''}
                 </span>
               </span>
             </li>
