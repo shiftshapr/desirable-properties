@@ -105,7 +105,7 @@ export const PROCESS_ROLES: ReadonlyArray<{
 ];
 
 export const CO_EDITOR_CLAIM_RULE =
-  'The coordinator holds one seat automatically. An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. Or a member nominates someone from the workgroup, who becomes a co-editor the moment they accept, with no admin approval. Outside their coordinator seat, one person co-edits at most 2 DPs. Every new seat is announced to the coordinator and admins. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
+  'The coordinator holds one seat automatically. An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. Or a member nominates someone from the workgroup, who becomes a co-editor the moment they accept, with no admin approval. Outside their coordinator seat, one person co-edits a limited number of DPs: 2 to start, raised step by step (up to 7) as co-editors settle in; the workgroup page shows the current limit. Every new seat is announced to the coordinator and admins. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
 
 export type PracticeTask = {
   id: string;
