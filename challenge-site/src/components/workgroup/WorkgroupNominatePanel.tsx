@@ -104,7 +104,7 @@ export default function WorkgroupNominatePanel({
           }}
           className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500 disabled:opacity-50"
         >
-          {user ? 'Nominate' : 'Sign in to nominate'}
+          {user ? 'Nominate coordinator' : 'Sign in to nominate a coordinator'}
         </button>
       ) : (
         <form
@@ -112,7 +112,7 @@ export default function WorkgroupNominatePanel({
           className="mt-2 space-y-3 rounded-xl border border-slate-800 bg-slate-950/60 p-4"
         >
           <div className="flex items-center justify-between gap-2">
-            <h3 className="text-sm font-semibold text-white">Nominate for a position</h3>
+            <h3 className="text-sm font-semibold text-white">Nominate a coordinator</h3>
             <button
               type="button"
               onClick={() => setOpen(false)}

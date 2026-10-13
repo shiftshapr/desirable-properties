@@ -10,7 +10,6 @@ import {
   READINESS_ITEMS,
   V1_FREEZE_LABEL,
   shortDate,
-  countedReadinessItems,
   RULES_UPDATED,
 } from '@/data/dp-process';
 import { DP_ROUNDUP_EVENTS, roundupDateLabel } from '@/lib/dp-roundups';
@@ -204,7 +203,7 @@ export default function ProcessPage() {
       <Section
         id="checklist"
         title="V1 readiness checklist"
-        lead={`A chapter is ready for Version 1.0 when all ${countedReadinessItems(READINESS_ITEMS).length} counted items pass. Most are checked automatically from Gov Hub and Canopi data; the manual ones are ticked by a co-editor or the coordinator. Member count is shown for context and not counted.`}
+        lead={`A chapter is ready for Version 1.0 when all ${READINESS_ITEMS.length} items pass. Most are checked automatically from Gov Hub and Canopi data; the manual ones are ticked by a co-editor or the coordinator.`}
       >
         <ol className="grid gap-2 text-sm sm:grid-cols-2">
           {READINESS_ITEMS.map((item, i) => (
@@ -214,7 +213,6 @@ export default function ProcessPage() {
                 {item.label}
                 <span className={`block text-xs ${item.check === 'manual' ? 'text-violet-300' : 'text-slate-500'}`}>
                   {item.check === 'manual' ? 'manual' : 'automatic'} · due {shortDate(item.due)}
-                  {item.advisory ? ' · for context, not counted' : ''}
                 </span>
               </span>
             </li>

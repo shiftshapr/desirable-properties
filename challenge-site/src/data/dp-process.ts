@@ -14,7 +14,6 @@ export const V1_FREEZE_LABEL = 'Monday 9 November, 1 p.m. PT';
 export const PROPOSAL_CUTOFF_DATE = '2026-10-19';
 export const STALE_PROPOSAL_DAYS = 7;
 export const CO_EDITORS_PER_DP = 2;
-export const MIN_WORKGROUP_MEMBERS = 3;
 
 /** Shown at the top of /process. Update whenever a rule on this page changes. */
 export const RULES_UPDATED = {
@@ -93,7 +92,7 @@ export const PROCESS_ROLES: ReadonlyArray<{
 }> = [
   {
     role: 'Member',
-    count: `Any (${MIN_WORKGROUP_MEMBERS}+ helps)`,
+    count: 'Any',
     decides: 'Proposes, comments, reviews, takes practice tasks',
     howToGetIt: 'Join the workgroup',
   },
@@ -220,12 +219,9 @@ export type ReadinessItem = {
   label: string;
   check: 'auto' | 'manual' | 'external';
   due: string;
-  /** Shown for context; does not count toward a DP's passed total. */
-  advisory?: boolean;
 };
 
 export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
-  { key: 'members', label: `Workgroup has at least ${MIN_WORKGROUP_MEMBERS} members`, check: 'auto', due: '2026-10-12', advisory: true },
   { key: 'co_editors', label: 'Both co-editor seats filled (fully staffed)', check: 'auto', due: '2026-10-12' },
   { key: 'coordinator', label: 'Coordinator in place', check: 'auto', due: '2026-10-12' },
   { key: 'canopi_filed', label: 'Every Canopi patch and insert on the chapter is filed in Gov Hub or decided by Astra', check: 'external', due: '2026-10-19' },
@@ -239,16 +235,11 @@ export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
   { key: 'v1_candidate', label: 'V1 candidate revision published before the freeze', check: 'auto', due: '2026-11-09' },
 ];
 
-const ADVISORY_KEYS = new Set(READINESS_ITEMS.filter((i) => i.advisory).map((i) => i.key));
+const READINESS_KEYS = new Set(READINESS_ITEMS.map((i) => i.key));
 
-/** Items that count toward a DP being ready (advisory ones are shown, not counted). */
-export function countedReadinessItems<T extends { key: string; advisory?: boolean }>(items: readonly T[]): T[] {
-  return items.filter((i) => !i.advisory && !ADVISORY_KEYS.has(i.key));
-}
-
-/** Passed checks, not counting advisory items. */
+/** Passed checks among the site's checklist items (Gov Hub may report others). */
 export function countPassed(checks: Record<string, { pass: boolean | null } | undefined>): number {
-  return Object.entries(checks).filter(([key, c]) => c?.pass === true && !ADVISORY_KEYS.has(key)).length;
+  return Object.entries(checks).filter(([key, c]) => c?.pass === true && READINESS_KEYS.has(key)).length;
 }
 
 export function tasksForWeek(mondayIso: string): PracticeTask[] {
