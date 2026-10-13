@@ -1,6 +1,6 @@
 # DP{N} – {Title}
 
-*{Tagline — participant-facing subtitle}*
+*{Tagline – participant-facing subtitle}*
 
 <!-- dp-local-version: 1.0 | standardized: YYYY-MM-DD -->
 
@@ -70,7 +70,9 @@
 
 ## N. Non-Goals and Explicit Boundaries
 
-## N. Minimum DP{N} Alignment (Non-Normative)
+## N. Minimum DP{N} Alignment
+
+{Testable requirements: capital MUST / SHOULD / MAY, one per sentence, each naming who it applies to. See /style-guide#requirements.}
 
 ## N. Open Questions and Future Work
 
