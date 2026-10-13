@@ -15,14 +15,16 @@ import {
 
 type Props = {
   workgroupId: string;
+  /** e.g. "DP16", for the copy. */
+  dpLabel?: string | null;
   isMember: boolean;
   className?: string;
 };
 
 const KIND_LABEL: Record<CoEditorSeat['kind'], string> = {
-  coordinator: 'Coordinator seat',
-  claimed: 'Claimed',
-  nominated: 'Nominated',
+  coordinator: 'Coordinator',
+  claimed: 'Co-editor',
+  nominated: 'Co-editor (nominated)',
 };
 
 const MIN_STATEMENT = 20;
@@ -31,11 +33,12 @@ const MIN_REASON = 10;
 type Mode = null | 'claim' | 'nominate' | { revoke: CoEditorSeat };
 
 /**
- * The DP's two co-editor seats. A seat is filled by the coordinator (automatic),
- * a claim, or a nomination the nominee accepts. Two co-editors = fully staffed.
+ * The DP's two co-editor seats, shown above the workgroup tabs. A seat is held by
+ * the coordinator (automatic), claimed ("Become a co-editor"), or filled by a
+ * nomination the nominee accepts. Two co-editors = fully staffed.
  */
-export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, className = '' }: Props) {
-  const { user } = useAuth();
+export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember, className = '' }: Props) {
+  const { user, checked } = useAuth();
   const [data, setData] = useState<CoEditorSeatsResponse | null>(null);
   const [mode, setMode] = useState<Mode>(null);
   const [text, setText] = useState('');
@@ -45,7 +48,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
+  const reload = useCallback(async () => {
     try {
       setData(await fetchCoEditorSeats(workgroupId));
     } catch {
@@ -67,6 +70,14 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
     };
   }, [workgroupId, user?.id]);
 
+  // Links like /workgroups/<slug>#co-editors arrive before this card has data.
+  const loaded = Boolean(data?.enabled);
+  useEffect(() => {
+    if (loaded && window.location.hash === '#co-editors') {
+      document.getElementById('co-editors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [loaded]);
+
   useEffect(() => {
     if (mode !== 'nominate' || roster) return;
     fetchWorkgroupMemberRoster(workgroupId)
@@ -76,6 +87,11 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
 
   if (!data?.enabled) return null;
 
+  const dp = dpLabel || 'this DP';
+  const filled = data.seats.length;
+  const fullyStaffed = filled >= data.seats_total;
+  const iAmCoEditor = Boolean(data.viewer_is_co_editor ?? data.seats.some((s) => s.user_id === user?.id));
+  const blockReason = data.claim_block_reason && !iAmCoEditor ? data.claim_block_reason : null;
   const seatedIds = new Set(data.seats.map((s) => s.user_id));
   const candidates = (roster || []).filter((m) => !seatedIds.has(m.user_id) && m.user_id !== user?.id);
   const trimmed = text.trim();
@@ -89,9 +105,13 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
           ? trimmed.length >= MIN_REASON
           : false;
 
+  function signIn() {
+    window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+  }
+
   function open(next: Mode) {
     if (!user) {
-      window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+      signIn();
       return;
     }
     setMode(next);
@@ -109,7 +129,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
     try {
       let message: string | undefined;
       if (mode === 'claim') {
-        message = (await claimCoEditorSeat(workgroupId, trimmed)).message;
+        message = (await claimCoEditorSeat(workgroupId, trimmed)).message || `You are now a co-editor of ${dp}.`;
       } else if (mode === 'nominate') {
         const member = candidates.find((m) => m.user_id === nomineeId);
         if (!member) throw new Error('Pick a member to nominate.');
@@ -119,7 +139,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
       }
       setNotice(message || 'Done.');
       setMode(null);
-      await load();
+      await reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
@@ -127,159 +147,235 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, isMember, classNa
     }
   }
 
-  const filled = data.seats.length;
-  const fullyStaffed = filled >= data.seats_total;
-
   return (
     <section
+      id="co-editors"
       aria-label="Co-editors"
-      className={`rounded-xl border border-slate-800 bg-slate-950/40 p-4 ${className}`}
+      className={`scroll-mt-24 rounded-xl border p-5 ${
+        fullyStaffed ? 'border-slate-800 bg-slate-900/40' : 'border-cyan-800/70 bg-cyan-950/20'
+      } ${className}`}
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-semibold text-white">
-          Co-editors{' '}
-          <span className={fullyStaffed ? 'text-emerald-300' : 'text-amber-300'}>
-            {filled} of {data.seats_total}
-          </span>
-          {fullyStaffed ? <span className="ml-2 text-xs font-normal text-emerald-300">Fully staffed</span> : null}
-        </h2>
-        <p className="text-xs text-slate-400">
-          Both co-editors approve a proposal before it goes into the book. Every “no” carries a reason.
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold text-white">
+            Co-editors{' '}
+            <span className={fullyStaffed ? 'text-emerald-300' : 'text-amber-300'}>
+              · {filled} of {data.seats_total}
+            </span>
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-slate-300">
+            {fullyStaffed
+              ? `${dp} is fully staffed. `
+              : `${dp} needs ${data.seats_total - filled} more co-editor${data.seats_total - filled === 1 ? '' : 's'}. `}
+            Co-editors decide which proposals go into V1: both approve a change before it goes in, and every
+            “no” carries a short reason for the author.
+          </p>
+        </div>
+        {!fullyStaffed && !mode && !iAmCoEditor ? (
+          checked && !user ? (
+            <button
+              type="button"
+              onClick={signIn}
+              className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500"
+            >
+              Sign in to become a co-editor
+            </button>
+          ) : data.can_claim ? (
+            <button
+              type="button"
+              onClick={() => open('claim')}
+              className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500"
+            >
+              Become a co-editor
+            </button>
+          ) : null
+        ) : null}
       </div>
 
-      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-4 grid gap-2 sm:grid-cols-2">
         {data.seats.map((seat) => (
-          <li key={seat.id} className="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-sm text-slate-100">{seat.name || 'Co-editor'}</span>
+          <li
+            key={seat.id}
+            className="flex items-center justify-between gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2"
+          >
+            <span className="text-sm text-slate-100">
+              {seat.name || 'Co-editor'}
+              {seat.user_id && seat.user_id === user?.id ? <span className="text-emerald-300"> (you)</span> : null}
+            </span>
+            <span className="flex items-center gap-2">
               <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[11px] text-slate-300">
                 {KIND_LABEL[seat.kind] || 'Co-editor'}
               </span>
-            </div>
-            {seat.can_revoke ? (
-              <button
-                type="button"
-                onClick={() => open({ revoke: seat })}
-                className="mt-1 text-xs text-slate-400 underline hover:text-rose-300"
-              >
-                Revoke…
-              </button>
-            ) : null}
+              {seat.can_revoke ? (
+                <button
+                  type="button"
+                  onClick={() => open({ revoke: seat })}
+                  className="text-xs text-slate-500 underline hover:text-rose-300"
+                >
+                  Revoke
+                </button>
+              ) : null}
+            </span>
           </li>
         ))}
         {Array.from({ length: data.open_seats }).map((_, i) => (
           <li
             key={`open-${i}`}
-            className="rounded-lg border border-dashed border-slate-700 px-3 py-2 text-sm text-slate-400"
+            className="rounded-lg border border-dashed border-cyan-800/70 px-3 py-2 text-sm text-cyan-200/80"
           >
             Open seat
           </li>
         ))}
       </ul>
 
-      {data.open_seats > 0 && !mode ? (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {data.can_claim || !user ? (
-            <button
-              type="button"
-              onClick={() => open('claim')}
-              className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600"
-            >
-              {user ? 'Claim a seat' : 'Sign in to claim a seat'}
-            </button>
-          ) : null}
-          {user && isMember && data.can_nominate ? (
-            <button
-              type="button"
-              onClick={() => open('nominate')}
-              className="rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-500"
-            >
-              Nominate a member
-            </button>
-          ) : null}
-        </div>
+      {iAmCoEditor ? (
+        <p className="mt-3 text-sm text-emerald-300">
+          You are a co-editor of {dp}. Proposals waiting for a decision are on the{' '}
+          <a href="?tab=review" className="underline hover:text-emerald-200">
+            Review tab
+          </a>
+          .
+        </p>
       ) : null}
+      {blockReason && !fullyStaffed && !mode ? <p className="mt-3 text-sm text-amber-200">{blockReason}</p> : null}
 
-      {mode ? (
-        <form onSubmit={(e) => void submit(e)} className="mt-3 space-y-2">
-          {mode === 'claim' ? (
-            <p className="text-xs text-slate-400">
-              Your account must be at least {data.rules.min_account_days} days old, and you can co-edit at
-              most {data.rules.max_seats_per_person} DPs. The seat is yours at once; the coordinator can revoke
-              it within {data.rules.revoke_window_days} days, with a reason.
+      {mode === 'claim' ? (
+        <form
+          onSubmit={(e) => void submit(e)}
+          className="mt-4 space-y-3 rounded-lg border border-slate-800 bg-slate-950/60 p-4"
+        >
+          <h3 className="text-sm font-semibold text-white">Become a co-editor of {dp}</h3>
+          <ul className="list-disc space-y-1 pl-5 text-sm text-slate-300">
+            <li>Decide each proposal on the Review tab within 7 days: approve or decline.</li>
+            <li>A change goes in when both co-editors approve it.</li>
+            <li>When you decline, write a sentence the author can read.</li>
+          </ul>
+          {!isMember ? <p className="text-xs text-slate-400">You will also join this workgroup.</p> : null}
+          <label className="block text-sm text-slate-300">
+            Why you would like to co-edit {dp}
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={3}
+              autoFocus
+              placeholder="A sentence or two: your interest or experience with this property."
+              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+            />
+          </label>
+          {trimmed.length < MIN_STATEMENT ? (
+            <p className="text-xs text-slate-500">
+              {MIN_STATEMENT - trimmed.length} more character{MIN_STATEMENT - trimmed.length === 1 ? '' : 's'} to go.
             </p>
           ) : null}
-          {mode === 'nominate' ? (
-            <>
-              <p className="text-xs text-slate-400">
-                They get an email with your note and become a co-editor as soon as they accept.
-              </p>
-              <label className="block text-xs text-slate-400">
-                Member
-                <select
-                  value={nomineeId}
-                  onChange={(e) => setNomineeId(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
-                >
-                  <option value="">{roster ? 'Choose a member' : 'Loading members…'}</option>
-                  {candidates.map((m) => (
-                    <option key={m.user_id} value={m.user_id}>
-                      {m.user_name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {roster && candidates.length === 0 ? (
-                <p className="text-xs text-amber-300">No other members to nominate yet.</p>
-              ) : null}
-            </>
-          ) : null}
-          {revokeTarget ? (
-            <p className="text-xs text-slate-400">
-              Revoke {revokeTarget.name || 'this co-editor'}’s seat. Their pending approvals stop counting.
-            </p>
-          ) : null}
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            rows={3}
-            placeholder={
-              mode === 'claim'
-                ? 'Why you will co-edit this DP (at least 20 characters)'
-                : mode === 'nominate'
-                  ? 'Why this person should co-edit this DP'
-                  : 'Reason (at least 10 characters)'
-            }
-            className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
-          />
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              disabled={busy || !canSubmit}
-              className="rounded-lg bg-cyan-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
-            >
-              {busy
-                ? 'Working…'
-                : mode === 'claim'
-                  ? 'Claim seat'
-                  : mode === 'nominate'
-                    ? 'Send nomination'
-                    : 'Revoke seat'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode(null)}
-              className="rounded-lg px-3 py-1.5 text-sm text-slate-400 hover:text-slate-200"
-            >
-              Cancel
-            </button>
-          </div>
+          <FormButtons busy={busy} canSubmit={canSubmit} label="Become a co-editor" onCancel={() => setMode(null)} />
         </form>
       ) : null}
 
-      {error ? <p className="mt-2 text-sm text-rose-300">{error}</p> : null}
-      {notice ? <p className="mt-2 text-sm text-emerald-300">{notice}</p> : null}
+      {mode === 'nominate' ? (
+        <form
+          onSubmit={(e) => void submit(e)}
+          className="mt-4 space-y-3 rounded-lg border border-slate-800 bg-slate-950/60 p-4"
+        >
+          <h3 className="text-sm font-semibold text-white">Nominate a member as co-editor</h3>
+          <p className="text-sm text-slate-300">
+            They get an email with your note and become a co-editor as soon as they accept.
+          </p>
+          <label className="block text-sm text-slate-300">
+            Member
+            <select
+              value={nomineeId}
+              onChange={(e) => setNomineeId(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+            >
+              <option value="">{roster ? 'Choose a member' : 'Loading members…'}</option>
+              {candidates.map((m) => (
+                <option key={m.user_id} value={m.user_id}>
+                  {m.user_name}
+                </option>
+              ))}
+            </select>
+          </label>
+          {roster && candidates.length === 0 ? (
+            <p className="text-xs text-amber-300">No other members to nominate yet.</p>
+          ) : null}
+          <label className="block text-sm text-slate-300">
+            Why this person
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={2}
+              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+            />
+          </label>
+          <FormButtons busy={busy} canSubmit={canSubmit} label="Send nomination" onCancel={() => setMode(null)} />
+        </form>
+      ) : null}
+
+      {revokeTarget ? (
+        <form
+          onSubmit={(e) => void submit(e)}
+          className="mt-4 space-y-3 rounded-lg border border-rose-900/50 bg-slate-950/60 p-4"
+        >
+          <h3 className="text-sm font-semibold text-white">Revoke {revokeTarget.name || 'this co-editor'}’s seat</h3>
+          <p className="text-sm text-slate-300">Their pending approvals stop counting. They will see your reason.</p>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={2}
+            placeholder="Reason (at least 10 characters)"
+            className="w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+          />
+          <FormButtons busy={busy} canSubmit={canSubmit} label="Revoke seat" onCancel={() => setMode(null)} />
+        </form>
+      ) : null}
+
+      {!fullyStaffed && !mode && user && isMember && data.can_nominate ? (
+        <p className="mt-3 text-sm text-slate-400">
+          Know a member who should do this?{' '}
+          <button
+            type="button"
+            onClick={() => open('nominate')}
+            className="text-cyan-300 underline hover:text-cyan-200"
+          >
+            Nominate them
+          </button>
+          .
+        </p>
+      ) : null}
+
+      {error ? <p className="mt-3 text-sm text-rose-300">{error}</p> : null}
+      {notice ? <p className="mt-3 text-sm text-emerald-300">{notice}</p> : null}
     </section>
+  );
+}
+
+function FormButtons({
+  busy,
+  canSubmit,
+  label,
+  onCancel,
+}: {
+  busy: boolean;
+  canSubmit: boolean;
+  label: string;
+  onCancel: () => void;
+}) {
+  return (
+    <div className="flex gap-2">
+      <button
+        type="submit"
+        disabled={busy || !canSubmit}
+        className="rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500 disabled:opacity-50"
+      >
+        {busy ? 'Working…' : label}
+      </button>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="rounded-lg px-3 py-2 text-sm text-slate-400 hover:text-slate-200"
+      >
+        Cancel
+      </button>
+    </div>
   );
 }

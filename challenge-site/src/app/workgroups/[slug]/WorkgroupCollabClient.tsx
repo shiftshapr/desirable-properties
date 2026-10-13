@@ -312,14 +312,16 @@ export default function WorkgroupCollabClient({
             {!membershipChecked ? (
               <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
             ) : null}
-            <WorkgroupCoEditorsPanel
-              workgroupId={workgroup.id}
-              isMember={membershipChecked && isMember}
-              className="mt-5"
-            />
           </div>
         </div>
       </header>
+
+      <WorkgroupCoEditorsPanel
+        workgroupId={workgroup.id}
+        dpLabel={dpId}
+        isMember={membershipChecked && isMember}
+        className="mb-6"
+      />
 
       <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
         <nav

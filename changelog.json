@@ -4,6 +4,44 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "co-editor-claim-ux",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Becoming a co-editor is easy to find; '3 members' check removed",
+      "summary": "The Co-editors card now sits above the workgroup tabs and says plainly how many co-editors the DP needs, with a 'Become a co-editor' button, what the role involves, and why you can't take a seat when you can't. Workgroup cards on /workgroups link straight to it. The 'Workgroup has at least 3 members' readiness item is gone; two co-editors is what makes a DP fully staffed.",
+      "changes": [
+        "Co-editors card moved from the bottom of the header to its own section above the tabs",
+        "'Claim a seat' renamed 'Become a co-editor', with what the role involves and a character countdown",
+        "Shows why a seat can't be taken (already a co-editor, seats taken, account under 7 days, per-person limit)",
+        "Co-editors see a link to the Review tab; 'Nominate them' for members",
+        "Header 'Nominate' is now 'Nominate coordinator'; /workgroups cards get 'Become a co-editor'",
+        "Readiness: 'at least 3 members' removed from the card, board and process page"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupCoEditorsPanel.tsx",
+          "label": "Co-editors card"
+        },
+        {
+          "path": "challenge-site/src/app/workgroups/[slug]/WorkgroupCollabClient.tsx",
+          "label": "Workgroup page layout"
+        },
+        {
+          "path": "challenge-site/src/app/workgroups/page.tsx",
+          "label": "All workgroups"
+        },
+        {
+          "path": "challenge-site/src/data/dp-process.ts",
+          "label": "Readiness items"
+        }
+      ],
+      "verify": "Signed in, open a DP workgroup page: the Co-editors section is above the tabs with 'Become a co-editor'. Needs Gov Hub #16 (bearer-token seat routes).",
+      "intent": "Members must be able to see and take an open co-editor seat without hunting for it.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "invite-content-500",
       "date": "2026-10-13",
       "status": "open",

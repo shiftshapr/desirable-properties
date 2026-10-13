@@ -318,7 +318,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                 The nominee reviews the nomination first and must accept it before the layer
                 admin reviews and approves. Use the
                 <span className="mx-1 inline-block rounded-md border border-slate-700 px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-slate-200">
-                  Nominate
+                  Nominate coordinator
                 </span>
                 button on any card below – it opens the workgroup page with the form ready.
               </p>
@@ -422,6 +422,14 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                           <span aria-hidden>→</span>
                         </a>
                       )}
+                      {collabEnabled ? (
+                        <Link
+                          href={`${collabHref}#co-editors`}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
+                        >
+                          Become a co-editor
+                        </Link>
+                      ) : null}
                       {!collabEnabled ? (
                         <a
                           href={nominateHref}

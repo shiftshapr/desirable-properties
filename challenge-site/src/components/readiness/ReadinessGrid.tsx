@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
-import { countedReadinessItems, countPassed, shortDate, type ReadinessItem } from '@/data/dp-process';
+import { countPassed, shortDate, type ReadinessItem } from '@/data/dp-process';
 import type { DpReadiness, ReadinessCheck } from '@/lib/v1-readiness.server';
 
 type Props = {
@@ -24,7 +24,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const counted = countedReadinessItems(items).length;
+  const counted = items.length;
   const totals = useMemo(() => {
     const ready = rows.filter((r) => r.passed === counted).length;
     const seats = rows.filter((r) => r.checks.co_editors?.pass).length;
@@ -156,7 +156,6 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
               {item.label}{' '}
               <span className={item.check === 'manual' ? 'text-violet-300' : 'text-slate-500'}>
                 · {item.check === 'manual' ? 'manual' : 'automatic'} · due {shortDate(item.due)}
-                {item.advisory ? ' · for context, not counted' : ''}
               </span>
             </span>
           </li>
@@ -225,7 +224,7 @@ function ReadinessRow({
           );
         })}
         <td className="px-3 py-2 text-right font-semibold text-slate-200">
-          {dp.passed}/{countedReadinessItems(items).length}
+          {dp.passed}/{items.length}
         </td>
       </tr>
       {isOpen ? (

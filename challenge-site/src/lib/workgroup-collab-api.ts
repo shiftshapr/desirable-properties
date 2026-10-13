@@ -224,6 +224,9 @@ export type CoEditorSeatsResponse = {
   open_seats: number;
   can_claim: boolean;
   can_nominate?: boolean;
+  /** Plain-words reason the viewer cannot claim; null when they can or are signed out. */
+  claim_block_reason?: string | null;
+  viewer_is_co_editor?: boolean;
   viewer_is_coordinator?: boolean;
   fully_staffed?: boolean;
   rules: { min_account_days: number; max_seats_per_person: number; revoke_window_days: number };
