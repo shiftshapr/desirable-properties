@@ -336,7 +336,13 @@ export default function WorkgroupReviewPanel({
                 </p>
                 <label className="block text-xs text-slate-400">
                   Decision note{' '}
-                  <span className="text-slate-500">(required to decline; the author sees it)</span>
+                  <span className="text-slate-500">
+                    (required to decline; the author sees it ·{' '}
+                    <a href="/style-guide#co-editors" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">
+                      style guide
+                    </a>
+                    )
+                  </span>
                   <textarea
                     value={noteByKey[item.key] || ''}
                     onChange={(event) =>

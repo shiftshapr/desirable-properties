@@ -63,6 +63,7 @@ export default function ProcessPage() {
             ['#practices', 'This month’s tasks'],
             ['#checklist', 'Readiness checklist'],
             ['#sessions', 'Monday sessions'],
+            ['/style-guide', 'Style guide'],
           ].map(([href, label]) => (
             <a key={href} href={href} className="text-cyan-300 hover:text-cyan-200">
               {label}
