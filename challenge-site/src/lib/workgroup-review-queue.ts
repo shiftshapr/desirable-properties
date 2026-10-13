@@ -10,6 +10,12 @@ import { loadCanopiFilingReport } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
 
+function patchModeOf(raw: string | null | undefined): ReviewQueueItem['patchMode'] {
+  const mode = String(raw || 'replace').toLowerCase();
+  if (mode === 'editorial_bundle') return 'bundle';
+  return mode === 'insert' ? 'insert' : 'replace';
+}
+
 function normalizeAnchor(text: string): string {
   return String(text || '').replace(/\s+/g, ' ').trim().toLowerCase().slice(0, 240);
 }
@@ -72,7 +78,12 @@ export async function buildWorkgroupReviewQueue(opts: {
       sources,
       govhubProposalId: proposal.id,
       canopiMessageId: matchedCanopi?.id || ext || null,
-      patchMode: String(proposal.patch_mode || 'replace').toLowerCase() === 'insert' ? 'insert' : 'replace',
+      patchMode: patchModeOf(proposal.patch_mode),
+      edits: (proposal.edits || []).map((e) => ({
+        rule: e.rule || null,
+        originalText: e.original_text,
+        proposedText: e.proposed_text,
+      })),
       originalText: proposal.original_text || '',
       proposedText: proposal.proposed_text || '',
       rationale: proposal.rationale || null,
@@ -116,6 +127,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       govhubProposalId: null,
       canopiMessageId: post.id,
       patchMode: parsed.kind === 'insert' ? 'insert' : 'replace',
+      edits: [],
       originalText: '',
       proposedText: parsed.content,
       rationale: null,

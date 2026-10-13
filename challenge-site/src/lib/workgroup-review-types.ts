@@ -10,12 +10,20 @@ export type ReviewEvalComment = {
   updatedAt: string;
 };
 
+export type ReviewBundleEdit = {
+  rule: string | null;
+  originalText: string;
+  proposedText: string;
+};
+
 export type ReviewQueueItem = {
   key: string;
   sources: ReviewSource[];
   govhubProposalId: string | null;
   canopiMessageId: string | null;
-  patchMode: 'replace' | 'insert';
+  /** bundle = a mechanical style pass: many line edits approved together. */
+  patchMode: 'replace' | 'insert' | 'bundle';
+  edits: ReviewBundleEdit[];
   originalText: string;
   proposedText: string;
   rationale: string | null;
