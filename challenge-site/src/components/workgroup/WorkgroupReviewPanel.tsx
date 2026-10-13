@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
-import type { ReviewQueueItem, ReviewQueueResponse, ReviewVote } from '@/lib/workgroup-review-types';
+import type {
+  ReviewQueueItem,
+  ReviewQueueResponse,
+  ReviewStyleCheck,
+  ReviewVote,
+} from '@/lib/workgroup-review-types';
+import { STYLE_GUIDE } from '@/data/dp-style-guide';
 
 type Props = {
   workgroupId: string;
@@ -30,6 +36,8 @@ export default function WorkgroupReviewPanel({
   const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
   const [notice, setNotice] = useState<string | null>(null);
+  /** Style checks fetched this session, keyed by item; 'pending' while running, string on error. */
+  const [styleByKey, setStyleByKey] = useState<Record<string, ReviewStyleCheck | 'pending' | { error: string }>>({});
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -51,6 +59,56 @@ export default function WorkgroupReviewPanel({
   useEffect(() => {
     void reload();
   }, [reload]);
+
+  // Check up to 8 unchecked pending items, one at a time, when a member opens the tab.
+  useEffect(() => {
+    if (!data?.isMember || !data.styleCheckEnabled) return;
+    const todo = data.items.filter((i) => i.styleCheckable && !i.styleCheck).slice(0, 8);
+    if (!todo.length) return;
+    let cancelled = false;
+    (async () => {
+      for (const item of todo) {
+        if (cancelled) return;
+        await runStyleCheckFor(item.key, () => cancelled);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  async function runStyleCheckFor(itemKey: string, isCancelled: () => boolean = () => false) {
+    setStyleByKey((prev) => ({ ...prev, [itemKey]: 'pending' }));
+    try {
+      const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/style-check`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemKey }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        check?: { id: string; createdAt: string; model: string | null; helpful: boolean | null; result: Omit<ReviewStyleCheck, 'id' | 'createdAt' | 'model' | 'helpful'> };
+      };
+      if (isCancelled()) return;
+      if (!res.ok || !body.check?.result) throw new Error(body.error || 'Style check failed');
+      const { id, createdAt, model, helpful, result } = body.check;
+      setStyleByKey((prev) => ({ ...prev, [itemKey]: { id, createdAt, model, helpful, ...result } }));
+    } catch (err) {
+      if (!isCancelled()) {
+        setStyleByKey((prev) => ({ ...prev, [itemKey]: { error: err instanceof Error ? err.message : 'Style check failed' } }));
+      }
+    }
+  }
+
+  async function rateStyle(itemKey: string, check: ReviewStyleCheck, helpful: boolean) {
+    setStyleByKey((prev) => ({ ...prev, [itemKey]: { ...check, helpful } }));
+    await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/style-check/rate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ checkId: check.id, helpful }),
+    }).catch(() => undefined);
+  }
 
   async function submitEval(item: ReviewQueueItem, vote: ReviewVote) {
     setBusyKey(item.key);
@@ -257,6 +315,14 @@ export default function WorkgroupReviewPanel({
             {item.rationale ? (
               <p className="mt-2 text-sm text-slate-400">{item.rationale}</p>
             ) : null}
+            {item.styleCheckable ? (
+              <StyleNotes
+                state={styleByKey[item.key] ?? item.styleCheck}
+                canAct={Boolean(signedIn && isMember)}
+                onRun={() => void runStyleCheckFor(item.key)}
+                onRate={(check, helpful) => void rateStyle(item.key, check, helpful)}
+              />
+            ) : null}
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
               {item.hrefs.book ? (
                 <DiscussPatchLink href={item.hrefs.book} className="text-cyan-300 hover:text-cyan-200">
@@ -436,6 +502,97 @@ function StylePassEdits({ item }: { item: ReviewQueueItem }) {
           ))}
         </ol>
       </details>
+    </div>
+  );
+}
+
+const SECTION_TITLES: Record<string, string> = Object.fromEntries(STYLE_GUIDE.map((sec) => [sec.id, sec.title]));
+
+/** AI style notes on a proposal, for co-editors. Advisory: co-editors decide. */
+function StyleNotes({
+  state,
+  canAct,
+  onRun,
+  onRate,
+}: {
+  state: ReviewStyleCheck | 'pending' | { error: string } | null | undefined;
+  canAct: boolean;
+  onRun: () => void;
+  onRate: (check: ReviewStyleCheck, helpful: boolean) => void;
+}) {
+  if (!state) {
+    return canAct ? (
+      <button type="button" onClick={onRun} className="mt-3 text-xs text-cyan-300 underline hover:text-cyan-200">
+        Check against the style guide
+      </button>
+    ) : null;
+  }
+  if (state === 'pending') {
+    return <p className="mt-3 text-xs text-slate-500">Checking against the style guide…</p>;
+  }
+  if ('error' in state) {
+    return (
+      <p className="mt-3 text-xs text-slate-500">
+        Style check unavailable ({state.error}).{' '}
+        {canAct ? (
+          <button type="button" onClick={onRun} className="underline hover:text-slate-300">
+            Try again
+          </button>
+        ) : null}
+      </p>
+    );
+  }
+  const check = state;
+  return (
+    <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm">
+      <p className="text-xs uppercase tracking-wide text-slate-500">
+        Style notes · AI, advisory{check.model ? ` · ${check.model}` : ''}
+      </p>
+      <p className={`mt-1 ${check.verdict === 'ok' ? 'text-emerald-200' : 'text-slate-200'}`}>{check.summary}</p>
+      {check.notes.length ? (
+        <ul className="mt-2 space-y-1.5">
+          {check.notes.map((n, i) => (
+            <li key={i} className="text-slate-300">
+              <a
+                href={`/style-guide#${n.section}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mr-1 text-xs text-cyan-300 underline hover:text-cyan-200"
+              >
+                {SECTION_TITLES[n.section] || n.section}
+              </a>
+              {n.issue} <span className="text-slate-400">→ {n.fix}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {check.suggestedText ? (
+        <details className="mt-2">
+          <summary className="cursor-pointer text-xs text-slate-400">Suggested wording</summary>
+          <p className="mt-1 whitespace-pre-wrap rounded bg-emerald-950/30 px-2 py-1 text-emerald-100">
+            {check.suggestedText}
+          </p>
+        </details>
+      ) : null}
+      {canAct ? (
+        <p className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+          Were these notes helpful?
+          <button
+            type="button"
+            onClick={() => onRate(check, true)}
+            className={`rounded border px-2 py-0.5 ${check.helpful === true ? 'border-emerald-600 text-emerald-200' : 'border-slate-700 hover:border-emerald-700'}`}
+          >
+            Yes
+          </button>
+          <button
+            type="button"
+            onClick={() => onRate(check, false)}
+            className={`rounded border px-2 py-0.5 ${check.helpful === false ? 'border-rose-600 text-rose-200' : 'border-slate-700 hover:border-rose-700'}`}
+          >
+            No
+          </button>
+        </p>
+      ) : null}
     </div>
   );
 }

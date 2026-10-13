@@ -1,35 +1,19 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
-import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { extractDpId } from '@/lib/govhub';
 import { resolveWorkgroupMembership } from '@/lib/workgroup-membership.server';
 import {
   draftRefFromDocumentHref,
   draftRefFromLabel,
+  fetchWorkgroupSummary,
   fetchWorkingRevision,
   workgroupCanEdit,
 } from '@/lib/workgroup-review-govhub';
 import { buildWorkgroupReviewQueue } from '@/lib/workgroup-review-queue';
+import { currentStyleCheckModel } from '@/lib/style-check.server';
 import type { ReviewQueueResponse } from '@/lib/workgroup-review-types';
 
 type RouteContext = { params: Promise<{ id: string }> };
-
-async function fetchWorkgroupSummary(workgroupId: string, idToken?: string | null) {
-  const headers: HeadersInit = { Accept: 'application/json' };
-  if (idToken) headers.Authorization = `Bearer ${idToken}`;
-  const res = await fetch(
-    `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/`,
-    { cache: 'no-store', headers },
-  );
-  if (!res.ok) return null;
-  return (await res.json()) as {
-    id?: string;
-    name?: string;
-    slug?: string;
-    document_href?: string | null;
-    document_label?: string | null;
-    can_edit?: boolean;
-  };
-}
 
 export async function GET(_request: Request, ctx: RouteContext) {
   const { id: workgroupId } = await ctx.params;
@@ -82,6 +66,7 @@ export async function GET(_request: Request, ctx: RouteContext) {
     workingRevision,
     isMember,
     canEdit,
+    styleCheckEnabled: Boolean(currentStyleCheckModel()),
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }

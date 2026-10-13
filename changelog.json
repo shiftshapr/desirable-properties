@@ -4,6 +4,44 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "ai-style-check",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "AI style check for patches and inserts, with an audit trail",
+      "summary": "Pending patches and inserts on a workgroup's Review tab now get 'Style notes': an AI check against the style guide that names each problem, the guide section it breaks, and a suggested wording. Co-editors can rate the notes helpful or not. The same check is available to Canopi's book composer through a server-to-server endpoint. Every check is recorded with its inputs, model, raw response, timing and the ratings and outcomes that followed, and admins can review and export them under Admin → AI style checks.",
+      "changes": [
+        "Review tab: style notes per pending patch/insert (auto-checked for members, up to 8 per visit), linked to style guide sections, with helpful / not helpful rating",
+        "/api/embed/style-check and /outcome for Canopi's composer (shared secret CANOPI_EMBED_AI_PROXY_SECRET)",
+        "dp_style_check audit table; identical inputs reuse the cached result",
+        "Admin → AI style checks: quality summary, filters, full detail including raw model output, CSV/JSON export",
+        "PM2 configs read the model settings and the shared secret from Canopi's .env"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/style-check.server.ts",
+          "label": "Style check service"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupReviewPanel.tsx",
+          "label": "Review tab"
+        },
+        {
+          "path": "challenge-site/src/app/admin/StyleChecksPanel.tsx",
+          "label": "Admin audit"
+        },
+        {
+          "path": "challenge-site/src/app/api/embed/style-check/route.ts",
+          "label": "Composer endpoint"
+        }
+      ],
+      "verify": "As a workgroup member, open a DP's Review tab: pending items show 'Checking against the style guide…' then Style notes. Admin → AI style checks lists them.",
+      "intent": "AI pre-processing agreed on 12 Oct 2026: check manually written patches and inserts against the style guide and suggest improvements, using the existing model setup, auditable so quality can be judged.",
+      "surfaces": [
+        "site",
+        "ops"
+      ]
+    },
+    {
       "id": "style-pass-review",
       "date": "2026-10-13",
       "status": "open",
