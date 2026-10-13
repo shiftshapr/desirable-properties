@@ -120,6 +120,7 @@ export type NominatePayload = {
   position?: string;
   nominee_name: string;
   nominee_email: string;
+  /** Required by Gov Hub except for co-editor nominations. */
   nominee_profile_url: string;
   statement: string;
   nominee_user_id?: string;
@@ -201,4 +202,83 @@ export async function shareWorkgroupMessage(
     },
   );
   return parseJson(res);
+}
+
+export type CoEditorSeat = {
+  id: string;
+  user_id: string | null;
+  name: string | null;
+  statement: string | null;
+  claimed: boolean;
+  /** How the seat was filled. */
+  kind: 'coordinator' | 'claimed' | 'nominated';
+  since: string | null;
+  revoke_window_open: boolean;
+  can_revoke: boolean;
+};
+
+export type CoEditorSeatsResponse = {
+  enabled: boolean;
+  seats: CoEditorSeat[];
+  seats_total: number;
+  open_seats: number;
+  can_claim: boolean;
+  can_nominate?: boolean;
+  viewer_is_coordinator?: boolean;
+  fully_staffed?: boolean;
+  rules: { min_account_days: number; max_seats_per_person: number; revoke_window_days: number };
+};
+
+export async function fetchCoEditorSeats(workgroupId: string): Promise<CoEditorSeatsResponse> {
+  const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors`, {
+    credentials: 'include',
+    cache: 'no-store',
+  });
+  return parseJson(res);
+}
+
+export async function claimCoEditorSeat(
+  workgroupId: string,
+  statement: string,
+): Promise<{ message?: string }> {
+  const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors/claim`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ statement }),
+  });
+  return parseJson(res);
+}
+
+export async function revokeCoEditorSeat(
+  workgroupId: string,
+  seatId: string,
+  reason: string,
+): Promise<{ message?: string }> {
+  const res = await fetch(
+    `/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors/${encodeURIComponent(seatId)}/revoke`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason }),
+    },
+  );
+  return parseJson(res);
+}
+
+/** Nominate a workgroup member; they become a co-editor when they accept. */
+export function nominateCoEditor(
+  workgroupId: string,
+  member: { user_id: string; user_name: string },
+  statement: string,
+): Promise<{ success?: boolean; message?: string }> {
+  return nominateWorkgroupPosition(workgroupId, {
+    position_key: 'co_editor',
+    nominee_user_id: member.user_id,
+    nominee_name: member.user_name,
+    nominee_email: '',
+    nominee_profile_url: '',
+    statement,
+  });
 }

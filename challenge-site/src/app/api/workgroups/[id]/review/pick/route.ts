@@ -31,7 +31,7 @@ export async function POST(request: Request, ctx: RouteContext) {
     );
   }
 
-  let body: { action?: string; govhubProposalId?: string; itemKey?: string } = {};
+  let body: { action?: string; govhubProposalId?: string; itemKey?: string; note?: string } = {};
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -41,9 +41,16 @@ export async function POST(request: Request, ctx: RouteContext) {
   const rawAction = String(body.action || '').trim().toLowerCase();
   const action = rawAction === 'include' ? 'promote' : rawAction;
   const proposalId = String(body.govhubProposalId || '').trim();
+  const note = String(body.note || '').trim().slice(0, 4000);
   if ((action !== 'promote' && action !== 'drop') || !proposalId) {
     return NextResponse.json(
       { error: 'action (promote|drop) and govhubProposalId required. Promote composes the revision draft; it does not publish.' },
+      { status: 400 },
+    );
+  }
+  if (action === 'drop' && !note) {
+    return NextResponse.json(
+      { error: 'Write a decision note before declining. The author can read it.', code: 'note_required' },
       { status: 400 },
     );
   }
@@ -68,8 +75,8 @@ export async function POST(request: Request, ctx: RouteContext) {
 
   const result =
     action === 'promote'
-      ? await acceptGovHubProposal(draftRef, proposalId, session.idToken)
-      : await declineGovHubProposal(draftRef, proposalId, session.idToken);
+      ? await acceptGovHubProposal(draftRef, proposalId, session.idToken, note)
+      : await declineGovHubProposal(draftRef, proposalId, session.idToken, note);
 
   if (!result.ok) {
     return NextResponse.json(
@@ -92,7 +99,7 @@ export async function POST(request: Request, ctx: RouteContext) {
         ? result.data.incorporated === false
           ? `${actorName} approved a Review proposal as co-editor (waiting for the second co-editor)`
           : `${actorName} promoted a Review proposal into the next revision draft (not live)`
-        : `${actorName} dropped a Review proposal`,
+        : `${actorName} declined a Review proposal`,
     detail: { proposalId, draftRef, href: `/workgroups/${workgroupId}?tab=review` },
   });
 
@@ -106,6 +113,6 @@ export async function POST(request: Request, ctx: RouteContext) {
       result.data.message ||
       (action === 'promote'
         ? 'Promoted into the next revision draft. Not live until Publish revision.'
-        : 'Dropped'),
+        : 'Declined'),
   });
 }

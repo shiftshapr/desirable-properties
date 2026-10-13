@@ -4,8 +4,9 @@
  * /v1-readiness, the roundup pages and the Blueberries seed.
  *
  * Source: "DP Workgroups: Principles, Protocols & Practices to Nov 13 (V1)".
- * Two items are still proposed, pending the Monday session: the last day a new
- * proposal can enter V1 (19 October) and the 7-day agenda rule.
+ * The 12 October session agreed the 7-day decision rule and the co-editor model
+ * (coordinator seat, claim or nomination; two co-editors = fully staffed). Still
+ * proposed: the last day a new proposal can enter V1 (19 October).
  */
 
 export const V1_RELEASE_DATE = '2026-11-13';
@@ -61,12 +62,11 @@ export const PROCESS_PROTOCOL: ReadonlyArray<{ title: string; body: string; prop
   },
   {
     title: 'Two co-editors decide',
-    body: 'A proposal is incorporated when both co-editors approve it. Either co-editor, or the coordinator, can decline it or mark it considered. Every decision carries a review note.',
+    body: 'A proposal is incorporated when both co-editors approve it. Either co-editor can decline it or mark it considered, and that decision cannot be posted without a note the author can read.',
   },
   {
     title: 'Nothing waits silently',
-    body: `A proposal still pending after ${STALE_PROPOSAL_DAYS} days goes on the next Monday session’s agenda.`,
-    proposed: true,
+    body: `Co-editors decide within ${STALE_PROPOSAL_DAYS} days of filing; they get a daily list of what is waiting. A proposal still pending after ${STALE_PROPOSAL_DAYS} days goes on the next Monday session’s agenda.`,
   },
   {
     title: 'Publish as a numbered revision',
@@ -86,26 +86,26 @@ export const PROCESS_ROLES: ReadonlyArray<{
 }> = [
   {
     role: 'Member',
-    count: `${MIN_WORKGROUP_MEMBERS} or more`,
+    count: `Any (${MIN_WORKGROUP_MEMBERS}+ helps)`,
     decides: 'Proposes, comments, reviews, takes practice tasks',
     howToGetIt: 'Join the workgroup',
   },
   {
     role: 'Co-editor',
-    count: `Exactly ${CO_EDITORS_PER_DP}`,
-    decides: 'Approves (both needed) or declines proposals; publishes revisions',
-    howToGetIt: 'Claim an open seat on the workgroup page',
+    count: `Exactly ${CO_EDITORS_PER_DP} (fully staffed)`,
+    decides: 'Approves (both needed) or declines proposals with a note; publishes revisions',
+    howToGetIt: 'The coordinator holds one seat; claim the other, or accept a nomination',
   },
   {
     role: 'Coordinator',
     count: '1',
-    decides: 'Runs the weekly rhythm, declines or marks considered, publishes revisions; cannot incorporate alone',
+    decides: 'Runs the weekly rhythm and holds one co-editor seat; cannot incorporate alone',
     howToGetIt: 'Nomination, approved by a layer admin',
   },
 ];
 
 export const CO_EDITOR_CLAIM_RULE =
-  'Any signed-in person whose account is at least 7 days old can claim an open seat with a short statement, for at most 2 DPs. The claim takes effect at once and is announced to the coordinator and admins. The coordinator can revoke it within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
+  'The coordinator holds one seat automatically. An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. Or a member nominates someone from the workgroup, who becomes a co-editor the moment they accept, with no admin approval. Outside their coordinator seat, one person co-edits at most 2 DPs. Every new seat is announced to the coordinator and admins. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
 
 export type PracticeTask = {
   id: string;
@@ -136,7 +136,7 @@ export const PRACTICE_TASKS: ReadonlyArray<PracticeTask> = [
   },
   {
     id: 'claim-co-editor',
-    task: 'Claim a co-editor seat, or invite someone who should hold it',
+    task: 'Claim the open co-editor seat, or nominate the member who should hold it',
     who: 'Members',
     weeks: ['2026-10-05', '2026-10-12'],
     doneWhen: 'Both seats filled',
@@ -213,11 +213,13 @@ export type ReadinessItem = {
   label: string;
   check: 'auto' | 'manual' | 'external';
   due: string;
+  /** Shown for context; does not count toward a DP's passed total. */
+  advisory?: boolean;
 };
 
 export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
-  { key: 'members', label: `Workgroup has at least ${MIN_WORKGROUP_MEMBERS} members`, check: 'auto', due: '2026-10-12' },
-  { key: 'co_editors', label: 'Both co-editor seats filled', check: 'auto', due: '2026-10-12' },
+  { key: 'members', label: `Workgroup has at least ${MIN_WORKGROUP_MEMBERS} members`, check: 'auto', due: '2026-10-12', advisory: true },
+  { key: 'co_editors', label: 'Both co-editor seats filled (fully staffed)', check: 'auto', due: '2026-10-12' },
   { key: 'coordinator', label: 'Coordinator in place', check: 'auto', due: '2026-10-12' },
   { key: 'canopi_filed', label: 'Every Canopi patch and insert on the chapter is filed in Gov Hub or decided by Astra', check: 'external', due: '2026-10-19' },
   { key: 'no_stale_proposals', label: `No proposal pending longer than ${STALE_PROPOSAL_DAYS} days`, check: 'auto', due: '2026-10-26' },
@@ -229,6 +231,18 @@ export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
   { key: 'no_blockers', label: 'No release blockers open from the readiness review', check: 'manual', due: '2026-11-09' },
   { key: 'v1_candidate', label: 'V1 candidate revision published before the freeze', check: 'auto', due: '2026-11-09' },
 ];
+
+const ADVISORY_KEYS = new Set(READINESS_ITEMS.filter((i) => i.advisory).map((i) => i.key));
+
+/** Items that count toward a DP being ready (advisory ones are shown, not counted). */
+export function countedReadinessItems<T extends { key: string; advisory?: boolean }>(items: readonly T[]): T[] {
+  return items.filter((i) => !i.advisory && !ADVISORY_KEYS.has(i.key));
+}
+
+/** Passed checks, not counting advisory items. */
+export function countPassed(checks: Record<string, { pass: boolean | null } | undefined>): number {
+  return Object.entries(checks).filter(([key, c]) => c?.pass === true && !ADVISORY_KEYS.has(key)).length;
+}
 
 export function tasksForWeek(mondayIso: string): PracticeTask[] {
   return PRACTICE_TASKS.filter((t) => t.weeks.includes(mondayIso));

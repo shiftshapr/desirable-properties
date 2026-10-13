@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
-import { shortDate, type ReadinessItem } from '@/data/dp-process';
+import { countedReadinessItems, countPassed, shortDate, type ReadinessItem } from '@/data/dp-process';
 import type { DpReadiness, ReadinessCheck } from '@/lib/v1-readiness.server';
 
 type Props = {
@@ -24,12 +24,13 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  const counted = countedReadinessItems(items).length;
   const totals = useMemo(() => {
-    const ready = rows.filter((r) => r.passed === items.length).length;
+    const ready = rows.filter((r) => r.passed === counted).length;
     const seats = rows.filter((r) => r.checks.co_editors?.pass).length;
     const pending = rows.reduce((n, r) => n + (r.pending_proposals || 0), 0);
     return { ready, seats, pending };
-  }, [rows, items.length]);
+  }, [rows, counted]);
 
   const tick = useCallback(
     async (dp: DpReadiness, item: ReadinessItem) => {
@@ -79,8 +80,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
                 checked_at: data.checked_at ?? null,
               },
             };
-            const passed = Object.values(checks).filter((c) => c.pass === true).length;
-            return { ...r, checks, passed };
+            return { ...r, checks, passed: countPassed(checks) };
           }),
         );
       } catch {
@@ -96,7 +96,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
     <div>
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="DPs ready for V1" value={`${totals.ready} of ${rows.length}`} />
-        <Stat label="DPs with both co-editors" value={`${totals.seats} of ${rows.length}`} />
+        <Stat label="DPs fully staffed (2 co-editors)" value={`${totals.seats} of ${rows.length}`} />
         <Stat label="Proposals pending" value={String(totals.pending)} />
       </div>
 
@@ -156,6 +156,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
               {item.label}{' '}
               <span className={item.check === 'manual' ? 'text-violet-300' : 'text-slate-500'}>
                 · {item.check === 'manual' ? 'manual' : 'automatic'} · due {shortDate(item.due)}
+                {item.advisory ? ' · for context, not counted' : ''}
               </span>
             </span>
           </li>
@@ -224,7 +225,7 @@ function ReadinessRow({
           );
         })}
         <td className="px-3 py-2 text-right font-semibold text-slate-200">
-          {dp.passed}/{items.length}
+          {dp.passed}/{countedReadinessItems(items).length}
         </td>
       </tr>
       {isOpen ? (

@@ -26,6 +26,8 @@ export default function WorkgroupReviewPanel({
   const [error, setError] = useState<string | null>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [commentByKey, setCommentByKey] = useState<Record<string, string>>({});
+  /** Co-editor decision note per item: optional to approve, required to decline. */
+  const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -75,6 +77,8 @@ export default function WorkgroupReviewPanel({
 
   async function pick(item: ReviewQueueItem, action: 'promote' | 'drop') {
     if (!item.govhubProposalId) return;
+    const note = (noteByKey[item.key] || '').trim();
+    if (action === 'drop' && !note) return;
     setBusyKey(`${action}:${item.key}`);
     setNotice(null);
     try {
@@ -85,6 +89,7 @@ export default function WorkgroupReviewPanel({
           action,
           govhubProposalId: item.govhubProposalId,
           itemKey: item.key,
+          note,
         }),
       });
       const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
@@ -93,10 +98,11 @@ export default function WorkgroupReviewPanel({
         String(
           body.message ||
             (action === 'promote'
-              ? 'Promoted into the next revision draft. Not live.'
-              : 'Dropped'),
+              ? 'Approved. It goes into the next revision draft once both co-editors approve. Not live.'
+              : 'Declined. The author can read your note.'),
         ),
       );
+      setNoteByKey((prev) => ({ ...prev, [item.key]: '' }));
       await reload();
     } catch (err) {
       setNotice(err instanceof Error ? err.message : 'Gov Hub update failed');
@@ -143,8 +149,9 @@ export default function WorkgroupReviewPanel({
         </p>
         <ol className="max-w-3xl list-decimal space-y-1 pl-5 text-sm text-slate-300">
           <li>
-            <strong className="font-semibold text-white">Promote to revision</strong> (or drop /
-            leave pending): compose the next revision draft. That does not go live.
+            <strong className="font-semibold text-white">Approve or decline</strong>: co-editors
+            decide. A proposal goes into the next revision draft when both co-editors approve it.
+            Declining needs a note the author can read. Nothing goes live yet.
           </li>
           <li>
             <strong className="font-semibold text-white">Publish revision</strong>: a later, separate
@@ -324,9 +331,22 @@ export default function WorkgroupReviewPanel({
             {canEdit ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
-                  Promote composes the next revision draft. It does not go live. Leave pending by
-                  doing nothing.
+                  Both co-editors must approve before a proposal goes into the next revision draft
+                  (not live). Decide within 7 days of filing.
                 </p>
+                <label className="block text-xs text-slate-400">
+                  Decision note{' '}
+                  <span className="text-slate-500">(required to decline; the author sees it)</span>
+                  <textarea
+                    value={noteByKey[item.key] || ''}
+                    onChange={(event) =>
+                      setNoteByKey((prev) => ({ ...prev, [item.key]: event.target.value }))
+                    }
+                    rows={2}
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                    placeholder="Why this decision?"
+                  />
+                </label>
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -334,15 +354,21 @@ export default function WorkgroupReviewPanel({
                     onClick={() => void pick(item, 'promote')}
                     className="rounded-lg bg-cyan-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50"
                   >
-                    Promote to revision
+                    Approve
                   </button>
                   <button
                     type="button"
-                    disabled={!item.govhubProposalId || item.status !== 'pending' || Boolean(busyKey)}
+                    disabled={
+                      !item.govhubProposalId ||
+                      item.status !== 'pending' ||
+                      !(noteByKey[item.key] || '').trim() ||
+                      Boolean(busyKey)
+                    }
+                    title={(noteByKey[item.key] || '').trim() ? undefined : 'Write a decision note first'}
                     onClick={() => void pick(item, 'drop')}
                     className="rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-rose-700 disabled:opacity-50"
                   >
-                    Drop
+                    Decline
                   </button>
                 </div>
                 {item.promoteBlockReason ? (

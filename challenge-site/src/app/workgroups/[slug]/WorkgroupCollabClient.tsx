@@ -17,6 +17,7 @@ import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
 import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupMembersPanel from '@/components/workgroup/WorkgroupMembersPanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
+import WorkgroupCoEditorsPanel from '@/components/workgroup/WorkgroupCoEditorsPanel';
 import WorkgroupReviewPanel from '@/components/workgroup/WorkgroupReviewPanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
@@ -311,6 +312,11 @@ export default function WorkgroupCollabClient({
             {!membershipChecked ? (
               <p className="mt-4 text-xs text-slate-500">Checking membership…</p>
             ) : null}
+            <WorkgroupCoEditorsPanel
+              workgroupId={workgroup.id}
+              isMember={membershipChecked && isMember}
+              className="mt-5"
+            />
           </div>
         </div>
       </header>

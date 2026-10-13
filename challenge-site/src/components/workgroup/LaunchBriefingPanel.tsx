@@ -131,7 +131,7 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             release that makes that draft the live book / official text. Synthesize Approve is
             neither.
           </li>
-          <li>Invite members through workgroup invite tools; co-editors claim their seats on the workgroup page.</li>
+          <li>Invite members through workgroup invite tools; co-editor seats are claimed or nominated on the workgroup page.</li>
         </ul>
       </BriefingSection>
 

@@ -157,7 +157,7 @@ export default function ProcessPage() {
           </table>
         </div>
         <p className="mt-4 text-sm leading-relaxed text-slate-400">
-          <strong className="text-slate-200">Claiming a co-editor seat.</strong> {CO_EDITOR_CLAIM_RULE}{' '}
+          <strong className="text-slate-200">Filling a co-editor seat.</strong> {CO_EDITOR_CLAIM_RULE}{' '}
           Open seats are listed on the{' '}
           <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
             readiness board

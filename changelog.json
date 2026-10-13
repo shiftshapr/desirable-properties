@@ -4,6 +4,51 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "co-editor-seats-and-decline-notes",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Co-editors: coordinator seat, claim or nominate; a no needs a reason",
+      "summary": "Each workgroup page now has a Co-editors card showing the DP's two seats. The coordinator holds one seat automatically; the other is claimed, or a member nominates someone who becomes co-editor the moment they accept. On the Review tab, Decline stays disabled until the co-editor writes a note the author can read. Two co-editors now mean a DP is fully staffed; the 3-member check is shown for context only.",
+      "changes": [
+        "New Co-editors card on each workgroup page: seats, Claim a seat, Nominate a member, Revoke",
+        "Co-editor removed from the generic Nominate dropdown (coordinator nominations only)",
+        "Review tab: Approve / Decline with a decision note; Decline is disabled until the note has text, and the note is sent to Gov Hub",
+        "Readiness board: 'fully staffed' = both co-editor seats; member count no longer counts toward Ready",
+        "Process, workgroups, FAQ and role copy updated for the new seat rules and the agreed 7-day decision rule"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupCoEditorsPanel.tsx",
+          "label": "Co-editors card"
+        },
+        {
+          "path": "challenge-site/src/app/api/workgroups/[id]/co-editors/route.ts",
+          "label": "Seats proxy"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupReviewPanel.tsx",
+          "label": "Review tab"
+        },
+        {
+          "path": "challenge-site/src/app/api/workgroups/[id]/review/pick/route.ts",
+          "label": "Approve/decline route"
+        },
+        {
+          "path": "challenge-site/src/data/dp-process.ts",
+          "label": "Process rules and readiness items"
+        },
+        {
+          "path": "challenge-site/src/components/readiness/ReadinessGrid.tsx",
+          "label": "Readiness board"
+        }
+      ],
+      "verify": "On a DP workgroup page the Co-editors card shows 'n of 2'. On the Review tab, Decline is greyed out until text is typed in Decision note. Requires the matching Gov Hub release (feature/co-editor-nominations).",
+      "intent": "Implements the co-editor decisions from the 12 Oct 2026 DP session: coordinators are co-editors, seats are claimed or nominated (opt-in), and every rejection carries a rationale.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "web3auth-no-prod-fallback",
       "date": "2026-10-11",
       "status": "open",
