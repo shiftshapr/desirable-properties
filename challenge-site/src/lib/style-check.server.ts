@@ -141,7 +141,7 @@ export function styleCheckLlmConfigs(): LlmConfig[] {
   return out;
 }
 
-type LlmCall = {
+export type LlmCall = {
   provider: string;
   model: string;
   raw: string;
@@ -150,7 +150,7 @@ type LlmCall = {
   latencyMs: number;
 };
 
-async function callLlm(cfg: LlmConfig, input: StyleCheckInput): Promise<LlmCall> {
+async function callLlm(cfg: LlmConfig, system: string, user: string): Promise<LlmCall> {
   const started = Date.now();
   const res = await fetch(cfg.url, {
     method: 'POST',
@@ -162,8 +162,8 @@ async function callLlm(cfg: LlmConfig, input: StyleCheckInput): Promise<LlmCall>
       max_tokens: 6000,
       response_format: { type: 'json_object' },
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userPrompt(input) },
+        { role: 'system', content: system },
+        { role: 'user', content: user },
       ],
     }),
     signal: AbortSignal.timeout(60_000),
@@ -184,15 +184,43 @@ async function callLlm(cfg: LlmConfig, input: StyleCheckInput): Promise<LlmCall>
   };
 }
 
-/** Parse and validate the model's JSON. Throws on anything outside the contract. */
-export function parseStyleCheckResponse(raw: string): StyleCheckResult {
+/** The outermost JSON object in a model reply, ignoring <think>…</think> and code fences. */
+export function extractJsonObject(raw: string): Record<string, unknown> {
   // Some gateway models (e.g. MiniMax) prepend <think>…</think> reasoning and ignore
   // response_format; keep only the outermost JSON object.
   const stripped = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
   const start = stripped.indexOf('{');
   const end = stripped.lastIndexOf('}');
   if (start < 0 || end <= start) throw new Error('Model reply contained no JSON object');
-  const data = JSON.parse(stripped.slice(start, end + 1)) as Record<string, unknown>;
+  return JSON.parse(stripped.slice(start, end + 1)) as Record<string, unknown>;
+}
+
+/**
+ * Call the configured models in order until one returns a reply that `parse` accepts.
+ * Returns the call (for auditing), the parsed value, or the last error.
+ */
+export async function callLlmJson<T>(
+  system: string,
+  user: string,
+  parse: (raw: string) => T,
+): Promise<{ call: LlmCall | null; value: T | null; error: string | null; configs: number }> {
+  const configs = styleCheckLlmConfigs();
+  let call: LlmCall | null = null;
+  let error: string | null = configs.length ? null : 'No model API key on this server.';
+  for (const cfg of configs) {
+    try {
+      call = await callLlm(cfg, system, user);
+      return { call, value: parse(call.raw), error: null, configs: configs.length };
+    } catch (err) {
+      error = err instanceof Error ? err.message.slice(0, 1000) : 'Model call failed';
+    }
+  }
+  return { call, value: null, error, configs: configs.length };
+}
+
+/** Parse and validate the model's JSON. Throws on anything outside the contract. */
+export function parseStyleCheckResponse(raw: string): StyleCheckResult {
+  const data = extractJsonObject(raw);
   const notesIn = Array.isArray(data.notes) ? data.notes : [];
   const notes: StyleNote[] = notesIn.slice(0, 6).flatMap((n) => {
     const note = n as Record<string, unknown>;
@@ -274,19 +302,7 @@ export async function runStyleCheck(input: StyleCheckInput): Promise<StyleCheckR
     }
   }
 
-  let call: LlmCall | null = null;
-  let result: StyleCheckResult | null = null;
-  let error: string | null = null;
-  for (const cfg of configs) {
-    try {
-      call = await callLlm(cfg, input);
-      result = parseStyleCheckResponse(call.raw);
-      error = null;
-      break;
-    } catch (err) {
-      error = err instanceof Error ? err.message.slice(0, 1000) : 'Style check failed';
-    }
-  }
+  const { call, value: result, error } = await callLlmJson(SYSTEM_PROMPT, userPrompt(input), parseStyleCheckResponse);
 
   const id = randomUUID();
   if (pool) {

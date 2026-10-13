@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
+import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
 import type {
   ReviewQueueItem,
   ReviewQueueResponse,
@@ -261,6 +262,12 @@ export default function WorkgroupReviewPanel({
           {error}
         </p>
       ) : null}
+
+      <ReviewCommentsSection
+        workgroupId={workgroupId}
+        canAct={Boolean(signedIn && isMember)}
+        onFiled={() => void reload()}
+      />
 
       {!loading && !error && items.length === 0 ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">

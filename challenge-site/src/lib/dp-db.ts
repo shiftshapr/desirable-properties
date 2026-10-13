@@ -626,6 +626,48 @@ CREATE TABLE IF NOT EXISTS dp_style_check (
 
 CREATE INDEX IF NOT EXISTS dp_style_check_hash ON dp_style_check (input_hash, created_at DESC);
 CREATE INDEX IF NOT EXISTS dp_style_check_created ON dp_style_check (created_at DESC);
+
+-- Open comments -> proposals (src/lib/review-comments.server.ts): the decision on each comment.
+CREATE TABLE IF NOT EXISTS dp_comment_triage (
+  workgroup_id TEXT NOT NULL,
+  comment_key TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('open', 'proposed', 'asked', 'dismissed')),
+  note TEXT,
+  actor_user_id TEXT,
+  actor_name TEXT,
+  proposal_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (workgroup_id, comment_key)
+);
+
+-- Every AI draft of a proposal from a comment, and the text actually filed (audit).
+CREATE TABLE IF NOT EXISTS dp_comment_draft (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  workgroup_id TEXT NOT NULL,
+  dp_id TEXT,
+  comment_key TEXT NOT NULL,
+  actor_user_id TEXT,
+  passage TEXT NOT NULL,
+  comment_text TEXT NOT NULL,
+  guide_version TEXT NOT NULL,
+  prompt_version TEXT NOT NULL,
+  provider TEXT,
+  model TEXT,
+  latency_ms INTEGER,
+  prompt_tokens INTEGER,
+  completion_tokens INTEGER,
+  raw_response TEXT,
+  result_json JSONB,
+  error TEXT,
+  filed_text TEXT,
+  filed_mode TEXT,
+  proposal_id TEXT,
+  filed_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS dp_comment_draft_created ON dp_comment_draft (created_at DESC);
 `;
 
 let pool: pg.Pool | null = null;
