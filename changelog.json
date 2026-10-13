@@ -4,6 +4,42 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "invite-content-500",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Invite with Email: events and perspectives load again",
+      "summary": "On production the Invite with Email tab showed 'The string did not match the expected pattern' instead of the events and perspectives you can include. A one-off rename of the 'Fork in the Web' perspective ran on every request and, when both the old and new entries existed, broke the unique-name rule each time. The rename now runs only when it is safe, the list loads even if one part fails, and a failure shows a plain message saying the invitation can still be sent.",
+      "changes": [
+        "Perspective rename runs on one row and only when the new name is free; first-run seed ignores duplicates",
+        "Rename and seed run once per server process instead of on every request",
+        "/api/invite-content returns whatever loaded and logs what failed, instead of a bare 500",
+        "Invite tab shows a readable message when the list cannot load, instead of Safari's JSON parse error"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/dp-invite-content-store.ts",
+          "label": "Invite content store"
+        },
+        {
+          "path": "challenge-site/src/app/api/invite-content/route.ts",
+          "label": "Invite content API"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupInviteContentPicker.tsx",
+          "label": "Content picker"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupInviteAiPanel.tsx",
+          "label": "Invite panel"
+        }
+      ],
+      "verify": "curl -s -o /dev/null -w '%{http_code}' https://desirableproperties.org/api/invite-content returns 200, and the Invite with Email tab lists events and perspectives.",
+      "intent": "Inviting people to workgroups must not be blocked or confused by optional content failing to load.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "co-editor-seats-and-decline-notes",
       "date": "2026-10-13",
       "status": "open",
