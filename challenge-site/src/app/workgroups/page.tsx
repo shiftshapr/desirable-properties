@@ -19,7 +19,8 @@ import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
-import { WORKGROUP_TARGET_MEMBER_COUNT, workgroupRosterNudge } from '@/lib/workgroup-roster-nudge';
+import { coEditorCountFromDetail, workgroupStaffing } from '@/lib/workgroup-roster-nudge';
+import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import type { Metadata } from 'next';
 
@@ -151,11 +152,18 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
   const memberCountBySlug = new Map(
     (signups?.workgroups ?? []).map((group) => [group.slug, group.member_count]),
   );
+  const readiness = await fetchReadinessBoard();
+  const coEditorsByDp = new Map(
+    readiness.dps.map((r) => [r.dp, coEditorCountFromDetail(r.checks.co_editors?.detail)]),
+  );
   const discoveryCollabHref = workgroupPrimaryHref(DP_DISCOVERY_SLUG);
   const discoveryJoinHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'join');
   const discoveryNominateHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'nominate');
   const discoveryCardSrc = dpDiscoveryCardImageSrc();
-  const discoveryRoster = workgroupRosterNudge(memberCountBySlug.get(DP_DISCOVERY_SLUG) ?? 0);
+  const discoveryRoster = workgroupStaffing({
+    memberCount: memberCountBySlug.get(DP_DISCOVERY_SLUG) ?? 0,
+    coEditors: null,
+  });
 
   return (
     <main className="border-b border-slate-800">
@@ -170,8 +178,8 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             Each of the 23 Desirable Properties is stewarded by a dedicated workgroup, plus DP
             Discovery for gaps the current set may have missed. Help take the Community Review Draft
-            to Version 1.0 by November 13, 2026. We want at least {WORKGROUP_TARGET_MEMBER_COUNT}{' '}
-            people in every workgroup. If a group is smaller, join it and invite others.
+            to Version 1.0 by November 13, 2026. Each DP needs two co-editors, who decide which
+            proposals go in. If a group has an open seat, join it and become a co-editor.
           </p>
           <p className="mt-6 rounded-lg border border-slate-700/80 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">
             <strong className="font-semibold text-slate-200">Sign in</strong> to join a workgroup or
@@ -332,8 +340,8 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">The DP workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Twenty-three workgroups each steward one Desirable Property. DP Discovery watches for
-            properties the current 23 may have missed. Groups need at least{' '}
-            {WORKGROUP_TARGET_MEMBER_COUNT} members for a working Version 1.0 push.
+            properties the current 23 may have missed. A DP is fully staffed when it has two
+            co-editors.
             {collabEnabled
               ? ' Open Collaborate for Astra, Review, Canopi, chat, and invites.'
               : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
@@ -350,7 +358,10 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
               const summary = shortDescription(dp);
               const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups');
               const cardSrc = dpCardImageSrc(dpId);
-              const roster = workgroupRosterNudge(memberCountBySlug.get(slug) ?? 0);
+              const roster = workgroupStaffing({
+                memberCount: memberCountBySlug.get(slug) ?? 0,
+                coEditors: coEditorsByDp.get(dpId) ?? null,
+              });
 
               return (
                 <li
@@ -396,12 +407,10 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                   )}
                   <p
                     className={`mt-3 text-sm leading-relaxed ${
-                      roster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
+                      roster.kind === 'recruit' ? 'text-amber-200' : roster.kind === 'ready' ? 'text-emerald-200' : 'text-slate-400'
                     }`}
                   >
-                    {roster.kind === 'recruit'
-                      ? `${roster.title} · needs ${roster.remaining} more for a working group`
-                      : `${roster.title} · on track for November 13`}
+                    {roster.title}
                   </p>
                   <div className="mt-auto flex flex-col gap-3 pt-5">
                     <div className="flex flex-wrap gap-2">
@@ -496,12 +505,10 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                 ) : null}
                 <p
                   className={`mt-3 text-sm leading-relaxed ${
-                    discoveryRoster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
+                    discoveryRoster.kind === 'recruit' ? 'text-amber-200' : discoveryRoster.kind === 'ready' ? 'text-emerald-200' : 'text-slate-400'
                   }`}
                 >
-                  {discoveryRoster.kind === 'recruit'
-                    ? `${discoveryRoster.title} · needs ${discoveryRoster.remaining} more for a working group`
-                    : `${discoveryRoster.title} · on track for November 13`}
+                  {discoveryRoster.title}
                 </p>
                 <div className="mt-auto flex flex-col gap-3 pt-5">
                   <div className="flex flex-wrap gap-2">

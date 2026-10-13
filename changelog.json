@@ -4,6 +4,42 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-staffing-by-co-editors",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Workgroup cards show co-editor staffing, not a 3-member target",
+      "summary": "Workgroup cards on /workgroups now read, for example, '2 members · co-editors 0 of 2' or '4 members · fully staffed', instead of 'needs 1 more for a working group'. The 3-member target is gone from the workgroups intro, Start Here and the workgroup Getting Started tab; the Co-editors section above the tabs covers staffing.",
+      "changes": [
+        "DP cards: member count plus co-editor seats from the readiness data; amber until two co-editors, green when fully staffed",
+        "DP Discovery card: member count only (it has no co-editors)",
+        "Workgroups intro and Start Here: 'at least 3 people' replaced with the two-co-editor rule",
+        "Getting Started tab: member-target box removed"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/workgroup-roster-nudge.ts",
+          "label": "Staffing line"
+        },
+        {
+          "path": "challenge-site/src/app/workgroups/page.tsx",
+          "label": "All workgroups"
+        },
+        {
+          "path": "challenge-site/src/app/start-here/page.tsx",
+          "label": "Start Here"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupGettingStarted.tsx",
+          "label": "Getting Started tab"
+        }
+      ],
+      "verify": "Open /workgroups: each DP card shows 'n members · co-editors x of 2' or 'fully staffed'; no card mentions 'more for a working group'.",
+      "intent": "Two co-editors, not a member count, is what makes a DP fully staffed.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "co-editor-claim-ux",
       "date": "2026-10-13",
       "status": "open",
