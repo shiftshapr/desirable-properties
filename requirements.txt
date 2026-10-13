@@ -1,6 +1,7 @@
 # Data processing dependencies
 json5>=0.9.14
 pathlib2>=2.3.7
+beautifulsoup4>=4.12   # scripts/text2json.py imports bs4 (Process Data workflow)
 
 # Optional: for enhanced data analysis
 pandas>=1.5.0
