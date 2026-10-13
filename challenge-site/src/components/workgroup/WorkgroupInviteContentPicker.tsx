@@ -116,8 +116,10 @@ export default function WorkgroupInviteContentPicker({
     (async () => {
       try {
         const res = await fetch('/api/invite-content', { cache: 'no-store' });
-        const data = await res.json();
-        if (!res.ok || !data.ok) throw new Error(data.message || 'Failed to load invite content');
+        // A server error can come back without a JSON body (Safari then reports
+        // "The string did not match the expected pattern").
+        const data = await res.json().catch(() => ({ ok: false }));
+        if (!res.ok || !data.ok) throw new Error(data.message || 'Events and perspectives could not be loaded right now. You can still send the invitation without them.');
         if (cancelled) return;
         setGlobalEvents(data.events || []);
         setSeriesEvents(data.seriesEvents || []);

@@ -83,15 +83,35 @@ async function migrateForkPerspectiveSlug() {
   const pool = await ensureDpSchema();
   if (!pool) return;
 
+  // Rename one old row, and only when the new slug is free: renaming when both
+  // rows exist (or two rows match) breaks the unique slug index on every request.
   await pool.query(
     `UPDATE dp_invite_perspective
      SET url = '/perspectives/a-fork-in-the-web',
          slug = 'a-fork-in-the-web',
          updated_at = now(),
          updated_by = 'slug-migration'
-     WHERE slug = 'the-fork-in-the-web'
-        OR url = '/perspectives/the-fork-in-the-web'`,
+     WHERE id = (
+       SELECT id FROM dp_invite_perspective
+       WHERE slug = 'the-fork-in-the-web' OR url = '/perspectives/the-fork-in-the-web'
+       ORDER BY created_at ASC
+       LIMIT 1
+     )
+     AND NOT EXISTS (SELECT 1 FROM dp_invite_perspective WHERE slug = 'a-fork-in-the-web')`,
   );
+}
+
+let inviteContentSeeded: Promise<void> | null = null;
+
+/** Slug migration + first-run seed, once per process; retried after a failure. */
+function seedInviteContentOnce(): Promise<void> {
+  if (!inviteContentSeeded) {
+    inviteContentSeeded = seedInviteContentIfEmpty().catch((err) => {
+      inviteContentSeeded = null;
+      throw err;
+    });
+  }
+  return inviteContentSeeded;
 }
 
 async function seedInviteContentIfEmpty() {
@@ -107,7 +127,8 @@ async function seedInviteContentIfEmpty() {
   await pool.query(
     `INSERT INTO dp_invite_perspective (
        id, title, url, slug, active, sort_order, created_by, updated_by
-     ) VALUES ($1, $2, $3, $4, true, 0, 'seed', 'seed')`,
+     ) VALUES ($1, $2, $3, $4, true, 0, 'seed', 'seed')
+     ON CONFLICT DO NOTHING`,
     [
       id,
       'A Fork in the Web',
@@ -120,7 +141,7 @@ async function seedInviteContentIfEmpty() {
 export async function listInviteGlobalEvents(activeOnly = false): Promise<InviteGlobalEvent[]> {
   const pool = await ensureDpSchema();
   if (!pool) return [];
-  await seedInviteContentIfEmpty();
+  await seedInviteContentOnce();
   const res = await pool.query(
     `SELECT * FROM dp_invite_global_event
      ${activeOnly ? 'WHERE active = true' : ''}
@@ -132,7 +153,7 @@ export async function listInviteGlobalEvents(activeOnly = false): Promise<Invite
 export async function listInvitePerspectives(activeOnly = false): Promise<InvitePerspective[]> {
   const pool = await ensureDpSchema();
   if (!pool) return [];
-  await seedInviteContentIfEmpty();
+  await seedInviteContentOnce();
   const res = await pool.query(
     `SELECT * FROM dp_invite_perspective
      ${activeOnly ? 'WHERE active = true' : ''}
