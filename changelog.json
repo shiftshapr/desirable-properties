@@ -4,6 +4,36 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "style-pass-review",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Review tab shows style-pass proposals; style tasks for workgroups",
+      "summary": "From 20 October each chapter gets one style-pass proposal holding all its mechanical style-guide fixes (Meta-Layer capitalization, dashes, the '(Non-Normative)' label, § references). The Review tab labels it 'style pass' and lists every line before and after, so co-editors approve or decline it once. Three new weekly tasks cover the judgement calls: making each MUST and SHOULD testable, adding sources, and deciding the style pass.",
+      "changes": [
+        "Review tab: style-pass proposals show a summary and an expandable list of every line edit, labelled by rule",
+        "New tasks for 19 and 26 October: testable requirements, cite sources, co-editors decide the style pass"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupReviewPanel.tsx",
+          "label": "Review tab"
+        },
+        {
+          "path": "challenge-site/src/lib/workgroup-review-queue.ts",
+          "label": "Review queue"
+        },
+        {
+          "path": "challenge-site/src/data/dp-process.ts",
+          "label": "Practice tasks"
+        }
+      ],
+      "verify": "After the Gov Hub style-pass bundles are created, a DP's Review tab shows one 'style pass' item with 'Show all N line edits'.",
+      "intent": "Apply the agreed style guide to existing chapters without burying co-editors in hundreds of small proposals.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "style-guide-v1",
       "date": "2026-10-13",
       "status": "open",

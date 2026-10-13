@@ -227,7 +227,7 @@ export default function WorkgroupReviewPanel({
                 </span>
               ))}
               <span className="rounded border border-cyan-800/60 px-1.5 py-0.5 text-cyan-200">
-                {item.patchMode}
+                {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}
               </span>
               {item.conflictCount > 1 ? (
                 <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">
@@ -245,11 +245,15 @@ export default function WorkgroupReviewPanel({
             <p className="mt-2 text-sm text-slate-200">
               {item.authorName} · member evals: yes {item.evals.yes} / no {item.evals.no}
             </p>
-            <ActivityPatchPreview
-              removed={item.originalText || null}
-              added={item.proposedText || null}
-              mode={item.patchMode === 'insert' ? 'insert' : 'patch'}
-            />
+            {item.patchMode === 'bundle' ? (
+              <StylePassEdits item={item} />
+            ) : (
+              <ActivityPatchPreview
+                removed={item.originalText || null}
+                added={item.proposedText || null}
+                mode={item.patchMode === 'insert' ? 'insert' : 'patch'}
+              />
+            )}
             {item.rationale ? (
               <p className="mt-2 text-sm text-slate-400">{item.rationale}</p>
             ) : null}
@@ -385,6 +389,53 @@ export default function WorkgroupReviewPanel({
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+const STYLE_RULE_LABELS: Record<string, string> = {
+  non_normative_label: '“(Non-Normative)” label removed',
+  meta_layer_case: 'Meta-Layer',
+  en_dash: 'en dash',
+  section_ref: '§ → Section',
+};
+
+/** A style-pass bundle: every line edit, before and after, approved together. */
+function StylePassEdits({ item }: { item: ReviewQueueItem }) {
+  return (
+    <div className="mt-3 space-y-2">
+      <p className="text-sm text-slate-300">
+        {item.originalText}{' '}
+        <a href="/style-guide" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
+          Style guide
+        </a>
+      </p>
+      <details className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm">
+        <summary className="cursor-pointer text-slate-200">
+          Show all {item.edits.length} line edit{item.edits.length === 1 ? '' : 's'}
+        </summary>
+        <ol className="mt-3 space-y-3">
+          {item.edits.map((edit, i) => (
+            <li key={i} className="space-y-1">
+              <p className="text-xs uppercase tracking-wide text-slate-500">
+                {(edit.rule || '')
+                  .split(',')
+                  .filter(Boolean)
+                  .map((r) => STYLE_RULE_LABELS[r] || r)
+                  .join(' · ')}
+              </p>
+              <p className="rounded bg-rose-950/30 px-2 py-1 text-rose-100">
+                <span className="mr-1 text-rose-300">−</span>
+                {edit.originalText}
+              </p>
+              <p className="rounded bg-emerald-950/30 px-2 py-1 text-emerald-100">
+                <span className="mr-1 text-emerald-300">+</span>
+                {edit.proposedText}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </details>
     </div>
   );
 }

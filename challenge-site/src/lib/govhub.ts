@@ -216,6 +216,8 @@ export type GovHubDraftProposal = {
   applicability?: 'applies' | 'needs-review' | 'obsolete' | string | null;
   applicability_hint?: string | null;
   created_on_revision_label?: string | null;
+  /** editorial_bundle only: the line edits approved together. */
+  edits?: Array<{ seq: number; rule?: string | null; original_text: string; proposed_text: string }>;
 };
 
 type WorkgroupsResponse = {
