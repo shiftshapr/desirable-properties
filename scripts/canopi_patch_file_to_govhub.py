@@ -166,6 +166,27 @@ def splice_anchor(span: str, position: str) -> str | None:
     return anchor if anchor in span else None
 
 
+EMPHASIS = re.compile(r"(\*\*|__|\*|_|`)(.+?)\1")
+
+
+def whole_passage_patch(span: str, text: str) -> tuple[str, str] | None:
+    """Fallback when narrow_patch cannot isolate the change: replace the whole anchor span.
+
+    A Canopi patch means "replace the anchor passage with this text", so filing span -> text is
+    exactly the post. Only allowed when no emphasized phrase of the span survives verbatim in the
+    new text: then the markup dropped with the span belonged to wording the reviewer rewrote.
+    """
+    text = (text or "").strip()
+    if not span or not text:
+        return None
+    if re.search(r"[#>\[\]|]", span):  # links, headings, quotes, tables: never dropped wholesale
+        return None
+    for _marker, phrase in EMPHASIS.findall(span):
+        if " ".join(phrase.split()) in " ".join(text.split()):
+            return None
+    return span, text
+
+
 def narrow_patch(span: str, exact: str, text: str) -> tuple[str, str] | None:
     """Re-anchor a patch whose anchor passage carries markdown markup.
 
@@ -380,7 +401,7 @@ def main() -> int:
         else:
             proposed = text
             if MARKUP.search(span):
-                narrowed = narrow_patch(span, exact, text)
+                narrowed = narrow_patch(span, exact, text) or whole_passage_patch(span, text)
                 if not narrowed:
                     row.update(status="blocked", reason="patch anchor spans markdown markup and the change could not be narrowed")
                     continue
