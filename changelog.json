@@ -4,6 +4,34 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "style-guide-v1",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Style guide for the Desirable Properties book",
+      "summary": "A new page, /style-guide, sets how the book is written so 23 chapters read as one: who we write for, voice, requirement language (MUST/SHOULD/MAY), chapter structure, headings, terms, formatting, cross-references, sources, how to write a patch or insert, and guidance for co-editors. Most rules record what the chapters already do; the rest settle where they disagree. The same rules are available as text for the upcoming AI check of patches and inserts.",
+      "changes": [
+        "New /style-guide page: 11 sections, 49 rules, with do/don't examples drawn from the book",
+        "Rules derived from a count across all 23 live chapters (e.g. 115 capital MUST/SHOULD inside '(Non-Normative)' sections; Meta-Layer spelled two ways)",
+        "styleGuideAsText() exports the guide for AI review prompts",
+        "Linked from the About menu, /process, and the Review tab's decision note"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/data/dp-style-guide.ts",
+          "label": "Style guide rules"
+        },
+        {
+          "path": "challenge-site/src/app/style-guide/page.tsx",
+          "label": "Style guide page"
+        }
+      ],
+      "verify": "Open /style-guide: eleven sections from 'Who we write for' to 'For co-editors'; About menu lists Style guide.",
+      "intent": "Consistent tone and style across chapters, agreed at the 12 Oct 2026 session; the basis for the AI pre-check of manual patches and inserts.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "workgroup-staffing-by-co-editors",
       "date": "2026-10-13",
       "status": "open",
