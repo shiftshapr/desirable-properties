@@ -626,7 +626,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               <strong className="font-semibold text-white">Join</strong> when you want to contribute
               as a member–reviewing, discussing, drafting, and proposing patches. Members can also
-              claim one of the DP&apos;s two co-editor seats, who approve changes together.
+              claim, or be nominated to, one of the DP&apos;s two co-editor seats; co-editors approve
+              changes together, and the coordinator holds one seat automatically.
             </p>
             <p>
               <strong className="font-semibold text-white">Nominate</strong> when you want to propose

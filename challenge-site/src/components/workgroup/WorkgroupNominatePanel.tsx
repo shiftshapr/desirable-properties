@@ -12,10 +12,10 @@ type Props = {
   className?: string;
 };
 
-const DEFAULT_POSITIONS: Position[] = [
-  { key: 'chair', label: 'Coordinator' },
-  { key: 'co_editor', label: 'Co-editor' },
-];
+/** Co-editors are claimed or nominated from the Co-editors card, not here. */
+const HIDDEN_POSITIONS = new Set(['co_editor']);
+
+const DEFAULT_POSITIONS: Position[] = [{ key: 'chair', label: 'Coordinator' }];
 
 export default function WorkgroupNominatePanel({
   workgroupId,
@@ -45,7 +45,7 @@ export default function WorkgroupNominatePanel({
               key: p.key || p.position_key || '',
               label: p.label || p.position_label || p.key || '',
               description: p.description,
-            })).filter((p) => p.key),
+            })).filter((p) => p.key && !HIDDEN_POSITIONS.has(p.key)),
           );
         }
       } catch {

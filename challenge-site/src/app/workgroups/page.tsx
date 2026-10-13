@@ -93,7 +93,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'What do co-editors do, and how do I become one?',
-    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it with a reason. Claim an open seat on the workgroup page (account at least 7 days old, at most two DPs per person). The coordinator can revoke a claim within 7 days, and a super admin at any time, always with a reason.',
+    a: 'Each DP has two co-editors; two co-editors make a DP fully staffed. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. The coordinator holds one seat automatically. The other is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit starts at two DPs and rises as co-editors settle in) or by accepting a nomination from a member. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
   },
 ];
 
@@ -275,8 +275,8 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Two ways to get involved with a workgroup: join it as a member, or nominate
-            someone (including yourself) as coordinator. Co-editor seats are claimed on the
-            workgroup page. The full process, roles and weekly tasks are on{' '}
+            someone (including yourself) as coordinator. Co-editor seats are claimed or nominated
+            on the workgroup page. The full process, roles and weekly tasks are on{' '}
             <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
               How V1 gets made
             </Link>
@@ -310,8 +310,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 Nominating puts someone forward as the workgroup&apos;s Coordinator. You can
-                nominate yourself or someone else in the community. Co-editor seats are not
-                nominated: any member can claim an open seat on the workgroup&apos;s Gov Hub page.
+                nominate yourself or someone else in the community. Co-editor seats work
+                differently: the coordinator holds one, and the other is claimed, or nominated from
+                the workgroup&apos;s Co-editors card and filled when the nominee accepts.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
                 The nominee reviews the nomination first and must accept it before the layer

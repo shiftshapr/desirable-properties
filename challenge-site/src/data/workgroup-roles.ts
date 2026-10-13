@@ -27,7 +27,7 @@ export const MEMBER_ROLE: WorkgroupRole = {
 export const COORDINATOR_ROLE: WorkgroupRole = {
   key: 'coordinator',
   label: 'Coordinator',
-  description: 'Coordinates the workgroup, sets agenda, and supports contributors.',
+  description: 'Coordinates the workgroup, sets agenda, supports contributors, and holds one of the two co-editor seats.',
   glyph: '★',
   duties: [
     'organize meetings',
@@ -46,10 +46,10 @@ export const CO_EDITOR_ROLE: WorkgroupRole = {
   key: 'co_editor',
   label: 'Co-editor',
   description:
-    'One of two co-editors per DP. Both co-editors must approve a proposal before it is incorporated into the next revision. Claim an open seat on the workgroup page.',
+    'One of two co-editors per DP. Both co-editors must approve a proposal before it is incorporated into the next revision. The coordinator holds one seat; the other is claimed or nominated on the workgroup page.',
   glyph: '◫',
   duties: [
-    'approve or decline each proposal with a review note',
+    'approve or decline each proposal; every decline carries a note the author can read',
     'agree with the other co-editor before anything is incorporated',
     'keep no proposal waiting more than 7 days',
     'publish integrated changes as a numbered revision',

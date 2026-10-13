@@ -2,7 +2,7 @@ import 'server-only';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
-import { READINESS_ITEMS, type ReadinessItem } from '@/data/dp-process';
+import { countPassed, READINESS_ITEMS, type ReadinessItem } from '@/data/dp-process';
 
 export type ReadinessCheck = {
   pass: boolean | null;
@@ -97,8 +97,7 @@ export async function fetchReadinessBoard(): Promise<ReadinessBoard> {
 
   const dps = govhub.dps.map((dp) => {
     const checks = { ...dp.checks, canopi_filed: canopiFiledCheck(dp.dp, report) };
-    const passed = Object.values(checks).filter((c) => c.pass === true).length;
-    return { ...dp, checks, passed };
+    return { ...dp, checks, passed: countPassed(checks) };
   });
 
   return {

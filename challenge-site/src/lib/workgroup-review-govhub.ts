@@ -141,11 +141,12 @@ export async function acceptGovHubProposal(
   draftRef: string,
   proposalId: string,
   idToken: string,
+  note?: string,
 ): Promise<{ ok: boolean; status: number; error?: string; data: GovHubJson }> {
   const result = await govHubAuthed(
     `/api/doc/draft/${encodeURIComponent(draftRef)}/proposals/${encodeURIComponent(proposalId)}/accept/`,
     idToken,
-    { method: 'POST', body: '{}' },
+    { method: 'POST', body: JSON.stringify(note ? { note } : {}) },
   );
   return {
     ok: result.ok,
@@ -159,11 +160,12 @@ export async function declineGovHubProposal(
   draftRef: string,
   proposalId: string,
   idToken: string,
+  note?: string,
 ): Promise<{ ok: boolean; status: number; error?: string; data: GovHubJson }> {
   const result = await govHubAuthed(
     `/api/doc/draft/${encodeURIComponent(draftRef)}/proposals/${encodeURIComponent(proposalId)}/decline/`,
     idToken,
-    { method: 'POST', body: '{}' },
+    { method: 'POST', body: JSON.stringify(note ? { note } : {}) },
   );
   return {
     ok: result.ok,
