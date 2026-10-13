@@ -16,7 +16,6 @@ import {
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { WorkgroupCollabTabKey } from '@/lib/workgroup-collab-tabs';
-import { workgroupRosterNudge } from '@/lib/workgroup-roster-nudge';
 
 type Props = {
   workgroupName: string;
@@ -25,6 +24,7 @@ type Props = {
   dpDetailHref: string | null;
   documentHref?: string | null;
   showLaunchBriefing?: boolean;
+  /** Unused since staffing moved to the Co-editors section; kept for callers. */
   memberCount?: number;
   onSelectTab?: (tab: WorkgroupCollabTabKey) => void;
 };
@@ -36,7 +36,6 @@ export default function WorkgroupGettingStarted({
   dpDetailHref,
   documentHref,
   showLaunchBriefing = false,
-  memberCount = 0,
   onSelectTab,
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
@@ -49,7 +48,6 @@ export default function WorkgroupGettingStarted({
   const a = MESSAGE_A_SECTIONS;
   const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
   const v1Label = CHALLENGE_KEY_DATES.v1Release.label;
-  const roster = workgroupRosterNudge(memberCount);
 
   return (
     <div>
@@ -64,22 +62,6 @@ export default function WorkgroupGettingStarted({
           later release). Use Canopi to post,
           comment, review, and like so decisions stay visible.
         </p>
-        <div
-          className={`mt-4 rounded-lg border px-4 py-3 ${
-            roster.kind === 'recruit'
-              ? 'border-amber-800/60 bg-amber-950/30'
-              : 'border-emerald-800/50 bg-emerald-950/20'
-          }`}
-        >
-          <p
-            className={`text-sm font-semibold ${
-              roster.kind === 'recruit' ? 'text-amber-200' : 'text-emerald-200'
-            }`}
-          >
-            {roster.title}
-          </p>
-          <p className="mt-1 text-sm leading-relaxed text-slate-300">{roster.message}</p>
-        </div>
         <div className="mt-4 flex flex-wrap gap-3">
           {onSelectTab ? (
             <>

@@ -13,7 +13,6 @@ import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import { workgroupPrimaryHref } from '@/lib/workgroup-links';
-import { WORKGROUP_TARGET_MEMBER_COUNT } from '@/lib/workgroup-roster-nudge';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -174,8 +173,8 @@ export default function StartHerePage() {
                 then <strong className="font-semibold text-white">promote</strong> into a revision
                 draft on Review (publish is a later release). Use{' '}
                 <strong className="font-semibold text-white">Canopi</strong> to post, comment,
-                review, and like. We want at least {WORKGROUP_TARGET_MEMBER_COUNT} people per
-                workgroup. If a group is smaller, invite others.
+                review, and like. Each DP needs two co-editors; if a group has an open seat, step
+                up or invite someone who should.
               </p>
               <p className="mt-4 max-w-3xl rounded-lg border border-amber-800/50 bg-amber-950/30 px-4 py-3 text-sm leading-relaxed text-amber-100">
                 Sign in when you open Collaborate. Joining the workgroup, Astra, Review, and Canopi
@@ -533,7 +532,7 @@ export default function StartHerePage() {
                 <p className="text-base text-slate-400">
                   Book discussion (PATCH/INSERT), workgroup Astra and Review (promote, then publish),
                   Canopi conversation, and
-                  recruitment to at least {WORKGROUP_TARGET_MEMBER_COUNT} people per workgroup.
+                  filling every DP&apos;s co-editor seats.
                   Each DP needs two co-editors, who both approve a change before it is incorporated.{' '}
                   <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
                     How V1 gets made

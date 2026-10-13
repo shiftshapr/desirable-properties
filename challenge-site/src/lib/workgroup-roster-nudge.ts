@@ -1,37 +1,45 @@
-export const WORKGROUP_TARGET_MEMBER_COUNT = 3;
+import { CO_EDITORS_PER_DP } from '@/data/dp-process';
 
-export type WorkgroupRosterNudge = {
-  kind: 'recruit' | 'ready';
-  memberCount: number;
-  remaining: number;
+/**
+ * Staffing line for a workgroup card. Two co-editors make a DP fully staffed;
+ * member count is shown for information only. coEditors is null when unknown
+ * (Gov Hub unreachable) or not applicable (DP Discovery has no co-editors).
+ */
+export type WorkgroupStaffing = {
+  kind: 'recruit' | 'ready' | 'info';
   title: string;
   message: string;
 };
 
-export function workgroupRosterNudge(memberCount: number): WorkgroupRosterNudge {
+export function workgroupStaffing({
+  memberCount,
+  coEditors,
+}: {
+  memberCount: number;
+  coEditors: number | null;
+}): WorkgroupStaffing {
   const count = Math.max(0, Number.isFinite(memberCount) ? memberCount : 0);
-  const remaining = WORKGROUP_TARGET_MEMBER_COUNT - count;
-  if (remaining > 0) {
-    const memberLabel = count === 1 ? '1 member' : `${count} members`;
-    const needLabel =
-      remaining === 1
-        ? '1 more person'
-        : `${remaining} more people`;
+  const members = count === 0 ? 'No members yet' : count === 1 ? '1 member' : `${count} members`;
+  if (coEditors === null) {
+    return { kind: 'info', title: members, message: 'Join to take part.' };
+  }
+  const open = Math.max(0, CO_EDITORS_PER_DP - coEditors);
+  if (open > 0) {
     return {
       kind: 'recruit',
-      memberCount: count,
-      remaining,
-      title: count === 0 ? 'No members yet' : memberLabel,
-      message: `We want at least ${WORKGROUP_TARGET_MEMBER_COUNT} people in every workgroup. This group needs ${needLabel}. Invite others who care about this property.`,
+      title: `${members} · co-editors ${coEditors} of ${CO_EDITORS_PER_DP}`,
+      message: `Needs ${open} more co-editor${open === 1 ? '' : 's'}. Co-editors decide which proposals go into Version 1.0; any member can step up.`,
     };
   }
-  const memberLabel = count === 1 ? '1 member' : `${count} members`;
   return {
     kind: 'ready',
-    memberCount: count,
-    remaining: 0,
-    title: memberLabel,
-    message:
-      'On track for a working group. Keep going toward Version 1.0 on November 13, 2026.',
+    title: `${members} · fully staffed`,
+    message: 'Two co-editors in place. On track for Version 1.0 on November 13, 2026.',
   };
+}
+
+/** "1 of 2" (Gov Hub readiness detail) → 1; null if absent. */
+export function coEditorCountFromDetail(detail: string | null | undefined): number | null {
+  const match = String(detail || '').match(/^(\d+)\s+of\s+\d+/);
+  return match ? Number(match[1]) : null;
 }
