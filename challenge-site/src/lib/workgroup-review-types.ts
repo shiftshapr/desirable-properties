@@ -16,6 +16,18 @@ export type ReviewBundleEdit = {
   proposedText: string;
 };
 
+/** Latest AI style-check result for an item (src/lib/style-check.server.ts). */
+export type ReviewStyleCheck = {
+  id: string;
+  createdAt: string;
+  model: string | null;
+  helpful: boolean | null;
+  verdict: 'ok' | 'suggestions';
+  summary: string;
+  notes: Array<{ section: string; issue: string; fix: string }>;
+  suggestedText: string | null;
+};
+
 export type ReviewQueueItem = {
   key: string;
   sources: ReviewSource[];
@@ -40,6 +52,9 @@ export type ReviewQueueItem = {
     mine: ReviewVote | null;
     comments: ReviewEvalComment[];
   };
+  /** Pending patch/insert that can be style-checked. */
+  styleCheckable: boolean;
+  styleCheck: ReviewStyleCheck | null;
   canPromote: boolean;
   promoteBlockReason: string | null;
 };
@@ -60,4 +75,6 @@ export type ReviewQueueResponse = {
   workingRevision: ReviewWorkingRevision;
   isMember: boolean;
   canEdit: boolean;
+  /** False when no model is configured on this server. */
+  styleCheckEnabled: boolean;
 };
