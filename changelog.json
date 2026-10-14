@@ -42,6 +42,76 @@
       ]
     },
     {
+      "id": "comments-to-proposals",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "Review tab: turn open comments into proposals",
+      "summary": "Each workgroup's Review tab now lists the reader comments anchored to passages of its chapter, from Gov Hub and book Discuss. A member can have AI draft a proposal from a comment (following the style guide), edit it, and file it to Gov Hub under their own name with the commenter credited; ask the commenter (a reply under Gov Hub comments, or a link to Discuss); or close it as not actionable with a note. Every AI draft is recorded next to the text actually filed, and admins can export them.",
+      "changes": [
+        "Open comments section on the Review tab: Gov Hub reader comments and Canopi Discuss comments with an anchored passage",
+        "Draft a proposal (AI, editable) → filed to Gov Hub as the member, crediting the commenter; Ask the commenter; Not actionable (note required); Reopen",
+        "dp_comment_triage and dp_comment_draft tables; Admin → AI style checks → export comment-to-proposal drafts",
+        "Canopi post reader now keeps each post's anchored passage and parent"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/review-comments.server.ts",
+          "label": "Comments service"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/ReviewCommentsSection.tsx",
+          "label": "Review tab section"
+        },
+        {
+          "path": "challenge-site/src/app/api/workgroups/[id]/review/comments/route.ts",
+          "label": "Comments API"
+        }
+      ],
+      "verify": "On DP14's Review tab (Gov Hub has 5 anchored comments), 'Open comments · 5' appears; as a member, Draft a proposal returns an editable draft within a minute.",
+      "intent": "Meeting action: turn open comments into DP proposals or follow up with the commenter.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
+      "id": "ai-style-check",
+      "date": "2026-10-13",
+      "status": "open",
+      "title": "AI style check for patches and inserts, with an audit trail",
+      "summary": "Pending patches and inserts on a workgroup's Review tab now get 'Style notes': an AI check against the style guide that names each problem, the guide section it breaks, and a suggested wording. Co-editors can rate the notes helpful or not. The same check is available to Canopi's book composer through a server-to-server endpoint. Every check is recorded with its inputs, model, raw response, timing and the ratings and outcomes that followed, and admins can review and export them under Admin → AI style checks.",
+      "changes": [
+        "Review tab: style notes per pending patch/insert (auto-checked for members, up to 8 per visit), linked to style guide sections, with helpful / not helpful rating",
+        "/api/embed/style-check and /outcome for Canopi's composer (shared secret CANOPI_EMBED_AI_PROXY_SECRET)",
+        "dp_style_check audit table; identical inputs reuse the cached result",
+        "Admin → AI style checks: quality summary, filters, full detail including raw model output, CSV/JSON export",
+        "PM2 configs read the model settings and the shared secret from Canopi's .env"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/style-check.server.ts",
+          "label": "Style check service"
+        },
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupReviewPanel.tsx",
+          "label": "Review tab"
+        },
+        {
+          "path": "challenge-site/src/app/admin/StyleChecksPanel.tsx",
+          "label": "Admin audit"
+        },
+        {
+          "path": "challenge-site/src/app/api/embed/style-check/route.ts",
+          "label": "Composer endpoint"
+        }
+      ],
+      "verify": "As a workgroup member, open a DP's Review tab: pending items show 'Checking against the style guide…' then Style notes. Admin → AI style checks lists them.",
+      "intent": "AI pre-processing agreed on 12 Oct 2026: check manually written patches and inserts against the style guide and suggest improvements, using the existing model setup, auditable so quality can be judged.",
+      "surfaces": [
+        "site",
+        "ops"
+      ]
+    },
+    {
       "id": "style-pass-review",
       "date": "2026-10-13",
       "status": "open",

@@ -52,6 +52,27 @@ function loadDotenvValue(filePath, key) {
   return '';
 }
 
+/**
+ * Style check (src/lib/style-check.server.ts) uses Canopi's model setup, and Canopi
+ * calls /api/embed/style-check with CANOPI_EMBED_AI_PROXY_SECRET: read both from
+ * Canopi's .env so they are configured in one place. .env.local overrides.
+ */
+const STYLE_CHECK_ENV_KEYS = [
+  'OPENAI_API_KEY', 'OPENAI_BASE_URL', 'MODEL_NAME', 'OPENAI_MODEL',
+  'DEEPSEEK_API_KEY', 'DEEPSEEK_MODEL', 'DEEPSEEK_API_URL', 'CANOPI_EMBED_AI_PROXY_SECRET',
+];
+function loadStyleCheckEnv(role) {
+  const canopiEnv =
+    role === 'staging' ? '/home/ubuntu/canopi-staging/.env' : '/home/ubuntu/canopi-prod/.env';
+  const out = {};
+  for (const key of STYLE_CHECK_ENV_KEYS) {
+    const value = localEnv[key] || loadDotenvValue(canopiEnv, key);
+    if (value) out[key] = value;
+  }
+  return out;
+}
+const styleCheckEnv = loadStyleCheckEnv('staging');
+
 /** Must match canopi metawebInternal opsSecretOk (not neo4j hermes secret). */
 function loadCanopiOpsSecret(role = 'prod') {
   const filePath =
@@ -138,6 +159,7 @@ module.exports = {
           localEnv.METAWEB_GOVHUB_INTERNAL_SECRET || localEnv.DP_AUTH_HANDOFF_SECRET || '',
         DP_AUTH_HANDOFF_SECRET: localEnv.DP_AUTH_HANDOFF_SECRET || '',
         DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || canopiOpsSecretStaging || '',
+        ...styleCheckEnv,
         DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || hermesSharedSecret || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
         RESEND_API_KEY: localEnv.RESEND_API_KEY || resendEnv.RESEND_API_KEY || '',

@@ -9,6 +9,12 @@ import {
 import { loadCanopiFilingReport } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
+import {
+  cachedStyleChecks,
+  currentStyleCheckModel,
+  styleCheckInputHash,
+  type StyleCheckInput,
+} from '@/lib/style-check.server';
 
 function patchModeOf(raw: string | null | undefined): ReviewQueueItem['patchMode'] {
   const mode = String(raw || 'replace').toLowerCase();
@@ -102,6 +108,8 @@ export async function buildWorkgroupReviewQueue(opts: {
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
+      styleCheckable: false,
+      styleCheck: null,
       canPromote: pending && anchored,
       promoteBlockReason: !pending
         ? `Already ${proposal.status}. Only pending Gov Hub proposals can be promoted into the next revision draft.`
@@ -142,6 +150,8 @@ export async function buildWorkgroupReviewQueue(opts: {
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
+      styleCheckable: false,
+      styleCheck: null,
       canPromote: false,
       promoteBlockReason: filedElsewhere
         ? `Posted on this chapter's page, but the passage it targets is in ${filed!.home_dp}. It was filed there (${filed!.draft_ref}); review it on the ${filed!.home_dp} Review tab.`
@@ -155,6 +165,8 @@ export async function buildWorkgroupReviewQueue(opts: {
   for (const item of items) {
     item.evals = evalsForItem(evals, item.key, opts.viewerUserId);
   }
+
+  await attachStyleChecks(items, opts.dpId);
 
   const groups = new Map<string, ReviewQueueItem[]>();
   for (const item of items) {
@@ -175,6 +187,50 @@ export async function buildWorkgroupReviewQueue(opts: {
     return Date.parse(b.createdAt || '0') - Date.parse(a.createdAt || '0');
   });
   return items;
+}
+
+/** Style-check input for a queue item, or null when it is not a checkable patch/insert. */
+export function styleCheckInputForItem(item: ReviewQueueItem, dpId: string | null): StyleCheckInput | null {
+  const open = ['pending', 'canopi_only'].includes(String(item.status).toLowerCase());
+  if (!open || item.patchMode === 'bundle' || !item.proposedText.trim()) return null;
+  return {
+    source: 'review',
+    dpId,
+    mode: item.patchMode === 'insert' ? 'insert' : 'replace',
+    originalText: item.originalText,
+    proposedText: item.proposedText,
+    rationale: item.rationale,
+    itemKey: item.key,
+  };
+}
+
+async function attachStyleChecks(items: ReviewQueueItem[], dpId: string | null): Promise<void> {
+  const model = currentStyleCheckModel();
+  const hashes = new Map<string, string>();
+  for (const item of items) {
+    const input = styleCheckInputForItem(item, dpId);
+    item.styleCheckable = Boolean(input && model);
+    if (input && model) hashes.set(item.key, styleCheckInputHash(input, model));
+  }
+  if (!hashes.size) return;
+  let cached: Awaited<ReturnType<typeof cachedStyleChecks>>;
+  try {
+    cached = await cachedStyleChecks([...new Set(hashes.values())]);
+  } catch {
+    return;
+  }
+  for (const item of items) {
+    const hit = cached.get(hashes.get(item.key) || '');
+    if (hit?.result) {
+      item.styleCheck = {
+        id: hit.id,
+        createdAt: hit.createdAt,
+        model: hit.model,
+        helpful: hit.helpful,
+        ...hit.result,
+      };
+    }
+  }
 }
 
 export function proposalFingerprint(proposal: GovHubDraftProposal): string {

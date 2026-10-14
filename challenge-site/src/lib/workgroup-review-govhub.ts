@@ -195,3 +195,22 @@ export async function publishWorkingRevision(
     data: result.data,
   };
 }
+
+
+export async function fetchWorkgroupSummary(workgroupId: string, idToken?: string | null) {
+  const headers: HeadersInit = { Accept: 'application/json' };
+  if (idToken) headers.Authorization = `Bearer ${idToken}`;
+  const res = await fetch(
+    `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/`,
+    { cache: 'no-store', headers },
+  );
+  if (!res.ok) return null;
+  return (await res.json()) as {
+    id?: string;
+    name?: string;
+    slug?: string;
+    document_href?: string | null;
+    document_label?: string | null;
+    can_edit?: boolean;
+  };
+}

@@ -38,7 +38,24 @@ function normalizeCanopiMessage(m: Record<string, unknown>, fallbackPageId: stri
     authorName: messageAuthorName(m) || null,
     createdAt: (m.createdAt ?? m.created_at ?? null) as string | null,
     tagType: String(m.tagType ?? m.tag_type ?? '').trim() || null,
+    parentId: (m.parentId ?? m.parent_id ?? null) as string | null,
+    anchorExact: anchorExactFrom(m.contextAnchor ?? m.context_anchor),
   };
+}
+
+/** The anchored passage (TextQuoteSelector.exact) of a Canopi post, if any. */
+function anchorExactFrom(raw: unknown): string | null {
+  let anchor = raw;
+  if (typeof anchor === 'string') {
+    try {
+      anchor = JSON.parse(anchor);
+    } catch {
+      return null;
+    }
+  }
+  const quote = (anchor as { textQuote?: { exact?: unknown } } | null)?.textQuote;
+  const exact = typeof quote?.exact === 'string' ? quote.exact.trim() : '';
+  return exact || null;
 }
 
 type CanopiPageFeed =
@@ -110,6 +127,10 @@ export type CanopiSearchPost = {
   authorName: string | null;
   createdAt: string | null;
   tagType: string | null;
+  /** Set on replies; top-level posts have null. */
+  parentId: string | null;
+  /** The passage the post is anchored to, when it has one. */
+  anchorExact: string | null;
 };
 
 export async function searchCanopiPosts(opts: {
@@ -194,6 +215,8 @@ export async function searchCanopiPosts(opts: {
       authorName: m.authorName,
       createdAt: m.createdAt,
       tagType: m.tagType,
+      parentId: m.parentId,
+      anchorExact: m.anchorExact,
     });
   }
 
