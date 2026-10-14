@@ -8,6 +8,7 @@ import { fetchGovHubUserEmails, isGovHubUserId } from '@/lib/dp-govhub-user';
 import { searchCanopiUsersServer } from '@/lib/dp-canopi-user-search';
 import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 import { isEmailRelayMessage } from '@/lib/workgroup-relay-message';
+import { resolveCanopiProfileChain } from '@/lib/canopi-profile-chain';
 
 function attachCanopiProfile(
   member: WorkgroupRosterMember,
@@ -45,29 +46,37 @@ async function fetchCanopiProfileByDisplayName(
   return fetchCanopiProfileByHandle(exact.handle);
 }
 
-/**
- * Canopi profile for a Gov Hub user, by the roster's chain: Gov Hub handle as a Canopi
- * handle, then the Gov Hub account email, then an exact display-name match.
- * `email` is the Gov Hub account email when the caller already has it.
- */
-export async function resolveCanopiProfileForGovHubUser(person: {
+const canopiLookups = {
+  byHandle: fetchCanopiProfileByHandle,
+  byEmail: fetchCanopiProfileByEmail,
+  byDisplayName: fetchCanopiProfileByDisplayName,
+};
+
+type GovHubPerson = {
   handle?: string | null;
   email?: string | null;
   displayName?: string | null;
-}): Promise<CanopiPublicProfile | null> {
-  const handle = String(person.handle || '').trim().replace(/^@/, '');
-  if (handle) {
-    const profile = await fetchCanopiProfileByHandle(handle);
-    if (profile) return profile;
-  }
+};
 
-  const email = String(person.email || '').trim();
-  if (email) {
-    const profile = await fetchCanopiProfileByEmail(email);
-    if (profile) return profile;
-  }
+/**
+ * Canopi profile for a roster member: Gov Hub handle as a Canopi handle, then the Gov Hub
+ * account email, then an exact display-name match.
+ * `email` is the Gov Hub account email when the caller already has it.
+ */
+export async function resolveCanopiProfileForGovHubUser(
+  person: GovHubPerson,
+): Promise<CanopiPublicProfile | null> {
+  return resolveCanopiProfileChain(person, canopiLookups, { allowNameMatch: true });
+}
 
-  return fetchCanopiProfileByDisplayName(String(person.displayName || ''));
+/**
+ * Canopi profile for a relayed email author: handle, then email. Never by display name
+ * (identity by email only; a wrong person's link is worse than no link).
+ */
+export async function resolveCanopiProfileForRelayAuthor(
+  person: GovHubPerson,
+): Promise<CanopiPublicProfile | null> {
+  return resolveCanopiProfileChain(person, canopiLookups, { allowNameMatch: false });
 }
 
 /** Attach Canopi handle, profile URL, and avatar for workgroup roster rows. */
@@ -95,7 +104,7 @@ const MESSAGE_PROFILE_TTL_MS = 10 * 60 * 1000;
 const messageProfileCache = new Map<string, { url: string | null; at: number }>();
 
 /**
- * Add `author_canopi_profile_url` to email-relay chat messages, resolved like the roster.
+ * Add `author_canopi_profile_url` to email-relay chat messages (handle or email only).
  * Other messages are returned unchanged. Results are cached per author for 10 minutes
  * because the chat panel refreshes every 30 seconds.
  */
@@ -125,10 +134,9 @@ export async function enrichRelayMessagesWithCanopi(
     );
     await Promise.all(
       [...pending.entries()].map(async ([key, msg]) => {
-        const profile = await resolveCanopiProfileForGovHubUser({
+        const profile = await resolveCanopiProfileForRelayAuthor({
           handle: msg.author_handle ?? msg.handle,
           email: emailByGovHubId.get(key),
-          displayName: msg.author_name,
         }).catch(() => null);
         const url = profile?.profileUrl || null;
         urlByAuthor.set(key, url);

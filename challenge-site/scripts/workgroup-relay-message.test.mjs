@@ -14,6 +14,7 @@ import {
   relayAttachmentHref,
   relayMarkdown,
 } from '../src/lib/workgroup-relay-message.ts';
+import { resolveCanopiProfileChain } from '../src/lib/canopi-profile-chain.ts';
 
 const render = (node) => renderToStaticMarkup(node);
 
@@ -118,4 +119,50 @@ test('author name links to the Canopi profile only when one was resolved', () =>
   assert.doesNotMatch(plain, /<a /);
   assert.match(plain, />Ada Lovelace</);
   assert.doesNotMatch(render(h(RelayAuthorName, { name: 'X', profileUrl: 'javascript:alert(1)' })), /<a /);
+});
+
+/** Canopi lookups where only the display name "Ada Lovelace" matches someone. */
+function nameOnlyLookups(calls) {
+  return {
+    byHandle: async (x) => { calls.push(['handle', x]); return null; },
+    byEmail: async (x) => { calls.push(['email', x]); return null; },
+    byDisplayName: async (x) => {
+      calls.push(['name', x]);
+      return x === 'Ada Lovelace' ? { profileUrl: 'https://canopi.live/p/someone-else' } : null;
+    },
+  };
+}
+
+test('relay author whose only match is by display name renders unlinked', async () => {
+  const calls = [];
+  const person = { handle: 'ada', email: 'ada@example.org', displayName: 'Ada Lovelace' };
+  const profile = await resolveCanopiProfileChain(person, nameOnlyLookups(calls), { allowNameMatch: false });
+  assert.equal(profile, null);
+  assert.deepEqual(calls, [['handle', 'ada'], ['email', 'ada@example.org']]);
+  const html = render(h(RelayAuthorName, { name: 'Ada Lovelace', profileUrl: profile?.profileUrl ?? null }));
+  assert.doesNotMatch(html, /<a /);
+  assert.doesNotMatch(html, /someone-else/);
+});
+
+test('relay author: handle or email match still links', async () => {
+  const byEmail = await resolveCanopiProfileChain(
+    { handle: 'ada', email: 'ada@example.org' },
+    {
+      byHandle: async () => null,
+      byEmail: async (e) => (e === 'ada@example.org' ? { profileUrl: 'https://canopi.live/p/ada' } : null),
+      byDisplayName: async () => { throw new Error('name lookup must not run'); },
+    },
+    { allowNameMatch: false },
+  );
+  assert.equal(byEmail.profileUrl, 'https://canopi.live/p/ada');
+});
+
+test('roster chain keeps the display-name fallback', async () => {
+  const calls = [];
+  const profile = await resolveCanopiProfileChain(
+    { displayName: 'Ada Lovelace' },
+    nameOnlyLookups(calls),
+    { allowNameMatch: true },
+  );
+  assert.equal(profile.profileUrl, 'https://canopi.live/p/someone-else');
 });
