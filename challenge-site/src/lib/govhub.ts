@@ -1,5 +1,6 @@
 /** Public Gov Hub URL (interfacehub.net is canonical; legacy hub host 301s). */
-import { workgroupActivityHref } from '@/lib/workgroup-links';
+import { isWorkgroupCollabEnabledFromEnv, workgroupActivityHref } from '@/lib/workgroup-links';
+import { workgroupMessageEventHref } from '@/lib/workgroup-message-permalink';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 
 export const GOVHUB_PUBLIC_BASE_URL =
@@ -363,7 +364,13 @@ function formatActivityEvent(
         id: event.id,
         createdAt: event.created_at,
         text,
-        href: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
+        // With `message_id` (Gov Hub relay and newer posts): the message permalink.
+        href: workgroupMessageEventHref({
+          slug,
+          payload,
+          collabEnabled: isWorkgroupCollabEnabledFromEnv(),
+          fallbackHref: slug ? workgroupActivityHref(slug) : WORKGROUPS_JOIN_HREF,
+        }),
       };
     }
     case 'workgroup_invite_sent': {

@@ -4,6 +4,42 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-relay-ui",
+      "date": "2026-10-14",
+      "status": "open",
+      "title": "Workgroup chat: links to single messages, and notes sent by email",
+      "summary": "Each workgroup chat message now has its own link. Opening it goes to the chat, finds the message (loading older messages if needed) and highlights it. Activity items for chat posts link to the message itself. Notes a reviewer sent by email and that were posted for them show a 'via email' label, keep their formatting (paragraphs, lists, links), list any attached files with their size, and link the reviewer's name to their Canopi profile when we can find it.",
+      "changes": [
+        "Chat messages have permalinks: /workgroups/<slug>?tab=chat&m=<message id>",
+        "Activity on /activity and the workgroup Activity tab links to the exact chat message when Gov Hub sends its id",
+        "Notes relayed by email show formatted text, a 'via email' label, attachments, and the author's Canopi profile link",
+        "Attachments download through the site, signed in, as members-only files"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/components/workgroup/WorkgroupChatPanel.tsx",
+          "label": "Workgroup chat"
+        },
+        {
+          "path": "challenge-site/src/lib/workgroup-relay-message.ts",
+          "label": "Email-relay messages"
+        },
+        {
+          "path": "challenge-site/src/lib/workgroup-message-permalink.ts",
+          "label": "Message permalinks"
+        },
+        {
+          "path": "challenge-site/src/lib/govhub.ts",
+          "label": "Activity links"
+        }
+      ],
+      "verify": "After Gov Hub returns message ids, open a chat message link from a DP's Activity tab: the chat opens on that message and highlights it. A relayed email note shows 'via email', its files and a profile link.",
+      "intent": "Reviewers who answered by email get their notes posted under their own name in the DP workgroup chat, and people can link straight to them.",
+      "surfaces": [
+        "site"
+      ]
+    },
+    {
       "id": "style-pass-review",
       "date": "2026-10-13",
       "status": "open",

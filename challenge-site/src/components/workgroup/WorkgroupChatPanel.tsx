@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DpDialogHost } from '@/components/DpDialog';
 import HermesExperimentalInstructionsModal from '@/components/workgroup/HermesExperimentalInstructionsModal';
 import WorkgroupChatComposer from '@/components/workgroup/WorkgroupChatComposer';
@@ -23,6 +23,16 @@ import type { WorkgroupMessage } from '@/lib/workgroup-collab-types';
 import {
   canMemberShareMessage,
 } from '@/lib/workgroup-share-restrictions';
+import {
+  loadOlderUntilMessage,
+  mergeOlderMessages,
+  workgroupMessageAnchorId,
+} from '@/lib/workgroup-message-permalink';
+import {
+  isEmailRelayMessage,
+  RelayAuthorName,
+  ViaEmailLabel,
+} from '@/lib/workgroup-relay-message';
 
 type Props = {
   workgroupId: string;
@@ -34,7 +44,11 @@ type Props = {
   initialMessages?: WorkgroupMessage[];
   initialIsMember?: boolean;
   initialCanPost?: boolean;
+  /** Message id from `?m=`: load older pages until it is shown, then scroll to it. */
+  focusMessageId?: string | null;
 };
+
+const HIGHLIGHT_MS = 4000;
 
 export default function WorkgroupChatPanel({
   workgroupId,
@@ -46,8 +60,16 @@ export default function WorkgroupChatPanel({
   initialMessages = [],
   initialIsMember = false,
   initialCanPost = false,
+  focusMessageId = null,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>(initialMessages);
+  /** Older pages loaded for a permalink; kept across the 30s refresh of the latest page. */
+  const [olderMessages, setOlderMessages] = useState<WorkgroupMessage[]>([]);
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+  const [focusMissing, setFocusMissing] = useState(false);
+  const focusHandledRef = useRef<string | null>(null);
+  /** True after the first full-page fetch (the initial props may be a teaser). */
+  const [fullLoaded, setFullLoaded] = useState(false);
   const [isMember, setIsMember] = useState(initialIsMember);
   const [canPost, setCanPost] = useState(initialCanPost || initialIsMember);
   const [loading, setLoading] = useState(!initialIsMember);
@@ -113,6 +135,7 @@ export default function WorkgroupChatPanel({
       setIsMember((prev) => Boolean(data.is_member) || prev);
       setCanPost((prev) => Boolean(data.can_post) || prev);
       setError(null);
+      setFullLoaded(true);
       await refreshHands();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load messages');
@@ -128,6 +151,45 @@ export default function WorkgroupChatPanel({
     }, 30000);
     return () => window.clearInterval(timer);
   }, [refresh]);
+
+  const displayedMessages = useMemo(
+    () => mergeOlderMessages(olderMessages, messages),
+    [olderMessages, messages],
+  );
+
+  // Permalink (?m=<id>): once the latest page is in, load older pages until the message is there.
+  useEffect(() => {
+    if (!focusMessageId || !fullLoaded || focusHandledRef.current === focusMessageId) return;
+    // Runs once per id; not cancelled when `messages` refreshes underneath it.
+    focusHandledRef.current = focusMessageId;
+    void (async () => {
+      try {
+        const result = await loadOlderUntilMessage({
+          targetId: focusMessageId,
+          current: messages,
+          fetchOlder: async (before) => {
+            const data = await fetchWorkgroupMessages(workgroupId, { full: true, before });
+            return data.messages || [];
+          },
+        });
+        if (result.older.length) {
+          setOlderMessages((prev) => mergeOlderMessages(result.older, prev));
+        }
+        setFocusMissing(!result.found);
+        if (result.found) setHighlightId(focusMessageId);
+      } catch {
+        setFocusMissing(true);
+      }
+    })();
+  }, [focusMessageId, fullLoaded, messages, workgroupId]);
+
+  useEffect(() => {
+    if (!highlightId) return;
+    const el = document.getElementById(workgroupMessageAnchorId(highlightId));
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const timer = window.setTimeout(() => setHighlightId(null), HIGHLIGHT_MS);
+    return () => window.clearTimeout(timer);
+  }, [highlightId]);
 
   async function triggerAmbientAssess(message: WorkgroupMessage, allMessages: WorkgroupMessage[]) {
     try {
@@ -269,29 +331,58 @@ export default function WorkgroupChatPanel({
           </div>
 
           {error ? <p className="mt-4 text-sm text-rose-300">{error}</p> : null}
+          {focusMissing ? (
+            <p className="mt-4 text-sm text-slate-400">
+              That message is not in this chat&apos;s recent history. It may have been removed.
+            </p>
+          ) : null}
 
           <div className="mt-5 max-h-[28rem] space-y-3 overflow-y-auto pr-1 lg:max-h-[calc(100vh-22rem)]">
-            {loading && messages.length === 0 ? (
+            {loading && displayedMessages.length === 0 ? (
               <p className="text-sm text-slate-500">Loading messages…</p>
-            ) : messages.length === 0 ? (
+            ) : displayedMessages.length === 0 ? (
               <p className="text-sm text-slate-500">No messages yet. Start the conversation.</p>
             ) : (
-              messages.map((msg) => {
+              displayedMessages.map((msg) => {
                 const msgHands = handsByMessage.get(msg.id) || [];
+                const relay = isEmailRelayMessage(msg);
+                const highlighted = highlightId === msg.id;
                 return (
                   <article
                     key={msg.id}
-                    className="group rounded-lg border border-slate-800/80 bg-slate-950/40 px-4 py-3"
+                    id={workgroupMessageAnchorId(msg.id)}
+                    className={`group scroll-mt-4 rounded-lg border px-4 py-3 transition-colors duration-700 ${
+                      highlighted
+                        ? 'border-cyan-400/80 bg-cyan-950/40'
+                        : 'border-slate-800/80 bg-slate-950/40'
+                    }`}
                   >
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
+                      {relay ? (
+                        <span className="flex min-w-0 items-baseline gap-2">
+                          <RelayAuthorName
+                            name={msg.author_name || 'Member'}
+                            profileUrl={msg.author_canopi_profile_url}
+                          />
+                          <ViaEmailLabel />
+                        </span>
+                      ) : (
+                        <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
+                      )}
                       <UserDateTime
                         value={msg.created_at}
                         mode="short"
                         className="text-xs text-slate-500"
                       />
                     </div>
-                    <WorkgroupMessageBody body={msg.body} />
+                    <WorkgroupMessageBody
+                      body={msg.body}
+                      relay={
+                        relay
+                          ? { workgroupId, messageId: msg.id, attachments: msg.attachments }
+                          : null
+                      }
+                    />
                     {msgHands.map((hand) => (
                       <HermesAmbientHandBadge
                         key={hand.id}

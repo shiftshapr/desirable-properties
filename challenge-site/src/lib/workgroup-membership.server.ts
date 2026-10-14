@@ -2,6 +2,7 @@ import { readSession, type HermesSession } from '@/lib/auth-session';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import type { WorkgroupMessagesResponse } from '@/lib/workgroup-collab-types';
+import { enrichRelayMessagesWithCanopi } from '@/lib/workgroup-roster-canopi.server';
 
 export type WorkgroupMembershipSnapshot = {
   isMember: boolean;
@@ -66,12 +67,14 @@ async function fetchGovHubMessages(
   workgroupId: string,
   session: HermesSession | null,
   full: boolean,
+  before?: string | null,
 ): Promise<WorkgroupMessagesResponse | null> {
   try {
     const url = new URL(
       `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/messages/`,
     );
     if (full) url.searchParams.set('full', '1');
+    if (before) url.searchParams.set('before', before);
     const headers: HeadersInit = { Accept: 'application/json' };
     if (session?.idToken) {
       headers.Authorization = `Bearer ${session.idToken}`;
@@ -109,6 +112,8 @@ export async function fetchWorkgroupMessagesServer(
   opts?: {
     session?: HermesSession | null;
     full?: boolean;
+    /** Message id: return the page of messages older than this one (chat permalinks). */
+    before?: string | null;
     teaserMessages?: WorkgroupMessagesResponse['messages'];
   },
 ): Promise<WorkgroupMessagesResponse> {
@@ -123,10 +128,11 @@ export async function fetchWorkgroupMessagesServer(
 
   const upstream =
     session?.idToken != null
-      ? await fetchGovHubMessages(workgroupId, session, full)
+      ? await fetchGovHubMessages(workgroupId, session, full, opts?.before)
       : null;
 
   if (upstream) {
+    upstream.messages = await enrichRelayMessagesWithCanopi(upstream.messages || []);
     if (signupsMember && !upstream.is_member) {
       return {
         ...upstream,

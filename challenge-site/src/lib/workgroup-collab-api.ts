@@ -21,9 +21,12 @@ async function parseJson<T>(res: Response): Promise<T> {
 /** Client-side helpers calling same-origin challenge-site proxy routes. */
 export async function fetchWorkgroupMessages(
   workgroupId: string,
-  opts?: { full?: boolean },
+  opts?: { full?: boolean; before?: string },
 ): Promise<WorkgroupMessagesResponse> {
-  const qs = opts?.full ? '?full=1' : '';
+  const params = new URLSearchParams();
+  if (opts?.full) params.set('full', '1');
+  if (opts?.before) params.set('before', opts.before);
+  const qs = params.size ? `?${params.toString()}` : '';
   const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/messages${qs}`, {
     credentials: 'include',
     cache: 'no-store',
