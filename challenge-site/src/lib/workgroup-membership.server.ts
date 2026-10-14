@@ -2,6 +2,12 @@ import { readSession, type HermesSession } from '@/lib/auth-session';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import type { WorkgroupMessagesResponse } from '@/lib/workgroup-collab-types';
+import { enrichRelayMessagesWithCanopi } from '@/lib/workgroup-roster-canopi.server';
+import {
+  anonymousTeaserResponse,
+  PUBLIC_TEASER_LIMIT,
+  publicMessagesRequest,
+} from '@/lib/workgroup-public-teaser';
 
 export type WorkgroupMembershipSnapshot = {
   isMember: boolean;
@@ -10,7 +16,7 @@ export type WorkgroupMembershipSnapshot = {
   messages: WorkgroupMessagesResponse['messages'];
 };
 
-const TEASER_LIMIT = 5;
+const TEASER_LIMIT = PUBLIC_TEASER_LIMIT;
 
 /** Workgroup IDs the signed-in Gov Hub user belongs to (from layer signups aggregate). */
 export async function fetchUserMemberWorkgroupIds(userId: string): Promise<Set<string>> {
@@ -66,12 +72,14 @@ async function fetchGovHubMessages(
   workgroupId: string,
   session: HermesSession | null,
   full: boolean,
+  before?: string | null,
 ): Promise<WorkgroupMessagesResponse | null> {
   try {
     const url = new URL(
       `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/messages/`,
     );
     if (full) url.searchParams.set('full', '1');
+    if (before) url.searchParams.set('before', before);
     const headers: HeadersInit = { Accept: 'application/json' };
     if (session?.idToken) {
       headers.Authorization = `Bearer ${session.idToken}`;
@@ -79,6 +87,24 @@ async function fetchGovHubMessages(
     const res = await fetch(url.toString(), { cache: 'no-store', headers });
     if (!res.ok) return null;
     return (await res.json()) as WorkgroupMessagesResponse;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Gov Hub's public (anonymous) message list. Never sends the caller's session token.
+ * Returns null when Gov Hub is unreachable.
+ */
+export async function fetchPublicWorkgroupMessages(
+  workgroupId: string,
+): Promise<WorkgroupMessagesResponse['messages'] | null> {
+  try {
+    const { url, headers } = publicMessagesRequest(GOVHUB_PUBLIC_BASE_URL, workgroupId);
+    const res = await fetch(url, { headers, next: { revalidate: 30 } });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { messages?: WorkgroupMessagesResponse['messages'] };
+    return data.messages || [];
   } catch {
     return null;
   }
@@ -109,6 +135,8 @@ export async function fetchWorkgroupMessagesServer(
   opts?: {
     session?: HermesSession | null;
     full?: boolean;
+    /** Message id: return the page of messages older than this one (chat permalinks). */
+    before?: string | null;
     teaserMessages?: WorkgroupMessagesResponse['messages'];
   },
 ): Promise<WorkgroupMessagesResponse> {
@@ -123,10 +151,11 @@ export async function fetchWorkgroupMessagesServer(
 
   const upstream =
     session?.idToken != null
-      ? await fetchGovHubMessages(workgroupId, session, full)
+      ? await fetchGovHubMessages(workgroupId, session, full, opts?.before)
       : null;
 
   if (upstream) {
+    upstream.messages = await enrichRelayMessagesWithCanopi(upstream.messages || []);
     if (signupsMember && !upstream.is_member) {
       return {
         ...upstream,
@@ -135,6 +164,17 @@ export async function fetchWorkgroupMessagesServer(
       };
     }
     return upstream;
+  }
+
+  // No session token (signed out) and not a member: Gov Hub's public teaser, read-only.
+  // Never pages (`before` is ignored) and never sends a token.
+  if (!session?.idToken && !signupsMember) {
+    const publicMessages = await fetchPublicWorkgroupMessages(workgroupId);
+    const response = anonymousTeaserResponse(publicMessages ?? teaser, TEASER_LIMIT);
+    return {
+      ...response,
+      messages: await enrichRelayMessagesWithCanopi(response.messages),
+    };
   }
 
   return emptyMessagesResponse(signupsMember, full, teaser);

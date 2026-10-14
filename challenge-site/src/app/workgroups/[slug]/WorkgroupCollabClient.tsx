@@ -32,6 +32,7 @@ import {
 } from '@/lib/govhub';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
+import { normalizeWorkgroupMessageParam } from '@/lib/workgroup-message-permalink';
 import {
   normalizeWorkgroupCollabTab,
   visibleWorkgroupCollabTabs,
@@ -78,13 +79,16 @@ export default function WorkgroupCollabClient({
   const inviteToken = searchParams.get('invite')?.trim() || null;
   const deepLinkChangeId = searchParams.get('change')?.trim() || null;
   const deepLinkProposalId = searchParams.get('proposal')?.trim() || null;
+  const deepLinkMessageId = normalizeWorkgroupMessageParam(searchParams.get('m'));
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
   const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
-    normalizeWorkgroupCollabTab(
-      searchParams.get('tab'),
-      typeof window !== 'undefined' ? window.location.hash : null,
-    ),
+    deepLinkMessageId
+      ? 'chat'
+      : normalizeWorkgroupCollabTab(
+          searchParams.get('tab'),
+          typeof window !== 'undefined' ? window.location.hash : null,
+        ),
   );
   const [isMember, setIsMember] = useState(initialIsMember || justJoined);
   const [canInvite, setCanInvite] = useState(
@@ -100,9 +104,15 @@ export default function WorkgroupCollabClient({
   useEffect(() => {
     const rawTab = searchParams.get('tab');
     const hash = window.location.hash;
-    const next = normalizeWorkgroupCollabTab(rawTab, hash);
+    // A message permalink (?m=) always opens the chat tab.
+    const messageLink = Boolean(normalizeWorkgroupMessageParam(searchParams.get('m')));
+    const next = messageLink ? 'chat' : normalizeWorkgroupCollabTab(rawTab, hash);
     setTab(next);
-    if (rawTab === 'edit') {
+    if (messageLink && rawTab !== 'chat') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', 'chat');
+      window.history.replaceState(null, '', url.toString());
+    } else if (rawTab === 'edit') {
       const url = new URL(window.location.href);
       url.searchParams.set('tab', next);
       if (next !== 'astra') {
@@ -385,6 +395,7 @@ export default function WorkgroupCollabClient({
                 initialMessages={teaserMessages}
                 initialIsMember
                 initialCanPost={initialCanPost || isMember}
+                focusMessageId={deepLinkMessageId}
               />
             ) : (
               <WorkgroupChatTeaser
@@ -392,6 +403,8 @@ export default function WorkgroupCollabClient({
                 joinHref={joinHref}
                 workgroupName={workgroup.name}
                 isMember={isMember}
+                workgroupId={workgroup.id}
+                focusMessageId={deepLinkMessageId}
               />
             )
           ) : null}

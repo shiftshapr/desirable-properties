@@ -1,5 +1,6 @@
 import { fetchWorkgroupMessagesServer } from '@/lib/workgroup-membership.server';
 import { proxyGovHubJson } from '@/lib/govhub-proxy';
+import { normalizeWorkgroupMessageParam } from '@/lib/workgroup-message-permalink';
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -13,7 +14,9 @@ export async function GET(request: Request, ctx: Ctx) {
   const fullParam = url.searchParams.get('full')?.toLowerCase() ?? '';
   const full = fullParam === '1' || fullParam === 'true' || fullParam === 'yes';
 
-  const payload = await fetchWorkgroupMessagesServer(id, { full });
+  const before = normalizeWorkgroupMessageParam(url.searchParams.get('before'));
+
+  const payload = await fetchWorkgroupMessagesServer(id, { full, before });
   return Response.json(payload, {
     headers: { 'Cache-Control': 'no-store' },
   });

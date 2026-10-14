@@ -9,6 +9,15 @@ export type WorkgroupMessage = {
   created_at: string | null;
   edited_at?: string | null;
   source?: 'human' | 'deepi_shared';
+  /** Gov Hub channel: 'gov-hub' | 'agent-rep' | 'email-relay'. */
+  source_channel?: string | null;
+  /** Gov Hub handle of the author (may differ from their Canopi handle). */
+  author_handle?: string | null;
+  handle?: string | null;
+  /** Files on email-relay messages. */
+  attachments?: Array<{ id: string; filename: string; size?: number | null; url?: string | null }>;
+  /** Canopi profile resolved on the DP site server (email-relay authors only). */
+  author_canopi_profile_url?: string | null;
 };
 
 export type WorkgroupMessagesResponse = {

@@ -12,7 +12,8 @@ import {
   type GovHubDraftProposal,
   type LayerActivityEvent,
 } from '@/lib/govhub';
-import { workgroupActivityHref } from '@/lib/workgroup-links';
+import { isWorkgroupCollabEnabledFromEnv, workgroupActivityHref } from '@/lib/workgroup-links';
+import { workgroupMessageEventHref } from '@/lib/workgroup-message-permalink';
 import { fetchLocalWorkgroupActivity } from '@/lib/workgroup-local-activity';
 import { readAstraChapterBundle } from '@/lib/astra-corpus.server';
 import { dpIdToAstraKey } from '@/lib/astra-utils';
@@ -217,11 +218,20 @@ function eventToWorkgroupFeedItem(
     }
   }
 
-  const href = base.href.startsWith('http')
+  let href = base.href.startsWith('http')
     ? base.href
     : base.href.startsWith('/workgroups/')
       ? base.href
       : workgroupActivityHref(workgroupSlug);
+
+  if (event.event_type === 'workgroup_message_posted') {
+    href = workgroupMessageEventHref({
+      slug: String(payload.workgroup_slug || '').trim() || workgroupSlug,
+      payload,
+      collabEnabled: isWorkgroupCollabEnabledFromEnv(),
+      fallbackHref: href,
+    });
+  }
 
   return {
     id: `gh-event-${event.id}`,

@@ -21,6 +21,7 @@
     "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs",
     "test:canopi-comment-body": "node --experimental-strip-types --test scripts/canopi-comment-body.test.mjs",
     "test:canopi-feed-cache": "node --experimental-strip-types --test scripts/canopi-feed-cache.test.mjs",
+    "test:workgroup-relay": "node --experimental-strip-types --test scripts/workgroup-message-permalink.test.mjs scripts/workgroup-relay-message.test.mjs scripts/workgroup-public-teaser.test.mjs",
     "test:auth-session-cookie": "tsx --test scripts/auth-session-cookie.test.mjs",
     "test:web3auth-client-id": "node --experimental-strip-types --test scripts/web3auth-client-id.test.mjs",
     "test:pad-slug-typo": "node --test scripts/pad-slug-typo.test.mjs",
