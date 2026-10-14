@@ -91,6 +91,9 @@ export default function StyleChecksPanel() {
         <a href={`/api/admin/style-checks?${query}&format=json&limit=2000`} className="text-cyan-300 underline">
           Export JSON
         </a>
+        <a href="/api/admin/comment-drafts" className="text-cyan-300 underline">
+          Export comment-to-proposal drafts (CSV)
+        </a>
       </div>
 
       {error ? <p className="text-sm text-rose-300">{error}</p> : null}
