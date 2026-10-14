@@ -30,8 +30,7 @@ import {
 } from '@/lib/workgroup-message-permalink';
 import {
   isEmailRelayMessage,
-  RelayAuthorName,
-  ViaEmailLabel,
+  WorkgroupMessageAuthor,
 } from '@/lib/workgroup-relay-message';
 
 type Props = {
@@ -358,17 +357,7 @@ export default function WorkgroupChatPanel({
                     }`}
                   >
                     <div className="flex items-baseline justify-between gap-3">
-                      {relay ? (
-                        <span className="flex min-w-0 items-baseline gap-2">
-                          <RelayAuthorName
-                            name={msg.author_name || 'Member'}
-                            profileUrl={msg.author_canopi_profile_url}
-                          />
-                          <ViaEmailLabel />
-                        </span>
-                      ) : (
-                        <span className="text-sm font-medium text-cyan-200">{msg.author_name || 'Member'}</span>
-                      )}
+                      <WorkgroupMessageAuthor message={msg} />
                       <UserDateTime
                         value={msg.created_at}
                         mode="short"

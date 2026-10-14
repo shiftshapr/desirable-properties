@@ -403,6 +403,8 @@ export default function WorkgroupCollabClient({
                 joinHref={joinHref}
                 workgroupName={workgroup.name}
                 isMember={isMember}
+                workgroupId={workgroup.id}
+                focusMessageId={deepLinkMessageId}
               />
             )
           ) : null}

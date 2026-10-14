@@ -84,3 +84,18 @@ export async function loadOlderUntilMessage<T extends HasId>(opts: {
   }
   return { older, found: false, pages };
 }
+
+/**
+ * Permalink state in the signed-out teaser, which never loads older pages:
+ * `found` when the message is among the teaser messages, `missing` when a valid `?m=` id
+ * is not (the view then says to join for the full history).
+ */
+export function teaserFocusState(
+  messages: HasId[],
+  focusMessageId: string | null | undefined,
+): { found: boolean; missing: boolean } {
+  const id = normalizeWorkgroupMessageParam(focusMessageId);
+  if (!id) return { found: false, missing: false };
+  const found = messages.some((m) => m.id === id);
+  return { found, missing: !found };
+}

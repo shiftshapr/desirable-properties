@@ -108,3 +108,12 @@ test('older pages survive a refresh of the latest page', () => {
   const merged = mergeOlderMessages(msgs('a', 'b', 'c'), msgs('c', 'd'));
   assert.deepEqual(merged.map((m) => m.id), ['a', 'b', 'c', 'd']);
 });
+
+test('teaser permalink: found among teaser messages, missing otherwise', async () => {
+  const { teaserFocusState } = await import('../src/lib/workgroup-message-permalink.ts');
+  const teaser = msgs('a1', MID, 'c3');
+  assert.deepEqual(teaserFocusState(teaser, MID), { found: true, missing: false });
+  assert.deepEqual(teaserFocusState(teaser, 'older-id'), { found: false, missing: true });
+  assert.deepEqual(teaserFocusState(teaser, null), { found: false, missing: false });
+  assert.deepEqual(teaserFocusState(teaser, '"><img>'), { found: false, missing: false });
+});

@@ -5,9 +5,10 @@ import { normalizeWorkgroupMessageParam } from '@/lib/workgroup-message-permalin
 type Ctx = { params: Promise<{ id: string; messageId: string; attachmentId: string }> };
 
 /**
- * Download an email-relay attachment. Gov Hub serves it with the message's visibility
- * (members only), so this forwards the signed-in session token and streams the file back
- * as a download.
+ * Download an email-relay attachment. Gov Hub serves it with the message's visibility,
+ * so this forwards the session token when there is one (members) and asks anonymously
+ * otherwise (messages in the public teaser); Gov Hub decides. Streams the file back as a
+ * download.
  */
 export async function GET(_request: Request, ctx: Ctx) {
   const { id, messageId, attachmentId } = await ctx.params;
@@ -19,12 +20,9 @@ export async function GET(_request: Request, ctx: Ctx) {
   }
 
   const session = await readSession();
-  if (!session?.idToken) {
-    return Response.json(
-      { error: 'Authentication required', code: 'AUTHENTICATION_REQUIRED' },
-      { status: 401, headers: { 'Cache-Control': 'no-store' } },
-    );
-  }
+  const authHeaders: Record<string, string> = session?.idToken
+    ? { Authorization: `Bearer ${session.idToken}` }
+    : {};
 
   const url = `${getGovHubProxyBaseUrl()}/api/workgroups/${encodeURIComponent(wg)}/messages/${encodeURIComponent(
     mid,
@@ -33,7 +31,7 @@ export async function GET(_request: Request, ctx: Ctx) {
   let res: Response;
   try {
     res = await fetch(url, {
-      headers: { Authorization: `Bearer ${session.idToken}` },
+      headers: authHeaders,
       cache: 'no-store',
       redirect: 'manual',
       signal: AbortSignal.timeout(45000),

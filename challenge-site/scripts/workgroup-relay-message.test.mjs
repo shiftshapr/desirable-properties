@@ -8,6 +8,7 @@ import {
   RelayAuthorName,
   RelayMessageContent,
   ViaEmailLabel,
+  WorkgroupMessageAuthor,
   formatAttachmentSize,
   isEmailRelayMessage,
   normalizeRelayAttachments,
@@ -165,4 +166,38 @@ test('roster chain keeps the display-name fallback', async () => {
     { allowNameMatch: true },
   );
   assert.equal(profile.profileUrl, 'https://canopi.live/p/someone-else');
+});
+
+test('author line: email-relay gets profile link and "via email"; others unchanged', () => {
+  const relay = render(h(WorkgroupMessageAuthor, {
+    message: {
+      author_name: 'John Falstaff',
+      source_channel: 'email-relay',
+      author_canopi_profile_url: 'https://staging.app.canopi.live/p/thesirjohnfalstaff',
+    },
+  }));
+  assert.match(relay, /<a href="https:\/\/staging\.app\.canopi\.live\/p\/thesirjohnfalstaff"[^>]*>John Falstaff<\/a>/);
+  assert.match(relay, />via email</);
+
+  const plain = render(h(WorkgroupMessageAuthor, { message: { author_name: 'Ada', source_channel: 'gov-hub' } }));
+  assert.equal(plain, '<span class="text-sm font-medium text-cyan-200">Ada</span>');
+  assert.equal(
+    render(h(WorkgroupMessageAuthor, { message: { author_name: '' } })),
+    '<span class="text-sm font-medium text-cyan-200">Member</span>',
+  );
+});
+
+test('teaser relay body: the staging note renders as markdown, not literal **[..](..)**', () => {
+  const body = '**[John Falstaff](https://staging.app.canopi.live/p/thesirjohnfalstaff)** shared notes on DP8 by email:\n\nSee attached.';
+  const html = render(h(RelayMessageContent, {
+    workgroupId: 'a7bc9478-da04-468b-8768-7fee9dc31224',
+    messageId: 'dd6af0dd-7989-44ef-ab92-25e23f0e00ec',
+    body,
+    attachments: [{ id: 'f1', filename: 'notes.pdf', size: 4096, url: null }],
+  }));
+  assert.doesNotMatch(html, /\*\*/);
+  assert.doesNotMatch(html, /\]\(/);
+  assert.match(html, /<strong[^>]*><a href="https:\/\/staging\.app\.canopi\.live\/p\/thesirjohnfalstaff" target="_blank" rel="noopener noreferrer"/);
+  assert.match(html, /notes\.pdf/);
+  assert.match(html, /4 KB/);
 });

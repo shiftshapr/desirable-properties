@@ -184,3 +184,27 @@ export function RelayAuthorName(props: { name: string; profileUrl?: string | nul
     name,
   );
 }
+
+/**
+ * Author line for any chat message (member chat and signed-out teaser). Email-relay
+ * messages get the Canopi profile link and the "via email" label; others render the
+ * plain name exactly as before.
+ */
+export function WorkgroupMessageAuthor(props: {
+  message: {
+    author_name?: string | null;
+    source_channel?: string | null;
+    author_canopi_profile_url?: string | null;
+  };
+}): ReactNode {
+  const name = props.message.author_name || 'Member';
+  if (!isEmailRelayMessage(props.message)) {
+    return h('span', { className: 'text-sm font-medium text-cyan-200' }, name);
+  }
+  return h(
+    'span',
+    { className: 'flex min-w-0 items-baseline gap-2' },
+    h(RelayAuthorName, { name, profileUrl: props.message.author_canopi_profile_url }),
+    h(ViaEmailLabel),
+  );
+}
