@@ -3,6 +3,11 @@ import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import type { WorkgroupMessagesResponse } from '@/lib/workgroup-collab-types';
 import { enrichRelayMessagesWithCanopi } from '@/lib/workgroup-roster-canopi.server';
+import {
+  anonymousTeaserResponse,
+  PUBLIC_TEASER_LIMIT,
+  publicMessagesRequest,
+} from '@/lib/workgroup-public-teaser';
 
 export type WorkgroupMembershipSnapshot = {
   isMember: boolean;
@@ -11,7 +16,7 @@ export type WorkgroupMembershipSnapshot = {
   messages: WorkgroupMessagesResponse['messages'];
 };
 
-const TEASER_LIMIT = 5;
+const TEASER_LIMIT = PUBLIC_TEASER_LIMIT;
 
 /** Workgroup IDs the signed-in Gov Hub user belongs to (from layer signups aggregate). */
 export async function fetchUserMemberWorkgroupIds(userId: string): Promise<Set<string>> {
@@ -87,6 +92,24 @@ async function fetchGovHubMessages(
   }
 }
 
+/**
+ * Gov Hub's public (anonymous) message list. Never sends the caller's session token.
+ * Returns null when Gov Hub is unreachable.
+ */
+export async function fetchPublicWorkgroupMessages(
+  workgroupId: string,
+): Promise<WorkgroupMessagesResponse['messages'] | null> {
+  try {
+    const { url, headers } = publicMessagesRequest(GOVHUB_PUBLIC_BASE_URL, workgroupId);
+    const res = await fetch(url, { headers, next: { revalidate: 30 } });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { messages?: WorkgroupMessagesResponse['messages'] };
+    return data.messages || [];
+  } catch {
+    return null;
+  }
+}
+
 function emptyMessagesResponse(
   isMember: boolean,
   full: boolean,
@@ -141,6 +164,17 @@ export async function fetchWorkgroupMessagesServer(
       };
     }
     return upstream;
+  }
+
+  // No session token (signed out) and not a member: Gov Hub's public teaser, read-only.
+  // Never pages (`before` is ignored) and never sends a token.
+  if (!session?.idToken && !signupsMember) {
+    const publicMessages = await fetchPublicWorkgroupMessages(workgroupId);
+    const response = anonymousTeaserResponse(publicMessages ?? teaser, TEASER_LIMIT);
+    return {
+      ...response,
+      messages: await enrichRelayMessagesWithCanopi(response.messages),
+    };
   }
 
   return emptyMessagesResponse(signupsMember, full, teaser);

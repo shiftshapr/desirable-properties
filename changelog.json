@@ -13,7 +13,8 @@
         "Chat messages have permalinks: /workgroups/<slug>?tab=chat&m=<message id>",
         "Activity on /activity and the workgroup Activity tab links to the exact chat message when Gov Hub sends its id",
         "Notes relayed by email show formatted text, a 'via email' label, attachments, and the author's Canopi profile link",
-        "Attachments download through the site, signed in, as members-only files"
+        "Attachments download through the site, signed in, as members-only files",
+        "Signed-out visitors keep seeing the latest chat messages; the page no longer empties the chat after it loads"
       ],
       "files": [
         {

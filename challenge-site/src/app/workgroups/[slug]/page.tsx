@@ -12,7 +12,10 @@ import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { dpDetailHref } from '@/lib/dp-links';
 import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { workgroupGovHubHref } from '@/lib/workgroup-links';
-import { fetchWorkgroupMembershipSnapshot } from '@/lib/workgroup-membership.server';
+import {
+  fetchPublicWorkgroupMessages,
+  fetchWorkgroupMembershipSnapshot,
+} from '@/lib/workgroup-membership.server';
 import { fetchWorkgroupRoster } from '@/lib/workgroup-members-roster.server';
 import { enrichWorkgroupRosterWithCanopi } from '@/lib/workgroup-roster-canopi.server';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
@@ -51,17 +54,7 @@ async function fetchWorkgroup(
 }
 
 async function fetchTeaserMessages(workgroupId: string): Promise<WorkgroupMessage[]> {
-  try {
-    const res = await fetch(
-      `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/messages/`,
-      { next: { revalidate: 30 } },
-    );
-    if (!res.ok) return [];
-    const data = (await res.json()) as { messages?: WorkgroupMessage[] };
-    return data.messages || [];
-  } catch {
-    return [];
-  }
+  return (await fetchPublicWorkgroupMessages(workgroupId)) ?? [];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
