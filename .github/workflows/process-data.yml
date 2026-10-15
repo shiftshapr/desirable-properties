@@ -15,6 +15,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        # Push to main with the deploy key: the production-branch ruleset lets deploy keys
+        # bypass it, but not the Actions bot (north-star docs/STAGING-BRANCH.md).
+        ssh-key: ${{ secrets.MAIN_PUSH_DEPLOY_KEY }}
       
     - name: Setup Python
       uses: actions/setup-python@v4
