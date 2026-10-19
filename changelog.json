@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-tab-all-proposals",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Review tab: every book patch and insert, with its anchored passage",
+      "summary": "The workgroup Review tab only read book posts from the DP community, so patches and inserts posted in Canopi's Public Square (most of them, including the Astra-reconciled CFI changes and emailed reviews) were missing: DP1 showed 1 of 9. Each item now shows the passage it is anchored to, whether an insert goes above or below it, and its rationale. Diff highlights the change against that passage; As updated shows the passage as it would read. Open on book Discuss goes to the post itself.",
+      "changes": [
+        "Review and its comment triage read both the DP community and Public Square",
+        "Book patches/inserts carry the anchored passage, insert position (above/below) and rationale from Canopi",
+        "Gov Hub insert_after proposals show as inserts below the passage, not replacements",
+        "Diff: inserted text highlighted next to the greyed anchored passage; As updated: the resulting passage without markup",
+        "Open on book Discuss deep-links to the post (canopiMsg, canopiCommunity)"
+      ]
+    },
+    {
       "id": "workgroup-relay-ui",
       "date": "2026-10-14",
       "status": "open",

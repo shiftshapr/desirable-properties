@@ -5,6 +5,8 @@ type Props = {
   removed?: string | null;
   added?: string | null;
   mode?: 'replace' | 'insert' | 'patch' | 'comment' | null;
+  /** INSERT: where the text goes relative to the anchored passage (default above). */
+  insertPosition?: 'above' | 'below' | null;
 };
 
 function DiffPre({ children }: { children: ReactNode }) {
@@ -52,7 +54,7 @@ function InlineDiff({ original, proposed }: { original: string; proposed: string
 }
 
 /** Inline word-level diff preview for patch/insert proposals (Gov Hub style). */
-export default function ActivityDiffBlock({ removed, added, mode }: Props) {
+export default function ActivityDiffBlock({ removed, added, mode, insertPosition }: Props) {
   const original = (removed || '').trim();
   const proposed = (added || '').trim();
   if (!original && !proposed) return null;
@@ -67,19 +69,25 @@ export default function ActivityDiffBlock({ removed, added, mode }: Props) {
   }
 
   if (mode === 'insert') {
+    const below = insertPosition === 'below';
+    const inserted = proposed ? <mark className="dp-diff-ins">{proposed}</mark> : null;
+    const anchor = original ? <span className="text-slate-500">{original}</span> : null;
     return (
       <div className="gh-patch-diff space-y-1.5">
         <p className="text-[11px] uppercase tracking-wide text-slate-500">
-          Text to insert above selection
+          {original
+            ? `Inserted ${below ? 'below' : 'above'} the anchored passage (grey, unchanged)`
+            : `Text to insert ${below ? 'below' : 'above'} selection · anchored passage not recorded`}
         </p>
-        {proposed ? <DiffPre>{proposed}</DiffPre> : null}
-        {original ? (
-          <>
-            <p className="text-[11px] uppercase tracking-wide text-slate-500">
-              Selected passage (unchanged)
-            </p>
-            <DiffPre>{original}</DiffPre>
-          </>
+        <DiffPre>
+          {below ? anchor : inserted}
+          {anchor && inserted ? '\n\n' : null}
+          {below ? inserted : anchor}
+        </DiffPre>
+        {proposed ? (
+          <div className="gh-patch-diff-legend mt-1 text-[11px] text-emerald-400">
+            +{proposed.split(/\s+/).filter(Boolean).length} words
+          </div>
         ) : null}
       </div>
     );
@@ -88,7 +96,9 @@ export default function ActivityDiffBlock({ removed, added, mode }: Props) {
   if (!original) {
     return (
       <div className="gh-patch-diff space-y-1.5">
-        <p className="text-[11px] uppercase tracking-wide text-slate-500">Patched text</p>
+        <p className="text-[11px] uppercase tracking-wide text-slate-500">
+          Replacement text · anchored passage not recorded
+        </p>
         {proposed ? <DiffPre>{proposed}</DiffPre> : null}
       </div>
     );
@@ -96,7 +106,9 @@ export default function ActivityDiffBlock({ removed, added, mode }: Props) {
 
   return (
     <div className="gh-patch-diff space-y-1.5">
-      <p className="text-[11px] uppercase tracking-wide text-slate-500">Patched text</p>
+      <p className="text-[11px] uppercase tracking-wide text-slate-500">
+        Changes to the anchored passage
+      </p>
       <DiffPre>
         <InlineDiff original={original} proposed={proposed} />
       </DiffPre>
