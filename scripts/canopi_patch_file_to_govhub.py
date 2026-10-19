@@ -18,8 +18,9 @@ Per post:
   python3 scripts/canopi_patch_file_to_govhub.py --env staging --dry-run
   python3 scripts/canopi_patch_file_to_govhub.py --env prod --apply
 
-Skipped: posts carrying payload.aiAssist.cfiPatchId (CFI / Astra reconciled posts, tracked in
-Gov Hub's CFI graph) and Canopi posts an Astra release already decided (proposal-dispositions).
+CFI / Astra reconciled posts (payload.aiAssist.cfiPatchId) are filed like any other post, so
+co-editors approve them on Review (owner decision 2026-10-19); the CFI patch id goes in the rationale.
+Skipped: Canopi posts an Astra release already decided (proposal-dispositions).
 Deleted posts never appear: the Canopi messages API excludes message_deletions.
 
 Report: data/loop/canopi-filing-<env>.json (read by the loop dashboard).
@@ -354,8 +355,7 @@ def main() -> int:
             continue
         cfi_id = cfi_patch_id(p)
         if cfi_id:
-            row.update(status="skipped_cfi", reason=f"CFI/Astra post ({cfi_id}); tracked in Gov Hub's CFI graph")
-            continue
+            row["cfi_patch_id"] = cfi_id
         if mid in astra_done:
             row.update(status="skipped_astra", reason=f"already decided by Astra ({astra_done[mid]})")
             continue
@@ -408,7 +408,8 @@ def main() -> int:
                 span, proposed = narrowed
         credit = (f"Filed from Canopi book {p['_kind']} {mid}"
                   + (f" (insert {'above' if position == 'above' else 'below'} the anchor, encoded as replace)" if p["_kind"] == "insert" else "")
-                  + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "") + ".")
+                  + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "")
+                  + (f"; Astra reconciled CFI change {cfi_id}" if cfi_id else "") + ".")
         note = (override or {}).get("note") or ""
         rationale = "\n\n".join(x for x in (str(ai.get("patchRationale") or "").strip(), credit, note) if x)[:3900]
         body = {
