@@ -1,5 +1,11 @@
 export const DP_CANOPI_COMMUNITY_ID = 'c0f30bc5-de17-4328-80d9-ff8f364907da';
 
+/** Canopi Public Square: the book embed's default community, where most book patches/inserts are posted. */
+export const CANOPI_PUBLIC_SQUARE_COMMUNITY_ID = 'abe5ec85-4ba6-456f-adaf-03d7d51cecf4';
+
+/** Every community whose posts show on the book's Discuss (Review reads all of them). */
+export const DP_BOOK_COMMUNITY_IDS = [DP_CANOPI_COMMUNITY_ID, CANOPI_PUBLIC_SQUARE_COMMUNITY_ID];
+
 /** Prod book host for Canopi pageId hashing (staging book uses prod pageUrlOrigin). */
 export const DP_CANOPI_BOOK_ORIGIN = 'https://book.desirableproperties.org';
 

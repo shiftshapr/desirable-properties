@@ -36,6 +36,9 @@ export type ReviewQueueItem = {
   /** bundle = a mechanical style pass: many line edits approved together. */
   patchMode: 'replace' | 'insert' | 'bundle';
   edits: ReviewBundleEdit[];
+  /** INSERT: where proposedText goes relative to originalText (the anchored passage). */
+  insertPosition: 'above' | 'below' | null;
+  /** replace: the passage being replaced. insert: the anchored passage it goes next to. */
   originalText: string;
   proposedText: string;
   rationale: string | null;

@@ -8,12 +8,13 @@ type Props = {
   removed?: string | null;
   added?: string | null;
   mode?: 'replace' | 'insert' | 'patch' | 'comment' | null;
+  insertPosition?: 'above' | 'below' | null;
 };
 
 type ViewMode = 'diff' | 'updated';
 
 /** Per-item Diff vs As-updated toggle for patch/insert activity rows. */
-export default function ActivityPatchPreview({ removed, added, mode }: Props) {
+export default function ActivityPatchPreview({ removed, added, mode, insertPosition }: Props) {
   const [view, setView] = useState<ViewMode>('diff');
   const removedText = (removed || '').trim();
   const addedText = (added || '').trim();
@@ -54,9 +55,9 @@ export default function ActivityPatchPreview({ removed, added, mode }: Props) {
         </button>
       </div>
       {view === 'diff' ? (
-        <ActivityDiffBlock removed={removed} added={added} mode={mode} />
+        <ActivityDiffBlock removed={removed} added={added} mode={mode} insertPosition={insertPosition} />
       ) : (
-        <ActivityUpdatedText removed={removed} added={added} mode={mode} />
+        <ActivityUpdatedText removed={removed} added={added} mode={mode} insertPosition={insertPosition} />
       )}
     </div>
   );
