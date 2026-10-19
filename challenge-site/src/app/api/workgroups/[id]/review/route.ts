@@ -5,6 +5,7 @@ import { resolveWorkgroupMembership } from '@/lib/workgroup-membership.server';
 import {
   draftRefFromDocumentHref,
   draftRefFromLabel,
+  fetchViewerCoEditor,
   fetchWorkgroupSummary,
   fetchWorkingRevision,
   workgroupCanEdit,
@@ -38,6 +39,10 @@ export async function GET(_request: Request, ctx: RouteContext) {
     ? await workgroupCanEdit(workgroupId, session.idToken)
     : false;
 
+  const coEditor = session?.idToken
+    ? await fetchViewerCoEditor(workgroupId, session.idToken)
+    : { isCoEditor: false, govhubUserId: null };
+
   const items = await buildWorkgroupReviewQueue({
     workgroupId,
     dpId,
@@ -66,6 +71,8 @@ export async function GET(_request: Request, ctx: RouteContext) {
     workingRevision,
     isMember,
     canEdit,
+    isCoEditor: coEditor.isCoEditor,
+    viewerGovhubUserId: coEditor.govhubUserId,
     styleCheckEnabled: Boolean(currentStyleCheckModel()),
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });

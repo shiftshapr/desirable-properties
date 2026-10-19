@@ -220,6 +220,10 @@ export type GovHubDraftProposal = {
   applicability?: 'applies' | 'needs-review' | 'obsolete' | string | null;
   applicability_hint?: string | null;
   created_on_revision_label?: string | null;
+  /** DP co-editor approvals recorded so far (two incorporate the proposal). */
+  approvals?: Array<{ user_id: string; user_name?: string | null; note?: string | null; created_at?: string | null }>;
+  review_note?: string | null;
+  reviewed_by_name?: string | null;
   /** editorial_bundle only: the line edits approved together. */
   edits?: Array<{ seq: number; rule?: string | null; original_text: string; proposed_text: string }>;
 };
