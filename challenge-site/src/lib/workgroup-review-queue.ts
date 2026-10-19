@@ -7,7 +7,7 @@ import {
   govhubDraftReadHref,
   type GovHubDraftProposal,
 } from '@/lib/govhub';
-import { loadCanopiFilingReport } from '@/lib/canopi-filing-report';
+import { loadCanopiFilingReportWithTime } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
 import {
@@ -119,6 +119,13 @@ export async function buildWorkgroupReviewQueue(opts: {
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
+      approvals: (proposal.approvals || []).map((a) => ({
+        userId: a.user_id,
+        userName: a.user_name || 'A co-editor',
+        note: a.note || null,
+        createdAt: a.created_at || null,
+      })),
+      decision: pending ? null : { by: proposal.reviewed_by_name || null, note: proposal.review_note || null },
       styleCheckable: false,
       styleCheck: null,
       canPromote: pending && anchored,
@@ -132,7 +139,10 @@ export async function buildWorkgroupReviewQueue(opts: {
     });
   }
 
-  const filing = await loadCanopiFilingReport();
+  const { rows: filing, generatedAt: filedAt } = await loadCanopiFilingReportWithTime();
+  const lastRun = filedAt
+    ? `The filer last ran ${new Date(filedAt).toISOString().slice(0, 16).replace('T', ' ')} UTC.`
+    : 'The filer has not reported yet.';
   const thisDp = opts.dpId ? `DP${String(opts.dpId).replace(/^DP/i, '')}` : null;
   for (const post of canopiPatches) {
     if (usedCanopiIds.has(post.id)) continue;
@@ -162,6 +172,8 @@ export async function buildWorkgroupReviewQueue(opts: {
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },
+      approvals: [],
+      decision: null,
       styleCheckable: false,
       styleCheck: null,
       canPromote: false,
@@ -169,7 +181,7 @@ export async function buildWorkgroupReviewQueue(opts: {
         ? `Posted on this chapter's page, but the passage it targets is in ${filed!.home_dp}. It was filed there (${filed!.draft_ref}); review it on the ${filed!.home_dp} Review tab.`
         : filed?.status === 'blocked' || filed?.status === 'error'
           ? `Not filed to Gov Hub automatically: ${filed.reason || filed.status}.`
-          : 'Book patches are filed to Gov Hub automatically every 30 minutes. This one is not filed yet, so it cannot be promoted.',
+          : `Not filed to Gov Hub yet, so it cannot be approved here. ${lastRun}`,
     });
   }
 

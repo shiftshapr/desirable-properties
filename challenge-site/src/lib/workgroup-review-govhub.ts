@@ -197,6 +197,24 @@ export async function publishWorkingRevision(
 }
 
 
+/** The viewer's co-editor standing on a DP workgroup (Gov Hub co-editors list). */
+export async function fetchViewerCoEditor(
+  workgroupId: string,
+  idToken: string,
+): Promise<{ isCoEditor: boolean; govhubUserId: string | null }> {
+  try {
+    const res = await fetch(
+      `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors/`,
+      { cache: 'no-store', headers: { Accept: 'application/json', Authorization: `Bearer ${idToken}` } },
+    );
+    if (!res.ok) return { isCoEditor: false, govhubUserId: null };
+    const data = (await res.json()) as { viewer_is_co_editor?: boolean; viewer_user_id?: string | null };
+    return { isCoEditor: Boolean(data.viewer_is_co_editor), govhubUserId: data.viewer_user_id || null };
+  } catch {
+    return { isCoEditor: false, govhubUserId: null };
+  }
+}
+
 export async function fetchWorkgroupSummary(workgroupId: string, idToken?: string | null) {
   const headers: HeadersInit = { Accept: 'application/json' };
   if (idToken) headers.Authorization = `Bearer ${idToken}`;

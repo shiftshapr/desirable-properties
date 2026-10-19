@@ -37,6 +37,8 @@ export default function WorkgroupReviewPanel({
   const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
   const [notice, setNotice] = useState<string | null>(null);
+  /** Result of the last Approve/Decline on an item, shown next to it. */
+  const [resultByKey, setResultByKey] = useState<Record<string, { ok: boolean; text: string }>>({});
   /** Style checks fetched this session, keyed by item; 'pending' while running, string on error. */
   const [styleByKey, setStyleByKey] = useState<Record<string, ReviewStyleCheck | 'pending' | { error: string }>>({});
 
@@ -140,6 +142,7 @@ export default function WorkgroupReviewPanel({
     if (action === 'drop' && !note) return;
     setBusyKey(`${action}:${item.key}`);
     setNotice(null);
+    setResultByKey((prev) => ({ ...prev, [item.key]: { ok: true, text: '' } }));
     try {
       const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/pick`, {
         method: 'POST',
@@ -153,18 +156,18 @@ export default function WorkgroupReviewPanel({
       });
       const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
       if (!res.ok) throw new Error(body.error || 'Gov Hub update failed');
-      setNotice(
-        String(
-          body.message ||
-            (action === 'promote'
-              ? 'Approved. It goes into the next revision draft once both co-editors approve. Not live.'
-              : 'Declined. The author can read your note.'),
-        ),
+      const text = String(
+        body.message ||
+          (action === 'promote'
+            ? 'Approved. It goes into the next revision draft once both co-editors approve. Not live.'
+            : 'Declined. The author can read your note.'),
       );
+      setResultByKey((prev) => ({ ...prev, [item.key]: { ok: true, text } }));
       setNoteByKey((prev) => ({ ...prev, [item.key]: '' }));
       await reload();
     } catch (err) {
-      setNotice(err instanceof Error ? err.message : 'Gov Hub update failed');
+      const text = err instanceof Error ? err.message : 'Gov Hub update failed';
+      setResultByKey((prev) => ({ ...prev, [item.key]: { ok: false, text } }));
     } finally {
       setBusyKey(null);
     }
@@ -340,6 +343,7 @@ export default function WorkgroupReviewPanel({
                   Open on book Discuss
                 </DiscussPatchLink>
               ) : null}
+{/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
               {item.hrefs.govhub ? (
                 <a
                   href={item.hrefs.govhub}
@@ -350,7 +354,10 @@ export default function WorkgroupReviewPanel({
                   Open Gov Hub draft
                 </a>
               ) : null}
+*/}
             </div>
+
+            <Decisions item={item} viewerGovhubUserId={data?.viewerGovhubUserId || null} />
 
             {item.evals.comments.length ? (
               <ul className="mt-3 space-y-1 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-400">
@@ -409,7 +416,7 @@ export default function WorkgroupReviewPanel({
               </p>
             )}
 
-            {canEdit ? (
+            {data?.isCoEditor ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
                   Both co-editors must approve before a proposal goes into the next revision draft
@@ -435,14 +442,22 @@ export default function WorkgroupReviewPanel({
                   />
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    disabled={!item.canPromote || Boolean(busyKey)}
-                    onClick={() => void pick(item, 'promote')}
-                    className="rounded-lg bg-cyan-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50"
-                  >
-                    Approve
-                  </button>
+                  {(() => {
+                    const mine = Boolean(
+                      data?.viewerGovhubUserId && item.approvals.some((a) => a.userId === data.viewerGovhubUserId),
+                    );
+                    return (
+                      <button
+                        type="button"
+                        disabled={mine || !item.canPromote || Boolean(busyKey)}
+                        title={mine ? 'You approved this proposal' : undefined}
+                        onClick={() => void pick(item, 'promote')}
+                        className="rounded-lg bg-cyan-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50"
+                      >
+                        {mine ? 'Approved by you' : busyKey === `promote:${item.key}` ? 'Approving…' : 'Approve'}
+                      </button>
+                    );
+                  })()}
                   <button
                     type="button"
                     disabled={
@@ -458,16 +473,63 @@ export default function WorkgroupReviewPanel({
                     Decline
                   </button>
                 </div>
+                {resultByKey[item.key]?.text ? (
+                  <p
+                    role="status"
+                    className={`text-sm ${resultByKey[item.key].ok ? 'text-emerald-200' : 'text-rose-200'}`}
+                  >
+                    {resultByKey[item.key].text}
+                  </p>
+                ) : null}
                 {item.promoteBlockReason ? (
                   <p className="text-xs text-amber-200">{item.promoteBlockReason}</p>
                 ) : null}
               </div>
+            ) : signedIn && item.status === 'pending' && item.govhubProposalId ? (
+              <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">
+                Only this DP&apos;s two co-editors approve or decline proposals. Claim an open seat at the top of the
+                workgroup page.
+              </p>
             ) : null}
           </li>
         ))}
       </ul>
     </div>
   );
+}
+
+/** Who approved (visible to everyone), or the recorded decision once the proposal is closed. */
+function Decisions({ item, viewerGovhubUserId }: { item: ReviewQueueItem; viewerGovhubUserId: string | null }) {
+  if (item.approvals.length) {
+    return (
+      <div className="mt-3 rounded-lg border border-emerald-900/50 bg-emerald-950/20 px-3 py-2 text-sm">
+        <p className="text-emerald-200">
+          Approved by{' '}
+          {item.approvals
+            .map((a) => (a.userId === viewerGovhubUserId ? `${a.userName} (you)` : a.userName))
+            .join(' and ')}{' '}
+          · {item.approvals.length} of 2 co-editor approvals
+        </p>
+        {item.approvals
+          .filter((a) => a.note)
+          .map((a) => (
+            <p key={a.userId} className="mt-1 text-slate-300">
+              <span className="text-slate-400">{a.userName}:</span> {a.note}
+            </p>
+          ))}
+      </div>
+    );
+  }
+  if (item.decision && (item.decision.by || item.decision.note)) {
+    return (
+      <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-300">
+        <span className="capitalize text-slate-200">{item.status}</span>
+        {item.decision.by ? <> by {item.decision.by}</> : null}
+        {item.decision.note ? <>: {item.decision.note}</> : null}
+      </div>
+    );
+  }
+  return null;
 }
 
 const STYLE_RULE_LABELS: Record<string, string> = {

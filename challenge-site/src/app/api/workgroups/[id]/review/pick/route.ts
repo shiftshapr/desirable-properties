@@ -7,7 +7,7 @@ import {
   declineGovHubProposal,
   draftRefFromDocumentHref,
   draftRefFromLabel,
-  workgroupCanEdit,
+  fetchViewerCoEditor,
 } from '@/lib/workgroup-review-govhub';
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -23,10 +23,11 @@ export async function POST(request: Request, ctx: RouteContext) {
     return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
   }
 
-  const canEdit = await workgroupCanEdit(workgroupId, session.idToken);
-  if (!canEdit) {
+  // Only this DP's co-editors approve or decline (owner, 2026-10-19).
+  const { isCoEditor } = await fetchViewerCoEditor(workgroupId, session.idToken);
+  if (!isCoEditor) {
     return NextResponse.json(
-      { error: 'Workgroup coordinator or co-editor permission required' },
+      { error: "Only this DP's co-editors approve or decline proposals." },
       { status: 403 },
     );
   }
@@ -85,7 +86,7 @@ export async function POST(request: Request, ctx: RouteContext) {
     );
   }
 
-  const actorName = session.displayName || session.username || 'Coordinator';
+  const actorName = session.displayName || session.username || 'Co-editor';
   const dpId = extractDpId(wg.name || '');
   const dpKey = dpId ? `dp${dpId.replace(/^DP/i, '').padStart(2, '0')}` : null;
   await recordWorkgroupActivityEvent({

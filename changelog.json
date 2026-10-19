@@ -22,6 +22,54 @@
       ]
     },
     {
+      "id": "anchor-audit-2026-10-19",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Anchor audit of every open book proposal; filer fixes",
+      "summary": "All 289 open book proposals were audited for where they land. 95 Canopi posts and 12 Gov Hub proposals get corrected anchors (scripts and data in scripts/anchor-audit-2026-10-19), three PDPP sections misfiled on DP22 are withdrawn and refiled on DP1, DP4 and DP7, and two duplicates are skipped. The Canopi filer no longer splices inside headings, at the first of several identical anchors, or in reverse order, and can anchor next to formatted lines.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: whole heading lines (above a heading goes above its rule), unique anchors, formatted edges, heading-marker patches, whole-passage patches that keep emphasis, skip overrides",
+        "scripts/apply_canopi_anchor_fixes.py and scripts/apply_govhub_anchor_fixes.py (box #1, dry run by default, backup/rollback)",
+        "scripts/canopi_filing_overrides.json: superseded overrides removed; duplicates skipped",
+        "scripts/test_canopi_filer_anchors.py"
+      ]
+    },
+    {
+      "id": "review-co-editors-only",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Review: only a DP's co-editors approve or decline",
+      "summary": "The Approve and Decline controls on the Review tab appear only for the DP's co-editors; everyone else sees who has approved and a note on how to claim a seat. The site's API and Gov Hub refuse decisions from anyone else.",
+      "changes": [
+        "Review decision block rendered only for co-editors",
+        "review/pick API: co-editors only (was coordinators and co-editors)"
+      ]
+    },
+    {
+      "id": "review-approvals-wg-cards",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Review shows who approved; workgroup cards show open proposals and readiness; Gov Hub buttons hidden",
+      "summary": "Approving on the Review tab now shows the result next to the proposal and, for everyone, who has approved it (\"Approved by Daveed (you) · 1 of 2\"); declined items show the decision and its note. Only the DP's co-editors see an active Approve button. The workgroups list shows Open Proposals and Readiness on each DP card. Gov Hub buttons on workgroup pages are hidden for now because people found them confusing.",
+      "changes": [
+        "Review: per-item approve/decline result; approvals and decisions from Gov Hub visible to all; 'Approved by you' replaces the button",
+        "Review: Approve enabled only for this DP's co-editors (Gov Hub viewer_is_co_editor)",
+        "/workgroups cards: 'Open Proposals: X' (Gov Hub pending + book posts not yet filed) and 'Readiness: passed/total'",
+        "Gov Hub buttons commented out: Getting started (Patch draft / Open on Gov Hub), workgroup header draft link, Review 'Open Gov Hub draft', Astra 'Open baseline on Gov Hub', /workgroups 'Open Gov Hub'"
+      ]
+    },
+    {
+      "id": "file-astra-proposals",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Astra-reconciled CFI changes are filed as Gov Hub proposals",
+      "summary": "The Canopi→Gov Hub filer skipped the 95 Astra-reconciled CFI changes on the book, so co-editors could not approve them on Review. It now files them like any other book patch or insert, under the contributor's account, with Astra's rationale and the CFI change id. Review no longer says unfiled posts are filed every 30 minutes; it says when the filer last ran.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: CFI/Astra posts are filed; the CFI patch id goes in the rationale",
+        "Review: unfiled items show the filer's last run time instead of 'every 30 minutes'"
+      ]
+    },
+    {
       "id": "review-tab-all-proposals",
       "date": "2026-10-19",
       "status": "open",
