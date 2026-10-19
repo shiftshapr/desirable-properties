@@ -17,9 +17,9 @@
 import { randomUUID } from 'node:crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
-import { canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
+import { DP_BOOK_COMMUNITY_IDS, canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
 import { classifyDiscussPost } from '@/lib/discuss-patch';
-import { bookDiscussHref, govhubDraftReadHref, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { bookDiscussPostHref, govhubDraftReadHref, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { STYLE_GUIDE_VERSION, styleGuideAsText } from '@/data/dp-style-guide';
 import { callLlmJson, extractJsonObject } from '@/lib/style-check.server';
 
@@ -134,7 +134,7 @@ export async function listReviewComments(opts: {
 
   const pageIds = canopiBookPageIdsForDp(opts.dpId);
   if (pageIds.length) {
-    const canopi = await searchCanopiPosts({ pageIds, limit: 50, maxContentLength: 4000 });
+    const canopi = await searchCanopiPosts({ pageIds, communityIds: DP_BOOK_COMMUNITY_IDS, limit: 200, maxContentLength: 4000 });
     for (const post of canopi.ok ? canopi.posts : []) {
       if (post.parentId || !post.anchorExact) continue;
       if (classifyDiscussPost({ body: post.content, tagType: post.tagType }).kind !== 'comment') continue;
@@ -148,7 +148,7 @@ export async function listReviewComments(opts: {
         contextAnchor: null,
         createdAt: post.createdAt,
         replies: 0,
-        href: bookDiscussHref({ dpId: opts.dpId, pageId: post.pageId }),
+        href: bookDiscussPostHref({ messageId: post.id, dpId: opts.dpId, pageId: post.pageId, communityId: post.communityId }),
         status: 'open',
         note: null,
         actorName: null,

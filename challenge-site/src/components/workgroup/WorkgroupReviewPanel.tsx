@@ -317,10 +317,14 @@ export default function WorkgroupReviewPanel({
                 removed={item.originalText || null}
                 added={item.proposedText || null}
                 mode={item.patchMode === 'insert' ? 'insert' : 'patch'}
+                insertPosition={item.insertPosition}
               />
             )}
             {item.rationale ? (
-              <p className="mt-2 text-sm text-slate-400">{item.rationale}</p>
+              <p className="mt-2 whitespace-pre-line text-sm text-slate-400">
+                <span className="text-slate-500">Rationale: </span>
+                {item.rationale}
+              </p>
             ) : null}
             {item.styleCheckable ? (
               <StyleNotes

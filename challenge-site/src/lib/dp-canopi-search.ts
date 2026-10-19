@@ -40,7 +40,24 @@ function normalizeCanopiMessage(m: Record<string, unknown>, fallbackPageId: stri
     tagType: String(m.tagType ?? m.tag_type ?? '').trim() || null,
     parentId: (m.parentId ?? m.parent_id ?? null) as string | null,
     anchorExact: anchorExactFrom(m.contextAnchor ?? m.context_anchor),
+    ...payloadFields(m.payload),
   };
+}
+
+/** Insert position and the author's rationale, from the post payload. */
+function payloadFields(raw: unknown): { insertPosition: 'above' | 'below' | null; rationale: string | null } {
+  let payload = raw;
+  if (typeof payload === 'string') {
+    try {
+      payload = JSON.parse(payload);
+    } catch {
+      payload = null;
+    }
+  }
+  const p = (payload || {}) as { insertPosition?: unknown; aiAssist?: { patchRationale?: unknown } };
+  const position = p.insertPosition === 'above' || p.insertPosition === 'below' ? p.insertPosition : null;
+  const rationale = typeof p.aiAssist?.patchRationale === 'string' ? p.aiAssist.patchRationale.trim() : '';
+  return { insertPosition: position, rationale: rationale || null };
 }
 
 /** The anchored passage (TextQuoteSelector.exact) of a Canopi post, if any. */
@@ -131,6 +148,10 @@ export type CanopiSearchPost = {
   parentId: string | null;
   /** The passage the post is anchored to, when it has one. */
   anchorExact: string | null;
+  /** INSERT posts: where the text goes relative to the anchored passage. */
+  insertPosition: 'above' | 'below' | null;
+  /** payload.aiAssist.patchRationale, when the post carries one. */
+  rationale: string | null;
 };
 
 export async function searchCanopiPosts(opts: {
@@ -140,6 +161,8 @@ export async function searchCanopiPosts(opts: {
   q?: string;
   authorName?: string;
   communityId?: string;
+  /** Read several communities (e.g. DP_BOOK_COMMUNITY_IDS); overrides communityId. */
+  communityIds?: string[];
   limit?: number;
   /** Max characters kept per post body (default 280). */
   maxContentLength?: number;
@@ -148,7 +171,8 @@ export async function searchCanopiPosts(opts: {
   const chapterFilter = String(opts.pageId || '').trim();
   const authorNeedle = String(opts.authorName || '').trim().toLowerCase();
   const communityId = String(opts.communityId || DEFAULT_COMMUNITY_ID).trim();
-  const limit = Math.min(50, Math.max(1, opts.limit || 40));
+  const communityIds = (opts.communityIds || []).map((c) => String(c || '').trim()).filter(Boolean);
+  const limit = Math.min(200, Math.max(1, opts.limit || 40));
   const maxContentLength = Math.min(4000, Math.max(80, opts.maxContentLength || 280));
 
   const extraIds = (opts.pageIds || []).map((p) => String(p || '').trim()).filter(Boolean);
@@ -159,19 +183,27 @@ export async function searchCanopiPosts(opts: {
   const merged: ReturnType<typeof normalizeCanopiMessage>[] = [];
   let fetchError: string | null = null;
 
+  const communitiesToFetch = communityIds.length ? [...new Set(communityIds)] : [communityId];
   const batches = await Promise.all(
-    pageIdsToFetch.map((apiPageId) =>
-      fetchCanopiMessagesForPage({ pageId: apiPageId, communityId, limit: Math.max(limit, 20) }),
+    communitiesToFetch.flatMap((comm) =>
+      pageIdsToFetch.map(async (apiPageId) => ({
+        comm,
+        batch: await fetchCanopiMessagesForPage({ pageId: apiPageId, communityId: comm, limit: Math.max(limit, 20) }),
+      })),
     ),
   );
 
-  for (const batch of batches) {
+  const seenIds = new Set<string>();
+  for (const { comm, batch } of batches) {
     if (!batch.ok) {
       fetchError = batch.error || fetchError;
       continue;
     }
     for (const m of batch.items) {
-      merged.push(normalizeCanopiMessage(m, batch.pageId, communityId));
+      const msg = normalizeCanopiMessage(m, batch.pageId, comm);
+      if (msg.id && seenIds.has(msg.id)) continue;
+      seenIds.add(msg.id);
+      merged.push(msg);
     }
   }
 
@@ -217,6 +249,8 @@ export async function searchCanopiPosts(opts: {
       tagType: m.tagType,
       parentId: m.parentId,
       anchorExact: m.anchorExact,
+      insertPosition: m.insertPosition,
+      rationale: m.rationale,
     });
   }
 

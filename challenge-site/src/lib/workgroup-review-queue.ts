@@ -1,8 +1,9 @@
 import { classifyDiscussPost } from '@/lib/discuss-patch';
-import { canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
+import { DP_BOOK_COMMUNITY_IDS, canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import {
   bookDiscussHref,
+  bookDiscussPostHref,
   govhubDraftReadHref,
   type GovHubDraftProposal,
 } from '@/lib/govhub';
@@ -19,7 +20,14 @@ import {
 function patchModeOf(raw: string | null | undefined): ReviewQueueItem['patchMode'] {
   const mode = String(raw || 'replace').toLowerCase();
   if (mode === 'editorial_bundle') return 'bundle';
-  return mode === 'insert' ? 'insert' : 'replace';
+  return mode === 'insert' || mode === 'insert_after' ? 'insert' : 'replace';
+}
+
+/** Gov Hub: insert goes above the anchored passage, insert_after below it. */
+function govhubInsertPosition(raw: string | null | undefined): ReviewQueueItem['insertPosition'] {
+  const mode = String(raw || '').toLowerCase();
+  if (mode === 'insert_after') return 'below';
+  return mode === 'insert' ? 'above' : null;
 }
 
 function normalizeAnchor(text: string): string {
@@ -51,12 +59,14 @@ export async function buildWorkgroupReviewQueue(opts: {
   const canopi = bookPageIds.length
     ? await searchCanopiPosts({
         pageIds: bookPageIds,
-        limit: 40,
-        maxContentLength: 2000,
+        communityIds: DP_BOOK_COMMUNITY_IDS,
+        limit: 200,
+        maxContentLength: 4000,
       })
     : { ok: true as const, posts: [] };
 
   const canopiPatches = (canopi.ok ? canopi.posts : []).filter((post) => {
+    if (post.parentId) return false;
     const parsed = classifyDiscussPost({ body: post.content, tagType: post.tagType });
     return parsed.kind === 'patch' || parsed.kind === 'insert';
   });
@@ -85,14 +95,15 @@ export async function buildWorkgroupReviewQueue(opts: {
       govhubProposalId: proposal.id,
       canopiMessageId: matchedCanopi?.id || ext || null,
       patchMode: patchModeOf(proposal.patch_mode),
+      insertPosition: govhubInsertPosition(proposal.patch_mode),
       edits: (proposal.edits || []).map((e) => ({
         rule: e.rule || null,
         originalText: e.original_text,
         proposedText: e.proposed_text,
       })),
-      originalText: proposal.original_text || '',
+      originalText: proposal.original_text || matchedCanopi?.anchorExact || '',
       proposedText: proposal.proposed_text || '',
-      rationale: proposal.rationale || null,
+      rationale: proposal.rationale || matchedCanopi?.rationale || null,
       authorName: proposal.author_name || matchedCanopi?.authorName || 'Someone',
       createdAt: proposal.created_at || matchedCanopi?.createdAt || '',
       status: proposal.status || 'pending',
@@ -100,8 +111,8 @@ export async function buildWorkgroupReviewQueue(opts: {
       conflictSetId: '',
       conflictCount: 1,
       hrefs: {
-        book: matchedCanopi
-          ? bookDiscussHref({ dpId: opts.dpId, pageId: matchedCanopi.pageId })
+        book: channel === 'canopi' && ext
+          ? bookDiscussPostHref({ messageId: ext, dpId: opts.dpId, pageId: matchedCanopi?.pageId, communityId: matchedCanopi?.communityId })
           : opts.dpId
             ? bookDiscussHref({ dpId: opts.dpId })
             : null,
@@ -135,10 +146,11 @@ export async function buildWorkgroupReviewQueue(opts: {
       govhubProposalId: null,
       canopiMessageId: post.id,
       patchMode: parsed.kind === 'insert' ? 'insert' : 'replace',
+      insertPosition: parsed.kind === 'insert' ? post.insertPosition || 'above' : null,
       edits: [],
-      originalText: '',
+      originalText: post.anchorExact || '',
       proposedText: parsed.content,
-      rationale: null,
+      rationale: post.rationale,
       authorName: post.authorName || 'Someone',
       createdAt: post.createdAt || '',
       status: filedElsewhere ? 'filed_elsewhere' : 'canopi_only',
@@ -146,7 +158,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       conflictSetId: '',
       conflictCount: 1,
       hrefs: {
-        book: bookDiscussHref({ dpId: opts.dpId, pageId: post.pageId }),
+        book: bookDiscussPostHref({ messageId: post.id, dpId: opts.dpId, pageId: post.pageId, communityId: post.communityId }),
         govhub: draftHref,
       },
       evals: { yes: 0, no: 0, mine: null, comments: [] },

@@ -108,6 +108,8 @@ export function bookDiscussPostHref(opts: {
   draftRef?: string | null;
   dpId?: string | null;
   pageId?: string | null;
+  /** The post's community, so the sidebar opens the right feed (e.g. Public Square). */
+  communityId?: string | null;
 }): string {
   const base = bookDiscussHref({
     dpId: opts.dpId || dpIdFromDraftRef(opts.draftRef),
@@ -117,6 +119,7 @@ export function bookDiscussPostHref(opts: {
   url.searchParams.set('canopiOpen', '1');
   url.searchParams.set('canopiMsg', opts.messageId);
   if (opts.pageId) url.searchParams.set('canopiPageId', opts.pageId);
+  if (opts.communityId) url.searchParams.set('canopiCommunity', opts.communityId);
   return url.href;
 }
 
