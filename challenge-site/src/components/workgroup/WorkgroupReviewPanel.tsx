@@ -416,7 +416,7 @@ export default function WorkgroupReviewPanel({
               </p>
             )}
 
-            {canEdit ? (
+            {data?.isCoEditor ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
                   Both co-editors must approve before a proposal goes into the next revision draft
@@ -449,14 +449,8 @@ export default function WorkgroupReviewPanel({
                     return (
                       <button
                         type="button"
-                        disabled={mine || !data?.isCoEditor || !item.canPromote || Boolean(busyKey)}
-                        title={
-                          mine
-                            ? 'You approved this proposal'
-                            : data?.isCoEditor
-                              ? undefined
-                              : "Only this DP's co-editors approve. Claim a seat at the top of the workgroup page."
-                        }
+                        disabled={mine || !item.canPromote || Boolean(busyKey)}
+                        title={mine ? 'You approved this proposal' : undefined}
                         onClick={() => void pick(item, 'promote')}
                         className="rounded-lg bg-cyan-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50"
                       >
@@ -487,15 +481,15 @@ export default function WorkgroupReviewPanel({
                     {resultByKey[item.key].text}
                   </p>
                 ) : null}
-                {!data?.isCoEditor && item.canPromote ? (
-                  <p className="text-xs text-slate-400">
-                    Only this DP&apos;s co-editors approve. You can decline with a note as coordinator or admin.
-                  </p>
-                ) : null}
                 {item.promoteBlockReason ? (
                   <p className="text-xs text-amber-200">{item.promoteBlockReason}</p>
                 ) : null}
               </div>
+            ) : signedIn && item.status === 'pending' && item.govhubProposalId ? (
+              <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">
+                Only this DP&apos;s two co-editors approve or decline proposals. Claim an open seat at the top of the
+                workgroup page.
+              </p>
             ) : null}
           </li>
         ))}
