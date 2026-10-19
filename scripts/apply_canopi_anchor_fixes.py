@@ -49,7 +49,7 @@ def db_url() -> str:
 
 def psql(sql: str, *, read_only: bool) -> str:
     prefix = "set default_transaction_read_only=on; " if read_only else ""
-    res = subprocess.run(["psql", db_url(), "-X", "-v", "ON_ERROR_STOP=1", "-Atc", prefix + sql],
+    res = subprocess.run(["psql", db_url(), "-X", "-q", "-v", "ON_ERROR_STOP=1", "-Atc", prefix + sql],
                          capture_output=True, text=True, timeout=120)
     if res.returncode != 0:
         raise SystemExit(f"psql failed: {res.stderr.strip()[:400]}")
@@ -139,11 +139,14 @@ def update_sql(mid: str, new: dict) -> str:
 
 
 def main() -> int:
+    global CANOPI_ENV
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("manifest", nargs="?")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--rollback", help="restore rows from a backup file written by --apply")
+    ap.add_argument("--env-file", default=str(CANOPI_ENV), help="Canopi .env with DATABASE_URL (default: production)")
     args = ap.parse_args()
+    CANOPI_ENV = Path(args.env_file)
 
     if args.rollback:
         rows = json.loads(Path(args.rollback).read_text())
