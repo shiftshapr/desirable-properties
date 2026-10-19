@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "reviewer-accounts",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Gov Hub accounts for book authors so their proposals are credited to them",
+      "summary": "54 book proposals could not be filed because their authors (mostly reviewers whose emailed feedback was posted for them) had no Gov Hub account. scripts/create_reviewer_accounts.py creates each account from the author's Canopi name and email, with no sign-in attached; their first sign-in with that email links to it.",
+      "changes": [
+        "scripts/create_reviewer_accounts.py (box #1, runs inside Gov Hub; dry run by default)"
+      ]
+    },
+    {
       "id": "retire-process-data-workflow",
       "date": "2026-10-19",
       "status": "open",
