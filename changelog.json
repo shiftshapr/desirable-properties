@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "anchor-audit-2026-10-19",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Anchor audit of every open book proposal; filer fixes",
+      "summary": "All 289 open book proposals were audited for where they land. 95 Canopi posts and 12 Gov Hub proposals get corrected anchors (scripts and data in scripts/anchor-audit-2026-10-19), three PDPP sections misfiled on DP22 are withdrawn and refiled on DP1, DP4 and DP7, and two duplicates are skipped. The Canopi filer no longer splices inside headings, at the first of several identical anchors, or in reverse order, and can anchor next to formatted lines.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: whole heading lines (above a heading goes above its rule), unique anchors, formatted edges, heading-marker patches, whole-passage patches that keep emphasis, skip overrides",
+        "scripts/apply_canopi_anchor_fixes.py and scripts/apply_govhub_anchor_fixes.py (box #1, dry run by default, backup/rollback)",
+        "scripts/canopi_filing_overrides.json: superseded overrides removed; duplicates skipped",
+        "scripts/test_canopi_filer_anchors.py"
+      ]
+    },
+    {
       "id": "review-co-editors-only",
       "date": "2026-10-19",
       "status": "open",
