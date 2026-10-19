@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-approvals-wg-cards",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Review shows who approved; workgroup cards show open proposals and readiness; Gov Hub buttons hidden",
+      "summary": "Approving on the Review tab now shows the result next to the proposal and, for everyone, who has approved it (\"Approved by Daveed (you) · 1 of 2\"); declined items show the decision and its note. Only the DP's co-editors see an active Approve button. The workgroups list shows Open Proposals and Readiness on each DP card. Gov Hub buttons on workgroup pages are hidden for now because people found them confusing.",
+      "changes": [
+        "Review: per-item approve/decline result; approvals and decisions from Gov Hub visible to all; 'Approved by you' replaces the button",
+        "Review: Approve enabled only for this DP's co-editors (Gov Hub viewer_is_co_editor)",
+        "/workgroups cards: 'Open Proposals: X' (Gov Hub pending + book posts not yet filed) and 'Readiness: passed/total'",
+        "Gov Hub buttons commented out: Getting started (Patch draft / Open on Gov Hub), workgroup header draft link, Review 'Open Gov Hub draft', Astra 'Open baseline on Gov Hub', /workgroups 'Open Gov Hub'"
+      ]
+    },
+    {
       "id": "file-astra-proposals",
       "date": "2026-10-19",
       "status": "open",

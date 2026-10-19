@@ -55,6 +55,10 @@ export type ReviewQueueItem = {
     mine: ReviewVote | null;
     comments: ReviewEvalComment[];
   };
+  /** Co-editor approvals recorded in Gov Hub; userId is the Gov Hub user id. */
+  approvals: Array<{ userId: string; userName: string; note: string | null; createdAt: string | null }>;
+  /** Decline / considered note and who wrote it, once decided. */
+  decision: { by: string | null; note: string | null } | null;
   /** Pending patch/insert that can be style-checked. */
   styleCheckable: boolean;
   styleCheck: ReviewStyleCheck | null;
@@ -78,6 +82,10 @@ export type ReviewQueueResponse = {
   workingRevision: ReviewWorkingRevision;
   isMember: boolean;
   canEdit: boolean;
+  /** Viewer holds a co-editor seat on this DP (only co-editors approve). */
+  isCoEditor: boolean;
+  /** Viewer's Gov Hub user id, to match approvals. */
+  viewerGovhubUserId: string | null;
   /** False when no model is configured on this server. */
   styleCheckEnabled: boolean;
 };

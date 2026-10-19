@@ -21,6 +21,7 @@ import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server
 import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import { coEditorCountFromDetail, workgroupStaffing } from '@/lib/workgroup-roster-nudge';
 import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
+import { openProposalCountsByDp } from '@/lib/open-proposals.server';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import type { Metadata } from 'next';
 
@@ -153,6 +154,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
     (signups?.workgroups ?? []).map((group) => [group.slug, group.member_count]),
   );
   const readiness = await fetchReadinessBoard();
+  const openByDp = await openProposalCountsByDp(readiness.dps);
+  const readinessByDp = new Map(readiness.dps.map((r) => [r.dp, r.passed]));
+  const readinessTotal = readiness.items.length;
   const coEditorsByDp = new Map(
     readiness.dps.map((r) => [r.dp, coEditorCountFromDetail(r.checks.co_editors?.detail)]),
   );
@@ -412,6 +416,23 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                   >
                     {roster.title}
                   </p>
+                  {openByDp.has(dpId) || readinessByDp.has(dpId) ? (
+                    <p className="mt-1 text-sm text-slate-300">
+                      {openByDp.has(dpId) ? (
+                        <span className="mr-4">
+                          Open Proposals: <span className="font-semibold text-white">{openByDp.get(dpId)}</span>
+                        </span>
+                      ) : null}
+                      {readinessByDp.has(dpId) ? (
+                        <Link href="/v1-readiness" className="hover:text-cyan-300">
+                          Readiness:{' '}
+                          <span className="font-semibold text-white">
+                            {readinessByDp.get(dpId)}/{readinessTotal}
+                          </span>
+                        </Link>
+                      ) : null}
+                    </p>
+                  ) : null}
                   <div className="mt-auto flex flex-col gap-3 pt-5">
                     <div className="flex flex-wrap gap-2">
                       {collabEnabled ? (
@@ -607,12 +628,14 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             >
               Browse DP workgroups →
             </a>
+{/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
             <a
               href={govhubUrl('/layers/the-metaweb/')}
               className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
             >
               Open Gov Hub
             </a>
+*/}
             <Link
               href="/"
               className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
