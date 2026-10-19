@@ -218,6 +218,7 @@ export default function WorkgroupCollabClient({
   const showFullChat = membershipChecked && isMember;
   const showInviteTools = showFullChat || initialIsDpAdmin;
   const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
   const docHref = govhubDraftReadHref(workgroup.document_href);
   const nominateFallback = `${govHubHref}?action=nominate`;
   const artSrc = dpWorkgroupCardImageSrc({ dpId, workgroupSlug: workgroup.slug });
@@ -296,6 +297,7 @@ export default function WorkgroupCollabClient({
                 workgroupId={workgroup.id}
                 fallbackHref={nominateFallback}
               />
+{/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
               {docHref ? (
                 <a
                   href={docHref}
@@ -304,6 +306,7 @@ export default function WorkgroupCollabClient({
                   {workgroup.document_label || 'Open draft'}
                 </a>
               ) : null}
+*/}
               <Link
                 href={WORKGROUPS_JOIN_HREF}
                 className="rounded-lg px-3 py-2 text-slate-400 hover:text-cyan-300"

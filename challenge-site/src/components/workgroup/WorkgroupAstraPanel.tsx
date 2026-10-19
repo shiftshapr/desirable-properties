@@ -41,6 +41,7 @@ function mlDraftLabel(dpId: string): string {
   return mlByDp[dpId]?.mlNumber || 'ML-Draft';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
 function mlDraftReadHref(mlNumber: string): string {
   return govhubUrl(`/doc/draft/${mlNumber}/read/`);
 }
@@ -395,6 +396,7 @@ export default function WorkgroupAstraPanel({
             >
               Editorial synthesis index
             </Link>
+{/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
             <a
               href={mlDraftReadHref(headerMeta.mlDraft)}
               target="_blank"
@@ -403,6 +405,7 @@ export default function WorkgroupAstraPanel({
             >
               Open baseline on Gov Hub
             </a>
+*/}
             {bundle ? (
               <a
                 href={`/api/astra/chapters/${encodeURIComponent(dpKey)}`}

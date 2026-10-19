@@ -39,11 +39,13 @@ export default function WorkgroupGettingStarted({
   onSelectTab,
 }: Props) {
   const welcomeHref = `/welcome/member?wg=${encodeURIComponent(workgroupSlug)}`;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
   const govHubHref = govhubUrl(`/workgroups/${workgroupSlug}/`);
   const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
   const discussHref = isDiscovery
     ? bookIntroDiscussHref()
     : bookDiscussHref(dpId ? { dpId } : undefined);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
   const patchHref = isDiscovery ? null : govhubDraftReadHref(documentHref);
   const a = MESSAGE_A_SECTIONS;
   const askItems = isDiscovery ? [...DP_DISCOVERY_ASK_ITEMS] : a.askItems.slice(0, 4);
@@ -128,6 +130,7 @@ export default function WorkgroupGettingStarted({
         >
           {isDiscovery ? 'Discuss →' : 'Discuss & patch this chapter →'}
         </DiscussPatchLink>
+{/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
         {patchHref ? (
           <a
             href={patchHref}
@@ -146,6 +149,7 @@ export default function WorkgroupGettingStarted({
         >
           Open on Gov Hub
         </a>
+*/}
         <Link
           href={WORKGROUPS_LIST_HREF}
           className="rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
