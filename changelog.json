@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-co-editors-only",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Review: only a DP's co-editors approve or decline",
+      "summary": "The Approve and Decline controls on the Review tab appear only for the DP's co-editors; everyone else sees who has approved and a note on how to claim a seat. The site's API and Gov Hub refuse decisions from anyone else.",
+      "changes": [
+        "Review decision block rendered only for co-editors",
+        "review/pick API: co-editors only (was coordinators and co-editors)"
+      ]
+    },
+    {
       "id": "review-approvals-wg-cards",
       "date": "2026-10-19",
       "status": "open",
