@@ -136,10 +136,11 @@ SENTENCE_END = re.compile(r"(?<=[.!?:;])\s+")
 
 
 def splice_anchor(span: str, position: str) -> str | None:
-    """Anchor that Gov Hub accepts (in rendered plain text) and can splice (verbatim in markdown).
+    """Anchor that Gov Hub accepts and can splice (verbatim in markdown).
 
     Inserts only need the insertion edge: the markup-free sentence(s) at the end of the
-    quoted span (insert below) or at its start (insert above).
+    quoted span (insert below) or at its start (insert above); when the edge sentence has
+    markup, the whole edge line as written in the markdown.
     """
     paras = [p.strip() for p in re.split(r"\n\s*\n", span) if p.strip()]
     if not paras:
@@ -149,9 +150,10 @@ def splice_anchor(span: str, position: str) -> str | None:
     if len(lines) > 1:  # list or wrapped block: use the edge line, without its list marker
         para = lines[0] if position == "above" else lines[-1]
     para = re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", para).strip()
-    heading = re.match(r"^#{1,6}\s+(.+)$", para)
-    if heading and not MARKUP.search(heading.group(1)):
-        return heading.group(1).strip()
+    if re.match(r"^#{1,6}\s+\S", para):
+        # The whole heading line, hashes included: anchoring on its text alone splices the
+        # insert inside the heading ("## 4. ### 3.12 New … Core Principle").
+        return para if para in span else None
     sentences = [x for x in SENTENCE_END.split(para) if x.strip()]
     ordered = sentences if position == "above" else list(reversed(sentences))
     picked: list[str] = []
@@ -162,7 +164,10 @@ def splice_anchor(span: str, position: str) -> str | None:
         if sum(len(x) for x in picked) >= 60:
             break
     if not picked:
-        return None
+        # The edge is a formatted line ("Failure mode: **x**", a bold label): anchor on that
+        # line as written. Gov Hub (interface-gov-hub#26) accepts anchors found verbatim in
+        # the chapter Markdown, which is what it splices into.
+        return para if para and para in span else None
     anchor = " ".join(picked if position == "above" else list(reversed(picked)))
     return anchor if anchor in span else None
 
@@ -170,20 +175,82 @@ def splice_anchor(span: str, position: str) -> str | None:
 EMPHASIS = re.compile(r"(\*\*|__|\*|_|`)(.+?)\1")
 
 
+def whole_heading_line(md: str, span: str, edge: str, position: str = "below") -> str:
+    """If the insertion edge sits inside a heading line, use the whole line (hashes included).
+
+    An anchor quoted from the page has no "## ", so its edge can be "Core Principle" out of
+    "## 4. Core Principle"; splicing there would put the insert inside the heading.
+    """
+    base = md.find(span)
+    at = md.find(edge, base if base >= 0 else 0)
+    if at < 0:
+        return edge
+    start = md.rfind("\n", 0, at) + 1
+    stop = md.find("\n", at)
+    line = md[start:stop if stop >= 0 else len(md)]
+    if not re.match(r"^#{1,6}\s", line):
+        return edge
+    # Above a section heading means above the rule that closes the previous section.
+    rule = re.search(r"(?:^|\n)(---+\n\n)$", md[:start])
+    return (rule.group(1) + line) if position == "above" and rule else line
+
+
+def with_heading_marker(md: str, full_span: str, orig: str, new: str) -> str:
+    """A patch whose new text is a heading ("### 5.10 …") replaces the marker too.
+
+    The quoted anchor has no "### ", so without this the result is "### ### 5.10 …".
+    """
+    if not re.match(r"^#{1,6}\s", new):
+        return orig
+    base = md.find(full_span)
+    at = md.find(orig, base if base >= 0 else 0)
+    start = md.rfind("\n", 0, at) + 1 if at >= 0 else -1
+    marker = md[start:at] if at >= 0 else ""
+    return marker + orig if re.fullmatch(r"#{1,6}\s+", marker) else orig
+
+
+def unique_splice(md: str, span: str, orig: str, new: str) -> tuple[str, str] | None:
+    """Widen (orig -> new) until orig occurs once in the chapter.
+
+    Gov Hub splices at the first occurrence of original_text, so a short anchor such as
+    "Failure mode:" would land in the wrong subsection. Widen to the line, then the
+    paragraph, then the whole quoted span, rewriting new to match.
+    """
+    if md.count(orig) == 1:
+        return orig, new
+    base = md.find(span)
+    at = md.find(orig, base) if base >= 0 else -1
+    if at < 0:
+        return None
+    end = at + len(orig)
+    line = (md.rfind("\n", 0, at) + 1, (md.find("\n", end) + 1 or len(md) + 1) - 1)
+    para_start = md.rfind("\n\n", 0, at)
+    para_end = md.find("\n\n", end)
+    para = (para_start + 2 if para_start >= 0 else 0, para_end if para_end >= 0 else len(md))
+    for lo, hi in (line, para, (base, base + len(span))):
+        wide = md[lo:hi].strip("\n")
+        if wide and orig in wide and md.count(wide) == 1:
+            return wide, wide.replace(orig, new, 1)
+    return None
+
+
 def whole_passage_patch(span: str, text: str) -> tuple[str, str] | None:
     """Fallback when narrow_patch cannot isolate the change: replace the whole anchor span.
 
     A Canopi patch means "replace the anchor passage with this text", so filing span -> text is
-    exactly the post. Only allowed when no emphasized phrase of the span survives verbatim in the
-    new text: then the markup dropped with the span belonged to wording the reviewer rewrote.
+    exactly the post. Refused when an emphasized phrase of the span survives in the new text
+    without its emphasis (the markup would be lost); allowed when the new text keeps it.
     """
     text = (text or "").strip()
     if not span or not text:
         return None
     if re.search(r"[#>\[\]|]", span):  # links, headings, quotes, tables: never dropped wholesale
         return None
-    for _marker, phrase in EMPHASIS.findall(span):
-        if " ".join(phrase.split()) in " ".join(text.split()):
+    flat = " ".join(text.split())
+    for marker, phrase in EMPHASIS.findall(span):
+        phrase = " ".join(phrase.split())
+        # The phrase survives but its emphasis would be lost, unless the new text keeps it.
+        if phrase in flat and f"{marker}{phrase}{marker}" not in flat:
             return None
     return span, text
 
@@ -365,6 +432,10 @@ def main() -> int:
         ai = as_obj(p.get("aiAssist")) or as_obj(payload_obj.get("aiAssist")) or {}
         position = str(payload_obj.get("insertPosition") or anchor.get("insertPosition") or "").lower()
         override = overrides.get(mid)
+        if override and override.get("skip"):
+            # Not filed on purpose (e.g. a duplicate of another post); the post itself is untouched.
+            row.update(status="skipped", reason=override["skip"])
+            continue
         if override:
             # Hand placement (scripts/canopi_filing_overrides.json): the post's own anchor
             # cannot be filed as-is. The Canopi post itself is left untouched.
@@ -392,13 +463,15 @@ def main() -> int:
             continue
         text = post_text(p.get("content") or "")
         if p["_kind"] == "insert":
+            full_span = span
             edge = splice_anchor(span, position)
             if not edge:
                 row.update(status="blocked", reason="no markup-free sentence at the insertion edge of the anchor")
                 continue
-            span = edge
+            span = whole_heading_line(rails[home], full_span, edge, position)
             proposed = f"{text}\n\n{span}" if position == "above" else f"{span}\n\n{text}"
         else:
+            full_span = span
             proposed = text
             if MARKUP.search(span):
                 narrowed = narrow_patch(span, exact, text) or whole_passage_patch(span, text)
@@ -406,6 +479,13 @@ def main() -> int:
                     row.update(status="blocked", reason="patch anchor spans markdown markup and the change could not be narrowed")
                     continue
                 span, proposed = narrowed
+        if p["_kind"] != "insert":
+            span = with_heading_marker(rails[home], full_span, span, proposed)
+        widened = unique_splice(rails[home], full_span, span, proposed)
+        if not widened:
+            row.update(status="blocked", reason="anchor occurs more than once in the chapter and cannot be made unique")
+            continue
+        span, proposed = widened
         credit = (f"Filed from Canopi book {p['_kind']} {mid}"
                   + (f" (insert {'above' if position == 'above' else 'below'} the anchor, encoded as replace)" if p["_kind"] == "insert" else "")
                   + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "")
