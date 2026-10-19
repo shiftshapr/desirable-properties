@@ -49,7 +49,7 @@ def db_url() -> str:
 
 def psql(sql: str, *, read_only: bool) -> str:
     prefix = "set default_transaction_read_only=on; " if read_only else ""
-    res = subprocess.run(["psql", db_url(), "-X", "-q", "-v", "ON_ERROR_STOP=1", "-Atc", prefix + sql],
+    res = subprocess.run(["psql", db_url(), "-X", "-q", "-v", "ON_ERROR_STOP=1", "-At", "-f", "-"], input=prefix + sql,
                          capture_output=True, text=True, timeout=120)
     if res.returncode != 0:
         raise SystemExit(f"psql failed: {res.stderr.strip()[:400]}")
