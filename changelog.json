@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "file-astra-proposals",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Astra-reconciled CFI changes are filed as Gov Hub proposals",
+      "summary": "The Canopi→Gov Hub filer skipped the 95 Astra-reconciled CFI changes on the book, so co-editors could not approve them on Review. It now files them like any other book patch or insert, under the contributor's account, with Astra's rationale and the CFI change id. Review no longer says unfiled posts are filed every 30 minutes; it says when the filer last ran.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: CFI/Astra posts are filed; the CFI patch id goes in the rationale",
+        "Review: unfiled items show the filer's last run time instead of 'every 30 minutes'"
+      ]
+    },
+    {
       "id": "review-tab-all-proposals",
       "date": "2026-10-19",
       "status": "open",
