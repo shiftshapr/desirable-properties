@@ -4,6 +4,24 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "retire-process-data-workflow",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Retire the Process Data workflow",
+      "summary": "The Process Data GitHub Actions workflow failed on all 24 runs it ever made. The per-submission JSON files it compiled were deleted from the repo on 2025-09-08, and its four scripts each assumed a different folder layout. The site no longer reads its output: challenge-site uses its own src/data, and the web app's submit route writes submissions on the server. Fixing only the paths would have compiled zero submissions over data/compiled/allstructured.json and pushed that to main, so the workflow is removed instead. The scripts stay for running by hand.",
+      "changes": [
+        "Removed .github/workflows/process-data.yml",
+        "Rail sync keeps pushing to main with the MAIN_PUSH_DEPLOY_KEY deploy key",
+        "data/compiled/ and the scripts in scripts/ are unchanged"
+      ],
+      "files": [
+        {
+          "path": ".github/workflows/process-data.yml",
+          "label": "Process Data workflow (removed)"
+        }
+      ]
+    },
+    {
       "id": "anchor-audit-2026-10-19",
       "date": "2026-10-19",
       "status": "open",
