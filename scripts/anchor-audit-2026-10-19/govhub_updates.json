@@ -1,0 +1,90 @@
+{
+ "updates": [
+  {
+   "id": "0fb29732-66c0-4fa6-b5be-ae151b0a520b",
+   "original_text": "clear explanations of limits of verification",
+   "proposed_text": "clear explanations of limits of verification\n\n- for time-bound or safety-critical claims, a user-actionable confirmation affordance (e.g., a 'marked safe / status confirmed' interaction) that is itself logged and distinguishable from the underlying source verification, so participant-supplied confirmations are never conflated with source-verified truth",
+   "note": "Proposed text glues a new bullet onto 'Systems MUST provide:' ('…truthSystems MUST provide:'), putting it above the list lead-in with a lost line break. It should be a new bullet at the end of the 5.9 list, same as canopi dbb586b3."
+  },
+  {
+   "id": "05f2d3ae-6dcb-413e-988b-85c942b5df4f",
+   "original_text": "## 4. Core Principle",
+   "proposed_text": "### 3.12 Capable AI as a direct adversary\n\nDP15 assumes that AI systems with capabilities at or above human-expert level in security, social engineering, code generation, and protocol exploitation will be present in the threat environment. Such systems may attempt to hack, deceive, break in: compromising signing keys and attestation roots; fabricating or socially engineering the disclosure of credentials; exploiting software supply chains to insert or replay malicious artifacts; synthesizing policy artifacts and audit trails that appear authentic; and coordinating across many endpoints to overwhelm verification witnesses.\n\nDP15 does not require AI to be the threat. It requires that verification primitives and operational practices remain sound against a capable AI adversary acting alone, in coordination with other AI systems, or in combination with insider, criminal, or state actors.\n\nFailure mode: **human-baseline verification**, where keys, attestation chains, and disclosure rituals are designed for a slower, less capable, less coordinated adversary.\n\n## 4. Core Principle",
+   "note": "Inserts the new subsection inside 3.10 (between its paragraph and its Example), splitting 3.10; it belongs at the end of §3 above the §4 heading. Its number 3.11 collides with Liz Sweigart's earlier 3.11; recommended renumber to 3.12, as for canopi efc4fe37."
+  },
+  {
+   "id": "dd59d9c6-10ac-4adf-af86-75c91b9a44f9",
+   "original_text": "## 4. Core Principle",
+   "proposed_text": "### 3.13 Verification monoculture\n\nWhen participants, communities, and systems rely on the same attestation provider, identity registry, log witness, or provenance service, concentration creates a single point of failure that a capability-asymmetric adversary can exploit. DP15 treats verification monoculture as a structural risk distinct from implementation bugs: even correct cryptography fails closed if every verifier derives trust from one root, one identity provider, or one operator.\n\nFailure mode: **monoculture breach**, where a single attestation or identity compromise yields system-wide loss of provenance integrity rather than bounded blast radius.\n\n## 4. Core Principle",
+   "note": "Inserts inside 3.10 between its paragraph and Example; belongs at the end of §3 above the §4 heading after Capable AI, same as canopi 1e2c9ab5. Numbering: Liz Sweigart's '### 3.11 Coercion against communities' (posted 2026-09-06) predates this post (2026-09-21) and keeps 3.11, so Daveed's two §3 additions become 3.12 (Capable AI) and 3.13 (Verification monoculture), and the §3.12 cross-reference in the new 12.10 becomes §3.13."
+  },
+  {
+   "id": "7fadb6d9-3716-4d83-a2a7-62fbe9db9baa",
+   "original_text": "Failure mode: **improvised response**, where the first real incident is also the first exercise.",
+   "proposed_text": "Failure mode: **improvised response**, where the first real incident is also the first exercise.\n\n### 6.6 Adversarial-AI verification\n\nHuman-only authentication, human-only disclosure review, and key custodianship MUST be paired with machine-verifiable cryptographic bindings and rate or coordination limits inherited from DP13 (AI Containment) §3.5 and §5. Verification routes that depend solely on human vigilance or human-speed response do not satisfy DP15 under a capable-AI threat environment.\n\nFailure mode: **drift back to human baseline**, where rituals that pre-date capable AI adversaries are left in place and human operators become the rate-limiting step an adversary can predict and outlast.",
+   "note": "Inserts between 6.5's paragraph and its failure-mode line; §6.6 belongs after 6.5's failure-mode line, same as canopi 8c699edb. Heading style fixed."
+  },
+  {
+   "id": "f7675047-555d-4586-baad-91130c4f1db6",
+   "original_text": "## 7. Provenance and Archive",
+   "proposed_text": "### 6.7 Verification independence\n\nHigh-stakes verification MUST be distributable across independent operators or roots, with an explicit fail-closed posture when a sole provider is compromised, silent, or otherwise unavailable. A system whose verification collapses because one attestation, identity, or witnessing service fails does not satisfy DP15.\n\nFailure mode: **single-witness systemic failure**, where independence is asserted architecturally but not enforced operationally, so a single outage or compromise propagates loss of provenance integrity to every dependent participant.\n\n## 7. Provenance and Archive",
+   "note": "Inserts between 6.5's paragraph and its failure mode, and would also land before 6.6; §6.7 belongs at the end of §6 directly above the §7 heading (after 6.6), same as canopi 2f4c023a."
+  },
+  {
+   "id": "b3731f96-2fb3-47f3-aae7-214ba06735f7",
+   "original_text": "Failure mode: **evidence opacity or loss**",
+   "proposed_text": "Failure mode: **evidence opacity or loss**\n\n### 12.9 Adversarial-AI Robustness (minimum alignment)\n\nSystems MUST document, for each verification primitive they rely on, how that primitive is expected to fail under capable-AI conditions and what observable signal the system emits when such failure is detected. A primitive that can degrade silently does not satisfy DP15.\n\nFailure mode: **verification collapse against capable AI**, where attestation, identity, or witnessing appears to succeed while the underlying primitive has already been subverted, and no signal surfaces for operators or participants.",
+   "note": "Inserts inside 12.8 between its last bullet and its failure mode (also splitting the list); §12.9 belongs after 12.8's failure-mode line, same as canopi 2e81bc80."
+  },
+  {
+   "id": "e6cb373e-3b1d-440b-8ce0-c3105fe6044f",
+   "original_text": "Systems that omit verification, provenance, or auditability MUST NOT be considered aligned with DP15.",
+   "proposed_text": "### 12.10 Independence (minimum alignment)\n\nSystems MUST NOT depend on a single attestation root, identity provider, or witness service for verification of high-stakes claims. Where independence is not yet achievable, the resulting dependency MUST be disclosed together with a documented migration path and a bounded blast-radius statement.\n\nFailure mode: **verification monoculture**, the same structural condition named in §3.13, manifesting here as a minimum-alignment obligation that any system claiming DP15 conformance must meet or explicitly disclaim.\n\nSystems that omit verification, provenance, or auditability MUST NOT be considered aligned with DP15.",
+   "note": "Inserts inside 12.8 between its last bullet and failure mode, and before 12.9; §12.10 belongs at the end of §12 above the closing '---' / 'Systems that omit…' line (after 12.9), same as canopi 26d29544. Cross-reference updated to §3.13 per the §3 renumbering."
+  },
+  {
+   "id": "b4ffac8d-b055-4faf-97c4-6071ef3820dd",
+   "original_text": "## 16. Path Toward ML-RFC",
+   "proposed_text": "### 15.1 Anticipatory threat-model posture\n\nVerification design under DP15 MUST signal degradation rather than silently fail, and MUST assume, at minimum, the following forward-horizon conditions: (a) quantum-capable adversaries able to break currently deployed signature and hash primitives; (b) AI systems capable of forging, deceiving, and breaking in at human-expert level across security, social engineering, code generation, and protocol exploitation; (c) concentration of attestation, identity, or data infrastructure that creates monoculture risk. These assumptions apply unless and until a successor threat-model revision explicitly supersedes them.\n\n## 16. Path Toward ML-RFC",
+   "note": "Inserts between §15's two paragraphs; §15.1 belongs below §15's last paragraph, same as canopi bf376ddc. Several inserts shared one 'below' anchor, which reverses their order when applied one by one; all now go above \"## 16. Path Toward ML-RFC\" (and its preceding rule), so they apply in section order."
+  },
+  {
+   "id": "a05a03af-1997-4ff2-b539-09e7a1f1997c",
+   "original_text": "Failure mode: **reference drift**, where participants believe they are discussing the same object but each modality has attached context to a different target.",
+   "proposed_text": "Anchors should be verifiable. Participants in any modality must have a way to confirm that a signal originates from the governed semantic object it claims to represent.\n\nFailure mode: **reference drift**, where participants believe they are discussing the same object but each modality has attached context to a different target.",
+   "note": "The single newline would merge the new sentence into the failure-mode line. Re-file as a standalone paragraph above the 5.12 failure-mode line, the same place as Canopi post 468dc320."
+  },
+  {
+   "id": "1a812fd3-6303-4491-a2a0-11722f776aa9",
+   "original_text": "accessibility rendering",
+   "proposed_text": "- accessibility rendering\n- cultural and regional variants\n\nColors, tones, gestures, and vibration patterns carry different meanings across cultures. Equivalence maps should be localizable, not only translated.",
+   "note": "Same structural issue as Canopi post 832fc83b: 'cultural and regional variants' must be a list item in the 5.11 list, with the explanatory paragraph after the list."
+  },
+  {
+   "id": "d58ac321-30d1-4f66-a077-5c1e6fe605ca",
+   "original_text": "#### 4.1.4 Multilingual AI remains uncertain and contestable",
+   "proposed_text": "DP23 further requires that translation infrastructure preserve non-literal meaning — including metaphor, satire, humor, symbolic and figurative language, idiom, slang, and culturally specific semantic gestures — by surfacing such usages and offering interpretive aids rather than collapsing them into literal rendering.\n\n#### 4.1.4 Multilingual AI remains uncertain and contestable",
+   "note": "Filed from canopi 0f240f59 as a replace that prepends the text to \"Translation can increase access...\" in Section 2, a position that is wrong for the reason given on 0f240f59. It needs refiling as an insert below the last line of 4.1.3, matching the canopi post. The text is just the new paragraph, without the restated anchor. Several inserts shared one 'below' anchor, which reverses their order when applied one by one; all now go above \"#### 4.1.4 Multilingual AI remains uncertain and contestable\" (and its preceding rule), so they apply in section order."
+  },
+  {
+   "id": "19ca6b93-9a9d-43c0-b543-e74139dcf78f",
+   "original_text": "### 13.5 In-use rule",
+   "proposed_text": "### 13.4a Resolver depth, chain identification, substrate lifetime, and access layering\n\n§13.4a — Resolver depth is the resolver's choice. A resolver MUST surface the substrate-determined order of inscriptions. A resolver MAY surface only the first-position record, the full stack, or any subset. A resolver MUST publish its depth-selection logic. The resolver MAY offer a per-response proof mode. The participant selects the mode. The protocol does not prescribe the negotiation mechanism. Multiple resolvers surfacing different depths is the expected condition. Conflicting depths from plural resolvers are not authoritative failures; the participant selects, compares, and routes. The protocol does not impose a single resolver as canonical. When the resolver surfaces depth, the response MUST identify the substrate and chain or namespace the depth applies to. A depth value without chain identification is not a complete result. When the substrate is forked or under contention, the resolver MUST surface the contention visibly. Depth-selection MUST NOT paper over substrate disagreement. Flattened responses that hide forks are a §18 degradation path.\n\nNote: The Overweb will move forward with Bitcoin ordinals as the practical substrate today. They satisfy persistent inscription, substrate-determined ordering, open verification, no operator gating. Permanence is defined by substrate lifetime: an identifier remains addressable so long as the substrate exists. This is why substrate death is a community decision, not a protocol one. If the substrate dissolves or ordinals are removed, a new substrate should accommodate existing identifiers via a community-ratified migration. Communities may recognize additional substrates when Bitcoin pricing makes registration inaccessible. The resolver declares its substrate scope. The participant selects. The protocol does not prescribe a substrate.\n\nNote: Identifier access is layered. The substrate is canonical, not the URL. The resolver routes a name to an inscriptionId. The ordinals web server serves the inscription via HTTP based on inscriptionId. Plural resolvers are possible because verification does not depend on the resolver — the participant can verify any inscriptionId against the chain directly. A resolver that returns a wrong inscriptionId is detectable by cross-check. The ordinals web server is shared infrastructure for verification, not a per-resolver service.\n\n### 13.5 In-use rule",
+   "note": "Placement (after 13.4 step 6) is right and matches the canopi post's filing override, but the '13.4a …' title runs into the body with a single line break and renders as one paragraph; made it a ### heading. Several inserts shared one 'below' anchor, which reverses their order when applied one by one; all now go above \"### 13.5 In-use rule\" (and its preceding rule), so they apply in section order."
+  }
+ ],
+ "withdraw": [
+  {
+   "id": "5421f512-820e-4150-9aa4-2e213498acee",
+   "note": "Filed against DP22 by mistake: this PDPP reference-implementation example is written for DP7 (it says it is not a DP7 requirement). Its book post 4340a7d1 is re-anchored on DP7 and filed there; nothing in DP22 changes."
+  },
+  {
+   "id": "cea3feac-5a38-4eeb-bfd0-35b025d99c05",
+   "note": "Filed against DP22 by mistake: this PDPP reference-implementation example is written for DP4 (it says it is not a DP4 requirement). Its book post e9353cd3 is re-anchored on DP4 and filed there; nothing in DP22 changes."
+  },
+  {
+   "id": "fa5051de-0d7d-4cde-b3cb-87a3c7a701b1",
+   "note": "Filed against DP22 by mistake: this PDPP reference-implementation example is written for DP1 (it says it is not a DP1 requirement). Its book post 106fc5a3 is re-anchored on DP1 and filed there; nothing in DP22 changes."
+  }
+ ]
+}

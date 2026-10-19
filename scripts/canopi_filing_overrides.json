@@ -1,17 +1,9 @@
 {
- "_doc": "Per-post placement for Canopi posts whose own anchor cannot be filed as-is. Keyed by Canopi message id. Fields: dp (home chapter number), kind (patch|insert), position (above|below, inserts), anchor (rendered text to anchor on), note (appended to the Gov Hub rationale). Added 2026-10-05.",
- "489e6a28-408f-4fcb-960b-eb1c23b1e14d": {
-  "dp": 5,
-  "kind": "insert",
-  "position": "below",
-  "anchor": "6. Accept and register.",
-  "note": "Re-anchored on filing: the post (a new \u00a713.4a) was anchored above \u00a75 step 5 of the resolution flow; it belongs at the end of \u00a713.4 Recommended validation order."
- },
- "f80c9acf-0994-49ff-8e55-d2f9772366c8": {
-  "dp": 15,
-  "kind": "insert",
-  "position": "below",
-  "anchor": "where retracted material persists as apparently valid evidence.",
-  "note": "Filed as an insert below the frozen-falsehood failure mode: the post was tagged as a patch but its text does not restate the anchored line, so filing it as a replacement would have deleted that failure mode."
- }
+  "_doc": "Per-post placement for Canopi posts whose own anchor cannot be filed as-is. Keyed by Canopi message id. Fields: dp (home chapter number), kind (patch|insert), position (above|below, inserts), anchor (rendered text to anchor on), note (appended to the Gov Hub rationale). Added 2026-10-05. Fields: skip (reason; the post is not filed, e.g. a duplicate). Entries whose post was re-anchored in Canopi by the 2026-10-19 anchor audit were removed.",
+  "df2d8ee2-bb0f-43dd-bdf7-4b378c6ec6ce": {
+    "skip": "duplicate of 31184888-cd7b-4dc4-bcf7-9a29d8389a24 (2026-10-19 anchor audit): This paragraph is word-for-word the second paragraph of 31184888 (dp04-change-020), which inserts at the same anchor; applying both would print it twice. Keep 31184888, which is the earlier change number, and credit Michelle Thuo for that paragraph if attribution matters."
+  },
+  "f20a2d47-86df-49ba-a915-759e62b93303": {
+    "skip": "duplicate of fe50d4f5-dd87-45d3-910d-0cabfede4fbf (2026-10-19 anchor audit): Same 5.7 Zone-Scoped Privacy Profiles explainer as fe50d4f5, identical except for extra blank and \"**\" artifact lines. The inputs carry no post timestamps; fe50d4f5 is kept as the cleaner copy (it is listed after this one, which appears to be newest-first order)."
+  }
 }
