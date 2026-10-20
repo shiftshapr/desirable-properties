@@ -4,6 +4,26 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "filer-astra-unposted",
+      "date": "2026-10-20",
+      "status": "open",
+      "title": "Filer: book posts Astra replaced with changes that never reached the book are filed as written",
+      "summary": "Astra's 2026-09-05 release folded 26 of Phahsa Ras's DP4 posts into its own revised changes, and the filer skipped any post Astra had decided. Those Astra changes were never posted to the book or filed in Gov Hub, so the contributor's work reached nobody. The filer now skips an Astra-decided post only when the Astra change that replaced it was posted; otherwise it files the post as written, credited to its author, with a note naming the unposted Astra change.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: astra_canopi_dispositions() carries release and change ids; skip only when a linked change was posted"
+      ]
+    },
+    {
+      "id": "reviewer-accounts",
+      "date": "2026-10-19",
+      "status": "open",
+      "title": "Gov Hub accounts for book authors so their proposals are credited to them",
+      "summary": "54 book proposals could not be filed because their authors (mostly reviewers whose emailed feedback was posted for them) had no Gov Hub account. scripts/create_reviewer_accounts.py creates each account from the author's Canopi name and email, with no sign-in attached; their first sign-in with that email links to it.",
+      "changes": [
+        "scripts/create_reviewer_accounts.py (box #1, runs inside Gov Hub; dry run by default)"
+      ]
+    },
+    {
       "id": "retire-process-data-workflow",
       "date": "2026-10-19",
       "status": "open",
