@@ -360,14 +360,18 @@ def cfi_patch_id(post: dict) -> str:
     return str(ai.get("cfiPatchId") or "").strip()
 
 
-def astra_canopi_dispositions() -> dict[str, str]:
-    """Canopi message id -> "<release>: <status>" for posts an Astra release already decided."""
-    out: dict[str, str] = {}
+def astra_canopi_dispositions() -> dict[str, dict]:
+    """Canopi message id -> {label, release, changes} for posts an Astra release already decided."""
+    out: dict[str, dict] = {}
     for f in sorted(ASTRA_RELEASES.glob("*/proposal-dispositions.json")):
         for d in json.loads(f.read_text()):
             ref = str(d.get("source_ref") or "")
             if ref.startswith("canopi:"):
-                out[ref[len("canopi:"):]] = f"{f.parent.name}: {d.get('status')}"
+                out[ref[len("canopi:"):]] = {
+                    "label": f"{f.parent.name}: {d.get('status')}",
+                    "release": f.parent.name,
+                    "changes": [c.get("change_id") for c in d.get("changes") or [] if c.get("change_id")],
+                }
     return out
 
 
@@ -411,6 +415,7 @@ def main() -> int:
     astra_done = astra_canopi_dispositions()
     overrides = {k: v for k, v in json.loads(OVERRIDES.read_text()).items() if not k.startswith("_")} if OVERRIDES.exists() else {}
     posts = fetch_posts(cfg)
+    posted_cfi = {cfi_patch_id(p) for p in posts} - {""}
     emails = canopi_emails(cfg, {str((p.get("author") or {}).get("id") or "") for p in posts} - {""})
     results = []
     for p in posts:
@@ -423,9 +428,18 @@ def main() -> int:
         cfi_id = cfi_patch_id(p)
         if cfi_id:
             row["cfi_patch_id"] = cfi_id
+        astra_note = ""
         if mid in astra_done:
-            row.update(status="skipped_astra", reason=f"already decided by Astra ({astra_done[mid]})")
-            continue
+            decided = astra_done[mid]
+            unposted = [c for c in decided["changes"] if f"astra:{decided['release']}:{c}" not in posted_cfi]
+            if not decided["changes"] or len(unposted) < len(decided["changes"]):
+                row.update(status="skipped_astra", reason=f"already decided by Astra ({decided['label']})")
+                continue
+            # Astra folded this post into changes that never reached the book or Gov Hub:
+            # skipping it would leave the contributor's work with nobody. File it as written.
+            astra_note = (f"; Astra ({decided['release']}) folded it into {', '.join(unposted)}, "
+                          "which were never posted to the book, so it is filed as written")
+            row["astra_unposted"] = unposted
         anchor = as_obj(p.get("contextAnchor")) or {}
         exact = (as_obj(anchor.get("textQuote")) or {}).get("exact") or ""
         payload_obj = as_obj(p.get("payload")) or {}
@@ -489,7 +503,7 @@ def main() -> int:
         credit = (f"Filed from Canopi book {p['_kind']} {mid}"
                   + (f" (insert {'above' if position == 'above' else 'below'} the anchor, encoded as replace)" if p["_kind"] == "insert" else "")
                   + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "")
-                  + (f"; Astra reconciled CFI change {cfi_id}" if cfi_id else "") + ".")
+                  + (f"; Astra reconciled CFI change {cfi_id}" if cfi_id else "") + astra_note + ".")
         note = (override or {}).get("note") or ""
         rationale = "\n\n".join(x for x in (str(ai.get("patchRationale") or "").strip(), credit, note) if x)[:3900]
         body = {

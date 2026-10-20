@@ -78,5 +78,24 @@ class FilerAnchors(unittest.TestCase):
         self.assertIsNone(f.whole_passage_patch(span, "Why this matters: New reason."))
 
 
+class AstraDispositions(unittest.TestCase):
+    def test_dispositions_carry_release_and_changes(self):
+        import json, tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            rel = Path(tmp) / "2026-09-05-integrated"
+            rel.mkdir()
+            (rel / "proposal-dispositions.json").write_text(json.dumps([
+                {"source_ref": "canopi:abc", "status": "integrated_revised", "changes": [{"chapter": "DP4", "change_id": "dp04-change-006"}]}]))
+            old = f.ASTRA_RELEASES
+            f.ASTRA_RELEASES = Path(tmp)
+            try:
+                d = f.astra_canopi_dispositions()
+            finally:
+                f.ASTRA_RELEASES = old
+        self.assertEqual(d["abc"]["release"], "2026-09-05-integrated")
+        self.assertEqual(d["abc"]["changes"], ["dp04-change-006"])
+
+
 if __name__ == "__main__":
     unittest.main()
