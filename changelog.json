@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "recredit-proposals",
+      "date": "2026-10-20",
+      "status": "open",
+      "title": "Proposals credited to their named contributors",
+      "summary": "Astra-reconciled changes posted through the shared Metaweb Academy account showed the Gov Hub account behind that email as author. They are now credited to their first named contributor (BridgeDAO's collective attribution for anonymous CFI submissions, or Astra for Astra-authored corrections). A contributor with two Gov Hub accounts has all proposals on one.",
+      "changes": [
+        "scripts/recredit_proposals.py (box #1, runs inside Gov Hub; dry run by default)"
+      ]
+    },
+    {
       "id": "filer-astra-unposted",
       "date": "2026-10-20",
       "status": "open",
