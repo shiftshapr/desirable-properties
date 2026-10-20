@@ -2,10 +2,11 @@
 """Credit pending DP proposals to the people (or collectives) who made them (production, box #1).
 
 1. Astra-reconciled changes posted through the shared Metaweb Academy account are
-   credited to the Gov Hub account that owns that email ("Bridgit"). Each carries an
-   "Attribution: <names>, Astra." line. Credit each to its first named contributor other
-   than Astra (for anonymous CFI submissions that is BridgeDAO's collective attribution),
-   or to Astra when Astra is the only one named. A Gov Hub account is found by display
+   credited to the Gov Hub account that owns that email (--shared, default "Bridgit").
+   Only those are re-credited, never a proposal already credited to a person. Each carries
+   an "Attribution: <names>, Astra." line: credit it to the first named person, else to
+   the first named collective (BridgeDAO's collective attribution for anonymous CFI
+   submissions), else to Astra when Astra is the only one named. A Gov Hub account is found by display
    name or username, or created (no email, no sign-in) when none exists.
 2. --move FROM_USER_ID TO_USER_ID: move every proposal authored by one account to another
    (the same person with two accounts).
@@ -30,6 +31,7 @@ ASTRA_MARK = "Astra reconciled change"
 def main() -> int:
     args = sys.argv[1:]
     apply = "--apply" in args
+    shared = args[args.index("--shared") + 1] if "--shared" in args else "Bridgit"
     move = None
     if "--move" in args:
         i = args.index("--move")
@@ -64,16 +66,16 @@ def main() -> int:
             m = ATTRIBUTION.search(p.rationale or "")
             if not m:
                 continue
+            if (author or "") != shared:
+                continue  # already credited to a person (or another account): leave it
             names = [n.strip() for n in m.group(1).split(",") if n.strip()]
-            people = [n for n in names if n.lower() != "astra"] or ["Astra"]
-            target = people[0]
-            if author and author.lower() == target.lower():
-                continue
+            collectives = {"bridgedao"}
+            people = [n for n in names if n.lower() != "astra" and n.lower() not in collectives]
+            groups = [n for n in names if n.lower() in collectives]
+            target = (people or groups or ["Astra"])[0]
             if target not in made:
                 made[target], new = find_or_make(target)
                 print(f"account  {target}: " + ("create" if new else f"existing @{made[target].username}"))
-            if author and re.sub(r"[^a-z]", "", author.lower()) == re.sub(r"[^a-z]", "", target.lower()):
-                continue
             print(f"credit   {p.id[:8]} {author!r} -> {target!r}" + (f"  (also named: {', '.join(names[1:])})" if len(names) > 1 else ""))
             if apply and made[target]:
                 p.author_user_id = made[target].id
