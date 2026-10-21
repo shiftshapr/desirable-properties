@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "start-here-co-editors",
+      "date": "2026-10-21",
+      "status": "open",
+      "title": "Start Here leads with co-editors",
+      "summary": "Start Here now says what the work needs most: co-editors. The hero shows live seats filled and proposals waiting, with a 'Become a co-editor' button. 'Ways to contribute' opens with 'Co-edit a DP' (how co-editors decide, how to claim or nominate, and the DPs with open seats). The workgroup and book tracks describe proposals going to co-editors on the Review tab instead of promoting Gov Hub drafts, and the 'Patch on Gov Hub' button is hidden. The homepage Start Here panel matches.",
+      "changes": [
+        "/start-here: live co-editor status, Co-edit track first, Review/co-editor wording, Gov Hub patch button hidden",
+        "Homepage Start Here panel copy",
+        "Shared src/lib/co-editor-status.server.ts (also used by /roundups)"
+      ]
+    },
+    {
       "id": "co-editors-and-proposals-focus",
       "date": "2026-10-21",
       "status": "open",
