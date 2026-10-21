@@ -140,9 +140,6 @@ export default function WorkgroupSignupsClient({ data, collabEnabled }: Props) {
                 <div className="flex flex-col gap-2 border-b border-slate-800 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="text-lg font-semibold text-white">{group.name}</h2>
-                    <p className="text-sm text-slate-400">
-                      {group.member_count} member{group.member_count === 1 ? '' : 's'}
-                    </p>
                   </div>
                   <Link
                     href={workgroupLink(group.slug, collabEnabled)}

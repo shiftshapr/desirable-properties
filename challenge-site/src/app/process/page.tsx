@@ -138,7 +138,7 @@ export default function ProcessPage() {
       <Section
         id="roles"
         title="Roles"
-        lead="Each DP workgroup has members, two co-editors and one coordinator. Both co-editor seats must be filled before anything is incorporated."
+        lead="Each DP has two co-editors and one coordinator; members contribute. A proposal is incorporated only when both co-editors approve it."
       >
         <div className="overflow-x-auto rounded-xl border border-slate-800">
           <table className="w-full min-w-[640px] text-left text-sm">

@@ -21,8 +21,6 @@ async function coEditorStatus() {
   return {
     seatsFilled: rows.reduce((sum, r) => sum + r.seats, 0),
     seatsTotal: rows.length * SEATS_PER_DP,
-    fullyStaffed: rows.filter((r) => r.seats >= SEATS_PER_DP).length,
-    dpCount: rows.length,
     needsCoEditor: rows.filter((r) => r.seats < SEATS_PER_DP).sort(byNumber),
     openProposals: open.size ? [...open.values()].reduce((a, b) => a + b, 0) : null,
     openByDp: open,
@@ -54,12 +52,11 @@ export default async function RoundupsPage() {
     <div className="mt-6 flex flex-wrap gap-5 text-cyan-300"><Link href="/start-here" className="underline">Start Here</Link><Link href="/workgroups" className="underline">Find a workgroup</Link><a href="#calendar" className="underline">Series calendar</a></div>
     <section className="mt-12" aria-labelledby="progress"><h2 id="progress" className="text-2xl font-bold text-white">Where the work stands</h2>
       {status ? <>
-        <dl className="mt-5 grid gap-4 sm:grid-cols-3">
+        <dl className="mt-5 grid gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-slate-700 p-4"><dt className="text-sm text-slate-400">Co-editor seats filled</dt><dd className="mt-1 text-3xl font-bold text-white">{status.seatsFilled} / {status.seatsTotal}</dd></div>
-          <div className="rounded-xl border border-slate-700 p-4"><dt className="text-sm text-slate-400">DPs fully staffed (two co-editors)</dt><dd className="mt-1 text-3xl font-bold text-white">{status.fullyStaffed} / {status.dpCount}</dd></div>
           <div className="rounded-xl border border-slate-700 p-4"><dt className="text-sm text-slate-400">Open proposals waiting for co-editors</dt><dd className="mt-1 text-3xl font-bold text-white">{status.openProposals ?? '—'}</dd></div>
         </dl>
-        <p className="mt-4">A proposal goes into a chapter only when both of its DP&apos;s co-editors approve it, so open seats are what hold the work back. {status.needsCoEditor.length ? 'These DPs need a co-editor:' : 'Every DP is fully staffed.'}</p>
+        <p className="mt-4">A proposal goes into a chapter only when both of its DP&apos;s co-editors approve it, so open seats are what hold the work back. {status.needsCoEditor.length ? 'These DPs have an open co-editor seat:' : 'Every co-editor seat is filled.'}</p>
         {status.needsCoEditor.length ? <ul className="mt-3 flex flex-wrap gap-2">{status.needsCoEditor.map((r) => {
           const slug = DP_WORKGROUP_SLUGS[r.dp];
           const waiting = status.openByDp.get(r.dp);

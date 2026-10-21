@@ -35,7 +35,7 @@ type Mode = null | 'claim' | 'nominate' | { revoke: CoEditorSeat };
 /**
  * The DP's two co-editor seats, shown above the workgroup tabs. A seat is held by
  * the coordinator (automatic), claimed ("Become a co-editor"), or filled by a
- * nomination the nominee accepts. Two co-editors = fully staffed.
+ * nomination the nominee accepts.
  */
 export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember, className = '' }: Props) {
   const { user, checked } = useAuth();
@@ -165,7 +165,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-slate-300">
             {fullyStaffed
-              ? `${dp} is fully staffed. `
+              ? 'Both co-editor seats are filled. '
               : `${dp} needs ${data.seats_total - filled} more co-editor${data.seats_total - filled === 1 ? '' : 's'}. `}
             Co-editors decide which proposals go into V1: both approve a change before it goes in, and every
             “no” carries a short reason for the author.

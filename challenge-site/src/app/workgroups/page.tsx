@@ -18,7 +18,6 @@ import { isWorkgroupCollabEnabled } from '@/lib/workgroup-links.server';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
 import { workgroupGovHubHref, workgroupPrimaryHref } from '@/lib/workgroup-links';
 import { resolveWorkgroupInviteLandingPath } from '@/lib/workgroup-invite.server';
-import { fetchWorkgroupSignups } from '@/lib/workgroup-signups';
 import { coEditorCountFromDetail, workgroupStaffing } from '@/lib/workgroup-roster-nudge';
 import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
 import { openProposalCountsByDp } from '@/lib/open-proposals.server';
@@ -95,7 +94,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'What do co-editors do, and how do I become one?',
-    a: 'Each DP has two co-editors; two co-editors make a DP fully staffed. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. The coordinator holds one seat automatically. The other is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination from a member. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
+    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. The coordinator holds one seat automatically. The other is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination from a member. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
   },
 ];
 
@@ -149,10 +148,6 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
     description: discoveryLive?.description || DP_DISCOVERY_FALLBACK_DESCRIPTION,
   });
   const memberWorkgroupIds = collabEnabled ? await readSessionMemberWorkgroupIds() : new Set<string>();
-  const signups = await fetchWorkgroupSignups();
-  const memberCountBySlug = new Map(
-    (signups?.workgroups ?? []).map((group) => [group.slug, group.member_count]),
-  );
   const readiness = await fetchReadinessBoard();
   const openByDp = await openProposalCountsByDp(readiness.dps);
   const readinessByDp = new Map(readiness.dps.map((r) => [r.dp, r.passed]));
@@ -165,8 +160,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
   const discoveryNominateHref = workgroupGovHubHref(DP_DISCOVERY_SLUG, 'nominate');
   const discoveryCardSrc = dpDiscoveryCardImageSrc();
   const discoveryRoster = workgroupStaffing({
-    memberCount: memberCountBySlug.get(DP_DISCOVERY_SLUG) ?? 0,
-    coEditors: null,
+                coEditors: null,
   });
 
   return (
@@ -344,8 +338,8 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">The DP workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             Twenty-three workgroups each steward one Desirable Property. DP Discovery watches for
-            properties the current 23 may have missed. A DP is fully staffed when it has two
-            co-editors.
+            properties the current 23 may have missed. Each DP has two co-editors, who decide its
+            proposals.
             {collabEnabled
               ? ' Open Collaborate for Astra, Review, Canopi, chat, and invites.'
               : ' Click through to Gov Hub to join as a member or nominate a coordinator.'}
@@ -363,7 +357,6 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
               const dpDetailHrefValue = dpDetailHref(dpId, '/workgroups');
               const cardSrc = dpCardImageSrc(dpId);
               const roster = workgroupStaffing({
-                memberCount: memberCountBySlug.get(slug) ?? 0,
                 coEditors: coEditorsByDp.get(dpId) ?? null,
               });
 
@@ -409,13 +402,15 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                       {summary}
                     </p>
                   )}
-                  <p
-                    className={`mt-3 text-sm leading-relaxed ${
-                      roster.kind === 'recruit' ? 'text-amber-200' : roster.kind === 'ready' ? 'text-emerald-200' : 'text-slate-400'
-                    }`}
-                  >
-                    {roster.title}
-                  </p>
+                  {roster.title ? (
+                    <p
+                      className={`mt-3 text-sm leading-relaxed ${
+                        roster.kind === 'recruit' ? 'text-amber-200' : roster.kind === 'ready' ? 'text-emerald-200' : 'text-slate-400'
+                      }`}
+                    >
+                      {roster.title}
+                    </p>
+                  ) : null}
                   {openByDp.has(dpId) || readinessByDp.has(dpId) ? (
                     <p className="mt-1 text-sm text-slate-300">
                       {openByDp.has(dpId) ? (
@@ -524,13 +519,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                     {discoveryDescription}
                   </p>
                 ) : null}
-                <p
-                  className={`mt-3 text-sm leading-relaxed ${
-                    discoveryRoster.kind === 'recruit' ? 'text-amber-200' : discoveryRoster.kind === 'ready' ? 'text-emerald-200' : 'text-slate-400'
-                  }`}
-                >
-                  {discoveryRoster.title}
-                </p>
+                {discoveryRoster.title ? (
+                  <p className="mt-3 text-sm leading-relaxed text-slate-400">{discoveryRoster.title}</p>
+                ) : null}
                 <div className="mt-auto flex flex-col gap-3 pt-5">
                   <div className="flex flex-wrap gap-2">
                     {collabEnabled ? (
