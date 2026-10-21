@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "co-editors-and-proposals-focus",
+      "date": "2026-10-21",
+      "status": "open",
+      "title": "Co-editors and open proposals, not head counts",
+      "summary": "The site no longer reports how many people are in a workgroup or calls a DP 'fully staffed'. Workgroup cards show 'Co-editors: x of 2 · n open seats' and open proposals. The co-editors panel, readiness board (now 'Co-editor seats filled'), Roundups page, /process and the /workgroups FAQ were updated to match. Open-proposal counts and the Review tab leave out the two book posts the filer skips as duplicates, so they match Gov Hub.",
+      "changes": [
+        "workgroupStaffing(): co-editor seats only; no member count",
+        "Readiness board: 'Co-editor seats filled x of 46'; member count removed from DP rows",
+        "Roundups: 'DPs fully staffed' stat removed",
+        "/workgroups/signups: member count removed",
+        "canopi-filing-skips.server.ts: duplicates skipped by the filer are left out of Review and open counts"
+      ]
+    },
+    {
       "id": "roundups-co-editor-focus",
       "date": "2026-10-21",
       "status": "open",

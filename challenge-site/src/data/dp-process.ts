@@ -5,7 +5,7 @@
  *
  * Source: "DP Workgroups: Principles, Protocols & Practices to Nov 13 (V1)".
  * The 12 October session agreed the 7-day decision rule and the co-editor model
- * (coordinator seat, claim or nomination; two co-editors = fully staffed). Still
+ * (coordinator seat, claim or nomination; two co-editors per DP). Still
  * proposed: the last day a new proposal can enter V1 (19 October).
  */
 
@@ -19,7 +19,7 @@ export const CO_EDITORS_PER_DP = 2;
 export const RULES_UPDATED = {
   date: '2026-10-13',
   summary:
-    'Co-editors: the coordinator holds one seat; the other is claimed or filled by an accepted nomination. Two co-editors make a DP fully staffed. Every decline carries a note the author can read. Proposals are decided within 7 days.',
+    'Co-editors: the coordinator holds one seat; the other is claimed or filled by an accepted nomination. Every decline carries a note the author can read. Proposals are decided within 7 days.',
 };
 
 export const PROCESS_PRINCIPLES: ReadonlyArray<{ title: string; body: string }> = [
@@ -98,7 +98,7 @@ export const PROCESS_ROLES: ReadonlyArray<{
   },
   {
     role: 'Co-editor',
-    count: `Exactly ${CO_EDITORS_PER_DP} (fully staffed)`,
+    count: `Exactly ${CO_EDITORS_PER_DP}`,
     decides: 'Approves (both needed) or declines proposals with a note; publishes revisions',
     howToGetIt: 'The coordinator holds one seat; claim the other, or accept a nomination',
   },
@@ -246,7 +246,7 @@ export type ReadinessItem = {
 };
 
 export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
-  { key: 'co_editors', label: 'Both co-editor seats filled (fully staffed)', check: 'auto', due: '2026-10-12' },
+  { key: 'co_editors', label: 'Both co-editor seats filled', check: 'auto', due: '2026-10-12' },
   { key: 'coordinator', label: 'Coordinator in place', check: 'auto', due: '2026-10-12' },
   { key: 'canopi_filed', label: 'Every Canopi patch and insert on the chapter is filed in Gov Hub or decided by Astra', check: 'external', due: '2026-10-19' },
   { key: 'no_stale_proposals', label: `No proposal pending longer than ${STALE_PROPOSAL_DAYS} days`, check: 'auto', due: '2026-10-26' },

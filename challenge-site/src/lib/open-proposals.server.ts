@@ -4,6 +4,7 @@
  * items the Review tab lists as "Canopi only"). Cached for 5 minutes per process.
  */
 import { classifyDiscussPost } from '@/lib/discuss-patch';
+import { skippedCanopiPostIds } from '@/lib/canopi-filing-skips.server';
 import { DP_BOOK_COMMUNITY_IDS, canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import { fetchDraftProposalsFresh } from '@/lib/workgroup-review-govhub';
@@ -28,8 +29,9 @@ async function openForDp(dpId: string, draftRef: string | null): Promise<number>
       .map((p) => String(p.external_id)),
   );
   const pending = proposals.filter((p) => String(p.status || '').toLowerCase() === 'pending').length;
+  const skipped = await skippedCanopiPostIds();
   const unfiled = (canopi.ok ? canopi.posts : []).filter((post) => {
-    if (post.parentId || filed.has(post.id)) return false;
+    if (post.parentId || filed.has(post.id) || skipped.has(post.id)) return false;
     const kind = classifyDiscussPost({ body: post.content, tagType: post.tagType }).kind;
     return kind === 'patch' || kind === 'insert';
   }).length;

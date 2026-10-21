@@ -1,4 +1,5 @@
 import { classifyDiscussPost } from '@/lib/discuss-patch';
+import { skippedCanopiPostIds } from '@/lib/canopi-filing-skips.server';
 import { DP_BOOK_COMMUNITY_IDS, canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
 import { searchCanopiPosts } from '@/lib/dp-canopi-search';
 import {
@@ -65,8 +66,9 @@ export async function buildWorkgroupReviewQueue(opts: {
       })
     : { ok: true as const, posts: [] };
 
+  const skipped = await skippedCanopiPostIds();
   const canopiPatches = (canopi.ok ? canopi.posts : []).filter((post) => {
-    if (post.parentId) return false;
+    if (post.parentId || skipped.has(post.id)) return false;
     const parsed = classifyDiscussPost({ body: post.content, tagType: post.tagType });
     return parsed.kind === 'patch' || parsed.kind === 'insert';
   });
