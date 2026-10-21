@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "roundups-co-editor-focus",
+      "date": "2026-10-21",
+      "status": "open",
+      "title": "DP Roundups page centred on co-editors",
+      "summary": "The Roundups page now leads with the co-editor model. 'Where the work stands' shows live co-editor seats filled, DPs fully staffed and open proposals, and lists the DPs that still need a co-editor, each linked to its workgroup. 'How you can participate' starts with claiming or nominating a co-editor seat. The breakout, reportback and V1 sections describe co-editor decisions on the Review tab. The outdated three-member target and 'not yet reported here' line are gone. Each session page points members to open seats. The per-person seat limit is stated as three.",
+      "changes": [
+        "/roundups: live co-editor and proposal numbers, DPs needing a co-editor, co-edit participation option, co-editor decision rules",
+        "/roundups/[date]: co-editor paragraph",
+        "Agenda line: progress, open co-editor seats, and the co-editor process",
+        "Seat limit copy 2 → 3 (/process, /workgroups FAQ)"
+      ]
+    },
+    {
       "id": "recredit-proposals",
       "date": "2026-10-20",
       "status": "open",
