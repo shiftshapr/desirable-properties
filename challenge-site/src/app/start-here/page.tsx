@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { coEditorStatus, SEATS_PER_DP } from '@/lib/co-editor-status.server';
 import Link from 'next/link';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import localData from '@/data/desirable-properties.json';
@@ -7,6 +8,7 @@ import {
   bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
   DESIRABLE_PROPERTIES_BOOK_TITLE,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub button hidden for now
   GOVHUB_DP_PATCHES_URL,
 } from '@/lib/govhub';
 import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
@@ -14,6 +16,8 @@ import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import { workgroupPrimaryHref } from '@/lib/workgroup-links';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Start Here – Desirable Properties Challenge',
@@ -102,7 +106,8 @@ function dpHref(id: string) {
   return `/dp/${id.toLowerCase()}`;
 }
 
-export default function StartHerePage() {
+export default async function StartHerePage() {
+  const status = await coEditorStatus().catch(() => null);
   const categories = localData.meta.categories;
   const dpsByCategory = categories.map((category) => ({
     category,
@@ -129,12 +134,28 @@ export default function StartHerePage() {
             across implementations. The Community Review Draft is published. The next milestone is{' '}
             <strong className="font-semibold text-white">Version 1.0 on {v1Target}</strong>.
           </p>
-          <p className="mt-4 max-w-3xl text-base text-slate-400">
-            Current draft: Version {challengeMeta.current_draft_version}. The workgroup{' '}
-            <strong className="font-semibold text-white">Collaborate</strong> page is where groups
-            take a DP to Version 1.0. Commenting on the book is the lighter path.
+          <p className="mt-4 max-w-3xl text-base text-slate-300">
+            What the work needs most now is <strong className="font-semibold text-white">co-editors</strong>.
+            Each DP has two, and a proposal goes into its chapter only when both approve it.
+            {status ? (
+              <>
+                {' '}Right now{' '}
+                <strong className="font-semibold text-white">
+                  {status.seatsFilled} of {status.seatsTotal} seats
+                </strong>{' '}
+                are filled and{' '}
+                <strong className="font-semibold text-white">{status.openProposals ?? 'many'} proposals</strong>{' '}
+                are waiting for a decision.
+              </>
+            ) : null}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href="#co-edit"
+              className="rounded-lg bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-200"
+            >
+              Become a co-editor →
+            </a>
             <a
               href="#tracks"
               className="rounded-lg bg-gradient-to-r from-violet-600 to-blue-600 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-violet-950/40 hover:from-violet-500 hover:to-blue-500"
@@ -153,15 +174,57 @@ export default function StartHerePage() {
 
       <section id="tracks" className="scroll-mt-20 border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">Two ways to contribute</h2>
+          <h2 className="text-3xl font-bold text-white">Ways to contribute</h2>
           <p className="mt-3 max-w-3xl text-lg text-slate-400">
-            You do not need to do both. If you will stay with a property through November, the
-            Collaborate page is the workgroup home.
+            Pick one. Co-editors carry a DP to Version 1.0; members and readers bring proposals and
+            comments for them to decide.
           </p>
           <ul className="mt-10 grid gap-5">
+            <li id="co-edit" className="scroll-mt-20 rounded-2xl border-2 border-cyan-400 bg-gradient-to-br from-cyan-950/70 via-slate-950 to-slate-950 p-6 shadow-lg shadow-cyan-950/50 sm:p-8">
+              <p className="text-sm font-semibold uppercase tracking-wide text-cyan-200">
+                Most needed · Co-editor
+              </p>
+              <h3 className="mt-3 text-2xl font-bold text-white sm:text-3xl">Co-edit a DP</h3>
+              <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-200 sm:text-lg">
+                Each DP has two co-editors who review its proposals independently on the
+                workgroup&apos;s <strong className="font-semibold text-white">Review</strong> tab.
+                Both approve before a change goes in; a decline carries a short note the author can
+                read; proposals are decided within 7 days. Claim an open seat at the top of the
+                DP&apos;s workgroup page with a short statement, or nominate someone you trust.
+              </p>
+              {status?.needsCoEditor.length ? (
+                <>
+                  <p className="mt-5 text-sm text-slate-300">DPs with an open seat:</p>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {status.needsCoEditor.map((r) => {
+                      const slug = DP_WORKGROUP_SLUGS[r.dp];
+                      const waiting = status.openByDp.get(r.dp);
+                      return (
+                        <li key={r.dp}>
+                          <Link
+                            href={slug ? `/workgroups/${slug}#co-editors` : WORKGROUPS_LIST_HREF}
+                            className="inline-flex rounded-lg border border-cyan-800 px-3 py-1.5 text-sm text-cyan-100 hover:bg-cyan-950"
+                          >
+                            {r.dp} · {SEATS_PER_DP - r.seats} open{waiting ? ` · ${waiting} waiting` : ''}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              ) : null}
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/process#roles"
+                  className="inline-flex rounded-lg border border-cyan-400/70 px-5 py-3 text-sm font-medium text-cyan-100 hover:border-cyan-300"
+                >
+                  How co-editing works
+                </Link>
+              </div>
+            </li>
             <li className="rounded-2xl border-2 border-violet-400 bg-gradient-to-br from-violet-950/80 via-slate-950 to-slate-950 p-6 shadow-lg shadow-violet-950/50 sm:p-8">
               <p className="text-sm font-semibold uppercase tracking-wide text-violet-200">
-                Primary for Version 1.0 · Collaborate page
+                Workgroup member · Collaborate page
               </p>
               <h3 className="mt-3 text-2xl font-bold text-white sm:text-3xl">
                 Join a workgroup Collaborate page
@@ -169,12 +232,11 @@ export default function StartHerePage() {
               <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-200 sm:text-lg">
                 Each DP has a Collaborate page. That is the workgroup workspace, not a side tab.
                 Use <strong className="font-semibold text-white">Astra</strong> to review editorial
-                synthesis. Propose passage changes on book Discuss (PATCH/INSERT) or Gov Hub drafts,
-                then <strong className="font-semibold text-white">promote</strong> into a revision
-                draft on Review (publish is a later release). Use{' '}
-                <strong className="font-semibold text-white">Canopi</strong> to post, comment,
-                review, and like. Each DP needs two co-editors; if a group has an open seat, step
-                up or invite someone who should.
+                synthesis. Propose passage changes on the book&apos;s Discuss (PATCH/INSERT); they
+                appear on the workgroup&apos;s <strong className="font-semibold text-white">Review</strong>{' '}
+                tab, where members weigh in and the DP&apos;s two co-editors approve or decline them.
+                Use <strong className="font-semibold text-white">Canopi</strong> to post, comment,
+                review, and like.
               </p>
               <p className="mt-4 max-w-3xl rounded-lg border border-amber-800/50 bg-amber-950/30 px-4 py-3 text-sm leading-relaxed text-amber-100">
                 Sign in when you open Collaborate. Joining the workgroup, Astra, Review, and Canopi
@@ -203,8 +265,8 @@ export default function StartHerePage() {
               <h3 className="mt-3 text-xl font-bold text-white">Comment on the book</h3>
               <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300">
                 Prefer 30–90 minutes on a chapter without joining a group? Discuss and suggest
-                wording on {DESIRABLE_PROPERTIES_BOOK_HOST}. Passage-level patches can also go to
-                Gov Hub.
+                wording on {DESIRABLE_PROPERTIES_BOOK_HOST}. Your patches and inserts go to the
+                DP&apos;s co-editors for a decision.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <DiscussPatchLink
@@ -213,12 +275,14 @@ export default function StartHerePage() {
                 >
                   Discuss &amp; Patch a chapter →
                 </DiscussPatchLink>
+                {/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
                 <a
                   href={GOVHUB_DP_PATCHES_URL}
                   className="inline-flex rounded-lg border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                 >
                   Patch on Gov Hub
                 </a>
+                */}
               </div>
             </li>
           </ul>
@@ -562,12 +626,12 @@ export default function StartHerePage() {
             <blockquote className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-6 text-lg text-slate-200">
               <p>
                 <strong className="font-semibold text-white">
-                  Choose one DP. Bring one improvement.
+                  Choose one DP. Claim a co-editor seat, or bring one improvement.
                 </strong>
               </p>
               <p className="mt-3 text-slate-300">
-                Comment on a chapter, or join a workgroup and help take it to Version 1.0 by{' '}
-                {v1Target}.
+                Co-edit a DP, comment on a chapter, or join a workgroup and help take it to Version
+                1.0 by {v1Target}.
               </p>
             </blockquote>
             <div className="flex flex-wrap gap-3">

@@ -1,31 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { DP_ROUNDUP_EVENTS, ROUNDUP_AGENDA, ROUNDUP_TIME_LABEL, roundupDateLabel, nextRoundup } from '@/lib/dp-roundups';
-import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
-import { openProposalCountsByDp } from '@/lib/open-proposals.server';
-import { coEditorCountFromDetail } from '@/lib/workgroup-roster-nudge';
+import { coEditorStatus, SEATS_PER_DP } from '@/lib/co-editor-status.server';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
-
-const SEATS_PER_DP = 2;
-
-/** Live co-editor staffing and open proposals, from the readiness board (Gov Hub) and the Review queue sources. */
-async function coEditorStatus() {
-  const board = await fetchReadinessBoard();
-  if (!board.dps.length) return null;
-  const rows = board.dps.map((dp) => ({
-    dp: dp.dp,
-    seats: Math.min(SEATS_PER_DP, coEditorCountFromDetail(dp.checks.co_editors?.detail) ?? 0),
-  }));
-  const open = await openProposalCountsByDp(board.dps).catch(() => new Map<string, number>());
-  const byNumber = (a: { dp: string }, b: { dp: string }) => Number(a.dp.slice(2)) - Number(b.dp.slice(2));
-  return {
-    seatsFilled: rows.reduce((sum, r) => sum + r.seats, 0),
-    seatsTotal: rows.length * SEATS_PER_DP,
-    needsCoEditor: rows.filter((r) => r.seats < SEATS_PER_DP).sort(byNumber),
-    openProposals: open.size ? [...open.values()].reduce((a, b) => a + b, 0) : null,
-    openByDp: open,
-  };
-}
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
