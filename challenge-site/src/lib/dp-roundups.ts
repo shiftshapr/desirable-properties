@@ -35,7 +35,7 @@ export function roundupDateLabel(iso: string) {
 export const ROUNDUP_AGENDA = [
   ['11:30–11:35', 'Meta-Layer Initiative updates'],
   ['11:35–11:40', 'Agenda and burning questions'],
-  ['11:40–11:50', 'DP progress and tooling overview'],
+  ['11:40–11:50', 'Progress, open co-editor seats, and the co-editor process'],
   ['11:50–11:55', 'DP focus'],
   ['11:55–12:05', 'Workgroup updates and room selection'],
   ['12:05–12:45', 'Workgroup breakouts'],
