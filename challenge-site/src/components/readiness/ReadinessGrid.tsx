@@ -27,7 +27,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
   const counted = items.length;
   const totals = useMemo(() => {
     const ready = rows.filter((r) => r.passed === counted).length;
-    const seats = rows.filter((r) => r.checks.co_editors?.pass).length;
+    const seats = rows.reduce((n, r) => n + Math.min(2, Number(String(r.checks.co_editors?.detail || '').match(/^(\d+)/)?.[1] || 0)), 0);
     const pending = rows.reduce((n, r) => n + (r.pending_proposals || 0), 0);
     return { ready, seats, pending };
   }, [rows, counted]);
@@ -96,7 +96,7 @@ export default function ReadinessGrid({ items, dps, signedIn, generatedAt }: Pro
     <div>
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="DPs ready for V1" value={`${totals.ready} of ${rows.length}`} />
-        <Stat label="DPs fully staffed (2 co-editors)" value={`${totals.seats} of ${rows.length}`} />
+        <Stat label="Co-editor seats filled" value={`${totals.seats} of ${rows.length * 2}`} />
         <Stat label="Proposals pending" value={String(totals.pending)} />
       </div>
 
@@ -233,7 +233,6 @@ function ReadinessRow({
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
               <span className="font-semibold text-white">{dp.name}</span>
               {dp.draft_ref ? <span className="text-slate-400">{dp.draft_ref}</span> : null}
-              <span className="text-slate-400">{dp.members} members</span>
               <span className="text-slate-400">{dp.pending_proposals} pending</span>
               {dp.slug ? (
                 <Link href={`/workgroups/${dp.slug}`} className="text-cyan-300 hover:text-cyan-200">
