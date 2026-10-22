@@ -26,7 +26,6 @@ import { isLaunchBriefingEnabled } from '@/lib/dp-launch-briefing';
 import LaunchBriefingLink from '@/components/workgroup/LaunchBriefingLink';
 import {
   govhubDraftReadHref,
-  govhubUrl,
   isDpChallengeWorkgroup,
   isDpDiscoveryWorkgroup,
 } from '@/lib/govhub';
@@ -217,10 +216,8 @@ export default function WorkgroupCollabClient({
 
   const showFullChat = membershipChecked && isMember;
   const showInviteTools = showFullChat || initialIsDpAdmin;
-  const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
   const docHref = govhubDraftReadHref(workgroup.document_href);
-  const nominateFallback = `${govHubHref}?action=nominate`;
   const artSrc = dpWorkgroupCardImageSrc({ dpId, workgroupSlug: workgroup.slug });
   const artAlt = isDpDiscoveryWorkgroup(workgroup.slug)
     ? dpDiscoveryImageAlt(workgroup.name)
@@ -293,10 +290,7 @@ export default function WorkgroupCollabClient({
                   You are a member
                 </span>
               ) : null}
-              <WorkgroupNominatePanel
-                workgroupId={workgroup.id}
-                fallbackHref={nominateFallback}
-              />
+              {dpId ? <WorkgroupNominatePanel workgroupSlug={workgroup.slug} /> : null}
 {/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
               {docHref ? (
                 <a

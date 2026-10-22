@@ -5,7 +5,8 @@
  *
  * Source: "DP Workgroups: Principles, Protocols & Practices to Nov 13 (V1)".
  * The 12 October session agreed the 7-day decision rule and the co-editor model
- * (coordinator seat, claim or nomination; two co-editors per DP). Still
+ * (claim or nomination; two co-editors per DP). 22 October: coordinators no
+ * longer hold a seat automatically and are not a readiness item. Still
  * proposed: the last day a new proposal can enter V1 (19 October).
  */
 
@@ -17,9 +18,9 @@ export const CO_EDITORS_PER_DP = 2;
 
 /** Shown at the top of /process. Update whenever a rule on this page changes. */
 export const RULES_UPDATED = {
-  date: '2026-10-13',
+  date: '2026-10-22',
   summary:
-    'Co-editors: the coordinator holds one seat; the other is claimed or filled by an accepted nomination. Every decline carries a note the author can read. Proposals are decided within 7 days.',
+    'Co-editors: both seats are claimed or filled by an accepted nomination; anyone can nominate a member or someone new by email. Coordinators no longer hold a seat automatically. Every decline carries a note the author can read. Proposals are decided within 7 days.',
 };
 
 export const PROCESS_PRINCIPLES: ReadonlyArray<{ title: string; body: string }> = [
@@ -100,18 +101,18 @@ export const PROCESS_ROLES: ReadonlyArray<{
     role: 'Co-editor',
     count: `Exactly ${CO_EDITORS_PER_DP}`,
     decides: 'Approves (both needed) or declines proposals with a note; publishes revisions',
-    howToGetIt: 'The coordinator holds one seat; claim the other, or accept a nomination',
+    howToGetIt: 'Claim an open seat, or accept a nomination',
   },
   {
     role: 'Coordinator',
     count: '1',
-    decides: 'Runs the weekly rhythm and holds one co-editor seat; cannot incorporate alone',
+    decides: 'Can revoke a new co-editor seat within 7 days, with a reason; cannot incorporate alone',
     howToGetIt: 'Nomination, approved by a layer admin',
   },
 ];
 
 export const CO_EDITOR_CLAIM_RULE =
-  'The coordinator holds one seat automatically. An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. Or a member nominates someone from the workgroup, who becomes a co-editor the moment they accept, with no admin approval. Outside their coordinator seat, one person co-edits a limited number of DPs: 3 for now, raised step by step (up to 7) as co-editors settle in; the workgroup page shows the current limit. Every new seat is announced to the coordinator and admins. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
+  'An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. Or anyone signed in nominates a workgroup member, or someone new by email, who becomes a co-editor and joins the workgroup the moment they accept, with no admin approval. One person co-edits a limited number of DPs: 3 for now, raised step by step (up to 7) as co-editors settle in; the workgroup page shows the current limit. Every new seat is announced to the coordinator and admins. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason. A revoked co-editor’s pending approvals stop counting.';
 
 export type PracticeTask = {
   id: string;
@@ -215,7 +216,7 @@ export const PRACTICE_TASKS: ReadonlyArray<PracticeTask> = [
   {
     id: 'acknowledgments',
     task: 'Confirm contributor acknowledgments for the chapter',
-    who: 'Coordinator',
+    who: 'Co-editors',
     weeks: ['2026-11-02'],
     doneWhen: 'Every contributor is credited',
     minutes: 30,
@@ -223,7 +224,7 @@ export const PRACTICE_TASKS: ReadonlyArray<PracticeTask> = [
   {
     id: 'run-checklist',
     task: 'Run the readiness checklist and list release blockers',
-    who: 'Coordinator and co-editors',
+    who: 'Co-editors',
     weeks: ['2026-11-02'],
     doneWhen: 'Blockers named on the workgroup page',
     minutes: 45,
@@ -247,7 +248,6 @@ export type ReadinessItem = {
 
 export const READINESS_ITEMS: ReadonlyArray<ReadinessItem> = [
   { key: 'co_editors', label: 'Both co-editor seats filled', check: 'auto', due: '2026-10-12' },
-  { key: 'coordinator', label: 'Coordinator in place', check: 'auto', due: '2026-10-12' },
   { key: 'canopi_filed', label: 'Every Canopi patch and insert on the chapter is filed in Gov Hub or decided by Astra', check: 'external', due: '2026-10-19' },
   { key: 'no_stale_proposals', label: `No proposal pending longer than ${STALE_PROPOSAL_DAYS} days`, check: 'auto', due: '2026-10-26' },
   { key: 'review_notes', label: 'Every declined or considered proposal has a review note', check: 'auto', due: '2026-10-26' },

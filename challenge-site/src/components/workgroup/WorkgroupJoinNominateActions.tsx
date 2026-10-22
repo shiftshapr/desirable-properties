@@ -8,18 +8,19 @@ type Props = {
   workgroupName?: string;
   workgroupSlug?: string;
   joinFallbackHref?: string;
-  nominateFallbackHref?: string;
+  /** False for workgroups without co-editor seats (DP Discovery). */
+  coEditorSeats?: boolean;
   /** When true (from server membership check), hide the join control. */
   isMember?: boolean;
 };
 
-/** Compact join + nominate controls for collab-enabled join cards. */
+/** Compact join + nominate-a-co-editor controls for collab-enabled join cards. */
 export default function WorkgroupJoinNominateActions({
   workgroupId,
   workgroupName,
   workgroupSlug,
   joinFallbackHref,
-  nominateFallbackHref,
+  coEditorSeats = true,
   isMember = false,
 }: Props) {
   return (
@@ -36,10 +37,7 @@ export default function WorkgroupJoinNominateActions({
           fallbackHref={joinFallbackHref}
         />
       )}
-      <WorkgroupNominatePanel
-        workgroupId={workgroupId}
-        fallbackHref={nominateFallbackHref}
-      />
+      {coEditorSeats && workgroupSlug ? <WorkgroupNominatePanel workgroupSlug={workgroupSlug} /> : null}
     </div>
   );
 }
