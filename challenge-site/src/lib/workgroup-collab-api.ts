@@ -274,16 +274,17 @@ export async function revokeCoEditorSeat(
 }
 
 /** Nominate a workgroup member; they become a co-editor when they accept. */
+/** Nominate a workgroup member (by user id) or anyone else (by name and email) as co-editor. */
 export function nominateCoEditor(
   workgroupId: string,
-  member: { user_id: string; user_name: string },
+  nominee: { user_id?: string; name: string; email?: string },
   statement: string,
 ): Promise<{ success?: boolean; message?: string }> {
   return nominateWorkgroupPosition(workgroupId, {
     position_key: 'co_editor',
-    nominee_user_id: member.user_id,
-    nominee_name: member.user_name,
-    nominee_email: '',
+    nominee_user_id: nominee.user_id,
+    nominee_name: nominee.name,
+    nominee_email: nominee.email || '',
     nominee_profile_url: '',
     statement,
   });

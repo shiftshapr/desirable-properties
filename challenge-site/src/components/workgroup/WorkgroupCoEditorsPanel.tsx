@@ -22,20 +22,26 @@ type Props = {
 };
 
 const KIND_LABEL: Record<CoEditorSeat['kind'], string> = {
-  coordinator: 'Coordinator',
+  coordinator: 'Co-editor',
   claimed: 'Co-editor',
   nominated: 'Co-editor (nominated)',
 };
 
 const MIN_STATEMENT = 20;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Dispatched on window (e.g. by the header's "Nominate a co-editor") to open the nominate form. */
+export const NOMINATE_CO_EDITOR_EVENT = 'dp:nominate-co-editor';
+/** Query flag that opens the nominate form on load: /workgroups/<slug>?nominate=co-editor#co-editors */
+export const NOMINATE_CO_EDITOR_PARAM = 'nominate';
 const MIN_REASON = 10;
 
 type Mode = null | 'claim' | 'nominate' | { revoke: CoEditorSeat };
 
 /**
- * The DP's two co-editor seats, shown above the workgroup tabs. A seat is held by
- * the coordinator (automatic), claimed ("Become a co-editor"), or filled by a
- * nomination the nominee accepts.
+ * The DP's two co-editor seats, shown above the workgroup tabs. A seat is claimed
+ * ("Become a co-editor") or filled by a nomination the nominee accepts; accepting
+ * also adds the nominee to the workgroup.
  */
 export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember, className = '' }: Props) {
   const { user, checked } = useAuth();
@@ -44,6 +50,10 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
   const [text, setText] = useState('');
   const [roster, setRoster] = useState<WorkgroupRosterMember[] | null>(null);
   const [nomineeId, setNomineeId] = useState('');
+  /** Nominate a current member, or someone else by name and email. */
+  const [nomineeSource, setNomineeSource] = useState<'member' | 'email'>('member');
+  const [nomineeName, setNomineeName] = useState('');
+  const [nomineeEmail, setNomineeEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -60,7 +70,22 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
     let cancelled = false;
     fetchCoEditorSeats(workgroupId)
       .then((next) => {
-        if (!cancelled) setData(next);
+        if (cancelled) return;
+        setData(next);
+        // ?nominate=co-editor (from "Nominate a co-editor" elsewhere) opens the form once auth is known.
+        const url = new URL(window.location.href);
+        if (!checked || !next?.enabled || !url.searchParams.has(NOMINATE_CO_EDITOR_PARAM)) return;
+        if (!user) {
+          window.location.assign(`/login?next=${encodeURIComponent(url.pathname + url.search + url.hash)}`);
+          return;
+        }
+        url.searchParams.delete(NOMINATE_CO_EDITOR_PARAM);
+        window.history.replaceState(null, '', url.toString());
+        if (next.seats.length >= next.seats_total) {
+          setNotice('Both co-editor seats are filled.');
+        } else {
+          setMode('nominate');
+        }
       })
       .catch(() => {
         if (!cancelled) setData(null);
@@ -68,7 +93,9 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
     return () => {
       cancelled = true;
     };
-  }, [workgroupId, user?.id]);
+    // user is read only alongside user?.id and checked, which cover its changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workgroupId, user?.id, checked]);
 
   // Links like /workgroups/<slug>#co-editors arrive before this card has data.
   const loaded = Boolean(data?.enabled);
@@ -77,6 +104,29 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
       document.getElementById('co-editors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [loaded]);
+
+  const openNominate = useCallback(() => {
+    document.getElementById('co-editors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setError(null);
+    setNotice(null);
+    if (!data) return;
+    if (!user) {
+      window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+      return;
+    }
+    if (data.seats.length >= data.seats_total) {
+      setNotice('Both co-editor seats are filled.');
+      return;
+    }
+    setMode('nominate');
+    setText('');
+    setNomineeId('');
+  }, [data, user]);
+
+  useEffect(() => {
+    window.addEventListener(NOMINATE_CO_EDITOR_EVENT, openNominate);
+    return () => window.removeEventListener(NOMINATE_CO_EDITOR_EVENT, openNominate);
+  }, [openNominate]);
 
   useEffect(() => {
     if (mode !== 'nominate' || roster) return;
@@ -94,13 +144,16 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
   const blockReason = data.claim_block_reason && !iAmCoEditor ? data.claim_block_reason : null;
   const seatedIds = new Set(data.seats.map((s) => s.user_id));
   const candidates = (roster || []).filter((m) => !seatedIds.has(m.user_id) && m.user_id !== user?.id);
+  // With nobody left to pick from the roster, nominate by email.
+  const source = roster && candidates.length === 0 ? 'email' : nomineeSource;
   const trimmed = text.trim();
+  const emailNomineeReady = nomineeName.trim().length > 0 && EMAIL_RE.test(nomineeEmail.trim());
   const revokeTarget = typeof mode === 'object' && mode ? mode.revoke : null;
   const canSubmit =
     mode === 'claim'
       ? trimmed.length >= MIN_STATEMENT
       : mode === 'nominate'
-        ? Boolean(nomineeId) && trimmed.length > 0
+        ? (source === 'member' ? Boolean(nomineeId) : emailNomineeReady) && trimmed.length > 0
         : revokeTarget
           ? trimmed.length >= MIN_REASON
           : false;
@@ -117,6 +170,8 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
     setMode(next);
     setText('');
     setNomineeId('');
+    setNomineeName('');
+    setNomineeEmail('');
     setError(null);
     setNotice(null);
   }
@@ -131,9 +186,15 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
       if (mode === 'claim') {
         message = (await claimCoEditorSeat(workgroupId, trimmed)).message || `You are now a co-editor of ${dp}.`;
       } else if (mode === 'nominate') {
-        const member = candidates.find((m) => m.user_id === nomineeId);
-        if (!member) throw new Error('Pick a member to nominate.');
-        message = (await nominateCoEditor(workgroupId, member, trimmed)).message;
+        if (source === 'member') {
+          const member = candidates.find((m) => m.user_id === nomineeId);
+          if (!member) throw new Error('Pick a member to nominate.');
+          message = (await nominateCoEditor(workgroupId, { user_id: member.user_id, name: member.user_name }, trimmed)).message;
+        } else {
+          message = (
+            await nominateCoEditor(workgroupId, { name: nomineeName.trim(), email: nomineeEmail.trim() }, trimmed)
+          ).message;
+        }
       } else if (revokeTarget) {
         message = (await revokeCoEditorSeat(workgroupId, revokeTarget.id, trimmed)).message;
       }
@@ -276,28 +337,69 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
           onSubmit={(e) => void submit(e)}
           className="mt-4 space-y-3 rounded-lg border border-slate-800 bg-slate-950/60 p-4"
         >
-          <h3 className="text-sm font-semibold text-white">Nominate a member as co-editor</h3>
+          <h3 className="text-sm font-semibold text-white">Nominate a co-editor for {dp}</h3>
           <p className="text-sm text-slate-300">
-            They get an email with your note and become a co-editor as soon as they accept.
+            They get an email with your note. When they accept, they become a co-editor and join the workgroup.
           </p>
-          <label className="block text-sm text-slate-300">
-            Member
-            <select
-              value={nomineeId}
-              onChange={(e) => setNomineeId(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
-            >
-              <option value="">{roster ? 'Choose a member' : 'Loading members…'}</option>
-              {candidates.map((m) => (
-                <option key={m.user_id} value={m.user_id}>
-                  {m.user_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          {roster && candidates.length === 0 ? (
-            <p className="text-xs text-amber-300">No other members to nominate yet.</p>
+          {roster && candidates.length > 0 ? (
+            <div className="flex flex-wrap gap-4 text-sm text-slate-300" role="radiogroup" aria-label="Who to nominate">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="nominee-source"
+                  checked={source === 'member'}
+                  onChange={() => setNomineeSource('member')}
+                />
+                A workgroup member
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="nominee-source"
+                  checked={source === 'email'}
+                  onChange={() => setNomineeSource('email')}
+                />
+                Someone else, by email
+              </label>
+            </div>
           ) : null}
+          {source === 'member' ? (
+            <label className="block text-sm text-slate-300">
+              Member
+              <select
+                value={nomineeId}
+                onChange={(e) => setNomineeId(e.target.value)}
+                className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+              >
+                <option value="">{roster ? 'Choose a member' : 'Loading members…'}</option>
+                {candidates.map((m) => (
+                  <option key={m.user_id} value={m.user_id}>
+                    {m.user_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block text-sm text-slate-300">
+                Name
+                <input
+                  value={nomineeName}
+                  onChange={(e) => setNomineeName(e.target.value)}
+                  className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+                />
+              </label>
+              <label className="block text-sm text-slate-300">
+                Email
+                <input
+                  type="email"
+                  value={nomineeEmail}
+                  onChange={(e) => setNomineeEmail(e.target.value)}
+                  className="mt-1 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
+                />
+              </label>
+            </div>
+          )}
           <label className="block text-sm text-slate-300">
             Why this person
             <textarea
@@ -329,9 +431,9 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
         </form>
       ) : null}
 
-      {!fullyStaffed && !mode && user && isMember && data.can_nominate ? (
+      {!fullyStaffed && !mode && (!user || data.can_nominate) ? (
         <p className="mt-3 text-sm text-slate-400">
-          Know a member who should do this?{' '}
+          Know someone who should do this?{' '}
           <button
             type="button"
             onClick={() => open('nominate')}
@@ -339,7 +441,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
           >
             Nominate them
           </button>
-          .
+          {user ? '' : ' (sign in first)'}.
         </p>
       ) : null}
 

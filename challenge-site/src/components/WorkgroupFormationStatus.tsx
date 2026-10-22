@@ -70,12 +70,14 @@ function WorkgroupCard({
                 Join
               </a>
             )}
-            <a
-              href={workgroupGovHubHref(wg.slug, 'nominate')}
-              className="text-xs text-cyan-300 hover:text-cyan-200"
-            >
-              Nominate
-            </a>
+            {collabEnabled ? (
+              <Link
+                href={`/workgroups/${encodeURIComponent(wg.slug)}?nominate=co-editor#co-editors`}
+                className="text-xs text-cyan-300 hover:text-cyan-200"
+              >
+                Nominate a co-editor
+              </Link>
+            ) : null}
           </>
         ) : (
           <>
@@ -119,8 +121,8 @@ export default async function WorkgroupFormationStatus({
         <div>
           <h3 className="text-lg font-semibold text-white">Workgroup formation</h3>
           <p className="mt-2 max-w-2xl text-sm text-slate-400">
-            Each Desirable Property needs a workgroup with coordinators and contributors. Join an
-            existing group or help stand one up before August 30.
+            Each Desirable Property has a workgroup and two co-editors who decide which proposals
+            go into V1. Join a group, become a co-editor, or nominate someone.
           </p>
         </div>
         <p className="shrink-0 text-sm text-slate-400">
@@ -146,7 +148,7 @@ export default async function WorkgroupFormationStatus({
           href={WORKGROUPS_JOIN_HREF}
           className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
         >
-          Join or coordinate a workgroup
+          Join a workgroup
         </Link>
         <a
           href={govhubUrl('/layers/the-metaweb/#workgroups')}
