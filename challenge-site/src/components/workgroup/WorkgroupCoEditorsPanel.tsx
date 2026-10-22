@@ -45,6 +45,14 @@ type Mode = null | 'claim' | 'nominate' | { revoke: CoEditorSeat };
  * ("Become a co-editor") or filled by a nomination the nominee accepts; accepting
  * also adds the nominee to the workgroup.
  */
+/** Sign in, then come back with the nominate form open. */
+function signInToNominate() {
+  const url = new URL(window.location.href);
+  url.searchParams.set(NOMINATE_CO_EDITOR_PARAM, 'co-editor');
+  url.hash = 'co-editors';
+  window.location.assign(`/login?next=${encodeURIComponent(url.pathname + url.search + url.hash)}`);
+}
+
 export default function WorkgroupCoEditorsPanel({
   workgroupId,
   dpLabel,
@@ -130,7 +138,7 @@ export default function WorkgroupCoEditorsPanel({
     setNotice(null);
     if (!data) return;
     if (!user) {
-      window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+      signInToNominate();
       return;
     }
     if (data.seats.length >= data.seats_total) {
@@ -183,7 +191,8 @@ export default function WorkgroupCoEditorsPanel({
 
   function open(next: Mode) {
     if (!user) {
-      signIn();
+      if (next === 'nominate') signInToNominate();
+      else signIn();
       return;
     }
     setMode(next);
