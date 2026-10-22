@@ -8,10 +8,10 @@
       "date": "2026-10-22",
       "status": "open",
       "title": "Review tab: proposal counts, declined items folded away",
-      "summary": "The Review tab now opens with a count of the chapter's proposals: total, open (waiting for a co-editor decision or not yet filed) and declined, plus considered and approved when there are any. Declined and considered proposals move to the end of the list and are collapsed to one line showing the decision note; a chevron opens the full proposal.",
+      "summary": "The Review tab now opens with a count of the chapter's proposals: total, open (waiting for a co-editor decision or not yet filed) and declined, plus considered, original-text-not-found and approved when there are any. Declined, considered and original-text-not-found proposals move to the end of the list and are collapsed to one line showing the decision note; a chevron opens the full proposal.",
       "changes": [
         "WorkgroupReviewPanel: summary counts above the queue",
-        "Declined and considered items collapsed at the end of the list, openable with a chevron"
+        "Declined, considered and original-text-not-found items collapsed at the end of the list, openable with a chevron"
       ]
     },
     {
