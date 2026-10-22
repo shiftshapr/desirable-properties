@@ -620,19 +620,19 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         ),
       },
       {
-        q: 'Join vs nominate a coordinator?',
+        q: 'Join vs nominate a co-editor?',
         a: (
           <>
             <p>
               <strong className="font-semibold text-white">Join</strong> when you want to contribute
               as a member–reviewing, discussing, drafting, and proposing patches. Members can also
-              claim, or be nominated to, one of the DP&apos;s two co-editor seats; co-editors approve
-              changes together, and the coordinator holds one seat automatically.
+              claim one of the DP&apos;s two co-editor seats; co-editors decide which proposals go
+              into V1, and both approve a change before it goes in.
             </p>
             <p>
-              <strong className="font-semibold text-white">Nominate</strong> when you want to propose
-              yourself or someone else as Workgroup Coordinator. The layer admin reviews and
-              approves nominations.
+              <strong className="font-semibold text-white">Nominate</strong> when you want to put
+              someone else forward as co-editor: a member, or anyone by name and email. They become
+              a co-editor, and join the workgroup, as soon as they accept.
             </p>
             <p>
               <Link href="/workgroups#join-vs-nominate">Join vs nominate →</Link>

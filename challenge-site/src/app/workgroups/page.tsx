@@ -94,7 +94,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'What do co-editors do, and how do I become one?',
-    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. The coordinator holds one seat automatically. The other is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination from a member. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
+    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. A seat is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination. Anyone signed in can nominate a member or someone new by email; the nominee becomes a co-editor, and joins the workgroup, when they accept. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
   },
 ];
 
@@ -280,9 +280,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Join vs Nominate</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Two ways to get involved with a workgroup: join it as a member, or nominate
-            someone (including yourself) as coordinator. Co-editor seats are claimed or nominated
-            on the workgroup page. The full process, roles and weekly tasks are on{' '}
+            Two ways to get involved with a workgroup: join it as a member, or put someone
+            forward as a co-editor. To take a co-editor seat yourself, use Become a co-editor on
+            the workgroup page. The full process, roles and weekly tasks are on{' '}
             <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
               How V1 gets made
             </Link>
@@ -311,20 +311,17 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             </div>
 
             <div className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-950/60 p-6">
-              <h3 className="text-lg font-semibold text-white">
-                Nominate a coordinator (or yourself)
-              </h3>
+              <h3 className="text-lg font-semibold text-white">Nominate a co-editor</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                Nominating puts someone forward as the workgroup&apos;s Coordinator. You can
-                nominate yourself or someone else in the community. Co-editor seats work
-                differently: the coordinator holds one, and the other is claimed, or nominated from
-                the workgroup&apos;s Co-editors card and filled when the nominee accepts.
+                Each DP has two co-editors, who decide which proposals go into V1. Nominate a
+                workgroup member, or anyone else by name and email. They get an email with your
+                note and become a co-editor, and a member of the workgroup, as soon as they accept.
+                No administrator approval.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                The nominee reviews the nomination first and must accept it before the layer
-                admin reviews and approves. Use the
+                Use the
                 <span className="mx-1 inline-block rounded-md border border-slate-700 px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-slate-200">
-                  Nominate coordinator
+                  Nominate a co-editor
                 </span>
                 button on any card below – it opens the workgroup page with the form ready.
               </p>
@@ -477,7 +474,6 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                         workgroupName={name}
                         workgroupSlug={slug}
                         joinFallbackHref={joinHref}
-                        nominateFallbackHref={nominateHref}
                         isMember={memberWorkgroupIds.has(idBySlug.get(slug)!)}
                       />
                     ) : null}
@@ -556,7 +552,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                       workgroupName="DP Discovery"
                       workgroupSlug={DP_DISCOVERY_SLUG}
                       joinFallbackHref={discoveryJoinHref}
-                      nominateFallbackHref={discoveryNominateHref}
+                      coEditorSeats={false}
                       isMember={memberWorkgroupIds.has(idBySlug.get(DP_DISCOVERY_SLUG)!)}
                     />
                   ) : null}

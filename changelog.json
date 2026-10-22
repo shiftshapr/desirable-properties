@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-page-co-editors",
+      "date": "2026-10-22",
+      "status": "open",
+      "title": "Workgroup pages built around co-editors",
+      "summary": "The workgroup (Collaborate) page now tells each visitor what to do next. A new Next steps tab replaces Getting Started: co-editors see how many proposals are waiting for their decision and how old the oldest is, everyone else sees how to become a co-editor, nominate someone or propose a change, and the DP's open V1 readiness items sit there with due dates. Co-editors open on the Review tab. Tabs are down from eight to five (Next steps, Review, Astra, Chat, Members); old tab links still work. Nominate now means nominating a co-editor: any signed-in person can put forward a member or anyone by name and email, and the nominee becomes a co-editor and joins the workgroup when they accept. Coordinators no longer hold a co-editor seat automatically and are no longer a readiness item (they keep the 7-day revoke).",
+      "changes": [
+        "/workgroups/[slug]: Next steps tab, five tabs, co-editors land on Review, 'Nominate a co-editor' button, readiness moved into Next steps",
+        "Co-editors card: nominate a member or anyone by email; sign-in returns with the form open",
+        "Coordinator nomination form removed; /workgroups, /challenge cards, FAQ, /process and role copy updated",
+        "V1 readiness: 'Coordinator in place' removed (10 items on the site)",
+        "Gov Hub (Bridgit-DAO/interface-gov-hub#28): no automatic coordinator seat; email nominees sign in from the accept link"
+      ]
+    },
+    {
       "id": "start-here-co-editors",
       "date": "2026-10-21",
       "status": "open",

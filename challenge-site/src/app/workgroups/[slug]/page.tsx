@@ -4,7 +4,9 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import WorkgroupCollabClient from '@/app/workgroups/[slug]/WorkgroupCollabClient';
 import { fetchWorkgroupDpActivity } from '@/lib/activity-feed';
-import DpReadinessCard from '@/components/readiness/DpReadinessCard';
+import type { NextStepsReadiness } from '@/components/workgroup/WorkgroupNextSteps';
+import { READINESS_ITEMS } from '@/data/dp-process';
+import { fetchDpReadiness } from '@/lib/v1-readiness.server';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { resolveAdminEmail } from '@/lib/dp-admin-auth';
 import { readSession } from '@/lib/auth-session';
@@ -53,6 +55,24 @@ async function fetchWorkgroup(
   }
 }
 
+/** This DP's readiness items that do not pass yet, for the Next steps tab. */
+async function fetchOpenReadiness(dpId: string | null): Promise<NextStepsReadiness | null> {
+  if (!dpId) return null;
+  const dp = await fetchDpReadiness(dpId).catch(() => null);
+  if (!dp) return null;
+  return {
+    passed: dp.passed,
+    total: READINESS_ITEMS.length,
+    open: READINESS_ITEMS.filter((item) => dp.checks[item.key]?.pass === false).map((item) => ({
+      key: item.key,
+      label: item.label,
+      due: item.due,
+      detail: dp.checks[item.key]?.detail || '',
+      manual: item.check === 'manual',
+    })),
+  };
+}
+
 async function fetchTeaserMessages(workgroupId: string): Promise<WorkgroupMessage[]> {
   return (await fetchPublicWorkgroupMessages(workgroupId)) ?? [];
 }
@@ -66,7 +86,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: wg ? `${wg.name} · Workgroup` : 'Workgroup · Desirable Properties Challenge',
     description: wg?.description
       ? String(wg.description).slice(0, 160)
-      : 'Collaborate on a Desirable Properties workgroup – chat and invite members.',
+      : 'Co-edit a Desirable Property: decide proposals for Version 1.0, propose changes, and chat with the workgroup.',
   };
 }
 
@@ -105,9 +125,10 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
     draftLabel: workgroup.document_label || null,
     limit: 40,
   });
-  const roster = await enrichWorkgroupRosterWithCanopi(
-    await fetchWorkgroupRoster(workgroup.id),
-  );
+  const [roster, readiness] = await Promise.all([
+    fetchWorkgroupRoster(workgroup.id).then(enrichWorkgroupRosterWithCanopi),
+    fetchOpenReadiness(dpId),
+  ]);
 
   return (
     <main className="border-b border-slate-800">
@@ -131,13 +152,9 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             initialCanEdit={Boolean(workgroup.can_edit)}
             justJoined={justJoined}
             initialMembers={roster}
+            readiness={readiness}
           />
         </Suspense>
-        {dpId ? (
-          <div className="mt-10">
-            <DpReadinessCard dpId={dpId} />
-          </div>
-        ) : null}
       </div>
     </main>
   );

@@ -2,15 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed';
 import WorkgroupAstraPanel from '@/components/workgroup/WorkgroupAstraPanel';
 import WorkgroupCanopiEmbed from '@/components/workgroup/WorkgroupCanopiEmbed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
 import WorkgroupChatTeaser from '@/components/workgroup/WorkgroupChatTeaser';
 import WorkgroupExternalChatPanel from '@/components/workgroup/WorkgroupExternalChatPanel';
-import WorkgroupGettingStarted from '@/components/workgroup/WorkgroupGettingStarted';
 import WorkgroupInviteAiPanel from '@/components/workgroup/WorkgroupInviteAiPanel';
 import WorkgroupInviteWelcomeModal from '@/components/workgroup/WorkgroupInviteWelcomeModal';
 import WorkgroupJoinPanel from '@/components/workgroup/WorkgroupJoinPanel';
@@ -18,18 +16,12 @@ import WorkgroupLeavePanel from '@/components/workgroup/WorkgroupLeavePanel';
 import WorkgroupMembersPanel from '@/components/workgroup/WorkgroupMembersPanel';
 import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePanel';
 import WorkgroupCoEditorsPanel from '@/components/workgroup/WorkgroupCoEditorsPanel';
+import WorkgroupNextSteps, { type NextStepsReadiness } from '@/components/workgroup/WorkgroupNextSteps';
 import WorkgroupReviewPanel from '@/components/workgroup/WorkgroupReviewPanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
-import { isLaunchBriefingEnabled } from '@/lib/dp-launch-briefing';
-import LaunchBriefingLink from '@/components/workgroup/LaunchBriefingLink';
-import {
-  govhubDraftReadHref,
-  govhubUrl,
-  isDpChallengeWorkgroup,
-  isDpDiscoveryWorkgroup,
-} from '@/lib/govhub';
+import { govhubDraftReadHref, isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
 import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
 import { normalizeWorkgroupMessageParam } from '@/lib/workgroup-message-permalink';
@@ -40,7 +32,7 @@ import {
   type WorkgroupCollabTabKey,
 } from '@/lib/workgroup-collab-tabs';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
-import type { WorkgroupRosterMember } from '@/lib/workgroup-collab-api';
+import type { CoEditorSeatsResponse, WorkgroupRosterMember } from '@/lib/workgroup-collab-api';
 
 type Props = {
   workgroup: WorkgroupCollabSummary;
@@ -58,6 +50,8 @@ type Props = {
   /** Set when redirected here immediately after a successful join. */
   justJoined?: boolean;
   initialMembers?: WorkgroupRosterMember[];
+  /** This DP's readiness items that do not pass yet (server-side). */
+  readiness?: NextStepsReadiness | null;
 };
 
 export default function WorkgroupCollabClient({
@@ -74,6 +68,7 @@ export default function WorkgroupCollabClient({
   initialCanEdit = false,
   justJoined = false,
   initialMembers = [],
+  readiness = null,
 }: Props) {
   const searchParams = useSearchParams();
   const inviteToken = searchParams.get('invite')?.trim() || null;
@@ -133,7 +128,21 @@ export default function WorkgroupCollabClient({
     }
   }, [deepLinkChangeId, deepLinkProposalId]);
 
+  // Co-editors land on Review unless the link named a tab.
+  const tabChosen = useRef(
+    Boolean(searchParams.get('tab') || deepLinkMessageId || deepLinkChangeId || deepLinkProposalId),
+  );
+  const [seats, setSeats] = useState<CoEditorSeatsResponse | null>(null);
+  const onSeatsLoaded = useCallback((next: CoEditorSeatsResponse | null) => {
+    setSeats(next);
+    if (next?.viewer_is_co_editor && !tabChosen.current) {
+      tabChosen.current = true;
+      setTab('review');
+    }
+  }, []);
+
   const selectTab = useCallback((next: WorkgroupCollabTabKey) => {
+    tabChosen.current = true;
     setTab(next);
     const url = new URL(window.location.href);
     url.searchParams.set('tab', next);
@@ -217,16 +226,12 @@ export default function WorkgroupCollabClient({
 
   const showFullChat = membershipChecked && isMember;
   const showInviteTools = showFullChat || initialIsDpAdmin;
-  const govHubHref = govhubUrl(`/workgroups/${workgroup.slug}/`);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Gov Hub buttons hidden for now
   const docHref = govhubDraftReadHref(workgroup.document_href);
-  const nominateFallback = `${govHubHref}?action=nominate`;
   const artSrc = dpWorkgroupCardImageSrc({ dpId, workgroupSlug: workgroup.slug });
   const artAlt = isDpDiscoveryWorkgroup(workgroup.slug)
     ? dpDiscoveryImageAlt(workgroup.name)
     : dpImageAlt(dpId || '', workgroup.name);
-  const showLaunchBriefing =
-    isLaunchBriefingEnabled() && isDpChallengeWorkgroup(workgroup);
 
   const collabTabs = useMemo(
     () => visibleWorkgroupCollabTabs({ dpId, workgroup }),
@@ -237,7 +242,7 @@ export default function WorkgroupCollabClient({
 
   useEffect(() => {
     if (collabTabs.some((item) => item.key === tab)) return;
-    setTab('getting-started');
+    setTab('next-steps');
   }, [collabTabs, tab]);
 
   return (
@@ -273,13 +278,6 @@ export default function WorkgroupCollabClient({
               <p className="mt-4 max-w-3xl text-slate-300">{workgroup.description}</p>
             ) : null}
             <div className="mt-5 flex flex-wrap items-start gap-3 text-sm">
-              {showLaunchBriefing ? (
-                <LaunchBriefingLink
-                  workgroupSlug={workgroup.slug}
-                  label="What shipped September 16"
-                  className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-200 hover:border-slate-500"
-                />
-              ) : null}
               {membershipChecked && !isMember ? (
                 <WorkgroupJoinPanel
                   workgroupId={workgroup.id}
@@ -293,10 +291,7 @@ export default function WorkgroupCollabClient({
                   You are a member
                 </span>
               ) : null}
-              <WorkgroupNominatePanel
-                workgroupId={workgroup.id}
-                fallbackHref={nominateFallback}
-              />
+              {dpId ? <WorkgroupNominatePanel workgroupSlug={workgroup.slug} /> : null}
 {/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
               {docHref ? (
                 <a
@@ -333,6 +328,7 @@ export default function WorkgroupCollabClient({
         workgroupId={workgroup.id}
         dpLabel={dpId}
         isMember={membershipChecked && isMember}
+        onLoaded={onSeatsLoaded}
         className="mb-6"
       />
 
@@ -364,63 +360,18 @@ export default function WorkgroupCollabClient({
         </nav>
 
         <div role="tabpanel" className="p-5 sm:p-6">
-          {tab === 'getting-started' ? (
-            <WorkgroupGettingStarted
-              workgroupName={workgroup.name}
-              workgroupSlug={workgroup.slug}
-              dpId={dpId}
-              dpDetailHref={dpDetailHref}
-              documentHref={workgroup.document_href}
-              showLaunchBriefing={showLaunchBriefing}
-              memberCount={initialMembers.length}
-              onSelectTab={selectTab}
-            />
-          ) : null}
-
-          {tab === 'members' ? (
-            <WorkgroupMembersPanel
-              workgroupName={workgroup.name}
-              members={initialMembers}
-              coordinatorId={workgroup.coordinator_id}
-              coordinatorName={workgroup.coordinator_name}
-            />
-          ) : null}
-
-          {tab === 'chat' ? (
-            showFullChat ? (
-              <WorkgroupChatPanel
-                workgroupId={workgroup.id}
-                workgroupSlug={workgroup.slug}
-                workgroupName={workgroup.name}
-                dpId={dpId}
-                signedIn={signedIn}
-                sharerUserId={user?.id ?? null}
-                initialMessages={teaserMessages}
-                initialIsMember
-                initialCanPost={initialCanPost || isMember}
-                focusMessageId={deepLinkMessageId}
-              />
-            ) : (
-              <WorkgroupChatTeaser
-                messages={teaserMessages}
-                joinHref={joinHref}
-                workgroupName={workgroup.name}
-                isMember={isMember}
-                workgroupId={workgroup.id}
-                focusMessageId={deepLinkMessageId}
-              />
-            )
-          ) : null}
-
-          {tab === 'astra' ? (
-            <WorkgroupAstraPanel
+          {tab === 'next-steps' ? (
+            <WorkgroupNextSteps
               workgroupId={workgroup.id}
               workgroupSlug={workgroup.slug}
               dpId={dpId}
-              canEdit={Boolean(workgroup.can_edit || initialCanEdit)}
-              deepLinkChangeId={deepLinkChangeId}
-              deepLinkProposalId={deepLinkProposalId}
-              onDeepLinkHandled={clearAstraDeepLinks}
+              dpDetailHref={dpDetailHref}
+              signedIn={signedIn}
+              isMember={membershipChecked && isMember}
+              seats={seats}
+              readiness={readiness}
+              initialActivity={initialActivity}
+              onSelectTab={selectTab}
             />
           ) : null}
 
@@ -435,45 +386,90 @@ export default function WorkgroupCollabClient({
             />
           ) : null}
 
-          {tab === 'activity' ? (
-            <WorkgroupActivityFeed
+          {tab === 'astra' ? (
+            <WorkgroupAstraPanel
+              workgroupId={workgroup.id}
               workgroupSlug={workgroup.slug}
               dpId={dpId}
-              initialItems={initialActivity}
+              canEdit={Boolean(workgroup.can_edit || initialCanEdit)}
+              deepLinkChangeId={deepLinkChangeId}
+              deepLinkProposalId={deepLinkProposalId}
+              onDeepLinkHandled={clearAstraDeepLinks}
             />
           ) : null}
 
-          {tab === 'external-chat' ? (
-            <WorkgroupExternalChatPanel
-              workgroupSlug={workgroup.slug}
-              workgroupName={workgroup.name}
-              signedIn={signedIn}
-            />
-          ) : null}
-
-          {tab === 'invite' ? (
-            showInviteTools ? (
-              <WorkgroupInviteAiPanel
-                workgroupId={workgroup.id}
-                workgroupSlug={workgroup.slug}
-                canInvite={canInvite || isMember || initialIsDpAdmin}
-              />
-            ) : (
-              <div>
-                <p className="text-sm text-slate-400">
-                  Join this workgroup to invite people with the AI-assisted email flow.
-                </p>
-                <WorkgroupJoinPanel
+          {tab === 'chat' ? (
+            <div className="space-y-10">
+              {showFullChat ? (
+                <WorkgroupChatPanel
                   workgroupId={workgroup.id}
-                  workgroupName={workgroup.name}
                   workgroupSlug={workgroup.slug}
-                  fallbackHref={joinHref}
+                  workgroupName={workgroup.name}
+                  dpId={dpId}
+                  signedIn={signedIn}
+                  sharerUserId={user?.id ?? null}
+                  initialMessages={teaserMessages}
+                  initialIsMember
+                  initialCanPost={initialCanPost || isMember}
+                  focusMessageId={deepLinkMessageId}
+                />
+              ) : (
+                <WorkgroupChatTeaser
+                  messages={teaserMessages}
+                  joinHref={joinHref}
+                  workgroupName={workgroup.name}
                   isMember={isMember}
-                  className="mt-4"
-                  onJoined={() => void refreshMembership()}
+                  workgroupId={workgroup.id}
+                  focusMessageId={deepLinkMessageId}
+                />
+              )}
+              <div className="border-t border-slate-800 pt-8">
+                <WorkgroupExternalChatPanel
+                  workgroupSlug={workgroup.slug}
+                  workgroupName={workgroup.name}
+                  signedIn={signedIn}
                 />
               </div>
-            )
+            </div>
+          ) : null}
+
+          {tab === 'members' ? (
+            <div className="space-y-10">
+              <WorkgroupMembersPanel
+                workgroupName={workgroup.name}
+                members={initialMembers}
+                coordinatorId={workgroup.coordinator_id}
+                coordinatorName={workgroup.coordinator_name}
+              />
+              <section className="border-t border-slate-800 pt-8">
+                <h2 className="text-lg font-semibold text-white">Invite someone by email</h2>
+                {showInviteTools ? (
+                  <div className="mt-4">
+                    <WorkgroupInviteAiPanel
+                      workgroupId={workgroup.id}
+                      workgroupSlug={workgroup.slug}
+                      canInvite={canInvite || isMember || initialIsDpAdmin}
+                    />
+                  </div>
+                ) : (
+                  <div className="mt-2">
+                    <p className="text-sm text-slate-400">
+                      Join this workgroup to invite people with the AI-assisted email flow. To put someone
+                      forward as co-editor, use Nominate a co-editor at the top of the page.
+                    </p>
+                    <WorkgroupJoinPanel
+                      workgroupId={workgroup.id}
+                      workgroupName={workgroup.name}
+                      workgroupSlug={workgroup.slug}
+                      fallbackHref={joinHref}
+                      isMember={isMember}
+                      className="mt-4"
+                      onJoined={() => void refreshMembership()}
+                    />
+                  </div>
+                )}
+              </section>
+            </div>
           ) : null}
         </div>
       </div>
