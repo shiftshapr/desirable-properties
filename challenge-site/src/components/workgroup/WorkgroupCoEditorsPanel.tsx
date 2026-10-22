@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import {
   claimCoEditorSeat,
@@ -18,6 +18,8 @@ type Props = {
   /** e.g. "DP16", for the copy. */
   dpLabel?: string | null;
   isMember: boolean;
+  /** Called with each load of the seats (null on error), e.g. for the Next steps tab. */
+  onLoaded?: (data: CoEditorSeatsResponse | null) => void;
   className?: string;
 };
 
@@ -43,7 +45,13 @@ type Mode = null | 'claim' | 'nominate' | { revoke: CoEditorSeat };
  * ("Become a co-editor") or filled by a nomination the nominee accepts; accepting
  * also adds the nominee to the workgroup.
  */
-export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember, className = '' }: Props) {
+export default function WorkgroupCoEditorsPanel({
+  workgroupId,
+  dpLabel,
+  isMember,
+  onLoaded,
+  className = '',
+}: Props) {
   const { user, checked } = useAuth();
   const [data, setData] = useState<CoEditorSeatsResponse | null>(null);
   const [mode, setMode] = useState<Mode>(null);
@@ -58,12 +66,20 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
+  const onLoadedRef = useRef(onLoaded);
+  useEffect(() => {
+    onLoadedRef.current = onLoaded;
+  }, [onLoaded]);
+
   const reload = useCallback(async () => {
+    let next: CoEditorSeatsResponse | null = null;
     try {
-      setData(await fetchCoEditorSeats(workgroupId));
+      next = await fetchCoEditorSeats(workgroupId);
     } catch {
-      setData(null);
+      next = null;
     }
+    setData(next);
+    onLoadedRef.current?.(next);
   }, [workgroupId]);
 
   useEffect(() => {
@@ -72,6 +88,7 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
       .then((next) => {
         if (cancelled) return;
         setData(next);
+        onLoadedRef.current?.(next);
         // ?nominate=co-editor (from "Nominate a co-editor" elsewhere) opens the form once auth is known.
         const url = new URL(window.location.href);
         if (!checked || !next?.enabled || !url.searchParams.has(NOMINATE_CO_EDITOR_PARAM)) return;
@@ -88,7 +105,9 @@ export default function WorkgroupCoEditorsPanel({ workgroupId, dpLabel, isMember
         }
       })
       .catch(() => {
-        if (!cancelled) setData(null);
+        if (cancelled) return;
+        setData(null);
+        onLoadedRef.current?.(null);
       });
     return () => {
       cancelled = true;

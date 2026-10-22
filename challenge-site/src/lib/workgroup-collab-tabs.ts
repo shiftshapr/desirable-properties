@@ -1,18 +1,24 @@
+/** Five tabs (owner, 2026-10-22: orient the page to co-editors). Retired keys map in RETIRED_TABS. */
 export const WORKGROUP_COLLAB_TABS = [
-  { key: 'getting-started', label: 'Getting Started' },
-  { key: 'members', label: 'Members' },
-  { key: 'chat', label: 'Workgroup Chat' },
-  { key: 'astra', label: 'Astra' },
+  { key: 'next-steps', label: 'Next steps' },
   { key: 'review', label: 'Review' },
-  { key: 'external-chat', label: 'External Chat' },
-  { key: 'activity', label: 'Activity' },
-  { key: 'invite', label: 'Invite with Email' },
+  { key: 'astra', label: 'Astra' },
+  { key: 'chat', label: 'Chat' },
+  { key: 'members', label: 'Members' },
 ] as const;
+
+/** Old ?tab= values: Getting Started and Activity are on Next steps, External Chat on Chat, invites on Members. */
+const RETIRED_TABS: Record<string, string> = {
+  'getting-started': 'next-steps',
+  activity: 'next-steps',
+  'external-chat': 'chat',
+  invite: 'members',
+};
 
 export type WorkgroupCollabTabKey = (typeof WORKGROUP_COLLAB_TABS)[number]['key'];
 
 export const WORKGROUP_CANOPI_TAB_KEYS = new Set<WorkgroupCollabTabKey>([
-  'getting-started',
+  'next-steps',
   'astra',
 ]);
 
@@ -30,11 +36,12 @@ export function normalizeWorkgroupCollabTab(
   if (tab === 'edit') {
     return resolveRetiredEditTab(hash);
   }
-  const allowed = new Set(WORKGROUP_COLLAB_TABS.map((item) => item.key));
-  if (tab && allowed.has(tab as WorkgroupCollabTabKey)) {
-    return tab as WorkgroupCollabTabKey;
+  const allowed = new Set<string>(WORKGROUP_COLLAB_TABS.map((item) => item.key));
+  const key = tab ? RETIRED_TABS[tab] ?? tab : null;
+  if (key && allowed.has(key)) {
+    return key as WorkgroupCollabTabKey;
   }
-  return 'getting-started';
+  return 'next-steps';
 }
 
 export function visibleWorkgroupCollabTabs(_opts?: {
