@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-tab-summary-collapse",
+      "date": "2026-10-22",
+      "status": "open",
+      "title": "Review tab: proposal counts, declined items folded away",
+      "summary": "The Review tab now opens with a count of the chapter's proposals: total, open (waiting for a co-editor decision or not yet filed) and declined, plus considered and approved when there are any. Declined and considered proposals move to the end of the list and are collapsed to one line showing the decision note; a chevron opens the full proposal.",
+      "changes": [
+        "WorkgroupReviewPanel: summary counts above the queue",
+        "Declined and considered items collapsed at the end of the list, openable with a chevron"
+      ]
+    },
+    {
       "id": "workgroup-page-co-editors",
       "date": "2026-10-22",
       "status": "open",
