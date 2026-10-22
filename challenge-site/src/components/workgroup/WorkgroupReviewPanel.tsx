@@ -292,7 +292,7 @@ export default function WorkgroupReviewPanel({
       {items.length ? <ReviewSummary counts={counts} /> : null}
 
       <ul className="space-y-4">
-        {/* Declined and considered proposals go last, collapsed; the order is otherwise the queue's. */}
+        {/* Closed proposals (declined, considered, orphaned) go last, collapsed; the order is otherwise the queue's. */}
         {[...items].sort((a, b) => Number(isClosed(a)) - Number(isClosed(b))).map((item) => {
           const declined = isClosed(item);
           const open = !declined || expandedKeys.has(item.key);
@@ -316,7 +316,7 @@ export default function WorkgroupReviewPanel({
                 </span>
                 <span className="min-w-0 flex-1 text-sm">
                   <span className={isDeclined(item) ? 'text-rose-200' : 'text-slate-300'}>
-                    {isDeclined(item) ? 'Declined' : 'Considered'}
+                    {CLOSED_LABEL[String(item.status).toLowerCase()] || item.status}
                   </span>
                   <span className="text-slate-400"> · {item.authorName} · {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}</span>
                   {!open ? (
@@ -721,17 +721,30 @@ function isDeclined(item: ReviewQueueItem): boolean {
   return String(item.status).toLowerCase() === 'declined';
 }
 
-/** Closed without going in: declined, or marked considered. These start collapsed. */
+/** Closed without going in: declined, considered, or orphaned (its passage is gone). These start collapsed. */
 function isClosed(item: ReviewQueueItem): boolean {
-  return ['declined', 'considered'].includes(String(item.status).toLowerCase());
+  return ['declined', 'considered', 'orphaned'].includes(String(item.status).toLowerCase());
 }
+
+const CLOSED_LABEL: Record<string, string> = {
+  declined: 'Declined',
+  considered: 'Considered',
+  orphaned: 'Original text not found',
+};
 
 function snippet(text: string, max = 140): string {
   const flat = (text || '').replace(/\s+/g, ' ').trim();
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat;
 }
 
-type ReviewCounts = { total: number; open: number; declined: number; considered: number; approved: number };
+type ReviewCounts = {
+  total: number;
+  open: number;
+  declined: number;
+  considered: number;
+  orphaned: number;
+  approved: number;
+};
 
 /** Open = waiting for a co-editor decision (or not yet filed); approved = in or headed for the revision. */
 function reviewCounts(items: ReviewQueueItem[]): ReviewCounts {
@@ -741,6 +754,7 @@ function reviewCounts(items: ReviewQueueItem[]): ReviewCounts {
     open: items.filter((i) => ['pending', 'canopi_only'].includes(status(i))).length,
     declined: items.filter(isDeclined).length,
     considered: items.filter((i) => status(i) === 'considered').length,
+    orphaned: items.filter((i) => status(i) === 'orphaned').length,
     approved: items.filter((i) => ['accepted', 'incorporated'].includes(status(i))).length,
   };
 }
@@ -752,6 +766,7 @@ function ReviewSummary({ counts }: { counts: ReviewCounts }) {
     { label: 'Declined', value: counts.declined, tone: 'text-rose-200' },
   ];
   if (counts.considered) cells.push({ label: 'Considered', value: counts.considered, tone: 'text-slate-300' });
+  if (counts.orphaned) cells.push({ label: 'Text not found', value: counts.orphaned, tone: 'text-slate-300' });
   if (counts.approved) cells.push({ label: 'Approved', value: counts.approved, tone: 'text-emerald-200' });
   return (
     <dl className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Proposal counts">
