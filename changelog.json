@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-revise",
+      "date": "2026-10-23",
+      "status": "open",
+      "title": "Co-editors can revise a proposal's text or placement",
+      "summary": "On the Review tab a co-editor can now revise a pending proposal instead of declining it: edit the wording, move it to another passage in the chapter (replace that passage, or insert above or below it), or both. The revised version stays credited to the original author, is marked 'revised by' the co-editor and carries their approval; it goes in when the other co-editor approves it. The original closes as considered with the co-editor's note, so the author sees what changed and why.",
+      "changes": [
+        "Review tab: Revise button for co-editors, with text editor, chapter passage picker and required note",
+        "Revised versions show 'revised by <co-editor>'",
+        "/api/workgroups/[id]/review/revise and /review/passages (Gov Hub: Bridgit-DAO/interface-gov-hub#30)"
+      ]
+    },
+    {
       "id": "review-tab-summary-collapse",
       "date": "2026-10-22",
       "status": "open",

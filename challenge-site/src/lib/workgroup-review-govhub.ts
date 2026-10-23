@@ -232,3 +232,58 @@ export async function fetchWorkgroupSummary(workgroupId: string, idToken?: strin
     can_edit?: boolean;
   };
 }
+
+/** The Gov Hub draft a DP workgroup edits (from its document link or ML-Draft label). */
+export async function draftRefForWorkgroup(workgroupId: string, idToken?: string | null): Promise<string | null> {
+  const headers: HeadersInit = { Accept: 'application/json' };
+  if (idToken) headers.Authorization = `Bearer ${idToken}`;
+  const res = await fetch(`${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/`, {
+    cache: 'no-store',
+    headers,
+  });
+  const wg = (await res.json().catch(() => ({}))) as { document_href?: string; document_label?: string };
+  return draftRefFromDocumentHref(wg.document_href) || draftRefFromLabel(wg.document_label);
+}
+
+export type ReviseProposalInput = {
+  proposedText: string;
+  /** The passage the revised text replaces or goes next to; omit to keep the original's. */
+  originalText?: string;
+  /** replace | insert (above) | insert_after (below); omit to keep the original's. */
+  patchMode?: 'replace' | 'insert' | 'insert_after';
+  note: string;
+};
+
+/** A co-editor's revision: Gov Hub files a new version (with their approval) and closes the original. */
+export async function reviseGovHubProposal(
+  draftRef: string,
+  proposalId: string,
+  idToken: string,
+  input: ReviseProposalInput,
+): Promise<{ ok: boolean; status: number; error?: string; data: GovHubJson }> {
+  const body: Record<string, string> = { proposed_text: input.proposedText, note: input.note };
+  if (input.originalText) body.original_text = input.originalText;
+  if (input.patchMode) body.patch_mode = input.patchMode;
+  const result = await govHubAuthed(
+    `/api/doc/draft/${encodeURIComponent(draftRef)}/proposals/${encodeURIComponent(proposalId)}/revise/`,
+    idToken,
+    { method: 'POST', body: JSON.stringify(body) },
+  );
+  return {
+    ok: result.ok,
+    status: result.status,
+    error: result.ok ? undefined : String(result.data.error || `Revise failed (${result.status})`),
+    data: result.data,
+  };
+}
+
+/** The chapter's Markdown blocks, for choosing where a revised proposal goes. */
+export async function fetchChapterPassages(draftRef: string): Promise<string[]> {
+  const res = await fetch(
+    `${GOVHUB_PUBLIC_BASE_URL}/api/doc/draft/${encodeURIComponent(draftRef)}/chapter-passages/`,
+    { cache: 'no-store', headers: { Accept: 'application/json' } },
+  );
+  if (!res.ok) throw new Error(`Chapter passages unavailable (${res.status})`);
+  const data = (await res.json().catch(() => ({}))) as { passages?: unknown };
+  return Array.isArray(data.passages) ? data.passages.filter((p): p is string => typeof p === 'string') : [];
+}
