@@ -36,6 +36,15 @@ export default function WorkgroupReviewPanel({
   /** Co-editor decision note per item: optional to approve, required to decline. */
   const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
+  /** Declined proposals start collapsed; these are the ones opened with the chevron. */
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(() => new Set());
+  const toggleExpanded = (key: string) =>
+    setExpandedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
   const [notice, setNotice] = useState<string | null>(null);
   /** Result of the last Approve/Decline on an item, shown next to it. */
   const [resultByKey, setResultByKey] = useState<Record<string, { ok: boolean; text: string }>>({});
@@ -195,6 +204,7 @@ export default function WorkgroupReviewPanel({
   }
 
   const items = data?.items || [];
+  const counts = reviewCounts(items);
   const working = data?.workingRevision;
   const hasComposedDraft = Boolean(working?.exists && (working?.appliedCount || 0) > 0);
 
@@ -279,13 +289,47 @@ export default function WorkgroupReviewPanel({
         </p>
       ) : null}
 
+      {items.length ? <ReviewSummary counts={counts} /> : null}
+
       <ul className="space-y-4">
-        {items.map((item) => (
+        {/* Closed proposals (declined, considered, orphaned) go last, collapsed; the order is otherwise the queue's. */}
+        {[...items].sort((a, b) => Number(isClosed(a)) - Number(isClosed(b))).map((item) => {
+          const declined = isClosed(item);
+          const open = !declined || expandedKeys.has(item.key);
+          return (
           <li
             key={item.key}
-            className="rounded-xl border border-slate-800 bg-slate-950/40 p-4"
+            className={`rounded-xl border border-slate-800 p-4 ${declined ? 'bg-slate-950/20' : 'bg-slate-950/40'}`}
           >
-            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-wide">
+            {declined ? (
+              <button
+                type="button"
+                aria-expanded={open}
+                onClick={() => toggleExpanded(item.key)}
+                className="flex w-full items-start gap-2 text-left"
+              >
+                <span
+                  aria-hidden
+                  className={`mt-0.5 inline-block text-slate-400 transition-transform ${open ? 'rotate-90' : ''}`}
+                >
+                  ›
+                </span>
+                <span className="min-w-0 flex-1 text-sm">
+                  <span className={isDeclined(item) ? 'text-rose-200' : 'text-slate-300'}>
+                    {CLOSED_LABEL[String(item.status).toLowerCase()] || item.status}
+                  </span>
+                  <span className="text-slate-400"> · {item.authorName} · {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}</span>
+                  {!open ? (
+                    <span className="mt-1 block truncate text-slate-500">
+                      {item.decision?.note ? `Note: ${item.decision.note}` : snippet(item.proposedText)}
+                    </span>
+                  ) : null}
+                </span>
+              </button>
+            ) : null}
+            {open ? (
+            <>
+            <div className={`flex flex-wrap items-center gap-2 text-xs uppercase tracking-wide ${declined ? 'mt-3' : ''}`}>
               {item.sources.map((source) => (
                 <span
                   key={source}
@@ -491,8 +535,11 @@ export default function WorkgroupReviewPanel({
                 workgroup page.
               </p>
             ) : null}
+            </>
+            ) : null}
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );
@@ -667,5 +714,68 @@ function StyleNotes({
         </p>
       ) : null}
     </div>
+  );
+}
+
+function isDeclined(item: ReviewQueueItem): boolean {
+  return String(item.status).toLowerCase() === 'declined';
+}
+
+/** Closed without going in: declined, considered, or orphaned (its passage is gone). These start collapsed. */
+function isClosed(item: ReviewQueueItem): boolean {
+  return ['declined', 'considered', 'orphaned'].includes(String(item.status).toLowerCase());
+}
+
+const CLOSED_LABEL: Record<string, string> = {
+  declined: 'Declined',
+  considered: 'Considered',
+  orphaned: 'Original text not found',
+};
+
+function snippet(text: string, max = 140): string {
+  const flat = (text || '').replace(/\s+/g, ' ').trim();
+  return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat;
+}
+
+type ReviewCounts = {
+  total: number;
+  open: number;
+  declined: number;
+  considered: number;
+  orphaned: number;
+  approved: number;
+};
+
+/** Open = waiting for a co-editor decision (or not yet filed); approved = in or headed for the revision. */
+function reviewCounts(items: ReviewQueueItem[]): ReviewCounts {
+  const status = (i: ReviewQueueItem) => String(i.status).toLowerCase();
+  return {
+    total: items.length,
+    open: items.filter((i) => ['pending', 'canopi_only'].includes(status(i))).length,
+    declined: items.filter(isDeclined).length,
+    considered: items.filter((i) => status(i) === 'considered').length,
+    orphaned: items.filter((i) => status(i) === 'orphaned').length,
+    approved: items.filter((i) => ['accepted', 'incorporated'].includes(status(i))).length,
+  };
+}
+
+function ReviewSummary({ counts }: { counts: ReviewCounts }) {
+  const cells: Array<{ label: string; value: number; tone: string }> = [
+    { label: 'Total', value: counts.total, tone: 'text-white' },
+    { label: 'Open', value: counts.open, tone: counts.open ? 'text-amber-200' : 'text-white' },
+    { label: 'Declined', value: counts.declined, tone: 'text-rose-200' },
+  ];
+  if (counts.considered) cells.push({ label: 'Considered', value: counts.considered, tone: 'text-slate-300' });
+  if (counts.orphaned) cells.push({ label: 'Text not found', value: counts.orphaned, tone: 'text-slate-300' });
+  if (counts.approved) cells.push({ label: 'Approved', value: counts.approved, tone: 'text-emerald-200' });
+  return (
+    <dl className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Proposal counts">
+      {cells.map((c) => (
+        <div key={c.label} className="rounded-lg border border-slate-800 bg-slate-950/50 px-4 py-2 sm:min-w-28">
+          <dt className="text-xs uppercase tracking-wide text-slate-500">{c.label}</dt>
+          <dd className={`text-2xl font-semibold ${c.tone}`}>{c.value}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
