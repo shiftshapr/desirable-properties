@@ -14,6 +14,7 @@ export type WorkgroupActivityEventType =
   | 'review_include'
   | 'review_promote'
   | 'review_drop'
+  | 'review_revise'
   | 'review_publish';
 
 export type WorkgroupActivityEvent = {
