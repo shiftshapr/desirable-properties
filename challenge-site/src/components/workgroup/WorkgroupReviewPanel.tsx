@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
+import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
 import type {
   ReviewQueueItem,
   ReviewQueueResponse,
@@ -36,6 +37,8 @@ export default function WorkgroupReviewPanel({
   /** Co-editor decision note per item: optional to approve, required to decline. */
   const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
+  /** The item whose Revise form is open (co-editors only). */
+  const [revisingKey, setRevisingKey] = useState<string | null>(null);
   /** Declined proposals start collapsed; these are the ones opened with the chevron. */
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(() => new Set());
   const toggleExpanded = (key: string) =>
@@ -355,7 +358,9 @@ export default function WorkgroupReviewPanel({
               </span>
             </div>
             <p className="mt-2 text-sm text-slate-200">
-              {item.authorName} · member evals: yes {item.evals.yes} / no {item.evals.no}
+              {item.authorName}
+              {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · member
+              evals: yes {item.evals.yes} / no {item.evals.no}
             </p>
             {item.patchMode === 'bundle' ? (
               <StylePassEdits item={item} />
@@ -516,7 +521,30 @@ export default function WorkgroupReviewPanel({
                   >
                     Decline
                   </button>
+                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' ? (
+                    <button
+                      type="button"
+                      disabled={Boolean(busyKey)}
+                      aria-expanded={revisingKey === item.key}
+                      onClick={() => setRevisingKey(revisingKey === item.key ? null : item.key)}
+                      className="rounded-lg border border-violet-800/70 px-3 py-1.5 text-sm text-violet-100 hover:border-violet-500 disabled:opacity-50"
+                    >
+                      Revise
+                    </button>
+                  ) : null}
                 </div>
+                {revisingKey === item.key ? (
+                  <ReviewReviseForm
+                    workgroupId={workgroupId}
+                    item={item}
+                    onCancel={() => setRevisingKey(null)}
+                    onDone={(message) => {
+                      setRevisingKey(null);
+                      setNotice(message);
+                      void reload();
+                    }}
+                  />
+                ) : null}
                 {resultByKey[item.key]?.text ? (
                   <p
                     role="status"
