@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "mli-amf-fiscal-sponsor",
+      "date": "2026-11-05",
+      "status": "open",
+      "title": "Meta-Layer Initiative is a program of Alternative Minds Foundation",
+      "summary": "The About page now describes the Meta-Layer Initiative as a fiscally sponsored program of Alternative Minds Foundation (AMF, EIN 20-5963476) instead of a Bridgit DAO project. The privacy notice now says the same, names AMF (EIN 20-5963476) as the place charitable gifts are handled, and keeps Bridgit To The Future LLC as the operator of these services.",
+      "changes": [
+        "/about: MLI described as a fiscally sponsored program of AMF, EIN 20-5963476 (two places)",
+        "Privacy notice (privacy.html, privacy/index.html, privacy-body.html): AMF program and gift line; Bridgit To The Future LLC operates the services"
+      ]
+    },
+    {
       "id": "readiness-proposals-by-dp",
       "date": "2026-11-04",
       "status": "open",
