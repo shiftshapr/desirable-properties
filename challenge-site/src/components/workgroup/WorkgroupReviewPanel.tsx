@@ -321,7 +321,7 @@ export default function WorkgroupReviewPanel({
                   <span className={isDeclined(item) ? 'text-rose-200' : 'text-slate-300'}>
                     {CLOSED_LABEL[String(item.status).toLowerCase()] || item.status}
                   </span>
-                  <span className="text-slate-400"> · {item.authorName} · {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}</span>
+                  <span className="text-slate-400"> · {item.authorName} · {kindLabel(item)}</span>
                   {!open ? (
                     <span className="mt-1 block truncate text-slate-500">
                       {item.decision?.note ? `Note: ${item.decision.note}` : snippet(item.proposedText)}
@@ -342,7 +342,7 @@ export default function WorkgroupReviewPanel({
                 </span>
               ))}
               <span className="rounded border border-cyan-800/60 px-1.5 py-0.5 text-cyan-200">
-                {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}
+                {kindLabel(item)}
               </span>
               {item.conflictCount > 1 ? (
                 <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">
@@ -364,6 +364,8 @@ export default function WorkgroupReviewPanel({
             </p>
             {item.patchMode === 'bundle' ? (
               <StylePassEdits item={item} />
+            ) : item.patchMode === 'dedup' ? (
+              <DedupEdits item={item} />
             ) : (
               <ActivityPatchPreview
                 removed={item.originalText || null}
@@ -521,7 +523,7 @@ export default function WorkgroupReviewPanel({
                   >
                     Decline
                   </button>
-                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' ? (
+                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' && item.patchMode !== 'dedup' ? (
                     <button
                       type="button"
                       disabled={Boolean(busyKey)}
@@ -613,6 +615,55 @@ const STYLE_RULE_LABELS: Record<string, string> = {
   en_dash: 'en dash',
   section_ref: '§ → Section',
 };
+
+function kindLabel(item: ReviewQueueItem): string {
+  if (item.patchMode === 'bundle') return 'style pass';
+  if (item.patchMode === 'dedup') return 'dedup';
+  return item.patchMode;
+}
+
+/** A dedup bundle: deletions and merges grouped by finding, each with its reason. All or nothing. */
+function DedupEdits({ item }: { item: ReviewQueueItem }) {
+  const groups: Array<{ finding: string; edits: ReviewQueueItem['edits'] }> = [];
+  for (const edit of item.edits) {
+    const finding = edit.rule || 'Other';
+    const last = groups[groups.length - 1];
+    if (last && last.finding === finding) last.edits.push(edit);
+    else groups.push({ finding, edits: [edit] });
+  }
+  return (
+    <div className="mt-3 space-y-3 text-sm">
+      <p className="text-slate-300">
+        {item.originalText} Approving applies every edit below together. If the chapter has changed under any of
+        them, nothing is applied.
+      </p>
+      {groups.map((group, g) => (
+        <section key={g} className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+          <h4 className="text-xs uppercase tracking-wide text-slate-400">{group.finding}</h4>
+          <ol className="mt-2 space-y-3">
+            {group.edits.map((edit, i) => (
+              <li key={i} className="space-y-1">
+                {edit.note ? <p className="text-slate-300">{edit.note}</p> : null}
+                <p className="whitespace-pre-wrap rounded bg-rose-950/30 px-2 py-1 text-rose-100">
+                  <span className="mr-1 text-rose-300">{edit.proposedText.trim() ? '−' : 'Delete'}</span>
+                  <span className={edit.proposedText.trim() ? '' : 'line-through decoration-rose-400/70'}>
+                    {edit.originalText}
+                  </span>
+                </p>
+                {edit.proposedText.trim() ? (
+                  <p className="whitespace-pre-wrap rounded bg-emerald-950/30 px-2 py-1 text-emerald-100">
+                    <span className="mr-1 text-emerald-300">+</span>
+                    {edit.proposedText}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  );
+}
 
 /** A style-pass bundle: every line edit, before and after, approved together. */
 function StylePassEdits({ item }: { item: ReviewQueueItem }) {
