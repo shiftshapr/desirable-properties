@@ -227,8 +227,8 @@ export type GovHubDraftProposal = {
   /** A co-editor's revision of another proposal: the original's id and who revised it. */
   revised_from_id?: string | null;
   revised_by_name?: string | null;
-  /** editorial_bundle only: the line edits approved together. */
-  edits?: Array<{ seq: number; rule?: string | null; original_text: string; proposed_text: string }>;
+  /** editorial_bundle / dedup_bundle: the edits approved together (dedup: note per edit, empty proposed_text deletes). */
+  edits?: Array<{ seq: number; rule?: string | null; original_text: string; proposed_text: string; note?: string | null }>;
 };
 
 type WorkgroupsResponse = {

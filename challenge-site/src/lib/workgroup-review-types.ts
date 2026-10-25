@@ -11,9 +11,13 @@ export type ReviewEvalComment = {
 };
 
 export type ReviewBundleEdit = {
+  /** Style pass: rule codes. Dedup: the finding this edit belongs to. */
   rule: string | null;
   originalText: string;
+  /** Empty in a dedup bundle: delete originalText. */
   proposedText: string;
+  /** Dedup only: why this edit. */
+  note: string | null;
 };
 
 /** Latest AI style-check result for an item (src/lib/style-check.server.ts). */
@@ -33,8 +37,9 @@ export type ReviewQueueItem = {
   sources: ReviewSource[];
   govhubProposalId: string | null;
   canopiMessageId: string | null;
-  /** bundle = a mechanical style pass: many line edits approved together. */
-  patchMode: 'replace' | 'insert' | 'bundle';
+  /** bundle = a mechanical style pass; dedup = duplicate-text deletions and merges. Both are many
+   *  edits approved together; a dedup bundle applies all or nothing. */
+  patchMode: 'replace' | 'insert' | 'bundle' | 'dedup';
   edits: ReviewBundleEdit[];
   /** INSERT: where proposedText goes relative to originalText (the anchored passage). */
   insertPosition: 'above' | 'below' | null;
