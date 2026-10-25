@@ -4,6 +4,30 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-withdraw",
+      "date": "2026-10-25",
+      "status": "open",
+      "title": "Authors can withdraw their own pending proposals",
+      "summary": "On the Review tab the author of a pending proposal now sees \"Withdraw my proposal\", with an optional note. A withdrawn proposal closes without a co-editor decision and shows as \"Withdrawn by author\". Only the author can do this, only while it is pending, and not for bundles.",
+      "changes": [
+        "Review tab: Withdraw button on your own pending proposals, with an optional note",
+        "\"Withdrawn by author\" closed state",
+        "/api/workgroups/[id]/review/withdraw (Gov Hub: Bridgit-DAO/interface-gov-hub, POST .../proposals/<id>/withdraw/)"
+      ]
+    },
+    {
+      "id": "review-dedup-bundles",
+      "date": "2026-10-25",
+      "status": "open",
+      "title": "Dedup bundles on the Review tab",
+      "summary": "Duplicate text found by the chapter audit reaches co-editors as one dedup bundle per chapter: the deletions and merges that remove the duplicates, approved once by both co-editors and applied together. A dedup bundle applies all or nothing, so if the chapter has changed under any edit nothing goes in. Separate from the style-pass bundle, which comes after it.",
+      "changes": [
+        "Review tab: \"dedup\" label and a view grouping edits by finding, each with its reason; deletions are struck through",
+        "No Revise button or AI style check on dedup bundles, as for style-pass bundles",
+        "Gov Hub side: Bridgit-DAO/interface-gov-hub (dedup_bundle mode, scripts/create_dedup_bundles.py)"
+      ]
+    },
+    {
       "id": "review-revise",
       "date": "2026-10-23",
       "status": "open",

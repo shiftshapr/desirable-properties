@@ -185,6 +185,28 @@ export default function WorkgroupReviewPanel({
     }
   }
 
+  async function withdraw(item: ReviewQueueItem) {
+    if (!item.govhubProposalId) return;
+    const note = (noteByKey[`withdraw:${item.key}`] || '').trim();
+    setBusyKey(`withdraw:${item.key}`);
+    setNotice(null);
+    try {
+      const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/withdraw`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ govhubProposalId: item.govhubProposalId, note }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
+      if (!res.ok) throw new Error(body.error || 'Gov Hub update failed');
+      setNotice(String(body.message || 'Proposal withdrawn.'));
+      await reload();
+    } catch (err) {
+      setNotice(`Withdraw failed: ${err instanceof Error ? err.message : 'Gov Hub update failed'}`);
+    } finally {
+      setBusyKey(null);
+    }
+  }
+
   async function publish() {
     setBusyKey('publish');
     setNotice(null);
@@ -321,7 +343,7 @@ export default function WorkgroupReviewPanel({
                   <span className={isDeclined(item) ? 'text-rose-200' : 'text-slate-300'}>
                     {CLOSED_LABEL[String(item.status).toLowerCase()] || item.status}
                   </span>
-                  <span className="text-slate-400"> · {item.authorName} · {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}</span>
+                  <span className="text-slate-400"> · {item.authorName} · {kindLabel(item)}</span>
                   {!open ? (
                     <span className="mt-1 block truncate text-slate-500">
                       {item.decision?.note ? `Note: ${item.decision.note}` : snippet(item.proposedText)}
@@ -342,7 +364,7 @@ export default function WorkgroupReviewPanel({
                 </span>
               ))}
               <span className="rounded border border-cyan-800/60 px-1.5 py-0.5 text-cyan-200">
-                {item.patchMode === 'bundle' ? 'style pass' : item.patchMode}
+                {kindLabel(item)}
               </span>
               {item.conflictCount > 1 ? (
                 <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">
@@ -364,6 +386,8 @@ export default function WorkgroupReviewPanel({
             </p>
             {item.patchMode === 'bundle' ? (
               <StylePassEdits item={item} />
+            ) : item.patchMode === 'dedup' ? (
+              <DedupEdits item={item} />
             ) : (
               <ActivityPatchPreview
                 removed={item.originalText || null}
@@ -465,6 +489,38 @@ export default function WorkgroupReviewPanel({
               </p>
             )}
 
+            {item.status === 'pending' &&
+            item.govhubProposalId &&
+            item.patchMode !== 'bundle' &&
+            item.patchMode !== 'dedup' &&
+            data?.viewerGovhubUserId &&
+            item.authorGovhubUserId === data.viewerGovhubUserId ? (
+              <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
+                <p className="text-xs text-slate-500">
+                  This is your proposal. You can withdraw it while it is pending; it closes without a co-editor decision.
+                </p>
+                <label className="block text-xs text-slate-400">
+                  Why (optional, shown with the proposal)
+                  <input
+                    value={noteByKey[`withdraw:${item.key}`] || ''}
+                    onChange={(event) =>
+                      setNoteByKey((prev) => ({ ...prev, [`withdraw:${item.key}`]: event.target.value }))
+                    }
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                    placeholder="For example: folded into the dedup bundle"
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={Boolean(busyKey)}
+                  onClick={() => void withdraw(item)}
+                  className="rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-amber-600 disabled:opacity-50"
+                >
+                  {busyKey === `withdraw:${item.key}` ? 'Withdrawing…' : 'Withdraw my proposal'}
+                </button>
+              </div>
+            ) : null}
+
             {data?.isCoEditor ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
@@ -521,7 +577,7 @@ export default function WorkgroupReviewPanel({
                   >
                     Decline
                   </button>
-                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' ? (
+                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' && item.patchMode !== 'dedup' ? (
                     <button
                       type="button"
                       disabled={Boolean(busyKey)}
@@ -613,6 +669,55 @@ const STYLE_RULE_LABELS: Record<string, string> = {
   en_dash: 'en dash',
   section_ref: '§ → Section',
 };
+
+function kindLabel(item: ReviewQueueItem): string {
+  if (item.patchMode === 'bundle') return 'style pass';
+  if (item.patchMode === 'dedup') return 'dedup';
+  return item.patchMode;
+}
+
+/** A dedup bundle: deletions and merges grouped by finding, each with its reason. All or nothing. */
+function DedupEdits({ item }: { item: ReviewQueueItem }) {
+  const groups: Array<{ finding: string; edits: ReviewQueueItem['edits'] }> = [];
+  for (const edit of item.edits) {
+    const finding = edit.rule || 'Other';
+    const last = groups[groups.length - 1];
+    if (last && last.finding === finding) last.edits.push(edit);
+    else groups.push({ finding, edits: [edit] });
+  }
+  return (
+    <div className="mt-3 space-y-3 text-sm">
+      <p className="text-slate-300">
+        {item.originalText} Approving applies every edit below together. If the chapter has changed under any of
+        them, nothing is applied.
+      </p>
+      {groups.map((group, g) => (
+        <section key={g} className="rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+          <h4 className="text-xs uppercase tracking-wide text-slate-400">{group.finding}</h4>
+          <ol className="mt-2 space-y-3">
+            {group.edits.map((edit, i) => (
+              <li key={i} className="space-y-1">
+                {edit.note ? <p className="text-slate-300">{edit.note}</p> : null}
+                <p className="whitespace-pre-wrap rounded bg-rose-950/30 px-2 py-1 text-rose-100">
+                  <span className="mr-1 text-rose-300">{edit.proposedText.trim() ? '−' : 'Delete'}</span>
+                  <span className={edit.proposedText.trim() ? '' : 'line-through decoration-rose-400/70'}>
+                    {edit.originalText}
+                  </span>
+                </p>
+                {edit.proposedText.trim() ? (
+                  <p className="whitespace-pre-wrap rounded bg-emerald-950/30 px-2 py-1 text-emerald-100">
+                    <span className="mr-1 text-emerald-300">+</span>
+                    {edit.proposedText}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  );
+}
 
 /** A style-pass bundle: every line edit, before and after, approved together. */
 function StylePassEdits({ item }: { item: ReviewQueueItem }) {
@@ -749,15 +854,16 @@ function isDeclined(item: ReviewQueueItem): boolean {
   return String(item.status).toLowerCase() === 'declined';
 }
 
-/** Closed without going in: declined, considered, or orphaned (its passage is gone). These start collapsed. */
+/** Closed without going in: declined, considered, orphaned (its passage is gone), or withdrawn by its author. These start collapsed. */
 function isClosed(item: ReviewQueueItem): boolean {
-  return ['declined', 'considered', 'orphaned'].includes(String(item.status).toLowerCase());
+  return ['declined', 'considered', 'orphaned', 'withdrawn'].includes(String(item.status).toLowerCase());
 }
 
 const CLOSED_LABEL: Record<string, string> = {
   declined: 'Declined',
   considered: 'Considered',
   orphaned: 'Original text not found',
+  withdrawn: 'Withdrawn by author',
 };
 
 function snippet(text: string, max = 140): string {

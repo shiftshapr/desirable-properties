@@ -21,6 +21,7 @@ import {
 function patchModeOf(raw: string | null | undefined): ReviewQueueItem['patchMode'] {
   const mode = String(raw || 'replace').toLowerCase();
   if (mode === 'editorial_bundle') return 'bundle';
+  if (mode === 'dedup_bundle') return 'dedup';
   return mode === 'insert' || mode === 'insert_after' ? 'insert' : 'replace';
 }
 
@@ -102,11 +103,13 @@ export async function buildWorkgroupReviewQueue(opts: {
         rule: e.rule || null,
         originalText: e.original_text,
         proposedText: e.proposed_text,
+        note: e.note ?? null,
       })),
       originalText: proposal.original_text || matchedCanopi?.anchorExact || '',
       proposedText: proposal.proposed_text || '',
       rationale: proposal.rationale || matchedCanopi?.rationale || null,
       authorName: proposal.author_name || matchedCanopi?.authorName || 'Someone',
+      authorGovhubUserId: proposal.author_user_id || null,
       createdAt: proposal.created_at || matchedCanopi?.createdAt || '',
       status: proposal.status || 'pending',
       anchorHash: proposal.anchor_hash || null,
@@ -165,6 +168,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       proposedText: parsed.content,
       rationale: post.rationale,
       authorName: post.authorName || 'Someone',
+      authorGovhubUserId: null,
       createdAt: post.createdAt || '',
       status: filedElsewhere ? 'filed_elsewhere' : 'canopi_only',
       anchorHash: null,
@@ -220,7 +224,7 @@ export async function buildWorkgroupReviewQueue(opts: {
 /** Style-check input for a queue item, or null when it is not a checkable patch/insert. */
 export function styleCheckInputForItem(item: ReviewQueueItem, dpId: string | null): StyleCheckInput | null {
   const open = ['pending', 'canopi_only'].includes(String(item.status).toLowerCase());
-  if (!open || item.patchMode === 'bundle' || !item.proposedText.trim()) return null;
+  if (!open || item.patchMode === 'bundle' || item.patchMode === 'dedup' || !item.proposedText.trim()) return null;
   return {
     source: 'review',
     dpId,
