@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-withdraw",
+      "date": "2026-10-25",
+      "status": "open",
+      "title": "Authors can withdraw their own pending proposals",
+      "summary": "On the Review tab the author of a pending proposal now sees \"Withdraw my proposal\", with an optional note. A withdrawn proposal closes without a co-editor decision and shows as \"Withdrawn by author\". Only the author can do this, only while it is pending, and not for bundles.",
+      "changes": [
+        "Review tab: Withdraw button on your own pending proposals, with an optional note",
+        "\"Withdrawn by author\" closed state",
+        "/api/workgroups/[id]/review/withdraw (Gov Hub: Bridgit-DAO/interface-gov-hub, POST .../proposals/<id>/withdraw/)"
+      ]
+    },
+    {
       "id": "review-dedup-bundles",
       "date": "2026-10-25",
       "status": "open",

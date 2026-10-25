@@ -185,6 +185,28 @@ export default function WorkgroupReviewPanel({
     }
   }
 
+  async function withdraw(item: ReviewQueueItem) {
+    if (!item.govhubProposalId) return;
+    const note = (noteByKey[`withdraw:${item.key}`] || '').trim();
+    setBusyKey(`withdraw:${item.key}`);
+    setNotice(null);
+    try {
+      const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/withdraw`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ govhubProposalId: item.govhubProposalId, note }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
+      if (!res.ok) throw new Error(body.error || 'Gov Hub update failed');
+      setNotice(String(body.message || 'Proposal withdrawn.'));
+      await reload();
+    } catch (err) {
+      setNotice(`Withdraw failed: ${err instanceof Error ? err.message : 'Gov Hub update failed'}`);
+    } finally {
+      setBusyKey(null);
+    }
+  }
+
   async function publish() {
     setBusyKey('publish');
     setNotice(null);
@@ -466,6 +488,38 @@ export default function WorkgroupReviewPanel({
                 not a public book downvote.
               </p>
             )}
+
+            {item.status === 'pending' &&
+            item.govhubProposalId &&
+            item.patchMode !== 'bundle' &&
+            item.patchMode !== 'dedup' &&
+            data?.viewerGovhubUserId &&
+            item.authorGovhubUserId === data.viewerGovhubUserId ? (
+              <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
+                <p className="text-xs text-slate-500">
+                  This is your proposal. You can withdraw it while it is pending; it closes without a co-editor decision.
+                </p>
+                <label className="block text-xs text-slate-400">
+                  Why (optional, shown with the proposal)
+                  <input
+                    value={noteByKey[`withdraw:${item.key}`] || ''}
+                    onChange={(event) =>
+                      setNoteByKey((prev) => ({ ...prev, [`withdraw:${item.key}`]: event.target.value }))
+                    }
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                    placeholder="For example: folded into the dedup bundle"
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={Boolean(busyKey)}
+                  onClick={() => void withdraw(item)}
+                  className="rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-amber-600 disabled:opacity-50"
+                >
+                  {busyKey === `withdraw:${item.key}` ? 'Withdrawing…' : 'Withdraw my proposal'}
+                </button>
+              </div>
+            ) : null}
 
             {data?.isCoEditor ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
@@ -800,15 +854,16 @@ function isDeclined(item: ReviewQueueItem): boolean {
   return String(item.status).toLowerCase() === 'declined';
 }
 
-/** Closed without going in: declined, considered, or orphaned (its passage is gone). These start collapsed. */
+/** Closed without going in: declined, considered, orphaned (its passage is gone), or withdrawn by its author. These start collapsed. */
 function isClosed(item: ReviewQueueItem): boolean {
-  return ['declined', 'considered', 'orphaned'].includes(String(item.status).toLowerCase());
+  return ['declined', 'considered', 'orphaned', 'withdrawn'].includes(String(item.status).toLowerCase());
 }
 
 const CLOSED_LABEL: Record<string, string> = {
   declined: 'Declined',
   considered: 'Considered',
   orphaned: 'Original text not found',
+  withdrawn: 'Withdrawn by author',
 };
 
 function snippet(text: string, max = 140): string {

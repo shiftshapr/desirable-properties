@@ -48,6 +48,8 @@ export type ReviewQueueItem = {
   proposedText: string;
   rationale: string | null;
   authorName: string;
+  /** Gov Hub user id of the author (null for Canopi-only items); the author may withdraw while pending. */
+  authorGovhubUserId: string | null;
   createdAt: string;
   status: string;
   anchorHash: string | null;

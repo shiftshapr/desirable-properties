@@ -208,6 +208,7 @@ export type GovHubDraftProposal = {
   original_text?: string | null;
   proposed_text?: string | null;
   author_name?: string | null;
+  author_user_id?: string | null;
   created_at?: string | null;
   reviewed_at?: string | null;
   rationale?: string | null;
