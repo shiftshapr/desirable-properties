@@ -175,6 +175,26 @@ export async function declineGovHubProposal(
   };
 }
 
+/** The author takes back their own pending proposal (Gov Hub checks authorship). */
+export async function withdrawGovHubProposal(
+  draftRef: string,
+  proposalId: string,
+  idToken: string,
+  note?: string,
+): Promise<{ ok: boolean; status: number; error?: string; data: GovHubJson }> {
+  const result = await govHubAuthed(
+    `/api/doc/draft/${encodeURIComponent(draftRef)}/proposals/${encodeURIComponent(proposalId)}/withdraw/`,
+    idToken,
+    { method: 'POST', body: JSON.stringify(note ? { note } : {}) },
+  );
+  return {
+    ok: result.ok,
+    status: result.status,
+    error: result.ok ? undefined : String(result.data.error || `Withdraw failed (${result.status})`),
+    data: result.data,
+  };
+}
+
 export async function publishWorkingRevision(
   draftRef: string,
   idToken: string,
