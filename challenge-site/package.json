@@ -20,6 +20,7 @@
     "test:dp-invite-content": "node --test scripts/dp-invite-event-catalog.test.mjs",
     "test:hermes-onboard": "node --test scripts/hermes-onboard-directory.test.mjs scripts/hermes-person-pad.test.mjs",
     "test:canopi-comment-body": "node --experimental-strip-types --test scripts/canopi-comment-body.test.mjs",
+    "test:canopi-embed-script": "node --experimental-strip-types --test scripts/canopi-embed-script.test.mjs",
     "test:canopi-feed-cache": "node --experimental-strip-types --test scripts/canopi-feed-cache.test.mjs",
     "test:workgroup-relay": "node --experimental-strip-types --test scripts/workgroup-message-permalink.test.mjs scripts/workgroup-relay-message.test.mjs scripts/workgroup-public-teaser.test.mjs",
     "test:auth-session-cookie": "tsx --test scripts/auth-session-cookie.test.mjs",

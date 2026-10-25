@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "staging-canopi-embed",
+      "date": "2026-10-25",
+      "status": "open",
+      "title": "Staging Discuss embed uses staging Canopi",
+      "summary": "On staging.desirableproperties.org the Canopi Discuss embed now loads from staging Canopi, the same Canopi the staging site signs people in against. Before, it loaded production Canopi with a staging sign-in, so every signed-in call failed and the panel showed \"Sign in\". Production is unchanged.",
+      "changes": [
+        "Embed script chosen by host: staging.* uses https://staging.api.canopi.live/embed/v1.js",
+        "scripts/canopi-embed-script.test.mjs (npm run test:canopi-embed-script)"
+      ]
+    },
+    {
       "id": "review-withdraw",
       "date": "2026-10-25",
       "status": "open",
