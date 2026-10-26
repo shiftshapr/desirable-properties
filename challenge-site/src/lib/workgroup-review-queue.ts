@@ -1,3 +1,4 @@
+import { attachAnchorEvals } from '@/lib/anchor-eval.server';
 import { classifyDiscussPost } from '@/lib/discuss-patch';
 import { skippedCanopiPostIds } from '@/lib/canopi-filing-skips.server';
 import { DP_BOOK_COMMUNITY_IDS, canopiBookPageIdsForDp } from '@/lib/dp-canopi-chapters';
@@ -134,6 +135,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       decision: pending ? null : { by: proposal.reviewed_by_name || null, note: proposal.review_note || null },
       styleCheckable: false,
       styleCheck: null,
+      anchorEval: null,
       canPromote: pending && anchored,
       promoteBlockReason: !pending
         ? `Already ${proposal.status}. Only pending Gov Hub proposals can be promoted into the next revision draft.`
@@ -184,6 +186,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       decision: null,
       styleCheckable: false,
       styleCheck: null,
+      anchorEval: null,
       canPromote: false,
       promoteBlockReason: filedElsewhere
         ? `Posted on this chapter's page, but the passage it targets is in ${filed!.home_dp}. It was filed there (${filed!.draft_ref}); review it on the ${filed!.home_dp} Review tab.`
@@ -199,6 +202,7 @@ export async function buildWorkgroupReviewQueue(opts: {
   }
 
   await attachStyleChecks(items, opts.dpId);
+  await attachAnchorEvals(items).catch(() => undefined);
 
   const groups = new Map<string, ReviewQueueItem[]>();
   for (const item of items) {

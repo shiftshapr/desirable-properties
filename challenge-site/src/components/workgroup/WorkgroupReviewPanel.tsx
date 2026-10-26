@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
+import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
 import type {
   ReviewQueueItem,
@@ -39,6 +40,8 @@ export default function WorkgroupReviewPanel({
   const [whatChanged, setWhatChanged] = useState('');
   /** The item whose Revise form is open (co-editors only). */
   const [revisingKey, setRevisingKey] = useState<string | null>(null);
+  /** Set when Revise was opened from Claude's anchor flag, so the form starts at the suggested passage. */
+  const [moveKey, setMoveKey] = useState<string | null>(null);
   /** Declined proposals start collapsed; these are the ones opened with the chevron. */
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(() => new Set());
   const toggleExpanded = (key: string) =>
@@ -180,6 +183,26 @@ export default function WorkgroupReviewPanel({
     } catch (err) {
       const text = err instanceof Error ? err.message : 'Gov Hub update failed';
       setResultByKey((prev) => ({ ...prev, [item.key]: { ok: false, text } }));
+    } finally {
+      setBusyKey(null);
+    }
+  }
+
+  /** A co-editor keeps the proposal where it is: Claude's anchor flag is dismissed. */
+  async function keepAnchor(item: ReviewQueueItem) {
+    setBusyKey(item.key);
+    try {
+      const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/anchor-dismiss`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ govhubProposalId: item.govhubProposalId }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(body.error || `Failed (${res.status})`);
+      await reload();
+    } catch (err) {
+      setResultByKey((m) => ({ ...m, [item.key]: { ok: false, text: err instanceof Error ? err.message : 'Failed' } }));
     } finally {
       setBusyKey(null);
     }
@@ -410,6 +433,20 @@ export default function WorkgroupReviewPanel({
                 onRate={(check, helpful) => void rateStyle(item.key, check, helpful)}
               />
             ) : null}
+            {item.anchorEval && item.status === 'pending' ? (
+              <AnchorFlag
+                item={item}
+                canAct={Boolean(data?.isCoEditor) && !busyKey}
+                onMove={() => {
+                  setMoveKey(item.key);
+                  setRevisingKey(item.key);
+                }}
+                onKeep={() => void keepAnchor(item)}
+              />
+            ) : null}
+            {data?.askEnabled && signedIn && (isMember || data.isCoEditor) ? (
+              <ReviewAskDeepi workgroupId={workgroupId} itemKey={item.key} />
+            ) : null}
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
               {item.hrefs.book ? (
                 <DiscussPatchLink href={item.hrefs.book} className="text-cyan-300 hover:text-cyan-200">
@@ -582,7 +619,10 @@ export default function WorkgroupReviewPanel({
                       type="button"
                       disabled={Boolean(busyKey)}
                       aria-expanded={revisingKey === item.key}
-                      onClick={() => setRevisingKey(revisingKey === item.key ? null : item.key)}
+                      onClick={() => {
+                        setMoveKey(null);
+                        setRevisingKey(revisingKey === item.key ? null : item.key);
+                      }}
                       className="rounded-lg border border-violet-800/70 px-3 py-1.5 text-sm text-violet-100 hover:border-violet-500 disabled:opacity-50"
                     >
                       Revise
@@ -593,6 +633,7 @@ export default function WorkgroupReviewPanel({
                   <ReviewReviseForm
                     workgroupId={workgroupId}
                     item={item}
+                    suggestion={moveKey === item.key ? item.anchorEval : null}
                     onCancel={() => setRevisingKey(null)}
                     onDone={(message) => {
                       setRevisingKey(null);
@@ -669,6 +710,50 @@ const STYLE_RULE_LABELS: Record<string, string> = {
   en_dash: 'en dash',
   section_ref: '§ → Section',
 };
+
+/** Claude's anchor evaluation found a better place; co-editors move it (via Revise) or keep it. */
+function AnchorFlag({
+  item,
+  canAct,
+  onMove,
+  onKeep,
+}: {
+  item: ReviewQueueItem;
+  canAct: boolean;
+  onMove: () => void;
+  onKeep: () => void;
+}) {
+  const flag = item.anchorEval!;
+  return (
+    <div className="mt-3 rounded-lg border border-amber-800/60 bg-amber-950/20 px-3 py-2 text-sm">
+      <p className="font-medium text-amber-100">Claude suggests a better place for this</p>
+      <p className="mt-1 text-slate-300">{flag.reason}</p>
+      <p className="mt-2 text-xs text-slate-400">
+        Suggested: {flag.suggestedMode === 'insert' ? 'above' : 'below'} “{snippet(flag.suggestedPassage.replace(/^#{1,6}\s+/, ''), 180)}”
+      </p>
+      {canAct ? (
+        <div className="mt-2 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={onMove}
+            className="rounded-lg border border-amber-700 px-3 py-1 text-sm text-amber-100 hover:border-amber-400"
+          >
+            Move to suggested passage
+          </button>
+          <button
+            type="button"
+            onClick={onKeep}
+            className="rounded-lg px-3 py-1 text-sm text-slate-400 hover:text-slate-200"
+          >
+            Keep it where it is
+          </button>
+        </div>
+      ) : (
+        <p className="mt-1 text-xs text-slate-500">Co-editors decide whether to move it.</p>
+      )}
+    </div>
+  );
+}
 
 function kindLabel(item: ReviewQueueItem): string {
   if (item.patchMode === 'bundle') return 'style pass';
