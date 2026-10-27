@@ -110,6 +110,8 @@ export type ReviewQueueResponse = {
   viewerGovhubUserId: string | null;
   /** False when no model is configured on this server. */
   styleCheckEnabled: boolean;
-  /** Ask Deepi (Claude) is configured on this server. */
+  /** Ask Deepi (Claude) is configured on this server; also requires the pre-publish check. */
   askEnabled: boolean;
+  /** Co-editor approvals a proposal needs: every seat (two on most DPs, three on DP4). */
+  approvalsNeeded: number;
 };

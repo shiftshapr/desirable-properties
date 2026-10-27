@@ -4,8 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
+import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
 import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
+import WorkingRevisionEmail from '@/components/workgroup/WorkingRevisionEmail';
 import type {
   ReviewQueueItem,
   ReviewQueueResponse,
@@ -38,6 +40,8 @@ export default function WorkgroupReviewPanel({
   /** Co-editor decision note per item: optional to approve, required to decline. */
   const [noteByKey, setNoteByKey] = useState<Record<string, string>>({});
   const [whatChanged, setWhatChanged] = useState('');
+  /** The pre-publish check has read the current working revision (required to publish when Claude is on). */
+  const [checkCurrent, setCheckCurrent] = useState(false);
   /** The item whose Revise form is open (co-editors only). */
   const [revisingKey, setRevisingKey] = useState<string | null>(null);
   /** Set when Revise was opened from Claude's anchor flag, so the form starts at the suggested passage. */
@@ -174,7 +178,7 @@ export default function WorkgroupReviewPanel({
       const text = String(
         body.message ||
           (action === 'promote'
-            ? 'Approved. It goes into the next revision draft once both co-editors approve. Not live.'
+            ? 'Approved. It goes into the next revision draft once every co-editor approves. Not live.'
             : 'Declined. The author can read your note.'),
       );
       setResultByKey((prev) => ({ ...prev, [item.key]: { ok: true, text } }));
@@ -230,14 +234,14 @@ export default function WorkgroupReviewPanel({
     }
   }
 
-  async function publish() {
+  async function publish(skipCheck = false) {
     setBusyKey('publish');
     setNotice(null);
     try {
       const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review/publish`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ whatChanged }),
+        body: JSON.stringify({ whatChanged, skipCheck }),
       });
       const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
       if (!res.ok) throw new Error(body.error || 'Publish failed');
@@ -270,7 +274,7 @@ export default function WorkgroupReviewPanel({
         <ol className="max-w-3xl list-decimal space-y-1 pl-5 text-sm text-slate-300">
           <li>
             <strong className="font-semibold text-white">Approve or decline</strong>: co-editors
-            decide. A proposal goes into the next revision draft when both co-editors approve it.
+            decide. A proposal goes into the next revision draft when all of the DP&apos;s co-editors approve it.
             Declining needs a note the author can read. Nothing goes live yet.
           </li>
           <li>
@@ -280,6 +284,19 @@ export default function WorkgroupReviewPanel({
         </ol>
       </header>
 
+      {!canEdit && isMember && hasComposedDraft ? (
+        <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+          <h3 className="text-sm font-semibold text-white">Working revision</h3>
+          <p className="mt-1 text-sm text-slate-300">
+            {working?.appliedCount} approved change{working?.appliedCount === 1 ? '' : 's'} merged in, not yet
+            published.
+          </p>
+          <div className="mt-2">
+            <WorkingRevisionEmail workgroupId={workgroupId} canEmailWorkgroup={false} />
+          </div>
+        </section>
+      ) : null}
+
       {canEdit && hasComposedDraft ? (
         <section className="rounded-xl border border-violet-800/50 bg-violet-950/20 p-4">
           <h3 className="text-sm font-semibold text-violet-100">Publish revision</h3>
@@ -288,6 +305,12 @@ export default function WorkgroupReviewPanel({
             proposal{working?.appliedCount === 1 ? '' : 's'}. Publishing is the release step: it
             makes that draft the live Gov Hub / book text. Promoting a proposal is not publish.
           </p>
+          <div className="mt-2">
+            <WorkingRevisionEmail workgroupId={workgroupId} canEmailWorkgroup />
+          </div>
+          {data?.askEnabled ? (
+            <PrepublishCheck workgroupId={workgroupId} onCurrent={setCheckCurrent} onEdited={() => void reload()} />
+          ) : null}
           <label className="mt-3 block text-sm text-slate-300">
             Release note (optional)
             <input
@@ -299,12 +322,28 @@ export default function WorkgroupReviewPanel({
           </label>
           <button
             type="button"
-            disabled={!working?.canPublish || busyKey === 'publish'}
+            disabled={!working?.canPublish || busyKey === 'publish' || (Boolean(data?.askEnabled) && !checkCurrent)}
+            title={data?.askEnabled && !checkCurrent ? 'Run the pre-publish check first' : undefined}
             onClick={() => void publish()}
             className="mt-3 rounded-lg bg-violet-700 px-4 py-2 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
           >
             {busyKey === 'publish' ? 'Publishing…' : 'Publish revision'}
           </button>
+          {data?.askEnabled && !checkCurrent ? (
+            <p className="mt-2 text-xs text-slate-400">
+              Run the pre-publish check first.{' '}
+              <button
+                type="button"
+                disabled={!working?.canPublish || busyKey === 'publish'}
+                onClick={() => {
+                  if (window.confirm('Publish without the pre-publish check?')) void publish(true);
+                }}
+                className="text-slate-500 underline hover:text-slate-300"
+              >
+                Publish without it
+              </button>
+            </p>
+          ) : null}
         </section>
       ) : canEdit ? (
         <p className="text-sm text-slate-500">
@@ -467,7 +506,11 @@ export default function WorkgroupReviewPanel({
 */}
             </div>
 
-            <Decisions item={item} viewerGovhubUserId={data?.viewerGovhubUserId || null} />
+            <Decisions
+              item={item}
+              viewerGovhubUserId={data?.viewerGovhubUserId || null}
+              needed={data?.approvalsNeeded || 2}
+            />
 
             {item.evals.comments.length ? (
               <ul className="mt-3 space-y-1 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-400">
@@ -656,7 +699,7 @@ export default function WorkgroupReviewPanel({
               </div>
             ) : signedIn && item.status === 'pending' && item.govhubProposalId ? (
               <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">
-                Only this DP&apos;s two co-editors approve or decline proposals. Claim an open seat at the top of the
+                Only this DP&apos;s co-editors approve or decline proposals. Claim an open seat at the top of the
                 workgroup page.
               </p>
             ) : null}
@@ -671,7 +714,15 @@ export default function WorkgroupReviewPanel({
 }
 
 /** Who approved (visible to everyone), or the recorded decision once the proposal is closed. */
-function Decisions({ item, viewerGovhubUserId }: { item: ReviewQueueItem; viewerGovhubUserId: string | null }) {
+function Decisions({
+  item,
+  viewerGovhubUserId,
+  needed,
+}: {
+  item: ReviewQueueItem;
+  viewerGovhubUserId: string | null;
+  needed: number;
+}) {
   if (item.approvals.length) {
     return (
       <div className="mt-3 rounded-lg border border-emerald-900/50 bg-emerald-950/20 px-3 py-2 text-sm">
@@ -680,7 +731,7 @@ function Decisions({ item, viewerGovhubUserId }: { item: ReviewQueueItem; viewer
           {item.approvals
             .map((a) => (a.userId === viewerGovhubUserId ? `${a.userName} (you)` : a.userName))
             .join(' and ')}{' '}
-          · {item.approvals.length} of 2 co-editor approvals
+          · {item.approvals.length} of {needed} co-editor approvals
         </p>
         {item.approvals
           .filter((a) => a.note)

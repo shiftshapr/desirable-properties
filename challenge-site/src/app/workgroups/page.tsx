@@ -94,7 +94,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'What do co-editors do, and how do I become one?',
-    a: 'Each DP has two co-editors. Both must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. A seat is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination. Anyone signed in can nominate a member or someone new by email; the nominee becomes a co-editor, and joins the workgroup, when they accept. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
+    a: 'Each DP has two co-editors (DP4 has three). All of them must approve a proposal before it is incorporated into the next revision; either can decline it, always with a reason the author can read. A seat is filled by claiming it on the workgroup page (account at least 7 days old; a per-person limit, now three DPs, rises as co-editors settle in) or by accepting a nomination. Anyone signed in can nominate a member or someone new by email; the nominee becomes a co-editor, and joins the workgroup, when they accept. The coordinator can revoke a claimed or nominated seat within 7 days, and a super admin at any time, always with a reason.',
   },
 ];
 

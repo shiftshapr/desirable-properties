@@ -336,7 +336,7 @@ export default function WorkgroupCoEditorsPanel({
           <h3 className="text-sm font-semibold text-white">Become a co-editor of {dp}</h3>
           <ul className="list-disc space-y-1 pl-5 text-sm text-slate-300">
             <li>Decide each proposal on the Review tab within 7 days: approve or decline.</li>
-            <li>A change goes in when both co-editors approve it.</li>
+            <li>A change goes in when all {data.seats_total} co-editors approve it.</li>
             <li>When you decline, write a sentence the author can read.</li>
           </ul>
           {!isMember ? <p className="text-xs text-slate-400">You will also join this workgroup.</p> : null}

@@ -69,7 +69,7 @@ export const PROCESS_PROTOCOL: ReadonlyArray<{ title: string; body: string; prop
   },
   {
     title: 'Two co-editors decide',
-    body: 'A proposal is incorporated when both co-editors approve it. Either co-editor can decline it or mark it considered, and that decision cannot be posted without a note the author can read.',
+    body: 'A proposal is incorporated when all of its DP\'s co-editors approve it (two on most DPs, three on DP4). Either co-editor can decline it or mark it considered, and that decision cannot be posted without a note the author can read.',
   },
   {
     title: 'Nothing waits silently',

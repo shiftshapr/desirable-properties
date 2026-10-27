@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-prepublish-email-seats",
+      "date": "2026-10-27",
+      "status": "open",
+      "title": "Pre-publish check with Claude, emailing the working revision, and three co-editors on DP4",
+      "summary": "Before a revision is published, Claude Opus 5.5 reads the working revision against the published chapter and the style guide. It lists conflicts between approved changes and suggests last edits for style, errors and formatting, which the publisher accepts one by one or all at once. Publish waits until the check has read the current working revision; publishing without it needs an explicit confirmation. Members can email the working revision to themselves or to up to 10 other people; coordinators and co-editors can also send it to the whole workgroup. Approval counts now follow each DP's seats: DP4 has three co-editors and needs all three approvals.",
+      "changes": [
+        "Review tab, publish section: Pre-publish check (/review/prepublish, /review/prepublish/apply); Publish requires a current check when Claude is configured",
+        "Review tab: Email the working revision (/review/email-working); Gov Hub sends it",
+        "Approvals shown as \"n of <seats>\" from Gov Hub's seats_total; wording no longer assumes two co-editors",
+        "Needs Gov Hub Bridgit-DAO/interface-gov-hub#44 (seats, working-revision read/edits/email)"
+      ]
+    },
+    {
       "id": "review-ask-deepi-anchor-check",
       "date": "2026-10-26",
       "status": "open",

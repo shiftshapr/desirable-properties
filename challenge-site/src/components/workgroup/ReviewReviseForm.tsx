@@ -121,7 +121,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
         <h4 className="text-sm font-semibold text-white">Revise this proposal</h4>
         <p className="mt-1 text-xs text-slate-400">
           Your version is filed under {item.authorName}&apos;s name, with your approval. The original closes with your
-          note, so the author sees what changed. It goes in when the other co-editor approves your version.
+          note, so the author sees what changed. It goes in when the other co-editors approve your version.
         </p>
       </div>
 
