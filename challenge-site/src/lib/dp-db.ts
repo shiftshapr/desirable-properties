@@ -719,6 +719,29 @@ CREATE TABLE IF NOT EXISTS dp_anchor_eval (
   dismissed_by TEXT,
   dismissed_at TIMESTAMPTZ
 );
+
+-- Claude's last check of a working revision before it is published (src/lib/prepublish-check.server.ts).
+-- decisions: {"<edit index>": {"status": "accepted" | "skipped", "by": "...", "at": "..."}}.
+CREATE TABLE IF NOT EXISTS dp_prepublish_check (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  workgroup_id TEXT NOT NULL,
+  dp_id TEXT,
+  draft_ref TEXT NOT NULL,
+  revision_number TEXT,
+  working_hash TEXT NOT NULL,
+  created_by TEXT,
+  model TEXT,
+  latency_ms INTEGER,
+  input_tokens INTEGER,
+  output_tokens INTEGER,
+  raw_response TEXT,
+  result_json JSONB,
+  decisions JSONB NOT NULL DEFAULT '{}'::jsonb,
+  error TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_prepublish_check_wg ON dp_prepublish_check (workgroup_id, created_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

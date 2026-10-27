@@ -46,6 +46,8 @@ export async function callReviewClaude(opts: {
   maxTokens?: number;
   effort?: 'low' | 'medium' | 'high';
   jsonSchema?: Record<string, unknown>;
+  /** Stream the request (needed for large max_tokens, so the HTTP request does not time out). */
+  stream?: boolean;
 }): Promise<ReviewClaudeCall> {
   const started = Date.now();
   const system: Anthropic.Beta.BetaTextBlockParam[] = opts.system.map((text, i) => ({
@@ -53,18 +55,21 @@ export async function callReviewClaude(opts: {
     text,
     ...(i === opts.system.length - 1 ? { cache_control: { type: 'ephemeral' as const } } : {}),
   }));
-  const res = await reviewClient().beta.messages.create({
+  const params = {
     model: REVIEW_MODEL,
     max_tokens: opts.maxTokens ?? 16000,
     betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
+    fallbacks: 'default' as const,
     system,
     messages: opts.messages,
     output_config: {
       effort: opts.effort ?? 'medium',
       ...(opts.jsonSchema ? { format: { type: 'json_schema' as const, schema: opts.jsonSchema } } : {}),
     },
-  });
+  };
+  const res = opts.stream
+    ? await reviewClient().beta.messages.stream(params).finalMessage()
+    : await reviewClient().beta.messages.create(params);
   if (res.stop_reason === 'refusal') {
     throw new Error('Claude declined to answer this one.');
   }

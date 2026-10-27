@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { latestPrepublishCheck, workingHash } from '@/lib/prepublish-check.server';
+import { reviewClaudeConfigured } from '@/lib/review-claude.server';
 import { recordWorkgroupActivityEvent } from '@/lib/workgroup-activity-event-store';
 import {
   draftRefFromDocumentHref,
   draftRefFromLabel,
+  fetchWorkingRevisionBody,
   publishWorkingRevision,
   workgroupCanEdit,
 } from '@/lib/workgroup-review-govhub';
@@ -30,7 +33,7 @@ export async function POST(request: Request, ctx: RouteContext) {
     );
   }
 
-  let body: { whatChanged?: string } = {};
+  let body: { whatChanged?: string; skipCheck?: boolean } = {};
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -53,6 +56,21 @@ export async function POST(request: Request, ctx: RouteContext) {
     draftRefFromDocumentHref(wg.document_href) || draftRefFromLabel(wg.document_label);
   if (!draftRef) {
     return NextResponse.json({ error: 'This workgroup has no linked Gov Hub draft' }, { status: 409 });
+  }
+
+  // Claude's pre-publish check must have read exactly this working text (owner, 2026-10-27),
+  // unless the publisher explicitly publishes without it.
+  if (reviewClaudeConfigured() && !body.skipCheck) {
+    const [check, working] = await Promise.all([
+      latestPrepublishCheck(workgroupId),
+      fetchWorkingRevisionBody(draftRef, session.idToken).catch(() => null),
+    ]);
+    if (!check || check.error || !working || check.workingHash !== workingHash(working.body)) {
+      return NextResponse.json(
+        { error: 'Run the pre-publish check on the current working revision first.', error_code: 'check_required' },
+        { status: 409 },
+      );
+    }
   }
 
   const result = await publishWorkingRevision(draftRef, session.idToken, body.whatChanged);

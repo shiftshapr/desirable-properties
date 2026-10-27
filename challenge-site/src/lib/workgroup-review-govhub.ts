@@ -221,17 +221,26 @@ export async function publishWorkingRevision(
 export async function fetchViewerCoEditor(
   workgroupId: string,
   idToken: string,
-): Promise<{ isCoEditor: boolean; govhubUserId: string | null }> {
+): Promise<{ isCoEditor: boolean; govhubUserId: string | null; seatsTotal: number }> {
   try {
     const res = await fetch(
       `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors/`,
-      { cache: 'no-store', headers: { Accept: 'application/json', Authorization: `Bearer ${idToken}` } },
+      { cache: 'no-store', headers: { Accept: 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) } },
     );
-    if (!res.ok) return { isCoEditor: false, govhubUserId: null };
-    const data = (await res.json()) as { viewer_is_co_editor?: boolean; viewer_user_id?: string | null };
-    return { isCoEditor: Boolean(data.viewer_is_co_editor), govhubUserId: data.viewer_user_id || null };
+    if (!res.ok) return { isCoEditor: false, govhubUserId: null, seatsTotal: 2 };
+    const data = (await res.json()) as {
+      viewer_is_co_editor?: boolean;
+      viewer_user_id?: string | null;
+      seats_total?: number;
+    };
+    return {
+      isCoEditor: Boolean(data.viewer_is_co_editor),
+      govhubUserId: data.viewer_user_id || null,
+      // Every seated co-editor approves, so this is also the approvals a proposal needs.
+      seatsTotal: Number(data.seats_total) || 2,
+    };
   } catch {
-    return { isCoEditor: false, govhubUserId: null };
+    return { isCoEditor: false, govhubUserId: null, seatsTotal: 2 };
   }
 }
 
@@ -306,4 +315,57 @@ export async function fetchChapterPassages(draftRef: string): Promise<string[]> 
   if (!res.ok) throw new Error(`Chapter passages unavailable (${res.status})`);
   const data = (await res.json().catch(() => ({}))) as { passages?: unknown };
   return Array.isArray(data.passages) ? data.passages.filter((p): p is string => typeof p === 'string') : [];
+}
+
+/** The working revision's full text (members may read it; Gov Hub checks). Null when there is none. */
+export async function fetchWorkingRevisionBody(
+  draftRef: string,
+  idToken: string,
+): Promise<{ body: string; revisionNumber: string | null } | null> {
+  const result = await govHubAuthed(`/api/doc/draft/${encodeURIComponent(draftRef)}/working-revision/`, idToken);
+  if (!result.ok) throw new Error(String(result.data.error || `Working revision unavailable (${result.status})`));
+  const working = result.data.working_revision as { body?: string; revision_number?: string } | null;
+  if (!result.data.exists || !working) return null;
+  return { body: String(working.body || ''), revisionNumber: working.revision_number || null };
+}
+
+/** A publisher's last edits to the working revision (Gov Hub applies those found exactly once). */
+export async function applyWorkingRevisionEdits(
+  draftRef: string,
+  idToken: string,
+  edits: Array<{ original_text: string; proposed_text: string; note: string }>,
+  source: string,
+): Promise<{ ok: boolean; status: number; error?: string; applied: number[]; skipped: Array<{ index: number; reason: string }> }> {
+  const result = await govHubAuthed(
+    `/api/doc/draft/${encodeURIComponent(draftRef)}/working-revision/edits/`,
+    idToken,
+    { method: 'POST', body: JSON.stringify({ edits, source }) },
+  );
+  return {
+    ok: result.ok,
+    status: result.status,
+    error: result.ok ? undefined : String(result.data.error || `Edit failed (${result.status})`),
+    applied: ((result.data.applied as Array<{ index: number }>) || []).map((a) => a.index),
+    skipped: (result.data.skipped as Array<{ index: number; reason: string }>) || [],
+  };
+}
+
+/** Email the working revision (Gov Hub sends; see services/working_revision_email.py). */
+export async function emailWorkingRevision(
+  draftRef: string,
+  idToken: string,
+  input: { audience: 'me' | 'external' | 'workgroup'; emails?: string[]; message?: string },
+): Promise<{ ok: boolean; status: number; error?: string; sent: number; failed: number }> {
+  const result = await govHubAuthed(
+    `/api/doc/draft/${encodeURIComponent(draftRef)}/working-revision/email/`,
+    idToken,
+    { method: 'POST', body: JSON.stringify(input) },
+  );
+  return {
+    ok: result.ok,
+    status: result.status,
+    error: result.ok ? undefined : String(result.data.error || `Email failed (${result.status})`),
+    sent: Number(result.data.sent || 0),
+    failed: Number(result.data.failed || 0),
+  };
 }
