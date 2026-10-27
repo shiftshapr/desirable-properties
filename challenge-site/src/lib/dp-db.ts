@@ -668,6 +668,57 @@ CREATE TABLE IF NOT EXISTS dp_comment_draft (
 );
 
 CREATE INDEX IF NOT EXISTS dp_comment_draft_created ON dp_comment_draft (created_at DESC);
+
+-- Ask Deepi on a Review proposal (src/lib/review-ask.server.ts): each question and answer, private
+-- to the person who asked. Also the per-person daily limit.
+CREATE TABLE IF NOT EXISTS dp_review_ask (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  workgroup_id TEXT NOT NULL,
+  dp_id TEXT,
+  item_key TEXT NOT NULL,
+  proposal_id TEXT,
+  user_id TEXT NOT NULL,
+  user_name TEXT,
+  question TEXT NOT NULL,
+  answer TEXT,
+  model TEXT,
+  latency_ms INTEGER,
+  input_tokens INTEGER,
+  cache_read_tokens INTEGER,
+  output_tokens INTEGER,
+  error TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_review_ask_thread ON dp_review_ask (workgroup_id, item_key, user_id, created_at);
+CREATE INDEX IF NOT EXISTS dp_review_ask_user_day ON dp_review_ask (user_id, created_at DESC);
+
+-- Claude's evaluation of where a pending proposal is anchored (src/lib/anchor-eval.server.ts).
+-- input_hash covers the anchor and text, so a revised proposal is not shown a stale flag.
+CREATE TABLE IF NOT EXISTS dp_anchor_eval (
+  proposal_id TEXT PRIMARY KEY,
+  evaluated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  workgroup_id TEXT NOT NULL,
+  dp_id TEXT,
+  draft_ref TEXT,
+  input_hash TEXT NOT NULL,
+  prompt_version TEXT NOT NULL,
+  model TEXT,
+  verdict TEXT CHECK (verdict IN ('best', 'better_elsewhere')),
+  confidence TEXT,
+  reason TEXT,
+  suggested_passage TEXT,
+  suggested_mode TEXT CHECK (suggested_mode IN ('insert', 'insert_after')),
+  latency_ms INTEGER,
+  input_tokens INTEGER,
+  cache_read_tokens INTEGER,
+  cache_write_tokens INTEGER,
+  output_tokens INTEGER,
+  raw_response TEXT,
+  error TEXT,
+  dismissed_by TEXT,
+  dismissed_at TIMESTAMPTZ
+);
 `;
 
 let pool: pg.Pool | null = null;

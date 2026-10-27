@@ -14,6 +14,7 @@ import SiteAdminPanel from '@/app/admin/SiteAdminPanel';
 import LoopBookPanel from '@/app/admin/LoopBookPanel';
 import LoopReqsPanel from '@/app/admin/LoopReqsPanel';
 import StyleChecksPanel from '@/app/admin/StyleChecksPanel';
+import AnchorEvalPanel from '@/app/admin/AnchorEvalPanel';
 import { AdminToastProvider } from '@/components/AdminToastHost';
 import AdminAuthShell from '@/components/AdminAuthShell';
 import {
@@ -167,6 +168,7 @@ export default function DpAdminClient() {
           {tab === 'loop-book' ? <LoopBookPanel /> : null}
           {tab === 'loop-reqs' ? <LoopReqsPanel /> : null}
           {tab === 'style-checks' ? <StyleChecksPanel /> : null}
+          {tab === 'anchor-check' ? <AnchorEvalPanel /> : null}
         </div>
       </AdminAuthShell>
     </AdminToastProvider>

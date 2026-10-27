@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-ask-deepi-anchor-check",
+      "date": "2026-10-26",
+      "status": "open",
+      "title": "Ask Deepi on Review proposals, and Claude's anchor check",
+      "summary": "Members and co-editors can ask Deepi about any proposal on the Review tab. Deepi runs on Claude Opus 5.5 for this feature only and has read the chapter and the style guide. Each person's questions are private, with a daily limit. A one-time Claude check of where each pending patch or insert is anchored flags proposals that belong elsewhere, gives the reason and the suggested passage, and lets co-editors move them with a pre-filled Revise (the other co-editor still approves) or keep them where they are. Other Deepi uses stay on MiniMax.",
+      "changes": [
+        "Review card: \"Ask Deepi about this proposal\" (/api/workgroups/[id]/review/ask; REVIEW_ASK_DAILY_LIMIT, default 20 per person per day)",
+        "Review card: anchor flag with \"Move to suggested passage\" (opens Revise pre-filled) and \"Keep it where it is\" (/review/anchor-dismiss)",
+        "Admin → DP loop → Anchor check (Claude): run the one-time evaluation per DP, re-runs skip evaluated proposals",
+        "Claude client reads only REVIEW_ANTHROPIC_API_KEY (src/lib/review-claude.server.ts); tables dp_review_ask, dp_anchor_eval"
+      ]
+    },
+    {
       "id": "staging-canopi-embed",
       "date": "2026-10-25",
       "status": "open",

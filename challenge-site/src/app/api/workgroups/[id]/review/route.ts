@@ -1,3 +1,4 @@
+import { reviewClaudeConfigured } from '@/lib/review-claude.server';
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId } from '@/lib/govhub';
@@ -74,6 +75,7 @@ export async function GET(_request: Request, ctx: RouteContext) {
     isCoEditor: coEditor.isCoEditor,
     viewerGovhubUserId: coEditor.govhubUserId,
     styleCheckEnabled: Boolean(currentStyleCheckModel()),
+    askEnabled: reviewClaudeConfigured(),
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }

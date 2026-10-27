@@ -160,6 +160,9 @@ module.exports = {
         DP_AUTH_HANDOFF_SECRET: localEnv.DP_AUTH_HANDOFF_SECRET || '',
         DP_SUPPORT_OPS_SECRET: localEnv.DP_SUPPORT_OPS_SECRET || canopiOpsSecretProd || '',
         ...styleCheckEnv,
+        // Review tab only: Ask Deepi and the anchor check use Claude (src/lib/review-claude.server.ts).
+        REVIEW_ANTHROPIC_API_KEY: localEnv.REVIEW_ANTHROPIC_API_KEY || '',
+        REVIEW_ASK_DAILY_LIMIT: localEnv.REVIEW_ASK_DAILY_LIMIT || '',
         DP_HERMES_API_KEY: localEnv.DP_HERMES_API_KEY || hermesSharedSecret || '',
         ONCHAIN_ADMIN_SECRET: localEnv.ONCHAIN_ADMIN_SECRET || '',
         RESEND_API_KEY: localEnv.RESEND_API_KEY || resendEnv.RESEND_API_KEY || '',

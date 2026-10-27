@@ -11,6 +11,7 @@ export const DP_ADMIN_TAB_LABELS = {
   'loop-book': 'DP → BRC333 → Book',
   'loop-reqs': 'DP → REQ → ADR → Code',
   'style-checks': 'AI style checks',
+  'anchor-check': 'Anchor check (Claude)',
 } as const;
 
 export type DpAdminTabKey = keyof typeof DP_ADMIN_TAB_LABELS;
@@ -34,7 +35,7 @@ export const DP_ADMIN_GROUPS = [
   {
     key: 'loop',
     label: 'DP loop',
-    tabs: ['loop-book', 'loop-reqs', 'style-checks'] as const satisfies readonly DpAdminTabKey[],
+    tabs: ['loop-book', 'loop-reqs', 'style-checks', 'anchor-check'] as const satisfies readonly DpAdminTabKey[],
   },
   {
     key: 'ops',

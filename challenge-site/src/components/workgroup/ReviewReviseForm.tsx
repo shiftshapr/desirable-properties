@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import type { ReviewQueueItem } from '@/lib/workgroup-review-types';
+import type { ReviewAnchorEval, ReviewQueueItem } from '@/lib/workgroup-review-types';
 
 type Placement = 'same' | 'elsewhere';
 type Mode = 'replace' | 'insert' | 'insert_after';
@@ -9,6 +9,8 @@ type Mode = 'replace' | 'insert' | 'insert_after';
 type Props = {
   workgroupId: string;
   item: ReviewQueueItem;
+  /** Claude's suggested anchor: the form starts on it, with a note the co-editor can edit. */
+  suggestion?: ReviewAnchorEval | null;
   onDone: (message: string) => void;
   onCancel: () => void;
 };
@@ -34,15 +36,15 @@ function plain(block: string): string {
  * Gov Hub files the result as a new version credited to the author, with this co-editor's approval,
  * and closes the original as considered with the note.
  */
-export default function ReviewReviseForm({ workgroupId, item, onDone, onCancel }: Props) {
+export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone, onCancel }: Props) {
   const [text, setText] = useState(item.proposedText);
-  const [placement, setPlacement] = useState<Placement>('same');
+  const [placement, setPlacement] = useState<Placement>(suggestion ? 'elsewhere' : 'same');
   const [passages, setPassages] = useState<string[] | null>(null);
   const [passageError, setPassageError] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
   const [picked, setPicked] = useState<number | null>(null);
-  const [mode, setMode] = useState<Mode>('insert_after');
-  const [note, setNote] = useState('');
+  const [mode, setMode] = useState<Mode>(suggestion?.suggestedMode ?? 'insert_after');
+  const [note, setNote] = useState(suggestion ? `Same text, moved to a better place in the chapter. ${suggestion.reason}` : '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,7 +56,13 @@ export default function ReviewReviseForm({ workgroupId, item, onDone, onCancel }
         const data = (await res.json().catch(() => ({}))) as { passages?: string[]; error?: string };
         if (cancelled) return;
         if (!res.ok) throw new Error(data.error || `Could not load the chapter (${res.status})`);
-        setPassages(data.passages || []);
+        const list = data.passages || [];
+        setPassages(list);
+        if (suggestion) {
+          const at = list.indexOf(suggestion.suggestedPassage);
+          if (at >= 0) setPicked(at);
+          else setPassageError('The suggested passage has changed since Claude looked. Pick the place yourself.');
+        }
       })
       .catch((err) => {
         if (!cancelled) setPassageError(err instanceof Error ? err.message : 'Could not load the chapter');
@@ -62,7 +70,7 @@ export default function ReviewReviseForm({ workgroupId, item, onDone, onCancel }
     return () => {
       cancelled = true;
     };
-  }, [placement, passages, workgroupId]);
+  }, [placement, passages, workgroupId, suggestion]);
 
   const shown = useMemo(() => {
     const q = filter.trim().toLowerCase();
