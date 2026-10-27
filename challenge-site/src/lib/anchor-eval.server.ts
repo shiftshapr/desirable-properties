@@ -20,7 +20,7 @@ import {
 } from '@/lib/workgroup-review-govhub';
 import type { ReviewAnchorEval, ReviewQueueItem } from '@/lib/workgroup-review-types';
 
-export const ANCHOR_EVAL_PROMPT_VERSION = '1';
+export const ANCHOR_EVAL_PROMPT_VERSION = '2';
 
 type Candidate = {
   proposalId: string;
@@ -42,7 +42,7 @@ Each proposal is either a patch (it replaces the anchored passage) or an insert 
 
 For each proposal, decide whether its current anchor is the best place in this chapter for the proposed text.
 - verdict "best": the current anchor is right, or no other block is clearly better. This is the usual answer; a move costs the co-editors work, so only suggest one when a reader of the chapter would clearly find the text in a better place.
-- verdict "better_elsewhere": another block is clearly better. Give its number as best_block, and placement "insert" (above that block) or "insert_after" (below it). A patch moved elsewhere becomes an insert there, so only suggest a move for a patch when its text adds material that belongs elsewhere, not when it rewords its own passage.
+- verdict "better_elsewhere": another block is clearly better. This includes a block right next to the current one: if the text should sit after the following block instead (for example after a subsection's "Failure mode" or example line, so it does not split that subsection), that is "better_elsewhere" with that block. Never say "best" while your reason recommends a different placement. Give its number as best_block, and placement "insert" (above that block) or "insert_after" (below it). A patch moved elsewhere becomes an insert there, so only suggest a move for a patch when its text adds material that belongs elsewhere, not when it rewords its own passage.
 - reason: one or two sentences for the co-editors, naming the section or block and why. Quote briefly.
 - confidence: "high", "medium" or "low".
 For verdict "best", set best_block to the block number of the current anchor (or -1 if you cannot find it) and placement to the current placement ("insert_after" for a patch).
