@@ -141,7 +141,7 @@ export default function WorkgroupNextSteps({
               <p>Nothing is waiting for you. New proposals show up on the Review tab.</p>
             )}
             <ul className="list-disc space-y-1 pl-5 text-slate-400">
-              <li>Approve: a change goes in once both co-editors approve it.</li>
+              <li>Approve: a change goes in once all the DP&apos;s co-editors approve it.</li>
               <li>Decline: write a sentence the author can read.</li>
               <li>When changes are approved, publish them as the next revision on Review.</li>
             </ul>

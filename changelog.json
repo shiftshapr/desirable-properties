@@ -4,6 +4,43 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-prepublish-email-seats",
+      "date": "2026-10-27",
+      "status": "open",
+      "title": "Pre-publish check with Claude, emailing the working revision, and three co-editors on DP4",
+      "summary": "Before a revision is published, Claude Opus 5.5 reads the working revision against the published chapter and the style guide. It lists conflicts between approved changes and suggests last edits for style, errors and formatting, which the publisher accepts one by one or all at once. Publish waits until the check has read the current working revision; publishing without it needs an explicit confirmation. Members can email the working revision to themselves or to up to 10 other people; coordinators and co-editors can also send it to the whole workgroup. Approval counts now follow each DP's seats: DP4 has three co-editors and needs all three approvals.",
+      "changes": [
+        "Review tab, publish section: Pre-publish check (/review/prepublish, /review/prepublish/apply); Publish requires a current check when Claude is configured",
+        "Review tab: Email the working revision (/review/email-working); Gov Hub sends it",
+        "Approvals shown as \"n of <seats>\" from Gov Hub's seats_total; wording no longer assumes two co-editors",
+        "Needs Gov Hub Bridgit-DAO/interface-gov-hub#44 (seats, working-revision read/edits/email)"
+      ]
+    },
+    {
+      "id": "review-ask-deepi-anchor-check",
+      "date": "2026-10-26",
+      "status": "open",
+      "title": "Ask Deepi on Review proposals, and Claude's anchor check",
+      "summary": "Members and co-editors can ask Deepi about any proposal on the Review tab. Deepi runs on Claude Opus 5.5 for this feature only and has read the chapter and the style guide. Each person's questions are private, with a daily limit. A one-time Claude check of where each pending patch or insert is anchored flags proposals that belong elsewhere, gives the reason and the suggested passage, and lets co-editors move them with a pre-filled Revise (the other co-editor still approves) or keep them where they are. Other Deepi uses stay on MiniMax.",
+      "changes": [
+        "Review card: \"Ask Deepi about this proposal\" (/api/workgroups/[id]/review/ask; REVIEW_ASK_DAILY_LIMIT, default 20 per person per day)",
+        "Review card: anchor flag with \"Move to suggested passage\" (opens Revise pre-filled) and \"Keep it where it is\" (/review/anchor-dismiss)",
+        "Admin → DP loop → Anchor check (Claude): run the one-time evaluation per DP, re-runs skip evaluated proposals",
+        "Claude client reads only REVIEW_ANTHROPIC_API_KEY (src/lib/review-claude.server.ts); tables dp_review_ask, dp_anchor_eval"
+      ]
+    },
+    {
+      "id": "staging-canopi-embed",
+      "date": "2026-10-25",
+      "status": "open",
+      "title": "Staging Discuss embed uses staging Canopi",
+      "summary": "On staging.desirableproperties.org the Canopi Discuss embed now loads from staging Canopi, the same Canopi the staging site signs people in against. Before, it loaded production Canopi with a staging sign-in, so every signed-in call failed and the panel showed \"Sign in\". Production is unchanged.",
+      "changes": [
+        "Embed script chosen by host: staging.* uses https://staging.api.canopi.live/embed/v1.js",
+        "scripts/canopi-embed-script.test.mjs (npm run test:canopi-embed-script)"
+      ]
+    },
+    {
       "id": "review-withdraw",
       "date": "2026-10-25",
       "status": "open",

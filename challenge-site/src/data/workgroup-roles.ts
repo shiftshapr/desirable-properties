@@ -46,7 +46,7 @@ export const CO_EDITOR_ROLE: WorkgroupRole = {
   key: 'co_editor',
   label: 'Co-editor',
   description:
-    'One of two co-editors per DP. Both co-editors must approve a proposal before it is incorporated into the next revision. Seats are claimed, or filled by a nomination the nominee accepts, on the workgroup page.',
+    'One of two co-editors per DP (three on DP4). Every co-editor must approve a proposal before it is incorporated into the next revision. Seats are claimed, or filled by a nomination the nominee accepts, on the workgroup page.',
   glyph: '◫',
   duties: [
     'approve or decline each proposal; every decline carries a note the author can read',

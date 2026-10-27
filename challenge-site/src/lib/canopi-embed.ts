@@ -4,6 +4,15 @@ export const DP_CANOPI_EMBED_ID = '7f3e9a2b-1c4d-5e6f-8a9b-0d1e2f3a4b5c';
 
 export const DP_CANOPI_EMBED_SCRIPT = 'https://api.canopi.live/embed/v1.js';
 
+/** Staging Canopi's embed: staging.desirableproperties.org signs the embed in against staging Canopi
+ *  (CANOPI_API_BASE), so the script must come from there too, or every call is a 401. */
+export const DP_CANOPI_EMBED_SCRIPT_STAGING = 'https://staging.api.canopi.live/embed/v1.js';
+
+/** The embed script for the host the page is served from: staging hosts use staging Canopi. */
+export function canopiEmbedScriptForHost(hostname: string): string {
+  return /^staging\./i.test(String(hostname || '').trim()) ? DP_CANOPI_EMBED_SCRIPT_STAGING : DP_CANOPI_EMBED_SCRIPT;
+}
+
 export const DP_CANOPI_COMMUNITY_ID = 'c0f30bc5-de17-4328-80d9-ff8f364907da';
 
 /** Prod origin used for Canopi pageId hashing (staging mirrors prod threads). */

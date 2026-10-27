@@ -32,6 +32,17 @@ export type ReviewStyleCheck = {
   suggestedText: string | null;
 };
 
+/** Claude found a better anchor for this proposal (src/lib/anchor-eval.server.ts). */
+export type ReviewAnchorEval = {
+  reason: string;
+  confidence: string | null;
+  /** The chapter block (Markdown) Claude suggests; Revise sends it as the new anchor. */
+  suggestedPassage: string;
+  suggestedMode: 'insert' | 'insert_after';
+  evaluatedAt: string;
+  model: string | null;
+};
+
 export type ReviewQueueItem = {
   key: string;
   sources: ReviewSource[];
@@ -71,6 +82,8 @@ export type ReviewQueueItem = {
   /** Pending patch/insert that can be style-checked. */
   styleCheckable: boolean;
   styleCheck: ReviewStyleCheck | null;
+  /** Set only while the evaluated anchor and text are unchanged and no co-editor kept the anchor. */
+  anchorEval: ReviewAnchorEval | null;
   canPromote: boolean;
   promoteBlockReason: string | null;
 };
@@ -97,4 +110,8 @@ export type ReviewQueueResponse = {
   viewerGovhubUserId: string | null;
   /** False when no model is configured on this server. */
   styleCheckEnabled: boolean;
+  /** Ask Deepi (Claude) is configured on this server; also requires the pre-publish check. */
+  askEnabled: boolean;
+  /** Co-editor approvals a proposal needs: every seat (two on most DPs, three on DP4). */
+  approvalsNeeded: number;
 };

@@ -1,3 +1,4 @@
+import { reviewClaudeConfigured } from '@/lib/review-claude.server';
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId } from '@/lib/govhub';
@@ -41,7 +42,7 @@ export async function GET(_request: Request, ctx: RouteContext) {
 
   const coEditor = session?.idToken
     ? await fetchViewerCoEditor(workgroupId, session.idToken)
-    : { isCoEditor: false, govhubUserId: null };
+    : await fetchViewerCoEditor(workgroupId, '').catch(() => ({ isCoEditor: false, govhubUserId: null, seatsTotal: 2 }));
 
   const items = await buildWorkgroupReviewQueue({
     workgroupId,
@@ -51,8 +52,9 @@ export async function GET(_request: Request, ctx: RouteContext) {
     viewerUserId: session?.userId || null,
   });
 
-  const workingRevision = draftRef && session?.idToken && canEdit
-    ? await fetchWorkingRevision(draftRef, session.idToken)
+  // Members see it too (to email it); only publishers (canEdit) may publish it.
+  const workingRevision = draftRef && session?.idToken && (canEdit || isMember)
+    ? await fetchWorkingRevision(draftRef, session.idToken).then((w) => (canEdit ? w : { ...w, canPublish: false }))
     : {
         exists: false,
         revisionNumber: null,
@@ -74,6 +76,8 @@ export async function GET(_request: Request, ctx: RouteContext) {
     isCoEditor: coEditor.isCoEditor,
     viewerGovhubUserId: coEditor.govhubUserId,
     styleCheckEnabled: Boolean(currentStyleCheckModel()),
+    askEnabled: reviewClaudeConfigured(),
+    approvalsNeeded: coEditor.seatsTotal,
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }
