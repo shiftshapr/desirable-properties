@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "anchor-check-prompt-v2",
+      "date": "2026-10-28",
+      "status": "open",
+      "title": "Anchor check: moving a proposal by even one passage counts as a move",
+      "summary": "Claude's anchor check could answer that a proposal was in the best place while its reason said it belonged one passage later, so co-editors never saw the suggestion. The check now treats a one-passage shift as a move: when text should sit after the next passage (for example after a subsection's failure-mode line, so it doesn't split that subsection), the card shows the flag and the suggested passage. Proposals checked with the earlier version are checked again.",
+      "changes": [
+        "src/lib/anchor-eval.server.ts: ANCHOR_EVAL_PROMPT_VERSION 2 (#76); the input hash includes the version, so re-runs re-evaluate earlier results",
+        "Verified on staging: DP15 6 of 6 consistent (was 5 flagged, 1 contradictory); DP4's correct anchor still not flagged"
+      ]
+    },
+    {
       "id": "review-prepublish-email-seats",
       "date": "2026-10-27",
       "status": "open",
