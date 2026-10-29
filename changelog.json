@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-insert-labels",
+      "date": "2026-10-29",
+      "status": "open",
+      "title": "Review tab labels inserts as Insert above or Insert below",
+      "summary": "Canopi book inserts are filed into Gov Hub as a replace of the anchor (anchor plus new text), so the review tab labelled about 186 of them REPLACE and showed the anchor as part of the change. They now read Insert above or Insert below, and the diff shows only the new text next to the unchanged anchor. Where the text goes is read from the proposal itself, so inserts re-anchored later show where they really land. Approving is unchanged. Real replaces are labelled Patch, matching Canopi and Gov Hub.",
+      "changes": [
+        "src/lib/encoded-insert.ts: recovers the insert and its position from a replace filed from a Canopi insert",
+        "src/lib/workgroup-review-queue.ts, workgroup-review-types.ts: insertText and insertPosition on those items",
+        "src/components/workgroup/WorkgroupReviewPanel.tsx: kind label Patch / Insert above / Insert below; insert preview for filed inserts",
+        "scripts/encoded-insert.test.mjs: tests"
+      ]
+    },
+    {
       "id": "review-header-style-guide-link",
       "date": "2026-10-28",
       "status": "open",

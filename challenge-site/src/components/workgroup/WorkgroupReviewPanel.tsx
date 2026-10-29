@@ -464,8 +464,8 @@ export default function WorkgroupReviewPanel({
             ) : (
               <ActivityPatchPreview
                 removed={item.originalText || null}
-                added={item.proposedText || null}
-                mode={item.patchMode === 'insert' ? 'insert' : 'patch'}
+                added={(item.insertText ?? item.proposedText) || null}
+                mode={item.patchMode === 'insert' || item.insertText ? 'insert' : 'patch'}
                 insertPosition={item.insertPosition}
               />
             )}
@@ -820,7 +820,8 @@ function AnchorFlag({
 function kindLabel(item: ReviewQueueItem): string {
   if (item.patchMode === 'bundle') return 'style pass';
   if (item.patchMode === 'dedup') return 'dedup';
-  return item.patchMode;
+  if (item.patchMode === 'insert' || item.insertText) return `insert ${item.insertPosition === 'below' ? 'below' : 'above'}`;
+  return 'patch';
 }
 
 /** A dedup bundle: deletions and merges grouped by finding, each with its reason. All or nothing. */

@@ -12,6 +12,7 @@ import {
 import { loadCanopiFilingReportWithTime } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
+import { encodedInsertOf } from '@/lib/encoded-insert';
 import {
   cachedStyleChecks,
   currentStyleCheckModel,
@@ -99,7 +100,8 @@ export async function buildWorkgroupReviewQueue(opts: {
       govhubProposalId: proposal.id,
       canopiMessageId: matchedCanopi?.id || ext || null,
       patchMode: patchModeOf(proposal.patch_mode),
-      insertPosition: govhubInsertPosition(proposal.patch_mode),
+      insertPosition: govhubInsertPosition(proposal.patch_mode) ?? encodedInsertOf(proposal)?.position ?? null,
+      insertText: encodedInsertOf(proposal)?.text ?? null,
       edits: (proposal.edits || []).map((e) => ({
         rule: e.rule || null,
         originalText: e.original_text,
@@ -165,6 +167,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       canopiMessageId: post.id,
       patchMode: parsed.kind === 'insert' ? 'insert' : 'replace',
       insertPosition: parsed.kind === 'insert' ? post.insertPosition || 'above' : null,
+      insertText: null,
       edits: [],
       originalText: post.anchorExact || '',
       proposedText: parsed.content,
