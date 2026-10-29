@@ -11,9 +11,11 @@ Per post:
   anchor   Canopi quotes rendered text; the exact markdown span is located in the chapter
            rail (whitespace/emphasis tolerant). If absent from the tagged chapter, all
            chapters are searched (the book viewer has tagged some posts to the wrong page).
-  payload  patch → replace anchor with text. insert → exact replace anchor→anchor+text
-           (below, the Canopi default) or text+anchor (above): the one encoding that
-           splices correctly on promote in every Gov Hub build.
+  payload  patch → replace anchor with text. insert → Gov Hub insert_after (below, the Canopi
+           default) or insert (above), with the author's whole anchor as original_text and
+           only the new text as proposed_text, so reviewers see the passage the author
+           anchored to. Until 2026-10-29 inserts were filed as a replace of one edge sentence;
+           Gov Hub's scripts/convert_canopi_encoded_inserts.py converts those.
 
   python3 scripts/canopi_patch_file_to_govhub.py --env staging --dry-run
   python3 scripts/canopi_patch_file_to_govhub.py --env prod --apply
@@ -193,6 +195,24 @@ def whole_heading_line(md: str, span: str, edge: str, position: str = "below") -
     # Above a section heading means above the rule that closes the previous section.
     rule = re.search(r"(?:^|\n)(---+\n\n)$", md[:start])
     return (rule.group(1) + line) if position == "above" and rule else line
+
+
+def insert_anchor(md: str, span: str, position: str) -> str:
+    """The author's whole anchor for an insert, as Gov Hub needs it to splice.
+
+    A quoted heading has no "## ", so a span that starts on a heading line starts at the
+    line instead; otherwise an insert above would land between the hashes and the title.
+    Above a section heading means above the rule that closes the previous section.
+    """
+    at = md.find(span)
+    if at < 0:
+        return span
+    start = md.rfind("\n", 0, at) + 1
+    if not re.match(r"^#{1,6}\s", md[start:]):
+        return span
+    out = md[start:at + len(span)]
+    rule = re.search(r"(?:^|\n)(---+\n\n)$", md[:start])
+    return (rule.group(1) + out) if position == "above" and rule else out
 
 
 def with_heading_marker(md: str, full_span: str, orig: str, new: str) -> str:
@@ -477,13 +497,11 @@ def main() -> int:
             continue
         text = post_text(p.get("content") or "")
         if p["_kind"] == "insert":
-            full_span = span
-            edge = splice_anchor(span, position)
-            if not edge:
-                row.update(status="blocked", reason="no markup-free sentence at the insertion edge of the anchor")
+            span = insert_anchor(rails[home], span, position)
+            if rails[home].count(span) != 1:
+                row.update(status="blocked", reason="anchor occurs more than once in the chapter")
                 continue
-            span = whole_heading_line(rails[home], full_span, edge, position)
-            proposed = f"{text}\n\n{span}" if position == "above" else f"{span}\n\n{text}"
+            proposed = text
         else:
             full_span = span
             proposed = text
@@ -495,13 +513,13 @@ def main() -> int:
                 span, proposed = narrowed
         if p["_kind"] != "insert":
             span = with_heading_marker(rails[home], full_span, span, proposed)
-        widened = unique_splice(rails[home], full_span, span, proposed)
-        if not widened:
-            row.update(status="blocked", reason="anchor occurs more than once in the chapter and cannot be made unique")
-            continue
-        span, proposed = widened
+            widened = unique_splice(rails[home], full_span, span, proposed)
+            if not widened:
+                row.update(status="blocked", reason="anchor occurs more than once in the chapter and cannot be made unique")
+                continue
+            span, proposed = widened
         credit = (f"Filed from Canopi book {p['_kind']} {mid}"
-                  + (f" (insert {'above' if position == 'above' else 'below'} the anchor, encoded as replace)" if p["_kind"] == "insert" else "")
+                  + (f" (insert {'above' if position == 'above' else 'below'} the anchor)" if p["_kind"] == "insert" else "")
                   + (f"; posted on the DP{p['_page_dp']} page but anchored in DP{home}" if home != p["_page_dp"] else "")
                   + (f"; Astra reconciled CFI change {cfi_id}" if cfi_id else "") + astra_note + ".")
         note = (override or {}).get("note") or ""
@@ -515,7 +533,7 @@ def main() -> int:
             "payload": {
                 "original_text": span,
                 "proposed_text": proposed,
-                "patch_mode": "replace",
+                "patch_mode": ("insert" if position == "above" else "insert_after") if p["_kind"] == "insert" else "replace",
                 "rationale": rationale,
                 "reference_url": f"{cfg['book_url']}/viewer/dp{home:02d}",
                 "context_anchor": anchor if home == p["_page_dp"] and anchor else None,
