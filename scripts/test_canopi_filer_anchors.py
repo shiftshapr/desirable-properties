@@ -97,5 +97,21 @@ class AstraDispositions(unittest.TestCase):
         self.assertEqual(d["abc"]["changes"], ["dp04-change-006"])
 
 
+class InsertAnchorTest(unittest.TestCase):
+    """Inserts are filed with the author's whole anchor (2026-10-29)."""
+
+    def test_whole_passage(self):
+        md = "Intro.\n\nThe goal is not one namespace. The goal is **interoperable** naming.\n\nNext."
+        span = f.locate_anchor(md, "The goal is not one namespace. The goal is interoperable naming.")
+        self.assertEqual(f.insert_anchor(md, span, "below"),
+                         "The goal is not one namespace. The goal is **interoperable** naming.")
+
+    def test_heading_takes_the_hashes_and_the_rule_above(self):
+        md = "End of 3.\n\n---\n\n## 4. Core Principle\n\nBody."
+        span = f.locate_anchor(md, "4. Core Principle")
+        self.assertEqual(f.insert_anchor(md, span, "above"), "---\n\n## 4. Core Principle")
+        self.assertEqual(f.insert_anchor(md, span, "below"), "## 4. Core Principle")
+
+
 if __name__ == "__main__":
     unittest.main()

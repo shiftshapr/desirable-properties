@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "filer-real-inserts",
+      "date": "2026-10-29",
+      "status": "open",
+      "title": "Canopi inserts are filed into Gov Hub as inserts, with the author's whole anchor",
+      "summary": "The Canopi filer used to store a book insert as a replace of a single sentence at the insertion edge, so reviewers saw REPLACE and only part of the passage the author anchored to. New inserts are filed as Gov Hub insert (above) or insert_after (below), with the whole anchored passage as the anchor and only the new text as the proposal. A quoted heading is widened to its full line, and an insert above a section heading goes above the rule before it. Gov Hub converts the ones already filed.",
+      "changes": [
+        "scripts/canopi_patch_file_to_govhub.py: insert_anchor(); inserts filed as insert / insert_after",
+        "scripts/test_canopi_filer_anchors.py: tests"
+      ]
+    },
+    {
       "id": "review-insert-labels",
       "date": "2026-10-29",
       "status": "open",
