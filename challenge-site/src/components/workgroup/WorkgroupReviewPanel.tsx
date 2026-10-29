@@ -14,7 +14,7 @@ import type {
   ReviewStyleCheck,
   ReviewVote,
 } from '@/lib/workgroup-review-types';
-import { STYLE_GUIDE } from '@/data/dp-style-guide';
+import { STYLE_GUIDE, STYLE_GUIDE_VERSION } from '@/data/dp-style-guide';
 
 type Props = {
   workgroupId: string;
@@ -282,6 +282,17 @@ export default function WorkgroupReviewPanel({
             release. Only then does the draft become the live book / official text.
           </li>
         </ol>
+        <p className="max-w-3xl text-sm text-slate-400">
+          Proposals are read against the{' '}
+          <a href="/style-guide" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
+            DP style guide
+          </a>{' '}
+          (v{STYLE_GUIDE_VERSION}). Co-editors: see{' '}
+          <a href="/style-guide#co-editors" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">
+            the guide&apos;s notes for co-editors
+          </a>
+          .
+        </p>
       </header>
 
       {!canEdit && isMember && hasComposedDraft ? (
@@ -453,8 +464,8 @@ export default function WorkgroupReviewPanel({
             ) : (
               <ActivityPatchPreview
                 removed={item.originalText || null}
-                added={item.proposedText || null}
-                mode={item.patchMode === 'insert' ? 'insert' : 'patch'}
+                added={(item.insertText ?? item.proposedText) || null}
+                mode={item.patchMode === 'insert' || item.insertText ? 'insert' : 'patch'}
                 insertPosition={item.insertPosition}
               />
             )}
@@ -809,7 +820,8 @@ function AnchorFlag({
 function kindLabel(item: ReviewQueueItem): string {
   if (item.patchMode === 'bundle') return 'style pass';
   if (item.patchMode === 'dedup') return 'dedup';
-  return item.patchMode;
+  if (item.patchMode === 'insert' || item.insertText) return `insert ${item.insertPosition === 'below' ? 'below' : 'above'}`;
+  return 'patch';
 }
 
 /** A dedup bundle: deletions and merges grouped by finding, each with its reason. All or nothing. */

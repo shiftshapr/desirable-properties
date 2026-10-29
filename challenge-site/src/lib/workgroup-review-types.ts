@@ -54,6 +54,9 @@ export type ReviewQueueItem = {
   edits: ReviewBundleEdit[];
   /** INSERT: where proposedText goes relative to originalText (the anchored passage). */
   insertPosition: 'above' | 'below' | null;
+  /** A Canopi insert filed as a replace (anchor + new text): just the new text. patchMode stays
+   *  'replace' and proposedText keeps the full replacement, which is what approving applies. */
+  insertText: string | null;
   /** replace: the passage being replaced. insert: the anchored passage it goes next to. */
   originalText: string;
   proposedText: string;
