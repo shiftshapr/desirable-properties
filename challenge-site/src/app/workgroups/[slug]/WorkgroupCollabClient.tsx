@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import CoEditorGuideSteps from '@/components/workgroup/CoEditorGuideSteps';
 import WorkgroupAstraPanel from '@/components/workgroup/WorkgroupAstraPanel';
 import WorkgroupCanopiEmbed from '@/components/workgroup/WorkgroupCanopiEmbed';
 import WorkgroupChatPanel from '@/components/workgroup/WorkgroupChatPanel';
@@ -29,6 +30,7 @@ import {
   normalizeWorkgroupCollabTab,
   visibleWorkgroupCollabTabs,
   WORKGROUP_CANOPI_TAB_KEYS,
+  WORKGROUP_COLLAB_TABS,
   type WorkgroupCollabTabKey,
 } from '@/lib/workgroup-collab-tabs';
 import type { WorkgroupCollabSummary, WorkgroupMessage } from '@/lib/workgroup-collab-types';
@@ -241,7 +243,7 @@ export default function WorkgroupCollabClient({
   const canopiEmbedActive = WORKGROUP_CANOPI_TAB_KEYS.has(tab);
 
   useEffect(() => {
-    if (collabTabs.some((item) => item.key === tab)) return;
+    if (WORKGROUP_COLLAB_TABS.some((item) => item.key === tab)) return;
     setTab('next-steps');
   }, [collabTabs, tab]);
 
@@ -384,6 +386,37 @@ export default function WorkgroupCollabClient({
               isMember={isMember}
               signedIn={signedIn}
             />
+          ) : null}
+
+          {tab === 'co-editing' ? (
+            <div className="space-y-5">
+              <header className="space-y-2 border-b border-slate-800 pb-5">
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-400">Co-editing</p>
+                <h2 className="text-xl font-semibold text-white">How to review proposals</h2>
+                <p className="max-w-3xl text-sm text-slate-400">
+                  {dpId ? `${dpId} has` : 'Each DP has'} two co-editors. You read every proposal on the Review tab
+                  and approve, revise or decline it. These steps take you through one session.
+                </p>
+                <div className="flex flex-wrap gap-3 pt-1 text-sm">
+                  <button
+                    type="button"
+                    onClick={() => selectTab('review')}
+                    className="rounded-lg bg-cyan-600 px-4 py-2 font-semibold text-white hover:bg-cyan-500"
+                  >
+                    Open Review
+                  </button>
+                  <a
+                    href="/co-editors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-slate-200 hover:border-slate-500"
+                  >
+                    Open the guide in a new tab
+                  </a>
+                </div>
+              </header>
+              <CoEditorGuideSteps className="" />
+            </div>
           ) : null}
 
           {tab === 'astra' ? (
