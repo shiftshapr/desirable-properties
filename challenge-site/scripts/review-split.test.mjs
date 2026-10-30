@@ -40,6 +40,11 @@ test('the split marker is removed from the answer and flagged', () => {
   assert.deepEqual(readSplitMark('Split it in two.\n\n[offer-split]'), { answer: 'Split it in two.', offersSplit: true });
   assert.deepEqual(readSplitMark('Fine as it is.'), { answer: 'Fine as it is.', offersSplit: false });
   assert.deepEqual(readSplitMark(null), { answer: null, offersSplit: false });
+  // Answers from before the marker are read by their wording (DP11 proposal 93474b85).
+  assert.equal(readSplitMark('The profiling sentence works better as a separate proposal. It is a second idea.').offersSplit, true);
+  assert.equal(readSplitMark('I would split this into two proposals.').offersSplit, true);
+  assert.equal(readSplitMark('The style guide asks for one idea per proposal.').offersSplit, false);
+  assert.equal(readSplitMark('It fits in Section 9 as a fourth item.').offersSplit, false);
 });
 
 test('drafted parts land on real blocks; bad blocks and placements are dropped', () => {
