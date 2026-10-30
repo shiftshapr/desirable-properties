@@ -12,12 +12,25 @@ export const SPLIT_MARK = '[offer-split]';
 const SPLIT_WORDING =
   /\b(?:as (?:a )?separate proposals?|into (?:two|three|several|separate) (?:separate )?proposals|split (?:it|this|the proposal)\b|a (?:second|separate) proposal)/i;
 
-/** The answer without the split marker, and whether it recommends a split (marker or wording). */
-export function readSplitMark(answer: string | null): { answer: string | null; offersSplit: boolean } {
-  if (!answer) return { answer, offersSplit: false };
-  const marked = answer.includes(SPLIT_MARK);
-  const text = marked ? answer.split(SPLIT_MARK).join('').trim() : answer;
-  return { answer: text, offersSplit: marked || SPLIT_WORDING.test(text) };
+/** Deepi ends an answer with this line when it suggests a different place or wording for the one proposal. */
+export const REVISE_MARK = '[offer-revise]';
+
+/** Wording that suggests a new place or a rewrite, for answers written before REVISE_MARK. */
+const REVISE_WORDING =
+  /\b(?:a better (?:spot|place|placement|home|anchor) (?:is|would be)|the anchor is (?:wrong|awkward)|the (?:best|better) (?:fit|placement) is|suggested (?:version|wording|rewrite)|move (?:it|this|the (?:insert|text|proposal)) to|(?:insert|put|place) (?:it )?(?:after|before|below|above) \[\d+\])/i;
+
+/**
+ * The answer without the markers, and what it recommends: a split (marker or wording), or else a
+ * revision of this proposal in a different place or wording. A split covers the revision.
+ */
+export function readSplitMark(answer: string | null): { answer: string | null; offersSplit: boolean; offersRevise: boolean } {
+  if (!answer) return { answer, offersSplit: false, offersRevise: false };
+  const text = [SPLIT_MARK, REVISE_MARK].some((m) => answer.includes(m))
+    ? answer.split(SPLIT_MARK).join('').split(REVISE_MARK).join('').trim()
+    : answer;
+  const offersSplit = answer.includes(SPLIT_MARK) || SPLIT_WORDING.test(text);
+  const offersRevise = !offersSplit && (answer.includes(REVISE_MARK) || REVISE_WORDING.test(text));
+  return { answer: text, offersSplit, offersRevise };
 }
 
 export type SplitDraftPart = {

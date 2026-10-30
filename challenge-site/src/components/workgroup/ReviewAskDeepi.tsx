@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
 import ReviewSplitForm, { type SplitDraft } from '@/components/workgroup/ReviewSplitForm';
 import type { ReviewQueueItem } from '@/lib/workgroup-review-types';
 
@@ -11,6 +12,7 @@ type Ask = {
   answer: string | null;
   error: string | null;
   offersSplit?: boolean;
+  offersRevise?: boolean;
 };
 
 /**
@@ -18,7 +20,9 @@ type Ask = {
  * sees the proposal, the chapter and the style guide. Members and co-editors only, with a daily limit.
  *
  * When Deepi recommends splitting the proposal, a co-editor is offered Deepi's draft of the split
- * proposals (each with its own anchor) to check and post: the only way to split one proposal.
+ * proposals (each with its own anchor) to check and post: the only way to split one proposal. When
+ * Deepi suggests a different place or wording instead, a co-editor is offered that revised proposal
+ * in the Revise form.
  */
 export default function ReviewAskDeepi({
   workgroupId,
@@ -30,6 +34,7 @@ export default function ReviewAskDeepi({
   item: ReviewQueueItem;
   /** Viewer is a co-editor and the item is a pending Gov Hub patch or insert. */
   canSplit: boolean;
+  /** After a split or revision is filed. */
   onSplit: (message: string) => void;
 }) {
   const itemKey = item.key;
@@ -39,11 +44,11 @@ export default function ReviewAskDeepi({
   const [question, setQuestion] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [draft, setDraft] = useState<SplitDraft | null>(null);
+  const [draft, setDraft] = useState<(SplitDraft & { kind: 'split' | 'revise' }) | null>(null);
   const [drafting, setDrafting] = useState(false);
   const base = `/api/workgroups/${encodeURIComponent(workgroupId)}/review/ask`;
 
-  async function draftSplit() {
+  async function draftSplit(kind: 'split' | 'revise') {
     if (drafting) return;
     setDrafting(true);
     setError(null);
@@ -52,12 +57,12 @@ export default function ReviewAskDeepi({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ itemKey }),
+        body: JSON.stringify({ itemKey, kind }),
       });
       const body = (await res.json().catch(() => ({}))) as { draft?: SplitDraft; remainingToday?: number; error?: string };
       if (typeof body.remainingToday === 'number') setRemaining(body.remainingToday);
       if (!res.ok || !body.draft) throw new Error(body.error || `Draft failed (${res.status})`);
-      setDraft(body.draft);
+      setDraft({ ...body.draft, kind });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Draft failed');
     } finally {
@@ -159,14 +164,40 @@ export default function ReviewAskDeepi({
           <button
             type="button"
             disabled={drafting || remaining === 0}
-            onClick={() => void draftSplit()}
+            onClick={() => void draftSplit('split')}
             className="rounded-lg bg-violet-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
           >
             {drafting ? 'Deepi is drafting…' : 'Create the proposals Deepi recommends'}
           </button>
         </div>
+      ) : canSplit && !draft && asks?.some((a) => a.offersRevise) ? (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-violet-800/60 bg-violet-950/20 p-3 text-sm">
+          <span className="text-violet-100">
+            Deepi suggests a different place or wording for this proposal. Have it draft the revision, check it, then
+            save.
+          </span>
+          <button
+            type="button"
+            disabled={drafting || remaining === 0}
+            onClick={() => void draftSplit('revise')}
+            className="rounded-lg bg-violet-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
+          >
+            {drafting ? 'Deepi is drafting…' : "Apply Deepi's suggestion"}
+          </button>
+        </div>
       ) : null}
-      {draft ? (
+      {draft?.kind === 'revise' && draft.parts[0] ? (
+        <ReviewReviseForm
+          workgroupId={workgroupId}
+          item={item}
+          deepi={{ ...draft.parts[0], note: draft.note }}
+          onCancel={() => setDraft(null)}
+          onDone={(message) => {
+            setDraft(null);
+            onSplit(message);
+          }}
+        />
+      ) : draft ? (
         <ReviewSplitForm
           workgroupId={workgroupId}
           item={item}
