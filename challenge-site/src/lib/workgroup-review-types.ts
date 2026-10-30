@@ -59,6 +59,9 @@ export type ReviewQueueItem = {
   insertText: string | null;
   /** replace: the passage being replaced. insert: the anchored passage it goes next to. */
   originalText: string;
+  /** The headings above the anchored passage, e.g. "5. Runtime › 5.14 Risk-Tiered Enforcement";
+   *  null when the passage is not in the current chapter text. */
+  section: string | null;
   proposedText: string;
   rationale: string | null;
   authorName: string;

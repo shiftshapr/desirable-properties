@@ -306,6 +306,40 @@ export async function reviseGovHubProposal(
   };
 }
 
+export type SplitPartInput = {
+  /** The passage this part replaces or goes next to. */
+  originalText: string;
+  proposedText: string;
+  patchMode: 'replace' | 'insert' | 'insert_after';
+};
+
+/** A co-editor splits one proposal into several with their own anchors (Gov Hub files each, with their approval). */
+export async function splitGovHubProposal(
+  draftRef: string,
+  proposalId: string,
+  idToken: string,
+  parts: SplitPartInput[],
+  note: string,
+): Promise<{ ok: boolean; status: number; error?: string; data: GovHubJson }> {
+  const result = await govHubAuthed(
+    `/api/doc/draft/${encodeURIComponent(draftRef)}/proposals/${encodeURIComponent(proposalId)}/split/`,
+    idToken,
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        note,
+        parts: parts.map((p) => ({ original_text: p.originalText, proposed_text: p.proposedText, patch_mode: p.patchMode })),
+      }),
+    },
+  );
+  return {
+    ok: result.ok,
+    status: result.status,
+    error: result.ok ? undefined : String(result.data.error || `Split failed (${result.status})`),
+    data: result.data,
+  };
+}
+
 /** The chapter's Markdown blocks, for choosing where a revised proposal goes. */
 export async function fetchChapterPassages(draftRef: string): Promise<string[]> {
   const res = await fetch(
