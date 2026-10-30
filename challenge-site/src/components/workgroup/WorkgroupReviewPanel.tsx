@@ -7,6 +7,7 @@ import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection'
 import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
 import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
+import SectionLabel from '@/components/workgroup/SectionLabel';
 import WorkingRevisionEmail from '@/components/workgroup/WorkingRevisionEmail';
 import type {
   ReviewQueueItem,
@@ -287,7 +288,11 @@ export default function WorkgroupReviewPanel({
           <a href="/style-guide" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
             DP style guide
           </a>{' '}
-          (v{STYLE_GUIDE_VERSION}). Co-editors: see{' '}
+          (v{STYLE_GUIDE_VERSION}). Co-editors: follow the{' '}
+          <a href="/co-editors" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
+            step-by-step co-editor guide
+          </a>
+          , and see{' '}
           <a href="/style-guide#co-editors" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">
             the guide&apos;s notes for co-editors
           </a>
@@ -462,12 +467,15 @@ export default function WorkgroupReviewPanel({
             ) : item.patchMode === 'dedup' ? (
               <DedupEdits item={item} />
             ) : (
+              <>
+              <SectionLabel section={item.section} />
               <ActivityPatchPreview
                 removed={item.originalText || null}
                 added={(item.insertText ?? item.proposedText) || null}
                 mode={item.patchMode === 'insert' || item.insertText ? 'insert' : 'patch'}
                 insertPosition={item.insertPosition}
               />
+              </>
             )}
             {item.rationale ? (
               <p className="mt-2 whitespace-pre-line text-sm text-slate-400">
@@ -495,7 +503,20 @@ export default function WorkgroupReviewPanel({
               />
             ) : null}
             {data?.askEnabled && signedIn && (isMember || data.isCoEditor) ? (
-              <ReviewAskDeepi workgroupId={workgroupId} itemKey={item.key} />
+              <ReviewAskDeepi
+                workgroupId={workgroupId}
+                item={item}
+                canSplit={
+                  Boolean(data.isCoEditor && item.govhubProposalId) &&
+                  item.status === 'pending' &&
+                  item.patchMode !== 'bundle' &&
+                  item.patchMode !== 'dedup'
+                }
+                onSplit={(message) => {
+                  setNotice(message);
+                  void reload();
+                }}
+              />
             ) : null}
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
               {item.hrefs.book ? (

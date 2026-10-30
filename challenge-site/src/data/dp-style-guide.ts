@@ -1,5 +1,5 @@
 /**
- * Style guide for the Desirable Properties book (Version 1.0). One source for the
+ * Style guide for the Desirable Properties book (Version 1.1). One source for the
  * /style-guide page and for AI checks of patches and inserts (styleGuideAsText).
  *
  * Rules codify what most chapters already do, measured across the 23 chapters on
@@ -7,8 +7,8 @@
  * STYLE_GUIDE_UPDATED whenever a rule changes.
  */
 
-export const STYLE_GUIDE_VERSION = '1.0';
-export const STYLE_GUIDE_UPDATED = '2026-10-13';
+export const STYLE_GUIDE_VERSION = '1.1';
+export const STYLE_GUIDE_UPDATED = '2026-10-30';
 
 export type StyleRule = {
   rule: string;
@@ -261,8 +261,8 @@ export const STYLE_GUIDE: ReadonlyArray<StyleSection> = [
         rule: 'Put the reasons, sources and context in the rationale field, not in the proposed text.',
       },
       {
-        rule: 'One idea per proposal. Two unrelated changes are two proposals.',
-        why: 'Co-editors can then approve one and decline the other.',
+        rule: 'One proposal for each place in the chapter. Changes that go in different places are separate proposals; changes that go in one place stay one proposal, even when they make more than one point.',
+        why: 'Each proposal has one anchor, and co-editors can approve one place and decline another.',
       },
       {
         rule: 'Check the chapter first. If the idea is already there, patch that passage instead of inserting a new one.',

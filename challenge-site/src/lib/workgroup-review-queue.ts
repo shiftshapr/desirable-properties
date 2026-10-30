@@ -13,6 +13,7 @@ import { loadCanopiFilingReportWithTime } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
 import { encodedInsertOf } from '@/lib/encoded-insert';
+import { sectionLabelFor } from '@/lib/chapter-sections';
 import {
   cachedStyleChecks,
   currentStyleCheckModel,
@@ -53,11 +54,13 @@ export async function buildWorkgroupReviewQueue(opts: {
   viewerUserId?: string | null;
 }): Promise<ReviewQueueItem[]> {
   const draftHref = govhubDraftReadHref(opts.documentHref || null);
-  const proposals = opts.draftRef
-    ? await import('@/lib/workgroup-review-govhub').then((mod) =>
-        mod.fetchDraftProposalsFresh(opts.draftRef!),
-      )
-    : [];
+  const govhub = await import('@/lib/workgroup-review-govhub');
+  const [proposals, passages] = opts.draftRef
+    ? await Promise.all([
+        govhub.fetchDraftProposalsFresh(opts.draftRef),
+        govhub.fetchChapterPassages(opts.draftRef).catch(() => [] as string[]),
+      ])
+    : [[], [] as string[]];
 
   const bookPageIds = canopiBookPageIdsForDp(opts.dpId);
   const canopi = bookPageIds.length
@@ -109,6 +112,7 @@ export async function buildWorkgroupReviewQueue(opts: {
         note: e.note ?? null,
       })),
       originalText: proposal.original_text || matchedCanopi?.anchorExact || '',
+      section: null,
       proposedText: proposal.proposed_text || '',
       rationale: proposal.rationale || matchedCanopi?.rationale || null,
       authorName: proposal.author_name || matchedCanopi?.authorName || 'Someone',
@@ -170,6 +174,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       insertText: null,
       edits: [],
       originalText: post.anchorExact || '',
+      section: null,
       proposedText: parsed.content,
       rationale: post.rationale,
       authorName: post.authorName || 'Someone',
@@ -197,6 +202,12 @@ export async function buildWorkgroupReviewQueue(opts: {
           ? `Not filed to Gov Hub automatically: ${filed.reason || filed.status}.`
           : `Not filed to Gov Hub yet, so it cannot be approved here. ${lastRun}`,
     });
+  }
+
+  for (const item of items) {
+    if (item.originalText && item.patchMode !== 'bundle' && item.patchMode !== 'dedup') {
+      item.section = sectionLabelFor(passages, item.originalText);
+    }
   }
 
   const evals = await listReviewEvals(opts.workgroupId);

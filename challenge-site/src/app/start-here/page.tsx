@@ -190,7 +190,10 @@ export default async function StartHerePage() {
                 workgroup&apos;s <strong className="font-semibold text-white">Review</strong> tab.
                 Both approve before a change goes in; a decline carries a short note the author can
                 read; proposals are decided within 7 days. Claim an open seat at the top of the
-                DP&apos;s workgroup page with a short statement, or nominate someone you trust.
+                DP&apos;s workgroup page with a short statement, or nominate someone you trust.{' '}
+                <Link href="/co-editors" className="text-cyan-300 hover:text-cyan-200">
+                  Read the co-editor guide →
+                </Link>
               </p>
               {status?.needsCoEditor.length ? (
                 <>

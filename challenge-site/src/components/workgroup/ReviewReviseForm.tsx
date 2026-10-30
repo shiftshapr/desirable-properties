@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import PassagePicker from '@/components/workgroup/PassagePicker';
+import SectionLabel from '@/components/workgroup/SectionLabel';
+import { sectionTrail } from '@/lib/chapter-sections';
 import type { ReviewAnchorEval, ReviewQueueItem } from '@/lib/workgroup-review-types';
 
 type Placement = 'same' | 'elsewhere';
@@ -11,6 +14,8 @@ type Props = {
   item: ReviewQueueItem;
   /** Claude's suggested anchor: the form starts on it, with a note the co-editor can edit. */
   suggestion?: ReviewAnchorEval | null;
+  /** Deepi's revised proposal from Ask Deepi: the form starts on its place, text and note. */
+  deepi?: { passage: string; patchMode: Mode; text: string; note: string } | null;
   onDone: (message: string) => void;
   onCancel: () => void;
 };
@@ -21,30 +26,21 @@ const MODE_LABEL: Record<Mode, string> = {
   insert_after: 'Insert below it',
 };
 
-/** Markdown block shown as readable text in the picker (the block itself is what Gov Hub gets). */
-function plain(block: string): string {
-  return block
-    .replace(/^#{1,6}\s+/gm, '')
-    .replace(/\*\*|__|`/g, '')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
 /**
  * A co-editor's revision of a pending proposal: edit the text, move it to another passage, or both.
  * Gov Hub files the result as a new version credited to the author, with this co-editor's approval,
  * and closes the original as considered with the note.
  */
-export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone, onCancel }: Props) {
-  const [text, setText] = useState(item.proposedText);
-  const [placement, setPlacement] = useState<Placement>(suggestion ? 'elsewhere' : 'same');
+export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi, onDone, onCancel }: Props) {
+  const [text, setText] = useState(deepi?.text ?? item.proposedText);
+  const [placement, setPlacement] = useState<Placement>(suggestion || deepi ? 'elsewhere' : 'same');
   const [passages, setPassages] = useState<string[] | null>(null);
   const [passageError, setPassageError] = useState<string | null>(null);
-  const [filter, setFilter] = useState('');
   const [picked, setPicked] = useState<number | null>(null);
-  const [mode, setMode] = useState<Mode>(suggestion?.suggestedMode ?? 'insert_after');
-  const [note, setNote] = useState(suggestion ? `Same text, moved to a better place in the chapter. ${suggestion.reason}` : '');
+  const [mode, setMode] = useState<Mode>(deepi?.patchMode ?? suggestion?.suggestedMode ?? 'insert_after');
+  const [note, setNote] = useState(
+    deepi?.note ?? (suggestion ? `Same text, moved to a better place in the chapter. ${suggestion.reason}` : ''),
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,10 +54,11 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
         if (!res.ok) throw new Error(data.error || `Could not load the chapter (${res.status})`);
         const list = data.passages || [];
         setPassages(list);
-        if (suggestion) {
-          const at = list.indexOf(suggestion.suggestedPassage);
+        const wanted = deepi?.passage ?? suggestion?.suggestedPassage;
+        if (wanted) {
+          const at = list.indexOf(wanted);
           if (at >= 0) setPicked(at);
-          else setPassageError('The suggested passage has changed since Claude looked. Pick the place yourself.');
+          else setPassageError('The suggested passage has changed since it was read. Pick the place yourself.');
         }
       })
       .catch((err) => {
@@ -70,14 +67,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
     return () => {
       cancelled = true;
     };
-  }, [placement, passages, workgroupId, suggestion]);
-
-  const shown = useMemo(() => {
-    const q = filter.trim().toLowerCase();
-    return (passages || [])
-      .map((block, index) => ({ block, index, text: plain(block) }))
-      .filter((p) => p.text && (!q || p.text.toLowerCase().includes(q)));
-  }, [passages, filter]);
+  }, [placement, passages, workgroupId, suggestion, deepi]);
 
   const textChanged = text.trim() !== item.proposedText.trim();
   const moved = placement === 'elsewhere' && picked !== null;
@@ -158,36 +148,10 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
           {!passages && !passageError ? <p className="text-sm text-slate-400">Loading the chapter…</p> : null}
           {passages ? (
             <>
-              <input
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                placeholder="Find a passage"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
-              />
-              <ul
-                className="max-h-64 space-y-1 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60 p-1"
-                role="listbox"
-                aria-label="Chapter passages"
-              >
-                {shown.map((p) => (
-                  <li key={p.index}>
-                    <button
-                      type="button"
-                      role="option"
-                      aria-selected={picked === p.index}
-                      onClick={() => setPicked(p.index)}
-                      className={`w-full rounded px-2 py-1.5 text-left text-sm ${
-                        picked === p.index
-                          ? 'bg-violet-900/50 text-white'
-                          : 'text-slate-300 hover:bg-slate-800/60'
-                      }`}
-                    >
-                      <span className="line-clamp-2">{p.text}</span>
-                    </button>
-                  </li>
-                ))}
-                {!shown.length ? <li className="px-2 py-1.5 text-sm text-slate-500">No passage matches.</li> : null}
-              </ul>
+              <PassagePicker passages={passages} picked={picked} onPick={setPicked} />
+              {picked !== null ? (
+                <SectionLabel section={sectionTrail(passages, picked).join(' › ') || null} className="" />
+              ) : null}
               {picked !== null ? (
                 <div className="flex flex-wrap gap-4 text-sm text-slate-300" role="radiogroup" aria-label="How it goes in">
                   {(Object.keys(MODE_LABEL) as Mode[]).map((m) => (

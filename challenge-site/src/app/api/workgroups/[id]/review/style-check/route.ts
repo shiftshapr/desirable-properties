@@ -47,7 +47,7 @@ export async function POST(request: Request, ctx: RouteContext) {
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Style check failed' },
-      { status: 502 },
+      { status: 503 },
     );
   }
 }

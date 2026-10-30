@@ -4,6 +4,55 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-co-editing-tab",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Workgroup page: a Co-editing tab replaces Astra",
+      "summary": "The Astra tab showed Astra's 5 September recommendations, which the review process no longer uses. Its place in the tab bar now goes to Co-editing, which shows the step-by-step co-editor guide with a button to open Review. Old Astra links still open the Astra view.",
+      "changes": [
+        "Tabs: Next steps, Review, Co-editing, Chat, Members.",
+        "Astra is hidden from the tab bar but ?tab=astra and change/proposal links still open it.",
+        "The guide steps are one component shared by /co-editors and the tab."
+      ]
+    },
+    {
+      "id": "co-editor-guide",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Co-editor guide: step-by-step instructions for reviewing proposals",
+      "summary": "A new /co-editors page walks co-editors through a Review session: check how many proposals are open, read each one (section, Diff, As updated, the book), ask Deepi when unsure and apply its suggestion, then approve, revise or decline. Linked from the roles section, the Review tab and the Start here co-editor card.",
+      "changes": [
+        "New page /co-editors with eight numbered steps for a Review session.",
+        "Linked from How Version 1.0 gets made (Roles), the Review tab header and the Start here co-editor card."
+      ]
+    },
+    {
+      "id": "review-apply-deepi-suggestion",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Review tab: apply Deepi's suggested place or wording, and offer a split only when Deepi recommends one",
+      "summary": "When Ask Deepi suggests keeping a proposal but putting it somewhere else in the chapter, or rewording it, co-editors now get an Apply Deepi's suggestion button. Deepi drafts the revised proposal (its passage, placement, text and a note to the author) into the Revise form, where the co-editor checks it and saves. The split offer now appears only when Deepi actually recommends separate proposals; the small split link under every answer is gone.",
+      "changes": [
+        "src/lib/review-split.ts: revise marker and wording fallback; a split recommendation wins over a revise one",
+        "review-ask.server.ts: Deepi instruction for the revise marker; draftSplit kind 'revise' (one part)",
+        "/api/workgroups/[id]/review/ask/split takes kind; ReviewAskDeepi shows the Apply button; ReviewReviseForm starts on Deepi's draft"
+      ]
+    },
+    {
+      "id": "review-split-and-section",
+      "date": "2026-10-29",
+      "status": "open",
+      "title": "Review tab: section headings above each anchor, and Deepi can draft a split for co-editors to post",
+      "summary": "Each proposal on the Review tab now shows the section and subsection its anchor sits in (for example 5. Primary Mechanisms › 5.14 Risk-Tiered Enforcement), so reviewers know where it is without opening the book. When Ask Deepi recommends splitting a proposal into separate ones, co-editors are offered Deepi's draft of the split proposals, each with its own anchor and placement. They check and edit each part, then post them; Gov Hub files every part under the author's name with the co-editor's approval and closes the original with the note. Before this there was no way to split one proposal into several with different anchors.",
+      "changes": [
+        "src/lib/chapter-sections.ts, SectionLabel: the heading trail for an anchor",
+        "src/lib/review-split.ts, review-ask.server.ts: split marker in Deepi's answers; draftSplit()",
+        "/api/workgroups/[id]/review/ask/split and /review/split routes; ReviewSplitForm, PassagePicker",
+        "Needs Gov Hub POST /proposals/<id>/split/ (Bridgit-DAO/interface-gov-hub)",
+        "scripts/review-split.test.mjs: tests"
+      ]
+    },
+    {
       "id": "filer-real-inserts",
       "date": "2026-10-29",
       "status": "open",
