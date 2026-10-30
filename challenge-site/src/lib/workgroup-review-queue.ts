@@ -16,6 +16,7 @@ import { encodedInsertOf } from '@/lib/encoded-insert';
 import { sectionLabelFor } from '@/lib/chapter-sections';
 import {
   cachedStyleChecks,
+  latestStyleCheckErrors,
   currentStyleCheckModel,
   styleCheckInputHash,
   type StyleCheckInput,
@@ -142,6 +143,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       styleCheckable: false,
       styleCheck: null,
       anchorEval: null,
+      styleCheckError: null,
       canPromote: pending && anchored,
       promoteBlockReason: !pending
         ? `Already ${proposal.status}. Only pending Gov Hub proposals can be promoted into the next revision draft.`
@@ -195,6 +197,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       styleCheckable: false,
       styleCheck: null,
       anchorEval: null,
+      styleCheckError: null,
       canPromote: false,
       promoteBlockReason: filedElsewhere
         ? `Posted on this chapter's page, but the passage it targets is in ${filed!.home_dp}. It was filed there (${filed!.draft_ref}); review it on the ${filed!.home_dp} Review tab.`
@@ -269,8 +272,12 @@ async function attachStyleChecks(items: ReviewQueueItem[], dpId: string | null):
   } catch {
     return;
   }
+  const missing = [...hashes.entries()].filter(([, h]) => !cached.has(h)).map(([, h]) => h);
+  const errors = missing.length ? await latestStyleCheckErrors(missing).catch(() => new Map<string, string>()) : new Map<string, string>();
   for (const item of items) {
-    const hit = cached.get(hashes.get(item.key) || '');
+    const hash = hashes.get(item.key) || '';
+    const hit = cached.get(hash);
+    if (!hit?.result && errors.has(hash)) item.styleCheckError = errors.get(hash)!;
     if (hit?.result) {
       item.styleCheck = {
         id: hit.id,

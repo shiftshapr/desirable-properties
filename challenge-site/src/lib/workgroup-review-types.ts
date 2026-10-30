@@ -88,6 +88,8 @@ export type ReviewQueueItem = {
   /** Pending patch/insert that can be style-checked. */
   styleCheckable: boolean;
   styleCheck: ReviewStyleCheck | null;
+  /** Plain-words reason the last automatic style check failed, while there is no good result. */
+  styleCheckError: string | null;
   /** Set only while the evaluated anchor and text are unchanged and no co-editor kept the anchor. */
   anchorEval: ReviewAnchorEval | null;
   canPromote: boolean;

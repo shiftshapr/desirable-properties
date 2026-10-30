@@ -13,6 +13,7 @@ import {
 } from '@/lib/workgroup-review-govhub';
 import { buildWorkgroupReviewQueue } from '@/lib/workgroup-review-queue';
 import { currentStyleCheckModel } from '@/lib/style-check.server';
+import { nudgeReviewChecks } from '@/lib/review-checks-sweep.server';
 import type { ReviewQueueResponse } from '@/lib/workgroup-review-types';
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -51,6 +52,16 @@ export async function GET(_request: Request, ctx: RouteContext) {
     documentHref: summary.document_href,
     viewerUserId: session?.userId || null,
   });
+
+  // Checks for new proposals run on the server in the background; this request does not wait.
+  if (items.some((item) => item.styleCheckable && !item.styleCheck && !item.styleCheckError)) {
+    nudgeReviewChecks({
+      id: workgroupId,
+      name: summary.name || '',
+      document_href: summary.document_href ?? null,
+      document_label: summary.document_label ?? null,
+    });
+  }
 
   // Members see it too (to email it); only publishers (canEdit) may publish it.
   const workingRevision = draftRef && session?.idToken && (canEdit || isMember)

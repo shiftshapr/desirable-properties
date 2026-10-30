@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
@@ -83,23 +83,18 @@ export default function WorkgroupReviewPanel({
     void reload();
   }, [reload]);
 
-  // Check up to 8 unchecked pending items, one at a time, when a member opens the tab.
+  // Style checks run on the server; while some are still queued, reload a few times to show them.
+  const pollsLeft = useRef(6);
   useEffect(() => {
-    if (!data?.isMember || !data.styleCheckEnabled) return;
-    const todo = data.items.filter((i) => i.styleCheckable && !i.styleCheck).slice(0, 8);
-    if (!todo.length) return;
-    let cancelled = false;
-    (async () => {
-      for (const item of todo) {
-        if (cancelled) return;
-        await runStyleCheckFor(item.key, () => cancelled);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+    if (!data?.styleCheckEnabled) return;
+    const waiting = data.items.some((i) => i.styleCheckable && !i.styleCheck && !i.styleCheckError);
+    if (!waiting || pollsLeft.current <= 0) return;
+    const timer = setTimeout(() => {
+      pollsLeft.current -= 1;
+      void reload();
+    }, 20_000);
+    return () => clearTimeout(timer);
+  }, [data, reload]);
 
   async function runStyleCheckFor(itemKey: string, isCancelled: () => boolean = () => false) {
     setStyleByKey((prev) => ({ ...prev, [itemKey]: 'pending' }));
@@ -485,7 +480,7 @@ export default function WorkgroupReviewPanel({
             ) : null}
             {item.styleCheckable ? (
               <StyleNotes
-                state={styleByKey[item.key] ?? item.styleCheck}
+                state={styleByKey[item.key] ?? item.styleCheck ?? (item.styleCheckError ? { error: item.styleCheckError } : null)}
                 canAct={Boolean(signedIn && isMember)}
                 onRun={() => void runStyleCheckFor(item.key)}
                 onRate={(check, helpful) => void rateStyle(item.key, check, helpful)}
@@ -502,23 +497,23 @@ export default function WorkgroupReviewPanel({
                 onKeep={() => void keepAnchor(item)}
               />
             ) : null}
-            {data?.askEnabled && signedIn && (isMember || data.isCoEditor) ? (
-              <ReviewAskDeepi
-                workgroupId={workgroupId}
-                item={item}
-                canSplit={
-                  Boolean(data.isCoEditor && item.govhubProposalId) &&
-                  item.status === 'pending' &&
-                  item.patchMode !== 'bundle' &&
-                  item.patchMode !== 'dedup'
-                }
-                onSplit={(message) => {
-                  setNotice(message);
-                  void reload();
-                }}
-              />
-            ) : null}
-            <div className="mt-3 flex flex-wrap gap-3 text-sm">
+            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              {data?.askEnabled && signedIn && (isMember || data.isCoEditor) ? (
+                <ReviewAskDeepi
+                  workgroupId={workgroupId}
+                  item={item}
+                  canSplit={
+                    Boolean(data.isCoEditor && item.govhubProposalId) &&
+                    item.status === 'pending' &&
+                    item.patchMode !== 'bundle' &&
+                    item.patchMode !== 'dedup'
+                  }
+                  onSplit={(message) => {
+                    setNotice(message);
+                    void reload();
+                  }}
+                />
+              ) : null}
               {item.hrefs.book ? (
                 <DiscussPatchLink href={item.hrefs.book} className="text-cyan-300 hover:text-cyan-200">
                   Open on book Discuss
@@ -943,11 +938,7 @@ function StyleNotes({
   onRate: (check: ReviewStyleCheck, helpful: boolean) => void;
 }) {
   if (!state) {
-    return canAct ? (
-      <button type="button" onClick={onRun} className="mt-3 text-xs text-cyan-300 underline hover:text-cyan-200">
-        Check against the style guide
-      </button>
-    ) : null;
+    return <p className="mt-3 text-xs text-slate-500">Style check queued. It runs automatically and appears here.</p>;
   }
   if (state === 'pending') {
     return <p className="mt-3 text-xs text-slate-500">Checking against the style guide…</p>;
@@ -955,7 +946,7 @@ function StyleNotes({
   if ('error' in state) {
     return (
       <p className="mt-3 text-xs text-slate-500">
-        Style check unavailable ({state.error}).{' '}
+        Style check unavailable ({state.error}) It retries automatically.{' '}
         {canAct ? (
           <button type="button" onClick={onRun} className="underline hover:text-slate-300">
             Try again
