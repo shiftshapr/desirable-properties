@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "deepi-revise-keeps-place",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Apply Deepi's suggestion keeps the proposal's place and scope",
+      "summary": "When Deepi said a proposal was in the right place but suggested new wording, Apply Deepi's suggestion still drafted it against the whole chapter block. A one-sentence change came back as the whole bullet list, and the form switched to \"Put it somewhere else\". Deepi now drafts in-place revisions against the proposal's own passage, the form keeps \"Keep where it is\" selected, and when a move is suggested the passage list scrolls to the suggested passage.",
+      "changes": [
+        "Revise drafts can keep the proposal's current anchor and placement (block -1)",
+        "The revise form opens on \"Keep where it is\" unless Deepi moves the proposal",
+        "The passage picker scrolls to the picked passage"
+      ]
+    },
+    {
       "id": "review-checks-run-once",
       "date": "2026-10-30",
       "status": "open",

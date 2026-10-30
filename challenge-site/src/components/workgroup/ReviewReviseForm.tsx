@@ -15,7 +15,8 @@ type Props = {
   /** Claude's suggested anchor: the form starts on it, with a note the co-editor can edit. */
   suggestion?: ReviewAnchorEval | null;
   /** Deepi's revised proposal from Ask Deepi: the form starts on its place, text and note. */
-  deepi?: { passage: string; patchMode: Mode; text: string; note: string } | null;
+  /** Deepi's draft; passageIndex -1 means it keeps the proposal where it is. */
+  deepi?: { passageIndex: number; passage: string; patchMode: Mode; text: string; note: string } | null;
   onDone: (message: string) => void;
   onCancel: () => void;
 };
@@ -33,7 +34,8 @@ const MODE_LABEL: Record<Mode, string> = {
  */
 export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi, onDone, onCancel }: Props) {
   const [text, setText] = useState(deepi?.text ?? item.proposedText);
-  const [placement, setPlacement] = useState<Placement>(suggestion || deepi ? 'elsewhere' : 'same');
+  const deepiMoves = Boolean(deepi && deepi.passageIndex >= 0 && deepi.passage.trim() !== item.originalText.trim());
+  const [placement, setPlacement] = useState<Placement>(suggestion || deepiMoves ? 'elsewhere' : 'same');
   const [passages, setPassages] = useState<string[] | null>(null);
   const [passageError, setPassageError] = useState<string | null>(null);
   const [picked, setPicked] = useState<number | null>(null);
@@ -54,7 +56,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
         if (!res.ok) throw new Error(data.error || `Could not load the chapter (${res.status})`);
         const list = data.passages || [];
         setPassages(list);
-        const wanted = deepi?.passage ?? suggestion?.suggestedPassage;
+        const wanted = (deepiMoves ? deepi?.passage : null) ?? suggestion?.suggestedPassage;
         if (wanted) {
           const at = list.indexOf(wanted);
           if (at >= 0) setPicked(at);
@@ -67,7 +69,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
     return () => {
       cancelled = true;
     };
-  }, [placement, passages, workgroupId, suggestion, deepi]);
+  }, [placement, passages, workgroupId, suggestion, deepi, deepiMoves]);
 
   const textChanged = text.trim() !== item.proposedText.trim();
   const moved = placement === 'elsewhere' && picked !== null;

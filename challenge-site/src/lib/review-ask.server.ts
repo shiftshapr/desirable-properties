@@ -219,10 +219,14 @@ note: two or three sentences to the author on how and why their proposal was spl
 
 const REVISE_REQUEST = `Draft the revised proposal you recommended in this conversation: one proposal, in the place and wording you suggested (if you suggested none, decide yourself). Return exactly 1 part.
 
-For the part:
+First decide whether it stays where it is. If you said the current place is right, or you only suggested new wording, it stays: set block to -1. That keeps the proposal's own anchor and placement exactly as they are, and text is only the new version of the proposal's own text, the same scope as now (for example one sentence or one paragraph, never the whole surrounding list or block). Use the wording you suggested in this conversation when you gave one.
+
+Only if you recommended a different place, give the new place:
 - block: the number of the chapter block it is anchored to.
 - placement: "insert" puts the text above that block, "insert_after" below it, "replace" replaces the whole block (so give the whole block with your change made).
-- text: the final text in the chapter's Markdown style, following the style guide. Keep the author's wording where it works.
+
+For the part in either case:
+- text: the final text in the chapter's Markdown style, following the style guide. Keep the author's wording where it works, and keep its form: a paragraph stays a paragraph.
 - why: one sentence on why it goes there.
 
 note: two or three sentences to the author on what was changed and why. The author reads it.`;
@@ -264,8 +268,20 @@ export async function draftSplit(opts: {
       effort: 'medium',
       jsonSchema: SPLIT_SCHEMA,
     });
-    draft = splitDraftFrom(JSON.parse(call.text), opts.passages);
-    for (const part of draft.parts) part.section = sectionTrail(opts.passages, part.passageIndex).join(' › ') || null;
+    const current = opts.kind === 'revise' && opts.item.originalText.trim()
+      ? {
+          originalText: opts.item.originalText,
+          patchMode: (opts.item.patchMode === 'replace'
+            ? 'replace'
+            : opts.item.insertPosition === 'below' ? 'insert_after' : 'insert') as 'replace' | 'insert' | 'insert_after',
+        }
+      : undefined;
+    draft = splitDraftFrom(JSON.parse(call.text), opts.passages, current);
+    for (const part of draft.parts) {
+      part.section = part.passageIndex >= 0
+        ? sectionTrail(opts.passages, part.passageIndex).join(' › ') || null
+        : opts.item.section ?? null;
+    }
     if (opts.kind === 'revise') draft.parts = draft.parts.slice(0, 1);
     if (draft.parts.length < kind.min) {
       error = kind.min > 1

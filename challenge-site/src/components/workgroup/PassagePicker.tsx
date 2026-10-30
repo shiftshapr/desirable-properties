@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { plainBlock } from '@/lib/chapter-sections';
 
 /** Find and pick one chapter block (Gov Hub's Markdown blocks); the block itself is what Gov Hub gets. */
@@ -21,6 +21,14 @@ export default function PassagePicker({
       .filter((p) => p.text && (!q || p.text.toLowerCase().includes(q)));
   }, [passages, filter]);
 
+  // Bring the picked passage (e.g. a suggested one, picked before the list renders) into view.
+  const listRef = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const list = listRef.current;
+    const el = list?.querySelector<HTMLElement>('[aria-selected="true"]');
+    if (list && el) list.scrollTop = el.offsetTop - list.clientHeight / 3;
+  }, [picked, shown]);
+
   return (
     <>
       <input
@@ -30,7 +38,8 @@ export default function PassagePicker({
         className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
       />
       <ul
-        className="max-h-64 space-y-1 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60 p-1"
+        ref={listRef}
+        className="relative max-h-64 space-y-1 overflow-y-auto rounded-lg border border-slate-800 bg-slate-950/60 p-1"
         role="listbox"
         aria-label="Chapter passages"
       >
