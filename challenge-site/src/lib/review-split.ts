@@ -5,11 +5,19 @@
 /** Deepi ends an answer with this line when it recommends a split; the Review tab then offers to draft one. */
 export const SPLIT_MARK = '[offer-split]';
 
-/** The answer without the split marker, and whether it carried one. */
+/**
+ * Wording that recommends a split, for answers written before Deepi added SPLIT_MARK (and as a
+ * fallback when it forgets): "works better as a separate proposal", "split this into two", etc.
+ */
+const SPLIT_WORDING =
+  /\b(?:as (?:a )?separate proposals?|into (?:two|three|several|separate) (?:separate )?proposals|split (?:it|this|the proposal)\b|a (?:second|separate) proposal)/i;
+
+/** The answer without the split marker, and whether it recommends a split (marker or wording). */
 export function readSplitMark(answer: string | null): { answer: string | null; offersSplit: boolean } {
   if (!answer) return { answer, offersSplit: false };
-  const offersSplit = answer.includes(SPLIT_MARK);
-  return { answer: offersSplit ? answer.split(SPLIT_MARK).join('').trim() : answer, offersSplit };
+  const marked = answer.includes(SPLIT_MARK);
+  const text = marked ? answer.split(SPLIT_MARK).join('').trim() : answer;
+  return { answer: text, offersSplit: marked || SPLIT_WORDING.test(text) };
 }
 
 export type SplitDraftPart = {

@@ -149,11 +149,12 @@ export default function ReviewAskDeepi({
         </div>
       ))}
       {!asks && !error ? <p className="text-sm text-slate-400">Loading…</p> : null}
-      {canSplit && asks?.length && !draft ? (
-        asks[asks.length - 1].offersSplit ? (
+      {canSplit && !draft ? (
+        asks?.some((a) => a.offersSplit) ? (
           <div className="flex flex-wrap items-center gap-3 rounded-lg border border-violet-800/60 bg-violet-950/20 p-3 text-sm">
             <span className="text-violet-100">
-              Deepi suggests splitting this into separate proposals. A co-editor can post the split for you.
+              Deepi recommends splitting this into separate proposals. Create them from its advice, check each one, then
+              post.
             </span>
             <button
               type="button"
@@ -161,10 +162,10 @@ export default function ReviewAskDeepi({
               onClick={() => void draftSplit()}
               className="rounded-lg bg-violet-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
             >
-              {drafting ? 'Deepi is drafting…' : 'Draft the split proposals'}
+              {drafting ? 'Deepi is drafting…' : 'Create the proposals Deepi recommends'}
             </button>
           </div>
-        ) : (
+        ) : asks?.length ? (
           <button
             type="button"
             disabled={drafting || remaining === 0}
@@ -173,7 +174,7 @@ export default function ReviewAskDeepi({
           >
             {drafting ? 'Deepi is drafting…' : 'Split into separate proposals with Deepi'}
           </button>
-        )
+        ) : null
       ) : null}
       {draft ? (
         <ReviewSplitForm
