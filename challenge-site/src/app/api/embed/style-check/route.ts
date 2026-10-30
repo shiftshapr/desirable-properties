@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   } catch (err) {
     return NextResponse.json(
       { ok: false, error: err instanceof Error ? err.message : 'Style check failed' },
-      { status: 502 },
+      { status: 503 },
     );
   }
 }

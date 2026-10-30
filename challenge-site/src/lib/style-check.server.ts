@@ -14,6 +14,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { STYLE_GUIDE, STYLE_GUIDE_VERSION, styleGuideAsText } from '@/data/dp-style-guide';
+import { llmErrorMessage } from '@/lib/llm-error-message';
 
 /** Bump when the prompt or output contract changes, so results stay comparable. */
 export const STYLE_CHECK_PROMPT_VERSION = '1';
@@ -321,7 +322,7 @@ export async function runStyleCheck(input: StyleCheckInput): Promise<StyleCheckR
       ],
     );
   }
-  if (!result) throw new Error(error || 'Style check failed');
+  if (!result) throw new Error(llmErrorMessage(error));
   return {
     id,
     createdAt: new Date().toISOString(),
