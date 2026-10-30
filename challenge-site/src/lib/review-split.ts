@@ -46,6 +46,14 @@ export type SplitDraftPart = {
 
 export type SplitDraft = { parts: SplitDraftPart[]; note: string };
 
+/**
+ * How many different places the parts go (block and placement). A split needs at least two:
+ * parts in the same place belong in one proposal.
+ */
+export function distinctPlaces(parts: Array<{ passageIndex: number | null; patchMode: string }>): number {
+  return new Set(parts.filter((p) => p.passageIndex !== null).map((p) => `${p.passageIndex}:${p.patchMode}`)).size;
+}
+
 /** Claude's JSON as parts on real chapter blocks; parts pointing at a block that does not exist are dropped. */
 export function splitDraftFrom(raw: unknown, passages: string[]): SplitDraft {
   const obj = (raw && typeof raw === 'object' ? raw : {}) as { parts?: unknown; note?: unknown };

@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { findPassageIndex, sectionLabelFor, sectionTrail } from '../src/lib/chapter-sections.ts';
-import { readSplitMark, REVISE_MARK, splitDraftFrom } from '../src/lib/review-split.ts';
+import { distinctPlaces, readSplitMark, REVISE_MARK, splitDraftFrom } from '../src/lib/review-split.ts';
 
 const CHAPTER = [
   '# DP11 – Safe and Ethical AI',
@@ -78,4 +78,11 @@ test('a different place or wording offers a revision; a split wins over it; plai
   assert.deepEqual([both.offersSplit, both.offersRevise], [true, false]);
   const plain = readSplitMark('It adds two linked points the chapter does not make. The style is fine.');
   assert.deepEqual([plain.offersSplit, plain.offersRevise], [false, false]);
+});
+
+test('a split needs parts in different places, not just different ideas', () => {
+  assert.equal(distinctPlaces([{ passageIndex: 8, patchMode: 'insert_after' }, { passageIndex: 8, patchMode: 'insert_after' }]), 1);
+  assert.equal(distinctPlaces([{ passageIndex: 8, patchMode: 'insert_after' }, { passageIndex: 5, patchMode: 'insert_after' }]), 2);
+  assert.equal(distinctPlaces([{ passageIndex: 8, patchMode: 'insert' }, { passageIndex: 8, patchMode: 'insert_after' }]), 2);
+  assert.equal(distinctPlaces([{ passageIndex: null, patchMode: 'insert' }, { passageIndex: 3, patchMode: 'insert' }]), 1);
 });
