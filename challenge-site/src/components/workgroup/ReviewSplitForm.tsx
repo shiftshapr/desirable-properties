@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import PassagePicker from '@/components/workgroup/PassagePicker';
 import SectionLabel from '@/components/workgroup/SectionLabel';
 import { plainBlock, sectionTrail } from '@/lib/chapter-sections';
+import { distinctPlaces } from '@/lib/review-split';
 import type { ReviewQueueItem } from '@/lib/workgroup-review-types';
 
 type Mode = 'replace' | 'insert' | 'insert_after';
@@ -80,7 +81,9 @@ export default function ReviewSplitForm({
     setParts((prev) => prev.map((p, j) => (j === i ? { ...p, ...change } : p)));
 
   const ready = parts.every((p) => p.passageIndex !== null && p.text.trim());
-  const canSubmit = !busy && Boolean(passages) && parts.length >= 2 && ready && Boolean(note.trim());
+  // A split is only for parts that go in different places; parts in one place stay one proposal.
+  const separate = distinctPlaces(parts) === parts.length;
+  const canSubmit = !busy && Boolean(passages) && parts.length >= 2 && ready && separate && Boolean(note.trim());
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -231,6 +234,11 @@ export default function ReviewSplitForm({
         </button>
       </div>
       {!ready && passages ? <p className="text-xs text-slate-500">Every part needs a place and text.</p> : null}
+      {ready && !separate ? (
+        <p className="text-xs text-amber-200">
+          Two parts go in the same place. Text for one place belongs in one part: merge them or move one.
+        </p>
+      ) : null}
     </form>
   );
 }
