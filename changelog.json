@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-co-editing-tab",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Workgroup page: a Co-editing tab replaces Astra",
+      "summary": "The Astra tab showed Astra's 5 September recommendations, which the review process no longer uses. Its place in the tab bar now goes to Co-editing, which shows the step-by-step co-editor guide with a button to open Review. Old Astra links still open the Astra view.",
+      "changes": [
+        "Tabs: Next steps, Review, Co-editing, Chat, Members.",
+        "Astra is hidden from the tab bar but ?tab=astra and change/proposal links still open it.",
+        "The guide steps are one component shared by /co-editors and the tab."
+      ]
+    },
+    {
       "id": "co-editor-guide",
       "date": "2026-10-30",
       "status": "open",
