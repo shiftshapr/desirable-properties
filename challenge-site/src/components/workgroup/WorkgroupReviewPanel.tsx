@@ -288,7 +288,11 @@ export default function WorkgroupReviewPanel({
           <a href="/style-guide" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
             DP style guide
           </a>{' '}
-          (v{STYLE_GUIDE_VERSION}). Co-editors: see{' '}
+          (v{STYLE_GUIDE_VERSION}). Co-editors: follow the{' '}
+          <a href="/co-editors" target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
+            step-by-step co-editor guide
+          </a>
+          , and see{' '}
           <a href="/style-guide#co-editors" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">
             the guide&apos;s notes for co-editors
           </a>

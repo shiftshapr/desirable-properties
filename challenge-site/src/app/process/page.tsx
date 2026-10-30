@@ -170,6 +170,13 @@ export default function ProcessPage() {
           </Link>
           .
         </p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">
+          <strong className="text-slate-200">New co-editor?</strong> The{' '}
+          <Link href="/co-editors" className="text-cyan-300 hover:text-cyan-200">
+            co-editor guide
+          </Link>{' '}
+          walks through reviewing proposals step by step.
+        </p>
       </Section>
 
       <Section

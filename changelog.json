@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "co-editor-guide",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Co-editor guide: step-by-step instructions for reviewing proposals",
+      "summary": "A new /co-editors page walks co-editors through a Review session: check how many proposals are open, read each one (section, Diff, As updated, the book), ask Deepi when unsure and apply its suggestion, then approve, revise or decline. Linked from the roles section, the Review tab and the Start here co-editor card.",
+      "changes": [
+        "New page /co-editors with eight numbered steps for a Review session.",
+        "Linked from How Version 1.0 gets made (Roles), the Review tab header and the Start here co-editor card."
+      ]
+    },
+    {
       "id": "review-apply-deepi-suggestion",
       "date": "2026-10-30",
       "status": "open",
@@ -20,7 +31,7 @@
       "date": "2026-10-29",
       "status": "open",
       "title": "Review tab: section headings above each anchor, and Deepi can draft a split for co-editors to post",
-      "summary": "Each proposal on the Review tab now shows the section and subsection its anchor sits in (for example 5. Primary Mechanisms \u203a 5.14 Risk-Tiered Enforcement), so reviewers know where it is without opening the book. When Ask Deepi recommends splitting a proposal into separate ones, co-editors are offered Deepi's draft of the split proposals, each with its own anchor and placement. They check and edit each part, then post them; Gov Hub files every part under the author's name with the co-editor's approval and closes the original with the note. Before this there was no way to split one proposal into several with different anchors.",
+      "summary": "Each proposal on the Review tab now shows the section and subsection its anchor sits in (for example 5. Primary Mechanisms › 5.14 Risk-Tiered Enforcement), so reviewers know where it is without opening the book. When Ask Deepi recommends splitting a proposal into separate ones, co-editors are offered Deepi's draft of the split proposals, each with its own anchor and placement. They check and edit each part, then post them; Gov Hub files every part under the author's name with the co-editor's approval and closes the original with the note. Before this there was no way to split one proposal into several with different anchors.",
       "changes": [
         "src/lib/chapter-sections.ts, SectionLabel: the heading trail for an anchor",
         "src/lib/review-split.ts, review-ask.server.ts: split marker in Deepi's answers; draftSplit()",
