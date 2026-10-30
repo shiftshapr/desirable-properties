@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-apply-deepi-suggestion",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Review tab: apply Deepi's suggested place or wording, and offer a split only when Deepi recommends one",
+      "summary": "When Ask Deepi suggests keeping a proposal but putting it somewhere else in the chapter, or rewording it, co-editors now get an Apply Deepi's suggestion button. Deepi drafts the revised proposal (its passage, placement, text and a note to the author) into the Revise form, where the co-editor checks it and saves. The split offer now appears only when Deepi actually recommends separate proposals; the small split link under every answer is gone.",
+      "changes": [
+        "src/lib/review-split.ts: revise marker and wording fallback; a split recommendation wins over a revise one",
+        "review-ask.server.ts: Deepi instruction for the revise marker; draftSplit kind 'revise' (one part)",
+        "/api/workgroups/[id]/review/ask/split takes kind; ReviewAskDeepi shows the Apply button; ReviewReviseForm starts on Deepi's draft"
+      ]
+    },
+    {
       "id": "review-split-and-section",
       "date": "2026-10-29",
       "status": "open",

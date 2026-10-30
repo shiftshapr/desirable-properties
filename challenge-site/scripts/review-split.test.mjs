@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { findPassageIndex, sectionLabelFor, sectionTrail } from '../src/lib/chapter-sections.ts';
-import { readSplitMark, splitDraftFrom } from '../src/lib/review-split.ts';
+import { readSplitMark, REVISE_MARK, splitDraftFrom } from '../src/lib/review-split.ts';
 
 const CHAPTER = [
   '# DP11 – Safe and Ethical AI',
@@ -37,9 +37,9 @@ test('anchors are found as Markdown, as rendered text, and part-way into a block
 });
 
 test('the split marker is removed from the answer and flagged', () => {
-  assert.deepEqual(readSplitMark('Split it in two.\n\n[offer-split]'), { answer: 'Split it in two.', offersSplit: true });
-  assert.deepEqual(readSplitMark('Fine as it is.'), { answer: 'Fine as it is.', offersSplit: false });
-  assert.deepEqual(readSplitMark(null), { answer: null, offersSplit: false });
+  assert.deepEqual(readSplitMark('Split it in two.\n\n[offer-split]'), { answer: 'Split it in two.', offersSplit: true, offersRevise: false });
+  assert.deepEqual(readSplitMark('Fine as it is.'), { answer: 'Fine as it is.', offersSplit: false, offersRevise: false });
+  assert.deepEqual(readSplitMark(null), { answer: null, offersSplit: false, offersRevise: false });
   // Answers from before the marker are read by their wording (DP11 proposal 93474b85).
   assert.equal(readSplitMark('The profiling sentence works better as a separate proposal. It is a second idea.').offersSplit, true);
   assert.equal(readSplitMark('I would split this into two proposals.').offersSplit, true);
@@ -62,4 +62,20 @@ test('drafted parts land on real blocks; bad blocks and placements are dropped',
   assert.deepEqual(draft.parts.map((p) => [p.passageIndex, p.patchMode]), [[10, 'replace'], [5, 'insert_after']]);
   assert.equal(draft.parts[1].passage, CHAPTER[5]);
   assert.deepEqual(splitDraftFrom(null, CHAPTER), { parts: [], note: '' });
+});
+
+test('a different place or wording offers a revision; a split wins over it; plain answers offer neither', () => {
+  const placement =
+    'Placement. The idea fits 5.14. The anchor is wrong, though. A better spot is after [186], before the example [187]. Suggested version, to insert after [186]: Risk also depends on who is affected.';
+  assert.deepEqual(
+    [readSplitMark(placement).offersRevise, readSplitMark(placement).offersSplit],
+    [true, false],
+  );
+  const marked = readSplitMark(`Keep it, but below [12].\n${REVISE_MARK}`);
+  assert.equal(marked.offersRevise, true);
+  assert.equal(marked.answer, 'Keep it, but below [12].');
+  const both = readSplitMark('The anchor is wrong. The profiling sentence works better as a separate proposal.');
+  assert.deepEqual([both.offersSplit, both.offersRevise], [true, false]);
+  const plain = readSplitMark('It adds two linked points the chapter does not make. The style is fine.');
+  assert.deepEqual([plain.offersSplit, plain.offersRevise], [false, false]);
 });

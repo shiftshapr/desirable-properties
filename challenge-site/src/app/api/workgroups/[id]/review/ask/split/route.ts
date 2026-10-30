@@ -15,8 +15,9 @@ import { buildWorkgroupReviewQueue } from '@/lib/workgroup-review-queue';
 type RouteContext = { params: Promise<{ id: string }> };
 
 /**
- * Deepi drafts a split of one pending proposal into several with their own anchors, for a co-editor
- * to check and post (../../split). Nothing is filed here.
+ * Deepi drafts a split of one pending proposal into several with their own anchors (kind "split",
+ * posted by ../../split), or the proposal in the place and wording it suggested (kind "revise",
+ * posted by ../../revise), for a co-editor to check. Nothing is filed here.
  */
 export async function POST(request: Request, ctx: RouteContext) {
   const { id: workgroupId } = await ctx.params;
@@ -25,13 +26,14 @@ export async function POST(request: Request, ctx: RouteContext) {
     return NextResponse.json({ error: 'Sign in required' }, { status: 401 });
   }
   if (!(await fetchViewerCoEditor(workgroupId, session.idToken)).isCoEditor) {
-    return NextResponse.json({ error: "Only this DP's co-editors split proposals." }, { status: 403 });
+    return NextResponse.json({ error: "Only this DP's co-editors split or revise proposals." }, { status: 403 });
   }
   if (!reviewClaudeConfigured()) {
     return NextResponse.json({ error: 'Ask Deepi is not configured on this server yet.' }, { status: 503 });
   }
-  const body = (await request.json().catch(() => ({}))) as { itemKey?: string };
+  const body = (await request.json().catch(() => ({}))) as { itemKey?: string; kind?: string };
   const itemKey = String(body.itemKey || '').trim();
+  const kind = body.kind === 'revise' ? 'revise' : 'split';
   if (!itemKey) return NextResponse.json({ error: 'itemKey required' }, { status: 400 });
 
   const summary = await fetchWorkgroupSummary(workgroupId, session.idToken);
@@ -48,7 +50,7 @@ export async function POST(request: Request, ctx: RouteContext) {
   });
   const item = items.find((i) => i.key === itemKey);
   if (!item?.govhubProposalId || item.status !== 'pending' || item.patchMode === 'bundle' || item.patchMode === 'dedup') {
-    return NextResponse.json({ error: 'Only a pending patch or insert can be split.' }, { status: 409 });
+    return NextResponse.json({ error: 'Only a pending patch or insert can be split or revised.' }, { status: 409 });
   }
 
   try {
@@ -60,6 +62,7 @@ export async function POST(request: Request, ctx: RouteContext) {
       passages,
       userId: session.userId,
       userName: session.displayName || session.username || null,
+      kind,
     });
     const used = await asksToday(session.userId);
     return NextResponse.json({ ok: true, draft, remainingToday: Math.max(0, reviewAskDailyLimit() - used) });

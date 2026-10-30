@@ -14,6 +14,8 @@ type Props = {
   item: ReviewQueueItem;
   /** Claude's suggested anchor: the form starts on it, with a note the co-editor can edit. */
   suggestion?: ReviewAnchorEval | null;
+  /** Deepi's revised proposal from Ask Deepi: the form starts on its place, text and note. */
+  deepi?: { passage: string; patchMode: Mode; text: string; note: string } | null;
   onDone: (message: string) => void;
   onCancel: () => void;
 };
@@ -29,14 +31,16 @@ const MODE_LABEL: Record<Mode, string> = {
  * Gov Hub files the result as a new version credited to the author, with this co-editor's approval,
  * and closes the original as considered with the note.
  */
-export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone, onCancel }: Props) {
-  const [text, setText] = useState(item.proposedText);
-  const [placement, setPlacement] = useState<Placement>(suggestion ? 'elsewhere' : 'same');
+export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi, onDone, onCancel }: Props) {
+  const [text, setText] = useState(deepi?.text ?? item.proposedText);
+  const [placement, setPlacement] = useState<Placement>(suggestion || deepi ? 'elsewhere' : 'same');
   const [passages, setPassages] = useState<string[] | null>(null);
   const [passageError, setPassageError] = useState<string | null>(null);
   const [picked, setPicked] = useState<number | null>(null);
-  const [mode, setMode] = useState<Mode>(suggestion?.suggestedMode ?? 'insert_after');
-  const [note, setNote] = useState(suggestion ? `Same text, moved to a better place in the chapter. ${suggestion.reason}` : '');
+  const [mode, setMode] = useState<Mode>(deepi?.patchMode ?? suggestion?.suggestedMode ?? 'insert_after');
+  const [note, setNote] = useState(
+    deepi?.note ?? (suggestion ? `Same text, moved to a better place in the chapter. ${suggestion.reason}` : ''),
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,10 +54,11 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
         if (!res.ok) throw new Error(data.error || `Could not load the chapter (${res.status})`);
         const list = data.passages || [];
         setPassages(list);
-        if (suggestion) {
-          const at = list.indexOf(suggestion.suggestedPassage);
+        const wanted = deepi?.passage ?? suggestion?.suggestedPassage;
+        if (wanted) {
+          const at = list.indexOf(wanted);
           if (at >= 0) setPicked(at);
-          else setPassageError('The suggested passage has changed since Claude looked. Pick the place yourself.');
+          else setPassageError('The suggested passage has changed since it was read. Pick the place yourself.');
         }
       })
       .catch((err) => {
@@ -62,7 +67,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, onDone
     return () => {
       cancelled = true;
     };
-  }, [placement, passages, workgroupId, suggestion]);
+  }, [placement, passages, workgroupId, suggestion, deepi]);
 
   const textChanged = text.trim() !== item.proposedText.trim();
   const moved = placement === 'elsewhere' && picked !== null;
