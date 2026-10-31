@@ -4,6 +4,31 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "deepi-revise-keeps-place",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Apply Deepi's suggestion keeps the proposal's place and scope",
+      "summary": "When Deepi said a proposal was in the right place but suggested new wording, Apply Deepi's suggestion still drafted it against the whole chapter block. A one-sentence change came back as the whole bullet list, and the form switched to \"Put it somewhere else\". Deepi now drafts in-place revisions against the proposal's own passage, the form keeps \"Keep where it is\" selected, and when a move is suggested the passage list scrolls to the suggested passage.",
+      "changes": [
+        "Revise drafts can keep the proposal's current anchor and placement (block -1)",
+        "The revise form opens on \"Keep where it is\" unless Deepi moves the proposal",
+        "The passage picker scrolls to the picked passage"
+      ]
+    },
+    {
+      "id": "review-checks-run-once",
+      "date": "2026-10-30",
+      "status": "open",
+      "title": "Review: style and placement checks run once on the server",
+      "summary": "Style checks and placement checks used to start from each visitor's browser, and a failed check ran again on every visit. The site now runs each check once per proposal version in the background and the Review tab shows the stored result. A failed check waits 15 minutes before it is retried. The Ask Deepi and Open on book Discuss links now sit in one row.",
+      "changes": [
+        "A server sweep runs every 10 minutes, and opening a Review tab starts one for that workgroup without waiting for it",
+        "Placement checks run automatically for new proposals, not only from Admin",
+        "Review shows why a check failed and that it retries automatically",
+        "Ask Deepi and Open on book Discuss share one spaced row"
+      ]
+    },
+    {
       "id": "workgroup-co-editing-tab",
       "date": "2026-10-30",
       "status": "open",

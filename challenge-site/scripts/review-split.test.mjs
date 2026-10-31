@@ -86,3 +86,16 @@ test('a split needs parts in different places, not just different ideas', () => 
   assert.equal(distinctPlaces([{ passageIndex: 8, patchMode: 'insert' }, { passageIndex: 8, patchMode: 'insert_after' }]), 2);
   assert.equal(distinctPlaces([{ passageIndex: null, patchMode: 'insert' }, { passageIndex: 3, patchMode: 'insert' }]), 1);
 });
+
+test('revise: block -1 keeps the proposal on its own anchor and placement', () => {
+  const passages = ['# Title', '- one\n- two\n- three'];
+  const current = { originalText: 'two', patchMode: 'replace' };
+  const draft = splitDraftFrom(
+    { parts: [{ block: -1, placement: 'replace', text: 'two, reworded', why: 'Same place.' }], note: 'n' },
+    passages,
+    current,
+  );
+  assert.deepEqual(draft.parts.map((p) => [p.passageIndex, p.passage, p.patchMode, p.text]), [[-1, 'two', 'replace', 'two, reworded']]);
+  // Without the current anchor (split), block -1 is dropped.
+  assert.equal(splitDraftFrom({ parts: [{ block: -1, placement: 'replace', text: 'x', why: '' }] }, passages).parts.length, 0);
+});

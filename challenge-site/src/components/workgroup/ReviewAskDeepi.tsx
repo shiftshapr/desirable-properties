@@ -119,7 +119,7 @@ export default function ReviewAskDeepi({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-3 text-sm text-cyan-300 hover:text-cyan-200"
+        className="text-sm text-cyan-300 hover:text-cyan-200"
       >
         Ask Deepi about this proposal
       </button>
@@ -127,7 +127,7 @@ export default function ReviewAskDeepi({
   }
 
   return (
-    <div className="mt-3 space-y-3 rounded-lg border border-cyan-900/60 bg-cyan-950/10 p-3">
+    <div className="w-full basis-full space-y-3 rounded-lg border border-cyan-900/60 bg-cyan-950/10 p-3">
       <div className="flex items-start justify-between gap-2">
         <p className="text-xs text-slate-400">
           Ask Deepi (Claude Opus 5.5) about this proposal. Deepi has read the chapter and the style guide. Only you

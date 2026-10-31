@@ -10,7 +10,7 @@ export function llmErrorMessage(raw: string | null | undefined): string {
   if (/\b401\b|\b403\b|invalid[_ ]api[_ ]key|unauthori[sz]ed/i.test(text)) {
     return "The style-check model rejected this server's key. An admin needs to check it.";
   }
-  if (/\b429\b|rate[_ ]limit/i.test(text)) return 'The style-check model is busy. Try again in a minute.';
+  if (/\b429\b|rate[_ ]limit/i.test(text)) return 'The style-check model is busy.';
   if (/No model API key/i.test(text)) return 'Style check is not configured on this server.';
-  return 'The style-check model did not answer. Try again.';
+  return 'The style-check model did not answer.';
 }

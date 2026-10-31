@@ -34,7 +34,10 @@ export function readSplitMark(answer: string | null): { answer: string | null; o
 }
 
 export type SplitDraftPart = {
-  /** Index of the chapter block (fetchChapterPassages) and its Markdown, which is the part's anchor. */
+  /**
+   * Index of the chapter block (fetchChapterPassages) and its Markdown, which is the part's anchor.
+   * -1 (revise only): the proposal's own anchor and placement, unchanged; passage is then its anchor text.
+   */
   passageIndex: number;
   passage: string;
   /** Filled in by the server (sectionTrail); null until then or when the block has no heading above it. */
@@ -54,8 +57,15 @@ export function distinctPlaces(parts: Array<{ passageIndex: number | null; patch
   return new Set(parts.filter((p) => p.passageIndex !== null).map((p) => `${p.passageIndex}:${p.patchMode}`)).size;
 }
 
-/** Claude's JSON as parts on real chapter blocks; parts pointing at a block that does not exist are dropped. */
-export function splitDraftFrom(raw: unknown, passages: string[]): SplitDraft {
+/**
+ * Claude's JSON as parts on real chapter blocks; parts pointing at a block that does not exist are dropped.
+ * With `current` (revise), block -1 means the proposal stays where it is: the part keeps its anchor and placement.
+ */
+export function splitDraftFrom(
+  raw: unknown,
+  passages: string[],
+  current?: { originalText: string; patchMode: SplitDraftPart['patchMode'] },
+): SplitDraft {
   const obj = (raw && typeof raw === 'object' ? raw : {}) as { parts?: unknown; note?: unknown };
   const parts: SplitDraftPart[] = [];
   for (const p of Array.isArray(obj.parts) ? obj.parts.slice(0, 6) : []) {
@@ -63,6 +73,17 @@ export function splitDraftFrom(raw: unknown, passages: string[]): SplitDraft {
     const index = Number(part.block);
     const text = String(part.text || '').trim();
     const mode = String(part.placement || '');
+    if (current && index === -1 && text) {
+      parts.push({
+        passageIndex: -1,
+        passage: current.originalText,
+        section: null,
+        patchMode: current.patchMode,
+        text,
+        why: String(part.why || '').trim(),
+      });
+      continue;
+    }
     if (!Number.isInteger(index) || index < 0 || index >= passages.length || !text) continue;
     if (mode !== 'insert' && mode !== 'insert_after' && mode !== 'replace') continue;
     parts.push({

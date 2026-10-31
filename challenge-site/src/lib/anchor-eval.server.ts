@@ -225,7 +225,10 @@ export async function anchorEvalStatus(): Promise<AnchorEvalDpStatus[]> {
  * Evaluate one DP's pending proposals that have no current evaluation (or failed last time).
  * Sequential, so every call after the first reads the chapter from the prompt cache.
  */
-export async function runAnchorEvalForWorkgroup(workgroupId: string): Promise<{
+export async function runAnchorEvalForWorkgroup(
+  workgroupId: string,
+  opts: { retryErrorsAfterMs?: number } = {},
+): Promise<{
   dpId: string | null;
   results: EvalOutcome[];
   skipped: number;
@@ -239,8 +242,12 @@ export async function runAnchorEvalForWorkgroup(workgroupId: string): Promise<{
   const pool = await ensureDpSchema();
   if (!pool) throw new Error('The site database is not configured.');
   const done = new Map(
-    (await pool.query('SELECT proposal_id, input_hash FROM dp_anchor_eval WHERE proposal_id = ANY($1) AND error IS NULL',
-      [cands.map((c) => c.proposalId)])).rows.map((r) => [String(r.proposal_id), String(r.input_hash)]),
+    // A failed evaluation counts as done until retryErrorsAfterMs has passed (admin runs retry at once).
+    (await pool.query(
+      `SELECT proposal_id, input_hash FROM dp_anchor_eval WHERE proposal_id = ANY($1)
+         AND (error IS NULL OR evaluated_at > now() - make_interval(secs => $2))`,
+      [cands.map((c) => c.proposalId), (opts.retryErrorsAfterMs ?? 0) / 1000],
+    )).rows.map((r) => [String(r.proposal_id), String(r.input_hash)]),
   );
   const todo = cands.filter((c) => done.get(c.proposalId) !== anchorInputHash(c));
   if (!todo.length) return { dpId, results: [], skipped: cands.length };

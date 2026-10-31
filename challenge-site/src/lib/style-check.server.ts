@@ -268,6 +268,31 @@ export async function cachedStyleChecks(hashes: string[]): Promise<Map<string, S
   return out;
 }
 
+/**
+ * For hashes with no good result: the plain-words reason the latest attempt failed and when.
+ * Used to show the failure on Review and to back off before the sweep retries.
+ */
+export async function latestStyleCheckFailures(hashes: string[]): Promise<Map<string, { message: string; at: Date }>> {
+  const out = new Map<string, { message: string; at: Date }>();
+  const pool = await ensureDpSchema();
+  if (!pool || !hashes.length) return out;
+  const res = await pool.query(
+    `SELECT DISTINCT ON (input_hash) input_hash, error, created_at FROM dp_style_check
+     WHERE input_hash = ANY($1) AND cached_from IS NULL
+     ORDER BY input_hash, created_at DESC`,
+    [hashes],
+  );
+  for (const row of res.rows) {
+    if (row.error) out.set(String(row.input_hash), { message: llmErrorMessage(row.error), at: new Date(row.created_at) });
+  }
+  return out;
+}
+
+export async function latestStyleCheckErrors(hashes: string[]): Promise<Map<string, string>> {
+  const failures = await latestStyleCheckFailures(hashes);
+  return new Map([...failures].map(([h, f]) => [h, f.message]));
+}
+
 /** The model the next check would use (for cache keys before any call). */
 export function currentStyleCheckModel(): string | null {
   return styleCheckLlmConfigs()[0]?.model ?? null;
