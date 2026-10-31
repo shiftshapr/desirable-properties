@@ -20,7 +20,7 @@ import {
   type WorkgroupSignupGroup,
   type WorkgroupSignupPerson,
 } from '@/lib/workgroup-signups';
-import { govhubUrl } from '@/lib/govhub';
+import { extractDpId, fetchChallengeWorkgroups, govhubUrl } from '@/lib/govhub';
 
 export type BroadcastWorkgroupRef = {
   id: string;
@@ -41,6 +41,8 @@ export type BroadcastAudienceRow = {
   hasSubmittedPatch?: boolean;
   patchCount?: number;
   patchDpIds?: string[];
+  /** DPs where this person holds a co-editor seat (Gov Hub). */
+  coEditorDps?: string[];
 };
 
 export type BroadcastWorkgroupMember = {
@@ -149,6 +151,32 @@ export async function buildBroadcastWorkgroups(): Promise<BroadcastWorkgroupRow[
   });
 }
 
+/** Gov Hub user id → DPs where that person holds a co-editor seat. Empty on any failure. */
+async function fetchCoEditorDpsByUser(): Promise<Map<string, string[]>> {
+  const out = new Map<string, string[]>();
+  try {
+    const workgroups = await fetchChallengeWorkgroups();
+    await Promise.all(
+      workgroups.map(async (wg) => {
+        const res = await fetch(govhubUrl(`/api/workgroups/${encodeURIComponent(wg.id)}/co-editors/`), {
+          cache: 'no-store',
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) return;
+        const data = (await res.json()) as { seats?: Array<{ user_id?: string | null }> };
+        const dp = extractDpId(wg.name) || wg.name;
+        for (const seat of data.seats || []) {
+          if (!seat.user_id) continue;
+          out.set(seat.user_id, [...(out.get(seat.user_id) || []), dp]);
+        }
+      }),
+    );
+  } catch {
+    // The cohort is then empty; the rest of the audience is unaffected.
+  }
+  return out;
+}
+
 export async function buildBroadcastAudience(opts: {
   q?: string;
   workgroup?: string;
@@ -185,7 +213,13 @@ export async function buildBroadcastAudience(opts: {
     };
   });
 
-  const { rows: enriched } = await enrichBroadcastAudienceEmails(withPatchStatus);
+  const coEditorDpsByUser = await fetchCoEditorDpsByUser();
+  const withSeats = withPatchStatus.map((row) => ({
+    ...row,
+    coEditorDps: (row.userId && coEditorDpsByUser.get(row.userId)) || [],
+  }));
+
+  const { rows: enriched } = await enrichBroadcastAudienceEmails(withSeats);
   return enriched;
 }
 

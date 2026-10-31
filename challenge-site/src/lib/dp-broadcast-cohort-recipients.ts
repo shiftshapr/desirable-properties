@@ -15,6 +15,8 @@ export type CohortRecipientBase = {
   hasSubmittedPatch?: boolean;
   patchCount?: number;
   patchDpIds?: string[];
+  /** DPs where this person holds a co-editor seat (Gov Hub). */
+  coEditorDps?: string[];
 };
 
 export type CohortRecipientRow = CohortRecipientBase & {
@@ -44,6 +46,11 @@ export function applyBroadcastCohortFilter(
   audience: CohortRecipientBase[],
   cohort: BroadcastCohortKey,
 ): CohortRecipientRow[] {
+  if (cohort === 'co_editors') {
+    return audience
+      .filter((row) => row.coEditorDps?.length)
+      .map((row) => ({ ...row, cohortOnly: false, cohortSource: cohort }));
+  }
   if (cohort === 'all' || cohort === 'dp_challenge') {
     return audience.map((row) => ({ ...row, cohortOnly: false }));
   }
