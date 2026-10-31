@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "format-guide-page",
+      "date": "2026-10-31",
+      "status": "open",
+      "title": "Format guide: what goes in a DP chapter",
+      "summary": "A new page at /format-guide sets out what a Desirable Property chapter contains: the sections every chapter has, the ones to include when they fit, and when a chapter has earned a section of its own. It is drawn from the 23 chapters and lists where they differ today. It is linked from the About menu and the style guide.",
+      "changes": [
+        "New page /format-guide, rendered from docs/DP-FORMAT-GUIDE.md",
+        "About menu and style guide link to it"
+      ]
+    },
+    {
       "id": "broadcast-rate-limit-and-dp-cohort",
       "date": "2026-10-31",
       "status": "open",
