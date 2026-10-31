@@ -72,6 +72,13 @@ export default function StyleGuidePage() {
         Questions or a rule that does not work for your chapter? Raise it at the Monday session or in your
         workgroup chat; changes to this guide are agreed there and dated above.
       </p>
+      <p className="mt-4 text-sm text-slate-400">
+        Which sections a chapter has, and when a new one is warranted, is in the{' '}
+        <Link href="/format-guide" className="text-cyan-300 hover:text-cyan-200">
+          format guide
+        </Link>
+        .
+      </p>
     </main>
   );
 }
