@@ -159,7 +159,7 @@ Include each of these when the chapter has something specific to say. A generic 
 
 ### 4.1 Governance, Accountability, and Agency Surfaces
 
-**Include when:** Participants or communities need to see, contest, or change how the property operates. In practice this is almost always: 22 of 23 chapters include it. DP22 covers the same ground in "Governance Conditions for Civic Memory".
+**Include when:** Participants or communities need to see, contest, or change how the property operates. In practice this means always: all 23 chapters have it. DP22 has it under its own name, "Governance Conditions for Civic Memory" (§16.1 Accountability surfaces, §16.2 Participant agency surfaces). A rename to the standard heading has been prepared as a Gov Hub proposal.
 
 **Contains:** Two lists, "Participants must be able to …" and "Communities must be able to …", followed by an `**Example:**` of the surface at the interface (DP12: "Policy A (v3.2) … file an appeal that triggers a review queue").
 
@@ -299,6 +299,7 @@ The deviations below were found in this review. No chapter has been changed. Fix
 | Content before Purpose of This Draft ("Orientation"), and a section between Purpose and Problem ("Reality Anchors") | DP22 |
 | DP-specific sections after the conditional sections | DP7, DP8, DP9, DP10, DP11, DP12, DP20 |
 | Qualifiers in standard headings | DP14 (§3, §13–§16) |
+| Standard section under a non-standard name | DP22 §16 "Governance Conditions for Civic Memory" (rename to "Governance, Accountability, and Agency Surfaces" prepared) |
 | Duplicate principle section | DP8 §9 |
 | "(Non-Normative)" on Minimum Alignment, which holds requirements | All 23. Removed by the Gov Hub style-pass bundle (`create_style_pass_bundles.py`), which has not yet been run in production. It skips chapters with a pending dedup bundle (DP3, 6, 9, 12, 20, 22 as of October 31, 2026). The DP23 bundle above also removes it. |
 | "Minimum Alignment" without the DP number | DP14, DP15 |
