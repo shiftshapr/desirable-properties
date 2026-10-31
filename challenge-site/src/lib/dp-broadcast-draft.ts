@@ -34,6 +34,7 @@ const COHORT_KEYS = new Set<BroadcastCohortKey>([
   'cfi2_submitters',
   'isoc_nevada',
   'dp_challenge',
+  'co_editors',
 ]);
 
 const PATCH_FILTERS = new Set<BroadcastPatchFilter>(['all', 'submitted', 'not_submitted']);

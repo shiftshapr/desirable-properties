@@ -313,6 +313,7 @@ export default function BroadcastAdminPanel() {
     cfi2_submitters: applyBroadcastCohortFilter(audience, 'cfi2_submitters').length,
     isoc_nevada: applyBroadcastCohortFilter(audience, 'isoc_nevada').length,
     dp_challenge: audience.length,
+    co_editors: applyBroadcastCohortFilter(audience, 'co_editors').length,
   };
     return counts;
   }, [audience]);

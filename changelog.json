@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "broadcast-co-editors-cohort",
+      "date": "2026-10-31",
+      "status": "open",
+      "title": "Broadcast: Co-editors cohort",
+      "summary": "Admin → Broadcast has a Co-editors cohort: everyone seated as a co-editor of a DP, read live from the Gov Hub co-editor seats, so a message to all co-editors no longer needs picking people by hand.",
+      "changes": [
+        "New Co-editors cohort in Admin → Broadcast",
+        "Audience rows carry the DPs where each person holds a co-editor seat"
+      ]
+    },
+    {
       "id": "deepi-revise-keeps-place",
       "date": "2026-10-30",
       "status": "open",
