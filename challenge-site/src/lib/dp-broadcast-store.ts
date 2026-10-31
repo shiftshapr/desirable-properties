@@ -164,7 +164,8 @@ async function fetchCoEditorDpsByUser(): Promise<Map<string, string[]>> {
         });
         if (!res.ok) return;
         const data = (await res.json()) as { seats?: Array<{ user_id?: string | null }> };
-        const dp = extractDpId(wg.name) || wg.name;
+        const dp = extractDpId(wg.name);
+        if (!dp) return; // e.g. DP Discovery: not a DP chapter
         for (const seat of data.seats || []) {
           if (!seat.user_id) continue;
           out.set(seat.user_id, [...(out.get(seat.user_id) || []), dp]);
@@ -316,6 +317,17 @@ function appendUnsubscribeFooter(html: string, text: string | undefined, unsubsc
   };
 }
 
+/** Resend allows 10 requests per second per account; stay well under it. */
+const RESEND_MIN_GAP_MS = 150;
+const RESEND_MAX_ATTEMPTS = 4;
+let lastResendAt = 0;
+
+async function resendSlot() {
+  const wait = lastResendAt + RESEND_MIN_GAP_MS - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastResendAt = Date.now();
+}
+
 async function sendViaResend(payload: {
   to: string;
   subject: string;
@@ -339,23 +351,32 @@ async function sendViaResend(payload: {
     headers['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
   }
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from,
-      to: [payload.to],
-      subject: payload.subject,
-      html: payload.html,
-      text: payload.text,
-      headers: Object.keys(headers).length ? headers : undefined,
-      tags: payload.tags,
-    }),
-    signal: AbortSignal.timeout(20000),
-  });
+  let res: Response | null = null;
+  for (let attempt = 1; attempt <= RESEND_MAX_ATTEMPTS; attempt += 1) {
+    await resendSlot();
+    res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from,
+        to: [payload.to],
+        subject: payload.subject,
+        html: payload.html,
+        text: payload.text,
+        headers: Object.keys(headers).length ? headers : undefined,
+        tags: payload.tags,
+      }),
+      signal: AbortSignal.timeout(20000),
+    });
+    if (res.status !== 429 || attempt === RESEND_MAX_ATTEMPTS) break;
+    // Rate limited: back off (Retry-After when given) and try again.
+    const retryAfter = Number(res.headers.get('retry-after'));
+    await new Promise((r) => setTimeout(r, Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 1000 * attempt));
+  }
+  if (!res) return { ok: false as const, error: 'send_failed' };
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) return { ok: false as const, error: 'send_failed', detail: data };
