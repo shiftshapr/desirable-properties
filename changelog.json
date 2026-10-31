@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "broadcast-rate-limit-and-dp-cohort",
+      "date": "2026-10-31",
+      "status": "open",
+      "title": "Broadcast: no more rate-limit failures; Co-editors cohort is DP-only",
+      "summary": "A broadcast to 19 co-editors lost 9 sends because Broadcast sent faster than the email service's 10 requests per second. Sends are now spaced out and retried when the service asks to slow down. The Co-editors cohort now counts only seats on DP chapters, so seats on other workgroups such as DP Discovery are left out.",
+      "changes": [
+        "Broadcast spaces sends at most about 6 per second and retries rate-limited sends",
+        "Co-editors cohort includes DP chapter seats only"
+      ]
+    },
+    {
       "id": "broadcast-govhub-emails-key",
       "date": "2026-10-31",
       "status": "open",
