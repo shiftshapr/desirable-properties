@@ -1,0 +1,85 @@
+{
+  "rationale": "Brings the end of DP23 into the standard shape of the DP Format Guide, without changing any text. Strong DP23 Alignment (25) and Failure Conditions (26) move into Minimum DP23 Alignment as 24.9 and 24.10, so the whole alignment bar is in one section. Initial Implementation Path (27) moves into Implementation Patterns as 20.12, next to the patterns it sequences. The Proposed Constitutional Statement (28) becomes the last lines of Closing Orientation. The chapter then ends with the six standard closing sections (22–27). The (Non-Normative) label also comes off the Section 24 heading, because the style guide says that section holds requirements.",
+  "chapters": [
+    {
+      "dp": "DP23",
+      "findings": [
+        {
+          "title": "24–26 Minimum DP23 Alignment",
+          "edits": [
+            {
+              "original_text": "## 24. Minimum DP23 Alignment (Non-Normative)",
+              "proposed_text": "## 24. Minimum DP23 Alignment",
+              "note": "This section holds the chapter's alignment requirements, so the (Non-Normative) label contradicts it (style guide, Requirements; DP Format Guide 6.3)."
+            },
+            {
+              "original_text": "---\n\n## 25. Strong DP23 Alignment",
+              "proposed_text": "### 24.9 Strong DP23 alignment",
+              "note": "What a strongly aligned system adds is alignment content. It becomes a subsection of Minimum DP23 Alignment instead of a section of its own (DP Format Guide 5.2, test 3). Text unchanged."
+            },
+            {
+              "original_text": "---\n\n## 26. Failure Conditions",
+              "proposed_text": "### 24.10 Failure conditions",
+              "note": "When a system must not claim alignment is alignment content. It becomes a subsection of Minimum DP23 Alignment (DP Format Guide 6.3). Text unchanged."
+            }
+          ]
+        },
+        {
+          "title": "27 → 20.12 Phased implementation path",
+          "edits": [
+            {
+              "original_text": "they are distinct from the phased rollout described later in this draft.",
+              "proposed_text": "they are distinct from the phased implementation path in Section 20.12.",
+              "note": "Points to the phased path's new place in this section."
+            },
+            {
+              "original_text": "### 20.11 Graceful refusal\nWhere a community has restricted translation, indexing, or summarization, render an explicit notice of restriction rather than an empty result, so that absence is legible rather than mistaken for silence.",
+              "proposed_text": "### 20.11 Graceful refusal\nWhere a community has restricted translation, indexing, or summarization, render an explicit notice of restriction rather than an empty result, so that absence is legible rather than mistaken for silence.\n\n### 20.12 Phased implementation path\nDP23 may be developed in phases.\n\n#### 20.12.1 Phase 1 – Linguistic Access\n- Unicode-safe contribution storage\n- language detection with participant override\n- reading-language preferences\n- on-demand translation\n- original and bilingual views\n- translation provenance\n- translation caching\n- basic challenges\n\n#### 20.12.2 Phase 2 – Community Stewardship\n- cultural annotations\n- correction proposals\n- language steward roles\n- issue-specific multilingual glossaries\n- contested terminology\n- version history\n- multilingual review workflows\n\n#### 20.12.3 Phase 3 – Cross-Language Sensemaking\n- multilingual semantic search\n- cross-language clustering\n- evidence and position mapping\n- traceable summaries\n- minority-view preservation\n- participation-gap analysis\n- summary challenges\n\n#### 20.12.4 Phase 4 – Global Issue Participation\n- constituency mapping\n- global and regional ambassador networks\n- structured issue participation zones\n- multilingual deliberation\n- recommendation provenance\n- responsibility assignment\n- response tracking\n- contribution influence traces\n\n#### 20.12.5 Phase 5 – Federated Public Infrastructure\n- interoperable glossary protocols\n- portable linguistic preferences\n- federated language stewardship\n- shared evaluation resources\n- multilingual civic-memory standards\n- cross-platform issue corpora\n- institution-facing response interfaces\n- decentralized governance of language infrastructure",
+              "note": "Section 27 (Initial Implementation Path) moves here as Section 20.12, its phases as 20.12.1–20.12.5. A rollout plan is implementation content and sat inside the closing sections (DP Format Guide 5.2). Text unchanged."
+            },
+            {
+              "original_text": "---\n\n## 27. Initial Implementation Path\nDP23 may be developed in phases.\n\n### 27.1 Phase 1 – Linguistic Access\n- Unicode-safe contribution storage\n- language detection with participant override\n- reading-language preferences\n- on-demand translation\n- original and bilingual views\n- translation provenance\n- translation caching\n- basic challenges\n\n### 27.2 Phase 2 – Community Stewardship\n- cultural annotations\n- correction proposals\n- language steward roles\n- issue-specific multilingual glossaries\n- contested terminology\n- version history\n- multilingual review workflows\n\n### 27.3 Phase 3 – Cross-Language Sensemaking\n- multilingual semantic search\n- cross-language clustering\n- evidence and position mapping\n- traceable summaries\n- minority-view preservation\n- participation-gap analysis\n- summary challenges\n\n### 27.4 Phase 4 – Global Issue Participation\n- constituency mapping\n- global and regional ambassador networks\n- structured issue participation zones\n- multilingual deliberation\n- recommendation provenance\n- responsibility assignment\n- response tracking\n- contribution influence traces\n\n### 27.5 Phase 5 – Federated Public Infrastructure\n- interoperable glossary protocols\n- portable linguistic preferences\n- federated language stewardship\n- shared evaluation resources\n- multilingual civic-memory standards\n- cross-platform issue corpora\n- institution-facing response interfaces\n- decentralized governance of language infrastructure",
+              "proposed_text": "",
+              "note": "Deleted from here: moved to Section 20.12 (see the edit above)."
+            }
+          ]
+        },
+        {
+          "title": "28 → 27 Proposed constitutional statement",
+          "edits": [
+            {
+              "original_text": "---\n\n## 28. Proposed Constitutional Statement\n> No person’s ability to participate in collective sensemaking should depend on the language they speak. The Meta-Layer must preserve original expression, enable understanding across languages, make machine interpretation visible and contestable, protect cultural and contextual integrity, and show how participation influences shared understanding and action.",
+              "proposed_text": "",
+              "note": "Deleted from here: the statement moves to the end of Closing Orientation (see the edit below)."
+            },
+            {
+              "original_text": "It should enable humanity’s many voices to become mutually legible, collectively navigable, and meaningfully connected to responsibility and action.",
+              "proposed_text": "It should enable humanity’s many voices to become mutually legible, collectively navigable, and meaningfully connected to responsibility and action.\n\nDP23 proposes this statement for the Meta-Layer’s constitution:\n\n> No person’s ability to participate in collective sensemaking should depend on the language they speak. The Meta-Layer must preserve original expression, enable understanding across languages, make machine interpretation visible and contestable, protect cultural and contextual integrity, and show how participation influences shared understanding and action.",
+              "note": "The proposed constitutional statement is the chapter's closing line rather than a section of its own; Core Principle already holds the principle statement (DP Format Guide 3.4, 6.6). Quote unchanged."
+            }
+          ]
+        },
+        {
+          "title": "29–31 Renumbering",
+          "edits": [
+            {
+              "original_text": "## 29. Open Questions and Future Work",
+              "proposed_text": "## 25. Open Questions and Future Work",
+              "note": "Renumbered after the moves above."
+            },
+            {
+              "original_text": "## 30. Path Toward ML-RFC",
+              "proposed_text": "## 26. Path Toward ML-RFC",
+              "note": "Renumbered after the moves above."
+            },
+            {
+              "original_text": "## 31. Closing Orientation",
+              "proposed_text": "## 27. Closing Orientation",
+              "note": "Renumbered after the moves above."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
