@@ -1,5 +1,5 @@
 import { getGovHubProxyBaseUrl } from '@/lib/web3auth-config';
-import { govhubInternalApiSecret } from '@/lib/support-hermes-auth';
+import { fetchGovHubHermes } from '@/lib/support-hermes-auth';
 
 const GOVHUB_USER_ID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -17,21 +17,10 @@ export async function fetchGovHubUserEmails(userIds: string[]): Promise<Map<stri
   const out = new Map<string, string>();
   if (!ids.length) return out;
 
-  const secret = govhubInternalApiSecret();
-  if (!secret) return out;
-
   try {
     const base = getGovHubProxyBaseUrl();
-    const res = await fetch(`${base}/api/internal/dp/broadcast-user-emails`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${secret}`,
-      },
-      body: JSON.stringify({ userIds: ids }),
-      signal: AbortSignal.timeout(12000),
-    });
+    const res = await fetchGovHubHermes(`${base}/api/internal/dp/broadcast-user-emails`, { userIds: ids }, 12000);
+    if (!res) return out;
     if (!res.ok) return out;
     const data = await res.json().catch(() => ({}));
     const emails = data?.emails;
