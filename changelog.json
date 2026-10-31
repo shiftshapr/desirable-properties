@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "broadcast-govhub-emails-key",
+      "date": "2026-10-31",
+      "status": "open",
+      "title": "Broadcast finds co-editors' emails again",
+      "summary": "Broadcast could email only people whose username is an email address: the site sent Gov Hub a key it does not accept, so the email and patch-status lookups were refused. The site now tries each configured key until Gov Hub accepts one.",
+      "changes": [
+        "Gov Hub email lookup for Broadcast works again",
+        "Patch-status filter in Broadcast works again"
+      ]
+    },
+    {
       "id": "broadcast-co-editors-cohort",
       "date": "2026-10-31",
       "status": "open",
