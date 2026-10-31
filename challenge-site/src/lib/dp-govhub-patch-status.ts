@@ -1,7 +1,7 @@
 import dpInscriptions from '@/data/dp-inscriptions.json';
 import dpMlDraftMap from '@/data/dp-ml-draft-map.json';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
-import { govhubInternalApiSecret } from '@/lib/support-hermes-auth';
+import { fetchGovHubHermes } from '@/lib/support-hermes-auth';
 
 export type GovHubPatchStatusEntry = {
   patchCount: number;
@@ -56,21 +56,10 @@ export function mapPatchStatusUsers(
 }
 
 export async function fetchGovHubPatchStatus(): Promise<BroadcastPatchStatusByUser> {
-  const secret = govhubInternalApiSecret();
-  if (!secret) return new Map();
-
   try {
     const base = GOVHUB_PUBLIC_BASE_URL.replace(/\/$/, '');
-    const res = await fetch(`${base}/api/internal/dp/broadcast-patch-status`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${secret}`,
-      },
-      body: JSON.stringify({}),
-      signal: AbortSignal.timeout(15000),
-    });
+    const res = await fetchGovHubHermes(`${base}/api/internal/dp/broadcast-patch-status`, {}, 15000);
+    if (!res) return new Map();
     if (!res.ok) return new Map();
     const data = await res.json().catch(() => ({}));
     if (!data?.ok) return new Map();

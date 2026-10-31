@@ -13,7 +13,8 @@ export type BroadcastCohortKey =
   | 'cfi1_zoom'
   | 'cfi2_submitters'
   | 'isoc_nevada'
-  | 'dp_challenge';
+  | 'dp_challenge'
+  | 'co_editors';
 
 export type BroadcastCohortMember = {
   name: string;
@@ -132,6 +133,12 @@ export const BROADCAST_COHORTS: BroadcastCohortConfig[] = [
     key: 'dp_challenge',
     label: 'DP Challenge',
     description: 'Current Desirable Properties challenge workgroup participants.',
+    emails: [],
+  },
+  {
+    key: 'co_editors',
+    label: 'Co-editors',
+    description: 'Everyone seated as a co-editor of a DP (live from the Gov Hub co-editor seats).',
     emails: [],
   },
 ];
