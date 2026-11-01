@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "format-guide-part-and-required",
+      "date": "2026-11-01",
+      "status": "open",
+      "title": "Format guide: section table shows where each section sits and whether it is required",
+      "summary": "The section table's single Tier column mixed two things: where a section sits in the chapter and whether every chapter must have it. It is now two columns, Part (Core, Middle, Closing) and Required (Yes, or When it applies). 13 sections are required in every chapter; 4 are included when they apply.",
+      "changes": [
+        "Tier column split into Part and Required"
+      ]
+    },
+    {
       "id": "format-guide-rebuild",
       "date": "2026-11-01",
       "status": "open",
