@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "format-guide-required-middle-sections",
+      "date": "2026-11-01",
+      "status": "open",
+      "title": "Format guide: Governance Surfaces and Community Signals are required",
+      "summary": "The format guide listed Governance, Accountability, and Agency Surfaces and Community Signals Informing DPn as conditional, although every one of the 23 chapters has both. They are now required. The guide also no longer counts DP22 as missing Governance Surfaces: DP22 has it under another name, and a rename is pending.",
+      "changes": [
+        "Section table and chapter outline mark both sections Required",
+        "Section 4 renamed Middle sections: two required, four conditional",
+        "Checklist and DP-SECTION-MATRIX.md updated to match"
+      ]
+    },
+    {
       "id": "format-guide-page",
       "date": "2026-10-31",
       "status": "open",
