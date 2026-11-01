@@ -9,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 /**
  * The DP Chapter Format Guide, rendered from docs/DP-FORMAT-GUIDE.md so the page and the doc never
  * drift apart. Read at build time (static page); the build fails if the doc is missing.
+ * Box #1's dp-deploy rebuilds only when challenge-site/ changes, so a docs-only edit to the guide
+ * does not reach production until the next challenge-site change (2026-11-01, PR #109).
  */
 export const dynamic = 'force-static';
 
