@@ -26,6 +26,12 @@ type Props = {
   signedIn: boolean;
 };
 
+/** Sign in again and come back to this tab. */
+function signInAgain() {
+  const here = window.location.pathname + window.location.search + window.location.hash;
+  window.location.assign(`/login?next=${encodeURIComponent(here)}`);
+}
+
 export default function WorkgroupReviewPanel({
   workgroupId,
   dpId,
@@ -47,6 +53,16 @@ export default function WorkgroupReviewPanel({
   const [revisingKey, setRevisingKey] = useState<string | null>(null);
   /** Set when Revise was opened from Claude's anchor flag, so the form starts at the suggested passage. */
   const [moveKey, setMoveKey] = useState<string | null>(null);
+  /** Bumped on each Move click, so a second click on the same proposal scrolls again. */
+  const [moveTick, setMoveTick] = useState(0);
+  useEffect(() => {
+    if (!moveKey) return;
+    // The Revise form opens below Approve/Decline, off screen from the flag: bring it into view.
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(`revise-${moveKey}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [moveKey, moveTick]);
   /** Declined proposals start collapsed; these are the ones opened with the chevron. */
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(() => new Set());
   const toggleExpanded = (key: string) =>
@@ -169,7 +185,10 @@ export default function WorkgroupReviewPanel({
           note,
         }),
       });
-      const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
+      const body = (await res.json().catch(() => ({}))) as { error?: string; message?: string; code?: string };
+      if (body.code === 'sign_in_again') {
+        setData((prev) => (prev ? { ...prev, signInStale: true } : prev));
+      }
       if (!res.ok) throw new Error(body.error || 'Gov Hub update failed');
       const text = String(
         body.message ||
@@ -294,6 +313,23 @@ export default function WorkgroupReviewPanel({
           .
         </p>
       </header>
+
+      {data?.signInStale ? (
+        <section role="alert" className="rounded-xl border border-amber-700/70 bg-amber-950/30 p-4">
+          <h3 className="text-sm font-semibold text-amber-100">Your sign-in has expired</h3>
+          <p className="mt-1 text-sm text-slate-300">
+            Gov Hub no longer accepts it, so this tab can&apos;t tell that you&apos;re a co-editor or a member.
+            Sign in again to approve, decline and vote.
+          </p>
+          <button
+            type="button"
+            onClick={signInAgain}
+            className="mt-3 rounded-lg bg-amber-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600"
+          >
+            Sign in again
+          </button>
+        </section>
+      ) : null}
 
       {!canEdit && isMember && hasComposedDraft ? (
         <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
@@ -492,6 +528,7 @@ export default function WorkgroupReviewPanel({
                 canAct={Boolean(data?.isCoEditor) && !busyKey}
                 onMove={() => {
                   setMoveKey(item.key);
+                  setMoveTick((n) => n + 1);
                   setRevisingKey(item.key);
                 }}
                 onKeep={() => void keepAnchor(item)}
@@ -700,7 +737,10 @@ export default function WorkgroupReviewPanel({
                   ) : null}
                 </div>
                 {revisingKey === item.key ? (
+                  <div id={`revise-${item.key}`} className="scroll-mt-24">
                   <ReviewReviseForm
+                    // A new key when Move is used, so a form that was already open restarts at the suggested passage.
+                    key={moveKey === item.key ? `move:${item.key}` : item.key}
                     workgroupId={workgroupId}
                     item={item}
                     suggestion={moveKey === item.key ? item.anchorEval : null}
@@ -711,6 +751,7 @@ export default function WorkgroupReviewPanel({
                       void reload();
                     }}
                   />
+                  </div>
                 ) : null}
                 {resultByKey[item.key]?.text ? (
                   <p
@@ -724,6 +765,14 @@ export default function WorkgroupReviewPanel({
                   <p className="text-xs text-amber-200">{item.promoteBlockReason}</p>
                 ) : null}
               </div>
+            ) : signedIn && data?.signInStale && item.status === 'pending' && item.govhubProposalId ? (
+              <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-amber-200">
+                Your sign-in has expired.{' '}
+                <button type="button" onClick={signInAgain} className="underline hover:text-amber-100">
+                  Sign in again
+                </button>{' '}
+                to approve or decline.
+              </p>
             ) : signedIn && item.status === 'pending' && item.govhubProposalId ? (
               <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">
                 Only this DP&apos;s co-editors approve or decline proposals. Claim an open seat at the top of the
@@ -810,13 +859,14 @@ function AnchorFlag({
         Suggested: {flag.suggestedMode === 'insert' ? 'above' : 'below'} “{snippet(flag.suggestedPassage.replace(/^#{1,6}\s+/, ''), 180)}”
       </p>
       {canAct ? (
+        <>
         <div className="mt-2 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={onMove}
             className="rounded-lg border border-amber-700 px-3 py-1 text-sm text-amber-100 hover:border-amber-400"
           >
-            Move to suggested passage
+            Move to suggested passage…
           </button>
           <button
             type="button"
@@ -826,6 +876,10 @@ function AnchorFlag({
             Keep it where it is
           </button>
         </div>
+        <p className="mt-1 text-xs text-slate-500">
+          Move opens the Revise form below, set to that passage. Nothing moves until you file it there.
+        </p>
+        </>
       ) : (
         <p className="mt-1 text-xs text-slate-500">Co-editors decide whether to move it.</p>
       )}
