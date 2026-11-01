@@ -33,12 +33,13 @@ Chapters are edited on Gov Hub and synced here (see [`content/local/README.md`](
 
 ## <DP-specific sections>                      ← only when warranted (Section 5)
 
-## Governance, Accountability, and Agency Surfaces ┐
-## Incentives and Power Analysis               │ Middle (Section 4), in this order:
-## Community Signals Informing DPn             │ Governance Surfaces and Community
-## Evaluation Criteria                         │ Signals required; the other four
-## Implementation Patterns                     │ conditional
-## Foresight and Failure Design                ┘
+                                               Middle (Section 4, in this order)
+## Governance, Accountability, and Agency Surfaces ← required
+## Incentives and Power Analysis               ← when it applies
+## Community Signals Informing DPn             ← required
+## Evaluation Criteria                         ← when it applies
+## Implementation Patterns                     ← when it applies
+## Foresight and Failure Design                ← when it applies
 
 ## Relationship to Other Desirable Properties  ┐
 ## Non-Goals and Explicit Boundaries           │
