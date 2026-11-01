@@ -52,25 +52,25 @@ Every `##` section is numbered (`## 7.`) and every subsection too (`### 7.2`). S
 
 **How often each section appears in the 23 chapters, and how long it typically runs:**
 
-| Section | Tier | Chapters with it | Median length |
-|---|---|---|---|
-| Purpose of This Draft | Core | 23 | 175 words |
-| Problem Statement | Core | 23 | 150 words |
-| Threats and Failure Modes | Core | 23 | 500 words |
-| Core Principle | Core | 23 | 115 words |
-| Primary Mechanisms and Structural Conditions | Core | 23 | 860 words |
-| Governance, Accountability, and Agency Surfaces | Required | 23 (DP22 under another name, rename pending) | 275 words |
-| Incentives and Power Analysis | Conditional | 19 (not DP10, 13, 21, 22) | 230 words |
-| Community Signals Informing DPn | Required | 23 | 145 words |
-| Evaluation Criteria | Conditional | 9 | 235 words |
-| Implementation Patterns | Conditional | 9 | 250 words |
-| Foresight and Failure Design | Conditional | 18 (not DP8, 10, 18, 19, 21) | 290 words |
-| Relationship to Other Desirable Properties | Closing | 23 | 190 words |
-| Non-Goals and Explicit Boundaries | Closing | 23 | 175 words |
-| Minimum DPn Alignment | Closing | 23 | 290 words |
-| Open Questions and Future Work | Closing | 23 | 160 words |
-| Path Toward ML-RFC | Closing | 23 | 125 words |
-| Closing Orientation | Closing | 23 | 95 words |
+| Section | Part | Required | Chapters with it | Median length |
+|---|---|---|---|---|
+| Purpose of This Draft | Core | Yes | 23 | 175 words |
+| Problem Statement | Core | Yes | 23 | 150 words |
+| Threats and Failure Modes | Core | Yes | 23 | 500 words |
+| Core Principle | Core | Yes | 23 | 115 words |
+| Primary Mechanisms and Structural Conditions | Core | Yes | 23 | 860 words |
+| Governance, Accountability, and Agency Surfaces | Middle | Yes | 23 (DP22 under another name, rename pending) | 275 words |
+| Incentives and Power Analysis | Middle | When it applies | 19 (not DP10, 13, 21, 22) | 230 words |
+| Community Signals Informing DPn | Middle | Yes | 23 | 145 words |
+| Evaluation Criteria | Middle | When it applies | 9 | 235 words |
+| Implementation Patterns | Middle | When it applies | 9 | 250 words |
+| Foresight and Failure Design | Middle | When it applies | 18 (not DP8, 10, 18, 19, 21) | 290 words |
+| Relationship to Other Desirable Properties | Closing | Yes | 23 | 190 words |
+| Non-Goals and Explicit Boundaries | Closing | Yes | 23 | 175 words |
+| Minimum DPn Alignment | Closing | Yes | 23 | 290 words |
+| Open Questions and Future Work | Closing | Yes | 23 | 160 words |
+| Path Toward ML-RFC | Closing | Yes | 23 | 125 words |
+| Closing Orientation | Closing | Yes | 23 | 95 words |
 
 Lengths are a guide to proportion, not a limit. A section several times its median length is usually carrying material that belongs in a DP-specific section (Section 5). One under a third of its median length usually needs a real paragraph or should be merged.
 
