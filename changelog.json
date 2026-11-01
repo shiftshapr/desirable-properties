@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-sign-in-again-and-move",
+      "date": "2026-11-01",
+      "status": "open",
+      "title": "Review tab: expired sign-in says so; Move takes you to the Revise form",
+      "summary": "When a sign-in had expired, the Review tab quietly treated co-editors as non-members: Approve and Decline disappeared with no reason given. It now says the sign-in has expired and offers Sign in again. Move to suggested passage now scrolls to the Revise form it opens, starts it at Claude's suggested passage even if the form was already open, and says that nothing moves until the revision is filed.",
+      "changes": [
+        "Review queue API: signInStale when Gov Hub rejects the sign-in",
+        "Approve/Decline: 401 sign_in_again instead of 'only co-editors'",
+        "Review tab: Sign in again banner and per-proposal prompt",
+        "Claude's anchor flag: Move scrolls to and resets the Revise form"
+      ]
+    },
+    {
       "id": "format-guide-anatomy-middle",
       "date": "2026-11-01",
       "status": "open",

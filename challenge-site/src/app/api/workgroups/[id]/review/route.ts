@@ -86,6 +86,8 @@ export async function GET(_request: Request, ctx: RouteContext) {
     canEdit,
     isCoEditor: coEditor.isCoEditor,
     viewerGovhubUserId: coEditor.govhubUserId,
+    // Gov Hub resolves every signed-in viewer to a user id; none back means it rejected the token.
+    signInStale: Boolean(session?.idToken) && !coEditor.govhubUserId,
     styleCheckEnabled: Boolean(currentStyleCheckModel()),
     askEnabled: reviewClaudeConfigured(),
     approvalsNeeded: coEditor.seatsTotal,
