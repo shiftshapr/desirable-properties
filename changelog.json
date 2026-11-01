@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "format-guide-rebuild",
+      "date": "2026-11-01",
+      "status": "open",
+      "title": "Format guide page rebuilt with the corrected section tiers",
+      "summary": "Production kept showing Governance Surfaces and Community Signals as conditional after the guide was corrected, because production rebuilds the site only when the website folder changes and the fix touched only the guide. This release rebuilds the page.",
+      "changes": [
+        "Note in the format-guide page source on when production rebuilds it"
+      ]
+    },
+    {
       "id": "format-guide-required-middle-sections",
       "date": "2026-11-01",
       "status": "open",
