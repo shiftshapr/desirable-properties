@@ -10,7 +10,7 @@ Per-DP section plan for local `content/local/dpN.md` files.
 |------|----------|------|
 | **1 Core** | Purpose, Problem, Threats, Core Principle, Primary Mechanisms | Every DP |
 | **2 Standard** | Relationship to Other DPs, Non-Goals, Minimum Alignment, Open Questions, Path Toward ML-RFC, Closing Orientation | Every DP — generate if missing |
-| **3 Conditional** | Governance Surfaces, Incentives & Power, Community Signals, Evaluation Criteria, Implementation Patterns, Foresight | Include when useful; generate if missing |
+| **3 Middle** | Governance Surfaces and Community Signals (required); Incentives & Power, Evaluation Criteria, Implementation Patterns, Foresight (conditional) | Required ones in every chapter; conditional ones when useful |
 | **4 DP-specific** | Named domain sections | Only where topic requires depth |
 
 ---
