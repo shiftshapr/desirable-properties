@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "format-guide-anatomy-middle",
+      "date": "2026-11-01",
+      "status": "open",
+      "title": "Format guide: chapter outline marks each middle section",
+      "summary": "In the chapter outline at the top of the format guide, the note on the middle sections sat beside the wrong lines, so it read as if Incentives and Evaluation Criteria were the required ones. Each middle section is now marked on its own line: required, or when it applies.",
+      "changes": [
+        "Chapter anatomy diagram: per-line required / when it applies"
+      ]
+    },
+    {
       "id": "format-guide-part-and-required",
       "date": "2026-11-01",
       "status": "open",
