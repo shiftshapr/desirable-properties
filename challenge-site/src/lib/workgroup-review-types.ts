@@ -116,6 +116,8 @@ export type ReviewQueueResponse = {
   isCoEditor: boolean;
   /** Viewer's Gov Hub user id, to match approvals. */
   viewerGovhubUserId: string | null;
+  /** Signed in here, but Gov Hub no longer accepts the sign-in (usually an expired token): sign in again. */
+  signInStale: boolean;
   /** False when no model is configured on this server. */
   styleCheckEnabled: boolean;
   /** Ask Deepi (Claude) is configured on this server; also requires the pre-publish check. */

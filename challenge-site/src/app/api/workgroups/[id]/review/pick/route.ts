@@ -24,7 +24,14 @@ export async function POST(request: Request, ctx: RouteContext) {
   }
 
   // Only this DP's co-editors approve or decline (owner, 2026-10-19).
-  const { isCoEditor } = await fetchViewerCoEditor(workgroupId, session.idToken);
+  const { isCoEditor, govhubUserId } = await fetchViewerCoEditor(workgroupId, session.idToken);
+  if (!govhubUserId) {
+    // Gov Hub did not accept the sign-in (usually an expired token), so it cannot tell who this is.
+    return NextResponse.json(
+      { error: 'Your sign-in has expired. Sign in again to approve or decline.', code: 'sign_in_again' },
+      { status: 401 },
+    );
+  }
   if (!isCoEditor) {
     return NextResponse.json(
       { error: "Only this DP's co-editors approve or decline proposals." },
