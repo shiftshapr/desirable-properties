@@ -34,10 +34,10 @@ Chapters are edited on Gov Hub and synced here (see [`content/local/README.md`](
 ## <DP-specific sections>                      ← only when warranted (Section 5)
 
 ## Governance, Accountability, and Agency Surfaces ┐
-## Incentives and Power Analysis               │
-## Community Signals Informing DPn             │ Conditional (Section 3),
-## Evaluation Criteria                         │ in this order
-## Implementation Patterns                     │
+## Incentives and Power Analysis               │ Middle (Section 4), in this order:
+## Community Signals Informing DPn             │ Governance Surfaces and Community
+## Evaluation Criteria                         │ Signals required; the other four
+## Implementation Patterns                     │ conditional
 ## Foresight and Failure Design                ┘
 
 ## Relationship to Other Desirable Properties  ┐
@@ -59,9 +59,9 @@ Every `##` section is numbered (`## 7.`) and every subsection too (`### 7.2`). S
 | Threats and Failure Modes | Core | 23 | 500 words |
 | Core Principle | Core | 23 | 115 words |
 | Primary Mechanisms and Structural Conditions | Core | 23 | 860 words |
-| Governance, Accountability, and Agency Surfaces | Conditional | 22 (not DP22) | 275 words |
+| Governance, Accountability, and Agency Surfaces | Required | 23 (DP22 under another name, rename pending) | 275 words |
 | Incentives and Power Analysis | Conditional | 19 (not DP10, 13, 21, 22) | 230 words |
-| Community Signals Informing DPn | Conditional | 23 | 145 words |
+| Community Signals Informing DPn | Required | 23 | 145 words |
 | Evaluation Criteria | Conditional | 9 | 235 words |
 | Implementation Patterns | Conditional | 9 | 250 words |
 | Foresight and Failure Design | Conditional | 18 (not DP8, 10, 18, 19, 21) | 290 words |
@@ -153,13 +153,13 @@ These five open every chapter in this order. Together they answer: why this draf
 
 ---
 
-## 4. Conditional sections
+## 4. Middle sections
 
-Include each of these when the chapter has something specific to say. A generic paragraph that could be pasted into any chapter does not justify the section. Where included, keep this order, after any DP-specific sections and before the closing block.
+These six sit after any DP-specific sections and before the closing block, in this order. Two are required: Governance, Accountability, and Agency Surfaces (4.1) and Community Signals Informing DPn (4.3) are in every chapter. The other four are conditional: include each one when the chapter has something specific to say. A generic paragraph that could be pasted into any chapter does not justify a conditional section.
 
 ### 4.1 Governance, Accountability, and Agency Surfaces
 
-**Include when:** Participants or communities need to see, contest, or change how the property operates. In practice this means always: all 23 chapters have it. DP22 has it under its own name, "Governance Conditions for Civic Memory" (§16.1 Accountability surfaces, §16.2 Participant agency surfaces). A rename to the standard heading has been prepared as a Gov Hub proposal.
+**Required.** Every property has to be visible, contestable, and changeable by the people it governs, so every chapter says how. All 23 chapters have it. DP22 has it under its own name, "Governance Conditions for Civic Memory" (§16.1 Accountability surfaces, §16.2 Participant agency surfaces). A rename to the standard heading has been prepared as a Gov Hub proposal.
 
 **Contains:** Two lists, "Participants must be able to …" and "Communities must be able to …", followed by an `**Example:**` of the surface at the interface (DP12: "Policy A (v3.2) … file an appeal that triggers a review queue").
 
@@ -171,7 +171,7 @@ Include each of these when the chapter has something specific to say. A generic 
 
 ### 4.3 Community Signals Informing DPn
 
-**Include when:** Always, in practice: all 23 chapters have it. This section ties the chapter to what the community actually said. It is where the book shows it was written with participants, not for them.
+**Required.** All 23 chapters have it. This section ties the chapter to what the community actually said. It is where the book shows it was written with participants, not for them.
 
 **Contains:** The recurring signals from community input, as a short list in the participants' terms. Then one or two sentences on what they mean structurally ("These signals are not usability complaints. They indicate …").
 
@@ -244,7 +244,7 @@ A new `##` section is warranted only when **all four** of these hold:
 
 ### 5.3 Placement, naming, and numbering
 
-- **Placement:** Put DP-specific sections immediately after Primary Mechanisms and before the conditional sections, as the template says. A Category C entry-condition section comes first. A Category G tradeoffs section comes last among them. Seven chapters (DP7–DP12, DP20) currently place them after the conditional sections. Move them when those chapters are next revised.
+- **Placement:** Put DP-specific sections immediately after Primary Mechanisms and before the middle sections, as the template says. A Category C entry-condition section comes first. A Category G tradeoffs section comes last among them. Seven chapters (DP7–DP12, DP20) currently place them after the middle sections. Move them when those chapters are next revised.
 - **Naming:** Title case, a noun phrase naming the thing ("Data Vaults and Personas", not "How DP4 Handles Vaults"). Family B uses the "*X* System Layer: *A*, *B*, and *C*" form.
 - **Numbering:** The new section takes the next number in its position, and every later section is renumbered, including in-chapter cross-references ("Section 7.2"). `scripts/renumber_dp_section_headings.py` renumbers; run the cross-reference audit (`DP-SECTION-NUMBER-AUDIT.md`) afterward.
 - **Bookkeeping:** Add the section to the chapter's row in `DP-SECTION-MATRIX.md`.
@@ -297,7 +297,7 @@ The deviations below were found in this review. No chapter has been changed. Fix
 |---|---|
 | Closing block out of order (Non-Goals, Minimum Alignment, and Open Questions before Relationship; Foresight inside the closing block) | DP13, DP14, DP15, DP16, DP17 |
 | Content before Purpose of This Draft ("Orientation"), and a section between Purpose and Problem ("Reality Anchors") | DP22 |
-| DP-specific sections after the conditional sections | DP7, DP8, DP9, DP10, DP11, DP12, DP20 |
+| DP-specific sections after the middle sections | DP7, DP8, DP9, DP10, DP11, DP12, DP20 |
 | Qualifiers in standard headings | DP14 (§3, §13–§16) |
 | Standard section under a non-standard name | DP22 §16 "Governance Conditions for Civic Memory" (rename to "Governance, Accountability, and Agency Surfaces" prepared) |
 | Duplicate principle section | DP8 §9 |
@@ -317,6 +317,7 @@ The deviations below were found in this review. No chapter has been changed. Fix
 - [ ] Threats use `###` per threat with **Example** and **Why this matters**
 - [ ] Core Principle is one quotable statement; no second principle section
 - [ ] Capital MUST / SHOULD / MAY only in Primary Mechanisms and Minimum DPn Alignment
+- [ ] Governance, Accountability, and Agency Surfaces and Community Signals Informing DPn present
 - [ ] Each conditional section included has something specific to this DP
 - [ ] Each DP-specific section passes all four tests in Section 5.2 and sits after Primary Mechanisms
 - [ ] Six closing sections present, in order, with standard headings
