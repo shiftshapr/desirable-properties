@@ -8,7 +8,7 @@
  */
 
 export const STYLE_GUIDE_VERSION = '1.1';
-export const STYLE_GUIDE_UPDATED = '2026-10-30';
+export const STYLE_GUIDE_UPDATED = '2026-11-02';
 
 export type StyleRule = {
   rule: string;
@@ -118,6 +118,12 @@ export const STYLE_GUIDE: ReadonlyArray<StyleSection> = [
       },
       {
         rule: 'The six closing sections are required in every chapter: Relationship to Other Desirable Properties, Non-Goals and Explicit Boundaries, Minimum DPn Alignment, Open Questions and Future Work, Path Toward ML-RFC, and Closing Orientation.',
+      },
+      {
+        rule: 'Open section 1, Purpose of This Draft, with “This draft articulates Desirable Property N (DPN) as …”. Call the chapter “this draft”, not “this ML-Draft”.',
+        why: 'Settled at the 2 November 2026 community meeting, so all chapters open the same way.',
+        do: 'This draft articulates Desirable Property 7 (DP7) as the condition under which …',
+        dont: 'This ML-Draft articulates Desirable Property 7 (DP7) as …',
       },
       {
         rule: 'Under the title, keep a one-line italic tagline written for participants.',

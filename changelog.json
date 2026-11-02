@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "style-guide-this-draft",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Style guide: chapters open with “This draft articulates …”",
+      "summary": "Settled at the 2 November community meeting: section 1 of every chapter opens “This draft articulates Desirable Property N (DPN) as …”, not “This ML-Draft …”. The rule is on the style guide page and in the AI style checks. The style guide version stays 1.1, so existing style checks are not rerun.",
+      "changes": [
+        "dp-style-guide.ts: chapter-opening rule; updated date 2026-11-02"
+      ]
+    },
+    {
       "id": "review-button-labels-support",
       "date": "2026-11-02",
       "status": "open",
