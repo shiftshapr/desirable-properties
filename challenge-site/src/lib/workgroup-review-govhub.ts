@@ -218,29 +218,51 @@ export async function publishWorkingRevision(
 
 
 /** The viewer's co-editor standing on a DP workgroup (Gov Hub co-editors list). */
-export async function fetchViewerCoEditor(
-  workgroupId: string,
-  idToken: string,
-): Promise<{ isCoEditor: boolean; govhubUserId: string | null; seatsTotal: number }> {
+export type ViewerCoEditor = {
+  /** Viewer may decide this DP's proposals now: a co-editor, or after the editorial freeze a steering member. */
+  isCoEditor: boolean;
+  govhubUserId: string | null;
+  /** Approvals a proposal needs now: every co-editor seat, or one steering approval after the freeze. */
+  seatsTotal: number;
+  editorialFreeze: boolean;
+  isSteering: boolean;
+};
+
+const NO_VIEWER: ViewerCoEditor = {
+  isCoEditor: false,
+  govhubUserId: null,
+  seatsTotal: 2,
+  editorialFreeze: false,
+  isSteering: false,
+};
+
+export async function fetchViewerCoEditor(workgroupId: string, idToken: string): Promise<ViewerCoEditor> {
   try {
     const res = await fetch(
       `${GOVHUB_PUBLIC_BASE_URL}/api/workgroups/${encodeURIComponent(workgroupId)}/co-editors/`,
       { cache: 'no-store', headers: { Accept: 'application/json', ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) } },
     );
-    if (!res.ok) return { isCoEditor: false, govhubUserId: null, seatsTotal: 2 };
+    if (!res.ok) return NO_VIEWER;
     const data = (await res.json()) as {
       viewer_is_co_editor?: boolean;
+      viewer_can_decide?: boolean;
+      viewer_is_steering?: boolean;
+      editorial_freeze?: boolean;
       viewer_user_id?: string | null;
       seats_total?: number;
+      approvals_needed?: number;
     };
     return {
-      isCoEditor: Boolean(data.viewer_is_co_editor),
+      // Gov Hub decides who acts now (co-editors, or the steering committee after the freeze);
+      // older Gov Hub builds only send viewer_is_co_editor.
+      isCoEditor: Boolean(data.viewer_can_decide ?? data.viewer_is_co_editor),
       govhubUserId: data.viewer_user_id || null,
-      // Every seated co-editor approves, so this is also the approvals a proposal needs.
-      seatsTotal: Number(data.seats_total) || 2,
+      seatsTotal: Number(data.approvals_needed ?? data.seats_total) || 2,
+      editorialFreeze: Boolean(data.editorial_freeze),
+      isSteering: Boolean(data.viewer_is_steering),
     };
   } catch {
-    return { isCoEditor: false, govhubUserId: null, seatsTotal: 2 };
+    return NO_VIEWER;
   }
 }
 
