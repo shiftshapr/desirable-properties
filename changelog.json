@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-intro-indexer-fallback",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Book: the Introduction loads again",
+      "summary": "The Introduction is read from its Bitcoin inscription through the book's own proxy, which forwards to ordinals.com. ordinals.com started refusing those requests, so the chapter showed 'Onchain fetch failed (403)'. The viewer now falls back to a second indexer when the proxy fails. The intro landing also said 22 properties; it now says 23.",
+      "changes": [
+        "viewer.htm: fetchOnchainMarkdown tries /content/ then static.unisat.io/content/, skipping bot-check pages",
+        "viewer.htm: intro landing says 23 Properties"
+      ]
+    },
+    {
       "id": "review-editorial-freeze-steering",
       "date": "2026-11-02",
       "status": "open",
