@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-dp24-staging-preview",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Book: DP24 previewed on staging",
+      "summary": "DP24, Cross-Layer Resilience and Compromise Containment, appears as the last chapter of the staging book so the community can read it before deciding whether to add it. The production book does not list it: its entry in the book's chapter list is marked stagingOnly, and removing that mark publishes it.",
+      "changes": [
+        "content/local/dp24.md: DP24 draft (2026-11-01)",
+        "sources-sat.json: dp24 rail marked stagingOnly",
+        "viewer.htm: stagingOnly rails show only on staging.* and localhost",
+        "assets/data/dp24.json: empty alignment data like other new DPs"
+      ]
+    },
+    {
       "id": "book-intro-indexer-fallback",
       "date": "2026-11-02",
       "status": "open",
