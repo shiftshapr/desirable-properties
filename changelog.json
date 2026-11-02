@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-editorial-freeze-steering",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Review tab: steering committee decides after the editorial freeze",
+      "summary": "From the Version 1.0 editorial freeze (Monday 9 November, 1 p.m. PT), the Review tab follows Gov Hub: steering committee members can decide any pending proposal on any DP, one approval puts it in, and they can edit and publish the chapter. Co-editors see a notice that the steering committee is finishing the chapter, and their approve, revise and decline buttons close.",
+      "changes": [
+        "Review queue API: isCoEditor follows Gov Hub viewer_can_decide; approvalsNeeded follows approvals_needed (1 after the freeze)",
+        "Review queue API: editorialFreeze and isSteering; steering members may edit and publish after the freeze",
+        "Review tab: freeze notice for steering members and co-editors"
+      ]
+    },
+    {
       "id": "review-sign-in-again-and-move",
       "date": "2026-11-01",
       "status": "open",

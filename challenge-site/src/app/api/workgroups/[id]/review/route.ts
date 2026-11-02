@@ -37,13 +37,12 @@ export async function GET(_request: Request, ctx: RouteContext) {
   const isMember = session?.userId
     ? await resolveWorkgroupMembership(workgroupId, session.userId)
     : false;
-  const canEdit = session?.idToken
+  const coEditor = await fetchViewerCoEditor(workgroupId, session?.idToken || '');
+  // After the editorial freeze the steering committee edits and publishes every DP.
+  const steeringActs = coEditor.editorialFreeze && coEditor.isSteering;
+  const canEdit = steeringActs || (session?.idToken
     ? await workgroupCanEdit(workgroupId, session.idToken)
-    : false;
-
-  const coEditor = session?.idToken
-    ? await fetchViewerCoEditor(workgroupId, session.idToken)
-    : await fetchViewerCoEditor(workgroupId, '').catch(() => ({ isCoEditor: false, govhubUserId: null, seatsTotal: 2 }));
+    : false);
 
   const items = await buildWorkgroupReviewQueue({
     workgroupId,
@@ -91,6 +90,8 @@ export async function GET(_request: Request, ctx: RouteContext) {
     styleCheckEnabled: Boolean(currentStyleCheckModel()),
     askEnabled: reviewClaudeConfigured(),
     approvalsNeeded: coEditor.seatsTotal,
+    editorialFreeze: coEditor.editorialFreeze,
+    isSteering: coEditor.isSteering,
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }
