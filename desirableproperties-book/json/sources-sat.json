@@ -34,7 +34,8 @@
         "dp20",
         "dp21",
         "dp22",
-        "dp23"
+        "dp23",
+        "dp24"
     ],
     "sources": [
         {
@@ -370,6 +371,16 @@
             "status": "draft",
             "reinscribable": true,
             "reason": "Local rail \u2013 DP23 draft ahead of inscription"
+        },
+        {
+            "railKey": "dp24",
+            "label": "DP24 \u2013 Cross-Layer Resilience and Compromise Containment",
+            "dp": "DP24",
+            "localOverride": "/content/local/dp24.md",
+            "status": "draft",
+            "reinscribable": true,
+            "stagingOnly": true,
+            "reason": "Local rail \u2013 DP24 proposed 2026-11-01; staging only until the community agrees to add it (remove stagingOnly to publish)"
         }
     ]
 }

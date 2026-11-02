@@ -1016,7 +1016,7 @@
 
     /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
     let MANIFEST = null;
-    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp23). */
+    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp23, plus staging-only rails). */
     let RAILS = [];
     /** RailKey → index in RAILS. */
     let RAIL_INDEX = {};
@@ -1109,7 +1109,12 @@
       MANIFEST = m;
 
       // Build RAILS in articleRails order (book_cover is the top rail).
-      const byKey = Object.fromEntries(m.sources.map(s => [s.railKey, s]));
+      // stagingOnly rails (a proposed chapter, e.g. DP24) show on staging and localhost only.
+      const host = location.hostname;
+      const previewHost = /^staging\./.test(host) || host === 'localhost' || host === '127.0.0.1';
+      const byKey = Object.fromEntries(
+        m.sources.filter(s => previewHost || !s.stagingOnly).map(s => [s.railKey, s])
+      );
       RAILS = m.articleRails
         .map(k => byKey[k])
         .filter(Boolean)
