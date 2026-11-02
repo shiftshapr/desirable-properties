@@ -110,7 +110,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
       className="mt-3 space-y-4 rounded-lg border border-violet-800/50 bg-violet-950/15 p-4"
     >
       <div>
-        <h4 className="text-sm font-semibold text-white">Revise this proposal</h4>
+        <h4 className="text-sm font-semibold text-white">Approve with changes</h4>
         <p className="mt-1 text-xs text-slate-400">
           Your version is filed under {item.authorName}&apos;s name, with your approval. The original closes with your
           note, so the author sees what changed. It goes in when the other co-editors approve your version.
@@ -189,7 +189,7 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
           disabled={!canSubmit}
           className="rounded-lg bg-violet-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50"
         >
-          {busy ? 'Saving…' : 'Save revision and approve'}
+          {busy ? 'Saving…' : 'Save changes and approve'}
         </button>
         <button type="button" onClick={onCancel} className="rounded-lg px-3 py-1.5 text-sm text-slate-400 hover:text-slate-200">
           Cancel

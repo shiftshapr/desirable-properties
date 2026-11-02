@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-button-labels-support",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Review tab: clearer button names",
+      "summary": "From the 2 November community meeting: co-editors' Revise button is now Approve with changes, since revising also records their approval. Members' Yes and No on a proposal are now Support and Don't support. The co-editor guide uses the new names.",
+      "changes": [
+        "Revise → Approve with changes (button, form heading, guide)",
+        "Save revision and approve → Save changes and approve",
+        "Member vote: Yes/No → Support/Don't support"
+      ]
+    },
+    {
       "id": "book-dp24-staging-preview",
       "date": "2026-11-02",
       "status": "open",

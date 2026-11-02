@@ -621,7 +621,7 @@ export default function WorkgroupReviewPanel({
                         : 'border-slate-700 text-slate-200 hover:border-emerald-700'
                     }`}
                   >
-                    Yes
+                    Support
                   </button>
                   <button
                     type="button"
@@ -633,7 +633,7 @@ export default function WorkgroupReviewPanel({
                         : 'border-slate-700 text-slate-200 hover:border-rose-700'
                     }`}
                   >
-                    No
+                    Don&apos;t support
                   </button>
                 </div>
               </div>
@@ -743,7 +743,7 @@ export default function WorkgroupReviewPanel({
                       }}
                       className="rounded-lg border border-violet-800/70 px-3 py-1.5 text-sm text-violet-100 hover:border-violet-500 disabled:opacity-50"
                     >
-                      Revise
+                      Approve with changes
                     </button>
                   ) : null}
                 </div>
@@ -888,7 +888,7 @@ function AnchorFlag({
           </button>
         </div>
         <p className="mt-1 text-xs text-slate-500">
-          Move opens the Revise form below, set to that passage. Nothing moves until you file it there.
+          Move opens the Approve with changes form below, set to that passage. Nothing moves until you file it there.
         </p>
         </>
       ) : (
