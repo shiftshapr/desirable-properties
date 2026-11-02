@@ -1493,7 +1493,7 @@
       return (
         '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1">' +
           '<h1>The Layered Web<span class="header-subtitle">The Desirable Properties of a Meta-Layer</span></h1>' +
-          '<p class="dp-intro-eyebrow">22 Properties, inscribed on Bitcoin</p>' +
+          '<p class="dp-intro-eyebrow">23 Properties, inscribed on Bitcoin</p>' +
           '<p>This book collects twenty-three community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
           '<p>Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own – but they are strongest when seen together.</p>' +
           '<div class="dp-intro-actions">' +
@@ -1506,12 +1506,27 @@
 
     /* ---------- Chapter loading ---------- */
 
+    // Indexers tried after the local /content/ proxy fails (its upstream, ordinals.com, can block it).
+    const ONCHAIN_FALLBACK_BASES = ['https://static.unisat.io/content/'];
+
     async function fetchOnchainMarkdown(inscriptionId) {
       // Prefer the local /content/ proxy (same nginx server, faster + avoids CORS).
-      const url = '/content/' + inscriptionId;
-      const r = await fetch(url, { cache: 'no-cache' });
-      if (!r.ok) throw new Error('Onchain fetch failed (' + r.status + '): ' + inscriptionId);
-      return normalizeOrdinalMarkdown(await r.text());
+      const urls = ['/content/' + inscriptionId].concat(ONCHAIN_FALLBACK_BASES.map(function (b) { return b + inscriptionId; }));
+      let lastStatus = 0;
+      for (const url of urls) {
+        try {
+          const r = await fetch(url, { cache: 'no-cache' });
+          if (r.ok) {
+            const text = await r.text();
+            // A bot-check page can come back with 200; skip it and try the next indexer.
+            if (!/<title>Just a moment\.\.\.<\/title>/i.test(text)) return normalizeOrdinalMarkdown(text);
+          }
+          lastStatus = r.status;
+        } catch (e) {
+          lastStatus = 0;
+        }
+      }
+      throw new Error('Onchain fetch failed (' + lastStatus + '): ' + inscriptionId);
     }
 
     async function fetchLocalOverride(overridePath) {

@@ -314,6 +314,17 @@ export default function WorkgroupReviewPanel({
         </p>
       </header>
 
+      {data?.editorialFreeze ? (
+        <section role="status" className="rounded-xl border border-violet-700/70 bg-violet-950/30 p-4">
+          <h3 className="text-sm font-semibold text-violet-100">Editorial freeze for Version 1.0</h3>
+          <p className="mt-1 text-sm text-slate-300">
+            {data.isSteering
+              ? 'You are on the steering committee: you can decide any pending proposal on this DP, and one approval puts it in. Then review the chapter and publish.'
+              : 'The steering committee is now finishing this chapter, so approving, revising and declining are closed for co-editors. Thank you for your work on it.'}
+          </p>
+        </section>
+      ) : null}
+
       {data?.signInStale ? (
         <section role="alert" className="rounded-xl border border-amber-700/70 bg-amber-950/30 p-4">
           <h3 className="text-sm font-semibold text-amber-100">Your sign-in has expired</h3>

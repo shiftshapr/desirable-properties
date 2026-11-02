@@ -112,7 +112,7 @@ export type ReviewQueueResponse = {
   workingRevision: ReviewWorkingRevision;
   isMember: boolean;
   canEdit: boolean;
-  /** Viewer holds a co-editor seat on this DP (only co-editors approve). */
+  /** Viewer may decide proposals now: a co-editor, or a steering member after the editorial freeze. */
   isCoEditor: boolean;
   /** Viewer's Gov Hub user id, to match approvals. */
   viewerGovhubUserId: string | null;
@@ -122,6 +122,10 @@ export type ReviewQueueResponse = {
   styleCheckEnabled: boolean;
   /** Ask Deepi (Claude) is configured on this server; also requires the pre-publish check. */
   askEnabled: boolean;
-  /** Co-editor approvals a proposal needs: every seat (two on most DPs, three on DP4). */
+  /** Approvals a proposal needs: every co-editor seat (two on most DPs, three on DP4); one after the freeze. */
   approvalsNeeded: number;
+  /** The V1.0 editorial freeze has started: only the steering committee decides and publishes. */
+  editorialFreeze?: boolean;
+  /** Viewer is on the steering committee. */
+  isSteering?: boolean;
 };
