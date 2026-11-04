@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DpDialogHost } from '@/components/DpDialog';
 import HermesExperimentalInstructionsModal from '@/components/workgroup/HermesExperimentalInstructionsModal';
 import WorkgroupChatComposer from '@/components/workgroup/WorkgroupChatComposer';
@@ -14,7 +14,13 @@ import {
   assessHermesAmbient,
   fetchHermesHands,
 } from '@/lib/hermes-ambient-api';
-import { fetchWorkgroupMemberRoster, fetchWorkgroupMessages, postWorkgroupMessage } from '@/lib/workgroup-collab-api';
+import {
+  fetchWorkgroupMemberRoster,
+  fetchWorkgroupMessages,
+  markWorkgroupChatRead,
+  postWorkgroupMessage,
+} from '@/lib/workgroup-collab-api';
+import { newestMessageId, pickDividerId } from '@/lib/workgroup-chat-unread';
 import { isHermesExperimentalInstructionsDismissed } from '@/lib/hermes-experimental-instructions';
 import type { WorkgroupAskNote } from '@/lib/workgroup-hermes-panel-types';
 import type { HermesHand } from '@/lib/hermes-ambient-types';
@@ -45,6 +51,8 @@ type Props = {
   initialCanPost?: boolean;
   /** Message id from `?m=`: load older pages until it is shown, then scroll to it. */
   focusMessageId?: string | null;
+  /** What is still unread here after the panel marks messages read (for the Chat tab badge). */
+  onUnreadChange?: (unread: number) => void;
 };
 
 const HIGHLIGHT_MS = 4000;
@@ -60,6 +68,7 @@ export default function WorkgroupChatPanel({
   initialIsMember = false,
   initialCanPost = false,
   focusMessageId = null,
+  onUnreadChange,
 }: Props) {
   const [messages, setMessages] = useState<WorkgroupMessage[]>(initialMessages);
   /** Older pages loaded for a permalink; kept across the 30s refresh of the latest page. */
@@ -67,6 +76,15 @@ export default function WorkgroupChatPanel({
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const [focusMissing, setFocusMissing] = useState(false);
   const focusHandledRef = useRef<string | null>(null);
+  /** "New messages" line: the first unread message as of the first full load; it never moves after. */
+  const [dividerId, setDividerId] = useState<string | null>(null);
+  const dividerDecidedRef = useRef(false);
+  const dividerScrolledRef = useRef(false);
+  const lastMarkedRef = useRef<string | null>(null);
+  const onUnreadChangeRef = useRef(onUnreadChange);
+  useEffect(() => {
+    onUnreadChangeRef.current = onUnreadChange;
+  }, [onUnreadChange]);
   /** True after the first full-page fetch (the initial props may be a teaser). */
   const [fullLoaded, setFullLoaded] = useState(false);
   const [isMember, setIsMember] = useState(initialIsMember);
@@ -131,6 +149,10 @@ export default function WorkgroupChatPanel({
     try {
       const data = await fetchWorkgroupMessages(workgroupId, { full: true });
       setMessages(data.messages || []);
+      if (!dividerDecidedRef.current && data.is_member && !data.teaser) {
+        setDividerId((prev) => pickDividerId(prev, data.first_unread_message_id, false));
+        dividerDecidedRef.current = true;
+      }
       setIsMember((prev) => Boolean(data.is_member) || prev);
       setCanPost((prev) => Boolean(data.can_post) || prev);
       setError(null);
@@ -155,6 +177,56 @@ export default function WorkgroupChatPanel({
     () => mergeOlderMessages(olderMessages, messages),
     [olderMessages, messages],
   );
+
+  // Mark read up to the newest message while Chat is open and the browser tab is in front.
+  const markRead = useCallback(async () => {
+    if (!isMember || !fullLoaded || document.visibilityState !== 'visible') return;
+    const newest = newestMessageId(messages);
+    if (!newest || newest === lastMarkedRef.current) return;
+    lastMarkedRef.current = newest;
+    try {
+      const result = await markWorkgroupChatRead(workgroupId, newest);
+      if (typeof result.unread === 'number') onUnreadChangeRef.current?.(result.unread);
+    } catch {
+      lastMarkedRef.current = null; // try again on the next refresh
+    }
+  }, [isMember, fullLoaded, messages, workgroupId]);
+
+  useEffect(() => {
+    void markRead();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void markRead();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [markRead]);
+
+  // Open at the "New messages" line, loading older pages when it is further back (not for permalinks).
+  useEffect(() => {
+    if (!dividerId || !fullLoaded || focusMessageId || dividerScrolledRef.current) return;
+    dividerScrolledRef.current = true;
+    void (async () => {
+      if (!messages.some((m) => m.id === dividerId)) {
+        try {
+          const result = await loadOlderUntilMessage({
+            targetId: dividerId,
+            current: messages,
+            fetchOlder: async (before) => {
+              const data = await fetchWorkgroupMessages(workgroupId, { full: true, before });
+              return data.messages || [];
+            },
+          });
+          if (result.older.length) setOlderMessages((prev) => mergeOlderMessages(result.older, prev));
+          if (!result.found) return;
+        } catch {
+          return;
+        }
+      }
+      window.requestAnimationFrame(() => {
+        document.getElementById('workgroup-chat-new-messages')?.scrollIntoView({ block: 'start' });
+      });
+    })();
+  }, [dividerId, fullLoaded, focusMessageId, messages, workgroupId]);
 
   // Permalink (?m=<id>): once the latest page is in, load older pages until the message is there.
   useEffect(() => {
@@ -347,8 +419,20 @@ export default function WorkgroupChatPanel({
                 const relay = isEmailRelayMessage(msg);
                 const highlighted = highlightId === msg.id;
                 return (
+                  <Fragment key={msg.id}>
+                  {dividerId === msg.id ? (
+                    <div
+                      id="workgroup-chat-new-messages"
+                      className="flex scroll-mt-4 items-center gap-3 text-xs font-medium uppercase tracking-[0.14em] text-rose-300"
+                      role="separator"
+                      aria-label="New messages"
+                    >
+                      <span className="h-px flex-1 bg-rose-500/50" aria-hidden />
+                      New messages
+                      <span className="h-px flex-1 bg-rose-500/50" aria-hidden />
+                    </div>
+                  ) : null}
                   <article
-                    key={msg.id}
                     id={workgroupMessageAnchorId(msg.id)}
                     className={`group scroll-mt-4 rounded-lg border px-4 py-3 transition-colors duration-700 ${
                       highlighted
@@ -392,6 +476,7 @@ export default function WorkgroupChatPanel({
                       </div>
                     ) : null}
                   </article>
+                  </Fragment>
                 );
               })
             )}

@@ -22,6 +22,7 @@
     "test:encoded-insert": "node --experimental-strip-types --test scripts/encoded-insert.test.mjs",
     "test:review-split": "node --experimental-strip-types --test scripts/review-split.test.mjs",
     "test:dp-mtp": "node --experimental-strip-types --test scripts/dp-mtp.test.mjs",
+    "test:workgroup-chat-unread": "node --experimental-strip-types --test scripts/workgroup-chat-unread.test.mjs",
     "test:llm-error-message": "node --experimental-strip-types --test scripts/llm-error-message.test.mjs",
     "test:canopi-comment-body": "node --experimental-strip-types --test scripts/canopi-comment-body.test.mjs",
     "test:canopi-embed-script": "node --experimental-strip-types --test scripts/canopi-embed-script.test.mjs",
