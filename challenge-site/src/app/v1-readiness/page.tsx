@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import ProposalCountsTable from '@/components/readiness/ProposalCountsTable';
 import ReadinessGrid from '@/components/readiness/ReadinessGrid';
 import { READINESS_ITEMS, V1_RELEASE_DATE, V1_FREEZE_LABEL } from '@/data/dp-process';
 import { readSession } from '@/lib/auth-session';
@@ -37,12 +38,17 @@ export default async function V1ReadinessPage() {
         {board.error ? (
           <p className="rounded-xl border border-amber-700/60 bg-amber-950/40 p-4 text-amber-200">{board.error}</p>
         ) : (
-          <ReadinessGrid
-            items={board.items}
-            dps={board.dps}
-            signedIn={Boolean(session?.userId)}
-            generatedAt={board.generatedAt}
-          />
+          <>
+            <ReadinessGrid
+              items={board.items}
+              dps={board.dps}
+              signedIn={Boolean(session?.userId)}
+              generatedAt={board.generatedAt}
+            />
+            <div className="mt-12">
+              <ProposalCountsTable dps={board.dps} />
+            </div>
+          </>
         )}
       </div>
     </main>
