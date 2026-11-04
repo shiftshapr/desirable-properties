@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-chat-unread",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Workgroup chat: see which messages you haven't read",
+      "summary": "Members now see how many chat messages they haven't read: a count on the workgroup's Chat tab and an “N unread in chat” link on their workgroup cards. Opening Chat jumps to a “New messages” line and marks the chat read. At launch, messages from the last 10 days count as unread; after that, read state is kept per member.",
+      "changes": [
+        "Chat tab: unread count badge, refreshed every minute",
+        "Chat panel: “New messages” divider; marks read while open",
+        "Workgroups list: “N unread in chat” on member cards",
+        "GET /api/workgroups/unread and POST /api/workgroups/[id]/messages/read proxy Gov Hub"
+      ]
+    },
+    {
       "id": "review-title-change-steering",
       "date": "2026-11-04",
       "status": "open",
