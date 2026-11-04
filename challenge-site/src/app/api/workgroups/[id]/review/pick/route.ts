@@ -24,7 +24,7 @@ export async function POST(request: Request, ctx: RouteContext) {
   }
 
   // Only this DP's co-editors approve or decline (owner, 2026-10-19).
-  const { isCoEditor, govhubUserId } = await fetchViewerCoEditor(workgroupId, session.idToken);
+  const { isCoEditor, govhubUserId, canSignoffTitles } = await fetchViewerCoEditor(workgroupId, session.idToken);
   if (!govhubUserId) {
     // Gov Hub did not accept the sign-in (usually an expired token), so it cannot tell who this is.
     return NextResponse.json(
@@ -32,13 +32,6 @@ export async function POST(request: Request, ctx: RouteContext) {
       { status: 401 },
     );
   }
-  if (!isCoEditor) {
-    return NextResponse.json(
-      { error: "Only this DP's co-editors approve or decline proposals." },
-      { status: 403 },
-    );
-  }
-
   let body: { action?: string; govhubProposalId?: string; itemKey?: string; note?: string } = {};
   try {
     body = (await request.json()) as typeof body;
@@ -48,6 +41,14 @@ export async function POST(request: Request, ctx: RouteContext) {
 
   const rawAction = String(body.action || '').trim().toLowerCase();
   const action = rawAction === 'include' ? 'promote' : rawAction;
+  // Co-editors decide; a steering member (or site admin) may also agree to a title change, which
+  // Gov Hub accepts only for proposals that change the chapter title.
+  if (!isCoEditor && !(canSignoffTitles && action === 'promote')) {
+    return NextResponse.json(
+      { error: "Only this DP's co-editors approve or decline proposals." },
+      { status: 403 },
+    );
+  }
   const proposalId = String(body.govhubProposalId || '').trim();
   const note = String(body.note || '').trim().slice(0, 4000);
   if ((action !== 'promote' && action !== 'drop') || !proposalId) {
