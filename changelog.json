@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-mtp-tab",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Workgroup pages: an MTP tab for each chapter's Massive Transformational Purpose",
+      "summary": "Each DP workgroup page has a new MTP tab. It shows the chapter's current MTP and its plain-words line, the proposed wordings, and the history of past ones. Members can support a wording or not and comment on it, Deepi can suggest rewordings, and a wording becomes the chapter's MTP when every co-editor approves it (after the 9 November freeze, one steering committee member). The MTP sits under the chapter's tagline and appears in the book with the next published revision.",
+      "changes": [
+        "MTP tab (DP workgroups only): current MTP, proposed wordings, history",
+        "GET /api/workgroups/[id]/mtp: current lines from the chapter, history from Gov Hub proposals",
+        "Review panel: only='mtp' mode lists just MTP proposals"
+      ]
+    },
+    {
       "id": "style-guide-this-draft",
       "date": "2026-11-02",
       "status": "open",
