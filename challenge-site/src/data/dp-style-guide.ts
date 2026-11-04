@@ -8,7 +8,7 @@
  */
 
 export const STYLE_GUIDE_VERSION = '1.1';
-export const STYLE_GUIDE_UPDATED = '2026-11-02';
+export const STYLE_GUIDE_UPDATED = '2026-11-04';
 
 export type StyleRule = {
   rule: string;
@@ -124,6 +124,10 @@ export const STYLE_GUIDE: ReadonlyArray<StyleSection> = [
         why: 'Settled at the 2 November 2026 community meeting, so all chapters open the same way.',
         do: 'This draft articulates Desirable Property 7 (DP7) as the condition under which …',
         dont: 'This ML-Draft articulates Desirable Property 7 (DP7) as …',
+      },
+      {
+        rule: 'Under the tagline, the chapter’s MTP: a line “**MTP:** …” and a line “**In plain words:** …”. Like the tagline, they are written for participants: they may address the reader as “you”, and “MTP” needs no expansion there. They change only through proposals on the MTP tab.',
+        do: '**MTP:** Every voice understood, no voice erased.',
       },
       {
         rule: 'Under the title, keep a one-line italic tagline written for participants.',

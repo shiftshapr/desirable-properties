@@ -519,8 +519,8 @@ export default function WorkgroupReviewPanel({
             </div>
             <p className="mt-2 text-sm text-slate-200">
               {item.authorName}
-              {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · member
-              evals: yes {item.evals.yes} / no {item.evals.no}
+              {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · members:
+              support {item.evals.yes} / don&apos;t support {item.evals.no}
             </p>
             {item.patchMode === 'bundle' ? (
               <StylePassEdits item={item} />
