@@ -1,3 +1,4 @@
+import type { ChatUnreadResponse } from '@/lib/workgroup-chat-unread';
 import type {
   InviteDraftInput,
   InviteDraftResponse,
@@ -43,6 +44,35 @@ export async function postWorkgroupMessage(
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ body }),
+  });
+  return parseJson(res);
+}
+
+let chatUnreadInFlight: Promise<ChatUnreadResponse | null> | null = null;
+
+/** Unread chat across the viewer's workgroups; concurrent callers share one request. Null when signed out. */
+export function fetchChatUnread(): Promise<ChatUnreadResponse | null> {
+  if (!chatUnreadInFlight) {
+    chatUnreadInFlight = fetch('/api/workgroups/unread', { credentials: 'include', cache: 'no-store' })
+      .then(async (res) => (res.ok ? ((await res.json()) as ChatUnreadResponse) : null))
+      .catch(() => null)
+      .finally(() => {
+        chatUnreadInFlight = null;
+      });
+  }
+  return chatUnreadInFlight;
+}
+
+/** Mark a workgroup's chat read up to a message; returns what is still unread there. */
+export async function markWorkgroupChatRead(
+  workgroupId: string,
+  messageId: string,
+): Promise<{ unread?: number; error?: string }> {
+  const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/messages/read`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message_id: messageId }),
   });
   return parseJson(res);
 }

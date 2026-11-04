@@ -4,6 +4,30 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-modified-actionable",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Review: “Modified” replaces “Considered”; co-editors see what's actionable",
+      "summary": "On the Review tab, proposals that were approved with changes now count as “Modified” instead of “Considered”, and their closed label says the same. Co-editors also get an “Actionable” count next to Open: the open proposals they haven't approved yet and can still approve, decline or revise. Nobody else sees it.",
+      "changes": [
+        "Review counts: Considered → Modified (count and closed label)",
+        "Review counts: Actionable after Open, co-editors only"
+      ]
+    },
+    {
+      "id": "workgroup-chat-unread",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Workgroup chat: see which messages you haven't read",
+      "summary": "Members now see how many chat messages they haven't read: a count on the workgroup's Chat tab and an “N unread in chat” link on their workgroup cards. Opening Chat jumps to a “New messages” line and marks the chat read. At launch, messages from the last 10 days count as unread; after that, read state is kept per member.",
+      "changes": [
+        "Chat tab: unread count badge, refreshed every minute",
+        "Chat panel: “New messages” divider; marks read while open",
+        "Workgroups list: “N unread in chat” on member cards",
+        "GET /api/workgroups/unread and POST /api/workgroups/[id]/messages/read proxy Gov Hub"
+      ]
+    },
+    {
       "id": "review-title-change-steering",
       "date": "2026-11-04",
       "status": "open",
