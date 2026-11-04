@@ -4,6 +4,64 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "mtp-style-rule-support-counts",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Style guide: the MTP lines; Review shows support counts",
+      "summary": "The style guide now covers each chapter's MTP lines under the tagline: like the tagline they speak to participants, so they may say “you”, and “MTP” needs no expansion there. The AI style check no longer flags that on MTP proposals. On Review and MTP, each proposal's member count reads “support / don't support” instead of “yes / no”.",
+      "changes": [
+        "dp-style-guide.ts: MTP lines rule; updated 2026-11-04",
+        "Review item: members: support N / don't support N"
+      ]
+    },
+    {
+      "id": "workgroup-mtp-tab",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Workgroup pages: an MTP tab for each chapter's Massive Transformational Purpose",
+      "summary": "Each DP workgroup page has a new MTP tab. It shows the chapter's current MTP and its plain-words line, the proposed wordings, and the history of past ones. Members can support a wording or not and comment on it, Deepi can suggest rewordings, and a wording becomes the chapter's MTP when every co-editor approves it (after the 9 November freeze, one steering committee member). The MTP sits under the chapter's tagline and appears in the book with the next published revision.",
+      "changes": [
+        "MTP tab (DP workgroups only): current MTP, proposed wordings, history",
+        "GET /api/workgroups/[id]/mtp: current lines from the chapter, history from Gov Hub proposals",
+        "Review panel: only='mtp' mode lists just MTP proposals"
+      ]
+    },
+    {
+      "id": "style-guide-this-draft",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Style guide: chapters open with “This draft articulates …”",
+      "summary": "Settled at the 2 November community meeting: section 1 of every chapter opens “This draft articulates Desirable Property N (DPN) as …”, not “This ML-Draft …”. The rule is on the style guide page and in the AI style checks. The style guide version stays 1.1, so existing style checks are not rerun.",
+      "changes": [
+        "dp-style-guide.ts: chapter-opening rule; updated date 2026-11-02"
+      ]
+    },
+    {
+      "id": "review-button-labels-support",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Review tab: clearer button names",
+      "summary": "From the 2 November community meeting: co-editors' Revise button is now Approve with changes, since revising also records their approval. Members' Yes and No on a proposal are now Support and Don't support. The co-editor guide uses the new names.",
+      "changes": [
+        "Revise → Approve with changes (button, form heading, guide)",
+        "Save revision and approve → Save changes and approve",
+        "Member vote: Yes/No → Support/Don't support"
+      ]
+    },
+    {
+      "id": "book-dp24-staging-preview",
+      "date": "2026-11-02",
+      "status": "open",
+      "title": "Book: DP24 previewed on staging",
+      "summary": "DP24, Cross-Layer Resilience and Compromise Containment, appears as the last chapter of the staging book so the community can read it before deciding whether to add it. The production book does not list it: its entry in the book's chapter list is marked stagingOnly, and removing that mark publishes it.",
+      "changes": [
+        "content/local/dp24.md: DP24 draft (2026-11-01)",
+        "sources-sat.json: dp24 rail marked stagingOnly",
+        "viewer.htm: stagingOnly rails show only on staging.* and localhost",
+        "assets/data/dp24.json: empty alignment data like other new DPs"
+      ]
+    },
+    {
       "id": "book-intro-indexer-fallback",
       "date": "2026-11-02",
       "status": "open",

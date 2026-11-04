@@ -7,6 +7,7 @@ import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection'
 import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
 import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
+import { isMtpText } from '@/lib/dp-mtp';
 import SectionLabel from '@/components/workgroup/SectionLabel';
 import WorkingRevisionEmail from '@/components/workgroup/WorkingRevisionEmail';
 import type {
@@ -24,6 +25,8 @@ type Props = {
   canEdit: boolean;
   isMember: boolean;
   signedIn: boolean;
+  /** 'mtp': only this chapter's MTP proposals, without the chapter-wide header and publish tools. */
+  only?: 'mtp';
 };
 
 /** Sign in again and come back to this tab. */
@@ -38,6 +41,7 @@ export default function WorkgroupReviewPanel({
   canEdit,
   isMember,
   signedIn,
+  only,
 }: Props) {
   const [data, setData] = useState<ReviewQueueResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -270,13 +274,18 @@ export default function WorkgroupReviewPanel({
     }
   }
 
-  const items = data?.items || [];
+  const allItems = data?.items || [];
+  const items =
+    only === 'mtp'
+      ? allItems.filter((i) => isMtpText(i.proposedText) || isMtpText(i.insertText))
+      : allItems;
   const counts = reviewCounts(items);
   const working = data?.workingRevision;
   const hasComposedDraft = Boolean(working?.exists && (working?.appliedCount || 0) > 0);
 
   return (
     <div className="space-y-5">
+      {only !== 'mtp' ? (
       <header className="space-y-2 border-b border-slate-800 pb-5">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-400">Review</p>
         <h2 className="text-xl font-semibold text-white">
@@ -313,6 +322,7 @@ export default function WorkgroupReviewPanel({
           .
         </p>
       </header>
+      ) : null}
 
       {data?.editorialFreeze ? (
         <section role="status" className="rounded-xl border border-violet-700/70 bg-violet-950/30 p-4">
@@ -342,6 +352,8 @@ export default function WorkgroupReviewPanel({
         </section>
       ) : null}
 
+      {only !== 'mtp' ? (
+      <>
       {!canEdit && isMember && hasComposedDraft ? (
         <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
           <h3 className="text-sm font-semibold text-white">Working revision</h3>
@@ -409,6 +421,9 @@ export default function WorkgroupReviewPanel({
         </p>
       ) : null}
 
+      </>
+      ) : null}
+
       {notice ? (
         <p className="rounded-lg border border-slate-700 bg-slate-950/50 px-4 py-3 text-sm text-slate-200">
           {notice}
@@ -421,16 +436,19 @@ export default function WorkgroupReviewPanel({
         </p>
       ) : null}
 
+      {only !== 'mtp' ? (
       <ReviewCommentsSection
         workgroupId={workgroupId}
         canAct={Boolean(signedIn && isMember)}
         onFiled={() => void reload()}
       />
+      ) : null}
 
       {!loading && !error && items.length === 0 ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
-          No book Discuss patches or Gov Hub draft patches in queue for this chapter yet. Propose
-          PATCH/INSERT on the book, or file a Gov Hub draft patch, then return here.
+          {only === 'mtp'
+            ? 'No MTP proposals for this chapter yet.'
+            : 'No book Discuss patches or Gov Hub draft patches in queue for this chapter yet. Propose PATCH/INSERT on the book, or file a Gov Hub draft patch, then return here.'}
         </p>
       ) : null}
 
@@ -501,8 +519,8 @@ export default function WorkgroupReviewPanel({
             </div>
             <p className="mt-2 text-sm text-slate-200">
               {item.authorName}
-              {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · member
-              evals: yes {item.evals.yes} / no {item.evals.no}
+              {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · members:
+              support {item.evals.yes} / don&apos;t support {item.evals.no}
             </p>
             {item.patchMode === 'bundle' ? (
               <StylePassEdits item={item} />
@@ -621,7 +639,7 @@ export default function WorkgroupReviewPanel({
                         : 'border-slate-700 text-slate-200 hover:border-emerald-700'
                     }`}
                   >
-                    Yes
+                    Support
                   </button>
                   <button
                     type="button"
@@ -633,7 +651,7 @@ export default function WorkgroupReviewPanel({
                         : 'border-slate-700 text-slate-200 hover:border-rose-700'
                     }`}
                   >
-                    No
+                    Don&apos;t support
                   </button>
                 </div>
               </div>
@@ -743,7 +761,7 @@ export default function WorkgroupReviewPanel({
                       }}
                       className="rounded-lg border border-violet-800/70 px-3 py-1.5 text-sm text-violet-100 hover:border-violet-500 disabled:opacity-50"
                     >
-                      Revise
+                      Approve with changes
                     </button>
                   ) : null}
                 </div>
@@ -888,7 +906,7 @@ function AnchorFlag({
           </button>
         </div>
         <p className="mt-1 text-xs text-slate-500">
-          Move opens the Revise form below, set to that passage. Nothing moves until you file it there.
+          Move opens the Approve with changes form below, set to that passage. Nothing moves until you file it there.
         </p>
         </>
       ) : (

@@ -19,6 +19,7 @@ import WorkgroupNominatePanel from '@/components/workgroup/WorkgroupNominatePane
 import WorkgroupCoEditorsPanel from '@/components/workgroup/WorkgroupCoEditorsPanel';
 import WorkgroupNextSteps, { type NextStepsReadiness } from '@/components/workgroup/WorkgroupNextSteps';
 import WorkgroupReviewPanel from '@/components/workgroup/WorkgroupReviewPanel';
+import WorkgroupMtpPanel from '@/components/workgroup/WorkgroupMtpPanel';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
@@ -379,6 +380,17 @@ export default function WorkgroupCollabClient({
 
           {tab === 'review' ? (
             <WorkgroupReviewPanel
+              workgroupId={workgroup.id}
+              workgroupSlug={workgroup.slug}
+              dpId={dpId}
+              canEdit={Boolean(workgroup.can_edit || initialCanEdit)}
+              isMember={isMember}
+              signedIn={signedIn}
+            />
+          ) : null}
+
+          {tab === 'mtp' ? (
+            <WorkgroupMtpPanel
               workgroupId={workgroup.id}
               workgroupSlug={workgroup.slug}
               dpId={dpId}

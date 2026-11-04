@@ -47,7 +47,7 @@ const STEPS: Step[] = [
     body: (
       <>
         A card may say <strong className="text-white">Claude suggests a better place for this</strong>. Choose{' '}
-        <strong className="text-white">Move to suggested passage</strong> to open Revise at that spot, or{' '}
+        <strong className="text-white">Move to suggested passage</strong> to open Approve with changes at that spot, or{' '}
         <strong className="text-white">Keep it where it is</strong>.
       </>
     ),
@@ -64,7 +64,7 @@ const STEPS: Step[] = [
     tips: [
       <>
         If Deepi recommends a different place or wording, you will see{' '}
-        <strong className="text-white">Apply Deepi’s suggestion</strong>. It opens Revise already filled in. Check it,
+        <strong className="text-white">Apply Deepi’s suggestion</strong>. It opens Approve with changes already filled in. Check it,
         change anything you like, then save.
       </>,
       <>
@@ -84,7 +84,7 @@ const STEPS: Step[] = [
         <strong className="text-white">Approve</strong> when it is right as written. A note is optional.
       </>,
       <>
-        <strong className="text-white">Revise</strong> when the idea is right but the wording or place needs work: fix
+        <strong className="text-white">Approve with changes</strong> when the idea is right but the wording or place needs work: fix
         grammar, tighten wording, or pick another passage, keeping the author’s meaning. Then{' '}
         <strong className="text-white">Save revision and approve</strong>. Your version stays under the author’s name and
         counts as your approval.
