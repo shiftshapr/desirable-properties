@@ -25,7 +25,8 @@ import { useAuth } from '@/lib/auth-context';
 import { dpWorkgroupCardImageSrc, dpDiscoveryImageAlt, dpImageAlt } from '@/lib/dp-images';
 import { govhubDraftReadHref, isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import { WORKGROUPS_JOIN_HREF } from '@/lib/routes';
-import { fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
+import { fetchChatUnread, fetchWorkgroupMessages } from '@/lib/workgroup-collab-api';
+import { chatTabAriaLabel, formatUnreadCount, unreadForWorkgroup } from '@/lib/workgroup-chat-unread';
 import { normalizeWorkgroupMessageParam } from '@/lib/workgroup-message-permalink';
 import {
   normalizeWorkgroupCollabTab,
@@ -80,6 +81,8 @@ export default function WorkgroupCollabClient({
   const deepLinkMessageId = normalizeWorkgroupMessageParam(searchParams.get('m'));
   const { user, checked } = useAuth();
   const signedIn = Boolean(user);
+  /** Unread chat messages for the Chat tab badge (members only). */
+  const [chatUnread, setChatUnread] = useState(0);
   const [tab, setTab] = useState<WorkgroupCollabTabKey>(() =>
     deepLinkMessageId
       ? 'chat'
@@ -236,6 +239,28 @@ export default function WorkgroupCollabClient({
     ? dpDiscoveryImageAlt(workgroup.name)
     : dpImageAlt(dpId || '', workgroup.name);
 
+  // Chat badge: poll unread counts every minute while the page is in front.
+  const memberForUnread = signedIn && membershipChecked && isMember;
+  useEffect(() => {
+    if (!memberForUnread) return;
+    let live = true;
+    const load = () => {
+      if (document.visibilityState !== 'visible') return;
+      void fetchChatUnread().then((data) => {
+        if (live && data) setChatUnread(unreadForWorkgroup(data, workgroup.id));
+      });
+    };
+    load();
+    const timer = window.setInterval(load, 60000);
+    document.addEventListener('visibilitychange', load);
+    return () => {
+      live = false;
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', load);
+    };
+  }, [memberForUnread, workgroup.id]);
+  const chatBadge = memberForUnread ? chatUnread : 0;
+
   const collabTabs = useMemo(
     () => visibleWorkgroupCollabTabs({ dpId, workgroup }),
     [dpId, workgroup],
@@ -355,8 +380,14 @@ export default function WorkgroupCollabClient({
                     : 'border-transparent text-slate-400 hover:bg-slate-800/40 hover:text-slate-200'
                 }`}
                 onClick={() => selectTab(item.key)}
+                aria-label={item.key === 'chat' ? chatTabAriaLabel(chatBadge) : undefined}
               >
                 {item.label}
+                {item.key === 'chat' && chatBadge > 0 ? (
+                  <span className="ml-1.5 rounded-full bg-rose-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                    {formatUnreadCount(chatBadge)}
+                  </span>
+                ) : null}
               </button>
             );
           })}
@@ -457,6 +488,7 @@ export default function WorkgroupCollabClient({
                   initialIsMember
                   initialCanPost={initialCanPost || isMember}
                   focusMessageId={deepLinkMessageId}
+                  onUnreadChange={setChatUnread}
                 />
               ) : (
                 <WorkgroupChatTeaser

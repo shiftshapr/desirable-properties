@@ -3,6 +3,7 @@ import { COORDINATOR_ROLE, CO_EDITOR_ROLE, MEMBER_ROLE } from '@/data/workgroup-
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import WorkgroupUnreadPill from '@/components/workgroup/WorkgroupUnreadPill';
 import WorkgroupJoinNominateActions from '@/components/workgroup/WorkgroupJoinNominateActions';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import {
@@ -444,6 +445,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
                           <span aria-hidden>→</span>
                         </a>
                       )}
+                      {collabEnabled && memberWorkgroupIds.has(idBySlug.get(slug) ?? '') ? (
+                        <WorkgroupUnreadPill workgroupId={idBySlug.get(slug)!} href={`${collabHref}?tab=chat`} />
+                      ) : null}
                       {collabEnabled ? (
                         <Link
                           href={`${collabHref}#co-editors`}

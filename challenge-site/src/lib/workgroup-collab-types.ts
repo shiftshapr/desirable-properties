@@ -26,6 +26,9 @@ export type WorkgroupMessagesResponse = {
   can_post: boolean;
   teaser: boolean;
   count: number;
+  /** Members only: unread messages before this request marks anything read. */
+  unread_count?: number;
+  first_unread_message_id?: string | null;
   error?: string;
 };
 
