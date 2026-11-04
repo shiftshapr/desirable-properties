@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "mtp-style-rule-support-counts",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Style guide: the MTP lines; Review shows support counts",
+      "summary": "The style guide now covers each chapter's MTP lines under the tagline: like the tagline they speak to participants, so they may say “you”, and “MTP” needs no expansion there. The AI style check no longer flags that on MTP proposals. On Review and MTP, each proposal's member count reads “support / don't support” instead of “yes / no”.",
+      "changes": [
+        "dp-style-guide.ts: MTP lines rule; updated 2026-11-04",
+        "Review item: members: support N / don't support N"
+      ]
+    },
+    {
       "id": "workgroup-mtp-tab",
       "date": "2026-11-04",
       "status": "open",
