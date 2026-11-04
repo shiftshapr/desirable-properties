@@ -1,11 +1,12 @@
 /**
- * Five tabs (owner, 2026-10-22: orient the page to co-editors). Co-editing replaced Astra in the tab bar
+ * Six tabs (owner, 2026-10-22: orient the page to co-editors; MTP added 2026-11-04, DP chapters only). Co-editing replaced Astra in the tab bar
  * (owner, 2026-10-30); Astra stays reachable from old links (?tab=astra, change and proposal links).
  * Retired keys map in RETIRED_TABS.
  */
 export const WORKGROUP_COLLAB_TABS = [
   { key: 'next-steps', label: 'Next steps' },
   { key: 'review', label: 'Review' },
+  { key: 'mtp', label: 'MTP' },
   { key: 'co-editing', label: 'Co-editing' },
   { key: 'chat', label: 'Chat' },
   { key: 'members', label: 'Members' },
@@ -49,10 +50,12 @@ export function normalizeWorkgroupCollabTab(
   return 'next-steps';
 }
 
-export function visibleWorkgroupCollabTabs(_opts?: {
+export function visibleWorkgroupCollabTabs(opts?: {
   dpId: string | null;
   workgroup: { name?: string | null; slug?: string | null };
 }): Array<(typeof WORKGROUP_COLLAB_TABS)[number]> {
-  // The tab bar; normalizeWorkgroupCollabTab also accepts hidden tabs.
-  return WORKGROUP_COLLAB_TABS.filter((item) => !('hidden' in item && item.hidden));
+  // The tab bar; normalizeWorkgroupCollabTab also accepts hidden tabs. MTP is a DP chapter's only.
+  return WORKGROUP_COLLAB_TABS.filter(
+    (item) => !('hidden' in item && item.hidden) && (item.key !== 'mtp' || Boolean(opts?.dpId)),
+  );
 }
