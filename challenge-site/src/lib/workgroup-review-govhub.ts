@@ -226,6 +226,7 @@ export type ViewerCoEditor = {
   seatsTotal: number;
   editorialFreeze: boolean;
   isSteering: boolean;
+  canSignoffTitles: boolean;
 };
 
 const NO_VIEWER: ViewerCoEditor = {
@@ -234,6 +235,7 @@ const NO_VIEWER: ViewerCoEditor = {
   seatsTotal: 2,
   editorialFreeze: false,
   isSteering: false,
+  canSignoffTitles: false,
 };
 
 export async function fetchViewerCoEditor(workgroupId: string, idToken: string): Promise<ViewerCoEditor> {
@@ -247,6 +249,7 @@ export async function fetchViewerCoEditor(workgroupId: string, idToken: string):
       viewer_is_co_editor?: boolean;
       viewer_can_decide?: boolean;
       viewer_is_steering?: boolean;
+      viewer_can_signoff_titles?: boolean;
       editorial_freeze?: boolean;
       viewer_user_id?: string | null;
       seats_total?: number;
@@ -260,6 +263,7 @@ export async function fetchViewerCoEditor(workgroupId: string, idToken: string):
       seatsTotal: Number(data.approvals_needed ?? data.seats_total) || 2,
       editorialFreeze: Boolean(data.editorial_freeze),
       isSteering: Boolean(data.viewer_is_steering),
+      canSignoffTitles: Boolean(data.viewer_can_signoff_titles),
     };
   } catch {
     return NO_VIEWER;

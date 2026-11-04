@@ -138,6 +138,8 @@ export async function buildWorkgroupReviewQueue(opts: {
         note: a.note || null,
         createdAt: a.created_at || null,
       })),
+      titleChange: Boolean(proposal.title_change),
+      steeringSignoff: Boolean(proposal.steering_signoff),
       revisedBy: proposal.revised_from_id ? proposal.revised_by_name || 'A co-editor' : null,
       decision: pending ? null : { by: proposal.reviewed_by_name || null, note: proposal.review_note || null },
       styleCheckable: false,

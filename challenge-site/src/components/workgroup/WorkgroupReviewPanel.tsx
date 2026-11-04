@@ -694,6 +694,27 @@ export default function WorkgroupReviewPanel({
               </div>
             ) : null}
 
+            {item.titleChange && item.status === 'pending' ? (
+              <div className="mt-4 rounded-lg border border-amber-700/70 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
+                <p className="font-semibold">Title change: the steering committee must agree</p>
+                <p className="mt-1 text-amber-100/80">
+                  This proposal changes the chapter&apos;s title. It goes in only when every co-editor approves it and a
+                  steering committee member agrees.{' '}
+                  {item.steeringSignoff ? 'A steering member has agreed.' : 'No steering member has agreed yet.'}
+                </p>
+                {!data?.isCoEditor && data?.canSignoffTitles && !item.steeringSignoff ? (
+                  <button
+                    type="button"
+                    disabled={Boolean(busyKey)}
+                    onClick={() => void pick(item, 'promote')}
+                    className="mt-2 rounded-lg bg-amber-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+                  >
+                    {busyKey === `promote:${item.key}` ? 'Saving…' : 'Agree to this title change (steering)'}
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+
             {data?.isCoEditor ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">

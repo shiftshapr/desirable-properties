@@ -92,6 +92,7 @@ export async function GET(_request: Request, ctx: RouteContext) {
     approvalsNeeded: coEditor.seatsTotal,
     editorialFreeze: coEditor.editorialFreeze,
     isSteering: coEditor.isSteering,
+    canSignoffTitles: coEditor.canSignoffTitles,
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }

@@ -81,6 +81,10 @@ export type ReviewQueueItem = {
   };
   /** Co-editor approvals recorded in Gov Hub; userId is the Gov Hub user id. */
   approvals: Array<{ userId: string; userName: string; note: string | null; createdAt: string | null }>;
+  /** Changes the chapter title: every co-editor approves AND a steering committee member agrees. */
+  titleChange?: boolean;
+  /** A steering committee member (not the author) has agreed to this title change. */
+  steeringSignoff?: boolean;
   /** Set when a co-editor revised another proposal into this one (text and/or placement). */
   revisedBy: string | null;
   /** Decline / considered note and who wrote it, once decided. */
@@ -128,4 +132,6 @@ export type ReviewQueueResponse = {
   editorialFreeze?: boolean;
   /** Viewer is on the steering committee. */
   isSteering?: boolean;
+  /** Viewer may agree to title changes (steering committee, or a site admin until it is named). */
+  canSignoffTitles?: boolean;
 };
