@@ -279,7 +279,7 @@ export default function WorkgroupReviewPanel({
     only === 'mtp'
       ? allItems.filter((i) => isMtpText(i.proposedText) || isMtpText(i.insertText))
       : allItems;
-  const counts = reviewCounts(items);
+  const counts = reviewCounts(items, data?.isCoEditor ? data.viewerGovhubUserId || '' : null);
   const working = data?.workingRevision;
   const hasComposedDraft = Boolean(working?.exists && (working?.appliedCount || 0) > 0);
 
@@ -1125,7 +1125,7 @@ function isClosed(item: ReviewQueueItem): boolean {
 
 const CLOSED_LABEL: Record<string, string> = {
   declined: 'Declined',
-  considered: 'Considered',
+  considered: 'Modified',
   orphaned: 'Original text not found',
   withdrawn: 'Withdrawn by author',
 };
@@ -1138,18 +1138,32 @@ function snippet(text: string, max = 140): string {
 type ReviewCounts = {
   total: number;
   open: number;
+  /** Co-editors only (null otherwise): open proposals this co-editor can still approve, decline or revise. */
+  actionable: number | null;
   declined: number;
   considered: number;
   orphaned: number;
   approved: number;
 };
 
-/** Open = waiting for a co-editor decision (or not yet filed); approved = in or headed for the revision. */
-function reviewCounts(items: ReviewQueueItem[]): ReviewCounts {
+/** Open and still waiting on this co-editor: not yet approved by them, and something they can do (approve, decline, revise). */
+function isActionableFor(item: ReviewQueueItem, viewerGovhubUserId: string): boolean {
+  const status = String(item.status).toLowerCase();
+  if (status !== 'pending' && status !== 'canopi_only') return false;
+  if (viewerGovhubUserId && item.approvals.some((a) => a.userId === viewerGovhubUserId)) return false;
+  return item.canPromote || (Boolean(item.govhubProposalId) && status === 'pending');
+}
+
+/**
+ * Open = waiting for a co-editor decision (or not yet filed); approved = in or headed for the revision.
+ * viewerGovhubUserId is null for anyone who isn't a co-editor: they get no Actionable count.
+ */
+function reviewCounts(items: ReviewQueueItem[], viewerGovhubUserId: string | null): ReviewCounts {
   const status = (i: ReviewQueueItem) => String(i.status).toLowerCase();
   return {
     total: items.length,
     open: items.filter((i) => ['pending', 'canopi_only'].includes(status(i))).length,
+    actionable: viewerGovhubUserId === null ? null : items.filter((i) => isActionableFor(i, viewerGovhubUserId)).length,
     declined: items.filter(isDeclined).length,
     considered: items.filter((i) => status(i) === 'considered').length,
     orphaned: items.filter((i) => status(i) === 'orphaned').length,
@@ -1161,9 +1175,12 @@ function ReviewSummary({ counts }: { counts: ReviewCounts }) {
   const cells: Array<{ label: string; value: number; tone: string }> = [
     { label: 'Total', value: counts.total, tone: 'text-white' },
     { label: 'Open', value: counts.open, tone: counts.open ? 'text-amber-200' : 'text-white' },
-    { label: 'Declined', value: counts.declined, tone: 'text-rose-200' },
   ];
-  if (counts.considered) cells.push({ label: 'Considered', value: counts.considered, tone: 'text-slate-300' });
+  if (counts.actionable !== null) {
+    cells.push({ label: 'Actionable', value: counts.actionable, tone: counts.actionable ? 'text-cyan-200' : 'text-white' });
+  }
+  cells.push({ label: 'Declined', value: counts.declined, tone: 'text-rose-200' });
+  if (counts.considered) cells.push({ label: 'Modified', value: counts.considered, tone: 'text-slate-300' });
   if (counts.orphaned) cells.push({ label: 'Text not found', value: counts.orphaned, tone: 'text-slate-300' });
   if (counts.approved) cells.push({ label: 'Approved', value: counts.approved, tone: 'text-emerald-200' });
   return (
