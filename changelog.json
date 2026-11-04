@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-title-change-steering",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Review: changing a chapter's title needs the steering committee",
+      "summary": "A proposal that changes a chapter's title now shows “Title change: the steering committee must agree” on the Review tab. It goes in only when every co-editor approves and a steering committee member agrees, and steering members get an “Agree to this title change” button. The Approve with changes form warns when an edit changes the title, and the style guide states the rule.",
+      "changes": [
+        "Review item: title-change notice, steering agreement status and button",
+        "Approve with changes: warning when the title changes",
+        "pick route: steering members (or site admins) may agree to title changes",
+        "dp-style-guide.ts: title-change rule"
+      ]
+    },
+    {
       "id": "mtp-style-rule-support-counts",
       "date": "2026-11-04",
       "status": "open",

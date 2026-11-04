@@ -120,6 +120,10 @@ export const STYLE_GUIDE: ReadonlyArray<StyleSection> = [
         rule: 'The six closing sections are required in every chapter: Relationship to Other Desirable Properties, Non-Goals and Explicit Boundaries, Minimum DPn Alignment, Open Questions and Future Work, Path Toward ML-RFC, and Closing Orientation.',
       },
       {
+        rule: 'A chapter’s title changes only with every co-editor’s approval and a steering committee member’s agreement, and the change carries through to the workgroup, the book’s contents and the other chapters that cite it.',
+        why: 'The title is how every other chapter, the site and Gov Hub refer to the property (owner, 4 November 2026).',
+      },
+      {
         rule: 'Open section 1, Purpose of This Draft, with “This draft articulates Desirable Property N (DPN) as …”. Call the chapter “this draft”, not “this ML-Draft”.',
         why: 'Settled at the 2 November 2026 community meeting, so all chapters open the same way.',
         do: 'This draft articulates Desirable Property 7 (DP7) as the condition under which …',

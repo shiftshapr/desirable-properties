@@ -223,6 +223,9 @@ export type GovHubDraftProposal = {
   created_on_revision_label?: string | null;
   /** DP co-editor approvals recorded so far (two incorporate the proposal). */
   approvals?: Array<{ user_id: string; user_name?: string | null; note?: string | null; created_at?: string | null }>;
+  /** The proposal changes the chapter title: it also needs a steering committee member's agreement. */
+  title_change?: boolean;
+  steering_signoff?: boolean;
   review_note?: string | null;
   reviewed_by_name?: string | null;
   /** A co-editor's revision of another proposal: the original's id and who revised it. */

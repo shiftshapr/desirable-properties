@@ -72,6 +72,15 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
   }, [placement, passages, workgroupId, suggestion, deepi, deepiMoves]);
 
   const textChanged = text.trim() !== item.proposedText.trim();
+  // Same test as Gov Hub (services/dp_title_change.py): a single "DPn – Title" line, with or without #.
+  const titleLine = (t: string) => {
+    const lines = t.split('\n').map((l) => l.trim()).filter(Boolean);
+    const h1 = lines.find((l) => l.startsWith('# '));
+    if (h1) return h1.slice(2).trim();
+    return lines.length === 1 && /^#?\s*DP\d+\s*[–—-]\s+\S/.test(lines[0]) ? lines[0].replace(/^#\s*/, '') : null;
+  };
+  const anchorTitle = titleLine(item.originalText || '');
+  const changesTitle = Boolean(item.titleChange || (anchorTitle && titleLine(text) !== anchorTitle));
   const moved = placement === 'elsewhere' && picked !== null;
   const canSubmit =
     !busy && Boolean(text.trim()) && Boolean(note.trim()) && (textChanged || moved) &&
@@ -116,6 +125,13 @@ export default function ReviewReviseForm({ workgroupId, item, suggestion, deepi,
           note, so the author sees what changed. It goes in when the other co-editors approve your version.
         </p>
       </div>
+
+      {changesTitle ? (
+        <p className="rounded-lg border border-amber-700/70 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
+          This changes the chapter&apos;s title. Besides every co-editor, a steering committee member must agree before
+          it goes in.
+        </p>
+      ) : null}
 
       <label className="block text-sm text-slate-300">
         Text
