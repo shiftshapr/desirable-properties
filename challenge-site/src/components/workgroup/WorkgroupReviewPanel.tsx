@@ -719,7 +719,8 @@ export default function WorkgroupReviewPanel({
               </div>
             ) : null}
 
-            {data?.isCoEditor ? (
+            {/* Decided proposals (accepted, declined, …) keep their status label; no Approve/Decline. */}
+            {data?.isCoEditor && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
                   Both co-editors must approve before a proposal goes into the next revision draft
