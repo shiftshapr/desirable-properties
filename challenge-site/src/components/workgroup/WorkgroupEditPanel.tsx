@@ -31,7 +31,7 @@ type Props = {
   signedIn: boolean;
 };
 
-const DISCOVERY_DPS = Array.from({ length: 23 }, (_, index) => `DP${index + 1}`);
+const DISCOVERY_DPS = Array.from({ length: 24 }, (_, index) => `DP${index + 1}`);
 
 const EMPTY_EDIT_STATE: WorkgroupChapterEditList = {
   edits: [],

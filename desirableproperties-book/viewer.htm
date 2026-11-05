@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="dp-viewer-build" content="dp-viewer-manifest-20260704">
   <title>The Layered Web: The Desirable Properties of a Meta-Layer</title>
-  <meta name="description" content="Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Read the inscribed edition of DP1–DP23.">
+  <meta name="description" content="Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Read DP1–DP24, most of them inscribed on Bitcoin.">
   <meta name="theme-color" content="#0d1117">
   <meta name="color-scheme" content="dark light">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -13,13 +13,13 @@
 
   <meta property="og:type" content="book">
   <meta property="og:title" content="The Layered Web: The Desirable Properties of a Meta-Layer">
-  <meta property="og:description" content="Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. DP1–DP23 inscribed on Bitcoin.">
+  <meta property="og:description" content="Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Most are inscribed on Bitcoin.">
   <meta property="og:url" content="https://desirableproperties.org/viewer/intro">
   <meta property="og:site_name" content="The Layered Web">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Layered Web: The Desirable Properties of a Meta-Layer">
-  <meta name="twitter:description" content="Twenty-three Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
+  <meta name="twitter:description" content="Twenty-four Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
 
   <link rel="stylesheet" href="/assets/dp-site.css?v=20260823" />
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
@@ -47,7 +47,7 @@
     "@type": "Book",
     "name": "The Layered Web: The Desirable Properties of a Meta-Layer",
     "alternateName": "Meta-Layer Desirable Properties",
-    "description": "Twenty-three Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure.",
+    "description": "Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure.",
     "bookFormat": "https://schema.org/EBook",
     "inLanguage": "en",
     "url": "https://desirableproperties.org/viewer/intro",
@@ -990,7 +990,7 @@
    *
    * Pattern: fetch /json/sources-sat.json at init → TOC built from
    * manifest.sources filtered by manifest.articleRails order.
-   * URL routing: /viewer/<railKey> (book_cover, intro, dp01..dp23).
+   * URL routing: /viewer/<railKey> (book_cover, intro, dp01..dp24).
    * Mode toggle: Live (default; uses src.localOverride if present)
    *              Onchain (fetches /content/<inscriptionId> from ordinals.com
    *              proxy at /content/, so it works on book.desirableproperties.org).
@@ -1016,11 +1016,11 @@
 
     /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
     let MANIFEST = null;
-    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp23, plus staging-only rails). */
+    /** RailKey → manifest source entry, in articleRails order (intro first, then dp01..dp24, plus staging-only rails). */
     let RAILS = [];
     /** RailKey → index in RAILS. */
     let RAIL_INDEX = {};
-    /** Currently-displayed railKey (book_cover first, then ml-draft-026 intro, dp01..dp23). */
+    /** Currently-displayed railKey (book_cover first, then ml-draft-026 intro, dp01..dp24). */
     let currentRail = null;
     /** 'live' | 'onchain' */
     let currentMode = 'live';
@@ -1180,7 +1180,7 @@
       let m2 = seg.match(/^dp-?(\d{1,2})$/);
       if (m2) {
         const n = parseInt(m2[1], 10);
-        if (n >= 1 && n <= 23) return 'dp' + String(n).padStart(2, '0');
+        if (n >= 1 && n <= 24) return 'dp' + String(n).padStart(2, '0');
       }
       return seg;
     }
@@ -1499,7 +1499,7 @@
         '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1">' +
           '<h1>The Layered Web<span class="header-subtitle">The Desirable Properties of a Meta-Layer</span></h1>' +
           '<p class="dp-intro-eyebrow">23 Properties, inscribed on Bitcoin</p>' +
-          '<p>This book collects twenty-three community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
+          '<p>This book collects twenty-four community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
           '<p>Read them in order, jump around, or follow the threads that interest you. Each chapter stands on its own – but they are strongest when seen together.</p>' +
           '<div class="dp-intro-actions">' +
             '<a class="dp-intro-start" href="/viewer/dp01">Start at DP1 →</a>' +

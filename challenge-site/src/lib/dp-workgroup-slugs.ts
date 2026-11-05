@@ -23,6 +23,7 @@ export const DP_WORKGROUP_SLUGS: Record<string, string> = {
   DP21: 'dp21-multi-modal',
   DP22: 'dp22-civic-memory-epistemic-continuity',
   DP23: 'dp23-universal-participation-linguistic-interoperability',
+  DP24: 'dp24-cross-layer-resilience',
 };
 
 export function dpWorkgroupSlug(dpId: string | null | undefined): string | null {

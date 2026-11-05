@@ -9,7 +9,7 @@ import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
 export const metadata: Metadata = {
   title: 'V1 readiness board – Desirable Properties',
   description:
-    'Which of the 23 Desirable Properties chapters are ready for Version 1.0 on November 13, 2026, against the ten-item readiness checklist.',
+    'Which of the 24 Desirable Properties chapters are ready for Version 1.0 on November 13, 2026, against the ten-item readiness checklist.',
 };
 
 export const dynamic = 'force-dynamic';

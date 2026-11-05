@@ -3,7 +3,7 @@
     "title": "Meta-Layer Desirable Properties",
     "description": "Community-defined desirable properties for decentralized digital infrastructure",
     "version": "1.2",
-    "total_properties": 23,
+    "total_properties": 24,
     "categories": [
       "Authentication and Accountability",
       "Sovereignty and Privacy",
@@ -713,6 +713,30 @@
         }
       ],
       "markdown": "# DP23 – Universal Participation & Linguistic Interoperability\n\n*The Conditions for Shared Global Sensemaking*\n\n## Overview\n\nThe Meta-Layer should enable universal participation and linguistic interoperability–preserving original expression, enabling understanding across languages, making machine interpretation visible and contestable, and showing how participation influences shared understanding and action.\n\n## Why It Matters\n\nDP23 establishes the conditions under which people can inhabit the same civic and epistemic space while preserving linguistic and cultural difference–without dominant-language mediation, semantic flattening, or extractive consultation.\n\n## Key Elements\n\n### Original-language integrity\n\nPreserve original contributions as the canonical civic record, with translation provenance, uncertainty visibility, and paired original/translation views.\n\n### Community-governed interpretation\n\nEnable translation challenges, cultural annotations, glossary stewardship, and multilingual due process so affected communities govern meaning–not only model providers.\n\n### Traceable collective sensemaking\n\nLink contributions through classification, clustering, summaries, recommendations, and institutional response so participants can see how their input influenced outcomes.\n"
+    },
+    {
+      "id": "DP24",
+      "name": "Cross-Layer Resilience and Compromise Containment",
+      "category": "Security, Transparency, & Trust",
+      "description": "The Meta-Layer should preserve the integrity of identity, authority, interactions, and governance even when the websites, browsers, devices, networks, services, overlays, or AI systems it depends on are compromised – within explicitly declared trust boundaries and threat assumptions.",
+      "landing_title": "Compromise Stops at the Boundary",
+      "landing_subtitle": "Participants can visit any page, including a hostile one, without that page speaking for them, reading their communities, or redirecting their agents.",
+      "landing_text": "DP24 defines how the Meta-Layer’s guarantees for identity, authority, and governance survive when a neighboring layer – a website, browser, device, network, overlay, or AI system – turns hostile.",
+      "elements": [
+        {
+          "name": "Authority independent of content origin",
+          "description": "A page, script, or document is a source of content, never of authority: compromise of a lower layer must not confer control over identity, communities, or agents."
+        },
+        {
+          "name": "Isolation and containment",
+          "description": "Credentials and privileged operations stay isolated from host pages and sibling overlays; when one component is compromised, the damage is contained, evidence is preserved, and recovery begins."
+        },
+        {
+          "name": "Shared surfaces and anchor integrity",
+          "description": "Several Meta-Layer clients share the same page through one participant-arranged launcher, and annotations stay attached to what their authors meant – or say so – when the page beneath them changes."
+        }
+      ],
+      "markdown": "# DP24 – Cross-Layer Resilience and Compromise Containment\n\n*When something beneath the Meta-Layer breaks, the damage stops at the boundary*\n\n## Overview\n\nThe Meta-Layer should preserve the integrity of identity, authority, interactions, and governance even when the websites, browsers, devices, networks, services, overlays, or AI systems it depends on are compromised – within explicitly declared trust boundaries and threat assumptions.\n\n## Why It Matters\n\nWithout this, every website becomes a potential administrator of the Meta-Layer, and the safest choice is not to use it on any page that matters.\n\n## Key Elements\n\n### Authority independent of content origin\n\nA page, script, or document is a source of content, never of authority: compromise of a lower layer must not confer control over identity, communities, or agents.\n\n### Isolation and containment\n\nCredentials and privileged operations stay isolated from host pages and sibling overlays; when one component is compromised, the damage is contained, evidence is preserved, and recovery begins.\n\n### Shared surfaces and anchor integrity\n\nSeveral Meta-Layer clients share the same page through one participant-arranged launcher, and annotations stay attached to what their authors meant – or say so – when the page beneath them changes.\n"
     }
   ]
 }
