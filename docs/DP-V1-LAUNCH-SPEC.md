@@ -11,7 +11,7 @@ with the chapters. Today none of that front matter is maintained by a process:
 |---|---|---|---|
 | Acknowledgements | `desirableproperties-book/content/local/acknowledgements.md` (Gov Hub ML-Draft-032) | 2026-09-29 | Lists one contributor; "additional contributors will be appended" |
 | About This Digital Monument | `content/local/about.md` (ML-Draft-031) | 2026-10-12 | Says "twenty-three Desirable Property chapters"; DP24 now exists |
-| Introduction | none in the book | – | The challenge site has `/about`; the book has no introduction chapter |
+| Introduction | Inscribed rail ML-Draft-026 (not a local file) | inscribed | Reinscribable; any V1 wording changes go through Gov Hub like the other front matter |
 | Cover | `content/local/cover.md` (ML-Draft-033) | – | No version or date line for V1 |
 
 ## 1. Front matter process
@@ -52,9 +52,8 @@ These are prose, so they are not generated. Instead:
   steering to approve before the freeze ends.
 - Known fixes now: "twenty-three" → the V1 count; mention that this is Version 1.0 and its date.
 
-Open question: by "Introduction", do you mean a new book chapter (front matter after About,
-e.g. "How to read this book"), or the challenge site's `/about` page? The spec assumes a short new
-chapter, ML-Draft-034, drafted by @bridgitdao and approved by steering; drop it if not wanted.
+The Introduction (ML-Draft-026) is inscribed and read from Bitcoin, so the same check reads it
+from Gov Hub; a fix means a new revision of ML-Draft-026 and, if wanted, a reinscription.
 
 ## 2. The V1 PDF
 
@@ -102,9 +101,15 @@ Sections, top to bottom:
 ## 5. Home page top panel
 
 Replace the top of the home page on release day (switched by date, so nobody has to deploy at 9am):
+Recommendation: the release panel **replaces** the hero for launch week, and the hero returns
+below it after that. Two full-height panels stacked make the page start with two competing
+headlines; on a phone the release would push the existing hero (and its three buttons) far down,
+or the hero would push the release below the fold. One headline – "Version 1.0 is here" – is the
+launch. After Nov 20 the panel shrinks to a one-line banner above the hero.
+
 - **Before release** (now → Nov 13 9am PT): the current hero; the countdown overlay that is
   hidden today can show "Version 1.0 releases November 13".
-- **Release panel** (Nov 13 →): above `LayerHero`, a full-width panel –
+- **Release panel** (Nov 13 → Nov 20): in place of `LayerHero`, a full-width panel –
   - "Version 1.0 is here" with the cover, release date and one sentence;
   - buttons: Read V1, Download PDF, Share;
   - a line of numbers (chapters, contributors, proposals merged);
@@ -131,9 +136,9 @@ with Download PDF and Share.
 
 ## Open questions for the owner
 
-1. Introduction: new book chapter, or something else?
-2. Is DP24 in V1, and is the book "23 chapters" or "24"?
-3. Should the home page release panel replace the hero, or sit above it?
-4. Should Editors be listed by name only, or name plus the DPs they edited?
-5. Which share targets: are X, LinkedIn, Bluesky and email the right four?
-6. PDF size: letter, A4, or both?
+1. DP24 is on production as of 2026-11-05 (owner); the book is 24 chapters. Confirm DP24 is in V1
+   even though its workgroup has no co-editors yet (steering would approve it).
+2. Release panel replaces the hero for launch week (recommended above) – confirm.
+3. Should Editors be listed by name only, or name plus the DPs they edited?
+4. Which share targets: are X, LinkedIn, Bluesky and email the right four?
+5. PDF size: letter, A4, or both?
