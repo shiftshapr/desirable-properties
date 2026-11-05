@@ -12,6 +12,7 @@
       "changes": [
         "lib/dp-mtp.ts: MTP_PREFIX is **Massive Transformational Purpose:**; **MTP:** still read",
         "Style guide rule: spell the label out, with the old form as the don't",
+        "Style guide v1.2: style checks made under v1.1 (which flagged the spelled-out label) run again",
         "Pending MTP proposals are relabelled by Gov Hub scripts/spell_out_mtp_label.py (Gov Hub PR #97)"
       ]
     },
