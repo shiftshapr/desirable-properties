@@ -1,14 +1,22 @@
 /**
  * Massive Transformational Purpose (MTP) lines in DP chapters (owner, 2026-11-04).
  *
- * Each chapter carries two lines under its tagline, "**MTP:** …" and "**In plain words:** …"
- * (Gov Hub services/dp_mtp.py). They change only through proposals that every co-editor approves
- * (one steering approval after the freeze); the MTP tab shows those proposals, the current lines
- * and the history of approved wordings.
+ * Each chapter carries two lines under its tagline, "**Massive Transformational Purpose:** …" and
+ * "**In plain words:** …" (Gov Hub services/dp_mtp.py). The label is spelled out (owner, 2026-11-05);
+ * the first proposals used "**MTP:**", which is still read. They change only through proposals that
+ * every co-editor approves (one steering approval after the freeze); the MTP tab shows those
+ * proposals, the current lines and the history of approved wordings.
  */
 import type { GovHubDraftProposal } from '@/lib/govhub';
 
-export const MTP_PREFIX = '**MTP:**';
+export const MTP_PREFIX = '**Massive Transformational Purpose:**';
+export const LEGACY_MTP_PREFIX = '**MTP:**';
+const MTP_PREFIXES = [MTP_PREFIX, LEGACY_MTP_PREFIX];
+
+/** The MTP label a line starts with (spelled out or legacy), or null. */
+function mtpPrefixOf(line: string): string | null {
+  return MTP_PREFIXES.find((prefix) => line.startsWith(prefix)) ?? null;
+}
 export const PLAIN_PREFIX = '**In plain words:**';
 
 export type MtpLines = { mtp: string; plain: string | null };
@@ -32,7 +40,7 @@ export type MtpResponse = {
 };
 
 export function isMtpText(text: string | null | undefined): boolean {
-  return String(text || '').trimStart().startsWith(MTP_PREFIX);
+  return mtpPrefixOf(String(text || '').trimStart()) !== null;
 }
 
 /** The MTP and plain-words lines in a block of chapter text (a passage or a proposal). */
@@ -41,7 +49,8 @@ export function parseMtp(text: string | null | undefined): MtpLines | null {
   let plain: string | null = null;
   for (const raw of String(text || '').split('\n')) {
     const line = raw.trim();
-    if (mtp === null && line.startsWith(MTP_PREFIX)) mtp = line.slice(MTP_PREFIX.length).trim();
+    const prefix = mtpPrefixOf(line);
+    if (mtp === null && prefix) mtp = line.slice(prefix.length).trim();
     else if (plain === null && line.startsWith(PLAIN_PREFIX)) plain = line.slice(PLAIN_PREFIX.length).trim();
   }
   return mtp ? { mtp, plain } : null;
