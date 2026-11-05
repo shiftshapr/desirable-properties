@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-hide-decided-controls",
+      "date": "2026-11-05",
+      "status": "open",
+      "title": "Review tab: no Approve or Decline on proposals already decided",
+      "summary": "Accepted and declined proposals still showed co-editors the decision note, a disabled Approve button, Decline and the note “Already accepted. Only pending Gov Hub proposals can be promoted into the next revision draft.”, which read like an error. Decided proposals now show only their status and approvals.",
+      "changes": [
+        "WorkgroupReviewPanel shows the co-editor decision block only for pending and not-yet-filed proposals"
+      ]
+    },
+    {
       "id": "review-reload-on-signin",
       "date": "2026-11-05",
       "status": "open",
