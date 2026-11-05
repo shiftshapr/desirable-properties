@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import { useAuth } from '@/lib/auth-context';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection';
 import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
@@ -99,9 +100,12 @@ export default function WorkgroupReviewPanel({
     }
   }, [workgroupId]);
 
+  // Reload when the sign-in settles or changes: a load made while the session was still being
+  // refreshed comes back anonymous, which hides Approve and Decline from co-editors.
+  const { user, checked } = useAuth();
   useEffect(() => {
     void reload();
-  }, [reload]);
+  }, [reload, user?.id, checked]);
 
   // Style checks run on the server; while some are still queued, reload a few times to show them.
   const pollsLeft = useRef(6);
