@@ -817,7 +817,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               is a milestone, not the end of iteration.
             </p>
             <p>
-              The current 23 DPs are not assumed complete; DP Discovery continues to surface
+              The current 24 DPs are not assumed complete; DP Discovery continues to surface
               candidate properties. <Link href="/#missing">Help identify gaps →</Link>
             </p>
           </>

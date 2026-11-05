@@ -53,7 +53,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
     title: 'Connect to a Desirable Property',
     summary: 'Maps your draft to relevant DPs from the framework.',
     details: [
-      'Hermes scans ML-Draft text for DP1–DP23 and cites overlaps.',
+      'Hermes scans ML-Draft text for DP1–DP24 and cites overlaps.',
       ctx.dpId ? `This workgroup is scoped to ${ctx.dpId}.` : 'Discovery workgroups consider the full DP set.',
     ],
     relatedDps: ctx.dpId ? [ctx.dpId] : undefined,
@@ -110,7 +110,7 @@ const PROMPT_INFO: Record<string, (ctx: PromptInfoContext) => AiPromptInfo> = {
   'wg-fit': () => ({
     title: 'Fit among existing DPs',
     summary: 'Discovery workgroup: where a new concept might sit in the DP framework.',
-    details: ['Considers all 23 DPs including draft DP23.'],
+    details: ['Considers all 24 DPs.'],
     links: [{ label: 'DP discovery workgroup', href: '/workgroups' }],
   }),
   'wg-gaps': () => ({

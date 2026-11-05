@@ -47,7 +47,7 @@ export default async function DpReadinessCard({ dpId, compact = false }: { dpId:
       )}
       <p className="mt-3 text-sm">
         <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
-          All 23 DPs on the readiness board →
+          All 24 DPs on the readiness board →
         </Link>
         <span className="mx-2 text-slate-600">·</span>
         <Link href="/process" className="text-cyan-300 hover:text-cyan-200">

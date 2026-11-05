@@ -4,7 +4,7 @@ export function dpFocusFromPageUrl(url: string | null | undefined): number | nul
   const match = String(url).match(/\/viewer\/dp(\d{1,2})(?:[^0-9]|$)/i);
   if (!match) return null;
   const n = parseInt(match[1], 10);
-  return Number.isFinite(n) && n >= 1 && n <= 23 ? n : null;
+  return Number.isFinite(n) && n >= 1 && n <= 24 ? n : null;
 }
 
 export function embedHermesSurface(kind: 'assist' | 'agent', pageUrl?: string | null): string {

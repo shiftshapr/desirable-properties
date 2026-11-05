@@ -31,7 +31,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
   description:
-    'Browse the 23 Desirable Property workgroups plus DP Discovery. Join a group toward Version 1.0 on November 13, 2026. We want at least 3 people in every workgroup.',
+    'Browse the 24 Desirable Property workgroups plus DP Discovery. Join a group toward Version 1.0 on November 13, 2026. We want at least 3 people in every workgroup.',
 };
 
 const DP_DISCOVERY_FALLBACK_DESCRIPTION =
@@ -175,7 +175,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             Join a DP Workgroup
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            Each of the 23 Desirable Properties is stewarded by a dedicated workgroup, plus DP
+            Each of the 24 Desirable Properties is stewarded by a dedicated workgroup, plus DP
             Discovery for gaps the current set may have missed. Help take the Community Review Draft
             to Version 1.0 by November 13, 2026. Each DP needs two co-editors, who decide which
             proposals go in. If a group has an open seat, join it and become a co-editor.
@@ -335,7 +335,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">The DP workgroups</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
-            Twenty-three workgroups each steward one Desirable Property. DP Discovery watches for
+            Twenty-four workgroups each steward one Desirable Property. DP Discovery watches for
             properties the current 23 may have missed. Each DP has two co-editors, who decide its
             proposals.
             {collabEnabled
@@ -610,7 +610,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">Ready to participate?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
             Pick a workgroup above, or go straight to the Metaweb layer on Gov Hub to
-            discover drafts and discussions across all 23 properties – and DP Discovery.
+            discover drafts and discussions across all 24 properties – and DP Discovery.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a

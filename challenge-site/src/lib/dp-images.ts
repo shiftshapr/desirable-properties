@@ -9,7 +9,7 @@ export function normalizeDpNumber(dpId: string | null | undefined): number | nul
   const m = String(dpId).trim().match(/^DP\s*0*(\d+)$/i);
   if (!m) return null;
   const n = parseInt(m[1], 10);
-  return Number.isFinite(n) && n >= 1 && n <= 23 ? n : null;
+  return Number.isFinite(n) && n >= 1 && n <= 24 ? n : null;
 }
 
 /** Full illustration for DP / workgroup hero (~1200px). */
