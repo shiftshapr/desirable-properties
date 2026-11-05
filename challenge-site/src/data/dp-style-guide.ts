@@ -130,8 +130,9 @@ export const STYLE_GUIDE: ReadonlyArray<StyleSection> = [
         dont: 'This ML-Draft articulates Desirable Property 7 (DP7) as …',
       },
       {
-        rule: 'Under the tagline, the chapter’s MTP: a line “**MTP:** …” and a line “**In plain words:** …”. Like the tagline, they are written for participants: they may address the reader as “you”, and “MTP” needs no expansion there. They change only through proposals on the MTP tab.',
-        do: '**MTP:** Every voice understood, no voice erased.',
+        rule: 'Under the tagline, the chapter’s Massive Transformational Purpose: a line “**Massive Transformational Purpose:** …” and a line “**In plain words:** …”. Spell the label out; do not write “MTP”. Like the tagline, they are written for participants and may address the reader as “you”. They change only through proposals on the MTP tab.',
+        do: '**Massive Transformational Purpose:** Every voice understood, no voice erased.',
+        dont: '**MTP:** Every voice understood, no voice erased.',
       },
       {
         rule: 'Under the title, keep a one-line italic tagline written for participants.',

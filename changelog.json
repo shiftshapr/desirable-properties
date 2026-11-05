@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "mtp-spelled-out",
+      "date": "2026-11-05",
+      "status": "open",
+      "title": "Massive Transformational Purpose is spelled out",
+      "summary": "Each chapter's MTP line is now labelled “Massive Transformational Purpose:” instead of “MTP:”. The MTP tab and the Review tab still recognise proposals and chapters that use the old label, and the style guide now asks for the label to be spelled out.",
+      "changes": [
+        "lib/dp-mtp.ts: MTP_PREFIX is **Massive Transformational Purpose:**; **MTP:** still read",
+        "Style guide rule: spell the label out, with the old form as the don't",
+        "Pending MTP proposals are relabelled by Gov Hub scripts/spell_out_mtp_label.py (Gov Hub PR #97)"
+      ]
+    },
+    {
       "id": "review-hide-decided-controls",
       "date": "2026-11-05",
       "status": "open",
