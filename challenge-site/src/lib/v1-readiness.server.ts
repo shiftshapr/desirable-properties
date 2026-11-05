@@ -22,6 +22,9 @@ export type DpReadiness = {
   draft_ref: string | null;
   draft_title: string | null;
   pending_proposals: number;
+  /** Pending with exactly one approval. Optional: older Gov Hub deploys don't send it. */
+  one_approval_proposals?: number;
+  declined_proposals?: number;
   accepted_proposals: number;
   members: number;
   passed: number;

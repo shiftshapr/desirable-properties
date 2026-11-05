@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "readiness-proposals-by-dp",
+      "date": "2026-11-04",
+      "status": "open",
+      "title": "Readiness board: proposals by DP, with totals",
+      "summary": "The V1 readiness board now has a “Proposals by DP” table: for each DP and in total, how many proposals are open, how many open ones have one approval, how many were approved (incorporated) and how many were declined. Each DP links to its workgroup's Review tab.",
+      "changes": [
+        "ProposalCountsTable on /v1-readiness",
+        "Reads one_approval_proposals and declined_proposals from Gov Hub /api/dp/readiness/ (Gov Hub PR #95)"
+      ]
+    },
+    {
       "id": "review-modified-actionable",
       "date": "2026-11-04",
       "status": "open",
