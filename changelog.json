@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-reload-on-signin",
+      "date": "2026-11-05",
+      "status": "open",
+      "title": "Review tab: co-editors keep Approve and Decline after a sign-in refresh",
+      "summary": "The Review tab loaded once when the page opened. If the sign-in was still being refreshed at that moment it loaded as a signed-out visitor, so a co-editor saw “Only this DP's co-editors approve or decline” with no buttons while the co-editor card said they were a co-editor. It now reloads when the sign-in settles or changes.",
+      "changes": [
+        "WorkgroupReviewPanel reloads the review queue when the signed-in user changes"
+      ]
+    },
+    {
       "id": "readiness-proposals-by-dp",
       "date": "2026-11-04",
       "status": "open",
