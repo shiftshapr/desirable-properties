@@ -115,6 +115,11 @@
       "mlNumber": "ML-Draft-030",
       "label": "DP23 – Universal Participation & Linguistic Interoperability",
       "status": "draft"
+    },
+    "DP24": {
+      "mlNumber": "ML-Draft-056",
+      "label": "DP24 – Cross-Layer Resilience and Compromise Containment",
+      "status": "active"
     }
   }
 }

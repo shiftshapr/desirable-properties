@@ -34,7 +34,7 @@ type Props = {
   onDeepLinkHandled?: () => void;
 };
 
-const DISCOVERY_DPS = Array.from({ length: 23 }, (_, index) => `DP${index + 1}`);
+const DISCOVERY_DPS = Array.from({ length: 24 }, (_, index) => `DP${index + 1}`);
 
 function mlDraftLabel(dpId: string): string {
   const mlByDp = dpMlDraftMap.map as Record<string, { mlNumber?: string }>;

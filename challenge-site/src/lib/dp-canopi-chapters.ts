@@ -15,7 +15,7 @@ export const DP_CANOPI_SITE_ORIGIN = 'https://desirableproperties.org';
 export const DP_CANOPI_CHAPTERS = [
   { value: '', label: 'All chapters' },
   { value: 'intro', label: 'Intro' },
-  ...Array.from({ length: 23 }, (_, i) => {
+  ...Array.from({ length: 24 }, (_, i) => {
     const n = String(i + 1).padStart(2, '0');
     return { value: `dp${n}`, label: `DP${i + 1}` };
   }),

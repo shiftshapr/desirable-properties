@@ -231,7 +231,7 @@ export default function ProcessPage() {
             href="/v1-readiness"
             className="inline-flex rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-500"
           >
-            Open the readiness board for all 23 DPs →
+            Open the readiness board for all 24 DPs →
           </Link>
         </p>
       </Section>

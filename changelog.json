@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "dp24-live",
+      "date": "2026-11-05",
+      "status": "open",
+      "title": "DP24 joins the book and the site",
+      "summary": "DP24 – Cross-Layer Resilience and Compromise Containment is now a full chapter: listed in the book on production (no longer staging only), on the home page cards, the workgroups page, DP pages and pickers, with its own images and chapter PDF.",
+      "changes": [
+        "Book manifest: DP24 maps to Gov Hub ML-Draft-056 and is no longer stagingOnly; meta descriptions say twenty-four",
+        "desirable-properties.json (site and book): DP24 entry; total_properties 24",
+        "Workgroup slug, ML-Draft map, image range, chapter pickers and DP number parsing go to 24",
+        "DP24 card, full and badge images; DP24-0.77X.pdf",
+        "Current-count copy (workgroups, readiness, process, style guide, FAQ) says 24; historical Astra and September 16 text unchanged"
+      ]
+    },
+    {
       "id": "mtp-spelled-out",
       "date": "2026-11-05",
       "status": "open",
@@ -12,6 +26,7 @@
       "changes": [
         "lib/dp-mtp.ts: MTP_PREFIX is **Massive Transformational Purpose:**; **MTP:** still read",
         "Style guide rule: spell the label out, with the old form as the don't",
+        "Style guide v1.2: style checks made under v1.1 (which flagged the spelled-out label) run again",
         "Pending MTP proposals are relabelled by Gov Hub scripts/spell_out_mtp_label.py (Gov Hub PR #97)"
       ]
     },

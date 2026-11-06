@@ -7,8 +7,8 @@
  * STYLE_GUIDE_UPDATED whenever a rule changes.
  */
 
-export const STYLE_GUIDE_VERSION = '1.1';
-export const STYLE_GUIDE_UPDATED = '2026-11-04';
+export const STYLE_GUIDE_VERSION = '1.2';
+export const STYLE_GUIDE_UPDATED = '2026-11-05';
 
 export type StyleRule = {
   rule: string;

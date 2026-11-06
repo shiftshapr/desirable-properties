@@ -21,7 +21,7 @@ export default function StyleGuidePage() {
         </p>
         <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">Style guide</h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-300">
-          Twenty-three workgroups write one book. This guide keeps it reading as one book: who we write
+          Twenty-four workgroups write one book. This guide keeps it reading as one book: who we write
           for, the voice, how requirements are worded, and how to write a patch or insert that fits.
           Most rules record what the chapters already do; the rest settle where chapters disagree.
         </p>
