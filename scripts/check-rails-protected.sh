@@ -15,6 +15,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RAIL_PATHS=(
   'desirableproperties-book/content/local/dp*.md'
+  'desirableproperties-book/content/local/foreword.md'
   'desirableproperties-book/content/local/about.md'
   'desirableproperties-book/content/local/acknowledgements.md'
 )

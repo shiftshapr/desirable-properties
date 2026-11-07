@@ -50,14 +50,17 @@ class GovhubSyncCommonTests(unittest.TestCase):
                  'mlNumber': 'ML-Draft-032', 'localOverride': '/content/local/acknowledgements.md'},
                 {'railKey': 'about', 'label': 'About This Digital Monument',
                  'mlNumber': 'ML-Draft-031', 'localOverride': '/content/local/about.md'},
+                {'railKey': 'foreword', 'label': 'Foreword by Vint Cerf',
+                 'mlNumber': 'ML-Draft-057', 'localOverride': '/content/local/foreword.md'},
             ],
         }
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'sources-sat.json'
             path.write_text(json.dumps(payload), encoding='utf-8')
             rails = load_front_matter_manifest(path)
-        self.assertEqual([r['railKey'] for r in rails], ['about', 'acknowledgements'])
-        self.assertEqual(rails[0]['ml_number'], 'ML-Draft-031')
+        self.assertEqual([r['railKey'] for r in rails], ['foreword', 'about', 'acknowledgements'])
+        self.assertEqual(rails[0]['ml_number'], 'ML-Draft-057')
+        self.assertEqual(rails[0]['kind'], 'front_matter')
 
     def test_load_sync_rails_manifest_orders_front_matter_first(self):
         payload = {
