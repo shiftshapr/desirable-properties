@@ -1175,6 +1175,7 @@
       if (!railKey || !(railKey in RAIL_INDEX)) return '';
       const r = RAILS[RAIL_INDEX[railKey]];
       if (railKey === 'book_cover') return 'Cover';
+      if (railKey === 'foreword') return 'Foreword';
       if (railKey === 'about') return 'About';
       if (railKey === 'acknowledgements') return 'Acknowledgements';
       if (railKey === 'ml-draft-026') return 'Introduction';
@@ -1215,12 +1216,16 @@
         const dp = r.dp || '';
         const isCover = r.railKey === 'book_cover';
         const isIntro = r.railKey === 'ml-draft-026';
+        const isForeword = r.railKey === 'foreword';
         const isAbout = r.railKey === 'about';
         const isAck = r.railKey === 'acknowledgements';
         let idLabel, titleText;
         if (isCover) {
           idLabel = '';
           titleText = 'Cover';
+        } else if (isForeword) {
+          idLabel = '';
+          titleText = 'Foreword by Vint Cerf';
         } else if (isAbout) {
           idLabel = '';
           titleText = 'About This Digital Monument';

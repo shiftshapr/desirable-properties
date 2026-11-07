@@ -11,8 +11,8 @@ from typing import Any
 
 GOVHUB_SYNC_MARKER = 'govhub-sync:'
 
-FRONT_MATTER_RAIL_KEYS = frozenset({'about', 'acknowledgements'})
-FRONT_MATTER_ORDER = ('about', 'acknowledgements')
+FRONT_MATTER_RAIL_KEYS = frozenset({'foreword', 'about', 'acknowledgements'})
+FRONT_MATTER_ORDER = ('foreword', 'about', 'acknowledgements')
 
 HUB_URLS: dict[str, str] = {
     'dev': 'https://dev.interfacehub.net',
@@ -157,7 +157,7 @@ def load_dp_manifest(sources_sat: Path) -> list[dict[str, Any]]:
 
 
 def load_front_matter_manifest(sources_sat: Path) -> list[dict[str, Any]]:
-    """Front matter rails (about, acknowledgements) from sources-sat.json."""
+    """Front matter rails (foreword, about, acknowledgements) from sources-sat.json."""
     data = json.loads(sources_sat.read_text(encoding='utf-8'))
     order = {key: idx for idx, key in enumerate(FRONT_MATTER_ORDER)}
     rails: list[dict[str, Any]] = []
