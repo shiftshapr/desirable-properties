@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Bootstrap NEW root Gov Hub drafts from local about.md / acknowledgements.md.
+Bootstrap NEW root Gov Hub drafts from local front matter (foreword.md, about.md, acknowledgements.md).
 
 Creates approved root submissions (is_revision=False) with ML numbers assigned via
 get_next_ml_number — typically ML-Draft-031 and ML-Draft-032 on production.
@@ -100,7 +100,7 @@ def main() -> int:
     parser.add_argument('--reference-ml', default=DEFAULT_REFERENCE_ML,
                         help='Existing DP parent to copy layer metadata from')
     parser.add_argument('--only', default='',
-                        help='Comma-separated front matter rails (about, acknowledgements)')
+                        help='Comma-separated front matter rails (foreword, about, acknowledgements)')
     parser.add_argument('--submitted-by', default='Gov Hub',
                         help='Display name recorded as submitter')
     parser.add_argument('--approve', action='store_true',
