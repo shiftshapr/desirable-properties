@@ -40,6 +40,4 @@ The Desirable Properties in this book are an attempt to answer that question. I 
 
 *Vint Cerf*
 
----
-
-*Adapted from Vint Cerf's remarks at the Meta-Layer Initiative kickoff, 16 September 2024, with passages from his Stanford Engineering Heroes lecture (2011), his review of* The Metaweb *(Routledge, 2023), an NPR interview (2018) and an interview with This Is The World (2026). Edited for reading and approved by the author, 7 November 2026.*
+<!-- Source note, kept and not displayed (owner 2026-11-08): Adapted from Vint Cerf's remarks at the Meta-Layer Initiative kickoff, 16 September 2024, with passages from his Stanford Engineering Heroes lecture (2011), his review of The Metaweb (Routledge, 2023), an NPR interview (2018) and an interview with This Is The World (2026). Edited for reading and approved by the author, 7 November 2026. -->
