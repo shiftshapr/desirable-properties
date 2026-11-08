@@ -1,7 +1,5 @@
 # Foreword
 
-*Vint Cerf*
-
 People who run around using phrases like "words of wisdom" always worry me. I have words, but whether they're wise or not is someone else's decision. What I am happy to share is a little of the experience of watching the Internet begin and then blossom, and to try to extract from that some insight into what makes infrastructure possible.
 
 I think we have to agree that this proposal is indeed a broad kind of infrastructure. It is layered on top of the existing Internet, or whatever the Internet morphs into. When you create this sort of overlay, it's important that you use the words *agnostic*, or *technology agnostic*. The Internet Protocol layer is insensitive to the underlying transport, and that was by choice. We didn't care whether it was radio, optical fiber, a dedicated piece of copper or something else. That was helpful: when a new transport or transmission came along, we could simply sweep it in. The IP layer doesn't demand very much. It basically says: can you deliver this bundle of bits with some probability greater than zero?
