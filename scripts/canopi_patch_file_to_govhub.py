@@ -346,7 +346,9 @@ def post_text(content: str) -> str:
 
 def fetch_posts(cfg) -> list[dict]:
     posts, seen = [], set()
-    for n in range(1, 24):
+    # Every DP in the ML map, so a new DP is read without a code change (DP24 was missed at range(1, 24)).
+    dps = sorted(int(k[2:]) for k in json.loads(ML_MAP.read_text())["map"])
+    for n in dps:
         for community_id, pid in (
             (c, p) for c in COMMUNITY_IDS
             for p in (page_id(f"{BOOK_ORIGIN}/viewer/dp{n:02d}"), f"dp{n:02d}")
