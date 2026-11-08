@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "foreword-note-hidden",
+      "date": "2026-11-08",
+      "status": "open",
+      "title": "Foreword: source note no longer shown",
+      "summary": "The note under Vint Cerf's foreword (where its passages come from, approved by the author) is kept in the file as a comment and no longer displayed.",
+      "changes": [
+        "foreword.md: the visible source note and its rule are now an HTML comment, which the book viewer and Gov Hub do not display"
+      ]
+    },
+    {
       "id": "dp24-live",
       "date": "2026-11-05",
       "status": "open",
