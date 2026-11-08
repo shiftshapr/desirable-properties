@@ -9,6 +9,7 @@
     "bookCoverInscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
     "articleRails": [
         "book_cover",
+        "foreword",
         "about",
         "acknowledgements",
         "ml-draft-026",
@@ -46,6 +47,15 @@
             "status": "draft",
             "reinscribable": true,
             "reason": "Book cover – Gov Hub draft (ML-Draft-033) with 2026 cover art; not inscribed yet (Live mode only until next ordinal)"
+        },
+        {
+            "railKey": "foreword",
+            "label": "Foreword by Vint Cerf",
+            "mlNumber": "ML-Draft-057",
+            "localOverride": "/content/local/foreword.md",
+            "status": "draft",
+            "reinscribable": true,
+            "reason": "Front matter – Vint Cerf's foreword, approved by him 2026-11-07 – Gov Hub synced local rail"
         },
         {
             "railKey": "about",

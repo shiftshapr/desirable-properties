@@ -555,6 +555,27 @@
       border-top: 1px solid var(--book-rule);
       margin: 2em 0;
     }
+    .book-content .table-wrap {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+    .book-content table {
+      border-collapse: collapse;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+    .book-content th,
+    .book-content td {
+      border: 1px solid var(--book-rule);
+      padding: 0.45em 0.7em;
+      text-align: left;
+      vertical-align: top;
+    }
+    .book-content th {
+      background: var(--book-code-bg);
+      font-weight: 600;
+    }
 
     /* Intro / preface landing */
     .book-content .dp-intro {
@@ -1154,6 +1175,7 @@
       if (!railKey || !(railKey in RAIL_INDEX)) return '';
       const r = RAILS[RAIL_INDEX[railKey]];
       if (railKey === 'book_cover') return 'Cover';
+      if (railKey === 'foreword') return 'Foreword';
       if (railKey === 'about') return 'About';
       if (railKey === 'acknowledgements') return 'Acknowledgements';
       if (railKey === 'ml-draft-026') return 'Introduction';
@@ -1194,12 +1216,16 @@
         const dp = r.dp || '';
         const isCover = r.railKey === 'book_cover';
         const isIntro = r.railKey === 'ml-draft-026';
+        const isForeword = r.railKey === 'foreword';
         const isAbout = r.railKey === 'about';
         const isAck = r.railKey === 'acknowledgements';
         let idLabel, titleText;
         if (isCover) {
           idLabel = '';
           titleText = 'Cover';
+        } else if (isForeword) {
+          idLabel = '';
+          titleText = 'Foreword by Vint Cerf';
         } else if (isAbout) {
           idLabel = '';
           titleText = 'About This Digital Monument';
@@ -1275,7 +1301,7 @@
     /* ---------- Markdown rendering ----------
      * Inline renderer (replaces marked.js): handles headings, bold/italic,
      * inline code, links, ordered/unordered lists, blockquotes, horizontal
-     * rules, and paragraphs. Output is HTML-escaped first, then run through
+     * rules, tables, and paragraphs. Output is HTML-escaped first, then run through
      * the inline pass – the post-render sanitizer strips on* handlers.
      */
 
@@ -1304,6 +1330,16 @@
       // before stashing – so the inner literal text is already safe)
       out = out.replace(/\u0001CODE(\d+)\u0001/g, (_, i) => '<code>' + codeStash[+i] + '</code>');
       return out;
+    }
+
+    const TABLE_SEP_RE = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/;
+
+    function isTableStart(lines, i) {
+      return /^\s*\|/.test(lines[i]) && i + 1 < lines.length && TABLE_SEP_RE.test(lines[i + 1]);
+    }
+
+    function splitTableRow(line) {
+      return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim());
     }
 
     function renderMarkdown(md) {
@@ -1373,6 +1409,22 @@
           continue;
         }
 
+        // GFM table: a | header row followed by a |---| separator row.
+        if (isTableStart(lines, i)) {
+          const head = splitTableRow(lines[i]);
+          i += 2;
+          const rows = [];
+          while (i < lines.length && /^\s*\|/.test(lines[i])) {
+            rows.push(splitTableRow(lines[i]));
+            i++;
+          }
+          const th = head.map((c) => '<th>' + renderInlineMd(c) + '</th>').join('');
+          const body = rows.map((r) =>
+            '<tr>' + head.map((_, k) => '<td>' + renderInlineMd(r[k] || '') + '</td>').join('') + '</tr>').join('');
+          out.push('<div class="table-wrap"><table><thead><tr>' + th + '</tr></thead><tbody>' + body + '</tbody></table></div>');
+          continue;
+        }
+
         // paragraph: consume until blank line or block-level break
         const para = [];
         while (i < lines.length && lines[i].trim()
@@ -1380,7 +1432,8 @@
                && !/^---+\s*$/.test(lines[i])
                && !UL_RE.test(lines[i])
                && !OL_RE.test(lines[i])
-               && !/^>\s+/.test(lines[i])) {
+               && !/^>\s+/.test(lines[i])
+               && !isTableStart(lines, i)) {
           para.push(lines[i]);
           i++;
         }
