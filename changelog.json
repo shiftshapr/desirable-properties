@@ -7,10 +7,11 @@
       "id": "foreword-note-hidden",
       "date": "2026-11-08",
       "status": "open",
-      "title": "Foreword: source note no longer shown",
-      "summary": "The note under Vint Cerf's foreword (where its passages come from, approved by the author) is kept in the file as a comment and no longer displayed.",
+      "title": "Foreword: no source note, signature only at the end",
+      "summary": "The source note under Vint Cerf's foreword is kept in the file as a comment and no longer displayed, and his name no longer appears under the title: the foreword is signed at the end.",
       "changes": [
-        "foreword.md: the visible source note and its rule are now an HTML comment, which the book viewer and Gov Hub do not display"
+        "foreword.md: the visible source note and its rule are now an HTML comment, which the book viewer and Gov Hub do not display",
+        "foreword.md: the 'Vint Cerf' byline under the title is removed; the signature at the end stays"
       ]
     },
     {
