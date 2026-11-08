@@ -1,7 +1,5 @@
 # Foreword
 
-*Vint Cerf*
-
 People who run around using phrases like "words of wisdom" always worry me. I have words, but whether they're wise or not is someone else's decision. What I am happy to share is a little of the experience of watching the Internet begin and then blossom, and to try to extract from that some insight into what makes infrastructure possible.
 
 I think we have to agree that this proposal is indeed a broad kind of infrastructure. It is layered on top of the existing Internet, or whatever the Internet morphs into. When you create this sort of overlay, it's important that you use the words *agnostic*, or *technology agnostic*. The Internet Protocol layer is insensitive to the underlying transport, and that was by choice. We didn't care whether it was radio, optical fiber, a dedicated piece of copper or something else. That was helpful: when a new transport or transmission came along, we could simply sweep it in. The IP layer doesn't demand very much. It basically says: can you deliver this bundle of bits with some probability greater than zero?
@@ -40,6 +38,4 @@ The Desirable Properties in this book are an attempt to answer that question. I 
 
 *Vint Cerf*
 
----
-
-*Adapted from Vint Cerf's remarks at the Meta-Layer Initiative kickoff, 16 September 2024, with passages from his Stanford Engineering Heroes lecture (2011), his review of* The Metaweb *(Routledge, 2023), an NPR interview (2018) and an interview with This Is The World (2026). Edited for reading and approved by the author, 7 November 2026.*
+<!-- Source note, kept and not displayed (owner 2026-11-08): Adapted from Vint Cerf's remarks at the Meta-Layer Initiative kickoff, 16 September 2024, with passages from his Stanford Engineering Heroes lecture (2011), his review of The Metaweb (Routledge, 2023), an NPR interview (2018) and an interview with This Is The World (2026). Edited for reading and approved by the author, 7 November 2026. -->
