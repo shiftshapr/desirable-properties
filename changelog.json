@@ -11,7 +11,8 @@
       "summary": "The book cover carries a gold sunburst seal reading \"Foreword by Vint Cerf\", on the front beside the globe.",
       "changes": [
         "assets/cover.png, cover@2x.png, cover.webp, cover@2x.webp: seal added at both sizes",
-        "index.html: the cover's alt text mentions the foreword"
+        "index.html: the cover's alt text mentions the foreword",
+        "cover art: \"PEORLE\" under the first icon corrected to \"PEOPLE\""
       ]
     },
     {
