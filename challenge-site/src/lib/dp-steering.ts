@@ -104,6 +104,8 @@ export type SteeringBatch = {
   title: string;
   summary: string;
   proposalIds: string[];
+  /** Spans every document (e.g. the "(Non-Normative)" headings): approving votes on all of its items. */
+  bookWide: boolean;
 };
 
 export type SteeringDocument = {
@@ -264,6 +266,7 @@ function normalizeBatch(raw: unknown): SteeringBatch {
     title: str(b.title) || str(b.key) || 'Batch',
     summary: str(b.summary),
     proposalIds: ids.length ? ids : fromItems,
+    bookWide: b.book_wide === true,
   };
 }
 

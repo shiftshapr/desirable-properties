@@ -291,6 +291,12 @@ function BatchSection({
       ) : open.length ? (
         <div className="mt-4 space-y-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3">
           <p className="text-xs text-slate-400">
+            {batch.bookWide ? (
+              <strong className="block pb-1 text-amber-200">
+                This batch spans the whole book: approving it votes on all {batch.proposalIds.length} items, in every
+                chapter, not only the one shown here.
+              </strong>
+            ) : null}
             Approving votes <strong className="text-slate-200">{DECISION_LABEL[batch.kind]}</strong> on each ticked item
             {batch.kind === 'accept_revised' ? ', with the analysis’s revised text' : ''}. Untick an item to leave it out
             and vote on it separately.
@@ -322,7 +328,9 @@ function BatchSection({
           >
             {busy === `batch:${batch.id}`
               ? 'Approving…'
-              : `Approve batch (${included.length} of ${open.length})`}
+              : batch.bookWide
+                ? `Approve book-wide batch (${batch.proposalIds.length} items)`
+                : `Approve batch (${included.length} of ${open.length})`}
           </button>
           {flash[`batch:${batch.id}`]?.text ? (
             <p role="status" className="text-sm text-rose-200">{flash[`batch:${batch.id}`].text}</p>
