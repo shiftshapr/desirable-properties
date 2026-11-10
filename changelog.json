@@ -4,6 +4,43 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-sweep-pages",
+      "date": "2026-11-10",
+      "status": "open",
+      "title": "Steering committee review pages with batch approval",
+      "summary": "After the V1.0 freeze, the steering committee decides every open proposal at /steering. Each document's proposals come with a recorded analysis and are grouped into batches; two of the three steering members must agree before anything is carried out.",
+      "changes": [
+        "/steering: overview of the 24 DPs and the 4 front-matter documents, with progress",
+        "/steering/<document>: batches with Approve batch (untick items to leave them out), per-item votes (Agree, Accept, Accept revised, Reject, Defer to 1.1) and an audit export",
+        "Cards show the analysis, whether a second pass verified it, a stale badge, and who has voted; once you vote, your vote replaces the buttons",
+        "Review tab after the freeze: recommendation and vote state per item; Approve and Decline record steering votes"
+      ]
+    },
+    {
+      "id": "mtp-review-steering-only",
+      "date": "2026-11-10",
+      "status": "open",
+      "title": "Massive Transformational Purposes held for 1.1",
+      "summary": "Withdrawn MTP proposals no longer appear in the Review tab, and only the steering committee can decide MTPs.",
+      "changes": [
+        "Review tab hides withdrawn MTPs",
+        "MTP decision buttons show only for steering members"
+      ]
+    },
+    {
+      "id": "v1-book-panel-videos",
+      "date": "2026-11-10",
+      "status": "open",
+      "title": "Version 1.0 book panel, /v1 page and Layered Web videos",
+      "summary": "The home page gains a Version 1.0 book panel and a carousel of the Layered Web videos. Before launch the panel offers a waitlist for the launch-day email; at 10am PT on 13 November the PDF download goes live and the launch-day video opens first.",
+      "changes": [
+        "Home page: book panel and video carousel under the hero",
+        "/v1: book download page linking to the online book",
+        "Book waitlist with an unsubscribe link, sent through the existing broadcast tool",
+        "Video 7 stays hidden until launch, then leads the carousel"
+      ]
+    },
+    {
       "id": "cover-foreword-seal",
       "date": "2026-11-08",
       "status": "open",
