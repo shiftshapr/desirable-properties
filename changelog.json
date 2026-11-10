@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-launch-liveday-2026-11-13",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 is live",
+      "summary": "Release-day copy: the site now leads with “Version 1.0 is live.” The Friday gathering remains Friday, November 13, 2026, 10–11 AM PT, live on Zoom. Monday Roundup times are unchanged. From November 14, a follow-up should change gathering “is” to “was.”",
+      "changes": [
+        "Homepage, /v1, /pad, /challenge, /faq, /launch-briefing, /participate, /process, /start-here, /workgroups, and /v1-readiness swap pre-launch “V1.0 releases Friday…” lines to “Version 1.0 is live.”",
+        "/roundups closer and the /events Friday card, plus the /challenge countdown fallback, name the live launch gathering at 10–11 AM PT",
+        "FAQ question retitled to “When did Version 1.0 release?”",
+        "Book cover tagline leads with “Version 1.0 is live.” The July 21 notify modal was already removed in the pre-launch PR"
+      ]
+    },
+    {
       "id": "v1-pdf-final",
       "date": "2026-11-13",
       "status": "open",

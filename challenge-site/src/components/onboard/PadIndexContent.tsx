@@ -31,8 +31,8 @@ export default async function PadIndexContent({
         sources, not silent profiling. Suppositions stay hypotheses until you confirm.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
-        Version 0.77 is the current working draft. The Community Review Draft was published
-        September 16, 2026. V1.0 releases Friday, November 13, 2026, 10–11 AM PT.
+        Version 1.0 is live. The Community Review Draft was published September 16, 2026.
+        Landing pads remain open for dialogue and patches.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
         Curated public packet for DP Studio landing pads.

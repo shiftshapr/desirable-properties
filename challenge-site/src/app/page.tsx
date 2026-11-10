@@ -94,8 +94,7 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl font-bold text-white">Current DP Challenge</h2>
                 <p className="mt-3 max-w-2xl text-slate-400">
-                  Version 0.77 remains the working draft through Thursday. V1.0 releases Friday,
-                  November 13, 2026, 10–11 AM PT.{' '}
+                  Version 1.0 is live. The 0.77 working draft is the record that led here.{' '}
                   <Link href="/challenge#timeline" className="text-cyan-300 hover:text-cyan-200">
                     View full timeline →
                   </Link>

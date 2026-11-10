@@ -40,8 +40,8 @@ export default async function CohortPadClient() {
         until you confirm.
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">
-        Version 0.77 is the current working draft. The Community Review Draft was published
-        September 16, 2026. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. DP Studio is in
+        Version 1.0 is live. The Community Review Draft was published September 16, 2026.
+        Landing pads remain open for dialogue and patches. DP Studio is in
         public beta now. Contributions follow our{' '}
         <Link href="/terms" className="text-cyan-400 hover:text-cyan-200">
           Terms
