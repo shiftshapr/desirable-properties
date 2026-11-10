@@ -409,6 +409,11 @@ function ItemCard({
   const [revising, setRevising] = useState(false);
   const [revised, setRevised] = useState(a?.revisedText || p.proposed_text || '');
   const mine = item.votes.find((v) => v.mine) || null;
+  // Once you have voted, the card shows your vote; the buttons return only to change it.
+  const mineKey = mine ? `${mine.decision}:${mine.revisedText || ''}` : '';
+  const [changingFor, setChangingFor] = useState<string | null>(null);
+  const changing = Boolean(mine) && changingFor === mineKey; // a new vote changes mineKey and closes the controls
+  const showControls = !mine || changing;
   const disabled = Boolean(busy);
   const isDone = item.state === 'done' || Boolean(item.outcome?.executedAt);
   const rec = a?.recommendation || null;
@@ -504,7 +509,34 @@ function ItemCard({
         </p>
       ) : null}
 
-      {!isDone ? (
+      {!isDone && mine ? (
+        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-800 pt-3 text-sm">
+          <span className="text-slate-200">
+            Your vote: <strong>{DECISION_LABEL[mine.decision] || mine.decision}</strong>
+            {mine.batchId ? <span className="text-slate-400"> (via batch)</span> : null}
+            <span className="text-slate-400">
+              {item.state === 'split' ? ' · the votes differ, so the third member settles it' : ' · waiting for a second member'}
+            </span>
+          </span>
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => setChangingFor(changing ? null : mineKey)}
+            className="text-violet-300 underline hover:text-violet-200 disabled:opacity-50"
+          >
+            {changing ? 'Keep my vote' : 'Change vote'}
+          </button>
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => onWithdraw(item)}
+            className="text-slate-400 underline hover:text-slate-200 disabled:opacity-50"
+          >
+            Withdraw
+          </button>
+        </div>
+      ) : null}
+      {!isDone && showControls ? (
         <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
           <label className="block text-xs text-slate-400">
             Note (optional; the author reads it with a rejection)
@@ -578,14 +610,6 @@ function ItemCard({
                 </button>
               </div>
             </div>
-          ) : null}
-          {mine ? (
-            <p className="text-xs text-slate-400">
-              Your vote: {DECISION_LABEL[mine.decision] || mine.decision}.{' '}
-              <button type="button" disabled={disabled} onClick={() => onWithdraw(item)} className="underline hover:text-slate-200">
-                Withdraw it
-              </button>
-            </p>
           ) : null}
           {busy === `item:${item.proposalId}` ? <p className="text-xs text-slate-400">Saving…</p> : null}
         </div>
