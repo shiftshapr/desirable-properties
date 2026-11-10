@@ -8,7 +8,7 @@ import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection'
 import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
 import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
-import { isMtpText } from '@/lib/dp-mtp';
+import { isMtpItem } from '@/lib/dp-mtp';
 import SectionLabel from '@/components/workgroup/SectionLabel';
 import WorkingRevisionEmail from '@/components/workgroup/WorkingRevisionEmail';
 import type {
@@ -281,7 +281,7 @@ export default function WorkgroupReviewPanel({
   const allItems = data?.items || [];
   const items =
     only === 'mtp'
-      ? allItems.filter((i) => isMtpText(i.proposedText) || isMtpText(i.insertText))
+      ? allItems.filter((i) => isMtpItem(i))
       : allItems;
   const counts = reviewCounts(items, data?.isCoEditor ? data.viewerGovhubUserId || '' : null);
   const working = data?.workingRevision;
@@ -719,8 +719,15 @@ export default function WorkgroupReviewPanel({
               </div>
             ) : null}
 
+            {/* MTPs are held for Version 1.1: the steering committee alone decides them (owner, 2026-11-09). */}
+            {isMtpItem(item) && !data?.isSteering && item.status === 'pending' ? (
+              <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-400">
+                The steering committee decides Massive Transformational Purposes. This one is held for Version 1.1.
+              </p>
+            ) : null}
+
             {/* Decided proposals (accepted, declined, …) keep their status label; no Approve/Decline. */}
-            {data?.isCoEditor && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
+            {(isMtpItem(item) ? data?.isSteering : data?.isCoEditor) && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
                 <p className="text-xs text-slate-500">
                   Both co-editors must approve before a proposal goes into the next revision draft

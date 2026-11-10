@@ -1,4 +1,5 @@
 import { reviewClaudeConfigured } from '@/lib/review-claude.server';
+import { isMtpItem } from '@/lib/dp-mtp';
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId } from '@/lib/govhub';
@@ -44,13 +45,15 @@ export async function GET(_request: Request, ctx: RouteContext) {
     ? await workgroupCanEdit(workgroupId, session.idToken)
     : false);
 
-  const items = await buildWorkgroupReviewQueue({
+  const queue = await buildWorkgroupReviewQueue({
     workgroupId,
     dpId,
     draftRef,
     documentHref: summary.document_href,
     viewerUserId: session?.userId || null,
   });
+  // MTPs withdrawn from Version 1.0 (held for 1.1) are not part of this review (owner, 2026-11-09).
+  const items = queue.filter((item) => !(isMtpItem(item) && String(item.status).toLowerCase() === 'withdrawn'));
 
   // Checks for new proposals run on the server in the background; this request does not wait.
   if (items.some((item) => item.styleCheckable && !item.styleCheck && !item.styleCheckError)) {
