@@ -8,7 +8,7 @@ import ReviewCommentsSection from '@/components/workgroup/ReviewCommentsSection'
 import PrepublishCheck from '@/components/workgroup/PrepublishCheck';
 import ReviewAskDeepi from '@/components/workgroup/ReviewAskDeepi';
 import ReviewReviseForm from '@/components/workgroup/ReviewReviseForm';
-import { isMtpText } from '@/lib/dp-mtp';
+import { isMtpItem } from '@/lib/dp-mtp';
 import SectionLabel from '@/components/workgroup/SectionLabel';
 import WorkingRevisionEmail from '@/components/workgroup/WorkingRevisionEmail';
 import type {
@@ -281,10 +281,12 @@ export default function WorkgroupReviewPanel({
   const allItems = data?.items || [];
   const items =
     only === 'mtp'
-      ? allItems.filter((i) => isMtpText(i.proposedText) || isMtpText(i.insertText))
+      ? allItems.filter((i) => isMtpItem(i))
       : allItems;
   const counts = reviewCounts(items, data?.isCoEditor ? data.viewerGovhubUserId || '' : null);
   const working = data?.workingRevision;
+  /** After the freeze, a steering member's Approve and Decline record steering votes (two of three agree). */
+  const steeringVotes = Boolean(data?.editorialFreeze && data.isSteering);
   const hasComposedDraft = Boolean(working?.exists && (working?.appliedCount || 0) > 0);
 
   return (
@@ -333,9 +335,20 @@ export default function WorkgroupReviewPanel({
           <h3 className="text-sm font-semibold text-violet-100">Editorial freeze for Version 1.0</h3>
           <p className="mt-1 text-sm text-slate-300">
             {data.isSteering
-              ? 'You are on the steering committee: you can decide any pending proposal on this DP, and one approval puts it in. Then review the chapter and publish.'
+              ? 'You are on the steering committee. Every open proposal gets a recorded decision, and two of the three steering members must agree before it is carried out. Approve and Decline here record your vote; they no longer act at once. Then review the chapter and publish.'
               : 'The steering committee is now finishing this chapter, so approving, revising and declining are closed for co-editors. Thank you for your work on it.'}
           </p>
+          {data.isSteering && data.steeringHref ? (
+            <p className="mt-2 text-sm">
+              <a href={data.steeringHref} className="text-violet-200 underline hover:text-violet-100">
+                Open the steering sweep for this chapter
+              </a>
+              <span className="text-slate-400"> for the analysis, batches, Accept revised and Defer to 1.1.</span>
+            </p>
+          ) : null}
+          {data.isSteering && data.steeringError ? (
+            <p className="mt-2 text-xs text-amber-200">Steering record unavailable: {data.steeringError}</p>
+          ) : null}
         </section>
       ) : null}
 
@@ -521,6 +534,9 @@ export default function WorkgroupReviewPanel({
                     : item.status}
               </span>
             </div>
+            {data?.editorialFreeze && data.isSteering && item.govhubProposalId && !declined ? (
+              <SteeringChip item={item} href={data.steeringHref || null} />
+            ) : null}
             <p className="mt-2 text-sm text-slate-200">
               {item.authorName}
               {item.revisedBy ? <span className="text-violet-200"> · revised by {item.revisedBy}</span> : null} · members:
@@ -558,7 +574,7 @@ export default function WorkgroupReviewPanel({
             {item.anchorEval && item.status === 'pending' ? (
               <AnchorFlag
                 item={item}
-                canAct={Boolean(data?.isCoEditor) && !busyKey}
+                canAct={Boolean(data?.isCoEditor) && !steeringVotes && !busyKey}
                 onMove={() => {
                   setMoveKey(item.key);
                   setMoveTick((n) => n + 1);
@@ -607,6 +623,7 @@ export default function WorkgroupReviewPanel({
               item={item}
               viewerGovhubUserId={data?.viewerGovhubUserId || null}
               needed={data?.approvalsNeeded || 2}
+              steeringVotes={steeringVotes}
             />
 
             {item.evals.comments.length ? (
@@ -701,11 +718,18 @@ export default function WorkgroupReviewPanel({
             {item.titleChange && item.status === 'pending' ? (
               <div className="mt-4 rounded-lg border border-amber-700/70 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
                 <p className="font-semibold">Title change: the steering committee must agree</p>
+                {steeringVotes ? (
+                  <p className="mt-1 text-amber-100/80">
+                    This proposal changes the chapter&apos;s title. After the freeze it is decided like any other proposal:
+                    two steering members must agree.
+                  </p>
+                ) : (
                 <p className="mt-1 text-amber-100/80">
                   This proposal changes the chapter&apos;s title. It goes in only when every co-editor approves it and a
                   steering committee member agrees.{' '}
                   {item.steeringSignoff ? 'A steering member has agreed.' : 'No steering member has agreed yet.'}
                 </p>
+                )}
                 {!data?.isCoEditor && data?.canSignoffTitles && !item.steeringSignoff ? (
                   <button
                     type="button"
@@ -719,13 +743,27 @@ export default function WorkgroupReviewPanel({
               </div>
             ) : null}
 
+            {/* MTPs are held for Version 1.1: the steering committee alone decides them (owner, 2026-11-09). */}
+            {isMtpItem(item) && !data?.isSteering && item.status === 'pending' ? (
+              <p className="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-400">
+                The steering committee decides Massive Transformational Purposes. This one is held for Version 1.1.
+              </p>
+            ) : null}
+
             {/* Decided proposals (accepted, declined, …) keep their status label; no Approve/Decline. */}
-            {data?.isCoEditor && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
+            {(isMtpItem(item) ? data?.isSteering : data?.isCoEditor) && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
               <div className="mt-4 space-y-2 border-t border-slate-800 pt-3">
-                <p className="text-xs text-slate-500">
-                  Both co-editors must approve before a proposal goes into the next revision draft
-                  (not live). Decide within 7 days of filing.
-                </p>
+                {steeringVotes ? (
+                  <p className="text-xs text-slate-500">
+                    Two steering members must agree. Approve and Decline record your steering vote; the
+                    proposal is carried out (into the revision draft, not live) when a second member votes the same way.
+                  </p>
+                ) : (
+                  <p className="text-xs text-slate-500">
+                    Both co-editors must approve before a proposal goes into the next revision draft
+                    (not live). Decide within 7 days of filing.
+                  </p>
+                )}
                 <label className="block text-xs text-slate-400">
                   Decision note{' '}
                   <span className="text-slate-500">
@@ -747,18 +785,29 @@ export default function WorkgroupReviewPanel({
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {(() => {
-                    const mine = Boolean(
-                      data?.viewerGovhubUserId && item.approvals.some((a) => a.userId === data.viewerGovhubUserId),
-                    );
+                    // After the freeze, approvals recorded before it no longer count: "mine" is the steering vote.
+                    const mine = steeringVotes
+                      ? Boolean(item.steering?.votes.some((v) => v.mine && v.decision === 'accept'))
+                      : Boolean(
+                          data?.viewerGovhubUserId && item.approvals.some((a) => a.userId === data.viewerGovhubUserId),
+                        );
                     return (
                       <button
                         type="button"
                         disabled={mine || !item.canPromote || Boolean(busyKey)}
-                        title={mine ? 'You approved this proposal' : undefined}
+                        title={mine ? (steeringVotes ? 'You voted to accept this proposal' : 'You approved this proposal') : undefined}
                         onClick={() => void pick(item, 'promote')}
                         className="rounded-lg bg-cyan-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-cyan-700 disabled:opacity-50"
                       >
-                        {mine ? 'Approved by you' : busyKey === `promote:${item.key}` ? 'Approving…' : 'Approve'}
+                        {mine
+                          ? steeringVotes
+                            ? 'You voted accept'
+                            : 'Approved by you'
+                          : busyKey === `promote:${item.key}`
+                            ? steeringVotes
+                              ? 'Voting…'
+                              : 'Approving…'
+                            : 'Approve'}
                       </button>
                     );
                   })()}
@@ -776,7 +825,16 @@ export default function WorkgroupReviewPanel({
                   >
                     Decline
                   </button>
-                  {item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' && item.patchMode !== 'dedup' ? (
+                  {steeringVotes ? (
+                    data?.steeringHref ? (
+                      <a
+                        href={data.steeringHref}
+                        className="rounded-lg border border-violet-800/70 px-3 py-1.5 text-sm text-violet-100 hover:border-violet-500"
+                      >
+                        Accept revised or defer…
+                      </a>
+                    ) : null
+                  ) : item.govhubProposalId && item.status === 'pending' && item.patchMode !== 'bundle' && item.patchMode !== 'dedup' ? (
                     <button
                       type="button"
                       disabled={Boolean(busyKey)}
@@ -791,7 +849,7 @@ export default function WorkgroupReviewPanel({
                     </button>
                   ) : null}
                 </div>
-                {revisingKey === item.key ? (
+                {revisingKey === item.key && !steeringVotes ? (
                   <div id={`revise-${item.key}`} className="scroll-mt-24">
                   <ReviewReviseForm
                     // A new key when Move is used, so a form that was already open restarts at the suggested passage.
@@ -844,25 +902,81 @@ export default function WorkgroupReviewPanel({
   );
 }
 
+const STEERING_DECISION: Record<string, string> = {
+  accept: 'accept',
+  accept_revised: 'accept revised',
+  decline: 'reject',
+  defer: 'defer to 1.1',
+  needs_person: 'a person decides',
+};
+
+const STEERING_STATE: Record<string, string> = {
+  none: 'no steering votes',
+  one: 'one steering vote, needs a second',
+  split: 'steering split, the third vote settles it',
+  ready: 'two agree, being carried out',
+  done: 'decided by steering',
+};
+
+/** After the freeze, for steering members: the analysis's recommendation and the steering vote state. */
+function SteeringChip({ item, href }: { item: ReviewQueueItem; href: string | null }) {
+  const s = item.steering;
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+      {s?.recommendation ? (
+        <span className="rounded border border-violet-700/70 bg-violet-950/30 px-1.5 py-0.5 text-violet-100">
+          Recommends {STEERING_DECISION[s.recommendation] || s.recommendation}
+          {s.confidence ? ` · ${s.confidence}` : ''}
+        </span>
+      ) : (
+        <span className="rounded border border-slate-700 px-1.5 py-0.5 text-slate-400">Not analysed yet</span>
+      )}
+      {s?.stale ? (
+        <span className="rounded border border-amber-600 px-1.5 py-0.5 text-amber-200" title="The chapter changed after the analysis">
+          Stale
+        </span>
+      ) : null}
+      <span className="text-slate-300">
+        {STEERING_STATE[s?.state || 'none'] || s?.state}
+        {s?.votes.length
+          ? `: ${s.votes.map((v) => `${v.voterName}${v.mine ? ' (you)' : ''} ${STEERING_DECISION[v.decision] || v.decision}`).join(', ')}`
+          : ''}
+      </span>
+      {s?.outcomeError ? <span className="text-rose-200">Not carried out: {s.outcomeError}</span> : null}
+      {href ? (
+        <a href={href} className="text-violet-200 underline hover:text-violet-100">
+          Steering sweep
+        </a>
+      ) : null}
+    </div>
+  );
+}
+
 /** Who approved (visible to everyone), or the recorded decision once the proposal is closed. */
 function Decisions({
   item,
   viewerGovhubUserId,
   needed,
+  steeringVotes = false,
 }: {
   item: ReviewQueueItem;
   viewerGovhubUserId: string | null;
   needed: number;
+  /** After the freeze approvals stay in the history but do not count toward the steering decision. */
+  steeringVotes?: boolean;
 }) {
   if (item.approvals.length) {
+    const names = item.approvals
+      .map((a) => (a.userId === viewerGovhubUserId ? `${a.userName} (you)` : a.userName))
+      .join(' and ');
     return (
       <div className="mt-3 rounded-lg border border-emerald-900/50 bg-emerald-950/20 px-3 py-2 text-sm">
         <p className="text-emerald-200">
-          Approved by{' '}
-          {item.approvals
-            .map((a) => (a.userId === viewerGovhubUserId ? `${a.userName} (you)` : a.userName))
-            .join(' and ')}{' '}
-          · {item.approvals.length} of {needed} co-editor approvals
+          {steeringVotes && ['pending', 'canopi_only'].includes(String(item.status).toLowerCase()) ? (
+            <>Approved before the freeze by {names}. These approvals stay on record but do not count toward the steering decision.</>
+          ) : (
+            <>Approved by {names} · {item.approvals.length} of {needed} co-editor approvals</>
+          )}
         </p>
         {item.approvals
           .filter((a) => a.note)

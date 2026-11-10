@@ -1,4 +1,5 @@
 import { reviewClaudeConfigured } from '@/lib/review-claude.server';
+import { isMtpItem } from '@/lib/dp-mtp';
 import { NextResponse } from 'next/server';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId } from '@/lib/govhub';
@@ -14,7 +15,9 @@ import {
 import { buildWorkgroupReviewQueue } from '@/lib/workgroup-review-queue';
 import { currentStyleCheckModel } from '@/lib/style-check.server';
 import { nudgeReviewChecks } from '@/lib/review-checks-sweep.server';
-import type { ReviewQueueResponse } from '@/lib/workgroup-review-types';
+import type { ReviewQueueResponse, ReviewSteeringInfo } from '@/lib/workgroup-review-types';
+import { fetchSteeringDocument } from '@/lib/dp-steering-govhub.server';
+import { normalizeSteeringDocument } from '@/lib/dp-steering';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -44,13 +47,43 @@ export async function GET(_request: Request, ctx: RouteContext) {
     ? await workgroupCanEdit(workgroupId, session.idToken)
     : false);
 
-  const items = await buildWorkgroupReviewQueue({
+  const queue = await buildWorkgroupReviewQueue({
     workgroupId,
     dpId,
     draftRef,
     documentHref: summary.document_href,
     viewerUserId: session?.userId || null,
   });
+  // MTPs withdrawn from Version 1.0 (held for 1.1) are not part of this review (owner, 2026-11-09).
+  const items = queue.filter((item) => !(isMtpItem(item) && String(item.status).toLowerCase() === 'withdrawn'));
+
+  // After the freeze, steering members see each proposal's recommendation and steering votes
+  // (two of three must agree; docs/DP-V1-STEERING-SWEEP-SPEC.md). Gov Hub's steering API is steering-only.
+  let steeringError: string | null = null;
+  if (steeringActs && draftRef && session?.idToken) {
+    const result = await fetchSteeringDocument(draftRef, session.idToken);
+    if (result.ok) {
+      const doc = normalizeSteeringDocument(draftRef, result.data, coEditor.govhubUserId);
+      const byId = new Map<string, ReviewSteeringInfo>(
+        doc.items.map((s) => [
+          s.proposalId,
+          {
+            recommendation: s.analysis?.recommendation || null,
+            confidence: s.analysis?.confidence || null,
+            stale: s.stale,
+            state: s.state,
+            votes: s.votes.map((v) => ({ voterName: v.voterName, decision: v.decision, mine: v.mine })),
+            outcomeError: s.outcome?.error || null,
+          },
+        ]),
+      );
+      for (const item of items) {
+        item.steering = item.govhubProposalId ? byId.get(item.govhubProposalId) || null : null;
+      }
+    } else {
+      steeringError = String(result.data.error || `Steering record unavailable (${result.status})`);
+    }
+  }
 
   // Checks for new proposals run on the server in the background; this request does not wait.
   if (items.some((item) => item.styleCheckable && !item.styleCheck && !item.styleCheckError)) {
@@ -93,6 +126,8 @@ export async function GET(_request: Request, ctx: RouteContext) {
     editorialFreeze: coEditor.editorialFreeze,
     isSteering: coEditor.isSteering,
     canSignoffTitles: coEditor.canSignoffTitles,
+    steeringHref: steeringActs && draftRef ? `/steering/${encodeURIComponent(draftRef)}` : null,
+    steeringError,
   };
   return NextResponse.json(payload, { headers: { 'Cache-Control': 'no-store' } });
 }
