@@ -43,6 +43,12 @@ export function isMtpText(text: string | null | undefined): boolean {
   return mtpPrefixOf(String(text || '').trimStart()) !== null;
 }
 
+/** A review item that adds or changes a chapter's MTP. MTPs are held for Version 1.1 and decided
+ *  by the steering committee alone (owner, 2026-11-09; Gov Hub services/dp_mtp.py). */
+export function isMtpItem(item: { proposedText?: string | null; insertText?: string | null; originalText?: string | null }): boolean {
+  return isMtpText(item.proposedText) || isMtpText(item.insertText) || isMtpText(item.originalText);
+}
+
 /** The MTP and plain-words lines in a block of chapter text (a passage or a proposal). */
 export function parseMtp(text: string | null | undefined): MtpLines | null {
   let mtp: string | null = null;

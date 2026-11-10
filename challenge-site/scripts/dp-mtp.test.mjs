@@ -33,3 +33,11 @@ test('recognises MTP proposals and builds the history newest first', () => {
   assert.deepEqual(history[1].approvers, ['Ana', 'Ben']);
   assert.equal(history[0].note, 'Too narrow');
 });
+
+test('isMtpItem: new MTP text, an insert, or a replace of the MTP line', async () => {
+  const { isMtpItem } = await import('../src/lib/dp-mtp.ts');
+  assert.equal(isMtpItem({ proposedText: '**Massive Transformational Purpose:** X.', insertText: null, originalText: 'Tagline' }), true);
+  assert.equal(isMtpItem({ proposedText: '', insertText: '**MTP:** X.', originalText: 'Tagline' }), true);
+  assert.equal(isMtpItem({ proposedText: 'Gone.', insertText: null, originalText: '**Massive Transformational Purpose:** X.' }), true);
+  assert.equal(isMtpItem({ proposedText: 'Plain.', insertText: null, originalText: 'Other.' }), false);
+});
