@@ -6,7 +6,7 @@
  * (https://interfacehub.net/api/doc/draft/<ML-Draft>/chapter-passages/), lays the
  * book out as HTML, paginates it with Paged.js in headless Chrome and prints one PDF:
  *
- *   cover · title page · edition notice · contents · foreword · preface (About)
+ *   cover · title page · edition notice · contents · foreword · preface (About) · introduction
  *   · DP1–DP24 (opener page with the illustration, then the text) · acknowledgements
  *
  * with running heads, page numbers, a linked table of contents, in-book DP cross-references,
@@ -25,9 +25,13 @@
  *   --only DP1,DP2       Limit chapters (for quick layout checks).
  *   --html-only          Write the HTML and stop (open it in Chrome to debug the layout).
  *   --cover-image <file> Use a flat, full-bleed cover image instead of the typeset cover.
+ *   --cover-png <file>   Also save the typeset cover as flat art (PNG, about 2570 x 3690 px).
  *   --chrome <path>      Chrome/Chromium binary (or CHROME_PATH).
  *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
  *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
+ *
+ * The Introduction (ML-Draft-026) comes from Gov Hub when Gov Hub serves it, otherwise from its Bitcoin
+ * inscription (the copy the online book shows in Onchain mode).
  *
  * Gov Hub's API is fetched with curl: it answers non-browser clients such as Python urllib with 403.
  * MTPs (Massive Transformational Purposes) are not part of V1.0 and are never pulled in.
@@ -53,11 +57,13 @@ const TITLE = 'The Layered Web';
 const SUBTITLE = 'The Desirable Properties of a Meta-Layer';
 const EDITION = 'Version 1.0';
 const EDITION_DATE = 'November 13, 2026';
+// Mirrors that serve an inscription's raw content (ordinals.com blocks scripted clients).
+const INSCRIPTION_MIRRORS = ['https://static.unisat.io/content/', 'https://cdn.ordiscan.com/inscriptions/', 'https://ordinals.com/content/'];
 
 // ---------------------------------------------------------------- CLI
 
 function parseArgs(argv) {
-  const a = { final: false, offline: false, htmlOnly: false, only: null, out: null, coverImage: null,
+  const a = { final: false, offline: false, htmlOnly: false, only: null, out: null, coverImage: null, coverPng: null,
     chrome: process.env.CHROME_PATH || null, preview: null, hub: 'https://interfacehub.net' };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
@@ -68,6 +74,7 @@ function parseArgs(argv) {
     else if (k === '--only') a.only = next().split(',').map((s) => s.trim().toUpperCase());
     else if (k === '--out') a.out = path.resolve(next());
     else if (k === '--cover-image') a.coverImage = path.resolve(next());
+    else if (k === '--cover-png') a.coverPng = path.resolve(next());
     else if (k === '--chrome') a.chrome = next();
     else if (k === '--preview') a.preview = next();
     else if (k === '--hub') a.hub = next().replace(/\/$/, '');
@@ -122,6 +129,36 @@ function fetchPassages(hub, ml, offline) {
   return data.passages;
 }
 
+/**
+ * The rail's passages from Gov Hub, or, when Gov Hub cannot serve the draft, from the rail's inscription
+ * (its markdown split into blocks). Returns { passages, source }.
+ */
+function fetchRail(hub, rail, offline) {
+  try {
+    return { passages: fetchPassages(hub, rail.mlNumber, offline), source: 'gov-hub' };
+  } catch (e) {
+    if (!rail.inscriptionId) throw e;
+    const cache = path.join(CACHE_DIR, `${rail.inscriptionId}.md`);
+    let md = null;
+    if (offline) {
+      if (!fs.existsSync(cache)) throw new Error(`--offline: no cached copy of ${rail.mlNumber} or its inscription`);
+      md = fs.readFileSync(cache, 'utf8');
+    } else {
+      for (const base of INSCRIPTION_MIRRORS) {
+        try {
+          md = execFileSync('curl', ['-sS', '--fail', '-L', '-m', '60', '-A', 'Mozilla/5.0', base + rail.inscriptionId], { maxBuffer: 64 << 20 }).toString('utf8');
+          if (/^#\s/m.test(md)) break;
+          md = null;
+        } catch { /* next mirror */ }
+      }
+      if (!md) throw new Error(`${rail.mlNumber}: Gov Hub failed and no mirror served inscription ${rail.inscriptionId}`);
+      fs.writeFileSync(cache, md);
+    }
+    console.warn(`  ! ${rail.mlNumber}: Gov Hub could not serve it, using its inscription ${rail.inscriptionId.slice(0, 12)}…`);
+    return { passages: md.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean), source: `inscription ${rail.inscriptionId}` };
+  }
+}
+
 // ---------------------------------------------------------------- Markdown → HTML
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -132,11 +169,14 @@ function stripComments(md) {
 
 /** Clean a rail's passages: drop sync markers, pull out title / subtitle / illustration, drop structural rules. */
 function prepareRail(passages) {
-  let ps = passages.map(stripComments).filter((p) => p.length > 0);
+  // Headings written as `## **Title**` are bold already; drop the extra markers.
+  let ps = passages.map(stripComments).filter((p) => p.length > 0)
+    .map((p) => p.replace(/^(#{1,6}\s+)\*\*([^*]+)\*\*\s*$/gm, '$1$2'));
   let title = null; let subtitle = null; let image = null;
   if (ps[0] && /^#\s/.test(ps[0])) title = ps.shift().replace(/^#\s+/, '').trim();
   const sub = ps[0] && ps[0].match(/^(\*{1,2})([^*][\s\S]*?)\1$/);
-  if (sub) { ps.shift(); subtitle = sub[2].trim(); }
+  // Working-draft version tags such as "(V2)" are not part of the published subtitle.
+  if (sub) { ps.shift(); subtitle = sub[2].trim().replace(/\s*\(V\d+\)/g, ''); }
   if (ps[0] && /^!\[[^\]]*\]\([^)]+\)$/.test(ps[0])) image = ps.shift();
   // A horizontal rule next to a heading or at either end only repeats the structure the heading already shows.
   const isRule = (p) => /^(-{3,}|\*{3,}|_{3,})$/.test(p);
@@ -205,7 +245,8 @@ function polish(html, { signature = false } = {}) {
 // ---------------------------------------------------------------- Cover art
 
 /** A network sphere in the spirit of the cover: Fibonacci points on a sphere, nearest-neighbour links. */
-function sphereSvg(size = 520) {
+function sphereSvg(size = 520, cls = 'sphere') {
+  const id = cls;
   const n = 130; const r = size * 0.42; const c = size / 2;
   const pts = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
@@ -235,36 +276,66 @@ function sphereSvg(size = 520) {
     return `<circle cx="${(c + p.x * r).toFixed(1)}" cy="${(c + p.y * r).toFixed(1)}" r="${(1.4 + depth * 2.6).toFixed(1)}" fill-opacity="${(0.35 + depth * 0.65).toFixed(2)}"/>`;
   }).join('');
   const rings = [0.55, 0.7, 0.85, 1.0].map((k) => `<circle cx="${c}" cy="${c}" r="${(r * 1.18 * k).toFixed(1)}" fill="none" stroke="#3b6f8f" stroke-opacity="0.18" stroke-dasharray="1 5"/>`).join('');
-  return `<svg class="sphere" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  const star = cls === 'sphere' ? `<g stroke="#fff3c8" stroke-linecap="round" filter="url(#glow-${id})">${[0, 45, 90, 135].map((d) => `<line x1="${c - r * (d % 90 ? 0.16 : 0.3)}" y1="${c}" x2="${c + r * (d % 90 ? 0.16 : 0.3)}" y2="${c}" stroke-width="${d % 90 ? 0.8 : 1.3}" stroke-opacity="0.85" transform="rotate(${d} ${c} ${c})"/>`).join('')}</g><circle cx="${c}" cy="${c}" r="${(size * 0.012).toFixed(1)}" fill="#fffbe8" filter="url(#glow-${id})"/>` : '';
+  return `<svg class="${cls}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs>
-    <radialGradient id="core" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffcf6b" stop-opacity="0.9"/><stop offset="35%" stop-color="#e09a22" stop-opacity="0.35"/><stop offset="100%" stop-color="#e09a22" stop-opacity="0"/></radialGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <radialGradient id="core-${id}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffcf6b" stop-opacity="0.9"/><stop offset="35%" stop-color="#e09a22" stop-opacity="0.35"/><stop offset="100%" stop-color="#e09a22" stop-opacity="0"/></radialGradient>
+    <filter id="glow-${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
   ${rings}
-  <circle cx="${c}" cy="${c}" r="${(r * 0.75).toFixed(1)}" fill="url(#core)"/>
-  <g stroke="#f2b84b" stroke-width="1.05" filter="url(#glow)">${lines.join('')}</g>
-  <g fill="#ffd27a" filter="url(#glow)">${dots}</g>
+  <circle cx="${c}" cy="${c}" r="${(r * 0.75).toFixed(1)}" fill="url(#core-${id})"/>
+  <g stroke="#f2b84b" stroke-width="1.05" filter="url(#glow-${id})">${lines.join('')}</g>
+  <g fill="#ffd27a" filter="url(#glow-${id})">${dots}</g>
+  ${star}
 </svg>`;
 }
+
+/** A gold starburst seal ("Foreword by Vint Cerf"). */
+function sealSvg() {
+  const n = 36; const c = 60; const pts = [];
+  for (let i = 0; i < n * 2; i++) {
+    const r = i % 2 ? 51 : 58; const a = (Math.PI * i) / n;
+    pts.push(`${(c + r * Math.sin(a)).toFixed(2)},${(c - r * Math.cos(a)).toFixed(2)}`);
+  }
+  return `<svg class="cover-seal" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Foreword by Vint Cerf">
+  <defs>
+    <radialGradient id="sealGold" cx="38%" cy="32%" r="75%"><stop offset="0%" stop-color="#fff4b8"/><stop offset="45%" stop-color="#f0c33c"/><stop offset="100%" stop-color="#b8860b"/></radialGradient>
+  </defs>
+  <polygon points="${pts.join(' ')}" fill="url(#sealGold)" stroke="#8c6a12" stroke-width="0.8"/>
+  <circle cx="60" cy="60" r="44" fill="none" stroke="#8c6a12" stroke-width="1.1"/>
+  <circle cx="60" cy="60" r="41" fill="none" stroke="#fff1a8" stroke-opacity="0.7" stroke-width="0.6"/>
+  <text x="60" y="44" text-anchor="middle" font-family="Montserrat, Inter, sans-serif" font-weight="700" font-size="7.4" letter-spacing="1.3" fill="#1a1408">FOREWORD BY</text>
+  <text x="60" y="66" text-anchor="middle" font-family="Montserrat, Inter, sans-serif" font-weight="800" font-size="21" fill="#1a1408">VINT</text>
+  <text x="60" y="86" text-anchor="middle" font-family="Montserrat, Inter, sans-serif" font-weight="800" font-size="21" fill="#1a1408">CERF</text>
+</svg>`;
+}
+
+/** Line icons for the four pillars, drawn in the cover's gold. */
+const PILLAR_ICONS = {
+  people: '<circle cx="24" cy="15" r="5"/><circle cx="12" cy="18" r="4"/><circle cx="36" cy="18" r="4"/><path d="M14 38v-6a10 10 0 0 1 20 0v6z"/><path d="M4 38v-4a8 8 0 0 1 9-8"/><path d="M44 38v-4a8 8 0 0 0-9-8"/>',
+  trust: '<path d="M24 5l15 6v11c0 9-6.5 15.5-15 19-8.5-3.5-15-10-15-19V11z"/><circle cx="24" cy="22" r="6"/><path d="M19 27l10-10"/>',
+  coordination: '<circle cx="24" cy="24" r="4.5"/><circle cx="24" cy="7" r="3.5"/><circle cx="9" cy="35" r="3.5"/><circle cx="39" cy="35" r="3.5"/><circle cx="41" cy="14" r="2.8"/><path d="M24 11v8.5M20.3 26.6l-8.4 6.2M27.7 26.6l8.4 6.2M27.8 21.8l10.6-6"/>',
+  regeneration: '<path d="M24 42V22"/><path d="M24 26c0-9-6-14-15-14 0 9 6 14 15 14z"/><path d="M24 22c0-8 5-13 14-13 0 8-5 13-14 13z"/><path d="M15 42h18"/>',
+};
+const icon = (k) => `<svg class="pillar-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke="#e7b74a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PILLAR_ICONS[k]}</svg>`;
 
 function coverHtml(coverImage) {
   if (coverImage) return `<section class="cover cover-image"><img src="${pathToFileURL(coverImage).href}" alt="${esc(TITLE)} cover"></section>`;
   return `<section class="cover">
   <div class="cover-kicker">Building the civic layer<br>of a trustworthy Internet</div>
-  <div class="cover-rule"></div>
+  <div class="cover-emblem-row"><span class="cover-rule"></span>${sphereSvg(120, 'emblem')}<span class="cover-rule"></span></div>
   <h1 class="cover-title"><span class="the">The</span>Layered Web</h1>
-  <div class="cover-rule glow"></div>
-  <div class="cover-sub"><span class="small">The</span>Desirable Properties<span class="small">of a</span>Meta-Layer</div>
+  <div class="cover-rule glow"><i></i></div>
+  <div class="cover-sub"><span class="small dash">The</span>Desirable Properties<span class="small">of a</span>Meta-Layer</div>
   ${sphereSvg()}
-  <div class="cover-seal"><span>Foreword by</span><b>Vint<br>Cerf</b></div>
+  ${sealSvg()}
   <div class="cover-pillars">
-    <div><b>People</b>Empowered communities</div>
-    <div><b>Trust</b>Transparent &amp; accountable</div>
-    <div><b>Coordination</b>Shared intelligence</div>
-    <div><b>Regeneration</b>Sustainable futures</div>
+    <div>${icon('people')}<b>People</b>Empowered communities</div>
+    <div>${icon('trust')}<b>Trust</b>Transparent &amp; accountable</div>
+    <div>${icon('coordination')}<b>Coordination</b>Shared intelligence</div>
+    <div>${icon('regeneration')}<b>Regeneration</b>Sustainable futures</div>
   </div>
-  <div class="cover-edition">${EDITION}</div>
-  <div class="cover-foot">Meta-Layer Initiative</div>
+  <div class="cover-foot"><span class="cover-rule"></span><span>Meta-Layer Initiative</span><span class="cover-rule"></span></div>
 </section>`;
 }
 
@@ -301,6 +372,18 @@ function matterHtml(kind, rail, extra = '') {
 </section>`;
 }
 
+/** The Introduction opens the main matter: page 1, with its own opener-style title. */
+function introHtml(rail, validDps) {
+  const body = polish(linkDpRefs(marked.parse(rail.body), null, validDps));
+  return `<section class="matter intro main-start" id="introduction">
+  <div class="running">Introduction</div>
+  <div class="dp-label">Introduction</div>
+  <h1 class="matter-title">${esc(rail.title || SUBTITLE)}</h1>
+  ${body}
+  <p class="chapter-end"><a href="${BOOK_URL}/viewer/ml-draft-026">Read the Introduction online →</a></p>
+</section>`;
+}
+
 function tocHtml(chapters) {
   const row = (href, label, title, cls = '') => `<li class="${cls}"><a href="#${href}"><span class="toc-id">${label}</span><span class="toc-title">${esc(title)}</span><span class="toc-pg"></span></a></li>`;
   return `<section class="toc" id="contents">
@@ -309,6 +392,7 @@ function tocHtml(chapters) {
   <ol>
     ${row('foreword', '', 'Foreword by Vint Cerf', 'front')}
     ${row('preface', '', 'About This Digital Monument', 'front')}
+    ${row('introduction', '', 'Introduction', 'front')}
     <li class="toc-part">The Desirable Properties</li>
     ${chapters.map((c) => row(c.dp.toLowerCase(), c.dp, c.title.replace(/^DP\d+\s*[–\-:]\s*/, ''))).join('\n    ')}
     <li class="toc-part"></li>
@@ -396,30 +480,32 @@ img { max-width: 100%; }
 .caption { font: italic 8.6pt/1.4 'Source Serif 4', serif; color: var(--muted); text-align: left; margin-bottom: 1.1em; }
 
 /* cover */
-.cover { page: cover; height: 9.61in; width: 6.69in; box-sizing: border-box; padding: 0.55in 0.5in 0.45in; background: radial-gradient(ellipse at 50% 64%, #13202c 0%, #0d1117 58%, #090c11 100%);
+.cover { page: cover; height: 9.61in; width: 6.69in; box-sizing: border-box; padding: 0.52in 0.5in 0.4in; background: radial-gradient(ellipse at 50% 66%, #142230 0%, #0d1117 55%, #080b10 100%);
   color: #f3f0e8; text-align: center; font-family: Montserrat, Inter, sans-serif; position: relative; overflow: hidden; break-after: page; }
 .cover-image { padding: 0; background: var(--night); }
 .cover-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cover-kicker { color: var(--gold-bright); font-weight: 600; font-size: 9pt; letter-spacing: 0.24em; text-transform: uppercase; line-height: 1.6; }
-.cover-rule { height: 1px; width: 62%; margin: 0.14in auto; background: linear-gradient(90deg, transparent, #b8892a, transparent); }
-.cover-rule.glow { width: 88%; height: 1.5px; background: linear-gradient(90deg, transparent, #f2b84b 35%, #fff1c4 50%, #f2b84b 65%, transparent); box-shadow: 0 0 6px #f2b84b; }
-.cover-title { font-weight: 700; font-size: 45pt; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; margin: 0.12in 0 0.06in; color: #fbfaf6; string-set: none; }
-.cover-title .the { display: block; font-size: 24pt; letter-spacing: 0.12em; margin-bottom: 0.06in; }
-.cover-sub { color: var(--gold-bright); font-weight: 700; font-size: 19pt; line-height: 1.15; letter-spacing: 0.06em; text-transform: uppercase; }
-.cover-sub .small { display: block; font-size: 10pt; font-weight: 600; letter-spacing: 0.2em; margin: 0.05in 0; color: #e8d7a6; }
-.cover .sphere { width: 3.55in; height: 3.55in; display: block; margin: 0.02in auto 0; }
-.cover-seal { position: absolute; right: 0.36in; top: 5.55in; width: 1.05in; height: 1.05in; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff1a8, #e6b628 55%, #b8860b); box-shadow: 0 0 0 3px #d9a520, 0 0 0 5px #8c6a12;
-  color: #1a1408; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-8deg); }
-.cover-seal span { font-size: 5.6pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
-.cover-seal b { font-size: 15pt; line-height: 0.92; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
-.cover-pillars { display: flex; justify-content: space-between; margin: 0.06in 0.05in 0; font-size: 7.4pt; line-height: 1.35; color: #d9d4c7; }
+.cover-kicker { color: var(--gold-bright); font-weight: 600; font-size: 9.2pt; letter-spacing: 0.26em; text-transform: uppercase; line-height: 1.65; }
+.cover-rule { display: block; height: 1px; background: linear-gradient(90deg, transparent, #b8892a 30%, #b8892a 70%, transparent); }
+.cover-emblem-row { display: flex; align-items: center; gap: 0.08in; margin: 0.08in 0.35in 0.02in; }
+.cover-emblem-row .cover-rule { flex: 1; }
+.cover-emblem-row .cover-rule:first-child { background: linear-gradient(90deg, transparent, #b8892a); }
+.cover-emblem-row .cover-rule:last-child { background: linear-gradient(90deg, #b8892a, transparent); }
+.cover .emblem { width: 0.42in; height: 0.42in; }
+.cover-rule.glow { position: relative; width: 92%; margin: 0.12in auto 0.14in; height: 1.5px; background: linear-gradient(90deg, transparent, #c98a1e 20%, #f2b84b 45%, #fff1c4 50%, #f2b84b 55%, #c98a1e 80%, transparent); box-shadow: 0 0 6px #f2b84b; }
+.cover-rule.glow i { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: #fff6d6; box-shadow: 0 0 6px 3px #f2b84b, 0 0 14px 6px rgba(242,184,75,0.45); }
+.cover-title { font-weight: 700; font-size: 47pt; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; margin: 0.14in 0 0; color: #fbfaf6; string-set: none; text-shadow: 0 1px 0 #000; }
+.cover-title .the { display: block; font-size: 25pt; letter-spacing: 0.1em; margin-bottom: 0.08in; }
+.cover-sub { color: var(--gold-bright); font-weight: 700; font-size: 19.5pt; line-height: 1.15; letter-spacing: 0.07em; text-transform: uppercase; }
+.cover-sub .small { display: block; font-size: 10.5pt; font-weight: 600; letter-spacing: 0.2em; margin: 0.04in 0; color: #e8d7a6; }
+.cover-sub .small.dash::before, .cover-sub .small.dash::after { content: ""; display: inline-block; width: 0.32in; height: 1px; background: #b8892a; vertical-align: middle; margin: 0 0.1in; }
+.cover .sphere { width: 3.5in; height: 3.5in; display: block; margin: 0.04in auto 0; }
+.cover .cover-seal { position: absolute; right: 0.28in; top: 5.35in; width: 1.22in; height: 1.22in; transform: rotate(-6deg); filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
+.cover-pillars { display: flex; justify-content: space-between; margin: 0.02in 0.02in 0; font-size: 7.4pt; line-height: 1.35; color: #d9d4c7; }
 .cover-pillars div { flex: 1; padding: 0 0.04in; }
-.cover-pillars div + div { border-left: 1px solid rgba(184,137,42,0.35); }
-.cover-pillars b { display: block; color: var(--gold-bright); font-weight: 600; font-size: 7.6pt; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 2px; }
-.cover-edition { color: #e8d7a6; font-size: 9pt; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 0.22in; }
-.cover-foot { position: absolute; left: 0.5in; right: 0.5in; bottom: 0.42in; color: var(--gold-bright); font-weight: 600; font-size: 10pt; letter-spacing: 0.28em; text-transform: uppercase;
-  border-top: 1px solid rgba(184,137,42,0.55); padding-top: 0.12in; }
+.cover-pillars .pillar-icon { display: block; width: 0.38in; height: 0.38in; margin: 0 auto 0.05in; }
+.cover-pillars b { display: block; color: #f3f0e8; font-weight: 600; font-size: 7.6pt; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 2px; }
+.cover-foot { position: absolute; left: 0.5in; right: 0.5in; bottom: 0.4in; display: flex; align-items: center; gap: 0.14in; color: var(--gold-bright); font-weight: 600; font-size: 10pt; letter-spacing: 0.28em; text-transform: uppercase; white-space: nowrap; }
+.cover-foot .cover-rule { flex: 1; }
 
 /* title + edition pages */
 .titlepage { page: bare; break-after: page; text-align: center; padding-top: 1.6in; font-family: Montserrat, Inter, sans-serif; }
@@ -435,7 +521,9 @@ img { max-width: 100%; }
 
 /* contents */
 .toc, .matter { page: front; break-before: right; }
-.matter.back { page: auto; }
+.matter.back, .matter.intro { page: auto; }
+.matter.intro .dp-label { margin-top: 0.9in; }
+.matter.intro .matter-title { margin-top: 0.12in; }
 .matter-title { font: 700 20pt/1.15 Montserrat, Inter, sans-serif; letter-spacing: 0.02em; margin: 0.9in 0 0.45in; color: var(--ink); }
 .matter-title::after { content: ""; display: block; width: 0.6in; height: 2px; background: var(--gold-bright); margin-top: 0.18in; }
 .toc ol { list-style: none; padding: 0; margin: 0; font: 9.4pt/1.3 Inter, sans-serif; }
@@ -465,7 +553,7 @@ img { max-width: 100%; }
 .chapter-end a { color: #7a5b16; }
 `;
 
-function buildHtml({ chapters, foreword, preface, acknowledgements, final, builtAt, coverImage }) {
+function buildHtml({ chapters, foreword, preface, intro, acknowledgements, final, builtAt, coverImage }) {
   const validDps = new Set(chapters.map((c) => c.dp));
   const ackRail = { ...acknowledgements, body: linkDpRefs(acknowledgements.body, null, validDps) };
   return `<!doctype html>
@@ -484,6 +572,7 @@ ${titlePagesHtml(final, builtAt)}
 ${tocHtml(chapters)}
 ${matterHtml('foreword', foreword)}
 ${matterHtml('preface', preface)}
+${introHtml(intro, validDps)}
 ${chapters.map((c, i) => chapterHtml(c, validDps, i === 0)).join('\n')}
 ${matterHtml('acknowledgements back', ackRail).replace('id="acknowledgements back"', 'id="acknowledgements"')}
 </body>
@@ -493,7 +582,7 @@ ${matterHtml('acknowledgements back', ackRail).replace('id="acknowledgements bac
 /**
  * Runs in the page after Paged.js has laid the book out. Paged.js 0.4 resets the page counter only on the
  * page that carries counter-reset, so folios are computed here instead: lower-case roman numerals for the
- * front matter (the cover counts as i), arabic from the DP1 opener. Each page gets its folio as --folio
+ * front matter (the cover counts as i), arabic from the Introduction. Each page gets its folio as --folio
  * (the margin boxes print var(--folio)), and the contents page gets the folio of each entry's target.
  */
 const FOLIO_SCRIPT = String.raw`
@@ -503,7 +592,7 @@ function toRoman(n) {
 }
 window.PagedConfig = { auto: true, after: () => {
   const pages = Array.from(document.querySelectorAll('.pagedjs_page'));
-  const first = document.querySelector('.chapter.first');
+  const first = document.querySelector('.main-start') || document.querySelector('.chapter.first');
   const mainStart = first ? pages.indexOf(first.closest('.pagedjs_page')) : pages.length;
   const folio = (i) => (i < mainStart ? toRoman(i + 1) : String(i - mainStart + 1));
   pages.forEach((p, i) => p.style.setProperty('--folio', JSON.stringify(folio(i))));
@@ -576,6 +665,25 @@ async function renderPdf(htmlFile, outFile, chromePath, preview) {
   }
 }
 
+/** Save the typeset cover as flat art: a PNG at the trim size (6.69 x 9.61 in) and about 384 dpi. */
+async function renderCoverPng(outPng, chromePath) {
+  const { default: puppeteer } = await import('puppeteer-core');
+  const htmlFile = path.join(HERE, 'out', 'cover.html');
+  fs.writeFileSync(htmlFile, `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}\nhtml,body{margin:0;background:#0d1117}</style></head><body>${coverHtml(null)}</body></html>`);
+  const browser = await puppeteer.launch({ executablePath: chromePath, headless: true, args: ['--no-sandbox', '--allow-file-access-from-files'] });
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 643, height: 923, deviceScaleFactor: 4 });
+    await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'networkidle0', timeout: 120000 });
+    await page.evaluate(() => document.fonts.ready);
+    fs.mkdirSync(path.dirname(outPng), { recursive: true });
+    await (await page.$('.cover')).screenshot({ path: outPng });
+  } finally {
+    await browser.close();
+  }
+  console.log(`Wrote ${outPng}`);
+}
+
 // ---------------------------------------------------------------- main
 
 async function main() {
@@ -588,15 +696,16 @@ async function main() {
     .filter((s) => s && (!args.only || args.only.includes(s.dp)));
   const manifest = { builtAt: new Date().toISOString(), hub: args.hub, final: args.final, rails: {} };
   const load = (key) => {
-    const m = ml(key);
-    const passages = fetchPassages(args.hub, m, args.offline);
-    manifest.rails[key] = { ml: m, passages: passages.length, sha256: createHash('sha256').update(JSON.stringify(passages)).digest('hex').slice(0, 16) };
+    ml(key);
+    const { passages, source } = fetchRail(args.hub, byKey[key], args.offline);
+    manifest.rails[key] = { ml: byKey[key].mlNumber, source, passages: passages.length, sha256: createHash('sha256').update(JSON.stringify(passages)).digest('hex').slice(0, 16) };
     return passages;
   };
 
   console.log(`${args.offline ? 'Reading cached' : 'Fetching'} ${dpRails.length} chapters + front/back matter from ${args.hub}`);
   const foreword = prepareRail(load('foreword'));
   const preface = prepareRail(load('about'));
+  const intro = prepareRail(load('ml-draft-026'));
   const acknowledgements = prepareRail(load('acknowledgements'));
   const chapters = dpRails.map((s) => {
     const r = prepareRail(load(s.railKey));
@@ -607,7 +716,7 @@ async function main() {
   });
 
   const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
-  const html = buildHtml({ chapters, foreword, preface, acknowledgements, final: args.final, builtAt, coverImage: args.coverImage })
+  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, final: args.final, builtAt, coverImage: args.coverImage })
     .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
 
   const workDir = path.join(HERE, 'out');
@@ -616,6 +725,7 @@ async function main() {
   fs.writeFileSync(htmlFile, html);
   fs.writeFileSync(path.join(workDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   console.log(`Wrote ${path.relative(REPO, htmlFile)}`);
+  if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
   if (args.htmlOnly) return;
 
   const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);

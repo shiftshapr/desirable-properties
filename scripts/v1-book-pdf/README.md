@@ -9,15 +9,17 @@ It reads the published text from Gov Hub, the same source as the online book:
 |---|---|---|
 | Foreword by Vint Cerf | `foreword` | ML-Draft-057 |
 | Preface: About This Digital Monument | `about` | ML-Draft-031 |
+| Introduction | `ml-draft-026` | ML-Draft-026, or its Bitcoin inscription when Gov Hub cannot serve it |
 | DP1–DP24 | `dp01` … `dp24` | per `sources-sat.json` |
 | Acknowledgements | `acknowledgements` | ML-Draft-032 |
 
-The cover is typeset by the script (or pass `--cover-image` for flat cover art). Chapter
+The cover is typeset by the script after the 3D cover mockup; `--cover-png <file>` also saves it as
+flat art (PNG at the trim size, about 384 dpi), and `--cover-image <file>` uses other flat art instead. Chapter
 illustrations come from `challenge-site/public/images/dps/full/` (1200 px); other figures come
 from `desirableproperties-book/content/local/assets/dp/`.
 
 The PDF has a linked table of contents, running heads, roman folios for the front matter and
-arabic from DP1, PDF bookmarks, in-book links for every `DPn` mention, and a link from each
+arabic from the Introduction, PDF bookmarks, in-book links for every `DPn` mention, and a link from each
 chapter to its page in the online book.
 
 ## Run
