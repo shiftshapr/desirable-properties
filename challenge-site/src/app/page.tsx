@@ -5,6 +5,9 @@ import DiscussPatchLink from '@/components/DiscussPatchLink';
 import DPCardGrid from '@/components/DPCardGrid';
 import LayerHero from '@/components/LayerHero';
 import StartHereHomePanel from '@/components/StartHereHomePanel';
+import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
+import V1BookPanel from '@/components/V1BookPanel';
+import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
 import {
@@ -44,6 +47,21 @@ export default async function Home() {
         </div>
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
+
+        <V1BookPanel now={now} />
+
+        {/* The Layered Web videos (src/data/layered-web-videos.ts) */}
+        <section aria-labelledby="layered-web-videos-heading" className="border-b border-slate-800">
+          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+            <h2 id="layered-web-videos-heading" className="text-3xl font-bold text-white">The Layered Web</h2>
+            <p className="mt-3 max-w-2xl text-slate-400">
+              Short videos on why the web needs a layer above the page, and what the 24 properties are for.
+            </p>
+            <div className="mt-6">
+              <LayeredWebVideoCarousel videos={layeredWebVideosAt(now)} />
+            </div>
+          </div>
+        </section>
 
         <StartHereHomePanel />
 
