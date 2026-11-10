@@ -259,7 +259,11 @@ function BatchSection({
   const [note, setNote] = useState('');
   const [result, setResult] = useState<BatchApproveResult | null>(null);
   const open = items.filter((i) => i.state !== 'done');
-  const included = open.filter((i) => !excluded.has(i.proposalId));
+  // Items you have already voted on as this batch proposes need nothing more from you here.
+  const votedByMe = (i: SteeringItem) => i.votes.some((v) => v.mine && v.decision === batch.kind);
+  const pending = open.filter((i) => !votedByMe(i));
+  const alreadyVoted = open.length - pending.length;
+  const included = pending.filter((i) => !excluded.has(i.proposalId));
   const canApprove = batch.kind !== 'needs_person' && included.length > 0 && !busy;
   const done = items.length - open.length;
   const toggle = (id: string) =>
@@ -288,8 +292,20 @@ function BatchSection({
         <p className="mt-3 text-sm text-amber-200">
           The analysis left these for a person to decide. Vote on each item below.
         </p>
+      ) : open.length && !pending.length ? (
+        <p className="mt-4 rounded-xl border border-emerald-900/60 bg-emerald-950/20 p-3 text-sm text-emerald-100">
+          You approved this batch. {open.length} item{open.length === 1 ? ' is' : 's are'} waiting for a second steering
+          member{done ? `; ${done} already carried out` : ''}. To change your vote on one, use &ldquo;Change vote&rdquo; on
+          its card.
+        </p>
       ) : open.length ? (
         <div className="mt-4 space-y-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3">
+          {alreadyVoted ? (
+            <p className="text-xs text-emerald-200">
+              You have already voted {DECISION_LABEL[batch.kind]} on {alreadyVoted} of these; approving covers the other{' '}
+              {pending.length}.
+            </p>
+          ) : null}
           <p className="text-xs text-slate-400">
             {batch.bookWide ? (
               <strong className="block pb-1 text-amber-200">
@@ -330,7 +346,7 @@ function BatchSection({
               ? 'Approving…'
               : batch.bookWide
                 ? `Approve book-wide batch (${batch.proposalIds.length} items)`
-                : `Approve batch (${included.length} of ${open.length})`}
+                : `Approve batch (${included.length} of ${pending.length})`}
           </button>
           {flash[`batch:${batch.id}`]?.text ? (
             <p role="status" className="text-sm text-rose-200">{flash[`batch:${batch.id}`].text}</p>
