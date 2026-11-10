@@ -702,6 +702,24 @@
       text-decoration: underline;
     }
 
+    .dp-info-dialog {
+      max-width: 520px;
+      width: calc(100% - 32px);
+      padding: 20px 22px;
+      border: 1px solid var(--nav-border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+    }
+    .dp-info-dialog::backdrop { background: rgba(0, 0, 0, 0.55); }
+    .dp-info-dialog h2 { margin: 0 0 12px; font-size: 16px; }
+    .dp-info-dialog dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 13px; }
+    .dp-info-dialog dt { color: var(--muted); }
+    .dp-info-dialog dd { margin: 0; overflow-wrap: anywhere; }
+    .dp-info-dialog a { color: var(--accent); }
+    .dp-info-dialog .dp-info-links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
+    .dp-info-dialog .dp-info-close { margin-top: 18px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--nav-border); background: transparent; color: var(--text); cursor: pointer; }
+
     .not-onchain-notice {
       max-width: 680px;
       margin: 48px auto;
@@ -999,6 +1017,12 @@
       </div>
     </div>
   </main>
+
+  <dialog id="dpInfoDialog" class="dp-info-dialog" aria-labelledby="dpInfoTitle">
+    <h2 id="dpInfoTitle">Inscription info</h2>
+    <div id="dpInfoBody"></div>
+    <button type="button" class="dp-info-close" id="dpInfoClose">Close</button>
+  </dialog>
 
   <div id="dpToast" class="dp-toast" role="status" aria-live="polite">
     <span id="dpToastText"></span>
@@ -1697,6 +1721,7 @@
             '<a href="' + ordinalsHref + '" target="_blank" rel="noopener">' + escapeHtml(shortId) + '</a>' +
             (r.mlNumber ? ' · ' + escapeHtml(r.mlNumber) : '') +
             (r.block ? ' · block ' + r.block : '') +
+            ' · <a href="#" data-dp-info="1">press i for details</a>' +
           '</div>'
         );
       }
@@ -1710,6 +1735,44 @@
         );
       }
       return '';
+    }
+
+    // "Press i" (named in About this monument): the inscription and satplication
+    // graph for the open chapter, as the inscribed reader shows them.
+    function buildInfoHtml(rail) {
+      const idx = RAIL_INDEX[rail];
+      const r = idx == null ? null : RAILS[idx];
+      if (!r) return '<p>Open a chapter to see its inscription.</p>';
+      const rows = [['Chapter', escapeHtml(r.label)]];
+      if (r.mlNumber) rows.push(['Draft', escapeHtml(r.mlNumber)]);
+      if (r.inscriptionId) {
+        const href = 'https://ordinals.com/inscription/' + r.inscriptionId;
+        rows.push(['Inscription', '<a href="' + href + '" target="_blank" rel="noopener">' + escapeHtml(r.inscriptionId) + '</a>']);
+      } else {
+        rows.push(['Inscription', 'Not inscribed yet']);
+      }
+      if (r.block) rows.push(['Block', escapeHtml(String(r.block))]);
+      if (r.timestamp) rows.push(['Inscribed', escapeHtml(String(r.timestamp))]);
+      if (r.status) rows.push(['Status', escapeHtml(String(r.status))]);
+      const links = ['<a href="/satplication-graph.html" target="_blank" rel="noopener">Explore the satplication graph</a>'];
+      if (MANIFEST && MANIFEST.bookCoverInscriptionId) {
+        links.push('<a href="https://ordinals.com/inscription/' + MANIFEST.bookCoverInscriptionId + '" target="_blank" rel="noopener">Book cover inscription</a>');
+      }
+      if (!r.inscriptionId && r.mlNumber) {
+        links.push('<a href="https://interfacehub.net/doc/draft/' + encodeURIComponent(r.mlNumber) + '/" target="_blank" rel="noopener">Gov Hub draft</a>');
+      }
+      return (
+        '<dl>' + rows.map(function (row) { return '<dt>' + row[0] + '</dt><dd>' + row[1] + '</dd>'; }).join('') + '</dl>' +
+        '<div class="dp-info-links">' + links.join('') + '</div>'
+      );
+    }
+
+    function toggleInfo() {
+      const dlg = document.getElementById('dpInfoDialog');
+      if (!dlg || typeof dlg.showModal !== 'function') return;
+      if (dlg.open) { dlg.close(); return; }
+      document.getElementById('dpInfoBody').innerHTML = buildInfoHtml(currentRail);
+      dlg.showModal();
     }
 
     function buildNavBarHtml(rail) {
@@ -1888,6 +1951,16 @@
         if (t) t.className = 'dp-toast';
       });
 
+      // Inscription info ("press i").
+      const infoClose = document.getElementById('dpInfoClose');
+      if (infoClose) infoClose.addEventListener('click', function () { document.getElementById('dpInfoDialog').close(); });
+      document.addEventListener('click', function (e) {
+        const a = e.target && e.target.closest && e.target.closest('[data-dp-info]');
+        if (!a) return;
+        e.preventDefault();
+        toggleInfo();
+      });
+
       // Mode toggle.
       const liveBtn = document.getElementById('modeLive');
       const onchainBtn = document.getElementById('modeOnchain');
@@ -1897,7 +1970,13 @@
       // Keyboard nav (cover → intro → chapters).
       document.addEventListener('keydown', function (e) {
         const tag = (e.target && e.target.tagName || '').toLowerCase();
-        if (tag === 'input' || tag === 'textarea') return;
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        if (e.target && e.target.isContentEditable) return;
+        if ((e.key === 'i' || e.key === 'I') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+          e.preventDefault();
+          toggleInfo();
+          return;
+        }
         if (e.key === 'ArrowLeft' && currentRail) {
           const idx = RAIL_INDEX[currentRail];
           if (idx > 0) navigateToRail(RAILS[idx - 1].railKey);
