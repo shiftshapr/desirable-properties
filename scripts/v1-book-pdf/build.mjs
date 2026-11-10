@@ -1,0 +1,626 @@
+#!/usr/bin/env node
+/**
+ * Build the Version 1.0 PDF of "The Layered Web: The Desirable Properties of a Meta-Layer".
+ *
+ * Reads the published chapters (DP1–DP24) and front/back matter from Gov Hub
+ * (https://interfacehub.net/api/doc/draft/<ML-Draft>/chapter-passages/), lays the
+ * book out as HTML, paginates it with Paged.js in headless Chrome and prints one PDF:
+ *
+ *   cover · title page · edition notice · contents · foreword · preface (About)
+ *   · DP1–DP24 (opener page with the illustration, then the text) · acknowledgements
+ *
+ * with running heads, page numbers, a linked table of contents, in-book DP cross-references,
+ * PDF bookmarks, and links back to each chapter in the online book.
+ *
+ * Usage (from the repo root):
+ *   cd scripts/v1-book-pdf && npm install          # once
+ *   node scripts/v1-book-pdf/build.mjs              # review copy -> scripts/v1-book-pdf/out/
+ *   node scripts/v1-book-pdf/build.mjs --final \
+ *        --out challenge-site/public/downloads/desirable-properties-v1.0.pdf
+ *
+ * Options:
+ *   --final              Final V1.0 edition (no "review copy" notice).
+ *   --out <file>         Output PDF (default scripts/v1-book-pdf/out/desirable-properties-v1.0[-review].pdf).
+ *   --offline            Reuse the passages cached by the last run instead of calling Gov Hub.
+ *   --only DP1,DP2       Limit chapters (for quick layout checks).
+ *   --html-only          Write the HTML and stop (open it in Chrome to debug the layout).
+ *   --cover-image <file> Use a flat, full-bleed cover image instead of the typeset cover.
+ *   --chrome <path>      Chrome/Chromium binary (or CHROME_PATH).
+ *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
+ *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
+ *
+ * Gov Hub's API is fetched with curl: it answers non-browser clients such as Python urllib with 403.
+ * MTPs (Massive Transformational Purposes) are not part of V1.0 and are never pulled in.
+ */
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { marked } from 'marked';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const REPO = path.resolve(HERE, '..', '..');
+const BOOK_DIR = path.join(REPO, 'desirableproperties-book');
+const SOURCES_SAT = path.join(BOOK_DIR, 'json', 'sources-sat.json');
+const FULL_ILLUSTRATIONS = path.join(REPO, 'challenge-site', 'public', 'images', 'dps', 'full');
+const BOOK_ASSETS = path.join(BOOK_DIR, 'content', 'local', 'assets', 'dp');
+const CACHE_DIR = path.join(HERE, 'cache');
+const BOOK_URL = 'https://book.desirableproperties.org';
+const SITE_URL = 'https://desirableproperties.org';
+const TITLE = 'The Layered Web';
+const SUBTITLE = 'The Desirable Properties of a Meta-Layer';
+const EDITION = 'Version 1.0';
+const EDITION_DATE = 'November 13, 2026';
+
+// ---------------------------------------------------------------- CLI
+
+function parseArgs(argv) {
+  const a = { final: false, offline: false, htmlOnly: false, only: null, out: null, coverImage: null,
+    chrome: process.env.CHROME_PATH || null, preview: null, hub: 'https://interfacehub.net' };
+  for (let i = 0; i < argv.length; i++) {
+    const k = argv[i];
+    const next = () => argv[++i];
+    if (k === '--final') a.final = true;
+    else if (k === '--offline') a.offline = true;
+    else if (k === '--html-only') a.htmlOnly = true;
+    else if (k === '--only') a.only = next().split(',').map((s) => s.trim().toUpperCase());
+    else if (k === '--out') a.out = path.resolve(next());
+    else if (k === '--cover-image') a.coverImage = path.resolve(next());
+    else if (k === '--chrome') a.chrome = next();
+    else if (k === '--preview') a.preview = next();
+    else if (k === '--hub') a.hub = next().replace(/\/$/, '');
+    else if (k === '-h' || k === '--help') { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('*/')[0]); process.exit(0); }
+    else throw new Error(`Unknown option ${k}`);
+  }
+  a.out ||= path.join(HERE, 'out', a.final ? 'desirable-properties-v1.0.pdf' : 'desirable-properties-v1.0-review.pdf');
+  return a;
+}
+
+function findChrome(explicit) {
+  const candidates = [explicit,
+    ...globSync(path.join(os.homedir(), '.cache', 'puppeteer', 'chrome'), /chrome-linux64[/\\]chrome$/),
+    '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].filter(Boolean);
+  const hit = candidates.find((p) => fs.existsSync(p));
+  if (!hit) throw new Error('Chrome not found: pass --chrome or set CHROME_PATH');
+  return hit;
+}
+
+function globSync(dir, re) {
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  for (const v of fs.readdirSync(dir).sort().reverse()) {
+    const p = path.join(dir, v, 'chrome-linux64', 'chrome');
+    if (re.test(p) && fs.existsSync(p)) out.push(p);
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------- Gov Hub
+
+function fetchPassages(hub, ml, offline) {
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  const cache = path.join(CACHE_DIR, `${ml}.json`);
+  if (offline) {
+    if (!fs.existsSync(cache)) throw new Error(`--offline: no cached passages for ${ml}`);
+    return JSON.parse(fs.readFileSync(cache, 'utf8')).passages;
+  }
+  const url = `${hub}/api/doc/draft/${encodeURIComponent(ml)}/chapter-passages/`;
+  let body;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      body = execFileSync('curl', ['-sS', '--fail', '-m', '60', url], { maxBuffer: 64 << 20 }).toString('utf8');
+      break;
+    } catch (e) {
+      if (attempt >= 3) throw new Error(`Gov Hub fetch failed for ${ml}: ${url}\n${e.message}`);
+    }
+  }
+  const data = JSON.parse(body);
+  if (!Array.isArray(data.passages) || data.passages.length === 0) throw new Error(`No passages for ${ml}`);
+  fs.writeFileSync(cache, JSON.stringify(data, null, 1));
+  return data.passages;
+}
+
+// ---------------------------------------------------------------- Markdown → HTML
+
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function stripComments(md) {
+  return md.replace(/<!--[\s\S]*?-->/g, '').trim();
+}
+
+/** Clean a rail's passages: drop sync markers, pull out title / subtitle / illustration, drop structural rules. */
+function prepareRail(passages) {
+  let ps = passages.map(stripComments).filter((p) => p.length > 0);
+  let title = null; let subtitle = null; let image = null;
+  if (ps[0] && /^#\s/.test(ps[0])) title = ps.shift().replace(/^#\s+/, '').trim();
+  const sub = ps[0] && ps[0].match(/^(\*{1,2})([^*][\s\S]*?)\1$/);
+  if (sub) { ps.shift(); subtitle = sub[2].trim(); }
+  if (ps[0] && /^!\[[^\]]*\]\([^)]+\)$/.test(ps[0])) image = ps.shift();
+  // A horizontal rule next to a heading or at either end only repeats the structure the heading already shows.
+  const isRule = (p) => /^(-{3,}|\*{3,}|_{3,})$/.test(p);
+  const isHeading = (p) => /^#{1,6}\s/.test(p || '');
+  ps = ps.filter((p, i) => !(isRule(p) && (i === 0 || i === ps.length - 1 || isHeading(ps[i + 1]) || isRule(ps[i + 1]))));
+  while (ps.length && isRule(ps[ps.length - 1])) ps.pop();
+  return { title, subtitle, image, body: ps.join('\n\n') };
+}
+
+function resolveImage(src) {
+  const base = path.basename(src.split('?')[0]);
+  const dp = base.match(/^DP(\d{1,2})\.webp$/i);
+  const tries = [];
+  if (dp) tries.push(path.join(FULL_ILLUSTRATIONS, `DP${dp[1]}.webp`));
+  tries.push(path.join(BOOK_ASSETS, base), path.join(BOOK_DIR, src.replace(/^\//, '')));
+  const hit = tries.find((p) => fs.existsSync(p));
+  if (!hit) throw new Error(`Image not found locally: ${src}`);
+  return pathToFileURL(hit).href;
+}
+
+function absolutize(href) {
+  if (!href || /^(https?:|mailto:|#)/i.test(href)) return href;
+  if (href.startsWith('/viewer/') || href.startsWith('/content/')) return BOOK_URL + href;
+  if (href.startsWith('/')) return SITE_URL + href;
+  return href;
+}
+
+const renderer = new marked.Renderer();
+renderer.image = ({ href, title, text }) => {
+  const t = title ? ` title="${esc(title)}"` : '';
+  return `<img src="${esc(resolveImage(href))}" alt="${esc(text)}"${t}>`;
+};
+renderer.link = function ({ href, title, tokens }) {
+  const inner = this.parser.parseInline(tokens);
+  const t = title ? ` title="${esc(title)}"` : '';
+  return `<a href="${esc(absolutize(href))}"${t}>${inner}</a>`;
+};
+marked.use({ renderer, gfm: true });
+
+/** Link inline DPn mentions to the chapter in this PDF (outside links, code and headings). */
+function linkDpRefs(html, selfDp, validDps) {
+  const parts = html.split(/(<[^>]+>)/);
+  let skip = 0;
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    if (p.startsWith('<')) {
+      const m = p.match(/^<(\/?)(a|code|pre|h[1-6])\b/i);
+      if (m) skip += m[1] ? -1 : 1;
+      continue;
+    }
+    if (skip > 0 || !p) continue;
+    parts[i] = p.replace(/\bDP(\d{1,2})\b/g, (all, n) => {
+      const id = `DP${Number(n)}`;
+      return id !== selfDp && validDps.has(id) ? `<a class="xref" href="#${id.toLowerCase()}">${all}</a>` : all;
+    });
+  }
+  return parts.join('');
+}
+
+/** Typographic touches marked leaves alone. */
+function polish(html, { signature = false } = {}) {
+  if (signature) html = html.replace(/<p><em>([^<]{2,40})<\/em><\/p>\s*$/, '<p class="signature">$1</p>');
+  return html.replace(/<p><em>(Figure:[\s\S]*?)<\/em><\/p>/g, '<p class="caption">$1</p>');
+}
+
+// ---------------------------------------------------------------- Cover art
+
+/** A network sphere in the spirit of the cover: Fibonacci points on a sphere, nearest-neighbour links. */
+function sphereSvg(size = 520) {
+  const n = 130; const r = size * 0.42; const c = size / 2;
+  const pts = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < n; i++) {
+    const y = 1 - (i / (n - 1)) * 2; const rad = Math.sqrt(1 - y * y); const th = golden * i;
+    const x = Math.cos(th) * rad; const z = Math.sin(th) * rad;
+    // tilt for a less regular silhouette
+    const t = 0.35; const y2 = y * Math.cos(t) - z * Math.sin(t); const z2 = y * Math.sin(t) + z * Math.cos(t);
+    pts.push({ x, y: y2, z: z2 });
+  }
+  const lines = []; const seen = new Set();
+  pts.forEach((p, i) => {
+    const d = pts.map((q, j) => [j, (p.x - q.x) ** 2 + (p.y - q.y) ** 2 + (p.z - q.z) ** 2]).sort((a, b) => a[1] - b[1]);
+    for (const [j] of d.slice(1, 6)) {
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue; seen.add(key);
+      const q = pts[j]; const depth = ((p.z + q.z) / 2 + 1) / 2;
+      lines.push(`<line x1="${(c + p.x * r).toFixed(1)}" y1="${(c + p.y * r).toFixed(1)}" x2="${(c + q.x * r).toFixed(1)}" y2="${(c + q.y * r).toFixed(1)}" stroke-opacity="${(0.18 + depth * 0.62).toFixed(2)}"/>`);
+    }
+  });
+  // spokes from the bright core to the front-facing nodes
+  pts.forEach((p, i) => {
+    if (p.z > 0.35 && i % 3 === 0) lines.push(`<line x1="${c}" y1="${c}" x2="${(c + p.x * r).toFixed(1)}" y2="${(c + p.y * r).toFixed(1)}" stroke-opacity="0.32"/>`);
+  });
+  const dots = pts.map((p) => {
+    const depth = (p.z + 1) / 2;
+    return `<circle cx="${(c + p.x * r).toFixed(1)}" cy="${(c + p.y * r).toFixed(1)}" r="${(1.4 + depth * 2.6).toFixed(1)}" fill-opacity="${(0.35 + depth * 0.65).toFixed(2)}"/>`;
+  }).join('');
+  const rings = [0.55, 0.7, 0.85, 1.0].map((k) => `<circle cx="${c}" cy="${c}" r="${(r * 1.18 * k).toFixed(1)}" fill="none" stroke="#3b6f8f" stroke-opacity="0.18" stroke-dasharray="1 5"/>`).join('');
+  return `<svg class="sphere" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffcf6b" stop-opacity="0.9"/><stop offset="35%" stop-color="#e09a22" stop-opacity="0.35"/><stop offset="100%" stop-color="#e09a22" stop-opacity="0"/></radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  ${rings}
+  <circle cx="${c}" cy="${c}" r="${(r * 0.75).toFixed(1)}" fill="url(#core)"/>
+  <g stroke="#f2b84b" stroke-width="1.05" filter="url(#glow)">${lines.join('')}</g>
+  <g fill="#ffd27a" filter="url(#glow)">${dots}</g>
+</svg>`;
+}
+
+function coverHtml(coverImage) {
+  if (coverImage) return `<section class="cover cover-image"><img src="${pathToFileURL(coverImage).href}" alt="${esc(TITLE)} cover"></section>`;
+  return `<section class="cover">
+  <div class="cover-kicker">Building the civic layer<br>of a trustworthy Internet</div>
+  <div class="cover-rule"></div>
+  <h1 class="cover-title"><span class="the">The</span>Layered Web</h1>
+  <div class="cover-rule glow"></div>
+  <div class="cover-sub"><span class="small">The</span>Desirable Properties<span class="small">of a</span>Meta-Layer</div>
+  ${sphereSvg()}
+  <div class="cover-seal"><span>Foreword by</span><b>Vint<br>Cerf</b></div>
+  <div class="cover-pillars">
+    <div><b>People</b>Empowered communities</div>
+    <div><b>Trust</b>Transparent &amp; accountable</div>
+    <div><b>Coordination</b>Shared intelligence</div>
+    <div><b>Regeneration</b>Sustainable futures</div>
+  </div>
+  <div class="cover-edition">${EDITION}</div>
+  <div class="cover-foot">Meta-Layer Initiative</div>
+</section>`;
+}
+
+// ---------------------------------------------------------------- Book HTML
+
+function chapterHtml(ch, validDps, first) {
+  const n = Number(ch.dp.slice(2));
+  const anchor = ch.dp.toLowerCase();
+  const shortTitle = ch.title.replace(/^DP\d+\s*[–\-:]\s*/, '');
+  const online = `${BOOK_URL}/viewer/${ch.railKey}`;
+  const img = ch.image ? ch.image.match(/^!\[([^\]]*)\]\(([^)]+)\)$/) : null;
+  const body = polish(linkDpRefs(marked.parse(ch.body), ch.dp, validDps));
+  return `<section class="chapter${first ? ' first' : ''}" id="${anchor}" data-dp="${ch.dp}">
+  <div class="opener">
+    <div class="running">${esc(`${ch.dp} · ${shortTitle}`)}</div>
+    <div class="dp-label">Desirable Property ${n}</div>
+    <h1 class="chapter-title"><span class="dp-num">${ch.dp}</span>${esc(shortTitle)}</h1>
+    ${ch.subtitle ? `<p class="chapter-sub">${marked.parseInline(ch.subtitle)}</p>` : ''}
+    ${img ? `<figure class="illustration"><img src="${esc(resolveImage(img[2]))}" alt="${esc(img[1])}"></figure>` : ''}
+    <p class="online">Read, annotate and discuss this chapter online:<br><a href="${online}">${online.replace(/^https:\/\//, '')}</a></p>
+  </div>
+  <div class="chapter-body">${body}</div>
+  <p class="chapter-end"><a href="${online}">Continue the conversation on ${ch.dp} online →</a></p>
+</section>`;
+}
+
+function matterHtml(kind, rail, extra = '') {
+  const body = polish(marked.parse(rail.body), { signature: kind === 'foreword' });
+  return `<section class="matter ${kind}" id="${kind}">
+  <div class="running">${esc(rail.title)}</div>
+  <h1 class="matter-title">${esc(rail.title)}</h1>
+  ${body}
+  ${extra}
+</section>`;
+}
+
+function tocHtml(chapters) {
+  const row = (href, label, title, cls = '') => `<li class="${cls}"><a href="#${href}"><span class="toc-id">${label}</span><span class="toc-title">${esc(title)}</span><span class="toc-pg"></span></a></li>`;
+  return `<section class="toc" id="contents">
+  <div class="running">Contents</div>
+  <h1 class="matter-title">Contents</h1>
+  <ol>
+    ${row('foreword', '', 'Foreword by Vint Cerf', 'front')}
+    ${row('preface', '', 'About This Digital Monument', 'front')}
+    <li class="toc-part">The Desirable Properties</li>
+    ${chapters.map((c) => row(c.dp.toLowerCase(), c.dp, c.title.replace(/^DP\d+\s*[–\-:]\s*/, ''))).join('\n    ')}
+    <li class="toc-part"></li>
+    ${row('acknowledgements', '', 'Acknowledgements', 'noid')}
+  </ol>
+  <p class="toc-online">Every chapter is also published online at <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a>, where it can be annotated and discussed.</p>
+</section>`;
+}
+
+function titlePagesHtml(final, builtAt) {
+  const status = final
+    ? `<p>${EDITION} · ${EDITION_DATE}</p>`
+    : `<p class="review">Review copy, built ${builtAt} from the Gov Hub text at that time.<br>This is not the final ${EDITION} text.</p>`;
+  return `<section class="titlepage">
+  <div class="tp-title">${TITLE}</div>
+  <div class="tp-sub">${SUBTITLE}</div>
+  <div class="tp-rule"></div>
+  <div class="tp-fore">With a foreword by Vint Cerf</div>
+  <div class="tp-edition">${EDITION}</div>
+  <div class="tp-pub">Meta-Layer Initiative</div>
+</section>
+<section class="edition">
+  <p><i>${TITLE}: ${SUBTITLE}</i></p>
+  ${status}
+  <p>Developed in the open by the Meta-Layer community through the Desirable Properties Challenge and its workgroups, and approved by the Desirable Properties steering committee.</p>
+  <p>The online edition: <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a><br>
+  The Desirable Properties Challenge: <a href="${SITE_URL}">${SITE_URL.replace('https://', '')}</a><br>
+  Workgroups and drafts: <a href="https://interfacehub.net">interfacehub.net</a></p>
+  <p>The chapters of this book are inscribed on Bitcoin as part of a BRC333 digital monument. The online edition is the living reference; this PDF is a snapshot of ${EDITION}.</p>
+</section>`;
+}
+
+const CSS = String.raw`
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&family=JetBrains+Mono:wght@400&display=block');
+
+:root { --gold: #b8892a; --gold-bright: #d4af37; --ink: #1b1c1f; --muted: #5d6066; --rule: #d9d3c4; --night: #0d1117; }
+@page { size: 6.69in 9.61in; margin: 0.85in 0.7in 0.8in 0.8in; }
+@page :left { margin-left: 0.7in; margin-right: 0.8in;
+  @top-left { content: var(--folio); }
+  @top-center { content: "The Layered Web"; } }
+@page :right {
+  @top-right { content: var(--folio); }
+  @top-center { content: string(running); } }
+@page :blank { @top-left { content: none; } @top-right { content: none; } @top-center { content: none; } }
+@page cover { size: 6.69in 9.61in; margin: 0; background: var(--night);
+  @top-left { content: none; } @top-right { content: none; } @top-center { content: none; } }
+@page bare { @top-left { content: none; } @top-right { content: none; } @top-center { content: none; } }
+@page opener { @top-left { content: none; } @top-right { content: none; } @top-center { content: none; }
+  @bottom-center { content: var(--folio); } }
+.pagedjs_margin-top-left, .pagedjs_margin-top-right, .pagedjs_margin-top-center, .pagedjs_margin-bottom-center {
+  font: 500 7.4pt/1 Inter, sans-serif; letter-spacing: 0.03em; color: var(--muted); }
+.pagedjs_margin-top-center, .pagedjs_margin-top-center .pagedjs_margin-content, .pagedjs_margin-top-center .pagedjs_margin-content::after { white-space: nowrap; overflow: visible; }
+
+html { font-family: 'Source Serif 4', 'Bitstream Charter', Georgia, serif; font-size: 10.4pt; line-height: 1.5; color: var(--ink);
+  font-optical-sizing: auto; font-variant-numeric: oldstyle-nums proportional-nums; }
+body { margin: 0; }
+p { margin: 0 0 0.62em; text-align: justify; hyphens: auto; orphans: 2; widows: 2; }
+a { color: inherit; text-decoration: none; }
+a.xref { color: #7a5b16; }
+.chapter-body a[href^="http"], .matter a[href^="http"], .edition a, .online a, .toc-online a { color: #7a5b16; }
+strong { font-weight: 600; }
+.running { string-set: running content(text); height: 0; overflow: hidden; font-size: 0; line-height: 0; margin: 0; }
+
+h2, h3, h4 { font-family: Inter, sans-serif; color: var(--ink); break-after: avoid; line-height: 1.25; text-align: left; hyphens: manual; }
+h2 { font-size: 12.6pt; font-weight: 700; margin: 1.6em 0 0.55em; }
+h3 { font-size: 10.6pt; font-weight: 600; margin: 1.3em 0 0.4em; }
+h4 { font-size: 9.8pt; font-weight: 600; font-style: normal; color: #3a3d42; margin: 1.1em 0 0.3em; }
+h2 + p > em:only-child, h3 + p > em:only-child { color: var(--muted); }
+ul, ol { margin: 0.2em 0 0.8em; padding-left: 1.25em; }
+li { margin: 0.18em 0; text-align: left; }
+li > p { margin: 0.2em 0; }
+blockquote { margin: 0.9em 0 0.9em 0.2em; padding: 0.1em 0 0.1em 0.9em; border-left: 2px solid var(--gold-bright); color: #33363b; font-style: italic; }
+blockquote p { text-align: left; }
+hr { border: 0; text-align: center; margin: 1.1em 0; height: 1em; }
+hr::before { content: "·  ·  ·"; color: var(--gold); letter-spacing: 0.3em; }
+code { font-family: 'JetBrains Mono', 'DejaVu Sans Mono', monospace; font-size: 0.84em; background: #f4f1ea; padding: 0.05em 0.25em; border-radius: 2px; }
+pre { background: #f6f3ec; border-left: 2px solid var(--rule); padding: 0.7em 0.9em; font-size: 8.4pt; line-height: 1.35; white-space: pre-wrap; break-inside: avoid; }
+pre code { background: none; padding: 0; font-size: inherit; }
+table { width: 100%; border-collapse: collapse; margin: 0.9em 0 1.1em; font: 8.4pt/1.35 Inter, sans-serif; break-inside: auto; }
+th, td { border-bottom: 1px solid var(--rule); padding: 0.4em 0.45em; text-align: left; vertical-align: top; }
+th { font-weight: 600; border-bottom: 1.5px solid #9d9580; }
+tr { break-inside: avoid; }
+img { max-width: 100%; }
+.matter img, .chapter-body img { display: block; margin: 0.9em auto 0.4em; max-height: 3.6in; }
+.caption { font: italic 8.6pt/1.4 'Source Serif 4', serif; color: var(--muted); text-align: left; margin-bottom: 1.1em; }
+
+/* cover */
+.cover { page: cover; height: 9.61in; width: 6.69in; box-sizing: border-box; padding: 0.55in 0.5in 0.45in; background: radial-gradient(ellipse at 50% 64%, #13202c 0%, #0d1117 58%, #090c11 100%);
+  color: #f3f0e8; text-align: center; font-family: Montserrat, Inter, sans-serif; position: relative; overflow: hidden; break-after: page; }
+.cover-image { padding: 0; background: var(--night); }
+.cover-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-kicker { color: var(--gold-bright); font-weight: 600; font-size: 9pt; letter-spacing: 0.24em; text-transform: uppercase; line-height: 1.6; }
+.cover-rule { height: 1px; width: 62%; margin: 0.14in auto; background: linear-gradient(90deg, transparent, #b8892a, transparent); }
+.cover-rule.glow { width: 88%; height: 1.5px; background: linear-gradient(90deg, transparent, #f2b84b 35%, #fff1c4 50%, #f2b84b 65%, transparent); box-shadow: 0 0 6px #f2b84b; }
+.cover-title { font-weight: 700; font-size: 45pt; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; margin: 0.12in 0 0.06in; color: #fbfaf6; string-set: none; }
+.cover-title .the { display: block; font-size: 24pt; letter-spacing: 0.12em; margin-bottom: 0.06in; }
+.cover-sub { color: var(--gold-bright); font-weight: 700; font-size: 19pt; line-height: 1.15; letter-spacing: 0.06em; text-transform: uppercase; }
+.cover-sub .small { display: block; font-size: 10pt; font-weight: 600; letter-spacing: 0.2em; margin: 0.05in 0; color: #e8d7a6; }
+.cover .sphere { width: 3.55in; height: 3.55in; display: block; margin: 0.02in auto 0; }
+.cover-seal { position: absolute; right: 0.36in; top: 5.55in; width: 1.05in; height: 1.05in; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff1a8, #e6b628 55%, #b8860b); box-shadow: 0 0 0 3px #d9a520, 0 0 0 5px #8c6a12;
+  color: #1a1408; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-8deg); }
+.cover-seal span { font-size: 5.6pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.cover-seal b { font-size: 15pt; line-height: 0.92; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
+.cover-pillars { display: flex; justify-content: space-between; margin: 0.06in 0.05in 0; font-size: 7.4pt; line-height: 1.35; color: #d9d4c7; }
+.cover-pillars div { flex: 1; padding: 0 0.04in; }
+.cover-pillars div + div { border-left: 1px solid rgba(184,137,42,0.35); }
+.cover-pillars b { display: block; color: var(--gold-bright); font-weight: 600; font-size: 7.6pt; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 2px; }
+.cover-edition { color: #e8d7a6; font-size: 9pt; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 0.22in; }
+.cover-foot { position: absolute; left: 0.5in; right: 0.5in; bottom: 0.42in; color: var(--gold-bright); font-weight: 600; font-size: 10pt; letter-spacing: 0.28em; text-transform: uppercase;
+  border-top: 1px solid rgba(184,137,42,0.55); padding-top: 0.12in; }
+
+/* title + edition pages */
+.titlepage { page: bare; break-after: page; text-align: center; padding-top: 1.6in; font-family: Montserrat, Inter, sans-serif; }
+.tp-title { font-size: 30pt; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
+.tp-sub { font-size: 13pt; font-weight: 600; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.12in; }
+.tp-rule { width: 1.2in; height: 1px; background: var(--gold); margin: 0.35in auto; }
+.tp-fore { font: italic 12pt 'Source Serif 4', serif; }
+.tp-edition { margin-top: 1.9in; font-size: 9.5pt; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--muted); }
+.tp-pub { margin-top: 0.12in; font-size: 10pt; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; }
+.edition { page: bare; break-after: page; padding-top: 4.4in; font-size: 8.6pt; line-height: 1.5; color: #3a3d42; }
+.edition p { text-align: left; margin-bottom: 0.9em; }
+.edition .review { color: #9b2c1f; font-weight: 600; }
+
+/* contents */
+.toc, .matter { page: front; break-before: right; }
+.matter.back { page: auto; }
+.matter-title { font: 700 20pt/1.15 Montserrat, Inter, sans-serif; letter-spacing: 0.02em; margin: 0.9in 0 0.45in; color: var(--ink); }
+.matter-title::after { content: ""; display: block; width: 0.6in; height: 2px; background: var(--gold-bright); margin-top: 0.18in; }
+.toc ol { list-style: none; padding: 0; margin: 0; font: 9.4pt/1.3 Inter, sans-serif; }
+.toc li { margin: 0; padding: 0.3em 0; }
+.toc li a { display: flex; align-items: baseline; gap: 0.6em; }
+.toc .toc-id { flex: 0 0 2.6em; font-weight: 700; color: var(--gold); }
+.toc li.front .toc-id, .toc li.noid .toc-id { display: none; }
+.toc .toc-title { flex: 1; }
+.toc .toc-pg { flex: 0 0 2.4em; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.toc .toc-part { font: 600 7.6pt/1 Inter, sans-serif; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); padding: 1.1em 0 0.4em; }
+.toc-online { font: italic 8.6pt/1.45 'Source Serif 4', serif; color: var(--muted); margin-top: 1.4em; text-align: left; }
+
+.signature { text-align: right; font-style: italic; margin-top: 1.2em; }
+
+/* chapters */
+.chapter { break-before: right; }
+.opener { page: opener; break-after: page; text-align: left; }
+.dp-label { font: 600 8pt/1 Inter, sans-serif; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-top: 0.2in; }
+.chapter-title { font: 700 21pt/1.12 Montserrat, Inter, sans-serif; margin: 0.12in 0 0.16in; color: var(--ink); }
+.chapter-title .dp-num { display: block; font-size: 40pt; line-height: 1; color: var(--gold-bright); margin-bottom: 0.08in; letter-spacing: -0.01em; }
+.chapter-sub { font: italic 11pt/1.45 'Source Serif 4', serif; color: #3a3d42; text-align: left; margin-bottom: 0.2in; }
+.illustration { margin: 0.1in 0 0.14in; text-align: center; }
+.illustration img { width: 3.55in; height: 3.55in; object-fit: cover; border-radius: 3px; }
+.online { font: 7.8pt/1.45 Inter, sans-serif; color: var(--muted); text-align: left; margin: 0; }
+.chapter-body > h2:first-child { margin-top: 0; }
+.chapter-end { font: 500 8pt/1.4 Inter, sans-serif; text-align: right; margin-top: 1.6em; color: #7a5b16; }
+.chapter-end a { color: #7a5b16; }
+`;
+
+function buildHtml({ chapters, foreword, preface, acknowledgements, final, builtAt, coverImage }) {
+  const validDps = new Set(chapters.map((c) => c.dp));
+  const ackRail = { ...acknowledgements, body: linkDpRefs(acknowledgements.body, null, validDps) };
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${TITLE}: ${SUBTITLE} (${EDITION})</title>
+<meta name="author" content="Meta-Layer Initiative">
+<meta name="description" content="${EDITION} of ${TITLE}: ${SUBTITLE}, with a foreword by Vint Cerf.">
+<meta name="keywords" content="Meta-Layer, Desirable Properties, Layered Web, Overweb">
+<style>${CSS}</style>
+</head>
+<body>
+${coverHtml(coverImage)}
+${titlePagesHtml(final, builtAt)}
+${tocHtml(chapters)}
+${matterHtml('foreword', foreword)}
+${matterHtml('preface', preface)}
+${chapters.map((c, i) => chapterHtml(c, validDps, i === 0)).join('\n')}
+${matterHtml('acknowledgements back', ackRail).replace('id="acknowledgements back"', 'id="acknowledgements"')}
+</body>
+</html>`;
+}
+
+/**
+ * Runs in the page after Paged.js has laid the book out. Paged.js 0.4 resets the page counter only on the
+ * page that carries counter-reset, so folios are computed here instead: lower-case roman numerals for the
+ * front matter (the cover counts as i), arabic from the DP1 opener. Each page gets its folio as --folio
+ * (the margin boxes print var(--folio)), and the contents page gets the folio of each entry's target.
+ */
+const FOLIO_SCRIPT = String.raw`
+function toRoman(n) {
+  const t = [[1000,'m'],[900,'cm'],[500,'d'],[400,'cd'],[100,'c'],[90,'xc'],[50,'l'],[40,'xl'],[10,'x'],[9,'ix'],[5,'v'],[4,'iv'],[1,'i']];
+  let s = ''; for (const [v, r] of t) while (n >= v) { s += r; n -= v; } return s;
+}
+window.PagedConfig = { auto: true, after: () => {
+  const pages = Array.from(document.querySelectorAll('.pagedjs_page'));
+  const first = document.querySelector('.chapter.first');
+  const mainStart = first ? pages.indexOf(first.closest('.pagedjs_page')) : pages.length;
+  const folio = (i) => (i < mainStart ? toRoman(i + 1) : String(i - mainStart + 1));
+  pages.forEach((p, i) => p.style.setProperty('--folio', JSON.stringify(folio(i))));
+  document.querySelectorAll('.toc a[href^="#"]').forEach((a) => {
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    const pg = target && target.closest('.pagedjs_page');
+    const slot = a.querySelector('.toc-pg');
+    if (pg && slot) slot.textContent = folio(pages.indexOf(pg));
+  });
+  window.__folios = pages.map((p, i) => folio(i));
+  window.__pagedDone = true;
+} };
+`;
+
+// ---------------------------------------------------------------- PDF
+
+async function savePreviews(page, spec, total) {
+  const want = new Set();
+  for (const part of spec.split(',')) {
+    const [a, b] = part.split('-').map((x) => (x === 'end' ? total : Number(x)));
+    for (let i = a; i <= (b || a); i++) if (i >= 1 && i <= total) want.add(i);
+  }
+  const dir = path.join(HERE, 'out', 'preview');
+  fs.mkdirSync(dir, { recursive: true });
+  for (const f of fs.readdirSync(dir)) if (/^page-\d+\.png$/.test(f)) fs.unlinkSync(path.join(dir, f));
+  await page.setViewport({ width: 1400, height: 1000, deviceScaleFactor: 1.4 });
+  const handles = await page.$$('.pagedjs_page');
+  for (const i of want) {
+    await handles[i - 1].screenshot({ path: path.join(dir, `page-${String(i).padStart(3, '0')}.png`) });
+  }
+  console.log(`Saved ${want.size} preview PNGs to ${path.relative(REPO, dir)}`);
+}
+
+async function renderPdf(htmlFile, outFile, chromePath, preview) {
+  const { default: puppeteer } = await import('puppeteer-core');
+  const browser = await puppeteer.launch({ executablePath: chromePath, headless: true,
+    args: ['--no-sandbox', '--allow-file-access-from-files', '--font-render-hinting=none'] });
+  try {
+    const page = await browser.newPage();
+    page.setDefaultTimeout(0);
+    page.on('pageerror', (e) => console.error('[page error]', e.message));
+    await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'networkidle0', timeout: 120000 });
+    await page.evaluate(() => document.fonts.ready);
+    // Chrome embeds WebP as lossless Flate (a 1200 px illustration costs ~4 MB); re-encode as JPEG,
+    // which Chrome passes through to the PDF as-is.
+    await page.evaluate(async () => {
+      for (const img of document.querySelectorAll('img[src$=".webp"]')) {
+        await img.decode();
+        // 1000 px covers the 3.55 in opener illustration at ~280 dpi.
+        const k = Math.min(1, 1000 / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
+        g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+        img.src = c.toDataURL('image/jpeg', 0.86);
+        await img.decode();
+      }
+    });
+    await page.addScriptTag({ path: path.join(HERE, 'node_modules', 'pagedjs', 'dist', 'paged.polyfill.js') });
+    const t0 = Date.now();
+    await page.waitForFunction(() => document.querySelector('.pagedjs_pages') && window.__pagedDone === true, { timeout: 0, polling: 1000 });
+    const pages = await page.evaluate(() => document.querySelectorAll('.pagedjs_page').length);
+    console.log(`Paginated ${pages} pages in ${((Date.now() - t0) / 1000).toFixed(0)}s`);
+    if (preview) await savePreviews(page, preview, pages);
+    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    await page.pdf({ path: outFile, preferCSSPageSize: true, printBackground: true, outline: true, tagged: process.env.PDF_TAGGED !== '0', timeout: 0 });
+    return pages;
+  } finally {
+    await browser.close();
+  }
+}
+
+// ---------------------------------------------------------------- main
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const sat = JSON.parse(fs.readFileSync(SOURCES_SAT, 'utf8'));
+  const byKey = Object.fromEntries(sat.sources.filter((s) => s.railKey).map((s) => [s.railKey, s]));
+  const ml = (key) => { const m = byKey[key]?.mlNumber; if (!m) throw new Error(`No ML-Draft for rail ${key} in sources-sat.json`); return m; };
+
+  const dpRails = sat.articleRails.filter((k) => /^dp\d{2}$/.test(k)).map((k) => byKey[k])
+    .filter((s) => s && (!args.only || args.only.includes(s.dp)));
+  const manifest = { builtAt: new Date().toISOString(), hub: args.hub, final: args.final, rails: {} };
+  const load = (key) => {
+    const m = ml(key);
+    const passages = fetchPassages(args.hub, m, args.offline);
+    manifest.rails[key] = { ml: m, passages: passages.length, sha256: createHash('sha256').update(JSON.stringify(passages)).digest('hex').slice(0, 16) };
+    return passages;
+  };
+
+  console.log(`${args.offline ? 'Reading cached' : 'Fetching'} ${dpRails.length} chapters + front/back matter from ${args.hub}`);
+  const foreword = prepareRail(load('foreword'));
+  const preface = prepareRail(load('about'));
+  const acknowledgements = prepareRail(load('acknowledgements'));
+  const chapters = dpRails.map((s) => {
+    const r = prepareRail(load(s.railKey));
+    if (!r.title) throw new Error(`${s.dp}: chapter has no title passage`);
+    if (!r.image) console.warn(`  ! ${s.dp}: no illustration passage found`);
+    if (/massive transformati/i.test(r.body)) console.warn(`  ! ${s.dp}: mentions an MTP — MTPs are out of V1.0, check the text`);
+    return { ...r, dp: s.dp, railKey: s.railKey };
+  });
+
+  const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
+  const html = buildHtml({ chapters, foreword, preface, acknowledgements, final: args.final, builtAt, coverImage: args.coverImage })
+    .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
+
+  const workDir = path.join(HERE, 'out');
+  fs.mkdirSync(workDir, { recursive: true });
+  const htmlFile = path.join(workDir, 'book.html');
+  fs.writeFileSync(htmlFile, html);
+  fs.writeFileSync(path.join(workDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  console.log(`Wrote ${path.relative(REPO, htmlFile)}`);
+  if (args.htmlOnly) return;
+
+  const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);
+  const mb = (fs.statSync(args.out).size / 1e6).toFixed(1);
+  console.log(`Wrote ${args.out} (${pages} pages, ${mb} MB)`);
+}
+
+main().catch((e) => { console.error(e.stack || e.message); process.exit(1); });
