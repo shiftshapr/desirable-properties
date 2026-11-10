@@ -93,3 +93,4 @@ data/loop/
 loop/*.json
 loop/logs/
 scripts/.cache/
+challenge-site/public/media/layered-web/

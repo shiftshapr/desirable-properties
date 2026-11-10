@@ -27,3 +27,9 @@ cp /home/ubuntu/meta-console/agent-drop/be-part-of-v-1.0.png \
 ```
 
 Nginx may also alias `/media/` to this directory (see `challenge-site/nginx/desirableproperties.org.conf`) so seeking does not go through Node.
+
+## The Layered Web videos
+
+- Public URLs: `/media/layered-web/day1-9x16.mp4`, `day1-16x9.mp4`, `day2-9x16.mp4`, … (listed in `src/data/layered-web-videos.ts`)
+- Source on the dev VPS: `/home/ubuntu/layered-web-videos/out/`
+- 8–15MB each, so not in git. Copy them to `challenge-site/public/media/layered-web/` on the server.
