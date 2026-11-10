@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import V1BookPanel from '@/components/V1BookPanel';
-import { LAYERED_WEB_VIDEOS } from '@/data/layered-web-videos';
+import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import { V1_LAUNCH_LABEL, V1_LAUNCH_REGISTER_URL, V1_PDF_HREF, V1_READ_ONLINE_HREF, v1Released } from '@/lib/dp-v1-release';
 
 export const revalidate = 0;
@@ -25,7 +25,7 @@ export default function V1Page() {
             Short videos on why the web needs a layer above the page, and what the 24 properties are for.
           </p>
           <div className="mt-6">
-            <LayeredWebVideoCarousel videos={LAYERED_WEB_VIDEOS} />
+            <LayeredWebVideoCarousel videos={layeredWebVideosAt(now)} />
           </div>
         </div>
       </section>

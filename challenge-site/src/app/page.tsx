@@ -7,7 +7,7 @@ import LayerHero from '@/components/LayerHero';
 import StartHereHomePanel from '@/components/StartHereHomePanel';
 import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import V1BookPanel from '@/components/V1BookPanel';
-import { LAYERED_WEB_VIDEOS } from '@/data/layered-web-videos';
+import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
 import {
@@ -58,7 +58,7 @@ export default async function Home() {
               Short videos on why the web needs a layer above the page, and what the 24 properties are for.
             </p>
             <div className="mt-6">
-              <LayeredWebVideoCarousel videos={LAYERED_WEB_VIDEOS} />
+              <LayeredWebVideoCarousel videos={layeredWebVideosAt(now)} />
             </div>
           </div>
         </section>
