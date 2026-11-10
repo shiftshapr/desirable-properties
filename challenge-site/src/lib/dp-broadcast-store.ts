@@ -13,6 +13,7 @@ import {
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
 import { resolveBroadcastRecipientRow } from '@/lib/dp-broadcast-cohort-recipients';
+import { listWaitlist, WAITLIST_GROUP, WAITLIST_KEY_PREFIX, waitlistTokenFor } from '@/lib/dp-book-waitlist';
 import type { BroadcastRecipientResult } from '@/lib/dp-broadcast-result';
 import { isCanopiUserId, fetchCanopiUserHandles } from '@/lib/dp-canopi-user';
 import {
@@ -134,7 +135,14 @@ export async function buildBroadcastWorkgroups(): Promise<BroadcastWorkgroupRow[
   const payload = await fetchWorkgroupSignups();
   if (!payload) return [];
 
-  return payload.workgroups.map((wg: WorkgroupSignupGroup) => {
+  const waitlist = await listWaitlist();
+  const waitlistGroup: BroadcastWorkgroupRow = {
+    ...WAITLIST_GROUP,
+    memberCount: waitlist.length,
+    memberKeys: waitlist.map((w) => WAITLIST_KEY_PREFIX + w.email),
+    members: waitlist.map((w) => ({ key: WAITLIST_KEY_PREFIX + w.email, userName: w.email })),
+  };
+  return [waitlistGroup, ...payload.workgroups.map((wg: WorkgroupSignupGroup) => {
     const memberKeys = wg.members.map((member) => member.user_id || member.user_name || member.id);
     return {
       id: wg.id,
@@ -148,7 +156,7 @@ export async function buildBroadcastWorkgroups(): Promise<BroadcastWorkgroupRow[
         userName: member.user_name,
       })),
     };
-  });
+  })];
 }
 
 /** Gov Hub user id → DPs where that person holds a co-editor seat. Empty on any failure. */
@@ -221,7 +229,25 @@ export async function buildBroadcastAudience(opts: {
   }));
 
   const { rows: enriched } = await enrichBroadcastAudienceEmails(withSeats);
-  return enriched;
+  // The book waitlist (people who are not otherwise signed up), as the "Book waitlist" group.
+  const known = new Set(enriched.map((r) => (r.email || '').toLowerCase()).filter(Boolean));
+  const waitlistRows: BroadcastAudienceRow[] = (await listWaitlist())
+    .filter((w) => !known.has(w.email))
+    .map((w) => ({
+      key: WAITLIST_KEY_PREFIX + w.email,
+      userId: null,
+      userName: w.email,
+      email: w.email,
+      workgroups: [WAITLIST_GROUP.name],
+      workgroupIds: [WAITLIST_GROUP.id],
+      workgroupDetails: [{ id: WAITLIST_GROUP.id, name: WAITLIST_GROUP.name, slug: WAITLIST_GROUP.slug }],
+      joinedAt: w.createdAt,
+    }))
+    .filter((row) => {
+      if (workgroupFilter && !WAITLIST_GROUP.name.toLowerCase().includes(workgroupFilter)) return false;
+      return !q || row.email.includes(q);
+    });
+  return [...enriched, ...waitlistRows];
 }
 
 export async function isWorkgroupParticipant(userId: string | null | undefined) {
@@ -494,7 +520,10 @@ export async function sendBroadcast(input: {
     }
 
     let unsubscribeUrl = `${base}/api/broadcast/unsubscribe`;
-    if (row.userId && isCanopiUserId(row.userId)) {
+    if (row.key.startsWith(WAITLIST_KEY_PREFIX)) {
+      const token = await waitlistTokenFor(to);
+      if (token) unsubscribeUrl = `${base}/api/v1/waitlist/unsubscribe?token=${encodeURIComponent(token)}`;
+    } else if (row.userId && isCanopiUserId(row.userId)) {
       const tokenResult = await ensureUnsubscribeToken(row.userId, to);
       if (tokenResult.ok && tokenResult.token) {
         await indexUnsubscribeToken({ token: tokenResult.token, userId: row.userId, email: to });

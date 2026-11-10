@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import BookWaitlistForm from '@/components/BookWaitlistForm';
 import {
   V1_COVER_SRC,
   V1_LAUNCH_LABEL,
@@ -77,6 +78,7 @@ export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?
               </Link>
             ) : null}
           </div>
+          {released ? null : <BookWaitlistForm />}
         </div>
       </div>
     </section>

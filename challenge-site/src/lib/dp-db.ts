@@ -132,6 +132,14 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_preference (
 
 CREATE INDEX IF NOT EXISTS dp_broadcast_preference_token ON dp_broadcast_preference (unsubscribe_token);
 
+CREATE TABLE IF NOT EXISTS dp_book_waitlist (
+  email TEXT PRIMARY KEY,
+  source TEXT,
+  unsubscribe_token TEXT UNIQUE NOT NULL,
+  unsubscribed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS dp_broadcast_unsubscribe (
   token TEXT PRIMARY KEY,
   user_id TEXT,

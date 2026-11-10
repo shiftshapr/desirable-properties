@@ -81,8 +81,10 @@ export const LAYERED_WEB_VIDEOS: LayeredWebVideo[] = [
   },
 ];
 
-/** The videos to show now: the launch-day one waits for the launch. */
+/** The videos to show now: the launch-day one waits for the launch, then leads. */
 export function layeredWebVideosAt(now: Date = new Date()): LayeredWebVideo[] {
   const released = v1Released(now);
-  return LAYERED_WEB_VIDEOS.filter((v) => released || !v.launchDay);
+  if (!released) return LAYERED_WEB_VIDEOS.filter((v) => !v.launchDay);
+  // From the launch on, the carousel opens on the launch-day video.
+  return [...LAYERED_WEB_VIDEOS.filter((v) => v.launchDay), ...LAYERED_WEB_VIDEOS.filter((v) => !v.launchDay)];
 }
