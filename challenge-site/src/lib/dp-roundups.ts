@@ -1,7 +1,13 @@
 /** Confirmed 2026 series schedule. November dates use PST after the DST change. */
-export const DP_V1_LAUNCH_START = '2026-11-13T11:30:00-08:00';
+export const DP_V1_LAUNCH_START = '2026-11-13T10:00:00-08:00';
+export const DP_V1_LAUNCH_END = '2026-11-13T11:00:00-08:00';
 export const DP_V1_FREEZE = '2026-11-09T13:00:00-08:00';
+/** Monday DP Roundups only. Do not use this on the Friday V1 launch event. */
 export const ROUNDUP_TIME_LABEL = '11:30 a.m.–1:00 p.m. Pacific Time';
+/** Friday V1 launch gathering, long form. */
+export const V1_LAUNCH_TIME_LABEL = '10:00 a.m.–11:00 a.m. Pacific Time';
+/** Friday V1 launch gathering, short form. */
+export const V1_LAUNCH_CLOCK_SHORT = '10–11 AM PT';
 
 const sessions = [
   ['2026-09-28', 'Find Your Workgroup', 'Get direction, meet collaborators, and choose a first contribution.', 'https://luma.com/5fjbcp9l'],
@@ -16,15 +22,26 @@ const sessions = [
 
 export const DP_ROUNDUP_EVENTS = sessions.map(([date, focus, objective, lumaUrl], index) => {
   const offset = date < '2026-11-01' ? '-07:00' : '-08:00';
+  const launch = index === 7;
   return {
     date, focus, objective, lumaUrl,
-    title: index === 7 ? focus : `DP Roundup: ${focus}`,
-    startsAt: index === 7 ? DP_V1_LAUNCH_START : `${date}T11:30:00${offset}`,
-    endsAt: `${date}T13:00:00${offset}`,
+    title: launch ? focus : `DP Roundup: ${focus}`,
+    startsAt: launch ? DP_V1_LAUNCH_START : `${date}T11:30:00${offset}`,
+    endsAt: launch ? DP_V1_LAUNCH_END : `${date}T13:00:00${offset}`,
     href: `/roundups/${date}`,
-    launch: index === 7,
+    launch,
   };
 });
+
+export type RoundupEvent = (typeof DP_ROUNDUP_EVENTS)[number];
+
+/** Time-of-day label for a gathering. `short` is the Friday event-card / countdown form. */
+export function gatheringTimeLabel(event: { launch?: boolean }, style: 'long' | 'short' = 'long'): string {
+  if (event.launch) {
+    return style === 'short' ? V1_LAUNCH_CLOCK_SHORT : V1_LAUNCH_TIME_LABEL;
+  }
+  return ROUNDUP_TIME_LABEL;
+}
 
 export function roundupDateLabel(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {

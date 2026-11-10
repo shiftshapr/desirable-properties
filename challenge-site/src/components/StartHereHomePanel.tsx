@@ -1,10 +1,7 @@
 import Link from 'next/link';
-import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 
 export default function StartHereHomePanel() {
-  const v1Label = CHALLENGE_KEY_DATES.v1Release.label;
-
   return (
     <section
       aria-labelledby="start-here-home-heading"
@@ -22,8 +19,8 @@ export default function StartHereHomePanel() {
         </h2>
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-200">
           Each DP needs two <strong className="font-semibold text-white">co-editors</strong>, who
-          decide its proposals on the way to Version 1.0 on {v1Label}. Claim an open seat, propose
-          changes in a workgroup, or comment on a chapter.
+          decide its proposals. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. Claim an
+          open seat, propose changes in a workgroup, or comment on a chapter.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link

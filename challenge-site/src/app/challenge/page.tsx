@@ -24,7 +24,7 @@ import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server
 export const metadata = {
   title: 'The Challenge – Desirable Properties',
   description:
-    'Timeline, milestones, and participation guide for the Desirable Properties Challenge. Community Review Draft on September 16, 2026; Version 1.0 and the Digital Monument target November 13, 2026.',
+    'Timeline, milestones, and participation guide for the Desirable Properties Challenge. V1.0 releases Friday, November 13, 2026, 10–11 AM PT.',
 };
 
 export const revalidate = 300;
@@ -105,8 +105,8 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            September 16 is the Community Review Draft milestone and governance demo. Version 1.0
-            and the Digital Monument target November 13, 2026.{' '}
+            September 16, 2026 was the Community Review Draft milestone and governance demo. V1.0
+            releases Friday, November 13, 2026, 10–11 AM PT.{' '}
             <Link
               href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"

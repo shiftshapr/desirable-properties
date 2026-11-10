@@ -165,8 +165,8 @@ const CONTRIBUTE_CARDS = [
           process.
         </p>
         <p className="mt-4">
-          This collaborative synthesis work will be most active during late August and early
-          September as Version 1.0 takes shape. If you&apos;d like to help architect the future
+          Workgroup synthesis continues through the Version 1.0 release. V1.0 releases Friday,
+          November 13, 2026, 10–11 AM PT. If you&apos;d like to help architect the future
           Meta-Layer, this is where you&apos;ll have the greatest impact.
         </p>
       </>

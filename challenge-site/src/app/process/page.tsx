@@ -8,7 +8,6 @@ import {
   PROCESS_ROLES,
   PROPOSAL_CUTOFF_DATE,
   READINESS_ITEMS,
-  V1_FREEZE_LABEL,
   shortDate,
   RULES_UPDATED,
 } from '@/data/dp-process';
@@ -18,7 +17,7 @@ import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 export const metadata: Metadata = {
   title: 'How Version 1.0 gets made – Desirable Properties',
   description:
-    'Principles, protocols, roles and practices for the DP workgroups through Version 1.0 on November 13, 2026: how a change reaches the book, who decides, and what members can do each week.',
+    'Principles, protocols, roles and practices for the DP workgroups through Version 1.0. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. How a change reaches the book, who decides, and what members can do each week.',
 };
 
 export const revalidate = 300;
@@ -45,11 +44,11 @@ export default function ProcessPage() {
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">Desirable Properties · Version 1.0</p>
         <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">How Version 1.0 gets made</h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-300">
-          Every DP workgroup takes its chapter from the open working draft (Version 0.77) to Version 1.0 by{' '}
-          <strong className="font-semibold text-white">Friday 13 November 2026</strong>. The editorial freeze is{' '}
-          {V1_FREEZE_LABEL}. This page is the guide for the weeks in between: the principles that decide
-          close calls, the route a change takes, who decides, what members can do each week, and the
-          checklist every chapter is reviewed against.
+          Every DP workgroup takes its chapter from the open working draft (Version 0.77) to Version
+          1.0. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. The editorial freeze was Monday,
+          November 9, at 1 p.m. PT. This page is the guide for the weeks in between: the principles
+          that decide close calls, the route a change takes, who decides, what members can do each
+          week, and the checklist every chapter is reviewed against.
         </p>
         <p className="mt-4 max-w-3xl rounded-lg border border-cyan-900/60 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
           <strong className="font-semibold text-cyan-200">Rules last updated {shortDate(RULES_UPDATED.date)}.</strong>{' '}
