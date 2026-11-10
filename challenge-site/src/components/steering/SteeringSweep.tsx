@@ -528,9 +528,14 @@ function ItemCard({
               }
               className="col-span-2 rounded-lg bg-violet-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-600 disabled:opacity-50 sm:col-span-1"
             >
-              Agree with recommendation
+              {canAgree && rec
+                ? `Agree: ${DECISION_LABEL[rec] || rec}${rec === 'accept_revised' ? ' (as written above)' : ''}`
+                : 'Agree with recommendation'}
             </button>
-            <VoteButton label="Accept" active={mine?.decision === 'accept'} disabled={disabled} tone="emerald" onClick={() => void onVote(item, 'accept', { note: note.trim() })} />
+            {/* The Agree button already casts the recommended vote, so its plain twin is hidden. */}
+            {rec !== 'accept' ? (
+              <VoteButton label="Accept" active={mine?.decision === 'accept'} disabled={disabled} tone="emerald" onClick={() => void onVote(item, 'accept', { note: note.trim() })} />
+            ) : null}
             <VoteButton
               label="Accept revised…"
               active={mine?.decision === 'accept_revised' || revising}
@@ -538,8 +543,12 @@ function ItemCard({
               tone="violet"
               onClick={() => setRevising((r) => !r)}
             />
-            <VoteButton label="Reject" active={mine?.decision === 'decline'} disabled={disabled} tone="rose" onClick={() => void onVote(item, 'decline', { note: note.trim() })} />
-            <VoteButton label="Defer to 1.1" active={mine?.decision === 'defer'} disabled={disabled} tone="sky" onClick={() => void onVote(item, 'defer', { note: note.trim() })} />
+            {rec !== 'decline' ? (
+              <VoteButton label="Reject" active={mine?.decision === 'decline'} disabled={disabled} tone="rose" onClick={() => void onVote(item, 'decline', { note: note.trim() })} />
+            ) : null}
+            {rec !== 'defer' ? (
+              <VoteButton label="Defer to 1.1" active={mine?.decision === 'defer'} disabled={disabled} tone="sky" onClick={() => void onVote(item, 'defer', { note: note.trim() })} />
+            ) : null}
           </div>
           {revising ? (
             <div className="space-y-2 rounded-lg border border-violet-900/60 bg-violet-950/20 p-3">
