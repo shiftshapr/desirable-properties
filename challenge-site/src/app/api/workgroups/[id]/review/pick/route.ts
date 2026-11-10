@@ -9,6 +9,7 @@ import {
   draftRefFromLabel,
   fetchViewerCoEditor,
 } from '@/lib/workgroup-review-govhub';
+import { postSteeringVote } from '@/lib/dp-steering-govhub.server';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -24,7 +25,10 @@ export async function POST(request: Request, ctx: RouteContext) {
   }
 
   // Only this DP's co-editors approve or decline (owner, 2026-10-19).
-  const { isCoEditor, isSteering, govhubUserId, canSignoffTitles } = await fetchViewerCoEditor(workgroupId, session.idToken);
+  const { isCoEditor, isSteering, govhubUserId, canSignoffTitles, editorialFreeze } = await fetchViewerCoEditor(
+    workgroupId,
+    session.idToken,
+  );
   if (!govhubUserId) {
     // Gov Hub did not accept the sign-in (usually an expired token), so it cannot tell who this is.
     return NextResponse.json(
@@ -81,6 +85,51 @@ export async function POST(request: Request, ctx: RouteContext) {
     draftRefFromDocumentHref(wg.document_href) || draftRefFromLabel(wg.document_label);
   if (!draftRef) {
     return NextResponse.json({ error: 'This workgroup has no linked Gov Hub draft' }, { status: 409 });
+  }
+
+  // After the freeze, Approve and Decline record a steering vote; Gov Hub carries the outcome out
+  // once two steering members agree (docs/DP-V1-STEERING-SWEEP-SPEC.md, rule 7). This covers
+  // MTPs and title changes too.
+  if (editorialFreeze && isSteering) {
+    const decision = action === 'promote' ? 'accept' : 'decline';
+    const vote = await postSteeringVote(draftRef, session.idToken, {
+      proposal_id: proposalId,
+      decision,
+      ...(note ? { note } : {}),
+    });
+    if (!vote.ok) {
+      return NextResponse.json(
+        { error: String(vote.data.error || vote.data.detail || `Steering vote failed (${vote.status})`) },
+        { status: vote.status || 502 },
+      );
+    }
+    const state = String(vote.data.state || '');
+    const outcome = (vote.data.outcome || null) as { error?: string | null } | null;
+    const actor = session.displayName || session.username || 'Steering member';
+    const steeringDpId = extractDpId(wg.name || '');
+    await recordWorkgroupActivityEvent({
+      workgroupId,
+      dpKey: steeringDpId ? `dp${steeringDpId.replace(/^DP/i, '').padStart(2, '0')}` : null,
+      eventType: action === 'promote' ? 'review_promote' : 'review_drop',
+      actorUserId: session.userId,
+      actorName: actor,
+      summary: `${actor} voted to ${decision === 'accept' ? 'accept' : 'reject'} a Review proposal (steering)`,
+      detail: { proposalId, draftRef, steering: true, state, href: `/workgroups/${workgroupId}?tab=review` },
+    });
+    return NextResponse.json({
+      ok: true,
+      action,
+      steering: true,
+      state,
+      published: false,
+      message: outcome?.error
+        ? `Vote recorded. Two steering members agree, but carrying it out failed: ${outcome.error}`
+        : outcome || state === 'done'
+          ? `Vote recorded. Two steering members agree, so the proposal is ${decision === 'accept' ? 'accepted into the revision draft (not live)' : 'declined'}.`
+          : state === 'split'
+            ? 'Vote recorded. The steering votes differ, so the third member’s vote settles it.'
+            : 'Vote recorded. It is carried out when a second steering member agrees.',
+    });
   }
 
   const result =
