@@ -98,6 +98,19 @@ export type ReviewQueueItem = {
   anchorEval: ReviewAnchorEval | null;
   canPromote: boolean;
   promoteBlockReason: string | null;
+  /** After the editorial freeze, for steering members: the analysis's recommendation and the steering votes. */
+  steering?: ReviewSteeringInfo | null;
+};
+
+/** One proposal's steering-sweep record, as the Review tab shows it (Gov Hub steering API). */
+export type ReviewSteeringInfo = {
+  recommendation: string | null;
+  confidence: string | null;
+  stale: boolean;
+  /** none | one | split | ready | done */
+  state: string;
+  votes: Array<{ voterName: string; decision: string; mine: boolean }>;
+  outcomeError: string | null;
 };
 
 export type ReviewWorkingRevision = {
@@ -134,4 +147,8 @@ export type ReviewQueueResponse = {
   isSteering?: boolean;
   /** Viewer may agree to title changes (steering committee, or a site admin until it is named). */
   canSignoffTitles?: boolean;
+  /** After the freeze, for steering members: this document's steering sweep page (/steering/<ml>). */
+  steeringHref?: string | null;
+  /** Set when the steering record could not be loaded (the buttons still record votes). */
+  steeringError?: string | null;
 };
