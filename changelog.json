@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-launch-prelaunch-2026-11-10",
+      "date": "2026-11-10",
+      "status": "open",
+      "title": "V1.0 pre-launch copy and Friday 10–11 AM PT launch clock",
+      "summary": "Site copy now treats September 16 as the past Community Review Draft, and names the Version 1.0 release as Friday, November 13, 2026, 10–11 AM PT. Monday Roundup times stay 11:30 a.m.–1:00 p.m. Pacific Time. The FAQ count line now says 24 canonical DPs, pending confirmation of 23 vs 24.",
+      "changes": [
+        "/pad status and hero alt: Community Review Draft was September 16; V1.0 releases Friday, November 13, 2026, 10–11 AM PT",
+        "/challenge countdown and timeline: Friday 10–11 AM PT; September 16 in the past; Metaweb book 2nd edition removed from the November 13 listing",
+        "/faq, /launch-briefing, /onchain, /participate, /process, /start-here, /workgroups, and /v1-readiness updated to the same pre-launch wording",
+        "/roundups, /roundups/2026-11-13, and the /events Friday card use 10:00 a.m.–11:00 a.m. Pacific Time or 10–11 AM PT for the launch only",
+        "Homepage and /v1 book panel badge now reads Version 1.0 · releases Friday, with the locked 10–11 AM PT clock kept",
+        "The expired July 21 pre-challenge notify modal is removed from the book site cover page"
+      ]
+    },
+    {
       "id": "steering-sweep-pages",
       "date": "2026-11-10",
       "status": "open",

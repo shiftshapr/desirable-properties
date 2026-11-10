@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { DP_ROUNDUP_EVENTS, ROUNDUP_TIME_LABEL, roundupDateLabel } from '@/lib/dp-roundups';
+import { DP_ROUNDUP_EVENTS, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import { tasksForWeek } from '@/data/dp-process';
 
 type Props = { params: Promise<{ date: string }> };
@@ -20,7 +20,7 @@ export default async function RoundupEventPage({ params }: Props) {
     <Link href="/roundups" className="text-cyan-300 underline">All DP Roundups</Link>
     <p className="mt-8 text-sm uppercase tracking-widest text-cyan-400">{event.launch ? 'Version 1.0 launch' : 'Meta-Layer Monday'}</p>
     <h1 className="mt-3 text-4xl font-bold text-white">{event.title}</h1>
-    <p className="mt-5 text-xl">{roundupDateLabel(event.startsAt)}</p><p className="mt-2">{ROUNDUP_TIME_LABEL} · Zoom</p>
+    <p className="mt-5 text-xl">{roundupDateLabel(event.startsAt)}</p><p className="mt-2">{gatheringTimeLabel(event)} · Zoom</p>
     <p className="mt-6 text-xl">{event.objective}</p>
     <a href={event.lumaUrl} className="mt-6 inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 hover:bg-cyan-200">RSVP on Luma →</a>
     <section className="mt-8 rounded-xl border border-slate-700 p-6"><h2 className="text-xl font-semibold text-white">Meeting access</h2><p className="mt-3">Register on Luma to receive the Zoom meeting details. Use the Zoom link, meeting ID, and passcode in your invitation. If the invitation link does not open Zoom, copy and paste its full Zoom URL into your browser’s address bar.</p><p className="mt-3">Need help joining? <Link href="/support" className="text-cyan-300 underline">Contact support</Link>.</p></section>

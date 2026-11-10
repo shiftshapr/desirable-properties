@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import InscriptionClaimModal, { type ClaimTarget } from '@/components/InscriptionClaimModal';
 import OrdinalLink from '@/components/OrdinalLink';
 import { inscriptionUrl, submissionLink } from '@/lib/ordinalLinks';
@@ -58,10 +59,13 @@ export default function OnchainClaimableLists({
         <h2 className="text-2xl font-bold">Claim your inscription</h2>
         <p className="mt-4 text-slate-300">
           The Meta-Layer Initiative inscribed the PCI emails and Second Call submissions for the
-          Digital Monument. If an inscription was created for your contribution, you can claim it
-          here before <strong className="text-white">September 16, 2026</strong>. A confirmation
-          email will be sent to each person who completes a claim. For valid claims, we will deliver
-          the inscription by the end of September 2026.
+          Digital Monument. The public claim window announced for September 16, 2026 has closed. If
+          you still need a confirmation or a delivery question answered, contact us through the
+          address on this page.{' '}
+          <Link href="/support" className="text-cyan-300 hover:text-cyan-200">
+            Support
+          </Link>
+          .
         </p>
         <ol className="mt-4 list-decimal space-y-2 pl-6 text-slate-300">
           <li>

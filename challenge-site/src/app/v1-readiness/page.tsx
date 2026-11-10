@@ -9,7 +9,7 @@ import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
 export const metadata: Metadata = {
   title: 'V1 readiness board – Desirable Properties',
   description:
-    'Which of the 24 Desirable Properties chapters are ready for Version 1.0 on November 13, 2026, against the ten-item readiness checklist.',
+    'Which of the 24 Desirable Properties chapters are ready for Version 1.0 (V1.0 releases Friday, November 13, 2026, 10–11 AM PT), against the ten-item readiness checklist.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export default async function V1ReadinessPage() {
         ← Principles, protocols and practices
       </Link>
       <header className="mt-6 border-b border-slate-800 pb-8">
-        <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">Version 1.0 · 13 November 2026</p>
+        <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">Version 1.0 · Friday, November 13, 2026, 10–11 AM PT</p>
         <h1 className="mt-3 text-4xl font-bold text-white">V1 readiness board</h1>
         <p className="mt-4 max-w-3xl text-lg text-slate-300">
           A chapter is ready for Version 1.0 when all {READINESS_ITEMS.length} items pass. This is the board the{' '}

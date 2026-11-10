@@ -148,7 +148,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               they must be built.
             </p>
             <p>
-              The current working draft lists 23 canonical DPs in Version 0.77. The set is not
+              The current working draft lists 24 canonical DPs. The set is not
               assumed complete.{' '}
               <Link href="/#dps">Browse the DPs</Link>.
             </p>
@@ -179,16 +179,15 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              <strong className="font-semibold text-white">Version 0.77</strong> is the current
-              open working draft–developed through AI-assisted synthesis, two Calls for Input, and
-              community stewardship. It is open for public review now.
+              <strong className="font-semibold text-white">Version 0.77</strong> is the open
+              working draft – developed through AI-assisted synthesis, two Calls for Input, and
+              community stewardship.
             </p>
             <p>
               <strong className="font-semibold text-white">Version 1.0</strong> is the
-              community-synthesized foundation targeted for release on{' '}
-              <strong className="font-semibold text-white">November 13, 2026</strong>.{' '}
-              <strong className="font-semibold text-white">September 16, 2026</strong> marks the
-              Community Review Draft milestone and governance feedback workflow demonstration.
+              community-synthesized foundation. V1.0 releases Friday, November 13, 2026, 10–11 AM
+              PT. September 16, 2026 was the Community Review Draft milestone and governance
+              feedback workflow demonstration.
             </p>
           </>
         ),
@@ -455,10 +454,9 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               Discuss, Patch, Insert, and Gov Hub revisions.
             </p>
             <p>
-              Version 1.0 targets <strong className="font-semibold text-white">November 13, 2026</strong>,
-              with a permanent Ordinal edition as part of the Digital Monument. The{' '}
-              <strong className="font-semibold text-white">September 16, 2026</strong> milestone
-              shares the Community Review Draft. <Link href="/onchain">Browse on-chain →</Link>
+              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with a permanent Ordinal
+              edition as part of the Digital Monument. September 16, 2026 was the Community Review
+              Draft milestone. <Link href="/onchain">Browse on-chain →</Link>
             </p>
           </>
         ),
@@ -528,24 +526,21 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               See the live phase on the{' '}
-              <Link href="/challenge#timeline">Challenge timeline</Link>. Key upcoming milestones
-              include community review (August 2026), Community Review Draft preparation (early
-              September 2026), the September 16 Community Review Draft milestone, and Version 1.0
-              release on November 13, 2026.
+              <Link href="/challenge#timeline">Challenge timeline</Link>. September 16, 2026 was
+              the Community Review Draft milestone. V1.0 releases Friday, November 13, 2026, 10–11
+              AM PT.
             </p>
           </>
         ),
       },
       {
-        q: 'When is Version 1.0 and the Community Review Draft milestone?',
+        q: 'When is Version 1.0?',
         a: (
           <>
             <p>
-              Workgroups prepare the Community Review Draft in early September 2026.{' '}
-              <strong className="font-semibold text-white">September 16, 2026</strong> is the public
-              Community Review Draft milestone and governance feedback workflow demonstration.{' '}
-              <strong className="font-semibold text-white">November 13, 2026</strong> is the target
-              Version 1.0 release and Digital Monument publication.
+              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with Digital Monument
+              publication. September 16, 2026 was the public Community Review Draft milestone and
+              governance feedback workflow demonstration.
             </p>
             <p>
               <Link href="/book">Read the book →</Link>

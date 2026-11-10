@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import LaunchBriefingPanel from '@/components/workgroup/LaunchBriefingPanel';
-import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 import { challengeMeta } from '@/lib/challengeTimeline';
 import { fetchWorkgroupBySlug, getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { isLaunchBriefingEnabled } from '@/lib/dp-launch-briefing';
 import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Pre-launch briefing – Desirable Properties Challenge',
+  title: 'What shipped on September 16 – Desirable Properties Challenge',
   description:
-    'What the September 16 Community Review Draft launch includes, what it does not, and how workgroup members and coordinators can participate.',
+    'A briefing for Desirable Properties workgroup members and coordinators on the Community Review Draft milestone – what it included, what it did not, and how to keep participating.',
 };
 
 type Props = {
@@ -25,8 +24,6 @@ export default async function LaunchBriefingPage({ searchParams }: Props) {
   const params = await searchParams;
   const slug = getRequestedWorkgroupSlug(params.wg);
   const workgroup = slug ? await fetchWorkgroupBySlug(slug) : null;
-  const launchLabel = CHALLENGE_KEY_DATES.bookLaunch.label;
-
   return (
     <main className="border-b border-slate-800">
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
@@ -39,14 +36,19 @@ export default async function LaunchBriefingPage({ searchParams }: Props) {
 
         <header className="mt-8 border-b border-slate-800 pb-10">
           <p className="text-sm font-medium uppercase tracking-[0.15em] text-amber-300">
-            {launchLabel} launch
+            September 16, 2026 · Community Review Draft
           </p>
-          <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">Pre-launch briefing</h1>
+          <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">What shipped on September 16</h1>
           <p className="mt-4 text-lg leading-relaxed text-slate-300">
-            A shareable guide for Desirable Properties workgroup members and coordinators ahead of
-            the {launchLabel} Community Review Draft milestone.
+            A briefing for Desirable Properties workgroup members and coordinators on the Community
+            Review Draft milestone – what it included, what it did not, and how to keep
+            participating.
           </p>
           <p className="mt-3 text-sm text-slate-500">{challengeMeta.book_launch_title}</p>
+          <p className="mt-4 text-base leading-relaxed text-slate-300">
+            Version 1.0 was not part of that milestone. V1.0 releases Friday, November 13, 2026,
+            10–11 AM PT.
+          </p>
         </header>
 
         <nav className="mt-8 rounded-xl border border-slate-800 bg-slate-900/40 p-5 text-sm">

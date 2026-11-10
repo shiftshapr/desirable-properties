@@ -30,7 +30,6 @@ function BriefingSection({
 
 export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Props) {
   const launchLabel = CHALLENGE_KEY_DATES.bookLaunch.label;
-  const v1Label = CHALLENGE_KEY_DATES.v1Release.label;
   const launchTitle = challengeMeta.book_launch_title;
   const coordinatorHref = workgroupSlug
     ? `/welcome/coordinator?wg=${encodeURIComponent(workgroupSlug)}`
@@ -43,9 +42,9 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
           Why this page exists
         </p>
         <p className="mt-3 text-base leading-relaxed text-slate-200">
-          The {launchLabel} launch is new. The latest AI model enabled editorial synthesis across
-          hundreds of community proposals. This milestone delivers a scoped Community Review Draft,
-          not the complete Version {challengeMeta.target_version} book.
+          The September 16, 2026 milestone delivered a scoped Community Review Draft, not the
+          complete Version 1.0 book. The latest AI model enabled editorial synthesis across
+          hundreds of community proposals.
         </p>
       </section>
 
@@ -73,7 +72,7 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             <strong className="font-semibold text-white">
               Not Desirable Properties Version {challengeMeta.target_version}
             </strong>{' '}
-            – the mature edition remains targeted for {v1Label}.
+            – V1.0 releases Friday, November 13, 2026, 10–11 AM PT.
           </li>
           <li>
             <strong className="font-semibold text-white">Not every valid proposal integrated</strong>{' '}
@@ -153,8 +152,8 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
               Challenge timeline →
             </Link>
             <span className="mt-1 block text-sm text-slate-500">
-              Full milestone history including the {launchLabel} launch and {v1Label} Version{' '}
-              {challengeMeta.target_version} target.
+              Full milestone history including the September 16, 2026 Community Review Draft and
+              Version {challengeMeta.target_version}.
             </span>
           </li>
           <li>

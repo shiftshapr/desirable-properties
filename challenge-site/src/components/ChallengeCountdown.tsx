@@ -4,6 +4,7 @@ import {
   getCountdownMilestone,
 } from '@/lib/challengeTimeline';
 import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
+import { DP_V1_LAUNCH_START } from '@/lib/dp-roundups';
 
 type Props = {
   /** ISO string from server render so first paint matches */
@@ -27,13 +28,16 @@ export default function ChallengeCountdown({ initialNow }: Props) {
     );
   }
 
-  const launchLabel = milestone.target.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'America/Los_Angeles',
-  });
+  const isV1Launch = milestone.target.getTime() === new Date(DP_V1_LAUNCH_START).getTime();
+  const launchLabel = isV1Launch
+    ? 'Friday, November 13, 2026 · 10–11 AM PT'
+    : milestone.target.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'America/Los_Angeles',
+      });
 
   const launchTime = milestone.target.toLocaleTimeString('en-US', {
     hour: 'numeric',
@@ -58,7 +62,7 @@ export default function ChallengeCountdown({ initialNow }: Props) {
         {milestone.title}
       </p>
       <p className="mt-1 text-center text-sm text-slate-400">
-        {launchLabel} · {launchTime}
+        {isV1Launch ? launchLabel : `${launchLabel} · ${launchTime}`}
       </p>
       <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
         {units.map(({ value, label }) => (

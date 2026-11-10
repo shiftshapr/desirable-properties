@@ -1,4 +1,4 @@
-import { DP_ROUNDUP_EVENTS, ROUNDUP_TIME_LABEL, roundupDateLabel } from '@/lib/dp-roundups';
+import { DP_ROUNDUP_EVENTS, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import {
@@ -931,7 +931,7 @@ function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
     id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
     title: event.title, seriesType: event.launch ? 'single' : 'series',
     href: event.lumaUrl, detailHref: event.href, external: true,
-    startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${ROUNDUP_TIME_LABEL}`,
+    startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
     seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
     seriesTitle: event.launch ? 'Desirable Properties Version 1.0' : 'Meta-Layer Monday', seriesHref: '/roundups',
   }));

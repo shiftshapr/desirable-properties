@@ -18,8 +18,6 @@ type Props = {
   onClose: () => void;
 };
 
-const CLAIM_DEADLINE = 'September 16, 2026';
-
 export default function InscriptionClaimModal({ target, onClose }: Props) {
   const [inscriptionId, setInscriptionId] = useState('');
   const [email, setEmail] = useState('');
@@ -138,8 +136,9 @@ export default function InscriptionClaimModal({ target, onClose }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4 px-6 py-5">
           <div className="rounded-lg border border-amber-900/50 bg-amber-950/20 px-4 py-3 text-sm text-amber-100/90">
-            Claims must be completed before <strong>{CLAIM_DEADLINE}</strong>. A confirmation email
-            will be sent to the address you provide.
+            The public claim window announced for September 16, 2026 has closed. If you still need
+            a confirmation or a delivery question answered, contact us through{' '}
+            <a href="/support" className="text-cyan-300 hover:text-cyan-200">Support</a>.
           </div>
 
           <div>
