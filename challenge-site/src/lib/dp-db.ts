@@ -722,6 +722,20 @@ CREATE TABLE IF NOT EXISTS dp_anchor_eval (
 
 -- Claude's last check of a working revision before it is published (src/lib/prepublish-check.server.ts).
 -- decisions: {"<edit index>": {"status": "accepted" | "skipped", "by": "...", "at": "..."}}.
+-- Steering committee notes: a private chat on /steering (src/lib/steering-notes.server.ts).
+-- ml_number is the document a note was written from (null on the overview). Soft-delete only.
+CREATE TABLE IF NOT EXISTS dp_steering_note (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  user_id TEXT NOT NULL,
+  user_name TEXT,
+  ml_number TEXT,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS dp_steering_note_recent ON dp_steering_note (created_at DESC);
+
 CREATE TABLE IF NOT EXISTS dp_prepublish_check (
   id TEXT PRIMARY KEY,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

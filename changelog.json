@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-notes",
+      "date": "2026-11-11",
+      "status": "open",
+      "title": "Steering notes chat",
+      "summary": "A private chat on the steering pages where the three steering committee members can leave each other notes. Only the committee can read it; notes are not votes.",
+      "changes": [
+        "/steering and /steering/<ml>: \"Steering notes\" chat at the bottom, one shared thread",
+        "Notes written from a document page are tagged with that document and link back to it; a document page can show only its own notes",
+        "Authors can remove their own notes (soft delete); refreshes every 30 seconds",
+        "New API /api/steering/notes (steering members only, checked with Gov Hub); notes stored in dp_steering_note"
+      ]
+    },
+    {
       "id": "steering-ask-deepi",
       "date": "2026-11-11",
       "status": "open",

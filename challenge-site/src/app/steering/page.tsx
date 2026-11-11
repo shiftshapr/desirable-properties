@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import SteeringNotes from '@/components/steering/SteeringNotes';
 import SteeringOverview from '@/components/steering/SteeringOverview';
 import { readSession } from '@/lib/auth-session';
 
@@ -25,7 +26,10 @@ export default async function SteeringPage() {
         </p>
       </header>
       {session?.userId ? (
-        <SteeringOverview />
+        <>
+          <SteeringOverview />
+          <SteeringNotes />
+        </>
       ) : (
         <p className="mt-8 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
           <Link href="/login?next=%2Fsteering" className="text-cyan-300 underline hover:text-cyan-200">
