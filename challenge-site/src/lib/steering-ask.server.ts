@@ -2,7 +2,9 @@
  * Ask Deepi on the steering pages (/steering/<ml>): a steering member asks Claude Opus 5.5
  * (src/lib/review-claude.server.ts) about one proposal or one batch before voting.
  *
- * Deepi reads the analysis, the votes so far, the proposal(s) and the document's current text.
+ * Deepi reads the analysis, the votes so far, the proposal(s) and the document's current text, and can
+ * look things up across the whole book while answering (src/lib/steering-ask-tools.server.ts): search
+ * every document's current text, read blocks, and list or open proposals on any document.
  * Each person's thread is private and is logged in dp_review_ask under workgroup_id "steering",
  * with item_key "<ML>:item:<proposal id>" or "<ML>:batch:<batch id>". A separate daily limit
  * (STEERING_ASK_DAILY_LIMIT, default 60) caps cost, since steering reads hundreds of items.
@@ -11,7 +13,8 @@ import 'server-only';
 import { randomUUID } from 'node:crypto';
 import type Anthropic from '@anthropic-ai/sdk';
 import { ensureDpSchema } from '@/lib/dp-db';
-import { callReviewClaude, numberedChapter, styleGuideContext } from '@/lib/review-claude.server';
+import { callReviewClaudeWithTools, numberedChapter, styleGuideContext } from '@/lib/review-claude.server';
+import { STEERING_TOOLS, steeringToolRunner } from '@/lib/steering-ask-tools.server';
 import { DECISION_LABEL, type SteeringBatch, type SteeringDocument, type SteeringItem } from '@/lib/dp-steering';
 
 export const MAX_STEERING_QUESTION = 2000;
@@ -60,6 +63,7 @@ Each proposal comes with a recommendation from a recorded AI analysis, checked b
 
 How to answer:
 - Ground every claim in the document text, the proposal or the analysis. Cite document blocks by their number, e.g. [12], and quote the words you rely on. If the text does not settle a question, say so.
+- You can look beyond this document. Use search_book when a question touches other chapters (does another chapter already say this, repeat it or contradict it?), read_blocks for context around a hit, and list_proposals or get_proposal for related changes filed on other documents. Look things up rather than guess; a few lookups are fine, but answer once you have what you need. Cite other documents by ML number and block, e.g. ML-Draft-013 [40], and quote them.
 - Say plainly when you disagree with the analysis, and why.
 - Be direct and brief: a few short paragraphs at most. Plain text only, no Markdown headings or tables; simple "- " lists are fine.
 - You advise; the steering committee decides. Do not claim anything is accepted, rejected or applied.
@@ -166,6 +170,8 @@ export async function askSteeringDeepi(opts: {
   question: string;
   userId: string;
   userName: string | null;
+  /** The member's Gov Hub token, for lookups in other documents (Gov Hub checks what they may see). */
+  idToken: string;
 }): Promise<SteeringAsk> {
   const pool = await ensureDpSchema();
   if (!pool) throw new Error('The site database is not configured.');
@@ -192,11 +198,13 @@ export async function askSteeringDeepi(opts: {
   const id = randomUUID();
   let answer: string | null = null;
   let error: string | null = null;
-  let call: Awaited<ReturnType<typeof callReviewClaude>> | null = null;
+  let call: Awaited<ReturnType<typeof callReviewClaudeWithTools>> | null = null;
   try {
-    call = await callReviewClaude({
+    call = await callReviewClaudeWithTools({
       system: [INSTRUCTIONS, styleGuideContext(), numberedChapter(opts.title, opts.passages)],
       messages,
+      tools: STEERING_TOOLS,
+      runTool: steeringToolRunner(opts.idToken),
       effort: 'medium',
     });
     answer = call.text;
