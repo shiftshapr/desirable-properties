@@ -74,6 +74,7 @@ export async function POST(request: Request, ctx: RouteContext) {
       question,
       userId: l.auth.userId,
       userName: l.auth.name,
+      idToken: l.auth.idToken,
     });
     const used = await steeringAsksToday(l.auth.userId);
     return NextResponse.json(
