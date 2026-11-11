@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
+import SteeringAskDeepi from '@/components/steering/SteeringAskDeepi';
 import { useAuth } from '@/lib/auth-context';
 import {
   agreesWith,
@@ -205,6 +206,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
       {doc?.batches.map((batch) => (
         <BatchSection
           key={batch.id}
+          ml={ml}
           batch={batch}
           items={batch.proposalIds.map((id) => byId.get(id)).filter((i): i is SteeringItem => Boolean(i))}
           busy={busy}
@@ -224,6 +226,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
             {loose.map((item) => (
               <ItemCard
                 key={item.proposalId}
+                ml={ml}
                 item={item}
                 busy={busy}
                 flash={flash[item.proposalId]}
@@ -239,6 +242,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
 }
 
 function BatchSection({
+  ml,
   batch,
   items,
   busy,
@@ -247,6 +251,7 @@ function BatchSection({
   onVote,
   onWithdraw,
 }: {
+  ml: string;
   batch: SteeringBatch;
   items: SteeringItem[];
   busy: string | null;
@@ -287,6 +292,14 @@ function BatchSection({
       </div>
       <h2 className="mt-2 text-lg font-semibold text-white">{batch.title}</h2>
       {batch.summary ? <p className="mt-1 whitespace-pre-line text-sm text-slate-300">{batch.summary}</p> : null}
+      <div className="mt-2">
+        <SteeringAskDeepi
+          ml={ml}
+          target={`batch:${batch.id}`}
+          label="Ask Deepi about this batch"
+          placeholder="e.g. Is there anything in this batch I should leave out and vote on separately?"
+        />
+      </div>
 
       {batch.kind === 'needs_person' ? (
         <p className="mt-3 text-sm text-amber-200">
@@ -361,6 +374,7 @@ function BatchSection({
         {items.map((item) => (
           <ItemCard
             key={item.proposalId}
+            ml={ml}
             item={item}
             busy={busy}
             flash={flash[item.proposalId]}
@@ -405,6 +419,7 @@ type VoteFn = (
 ) => void | Promise<void>;
 
 function ItemCard({
+  ml,
   item,
   busy,
   flash,
@@ -412,6 +427,7 @@ function ItemCard({
   onWithdraw,
   include,
 }: {
+  ml: string;
   item: SteeringItem;
   busy: string | null;
   flash?: Flash;
@@ -514,6 +530,14 @@ function ItemCard({
       ) : null}
 
       {a ? <AnalysisBlock analysis={a} /> : null}
+      <div className="mt-2">
+        <SteeringAskDeepi
+          ml={ml}
+          target={`item:${item.proposalId}`}
+          label="Ask Deepi about this proposal"
+          placeholder="e.g. Does the recommendation hold up against the chapter text?"
+        />
+      </div>
 
       <Votes item={item} />
 
