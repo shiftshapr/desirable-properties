@@ -99,6 +99,7 @@ export default function WorkgroupChatTeaser({
                       ? { workgroupId: msg.workgroup_id || workgroupId, messageId: msg.id, attachments: msg.attachments }
                       : null
                   }
+                  files={{ workgroupId: msg.workgroup_id || workgroupId, messageId: msg.id, attachments: msg.attachments }}
                 />
               </li>
             );

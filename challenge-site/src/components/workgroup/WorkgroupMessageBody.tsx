@@ -2,7 +2,7 @@
 
 import HermesMarkdown from '@/components/HermesMarkdown';
 import { isSharedHermesWorkgroupMessage } from '@/lib/workgroup-hermes-share';
-import { RelayMessageContent } from '@/lib/workgroup-relay-message';
+import { MessageAttachmentList, RelayMessageContent } from '@/lib/workgroup-relay-message';
 
 type Props = {
   body: string;
@@ -14,9 +14,15 @@ type Props = {
     messageId: string;
     attachments?: unknown;
   } | null;
+  /** Files a member attached to an ordinary chat message. */
+  files?: {
+    workgroupId: string;
+    messageId: string;
+    attachments?: unknown;
+  } | null;
 };
 
-export default function WorkgroupMessageBody({ body, className = '', relay = null }: Props) {
+export default function WorkgroupMessageBody({ body, className = '', relay = null, files = null }: Props) {
   if (relay) {
     return (
       <RelayMessageContent
@@ -28,17 +34,25 @@ export default function WorkgroupMessageBody({ body, className = '', relay = nul
     );
   }
 
+  const attachmentList = files ? <MessageAttachmentList {...files} /> : null;
+
   if (isSharedHermesWorkgroupMessage(body)) {
     return (
       <div className={`mt-1 text-sm leading-relaxed ${className}`.trim()}>
         <HermesMarkdown text={body} variant="dark" />
+        {attachmentList}
       </div>
     );
   }
 
   return (
-    <p className={`mt-1 whitespace-pre-wrap text-sm leading-relaxed ${className || 'text-slate-200'}`.trim()}>
-      {body}
-    </p>
+    <>
+      {body ? (
+        <p className={`mt-1 whitespace-pre-wrap text-sm leading-relaxed ${className || 'text-slate-200'}`.trim()}>
+          {body}
+        </p>
+      ) : null}
+      {attachmentList}
+    </>
   );
 }

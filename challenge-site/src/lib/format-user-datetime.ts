@@ -1,8 +1,15 @@
 export type UserDateFormatMode = 'datetime' | 'date';
 
+/** ISO date-time with no zone, e.g. Gov Hub's `2026-11-10T22:01:00.123456`. */
+const NAIVE_ISO_DATETIME = /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/;
+
 export function parseUserDate(value: string | Date | null | undefined): Date | null {
   if (value == null || value === '') return null;
-  const date = value instanceof Date ? value : new Date(value);
+  // Gov Hub stores UTC and serializes it without a zone; read those as UTC, not local time.
+  const date =
+    value instanceof Date
+      ? value
+      : new Date(NAIVE_ISO_DATETIME.test(value.trim()) ? `${value.trim().replace(' ', 'T')}Z` : value);
   if (Number.isNaN(date.getTime())) return null;
   return date;
 }
