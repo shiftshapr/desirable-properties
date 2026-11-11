@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-ask-deepi",
+      "date": "2026-11-11",
+      "status": "open",
+      "title": "Ask Deepi on the steering pages",
+      "summary": "Steering committee members can ask Deepi (Claude Opus 5.5) about a whole batch or a single proposal before voting. Deepi reads the analysis, the votes so far, the document text and the style guide. Each member's questions are private, with a daily limit.",
+      "changes": [
+        "/steering/<ml>: \"Ask Deepi about this batch\" under each batch summary",
+        "/steering/<ml>: \"Ask Deepi about this proposal\" on each item card, under the analysis",
+        "New API /api/steering/<ml>/ask (steering members only; Gov Hub checks)"
+      ]
+    },
+    {
       "id": "v1-launch-prelaunch-2026-11-10",
       "date": "2026-11-10",
       "status": "open",
