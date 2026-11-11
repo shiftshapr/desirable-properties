@@ -80,6 +80,9 @@ export default function WorkgroupChatPanel({
   const [dividerId, setDividerId] = useState<string | null>(null);
   const dividerDecidedRef = useRef(false);
   const dividerScrolledRef = useRef(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  /** Keep the list pinned to the newest message while the reader is at (or near) the bottom. */
+  const stickToBottomRef = useRef(true);
   const lastMarkedRef = useRef<string | null>(null);
   const onUnreadChangeRef = useRef(onUnreadChange);
   useEffect(() => {
@@ -177,6 +180,15 @@ export default function WorkgroupChatPanel({
     () => mergeOlderMessages(olderMessages, messages),
     [olderMessages, messages],
   );
+
+  // Open at the newest message, and follow new ones while the reader is at the bottom. A permalink
+  // or the "New messages" line takes over the first scroll instead.
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el || !stickToBottomRef.current) return;
+    if (focusMessageId || (dividerId && !dividerScrolledRef.current)) return;
+    el.scrollTop = el.scrollHeight;
+  }, [displayedMessages.length, focusMessageId, dividerId]);
 
   // Mark read up to the newest message while Chat is open and the browser tab is in front.
   const markRead = useCallback(async () => {
@@ -289,6 +301,8 @@ export default function WorkgroupChatPanel({
       let newMessage = result.message;
       let nextMessages = messages;
 
+      // Your own message always brings the list to the bottom.
+      stickToBottomRef.current = true;
       if (newMessage) {
         nextMessages = [...messages, newMessage];
         setMessages(nextMessages);
@@ -408,7 +422,14 @@ export default function WorkgroupChatPanel({
             </p>
           ) : null}
 
-          <div className="mt-5 max-h-[28rem] space-y-3 overflow-y-auto pr-1 lg:max-h-[calc(100vh-22rem)]">
+          <div
+            ref={listRef}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              stickToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+            }}
+            className="mt-5 max-h-[28rem] space-y-3 overflow-y-auto pr-1 lg:max-h-[calc(100vh-22rem)]"
+          >
             {loading && displayedMessages.length === 0 ? (
               <p className="text-sm text-slate-500">Loading messages…</p>
             ) : displayedMessages.length === 0 ? (

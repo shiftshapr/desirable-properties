@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-chat-links-scroll",
+      "date": "2026-11-11",
+      "status": "open",
+      "title": "Workgroup chat: clickable links, opens at the newest message",
+      "summary": "Links in workgroup chat messages are now clickable, and the chat opens at the newest message and stays there when you post or new messages arrive.",
+      "changes": [
+        "http(s) and www. links in chat messages (and steering notes) open in a new tab; trailing punctuation is left out of the link",
+        "The message list opens scrolled to the newest message",
+        "Posting a message scrolls to it; new messages keep the list at the bottom while you are reading there, but not when you have scrolled up",
+        "Permalinks (?m=) and the \"New messages\" line still decide where the chat opens when they apply"
+      ]
+    },
+    {
       "id": "steering-ask-deepi-book-lookups",
       "date": "2026-11-11",
       "status": "open",
