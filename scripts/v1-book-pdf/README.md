@@ -13,8 +13,9 @@ It reads the published text from Gov Hub, the same source as the online book:
 | DP1–DP24 | `dp01` … `dp24` | per `sources-sat.json` |
 | Acknowledgements | `acknowledgements` | ML-Draft-032 |
 
-The cover is typeset by the script after the 3D cover mockup; `--cover-png <file>` also saves it as
-flat art (PNG at the trim size, about 384 dpi), and `--cover-image <file>` uses other flat art instead. Chapter
+The cover is drawn by the script after the 3D cover mockup and saved as flat art (`out/cover.png`, the
+trim size at about 384 dpi, or `--cover-png <file>`); the PDF uses that image as its cover page.
+`--cover-image <file>` uses other flat art instead. Chapter
 illustrations come from `challenge-site/public/images/dps/full/` (1200 px); other figures come
 from `desirableproperties-book/content/local/assets/dp/`.
 

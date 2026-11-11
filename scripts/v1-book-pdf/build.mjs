@@ -25,7 +25,7 @@
  *   --only DP1,DP2       Limit chapters (for quick layout checks).
  *   --html-only          Write the HTML and stop (open it in Chrome to debug the layout).
  *   --cover-image <file> Use a flat, full-bleed cover image instead of the typeset cover.
- *   --cover-png <file>   Also save the typeset cover as flat art (PNG, about 2570 x 3690 px).
+ *   --cover-png <file>   Where to save the cover as flat art (PNG, about 2570 x 3690 px; default out/cover.png).
  *   --chrome <path>      Chrome/Chromium binary (or CHROME_PATH).
  *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
  *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
@@ -244,48 +244,78 @@ function polish(html, { signature = false } = {}) {
 
 // ---------------------------------------------------------------- Cover art
 
-/** A network sphere in the spirit of the cover: Fibonacci points on a sphere, nearest-neighbour links. */
+/**
+ * The cover's geodesic globe: a frequency-2 geodesic sphere (42 nodes) seen in orthographic projection, with
+ * every edge drawn (the far side dimmer), chords between opposite nodes running through a bright core,
+ * and glowing nodes. `emblem` draws the small outline version used under the kicker.
+ */
+function geodesic() {
+  const t = (1 + Math.sqrt(5)) / 2;
+  let v = [[-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0], [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t], [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]];
+  const f = [[0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11], [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+    [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9], [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1]];
+  const norm = (p) => { const l = Math.hypot(...p); return p.map((x) => x / l); };
+  v = v.map(norm);
+  const mid = new Map(); const edges = new Set();
+  const m = (a, b) => { const k = a < b ? `${a}_${b}` : `${b}_${a}`; if (!mid.has(k)) { v.push(norm(v[a].map((x, i) => (x + v[b][i]) / 2))); mid.set(k, v.length - 1); } return mid.get(k); };
+  const e = (a, b) => edges.add(a < b ? `${a}_${b}` : `${b}_${a}`);
+  for (const [a, b, c] of f) { const ab = m(a, b); const bc = m(b, c); const ca = m(c, a); for (const [x, y] of [[a, ab], [ab, b], [b, bc], [bc, c], [c, ca], [ca, a], [ab, bc], [bc, ca], [ca, ab]]) e(x, y); }
+  return { v, edges: [...edges].map((k) => k.split('_').map(Number)) };
+}
+
 function sphereSvg(size = 520, cls = 'sphere') {
-  const id = cls;
-  const n = 130; const r = size * 0.42; const c = size / 2;
-  const pts = [];
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < n; i++) {
-    const y = 1 - (i / (n - 1)) * 2; const rad = Math.sqrt(1 - y * y); const th = golden * i;
-    const x = Math.cos(th) * rad; const z = Math.sin(th) * rad;
-    // tilt for a less regular silhouette
-    const t = 0.35; const y2 = y * Math.cos(t) - z * Math.sin(t); const z2 = y * Math.sin(t) + z * Math.cos(t);
-    pts.push({ x, y: y2, z: z2 });
+  const id = cls; const emblem = cls === 'emblem';
+  const c = size / 2; const r = size * (emblem ? 0.44 : 0.4);
+  const { v, edges } = geodesic();
+  // Turn the globe so a node faces the viewer and the silhouette reads as the cover's star pattern.
+  // Look straight down a five-fold axis (node 0 at the centre) so the pattern is symmetric, node at top.
+  const axis = v[0];
+  const rot = (p) => {
+    const z = p[0] * axis[0] + p[1] * axis[1] + p[2] * axis[2];
+    // orthonormal frame: u = up (towards node 5), w = u x axis
+    const ref = v[5]; const d = ref[0] * axis[0] + ref[1] * axis[1] + ref[2] * axis[2];
+    let u = ref.map((x, i) => x - d * axis[i]); const ul = Math.hypot(...u); u = u.map((x) => x / ul);
+    const w = [u[1] * axis[2] - u[2] * axis[1], u[2] * axis[0] - u[0] * axis[2], u[0] * axis[1] - u[1] * axis[0]];
+    const y = -(p[0] * u[0] + p[1] * u[1] + p[2] * u[2]);
+    const x = p[0] * w[0] + p[1] * w[1] + p[2] * w[2];
+    const tilt = emblem ? 0.5 : 0.18; // a slight tilt keeps front and back nodes from stacking
+    return [x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)];
+  };
+  const pts = v.map(rot).map(([x, y, z]) => ({ x: c + x * r, y: c + y * r, z }));
+  const f1 = (n) => n.toFixed(1);
+  const lines = edges.map(([a, b]) => {
+    const p = pts[a]; const q = pts[b]; const depth = ((p.z + q.z) / 2 + 1) / 2;
+    return `<line x1="${f1(p.x)}" y1="${f1(p.y)}" x2="${f1(q.x)}" y2="${f1(q.y)}" stroke-opacity="${(emblem ? 0.55 + depth * 0.45 : 0.35 + depth * 0.65).toFixed(2)}"/>`;
+  });
+  if (!emblem) {
+    // chords between opposite nodes: the long lines that cross through the core
+    const done = new Set();
+    v.forEach((p, i) => {
+      if (done.has(i)) return;
+      const j = v.findIndex((q) => Math.abs(q[0] + p[0]) + Math.abs(q[1] + p[1]) + Math.abs(q[2] + p[2]) < 1e-6);
+      done.add(i); done.add(j);
+      lines.push(`<line x1="${f1(pts[i].x)}" y1="${f1(pts[i].y)}" x2="${f1(pts[j].x)}" y2="${f1(pts[j].y)}" stroke-opacity="0.5" stroke-width="0.9"/>`);
+    });
   }
-  const lines = []; const seen = new Set();
-  pts.forEach((p, i) => {
-    const d = pts.map((q, j) => [j, (p.x - q.x) ** 2 + (p.y - q.y) ** 2 + (p.z - q.z) ** 2]).sort((a, b) => a[1] - b[1]);
-    for (const [j] of d.slice(1, 6)) {
-      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-      if (seen.has(key)) continue; seen.add(key);
-      const q = pts[j]; const depth = ((p.z + q.z) / 2 + 1) / 2;
-      lines.push(`<line x1="${(c + p.x * r).toFixed(1)}" y1="${(c + p.y * r).toFixed(1)}" x2="${(c + q.x * r).toFixed(1)}" y2="${(c + q.y * r).toFixed(1)}" stroke-opacity="${(0.18 + depth * 0.62).toFixed(2)}"/>`);
-    }
-  });
-  // spokes from the bright core to the front-facing nodes
-  pts.forEach((p, i) => {
-    if (p.z > 0.35 && i % 3 === 0) lines.push(`<line x1="${c}" y1="${c}" x2="${(c + p.x * r).toFixed(1)}" y2="${(c + p.y * r).toFixed(1)}" stroke-opacity="0.32"/>`);
-  });
-  const dots = pts.map((p) => {
-    const depth = (p.z + 1) / 2;
-    return `<circle cx="${(c + p.x * r).toFixed(1)}" cy="${(c + p.y * r).toFixed(1)}" r="${(1.4 + depth * 2.6).toFixed(1)}" fill-opacity="${(0.35 + depth * 0.65).toFixed(2)}"/>`;
-  }).join('');
-  const rings = [0.55, 0.7, 0.85, 1.0].map((k) => `<circle cx="${c}" cy="${c}" r="${(r * 1.18 * k).toFixed(1)}" fill="none" stroke="#3b6f8f" stroke-opacity="0.18" stroke-dasharray="1 5"/>`).join('');
-  const star = cls === 'sphere' ? `<g stroke="#fff3c8" stroke-linecap="round" filter="url(#glow-${id})">${[0, 45, 90, 135].map((d) => `<line x1="${c - r * (d % 90 ? 0.16 : 0.3)}" y1="${c}" x2="${c + r * (d % 90 ? 0.16 : 0.3)}" y2="${c}" stroke-width="${d % 90 ? 0.8 : 1.3}" stroke-opacity="0.85" transform="rotate(${d} ${c} ${c})"/>`).join('')}</g><circle cx="${c}" cy="${c}" r="${(size * 0.012).toFixed(1)}" fill="#fffbe8" filter="url(#glow-${id})"/>` : '';
+  const dots = emblem ? pts.filter((p) => p.z > -0.2).map((p) => `<circle cx="${f1(p.x)}" cy="${f1(p.y)}" r="${f1(size * 0.018)}"/>`).join('')
+    : pts.map((p) => {
+      const d = (p.z + 1) / 2;
+      return `<circle cx="${f1(p.x)}" cy="${f1(p.y)}" r="${f1(size * (0.005 + d * 0.007))}" fill-opacity="${(0.45 + d * 0.55).toFixed(2)}"/>`;
+    }).join('');
+  const halo = emblem ? '' : pts.filter((p) => p.z > -0.35).map((p) => `<circle cx="${f1(p.x)}" cy="${f1(p.y)}" r="${f1(size * (0.022 + 0.014 * (p.z + 1) / 2))}" fill="url(#node-${id})"/>`).join('');
+  const rings = emblem ? '' : [1.12, 1.24, 1.36].map((k) => `<circle cx="${c}" cy="${c}" r="${f1(r * k)}" fill="none" stroke="#3b6f8f" stroke-opacity="0.22" stroke-width="0.8" stroke-dasharray="0.8 4.2"/>`).join('');
+  const star = emblem ? '' : `<circle cx="${c}" cy="${c}" r="${f1(r * 0.7)}" fill="url(#core-${id})"/>
+  <g stroke="#fff3c8" stroke-linecap="round">${[0, 90].map((d) => `<line x1="${f1(c - r * 0.22)}" y1="${c}" x2="${f1(c + r * 0.22)}" y2="${c}" stroke-width="1.1" stroke-opacity="0.8" transform="rotate(${d} ${c} ${c})"/>`).join('')}</g>
+  <circle cx="${c}" cy="${c}" r="${f1(size * 0.05)}" fill="url(#node-${id})"/><circle cx="${c}" cy="${c}" r="${f1(size * 0.011)}" fill="#fffbe8"/>`;
   return `<svg class="${cls}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs>
-    <radialGradient id="core-${id}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffcf6b" stop-opacity="0.9"/><stop offset="35%" stop-color="#e09a22" stop-opacity="0.35"/><stop offset="100%" stop-color="#e09a22" stop-opacity="0"/></radialGradient>
-    <filter id="glow-${id}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <radialGradient id="core-${id}"><stop offset="0%" stop-color="#ffd77a" stop-opacity="1"/><stop offset="18%" stop-color="#f0a62a" stop-opacity="0.6"/><stop offset="55%" stop-color="#e09a22" stop-opacity="0.15"/><stop offset="100%" stop-color="#e09a22" stop-opacity="0"/></radialGradient>
+    <radialGradient id="node-${id}"><stop offset="0%" stop-color="#fff0b8" stop-opacity="0.95"/><stop offset="25%" stop-color="#ffc24d" stop-opacity="0.55"/><stop offset="100%" stop-color="#f2a52b" stop-opacity="0"/></radialGradient>
   </defs>
   ${rings}
-  <circle cx="${c}" cy="${c}" r="${(r * 0.75).toFixed(1)}" fill="url(#core-${id})"/>
-  <g stroke="#f2b84b" stroke-width="1.05" filter="url(#glow-${id})">${lines.join('')}</g>
-  <g fill="#ffd27a" filter="url(#glow-${id})">${dots}</g>
+  <g stroke="${emblem ? '#c9973a' : '#f2b84b'}" stroke-width="${emblem ? size * 0.012 : 1.5}" stroke-linecap="round">${lines.join('')}</g>
+  ${halo}
+  <g fill="${emblem ? '#d9a84a' : '#ffd27a'}">${dots}</g>
   ${star}
 </svg>`;
 }
@@ -325,8 +355,11 @@ function coverHtml(coverImage) {
   <div class="cover-kicker">Building the civic layer<br>of a trustworthy Internet</div>
   <div class="cover-emblem-row"><span class="cover-rule"></span>${sphereSvg(120, 'emblem')}<span class="cover-rule"></span></div>
   <h1 class="cover-title"><span class="the">The</span>Layered Web</h1>
-  <div class="cover-rule glow"><i></i></div>
-  <div class="cover-sub"><span class="small dash">The</span>Desirable Properties<span class="small">of a</span>Meta-Layer</div>
+  <svg class="cover-glow" viewBox="0 0 600 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><linearGradient id="glowLine"><stop offset="0" stop-color="#c98a1e" stop-opacity="0"/><stop offset="0.25" stop-color="#d89a2a"/><stop offset="0.5" stop-color="#fff1c4"/><stop offset="0.75" stop-color="#d89a2a"/><stop offset="1" stop-color="#c98a1e" stop-opacity="0"/></linearGradient>
+    <radialGradient id="glowDot"><stop offset="0" stop-color="#fffbe8"/><stop offset="0.3" stop-color="#ffd27a" stop-opacity="0.9"/><stop offset="1" stop-color="#f2a52b" stop-opacity="0"/></radialGradient></defs>
+    <rect x="0" y="6.2" width="600" height="1.6" fill="url(#glowLine)"/><ellipse cx="300" cy="7" rx="40" ry="7" fill="url(#glowDot)"/></svg>
+  <div class="cover-sub"><span class="small dash">The</span>Desirable Properties<span class="small dash">of a</span>Meta-Layer</div>
   ${sphereSvg()}
   ${sealSvg()}
   <div class="cover-pillars">
@@ -421,6 +454,7 @@ function titlePagesHtml(final, builtAt) {
   <p>The online edition: <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a><br>
   The Desirable Properties Challenge: <a href="${SITE_URL}">${SITE_URL.replace('https://', '')}</a><br>
   Workgroups and drafts: <a href="https://interfacehub.net">interfacehub.net</a></p>
+  <p>© 2026 the contributors to the Desirable Properties of a Meta-Layer. This book is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License (CC BY 4.0)</a>: you may share and adapt it for any purpose, provided you give appropriate credit and indicate if changes were made.</p>
   <p>The chapters of this book are inscribed on Bitcoin as part of a BRC333 digital monument. The online edition is the living reference; this PDF is a snapshot of ${EDITION}.</p>
 </section>`;
 }
@@ -486,14 +520,13 @@ img { max-width: 100%; }
 .cover-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cover-kicker { color: var(--gold-bright); font-weight: 600; font-size: 9.2pt; letter-spacing: 0.26em; text-transform: uppercase; line-height: 1.65; }
 .cover-rule { display: block; height: 1px; background: linear-gradient(90deg, transparent, #b8892a 30%, #b8892a 70%, transparent); }
-.cover-emblem-row { display: flex; align-items: center; gap: 0.08in; margin: 0.08in 0.35in 0.02in; }
+.cover-emblem-row { display: flex; align-items: center; gap: 0.1in; margin: 0.08in 0.6in 0.02in; }
 .cover-emblem-row .cover-rule { flex: 1; }
 .cover-emblem-row .cover-rule:first-child { background: linear-gradient(90deg, transparent, #b8892a); }
 .cover-emblem-row .cover-rule:last-child { background: linear-gradient(90deg, #b8892a, transparent); }
-.cover .emblem { width: 0.42in; height: 0.42in; }
-.cover-rule.glow { position: relative; width: 92%; margin: 0.12in auto 0.14in; height: 1.5px; background: linear-gradient(90deg, transparent, #c98a1e 20%, #f2b84b 45%, #fff1c4 50%, #f2b84b 55%, #c98a1e 80%, transparent); box-shadow: 0 0 6px #f2b84b; }
-.cover-rule.glow i { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: #fff6d6; box-shadow: 0 0 6px 3px #f2b84b, 0 0 14px 6px rgba(242,184,75,0.45); }
-.cover-title { font-weight: 700; font-size: 47pt; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; margin: 0.14in 0 0; color: #fbfaf6; string-set: none; text-shadow: 0 1px 0 #000; }
+.cover .emblem { width: 0.36in; height: 0.36in; }
+.cover-glow { display: block; width: 92%; height: 0.13in; margin: 0.08in auto 0.1in; }
+.cover-title { font-weight: 700; font-size: 47pt; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; margin: 0.14in 0 0; color: #fbfaf6; string-set: none; }
 .cover-title .the { display: block; font-size: 25pt; letter-spacing: 0.1em; margin-bottom: 0.08in; }
 .cover-sub { color: var(--gold-bright); font-weight: 700; font-size: 19.5pt; line-height: 1.15; letter-spacing: 0.07em; text-transform: uppercase; }
 .cover-sub .small { display: block; font-size: 10.5pt; font-weight: 600; letter-spacing: 0.2em; margin: 0.04in 0; color: #e8d7a6; }
@@ -665,7 +698,11 @@ async function renderPdf(htmlFile, outFile, chromePath, preview) {
   }
 }
 
-/** Save the typeset cover as flat art: a PNG at the trim size (6.69 x 9.61 in) and about 384 dpi. */
+/**
+ * Save the typeset cover as flat art: a PNG at the trim size (6.69 x 9.61 in) and about 384 dpi, plus a JPEG
+ * beside it that the PDF uses as its cover page (PDF viewers draw the SVG glows and gradients unevenly, so the
+ * cover goes into the PDF as the same image every time).
+ */
 async function renderCoverPng(outPng, chromePath) {
   const { default: puppeteer } = await import('puppeteer-core');
   const htmlFile = path.join(HERE, 'out', 'cover.html');
@@ -677,11 +714,14 @@ async function renderCoverPng(outPng, chromePath) {
     await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'networkidle0', timeout: 120000 });
     await page.evaluate(() => document.fonts.ready);
     fs.mkdirSync(path.dirname(outPng), { recursive: true });
-    await (await page.$('.cover')).screenshot({ path: outPng });
+    const el = await page.$('.cover');
+    await el.screenshot({ path: outPng });
+    await el.screenshot({ path: outPng.replace(/\.png$/i, '') + '.jpg', type: 'jpeg', quality: 92 });
   } finally {
     await browser.close();
   }
   console.log(`Wrote ${outPng}`);
+  return outPng.replace(/\.png$/i, '') + '.jpg';
 }
 
 // ---------------------------------------------------------------- main
@@ -715,8 +755,12 @@ async function main() {
     return { ...r, dp: s.dp, railKey: s.railKey };
   });
 
+  // The cover is rendered once as an image and placed in the PDF as that image (unless --cover-image is given).
+  let coverImage = args.coverImage;
+  if (!coverImage && !args.htmlOnly) coverImage = await renderCoverPng(args.coverPng || path.join(HERE, 'out', 'cover.png'), findChrome(args.chrome));
+  else if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
   const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
-  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, final: args.final, builtAt, coverImage: args.coverImage })
+  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, final: args.final, builtAt, coverImage })
     .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
 
   const workDir = path.join(HERE, 'out');
@@ -725,7 +769,6 @@ async function main() {
   fs.writeFileSync(htmlFile, html);
   fs.writeFileSync(path.join(workDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   console.log(`Wrote ${path.relative(REPO, htmlFile)}`);
-  if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
   if (args.htmlOnly) return;
 
   const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);
