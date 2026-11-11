@@ -38,8 +38,16 @@ export async function fetchWorkgroupMessages(
 export async function postWorkgroupMessage(
   workgroupId: string,
   body: string,
+  files: File[] = [],
 ): Promise<{ success?: boolean; message?: WorkgroupMessagesResponse['messages'][number]; error?: string }> {
-  const res = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/messages`, {
+  const url = `/api/workgroups/${encodeURIComponent(workgroupId)}/messages`;
+  if (files.length) {
+    const form = new FormData();
+    form.set('body', body);
+    for (const file of files) form.append('files', file, file.name);
+    return parseJson(await fetch(url, { method: 'POST', credentials: 'include', body: form }));
+  }
+  const res = await fetch(url, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },

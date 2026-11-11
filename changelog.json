@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "workgroup-chat-attachments-local-time",
+      "date": "2026-11-11",
+      "status": "open",
+      "title": "Workgroup chat: attach files, times in your timezone",
+      "summary": "Workgroup members can attach documents and images to a chat message, and message times now show in the reader's own timezone instead of UTC.",
+      "changes": [
+        "Chat composer: \"Attach file\" button; PDF, Word (.docx), PNG or JPEG, up to 3 files, 10 MB each (15 MB total); a message can be just files",
+        "Attachments on member messages show as download links, like emailed reviews; members only",
+        "Gov Hub timestamps without a zone are read as UTC by the shared date formatter, so chat times (and other dates it formats) appear in local time",
+        "Needs the matching Gov Hub release (multipart uploads on POST /api/workgroups/<id>/messages/)"
+      ]
+    },
+    {
       "id": "steering-notes",
       "date": "2026-11-11",
       "status": "open",
