@@ -118,6 +118,33 @@ export function relayMarkdown(text: string): ReactNode {
   });
 }
 
+/** Download list for a chat message's attachments (email-relay or member upload); null when none. */
+export function MessageAttachmentList(props: {
+  workgroupId: string;
+  messageId: string;
+  attachments?: unknown;
+}): ReactNode {
+  const attachments = normalizeRelayAttachments(props.attachments);
+  if (!attachments.length) return null;
+  return h(
+    'ul',
+    { className: 'mt-2 space-y-1', 'aria-label': 'Attachments' },
+    attachments.map((att, i) => {
+      const href = relayAttachmentHref(props.workgroupId, props.messageId, att);
+      const size = formatAttachmentSize(att.size);
+      const label = h('span', { className: 'break-all' }, att.filename);
+      return h(
+        'li',
+        { key: att.id || `${att.filename}-${i}`, className: 'flex items-baseline gap-2 text-xs' },
+        href
+          ? h('a', { href, target: '_blank', rel: 'noopener noreferrer', className: linkClass, download: att.filename }, label)
+          : h('span', { className: 'text-slate-300' }, label),
+        size ? h('span', { className: 'text-slate-500' }, size) : null,
+      );
+    }),
+  );
+}
+
 /** Body, "via email" label and attachment list for an email-relay message. */
 export function RelayMessageContent(props: {
   workgroupId: string;
@@ -125,30 +152,11 @@ export function RelayMessageContent(props: {
   body: string;
   attachments?: unknown;
 }): ReactNode {
-  const attachments = normalizeRelayAttachments(props.attachments);
   return h(
     'div',
     { className: 'mt-1 text-sm leading-relaxed', 'data-relay': 'email' },
     h('div', { className: 'select-text' }, relayMarkdown(props.body)),
-    attachments.length
-      ? h(
-          'ul',
-          { className: 'mt-2 space-y-1', 'aria-label': 'Attachments' },
-          attachments.map((att, i) => {
-            const href = relayAttachmentHref(props.workgroupId, props.messageId, att);
-            const size = formatAttachmentSize(att.size);
-            const label = h('span', { className: 'break-all' }, att.filename);
-            return h(
-              'li',
-              { key: att.id || `${att.filename}-${i}`, className: 'flex items-baseline gap-2 text-xs' },
-              href
-                ? h('a', { href, target: '_blank', rel: 'noopener noreferrer', className: linkClass, download: att.filename }, label)
-                : h('span', { className: 'text-slate-300' }, label),
-              size ? h('span', { className: 'text-slate-500' }, size) : null,
-            );
-          }),
-        )
-      : null,
+    h(MessageAttachmentList, props),
   );
 }
 

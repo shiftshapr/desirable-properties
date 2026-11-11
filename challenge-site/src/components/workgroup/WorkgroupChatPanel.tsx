@@ -282,10 +282,10 @@ export default function WorkgroupChatPanel({
     }
   }
 
-  async function handleSend(body: string) {
+  async function handleSend(body: string, files: File[] = []) {
     setPosting(true);
     try {
-      const result = await postWorkgroupMessage(workgroupId, body);
+      const result = await postWorkgroupMessage(workgroupId, body, files);
       let newMessage = result.message;
       let nextMessages = messages;
 
@@ -455,6 +455,7 @@ export default function WorkgroupChatPanel({
                           ? { workgroupId, messageId: msg.id, attachments: msg.attachments }
                           : null
                       }
+                      files={{ workgroupId, messageId: msg.id, attachments: msg.attachments }}
                     />
                     {msgHands.map((hand) => (
                       <HermesAmbientHandBadge

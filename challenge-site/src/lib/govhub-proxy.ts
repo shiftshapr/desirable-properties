@@ -9,6 +9,8 @@ type ProxyOptions = {
   adminEmail?: string;
   method?: string;
   body?: unknown;
+  /** Multipart body sent as is (fetch sets the boundary); takes the place of `body`. */
+  formData?: FormData;
   searchParams?: URLSearchParams | string;
   timeoutMs?: number;
 };
@@ -52,15 +54,15 @@ export async function proxyGovHubJson(
       { status: 500, headers: { 'Cache-Control': 'no-store' } },
     );
   }
-  if (options.body !== undefined) {
+  if (options.body !== undefined && !options.formData) {
     headers['Content-Type'] = 'application/json';
   }
 
   try {
     const res = await fetch(url, {
-      method: options.method || (options.body !== undefined ? 'POST' : 'GET'),
+      method: options.method || (options.body !== undefined || options.formData ? 'POST' : 'GET'),
       headers,
-      body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+      body: options.formData ?? (options.body !== undefined ? JSON.stringify(options.body) : undefined),
       signal: AbortSignal.timeout(options.timeoutMs ?? 45000),
       cache: 'no-store',
       redirect: 'manual',
