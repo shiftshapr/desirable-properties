@@ -596,12 +596,65 @@ export type SteeringFinding = {
   summary: string | null;
   /** Steering has to decide something a text fix cannot. */
   needsDecision: boolean;
-  decision: string | null;
+  /** The options the review laid out, with its recommendation. */
+  decision: { options: string[]; recommended: string | null; note: string | null } | null;
   noFixReason: string | null;
+  discussion: SteeringDiscussion;
   documents: string[];
   items: Array<SteeringItem & InDocument>;
   carried: Array<SteeringCarriedItem & InDocument>;
 };
+
+export type SteeringDecisionChoice = { key: string; label: string };
+
+/** Votes (for findings that need a decision) and comments on one cross-DP finding. */
+export type SteeringDiscussion = {
+  choices: SteeringDecisionChoice[];
+  votes: Array<{ id: string; userId: string; voterName: string | null; choice: string; note: string | null; createdAt: string | null; mine: boolean }>;
+  tally: Record<string, number>;
+  settledChoice: string | null;
+  myChoice: string | null;
+  myNote: string | null;
+  comments: Array<{ id: string; userId: string; authorName: string | null; body: string; createdAt: string | null; mine: boolean }>;
+};
+
+export function normalizeDiscussion(raw: unknown, viewerUserId: string | null): SteeringDiscussion {
+  const d = obj(raw);
+  const tally: Record<string, number> = {};
+  for (const [k, v] of Object.entries(obj(d.tally))) if (typeof v === 'number') tally[k] = v;
+  return {
+    choices: arr(d.choices)
+      .map((c) => ({ key: str(obj(c).key), label: str(obj(c).label) }))
+      .filter((c) => c.key && c.label),
+    votes: arr(d.votes).map((v) => {
+      const o = obj(v);
+      return {
+        id: str(o.id),
+        userId: str(o.user_id),
+        voterName: strOrNull(o.voter_name),
+        choice: str(o.choice),
+        note: strOrNull(o.note),
+        createdAt: strOrNull(o.created_at),
+        mine: !!viewerUserId && str(o.user_id) === viewerUserId,
+      };
+    }),
+    tally,
+    settledChoice: strOrNull(d.settled_choice),
+    myChoice: strOrNull(d.my_choice),
+    myNote: strOrNull(d.my_note),
+    comments: arr(d.comments).map((c) => {
+      const o = obj(c);
+      return {
+        id: str(o.id),
+        userId: str(o.user_id),
+        authorName: strOrNull(o.author_name),
+        body: str(o.body),
+        createdAt: strOrNull(o.created_at),
+        mine: !!viewerUserId && str(o.user_id) === viewerUserId,
+      };
+    }),
+  };
+}
 
 export type SteeringIssueGroup = {
   key: string;
@@ -663,11 +716,18 @@ export function normalizeIssues(raw: unknown): SteeringIssues {
             severity: strOrNull(finding.severity),
             summary: strOrNull(finding.summary),
             needsDecision: finding.needs_decision === true,
-            decision: strOrNull(finding.decision),
+            decision: (() => {
+              const dec = obj(finding.decision);
+              const options = arr(dec.options).map(str).filter(Boolean);
+              return options.length || str(dec.recommended)
+                ? { options, recommended: strOrNull(dec.recommended), note: strOrNull(dec.note) }
+                : null;
+            })(),
             noFixReason: strOrNull(finding.no_fix_reason),
             documents: arr(finding.documents).map(str).filter(Boolean),
             items,
             carried,
+            discussion: normalizeDiscussion(finding.discussion, viewerUserId),
           };
         }),
       };
