@@ -178,7 +178,11 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
   const reviewOpen = liveMeta?.openStages.find((s) => s.kind === 'review') || (current?.status === 'open' && current.kind === 'review' ? current : null);
   const openHere = alongside && current ? (liveMeta?.openByStage[current.key] ?? totals.open) : totals.open;
   // The open cross-DP stage is worked by issue (fix bundles and decisions), not chapter by chapter.
-  const issuesTab = Boolean(steering && !closedKey && current?.status === 'open' && current.kind === 'review' && current.key === 'stage-2');
+  // A review stage is worked in bundles (its analysis's findings by kind of fix), not chapter by chapter:
+  // open for steering members, read-only once closed for anyone signed in.
+  const issuesTab = Boolean(
+    current?.kind === 'review' && (current.status === 'open' ? steering : current.status === 'closed' && signedIn),
+  );
   const refreshStages = async (key: string) => {
     const list = await loadStages();
     setLoadedKey(null);
@@ -296,10 +300,11 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
           )}
           {issuesTab ? (
             <>
-              <SteeringIssues embedded />
+              <SteeringIssues embedded stageKey={current?.key} />
               <p className="text-sm text-slate-400">
-                Accepted changes the cross-DP check found no issue with need no vote: any not reviewed are kept when{' '}
-                {current?.title} closes.{' '}
+                {current?.status === 'open'
+                  ? `Accepted changes carried into ${current.title} need no vote unless a bundle flags them: any not reviewed are kept when it closes. `
+                  : `${current?.title} is closed; its full record by chapter is below the toggle. `}
                 <button type="button" onClick={() => setByChapter((v) => !v)} className="text-cyan-300 underline hover:text-cyan-200">
                   {byChapter ? 'Hide the chapters' : 'Show carried items by chapter'}
                 </button>

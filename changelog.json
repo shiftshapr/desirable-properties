@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage-bundles",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: every review stage is worked in bundles",
+      "summary": "Each review stage tab (Stage 2: Cross-DP, Stage 3: Style) now shows its analysis's findings as bundles, one box per kind of fix across the chapters. Until a stage's analysis is run, the tab says so. Settled bundles disappear unless \"Show settled bundles\" is ticked, and a bundle with nothing left for you folds to one line.",
+      "changes": [
+        "A review stage whose analysis has not been run says so, with the chapters behind a toggle",
+        "Each bundle has its own box with its findings, fixes and \"Approve all as written\" where the analysis recommends it",
+        "Settled bundles are hidden unless \"Show settled bundles\" is ticked; a bundle with nothing left for you folds to one line (Show / Collapse)",
+        "A closed review stage (Stage 2) keeps its bundles, read-only, for anyone signed in"
+      ]
+    },
+    {
       "id": "steering-issues-settled-by-fixes",
       "date": "2026-11-12",
       "status": "open",
