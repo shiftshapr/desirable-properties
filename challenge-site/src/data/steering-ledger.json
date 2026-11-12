@@ -1,0 +1,49 @@
+{
+  "updated": "2026-11-12",
+  "stages": {
+    "stage-1": {
+      "analysis": "run-002 and run-002-intro (Fable 5.2, verified)",
+      "itemsIn": "274 proposals and repairs (183 community proposals, 91 editorial repairs) plus 8 Introduction repairs",
+      "findings": "One analysis per proposal, in 100 batches",
+      "fixes": "99 editorial repairs",
+      "decisions": "Every item decided by two members",
+      "notes": [
+        "Every open proposal at the 9 November freeze got an analysis and a two-member decision.",
+        "Editorial repairs (duplicated passages, split sentences, wrong section numbers) were filed alongside as Metaweb Academy proposals."
+      ]
+    },
+    "stage-2": {
+      "analysis": "run-003-crossdp (8 analysts, 5 verifiers)",
+      "itemsIn": "240 accepted changes carried in",
+      "findings": "48: 13 conflict, 11 cross-reference, 10 landing, 8 term, 3 scope, 3 duplicate",
+      "fixes": "64, in 4 issue bundles",
+      "decisions": "11",
+      "notes": [
+        "Worked by issue: Broken text, Pointers and titles, Meaning (voted one by one), Steering decisions.",
+        "31 of the 34 findings with fixes touched one document.",
+        "Opened alongside Stage 1, so accepted changes flowed in as they were accepted."
+      ]
+    },
+    "stage-3": {
+      "analysis": "run-004-style (6 chapter analysts, 1 book-wide, 3 verifiers)",
+      "itemsIn": "294 accepted changes carried in",
+      "findings": "124: 56 typography, 20 terms, 15 references, 13 headings, 13 lists, 7 grammar",
+      "fixes": "219, in 8 bundles",
+      "decisions": "37",
+      "notes": [
+        "\"Meta-Layer\" versus \"meta-layer\" is one book-wide decision; chapter-level fixes that pulled in both directions were dropped.",
+        "Decisions cover book-wide conventions (citation form, quote marks, heading case, section separators, tagline dashes) and patterns too frequent to fix one by one.",
+        "Beyond style: in DP4 Section 6 a deletion accepted in Stage 1 never landed, so the introduction appears twice. Filed as a decision.",
+        "One fix (an invisible no-break space in DP11) could not be filed."
+      ]
+    },
+    "final": {
+      "analysis": "None: a sign-off on each document's finished text",
+      "itemsIn": "Each document's finished text",
+      "findings": "",
+      "fixes": "",
+      "decisions": "Two sign-offs per document",
+      "notes": []
+    }
+  }
+}
