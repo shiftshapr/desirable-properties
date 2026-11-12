@@ -56,6 +56,8 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
   const [busy, setBusy] = useState<string | null>(null);
   const [flash, setFlash] = useState<Record<string, Flash>>({});
   const [showDecided, setShowDecided] = useState(false);
+  const [onlyMine, setOnlyMine] = useState(true);
+  const [withOptional, setWithOptional] = useState(false);
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
   const openFinding = (key: string, on: boolean) =>
     setOpened((prev) => {
@@ -220,16 +222,29 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
     );
   // A group whose open fixes the analysis recommends as written can be approved in one click: one
   // accept vote from you on each open fix you have not voted on. A second member still has to agree.
+  // What still needs the signed-in member: fixes without their vote, decisions without their choice
+  // (and not yet settled), and, optionally, flagged accepted changes they have not reviewed.
+  const needsMyVote = (i: FindingItem) => isOpen(i) && !i.votes.some((v) => v.mine);
+  const needsMyChoice = (f: SteeringFinding) => f.needsDecision && !f.discussion.myChoice && !f.discussion.settledChoice;
+  const needsMyReview = (c: FindingCarried) => c.tab === 'open' && !c.reviews.some((r) => r.mine) && !c.decision;
+  const needsMe = (f: SteeringFinding) =>
+    f.items.some(needsMyVote) || needsMyChoice(f) || (withOptional && f.carried.some(needsMyReview));
+  const allFindings = data?.groups.flatMap((g) => g.findings) || [];
+  const myFixes = allFindings.flatMap((f) => f.items.filter(needsMyVote));
+  const myRecommended = myFixes.filter((i) => i.analysis?.recommendation === 'accept');
+  const myDecisions = allFindings.filter(needsMyChoice);
+  const myReviews = allFindings.flatMap((f) => f.carried.filter(needsMyReview));
+  const filtering = onlyMine && !readOnly;
   const bundle = (g: SteeringIssueGroup) => {
     const open = g.findings.flatMap((f) => f.items).filter(isOpen);
     const mine = open.filter((i) => !i.votes.some((v) => v.mine));
     const asWritten = open.length > 0 && open.every((i) => i.analysis?.recommendation === 'accept');
     return { open, mine, asWritten };
   };
-  async function approveGroup(g: SteeringIssueGroup) {
-    const { mine } = bundle(g);
-    setBusy(`group:${g.key}`);
-    say(`group:${g.key}`, true, '');
+  const approveGroup = (g: SteeringIssueGroup) => approveItems(bundle(g).mine, `group:${g.key}`);
+  async function approveItems(mine: FindingItem[], key: string) {
+    setBusy(key);
+    say(key, true, '');
     let ok = 0;
     const failed: string[] = [];
     for (const item of mine) {
@@ -247,7 +262,7 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
       }
     }
     say(
-      `group:${g.key}`,
+      key,
       !failed.length,
       `${ok} vote${ok === 1 ? '' : 's'} recorded. Each fix is carried out once a second member approves it.` +
         (failed.length ? ` ${failed.length} failed: ${failed.join('; ')}` : ''),
@@ -315,6 +330,59 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
         ) : null}
       </header>
 
+      {data && findings && !readOnly ? (
+        <section aria-label="What needs you" className="rounded-2xl border border-amber-700/60 bg-amber-950/20 p-4 sm:p-5">
+          <h2 className="text-lg font-semibold text-white">What needs you</h2>
+          {myFixes.length || myDecisions.length ? (
+            <ul className="mt-2 space-y-1 text-sm text-amber-50">
+              <li>
+                <strong>{myFixes.length}</strong> fix{myFixes.length === 1 ? '' : 'es'} waiting for your vote
+                {myFixes.length ? ` (${myRecommended.length} recommended as written, ${myFixes.length - myRecommended.length} to judge one by one)` : ''}
+              </li>
+              <li>
+                <strong>{myDecisions.length}</strong> decision{myDecisions.length === 1 ? '' : 's'} waiting for your choice
+              </li>
+              <li className="text-amber-100/80">
+                {myReviews.length} flagged accepted change{myReviews.length === 1 ? '' : 's'} you could review (optional: any nobody reviews are
+                kept when the stage closes)
+              </li>
+            </ul>
+          ) : (
+            <p className="mt-2 text-sm text-emerald-200">
+              Nothing needs you right now: every fix has your vote and every decision has your choice.
+              {myReviews.length ? ` ${myReviews.length} flagged accepted changes can still be reviewed (optional).` : ''}
+            </p>
+          )}
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+            {myRecommended.length ? (
+              <button
+                type="button"
+                disabled={busy !== null}
+                onClick={() => void approveItems(myRecommended, 'all')}
+                className="rounded-lg bg-emerald-600 px-3 py-1.5 font-medium text-white hover:bg-emerald-500 disabled:opacity-40"
+              >
+                {busy === 'all' ? 'Approving…' : `Approve all ${myRecommended.length} recommended fixes`}
+              </button>
+            ) : null}
+            <label className="flex items-center gap-2 text-amber-50">
+              <input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
+              Show only what needs me
+            </label>
+            <label className="flex items-center gap-2 text-amber-100/80">
+              <input type="checkbox" checked={withOptional} onChange={(e) => setWithOptional(e.target.checked)} />
+              Include optional reviews
+            </label>
+            {flash.all?.text ? <span className={flash.all.ok ? 'text-emerald-300' : 'text-rose-300'}>{flash.all.text}</span> : null}
+          </div>
+          {myRecommended.length ? (
+            <p className="mt-2 text-xs text-amber-100/70">
+              The button records your accept vote on every open fix the analysis recommends as written, across all
+              bundles. A second member still has to approve each one before it is carried out.
+            </p>
+          ) : null}
+        </section>
+      ) : null}
+
       {loading && !data ? <p className="text-sm text-slate-400">Loading…</p> : null}
       {error ? (
         <p role="alert" className="rounded-lg border border-rose-900/50 bg-rose-950/20 px-4 py-3 text-sm text-rose-200">
@@ -340,11 +408,16 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
 
       {data && findings ? (
         <nav aria-label="Issue groups" className="flex flex-wrap gap-2 text-sm">
-          {data.groups.map((g) => (
-            <a key={g.key} href={`#group-${g.key}`} className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-slate-500">
-              {g.title} <span className="text-slate-500">({g.findings.length})</span>
-            </a>
-          ))}
+          {data.groups
+            .filter((g) => !filtering || g.findings.some(needsMe))
+            .map((g) => (
+              <a key={g.key} href={`#group-${g.key}`} className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-slate-500">
+                {g.title}{' '}
+                <span className="text-slate-500">
+                  ({filtering ? `${g.findings.filter(needsMe).length} need you` : g.findings.length})
+                </span>
+              </a>
+            ))}
         </nav>
       ) : null}
 
@@ -355,12 +428,13 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
       ) : null}
 
       {data?.groups.map((group) => {
-        const shown = group.findings.filter((f) => showDecided || !settled(f));
+        const shown = filtering ? group.findings.filter(needsMe) : group.findings.filter((f) => showDecided || !settled(f));
+        if (filtering && !shown.length) return null;
         // A bundle whose findings are all settled disappears (unless settled ones are shown); one with
         // nothing left for you folds to a line.
         const groupSettled = group.findings.every(settled);
-        if (groupSettled && !showDecided) return null;
-        const nothingForMe = !readOnly && group.findings.every((f) => settled(f) || answeredByMe(f));
+        if (groupSettled && !showDecided && !filtering) return null;
+        const nothingForMe = !filtering && !readOnly && group.findings.every((f) => settled(f) || answeredByMe(f));
         if (nothingForMe && !opened.has(`group:${group.key}`)) {
           const waiting = group.findings.filter((f) => !settled(f)).length;
           return (
