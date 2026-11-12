@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-collapse-answered",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: what you have answered folds away",
+      "summary": "In every stage, a fix, an accepted change, a batch or a decision you have already voted on now folds to one line showing your vote and where it stands, so what still needs you stays in view. Each folded line opens again with Show.",
+      "changes": [
+        "Fixes and proposals you voted on (or that are carried out) fold to one line with your vote and their state",
+        "Accepted changes you reviewed, batches you approved and decisions you chose fold the same way",
+        "On the Stage 2 issues view, a finding folds once every fix, flagged change and decision under it has your answer",
+        "Show opens a folded card; Collapse folds it again"
+      ]
+    },
+    {
       "id": "steering-flag-from-data",
       "date": "2026-11-12",
       "status": "open",

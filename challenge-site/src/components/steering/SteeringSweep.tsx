@@ -480,6 +480,9 @@ function BatchSection({
   const canApprove = batch.kind !== 'needs_person' && included.length > 0 && !busy;
   const done = items.length - open.length;
   const doneItems = items.filter((i) => i.state === 'done');
+  // Approved by you (or all carried out): fold to one line.
+  const answered = !open.length || (batch.kind !== 'needs_person' && !pending.length);
+  const [expanded, setExpanded] = useState(false);
   const toggle = (id: string) =>
     setExcluded((prev) => {
       const next = new Set(prev);
@@ -487,6 +490,18 @@ function BatchSection({
       else next.add(id);
       return next;
     });
+
+  if (answered && !expanded) {
+    return (
+      <AnsweredRow
+        as="section"
+        badge={open.length ? 'Approved' : 'Done'}
+        title={batch.title || 'Batch'}
+        status={open.length ? `${open.length} waiting for a second member${done ? ` · ${done} done` : ''}` : `${done} carried out`}
+        onExpand={() => setExpanded(true)}
+      />
+    );
+  }
 
   return (
     <section className="rounded-2xl border border-violet-900/60 bg-violet-950/10 p-3 sm:p-5">
@@ -498,6 +513,7 @@ function BatchSection({
           {items.length} item{items.length === 1 ? '' : 's'}
           {done ? ` · ${done} done` : ''}
         </span>
+        {answered ? <CollapseLink onCollapse={() => setExpanded(false)} /> : null}
       </div>
       <h2 className="mt-2 text-lg font-semibold text-white">{batch.title}</h2>
       {batch.summary ? <p className="mt-1 whitespace-pre-line text-sm text-slate-300">{batch.summary}</p> : null}
@@ -712,6 +728,22 @@ export function ItemCard({
   const mode = String(p.patch_mode || '').toLowerCase();
   const isBundle = mode === 'editorial_bundle' || mode === 'dedup_bundle' || Boolean(p.edits?.length);
   const insertPosition = mode === 'insert_after' ? 'below' : mode === 'insert' ? 'above' : null;
+  // Once you have voted (or it is carried out), the card folds to one line; it can be opened again.
+  const answered = !readOnly && !include && (Boolean(mine) || item.state === 'done');
+  const [expanded, setExpanded] = useState(false);
+
+  if (answered && !expanded) {
+    const yours = mine ? `You: ${DECISION_LABEL[mine.decision as SteeringDecision] || mine.decision}` : 'Carried out';
+    return (
+      <AnsweredRow
+        id={`item-${item.proposalId}`}
+        badge={item.state === 'done' ? 'Done' : 'Voted'}
+        title={`${shortId(item.proposalId)} · ${String(p.proposed_text || p.original_text || '').replace(/\s+/g, ' ').slice(0, 140)}`}
+        status={`${yours} · ${STATE_LABEL[item.state]}`}
+        onExpand={() => setExpanded(true)}
+      />
+    );
+  }
 
   return (
     <li id={`item-${item.proposalId}`} className={`scroll-mt-24 rounded-xl border bg-slate-950/40 p-3 sm:p-4 ${include && !include.checked ? 'border-slate-800 opacity-80' : 'border-slate-800'}`}>
@@ -751,6 +783,7 @@ export function ItemCard({
             <span className={`rounded border px-1.5 py-0.5 ${STATE_TONE[item.state]}`}>{STATE_LABEL[item.state]}</span>
             {p.title_change ? <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">Title</span> : null}
             <span className="text-slate-500">{shortId(item.proposalId)}</span>
+            {answered ? <CollapseLink onCollapse={() => setExpanded(false)} /> : null}
           </div>
           <p className="mt-2 text-sm text-slate-200">
             {p.author_name || 'Unknown author'}
@@ -1069,6 +1102,46 @@ function BundleEdits({ item }: { item: SteeringItem }) {
   );
 }
 
+/** One line for something you have already answered: what it is, where it stands, and a way back in. */
+export function AnsweredRow({
+  id,
+  as = 'li',
+  badge,
+  title,
+  status,
+  onExpand,
+}: {
+  id?: string;
+  as?: 'li' | 'div' | 'section';
+  badge?: string;
+  title: string;
+  status: string;
+  onExpand: () => void;
+}) {
+  const Tag = as;
+  return (
+    <Tag id={id} className="scroll-mt-24 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-slate-800/80 bg-slate-950/30 px-3 py-2 text-sm">
+      <span className="rounded border border-emerald-800/70 px-1.5 py-0.5 text-xs text-emerald-200">{badge || 'Answered'}</span>
+      <span className="min-w-0 flex-1 truncate text-slate-300" title={title}>
+        {title}
+      </span>
+      <span className="text-xs text-slate-400">{status}</span>
+      <button type="button" onClick={onExpand} className="text-xs text-cyan-300 underline hover:text-cyan-200">
+        Show
+      </button>
+    </Tag>
+  );
+}
+
+/** "Collapse" link for an answered card that has been opened again. */
+function CollapseLink({ onCollapse }: { onCollapse: () => void }) {
+  return (
+    <button type="button" onClick={onCollapse} className="text-xs normal-case tracking-normal text-cyan-300 underline hover:text-cyan-200">
+      Collapse
+    </button>
+  );
+}
+
 function shortId(id: string): string {
   return id.length > 10 ? `#${id.slice(0, 8)}` : `#${id}`;
 }
@@ -1171,6 +1244,18 @@ export function CarriedCard({
   const p = item.resultProposal || item.proposal;
   const earlierVoters = item.earlier.votes.map((v) => v.voterName).join(', ');
   const settled = Boolean(item.decision) || readOnly;
+  const answered = !readOnly && (Boolean(mine) || Boolean(item.decision));
+  const [expanded, setExpanded] = useState(false);
+  if (answered && !expanded) {
+    return (
+      <AnsweredRow
+        badge={item.decision ? 'Settled' : 'Reviewed'}
+        title={`${shortId(item.proposalId)} · ${String(p.proposed_text || p.original_text || '').replace(/\s+/g, ' ').slice(0, 140)}`}
+        status={`${mine ? `You: ${REVIEW_LABEL[mine.decision as SteeringReviewDecision] || mine.decision}` : ''}${mine && item.decision ? ' · ' : ''}${item.decision ? REVIEW_LABEL[item.decision] : item.state === 'one' ? 'needs a second' : item.state === 'split' ? 'split' : ''}`}
+        onExpand={() => setExpanded(true)}
+      />
+    );
+  }
   return (
     <li className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
       <div className="flex flex-wrap items-center gap-1.5 text-xs">
@@ -1185,6 +1270,7 @@ export function CarriedCard({
           </span>
         )}
         <span className="text-slate-500">{shortId(item.proposalId)}</span>
+        {answered ? <CollapseLink onCollapse={() => setExpanded(false)} /> : null}
       </div>
       <p className="mt-2 text-sm text-slate-300">
         {item.earlier.stage || item.carriedFrom || 'Earlier'}:{' '}
