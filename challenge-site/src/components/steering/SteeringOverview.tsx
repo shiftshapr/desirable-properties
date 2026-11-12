@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import SteeringIssues from '@/components/steering/SteeringIssues';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import {
@@ -71,6 +72,7 @@ function readStageParam(): string | null {
 export default function SteeringOverview({ signedIn, steering }: { signedIn: boolean; steering: boolean }) {
   const [stages, setStages] = useState<SteeringStage[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
+  const [byChapter, setByChapter] = useState(false);
   const [record, setRecord] = useState<SteeringStage | null>(null);
   const [runs, setRuns] = useState<string[]>([]);
   const [meta, setMeta] = useState<OverviewMeta | null>(null);
@@ -172,6 +174,8 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
   const closesNow = !liveMeta?.closingStageKey || liveMeta.closingStageKey === current?.key;
   const reviewOpen = liveMeta?.openStages.find((s) => s.kind === 'review') || (current?.status === 'open' && current.kind === 'review' ? current : null);
   const openHere = alongside && current ? (liveMeta?.openByStage[current.key] ?? totals.open) : totals.open;
+  // The open cross-DP stage is worked by issue (fix bundles and decisions), not chapter by chapter.
+  const issuesTab = Boolean(steering && !closedKey && current?.status === 'open' && current.kind === 'review' && current.key === 'stage-2');
   const refreshStages = async (key: string) => {
     const list = await loadStages();
     setLoadedKey(null);
@@ -237,6 +241,7 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
 
       {shownRows ? (
         <>
+          {issuesTab ? null : (
           <dl className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Status totals">
             {STEERING_TABS.map((t) => (
               <div key={t.key} className="rounded-lg border border-slate-800 bg-slate-950/50 px-4 py-2 sm:min-w-32">
@@ -247,6 +252,7 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
               </div>
             ))}
           </dl>
+          )}
           {alongside && liveMeta ? (
             <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">
               {liveMeta.openStages.map((s) => s.title).join(' and ')} are open together. What{' '}
@@ -254,7 +260,7 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
               {liveMeta.openStages[0].title} closes first.
             </p>
           ) : null}
-          {reviewOpen && !closedKey ? (
+          {reviewOpen && !closedKey && !issuesTab ? (
             <p className="text-sm">
               <Link href="/steering/issues" className="text-cyan-300 underline hover:text-cyan-200">
                 {reviewOpen.title} by issue
@@ -262,14 +268,14 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
               <span className="text-slate-400">: the cross-DP findings in their groups, with the fixes to vote on.</span>
             </p>
           ) : null}
-          {reviewOpen && !closedKey ? <CarriedTotals rows={shownRows} stage={reviewOpen} /> : null}
+          {reviewOpen && !closedKey && !issuesTab ? <CarriedTotals rows={shownRows} stage={reviewOpen} /> : null}
           {current?.status === 'open' && current.kind === 'signoff' ? (
             <p className="text-sm text-slate-300">
               {shownRows.filter((r) => r.signoff?.signed).length} of {shownRows.filter((r) => r.listed).length} documents
               signed off by two steering members.
             </p>
           ) : null}
-          {closedKey ? null : (
+          {closedKey || issuesTab ? null : (
           <dl className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Sweep totals">
             {[
               { label: 'Open', value: totals.open, tone: totals.open ? 'text-amber-200' : 'text-white' },
@@ -285,8 +291,24 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
             ))}
           </dl>
           )}
-          <DocumentList heading="Front matter" rows={front} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
-          <DocumentList heading="Desirable Properties" rows={dps} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
+          {issuesTab ? (
+            <>
+              <SteeringIssues embedded />
+              <p className="text-sm text-slate-400">
+                Accepted changes the cross-DP check found no issue with need no vote: any not reviewed are kept when{' '}
+                {current?.title} closes.{' '}
+                <button type="button" onClick={() => setByChapter((v) => !v)} className="text-cyan-300 underline hover:text-cyan-200">
+                  {byChapter ? 'Hide the chapters' : 'Show carried items by chapter'}
+                </button>
+              </p>
+            </>
+          ) : null}
+          {!issuesTab || byChapter ? (
+            <>
+              <DocumentList heading="Front matter" rows={front} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
+              <DocumentList heading="Desirable Properties" rows={dps} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
+            </>
+          ) : null}
           {steering && liveMeta?.canOpenNext ? (
             <OpenNextStage next={liveMeta.canOpenNext} current={current} onOpened={refreshStages} />
           ) : null}

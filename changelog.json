@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage2-tab-by-issue",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: the Stage 2 tab is worked by issue",
+      "summary": "For steering members, the Stage 2: Cross-DP tab on /steering now shows the cross-DP findings to settle (the fix bundles and the decisions) instead of every chapter's carried items. A group of fixes that the analysis recommends as written can be approved in one click.",
+      "changes": [
+        "The Stage 2 tab shows the cross-DP issues in place of the chapter lists; carried items by chapter are one click away",
+        "\"Approve all as written\" records your accept vote on every open fix in a group that the analysis recommends as written; a second member still has to agree",
+        "Findings with nothing left to vote on are hidden with the settled ones",
+        "Accepted changes the cross-DP check found no issue with need no vote: any not reviewed are kept when the stage closes"
+      ]
+    },
+    {
       "id": "steering-stage2-decision-votes",
       "date": "2026-11-12",
       "status": "open",
