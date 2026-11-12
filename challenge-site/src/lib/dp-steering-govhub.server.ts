@@ -44,7 +44,7 @@ export const steeringPaths = {
     `/api/doc/steering/stages/${encodeURIComponent(key)}/documents/${encodeURIComponent(ml)}/`,
   closeStage: () => '/api/doc/steering/stages/close/',
   openNextStage: () => '/api/doc/steering/stages/open-next/',
-  issues: () => '/api/doc/steering/issues/',
+  issues: (stage?: string) => `/api/doc/steering/issues/${stage ? `?stage=${encodeURIComponent(stage)}` : ''}`,
   issueDecision: (finding: string) => `/api/doc/steering/issues/${encodeURIComponent(finding)}/decision/`,
   issueComments: (finding: string) => `/api/doc/steering/issues/${encodeURIComponent(finding)}/comments/`,
   issueComment: (finding: string, id: string) =>
