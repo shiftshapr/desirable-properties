@@ -43,6 +43,8 @@ export const steeringPaths = {
   stageDocument: (key: string, ml: string) =>
     `/api/doc/steering/stages/${encodeURIComponent(key)}/documents/${encodeURIComponent(ml)}/`,
   closeStage: () => '/api/doc/steering/stages/close/',
+  openNextStage: () => '/api/doc/steering/stages/open-next/',
+  issues: () => '/api/doc/steering/issues/',
   reviewCarried: (proposalId: string) =>
     `/api/doc/steering/stages/current/carried/${encodeURIComponent(proposalId)}/review/`,
   keepAll: (ml: string) => `/api/doc/steering/stages/current/documents/${encodeURIComponent(ml)}/keep-all/`,

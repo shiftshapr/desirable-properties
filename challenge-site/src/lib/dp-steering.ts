@@ -132,13 +132,16 @@ export type SteeringItem = {
   outcome: SteeringOutcome | null;
   /** Gov Hub's tab for the item (always sent for a closed stage). */
   tab: SteeringTab | null;
+  /** The open stage the item belongs to, when Gov Hub says (two stages can be open together). */
+  stageKey: string | null;
 };
 
 export type SteeringStageKind = 'proposals' | 'review' | 'signoff';
 
 /**
- * Stage 1 (proposal review), Stage 2 (cross-DP), Stage 3 (style), Final (sign-off): one open at a time.
- * What a stage accepted opens in the next as carried items; a closed stage is a public, read-only record.
+ * Stage 1 (proposal review), Stage 2 (cross-DP), Stage 3 (style), Final (sign-off). One is open at a
+ * time, except that Stage 2 can open alongside Stage 1. What a stage accepted opens in the next as
+ * carried items; a closed stage is a public, read-only record.
  */
 export type SteeringStage = {
   key: string;
@@ -223,6 +226,8 @@ export type SteeringDocument = {
   runs: Array<{ id: string; label: string; model: string | null; createdAt: string | null }>;
   viewerUserId: string | null;
   stage: SteeringStage | null;
+  /** Every open stage, earliest first: two while Stage 2 runs alongside Stage 1. */
+  openStages: SteeringStage[];
   carried: SteeringCarriedItem[];
   /** Final stage only. */
   signoff: SteeringSignoff | null;
@@ -370,6 +375,7 @@ export function normalizeItem(raw: unknown, viewerUserId: string | null): Steeri
     state: toState(it.state, votes, outcome),
     outcome,
     tab: isSteeringTab(it.tab) ? it.tab : null,
+    stageKey: strOrNull(it.stage_key),
   };
 }
 
@@ -540,6 +546,7 @@ export function normalizeSteeringDocument(ml: string, raw: unknown, knownViewerI
     }),
     viewerUserId,
     stage: normalizeStage(d.stage),
+    openStages: normalizeStages(d.open_stages),
     carried: arr(d.carried)
       .map((c) => normalizeCarried(c, viewerUserId))
       .filter((c): c is SteeringCarriedItem => Boolean(c)),
@@ -553,9 +560,119 @@ export function normalizeOverviewMeta(raw: unknown): {
   stage: SteeringStage | null;
   stages: SteeringStage[];
   viewerIsSteering: boolean;
+  /** Every open stage, earliest first. */
+  openStages: SteeringStage[];
+  /** The stage that closes next: the earliest open one. */
+  closingStageKey: string | null;
+  /** The stage a steering member can open alongside the open one, if any. */
+  canOpenNext: { key: string; title: string } | null;
+  /** Open proposals in each open stage. */
+  openByStage: Record<string, number>;
 } {
   const d = obj(raw);
-  return { stage: normalizeStage(d.stage), stages: normalizeStages(d.stages), viewerIsSteering: d.viewer_is_steering === true };
+  const next = obj(d.can_open_next);
+  return {
+    stage: normalizeStage(d.stage),
+    stages: normalizeStages(d.stages),
+    viewerIsSteering: d.viewer_is_steering === true,
+    openStages: normalizeStages(d.open_stages),
+    closingStageKey: strOrNull(d.closing_stage_key),
+    canOpenNext: str(next.key) ? { key: str(next.key), title: str(next.title) || str(next.key) } : null,
+    openByStage: Object.fromEntries(Object.entries(obj(d.open_by_stage)).map(([k, v]) => [k, num(v)])),
+  };
+}
+
+// ---------- Stage 2 by issue ----------
+
+/** Where an item sits: its document, for the vote and for Ask Deepi. */
+type InDocument = { mlNumber: string; docKey: string | null; docTitle: string | null };
+
+/** One thing the cross-DP check found, with the fixes it filed and the accepted changes it flagged. */
+export type SteeringFinding = {
+  key: string;
+  title: string;
+  type: string | null;
+  severity: string | null;
+  summary: string | null;
+  /** Steering has to decide something a text fix cannot. */
+  needsDecision: boolean;
+  decision: string | null;
+  noFixReason: string | null;
+  documents: string[];
+  items: Array<SteeringItem & InDocument>;
+  carried: Array<SteeringCarriedItem & InDocument>;
+};
+
+export type SteeringIssueGroup = {
+  key: string;
+  title: string;
+  summary: string | null;
+  tabs: Record<SteeringTab, number>;
+  findings: SteeringFinding[];
+};
+
+export type SteeringIssues = {
+  stage: SteeringStage | null;
+  run: { label: string; model: string | null } | null;
+  viewerIsSteering: boolean;
+  groups: SteeringIssueGroup[];
+  totals: Record<SteeringTab, number>;
+};
+
+const NO_TABS: Record<SteeringTab, number> = { open: 0, accepted: 0, deferred: 0, declined: 0 };
+
+/** GET /api/doc/steering/issues/ → the cross-DP findings in their groups. */
+export function normalizeIssues(raw: unknown): SteeringIssues {
+  const d = obj(raw);
+  const viewerUserId = strOrNull(d.viewer_user_id);
+  const where = (o: Json): InDocument | null => {
+    const mlNumber = normalizeMl(str(o.ml_number));
+    return mlNumber ? { mlNumber, docKey: strOrNull(o.doc_key), docTitle: strOrNull(o.doc_title) } : null;
+  };
+  const run = obj(d.run);
+  return {
+    stage: normalizeStage(d.stage),
+    run: str(run.label) ? { label: str(run.label), model: strOrNull(run.model) } : null,
+    viewerIsSteering: d.viewer_is_steering === true,
+    totals: normalizeTabs(d.totals) || NO_TABS,
+    groups: arr(d.groups).map((g) => {
+      const group = obj(g);
+      return {
+        key: str(group.key),
+        title: str(group.title) || str(group.key),
+        summary: strOrNull(group.summary),
+        tabs: normalizeTabs(group.tabs) || NO_TABS,
+        findings: arr(group.findings).map((f) => {
+          const finding = obj(f);
+          const items: SteeringFinding['items'] = [];
+          for (const i of arr(finding.items)) {
+            const item = normalizeItem(i, viewerUserId);
+            const doc = where(obj(i));
+            if (item && doc) items.push({ ...item, ...doc });
+          }
+          const carried: SteeringFinding['carried'] = [];
+          for (const c of arr(finding.carried)) {
+            const item = normalizeCarried(c, viewerUserId);
+            const doc = where(obj(c));
+            if (item && doc) carried.push({ ...item, ...doc });
+          }
+          return {
+            key: str(finding.key),
+            title: str(finding.title) || str(finding.key),
+            type: strOrNull(finding.type),
+            severity: strOrNull(finding.severity),
+            summary: strOrNull(finding.summary),
+            needsDecision: finding.needs_decision === true,
+            decision: strOrNull(finding.decision),
+            noFixReason: strOrNull(finding.no_fix_reason),
+            documents: arr(finding.documents).map(str).filter(Boolean),
+            items,
+            carried,
+          };
+        }),
+      };
+    }),
+  };
 }
 
 /** GET /api/doc/steering/overview/ → one row per document; front matter always listed, with its titles. */

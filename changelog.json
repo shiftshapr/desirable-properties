@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage2-by-issue",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: Stage 2 opens alongside Stage 1 and is organised by issue",
+      "summary": "Steering can now open Stage 2 while Stage 1 still has proposals to settle. Everything Stage 1 has accepted flows into Stage 2 as it is accepted. Stage 2 has a new page, organised by issue: each cross-DP finding sits in one of four groups with the fixes that settle it, so a finding and its fixes are read and voted on together.",
+      "changes": [
+        "\"Open Stage 2 now\" on /steering, for steering members. It is a deliberate step, not automatic",
+        "With both stages open, new community proposals still land in Stage 1 and the fixes the cross-DP review files land in Stage 2. Stages close in order: Stage 1 first",
+        "New page /steering/issues: findings grouped as Broken text, Pointers and titles, Meaning, and Steering decisions, each with the fixes that settle it and any accepted change it flags",
+        "Every fix card on the issues page has \"Ask Deepi about this proposal\" for steering members",
+        "Settled findings are hidden by default, with a switch to show them",
+        "The Stage 1 record keeps only Stage 1's items and the analysis they were decided on"
+      ]
+    },
+    {
       "id": "steering-batch-remaining",
       "date": "2026-11-12",
       "status": "open",
