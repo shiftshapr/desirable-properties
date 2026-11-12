@@ -14,6 +14,7 @@ import {
   type SteeringCarriedItem,
   type SteeringDecision,
   type SteeringFinding,
+  type SteeringIssueGroup,
   type SteeringIssues as Issues,
   type SteeringItem,
   type SteeringReviewDecision,
@@ -45,7 +46,7 @@ async function fetchIssues(): Promise<IssuesResult> {
  * /steering/issues: Stage 2 by issue. The cross-DP check's findings in their groups; under each, the
  * fixes it filed (voted on like any proposal, each with Ask Deepi) and the accepted changes it flagged.
  */
-export default function SteeringIssues() {
+export default function SteeringIssues({ embedded = false }: { embedded?: boolean } = {}) {
   const [data, setData] = useState<Issues | null>(null);
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -168,9 +169,7 @@ export default function SteeringIssues() {
   const settled = (f: SteeringFinding) =>
     f.needsDecision
       ? !!f.discussion.settledChoice
-      : f.items.length || f.carried.length
-        ? !f.items.some(isOpen) && !f.carried.some(carriedOpen)
-        : false;
+      : !f.items.some(isOpen) && !f.carried.some(carriedOpen); // nothing left to vote on, or nothing to act on
   const decide = (f: SteeringFinding, choice: string | null, note: string) =>
     void act(
       f.key,
@@ -198,6 +197,43 @@ export default function SteeringIssues() {
       { method: 'POST', body: JSON.stringify({ body: text }) },
       () => ({ ok: true, text: 'Comment posted.' }),
     );
+  // A group whose open fixes the analysis recommends as written can be approved in one click: one
+  // accept vote from you on each open fix you have not voted on. A second member still has to agree.
+  const bundle = (g: SteeringIssueGroup) => {
+    const open = g.findings.flatMap((f) => f.items).filter(isOpen);
+    const mine = open.filter((i) => !i.votes.some((v) => v.mine));
+    const asWritten = open.length > 0 && open.every((i) => i.analysis?.recommendation === 'accept');
+    return { open, mine, asWritten };
+  };
+  async function approveGroup(g: SteeringIssueGroup) {
+    const { mine } = bundle(g);
+    setBusy(`group:${g.key}`);
+    say(`group:${g.key}`, true, '');
+    let ok = 0;
+    const failed: string[] = [];
+    for (const item of mine) {
+      try {
+        const res = await fetch(`/api/steering/${encodeURIComponent(item.mlNumber)}/votes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ proposal_id: item.proposalId, decision: 'accept', agrees_with_analysis: true }),
+        });
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        if (!res.ok) throw new Error(body.error || `Failed (${res.status})`);
+        ok += 1;
+      } catch (err) {
+        failed.push(`${item.docKey || item.mlNumber}: ${err instanceof Error ? err.message : 'failed'}`);
+      }
+    }
+    say(
+      `group:${g.key}`,
+      !failed.length,
+      `${ok} vote${ok === 1 ? '' : 's'} recorded. Each fix is carried out once a second member approves it.` +
+        (failed.length ? ` ${failed.length} failed: ${failed.join('; ')}` : ''),
+    );
+    await load();
+    setBusy(null);
+  }
   const uncomment = (f: SteeringFinding, id: string) =>
     void act(
       f.key,
@@ -210,10 +246,16 @@ export default function SteeringIssues() {
   return (
     <div className="mt-6 space-y-8">
       <header className="space-y-3 border-b border-slate-800 pb-5">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
-          Steering{data?.stage ? ` · ${data.stage.title}` : ''} · by issue
-        </p>
-        <h1 className="text-2xl font-semibold text-white sm:text-3xl">Cross-DP issues</h1>
+        {embedded ? (
+          <h2 className="text-xl font-semibold text-white">Cross-DP issues to settle</h2>
+        ) : (
+          <>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
+              Steering{data?.stage ? ` · ${data.stage.title}` : ''} · by issue
+            </p>
+            <h1 className="text-2xl font-semibold text-white sm:text-3xl">Cross-DP issues</h1>
+          </>
+        )}
         <p className="max-w-3xl text-sm text-slate-300">
           The cross-DP check read every accepted change against all 28 documents. Each finding below lists the
           fixes it filed, which are voted on like any proposal, and the accepted changes it flagged. Two steering
@@ -293,6 +335,31 @@ export default function SteeringIssues() {
                 {group.tabs.declined} declined
               </p>
             </div>
+            {(() => {
+              const b = bundle(group);
+              if (readOnly || !b.asWritten) return null;
+              return (
+                <div className="flex flex-wrap items-center gap-3 rounded-xl border border-emerald-800/60 bg-emerald-950/20 px-4 py-3 text-sm">
+                  <span className="text-emerald-100">
+                    {b.open.length} open fix{b.open.length === 1 ? '' : 'es'} in this group, all recommended as written.
+                    {b.mine.length < b.open.length ? ` You have voted on ${b.open.length - b.mine.length}.` : ''}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={!b.mine.length || busy !== null}
+                    onClick={() => void approveGroup(group)}
+                    className="rounded-lg bg-emerald-600 px-3 py-1.5 font-medium text-white hover:bg-emerald-500 disabled:opacity-40"
+                  >
+                    {busy === `group:${group.key}` ? 'Approving…' : `Approve all ${b.mine.length} as written`}
+                  </button>
+                  {flash[`group:${group.key}`]?.text ? (
+                    <span className={flash[`group:${group.key}`].ok ? 'text-emerald-300' : 'text-rose-300'}>
+                      {flash[`group:${group.key}`].text}
+                    </span>
+                  ) : null}
+                </div>
+              );
+            })()}
             {!shown.length ? (
               <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-4 text-sm text-slate-300">
                 Every finding in this group is settled.
