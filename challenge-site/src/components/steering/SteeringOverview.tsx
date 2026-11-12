@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import SteeringIssues from '@/components/steering/SteeringIssues';
+import StageLedger from '@/components/steering/StageLedger';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import {
@@ -69,6 +70,9 @@ function readStageParam(): string | null {
  * record (anyone); stages still to come are listed but not selectable. Stage 2 can be opened alongside
  * Stage 1: both tabs then show the same live progress, and Stage 1 is the one that closes first.
  */
+/** The tab after Final: every stage in one table. */
+const LEDGER_KEY = 'ledger';
+
 export default function SteeringOverview({ signedIn, steering: steeringFromPage }: { signedIn: boolean; steering: boolean }) {
   const [stages, setStages] = useState<SteeringStage[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
@@ -100,7 +104,9 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
       const lastClosed = [...list].reverse().find((p) => p.status === 'closed');
       // Signed out, only closed stages can be read, so start on the latest one.
       setSelected(
-        list.find((p) => p.key === wanted)?.key || (signedIn ? open?.key : lastClosed?.key) || open?.key || null,
+        wanted === LEDGER_KEY
+          ? LEDGER_KEY
+          : list.find((p) => p.key === wanted)?.key || (signedIn ? open?.key : lastClosed?.key) || open?.key || null,
       );
     });
     return () => {
@@ -193,6 +199,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
   return (
     <div className="mt-8 space-y-8">
       {stages?.length ? <StageTabs stages={stages} selected={selected} onSelect={choose} /> : null}
+      {selected === LEDGER_KEY && stages ? <StageLedger stages={stages} /> : null}
 
       {current && !canRead ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
@@ -420,6 +427,20 @@ function StageTabs({
           </button>
         );
       })}
+      <button
+        type="button"
+        role="tab"
+        aria-selected={selected === LEDGER_KEY}
+        onClick={() => onSelect(LEDGER_KEY)}
+        className={`rounded-lg border px-4 py-2 text-left text-sm ${
+          selected === LEDGER_KEY
+            ? 'border-violet-500 bg-violet-950/40 text-white'
+            : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
+        }`}
+      >
+        <span className="block font-semibold">Ledger</span>
+        <span className="block text-xs text-slate-500">All stages</span>
+      </button>
     </div>
   );
 }

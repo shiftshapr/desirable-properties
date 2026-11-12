@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-ledger",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: a Ledger tab shows every stage in one table",
+      "summary": "/steering has a new Ledger tab to the right of Final: one row per stage with the same measures (dates, analysis, items in, findings, fixes filed, steering decisions, outcome), plus notes for each stage. Dates and outcomes come live from Gov Hub; the analysis figures are recorded as each stage runs.",
+      "changes": [
+        "New Ledger tab after Final (?stage=ledger)",
+        "Dates and outcomes are live; analysis figures live in src/data/steering-ledger.json"
+      ]
+    },
+    {
       "id": "steering-stage-bundles",
       "date": "2026-11-12",
       "status": "open",
