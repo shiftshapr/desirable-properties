@@ -4,6 +4,38 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stages",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: four stages, with accepted changes carried forward",
+      "summary": "Passes are now a fixed plan of four stages: Stage 1 proposal review, Stage 2 cross-DP, Stage 3 style, and Final. Whatever a stage accepts opens in the next stage to be reviewed again against that stage's analysis. Final is a sign-off by two steering members on each document's finished text. A stage closes only when nothing is open, and each closed stage keeps a public, read-only record.",
+      "changes": [
+        "Stage tabs on /steering: Stage 1: Proposal review, Stage 2: Cross-DP, Stage 3: Style, Final. Stages still to come are listed but can't be opened yet (?stage=stage-1)",
+        "Accepted items move on: when a stage closes, what it accepted appears in the next stage under \"Carried into\", with the earlier decision, votes and analysis attached",
+        "Each carried item gets three choices: Keep, Keep with a follow-up edit, or Defer to 1.1. The last two need a note. Two members settle each item, and nothing is reverted: a follow-up edit or an undo is filed as a new proposal",
+        "\"Keep all with no issue found\" keeps, in one click, every carried item that this stage's analysis checked and found no problem with. Flagged and unchecked items are reviewed one by one",
+        "A stage closes only when nothing is open. Remaining proposals can be deferred to 1.1 as part of closing, keeping their votes. Carried items nobody reviewed are kept",
+        "Final: two steering members sign off each document's finished text. A sign-off is tied to the exact text, so any later change voids it",
+        "Ask Deepi can now answer questions about carried items too"
+      ]
+    },
+    {
+      "id": "steering-stages",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: four stages, with accepted changes carried forward",
+      "summary": "Passes are now a fixed plan of four stages: Stage 1 proposal review, Stage 2 cross-DP, Stage 3 style, and Final. Whatever a stage accepts opens in the next stage to be reviewed again against that stage's analysis. Final is a sign-off by two steering members on each document's finished text. A stage closes only when nothing is open, and each closed stage keeps a public, read-only record.",
+      "changes": [
+        "Stage tabs on /steering: Stage 1: Proposal review, Stage 2: Cross-DP, Stage 3: Style, Final. Stages still to come are listed but can't be opened yet (?stage=stage-1)",
+        "Accepted items move on: when a stage closes, what it accepted appears in the next stage under \"Carried into\", with the earlier decision, votes and analysis attached",
+        "Each carried item gets three choices: Keep, Keep with a follow-up edit, or Defer to 1.1. The last two need a note. Two members settle each item, and nothing is reverted: a follow-up edit or an undo is filed as a new proposal",
+        "\"Keep all with no issue found\" keeps, in one click, every carried item that this stage's analysis checked and found no problem with. Flagged and unchecked items are reviewed one by one",
+        "A stage closes only when nothing is open. Remaining proposals can be deferred to 1.1 as part of closing, keeping their votes. Carried items nobody reviewed are kept",
+        "Final: two steering members sign off each document's finished text. A sign-off is tied to the exact text, so any later change voids it",
+        "Ask Deepi can now answer questions about carried items too"
+      ]
+    },
+    {
       "id": "steering-passes",
       "date": "2026-11-12",
       "status": "open",
