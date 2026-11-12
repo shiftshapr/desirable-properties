@@ -4,6 +4,78 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-batch-remaining",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: batches name what is left to vote on",
+      "summary": "A partly finished batch now names the items that still need your vote, each linking to its card. The cards already carried out are collapsed under one line, so a done card no longer sits above the Approve button looking like the item being voted on.",
+      "changes": [
+        "Partly finished batches list the items that still need your vote, with links to their cards.",
+        "Cards already carried out are collapsed under one line below the open ones."
+      ]
+    },
+    {
+      "id": "steering-stages",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: four stages, with accepted changes carried forward",
+      "summary": "Passes are now a fixed plan of four stages: Stage 1 proposal review, Stage 2 cross-DP, Stage 3 style, and Final. Whatever a stage accepts opens in the next stage to be reviewed again against that stage's analysis. Final is a sign-off by two steering members on each document's finished text. A stage closes only when nothing is open, and each closed stage keeps a public, read-only record.",
+      "changes": [
+        "Stage tabs on /steering: Stage 1: Proposal review, Stage 2: Cross-DP, Stage 3: Style, Final. Stages still to come are listed but can't be opened yet (?stage=stage-1)",
+        "Accepted items move on: when a stage closes, what it accepted appears in the next stage under \"Carried into\", with the earlier decision, votes and analysis attached",
+        "Each carried item gets three choices: Keep, Keep with a follow-up edit, or Defer to 1.1. The last two need a note. Two members settle each item, and nothing is reverted: a follow-up edit or an undo is filed as a new proposal",
+        "\"Keep all with no issue found\" keeps, in one click, every carried item that this stage's analysis checked and found no problem with. Flagged and unchecked items are reviewed one by one",
+        "A stage closes only when nothing is open. Remaining proposals can be deferred to 1.1 as part of closing, keeping their votes. Carried items nobody reviewed are kept",
+        "Final: two steering members sign off each document's finished text. A sign-off is tied to the exact text, so any later change voids it",
+        "Ask Deepi can now answer questions about carried items too"
+      ]
+    },
+    {
+      "id": "steering-stages",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: four stages, with accepted changes carried forward",
+      "summary": "Passes are now a fixed plan of four stages: Stage 1 proposal review, Stage 2 cross-DP, Stage 3 style, and Final. Whatever a stage accepts opens in the next stage to be reviewed again against that stage's analysis. Final is a sign-off by two steering members on each document's finished text. A stage closes only when nothing is open, and each closed stage keeps a public, read-only record.",
+      "changes": [
+        "Stage tabs on /steering: Stage 1: Proposal review, Stage 2: Cross-DP, Stage 3: Style, Final. Stages still to come are listed but can't be opened yet (?stage=stage-1)",
+        "Accepted items move on: when a stage closes, what it accepted appears in the next stage under \"Carried into\", with the earlier decision, votes and analysis attached",
+        "Each carried item gets three choices: Keep, Keep with a follow-up edit, or Defer to 1.1. The last two need a note. Two members settle each item, and nothing is reverted: a follow-up edit or an undo is filed as a new proposal",
+        "\"Keep all with no issue found\" keeps, in one click, every carried item that this stage's analysis checked and found no problem with. Flagged and unchecked items are reviewed one by one",
+        "A stage closes only when nothing is open. Remaining proposals can be deferred to 1.1 as part of closing, keeping their votes. Carried items nobody reviewed are kept",
+        "Final: two steering members sign off each document's finished text. A sign-off is tied to the exact text, so any later change voids it",
+        "Ask Deepi can now answer questions about carried items too"
+      ]
+    },
+    {
+      "id": "steering-passes",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: passes (Pass 1, Pass 2, Final), each with a public record once closed",
+      "summary": "The steering page now has a tab for each pass. Closing a pass saves its full record (every proposal with its analysis, votes and outcome), makes that record public and read-only, carries open items into the next pass and opens it. Anyone signed in can follow the open pass's progress; only steering members open its documents and see the steering notes.",
+      "changes": [
+        "Pass tabs on /steering; the open pass shows live progress, a closed pass shows its saved record (?pass=pass-1)",
+        "Each document row and the totals show Open, Accepted, Deferred and Declined counts in colored circles",
+        "Close Pass (steering members): name the next pass, say what it covers, and leave a closing note that is public with the record",
+        "Items still open when a pass closes are carried into the next pass with their votes and marked \"Carried from\"",
+        "A closed pass's documents (/steering/<ml>?pass=<key>) are readable by anyone, read-only, without voting or Ask Deepi",
+        "Anyone signed in sees the steering overview; steering notes and the audit export stay steering-only"
+      ]
+    },
+    {
+      "id": "steering-status-tabs",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: Open, Accepted, Deferred and Declined tabs",
+      "summary": "Each steering document page now splits its proposals into Open, Accepted, Deferred and Declined tabs, each with its count in a colored circle, so what still needs a decision is easy to see.",
+      "changes": [
+        "Open lists the batches and items still to decide; a batch shows only its open items",
+        "Accepted (accept and accept revised), Deferred and Declined list what was carried out",
+        "An outcome that failed to apply stays under Open",
+        "The tab is kept in ?tab= so a reload or a shared link opens the same one",
+        "Wording now says two steering members must agree, since steering has five members"
+      ]
+    },
+    {
       "id": "workgroup-chat-links-scroll",
       "date": "2026-11-11",
       "status": "open",

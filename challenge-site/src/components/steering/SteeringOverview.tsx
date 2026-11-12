@@ -3,51 +3,143 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
-import { normalizeOverview, type SteeringOverviewRow } from '@/lib/dp-steering';
+import {
+  normalizeOverview,
+  normalizeStage,
+  normalizeStages,
+  STEERING_TABS,
+  type SteeringOverviewRow,
+  type SteeringStage,
+  type SteeringTab,
+} from '@/lib/dp-steering';
 
-type OverviewResult = { rows: SteeringOverviewRow[] } | { error: { text: string; code?: string } };
+type OverviewResult =
+  | { rows: SteeringOverviewRow[]; record: SteeringStage | null; runs: string[] }
+  | { error: { text: string; code?: string } };
 
-async function fetchOverview(): Promise<OverviewResult> {
+/** The open stage's live overview, or a closed stage's saved record. */
+async function fetchOverview(closedKey: string | null): Promise<OverviewResult> {
   try {
-    const res = await fetch('/api/steering/overview', { cache: 'no-store' });
-    const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string };
+    const url = closedKey ? `/api/steering/stages/${encodeURIComponent(closedKey)}` : '/api/steering/overview';
+    const res = await fetch(url, { cache: 'no-store' });
+    const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string; runs?: unknown };
     if (!res.ok) return { error: { text: body.error || `Overview ${res.status}`, code: body.code } };
-    return { rows: normalizeOverview(body) };
+    const runs = Array.isArray(body.runs)
+      ? body.runs.map((r) => {
+          const o = (r || {}) as { label?: string; model?: string };
+          return `${o.label || 'run'}${o.model ? ` (${o.model})` : ''}`;
+        })
+      : [];
+    return { rows: normalizeOverview(body), record: closedKey ? normalizeStage(body) : null, runs };
   } catch (err) {
     return { error: { text: err instanceof Error ? err.message : 'Overview unavailable' } };
   }
 }
 
-/** Every document's steering progress, with a link to its sweep. */
-export default function SteeringOverview() {
+const FALLBACK_STAGE: SteeringStage = {
+  key: 'current', title: 'The sweep', position: 1, kind: 'proposals', status: 'open', nextTitle: null,
+  description: null, openedAt: null, closedAt: null, closedByName: null, closeNote: null, totals: null,
+};
+
+async function fetchStages(): Promise<SteeringStage[]> {
+  try {
+    const res = await fetch('/api/steering/stages', { cache: 'no-store' });
+    return res.ok ? normalizeStages(await res.json().catch(() => ({}))) : [];
+  } catch {
+    return [];
+  }
+}
+
+function readStageParam(): string | null {
+  if (typeof window === 'undefined') return null;
+  return new URLSearchParams(window.location.search).get('stage');
+}
+
+/**
+ * The steering page: one tab per stage (Stage 1, Cross-DP, Style, Final). The open stage shows live
+ * progress (anyone signed in; only steering members open a document); a closed stage shows its saved
+ * record (anyone); stages still to come are listed but not selectable.
+ */
+export default function SteeringOverview({ signedIn, steering }: { signedIn: boolean; steering: boolean }) {
+  const [stages, setStages] = useState<SteeringStage[] | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [record, setRecord] = useState<SteeringStage | null>(null);
+  const [runs, setRuns] = useState<string[]>([]);
   const [rows, setRows] = useState<SteeringOverviewRow[] | null>(null);
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const loadStages = useCallback(async () => {
+    const list = await fetchStages();
+    setStages(list);
+    return list;
+  }, []);
+
+  const { user, checked } = useAuth();
+  useEffect(() => {
+    let cancelled = false;
+    void fetchStages().then((list) => {
+      if (cancelled) return;
+      setStages(list);
+      const wanted = readStageParam();
+      const open = list.find((p) => p.status === 'open');
+      const lastClosed = [...list].reverse().find((p) => p.status === 'closed');
+      // Signed out, only closed stages can be read, so start on the latest one.
+      setSelected(
+        list.find((p) => p.key === wanted)?.key || (signedIn ? open?.key : lastClosed?.key) || open?.key || null,
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [signedIn, user?.id, checked]);
+
+  // A Gov Hub without stages yet: show the live overview, with no stage tabs and nothing to close.
+  const noStages = stages !== null && !stages.length;
+  const current = stages?.find((p) => p.key === selected) || (noStages ? FALLBACK_STAGE : null);
+  const closedKey = current?.status === 'closed' ? current.key : null;
+  const canRead = Boolean(current && (closedKey || signedIn));
+  // Which view is on screen: rows show only once they belong to the selected stage.
+  const viewKey = current && canRead ? `${current.key}:${closedKey ? 'closed' : 'open'}` : null;
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
 
   const apply = useCallback((result: OverviewResult) => {
     if ('error' in result) setError(result.error);
     else {
       setRows(result.rows);
+      setRecord(result.record);
+      setRuns(result.runs);
       setError(null);
     }
     setLoading(false);
   }, []);
-  const load = useCallback(async () => apply(await fetchOverview()), [apply]);
+  const load = useCallback(async () => apply(await fetchOverview(closedKey)), [apply, closedKey]);
 
-  const { user, checked } = useAuth();
   useEffect(() => {
+    if (!viewKey) return;
     let cancelled = false;
-    void fetchOverview().then((result) => {
-      if (!cancelled) apply(result);
+    void fetchOverview(closedKey).then((result) => {
+      if (cancelled) return;
+      apply(result);
+      setLoadedKey(viewKey);
     });
     return () => {
       cancelled = true;
     };
-  }, [apply, user?.id, checked]);
+  }, [apply, viewKey, closedKey]);
+  const shownRows = viewKey && loadedKey === viewKey ? rows : null;
+  const shownRecord = shownRows ? record : null;
 
-  const dps = (rows || []).filter((r) => !r.frontMatter);
-  const front = (rows || []).filter((r) => r.frontMatter);
-  const totals = (rows || []).reduce(
+  const choose = (key: string) => {
+    setSelected(key);
+    const url = new URL(window.location.href);
+    url.searchParams.set('stage', key);
+    window.history.replaceState(null, '', url);
+  };
+
+  const dps = (shownRows || []).filter((r) => !r.frontMatter);
+  const front = (shownRows || []).filter((r) => r.frontMatter);
+  const totals = (shownRows || []).reduce(
     (t, r) => ({
       open: t.open + r.open,
       analysed: t.analysed + r.analysed,
@@ -57,13 +149,45 @@ export default function SteeringOverview() {
     }),
     { open: 0, analysed: 0, stale: 0, done: 0, waiting: 0 },
   );
+  const tabTotals = (shownRows || []).reduce(
+    (t, r) => {
+      for (const k of STEERING_TABS) t[k.key] += r.tabs?.[k.key] || 0;
+      return t;
+    },
+    { open: 0, accepted: 0, deferred: 0, declined: 0 } as Record<SteeringTab, number>,
+  );
+  const linkFor = (ml: string) => (closedKey ? `/steering/${ml}?stage=${closedKey}` : steering ? `/steering/${ml}` : null);
 
   return (
     <div className="mt-8 space-y-8">
+      {stages?.length ? <StageTabs stages={stages} selected={selected} onSelect={choose} /> : null}
+
+      {current && !canRead ? (
+        <p className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
+          {current.title} is open.{' '}
+          <Link href="/login?next=%2Fsteering" className="text-cyan-300 underline hover:text-cyan-200">
+            Sign in
+          </Link>{' '}
+          to follow its progress. Closed stages are public.
+        </p>
+      ) : null}
+
+      {shownRecord ? <StageRecordHeader stage={shownRecord} runs={runs} /> : null}
+      {current?.status === 'open' && canRead && !steering ? (
+        <p className="text-sm text-slate-400">
+          You can follow the progress of {current.title}. Only steering committee members open a document&apos;s
+          items while a stage is open; each stage&apos;s full record is public once it closes.
+        </p>
+      ) : null}
+
+      {canRead ? (
+      <>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        <a href="/api/steering/audit" download className="text-cyan-300 underline hover:text-cyan-200">
-          Download the audit export (JSON)
-        </a>
+        {steering ? (
+          <a href="/api/steering/audit" download className="text-cyan-300 underline hover:text-cyan-200">
+            Download the audit export (JSON)
+          </a>
+        ) : null}
         <button
           type="button"
           onClick={() => {
@@ -75,7 +199,7 @@ export default function SteeringOverview() {
         </button>
       </div>
 
-      {loading && !rows ? <p className="text-sm text-slate-400">Loading the sweep…</p> : null}
+      {(loading || (viewKey && loadedKey !== viewKey)) && !shownRows ? <p className="text-sm text-slate-400">Loading the sweep…</p> : null}
       {error ? (
         <p role="alert" className="rounded-lg border border-rose-900/50 bg-rose-950/20 px-4 py-3 text-sm text-rose-200">
           {error.text}
@@ -90,8 +214,28 @@ export default function SteeringOverview() {
         </p>
       ) : null}
 
-      {rows ? (
+      {shownRows ? (
         <>
+          <dl className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Status totals">
+            {STEERING_TABS.map((t) => (
+              <div key={t.key} className="rounded-lg border border-slate-800 bg-slate-950/50 px-4 py-2 sm:min-w-32">
+                <dt className="text-xs uppercase tracking-wide text-slate-500">{t.label}</dt>
+                <dd className="mt-1">
+                  <CountDot n={tabTotals[t.key]} dot={t.dot} label={t.label} large />
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {current?.status === 'open' && current.kind === 'review' ? (
+            <CarriedTotals rows={shownRows} stage={current} />
+          ) : null}
+          {current?.status === 'open' && current.kind === 'signoff' ? (
+            <p className="text-sm text-slate-300">
+              {shownRows.filter((r) => r.signoff?.signed).length} of {shownRows.filter((r) => r.listed).length} documents
+              signed off by two steering members.
+            </p>
+          ) : null}
+          {closedKey ? null : (
           <dl className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3" aria-label="Sweep totals">
             {[
               { label: 'Open', value: totals.open, tone: totals.open ? 'text-amber-200' : 'text-white' },
@@ -106,31 +250,284 @@ export default function SteeringOverview() {
               </div>
             ))}
           </dl>
-          <DocumentList heading="Front matter" rows={front} />
-          <DocumentList heading="Desirable Properties" rows={dps} />
+          )}
+          <DocumentList heading="Front matter" rows={front} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
+          <DocumentList heading="Desirable Properties" rows={dps} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
+          {steering && current?.status === 'open' && !noStages ? (
+            <CloseStage
+              stage={current}
+              openProposals={totals.open}
+              openCarried={shownRows.reduce((n, r) => n + (r.carried?.open || 0), 0)}
+              unsigned={current.kind === 'signoff' ? shownRows.filter((r) => r.listed && !r.signoff?.signed).length : 0}
+              onClosed={async (next) => {
+                const list = await loadStages();
+                choose(list.find((p) => p.key === next)?.key || next);
+              }}
+            />
+          ) : null}
         </>
+      ) : null}
+      </>
       ) : null}
     </div>
   );
 }
 
-function DocumentList({ heading, rows }: { heading: string; rows: SteeringOverviewRow[] }) {
+function CountDot({ n, dot, label, large = false }: { n: number; dot: string; label: string; large?: boolean }) {
+  return (
+    <span
+      aria-label={`${n} ${label.toLowerCase()}`}
+      className={`inline-flex items-center justify-center rounded-full font-semibold ${
+        large ? 'h-9 min-w-9 px-2 text-base' : 'h-6 min-w-6 px-1.5 text-xs'
+      } ${n ? dot : 'bg-slate-800 text-slate-400'}`}
+    >
+      {n}
+    </span>
+  );
+}
+
+function CarriedTotals({ rows, stage }: { rows: SteeringOverviewRow[]; stage: SteeringStage }) {
+  const t = rows.reduce(
+    (acc, r) => ({
+      count: acc.count + (r.carried?.count || 0),
+      open: acc.open + (r.carried?.open || 0),
+      flagged: acc.flagged + (r.carried?.flagged || 0),
+      unchecked: acc.unchecked + (r.carried?.unchecked || 0),
+    }),
+    { count: 0, open: 0, flagged: 0, unchecked: 0 },
+  );
+  return (
+    <p className="text-sm text-slate-300">
+      {t.count} accepted item{t.count === 1 ? '' : 's'} carried into {stage.title}: {t.open} still to review
+      {t.flagged ? <span className="text-amber-200">, {t.flagged} flagged by the analysis</span> : null}
+      {t.unchecked ? <span className="text-slate-400">, {t.unchecked} not checked yet</span> : null}.
+    </p>
+  );
+}
+
+function StageTabs({
+  stages,
+  selected,
+  onSelect,
+}: {
+  stages: SteeringStage[];
+  selected: string | null;
+  onSelect: (key: string) => void;
+}) {
+  return (
+    <div role="tablist" aria-label="Steering stages" className="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+      {stages.map((p) => {
+        const active = p.key === selected;
+        const upcoming = p.status === 'upcoming';
+        return (
+          <button
+            key={p.key}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            disabled={upcoming}
+            title={upcoming ? p.description || undefined : undefined}
+            onClick={() => onSelect(p.key)}
+            className={`rounded-lg border px-4 py-2 text-left text-sm ${
+              active
+                ? 'border-violet-500 bg-violet-950/40 text-white'
+                : upcoming
+                  ? 'cursor-default border-dashed border-slate-800 text-slate-500'
+                  : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
+            }`}
+          >
+            <span className="block font-semibold">{p.title}</span>
+            <span className={`block text-xs ${p.status === 'open' ? 'text-amber-200' : 'text-slate-500'}`}>
+              {p.status === 'open'
+                ? 'Open'
+                : upcoming
+                  ? 'Not started'
+                  : `Closed${p.closedAt ? ` ${new Date(p.closedAt).toLocaleDateString()}` : ''}`}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function StageRecordHeader({ stage, runs }: { stage: SteeringStage; runs: string[] }) {
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
+      <p>
+        <strong className="text-white">{stage.title}</strong> closed
+        {stage.closedAt ? ` ${new Date(stage.closedAt).toLocaleString()}` : ''}
+        {stage.closedByName ? ` by ${stage.closedByName}` : ''}. This is its saved record: every item as it stood
+        then, with its analysis, the votes and the outcome.
+        {stage.kind !== 'signoff' && stage.nextTitle ? ` What it accepted moved on to ${stage.nextTitle}.` : ''}
+      </p>
+      {stage.description ? <p className="mt-2 whitespace-pre-line text-slate-400">{stage.description}</p> : null}
+      {stage.closeNote ? <p className="mt-2 whitespace-pre-line text-slate-400">Closing note: {stage.closeNote}</p> : null}
+      {runs.length ? <p className="mt-2 text-xs text-slate-500">Analysis runs: {runs.join(', ')}</p> : null}
+    </div>
+  );
+}
+
+function CloseStage({
+  stage,
+  openProposals,
+  openCarried,
+  unsigned,
+  onClosed,
+}: {
+  stage: SteeringStage;
+  openProposals: number;
+  openCarried: number;
+  unsigned: number;
+  onClosed: (nextKey: string) => void | Promise<void>;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const [deferRemaining, setDeferRemaining] = useState(false);
+  const [note, setNote] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const final = stage.kind === 'signoff';
+  const blocked = final ? unsigned > 0 : openProposals > 0 && !deferRemaining;
+  const them = (n: number) => (n === 1 ? 'it' : 'them');
+
+  async function close() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/steering/stages/close', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stage_key: stage.key, note: note.trim(), defer_remaining: deferRemaining }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string; opened?: { key?: string } | null };
+      if (!res.ok) throw new Error(body.error || `Closing failed (${res.status})`);
+      setConfirming(false);
+      await onClosed(String(body.opened?.key || stage.key));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Closing failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 text-sm">
+      <h2 className="font-semibold text-white">Close {stage.title}</h2>
+      <p className="mt-1 text-slate-400">
+        Closing saves this stage&apos;s record (every item with its analysis, votes and outcome) and makes it public
+        and read-only.
+        {final
+          ? ' Final closes once every document has two sign-offs on its current text. That ends the steering work.'
+          : ` Everything it accepted then opens in ${stage.nextTitle || 'the next stage'} to be reviewed again.`}
+      </p>
+      {final ? (
+        <p className="mt-2 text-slate-300">
+          {unsigned
+            ? `${unsigned} document${unsigned === 1 ? ' still needs' : 's still need'} two sign-offs.`
+            : 'Every document is signed off.'}
+        </p>
+      ) : (
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-300">
+          <li>
+            {openProposals
+              ? `${openProposals} proposal${openProposals === 1 ? ' is' : 's are'} still open. A stage closes only when nothing is open: decide ${them(openProposals)}, or defer ${them(openProposals)} to 1.1 as part of closing.`
+              : 'No proposals are open.'}
+          </li>
+          {stage.kind === 'review' ? (
+            <li>
+              {openCarried
+                ? `${openCarried} carried item${openCarried === 1 ? ' has' : 's have'} not been reviewed. An earlier stage accepted ${them(openCarried)}, so ${openCarried === 1 ? 'it is' : 'they are'} kept.`
+                : 'Every carried item has been reviewed.'}
+            </li>
+          ) : null}
+        </ul>
+      )}
+      {confirming ? (
+        <div className="mt-3 space-y-2">
+          {!final && openProposals ? (
+            <label className="flex items-start gap-2 text-slate-200">
+              <input type="checkbox" checked={deferRemaining} onChange={(e) => setDeferRemaining(e.target.checked)} className="mt-1" />
+              <span>
+                Defer the remaining {openProposals} to 1.1. Their votes are kept, and the record says they were deferred
+                when {stage.title} closed.
+              </span>
+            </label>
+          ) : null}
+          <label className="block text-xs text-slate-400">
+            Closing note for {stage.title} (optional, public with the record)
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              rows={2}
+              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+            />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy || blocked}
+              onClick={() => void close()}
+              className="rounded-lg bg-rose-700 px-4 py-2 font-medium text-white hover:bg-rose-600 disabled:opacity-50"
+            >
+              {busy ? 'Closing…' : final ? 'Close Final' : `Close ${stage.title} and open ${stage.nextTitle || 'the next stage'}`}
+            </button>
+            <button type="button" disabled={busy} onClick={() => setConfirming(false)} className="px-3 py-2 text-slate-400 hover:text-slate-200">
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setConfirming(true)}
+          className="mt-3 rounded-lg border border-slate-600 px-4 py-2 text-slate-200 hover:border-slate-400"
+        >
+          Close {stage.title}…
+        </button>
+      )}
+      {error ? <p role="alert" className="mt-2 text-rose-200">{error}</p> : null}
+    </section>
+  );
+}
+
+function DocumentList({
+  heading,
+  rows,
+  linkFor,
+  closed,
+  stage,
+}: {
+  heading: string;
+  rows: SteeringOverviewRow[];
+  linkFor: (ml: string) => string | null;
+  closed: boolean;
+  stage: SteeringStage | null;
+}) {
   if (!rows.length) return null;
   return (
     <section>
       <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">{heading}</h2>
       <ul className="mt-3 grid gap-3 md:grid-cols-2">
-        {rows.map((r) => (
-          <li key={r.mlNumber}>
-            <Link
-              href={`/steering/${r.mlNumber}`}
-              className="block rounded-xl border border-slate-800 bg-slate-950/40 p-4 transition hover:border-violet-700/70"
-            >
+        {rows.map((r) => {
+          const href = r.listed ? linkFor(r.mlNumber) : null;
+          const body = (
+            <>
               <div className="flex items-baseline justify-between gap-3">
                 <p className="min-w-0 truncate font-semibold text-white">{r.title}</p>
                 <span className="shrink-0 text-xs text-slate-500">{r.mlNumber}</span>
               </div>
-              <Progress row={r} />
+              {r.tabs ? (
+                <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Status counts">
+                  {STEERING_TABS.map((t) => (
+                    <span key={t.key} className="inline-flex items-center gap-1 text-xs text-slate-400">
+                      <CountDot n={r.tabs?.[t.key] || 0} dot={t.dot} label={t.label} />
+                      {t.label}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              {closed ? null : <Progress row={r} />}
+              {closed ? null : (
               <p className="mt-2 text-xs text-slate-400">
                 {r.listed ? (
                   <>
@@ -145,15 +542,42 @@ function DocumentList({ heading, rows }: { heading: string; rows: SteeringOvervi
                   'Not in the sweep yet'
                 )}
               </p>
+              )}
+              {!closed && r.carried?.count ? (
+                <p className="mt-1 text-xs text-slate-400">
+                  {r.carried.count} carried in · {r.carried.open} to review
+                  {r.carried.flagged ? <span className="text-amber-200"> · {r.carried.flagged} flagged</span> : null}
+                  {r.carried.unchecked ? <> · {r.carried.unchecked} not checked yet</> : null}
+                </p>
+              ) : null}
+              {!closed && stage?.kind === 'signoff' && r.signoff ? (
+                <p className={`mt-1 text-xs ${r.signoff.signed ? 'text-emerald-200' : 'text-slate-400'}`}>
+                  {r.signoff.signed ? 'Signed off' : `${r.signoff.count} of 2 sign-offs`}
+                </p>
+              ) : null}
               {r.batches.length ? (
                 <p className="mt-1 truncate text-xs text-slate-500">
                   {r.batches.length} batch{r.batches.length === 1 ? '' : 'es'}:{' '}
                   {r.batches.map((b) => `${b.title} (${b.count})`).join(' · ')}
                 </p>
               ) : null}
-            </Link>
-          </li>
-        ))}
+            </>
+          );
+          return (
+            <li key={r.mlNumber}>
+              {href ? (
+                <Link
+                  href={href}
+                  className="block rounded-xl border border-slate-800 bg-slate-950/40 p-4 transition hover:border-violet-700/70"
+                >
+                  {body}
+                </Link>
+              ) : (
+                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">{body}</div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

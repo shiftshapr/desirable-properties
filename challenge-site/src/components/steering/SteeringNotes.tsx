@@ -23,7 +23,7 @@ function docLabel(ml: string): string {
 }
 
 /**
- * Steering notes: a private chat for the three steering members, on /steering and every
+ * Steering notes: a private chat for the steering members, on /steering and every
  * /steering/<ml> page (one shared thread). Notes written from a document page carry it, and on a
  * document page you can show only that document's notes.
  */
