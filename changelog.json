@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-flag-from-data",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: members are recognised even after their sign-in refreshes",
+      "summary": "/steering could show a steering member the read-only view when the page was rendered with a sign-in that had expired. It now also trusts the membership Gov Hub reports with the stage data, so steering members see the Stage 2 issues view and the stage controls.",
+      "changes": [
+        "/steering uses the steering flag from the overview data as well as the page's own check"
+      ]
+    },
+    {
       "id": "steering-stage2-tab-by-issue",
       "date": "2026-11-12",
       "status": "open",
