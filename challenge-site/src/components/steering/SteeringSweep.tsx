@@ -10,12 +10,16 @@ import {
   normalizeBatchApprove,
   normalizeSteeringDocument,
   STATE_LABEL,
+  STEERING_TABS,
+  steeringTab,
+  steeringTabCounts,
   type BatchApproveResult,
   type SteeringAnalysis,
   type SteeringBatch,
   type SteeringDecision,
   type SteeringDocument,
   type SteeringItem,
+  type SteeringTab,
 } from '@/lib/dp-steering';
 
 type Flash = { ok: boolean; text: string };
@@ -37,9 +41,15 @@ const STATE_TONE: Record<string, string> = {
   done: 'border-emerald-800/70 text-emerald-200',
 };
 
-/** /steering/<ml>: batches first, then every other open item, each with the analysis and the votes. */
+const isTab = (v: string | null): v is SteeringTab => STEERING_TABS.some((t) => t.key === v);
+
+/**
+ * /steering/<ml>: status tabs (Open, Accepted, Deferred, Declined). Open shows the batches first, then
+ * every other open item; the other tabs list what was carried out, each with the analysis and the votes.
+ */
 export default function SteeringSweep({ ml }: { ml: string }) {
   const [doc, setDoc] = useState<SteeringDocument | null>(null);
+  const [tab, setTabState] = useState<SteeringTab>('open');
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
@@ -68,9 +78,30 @@ export default function SteeringSweep({ ml }: { ml: string }) {
     void load();
   }, [load, user?.id, checked]);
 
-  const byId = useMemo(() => new Map((doc?.items || []).map((i) => [i.proposalId, i])), [doc]);
+  // The tab lives in ?tab= so a reload or a shared link opens the same one.
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get('tab');
+    if (isTab(t)) setTabState(t);
+  }, []);
+  const setTab = (t: SteeringTab) => {
+    setTabState(t);
+    const url = new URL(window.location.href);
+    if (t === 'open') url.searchParams.delete('tab');
+    else url.searchParams.set('tab', t);
+    window.history.replaceState(null, '', url);
+  };
+
+  const tabCounts = useMemo(() => steeringTabCounts(doc?.items || []), [doc]);
+  const shown = useMemo(() => (doc?.items || []).filter((i) => steeringTab(i) === tab), [doc, tab]);
+  const byId = useMemo(() => new Map(shown.map((i) => [i.proposalId, i])), [shown]);
   const inBatch = useMemo(() => new Set((doc?.batches || []).flatMap((b) => b.proposalIds)), [doc]);
-  const loose = (doc?.items || []).filter((i) => !inBatch.has(i.proposalId));
+  // Batches are for deciding, so only the Open tab groups by them; a batch shows its open items only.
+  const openBatches = tab === 'open'
+    ? (doc?.batches || [])
+        .map((batch) => ({ batch, items: batch.proposalIds.map((id) => byId.get(id)).filter((i): i is SteeringItem => Boolean(i)) }))
+        .filter((b) => b.items.length)
+    : [];
+  const loose = tab === 'open' ? shown.filter((i) => !inBatch.has(i.proposalId)) : shown;
 
   async function vote(item: SteeringItem, decision: SteeringDecision, opts: { revisedText?: string; note?: string; agrees?: boolean | null }) {
     setBusy(`item:${item.proposalId}`);
@@ -95,7 +126,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
         : state === 'done' || (body.outcome && !body.outcome.error)
           ? `Vote recorded. Two members agree: ${DECISION_LABEL[decision]} is carried out.`
           : state === 'split'
-            ? 'Vote recorded. The votes differ, so the third member’s vote settles it.'
+            ? 'Vote recorded. The votes differ, so another member’s vote settles it.'
             : 'Vote recorded. It needs a second steering member to agree.';
       setFlash((f) => ({ ...f, [item.proposalId]: { ok: !body.outcome?.error, text } }));
       await load();
@@ -156,7 +187,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">Steering sweep · {ml}</p>
         <h1 className="text-2xl font-semibold text-white sm:text-3xl">{doc?.title || ml}</h1>
         <p className="max-w-3xl text-sm text-slate-300">
-          Two of the three steering members must agree before an outcome is carried out: the same decision and, to
+          Two steering members must agree before an outcome is carried out: the same decision and, to
           accept a revision, the same text. Your vote counts on your own proposals too. You can change or withdraw it
           until it is carried out.
         </p>
@@ -197,18 +228,24 @@ export default function SteeringSweep({ ml }: { ml: string }) {
         </p>
       ) : null}
 
+      {doc ? <StatusTabs tab={tab} counts={tabCounts} onSelect={setTab} /> : null}
+
       {doc && !doc.items.length ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
           No open proposals on this document.
         </p>
+      ) : doc && !shown.length ? (
+        <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
+          {tab === 'open' ? 'Nothing left to decide on this document.' : `Nothing ${STEERING_TABS.find((t) => t.key === tab)?.label.toLowerCase()} on this document yet.`}
+        </p>
       ) : null}
 
-      {doc?.batches.map((batch) => (
+      {openBatches.map(({ batch, items }) => (
         <BatchSection
           key={batch.id}
           ml={ml}
           batch={batch}
-          items={batch.proposalIds.map((id) => byId.get(id)).filter((i): i is SteeringItem => Boolean(i))}
+          items={items}
           busy={busy}
           flash={flash}
           onApprove={approveBatch}
@@ -220,7 +257,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
       {loose.length ? (
         <section className="space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">
-            {doc?.batches.length ? 'Not in a batch' : 'Items'}
+            {tab !== 'open' ? STEERING_TABS.find((t) => t.key === tab)?.label : openBatches.length ? 'Not in a batch' : 'Items'}
           </h2>
           <ul className="space-y-4">
             {loose.map((item) => (
@@ -237,6 +274,46 @@ export default function SteeringSweep({ ml }: { ml: string }) {
           </ul>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+function StatusTabs({
+  tab,
+  counts,
+  onSelect,
+}: {
+  tab: SteeringTab;
+  counts: Record<SteeringTab, number>;
+  onSelect: (t: SteeringTab) => void;
+}) {
+  return (
+    <div role="tablist" aria-label="Proposal status" className="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+      {STEERING_TABS.map((t) => {
+        const active = t.key === tab;
+        return (
+          <button
+            key={t.key}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            onClick={() => onSelect(t.key)}
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${
+              active ? 'border-violet-500 bg-violet-950/40 text-white' : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
+            }`}
+          >
+            {t.label}
+            <span
+              aria-label={`${counts[t.key]} ${t.label.toLowerCase()}`}
+              className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-xs font-semibold ${
+                counts[t.key] ? t.dot : 'bg-slate-800 text-slate-400'
+              }`}
+            >
+              {counts[t.key]}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -555,7 +632,7 @@ function ItemCard({
             Your vote: <strong>{DECISION_LABEL[mine.decision] || mine.decision}</strong>
             {mine.batchId ? <span className="text-slate-400"> (via batch)</span> : null}
             <span className="text-slate-400">
-              {item.state === 'split' ? ' · the votes differ, so the third member settles it' : ' · waiting for a second member'}
+              {item.state === 'split' ? ' · the votes differ, so another member settles it' : ' · waiting for a second member'}
             </span>
           </span>
           <button
