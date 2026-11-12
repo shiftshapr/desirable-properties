@@ -1,0 +1,14 @@
+{
+  "name": "dp-v1-book-pdf",
+  "private": true,
+  "type": "module",
+  "description": "Builds the Version 1.0 PDF of The Layered Web from the published Gov Hub chapters.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "marked": "^14.1.4",
+    "pagedjs": "0.4.3",
+    "puppeteer-core": "^24.0.0"
+  }
+}
