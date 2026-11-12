@@ -69,13 +69,16 @@ function readStageParam(): string | null {
  * record (anyone); stages still to come are listed but not selectable. Stage 2 can be opened alongside
  * Stage 1: both tabs then show the same live progress, and Stage 1 is the one that closes first.
  */
-export default function SteeringOverview({ signedIn, steering }: { signedIn: boolean; steering: boolean }) {
+export default function SteeringOverview({ signedIn, steering: steeringFromPage }: { signedIn: boolean; steering: boolean }) {
   const [stages, setStages] = useState<SteeringStage[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [byChapter, setByChapter] = useState(false);
   const [record, setRecord] = useState<SteeringStage | null>(null);
   const [runs, setRuns] = useState<string[]>([]);
   const [meta, setMeta] = useState<OverviewMeta | null>(null);
+  // The page checks membership with the sign-in it was rendered with, which may have expired since; the
+  // overview Gov Hub returns says it again for the sign-in that fetched it, so either one is enough.
+  const steering = steeringFromPage || Boolean(meta?.viewerIsSteering);
   const [rows, setRows] = useState<SteeringOverviewRow[] | null>(null);
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
   const [loading, setLoading] = useState(false);
