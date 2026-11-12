@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { CarriedCard, ItemCard, type Flash } from '@/components/steering/SteeringSweep';
+import { AnsweredRow, CarriedCard, ItemCard, type Flash } from '@/components/steering/SteeringSweep';
 import { useAuth } from '@/lib/auth-context';
 import {
   agreesWith,
@@ -53,6 +53,14 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
   const [busy, setBusy] = useState<string | null>(null);
   const [flash, setFlash] = useState<Record<string, Flash>>({});
   const [showDecided, setShowDecided] = useState(false);
+  const [opened, setOpened] = useState<Set<string>>(() => new Set());
+  const openFinding = (key: string, on: boolean) =>
+    setOpened((prev) => {
+      const next = new Set(prev);
+      if (on) next.add(key);
+      else next.delete(key);
+      return next;
+    });
 
   const apply = useCallback((result: IssuesResult) => {
     if ('error' in result) setError(result.error);
@@ -170,6 +178,13 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
     f.needsDecision
       ? !!f.discussion.settledChoice
       : !f.items.some(isOpen) && !f.carried.some(carriedOpen); // nothing left to vote on, or nothing to act on
+  // Everything under a finding has your answer (or is carried out): it folds to one line.
+  const answeredByMe = (f: SteeringFinding) => {
+    const items = f.items.every((i) => !isOpen(i) || i.votes.some((v) => v.mine));
+    const carried = f.carried.every((c) => c.tab !== 'open' || c.reviews.some((r) => r.mine) || Boolean(c.decision));
+    const decision = !f.needsDecision || Boolean(f.discussion.myChoice);
+    return !readOnly && items && carried && decision && (f.items.length > 0 || f.carried.length > 0 || f.needsDecision);
+  };
   const decide = (f: SteeringFinding, choice: string | null, note: string) =>
     void act(
       f.key,
@@ -338,6 +353,13 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
             {(() => {
               const b = bundle(group);
               if (readOnly || !b.asWritten) return null;
+              if (!b.mine.length)
+                return (
+                  <p className="rounded-xl border border-slate-800 bg-slate-950/30 px-4 py-2 text-sm text-slate-400">
+                    You have voted on all {b.open.length} open fix{b.open.length === 1 ? '' : 'es'} in this group; each is carried
+                    out once a second member approves it.
+                  </p>
+                );
               return (
                 <div className="flex flex-wrap items-center gap-3 rounded-xl border border-emerald-800/60 bg-emerald-950/20 px-4 py-3 text-sm">
                   <span className="text-emerald-100">
@@ -365,7 +387,23 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
                 Every finding in this group is settled.
               </p>
             ) : null}
-            {shown.map((f) => (
+            {shown.map((f) =>
+              answeredByMe(f) && !opened.has(f.key) ? (
+                <AnsweredRow
+                  key={f.key}
+                  as="div"
+                  badge={settled(f) ? 'Settled' : 'Answered'}
+                  title={f.title}
+                  status={
+                    settled(f)
+                      ? 'settled'
+                      : f.needsDecision
+                        ? 'waiting for a second member to choose the same'
+                        : 'waiting for a second member'
+                  }
+                  onExpand={() => openFinding(f.key, true)}
+                />
+              ) : (
               <article key={f.key} className="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   {f.severity ? (
@@ -376,6 +414,11 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
                     <span className="rounded-full border border-violet-700/70 px-2 py-0.5 text-violet-200">Needs a steering decision</span>
                   ) : null}
                   {f.documents.length ? <span className="text-slate-400">{f.documents.join(', ')}</span> : null}
+                  {answeredByMe(f) ? (
+                    <button type="button" onClick={() => openFinding(f.key, false)} className="text-cyan-300 underline hover:text-cyan-200">
+                      Collapse
+                    </button>
+                  ) : null}
                 </div>
                 <h3 className="mt-2 text-lg font-semibold text-white">{f.title}</h3>
                 {f.summary ? <p className="mt-1 whitespace-pre-line text-sm text-slate-300">{f.summary}</p> : null}
@@ -442,7 +485,8 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
                   </div>
                 ) : null}
               </article>
-            ))}
+              ),
+            )}
           </section>
         );
       })}
@@ -497,12 +541,29 @@ function FindingDiscussion({
   const short = (key: string) => (key.startsWith('option-') ? `Option ${key.slice(7)}` : key === 'defer' ? 'Defer to 1.1' : 'Something else');
   const changed = choice !== (d.myChoice || '') || (note.trim() || '') !== (d.myNote || '');
   const needsNote = choice === 'other' && !note.trim();
+  const [showDecision, setShowDecision] = useState(false);
+  const decisionFolded = finding.needsDecision && !readOnly && Boolean(d.myChoice) && !showDecision;
 
   return (
     <div className="mt-4 space-y-4">
-      {finding.needsDecision ? (
+      {decisionFolded && d.myChoice ? (
+        <AnsweredRow
+          as="div"
+          badge={d.settledChoice ? 'Settled' : 'Chosen'}
+          title={`Your choice: ${short(d.myChoice)}. ${label(d.myChoice)}`}
+          status={d.settledChoice ? `settled: ${short(d.settledChoice)}` : 'waiting for a second member'}
+          onExpand={() => setShowDecision(true)}
+        />
+      ) : finding.needsDecision ? (
         <div className="rounded-xl border border-violet-800/60 bg-violet-950/20 p-4">
-          <h4 className="text-sm font-semibold uppercase tracking-[0.15em] text-violet-200">Steering decision</h4>
+          <h4 className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.15em] text-violet-200">
+            Steering decision
+            {d.myChoice && !readOnly ? (
+              <button type="button" onClick={() => setShowDecision(false)} className="text-xs normal-case tracking-normal text-cyan-300 underline hover:text-cyan-200">
+                Collapse
+              </button>
+            ) : null}
+          </h4>
           {d.settledChoice ? (
             <p className="mt-2 rounded-lg border border-emerald-700/60 bg-emerald-950/30 px-3 py-2 text-sm text-emerald-100">
               Settled: {short(d.settledChoice)}. {label(d.settledChoice)}
