@@ -20,8 +20,8 @@ export default async function SteeringPage() {
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-violet-300">Version 1.0 · steering committee</p>
         <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Steering sweep</h1>
         <p className="mt-4 max-w-3xl text-base text-slate-300 sm:text-lg">
-          Every open proposal on the 24 DPs and the front matter gets a recorded decision. Two of the three steering
-          members must agree on the same decision (and, to accept a revision, the same text) before it is carried out.
+          Every open proposal on the 24 DPs and the front matter gets a recorded decision. Two steering members
+          must agree on the same decision (and, to accept a revision, the same text) before it is carried out.
           A member may vote on their own proposal and may change their vote until then.
         </p>
       </header>

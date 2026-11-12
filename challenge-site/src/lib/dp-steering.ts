@@ -1,8 +1,8 @@
 /**
  * V1.0 steering sweep (owner, 2026-11-10; docs/DP-V1-STEERING-SWEEP-SPEC.md).
  *
- * After the editorial freeze every open proposal gets a recorded steering decision. Two of the three
- * steering members must agree (same decision and, for accept revised, the same text) before Gov Hub
+ * After the editorial freeze every open proposal gets a recorded steering decision. Two steering members
+ * must agree (same decision and, for accept revised, the same text) before Gov Hub
  * carries the outcome out. Gov Hub keeps the analysis runs, batches, votes and outcomes; this module
  * holds the shapes the DP site reads from its steering API and normalizes them, so a missing or
  * renamed field shows as empty instead of breaking the page. Client-safe (no server imports).
@@ -25,10 +25,39 @@ export const DECISION_LABEL: Record<string, string> = {
 export const STATE_LABEL: Record<SteeringState, string> = {
   none: 'No votes',
   one: 'One vote, needs a second',
-  split: 'Split, the third vote settles it',
+  split: 'Split, another vote settles it',
   ready: 'Two agree, being carried out',
   done: 'Done',
 };
+
+/** The status tabs on a steering page: still to decide, or which way it went once carried out. */
+export type SteeringTab = 'open' | 'accepted' | 'deferred' | 'declined';
+export const STEERING_TABS: Array<{ key: SteeringTab; label: string; dot: string }> = [
+  { key: 'open', label: 'Open', dot: 'bg-amber-500 text-slate-950' },
+  { key: 'accepted', label: 'Accepted', dot: 'bg-emerald-500 text-slate-950' },
+  { key: 'deferred', label: 'Deferred', dot: 'bg-sky-500 text-slate-950' },
+  { key: 'declined', label: 'Declined', dot: 'bg-rose-500 text-white' },
+];
+const OUTCOME_TAB: Record<string, SteeringTab> = {
+  accept: 'accepted',
+  accept_revised: 'accepted',
+  defer: 'deferred',
+  decline: 'declined',
+  reject: 'declined',
+};
+
+/** An item stays Open until its outcome is carried out (an outcome that failed to apply is still open). */
+export function steeringTab(item: Pick<SteeringItem, 'state' | 'outcome'>): SteeringTab {
+  const o = item.outcome;
+  if (!o || o.error || (!o.executedAt && item.state !== 'done')) return 'open';
+  return OUTCOME_TAB[o.decision] || 'open';
+}
+
+export function steeringTabCounts(items: Array<Pick<SteeringItem, 'state' | 'outcome'>>): Record<SteeringTab, number> {
+  const counts: Record<SteeringTab, number> = { open: 0, accepted: 0, deferred: 0, declined: 0 };
+  for (const i of items) counts[steeringTab(i)] += 1;
+  return counts;
+}
 
 /** Front-matter documents steering decides like the DPs (spec, rule 8). */
 export const FRONT_MATTER: Array<{ ml: string; title: string }> = [

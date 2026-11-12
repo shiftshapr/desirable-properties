@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-status-tabs",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: Open, Accepted, Deferred and Declined tabs",
+      "summary": "Each steering document page now splits its proposals into Open, Accepted, Deferred and Declined tabs, each with its count in a colored circle, so what still needs a decision is easy to see.",
+      "changes": [
+        "Open lists the batches and items still to decide; a batch shows only its open items",
+        "Accepted (accept and accept revised), Deferred and Declined list what was carried out",
+        "An outcome that failed to apply stays under Open",
+        "The tab is kept in ?tab= so a reload or a shared link opens the same one",
+        "Wording now says two steering members must agree, since steering has five members"
+      ]
+    },
+    {
       "id": "workgroup-chat-links-scroll",
       "date": "2026-11-11",
       "status": "open",
