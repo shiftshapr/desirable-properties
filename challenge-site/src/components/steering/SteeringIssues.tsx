@@ -26,14 +26,17 @@ const SEVERITY_TONE: Record<string, string> = {
   low: 'border-slate-700 text-slate-300',
 };
 
+/** What each review stage's analysis is called. */
+const ANALYSIS_NAME: Record<string, string> = { 'stage-2': 'cross-DP', 'stage-3': 'style' };
+
 type FindingItem = SteeringFinding['items'][number];
 type FindingCarried = SteeringFinding['carried'][number];
 
 type IssuesResult = { data: Issues } | { error: { text: string; code?: string } };
 
-async function fetchIssues(): Promise<IssuesResult> {
+async function fetchIssues(stageKey?: string): Promise<IssuesResult> {
   try {
-    const res = await fetch('/api/steering/issues', { cache: 'no-store' });
+    const res = await fetch(`/api/steering/issues${stageKey ? `?stage=${encodeURIComponent(stageKey)}` : ''}`, { cache: 'no-store' });
     const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string };
     if (!res.ok) return { error: { text: body.error || `Steering ${res.status}`, code: body.code } };
     return { data: normalizeIssues(body) };
@@ -46,7 +49,7 @@ async function fetchIssues(): Promise<IssuesResult> {
  * /steering/issues: Stage 2 by issue. The cross-DP check's findings in their groups; under each, the
  * fixes it filed (voted on like any proposal, each with Ask Deepi) and the accepted changes it flagged.
  */
-export default function SteeringIssues({ embedded = false }: { embedded?: boolean } = {}) {
+export default function SteeringIssues({ embedded = false, stageKey }: { embedded?: boolean; stageKey?: string } = {}) {
   const [data, setData] = useState<Issues | null>(null);
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -70,18 +73,18 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
     }
     setLoading(false);
   }, []);
-  const load = useCallback(async () => apply(await fetchIssues()), [apply]);
+  const load = useCallback(async () => apply(await fetchIssues(stageKey)), [apply, stageKey]);
 
   const { user, checked } = useAuth();
   useEffect(() => {
     let cancelled = false;
-    void fetchIssues().then((result) => {
+    void fetchIssues(stageKey).then((result) => {
       if (!cancelled) apply(result);
     });
     return () => {
       cancelled = true;
     };
-  }, [apply, user?.id, checked]);
+  }, [apply, user?.id, checked, stageKey]);
 
   const say = (id: string, ok: boolean, text: string) => setFlash((f) => ({ ...f, [id]: { ok, text } }));
 
@@ -168,7 +171,8 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
       () => ({ ok: true, text: 'Your review is withdrawn.' }),
     );
 
-  const readOnly = !data?.viewerIsSteering;
+  const closedStage = data?.stage?.status === 'closed';
+  const readOnly = !data?.viewerIsSteering || closedStage;
   const findings = data?.groups.reduce((n, g) => n + g.findings.length, 0) || 0;
   const isOpen = (i: FindingItem) => steeringTab(i) === 'open';
   const carriedOpen = (c: FindingCarried) => c.tab === 'open';
@@ -264,7 +268,10 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
     <div className="mt-6 space-y-8">
       <header className="space-y-3 border-b border-slate-800 pb-5">
         {embedded ? (
-          <h2 className="text-xl font-semibold text-white">Cross-DP issues to settle</h2>
+          <h2 className="text-xl font-semibold text-white">
+            {closedStage ? 'Bundles' : 'Bundles to settle'}
+            {data?.stage ? <span className="ml-2 text-base font-normal text-slate-400">{data.stage.title}</span> : null}
+          </h2>
         ) : (
           <>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
@@ -274,10 +281,12 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
           </>
         )}
         <p className="max-w-3xl text-sm text-slate-300">
-          The cross-DP check read every accepted change against all 28 documents. Each finding below lists the
-          fixes it filed, which are voted on like any proposal, and the accepted changes it flagged. Two steering
-          members must agree before a fix is carried out. A fix that touches several documents is one proposal per
-          document, shown together here.
+          {data?.stage && ANALYSIS_NAME[data.stage.key]
+            ? `The ${ANALYSIS_NAME[data.stage.key]} analysis read every accepted change. `
+            : ''}
+          Each bundle is one kind of fix across the chapters: its findings, the fixes they filed (voted on like any
+          proposal) and the accepted changes they flagged. Two steering members must agree before a fix is carried out.
+          Settled bundles are hidden, and a bundle with nothing left for you folds to one line.
         </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
           <button type="button" onClick={() => void load()} className="text-slate-400 hover:text-slate-200">
@@ -285,7 +294,7 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
           </button>
           <label className="flex items-center gap-2 text-slate-300">
             <input type="checkbox" checked={showDecided} onChange={(e) => setShowDecided(e.target.checked)} />
-            Show settled findings
+            Show settled bundles
           </label>
           {data?.run ? (
             <span className="text-xs text-slate-500">
@@ -324,8 +333,8 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
       {data && !findings ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
           {data.stage?.kind === 'review'
-            ? `No cross-DP findings have been imported for ${data.stage.title} yet.`
-            : 'The cross-DP stage is not open yet.'}
+            ? `The ${ANALYSIS_NAME[data.stage.key] || 'stage'} analysis for ${data.stage.title} has not been run yet. Its findings will appear here in bundles, one box per kind of fix.`
+            : 'This stage has no analysis bundles.'}
         </p>
       ) : null}
 
@@ -339,12 +348,48 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
         </nav>
       ) : null}
 
+      {data && findings && !showDecided && data.groups.every((g) => g.findings.every(settled)) ? (
+        <p className="rounded-xl border border-emerald-900/60 bg-emerald-950/20 px-4 py-4 text-sm text-emerald-100">
+          Every bundle in {data.stage?.title || 'this stage'} is settled. Tick &ldquo;Show settled bundles&rdquo; to see them.
+        </p>
+      ) : null}
+
       {data?.groups.map((group) => {
         const shown = group.findings.filter((f) => showDecided || !settled(f));
+        // A bundle whose findings are all settled disappears (unless settled ones are shown); one with
+        // nothing left for you folds to a line.
+        const groupSettled = group.findings.every(settled);
+        if (groupSettled && !showDecided) return null;
+        const nothingForMe = !readOnly && group.findings.every((f) => settled(f) || answeredByMe(f));
+        if (nothingForMe && !opened.has(`group:${group.key}`)) {
+          const waiting = group.findings.filter((f) => !settled(f)).length;
+          return (
+            <AnsweredRow
+              key={group.key}
+              id={`group-${group.key}`}
+              as="section"
+              badge={groupSettled ? 'Settled' : 'Answered'}
+              title={`${group.title} · ${group.findings.length} finding${group.findings.length === 1 ? '' : 's'}`}
+              status={groupSettled ? 'settled' : `${waiting} waiting for a second member`}
+              onExpand={() => openFinding(`group:${group.key}`, true)}
+            />
+          );
+        }
         return (
-          <section key={group.key} id={`group-${group.key}`} className="scroll-mt-24 space-y-4">
+          <section key={group.key} id={`group-${group.key}`} className="scroll-mt-24 space-y-4 rounded-2xl border border-violet-900/50 bg-violet-950/10 p-4 sm:p-5">
             <div>
-              <h2 className="text-xl font-semibold text-white">{group.title}</h2>
+              <h2 className="flex flex-wrap items-center gap-3 text-xl font-semibold text-white">
+                {group.title}
+                {nothingForMe ? (
+                  <button
+                    type="button"
+                    onClick={() => openFinding(`group:${group.key}`, false)}
+                    className="text-xs font-normal text-cyan-300 underline hover:text-cyan-200"
+                  >
+                    Collapse
+                  </button>
+                ) : null}
+              </h2>
               {group.summary ? <p className="mt-1 max-w-3xl whitespace-pre-line text-sm text-slate-300">{group.summary}</p> : null}
               <p className="mt-1 text-xs text-slate-400">
                 {group.findings.length} finding{group.findings.length === 1 ? '' : 's'} · {group.tabs.open} fix
