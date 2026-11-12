@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-batch-remaining",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: batches name what is left to vote on",
+      "summary": "A partly finished batch now names the items that still need your vote, each linking to its card. The cards already carried out are collapsed under one line, so a done card no longer sits above the Approve button looking like the item being voted on.",
+      "changes": [
+        "Partly finished batches list the items that still need your vote, with links to their cards.",
+        "Cards already carried out are collapsed under one line below the open ones."
+      ]
+    },
+    {
       "id": "steering-stages",
       "date": "2026-11-12",
       "status": "open",
