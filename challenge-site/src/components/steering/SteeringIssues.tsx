@@ -164,7 +164,48 @@ export default function SteeringIssues() {
   const isOpen = (i: FindingItem) => steeringTab(i) === 'open';
   const carriedOpen = (c: FindingCarried) => c.tab === 'open';
   // A finding is settled once every fix and every flagged change under it is; one with neither stays listed.
-  const settled = (f: SteeringFinding) => (f.items.length || f.carried.length ? !f.items.some(isOpen) && !f.carried.some(carriedOpen) : false);
+  // A decision is settled once two members choose the same course.
+  const settled = (f: SteeringFinding) =>
+    f.needsDecision
+      ? !!f.discussion.settledChoice
+      : f.items.length || f.carried.length
+        ? !f.items.some(isOpen) && !f.carried.some(carriedOpen)
+        : false;
+  const decide = (f: SteeringFinding, choice: string | null, note: string) =>
+    void act(
+      f.key,
+      `finding:${f.key}`,
+      `/api/steering/issues/${encodeURIComponent(f.key)}/decision`,
+      choice ? { method: 'POST', body: JSON.stringify({ choice, note: note || undefined }) } : { method: 'DELETE' },
+      (body) => {
+        const d = (body.discussion || {}) as { settled_choice?: string | null };
+        if (!choice) return { ok: true, text: 'Your choice is withdrawn.' };
+        return {
+          ok: true,
+          text: d.settled_choice
+            ? d.settled_choice === choice
+              ? 'Choice recorded. Two members agree, so this decision is settled.'
+              : 'Choice recorded. Two other members already agree on a different course.'
+            : 'Choice recorded. It needs a second steering member to choose the same.',
+        };
+      },
+    );
+  const comment = (f: SteeringFinding, text: string) =>
+    act(
+      f.key,
+      `finding:${f.key}`,
+      `/api/steering/issues/${encodeURIComponent(f.key)}/comments`,
+      { method: 'POST', body: JSON.stringify({ body: text }) },
+      () => ({ ok: true, text: 'Comment posted.' }),
+    );
+  const uncomment = (f: SteeringFinding, id: string) =>
+    void act(
+      f.key,
+      `finding:${f.key}`,
+      `/api/steering/issues/${encodeURIComponent(f.key)}/comments/${encodeURIComponent(id)}`,
+      { method: 'DELETE' },
+      () => ({ ok: true, text: 'Comment removed.' }),
+    );
 
   return (
     <div className="mt-6 space-y-8">
@@ -271,8 +312,16 @@ export default function SteeringIssues() {
                 </div>
                 <h3 className="mt-2 text-lg font-semibold text-white">{f.title}</h3>
                 {f.summary ? <p className="mt-1 whitespace-pre-line text-sm text-slate-300">{f.summary}</p> : null}
-                {f.decision ? <p className="mt-2 whitespace-pre-line text-sm text-violet-100">To decide: {f.decision}</p> : null}
                 {f.noFixReason ? <p className="mt-2 whitespace-pre-line text-sm text-slate-400">No text fix: {f.noFixReason}</p> : null}
+                <FindingDiscussion
+                  finding={f}
+                  readOnly={readOnly}
+                  busy={busy === `finding:${f.key}`}
+                  flash={flash[f.key]}
+                  onDecide={decide}
+                  onComment={comment}
+                  onUncomment={uncomment}
+                />
 
                 {f.items.length ? (
                   <div className="mt-4 space-y-2">
@@ -343,5 +392,198 @@ function DocumentLine({ item }: { item: { mlNumber: string; docKey: string | nul
         {item.docTitle || item.mlNumber}
       </Link>
     </p>
+  );
+}
+
+function when(iso: string | null): string {
+  if (!iso) return '';
+  const d = new Date(iso.endsWith('Z') || iso.includes('+') ? iso : `${iso}Z`);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+/**
+ * Under a finding: for one that needs a steering decision, its options (with the review's
+ * recommendation) and each member's choice; two matching choices settle it. Any finding takes comments.
+ */
+function FindingDiscussion({
+  finding,
+  readOnly,
+  busy,
+  flash,
+  onDecide,
+  onComment,
+  onUncomment,
+}: {
+  finding: SteeringFinding;
+  readOnly: boolean;
+  busy: boolean;
+  flash?: Flash;
+  onDecide: (f: SteeringFinding, choice: string | null, note: string) => void;
+  onComment: (f: SteeringFinding, text: string) => Promise<void>;
+  onUncomment: (f: SteeringFinding, id: string) => void;
+}) {
+  const d = finding.discussion;
+  const [choice, setChoice] = useState<string>(d.myChoice || '');
+  const [note, setNote] = useState<string>(d.myNote || '');
+  const [draft, setDraft] = useState('');
+  const label = (key: string) => d.choices.find((c) => c.key === key)?.label || key;
+  const short = (key: string) => (key.startsWith('option-') ? `Option ${key.slice(7)}` : key === 'defer' ? 'Defer to 1.1' : 'Something else');
+  const changed = choice !== (d.myChoice || '') || (note.trim() || '') !== (d.myNote || '');
+  const needsNote = choice === 'other' && !note.trim();
+
+  return (
+    <div className="mt-4 space-y-4">
+      {finding.needsDecision ? (
+        <div className="rounded-xl border border-violet-800/60 bg-violet-950/20 p-4">
+          <h4 className="text-sm font-semibold uppercase tracking-[0.15em] text-violet-200">Steering decision</h4>
+          {d.settledChoice ? (
+            <p className="mt-2 rounded-lg border border-emerald-700/60 bg-emerald-950/30 px-3 py-2 text-sm text-emerald-100">
+              Settled: {short(d.settledChoice)}. {label(d.settledChoice)}
+            </p>
+          ) : null}
+          {finding.decision?.recommended ? (
+            <p className="mt-2 whitespace-pre-line text-sm text-violet-100">
+              <span className="font-semibold">Review recommends:</span> {finding.decision.recommended}
+            </p>
+          ) : null}
+          <fieldset className="mt-3 space-y-2" disabled={readOnly || busy}>
+            <legend className="sr-only">Choose a course</legend>
+            {d.choices.map((c) => {
+              const n = d.tally[c.key] || 0;
+              return (
+                <label
+                  key={c.key}
+                  className={`flex cursor-pointer gap-3 rounded-lg border px-3 py-2 text-sm ${
+                    choice === c.key ? 'border-violet-500 bg-violet-900/30 text-white' : 'border-slate-700 text-slate-200'
+                  } ${readOnly ? 'cursor-default' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`choice-${finding.key}`}
+                    value={c.key}
+                    checked={choice === c.key}
+                    onChange={() => setChoice(c.key)}
+                    className="mt-1 shrink-0"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="font-semibold">{short(c.key)}.</span> {c.label}
+                    {n ? (
+                      <span className="ml-2 whitespace-nowrap text-xs text-violet-200">
+                        {n} vote{n === 1 ? '' : 's'}
+                      </span>
+                    ) : null}
+                  </span>
+                </label>
+              );
+            })}
+          </fieldset>
+          {!readOnly ? (
+            <div className="mt-3 space-y-2">
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={2}
+                maxLength={4000}
+                placeholder={choice === 'other' ? 'Say what steering should do instead (required)' : 'Note on your choice (optional)'}
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
+              />
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  disabled={busy || !choice || needsNote || !changed}
+                  onClick={() => onDecide(finding, choice, note.trim())}
+                  className="rounded-lg bg-violet-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-40"
+                >
+                  {d.myChoice ? 'Change my choice' : 'Record my choice'}
+                </button>
+                {d.myChoice ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      setChoice('');
+                      setNote('');
+                      onDecide(finding, null, '');
+                    }}
+                    className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-200 hover:border-slate-400 disabled:opacity-40"
+                  >
+                    Withdraw my choice
+                  </button>
+                ) : null}
+                <span className="text-xs text-slate-400">Two members choosing the same course settle it.</span>
+              </div>
+            </div>
+          ) : null}
+          {d.votes.length ? (
+            <ul className="mt-3 space-y-1 text-sm text-slate-300">
+              {d.votes.map((v) => (
+                <li key={v.id}>
+                  <span className="font-medium text-slate-100">{v.mine ? 'You' : v.voterName || 'A steering member'}</span>: {short(v.choice)}
+                  {v.note ? <span className="text-slate-400"> · {v.note}</span> : null}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {finding.decision?.note ? (
+            <details className="mt-3 text-sm text-slate-400">
+              <summary className="cursor-pointer text-slate-300">Second-pass reviewer’s note</summary>
+              <p className="mt-1 whitespace-pre-line">{finding.decision.note}</p>
+            </details>
+          ) : null}
+        </div>
+      ) : null}
+
+      {d.comments.length || !readOnly ? (
+        <div className="space-y-2">
+          <h4 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">
+            Comments{d.comments.length ? ` (${d.comments.length})` : ''}
+          </h4>
+          {d.comments.length ? (
+            <ul className="space-y-2">
+              {d.comments.map((c) => (
+                <li key={c.id} className="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2 text-sm">
+                  <p className="text-xs text-slate-400">
+                    <span className="font-medium text-slate-200">{c.mine ? 'You' : c.authorName || 'A steering member'}</span>
+                    {when(c.createdAt) ? ` · ${when(c.createdAt)}` : ''}
+                    {c.mine && !readOnly ? (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => onUncomment(finding, c.id)}
+                        className="ml-2 text-xs text-slate-400 underline hover:text-slate-200 disabled:opacity-40"
+                      >
+                        Remove
+                      </button>
+                    ) : null}
+                  </p>
+                  <p className="mt-1 whitespace-pre-line text-slate-200">{c.body}</p>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {!readOnly ? (
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={2}
+                maxLength={4000}
+                placeholder="Add a comment for the steering committee"
+                className="min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500"
+              />
+              <button
+                type="button"
+                disabled={busy || !draft.trim()}
+                onClick={() => void onComment(finding, draft.trim()).then(() => setDraft(''))}
+                className="rounded-lg border border-slate-600 px-3 py-1.5 text-sm text-slate-100 hover:border-slate-400 disabled:opacity-40"
+              >
+                Post comment
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+      {flash?.text ? <p className={`text-sm ${flash.ok ? 'text-emerald-300' : 'text-rose-300'}`}>{flash.text}</p> : null}
+    </div>
   );
 }

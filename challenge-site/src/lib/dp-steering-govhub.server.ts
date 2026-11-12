@@ -45,6 +45,10 @@ export const steeringPaths = {
   closeStage: () => '/api/doc/steering/stages/close/',
   openNextStage: () => '/api/doc/steering/stages/open-next/',
   issues: () => '/api/doc/steering/issues/',
+  issueDecision: (finding: string) => `/api/doc/steering/issues/${encodeURIComponent(finding)}/decision/`,
+  issueComments: (finding: string) => `/api/doc/steering/issues/${encodeURIComponent(finding)}/comments/`,
+  issueComment: (finding: string, id: string) =>
+    `/api/doc/steering/issues/${encodeURIComponent(finding)}/comments/${encodeURIComponent(id)}/`,
   reviewCarried: (proposalId: string) =>
     `/api/doc/steering/stages/current/carried/${encodeURIComponent(proposalId)}/review/`,
   keepAll: (ml: string) => `/api/doc/steering/stages/current/documents/${encodeURIComponent(ml)}/keep-all/`,

@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage2-decision-votes",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: vote and comment on the cross-DP decisions",
+      "summary": "On /steering/issues, each finding that needs a steering decision now lists its options, with the review's recommendation, and steering members choose one. Two members choosing the same course settle it. Every finding also takes comments from steering members.",
+      "changes": [
+        "Each decision lists the review's options, plus Defer to 1.1 and Something else (with a note saying what)",
+        "Two steering members choosing the same course settle the decision; a member can change or withdraw their choice",
+        "Steering members can comment on any finding and remove their own comments",
+        "A settled decision records the choice only: any text change it calls for is filed and voted as a proposal"
+      ]
+    },
+    {
       "id": "steering-stage2-by-issue",
       "date": "2026-11-12",
       "status": "open",
