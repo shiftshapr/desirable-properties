@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-issues-settled-by-fixes",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: a cross-DP finding is settled once its fixes are decided",
+      "summary": "On the Stage 2 issues view, a finding with fixes now counts as settled (and is hidden unless \"Show settled findings\" is on) once every fix is accepted, deferred or declined, even if the accepted changes it flagged were not reviewed one by one. Those changes are kept when the stage closes unless someone defers them.",
+      "changes": [
+        "A finding with fixes is settled when all its fixes are decided",
+        "A finding without fixes is still settled once the changes it flagged are reviewed"
+      ]
+    },
+    {
       "id": "steering-collapse-answered",
       "date": "2026-11-12",
       "status": "open",

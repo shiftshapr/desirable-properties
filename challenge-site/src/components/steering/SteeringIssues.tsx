@@ -177,7 +177,9 @@ export default function SteeringIssues({ embedded = false }: { embedded?: boolea
   const settled = (f: SteeringFinding) =>
     f.needsDecision
       ? !!f.discussion.settledChoice
-      : !f.items.some(isOpen) && !f.carried.some(carriedOpen); // nothing left to vote on, or nothing to act on
+      : f.items.length
+        ? !f.items.some(isOpen) // its fixes are decided: they deal with the changes it flagged
+        : !f.carried.some(carriedOpen); // no fixes: settled once the changes it flagged are reviewed (or none)
   // Everything under a finding has your answer (or is carried out): it folds to one line.
   const answeredByMe = (f: SteeringFinding) => {
     const items = f.items.every((i) => !isOpen(i) || i.votes.some((v) => v.mine));
