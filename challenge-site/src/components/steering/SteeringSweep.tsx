@@ -47,7 +47,8 @@ const isTab = (v: string | null): v is SteeringTab => STEERING_TABS.some((t) => 
  * /steering/<ml>: status tabs (Open, Accepted, Deferred, Declined). Open shows the batches first, then
  * every other open item; the other tabs list what was carried out, each with the analysis and the votes.
  */
-export default function SteeringSweep({ ml }: { ml: string }) {
+export default function SteeringSweep({ ml, passKey = null }: { ml: string; passKey?: string | null }) {
+  const readOnly = Boolean(passKey);
   const [doc, setDoc] = useState<SteeringDocument | null>(null);
   const [tab, setTabState] = useState<SteeringTab>('open');
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
@@ -58,7 +59,10 @@ export default function SteeringSweep({ ml }: { ml: string }) {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/steering/${encodeURIComponent(ml)}`, { cache: 'no-store' });
+      const url = passKey
+        ? `/api/steering/passes/${encodeURIComponent(passKey)}/${encodeURIComponent(ml)}`
+        : `/api/steering/${encodeURIComponent(ml)}`;
+      const res = await fetch(url, { cache: 'no-store' });
       const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string };
       if (!res.ok) {
         setError({ text: body.error || `Steering ${res.status}`, code: body.code });
@@ -71,7 +75,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
     } finally {
       setLoading(false);
     }
-  }, [ml]);
+  }, [ml, passKey]);
 
   const { user, checked } = useAuth();
   useEffect(() => {
@@ -96,7 +100,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
   const byId = useMemo(() => new Map(shown.map((i) => [i.proposalId, i])), [shown]);
   const inBatch = useMemo(() => new Set((doc?.batches || []).flatMap((b) => b.proposalIds)), [doc]);
   // Batches are for deciding, so only the Open tab groups by them; a batch shows its open items only.
-  const openBatches = tab === 'open'
+  const openBatches = tab === 'open' && !readOnly
     ? (doc?.batches || [])
         .map((batch) => ({ batch, items: batch.proposalIds.map((id) => byId.get(id)).filter((i): i is SteeringItem => Boolean(i)) }))
         .filter((b) => b.items.length)
@@ -184,17 +188,29 @@ export default function SteeringSweep({ ml }: { ml: string }) {
   return (
     <div className="mt-6 space-y-6">
       <header className="space-y-3 border-b border-slate-800 pb-5">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">Steering sweep · {ml}</p>
-        <h1 className="text-2xl font-semibold text-white sm:text-3xl">{doc?.title || ml}</h1>
-        <p className="max-w-3xl text-sm text-slate-300">
-          Two steering members must agree before an outcome is carried out: the same decision and, to
-          accept a revision, the same text. Your vote counts on your own proposals too. You can change or withdraw it
-          until it is carried out.
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
+          Steering{doc?.pass ? ` · ${doc.pass.title}${doc.pass.status === 'closed' ? ' (closed)' : ''}` : ''} · {ml}
         </p>
+        <h1 className="text-2xl font-semibold text-white sm:text-3xl">{doc?.title || ml}</h1>
+        {readOnly ? (
+          <p className="max-w-3xl text-sm text-slate-300">
+            The saved record of this pass: each proposal as it stood when the pass closed
+            {doc?.pass?.closedAt ? ` on ${new Date(doc.pass.closedAt).toLocaleString()}` : ''}, with its analysis, the
+            votes and the outcome. Items still open then were carried into the next pass.
+          </p>
+        ) : (
+          <p className="max-w-3xl text-sm text-slate-300">
+            Two steering members must agree before an outcome is carried out: the same decision and, to
+            accept a revision, the same text. Your vote counts on your own proposals too. You can change or withdraw it
+            until it is carried out.
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-          <a href="/api/steering/audit" download className="text-cyan-300 underline hover:text-cyan-200">
-            Audit export (JSON)
-          </a>
+          {readOnly ? null : (
+            <a href="/api/steering/audit" download className="text-cyan-300 underline hover:text-cyan-200">
+              Audit export (JSON)
+            </a>
+          )}
           <button type="button" onClick={() => void load()} className="text-slate-400 hover:text-slate-200">
             Refresh
           </button>
@@ -236,7 +252,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
         </p>
       ) : doc && !shown.length ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
-          {tab === 'open' ? 'Nothing left to decide on this document.' : `Nothing ${STEERING_TABS.find((t) => t.key === tab)?.label.toLowerCase()} on this document yet.`}
+          {tab === 'open' ? (readOnly ? 'Nothing was left open on this document.' : 'Nothing left to decide on this document.') : `Nothing ${STEERING_TABS.find((t) => t.key === tab)?.label.toLowerCase()} on this document yet.`}
         </p>
       ) : null}
 
@@ -269,6 +285,7 @@ export default function SteeringSweep({ ml }: { ml: string }) {
                 flash={flash[item.proposalId]}
                 onVote={vote}
                 onWithdraw={withdrawVote}
+                readOnly={readOnly}
               />
             ))}
           </ul>
@@ -503,6 +520,7 @@ function ItemCard({
   onVote,
   onWithdraw,
   include,
+  readOnly = false,
 }: {
   ml: string;
   item: SteeringItem;
@@ -511,6 +529,8 @@ function ItemCard({
   onVote: VoteFn;
   onWithdraw: (item: SteeringItem) => void;
   include?: { checked: boolean; onToggle: () => void };
+  /** A closed pass's saved item: no voting, no Ask Deepi. */
+  readOnly?: boolean;
 }) {
   const p = item.proposal;
   const a = item.analysis;
@@ -524,7 +544,7 @@ function ItemCard({
   const changing = Boolean(mine) && changingFor === mineKey; // a new vote changes mineKey and closes the controls
   const showControls = !mine || changing;
   const disabled = Boolean(busy);
-  const isDone = item.state === 'done' || Boolean(item.outcome?.executedAt);
+  const isDone = readOnly || item.state === 'done' || Boolean(item.outcome?.executedAt);
   const rec = a?.recommendation || null;
   const canAgree = Boolean(rec && rec !== 'needs_person' && (rec !== 'accept_revised' || a?.revisedText));
   const mode = String(p.patch_mode || '').toLowerCase();
@@ -568,6 +588,11 @@ function ItemCard({
             ) : null}
             <span className={`rounded border px-1.5 py-0.5 ${STATE_TONE[item.state]}`}>{STATE_LABEL[item.state]}</span>
             {p.title_change ? <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">Title</span> : null}
+            {item.carriedFrom ? (
+              <span className="rounded border border-slate-600 px-1.5 py-0.5 text-slate-300" title="Still open when that pass closed">
+                Carried from {item.carriedFrom}
+              </span>
+            ) : null}
             <span className="text-slate-500">{shortId(item.proposalId)}</span>
           </div>
           <p className="mt-2 text-sm text-slate-200">
@@ -607,14 +632,16 @@ function ItemCard({
       ) : null}
 
       {a ? <AnalysisBlock analysis={a} /> : null}
-      <div className="mt-2">
-        <SteeringAskDeepi
-          ml={ml}
-          target={`item:${item.proposalId}`}
-          label="Ask Deepi about this proposal"
-          placeholder="e.g. Does the recommendation hold up against the chapter text?"
-        />
-      </div>
+      {readOnly ? null : (
+        <div className="mt-2">
+          <SteeringAskDeepi
+            ml={ml}
+            target={`item:${item.proposalId}`}
+            label="Ask Deepi about this proposal"
+            placeholder="e.g. Does the recommendation hold up against the chapter text?"
+          />
+        </div>
+      )}
 
       <Votes item={item} />
 

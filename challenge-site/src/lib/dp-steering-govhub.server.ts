@@ -1,7 +1,7 @@
 /**
  * Gov Hub steering-sweep API, called from the DP site's server with the viewer's Bearer token
  * (docs/DP-V1-STEERING-SWEEP-SPEC.md, "API"). Gov Hub checks that the viewer is on the steering
- * committee; these calls pass its status and JSON through.
+ * committee (the overview: signed in; closed passes: anyone); these calls pass its status and JSON through.
  */
 import 'server-only';
 import { NextResponse } from 'next/server';
@@ -11,14 +11,14 @@ import { normalizeMl } from '@/lib/dp-steering';
 
 export type GovHubResult = { ok: boolean; status: number; data: Record<string, unknown> };
 
-export async function steeringFetch(path: string, idToken: string, init?: RequestInit): Promise<GovHubResult> {
+export async function steeringFetch(path: string, idToken: string | null, init?: RequestInit): Promise<GovHubResult> {
   try {
     const res = await fetch(`${GOVHUB_PUBLIC_BASE_URL}${path}`, {
       ...init,
       headers: {
         Accept: 'application/json',
         ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
-        Authorization: `Bearer ${idToken}`,
+        ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
         ...(init?.headers || {}),
       },
       cache: 'no-store',
@@ -38,7 +38,18 @@ export const steeringPaths = {
     `/api/doc/draft/${encodeURIComponent(ml)}/steering/votes/${encodeURIComponent(proposalId)}/`,
   approveBatch: (batchId: string) => `/api/doc/steering/batches/${encodeURIComponent(batchId)}/approve/`,
   audit: () => '/api/doc/steering/audit/',
+  passes: () => '/api/doc/steering/passes/',
+  pass: (key: string) => `/api/doc/steering/passes/${encodeURIComponent(key)}/`,
+  passDocument: (key: string, ml: string) =>
+    `/api/doc/steering/passes/${encodeURIComponent(key)}/documents/${encodeURIComponent(ml)}/`,
+  closePass: () => '/api/doc/steering/passes/close/',
 };
+
+/** A pass key as Gov Hub writes it (pass-1, pass-2, …), or null. */
+export function passKey(raw: string | null | undefined): string | null {
+  const k = String(raw || '').trim().toLowerCase();
+  return /^pass-\d{1,3}$/.test(k) ? k : null;
+}
 
 /** The signed-in viewer's token, or a 401 response to return. */
 export async function requireSteeringSession(): Promise<

@@ -46,14 +46,20 @@ const OUTCOME_TAB: Record<string, SteeringTab> = {
   reject: 'declined',
 };
 
-/** An item stays Open until its outcome is carried out (an outcome that failed to apply is still open). */
-export function steeringTab(item: Pick<SteeringItem, 'state' | 'outcome'>): SteeringTab {
+const isSteeringTab = (v: unknown): v is SteeringTab => STEERING_TABS.some((t) => t.key === v);
+
+/**
+ * An item stays Open until its outcome is carried out (an outcome that failed to apply is still open).
+ * A closed pass's saved items say their tab; that wins.
+ */
+export function steeringTab(item: Pick<SteeringItem, 'state' | 'outcome'> & { tab?: SteeringTab | null }): SteeringTab {
+  if (item.tab) return item.tab;
   const o = item.outcome;
   if (!o || o.error || (!o.executedAt && item.state !== 'done')) return 'open';
   return OUTCOME_TAB[o.decision] || 'open';
 }
 
-export function steeringTabCounts(items: Array<Pick<SteeringItem, 'state' | 'outcome'>>): Record<SteeringTab, number> {
+export function steeringTabCounts(items: Array<Pick<SteeringItem, 'state' | 'outcome' | 'tab'>>): Record<SteeringTab, number> {
   const counts: Record<SteeringTab, number> = { open: 0, accepted: 0, deferred: 0, declined: 0 };
   for (const i of items) counts[steeringTab(i)] += 1;
   return counts;
@@ -124,6 +130,24 @@ export type SteeringItem = {
   votes: SteeringVoteRow[];
   state: SteeringState;
   outcome: SteeringOutcome | null;
+  /** Gov Hub's tab for the item (always sent for a closed pass). */
+  tab: SteeringTab | null;
+  /** The pass this item was carried from, when it was still open as that pass closed. */
+  carriedFrom: string | null;
+};
+
+/** Pass 1, Pass 2, Final: one open at a time; a closed pass is a public, read-only record. */
+export type SteeringPass = {
+  key: string;
+  title: string;
+  position: number;
+  status: 'open' | 'closed';
+  description: string | null;
+  openedAt: string | null;
+  closedAt: string | null;
+  closedByName: string | null;
+  closeNote: string | null;
+  totals: Record<SteeringTab, number> | null;
 };
 
 export type SteeringBatch = {
@@ -144,6 +168,9 @@ export type SteeringDocument = {
   batches: SteeringBatch[];
   runs: Array<{ id: string; label: string; model: string | null; createdAt: string | null }>;
   viewerUserId: string | null;
+  pass: SteeringPass | null;
+  /** A closed pass's saved record: nothing can be voted on. */
+  readOnly: boolean;
 };
 
 export type SteeringOverviewRow = {
@@ -155,6 +182,8 @@ export type SteeringOverviewRow = {
   stale: number;
   votes: Record<SteeringState, number>;
   batches: Array<{ id: string; key: string; kind: string; title: string; count: number }>;
+  /** Open / Accepted / Deferred / Declined, when Gov Hub sends them. */
+  tabs: Record<SteeringTab, number> | null;
   /** False when Gov Hub's overview did not list this document (front matter shown anyway). */
   listed: boolean;
 };
@@ -279,7 +308,41 @@ export function normalizeItem(raw: unknown, viewerUserId: string | null): Steeri
     votes,
     state: toState(it.state, votes, outcome),
     outcome,
+    tab: isSteeringTab(it.tab) ? it.tab : null,
+    carriedFrom: strOrNull(it.carried_from),
   };
+}
+
+function normalizeTabs(raw: unknown): Record<SteeringTab, number> | null {
+  const t = obj(raw);
+  if (!Object.keys(t).length) return null;
+  return { open: num(t.open), accepted: num(t.accepted), deferred: num(t.deferred), declined: num(t.declined) };
+}
+
+export function normalizePass(raw: unknown): SteeringPass | null {
+  const p = obj(raw);
+  const key = str(p.key);
+  if (!key) return null;
+  return {
+    key,
+    title: str(p.title) || key,
+    position: num(p.position),
+    status: str(p.status) === 'closed' ? 'closed' : 'open',
+    description: strOrNull(p.description),
+    openedAt: strOrNull(p.opened_at),
+    closedAt: strOrNull(p.closed_at),
+    closedByName: strOrNull(p.closed_by_name),
+    closeNote: strOrNull(p.close_note),
+    totals: normalizeTabs(p.totals),
+  };
+}
+
+export function normalizePasses(raw: unknown): SteeringPass[] {
+  const d = obj(raw);
+  return arr(Array.isArray(raw) ? raw : d.passes)
+    .map(normalizePass)
+    .filter((p): p is SteeringPass => Boolean(p))
+    .sort((a, b) => a.position - b.position);
 }
 
 function normalizeBatch(raw: unknown): SteeringBatch {
@@ -329,7 +392,19 @@ export function normalizeSteeringDocument(ml: string, raw: unknown, knownViewerI
       return { id: str(o.id), label: str(o.label), model: strOrNull(o.model), createdAt: strOrNull(o.created_at) };
     }),
     viewerUserId,
+    pass: normalizePass(d.pass),
+    readOnly: d.read_only === true,
   };
+}
+
+/** The overview's pass and viewer fields (the rows come from normalizeOverview). */
+export function normalizeOverviewMeta(raw: unknown): {
+  pass: SteeringPass | null;
+  passes: SteeringPass[];
+  viewerIsSteering: boolean;
+} {
+  const d = obj(raw);
+  return { pass: normalizePass(d.pass), passes: normalizePasses(d.passes), viewerIsSteering: d.viewer_is_steering === true };
 }
 
 /** GET /api/doc/steering/overview/ → one row per document; front matter always listed, with its titles. */
@@ -366,6 +441,7 @@ export function normalizeOverview(raw: unknown): SteeringOverviewRow[] {
           count: num(bo.count, bo.item_count, bo.size, jsonList(bo.proposal_ids).length),
         };
       }),
+      tabs: normalizeTabs(o.tabs),
       listed: true,
     };
   });
@@ -381,6 +457,7 @@ export function normalizeOverview(raw: unknown): SteeringOverviewRow[] {
       stale: 0,
       votes: { none: 0, one: 0, split: 0, ready: 0, done: 0 },
       batches: [],
+      tabs: null,
       listed: false,
     });
   }
