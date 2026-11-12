@@ -23,8 +23,10 @@ export default async function SteeringPage() {
         <p className="mt-4 max-w-3xl text-base text-slate-300 sm:text-lg">
           Every open proposal on the 24 DPs and the front matter gets a recorded decision. Two steering members
           must agree on the same decision (and, to accept a revision, the same text) before it is carried out.
-          A member may vote on their own proposal and may change their vote until then. The work runs in passes;
-          each closed pass keeps its full record, which anyone can read.
+          A member may vote on their own proposal and may change their vote until then. The work runs in four
+          stages: proposal review, a cross-DP check, a style pass, and a final sign-off on each document. What a
+          stage accepts moves on to the next to be reviewed again, and each closed stage keeps its full record,
+          which anyone can read.
         </p>
       </header>
       <SteeringOverview signedIn={Boolean(session?.userId)} steering={steering} />

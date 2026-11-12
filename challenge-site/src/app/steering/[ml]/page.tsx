@@ -5,10 +5,10 @@ import SteeringNotes from '@/components/steering/SteeringNotes';
 import SteeringSweep from '@/components/steering/SteeringSweep';
 import { readSession } from '@/lib/auth-session';
 import { frontMatterTitle, normalizeMl } from '@/lib/dp-steering';
-import { passKey } from '@/lib/dp-steering-govhub.server';
+import { stageKey } from '@/lib/dp-steering-govhub.server';
 import { viewerIsSteering } from '@/lib/steering-notes.server';
 
-type PageProps = { params: Promise<{ ml: string }>; searchParams: Promise<{ pass?: string }> };
+type PageProps = { params: Promise<{ ml: string }>; searchParams: Promise<{ stage?: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const ml = normalizeMl((await params).ml);
@@ -21,16 +21,16 @@ export const dynamic = 'force-dynamic';
 export default async function SteeringDocumentPage({ params, searchParams }: PageProps) {
   const ml = normalizeMl((await params).ml);
   if (!ml) notFound();
-  const pass = passKey((await searchParams).pass);
+  const stage = stageKey((await searchParams).stage);
   const session = await readSession();
-  // A closed pass is a public record; the open pass is for steering members.
-  if (pass) {
+  // A closed stage is a public record; the open stage is for steering members.
+  if (stage) {
     return (
       <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
-        <Link href={`/steering?pass=${pass}`} className="text-sm text-cyan-300 hover:text-cyan-200">
+        <Link href={`/steering?stage=${stage}`} className="text-sm text-cyan-300 hover:text-cyan-200">
           ← All documents
         </Link>
-        <SteeringSweep ml={ml} passKey={pass} />
+        <SteeringSweep ml={ml} stageKey={stage} />
       </main>
     );
   }

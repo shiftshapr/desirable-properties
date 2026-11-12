@@ -6,7 +6,9 @@ import SteeringAskDeepi from '@/components/steering/SteeringAskDeepi';
 import { useAuth } from '@/lib/auth-context';
 import {
   agreesWith,
+  CHECK_LABEL,
   DECISION_LABEL,
+  REVIEW_LABEL,
   normalizeBatchApprove,
   normalizeSteeringDocument,
   STATE_LABEL,
@@ -16,9 +18,13 @@ import {
   type BatchApproveResult,
   type SteeringAnalysis,
   type SteeringBatch,
+  type SteeringCarriedItem,
+  type SteeringCheck,
   type SteeringDecision,
   type SteeringDocument,
   type SteeringItem,
+  type SteeringReviewDecision,
+  type SteeringSignoff,
   type SteeringTab,
 } from '@/lib/dp-steering';
 
@@ -47,8 +53,8 @@ const isTab = (v: string | null): v is SteeringTab => STEERING_TABS.some((t) => 
  * /steering/<ml>: status tabs (Open, Accepted, Deferred, Declined). Open shows the batches first, then
  * every other open item; the other tabs list what was carried out, each with the analysis and the votes.
  */
-export default function SteeringSweep({ ml, passKey = null }: { ml: string; passKey?: string | null }) {
-  const readOnly = Boolean(passKey);
+export default function SteeringSweep({ ml, stageKey = null }: { ml: string; stageKey?: string | null }) {
+  const readOnly = Boolean(stageKey);
   const [doc, setDoc] = useState<SteeringDocument | null>(null);
   const [tab, setTabState] = useState<SteeringTab>('open');
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
@@ -59,8 +65,8 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const url = passKey
-        ? `/api/steering/passes/${encodeURIComponent(passKey)}/${encodeURIComponent(ml)}`
+      const url = stageKey
+        ? `/api/steering/stages/${encodeURIComponent(stageKey)}/${encodeURIComponent(ml)}`
         : `/api/steering/${encodeURIComponent(ml)}`;
       const res = await fetch(url, { cache: 'no-store' });
       const body = (await res.json().catch(() => ({}))) as { error?: string; code?: string };
@@ -75,7 +81,7 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
     } finally {
       setLoading(false);
     }
-  }, [ml, passKey]);
+  }, [ml, stageKey]);
 
   const { user, checked } = useAuth();
   useEffect(() => {
@@ -95,8 +101,13 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
     window.history.replaceState(null, '', url);
   };
 
-  const tabCounts = useMemo(() => steeringTabCounts(doc?.items || []), [doc]);
+  const tabCounts = useMemo(() => {
+    const c = steeringTabCounts(doc?.items || []);
+    for (const i of doc?.carried || []) c[i.tab] += 1;
+    return c;
+  }, [doc]);
   const shown = useMemo(() => (doc?.items || []).filter((i) => steeringTab(i) === tab), [doc, tab]);
+  const shownCarried = useMemo(() => (doc?.carried || []).filter((i) => i.tab === tab), [doc, tab]);
   const byId = useMemo(() => new Map(shown.map((i) => [i.proposalId, i])), [shown]);
   const inBatch = useMemo(() => new Set((doc?.batches || []).flatMap((b) => b.proposalIds)), [doc]);
   // Batches are for deciding, so only the Open tab groups by them; a batch shows its open items only.
@@ -180,6 +191,66 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
     }
   }
 
+  async function stageAction(key: string, url: string, init: RequestInit, done: (body: Record<string, unknown>) => string) {
+    setBusy(key);
+    try {
+      const res = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...init });
+      const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+      if (!res.ok) throw new Error(String(body.error || `Failed (${res.status})`));
+      setFlash((f) => ({ ...f, [key.replace(/^carried:/, '')]: { ok: true, text: done(body) } }));
+      await load();
+    } catch (err) {
+      setFlash((f) => ({ ...f, [key.replace(/^carried:/, '')]: { ok: false, text: err instanceof Error ? err.message : 'Failed' } }));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const stageKeyNow = doc?.stage?.key;
+  const review = (item: SteeringCarriedItem, decision: SteeringReviewDecision, note: string) =>
+    void stageAction(
+      `carried:${item.proposalId}`,
+      `/api/steering/stages/current/carried/${encodeURIComponent(item.proposalId)}`,
+      { method: 'POST', body: JSON.stringify({ decision, note: note || undefined, stage_key: stageKeyNow }) },
+      (body) => {
+        const it = (body.item || {}) as { decision?: string | null; state?: string };
+        return it.decision
+          ? `Review recorded. Two members agree: ${REVIEW_LABEL[it.decision as SteeringReviewDecision] || it.decision}.`
+          : it.state === 'split'
+            ? 'Review recorded. The reviews differ, so another member settles it.'
+            : 'Review recorded. It needs a second steering member to agree.';
+      },
+    );
+  const withdrawReview = (item: SteeringCarriedItem) =>
+    void stageAction(
+      `carried:${item.proposalId}`,
+      `/api/steering/stages/current/carried/${encodeURIComponent(item.proposalId)}`,
+      { method: 'DELETE' },
+      () => 'Your review is withdrawn.',
+    );
+  const keepAll = () =>
+    void stageAction(
+      'keep-all',
+      `/api/steering/stages/current/${encodeURIComponent(ml)}/keep-all`,
+      { method: 'POST', body: JSON.stringify({ stage_key: stageKeyNow }) },
+      (body) => {
+        const n = Array.isArray(body.kept) ? body.kept.length : 0;
+        return `You kept ${n} item${n === 1 ? '' : 's'}. Each is settled once a second member keeps it too.`;
+      },
+    );
+  const signOff = (withdraw: boolean, note: string) =>
+    void stageAction(
+      'signoff',
+      `/api/steering/stages/current/${encodeURIComponent(ml)}/signoff`,
+      withdraw ? { method: 'DELETE' } : { method: 'POST', body: JSON.stringify({ note: note || undefined }) },
+      (body) =>
+        withdraw
+          ? 'Your sign-off is withdrawn.'
+          : (body.signoff as { signed?: boolean } | undefined)?.signed
+            ? 'Signed off. Two members have now approved this text.'
+            : 'Signed off. It needs a second steering member.',
+    );
+
   const counts = (doc?.items || []).reduce(
     (c, i) => ({ ...c, [i.state]: (c[i.state] || 0) + 1, stale: c.stale + (i.stale ? 1 : 0) }),
     { none: 0, one: 0, split: 0, ready: 0, done: 0, stale: 0 } as Record<string, number>,
@@ -189,14 +260,14 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
     <div className="mt-6 space-y-6">
       <header className="space-y-3 border-b border-slate-800 pb-5">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
-          Steering{doc?.pass ? ` · ${doc.pass.title}${doc.pass.status === 'closed' ? ' (closed)' : ''}` : ''} · {ml}
+          Steering{doc?.stage ? ` · ${doc.stage.title}${doc.stage.status === 'closed' ? ' (closed)' : ''}` : ''} · {ml}
         </p>
         <h1 className="text-2xl font-semibold text-white sm:text-3xl">{doc?.title || ml}</h1>
         {readOnly ? (
           <p className="max-w-3xl text-sm text-slate-300">
-            The saved record of this pass: each proposal as it stood when the pass closed
-            {doc?.pass?.closedAt ? ` on ${new Date(doc.pass.closedAt).toLocaleString()}` : ''}, with its analysis, the
-            votes and the outcome. Items still open then were carried into the next pass.
+            The saved record of {doc?.stage?.title || 'this stage'}: each item as it stood when the stage closed
+            {doc?.stage?.closedAt ? ` on ${new Date(doc.stage.closedAt).toLocaleString()}` : ''}, with its analysis,
+            the votes and the outcome. What it accepted moved on to the next stage.
           </p>
         ) : (
           <p className="max-w-3xl text-sm text-slate-300">
@@ -244,13 +315,31 @@ export default function SteeringSweep({ ml, passKey = null }: { ml: string; pass
         </p>
       ) : null}
 
+      {doc?.signoff ? (
+        <SignoffPanel signoff={doc.signoff} readOnly={readOnly} busy={busy === 'signoff'} flash={flash.signoff} onSign={signOff} />
+      ) : null}
+
       {doc ? <StatusTabs tab={tab} counts={tabCounts} onSelect={setTab} /> : null}
 
-      {doc && !doc.items.length ? (
+      {shownCarried.length ? (
+        <CarriedSection
+          ml={ml}
+          items={shownCarried}
+          stageTitle={doc?.stage?.title || 'this stage'}
+          readOnly={readOnly || tab !== 'open'}
+          busy={busy}
+          flash={flash}
+          onReview={review}
+          onWithdraw={withdrawReview}
+          onKeepAll={keepAll}
+        />
+      ) : null}
+
+      {doc && !doc.items.length && !doc.carried.length ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
           No open proposals on this document.
         </p>
-      ) : doc && !shown.length ? (
+      ) : doc && !shown.length && !shownCarried.length ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
           {tab === 'open' ? (readOnly ? 'Nothing was left open on this document.' : 'Nothing left to decide on this document.') : `Nothing ${STEERING_TABS.find((t) => t.key === tab)?.label.toLowerCase()} on this document yet.`}
         </p>
@@ -529,7 +618,7 @@ function ItemCard({
   onVote: VoteFn;
   onWithdraw: (item: SteeringItem) => void;
   include?: { checked: boolean; onToggle: () => void };
-  /** A closed pass's saved item: no voting, no Ask Deepi. */
+  /** A closed stage's saved item: no voting, no Ask Deepi. */
   readOnly?: boolean;
 }) {
   const p = item.proposal;
@@ -588,11 +677,6 @@ function ItemCard({
             ) : null}
             <span className={`rounded border px-1.5 py-0.5 ${STATE_TONE[item.state]}`}>{STATE_LABEL[item.state]}</span>
             {p.title_change ? <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">Title</span> : null}
-            {item.carriedFrom ? (
-              <span className="rounded border border-slate-600 px-1.5 py-0.5 text-slate-300" title="Still open when that pass closed">
-                Carried from {item.carriedFrom}
-              </span>
-            ) : null}
             <span className="text-slate-500">{shortId(item.proposalId)}</span>
           </div>
           <p className="mt-2 text-sm text-slate-200">
@@ -914,4 +998,278 @@ function BundleEdits({ item }: { item: SteeringItem }) {
 
 function shortId(id: string): string {
   return id.length > 10 ? `#${id.slice(0, 8)}` : `#${id}`;
+}
+
+const CHECK_TONE: Record<SteeringCheck, string> = {
+  clean: 'border-emerald-700 text-emerald-200',
+  flagged: 'border-amber-600 bg-amber-950/40 text-amber-200',
+  unchecked: 'border-slate-700 text-slate-400',
+};
+
+function CarriedSection({
+  ml,
+  items,
+  stageTitle,
+  readOnly,
+  busy,
+  flash,
+  onReview,
+  onWithdraw,
+  onKeepAll,
+}: {
+  ml: string;
+  items: SteeringCarriedItem[];
+  stageTitle: string;
+  readOnly: boolean;
+  busy: string | null;
+  flash: Record<string, Flash>;
+  onReview: (item: SteeringCarriedItem, decision: SteeringReviewDecision, note: string) => void;
+  onWithdraw: (item: SteeringCarriedItem) => void;
+  onKeepAll: () => void;
+}) {
+  // What "Keep all" would cover for the viewer: checked, no issue, not yet settled, not yet reviewed by them.
+  const keepable = items.filter((i) => i.check === 'clean' && !i.decision && !i.reviews.some((r) => r.mine));
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">
+            Carried into {stageTitle} ({items.length})
+          </h2>
+          <p className="mt-1 max-w-3xl text-sm text-slate-400">
+            Accepted in an earlier stage and reviewed again here against this stage&apos;s analysis. Keep it, keep it
+            with a follow-up edit, or defer it to 1.1. Nothing is reverted: a follow-up edit or an undo is filed as a
+            new proposal. Two members settle each item; items nobody reviews are kept when the stage closes.
+          </p>
+        </div>
+        {readOnly ? null : (
+          <button
+            type="button"
+            disabled={!keepable.length || busy === 'keep-all'}
+            onClick={onKeepAll}
+            className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
+          >
+            {busy === 'keep-all' ? 'Keeping…' : `Keep all with no issue found (${keepable.length})`}
+          </button>
+        )}
+      </div>
+      {flash['keep-all']?.text ? (
+        <p className={`text-sm ${flash['keep-all'].ok ? 'text-emerald-200' : 'text-rose-200'}`}>{flash['keep-all'].text}</p>
+      ) : null}
+      <ul className="space-y-4">
+        {items.map((item) => (
+          <CarriedCard
+            key={item.proposalId}
+            ml={ml}
+            item={item}
+            readOnly={readOnly}
+            busy={busy === `carried:${item.proposalId}`}
+            flash={flash[item.proposalId]}
+            onReview={onReview}
+            onWithdraw={onWithdraw}
+          />
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function CarriedCard({
+  ml,
+  item,
+  readOnly,
+  busy,
+  flash,
+  onReview,
+  onWithdraw,
+}: {
+  ml: string;
+  item: SteeringCarriedItem;
+  readOnly: boolean;
+  busy: boolean;
+  flash?: Flash;
+  onReview: (item: SteeringCarriedItem, decision: SteeringReviewDecision, note: string) => void;
+  onWithdraw: (item: SteeringCarriedItem) => void;
+}) {
+  const mine = item.reviews.find((r) => r.mine) || null;
+  const [pending, setPending] = useState<SteeringReviewDecision | null>(null);
+  const [note, setNote] = useState('');
+  // The text that went in: the revised copy when the earlier decision changed the wording.
+  const p = item.resultProposal || item.proposal;
+  const earlierVoters = item.earlier.votes.map((v) => v.voterName).join(', ');
+  const settled = Boolean(item.decision) || readOnly;
+  return (
+    <li className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+      <div className="flex flex-wrap items-center gap-1.5 text-xs">
+        <span className={`rounded border px-1.5 py-0.5 ${CHECK_TONE[item.check]}`}>{CHECK_LABEL[item.check]}</span>
+        {item.decision ? (
+          <span className="rounded border border-emerald-700 px-1.5 py-0.5 text-emerald-200">{REVIEW_LABEL[item.decision]}</span>
+        ) : item.keptByDefault ? (
+          <span className="rounded border border-slate-600 px-1.5 py-0.5 text-slate-300">Kept (not reviewed)</span>
+        ) : (
+          <span className="rounded border border-slate-700 px-1.5 py-0.5 text-slate-400">
+            {item.state === 'one' ? 'Needs a second' : item.state === 'split' ? 'Split' : 'Not reviewed'}
+          </span>
+        )}
+        <span className="text-slate-500">{shortId(item.proposalId)}</span>
+      </div>
+      <p className="mt-2 text-sm text-slate-300">
+        {item.earlier.stage || item.carriedFrom || 'Earlier'}:{' '}
+        {item.earlier.outcome ? DECISION_LABEL[item.earlier.outcome.decision] || item.earlier.outcome.decision : 'Accepted'}
+        {earlierVoters ? <span className="text-slate-500"> by {earlierVoters}</span> : null}
+        {item.proposal.author_name ? <span className="text-slate-500"> · proposed by {item.proposal.author_name}</span> : null}
+      </p>
+      {item.previousReview ? (
+        <p className="text-sm text-slate-400">
+          {item.previousReview.stage}:{' '}
+          {item.previousReview.keptByDefault
+            ? 'kept (not reviewed)'
+            : item.previousReview.decision
+              ? REVIEW_LABEL[item.previousReview.decision as SteeringReviewDecision] || item.previousReview.decision
+              : 'kept'}
+          {item.previousReview.reviews.filter((r) => r.note).map((r) => (
+            <span key={r.id} className="block text-slate-500">
+              {r.voterName}: “{r.note}”
+            </span>
+          ))}
+        </p>
+      ) : null}
+      <ActivityPatchPreview removed={p.original_text || null} added={p.proposed_text || null} mode="patch" />
+      {item.analysis ? <AnalysisBlock analysis={item.analysis} /> : null}
+      {readOnly ? null : (
+        <div className="mt-2">
+          <SteeringAskDeepi ml={ml} target={`item:${item.proposalId}`} label="Ask Deepi about this change" placeholder="e.g. Does this still fit with what DP12 says now?" />
+        </div>
+      )}
+      {item.reviews.length ? (
+        <ul className="mt-3 space-y-1 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm">
+          {item.reviews.map((r) => (
+            <li key={r.id} className="text-slate-300">
+              <span className="text-slate-100">
+                {r.voterName}
+                {r.mine ? ' (you)' : ''}
+              </span>
+              : {REVIEW_LABEL[r.decision]}
+              {r.bulk ? <span className="text-slate-500"> · via keep all</span> : null}
+              {r.note ? <span className="block text-slate-400">“{r.note}”</span> : null}
+            </li>
+          ))}
+        </ul>
+      ) : readOnly ? null : (
+        <p className="mt-3 text-xs text-slate-500">No reviews yet.</p>
+      )}
+      {settled ? null : (
+        <div className="mt-3 space-y-2">
+          <div className="flex flex-wrap gap-2">
+            <VoteButton label="Keep" tone="emerald" active={mine?.decision === 'keep'} disabled={busy}
+              onClick={() => onReview(item, 'keep', '')} />
+            <VoteButton label="Keep, with a follow-up edit" tone="violet" active={mine?.decision === 'follow_up' || pending === 'follow_up'}
+              disabled={busy} onClick={() => setPending('follow_up')} />
+            <VoteButton label="Defer to 1.1" tone="sky" active={mine?.decision === 'defer' || pending === 'defer'}
+              disabled={busy} onClick={() => setPending('defer')} />
+            {mine ? (
+              <button type="button" disabled={busy} onClick={() => onWithdraw(item)} className="px-2 text-sm text-slate-400 hover:text-slate-200">
+                Withdraw my review
+              </button>
+            ) : null}
+          </div>
+          {pending ? (
+            <div className="space-y-2">
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={2}
+                placeholder={pending === 'follow_up' ? 'What the follow-up edit should do' : 'Why it should wait for 1.1'}
+                className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+              />
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={busy || !note.trim()}
+                  onClick={() => {
+                    onReview(item, pending, note.trim());
+                    setPending(null);
+                    setNote('');
+                  }}
+                  className="rounded-lg bg-violet-700 px-3 py-1.5 text-sm text-white hover:bg-violet-600 disabled:opacity-50"
+                >
+                  Record: {REVIEW_LABEL[pending]}
+                </button>
+                <button type="button" onClick={() => setPending(null)} className="px-2 text-sm text-slate-400 hover:text-slate-200">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      )}
+      {flash?.text ? <p className={`mt-2 text-sm ${flash.ok ? 'text-emerald-200' : 'text-rose-200'}`}>{flash.text}</p> : null}
+    </li>
+  );
+}
+
+function SignoffPanel({
+  signoff,
+  readOnly,
+  busy,
+  flash,
+  onSign,
+}: {
+  signoff: SteeringSignoff;
+  readOnly: boolean;
+  busy: boolean;
+  flash?: Flash;
+  onSign: (withdraw: boolean, note: string) => void;
+}) {
+  const [note, setNote] = useState('');
+  const mine = signoff.signoffs.find((s) => s.mine && s.current) || null;
+  const current = signoff.signoffs.filter((s) => s.current);
+  return (
+    <section className="rounded-2xl border border-violet-800/60 bg-violet-950/20 p-4 text-sm">
+      <h2 className="font-semibold text-white">Final sign-off</h2>
+      <p className="mt-1 text-slate-300">
+        {signoff.signed
+          ? 'Signed off: two steering members approved this document’s finished text.'
+          : `Two steering members sign off this document’s finished text. ${current.length} of ${signoff.needed} so far.`}{' '}
+        A sign-off is tied to the text as it was when given; any later change voids it.
+      </p>
+      {signoff.signoffs.length ? (
+        <ul className="mt-2 space-y-1 text-slate-300">
+          {signoff.signoffs.map((s) => (
+            <li key={s.id}>
+              {s.voterName}
+              {s.mine ? ' (you)' : ''}
+              {s.createdAt ? <span className="text-slate-500"> · {new Date(s.createdAt).toLocaleString()}</span> : null}
+              {s.current ? null : <span className="text-amber-200"> · the text changed since; sign again</span>}
+              {s.note ? <span className="block text-slate-400">“{s.note}”</span> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {readOnly ? null : (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {mine ? (
+            <button type="button" disabled={busy} onClick={() => onSign(true, '')}
+              className="rounded-lg border border-slate-600 px-3 py-1.5 text-slate-200 hover:border-slate-400 disabled:opacity-50">
+              Withdraw my sign-off
+            </button>
+          ) : (
+            <>
+              <input
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Note (optional)"
+                className="min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-white"
+              />
+              <button type="button" disabled={busy} onClick={() => onSign(false, note.trim())}
+                className="rounded-lg bg-violet-700 px-4 py-1.5 font-medium text-white hover:bg-violet-600 disabled:opacity-50">
+                {busy ? 'Signing…' : 'Sign off this text'}
+              </button>
+            </>
+          )}
+        </div>
+      )}
+      {flash?.text ? <p className={`mt-2 ${flash.ok ? 'text-emerald-200' : 'text-rose-200'}`}>{flash.text}</p> : null}
+    </section>
+  );
 }

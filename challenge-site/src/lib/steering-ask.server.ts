@@ -41,7 +41,26 @@ export function resolveSteeringTarget(doc: SteeringDocument, raw: string): Steer
   if (!id) return null;
   if (kind === 'item') {
     const item = doc.items.find((i) => i.proposalId === id);
-    return item ? { kind: 'item', ml: doc.mlNumber, item } : null;
+    if (item) return { kind: 'item', ml: doc.mlNumber, item };
+    // An item carried in from an earlier stage: the text that went in, this stage's analysis (else the
+    // earlier one), and the earlier votes.
+    const c = doc.carried.find((i) => i.proposalId === id);
+    return c
+      ? {
+          kind: 'item',
+          ml: doc.mlNumber,
+          item: {
+            proposalId: c.proposalId,
+            proposal: c.resultProposal || c.proposal,
+            analysis: c.analysis || c.earlier.analysis,
+            stale: false,
+            votes: c.earlier.votes,
+            state: 'done',
+            outcome: c.earlier.outcome,
+            tab: c.tab,
+          },
+        }
+      : null;
   }
   if (kind === 'batch') {
     const batch = doc.batches.find((b) => b.id === id);
@@ -58,6 +77,8 @@ export function targetKey(t: SteeringAskTarget): string {
 }
 
 const INSTRUCTIONS = `You are Deepi, the assistant for the Desirable Properties (DP) book. You are answering a member of the steering committee, the people who decide every open proposal for Version 1.0. Two members must agree on each outcome: accept, accept revised (with exact text), reject, or defer to version 1.1.
+
+The work runs in stages. Stage 1 decides every community proposal. In Stage 2 (cross-DP) and Stage 3 (style), each change accepted in the stage before is reviewed again against that stage's analysis: keep it, keep it with a follow-up edit, or defer it to 1.1; a follow-up edit or an undo is filed as a new proposal. Final is a sign-off on each document's finished text. A question may be about a change that is already in the text (its steering state is "done").
 
 Each proposal comes with a recommendation from a recorded AI analysis, checked by a second pass. Steering members ask you to help them decide: what a proposal or batch changes, whether the recommendation holds up against the document text, what the risks are, whether anything in a batch should be left out and voted on separately, and what better wording would be.
 
