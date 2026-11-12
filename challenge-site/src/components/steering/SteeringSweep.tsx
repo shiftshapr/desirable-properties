@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
 import SteeringAskDeepi from '@/components/steering/SteeringAskDeepi';
@@ -28,7 +29,7 @@ import {
   type SteeringTab,
 } from '@/lib/dp-steering';
 
-type Flash = { ok: boolean; text: string };
+export type Flash = { ok: boolean; text: string };
 
 const KIND_TONE: Record<string, string> = {
   accept: 'border-emerald-800/70 text-emerald-200',
@@ -251,6 +252,27 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
             : 'Signed off. It needs a second steering member.',
     );
 
+  // Two stages open together: the header names both, and the open items are listed under their stage.
+  const openStages = !readOnly && (doc?.openStages.length || 0) > 1 ? doc!.openStages : [];
+  const stageLine = openStages.length
+    ? openStages.map((s) => s.title).join(' and ')
+    : doc?.stage
+      ? `${doc.stage.title}${doc.stage.status === 'closed' ? ' (closed)' : ''}`
+      : '';
+  const looseHeading = tab !== 'open' ? STEERING_TABS.find((t) => t.key === tab)?.label : openBatches.length ? 'Not in a batch' : 'Items';
+  const looseGroups =
+    tab === 'open' && openStages.length
+      ? openStages
+          .map((s, n) => ({
+            heading: s.title,
+            // An item with no stage of its own is listed with the earliest open stage.
+            items: loose.filter((i) => (i.stageKey ? i.stageKey === s.key : n === 0)),
+          }))
+          .filter((g) => g.items.length)
+      : loose.length
+        ? [{ heading: looseHeading, items: loose }]
+        : [];
+
   const counts = (doc?.items || []).reduce(
     (c, i) => ({ ...c, [i.state]: (c[i.state] || 0) + 1, stale: c.stale + (i.stale ? 1 : 0) }),
     { none: 0, one: 0, split: 0, ready: 0, done: 0, stale: 0 } as Record<string, number>,
@@ -260,7 +282,7 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
     <div className="mt-6 space-y-6">
       <header className="space-y-3 border-b border-slate-800 pb-5">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-violet-300">
-          Steering{doc?.stage ? ` · ${doc.stage.title}${doc.stage.status === 'closed' ? ' (closed)' : ''}` : ''} · {ml}
+          Steering{stageLine ? ` · ${stageLine}` : ''} · {ml}
         </p>
         <h1 className="text-2xl font-semibold text-white sm:text-3xl">{doc?.title || ml}</h1>
         {readOnly ? (
@@ -277,6 +299,11 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
           </p>
         )}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          {!readOnly && doc?.stage?.kind === 'review' ? (
+            <Link href="/steering/issues" className="text-cyan-300 underline hover:text-cyan-200">
+              {doc.stage.title} by issue
+            </Link>
+          ) : null}
           {readOnly ? null : (
             <a href="/api/steering/audit" download className="text-cyan-300 underline hover:text-cyan-200">
               Audit export (JSON)
@@ -359,13 +386,11 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
         />
       ))}
 
-      {loose.length ? (
-        <section className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">
-            {tab !== 'open' ? STEERING_TABS.find((t) => t.key === tab)?.label : openBatches.length ? 'Not in a batch' : 'Items'}
-          </h2>
+      {looseGroups.map((group) => (
+        <section key={group.heading} className="space-y-3">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">{group.heading}</h2>
           <ul className="space-y-4">
-            {loose.map((item) => (
+            {group.items.map((item) => (
               <ItemCard
                 key={item.proposalId}
                 ml={ml}
@@ -379,7 +404,7 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
             ))}
           </ul>
         </section>
-      ) : null}
+      ))}
     </div>
   );
 }
@@ -643,13 +668,13 @@ function BatchResult({ result }: { result: BatchApproveResult }) {
   );
 }
 
-type VoteFn = (
+export type VoteFn = (
   item: SteeringItem,
   decision: SteeringDecision,
   opts: { revisedText?: string; note?: string; agrees?: boolean | null },
 ) => void | Promise<void>;
 
-function ItemCard({
+export function ItemCard({
   ml,
   item,
   busy,
@@ -1122,7 +1147,7 @@ function CarriedSection({
   );
 }
 
-function CarriedCard({
+export function CarriedCard({
   ml,
   item,
   readOnly,

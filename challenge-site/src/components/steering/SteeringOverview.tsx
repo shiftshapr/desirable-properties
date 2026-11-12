@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import {
   normalizeOverview,
+  normalizeOverviewMeta,
   normalizeStage,
   normalizeStages,
   STEERING_TABS,
@@ -13,8 +14,9 @@ import {
   type SteeringTab,
 } from '@/lib/dp-steering';
 
+type OverviewMeta = ReturnType<typeof normalizeOverviewMeta>;
 type OverviewResult =
-  | { rows: SteeringOverviewRow[]; record: SteeringStage | null; runs: string[] }
+  | { rows: SteeringOverviewRow[]; record: SteeringStage | null; runs: string[]; meta: OverviewMeta | null }
   | { error: { text: string; code?: string } };
 
 /** The open stage's live overview, or a closed stage's saved record. */
@@ -30,7 +32,12 @@ async function fetchOverview(closedKey: string | null): Promise<OverviewResult> 
           return `${o.label || 'run'}${o.model ? ` (${o.model})` : ''}`;
         })
       : [];
-    return { rows: normalizeOverview(body), record: closedKey ? normalizeStage(body) : null, runs };
+    return {
+      rows: normalizeOverview(body),
+      record: closedKey ? normalizeStage(body) : null,
+      runs,
+      meta: closedKey ? null : normalizeOverviewMeta(body),
+    };
   } catch (err) {
     return { error: { text: err instanceof Error ? err.message : 'Overview unavailable' } };
   }
@@ -58,13 +65,15 @@ function readStageParam(): string | null {
 /**
  * The steering page: one tab per stage (Stage 1, Cross-DP, Style, Final). The open stage shows live
  * progress (anyone signed in; only steering members open a document); a closed stage shows its saved
- * record (anyone); stages still to come are listed but not selectable.
+ * record (anyone); stages still to come are listed but not selectable. Stage 2 can be opened alongside
+ * Stage 1: both tabs then show the same live progress, and Stage 1 is the one that closes first.
  */
 export default function SteeringOverview({ signedIn, steering }: { signedIn: boolean; steering: boolean }) {
   const [stages, setStages] = useState<SteeringStage[] | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [record, setRecord] = useState<SteeringStage | null>(null);
   const [runs, setRuns] = useState<string[]>([]);
+  const [meta, setMeta] = useState<OverviewMeta | null>(null);
   const [rows, setRows] = useState<SteeringOverviewRow[] | null>(null);
   const [error, setError] = useState<{ text: string; code?: string } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -109,6 +118,7 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
       setRows(result.rows);
       setRecord(result.record);
       setRuns(result.runs);
+      setMeta(result.meta);
       setError(null);
     }
     setLoading(false);
@@ -156,6 +166,17 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
     },
     { open: 0, accepted: 0, deferred: 0, declined: 0 } as Record<SteeringTab, number>,
   );
+  // With two stages open, the earlier one closes first and each counts its own open proposals.
+  const liveMeta = shownRows && !closedKey ? meta : null;
+  const alongside = (liveMeta?.openStages.length || 0) > 1;
+  const closesNow = !liveMeta?.closingStageKey || liveMeta.closingStageKey === current?.key;
+  const reviewOpen = liveMeta?.openStages.find((s) => s.kind === 'review') || (current?.status === 'open' && current.kind === 'review' ? current : null);
+  const openHere = alongside && current ? (liveMeta?.openByStage[current.key] ?? totals.open) : totals.open;
+  const refreshStages = async (key: string) => {
+    const list = await loadStages();
+    setLoadedKey(null);
+    choose(list.find((p) => p.key === key)?.key || key);
+  };
   const linkFor = (ml: string) => (closedKey ? `/steering/${ml}?stage=${closedKey}` : steering ? `/steering/${ml}` : null);
 
   return (
@@ -226,9 +247,22 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
               </div>
             ))}
           </dl>
-          {current?.status === 'open' && current.kind === 'review' ? (
-            <CarriedTotals rows={shownRows} stage={current} />
+          {alongside && liveMeta ? (
+            <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">
+              {liveMeta.openStages.map((s) => s.title).join(' and ')} are open together. What{' '}
+              {liveMeta.openStages[0].title} accepts moves into {liveMeta.openStages[1].title} as it is accepted, and{' '}
+              {liveMeta.openStages[0].title} closes first.
+            </p>
           ) : null}
+          {reviewOpen && !closedKey ? (
+            <p className="text-sm">
+              <Link href="/steering/issues" className="text-cyan-300 underline hover:text-cyan-200">
+                {reviewOpen.title} by issue
+              </Link>
+              <span className="text-slate-400">: the cross-DP findings in their groups, with the fixes to vote on.</span>
+            </p>
+          ) : null}
+          {reviewOpen && !closedKey ? <CarriedTotals rows={shownRows} stage={reviewOpen} /> : null}
           {current?.status === 'open' && current.kind === 'signoff' ? (
             <p className="text-sm text-slate-300">
               {shownRows.filter((r) => r.signoff?.signed).length} of {shownRows.filter((r) => r.listed).length} documents
@@ -253,10 +287,19 @@ export default function SteeringOverview({ signedIn, steering }: { signedIn: boo
           )}
           <DocumentList heading="Front matter" rows={front} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
           <DocumentList heading="Desirable Properties" rows={dps} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
-          {steering && current?.status === 'open' && !noStages ? (
+          {steering && liveMeta?.canOpenNext ? (
+            <OpenNextStage next={liveMeta.canOpenNext} current={current} onOpened={refreshStages} />
+          ) : null}
+          {steering && current?.status === 'open' && !noStages && !closesNow ? (
+            <p className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-400">
+              {current.title} closes after {liveMeta?.openStages[0]?.title || 'the stage before it'}.
+            </p>
+          ) : null}
+          {steering && current?.status === 'open' && !noStages && closesNow ? (
             <CloseStage
               stage={current}
-              openProposals={totals.open}
+              nextIsOpen={alongside}
+              openProposals={openHere}
               openCarried={shownRows.reduce((n, r) => n + (r.carried?.open || 0), 0)}
               unsigned={current.kind === 'signoff' ? shownRows.filter((r) => r.listed && !r.signoff?.signed).length : 0}
               onClosed={async (next) => {
@@ -373,9 +416,12 @@ function CloseStage({
   openProposals,
   openCarried,
   unsigned,
+  nextIsOpen = false,
   onClosed,
 }: {
   stage: SteeringStage;
+  /** The next stage is already open alongside this one. */
+  nextIsOpen?: boolean;
   openProposals: number;
   openCarried: number;
   unsigned: number;
@@ -418,7 +464,9 @@ function CloseStage({
         and read-only.
         {final
           ? ' Final closes once every document has two sign-offs on its current text. That ends the steering work.'
-          : ` Everything it accepted then opens in ${stage.nextTitle || 'the next stage'} to be reviewed again.`}
+          : nextIsOpen
+            ? ` ${stage.nextTitle || 'The next stage'} is already open and goes on reviewing what this stage accepted.`
+            : ` Everything it accepted then opens in ${stage.nextTitle || 'the next stage'} to be reviewed again.`}
       </p>
       {final ? (
         <p className="mt-2 text-slate-300">
@@ -469,7 +517,7 @@ function CloseStage({
               onClick={() => void close()}
               className="rounded-lg bg-rose-700 px-4 py-2 font-medium text-white hover:bg-rose-600 disabled:opacity-50"
             >
-              {busy ? 'Closing…' : final ? 'Close Final' : `Close ${stage.title} and open ${stage.nextTitle || 'the next stage'}`}
+              {busy ? 'Closing…' : final ? 'Close Final' : nextIsOpen ? `Close ${stage.title}` : `Close ${stage.title} and open ${stage.nextTitle || 'the next stage'}`}
             </button>
             <button type="button" disabled={busy} onClick={() => setConfirming(false)} className="px-3 py-2 text-slate-400 hover:text-slate-200">
               Cancel
@@ -483,6 +531,77 @@ function CloseStage({
           className="mt-3 rounded-lg border border-slate-600 px-4 py-2 text-slate-200 hover:border-slate-400"
         >
           Close {stage.title}…
+        </button>
+      )}
+      {error ? <p role="alert" className="mt-2 text-rose-200">{error}</p> : null}
+    </section>
+  );
+}
+
+/** Steering only: open the next stage (Stage 2) while the open one (Stage 1) goes on. */
+function OpenNextStage({
+  next,
+  current,
+  onOpened,
+}: {
+  next: { key: string; title: string };
+  current: SteeringStage | null;
+  onOpened: (key: string) => void | Promise<void>;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function open() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/steering/stages/open-next', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stage_key: next.key }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(body.error || `Opening failed (${res.status})`);
+      setConfirming(false);
+      await onOpened(next.key);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Opening failed');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const now = current?.title || 'the open stage';
+  return (
+    <section className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 text-sm">
+      <h2 className="font-semibold text-white">Open {next.title} now</h2>
+      <p className="mt-1 text-slate-400">
+        {next.title} can run alongside {now}. Everything {now} has accepted is reviewed there straight away, and
+        each change it accepts from then on joins as it is accepted. {now} stays open and closes first. This cannot be
+        undone.
+      </p>
+      {confirming ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => void open()}
+            className="rounded-lg bg-violet-700 px-4 py-2 font-medium text-white hover:bg-violet-600 disabled:opacity-50"
+          >
+            {busy ? 'Opening…' : `Open ${next.title}`}
+          </button>
+          <button type="button" disabled={busy} onClick={() => setConfirming(false)} className="px-3 py-2 text-slate-400 hover:text-slate-200">
+            Cancel
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setConfirming(true)}
+          className="mt-3 rounded-lg border border-slate-600 px-4 py-2 text-slate-200 hover:border-slate-400"
+        >
+          Open {next.title}…
         </button>
       )}
       {error ? <p role="alert" className="mt-2 text-rose-200">{error}</p> : null}

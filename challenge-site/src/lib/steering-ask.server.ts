@@ -58,6 +58,7 @@ export function resolveSteeringTarget(doc: SteeringDocument, raw: string): Steer
             state: 'done',
             outcome: c.earlier.outcome,
             tab: c.tab,
+            stageKey: doc.stage?.key || null,
           },
         }
       : null;
