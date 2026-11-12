@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-needs-you",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: a \"What needs you\" panel on each stage",
+      "summary": "Each review stage's bundles now open with a panel that says how many fixes wait for your vote, how many decisions wait for your choice and how many flagged changes you could review. One button approves every fix the analysis recommends as written, across all bundles, and \"Show only what needs me\" (on by default) hides everything else.",
+      "changes": [
+        "\"What needs you\" counts fixes waiting for your vote, decisions waiting for your choice, and optional reviews",
+        "\"Approve all N recommended fixes\" records your accept vote on every open fix recommended as written, across all bundles; a second member still has to agree",
+        "\"Show only what needs me\" (on by default) shows only findings with something waiting for you, including fixes attached to decisions; \"Include optional reviews\" adds the flagged accepted changes",
+        "The bundle links at the top show how many findings in each need you"
+      ]
+    },
+    {
       "id": "steering-ledger",
       "date": "2026-11-12",
       "status": "open",
