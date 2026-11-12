@@ -435,7 +435,7 @@ function tocHtml(chapters) {
 </section>`;
 }
 
-function titlePagesHtml(final, builtAt) {
+function titlePagesHtml(final, builtAt, editionRail) {
   const status = final
     ? `<p>${EDITION} · ${EDITION_DATE}</p>`
     : `<p class="review">Review copy, built ${builtAt} from the Gov Hub text at that time.<br>This is not the final ${EDITION} text.</p>`;
@@ -448,7 +448,7 @@ function titlePagesHtml(final, builtAt) {
   <div class="tp-pub">Meta-Layer Initiative</div>
 </section>
 <section class="edition">
-  <p><i>${TITLE}: ${SUBTITLE}</i></p>
+  ${editionRail ? `${final ? '' : status}${editionRail.subtitle ? `<p><i>${esc(editionRail.subtitle)}</i></p>` : ''}${marked.parse(editionRail.body)}</section>` : `<p><i>${TITLE}: ${SUBTITLE}</i></p>
   ${status}
   <p>Developed in the open by the Meta-Layer community through the Desirable Properties Challenge and its workgroups, and approved by the Desirable Properties steering committee.</p>
   <p>The online edition: <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a><br>
@@ -456,7 +456,7 @@ function titlePagesHtml(final, builtAt) {
   Workgroups and drafts: <a href="https://interfacehub.net">interfacehub.net</a></p>
   <p>© 2026 the contributors to the Desirable Properties of a Meta-Layer. This book is licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License (CC BY 4.0)</a>: you may share and adapt it for any purpose, provided you give appropriate credit and indicate if changes were made.</p>
   <p>The chapters of this book are inscribed on Bitcoin as part of a BRC333 digital monument. The online edition is the living reference; this PDF is a snapshot of ${EDITION}.</p>
-</section>`;
+</section>`}`;
 }
 
 const CSS = String.raw`
@@ -550,6 +550,8 @@ img { max-width: 100%; }
 .tp-pub { margin-top: 0.12in; font-size: 10pt; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; }
 .edition { page: bare; break-after: page; padding-top: 4.4in; font-size: 8.6pt; line-height: 1.5; color: #3a3d42; }
 .edition p { text-align: left; margin-bottom: 0.9em; }
+.edition h2 { font-size: 8.6pt; margin: 1.1em 0 0.3em; }
+.edition:has(h2) { padding-top: 1.6in; }
 .edition .review { color: #9b2c1f; font-weight: 600; }
 
 /* contents */
@@ -586,7 +588,7 @@ img { max-width: 100%; }
 .chapter-end a { color: #7a5b16; }
 `;
 
-function buildHtml({ chapters, foreword, preface, intro, acknowledgements, final, builtAt, coverImage }) {
+function buildHtml({ chapters, foreword, preface, intro, acknowledgements, edition, final, builtAt, coverImage }) {
   const validDps = new Set(chapters.map((c) => c.dp));
   const ackRail = { ...acknowledgements, body: linkDpRefs(acknowledgements.body, null, validDps) };
   return `<!doctype html>
@@ -601,7 +603,7 @@ function buildHtml({ chapters, foreword, preface, intro, acknowledgements, final
 </head>
 <body>
 ${coverHtml(coverImage)}
-${titlePagesHtml(final, builtAt)}
+${titlePagesHtml(final, builtAt, edition)}
 ${tocHtml(chapters)}
 ${matterHtml('foreword', foreword)}
 ${matterHtml('preface', preface)}
@@ -746,6 +748,9 @@ async function main() {
   const foreword = prepareRail(load('foreword'));
   const preface = prepareRail(load('about'));
   const intro = prepareRail(load('ml-draft-026'));
+  // The edition and license page, once it is a Gov Hub draft with an `edition` rail; until then the built-in text.
+  const edition = byKey.edition?.mlNumber ? prepareRail(load('edition')) : null;
+  if (!edition) console.warn('  ! No `edition` rail in sources-sat.json yet: using the built-in edition and license text');
   const acknowledgements = prepareRail(load('acknowledgements'));
   const chapters = dpRails.map((s) => {
     const r = prepareRail(load(s.railKey));
@@ -760,7 +765,7 @@ async function main() {
   if (!coverImage && !args.htmlOnly) coverImage = await renderCoverPng(args.coverPng || path.join(HERE, 'out', 'cover.png'), findChrome(args.chrome));
   else if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
   const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
-  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, final: args.final, builtAt, coverImage })
+  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, edition, final: args.final, builtAt, coverImage })
     .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
 
   const workDir = path.join(HERE, 'out');
