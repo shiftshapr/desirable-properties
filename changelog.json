@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-passes",
+      "date": "2026-11-12",
+      "status": "open",
+      "title": "Steering: passes (Pass 1, Pass 2, Final), each with a public record once closed",
+      "summary": "The steering page now has a tab for each pass. Closing a pass saves its full record (every proposal with its analysis, votes and outcome), makes that record public and read-only, carries open items into the next pass and opens it. Anyone signed in can follow the open pass's progress; only steering members open its documents and see the steering notes.",
+      "changes": [
+        "Pass tabs on /steering; the open pass shows live progress, a closed pass shows its saved record (?pass=pass-1)",
+        "Each document row and the totals show Open, Accepted, Deferred and Declined counts in colored circles",
+        "Close Pass (steering members): name the next pass, say what it covers, and leave a closing note that is public with the record",
+        "Items still open when a pass closes are carried into the next pass with their votes and marked \"Carried from\"",
+        "A closed pass's documents (/steering/<ml>?pass=<key>) are readable by anyone, read-only, without voting or Ask Deepi",
+        "Anyone signed in sees the steering overview; steering notes and the audit export stay steering-only"
+      ]
+    },
+    {
       "id": "steering-status-tabs",
       "date": "2026-11-12",
       "status": "open",

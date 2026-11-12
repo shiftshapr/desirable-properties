@@ -5,8 +5,10 @@ import SteeringNotes from '@/components/steering/SteeringNotes';
 import SteeringSweep from '@/components/steering/SteeringSweep';
 import { readSession } from '@/lib/auth-session';
 import { frontMatterTitle, normalizeMl } from '@/lib/dp-steering';
+import { passKey } from '@/lib/dp-steering-govhub.server';
+import { viewerIsSteering } from '@/lib/steering-notes.server';
 
-type PageProps = { params: Promise<{ ml: string }> };
+type PageProps = { params: Promise<{ ml: string }>; searchParams: Promise<{ pass?: string }> };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const ml = normalizeMl((await params).ml);
@@ -16,17 +18,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const dynamic = 'force-dynamic';
 
-export default async function SteeringDocumentPage({ params }: PageProps) {
+export default async function SteeringDocumentPage({ params, searchParams }: PageProps) {
   const ml = normalizeMl((await params).ml);
   if (!ml) notFound();
+  const pass = passKey((await searchParams).pass);
   const session = await readSession();
+  // A closed pass is a public record; the open pass is for steering members.
+  if (pass) {
+    return (
+      <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+        <Link href={`/steering?pass=${pass}`} className="text-sm text-cyan-300 hover:text-cyan-200">
+          ← All documents
+        </Link>
+        <SteeringSweep ml={ml} passKey={pass} />
+      </main>
+    );
+  }
+  const steering = session?.idToken ? await viewerIsSteering(session.idToken) : false;
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="flex items-center justify-between gap-3">
         <Link href="/steering" className="text-sm text-cyan-300 hover:text-cyan-200">
           ← All documents
         </Link>
-        {session?.userId ? (
+        {steering ? (
           <a href="#steering-notes" className="text-sm text-cyan-300 hover:text-cyan-200">
             Steering notes ↓
           </a>
@@ -35,7 +50,7 @@ export default async function SteeringDocumentPage({ params }: PageProps) {
       {session?.userId ? (
         <>
           <SteeringSweep ml={ml} />
-          <SteeringNotes ml={ml} />
+          {steering ? <SteeringNotes ml={ml} /> : null}
         </>
       ) : (
         <p className="mt-8 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
