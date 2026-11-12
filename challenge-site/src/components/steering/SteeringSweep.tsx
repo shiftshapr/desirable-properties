@@ -454,6 +454,7 @@ function BatchSection({
   const included = pending.filter((i) => !excluded.has(i.proposalId));
   const canApprove = batch.kind !== 'needs_person' && included.length > 0 && !busy;
   const done = items.length - open.length;
+  const doneItems = items.filter((i) => i.state === 'done');
   const toggle = (id: string) =>
     setExcluded((prev) => {
       const next = new Set(prev);
@@ -502,6 +503,7 @@ function BatchSection({
               {pending.length}.
             </p>
           ) : null}
+          <RemainingItems items={pending} done={done} />
           <p className="text-xs text-slate-400">
             {batch.bookWide ? (
               <strong className="block pb-1 text-amber-200">
@@ -554,7 +556,7 @@ function BatchSection({
       )}
 
       <ul className="mt-4 space-y-4">
-        {items.map((item) => (
+        {open.map((item) => (
           <ItemCard
             key={item.proposalId}
             ml={ml}
@@ -571,7 +573,53 @@ function BatchSection({
           />
         ))}
       </ul>
+      {doneItems.length ? (
+        <details className={`${open.length ? 'mt-4' : 'mt-3'}`}>
+          <summary className="cursor-pointer text-sm text-slate-400 hover:text-slate-200">
+            {doneItems.length} already carried out: {doneItems.map(itemLabel).join('; ')}
+          </summary>
+          <ul className="mt-3 space-y-4">
+            {doneItems.map((item) => (
+              <ItemCard
+                key={item.proposalId}
+                ml={ml}
+                item={item}
+                busy={busy}
+                flash={flash[item.proposalId]}
+                onVote={onVote}
+                onWithdraw={onWithdraw}
+              />
+            ))}
+          </ul>
+        </details>
+      ) : null}
     </section>
+  );
+}
+
+/** Author, kind and short id: enough to find the card, since proposals carry no title. */
+function itemLabel(item: SteeringItem): string {
+  const mode = String(item.proposal.patch_mode || '').toLowerCase();
+  const kind = mode === 'dedup_bundle' ? 'dedup bundle' : mode === 'editorial_bundle' ? 'editorial bundle' : null;
+  return [item.proposal.author_name || 'Unknown author', kind, shortId(item.proposalId)].filter(Boolean).join(' · ');
+}
+
+/** Names what approving still covers, so a done card above the button doesn't read as the one being voted on. */
+function RemainingItems({ items, done }: { items: SteeringItem[]; done: number }) {
+  if (!items.length || !done) return null;
+  return (
+    <p className="text-xs text-slate-300">
+      {items.length === 1 ? '1 item still needs your vote' : `${items.length} items still need your vote`}:{' '}
+      {items.map((item, n) => (
+        <span key={item.proposalId}>
+          {n ? '; ' : ''}
+          <a href={`#item-${item.proposalId}`} className="text-cyan-300 hover:underline">
+            {itemLabel(item)}
+          </a>
+        </span>
+      ))}
+      . The {done} done {done === 1 ? 'item is' : 'items are'} collapsed below.
+    </p>
   );
 }
 
@@ -641,7 +689,7 @@ function ItemCard({
   const insertPosition = mode === 'insert_after' ? 'below' : mode === 'insert' ? 'above' : null;
 
   return (
-    <li className={`rounded-xl border bg-slate-950/40 p-3 sm:p-4 ${include && !include.checked ? 'border-slate-800 opacity-80' : 'border-slate-800'}`}>
+    <li id={`item-${item.proposalId}`} className={`scroll-mt-24 rounded-xl border bg-slate-950/40 p-3 sm:p-4 ${include && !include.checked ? 'border-slate-800 opacity-80' : 'border-slate-800'}`}>
       <div className="flex items-start gap-3">
         {include ? (
           <input
