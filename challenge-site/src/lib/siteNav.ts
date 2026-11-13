@@ -56,6 +56,16 @@ export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): 
 export const SITE_NAV_LINKS: SiteNavLink[] = [
   { href: '/start-here', label: 'Start Here', highlight: true },
   {
+    label: 'Version 1.0',
+    href: '/v1',
+    children: [
+      { href: '/v1', label: 'About Version 1.0' },
+      { href: 'https://book.desirableproperties.org/', label: 'Read the book', external: true },
+      { href: '/steering', label: 'Steering and proposals' },
+      { href: '/press', label: 'Press release' },
+    ],
+  },
+  {
     label: 'About',
     href: '/about',
     children: [

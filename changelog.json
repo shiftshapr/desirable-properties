@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "nav-v1-press-steering",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0, Steering and Press in the menu and footer",
+      "summary": "A Version 1.0 menu (About Version 1.0, Read the book, Steering and proposals, Press release) and footer links to Version 1.0, Steering and Press, so those pages can be found from anywhere on the site.",
+      "changes": [
+        "Header: Version 1.0 menu",
+        "Footer: Version 1.0, Steering, Press"
+      ]
+    },
+    {
       "id": "public-proposals-roadmap-box1",
       "date": "2026-11-13",
       "status": "open",
