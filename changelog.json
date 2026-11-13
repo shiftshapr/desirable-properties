@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "press-phahsa-update",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: Phahsa Ras's updated quote",
+      "summary": "Phahsa Ras's quote and role line updated to his revised wording.",
+      "changes": [
+        "Press: Phahsa quote updated"
+      ]
+    },
+    {
       "id": "book-edition-page",
       "date": "2026-11-13",
       "status": "open",

@@ -27,10 +27,10 @@ const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean
   },
   {
     who: 'Phahsa Ras',
-    role: 'Director of UMi; contributor, co-editor of DP4, DP6, DP17 and DP22, and Version 1.0 Steering Committee',
+    role: 'Steering committee; co-editor of DP4, DP6, DP17 and DP22',
     text:
-      'We read every proposal, and then we read the whole book again, chapter by chapter, until nothing was left to fix. What we signed off is a text that hundreds of people helped shape.',
-    approved: true, // approved by Phahsa Ras (via Daveed Benjamin), 13 Nov 2026
+      'The Layered Web book represents a meaningful collaborative effort, bringing together ideas from a wide community with the support of AI-assisted tools. We see it as an evolving body of work, with an opportunity to build on what has been established and strengthen future editions together.',
+    approved: true, // Phahsa Ras's updated quote, 13 Nov 2026 (via Daveed Benjamin)
   },
   {
     who: 'Renad Baomar',
