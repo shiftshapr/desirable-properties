@@ -19,10 +19,10 @@ export default function ChallengeCountdown({ initialNow }: Props) {
     return (
       <div className="rounded-xl border border-violet-800/50 bg-violet-950/30 p-6 text-center">
         <p className="text-lg font-semibold text-violet-200">
-          Desirable Properties milestones are live
+          Version 1.0 is live.
         </p>
         <p className="mt-2 text-sm text-slate-400">
-          Explore the Community Review Draft and Version 1.0 release below.
+          The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.
         </p>
       </div>
     );
@@ -59,10 +59,12 @@ export default function ChallengeCountdown({ initialNow }: Props) {
         Countdown to milestone
       </p>
       <p className="mt-2 text-center text-lg font-semibold text-white">
-        {milestone.title}
+        {isV1Launch ? 'Version 1.0 is live.' : milestone.title}
       </p>
       <p className="mt-1 text-center text-sm text-slate-400">
-        {isV1Launch ? launchLabel : `${launchLabel} · ${launchTime}`}
+        {isV1Launch
+          ? 'The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'
+          : `${launchLabel} · ${launchTime}`}
       </p>
       <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
         {units.map(({ value, label }) => (

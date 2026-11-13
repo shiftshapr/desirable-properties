@@ -27,14 +27,14 @@ export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?
         </a>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
-            {released ? 'Version 1.0 · out now' : 'Version 1.0 · releases Friday'}
+            {released ? 'Version 1.0 is live' : 'Version 1.0 · releases Friday'}
           </p>
           <H id="v1-book-heading" className="mt-2 text-3xl font-bold text-white sm:text-4xl">
             The Desirable Properties of a Meta-Layer
           </H>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-200">
             {released
-              ? 'Twenty-four properties for the layered web, written in the open over two years. Read it online, with a discussion layer on every page, or download the PDF.'
+              ? 'Twenty-four properties for the layered web, written in the open over two years. Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'
               : 'Twenty-four properties for the layered web, written in the open over two years. V1.0 releases Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">

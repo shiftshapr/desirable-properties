@@ -931,7 +931,7 @@ function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
     id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
     title: event.title, seriesType: event.launch ? 'single' : 'series',
     href: event.lumaUrl, detailHref: event.href, external: true,
-    startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
+    startsAt: event.startsAt, dateLabel: event.launch ? 'Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.' : `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
     seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
     seriesTitle: event.launch ? 'Desirable Properties Version 1.0' : 'Meta-Layer Monday', seriesHref: '/roundups',
   }));

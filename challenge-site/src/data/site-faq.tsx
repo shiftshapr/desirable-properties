@@ -185,9 +185,9 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             </p>
             <p>
               <strong className="font-semibold text-white">Version 1.0</strong> is the
-              community-synthesized foundation. V1.0 releases Friday, November 13, 2026, 10–11 AM
-              PT. September 16, 2026 was the Community Review Draft milestone and governance
-              feedback workflow demonstration.
+              community-synthesized foundation. Version 1.0 is live. The launch gathering is
+              Friday, November 13, 2026, 10–11 AM PT. September 16, 2026 was the Community Review
+              Draft milestone and governance feedback workflow demonstration.
             </p>
           </>
         ),
@@ -454,9 +454,10 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               Discuss, Patch, Insert, and Gov Hub revisions.
             </p>
             <p>
-              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with a permanent Ordinal
-              edition as part of the Digital Monument. September 16, 2026 was the Community Review
-              Draft milestone. <Link href="/onchain">Browse on-chain →</Link>
+              Version 1.0 is live, with a permanent Ordinal edition as part of the Digital
+              Monument. The launch gathering is Friday, November 13, 2026, 10–11 AM PT. September
+              16, 2026 was the Community Review Draft milestone.{' '}
+              <Link href="/onchain">Browse on-chain →</Link>
             </p>
           </>
         ),
@@ -527,20 +528,20 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               See the live phase on the{' '}
               <Link href="/challenge#timeline">Challenge timeline</Link>. September 16, 2026 was
-              the Community Review Draft milestone. V1.0 releases Friday, November 13, 2026, 10–11
-              AM PT.
+              the Community Review Draft milestone. Version 1.0 is live. The launch gathering is
+              Friday, November 13, 2026, 10–11 AM PT.
             </p>
           </>
         ),
       },
       {
-        q: 'When is Version 1.0?',
+        q: 'When did Version 1.0 release?',
         a: (
           <>
             <p>
-              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with Digital Monument
-              publication. September 16, 2026 was the public Community Review Draft milestone and
-              governance feedback workflow demonstration.
+              Version 1.0 is live, with Digital Monument publication. The launch gathering is
+              Friday, November 13, 2026, 10–11 AM PT. September 16, 2026 was the public Community
+              Review Draft milestone and governance feedback workflow demonstration.
             </p>
             <p>
               <Link href="/book">Read the book →</Link>

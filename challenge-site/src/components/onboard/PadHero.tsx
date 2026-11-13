@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const HERO_SRC = '/media/be-part-of-1.0-hero.png';
 const HERO_ALT =
-  'Be part of 1.0 – Desirable Properties Studio. V1.0 releases Friday, November 13, 2026, 10–11 AM PT.';
+  'Be part of 1.0 – Desirable Properties Studio. Version 1.0 is live.';
 
 export default function PadHero() {
   return (

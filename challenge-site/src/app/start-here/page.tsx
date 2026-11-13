@@ -611,9 +611,10 @@ export default async function StartHerePage() {
                 </p>
               </li>
               <li>
-                <p className="font-semibold text-white">Friday, November 13, 2026, 10–11 AM PT</p>
+                <p className="font-semibold text-white">Version 1.0 is live</p>
                 <p className="text-base text-slate-400">
-                  V1.0 releases Friday, November 13, 2026, 10–11 AM PT ({challengeMeta.v1_release_title}).
+                  Version 1.0 is live ({challengeMeta.v1_release_title}). The launch gathering is
+                  Friday, November 13, 2026, 10–11 AM PT.
                 </p>
               </li>
             </ol>
@@ -632,8 +633,7 @@ export default async function StartHerePage() {
                 </strong>
               </p>
               <p className="mt-3 text-slate-300">
-                Co-edit a DP, comment on a chapter, or join a workgroup. V1.0 releases Friday,
-                November 13, 2026, 10–11 AM PT.
+                Co-edit a DP, comment on a chapter, or join a workgroup. Version 1.0 is live.
               </p>
             </blockquote>
             <div className="flex flex-wrap gap-3">

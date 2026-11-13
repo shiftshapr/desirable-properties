@@ -46,8 +46,8 @@ export default async function LaunchBriefingPage({ searchParams }: Props) {
           </p>
           <p className="mt-3 text-sm text-slate-500">{challengeMeta.book_launch_title}</p>
           <p className="mt-4 text-base leading-relaxed text-slate-300">
-            Version 1.0 was not part of that milestone. V1.0 releases Friday, November 13, 2026,
-            10–11 AM PT.
+            Version 1.0 is live. September 16 remains the Community Review Draft milestone that
+            preceded it.
           </p>
         </header>
 
