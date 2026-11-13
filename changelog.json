@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "nav-fit-laptop",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Menu fits at laptop widths",
+      "summary": "Between 1024 and 1279 px the header hides Badges and On-Chain (both in the footer) so the menu with Version 1.0 no longer runs into Sign in.",
+      "changes": [
+        "Header: fits at 1024–1279 px"
+      ]
+    },
+    {
       "id": "roadmap-crisp-text",
       "date": "2026-11-13",
       "status": "open",
