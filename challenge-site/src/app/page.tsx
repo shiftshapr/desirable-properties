@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
@@ -18,10 +19,21 @@ import {
   DESIRABLE_PROPERTIES_BOOK_HOST,
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import localData from '../data/desirable-properties.json';
 import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const revalidate = 0;
+
+// Visible copy and <title> unchanged; link previews announce the released Version 1.0.
+export const metadata: Metadata = {
+  openGraph: pageOpenGraph({
+    title: 'The Layered Web, Version 1.0 | Desirable Properties',
+    description:
+      'Version 1.0 of The Layered Web: The Desirable Properties of a Meta-Layer is released (13 November 2026). Twenty-four properties for a trustworthy layer above the web, written in the open. Read it, then help shape Version 1.1.',
+    path: '/',
+  }),
+};
 
 const MISSING_ITEMS = [
   'Candidate DPs',

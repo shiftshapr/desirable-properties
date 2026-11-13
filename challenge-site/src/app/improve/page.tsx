@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import Link from 'next/link';
 import localData from '@/data/desirable-properties.json';
 import ImproveExplorer from '@/components/improve/ImproveExplorer';
@@ -18,10 +19,11 @@ export const metadata: Metadata = {
   title: 'Help shape Version 1.1 | Desirable Properties',
   description:
     'Version 1.0 of The Layered Web is out. Help shape Version 1.1: propose changes to any of the 24 Desirable Properties, take a co-editor seat, or join the steering committee.',
-  openGraph: {
+  openGraph: pageOpenGraph({
     title: 'Help shape Version 1.1',
     description: 'Propose, co-edit or steer the next revision of The Layered Web: The Desirable Properties of a Meta-Layer.',
-  },
+    path: '/improve',
+  }),
 };
 
 /** Public co-editor seats for one workgroup (anonymous view; viewer actions are loaded in the drawer). */

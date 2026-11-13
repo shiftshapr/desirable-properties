@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import OrdinalLink from '@/components/OrdinalLink';
 import OnchainClaimableLists from '@/components/OnchainClaimableLists';
@@ -11,10 +12,24 @@ import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
 import { inscriptionUrl } from '@/lib/ordinalLinks';
 import { extractDpId, fetchChallengeWorkgroups, govhubUrl } from '@/lib/govhub';
 import { dpDetailHref } from '@/lib/dp-links';
+import { pageOpenGraph } from '@/lib/site-metadata';
 
 const CALL_FOR_INPUT_INSCRIPTION =
   articlesData.meta.call_for_input_inscription;
 const HOW_TO_INSCRIBE = articlesData.meta.how_to_inscribe;
+
+const ONCHAIN_DESCRIPTION =
+  'The Desirable Properties on Bitcoin: the Call for Input, community submissions and the DPs of The Layered Web, inscribed as ordinals.';
+
+export const metadata: Metadata = {
+  title: 'On Bitcoin | Desirable Properties',
+  description: ONCHAIN_DESCRIPTION,
+  openGraph: pageOpenGraph({
+    title: 'The Layered Web on Bitcoin',
+    description: ONCHAIN_DESCRIPTION,
+    path: '/onchain',
+  }),
+};
 
 export default async function OnchainPage() {
   const pciEmails = articlesData.pci_emails;
