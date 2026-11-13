@@ -27,16 +27,17 @@ const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean
   },
   {
     who: 'Phahsa Ras',
-    role: 'Version 1.0 Steering Committee; co-editor of DP4, DP6, DP17 and DP22',
+    role: 'Steering committee; co-editor of DP4, DP6, DP17 and DP22',
     text:
-      'We read every proposal, and then we read the whole book again, chapter by chapter, until nothing was left to fix. What we signed off is a text that hundreds of people helped shape.',
-    approved: false,
+      'The Layered Web book represents a meaningful collaborative effort, bringing together ideas from a wide community with the support of AI-assisted tools. We see it as an evolving body of work, with an opportunity to build on what has been established and strengthen future editions together.',
+    approved: true, // Phahsa Ras's updated quote, 13 Nov 2026 (via Daveed Benjamin)
   },
   {
     who: 'Renad Baomar',
-    role: 'Co-editor of DP10',
-    text: 'Quote requested from Renad Baomar (13 Nov); it appears here once received and approved.',
-    approved: false,
+    role: '14-year-old Global Youth Advocate, Founder of Brave Voices, and Co-editor of DP10 – Education',
+    text:
+      'Working with the Metaweb and the Desirable Properties has transformed how I see the relationship between knowledge, education, and the future we are creating. I have come to realise that the greatest opportunity of the internet is not simply to give everyone access to information, but to empower everyone to shape it. Serving as Co-editor of DP10 – Education has strengthened my conviction that we must move beyond designing education for the next generation and start building it with them.',
+    approved: true, // Renad Baomar's quote (13 Nov), shortened by cutting only; provided by Daveed Benjamin for release
   },
 ];
 

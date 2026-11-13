@@ -73,7 +73,7 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             <strong className="font-semibold text-white">
               Not Desirable Properties Version {challengeMeta.target_version}
             </strong>{' '}
-            – <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />
+            – <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." after="Version 1.0 is finished and published. Version 1.1 is the next open revision." />
           </li>
           <li>
             <strong className="font-semibold text-white">Not every valid proposal integrated</strong>{' '}

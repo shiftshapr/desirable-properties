@@ -4,6 +4,68 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-pdf-button",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1: Download the PDF always up front",
+      "summary": "The /v1 hero always shows a prominent Download the PDF button with Read online and Share (and, before the launch, Join the launch).",
+      "changes": [
+        "/v1: PDF button always shown"
+      ]
+    },
+    {
+      "id": "press-phahsa-update",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: Phahsa Ras's updated quote",
+      "summary": "Phahsa Ras's quote and role line updated to his revised wording.",
+      "changes": [
+        "Press: Phahsa quote updated"
+      ]
+    },
+    {
+      "id": "book-edition-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Book: Edition and license page",
+      "summary": "The online book gets an Edition and license page after the cover (Version 1.0, November 13, 2026; foreword by Vint Cerf; how it was made; links; CC BY 4.0; inscribed on Bitcoin), matching the PDF's edition notice.",
+      "changes": [
+        "Book: /viewer/edition"
+      ]
+    },
+    {
+      "id": "press-quotes",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release quotes: Phahsa Ras and Renad Baomar",
+      "summary": "The press release adds approved quotes from Phahsa Ras (Director of UMi, contributor, co-editor and Version 1.0 Steering Committee) and Renad Baomar (14-year-old Global Youth Advocate, Founder of Brave Voices, Co-editor of DP10 – Education).",
+      "changes": [
+        "Press: two more quotes"
+      ]
+    },
+    {
+      "id": "v1-hero-fold",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1 hero buttons above the fold",
+      "summary": "Tighter /v1 hero so Download, Read online and Share show without scrolling on laptop screens.",
+      "changes": [
+        "/v1 hero: tighter layout"
+      ]
+    },
+    {
+      "id": "v1-finished-wording",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Site wording for a finished Version 1.0",
+      "summary": "After the launch, /participate and other pages say Version 1.0 is finished and point to Version 1.1: read and discuss, propose changes, join a workgroup or take a co-editor seat (up to three per DP; any two approve), or join the V1.1 steering committee. Pre-launch wording is unchanged until 10am PT.",
+      "changes": [
+        "/participate: rewritten for after the launch, four ways to contribute toward Version 1.1",
+        "FAQ, Start Here, Challenge, Workgroups, Process, Readiness, Roundups, Launch briefing, landing pads: in-progress V1 wording switches at launch and points to Version 1.1",
+        "Workgroup next steps and roster nudge: say Version 1.1 after the launch"
+      ]
+    },
+    {
       "id": "v1-report-page",
       "date": "2026-11-13",
       "status": "open",

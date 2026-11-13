@@ -81,24 +81,59 @@ export default async function ChallengePage() {
             <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">
               Start Here
             </Link>
-            . Working toward Version 1.0?{' '}
-            <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
-              How V1 gets made
-            </Link>{' '}
-            and the{' '}
-            <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
-              readiness board
-            </Link>
-            .
+            .{' '}
+            <V1PhaseText
+              before={
+                <>
+                  Working toward Version 1.0?{' '}
+                  <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
+                    How V1 gets made
+                  </Link>{' '}
+                  and the{' '}
+                  <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">
+                    readiness board
+                  </Link>
+                  .
+                </>
+              }
+              during={
+                <>
+                  Want to help shape Version 1.1?{' '}
+                  <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
+                    Ways to contribute
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
+                    how Version 1.0 was made
+                  </Link>
+                  .
+                </>
+              }
+            />
           </p>
           <p>
-            That question and two international Calls for Input informed{' '}
-            <strong className="font-semibold text-white">
-              Version {challengeMeta.current_draft_version}
-            </strong>{' '}
-            of <em>The Layered Web: The Desirable Properties of a Meta-Layer</em>–the current working draft developed
-            through AI-assisted synthesis and community stewardship. The milestones below trace how
-            we got here and what&apos;s next.
+            <V1PhaseText
+              before={
+                <>
+                  That question and two international Calls for Input informed{' '}
+                  <strong className="font-semibold text-white">
+                    Version {challengeMeta.current_draft_version}
+                  </strong>{' '}
+                  of <em>The Layered Web: The Desirable Properties of a Meta-Layer</em>–the current working draft
+                  developed through AI-assisted synthesis and community stewardship. The milestones below trace how
+                  we got here and what&apos;s next.
+                </>
+              }
+              during={
+                <>
+                  That question and two international Calls for Input led to{' '}
+                  <strong className="font-semibold text-white">Version 1.0</strong> of{' '}
+                  <em>The Layered Web: The Desirable Properties of a Meta-Layer</em>, finished and published on
+                  November 13, 2026. It was developed through AI-assisted synthesis and community stewardship,
+                  with 1,635 proposals decided. The milestones below trace how we got here and what&apos;s next.
+                </>
+              }
+            />
           </p>
         </section>
 
@@ -109,8 +144,8 @@ export default async function ChallengePage() {
             September 16, 2026 was the Community Review Draft milestone and governance demo.{' '}
             <V1PhaseText
               before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
-              during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
-              after="Version 1.0 is live."
+              during="Version 1.0 is live. The launch gathering is on now, 10–11 AM PT."
+              after="Version 1.0 is finished. Proposals toward Version 1.1 are open."
             />{' '}
             <Link
               href="/challenge#timeline"
@@ -125,20 +160,41 @@ export default async function ChallengePage() {
         <section className="space-y-4 text-lg leading-relaxed text-slate-300">
           <h2 className="text-2xl font-bold text-white">A new phase</h2>
           <p>
-            Today the project enters a new phase. The Desirable Properties Challenge invites people
-            everywhere to refine, debate, test, and improve these living drafts using Meta-Layer
-            tools. Read and discuss chapters on{' '}
-            <DiscussPatchLink
-              href={bookDiscussHref()}
-              className="text-cyan-300 hover:text-cyan-200"
-            >
-              {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </DiscussPatchLink>{' '}
-            (chapter comments are live now). Patch draft text on Gov Hub – select a passage and submit
-            a revision. Over the coming months, workgroups will gather commentary, propose patches,
-            and explore implementations that strengthen the overall coherence of the emerging
-            framework. Every improvement helps move the work from exploration toward rough consensus
-            while preserving a transparent history of how the ideas evolved.
+            <V1PhaseText
+              before={
+                <>
+                  Today the project enters a new phase. The Desirable Properties Challenge invites people
+                  everywhere to refine, debate, test, and improve these living drafts using Meta-Layer
+                  tools. Read and discuss chapters on{' '}
+                  <DiscussPatchLink
+                    href={bookDiscussHref()}
+                    className="text-cyan-300 hover:text-cyan-200"
+                  >
+                    {DESIRABLE_PROPERTIES_BOOK_HOST}
+                  </DiscussPatchLink>{' '}
+                  (chapter comments are live now). Patch draft text on Gov Hub – select a passage and submit
+                  a revision. Over the coming months, workgroups will gather commentary, propose patches,
+                  and explore implementations that strengthen the overall coherence of the emerging
+                  framework. Every improvement helps move the work from exploration toward rough consensus
+                  while preserving a transparent history of how the ideas evolved.
+                </>
+              }
+              during={
+                <>
+                  Version 1.0 is finished, and the project enters a new phase: Version 1.1, an open revision.
+                  Read and discuss any page on{' '}
+                  <DiscussPatchLink
+                    href={bookDiscussHref()}
+                    className="text-cyan-300 hover:text-cyan-200"
+                  >
+                    {DESIRABLE_PROPERTIES_BOOK_HOST}
+                  </DiscussPatchLink>
+                  , or propose a change there or on Gov Hub. Over the coming months, workgroups and co-editors
+                  will take up the MTPs, glossaries, and everything deferred from 1.0. Every decision stays on
+                  the record, so the history of how the ideas evolved stays transparent.
+                </>
+              }
+            />
           </p>
         </section>
 
@@ -238,7 +294,10 @@ export default async function ChallengePage() {
               href="/#dps"
               className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
             >
-              Browse Version {challengeMeta.current_draft_version} DPs
+              <V1PhaseText
+                before={`Browse Version ${challengeMeta.current_draft_version} DPs`}
+                during="Browse the Version 1.0 DPs"
+              />
             </Link>
             <DiscussPatchLink
               href={bookDiscussHref()}

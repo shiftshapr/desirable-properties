@@ -96,45 +96,43 @@ export default function V1ReportHero() {
       aria-labelledby="v1-report-title"
       className="relative overflow-hidden border-b border-amber-400/30 bg-[radial-gradient(ellipse_at_70%_40%,rgba(217,164,65,0.18),transparent_55%),linear-gradient(180deg,#05070d,#0b1120)]"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-20">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12 lg:py-12">
         <div className="order-2 lg:order-1">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-300">
             {before ? 'New report · launching today, 10–11 AM PT' : 'New report · Version 1.0 · November 13, 2026'}
           </p>
-          <h1 id="v1-report-title" className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 id="v1-report-title" className="mt-3 text-4xl font-bold leading-tight text-white sm:text-5xl">
             The Layered Web
           </h1>
-          <p className="mt-2 text-xl font-semibold text-amber-200 sm:text-2xl">The Desirable Properties of a Meta-Layer</p>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-200">
+          <p className="mt-1 text-xl font-semibold text-amber-200">The Desirable Properties of a Meta-Layer</p>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-200">
             Twenty-four properties that a trustworthy layer above the web must have, written in the open by hundreds of
             contributors over two years and decided, line by line, in public.
           </p>
           <p className="mt-4 max-w-xl leading-relaxed text-slate-300">
-            It is the first step from principle to working system: the properties become testable requirements, the
-            requirements become architecture decisions, and those decisions build the Overweb. And it stays alive:
-            read and discuss every page online, propose changes for Version 1.1, and find its chapters preserved on
-            Bitcoin.
+            The first step from principle to working system: properties become requirements, requirements become
+            architecture decisions, and decisions build the Overweb. A living book: discuss every page online, propose
+            changes for Version 1.1, and find its chapters preserved on Bitcoin.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a
+              href={V1_PDF_HREF}
+              download
+              className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-6 py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-300"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19h16" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Download the PDF
+            </a>
             {before ? (
               <a
                 href={V1_LAUNCH_REGISTER_URL}
-                className="inline-flex items-center rounded-lg bg-amber-400 px-6 py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-300"
+                className="inline-flex items-center rounded-lg border-2 border-amber-300 px-5 py-3 text-sm font-semibold text-amber-100 hover:bg-amber-400/10"
               >
                 Join the launch: register free
               </a>
-            ) : (
-              <a
-                href={V1_PDF_HREF}
-                download
-                className="inline-flex items-center gap-2 rounded-lg bg-amber-400 px-6 py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-300"
-              >
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19h16" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Download the report
-              </a>
-            )}
+            ) : null}
             <a
               href={READ_ONLINE}
               className="inline-flex items-center rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15"
@@ -144,17 +142,17 @@ export default function V1ReportHero() {
             <ShareButton />
           </div>
           <p className="mt-5 text-sm text-slate-400">
-            {before ? 'PDF available from 10 AM PT · ' : 'PDF · 807 pages · 16 MB · '}Foreword by Vint Cerf · CC BY 4.0
+            PDF · 807 pages · 16 MB · Foreword by Vint Cerf · CC BY 4.0
           </p>
         </div>
         <div className="order-1 flex justify-center lg:order-2">
-          <a href={before ? READ_ONLINE : V1_PDF_HREF} className="group relative block w-72 sm:w-96 lg:w-[30rem]" aria-label="The Layered Web, Version 1.0">
+          <a href={V1_PDF_HREF} className="group relative block w-64 sm:w-80 lg:w-[26rem]" aria-label="The Layered Web, Version 1.0">
             <span aria-hidden="true" className="absolute inset-10 rounded-full bg-amber-400/20 blur-3xl" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/v1/book-3d-600.webp"
               srcSet="/images/v1/book-3d-600.webp 600w, /images/v1/book-3d-1200.webp 1200w"
-              sizes="(min-width: 1024px) 480px, (min-width: 640px) 384px, 288px"
+              sizes="(min-width: 1024px) 416px, (min-width: 640px) 320px, 256px"
               width={600}
               height={600}
               alt="The Layered Web: The Desirable Properties of a Meta-Layer, Version 1.0, foreword by Vint Cerf"

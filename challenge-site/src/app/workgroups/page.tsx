@@ -68,7 +68,7 @@ const ROLES: Role[] = [
 
 type FaqItem = {
   q: string;
-  a: string;
+  a: React.ReactNode;
   steps?: string[];
   footer?: string;
 };
@@ -76,7 +76,12 @@ type FaqItem = {
 const FAQ_ITEMS: FaqItem[] = [
   {
     q: 'How many people should a workgroup have?',
-    a: 'We want at least three people in every workgroup for the Version 1.0 push (November 13, 2026). If a group has fewer, join it and invite others who care about that property.',
+    a: (
+      <V1PhaseText
+        before="We want at least three people in every workgroup for the Version 1.0 push (November 13, 2026). If a group has fewer, join it and invite others who care about that property."
+        during="We want at least three people in every workgroup as work on Version 1.1 begins. If a group has fewer, join it and invite others who care about that property."
+      />
+    ),
   },
   {
     q: 'How do I know which workgroup is right for me?',
@@ -177,9 +182,12 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             Each of the 24 Desirable Properties is stewarded by a dedicated workgroup, plus DP
-            Discovery for gaps the current set may have missed. Help take the Community Review Draft
-            to Version 1.0.{' '}
-            <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />{' '}
+            Discovery for gaps the current set may have missed.{' '}
+            <V1PhaseText
+              before="Help take the Community Review Draft to Version 1.0. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+              during="Version 1.0 is live. Help shape Version 1.1, the next open revision."
+              after="Version 1.0 is finished. Help shape Version 1.1, the next open revision."
+            />{' '}
             Each DP needs two co-editors, who decide which proposals go in. If a group has an open seat, join it and
             become a co-editor.
           </p>
@@ -237,7 +245,12 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <h2 className="text-3xl font-bold text-white">What is a DP workgroup</h2>
           <p className="mt-3 max-w-3xl text-slate-400">
             A Desirable Properties workgroup is a small, focused team that moves a single
-            Desirable Property from the Community Review Draft to Version 1.0. On the Collaborate
+            Desirable Property forward:{' '}
+            <V1PhaseText
+              before="from the Community Review Draft to Version 1.0."
+              during="it helped take its property to Version 1.0 and now shapes Version 1.1."
+            />{' '}
+            On the Collaborate
             page, members review Astra, propose passage changes on book Discuss (PATCH/INSERT) or
             Gov Hub drafts, promote (then later publish) on the Review tab, and keep the conversation moving in Canopi
             (post, comment, review, like). Each workgroup has a charter, a coordinator, and a

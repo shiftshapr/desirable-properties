@@ -3,6 +3,7 @@ import FaqList from '@/components/FaqList';
 import { SITE_FAQ_COUNT, SITE_FAQ_SECTIONS } from '@/data/site-faq';
 import { getCurrentMilestones } from '@/lib/challengeTimeline';
 import type { Metadata } from 'next';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const metadata: Metadata = {
   title: 'FAQ – Desirable Properties Challenge',
@@ -48,10 +49,23 @@ export default function FaqPage() {
                 </p>
               )}
               <p>
-                Key upcoming milestones include Community Review Draft preparation in early
-                September and the{' '}
-                <Link href="/challenge#timeline">September 16 Community Review Draft milestone</Link>
-                , with Version 1.0 targeted for November 13, 2026.
+                <V1PhaseText
+                  before={
+                    <>
+                      Key upcoming milestones include Community Review Draft preparation in early
+                      September and the{' '}
+                      <Link href="/challenge#timeline">September 16 Community Review Draft milestone</Link>
+                      , with Version 1.0 targeted for November 13, 2026.
+                    </>
+                  }
+                  during={
+                    <>
+                      Version 1.0 was published on November 13, 2026. Next comes Version 1.1, an open
+                      revision, then Version 1.2 with images.{' '}
+                      <Link href="/participate">How to contribute →</Link>
+                    </>
+                  }
+                />
               </p>
             </>
           ),

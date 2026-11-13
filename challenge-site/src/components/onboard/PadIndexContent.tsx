@@ -35,6 +35,7 @@ export default async function PadIndexContent({
         <V1PhaseText
           before="Version 0.77 is the current working draft. The Community Review Draft was published September 16, 2026. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
           during="Version 1.0 is live. The Community Review Draft was published September 16, 2026. Landing pads remain open for dialogue and patches."
+          after="Version 1.0 is finished and published. Landing pads remain open for dialogue and proposals toward Version 1.1."
         />
       </p>
       <p className="mt-3 text-sm leading-relaxed text-slate-400">

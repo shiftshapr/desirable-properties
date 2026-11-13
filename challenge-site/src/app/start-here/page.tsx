@@ -23,7 +23,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Start Here – Desirable Properties Challenge',
   description:
-    'Two ways to contribute: review and revise Desirable Properties on the book, or join a workgroup toward Version 1.0 on November 13, 2026.',
+    'Two ways to contribute: review and revise Desirable Properties on the book, or join a workgroup. Version 1.0: November 13, 2026.',
 };
 
 function Section({
@@ -132,8 +132,22 @@ export default async function StartHerePage() {
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             Desirable Properties are public design criteria for the Meta-Layer: what must stay true
-            across implementations. The Community Review Draft is published. The next milestone is{' '}
-            <strong className="font-semibold text-white">Version 1.0 on {v1Target}</strong>.
+            across implementations.{' '}
+            <V1PhaseText
+              before={
+                <>
+                  The Community Review Draft is published. The next milestone is{' '}
+                  <strong className="font-semibold text-white">Version 1.0 on {v1Target}</strong>.
+                </>
+              }
+              during={
+                <>
+                  <strong className="font-semibold text-white">Version 1.0 is finished</strong> and published. The
+                  next milestone is <strong className="font-semibold text-white">Version 1.1</strong>, an open
+                  revision.
+                </>
+              }
+            />
           </p>
           <p className="mt-4 max-w-3xl text-base text-slate-300">
             What the work needs most now is <strong className="font-semibold text-white">co-editors</strong>.
@@ -177,8 +191,9 @@ export default async function StartHerePage() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">Ways to contribute</h2>
           <p className="mt-3 max-w-3xl text-lg text-slate-400">
-            Pick one. Co-editors carry a DP to Version 1.0; members and readers bring proposals and
-            comments for them to decide.
+            Pick one. Co-editors carry a DP{' '}
+            <V1PhaseText before="to Version 1.0" during="toward Version 1.1" />; members and readers bring
+            proposals and comments for them to decide.
           </p>
           <ul className="mt-10 grid gap-5">
             <li id="co-edit" className="scroll-mt-20 rounded-2xl border-2 border-cyan-400 bg-gradient-to-br from-cyan-950/70 via-slate-950 to-slate-950 p-6 shadow-lg shadow-cyan-950/50 sm:p-8">
@@ -485,7 +500,11 @@ export default async function StartHerePage() {
             </p>
             <p>
               That question launches the Desirable Properties Challenge: refine, debate, test, and
-              improve living drafts on the path toward Version 1.0 and substrate work.
+              improve{' '}
+              <V1PhaseText
+                before="living drafts on the path toward Version 1.0 and substrate work."
+                during="the published properties, from Version 1.0 toward Version 1.1 and substrate work."
+              />
             </p>
           </Section>
 
@@ -556,7 +575,8 @@ export default async function StartHerePage() {
 
           <Section id="landscape" title="Six families of Desirable Properties">
             <p>
-              The Community Review Draft organizes {localData.meta.total_properties} canonical DPs
+              <V1PhaseText before="The Community Review Draft" during="Version 1.0" /> organizes{' '}
+              {localData.meta.total_properties} canonical DPs
               into six families. You do not need to read every property. Pick one that matches your
               lens.
             </p>
@@ -579,8 +599,10 @@ export default async function StartHerePage() {
 
           <Section id="timeline" title="From community review to Version 1.0">
             <p>
-              Public review is open. Workgroup synthesis now aims at Version 1.0, then candidate
-              requirements, architecture decisions, and implementation evidence.
+              <V1PhaseText
+                before="Public review is open. Workgroup synthesis now aims at Version 1.0, then candidate requirements, architecture decisions, and implementation evidence."
+                during="Version 1.0 is finished. Next comes Version 1.1, an open revision, then candidate requirements, architecture decisions, and implementation evidence."
+              />
             </p>
             <ol className="space-y-4 border-l-2 border-slate-800 pl-6">
               <li>
@@ -596,7 +618,9 @@ export default async function StartHerePage() {
                 </p>
               </li>
               <li>
-                <p className="font-semibold text-white">Now through {v1Target}</p>
+                <p className="font-semibold text-white">
+                  <V1PhaseText before={<>Now through {v1Target}</>} during={<>Through {v1Target} · past</>} />
+                </p>
                 <p className="text-base text-slate-400">
                   Book discussion (PATCH/INSERT), workgroup Astra and Review (promote, then publish),
                   Canopi conversation, and
@@ -613,13 +637,17 @@ export default async function StartHerePage() {
               </li>
               <li>
                 <p className="font-semibold text-white">
-                  <V1PhaseText before="Friday, November 13, 2026, 10–11 AM PT" during="Version 1.0 is live" />
+                  <V1PhaseText
+                    before="Friday, November 13, 2026, 10–11 AM PT"
+                    during="Version 1.0 is live"
+                    after="November 13, 2026 · Version 1.0 published"
+                  />
                 </p>
                 <p className="text-base text-slate-400">
                   <V1PhaseText
                     before={<>V1.0 releases Friday, November 13, 2026, 10–11 AM PT ({challengeMeta.v1_release_title}).</>}
-                    during={<>Version 1.0 is live ({challengeMeta.v1_release_title}). The launch gathering is Friday, November 13, 2026, 10–11 AM PT.</>}
-                    after={<>Version 1.0 is live ({challengeMeta.v1_release_title}).</>}
+                    during={<>Version 1.0 is live ({challengeMeta.v1_release_title}). The launch gathering is on now, 10–11 AM PT.</>}
+                    after={<>Version 1.0 is finished ({challengeMeta.v1_release_title}). Version 1.1, an open revision, comes next, then Version 1.2 with images.</>}
                   />
                 </p>
               </li>
@@ -640,7 +668,11 @@ export default async function StartHerePage() {
               </p>
               <p className="mt-3 text-slate-300">
                 Co-edit a DP, comment on a chapter, or join a workgroup.{' '}
-                <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />
+                <V1PhaseText
+                  before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+                  during="Version 1.0 is live."
+                  after="Version 1.0 is finished. Proposals toward Version 1.1 are open."
+                />
               </p>
             </blockquote>
             <div className="flex flex-wrap gap-3">
