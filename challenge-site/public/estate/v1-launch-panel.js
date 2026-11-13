@@ -18,7 +18,7 @@
   var DP = 'https://desirableproperties.org';
   var READ = 'https://book.desirableproperties.org/';
   var PDF = DP + '/downloads/desirable-properties-v1.0.pdf';
-  var REGISTER = 'https://bit.ly/dp-nov-13';
+  var REGISTER = 'https://luma.com/uhb8828e';
   var COVER = 'https://book.desirableproperties.org/assets/cover.webp';
 
   function phase() {

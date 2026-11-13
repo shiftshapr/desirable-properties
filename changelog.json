@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "proposals-tab-ui-public-luma",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals tab open to visitors; launch links go straight to Luma",
+      "summary": "The /steering Proposals tab no longer asks visitors to sign in. Launch registration links on this site and the estate launch panel use the Luma event page directly instead of the bit.ly short link.",
+      "changes": [
+        "/steering Proposals tab: no sign-in",
+        "Launch links: https://luma.com/uhb8828e"
+      ]
+    },
+    {
       "id": "v1-deepi-steering-intro-split",
       "date": "2026-11-13",
       "status": "open",
