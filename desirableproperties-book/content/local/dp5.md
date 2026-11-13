@@ -1,17 +1,17 @@
 # DP5 – Decentralized Namespace
 
-*Claim your space in the Meta-Layer — meta-domains and personal identifiers give you sovereign, portable identity, owned by you, not a platform.*
+*Claim your space in the Meta-Layer – meta-domains and personal identifiers give you sovereign, portable identity, owned by you, not a platform.*
 
 ![Illustration for Desirable Property DP5: Decentralized Namespace](/content/local/assets/dp/DP5.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-012 revision=03 submission=efd1d316-cb3e-43c9-bf14-e9395698edce hash=13d7213ed5f6c23f synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-012 revision=04 submission=e8efd799-3aab-43e8-b0c5-a0eed6dfeea6 hash=7f0a9ef5cb3790c6 synced=2026-11-13T08:20:02Z -->
 
 ---
 
 ## 1. Purpose of This Draft
 
-This ML-Draft articulates Desirable Property 5 (DP5) as the condition under which people, communities, agents, artifacts, and spaces can be named, addressed, discovered, traded, and governed across the Meta-Layer without dependency on a single platform or registry.
+This draft articulates Desirable Property 5 (DP5) as the condition under which people, communities, agents, artifacts, and spaces can be named, addressed, discovered, traded, and governed across the Meta-Layer without dependency on a single platform or registry.
 
 DP5 introduces meta-domains and personal identifiers as sovereign, portable identity and addressability primitives. These identifiers allow participants to claim space in the Meta-Layer, link that space to existing web domains or decentralized identifiers, and use names as anchors for identity, ownership, trust, commerce, and governance.
 
@@ -129,14 +129,14 @@ A DP5-aligned namespace must therefore support:
 DP5 is enacted through mechanism families that together turn a name from a label into an accountable, resolvable, governed object. Each family addresses a distinct question that a namespace must be able to answer, and a namespace that answers some but not others will exhibit the failure modes named above.
 
 - **Namespace objects** define *what can be named*: meta-domains for spaces, personal identifiers for participants and personas, artifact identifiers for objects, name chains for structured composition, and well-known URI anchors for publisher-controlled trust data.
-- **The namespace system layer** defines *what a name is*, across five coupled layers: syntax, resolution, control, meaning, and history. Most existing naming systems implement one or two of these. DP5 requires all five, because omitting any one produces a specific, predictable failure — ambiguity, invisible override, ghost control, semantic drift, or history erasure.
+- **The namespace system layer** defines *what a name is*, across five coupled layers: syntax, resolution, control, meaning, and history. Most existing naming systems implement one or two of these. DP5 requires all five, because omitting any one produces a specific, predictable failure – ambiguity, invisible override, ghost control, semantic drift, or history erasure.
 - **The resolution protocol** defines *how a name is interpreted*: a governed, inspectable process that normalizes, validates, queries multiple resolvers, returns explicit state, attaches provenance, applies local policy, and renders an interface signal.
 - **The state machine** defines *what a name currently is*: available, claimed, provisional, verified, active, disputed, quarantined, transferred, retired, or forked, with receipts on transitions that affect ownership, resolution, or trust.
 - **The attack taxonomy** defines *what a name must withstand*, pairing each known attack with a required structural response rather than a moderation promise.
 - **Registry architecture and registration rules** define *how names come into being*: ingest, candidate classification, canonicality, snapshots with checksums, pluggable indexers, and deterministic validation of labels.
 - **Tradeability with bounded trust** defines *how a name may change hands* without laundering its history, through transfer receipts, provenance preservation, and visible dispute state.
 
-The structural condition uniting these is that **a name must never assert more trust than it can demonstrate**. Every mechanism in this draft exists to close a gap between what a name appears to mean and what can actually be verified about it. Where verification is unavailable, the mechanism's obligation is to signal uncertainty rather than to default to trust — which is why explicit state, resolver provenance, and visible degradation recur throughout.
+The structural condition uniting these is that **a name must never assert more trust than it can demonstrate**. Every mechanism in this draft exists to close a gap between what a name appears to mean and what can actually be verified about it. Where verification is unavailable, the mechanism's obligation is to signal uncertainty rather than to default to trust – which is why explicit state, resolver provenance, and visible degradation recur throughout.
 
 ---
 
@@ -229,7 +229,7 @@ Examples:
 - `@user`
 - `@user/object`
 
-Requirement:
+Requirements:
 
 - deterministic parsing
 - canonical normalization
@@ -453,7 +453,7 @@ Required response: rate limits, economic friction, proof thresholds, and anti-sp
 
 ## 11. Reference Patterns and Compatibility
 
-DP5 does not replace existing naming systems. It defines how meta-layer naming can interoperate with them.
+DP5 does not replace existing naming systems. It defines how Meta-Layer naming can interoperate with them.
 
 ### 11.1 DNS-style names
 
@@ -484,6 +484,8 @@ DP5 can use inscription ordering, registry snapshots, and graph facts to support
 Publisher-controlled paths such as `/.well-known/trust.txt` allow existing domain holders to publish trust-relevant metadata without centralized registry dependency.
 
 DP5 can compose these with meta-domain records and overlay resolution.
+
+Publisher-controlled declarations can also state relationships among publishers and associations. They can carry extension fields, for example AI-training permissions or social identifiers ([trust.txt specification](https://datatracker.ietf.org/doc/html/draft-org-trust-relationship-protocol-01#name-introduction)). A declaration is the publisher's own claim. Verification therefore separates what a publisher declares from independent evidence that a claimed relationship is valid. For example, a hypothetical news site may list membership in a press association, but the listing counts as verified only if the association confirms it. A declared permission also needs a clear scope. Publishing a field does not by itself establish that the permission is enforced or widely adopted.
 
 The goal is not one namespace to rule them all. The goal is interoperable naming with explicit trust semantics.
 
@@ -544,7 +546,7 @@ Failure mode: **indexer dependency**, where resolver integrity depends on one co
 
 ## 13. Registration Rules and Validation
 
-DP5 supports concrete registration rules for product-level namespaces.
+DP5 supports concrete registration rules for product-level namespaces. The ASCII-only label rules below are an example profile for one product namespace; they are not a DP5 requirement.
 
 ### 13.1 Canonical form example
 
@@ -618,7 +620,7 @@ DP5 requires:
 - compatibility with commerce and incentive systems (DP6, DP9)
 - alignment with identity and accountability requirements (DP1)
 
-A name may be tradable, but the trust attached to the name cannot be treated as a blank commodity. Reputation, history, and community meaning must remain visible across transfer.
+A name may be tradeable, but the trust attached to the name cannot be treated as a blank commodity. Reputation, history, and community meaning must remain visible across transfer.
 
 ---
 
@@ -644,7 +646,7 @@ Failure mode: invisible governance.
 
 ### 15.2 Overlay-mediated governance
 
-Meta-layer overlays SHOULD expose:
+Meta-Layer overlays SHOULD expose:
 
 - name provenance tooltips
 - impersonation warnings
@@ -692,9 +694,9 @@ Failure mode: governance only enforced off-screen.
 
 ## 16. Incentives and Power Analysis
 
-Namespaces concentrate value at three points, and each attracts a distinct form of capture. Understanding where the money and leverage sit explains why DP5's structural requirements — multi-source resolution, visible state, transfer receipts, registry snapshots — are economic interventions rather than technical preferences.
+Namespaces concentrate value at three points, and each attracts a distinct form of capture. Understanding where the money and leverage sit explains why DP5's structural requirements – multi-source resolution, visible state, transfer receipts, registry snapshots – are economic interventions rather than technical preferences.
 
-**Registration is where scarcity is manufactured.** Names are a positional good: `@jaime` has value precisely because no one else can hold it. Any registry therefore issues a monopoly with every name, and holds the power to define what may be issued, reserved, priced, or refused. Squatting is the market's rational response to unpriced scarcity, and anti-squatting mechanisms — staking, renewal, decay, community challenge — are attempts to price holding without pricing out legitimate participants. The tension is unresolved and named as such under *Open Questions and Future Work*: mechanisms that deter hoarding also burden the communities and individuals least able to pay.
+**Registration is where scarcity is manufactured.** Names are a positional good: `@jaime` has value precisely because no one else can hold it. Any registry therefore issues a monopoly with every name, and holds the power to define what may be issued, reserved, priced, or refused. Squatting is the market's rational response to unpriced scarcity, and anti-squatting mechanisms – staking, renewal, decay, community challenge – are attempts to price holding without pricing out legitimate participants. The tension is unresolved and named as such under *Open Questions and Future Work*: mechanisms that deter hoarding also burden the communities and individuals least able to pay.
 
 **Resolution is where the deepest power sits, and it is the least visible.** A resolver that becomes the default for most clients does not need formal authority over the namespace; it exercises effective authority by determining what most participants see. This is the same dynamic through which DNS registrars and app-store search became control points despite holding no formal ownership. DP5's requirement for multi-source resolution and exposed resolver provenance exists because *default position is the asset*, and because capture at this layer is invisible to the participant by construction. A single commercial indexer dependency reproduces platform risk under decentralized branding.
 
@@ -704,13 +706,13 @@ Several further pressures recur:
 
 - **Speculative capital outruns civic use.** Names with obvious community value are claimed before the community exists to claim them. Reservation rules are a redistribution of the option value from speculators to prospective communities.
 - **Registry economics favor amnesia.** Storing disputes, quarantines, and full ownership lineage costs money and creates liability; discarding it is cheaper and reduces exposure. Append-only logs with independent archival exist because the incentive runs toward forgetting.
-- **Verification becomes a rent.** Where one attestation path is the only credible route to a verified state, verification becomes a tollgate on legitimacy. Plural control derivation — keys, DIDs, registry attestations, community governance — is the counterweight.
+- **Verification becomes a rent.** Where one attestation path is the only credible route to a verified state, verification becomes a tollgate on legitimacy. Plural control derivation – keys, DIDs, registry attestations, community governance – is the counterweight.
 - **Agent identity is economically attractive to obscure.** An automated actor that reads as human or as an established organization captures trust it did not earn. Mandatory entity classification is an incentive constraint on whoever deploys agents at scale.
 - **Fragmentation serves incumbents.** Where namespaces do not interoperate, each becomes a captive market. Interoperability reduces the value of holding a namespace and is therefore under-supplied by the actors best positioned to provide it.
 
 **Example:** A registry publishes open registration rules and charges nominal fees, while its own resolver ranks names it has commercial relationships with above equally valid alternatives. Nothing in the naming rules changed; the namespace was captured at the resolution layer.
 
-**Why this matters:** Naming power is exercised through defaults, ordering, and memory far more often than through explicit denial. DP5 therefore requires that resolution be inspectable, state be explicit, and history be preserved — not because operators are presumed hostile, but because these are the surfaces where capture is otherwise undetectable.
+**Why this matters:** Naming power is exercised through defaults, ordering, and memory far more often than through explicit denial. DP5 therefore requires that resolution be inspectable, state be explicit, and history be preserved – not because operators are presumed hostile, but because these are the surfaces where capture is otherwise undetectable.
 
 ---
 
@@ -732,19 +734,19 @@ These signals indicate that DP5 is not only about naming people. It is about nam
 
 ## 18. Foresight and Failure Design
 
-Namespaces fail slowly and then all at once. For long periods a naming system appears healthy — names resolve, transfers settle, disputes are rare — while the conditions for its capture accumulate beneath the surface. By the time failure is visible, the namespace is usually load-bearing for identity, commerce, and provenance across many systems, which makes correction expensive and migration nearly impossible.
+Namespaces fail slowly and then all at once. For long periods a naming system appears healthy – names resolve, transfers settle, disputes are rare – while the conditions for its capture accumulate beneath the surface. By the time failure is visible, the namespace is usually load-bearing for identity, commerce, and provenance across many systems, which makes correction expensive and migration nearly impossible.
 
 Predictable degradation paths include:
 
 - **Resolver consolidation.** Multi-source resolution is implemented, but clients converge on one resolver for latency, cost, or convenience. The plural architecture remains intact while the effective architecture becomes singular.
 - **State flattening.** Provisional, disputed, and quarantined states are supported by the protocol but collapsed to a single indicator in interfaces, because nuance is hard to render. Participants lose the ability to distinguish a verified name from a contested one.
-- **Snapshot gaps.** Registry snapshots are produced regularly until an outage, migration, or cost review interrupts the cadence. Nothing appears broken, but a window of history becomes unreconstructable — and windows are exactly where laundering hides.
+- **Snapshot gaps.** Registry snapshots are produced regularly until an outage, migration, or cost review interrupts the cadence. Nothing appears broken, but a window of history becomes unreconstructable – and windows are exactly where laundering hides.
 - **Reserved-set erosion.** Reservations protecting communities, institutions, or safety-critical names are relaxed case by case under commercial pressure, until the reserved set no longer reflects the risks it was built for.
 - **Similarity-detection decay.** Spoofing defenses are calibrated against the confusables and scripts known at build time, while attackers move to newly supported characters, scripts, or rendering contexts.
 - **Semantic profile abandonment.** Meaning-layer data is populated at registration and then left to rot, so trust signals attached to a name increasingly describe a state that no longer exists.
 - **Quarantine backlog.** Suspicious names are quarantined faster than review capacity can adjudicate them, and the backlog is eventually cleared in bulk to restore throughput.
 
-These paths compound in a characteristic sequence. Resolver consolidation makes state flattening consequential, because a single resolver's rendering becomes the participant's only view. Snapshot gaps make ownership laundering undetectable. Undetectable laundering makes semantic profiles unreliable, which makes state signals meaningless, which returns participants to judging names by appearance — the precise condition DP5 exists to escape.
+These paths compound in a characteristic sequence. Resolver consolidation makes state flattening consequential, because a single resolver's rendering becomes the participant's only view. Snapshot gaps make ownership laundering undetectable. Undetectable laundering makes semantic profiles unreliable, which makes state signals meaningless, which returns participants to judging names by appearance – the precise condition DP5 exists to escape.
 
 Two properties make namespace failures unusually severe:
 
@@ -760,7 +762,7 @@ DP5 therefore requires safeguards designed in advance:
 - **Adversarial similarity testing** on a recurring schedule as scripts, fonts, and rendering surfaces change
 - **Quarantine capacity provisioning** proportional to registration volume, since review capacity is the binding constraint on abuse response (DP3, DP17)
 - **Fork drills**, in which a community exercises the ability to fork namespace rules and carry its records, so that the exit option is known to work before it is needed
-- **Public postmortems** for namespace incidents — a successful spoof, a laundered transfer, a resolution override — linked to the specific layer that failed
+- **Public postmortems** for namespace incidents – a successful spoof, a laundered transfer, a resolution override – linked to the specific layer that failed
 
 Failure is expected. Failure that becomes visible only after the namespace is load-bearing is not. A DP5-aligned namespace is one where the concentration of resolution power, the erosion of state visibility, and the loss of registry memory are all observable while they are still reversible.
 
@@ -784,7 +786,7 @@ Two couplings deserve emphasis, because DP5 is where they become concrete rather
 
 **DP3** governs the namespace itself. Reserved sets, dispute procedures, quarantine thresholds, fork legitimacy, and canonicality rules are all governance artifacts, subject to DP3's requirements for tiered decisions, receipts, visible diffs, bounded emergency authority, and memory. A registry that changes its reserved set or ordering rules without a traceable, contestable process has made a governance decision outside governance.
 
-**DP23** determines who the namespace is for. Unicode support, multilingual naming, and script integrity are the difference between a namespace that serves a global population and one that serves the subset writing in Latin script. This sits in direct tension with spoofing resistance, since script diversity expands the confusable space — a tension DP5 names openly rather than resolving by exclusion.
+**DP23** determines who the namespace is for. Unicode support, multilingual naming, and script integrity are the difference between a namespace that serves a global population and one that serves the subset writing in Latin script. This sits in direct tension with spoofing resistance, since script diversity expands the confusable space – a tension DP5 names openly rather than resolving by exclusion.
 
 A failure in DP5 propagates upward. If names cannot be trusted, ownership cannot be trusted, identity fragments, and interoperability becomes deception.
 
@@ -795,7 +797,7 @@ A failure in DP5 propagates upward. If names cannot be trusted, ownership cannot
 DP5 does not:
 
 - require one global namespace for all contexts
-- replace DNS, DIDs, ENS, SNS, BRC333, ordinals, or publisher-controlled URIs
+- replace DNS, DIDs, ENS, SNS, or publisher-controlled URIs
 - guarantee that all valuable names will be available
 - eliminate disputes, squatting, or fraud completely
 - treat tradeability as superior to stewardship
@@ -816,7 +818,7 @@ DP5 defines conditions under which naming remains interoperable, governable, and
 
 ---
 
-## 21. Minimum DP5 Alignment (Non-Normative)
+## 21. Minimum DP5 Alignment
 
 This section states **testable compliance criteria** rather than descriptive aspirations.
 
@@ -857,7 +859,7 @@ Test: ownership lineage query returns full chain
 
 ### 21.5 Portability
 
-- Names function across at least 2 independent systems
+- Names function across at least two independent systems
 
 Test: same name resolves meaningfully in multiple contexts
 
@@ -884,8 +886,6 @@ Test: dispute creates visible state transition
 - Agents and automated systems are distinguishable from humans
 
 Test: entity type is explicitly encoded and exposed
-
----
 
 These criteria transform DP5 from a principle into a **verifiable standard**.
 

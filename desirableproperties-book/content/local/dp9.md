@@ -5,25 +5,27 @@
 ![Illustration for Desirable Property DP9: Developer and Community Incentives](/content/local/assets/dp/DP9.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-016 revision=03 submission=5e1a8e31-7d4a-4b85-9ee8-d9397ddf4b3f hash=bbb2e501b455e25b synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-016 revision=04 submission=c242b41d-ac52-4865-9770-490c1bb1a84a hash=6fbbe88c22887d02 synced=2026-11-13T08:20:02Z -->
 
 ---
 
 ## 1. Purpose of This Draft
 
-This draft articulates Desirable Property 9 (DP9) as the condition under which developers and communities receive credible, legible incentives to build, maintain, and improve meta-layer capabilities, without collapsing into extraction, engagement-only rewards, or token theater that severs contribution from accountability.
+The Meta-Layer is a shared layer across existing websites where overlay apps, smart tags, agents, and communities operate on shared interfaces rather than inside a single platform. Incentive programs in it involve four main roles: the funder who supplies the money, the administrator who runs the program, the reviewer who judges the work, and the contributor who does it and gets paid. This chapter asks developers to expect published rules and portable receipts, asks community organizers to run programs others can check and appeal, and asks funders to disclose their role and keep rules stable once work begins.
+
+This draft articulates Desirable Property 9 (DP9) as the condition under which developers and communities receive credible, legible incentives to build, maintain, and improve Meta-Layer capabilities, without collapsing into extraction, engagement-only rewards, or token theater that severs contribution from accountability.
 
 DP9 is how interoperability (DP7), meta-communities (DP8), education (DP10), commerce (DP6), and ownership (DP20) become sustained rather than hobbyist. It connects to DP4 (privacy-preserving attribution where needed), DP2 (participant agency over incentives they accept), DP17 (financial sustainability), and DP11–DP13 (safe incentives for AI-assisted development and operations).
 
 If DP9 is weak, predictable failures follow: burnout maintainers, underfunded commons, predatory grant programs, misaligned metrics (growth over safety), capture of incentive systems by whales, and automated spam farms gaming rewards.
 
-DP9 does not prescribe a single tokenomics paper. It defines minimum legitimacy conditions for incentive systems: clarity, fairness, auditability, exit, and alignment with the meta-layer’s human-first goals.
+DP9 does not prescribe a single tokenomics paper. It defines minimum legitimacy conditions for incentive systems: clarity, fairness, auditability, exit, and alignment with the Meta-Layer's human-first goals.
 
 ---
 
 ## 2. Problem Statement
 
-In today’s web, builders often face misaligned incentives: metrics reward engagement and growth while externalizing harm (misinformation, addiction, privacy loss). Open-source maintainers carry systemic risk with little capture of value. Communities that host quality spaces rarely receive durable upside from the ecosystems they enable.
+In today's web, builders often face misaligned incentives: metrics reward engagement and growth while externalizing harm (misinformation, addiction, privacy loss). Open-source maintainers carry systemic risk with little capture of value. Communities that host quality spaces rarely receive durable upside from the ecosystems they enable.
 
 In practice, this produces recurring failures:
 
@@ -33,7 +35,7 @@ In practice, this produces recurring failures:
 - creator funds that function as marketing, not structural revenue share
 - AI tools that accelerate low-effort contribution farming unless bounded (DP13)
 
-These failures are structural: when incentives are opaque or misaligned, the fastest path to reward is usually not the best path for participants. DP9 reframes incentives as governance objects: measurable, contestable, and evolvable, parallel in spirit to DP12’s insistence that rules be executable and revisable.
+These failures are structural: when incentives are opaque or misaligned, the fastest path to reward is usually not the best path for participants. DP9 reframes incentives as governance objects: measurable, contestable, and evolvable, parallel in spirit to DP12's insistence that rules be executable and revisable.
 
 ---
 
@@ -91,7 +93,7 @@ Tokens substitute for clear rights and clear work, creating regulatory and UX ha
 
 Corporate roadmaps steer commons toward vendor stacks. Incentives reward integrations that reduce portability.
 
-**Example:** A grant prioritizes one cloud’s proprietary APIs over open interfaces.
+**Example:** A grant prioritizes one cloud's proprietary APIs over open interfaces.
 
 **Why this matters:** DP7 interoperability is an outcome incentive designers must protect, not accidentally punish.
 
@@ -115,7 +117,7 @@ English-first rubrics and US-centric eligibility exclude global majority talent.
 
 ## 4. Core Principle
 
-Developer and community incentives in the meta-layer must be transparent in allocation and metrics; aligned with safety and interoperability outcomes; resistant to gaming and capture; reciprocal toward commons maintenance; and evolvable through participatory governance, with bounded automation and clear accountability.
+Developer and community incentives in the Meta-Layer must be transparent in allocation and metrics; aligned with safety and interoperability outcomes; resistant to gaming and capture; reciprocal toward commons maintenance; and evolvable through participatory governance, with bounded automation and clear accountability.
 
 Incentive systems should feel like public infrastructure, not casino tables.
 
@@ -131,7 +133,7 @@ Incentive systems should feel like public infrastructure, not casino tables.
 
 ### 5.1 Incentive Layer: Allocation, Signal, and Enforcement
 
-Incentives in the meta-layer are not abstract reward schemes. They are operational systems that allocate value across participants, tools, and infrastructure in response to real activity.
+Incentives in the Meta-Layer are not abstract reward schemes. They are operational systems that allocate value across participants, tools, and infrastructure in response to real activity.
 
 In many systems, incentives fail because they are not bound to contribution quality, are not auditable, or are captured by intermediaries. Rewards become detached from value creation, and systems devolve into gaming contests.
 
@@ -161,13 +163,15 @@ Rewards must be bound to verifiable contributions rather than surface-level sign
 
 This requires linkage to identity (DP1), traceability of actions, and resistance to duplication or replay.
 
+For small rewards, programs should offer a lower-assurance identity path so that tying rewards to a verified identity does not shut out students, immigrants, and builders outside the US, the same participants Section 3.9 aims to include.
+
 Contribution binding ensures that value flows to actual work rather than its simulation.
 
 A failure mode is contribution spoofing, where low-effort or automated actions are mistaken for meaningful input.
 
 #### 5.1.3 Attribution and lineage
 
-Incentive systems must track contribution lineage across time and systems.
+Where a program is large or automated enough to support it, incentive systems track contribution lineage across time and systems. Like reward splitting, lineage tracking is a higher-tier instrument: a small program that pays contributors directly is not out of alignment for omitting it.
 
 Rewards should reflect original creation, downstream reuse, and derivative contributions.
 
@@ -177,7 +181,7 @@ A failure mode is attribution collapse, where downstream actors capture dispropo
 
 #### 5.1.4 Reward event splitting
 
-Each value-generating event should distribute rewards across contributing layers.
+Where a program is large or automated enough to support it, each value-generating event may distribute rewards across contributing layers. Reward splitting is a higher-tier instrument: a small program that pays contributors directly is not out of alignment for omitting it.
 
 This includes the primary contributor, interface layer, access layer, and shared infrastructure.
 
@@ -195,17 +199,7 @@ This reduces the effectiveness of spam and gaming strategies.
 
 A failure mode is volume dominance, where systems reward quantity over value, degrading overall quality.
 
-#### 5.1.6 Anti-gaming and containment integration
-
-Incentive systems must integrate with containment mechanisms (DP13).
-
-This includes rate limits on rewardable actions, detection of clustered or synthetic behavior, and discounting or quarantining suspicious contributions.
-
-Incentives must not be exploitable at scale through automation or coordination.
-
-A failure mode is incentive farming, where participants optimize for reward extraction rather than meaningful contribution.
-
-#### 5.1.7 Cross-system incentive integrity
+#### 5.1.6 Cross-system incentive integrity
 
 Incentives must preserve meaning across systems.
 
@@ -215,17 +209,17 @@ Incentives must not be portable in ways that allow reward without contribution.
 
 A failure mode is cross-system arbitrage, where value is multiplied without corresponding work.
 
-#### 5.1.8 Incentive–ownership binding
+#### 5.1.7 Incentive–ownership binding
 
-Incentives must create pathways to ownership (DP20).
+At higher tiers, incentive systems may create pathways to ownership (DP20). Ownership stakes and financial tokens are optional instruments, not conditions of alignment, and a program that offers them should first address the regulatory hazards noted in Section 3.6.
 
-Participants who contribute consistently should accumulate stake, gain governance rights, and participate in long-term value flows.
+Where such pathways exist, participants who contribute consistently should accumulate stake, gain governance rights, and participate in long-term value flows.
 
-Without this, incentives produce activity without durable power.
+Without any pathway of this kind, incentives produce activity without durable power.
 
 A failure mode is extractive participation, where contributors generate value but do not share in outcomes.
 
-#### 5.1.9 Incentive memory and auditability
+#### 5.1.8 Incentive memory and auditability
 
 All incentive allocations must be recorded and traceable.
 
@@ -235,7 +229,7 @@ This enables accountability and continuous improvement (DP15).
 
 A failure mode is opaque allocation, where trust erodes due to lack of visibility.
 
-#### 5.1.10 Adaptive emission and allocation
+#### 5.1.9 Adaptive emission and allocation
 
 Incentive systems must respond to system conditions.
 
@@ -313,7 +307,7 @@ A failure mode is reputation lock-in, where value accrues to platforms rather th
 
 Incentive systems must actively resist exploitation through automation, coordination, or scale.
 
-Automated submission and AI-generated bulk work must be rate-limited, attested, and reviewed using DP13 containment patterns.
+Automated submission and AI-generated bulk work must be rate-limited, attested, and reviewed using DP13 containment patterns, including rate limits on rewardable actions, detection of clustered or synthetic behavior, and discounting or quarantining suspicious contributions.
 
 This ensures that incentives remain aligned with meaningful contribution rather than extractive behavior.
 
@@ -343,7 +337,7 @@ DP9 requires long-horizon stewardship incentives such as multi-year maintenance 
 
 A core failure mode is launch bias, where contributors are rewarded for creating new tools but not for maintaining the systems others depend on. Over time, this produces fragile infrastructure, security risk, and maintainer burnout.
 
-Long-horizon incentives should therefore reward documented care work: issue triage, security patches, dependency updates, accessibility improvements, moderation support, and governance participation. Without this, the meta-layer risks building impressive surfaces on top of neglected foundations.
+Long-horizon incentives should therefore reward documented care work: issue triage, security patches, dependency updates, accessibility improvements, moderation support, and governance participation. Without this, the Meta-Layer risks building impressive surfaces on top of neglected foundations.
 
 ### 5.12 Delegated and agent-mediated incentives
 
@@ -443,7 +437,7 @@ Publish the scoring rubric and reviewer conflict disclosures before submissions 
 
 ### 9.3 Retrospective allocation with evidence bundles
 
-Reward demonstrated outcomes rather than proposals for a portion of each pool. Contributors submit evidence bundles — artifacts, usage, downstream reuse, audits — that reviewers score against published criteria.
+Reward demonstrated outcomes rather than proposals for a portion of each pool. Contributors submit evidence bundles (artifacts, usage, downstream reuse, audits) that reviewers score against published criteria.
 
 ### 9.4 Reward event splitting
 
@@ -516,7 +510,7 @@ Failure is expected. Invisible or unaccounted failure is not.
 
 DP9 pairs incentives with reach, because compensation without distribution is a grant program rather than an ecosystem. A developer who can be paid but cannot be found, installed, or trusted has no durable position in the Meta-Layer.
 
-Reach in the meta-layer means that a tool built once can operate across contexts, be discovered on merit, and accumulate reputation that its author keeps. In today's web, distribution is the primary lever platforms use to extract terms after dependency forms: rankings change, APIs close, and the cost of the switch falls entirely on the builder.
+Reach in the Meta-Layer means that a tool built once can operate across contexts, be discovered on merit, and accumulate reputation that its author keeps. In today's web, distribution is the primary lever platforms use to extract terms after dependency forms: rankings change, APIs close, and the cost of the switch falls entirely on the builder.
 
 ### 11.1 Build once, operate across contexts
 
@@ -579,7 +573,7 @@ Backward-looking allocation for demonstrated impact. Removes proposal overhead a
 
 Community signal amplified by a shared pool, so that many small endorsements direct larger allocation.
 
-- **Requires:** sybil resistance and identity-aware weighting (DP1, DP13)
+- **Requires:** Sybil resistance and identity-aware weighting (DP1, DP13)
 - **Failure mode:** collusion rings and wealth-weighted signal masquerading as community preference
 
 ### 12.5 Streaming rewards
@@ -631,13 +625,22 @@ Reversal or reduction of rewards when outcomes prove harmful, fraudulent, or aba
 - **Requires:** defined triggers, appeal paths, and bounded retroactivity
 - **Failure mode:** arbitrary retroactive punishment that makes participation unpredictable
 
+### 12.12 Creating and verifying connections
+
+People who create or verify useful connections among artifacts should be eligible for compensation and recognition. Those connections can make existing information navigable and support shared understanding, rather than requiring every contributor to produce a new standalone artifact.
+
+Assessment should consider the connection's contextual value and evidence, not simply the number of links created. Verifiers, curators, and application-substrate designers are part of this contribution economy. Payment is neither proof that a connection is true nor a substitute for contestable quality assessment.
+
+- **Requires:** assessment of each connection's contextual value and evidence, and contestable quality review
+- **Failure mode:** link farming, where the number of connections substitutes for their value, and payment taken as proof that a connection is true
+
 **Why this matters:** Instrument choice determines behavior more than stated program values. A system that funds only launches will produce launches; a system that funds only tasks will produce task volume. Portfolios of instruments, published with their failure modes, are what allow incentive systems to be debugged rather than merely defended.
 
 ---
 
 ## 13. Relationship to Other Desirable Properties
 
-DP9 connects incentives to the broader meta-layer system:
+DP9 connects incentives to the broader Meta-Layer system:
 
 - DP3 defines how incentive parameters evolve through governance
 - DP4 constrains how data can be used in measuring contribution
@@ -665,9 +668,11 @@ DP9 does not:
 
 DP9 defines the conditions under which incentives are legitimate and aligned. It does not prescribe a single economic model.
 
+Recording contributions and paying for them are separate. Where a program uses a shared ledger such as a blockchain, it records receipts, rule versions, and award decisions so anyone can check them, and no one needs to hold or trade a token for those records to be trustworthy. Because ledger records are permanent, personal details stay off the ledger and only a fingerprint of each receipt is written to it (DP4). DP9 does not cover tax reporting, identity checks for payment, payment rails, or how to pay students, volunteers, and other non-employees; programs must resolve these under their own legal obligations.
+
 ---
 
-## 15. Minimum DP9 Alignment (Non-Normative)
+## 15. Minimum DP9 Alignment
 
 Minimum alignment is not a checklist of features. It is the threshold at which an incentive system can be considered legitimate, auditable, and resistant to obvious gaming.
 
@@ -682,7 +687,7 @@ A DP9-aligned incentive system should, at minimum:
 
 These conditions must hold **before** scale. Systems that postpone enforcement, auditability, or cross-system clarity will accumulate hidden debt that surfaces as exploitation.
 
-Partial compliance that omits execution, auditability, containment, or cross-system integrity should not be treated as alignment.
+The conditions above describe full alignment for large, automated, or well-funded programs. Smaller programs align through tiers. A basic tier that any small program can meet requires a one-page published set of rules (goals, how work is judged, payment amounts and timing, and funding source), a public scoring rubric, a receipt for every payment or award, a named contact for appeals, and a short report after each round. Heavier requirements such as reward splitting, lineage tracking, streaming payments, and circuit breakers apply at higher tiers. Tiers are an on-ramp, not a permanent lower standard: each tier names the path to the next, so a program can start with published rules and receipts and add more as it grows.
 
 ---
 
@@ -727,7 +732,7 @@ When incentives are misaligned, even well-governed systems degrade into competit
 
 Incentives must therefore remain accountable not only at the point of allocation, but across time and across systems. If rewards can be detached from contribution through opacity, replay, or boundary effects, the system will be exploited.
 
-DP9 is the claim that the meta-layer will not be built on unpaid miracles or hidden rents.
+DP9 is the claim that the Meta-Layer will not be built on unpaid miracles or hidden rents.
 
 When incentives are legible and fair, interoperability and community stop being volunteer hobbies. They become careers, crafts, and commons worth defending.
 

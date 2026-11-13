@@ -1,23 +1,23 @@
 # DP6 – Commerce
 
-*Fair value, everywhere — the Meta-Layer supports seamless, flexible transactions, empowering communities and individuals to earn, exchange, and sustain themselves on their own terms.*
+*Fair value, everywhere – the Meta-Layer supports seamless, flexible transactions, empowering communities and individuals to earn, exchange, and sustain themselves on their own terms.*
 
 ![Illustration for Desirable Property DP6: Commerce](/content/local/assets/dp/DP6.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-013 revision=03 submission=11288927-b07c-4b99-839a-546ec53d77bc hash=a5be5b82b8b29445 synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-013 revision=04 submission=70099277-1c7e-494b-8f63-98cf947a2877 hash=2fe19c4f5d8aba04 synced=2026-11-13T08:20:02Z -->
 
 ---
 
 ## 1. Purpose of This Draft
 
-This draft articulates Desirable Property 6 (DP6) as the condition under which value exchange in the meta-layer is fair, legible, and aligned with human and community flourishing, not reducible to extraction, dark patterns, or attention rents dressed as markets.
+This draft articulates Desirable Property 6 (DP6) as the condition under which value exchange in the Meta-Layer is fair, legible, and aligned with human and community flourishing, not reducible to extraction, dark patterns, or attention rents dressed as markets.
 
-Commerce is not an add-on to the meta-layer. It is how incentives (DP9), ownership (DP20), and sustainability (DP17) become real.
+Commerce is not an add-on to the Meta-Layer. It is how incentives (DP9), ownership (DP20), and sustainability (DP17) become real.
 
 DP6 therefore defines the minimum conditions under which exchange remains trustworthy at the interface where money moves and value is recognized.
 
-Commerce is the highest-value attack surface in the meta-layer. Systems that appear fair locally but fail across system boundaries, delegation, or routing layers will be systematically exploited.
+Commerce is the highest-value attack surface in the Meta-Layer. Systems that appear fair locally but fail across system boundaries, delegation, or routing layers will be systematically exploited.
 
 DP6 connects to:
 
@@ -31,7 +31,7 @@ DP6 connects to:
 
 If DP6 is weak, predictable failures follow: surveillance advertising as hidden tax, fee obfuscation, lock-in through proprietary rails, platform capture of creator revenue, and AI-mediated manipulation at conversion.
 
-DP6 does not prescribe a specific payment rail, currency, or chain. It defines legitimacy conditions for commerce in the meta-layer.
+DP6 does not prescribe a specific payment rail, currency, or chain. It defines legitimacy conditions for commerce in the Meta-Layer.
 
 ---
 
@@ -97,7 +97,7 @@ Value cannot exit proprietary rails.
 
 Agents steer decisions without accountability.
 
-**Example:** Assistants recommend higher-commission products as "best".
+**Example:** Assistants recommend higher-commission products as "best."
 
 **Why this matters:** Requires DP11 disclosure and DP13 bounds.
 
@@ -129,7 +129,7 @@ Dynamic pricing or credit targets vulnerable users.
 
 Default assistants route to house inventory.
 
-**Example:** "Buy now" prioritizes sibling brands under "personalization".
+**Example:** "Buy now" prioritizes sibling brands under "personalization."
 
 **Why this matters:** Requires disclosure and contestability.
 
@@ -153,7 +153,7 @@ A community's economic surface is controlled by a subset of its participants, or
 
 ## 4. Core Principle
 
-Commerce in the meta-layer is fair only when pricing, fees, risks, and responsibilities are legible at the point of exchange; defaults are non-exploitative; automation and AI assistance are accountable and bounded; and communities can shape and, where appropriate, capture economic activity that depends on shared trust and infrastructure.
+Commerce in the Meta-Layer is fair only when pricing, fees, risks, and responsibilities are legible at the point of exchange; defaults are non-exploitative; automation and AI assistance are accountable and bounded; and communities can shape and, where appropriate, capture economic activity that depends on shared trust and infrastructure.
 
 **Example:** A checkout shows item price, full fee breakdown, data uses tied to the transaction, AI involvement, cancellation path, and any community surcharge with a link to governance.
 
@@ -174,7 +174,7 @@ Commerce that becomes opaque at handoff points is structurally unsafe.
 
 ### 5.1 Commerce Layer: Execution, Proof, and Settlement
 
-Commerce in the meta-layer cannot rely on interface clarity alone. It must be anchored in a substrate that binds pricing, allocation, and settlement to verifiable, enforceable structures. Without this, even well-designed interfaces can be subverted downstream, where actual value movement occurs.
+Commerce in the Meta-Layer cannot rely on interface clarity alone. It must be anchored in a substrate that binds pricing, allocation, and settlement to verifiable, enforceable structures. Without this, even well-designed interfaces can be subverted downstream, where actual value movement occurs.
 
 DP6 therefore defines a commerce layer composed of primitives that make exchange legible, auditable, and governable across the full lifecycle of a transaction, from intent to settlement to dispute.
 
@@ -186,15 +186,7 @@ By binding these elements together, transaction objects ensure that what a parti
 
 A failure mode here is selective omission or delayed disclosure, where certain fees or conditions are only materialized after commitment. Systems must therefore ensure that transaction objects are complete before commitment and immutable afterward except through governed updates.
 
-#### 5.1.2 Fee and allocation objects
-
-Fee structures must be computable and attributable prior to commitment, not inferred after settlement. This includes platform fees, payment processing costs, ranking or promotion adjustments, and any community-level surcharges.
-
-Rather than presenting fees as a flat percentage or opaque deduction, the system must expose how value is distributed across all participating layers. This enables participants to understand not only the price, but the economic structure behind it.
-
-The primary attack surface here is fee fragmentation, where costs are distributed across layers in ways that are individually legible but collectively opaque. DP6 requires that fee objects recombine into a clear total cost of participation.
-
-#### 5.1.3 Settlement and flow proofs
+#### 5.1.2 Settlement and flow proofs
 
 Settlement must be provable, not assumed. Participants and communities need to be able to trace how value moved: who received what, when, and under what conditions.
 
@@ -202,39 +194,27 @@ Settlement proofs create continuity between intent and outcome. Without them, sy
 
 Failure modes include delayed settlement visibility, partial disclosure of recipients, or selective omission of intermediary captures. Systems must treat settlement as a first-class observable state, not a backend detail.
 
-#### 5.1.4 Commerce policy binding
+#### 5.1.3 Commerce policy binding
 
-Zones and communities attach policy objects directly to transactions. These are not advisory rules; they execute at runtime and shape what is allowed, required, or disallowed in a transaction.
+Zones and communities attach policy objects directly to transactions. In plain terms, a rule that is bound to a sale must be followed when the sale happens. These rules are not advisory; they execute at runtime and shape what is allowed, required, or disallowed in a transaction.
 
 This includes restrictions on categories, required disclosures, surcharge logic, and AI usage constraints. The key shift is that commerce behavior is governed at the point of execution, not after harm occurs.
 
 The adversarial pressure here is policy bypass through integration pathways. Transactions must carry their governing policy context with them across systems or explicitly signal where enforcement no longer holds.
 
-#### 5.1.5 AI disclosure and constraint hooks
+#### 5.1.4 AI disclosure and constraint hooks
 
 AI participation in commerce must be visible, attributable, and bounded. This includes pricing adjustments, ranking decisions, bundling, and negotiation.
 
 Participants must be able to distinguish between neutral presentation and optimized persuasion. Without this, AI becomes a hidden incentive layer that distorts economic decisions.
 
+Participants should always know when a page, listing, or recommendation is wholly or partly generated by AI, before they rely on it to buy or sell.
+
 A critical failure mode is undisclosed optimization, where AI systems steer users toward outcomes that maximize commission or retention while presenting themselves as neutral assistants.
 
-#### 5.1.6 Exit and portability primitives
+**Example:** An AI assistant helps a person compare repair shops. It says that it is an AI. It says when a shop pays it a referral fee and gives the main reason each result was shown. It can draft a booking, but it cannot spend more than the person's set limit without asking first. The receipt lists the AI's role, the referral fee, the price, the cancellation terms, and who is responsible for doing the work.
 
-Participants must be able to leave economic relationships without disproportionate friction. This includes exporting receipts, transaction history, and where supported, balances or entitlements.
-
-Portability is not only a convenience feature; it is a constraint on extraction. Systems that make exit costly create economic capture even when pricing appears fair.
-
-The adversarial pattern here is soft lock-in, where exit is technically possible but practically costly due to fragmentation of records, identity, or value.
-
-#### 5.1.7 Dispute and evidence bundles
-
-Every transaction should produce an evidence bundle that can be used in dispute resolution. This includes signed receipts, policy state at the time of purchase, and clear identification of responsible parties.
-
-This shifts dispute resolution from subjective interpretation to evidence-based adjudication. It also creates incentives for systems to maintain accurate and complete records.
-
-Failure modes include missing policy context, unverifiable receipts, or ambiguity about responsibility across multi-party transactions.
-
-#### 5.1.8 Commerce memory
+#### 5.1.5 Commerce memory
 
 Commerce systems must retain a structured memory of transactions and policy evolution. This includes prior fee structures, changes in rules, and the outcomes of disputes.
 
@@ -248,9 +228,9 @@ These primitives transform commerce from a series of isolated interactions into 
 
 Fee transparency is not simply about showing a number. It is about ensuring that participants can understand the full economic structure of a transaction before they commit.
 
-In many systems, fees are fragmented across layers—platform fees, payment processing, ranking adjustments, or currency spreads—each of which may be individually legible but collectively opaque. This creates a situation where the true cost of participation cannot be known until after settlement.
+In many systems, fees are fragmented across layers (platform fees, payment processing, ranking or promotion adjustments, community-level surcharges, or currency spreads), each of which may be individually legible but collectively opaque. This creates a situation where the true cost of participation cannot be known until after settlement.
 
-DP6 requires that effective fees be computable before commitment, not reconstructed after the fact. Participants must be able to see the full take rate across all layers in a way that is coherent and comparable.
+DP6 requires that effective fees be computable and attributable before commitment, not reconstructed after the fact. Participants must be able to see the full take rate across all layers, and how value is distributed among them, in a way that is coherent and comparable.
 
 A core failure mode is fee fragmentation, where systems distribute costs in ways that obscure total extraction. Systems must therefore recombine all fee components into a clear, pre-commitment view of total cost.
 
@@ -262,6 +242,8 @@ DP6 requires that material commitments be opt-in, not opt-out, and that reversal
 
 A common failure mode is asymmetrical friction, where signup is immediate but cancellation is buried, delayed, or requires additional steps. Systems must treat reversibility as a first-class design constraint, not a secondary feature.
 
+**Example:** A person joins a learning service. Before they pay, one screen shows the monthly price, the payment fee, any community charge, the renewal date, the data the service needs, the data it would like but does not need, and a cancel link. They can cancel from the same account page they used to join. Their receipt keeps the terms that applied that day, so they have proof if there is a dispute.
+
 ### 5.4 Separation of payments and surveillance
 
 Commerce systems often bundle payment with data extraction, turning transactions into opportunities for surveillance. This creates hidden costs that are not reflected in price.
@@ -270,13 +252,17 @@ DP6 requires that payment does not require unrelated data processing (DP4). The 
 
 A key failure mode is covert bundling, where data collection is technically optional but practically unavoidable. Systems must ensure that participants can complete transactions without consenting to unrelated data flows.
 
+Payment privacy should also be evaluated at the transport carrying a transaction. Optional decentralized routing can reduce exposure of transaction metadata, but its limits and dependencies must remain visible. DP4 treats a privacy mesh as an implementation option rather than a guarantee of anonymity.
+
 ### 5.5 Interoperable value rails
 
 Value must be able to move without losing meaning, ownership, or accountability. When value is trapped within proprietary systems, participants are subject to platform-defined rules that cannot be contested or exited.
 
-DP6 therefore prefers open protocols and requires export and audit capabilities for closed systems (DP7). Participants must be able to move balances, receipts, and transaction history without losing integrity.
+DP6 therefore prefers open protocols and requires export and audit capabilities for closed systems (DP7). Participants must be able to leave economic relationships without disproportionate friction, moving balances, entitlements, receipts, and transaction history without losing integrity.
 
-A primary failure mode is economic lock-in, where value can technically be withdrawn but at significant loss or friction. Systems must treat portability as a constraint on extraction, not an optional feature.
+A primary failure mode is economic lock-in, where value can technically be withdrawn but at significant loss or friction, often because records, identity, or value are fragmented. Systems that make exit costly create economic capture even when pricing appears fair; they must treat portability as a constraint on extraction, not an optional feature.
+
+Interoperable rails also mean keeping the price a person sees separate from the tool they use to pay. A sale can show its price in local money, and the buyer still pays with any lawful method that works where they live. Before the buyer agrees, the system shows the exchange rate, when it was set, how long it holds, any conversion cost, and the final amount, and it never requires one coin, wallet, or chain.
 
 ### 5.6 Creator and worker fairness
 
@@ -294,6 +280,8 @@ DP6 enables zones to impose rules, surcharges, or bans with executable policy (D
 
 A key failure mode is extraction without reciprocity, where economic activity leverages community trust without contributing to its maintenance. Systems must ensure that communities can define and enforce economic participation terms.
 
+Community economic surfaces should support mutual aid and private peer-to-peer value exchange, including for people excluded from or poorly served by conventional financial infrastructure. Privacy of communication supports that use case but does not by itself resolve settlement, fraud recourse, or access to the necessary services.
+
 ### 5.8 High-stakes commerce pathways
 
 Not all transactions carry the same level of risk. High-stakes categories such as financial products, healthcare, or legal services require additional safeguards.
@@ -310,19 +298,23 @@ DP6 requires that fees transparently fund commons maintenance (DP17). This creat
 
 A failure mode is invisible extraction, where value is removed from ecosystems without reinvestment. Systems must make sustainability contributions explicit and traceable.
 
+**Example:** A community market adds a 1% charge to sales in its zone, and the bill shows it before payment. The charge has a cap and a stated purpose. Every three months the community shares a short report on how the money paid for moderation, translated safety guides, accessibility work, and dispute help. Members can read the report, question a choice, vote on the next budget or renewal of the charge, and keep their receipts if they leave.
+
 ### 5.10 Receipts and dispute evidence
 
 Receipts are not merely confirmations of payment. They are the foundation of accountability in commerce systems.
 
-DP6 requires machine-readable receipts that support fair resolution (DP15). These receipts must include sufficient detail to reconstruct the transaction and its governing conditions.
+DP6 requires machine-readable receipts that support fair resolution (DP15). Every transaction should produce an evidence bundle: signed receipts, the policy state at the time of purchase, and clear identification of responsible parties, with enough detail to reconstruct the transaction and its governing conditions. This shifts dispute resolution from subjective interpretation to evidence-based adjudication.
 
-A failure mode is incomplete or unverifiable receipts, which make disputes difficult or impossible to resolve. Systems must treat receipts as evidence, not just records.
+Failure modes include incomplete or unverifiable receipts, missing policy context, and ambiguity about responsibility across multi-party transactions, which make disputes difficult or impossible to resolve. Systems must treat receipts as evidence, not just records.
 
 ### 5.11 Accessibility of economic surfaces
 
 Commerce must be accessible to all participants, regardless of ability, device, or connectivity constraints.
 
 DP6 requires that checkout and transaction flows work across assistive technologies and low-bandwidth contexts. Accessibility is not only a usability concern, but a fairness constraint.
+
+Economic accessibility also includes affordability. Participants should be able to see fees, surcharges, and minimum commitments for core participation, so a technically available capability does not become accessible only to affluent users. This does not require every optional transaction or service to be free.
 
 A failure mode is exclusion by design, where systems assume high bandwidth, modern devices, or specific interaction patterns. Systems must ensure that economic participation is not gated by technical privilege.
 
@@ -362,13 +354,13 @@ Systems must ensure that delegation does not reduce accountability. Agent-mediat
 
 The mechanisms above describe fairness conditions at the level of a transaction. This section describes what becomes possible when communities themselves hold economic surfaces: the ability to fund what they depend on, to set terms for economic activity that relies on their trust, and to retain value that would otherwise flow entirely outward.
 
-A **meta-community economy** is the economic layer of a community zone. It exists because communities generate the conditions that make commerce trustworthy — moderation, reputation, curation, norms, dispute resolution, and the social relationships within which exchange feels safe — and because in current systems that contribution is uncompensated by default. Marketplaces leverage forums; recommendation systems harvest curation; platforms monetize trust they did not build. *Community extraction without reciprocity* is not a marginal harm; it is the normal operating condition.
+A **meta-community economy** is the economic layer of a community zone. It exists because communities generate the conditions that make commerce trustworthy (moderation, reputation, curation, norms, dispute resolution, and the social relationships within which exchange feels safe), and because in current systems that contribution is uncompensated by default. Marketplaces leverage forums; recommendation systems harvest curation; platforms monetize trust they did not build. *Community extraction without reciprocity* is not a marginal harm; it is the normal operating condition.
 
 ### 6.1 What a community economy comprises
 
 - **A treasury or common pool**, funded through zone surcharges, membership contributions, revenue shares on activity conducted in the zone, or grants, with allocation governed by the community rather than the host.
 - **Zone economic policy**, expressed as policy objects that execute at transaction time: which commerce categories are permitted, which require disclosures, what surcharge applies, which vendors are admitted, and what AI participation is allowed at conversion.
-- **Contribution accounting**, recording who produced the value the zone depends on — moderation, curation, translation, dispute resolution, infrastructure — so that distribution is grounded in a record rather than in social standing. This is where DP6 meets DP9.
+- **Contribution accounting**, recording who produced the value the zone depends on (moderation, curation, translation, dispute resolution, infrastructure), so that distribution is grounded in a record rather than in social standing. This is where DP6 meets DP9. The value a zone depends on also includes creating and verifying connections among artifacts (DP9) and designing or implementing the application substrate. Contributors should be able to inspect how the record relates to what they receive, whether reciprocity, gift, redistribution, barter, direct non-monetary exchange, or fiat or token rewards; on-chain recording is one option, not a requirement.
 - **Reciprocity terms**, defining what external commercial actors owe when they conduct business inside the zone or rely on its trust signals, and making that obligation enforceable rather than voluntary.
 - **Inter-community settlement**, allowing value, credits, or obligations to move between zones without requiring a single currency or clearing authority, and without losing provenance in transit.
 
@@ -378,13 +370,15 @@ Communities are not economically isolated. A participant may belong to several z
 
 Two rules follow. First, **surcharges and constraints must be enumerable at checkout**: a participant sees each zone's contribution as a distinct line, not a blended total, so that what they are funding is legible. Second, **the stricter constraint governs**: where one zone prohibits a category another permits, the prohibition applies to transactions within its scope. A zone's economic policy may raise the floor of protection for its participants; it may not lower another zone's floor.
 
+**Example:** A sale takes place in both a general market and an education zone. The education zone bans gambling offers and requires clear warnings on financial products, so those rules apply to the sale. The education zone also adds a small charge for moderation and access tools, and the bill shows it on its own line with a short reason. Protections stack toward the stronger rule; charges never blend into one total.
+
 ### 6.3 Sustainability rather than rent
 
 The distinction between a community economy and a rent-seeking intermediary is not the presence of a fee. It is whether the fee is bound to the maintenance of something participants depend on, and whether that binding is verifiable.
 
 DP6 therefore requires, for community economic surfaces:
 
-- **Traceable use of funds.** A surcharge is linked to what it maintains — moderation capacity, appeals capacity, infrastructure, translation, accessibility work — with settlement proofs that participants can inspect. This is the same requirement as *Sustainability linkage*, applied at community scale.
+- **Traceable use of funds.** A surcharge is linked to what it maintains (moderation capacity, appeals capacity, infrastructure, translation, accessibility work), with settlement proofs that participants can inspect. This is the same requirement as *Sustainability linkage*, applied at community scale.
 - **Proportionality to contribution.** A community's claim on economic activity should bear a defensible relationship to what the community actually provides. A zone that hosts a transaction and enforces its rules has a stronger claim than one that merely happens to be adjacent.
 - **Exit that preserves value.** Participants and vendors must be able to leave a zone economy with their receipts, history, and where supported their balances or entitlements. Without this, community economic power becomes lock-in with better rhetoric.
 - **Governed allocation.** Treasury decisions are governance decisions, subject to DP3's requirements for tiered thresholds, receipts, visible diffs, and revocable delegation, and to DP20's ownership conditions.
@@ -399,13 +393,19 @@ The bounds DP6 requires are:
 - **Rotation and mandate limits** on the roles controlling economic policy and allocation, since economic authority entrenches faster than moderation authority.
 - **Contestable admission.** Vendor admission and exclusion decisions are appealable, because the power to exclude from a market is more consequential than the power to exclude from a conversation.
 - **Forkability with economic continuity.** A community that disagrees with how its economy is being run must be able to fork, carrying contribution records and member continuity, or the disciplining effect of exit disappears (DP20).
-- **Audit without surveillance.** Aggregate economic outcomes — concentration of payouts, vendor diversity, surcharge burden distribution — should be reviewable without exposing individual transaction histories (DP4).
+- **Audit without surveillance.** Aggregate economic outcomes (concentration of payouts, vendor diversity, surcharge burden distribution) should be reviewable without exposing individual transaction histories (DP4).
 
 ### 6.5 Why this matters
 
-Without community economies, the meta-layer reproduces the current arrangement in new architecture: communities supply trust, platforms and intermediaries capture its value, and the work of maintaining a habitable space is performed for free until the people performing it stop.
+Without community economies, the Meta-Layer reproduces the current arrangement in new architecture: communities supply trust, platforms and intermediaries capture its value, and the work of maintaining a habitable space is performed for free until the people performing it stop.
 
-With them, a community can fund its own moderation, compensate its curators and translators, set terms for commerce that depends on its reputation, and sustain itself without a host extracting the difference. That is the point at which DP6 stops being a set of protections against bad commerce and becomes infrastructure for economic self-determination — and the point at which DP17's sustainability and DP20's ownership become achievable rather than aspirational.
+With them, a community can fund its own moderation, compensate its curators and translators, set terms for commerce that depends on its reputation, and sustain itself without a host extracting the difference. That is the point at which DP6 stops being a set of protections against bad commerce and becomes infrastructure for economic self-determination, and the point at which DP17's sustainability and DP20's ownership become achievable rather than aspirational.
+
+### 6.6 Optional infrastructure service markets
+
+Where a privacy-routing service charges for use, it could offer session- or bandwidth-based pricing, including token-based microtransactions, with visible shares for operators and a community treasury. Participant-chosen third-party services could use opt-in revenue-sharing agreements without making such agreements a prerequisite for interoperability.
+
+The choice between public funding, participant payment, and mixed models should preserve access and avoid surveillance-based monetization unless opted into by the participant. DP17 addresses whether relay revenue can cover continuing costs.
 
 ---
 
@@ -423,7 +423,7 @@ Participants must be able to:
 - understand what data is used in the transaction and revoke unrelated scopes (DP4)
 - identify AI involvement in pricing, ranking, or negotiation (DP11)
 - access clear cancellation, refund, and dispute pathways
-- export receipts and transaction history where honest (DP7, DP15)
+- export receipts and transaction history where supported (DP7, DP15)
 
 Participants must also be able to understand how commerce terms change across systems.
 
@@ -473,6 +473,8 @@ Power also concentrates when commerce fragments across systems.
 Actors who control routing, aggregation, or interface layers can reshape pricing, visibility, or policy without formally changing them.
 
 DP6 therefore requires resistance to cross-system arbitrage, where value is extracted through boundary manipulation rather than contribution or service.
+
+Economic design should be evaluated for entry barriers and concentration of control, not assumed to be competitive because it is decentralized. Privacy-respecting services can compete on participant control rather than extraction, supported by incentives alongside regulation, without requiring people to monetize their personal data.
 
 ---
 
@@ -538,7 +540,7 @@ Community economies introduce a further set of failure paths that DP6 must antic
 - **reciprocity avoidance**, where commercial actors restructure to appear external to a zone while continuing to rely on its trust signals
 - **inter-zone rate arbitrage**, where activity migrates to whichever zone imposes the lowest obligations, undermining the zones doing the maintenance work
 
-Each of these is a predictable consequence of giving communities economic power, and each is addressed by the bounds set out under *Meta-Community Economies* — enumerable surcharges, rotation on allocation authority, enforceable reciprocity terms, and audit of aggregate burden distribution.
+Each of these is a predictable consequence of giving communities economic power, and each is addressed by the bounds set out under *Meta-Community Economies*: enumerable surcharges, rotation on allocation authority, enforceable reciprocity terms, and audit of aggregate burden distribution.
 
 DP6-compliant systems include detection, signaling, and governance responses for these failures. They treat commerce not as a static system, but as an adversarial environment that must be continuously monitored and corrected.
 
@@ -548,7 +550,7 @@ Failure is expected. Invisible failure is not.
 
 ## 11. Relationship to Other Desirable Properties
 
-DP6 connects commerce to the full meta-layer system:
+DP6 connects commerce to the full Meta-Layer system:
 
 - DP2 ensures participant agency at checkout and over subscriptions
 - DP3 defines how commerce rules evolve through governance
@@ -593,7 +595,7 @@ DP6 defines the conditions under which exchange is legitimate and non-coercive.
 
 ---
 
-## 13. Minimum DP6 Alignment (Non-Normative)
+## 13. Minimum DP6 Alignment
 
 A DP6-aligned commerce system should, at minimum:
 
@@ -611,7 +613,7 @@ Where community economic surfaces are operated, a DP6-aligned system should furt
 
 - enumerate community surcharges as distinct, attributable line items at the point of commitment
 - link surcharge revenue to what it maintains, with settlement proofs participants can inspect
-- govern treasury allocation through visible, revocable, tiered process (DP3)
+- govern treasury allocation through a visible, revocable, tiered process (DP3)
 - support exit from a community economy with receipts, history, and supported balances intact
 - expose aggregate economic outcomes for audit without revealing individual transaction histories (DP4)
 
@@ -638,6 +640,8 @@ Community economic surfaces raise a further set of unresolved questions:
 - how to prevent contribution accounting from becoming a surveillance record of participants' community labor (tension with DP4)
 - what recourse exists when a community economy is captured, given that exit costs include social relationships rather than only economic ones
 
+A further question is how automated markets should be evaluated for their effects on human participation and access to value, alongside efficiency. Game-theoretic analysis can help examine whether stable outcomes sustain livelihoods and community contribution, but no particular equilibrium or distributional guarantee is assumed.
+
 These questions sit at the intersection of economic design, governance, and law.
 
 ---
@@ -658,19 +662,13 @@ Progress should be demonstrated through working systems, not only conceptual agr
 
 ## 16. Closing Orientation
 
-DP6 is where the meta-layer proves whether it can support real economic life without reverting to extraction.
+DP6 is where the Meta-Layer proves whether it can support real economic life without reverting to extraction.
 
 Fair commerce is not the opposite of innovation. It is the condition under which innovation remains trustworthy.
 
 When DP6 is strong, participants can pay, earn, and fund commons with clarity, agency, and dignity.
 
 When it is weak, every other property is undermined at the moment money changes hands.
-
-DP6 is where the meta-layer proves it is not building another opaque marketplace.
-
-Fair commerce is the condition under which innovation does not depend on misdirection.
-
-When DP6 is strong, people can pay, earn, and fund commons without trading away dignity or control.
 
 Commerce that fails under interoperability pressure is not fair commerce. DP6 requires that fairness survive movement.
 

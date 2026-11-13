@@ -1,11 +1,11 @@
 # DP3 – Adaptive Governance Supporting an Exponentially Growing Community
 
-*Scalable systems, sustainable communities — as the Meta-Layer expands, its governance must evolve, staying decentralized, fair, and responsive to the community that builds it.*
+*Scalable systems, sustainable communities – as the Meta-Layer expands, its governance must evolve, staying decentralized, fair, and responsive to the community that builds it.*
 
 ![Illustration for Desirable Property DP3: Adaptive Governance Supporting an Exponentially Growing Community](/content/local/assets/dp/DP3.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-010 revision=03 submission=d6741aee-0174-4258-875b-7360f67f1bf6 hash=bd324491b0ffc41b synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-010 revision=04 submission=9ac44fd5-6e2a-4b5a-b37a-fa2b12ff995f hash=ff178517b2112ec3 synced=2026-11-13T08:20:02Z -->
 
 ---
 
@@ -13,7 +13,7 @@
 
 This draft articulates Desirable Property 3 (DP3) as the condition under which governance scales with participation and capability without collapsing into centralized fiat, procedural paralysis, or symbolic participation.
 
-DP3 defines how the meta-layer maintains legitimate, timely, and contestable rule-setting as communities, tools, and AI capabilities expand. It sits between DP1 (accountability), DP2 (participant agency), and DP12 (community governance of AI), and acts as the bridge between human deliberation and executable policy.
+DP3 defines how the Meta-Layer maintains legitimate, timely, and contestable rule-setting as communities, tools, and AI capabilities expand. It sits between DP1 (accountability), DP2 (participant agency), and DP12 (community governance of AI), and acts as the bridge between human deliberation and executable policy.
 
 Governance is the system's primary control surface under conditions of scale, automation, and interoperability. When governance fails at system boundaries or under rapid change, every other property becomes unstable or performative.
 
@@ -21,7 +21,7 @@ If DP3 is weak, predictable failures follow: capture by early insiders, rubber-s
 
 DP3 does not prescribe a single voting system, constitution, or DAO pattern. It defines the minimum conditions under which governance remains adaptive, legible, and legitimate under exponential growth.
 
-Governance is the control layer of the meta-layer. Systems that appear governed locally but fail across scale, speed, or system boundaries will be captured or bypassed.
+Governance is the control layer of the Meta-Layer. Systems that appear governed locally but fail across scale, speed, or system boundaries will be captured or bypassed.
 
 ---
 
@@ -115,7 +115,7 @@ The same rule is enforced differently, or not at all, depending on which tool, i
 
 ## 4. Core Principle
 
-Adaptive governance in the meta-layer means authority evolves alongside scale, capability, and system interconnection while remaining visible, contestable, and bounded.
+Adaptive governance in the Meta-Layer means authority evolves alongside scale, capability, and system interconnection while remaining visible, contestable, and bounded.
 
 Governance must function not only within a single community or tool, but across the systems, environments, and contexts in which rules are applied, enforced, and experienced.
 
@@ -205,21 +205,6 @@ These include:
 
 Without enforcement hooks, governance decisions remain advisory and are overridden by underlying system behavior.
 
-#### 5.1.6 Governance memory graph
-
-Governance must persist over time as a connected structure.
-
-Decisions must be linked to:
-
-- prior versions
-- triggering events
-- debates and dissent
-- observed outcomes
-
-This creates a governance memory that enables learning, prevents repetition of failure, and supports accountability.
-
-Without memory, governance resets continuously and cannot improve.
-
 These primitives do not replace governance processes. They make them operational. The mechanisms that follow operate through this layer, ensuring that decisions are not only made, but executed, observed, and revised within a coherent system.
 
 ### 5.2 Tiered decision systems
@@ -250,7 +235,7 @@ A common failure mode is emergency normalization, where temporary powers persist
 
 Governance decisions do not occur in isolation. They are part of a continuous process of learning, adaptation, and correction.
 
-DP3 requires that all decisions be linked to their context, including triggering events, dissenting views, and measurable outcomes. This creates continuity and prevents repeated cycles of the same failures.
+DP3 requires that all decisions be linked to their context, including prior versions, triggering events, dissenting views, and measurable outcomes. This creates continuity, supports accountability, and prevents repeated cycles of the same failures. Without memory, governance resets continuously and cannot improve.
 
 A failure mode is historical amnesia, where prior decisions and their consequences are lost, forcing communities to relearn the same lessons under new conditions.
 
@@ -269,6 +254,8 @@ Governance systems must anticipate how they will be attacked or manipulated, rat
 DP3 requires that communities model adversarial scenarios such as capture attempts, AI-driven manipulation, and scale shocks. This allows governance structures to incorporate safeguards before vulnerabilities are exploited.
 
 A failure mode is reactive governance, where systems adapt only after harm occurs, often at higher cost and with reduced trust.
+
+Foresight should examine who controls information channels and whose incentives shape the evidence reaching decision-makers. Conflicts of interest can compound across networks of institutions, even when individual conflicts are disclosed. Independent information and foresight channels help make those patterns contestable; centralized filtering of human speech is not by itself a remedy for conflicted governance.
 
 ### 5.8 Interoperable governance artifacts
 
@@ -292,6 +279,8 @@ AI can significantly augment governance by processing information at scale, but 
 
 DP3 requires clear boundaries for AI participation, including roles in summarization, simulation, and pattern detection, while reserving material decisions for human ratification.
 
+Governance scale depends on agent speed, reach, and interacting capabilities as well as participant count. Advanced systems may support analysis, monitoring, and infrastructure under defined mandates, while the boundary between assistance and legitimate governing authority remains explicit.
+
 A failure mode is automation creep, where AI systems begin to effectively determine outcomes without explicit authorization or oversight.
 
 ### 5.11 Representation mechanisms
@@ -299,6 +288,8 @@ A failure mode is automation creep, where AI systems begin to effectively determ
 As participation scales globally, governance must ensure that diverse perspectives are meaningfully included.
 
 DP3 requires mechanisms that support geographic diversity, language accessibility, and asynchronous participation. Representation must reflect the actual composition of the community, not just those able to engage in specific formats.
+
+Freedom of expression depends in part on open information infrastructure through which people can contribute without a few actors monopolizing access or visibility. Protection of voice should operate alongside visible community rules and contestable moderation, rather than depend on a promise of an entirely ungoverned space.
 
 A failure mode is structural exclusion, where governance participation is limited by language, time zones, or access constraints, concentrating power among a narrow subset of participants.
 
@@ -316,7 +307,7 @@ Decisions are made at the smallest scope competent to make them, with escalation
 
 This pattern absorbs growth by adding zones rather than adding participants to a single deliberative body. A community of ten thousand does not deliberate as ten thousand; it deliberates as many bounded contexts with defined escalation pathways between them.
 
-**Scale condition:** subsidiarity fails when escalation thresholds are undefined, because every local dispute becomes a candidate for global attention. It also fails when zones proliferate faster than the memory graph can link them, producing incoherence rather than autonomy.
+**Scale condition:** subsidiarity fails when escalation thresholds are undefined, because every local dispute becomes a candidate for global attention. It also fails when zones proliferate faster than governance memory can link them, producing incoherence rather than autonomy.
 
 ### 6.2 Rotation, term limits, and sortition
 
@@ -348,19 +339,25 @@ Rules and system changes are deployed to a bounded population or zone before gen
 
 ### 6.6 Forkability as a governance constraint
 
-The credible ability to fork — carrying governance artifacts, memory, and member continuity — disciplines incumbents without requiring any fork to occur. Interoperable governance artifacts are the mechanism; forkability is the effect.
+The credible ability to fork, carrying governance artifacts, memory, and member continuity, disciplines incumbents without requiring any fork to occur. Interoperable governance artifacts are the mechanism; forkability is the effect.
 
 **Scale condition:** forkability fails when governance artifacts are portable in principle but the community's identity, data, or economic relationships are not. Exit that costs everything is not exit, and its disciplining effect disappears.
 
 ### 6.7 Automation as instrumentation, not authority
 
-AI and automated systems are used to observe governance at scale — detecting drift, surfacing dissent, summarizing deliberation, flagging capacity shortfalls — while material decisions remain human-ratified.
+AI and automated systems are used to observe governance at scale (detecting drift, surfacing dissent, summarizing deliberation, flagging capacity shortfalls) while material decisions remain human-ratified.
 
 The productive framing is that automation extends the *sensing* capacity of governance without extending its *deciding* capacity. This is what makes governance able to notice, at scale, the conditions it must respond to.
 
 **Scale condition:** this pattern fails through automation creep, where an advisory signal becomes the operative decision because no human has capacity to review it. The boundary must be enforced by structure, not by intention.
 
-### 6.8 Composing patterns
+### 6.8 Vicariance and protected incubation
+
+Vicariance is temporary, partial separation that gives fragile social, technical, or cultural designs room to develop before confronting dominant actors and wider competition. Communities should be able to incubate alternatives and choose gradual integration, preserving diverse paths of emergence.
+
+AI-mediated recommendation, translation, or outreach should respect the community's chosen dissemination boundaries instead of silently dissolving its incubation conditions. Insulation should remain reviewable and compatible with exit and accountability; it is not a justification for permanent enclosure. DP8 provides the zone setting and DP12 governs its enforceable boundaries.
+
+### 6.9 Composing patterns
 
 These patterns are not alternatives. A community operating at scale will typically combine nested zones with rotation inside each zone, progressive thresholds across zones, staged rollout for consequential changes, and automated instrumentation throughout. What DP3 requires of any composition is that the resulting system produce receipts, maintain memory, expose diffs, bound emergencies, and remain forkable.
 
@@ -417,6 +414,8 @@ DP3 therefore expects governance systems to:
 
 When incentives and governance are aligned, systems become self-reinforcing. When they diverge, governance becomes symbolic.
 
+Decentralization should be evaluated by its effects on participants and communities. Incentive review should ask whether a proposed economic or token design rewards zero-sum behavior, concentrates control, or undermines the shared purpose, rather than treating distributed architecture alone as evidence of benefit.
+
 ---
 
 ## 9. Community Signals Informing DP3
@@ -468,7 +467,7 @@ Failure is expected. Silent failure is not.
 
 ## 11. Relationship to Other Desirable Properties
 
-DP3 operates as the structural backbone for governance across the meta-layer.
+DP3 operates as the structural backbone for governance across the Meta-Layer.
 
 - DP1 ensures actions within governance are attributable and contestable
 - DP2 enables participants to exercise agency through delegation and participation
@@ -481,7 +480,7 @@ DP3 operates as the structural backbone for governance across the meta-layer.
 - DP17 ensures governance has sustained resources
 - DP20 defines who ultimately owns and can fork governance systems
 
-Two of these couplings deserve emphasis, because DP3 fails first at their boundaries.
+Two couplings deserve emphasis, because DP3 fails first at their boundaries.
 
 The first is **DP17**. Capacity-aware governance is not a procedural nicety; it is an economic dependency. Moderation, appeals, translation, and review are staffed activities, and a governance system that scales its rules faster than its funded capacity produces the capacity illusion described above. DP3's requirement to provision for enforcement is therefore a claim on DP17's sustainability mechanisms.
 
@@ -514,7 +513,7 @@ DP3 defines conditions for adaptive governance. It does not prescribe a single i
 
 ---
 
-## 13. Minimum DP3 Alignment (Non-Normative)
+## 13. Minimum DP3 Alignment
 
 A DP3-aligned system should, at minimum:
 
