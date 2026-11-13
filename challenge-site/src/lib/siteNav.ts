@@ -60,6 +60,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
     href: '/v1',
     children: [
       { href: '/v1', label: 'About Version 1.0' },
+      { href: '/improve', label: 'Help shape Version 1.1' },
       { href: 'https://book.desirableproperties.org/', label: 'Read the book', external: true },
       { href: '/steering', label: 'Steering and proposals' },
       { href: '/press', label: 'Press release' },
