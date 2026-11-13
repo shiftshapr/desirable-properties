@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "press-quote-daveed",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: Daveed Benjamin's quote approved",
+      "summary": "Daveed Benjamin approved his quote, so it now shows on the published press release.",
+      "changes": [
+        "Daveed's quote marked approved"
+      ]
+    },
+    {
       "id": "press-release-v1",
       "date": "2026-11-13",
       "status": "open",
