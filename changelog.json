@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "improve-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/improve: Help shape Version 1.1",
+      "summary": "New public page inviting launch attendees and contributors to improve Version 1.0: priorities for Version 1.1 and the road to Version 2 (editable in src/data/improve-priorities.ts), and a search-as-you-type explorer over the 24 DPs and every proposal. Each DP opens a drawer with its open co-editor seats, how to propose a change, how to volunteer for V1.1 steering, and its proposals. Linked from the Version 1.0 menu and the footer; /v1/improve redirects here.",
+      "changes": [
+        "/improve: hero, V1.1 and V2 priorities, DP and proposal explorer",
+        "DP drawer: contribute, co-edit (live seats), steer V1.1, review proposals; ?dp=dp7 deep links",
+        "Nav: Version 1.0 → Help shape Version 1.1; footer link",
+        "Redirect /v1/improve → /improve (temporary)"
+      ]
+    },
+    {
       "id": "v1-pdf-button",
       "date": "2026-11-13",
       "status": "open",
