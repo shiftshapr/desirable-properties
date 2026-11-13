@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-edition-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Book: Edition and license page",
+      "summary": "The online book gets an Edition and license page after the cover (Version 1.0, November 13, 2026; foreword by Vint Cerf; how it was made; links; CC BY 4.0; inscribed on Bitcoin), matching the PDF's edition notice.",
+      "changes": [
+        "Book: /viewer/edition"
+      ]
+    },
+    {
       "id": "press-quotes",
       "date": "2026-11-13",
       "status": "open",
