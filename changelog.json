@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-next-step-notice",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: an open stage says plainly when its analysis still has to run",
+      "summary": "An open review stage or Stage 4 with no analysis imported now shows a highlighted \"Next step: run the analysis\" box instead of a grey note. The Ledger records how Stage 3 closed.",
+      "changes": [
+        "Highlighted \"Next step\" box when a stage's analysis has not run",
+        "Stage 4 panel says the final read has not run and documents show as not read until it is imported",
+        "Ledger: Stage 3 close note"
+      ]
+    },
+    {
       "id": "steering-import-upload",
       "date": "2026-11-13",
       "status": "open",
