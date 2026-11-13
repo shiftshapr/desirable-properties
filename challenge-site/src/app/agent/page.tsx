@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import HermesChat from '@/components/HermesChat';
 import { resolveAgentStarter } from '@/lib/agent-starter';
 import { readSession, sessionToAuthUser } from '@/lib/auth-session';
@@ -7,6 +8,12 @@ export const metadata: Metadata = {
   title: 'Deepi – Desirable Properties',
   description:
     'Deepi helps the community refine the Desirable Properties: coherence, impact, and governance continuity.',
+  openGraph: pageOpenGraph({
+    title: 'Ask Deepi about the Desirable Properties',
+    description:
+      'Deepi answers questions about The Layered Web, Version 1.0 and helps the community refine the Desirable Properties.',
+    path: '/agent',
+  }),
   robots: { index: false, follow: false },
 };
 
