@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-decision-carries-fixes",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: choosing a decision's recommended course covers its fixes",
+      "summary": "When a steering decision comes with drafted fixes (DP4's bold labels), choosing the recommended course now approves those fixes too, and \"What needs you\" counts them with the recommended fixes you can approve in one click. Members who already chose get an \"Approve these\" button on the fixes.",
+      "changes": [
+        "Recording the recommended choice on a decision also casts your approve vote on its attached fixes",
+        "Fixes under a decision you chose count in \"Approve all recommended fixes\"",
+        "A line above a decision's fixes says how they relate to your choice"
+      ]
+    },
+    {
       "id": "steering-needs-you",
       "date": "2026-11-12",
       "status": "open",

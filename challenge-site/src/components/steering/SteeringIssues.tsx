@@ -100,8 +100,10 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
       const result = done(body);
       say(id, result.ok, result.text);
       await load();
+      return true;
     } catch (err) {
       say(id, false, err instanceof Error ? err.message : 'Failed');
+      return false;
     } finally {
       setBusy(null);
     }
@@ -193,8 +195,10 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
     const decision = !f.needsDecision || Boolean(f.discussion.myChoice);
     return !readOnly && items && carried && decision && (f.items.length > 0 || f.carried.length > 0 || f.needsDecision);
   };
-  const decide = (f: SteeringFinding, choice: string | null, note: string) =>
-    void act(
+  // Choosing the recommended course of a decision that carries fixes also approves those fixes
+  // (they are the drafted part of that course); a second member still has to agree on each.
+  const decide = async (f: SteeringFinding, choice: string | null, note: string) => {
+    const ok = await act(
       f.key,
       `finding:${f.key}`,
       `/api/steering/issues/${encodeURIComponent(f.key)}/decision`,
@@ -212,6 +216,9 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
         };
       },
     );
+    const pending = f.items.filter(needsMyVote);
+    if (ok && choice && choice === recommendedKey(f) && pending.length) await approveItems(pending, `fixes:${f.key}`);
+  };
   const comment = (f: SteeringFinding, text: string) =>
     act(
       f.key,
@@ -226,12 +233,18 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
   // (and not yet settled), and, optionally, flagged accepted changes they have not reviewed.
   const needsMyVote = (i: FindingItem) => isOpen(i) && !i.votes.some((v) => v.mine);
   const needsMyChoice = (f: SteeringFinding) => f.needsDecision && !f.discussion.myChoice && !f.discussion.settledChoice;
+  // Fixes attached to a decision carry out its recommended course: once you chose that course,
+  // they count with the recommended fixes you can approve in one click.
+  const followsMyChoice = (f: SteeringFinding) =>
+    f.needsDecision && Boolean(f.discussion.myChoice) && f.discussion.myChoice === recommendedKey(f);
   const needsMyReview = (c: FindingCarried) => c.tab === 'open' && !c.reviews.some((r) => r.mine) && !c.decision;
   const needsMe = (f: SteeringFinding) =>
     f.items.some(needsMyVote) || needsMyChoice(f) || (withOptional && f.carried.some(needsMyReview));
   const allFindings = data?.groups.flatMap((g) => g.findings) || [];
   const myFixes = allFindings.flatMap((f) => f.items.filter(needsMyVote));
-  const myRecommended = myFixes.filter((i) => i.analysis?.recommendation === 'accept');
+  const myRecommended = allFindings.flatMap((f) =>
+    f.items.filter((i) => needsMyVote(i) && (followsMyChoice(f) || i.analysis?.recommendation === 'accept')),
+  );
   const myDecisions = allFindings.filter(needsMyChoice);
   const myReviews = allFindings.flatMap((f) => f.carried.filter(needsMyReview));
   const filtering = onlyMine && !readOnly;
@@ -550,7 +563,7 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
                   busy={busy === `finding:${f.key}`}
                   flash={flash[f.key]}
                   onDecide={decide}
-                  onComment={comment}
+                  onComment={(f, t) => comment(f, t).then(() => undefined)}
                   onUncomment={uncomment}
                 />
 
@@ -559,6 +572,34 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
                     <h4 className="text-sm font-semibold uppercase tracking-[0.15em] text-slate-400">
                       Fix{f.items.length === 1 ? '' : 'es'} ({f.items.length})
                     </h4>
+                    {f.needsDecision && !readOnly && f.items.some(needsMyVote) ? (
+                      followsMyChoice(f) ? (
+                        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-emerald-800/60 bg-emerald-950/20 px-3 py-2 text-sm text-emerald-100">
+                          <span className="min-w-0 flex-1">
+                            These fixes carry out the course you chose. {f.items.filter(needsMyVote).length} still need your vote.
+                          </span>
+                          <button
+                            type="button"
+                            disabled={busy !== null}
+                            onClick={() => void approveItems(f.items.filter(needsMyVote), `fixes:${f.key}`)}
+                            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-40"
+                          >
+                            {busy === `fixes:${f.key}` ? 'Approving…' : `Approve these ${f.items.filter(needsMyVote).length}`}
+                          </button>
+                        </div>
+                      ) : f.discussion.myChoice ? (
+                        <p className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-300">
+                          You chose a course other than the recommended one, which these fixes carry out. Vote on each below: decline the ones your course does not want.
+                        </p>
+                      ) : (
+                        <p className="rounded-lg border border-slate-700 px-3 py-2 text-sm text-slate-300">
+                          These fixes carry out the recommended course. Choosing it above approves them too.
+                        </p>
+                      )
+                    ) : null}
+                    {flash[`fixes:${f.key}`]?.text ? (
+                      <p className={`text-sm ${flash[`fixes:${f.key}`]?.ok ? 'text-emerald-300' : 'text-rose-300'}`}>{flash[`fixes:${f.key}`]?.text}</p>
+                    ) : null}
                     <ul className="space-y-4">
                       {f.items.map((item) => (
                         <li key={item.proposalId} className="list-none space-y-1">
@@ -569,7 +610,7 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
                               item={item}
                               busy={busy}
                               flash={flash[item.proposalId]}
-                              onVote={vote(item.mlNumber)}
+                              onVote={(it, d, o) => vote(item.mlNumber)(it, d, o).then(() => undefined)}
                               onWithdraw={withdrawVote(item.mlNumber)}
                               readOnly={readOnly}
                             />
@@ -637,6 +678,20 @@ function when(iso: string | null): string {
  * Under a finding: for one that needs a steering decision, its options (with the review's
  * recommendation) and each member's choice; two matching choices settle it. Any finding takes comments.
  */
+/** The choice key ('option-N') of a decision's recommended course, or null. */
+function recommendedKey(f: SteeringFinding): string | null {
+  const rec = f.decision?.recommended?.trim();
+  const options = f.decision?.options || [];
+  if (!rec || !options.length) return null;
+  const letter = /^([A-Z])(?:\b|:)/.exec(rec);
+  if (letter && rec.length <= 3) {
+    const n = letter[1].charCodeAt(0) - 64;
+    if (n >= 1 && n <= options.length) return `option-${n}`;
+  }
+  const i = options.findIndex((o) => o.trim() === rec || o.trim().startsWith(rec) || rec.startsWith(o.trim()));
+  return i >= 0 ? `option-${i + 1}` : null;
+}
+
 function FindingDiscussion({
   finding,
   readOnly,
