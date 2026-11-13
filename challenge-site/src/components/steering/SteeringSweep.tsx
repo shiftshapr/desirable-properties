@@ -26,8 +26,12 @@ import {
   type SteeringItem,
   type SteeringReviewDecision,
   type SteeringSignoff,
+  type SteeringFinal,
   type SteeringTab,
 } from '@/lib/dp-steering';
+
+/** Gov Hub's public page for a document's current text (a fixed host: env vars differ server and client). */
+const CHAPTER_BASE = 'https://interfacehub.net';
 
 export type Flash = { ok: boolean; text: string };
 
@@ -343,7 +347,7 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
       ) : null}
 
       {doc?.signoff ? (
-        <SignoffPanel signoff={doc.signoff} readOnly={readOnly} busy={busy === 'signoff'} flash={flash.signoff} onSign={signOff} />
+        <SignoffPanel signoff={doc.signoff} final={doc.final} ml={ml} readOnly={readOnly} busy={busy === 'signoff'} flash={flash.signoff} onSign={signOff} />
       ) : null}
 
       {doc ? <StatusTabs tab={tab} counts={tabCounts} onSelect={setTab} /> : null}
@@ -1369,12 +1373,16 @@ export function CarriedCard({
 
 function SignoffPanel({
   signoff,
+  final,
+  ml,
   readOnly,
   busy,
   flash,
   onSign,
 }: {
   signoff: SteeringSignoff;
+  final: SteeringFinal | null;
+  ml: string;
   readOnly: boolean;
   busy: boolean;
   flash?: Flash;
@@ -1386,6 +1394,22 @@ function SignoffPanel({
   return (
     <section className="rounded-2xl border border-violet-800/60 bg-violet-950/20 p-4 text-sm">
       <h2 className="font-semibold text-white">Final sign-off</h2>
+      {final ? (
+        <p className={`mt-1 ${final.canSign ? 'text-emerald-200' : 'text-amber-200'}`}>
+          {final.label}
+          {final.check ? ` (checked in round ${final.check.round})` : ''}.{' '}
+          {final.status === 'open'
+            ? 'Settle its fixes and decisions in the Stage 4 bundles first.'
+            : final.status === 'needs_recheck'
+              ? 'Its text changed after the check; the next round re-reads it.'
+              : final.status === 'not_read'
+                ? 'The final read has not reached it yet.'
+                : ''}{' '}
+          <a href={`${CHAPTER_BASE}/doc/draft/${ml}/`} target="_blank" rel="noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
+            Read the full text
+          </a>
+        </p>
+      ) : null}
       <p className="mt-1 text-slate-300">
         {signoff.signed
           ? 'Signed off: two steering members approved this document’s finished text.'
@@ -1420,7 +1444,7 @@ function SignoffPanel({
                 placeholder="Note (optional)"
                 className="min-w-0 flex-1 rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-white"
               />
-              <button type="button" disabled={busy} onClick={() => onSign(false, note.trim())}
+              <button type="button" disabled={busy || (final ? !final.canSign : false)} onClick={() => onSign(false, note.trim())}
                 className="rounded-lg bg-violet-700 px-4 py-1.5 font-medium text-white hover:bg-violet-600 disabled:opacity-50">
                 {busy ? 'Signing…' : 'Sign off this text'}
               </button>

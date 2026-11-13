@@ -27,7 +27,7 @@ const SEVERITY_TONE: Record<string, string> = {
 };
 
 /** What each review stage's analysis is called. */
-const ANALYSIS_NAME: Record<string, string> = { 'stage-2': 'cross-DP', 'stage-3': 'style' };
+const ANALYSIS_NAME: Record<string, string> = { 'stage-2': 'cross-DP', 'stage-3': 'style', final: 'final read' };
 
 type FindingItem = SteeringFinding['items'][number];
 type FindingCarried = SteeringFinding['carried'][number];
@@ -309,9 +309,11 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
           </>
         )}
         <p className="max-w-3xl text-sm text-slate-300">
-          {data?.stage && ANALYSIS_NAME[data.stage.key]
-            ? `The ${ANALYSIS_NAME[data.stage.key]} analysis read every accepted change. `
-            : ''}
+          {data?.stage?.kind === 'signoff'
+            ? 'The final read goes through each document’s finished text end to end; each later round re-checks only the documents that changed. '
+            : data?.stage && ANALYSIS_NAME[data.stage.key]
+              ? `The ${ANALYSIS_NAME[data.stage.key]} analysis read every accepted change. `
+              : ''}
           Each bundle is one kind of fix across the chapters: its findings, the fixes they filed (voted on like any
           proposal) and the accepted changes they flagged. Two steering members must agree before a fix is carried out.
           Settled bundles are hidden, and a bundle with nothing left for you folds to one line.
@@ -413,9 +415,13 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
 
       {data && !findings ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
-          {data.stage?.kind === 'review'
-            ? `The ${ANALYSIS_NAME[data.stage.key] || 'stage'} analysis for ${data.stage.title} has not been run yet. Its findings will appear here in bundles, one box per kind of fix.`
-            : 'This stage has no analysis bundles.'}
+          {data.stage?.kind === 'signoff'
+            ? data.rounds?.length
+              ? `Round ${data.rounds.length} found nothing to fix in the ${data.rounds[data.rounds.length - 1].documentsRead} document${data.rounds[data.rounds.length - 1].documentsRead === 1 ? '' : 's'} it read.`
+              : `The final read for ${data.stage.title} has not been run yet. Anything it finds will appear here in bundles; documents it finds clean go straight to sign-off.`
+            : data.stage?.kind === 'review'
+              ? `The ${ANALYSIS_NAME[data.stage.key] || 'stage'} analysis for ${data.stage.title} has not been run yet. Its findings will appear here in bundles, one box per kind of fix.`
+              : 'This stage has no analysis bundles.'}
         </p>
       ) : null}
 
