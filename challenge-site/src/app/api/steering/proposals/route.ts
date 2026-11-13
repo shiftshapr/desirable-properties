@@ -49,11 +49,13 @@ async function loadAnalyses(idToken: string): Promise<Record<string, Raw>> {
   return byId;
 }
 
-/** Every proposal on the 28 Version 1.0 documents, for the Proposals tab (anyone signed in). */
+/**
+ * Every proposal on the 28 Version 1.0 documents, for the Proposals tab. Public, like the proposals on Gov Hub;
+ * the generated analyses are added for steering members (Gov Hub checks the sign-in).
+ */
 export async function GET() {
   const session = await readSession();
-  if (!session?.userId) return Response.json({ error: 'Sign in required', code: 'sign_in' }, { status: 401 });
-  const [rows, analyses] = await Promise.all([loadProposals(), session.idToken ? loadAnalyses(session.idToken) : Promise.resolve({})]);
+  const [rows, analyses] = await Promise.all([loadProposals(), session?.idToken ? loadAnalyses(session.idToken) : Promise.resolve({})]);
   // A proposal accepted with revisions is filed again as a revised copy (revised_from_id) and the original
   // is marked considered: list the idea once, as the revised copy, with the original's author and source.
   const byId = new Map(rows.map((p) => [s(p.id), p]));
