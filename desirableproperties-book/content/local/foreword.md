@@ -1,3 +1,4 @@
+<!-- govhub-sync: ml=ML-Draft-057 revision=01 submission=5785291a-785f-489b-a6bd-7f7f0a1b9b43 hash=bc26d1aedfa5ec84 synced=2026-11-13T08:34:22Z -->
 # Foreword
 
 People who run around using phrases like "words of wisdom" always worry me. I have words, but whether they're wise or not is someone else's decision. What I am happy to share is a little of the experience of watching the Internet begin and then blossom, and to try to extract from that some insight into what makes infrastructure possible.
