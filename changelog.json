@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-hero-phase",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 panel follows the launch clock",
+      "summary": "The Version 1.0 panel on the home page and /v1 now switches on the clock without a reload, and follows the staging ?v1phase= preview. From 11am PT it reads 'released November 13, 2026' and no longer offers to join the launch.",
+      "changes": [
+        "Home and /v1 Version 1.0 panel: before, during and after wording",
+        "No launch registration after 10am PT"
+      ]
+    },
+    {
       "id": "proposals-no-double-count",
       "date": "2026-11-13",
       "status": "open",

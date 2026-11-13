@@ -49,7 +49,7 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        <V1BookPanel now={now} />
+        <V1BookPanel />
 
         {/* The Layered Web videos (src/data/layered-web-videos.ts) */}
         <section aria-labelledby="layered-web-videos-heading" className="border-b border-slate-800">
