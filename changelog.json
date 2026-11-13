@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "press-release-v1",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release for Version 1.0",
+      "summary": "A press release page at /press announces Version 1.0. On desirableproperties.org it appears at 11:00 PT on 13 November, after the launch event, and shows only quotes their speakers have approved; staging previews the drafts.",
+      "changes": [
+        "/press page with the release, fast facts, links to read the book and the steering Ledger, and a press contact"
+      ]
+    },
+    {
       "id": "steering-ledger-stage4",
       "date": "2026-11-13",
       "status": "open",
