@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage4-stable-order",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: the Stage 4 document list stays in book order",
+      "summary": "The Stage 4 list used to re-sort as documents were signed, moving signed ones to the bottom, so people going down the list skipped rows. It now stays in book order: Cover, About, Acknowledgements, Introduction, then DP1 to DP24.",
+      "changes": [
+        "Stage 4 list in fixed book order"
+      ]
+    },
+    {
       "id": "steering-final-text-images",
       "date": "2026-11-13",
       "status": "open",
