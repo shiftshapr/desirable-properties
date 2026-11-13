@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-deepi-steering-intro-split",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Ask Deepi on /v1; /steering opened to visitors; proposals split by who and when",
+      "summary": "/v1 gets 'Ask Deepi about the book' with question buttons that open Deepi with the question ready. /steering is retitled 'How Version 1.0 was decided', is indexable, and opens with a visitor intro; /adjudication, /decisions and /proposals redirect to it. The Proposals tab and press release separate the 355 open-review proposals (237 from 57 community contributors, 79 from Metaweb Academy accounts) from the 1,280 steering repairs after the freeze.",
+      "changes": [
+        "/v1: Ask Deepi panel",
+        "/steering: visitor intro, indexable, redirects",
+        "Proposals: Metaweb Academy (open review) and Steering repair sources",
+        "Press: open review vs repairs"
+      ]
+    },
+    {
       "id": "nav-fit-laptop",
       "date": "2026-11-13",
       "status": "open",

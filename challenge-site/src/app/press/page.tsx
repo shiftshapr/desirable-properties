@@ -43,7 +43,7 @@ const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean
 const FACTS = [
   ['Released', '13 November 2026, at the Version 1.0 launch event'],
   ['Scope', '24 Desirable Properties, plus an Introduction, About, Acknowledgements and Cover'],
-  ['Proposals reviewed', '1,635, including 355 from the community'],
+  ['Proposals reviewed', '355 in the open review, 237 of them from 57 community contributors, plus 1,280 editorial repairs by the steering committee after the freeze'],
   ['Contributors named', '69, from two public Calls for Input (2024 and 2025) and the Desirable Properties Challenge'],
   ['Review', 'Four steering stages: proposal review, cross-chapter check, style pass, and a final read repeated until it found nothing'],
   ['Licence', 'CC BY 4.0'],
