@@ -50,6 +50,7 @@ export default async function LaunchBriefingPage({ searchParams }: Props) {
             <V1PhaseText
               before="Version 1.0 was not part of that milestone. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
               during="Version 1.0 is live. September 16 remains the Community Review Draft milestone that preceded it."
+              after="Version 1.0 is finished. September 16 remains the Community Review Draft milestone that preceded it. Version 1.1, an open revision, comes next."
             />
           </p>
         </header>

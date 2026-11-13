@@ -26,7 +26,9 @@ export default function ChallengeCountdown({ initialNow }: Props) {
         <p className="mt-2 text-sm text-slate-400">
           {phase === 'during'
             ? 'The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'
-            : 'Explore the Community Review Draft and Version 1.0 release below.'}
+            : phase === 'before'
+              ? 'Explore the Community Review Draft and Version 1.0 release below.'
+              : 'Version 1.0 is finished. Proposals toward Version 1.1 are open.'}
         </p>
       </div>
     );

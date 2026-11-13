@@ -21,7 +21,7 @@ export default function StartHereHomePanel() {
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-200">
           Each DP needs two <strong className="font-semibold text-white">co-editors</strong>, who
           decide its proposals.{' '}
-          <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />{' '}
+          <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." after="Version 1.0 is finished. Proposals toward Version 1.1 are open." />{' '}
           Claim an open seat, propose changes in a workgroup, or comment on a chapter.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">

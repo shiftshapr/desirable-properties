@@ -11,10 +11,9 @@ import {
   govhubUrl,
 } from '@/lib/govhub';
 import { resolveNamedTabTarget } from '@/lib/named-tab';
-import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
+import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import V1PhaseText from '@/components/v1/V1PhaseText';
 
 function PageLink({
   href,
@@ -58,7 +57,7 @@ function PageLink({
 export const metadata: Metadata = {
   title: 'More contribution paths – Desirable Properties Challenge',
   description:
-    'Extended catalog: Deepi, badges, workgroup roles, Gov Hub patching, and optional paths beyond Start Here.',
+    'Version 1.0 is finished. Read and discuss the book, propose changes toward Version 1.1, join a workgroup or take a co-editor seat, or join the V1.1 steering committee.',
 };
 
 const FOUNDATION_USES = [
@@ -71,62 +70,35 @@ const FOUNDATION_USES = [
 
 const CONTRIBUTE_CARDS = [
   {
-    id: 'integrate',
-    emoji: '🚀',
-    title: 'Integrate Your Existing Ideas',
-    time: '≈10 minutes',
+    id: 'read',
+    emoji: '📖',
+    title: 'Read and discuss Version 1.0',
+    time: '≈30 minutes and up',
     body: (
       <>
         <p>
-          Already have ideas? Perhaps you&apos;ve written a paper, drafted notes, built a project,
-          published research, or simply have thoughts about what the future Internet should support.
+          Version 1.0 of <em>The Layered Web: The Desirable Properties of a Meta-Layer</em> is
+          published. Read it online at{' '}
+          <a href="https://book.desirableproperties.org/" className="text-cyan-300 hover:text-cyan-200">
+            book.desirableproperties.org
+          </a>{' '}
+          or{' '}
+          <a href="/downloads/desirable-properties-v1.0.pdf" className="text-cyan-300 hover:text-cyan-200">
+            download the PDF
+          </a>
+          .
         </p>
-        <p className="mt-4">Use the <strong className="font-semibold text-white">DP Community AI</strong> to:</p>
-        <ul className="mt-3 list-disc space-y-2 pl-5">
-          <li>compare your ideas with the current Desirable Properties</li>
-          <li>identify where your ideas are already represented</li>
-          <li>discover missing capabilities or gaps</li>
-          <li>generate suggested patches or revisions</li>
-          <li>prepare your ideas for community discussion</li>
-        </ul>
         <p className="mt-4">
-          Whether your ideas exist as documents, notes, presentations, or free-form thoughts, the AI
-          can help integrate them into the community process.
+          Every page of the book has a discussion layer. Comment on a passage, ask a question, or
+          reply to others. Good discussion is often where the next proposal starts.
         </p>
-      </>
-    ),
-    cta: { href: '/agent', label: 'Use the DP Community AI →', primary: true },
-  },
-  {
-    id: 'review',
-    emoji: '📝',
-    title: 'Review the Desirable Properties',
-    time: '≈1–3 hours',
-    body: (
-      <>
-        <p>Read the current draft and help improve it two ways:</p>
-        <ul className="mt-3 list-disc space-y-2 pl-5">
-          <li>
-            <strong className="font-semibold text-white">Discuss on the book</strong> – read chapters
-            and comment with the community on{' '}
-            <DiscussPatchLink
-              href={bookDiscussHref()}
-              className="text-cyan-300 hover:text-cyan-200"
-            >
-              {DESIRABLE_PROPERTIES_BOOK_HOST}
-            </DiscussPatchLink>{' '}
-            (comments are live now). Passage-level patching on the book is coming.
-          </li>
-          <li>
-            <strong className="font-semibold text-white">Patch on Gov Hub</strong> – open a draft,
-            select a passage, and submit a specific text revision on{' '}
-            <a href={GOVHUB_DP_PATCHES_URL} className="text-cyan-300 hover:text-cyan-200">
-              Gov Hub
-            </a>
-            .
-          </li>
-        </ul>
-        <p className="mt-4">You can also identify missing concepts, suggest examples, challenge assumptions, and recommend new Desirable Properties. Every thoughtful review strengthens Version 1.0.</p>
+        <p className="mt-4">
+          Curious how Version 1.0 was decided? The{' '}
+          <Link href="/steering" className="text-cyan-300 hover:text-cyan-200">
+            decision record
+          </Link>{' '}
+          shows all 1,635 proposals and how each was resolved.
+        </p>
       </>
     ),
     cta: {
@@ -136,49 +108,111 @@ const CONTRIBUTE_CARDS = [
       discussPatch: true,
     },
     secondaryCta: {
+      href: '/v1',
+      label: 'About Version 1.0',
+    },
+  },
+  {
+    id: 'propose',
+    emoji: '✏️',
+    title: 'Propose changes toward Version 1.1',
+    time: '≈10 minutes to 3 hours',
+    body: (
+      <>
+        <p>
+          Version 1.1 is an open revision. It picks up everything deferred from 1.0, including the
+          MTPs and glossaries. Propose a change two ways:
+        </p>
+        <ul className="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong className="font-semibold text-white">On the book</strong> – select a passage on{' '}
+            <DiscussPatchLink
+              href={bookDiscussHref()}
+              className="text-cyan-300 hover:text-cyan-200"
+            >
+              {DESIRABLE_PROPERTIES_BOOK_HOST}
+            </DiscussPatchLink>{' '}
+            and propose new wording in the discussion layer.
+          </li>
+          <li>
+            <strong className="font-semibold text-white">On Gov Hub</strong> – open a document,
+            select a passage, and submit a specific text revision on{' '}
+            <a href={GOVHUB_DP_PATCHES_URL} className="text-cyan-300 hover:text-cyan-200">
+              Gov Hub
+            </a>
+            .
+          </li>
+        </ul>
+        <p className="mt-4">
+          Already have ideas in a paper, notes, or a project? The{' '}
+          <Link href="/agent" className="text-cyan-300 hover:text-cyan-200">
+            DP Community AI
+          </Link>{' '}
+          can compare them with the published properties, find gaps, and help you draft a proposal.
+        </p>
+      </>
+    ),
+    cta: {
+      href: bookDiscussHref(),
+      label: 'Propose on the book →',
+      primary: true,
+      discussPatch: true,
+    },
+    secondaryCta: {
       href: GOVHUB_DP_PATCHES_URL,
-      label: 'Patch a draft on Gov Hub',
+      label: 'Propose on Gov Hub',
     },
   },
   {
     id: 'workgroup',
     emoji: '🤝',
-    title: 'Join a Workgroup',
+    title: 'Join a workgroup or take a co-editor seat',
     time: '≈2–10+ hours',
     body: (
       <>
-        <p>Help synthesize community feedback into Version 1.0.</p>
-        <p className="mt-4">
-          Workgroups review comments, patches, proposals, and challenge submissions for one or more
-          Desirable Properties. The DP Community AI assists by:
-        </p>
-        <ul className="mt-3 list-disc space-y-2 pl-5">
-          <li>clustering related submissions</li>
-          <li>identifying recurring themes</li>
-          <li>surfacing unresolved questions</li>
-          <li>highlighting areas of agreement and disagreement</li>
-          <li>generating synthesis drafts</li>
-          <li>helping compare alternative proposals</li>
-        </ul>
-        <p className="mt-4">
-          People make the decisions. AI helps organize the conversation. Together, workgroups discuss
-          tradeoffs, build rough consensus, and prepare recommended revisions for the editorial
-          process.
+        <p>
+          Each Desirable Property has a workgroup. Members discuss proposals for that property and
+          help shape Version 1.1.
         </p>
         <p className="mt-4">
-          <V1PhaseText
-            before="Workgroup synthesis continues through the Version 1.0 release. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
-            during="Version 1.0 is live, and workgroup synthesis continues."
-          />{' '}
-          If you&apos;d like to help architect the future Meta-Layer, this is where you&apos;ll have
-          the greatest impact.
+          Each DP now has up to three co-editor seats. Co-editors review proposals for their
+          property, and any two of them can approve a proposal. If you know a property well, this is
+          where you&apos;ll have the greatest impact.
+        </p>
+        <p className="mt-4">
+          The DP Community AI helps by clustering related proposals, surfacing open questions, and
+          comparing alternatives. People make the decisions.
         </p>
       </>
     ),
-    cta: { href: WORKGROUPS_LIST_HREF, label: 'Join a Workgroup', primary: true },
+    cta: { href: WORKGROUPS_LIST_HREF, label: 'Join a workgroup', primary: true },
     secondaryCta: {
-      href: '/workgroups#join-vs-nominate',
-      label: 'Nominate a Workgroup Coordinator',
+      href: '/co-editors',
+      label: 'Read the co-editor guide',
+    },
+  },
+  {
+    id: 'steering',
+    emoji: '🧭',
+    title: 'Join the V1.1 steering committee',
+    time: 'Ongoing',
+    body: (
+      <>
+        <p>
+          The steering committee for Version 1.0 has closed its work. A new committee will guide
+          Version 1.1: it keeps the process moving, settles questions co-editors can&apos;t, and
+          signs off the finished documents.
+        </p>
+        <p className="mt-4">
+          To volunteer, send a request through the support page. Tell us which properties you know
+          best and how much time you can give.
+        </p>
+      </>
+    ),
+    cta: { href: '/support', label: 'Volunteer via support →', primary: true },
+    secondaryCta: {
+      href: '/steering',
+      label: 'See the V1.0 decision record',
     },
   },
 ] as const;
@@ -204,32 +238,32 @@ const BADGE_SECTIONS = [
 
 const FINAL_CTAS = [
   {
-    emoji: '🚀',
-    title: 'Use the DP Community AI',
-    description: 'Integrate your ideas in about 10 minutes.',
-    href: '/agent',
-    primary: true,
-  },
-  {
-    emoji: '📝',
-    title: 'Review the Desirable Properties',
-    description: 'Read and discuss on the book (comments live). Patch drafts on Gov Hub.',
+    emoji: '📖',
+    title: 'Read and discuss',
+    description: 'Read Version 1.0 online and join the discussion on any page.',
     href: bookDiscussHref(),
-    primary: false,
+    primary: true,
     discussPatch: true,
   },
   {
+    emoji: '✏️',
+    title: 'Propose a change',
+    description: 'Propose changes toward Version 1.1 on Gov Hub.',
+    href: GOVHUB_DP_PATCHES_URL,
+    primary: false,
+  },
+  {
     emoji: '🤝',
-    title: 'Join a Workgroup',
-    description: 'Help synthesize community feedback into Version 1.0.',
+    title: 'Join a workgroup',
+    description: 'Join a DP workgroup or take one of up to three co-editor seats.',
     href: WORKGROUPS_LIST_HREF,
     primary: false,
   },
   {
-    emoji: '🌟',
-    title: 'Nominate a Workgroup Coordinator',
-    description: 'Help coordinate one of the collaborative synthesis teams.',
-    href: '/workgroups#join-vs-nominate',
+    emoji: '🧭',
+    title: 'Join the steering committee',
+    description: 'Volunteer for the V1.1 steering committee through the support page.',
+    href: '/support',
     primary: false,
   },
 ] as const;
@@ -264,8 +298,8 @@ export default function ParticipatePage() {
           </Link>
           <p className="mt-6 rounded-lg border border-cyan-800/50 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
             New to the Challenge? Use <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link> for
-            the two contribution tracks. This page is the longer catalog (Deepi, badges, roles, and
-            extra paths).
+            the quickest way in. This page is the longer catalog (workgroups, co-editor seats, the
+            steering committee, and badges).
           </p>
           <p className="mt-6 text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
             Desirable Properties Challenge
@@ -274,11 +308,11 @@ export default function ParticipatePage() {
             More contribution paths
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
-            The Desirable Properties define what the Meta-Layer should make possible for humanity.
-            Together, we&apos;re refining these properties into{' '}
-            <strong className="font-semibold text-white">Version 1.0</strong> – a clear,
-            community-developed foundation that will guide the design and implementation of the
-            Meta-Layer substrate.
+            The Desirable Properties define what the Meta-Layer should make possible for humanity.{' '}
+            <strong className="font-semibold text-white">Version 1.0 is finished.</strong> All 24
+            properties are published as a book, shaped by 1,635 decided proposals. The next step is{' '}
+            <strong className="font-semibold text-white">Version 1.1</strong>, an open revision, and
+            you can help shape it now.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -293,6 +327,12 @@ export default function ParticipatePage() {
             >
               Browse this catalog
             </a>
+            <a
+              href="https://book.desirableproperties.org/"
+              className="rounded-lg border border-slate-700 px-5 py-3 text-sm font-medium text-slate-200 hover:border-slate-500"
+            >
+              Read Version 1.0
+            </a>
           </div>
         </div>
       </section>
@@ -306,7 +346,7 @@ export default function ParticipatePage() {
               capabilities, protections, freedoms, governance mechanisms, and social outcomes we want
               the Meta-Layer to support.
             </p>
-            <p>Version 1.0 will become the foundation for:</p>
+            <p>Version 1.0 is now the foundation for:</p>
             <ul className="list-disc space-y-2 pl-5">
               {FOUNDATION_USES.map((item) => (
                 <li key={item}>{item}</li>
@@ -332,9 +372,9 @@ export default function ParticipatePage() {
       {/* Three ways to contribute */}
       <section id="contribute" className="border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-white">Three Ways to Contribute</h2>
+          <h2 className="text-3xl font-bold text-white">Four ways to contribute</h2>
           <p className="mt-3 max-w-3xl text-lg text-slate-400">
-            Whether you have ten minutes or want to help shape Version 1.0 over several weeks,
+            Whether you have ten minutes or want to help shape Version 1.1 over several months,
             there&apos;s a place to contribute.
           </p>
 
@@ -368,12 +408,12 @@ export default function ParticipatePage() {
                           >
                             {card.cta.label}
                           </PageLink>
-                          <Link
+                          <PageLink
                             href={card.secondaryCta.href}
                             className="inline-flex items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
                           >
                             {card.secondaryCta.label}
-                          </Link>
+                          </PageLink>
                         </>
                       ) : (
                         <PageLink
@@ -398,20 +438,20 @@ export default function ParticipatePage() {
       {/* Workgroups, in brief – full roles, duties, and the join-vs-nominate breakdown live on the join page */}
       <section className="border-b border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <Section title="Workgroups, in Brief">
+          <Section title="Workgroups, in brief">
             <p>
-              Workgroups exist for one purpose:{' '}
+              Workgroups helped take the Desirable Properties to Version 1.0. Now they{' '}
               <strong className="font-semibold text-white">
-                to help develop and refine the Desirable Properties into Version 1.0.
+                review and shape proposals toward Version 1.1.
               </strong>{' '}
-              It&apos;s a bounded commitment, not a permanent committee – after Version 1.0
-              publishes, participants decide whether and how they&apos;d like to keep contributing.
+              It&apos;s a bounded commitment, not a permanent committee. Join for one property or
+              several, and step back when you need to.
             </p>
             <p>
-              Members read drafts, discuss on the book, patch on Gov Hub, and join workgroup
-              discussion at their own pace – no obligation to attend every meeting. Each DP has two
-              co-editors, who must both approve a change before it is incorporated, and a
-              coordinator who runs the workgroup; nobody owns a property or makes unilateral calls.
+              Members read the book, discuss on any page, propose changes on the book or Gov Hub, and
+              join workgroup discussion at their own pace. There is no obligation to attend every
+              meeting. Each DP has up to three co-editors, and any two can approve a proposal. A
+              coordinator runs the workgroup. Nobody owns a property or makes unilateral calls.
             </p>
             <p>
               <Link
@@ -436,7 +476,7 @@ export default function ParticipatePage() {
       <section id="badges" className="border-b border-slate-800 bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-bold text-white">
-            Recognition Through Desirable Properties Badges
+            Recognition through Desirable Properties badges
           </h2>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">
             Every contribution helps build the foundation of the Meta-Layer, and meaningful
@@ -480,8 +520,8 @@ export default function ParticipatePage() {
           <Section title="Why contribute?">
             <p>
               The Meta-Layer will shape how people collaborate, govern, coordinate, learn, create,
-              and build trust online. The Desirable Properties are our opportunity to define the
-              capabilities that infrastructure should support before those capabilities become code.
+              and build trust online. Version 1.0 set out what that infrastructure should support.
+              Version 1.1 is the chance to sharpen it before those capabilities become code.
             </p>
             <p>
               Your experience matters. Whether you are a technologist, researcher, designer,
@@ -500,7 +540,7 @@ export default function ParticipatePage() {
       <section className="bg-slate-900/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-white">Ready to Help?</h2>
+            <h2 className="text-3xl font-bold text-white">Ready to help?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
               Choose the level of participation that fits your schedule. No matter how you
               contribute, you&apos;ll be helping define the foundational requirements that guide the
