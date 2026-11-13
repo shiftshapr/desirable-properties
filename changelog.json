@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "acknowledgements-rev04",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Acknowledgements revision 04 in the book",
+      "summary": "The book's Acknowledgements now follow the owner-approved order: Daveed Benjamin 2, the kickoff co-hosts, Phahsa Ras, Melinda Woods and Joshua Colbert at 5 to 7, both Calls for Input, Kevin Clark (who suggested the title), the Desirable Properties Challenge contributors and the co-editors.",
+      "changes": [
+        "Book: Acknowledgements synced from Gov Hub revision 04"
+      ]
+    },
+    {
       "id": "proposals-tab-ui-public-luma",
       "date": "2026-11-13",
       "status": "open",
