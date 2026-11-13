@@ -205,18 +205,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
     <div className="mt-8 space-y-8">
       {stages?.length ? <StageTabs stages={stages} selected={selected} onSelect={choose} /> : null}
       {selected === LEDGER_KEY && stages ? <StageLedger stages={stages} /> : null}
-      {selected === PROPOSALS_KEY ? (
-        signedIn ? (
-          <ProposalsTab />
-        ) : (
-          <p className="text-sm text-slate-300">
-            <Link href="/login?next=%2Fsteering" className="text-cyan-300 underline hover:text-cyan-200">
-              Sign in
-            </Link>{' '}
-            to browse the proposals.
-          </p>
-        )
-      ) : null}
+      {selected === PROPOSALS_KEY ? <ProposalsTab /> : null}
 
       {current && !canRead ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
