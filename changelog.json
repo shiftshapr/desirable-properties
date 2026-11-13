@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-hero-fold",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1 hero buttons above the fold",
+      "summary": "Tighter /v1 hero so Download, Read online and Share show without scrolling on laptop screens.",
+      "changes": [
+        "/v1 hero: tighter layout"
+      ]
+    },
+    {
       "id": "v1-finished-wording",
       "date": "2026-11-13",
       "status": "open",
