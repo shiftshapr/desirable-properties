@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "public-proposals-roadmap-box1",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals tab open to everyone; roadmap first box border",
+      "summary": "The /steering Proposals tab no longer needs a sign-in: anyone can browse and filter every Version 1.0 proposal (generated analyses still show for steering members). The About roadmap image gets the missing top border on the Desirable Properties Challenge box.",
+      "changes": [
+        "/api/steering/proposals: public",
+        "About roadmap image: first box top border"
+      ]
+    },
+    {
       "id": "about-roadmap-arrow",
       "date": "2026-11-13",
       "status": "open",
