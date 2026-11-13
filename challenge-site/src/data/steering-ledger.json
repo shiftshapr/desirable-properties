@@ -34,7 +34,8 @@
         "\"Meta-Layer\" versus \"meta-layer\" is one book-wide decision; chapter-level fixes that pulled in both directions were dropped.",
         "Decisions cover book-wide conventions (citation form, quote marks, heading case, section separators, tagline dashes) and patterns too frequent to fix one by one.",
         "Beyond style: in DP4 Section 6 a deletion accepted in Stage 1 never landed, so the introduction appears twice. Filed as a decision.",
-        "One fix (an invisible no-break space in DP11) could not be filed."
+        "One fix (an invisible no-break space in DP11) could not be filed.",
+        "Closed 13 Nov: both members accepted all 219 fixes; the 294 carried changes were kept. Decisions were recorded, but text changes they call for were not drafted in this stage."
       ]
     },
     "final": {

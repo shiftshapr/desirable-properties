@@ -4,6 +4,30 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-next-step-notice",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: an open stage says plainly when its analysis still has to run",
+      "summary": "An open review stage or Stage 4 with no analysis imported now shows a highlighted \"Next step: run the analysis\" box instead of a grey note. The Ledger records how Stage 3 closed.",
+      "changes": [
+        "Highlighted \"Next step\" box when a stage's analysis has not run",
+        "Stage 4 panel says the final read has not run and documents show as not read until it is imported",
+        "Ledger: Stage 3 close note"
+      ]
+    },
+    {
+      "id": "steering-import-upload",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: import an analysis run from the steering page",
+      "summary": "Steering members can now import an analysis run from the open stage's tab: choose the run.json, check it with a dry run that writes nothing, then press Apply. No more shell pastes on the production server.",
+      "changes": [
+        "Import box on open review stages and Stage 4",
+        "Dry-run report: fixes, analyses, batches, findings, documents checked, anything skipped",
+        "Bundles refresh after an import"
+      ]
+    },
+    {
       "id": "steering-stage4-final-read",
       "date": "2026-11-13",
       "status": "open",

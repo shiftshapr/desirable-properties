@@ -77,7 +77,10 @@ export default function FinalReadPanel({
           ))}
         </ol>
       ) : (
-        <p className="text-sm text-slate-400">The final read has not been run yet.</p>
+        <p className="rounded-lg border border-amber-700/70 bg-amber-950/20 px-3 py-2 text-sm text-amber-50">
+          <strong className="text-white">Next step:</strong> the final read (the Fable analysis of every document) has not been run yet.
+          Each document shows as not read until it is imported.
+        </p>
       )}
       {recheck.length ? (
         <p className="rounded-lg border border-cyan-800/60 bg-cyan-950/20 px-3 py-2 text-sm text-cyan-100">

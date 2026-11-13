@@ -414,7 +414,16 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
       ) : null}
 
       {data && !findings ? (
-        <p className="rounded-xl border border-slate-800 bg-slate-950/40 px-4 py-5 text-sm text-slate-300">
+        <p
+          className={`rounded-xl border px-4 py-5 text-sm ${
+            data.stage?.status === 'open' && !data.rounds?.length && data.stage.kind !== 'proposals'
+              ? 'border-amber-700/70 bg-amber-950/20 text-amber-50'
+              : 'border-slate-800 bg-slate-950/40 text-slate-300'
+          }`}
+        >
+          {data.stage?.status === 'open' && !data.rounds?.length && data.stage.kind !== 'proposals' ? (
+            <strong className="mb-1 block text-base text-white">Next step: run the {ANALYSIS_NAME[data.stage.key] || 'stage'} analysis</strong>
+          ) : null}
           {data.stage?.kind === 'signoff'
             ? data.rounds?.length
               ? `Round ${data.rounds.length} found nothing to fix in the ${data.rounds[data.rounds.length - 1].documentsRead} document${data.rounds[data.rounds.length - 1].documentsRead === 1 ? '' : 's'} it read.`

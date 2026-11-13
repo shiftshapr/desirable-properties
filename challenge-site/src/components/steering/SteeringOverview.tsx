@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import FinalReadPanel from '@/components/steering/FinalReadPanel';
+import ImportRun from '@/components/steering/ImportRun';
 import SteeringIssues from '@/components/steering/SteeringIssues';
 import StageLedger from '@/components/steering/StageLedger';
 import { useCallback, useEffect, useState } from 'react';
@@ -81,6 +82,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
   const [record, setRecord] = useState<SteeringStage | null>(null);
   const [runs, setRuns] = useState<string[]>([]);
   const [meta, setMeta] = useState<OverviewMeta | null>(null);
+  const [imports, setImports] = useState(0); // remounts the bundles after an import
   // The page checks membership with the sign-in it was rendered with, which may have expired since; the
   // overview Gov Hub returns says it again for the sign-in that fetched it, so either one is enough.
   const steering = steeringFromPage || Boolean(meta?.viewerIsSteering);
@@ -310,7 +312,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
           )}
           {issuesTab ? (
             <>
-              <SteeringIssues embedded stageKey={current?.key} />
+              <SteeringIssues key={imports} embedded stageKey={current?.key} />
               {finalOpen ? <FinalReadPanel rows={shownRows} rounds={meta?.finalRounds || null} steering={steering} /> : null}
               {finalOpen ? null : (
               <p className="text-sm text-slate-400">
@@ -329,6 +331,15 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
               <DocumentList heading="Front matter" rows={front} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
               <DocumentList heading="Desirable Properties" rows={dps} linkFor={linkFor} closed={Boolean(closedKey)} stage={current} />
             </>
+          ) : null}
+          {steering && current?.status === 'open' && current.kind !== 'proposals' && !closedKey ? (
+            <ImportRun
+              onImported={() => {
+                setImports((n) => n + 1);
+                setLoading(true);
+                void load();
+              }}
+            />
           ) : null}
           {steering && liveMeta?.canOpenNext ? (
             <OpenNextStage next={liveMeta.canOpenNext} current={current} onOpened={refreshStages} />
