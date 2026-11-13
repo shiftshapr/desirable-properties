@@ -38,12 +38,16 @@
       ]
     },
     "final": {
-      "analysis": "None: a sign-off on each document's finished text",
+      "analysis": "Final read of each document's finished text, then re-checks of changed documents until a check finds nothing",
       "itemsIn": "Each document's finished text",
       "findings": "",
       "fixes": "",
-      "decisions": "Two sign-offs per document",
-      "notes": []
+      "decisions": "Fixes and choices two members each; two sign-offs per document",
+      "notes": [
+        "Round 1 reads every document; clean documents go straight to sign-off.",
+        "Documents whose findings were fixed are re-checked in later rounds until a round finds nothing.",
+        "A sign-off is tied to the exact text; any later change voids it."
+      ]
     }
   }
 }

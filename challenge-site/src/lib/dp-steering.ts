@@ -207,6 +207,59 @@ export type SteeringSignoff = {
   signoffs: Array<{ id: string; voterName: string; note: string | null; current: boolean; mine: boolean; createdAt: string | null }>;
 };
 
+/** Stage 4 (Final read): where one document stands. */
+export type SteeringFinalStatus = 'not_read' | 'open' | 'needs_recheck' | 'clean' | 'signed';
+export type SteeringFinal = {
+  status: SteeringFinalStatus;
+  label: string;
+  /** The latest check of this document: which round read it and when. */
+  check: { round: number; runLabel: string; checkedAt: string | null; findings: number } | null;
+  openFixes: number;
+  openDecisions: number;
+  canSign: boolean;
+};
+/** One round of Stage 4: what it read and what it found. */
+export type SteeringFinalRound = {
+  round: number;
+  label: string;
+  importedAt: string | null;
+  documentsRead: number;
+  documentsClean: number;
+  findings: number;
+};
+
+const FINAL_STATUSES: SteeringFinalStatus[] = ['not_read', 'open', 'needs_recheck', 'clean', 'signed'];
+
+export function normalizeFinal(raw: unknown): SteeringFinal | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const f = obj(raw);
+  const status = FINAL_STATUSES.includes(str(f.status) as SteeringFinalStatus) ? (str(f.status) as SteeringFinalStatus) : 'not_read';
+  const c = f.check && typeof f.check === 'object' ? obj(f.check) : null;
+  return {
+    status,
+    label: str(f.label) || status,
+    check: c ? { round: num(c.round), runLabel: str(c.run_label), checkedAt: strOrNull(c.checked_at), findings: num(c.findings) } : null,
+    openFixes: num(f.open_fixes),
+    openDecisions: num(f.open_decisions),
+    canSign: f.can_sign === true,
+  };
+}
+
+export function normalizeFinalRounds(raw: unknown): SteeringFinalRound[] | null {
+  if (!Array.isArray(raw)) return null;
+  return raw.map((r) => {
+    const o = obj(r);
+    return {
+      round: num(o.round),
+      label: str(o.label),
+      importedAt: strOrNull(o.imported_at),
+      documentsRead: num(o.documents_read),
+      documentsClean: num(o.documents_clean),
+      findings: num(o.findings),
+    };
+  });
+}
+
 export type SteeringBatch = {
   id: string;
   key: string;
@@ -231,6 +284,8 @@ export type SteeringDocument = {
   carried: SteeringCarriedItem[];
   /** Final stage only. */
   signoff: SteeringSignoff | null;
+  /** Stage 4 only: read, re-check and sign-off status. */
+  final: SteeringFinal | null;
   /** A closed stage's saved record: nothing can be voted on. */
   readOnly: boolean;
 };
@@ -250,6 +305,8 @@ export type SteeringOverviewRow = {
   carried: { count: number; open: number; flagged: number; unchecked: number } | null;
   /** Final stage: whether two members signed off the current text, and how many have. */
   signoff: { signed: boolean; count: number } | null;
+  /** Stage 4: read, re-check and sign-off status. */
+  final: SteeringFinal | null;
   /** False when Gov Hub's overview did not list this document (front matter shown anyway). */
   listed: boolean;
 };
@@ -551,6 +608,7 @@ export function normalizeSteeringDocument(ml: string, raw: unknown, knownViewerI
       .map((c) => normalizeCarried(c, viewerUserId))
       .filter((c): c is SteeringCarriedItem => Boolean(c)),
     signoff: normalizeSignoff(d.signoff, viewerUserId),
+    final: normalizeFinal(d.final),
     readOnly: d.read_only === true,
   };
 }
@@ -568,6 +626,8 @@ export function normalizeOverviewMeta(raw: unknown): {
   canOpenNext: { key: string; title: string } | null;
   /** Open proposals in each open stage. */
   openByStage: Record<string, number>;
+  /** Stage 4: one entry per round so far. */
+  finalRounds: SteeringFinalRound[] | null;
 } {
   const d = obj(raw);
   const next = obj(d.can_open_next);
@@ -579,6 +639,7 @@ export function normalizeOverviewMeta(raw: unknown): {
     closingStageKey: strOrNull(d.closing_stage_key),
     canOpenNext: str(next.key) ? { key: str(next.key), title: str(next.title) || str(next.key) } : null,
     openByStage: Object.fromEntries(Object.entries(obj(d.open_by_stage)).map(([k, v]) => [k, num(v)])),
+    finalRounds: normalizeFinalRounds(d.final_rounds),
   };
 }
 
@@ -668,6 +729,8 @@ export type SteeringIssues = {
   stage: SteeringStage | null;
   run: { label: string; model: string | null } | null;
   viewerIsSteering: boolean;
+  /** Stage 4: one entry per round so far. */
+  rounds: SteeringFinalRound[] | null;
   groups: SteeringIssueGroup[];
   totals: Record<SteeringTab, number>;
 };
@@ -687,6 +750,7 @@ export function normalizeIssues(raw: unknown): SteeringIssues {
     stage: normalizeStage(d.stage),
     run: str(run.label) ? { label: str(run.label), model: strOrNull(run.model) } : null,
     viewerIsSteering: d.viewer_is_steering === true,
+    rounds: normalizeFinalRounds(d.rounds),
     totals: normalizeTabs(d.totals) || NO_TABS,
     groups: arr(d.groups).map((g) => {
       const group = obj(g);
@@ -777,6 +841,7 @@ export function normalizeOverview(raw: unknown): SteeringOverviewRow[] {
           })()
         : null,
       signoff: o.signoff ? { signed: obj(o.signoff).signed === true, count: num(obj(o.signoff).count) } : null,
+      final: normalizeFinal(o.final),
       listed: true,
     };
   });
@@ -795,6 +860,7 @@ export function normalizeOverview(raw: unknown): SteeringOverviewRow[] {
       tabs: null,
       carried: null,
       signoff: null,
+      final: null,
       listed: false,
     });
   }
