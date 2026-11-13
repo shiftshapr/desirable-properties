@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pdf-v1-ack-roadmap",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt",
+      "summary": "The Version 1.0 PDF now carries Acknowledgements revision 04 and the corrected roadmap image (807 pages).",
+      "changes": [
+        "PDF: Acknowledgements rev 04, roadmap image"
+      ]
+    },
+    {
       "id": "acknowledgements-rev04",
       "date": "2026-11-13",
       "status": "open",
