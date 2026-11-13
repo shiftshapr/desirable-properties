@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "press-quotes",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release quotes: Phahsa Ras and Renad Baomar",
+      "summary": "The press release adds approved quotes from Phahsa Ras (Director of UMi, contributor, co-editor and Version 1.0 Steering Committee) and Renad Baomar (14-year-old Global Youth Advocate, Founder of Brave Voices, Co-editor of DP10 – Education).",
+      "changes": [
+        "Press: two more quotes"
+      ]
+    },
+    {
       "id": "v1-hero-fold",
       "date": "2026-11-13",
       "status": "open",
