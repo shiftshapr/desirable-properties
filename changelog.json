@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-ledger-stage4",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: the Ledger records how Stage 4 went",
+      "summary": "The Ledger's Stage 4 row now shows the eight rounds of the Final read: what each found, the 906 fixes applied, the 11 decisions, the sign-offs and the recorded exception for seven documents.",
+      "changes": [
+        "Ledger Stage 4 row and notes"
+      ]
+    },
+    {
       "id": "steering-proposals-tab",
       "date": "2026-11-13",
       "status": "open",
