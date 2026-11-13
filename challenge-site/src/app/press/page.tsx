@@ -20,14 +20,14 @@ const RELEASE_AT = Date.parse('2026-11-13T19:00:00Z');
 const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean }> = [
   {
     who: 'Daveed Benjamin',
-    role: 'Founder, Meta-Layer Initiative; steering committee',
+    role: 'Founder, Meta-Layer Initiative; Version 1.0 Steering Committee',
     text:
       'This book was written the way we want the next layer of the internet to work: in the open, with every proposal recorded, every decision explained, and every contributor named. Version 1.0 gives builders a shared reference for what a trustworthy Meta-Layer has to get right. Version 1.1 opens today, and anyone can propose the next change.',
     approved: true, // approved by Daveed Benjamin, 13 Nov 2026
   },
   {
     who: 'Phahsa Ras',
-    role: 'Steering committee; co-editor of DP4, DP6, DP17 and DP22',
+    role: 'Version 1.0 Steering Committee; co-editor of DP4, DP6, DP17 and DP22',
     text:
       'We read every proposal, and then we read the whole book again, chapter by chapter, until nothing was left to fix. What we signed off is a text that hundreds of people helped shape.',
     approved: false,
@@ -97,7 +97,7 @@ export default async function PressPage() {
           The work began at the Meta-Layer Initiative kickoff on 16 September 2024 with a simple question: what should a
           Meta-Layer be like? Two public Calls for Input followed, in 2024 and 2025, and then the Desirable Properties
           Challenge, in which anyone could propose changes to any chapter on the project&apos;s Gov Hub. Co-editors
-          reviewed the chapters, and since the 9 November freeze a steering committee has decided every open item in four
+          reviewed the chapters, and since the 9 November freeze the Version 1.0 Steering Committee has decided every open item in four
           stages: a review of each proposal, a check of every change against the whole book, a style pass, and a final read
           of every chapter, repeated until a reading found nothing left to fix. Each document was then signed off on its
           exact text.

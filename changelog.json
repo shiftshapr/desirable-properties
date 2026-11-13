@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "press-v1-steering",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: 'Version 1.0 Steering Committee'",
+      "summary": "The press release names the Version 1.0 Steering Committee.",
+      "changes": [
+        "Wording in the release and quote credits"
+      ]
+    },
+    {
       "id": "book-sync-cover-intro",
       "date": "2026-11-13",
       "status": "open",
