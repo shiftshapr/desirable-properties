@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-remove-import-box",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: the import box is gone",
+      "summary": "The steward now stores each analysis round directly in Gov Hub, so the \"Import an analysis run\" box on the stage tab is removed. Nothing changes for steering members except one box fewer.",
+      "changes": [
+        "Removed the Import box and its proxy route"
+      ]
+    },
+    {
       "id": "steering-next-step-notice",
       "date": "2026-11-13",
       "status": "open",
