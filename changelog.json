@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-pdf-final",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt from the published text",
+      "summary": "The downloadable PDF was built on 12 November, before Stages 2 to 4 finished. It is now rebuilt from the published Version 1.0 revisions on Gov Hub: 807 pages, with the edition and CC BY 4.0 copyright page, the regenerated Acknowledgements and every Stage 4 fix.",
+      "changes": [
+        "desirable-properties-v1.0.pdf rebuilt (807 pages, 15.9 MB) from Gov Hub's published Version 1.0"
+      ]
+    },
+    {
       "id": "press-v1-steering",
       "date": "2026-11-13",
       "status": "open",
