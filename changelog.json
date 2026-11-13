@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage4-one-vote",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: in Stage 4 one vote carries a fix or settles a choice",
+      "summary": "During the Final read, one steering member's vote carries a fix out or settles a choice, so each round moves on without waiting for a second member. Each document's final sign-off still needs two members on its exact text.",
+      "changes": [
+        "Stage 4 wording explains the one-vote rule",
+        "Sign-off unchanged: two members per document"
+      ]
+    },
+    {
       "id": "steering-final-text",
       "date": "2026-11-13",
       "status": "open",

@@ -178,6 +178,8 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
   const closedStage = data?.stage?.status === 'closed';
   const readOnly = !data?.viewerIsSteering || closedStage;
   const findings = data?.groups.reduce((n, g) => n + g.findings.length, 0) || 0;
+  // Stage 4 (Final read): one member's vote carries a fix or settles a decision; sign-off still needs two.
+  const oneVote = data?.stage?.kind === 'signoff';
   const isOpen = (i: FindingItem) => steeringTab(i) === 'open';
   const carriedOpen = (c: FindingCarried) => c.tab === 'open';
   // A finding is settled once every fix and every flagged change under it is; one with neither stays listed.
@@ -277,7 +279,7 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
     say(
       key,
       !failed.length,
-      `${ok} vote${ok === 1 ? '' : 's'} recorded. Each fix is carried out once a second member approves it.` +
+      `${ok} vote${ok === 1 ? '' : 's'} recorded. ${oneVote ? 'In Stage 4 one vote carries each fix out.' : 'Each fix is carried out once a second member approves it.'}` +
         (failed.length ? ` ${failed.length} failed: ${failed.join('; ')}` : ''),
     );
     await load();
@@ -315,7 +317,10 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
               ? `The ${ANALYSIS_NAME[data.stage.key]} analysis read every accepted change. `
               : ''}
           Each bundle is one kind of fix across the chapters: its findings, the fixes they filed (voted on like any
-          proposal) and the accepted changes they flagged. Two steering members must agree before a fix is carried out.
+          proposal) and the accepted changes they flagged.{' '}
+          {oneVote
+            ? 'In Stage 4 one steering member’s vote carries a fix out or settles a choice; each document is still signed off by two.'
+            : 'Two steering members must agree before a fix is carried out.'}
           Settled bundles are hidden, and a bundle with nothing left for you folds to one line.
         </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
@@ -392,7 +397,7 @@ export default function SteeringIssues({ embedded = false, stageKey }: { embedde
           {myRecommended.length ? (
             <p className="mt-2 text-xs text-amber-100/70">
               The button records your accept vote on every open fix the analysis recommends as written, across all
-              bundles. A second member still has to approve each one before it is carried out.
+              bundles. {oneVote ? 'In Stage 4 that carries them out at once.' : 'A second member still has to approve each one before it is carried out.'}
             </p>
           ) : null}
         </section>
