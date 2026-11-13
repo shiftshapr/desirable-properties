@@ -52,7 +52,6 @@ export const steeringPaths = {
   reviewCarried: (proposalId: string) =>
     `/api/doc/steering/stages/current/carried/${encodeURIComponent(proposalId)}/review/`,
   keepAll: (ml: string) => `/api/doc/steering/stages/current/documents/${encodeURIComponent(ml)}/keep-all/`,
-  importRun: () => '/api/doc/steering/runs/import/',
   signoff: (ml: string) => `/api/doc/steering/stages/current/documents/${encodeURIComponent(ml)}/signoff/`,
 };
 
