@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-pdf-button",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1: Download the PDF always up front",
+      "summary": "The /v1 hero always shows a prominent Download the PDF button with Read online and Share (and, before the launch, Join the launch).",
+      "changes": [
+        "/v1: PDF button always shown"
+      ]
+    },
+    {
       "id": "press-phahsa-update",
       "date": "2026-11-13",
       "status": "open",
