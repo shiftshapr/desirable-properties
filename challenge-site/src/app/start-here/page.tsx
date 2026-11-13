@@ -16,6 +16,7 @@ import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import { workgroupPrimaryHref } from '@/lib/workgroup-links';
 import type { Metadata } from 'next';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const dynamic = 'force-dynamic';
 
@@ -611,9 +612,15 @@ export default async function StartHerePage() {
                 </p>
               </li>
               <li>
-                <p className="font-semibold text-white">Friday, November 13, 2026, 10–11 AM PT</p>
+                <p className="font-semibold text-white">
+                  <V1PhaseText before="Friday, November 13, 2026, 10–11 AM PT" during="Version 1.0 is live" />
+                </p>
                 <p className="text-base text-slate-400">
-                  V1.0 releases Friday, November 13, 2026, 10–11 AM PT ({challengeMeta.v1_release_title}).
+                  <V1PhaseText
+                    before={<>V1.0 releases Friday, November 13, 2026, 10–11 AM PT ({challengeMeta.v1_release_title}).</>}
+                    during={<>Version 1.0 is live ({challengeMeta.v1_release_title}). The launch gathering is Friday, November 13, 2026, 10–11 AM PT.</>}
+                    after={<>Version 1.0 is live ({challengeMeta.v1_release_title}).</>}
+                  />
                 </p>
               </li>
             </ol>
@@ -632,8 +639,8 @@ export default async function StartHerePage() {
                 </strong>
               </p>
               <p className="mt-3 text-slate-300">
-                Co-edit a DP, comment on a chapter, or join a workgroup. V1.0 releases Friday,
-                November 13, 2026, 10–11 AM PT.
+                Co-edit a DP, comment on a chapter, or join a workgroup.{' '}
+                <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />
               </p>
             </blockquote>
             <div className="flex flex-wrap gap-3">

@@ -6,6 +6,7 @@ import {
   V1_READ_ONLINE_HREF,
   v1Released,
 } from '@/lib/dp-v1-release';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 /** Version 1.0 of the book: before the launch, the event; from 10am PT on Nov 13, read online or download the PDF. */
 export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?: Date; heading?: 'h1' | 'h2' }) {
@@ -27,14 +28,19 @@ export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?
         </a>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
-            {released ? 'Version 1.0 · out now' : 'Version 1.0 · releases Friday'}
+            {released ? 'Version 1.0 is live' : 'Version 1.0 · releases Friday'}
           </p>
           <H id="v1-book-heading" className="mt-2 text-3xl font-bold text-white sm:text-4xl">
             The Desirable Properties of a Meta-Layer
           </H>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-200">
-            {released
-              ? 'Twenty-four properties for the layered web, written in the open over two years. Read it online, with a discussion layer on every page, or download the PDF.'
+            {released ? (
+              <>
+                Twenty-four properties for the layered web, written in the open over two years. Read it online, with a
+                discussion layer on every page, or download the PDF.
+                <V1PhaseText before={null} during=" The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom." after={null} />
+              </>
+            )
               : 'Twenty-four properties for the layered web, written in the open over two years. V1.0 releases Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">

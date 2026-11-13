@@ -27,6 +27,7 @@ import type {
   PrimitiveCopy,
   ValueMapping,
 } from '@/lib/hermes-onboard/types';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 type PartnerOrg = { slug: string; name: string; mission: string };
 
@@ -176,9 +177,11 @@ export default function AllianceBriefingClient({
       </p>
       <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
         <span className="font-medium text-cyan-200">Desirable Properties Studio · Public beta.</span>{' '}
-        Pads learn from your confirms and choices (with consent), not silent profiling. Version 0.77
-        is the current working draft. The Community Review Draft was published September 16, 2026.
-        V1.0 releases Friday, November 13, 2026, 10–11 AM PT.
+        Pads learn from your confirms and choices (with consent), not silent profiling.{' '}
+        <V1PhaseText
+          before="Version 0.77 is the current working draft. The Community Review Draft was published September 16, 2026. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+          during="Version 1.0 is live. The Community Review Draft was published September 16, 2026. Landing pads remain open for dialogue and patches."
+        />
       </div>
       <header className="mt-4 border-b border-slate-800 pb-8">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">
