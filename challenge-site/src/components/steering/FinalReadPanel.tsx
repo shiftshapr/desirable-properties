@@ -33,11 +33,15 @@ export default function FinalReadPanel({
     SteeringFinalStatus,
     number
   >;
-  const sorted = [...listed].sort(
-    (a, b) =>
-      STATUS_ORDER.indexOf(a.final?.status || 'not_read') - STATUS_ORDER.indexOf(b.final?.status || 'not_read') ||
-      Number(a.frontMatter === false) - Number(b.frontMatter === false),
-  );
+  // Book order, and it never changes: a list that re-sorted as documents were signed made people skip rows (13 Nov).
+  const FRONT = ['ML-Draft-033', 'ML-Draft-031', 'ML-Draft-032', 'ML-Draft-026']; // Cover, About, Acknowledgements, Introduction
+  const place = (r: SteeringOverviewRow) => {
+    const fm = FRONT.indexOf(r.mlNumber);
+    if (fm >= 0) return fm;
+    const n = /^DP\s*(\d+)/i.exec(r.title);
+    return n ? 10 + Number(n[1]) : 100;
+  };
+  const sorted = [...listed].sort((a, b) => place(a) - place(b));
   const recheck = listed.filter((r) => r.final?.status === 'needs_recheck');
 
   return (
