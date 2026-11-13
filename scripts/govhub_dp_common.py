@@ -11,8 +11,9 @@ from typing import Any
 
 GOVHUB_SYNC_MARKER = 'govhub-sync:'
 
-FRONT_MATTER_RAIL_KEYS = frozenset({'foreword', 'about', 'acknowledgements'})
-FRONT_MATTER_ORDER = ('foreword', 'about', 'acknowledgements')
+# Version 1.0 (13 Nov 2026): the Cover and the Introduction are synced too, so the book shows their published text.
+FRONT_MATTER_RAIL_KEYS = frozenset({'book_cover', 'foreword', 'about', 'acknowledgements', 'ml-draft-026'})
+FRONT_MATTER_ORDER = ('book_cover', 'foreword', 'about', 'acknowledgements', 'ml-draft-026')
 
 HUB_URLS: dict[str, str] = {
     'dev': 'https://dev.interfacehub.net',

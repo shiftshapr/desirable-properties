@@ -4,6 +4,58 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-pdf-final",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt from the published text",
+      "summary": "The downloadable PDF was built on 12 November, before Stages 2 to 4 finished. It is now rebuilt from the published Version 1.0 revisions on Gov Hub: 807 pages, with the edition and CC BY 4.0 copyright page, the regenerated Acknowledgements and every Stage 4 fix.",
+      "changes": [
+        "desirable-properties-v1.0.pdf rebuilt (807 pages, 15.9 MB) from Gov Hub's published Version 1.0"
+      ]
+    },
+    {
+      "id": "press-v1-steering",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: 'Version 1.0 Steering Committee'",
+      "summary": "The press release names the Version 1.0 Steering Committee.",
+      "changes": [
+        "Wording in the release and quote credits"
+      ]
+    },
+    {
+      "id": "book-sync-cover-intro",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Book: the Cover and Introduction now follow Gov Hub",
+      "summary": "The book sync now also copies the Cover and the Introduction from their published Gov Hub revisions. The online book shows the Version 1.0 Cover (it still said '0.77 edition... twenty-three properties') and the Version 1.0 Introduction (it showed the inscribed text). The inscription stays the Onchain fallback.",
+      "changes": [
+        "Sync covers book_cover and the Introduction",
+        "Introduction gets a local rail, like the DP chapters",
+        "Cover and Introduction synced from Version 1.0"
+      ]
+    },
+    {
+      "id": "press-quote-daveed",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release: Daveed Benjamin's quote approved",
+      "summary": "Daveed Benjamin approved his quote, so it now shows on the published press release.",
+      "changes": [
+        "Daveed's quote marked approved"
+      ]
+    },
+    {
+      "id": "press-release-v1",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Press release for Version 1.0",
+      "summary": "A press release page at /press announces Version 1.0. On desirableproperties.org it appears at 11:00 PT on 13 November, after the launch event, and shows only quotes their speakers have approved; staging previews the drafts.",
+      "changes": [
+        "/press page with the release, fast facts, links to read the book and the steering Ledger, and a press contact"
+      ]
+    },
+    {
       "id": "steering-ledger-stage4",
       "date": "2026-11-13",
       "status": "open",

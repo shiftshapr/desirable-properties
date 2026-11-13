@@ -79,12 +79,13 @@
             "railKey": "ml-draft-026",
             "label": "Introduction",
             "mlNumber": "ML-Draft-026",
+            "localOverride": "/content/local/introduction.md",
             "inscriptionId": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0",
             "block": 950007,
             "timestamp": 1779478064,
             "status": "active",
             "reinscribable": true,
-            "reason": "Introduction"
+            "reason": "Introduction \u2013 Gov Hub synced local rail (Live); ordinal fallback (Onchain)"
         },
         {
             "railKey": "dp01",
