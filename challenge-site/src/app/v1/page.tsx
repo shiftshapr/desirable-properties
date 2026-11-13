@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import Link from 'next/link';
 import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import AskDeepiPanel from '@/components/v1/AskDeepiPanel';
@@ -11,11 +12,11 @@ export const metadata: Metadata = {
   title: 'The Layered Web, Version 1.0 | Desirable Properties',
   description:
     'The Layered Web: The Desirable Properties of a Meta-Layer, Version 1.0. Twenty-four properties for a trustworthy layer above the web, written in the open. Download the report, read it online, or share it.',
-  openGraph: {
+  openGraph: pageOpenGraph({
     title: 'The Layered Web, Version 1.0',
     description: 'Twenty-four Desirable Properties for a trustworthy layer above the web, written in the open.',
-    images: [{ url: '/images/v1/book-3d-1200.jpg', width: 1200, height: 1200, alt: 'The Layered Web, Version 1.0' }],
-  },
+    path: '/v1',
+  }),
 };
 
 const STATS: Array<[string, string]> = [

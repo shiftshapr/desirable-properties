@@ -9,6 +9,7 @@ import { readSession, sessionToAuthUser, setSessionCookies } from '@/lib/auth-se
 import { cookies } from 'next/headers';
 import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
+import { SHARE_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/site-metadata';
 import './globals.css';
 
 const geistSans = Geist({
@@ -25,6 +26,20 @@ export const metadata: Metadata = {
   title: 'Desirable Properties Challenge',
   description:
     'A living governance challenge to define, refine, and operationalize the Desirable Properties of a trustworthy Meta-Layer.',
+  // Absolute URLs for og:image etc. Without this Next.js emits http://localhost:$PORT.
+  metadataBase: new URL(SITE_ORIGIN),
+  // Default share card. No title/description here so pages without their own
+  // openGraph fall back to their <title> and meta description in crawlers.
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    locale: 'en_US',
+    images: [SHARE_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [SHARE_IMAGE],
+  },
   // icons resolved automatically from src/app/icon.svg (Desirable Properties book cover)
 };
 

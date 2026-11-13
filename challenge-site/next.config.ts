@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
   async redirects() {
     return [
+      { source: '/v1/improve', destination: '/improve', permanent: false },
       { source: '/adjudication', destination: '/steering', permanent: false },
       { source: '/decisions', destination: '/steering', permanent: false },
       { source: '/proposals', destination: '/steering?stage=proposals', permanent: false },

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import SteeringNotes from '@/components/steering/SteeringNotes';
 import SteeringOverview from '@/components/steering/SteeringOverview';
 import Link from 'next/link';
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   title: 'How Version 1.0 was decided – Desirable Properties',
   description:
     'The open record of how The Layered Web, Version 1.0 was decided: every proposal, every steering decision and the final text of each document.',
+  openGraph: pageOpenGraph({
+    title: 'How Version 1.0 was decided',
+    description:
+      'The open record of how The Layered Web, Version 1.0 was decided: every proposal, every steering decision and the final text of each document.',
+    path: '/steering',
+  }),
 };
 
 export const dynamic = 'force-dynamic';

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageOpenGraph } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { headers } from 'next/headers';
 
@@ -8,6 +9,12 @@ export const metadata: Metadata = {
   title: 'Press release: Version 1.0 | Desirable Properties',
   description:
     'The Layered Web: The Desirable Properties of a Meta-Layer, Version 1.0, released 13 November 2026 after an open, community-written review.',
+  openGraph: pageOpenGraph({
+    title: 'Press release: The Layered Web, Version 1.0',
+    description:
+      'The Layered Web: The Desirable Properties of a Meta-Layer, Version 1.0, released 13 November 2026 after an open, community-written review.',
+    path: '/press',
+  }),
 };
 
 /** Goes live right after the launch event (10 to 11am PT, 13 November 2026). */

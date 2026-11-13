@@ -4,6 +4,94 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-chapter-archives",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Book: earlier chapter revisions at their own URLs",
+      "summary": "Each chapter's text as it read on the book just before Version 1.0 is frozen and served at /viewer/<key>/<rev>, where <rev> is its Gov Hub revision (for example /viewer/dp01/5, /viewer/acknowledgements/2). Canopi discussion made on that text can then be moved there (specs/canopi-page-move.md). Before this, every /viewer/* path served the live chapter, so no previous version had a link.",
+      "changes": [
+        "content/local/archive/<key>/<rev>.md: 25 frozen texts (DP1–DP24, Acknowledgements), byte-identical to the book before 17eaa8b and to the Gov Hub submission named in each file",
+        "json/chapter-archives.json: key, rev, label, live dates, source commit, sha256 and Gov Hub submission for each",
+        "Viewer: /viewer/<key>/<rev> keeps its URL, shows an 'Archived: Revision N … Read the current Version 1.0 text' banner, is noindex, and an unknown revision shows 'Revision not found' instead of the live chapter; /viewer/dp1/05 is rewritten to /viewer/dp01/5",
+        "Live chapters link to their earlier revision under the text",
+        "data-canopi-content on the chapter text (live and archive) for Canopi's page fingerprints",
+        "dp-deep-link.js: the phone Discuss count uses the archive's own page id"
+      ],
+      "files": [
+        {
+          "path": "desirableproperties-book/viewer.htm",
+          "label": "Viewer route and banner"
+        },
+        {
+          "path": "desirableproperties-book/json/chapter-archives.json",
+          "label": "Archive manifest"
+        },
+        {
+          "path": "desirableproperties-book/content/local/archive",
+          "label": "Frozen chapter texts"
+        },
+        {
+          "path": "desirableproperties-book/assets/dp-deep-link.js",
+          "label": "Phone Discuss page id"
+        }
+      ],
+      "surfaces": [
+        "book"
+      ],
+      "intent": "Give each pre-1.0 chapter text a permanent URL so its smart tags and discussion can follow it.",
+      "verify": "curl -s https://book.desirableproperties.org/json/chapter-archives.json | python3 -c \"import json,sys;print(len(json.load(sys.stdin)['archives']))\"  # 25; then open https://book.desirableproperties.org/viewer/dp01/5"
+    },
+    {
+      "id": "share-previews",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Link previews show the Version 1.0 card",
+      "summary": "Shared links to desirableproperties.org and the book site now show a 1200×630 Version 1.0 card with page titles and descriptions. Previously og:image pointed at http://localhost:3005 (no metadataBase), so shares had no image, and most pages had no image at all.",
+      "changes": [
+        "Root layout: metadataBase https://desirableproperties.org, default og:image and twitter summary_large_image",
+        "New share card public/images/v1/share-1200x630.jpg (also served from the book site's /assets)",
+        "Page-specific Open Graph for /, /v1, /press, /steering, /improve, /onchain, /agent; home preview announces Version 1.0",
+        "Book site index.html and viewer.htm: og:image and twitter image"
+      ],
+      "files": [
+        {
+          "path": "challenge-site/src/lib/site-metadata.ts",
+          "label": "Share metadata helper"
+        },
+        {
+          "path": "challenge-site/src/app/layout.tsx",
+          "label": "Root metadata"
+        },
+        {
+          "path": "challenge-site/public/images/v1/share-1200x630.jpg",
+          "label": "Share card"
+        },
+        {
+          "path": "desirableproperties-book/index.html",
+          "label": "Book head"
+        }
+      ],
+      "surfaces": [
+        "site",
+        "book"
+      ],
+      "intent": "Make shared links show an image and the right title.",
+      "verify": "curl -s https://desirableproperties.org/v1 | grep -o '<meta property=\"og:image\"[^>]*>'"
+    },
+    {
+      "id": "improve-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/improve: Help shape Version 1.1",
+      "summary": "New public page inviting launch attendees and contributors to improve Version 1.0: priorities for Version 1.1 and the road to Version 2 (editable in src/data/improve-priorities.ts), and a search-as-you-type explorer over the 24 DPs and every proposal. Each DP opens a drawer with its open co-editor seats, how to propose a change, how to volunteer for V1.1 steering, and its proposals. Linked from the Version 1.0 menu and the footer; /v1/improve redirects here.",
+      "changes": [
+        "/improve: hero, V1.1 and V2 priorities, DP and proposal explorer",
+        "DP drawer: contribute, co-edit (live seats), steer V1.1, review proposals; ?dp=dp7 deep links",
+        "Nav: Version 1.0 → Help shape Version 1.1; footer link",
+        "Redirect /v1/improve → /improve (temporary)"
+      ]
+    },
+    {
       "id": "v1-pdf-button",
       "date": "2026-11-13",
       "status": "open",

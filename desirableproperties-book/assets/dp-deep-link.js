@@ -223,8 +223,9 @@
 
   function chapterPageId() {
     if (link.pageId) return link.pageId;
-    var m = /\/viewer\/(dp\d{2})/.exec(global.location.pathname || '');
-    return m ? 'book_desirableproperties_org_viewer_' + m[1] : '';
+    // /viewer/dp01 → …_dp01; an archived revision /viewer/dp01/5 → …_dp01_5 (its own Canopi page).
+    var m = /\/viewer\/(dp\d{2})(?:\/(\d+))?\/?$/.exec(global.location.pathname || '');
+    return m ? 'book_desirableproperties_org_viewer_' + m[1] + (m[2] ? '_' + m[2] : '') : '';
   }
 
   function chapterPageUrl() {

@@ -16,17 +16,22 @@
   <meta property="og:description" content="Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Most are inscribed on Bitcoin.">
   <meta property="og:url" content="https://desirableproperties.org/viewer/intro">
   <meta property="og:site_name" content="The Layered Web">
+  <meta property="og:image" content="https://book.desirableproperties.org/assets/share-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Layered Web: The Desirable Properties of a Meta-Layer, Version 1.0">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Layered Web: The Desirable Properties of a Meta-Layer">
   <meta name="twitter:description" content="Twenty-four Desirable Properties for the Meta-Layer – inscribed on Bitcoin.">
+  <meta name="twitter:image" content="https://book.desirableproperties.org/assets/share-1200x630.jpg">
 
   <link rel="stylesheet" href="/assets/dp-site.css?v=20260823" />
   <link rel="preload" href="/json/sources-sat.json" as="fetch" crossorigin="anonymous" />
 
   <script src="/assets/dp-loading.js?v=20260801"></script>
   <!-- Deep links (post links, #:~:text=) and the phone Discuss button. Must run before the bridge and SDK read the URL. -->
-  <script src="/assets/dp-deep-link.js?v=20261012c"></script>
+  <script src="/assets/dp-deep-link.js?v=20261113a"></script>
   <!-- Canopi sidebar – one embed for all /viewer/* chapters. Staging host mirrors prod API + pageUrlOrigin. -->
   <script src="/assets/dp-canopi-bridge.js"></script>
   <script>
@@ -720,6 +725,28 @@
     .dp-info-dialog .dp-info-links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; }
     .dp-info-dialog .dp-info-close { margin-top: 18px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--nav-border); background: transparent; color: var(--text); cursor: pointer; }
 
+    /* Archived chapter revisions (/viewer/<key>/<rev>, json/chapter-archives.json). */
+    .dp-archive-banner {
+      max-width: 760px;
+      margin: 16px auto 8px;
+      padding: 12px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent-soft-2);
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .dp-archive-banner strong { color: var(--accent); }
+    .dp-archive-banner a { color: var(--accent); font-weight: 600; white-space: nowrap; }
+    .dp-archive-source, .dp-archive-links {
+      max-width: 760px;
+      margin: 12px auto;
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .dp-archive-source a, .dp-archive-links a { color: var(--accent); }
     .not-onchain-notice {
       max-width: 680px;
       margin: 48px auto;
@@ -1058,6 +1085,27 @@
     const SITE_SUBTITLE = 'The Desirable Properties of a Meta-Layer';
     const SITE_TITLE_FULL = SITE_TITLE + ': ' + SITE_SUBTITLE;
     const MANIFEST_URL = '/json/sources-sat.json';
+    /** Frozen earlier revisions of chapters, served at /viewer/<key>/<rev>. */
+    const ARCHIVE_MANIFEST_URL = '/json/chapter-archives.json';
+    /** railKey → [{key, rev, label, title, file, live_from, live_until, govhub, ...}] (null until loaded). */
+    let ARCHIVES = null;
+    /** {rail, rev} while an archived revision is shown, else null. */
+    let currentArchive = null;
+
+    // Canonical archive URLs: /viewer/dp1/05 → /viewer/dp01/5 before anything reads the path
+    // (Canopi keys discussion by the URL, so one revision must have exactly one URL).
+    (function canonicalizeArchivePath() {
+      try {
+        const m = (window.location.pathname || '').match(/^\/viewer\/dp-?(\d{1,2})\/0*(\d+)\/?$/i);
+        if (!m) return;
+        const n = parseInt(m[1], 10);
+        if (n < 1 || n > 24) return;
+        const target = '/viewer/dp' + String(n).padStart(2, '0') + '/' + String(parseInt(m[2], 10));
+        if (target !== window.location.pathname) {
+          history.replaceState(history.state, document.title, target + window.location.search + window.location.hash);
+        }
+      } catch (e) { /* ignore */ }
+    })();
 
     /** @type {{protocol:string,operation:string,workId:string,articleRails:string[],sources:Array}} */
     let MANIFEST = null;
@@ -1219,7 +1267,26 @@
       const path = window.location.pathname || '';
       const m = path.match(/^\/viewer\/?([^?#]*)/i);
       if (!m) return null;
-      let seg = decodeURIComponent(m[1] || '').toLowerCase();
+      return normalizeRailSegment(m[1]);
+    }
+
+    /**
+     * Archived revision route: /viewer/<key>/<rev> → {rail, rev}, else null.
+     * /viewer/dp01/5 → {rail:'dp01', rev:'5'}; /viewer/acknowledgements/2 → {rail:'acknowledgements', rev:'2'}.
+     * rev is returned as written (an unknown or malformed rev shows the not-found notice).
+     */
+    function getArchiveRouteFromLocation() {
+      const path = window.location.pathname || '';
+      const m = path.match(/^\/viewer\/([^/?#]+)\/([^/?#]+)\/?$/i);
+      if (!m) return null;
+      let rev = '';
+      try { rev = decodeURIComponent(m[2]); } catch (e) { rev = m[2]; }
+      return { rail: normalizeRailSegment(m[1]), rev: rev };
+    }
+
+    function normalizeRailSegment(raw) {
+      let seg = '';
+      try { seg = decodeURIComponent(raw || '').toLowerCase(); } catch (e) { seg = String(raw || '').toLowerCase(); }
       if (!seg) return null;
       if (seg === 'cover') return 'book_cover';
       if (seg === 'intro') return 'ml-draft-026';
@@ -1573,7 +1640,7 @@
 
     function renderIntroLanding() {
       return (
-        '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1">' +
+        '<div class="book-content dp-intro" data-dp-content-root="1" data-canopi-content-root="1" data-canopi-content="1">' +
           '<h1>The Layered Web<span class="header-subtitle">The Desirable Properties of a Meta-Layer</span></h1>' +
           '<p class="dp-intro-eyebrow">23 Properties, inscribed on Bitcoin</p>' +
           '<p>This book collects twenty-four community-defined Desirable Properties for the Meta-Layer – the foundations of a decentralized, human-meaningful internet. They emerged from open submissions during the Desirable Properties Challenge; most are inscribed on Bitcoin, and all are available to read here in chapter order.</p>' +
@@ -1800,6 +1867,146 @@
       );
     }
 
+    /* ---------- Archived revisions (/viewer/<key>/<rev>) ---------- */
+
+    async function loadArchiveManifest() {
+      if (ARCHIVES) return ARCHIVES;
+      const byKey = {};
+      try {
+        const r = await fetch(ARCHIVE_MANIFEST_URL, { cache: 'no-cache' });
+        if (r.ok) {
+          const data = await r.json();
+          (data && Array.isArray(data.archives) ? data.archives : []).forEach(function (a) {
+            if (!a || !a.key || a.rev == null || !a.file) return;
+            (byKey[a.key] = byKey[a.key] || []).push(a);
+          });
+        }
+      } catch (e) { /* no archives: live chapters still work */ }
+      ARCHIVES = byKey;
+      return ARCHIVES;
+    }
+
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    /** '2026-08-08', '2026-11-13' → '8 August – 13 November 2026'. */
+    function formatLiveRange(from, until) {
+      function parts(s) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+        return m ? { y: m[1], mo: MONTHS[parseInt(m[2], 10) - 1], d: String(parseInt(m[3], 10)) } : null;
+      }
+      const a = parts(from);
+      const b = parts(until);
+      if (!a || !b) return '';
+      return a.y === b.y
+        ? a.d + ' ' + a.mo + ' – ' + b.d + ' ' + b.mo + ' ' + b.y
+        : a.d + ' ' + a.mo + ' ' + a.y + ' – ' + b.d + ' ' + b.mo + ' ' + b.y;
+    }
+
+    function setRobotsNoindex(on) {
+      let m = document.querySelector('meta[name="robots"][data-dp-archive]');
+      if (on && !m) {
+        m = document.createElement('meta');
+        m.setAttribute('name', 'robots');
+        m.setAttribute('content', 'noindex, follow');
+        m.setAttribute('data-dp-archive', '1');
+        document.head.appendChild(m);
+      } else if (!on && m) {
+        m.remove();
+      }
+    }
+
+    function chapterTitle(rail) {
+      const idx = RAIL_INDEX[rail];
+      return idx == null ? rail : (RAILS[idx].label || rail);
+    }
+
+    /** Small "Earlier revisions" line under a live chapter (outside the Canopi content root). */
+    function buildArchiveLinksHtml(rail) {
+      const list = ARCHIVES && ARCHIVES[rail];
+      if (!list || !list.length) return '';
+      const links = list.map(function (a) {
+        const range = formatLiveRange(a.live_from, a.live_until);
+        return '<a href="/viewer/' + escapeHtml(rail) + '/' + escapeHtml(String(a.rev)) + '">' +
+          escapeHtml(a.label || ('Revision ' + a.rev)) + '</a>' + (range ? ' (' + escapeHtml(range) + ')' : '');
+      });
+      return '<p class="dp-archive-links">Earlier ' + (list.length > 1 ? 'revisions' : 'revision') +
+        ', with the discussion made on it: ' + links.join(', ') + '</p>';
+    }
+
+    function buildArchiveNotFoundHtml(rail, rev) {
+      const known = rail && rail in RAIL_INDEX;
+      const list = (known && ARCHIVES && ARCHIVES[rail]) || [];
+      const title = known ? escapeHtml(chapterTitle(rail)) : 'this page';
+      let html =
+        '<div class="not-onchain-notice" role="status">' +
+          '<h2>Revision not found</h2>' +
+          '<p>There is no archived revision “' + escapeHtml(String(rev)) + '” of ' + title + '.</p>';
+      if (list.length) {
+        html += '<p>Archived revisions: ' + list.map(function (a) {
+          return '<a href="/viewer/' + escapeHtml(rail) + '/' + escapeHtml(String(a.rev)) + '">' + escapeHtml(a.label || ('Revision ' + a.rev)) + '</a>';
+        }).join(', ') + '</p>';
+      }
+      html += known
+        ? '<a class="govhub-link" href="/viewer/' + escapeHtml(rail) + '">Read the current Version 1.0 text →</a>'
+        : '<a class="govhub-link" href="/viewer/book_cover">Go to the book →</a>';
+      return html + '</div>';
+    }
+
+    /** Render a frozen earlier revision. Keeps the /viewer/<key>/<rev> URL (Canopi keys its discussion by it). */
+    async function loadArchive(rail, rev) {
+      await loadArchiveManifest();
+      currentArchive = { rail: rail, rev: rev };
+      const known = rail && rail in RAIL_INDEX;
+      if (known) currentRail = rail;
+      setRobotsNoindex(true);
+
+      const contentEl = document.getElementById('content');
+      if (!contentEl) return;
+      contentEl.innerHTML = LS ? LS.html('loading') :
+        '<div class="dp-loading"><div class="loading-spinner"></div></div>';
+
+      const entry = known && (ARCHIVES[rail] || []).find(function (a) { return String(a.rev) === String(rev); });
+      if (!entry) {
+        contentEl.innerHTML = buildArchiveNotFoundHtml(rail, rev);
+        document.title = 'Revision not found – ' + SITE_TITLE;
+        if (known) { setActiveToc(rail); updateHeaderProgress(rail); }
+        return;
+      }
+
+      try {
+        const md = await fetchLocalOverride(entry.file);
+        const title = chapterTitle(rail);
+        const label = entry.label || ('Revision ' + entry.rev);
+        const range = formatLiveRange(entry.live_from, entry.live_until);
+        const banner =
+          '<div class="dp-archive-banner" role="note">' +
+            '<strong>Archived:</strong> ' + escapeHtml(label) + ' of ' + escapeHtml(title) +
+            (range ? ', live ' + escapeHtml(range) : '') + '. ' +
+            '<a href="/viewer/' + escapeHtml(rail) + '">Read the current Version 1.0 text →</a>' +
+          '</div>';
+        const gh = entry.govhub || {};
+        const source = gh.read_url
+          ? '<p class="dp-archive-source">Frozen copy of Gov Hub ' + escapeHtml(gh.ml_number || '') +
+            ' revision ' + escapeHtml(String(gh.revision || entry.rev)) +
+            ' (<a href="' + escapeHtml(gh.read_url) + '" target="_blank" rel="noopener">source</a>).</p>'
+          : '';
+        contentEl.innerHTML =
+          banner +
+          '<div class="book-content dp-archive" data-dp-content-root="1" data-canopi-content-root="1" data-canopi-content="1">' +
+            renderChapterMarkdown(md) +
+          '</div>' +
+          source;
+        document.title = label + ' (archived) – ' + title + ' – ' + SITE_TITLE;
+        setActiveToc(rail);
+        updateHeaderProgress(rail);
+        try { window.dispatchEvent(new CustomEvent('dp:chapter-rendered', { detail: { rail: rail, archiveRev: String(entry.rev) } })); } catch (e) { /* ignore */ }
+      } catch (err) {
+        const msg = (err && err.message ? err.message : String(err))
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+        contentEl.innerHTML = '<div class="error">Failed to load archived revision: ' + msg + '</div>';
+      }
+    }
+
     async function loadChapter(rail, opts) {
       const o = opts || {};
       if (!(rail in RAIL_INDEX)) {
@@ -1807,6 +2014,8 @@
         rail = 'book_cover';
       }
       currentRail = rail;
+      currentArchive = null;
+      setRobotsNoindex(false);
 
       const contentEl = document.getElementById('content');
       if (contentEl) contentEl.innerHTML = LS ? LS.html('loading') :
@@ -1819,7 +2028,8 @@
           bodyHtml = result.html;
         } else {
           const wrapClass = result.wrapClass || '';
-          bodyHtml = '<div class="book-content' + wrapClass + '" data-dp-content-root="1" data-canopi-content-root="1">' + result.html + '</div>';
+          bodyHtml = '<div class="book-content' + wrapClass + '" data-dp-content-root="1" data-canopi-content-root="1" data-canopi-content="1">' + result.html + '</div>' +
+            buildArchiveLinksHtml(rail);
         }
         const navHtml = buildNavBarHtml(rail);
         const downloadHtml = result.source === 'not-onchain' ? '' : buildChapterDownloadHtml(rail);
@@ -1875,7 +2085,10 @@
       if (liveBtn) liveBtn.classList.toggle('active', currentMode === 'live');
       if (onchainBtn) onchainBtn.classList.toggle('active', currentMode === 'onchain');
 
-      if (currentRail) {
+      if (currentArchive) {
+        // An archived revision is a fixed text: the Live/Onchain toggle doesn't apply.
+        loadArchive(currentArchive.rail, currentArchive.rev);
+      } else if (currentRail) {
         loadChapter(currentRail, { skipUrl: true });
       }
     }
@@ -2022,6 +2235,15 @@
       // Sidebar default.
       setSidebarOpen(readTocOpenPreference());
 
+      // Archived revision: /viewer/<key>/<rev> keeps its URL and never falls back to the live chapter.
+      await loadArchiveManifest();
+      const archiveRoute = getArchiveRouteFromLocation();
+      if (archiveRoute) {
+        setMode(savedMode);
+        await loadArchive(archiveRoute.rail, archiveRoute.rev);
+        return;
+      }
+
       // Decide which chapter to show.
       let rail = getRailKeyFromLocation();
       if (!rail || !(rail in RAIL_INDEX)) {
@@ -2047,6 +2269,11 @@
 
     // History popstate (back/forward) – load chapter from URL.
     window.addEventListener('popstate', function () {
+      const archiveRoute = getArchiveRouteFromLocation();
+      if (archiveRoute) {
+        loadArchive(archiveRoute.rail, archiveRoute.rev);
+        return;
+      }
       const rail = getRailKeyFromLocation();
       if (rail && rail in RAIL_INDEX) {
         loadChapter(rail, { skipUrl: true });
