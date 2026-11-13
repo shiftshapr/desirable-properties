@@ -1,16 +1,26 @@
-import Link from 'next/link';
+"use client";
+
+import Link from "next/link";
 import {
   V1_COVER_SRC,
   V1_LAUNCH_REGISTER_URL,
   V1_PDF_HREF,
   V1_READ_ONLINE_HREF,
-  v1Released,
-} from '@/lib/dp-v1-release';
-import V1PhaseText from '@/components/v1/V1PhaseText';
+} from "@/lib/dp-v1-release";
+import { useV1Phase } from "@/components/v1/V1PhaseText";
 
-/** Version 1.0 of the book: before the launch, the event; from 10am PT on Nov 13, read online or download the PDF. */
-export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?: Date; heading?: 'h1' | 'h2' }) {
-  const released = v1Released(now);
+/**
+ * Version 1.0 of the book. Before 10am PT on Nov 13: the launch and registration. During the launch (10–11am PT):
+ * live, with the PDF. From 11am PT: released, no launch call to action. Switches on the clock without a reload.
+ */
+export default function V1BookPanel({
+  heading = "h2",
+}: {
+  now?: Date;
+  heading?: "h1" | "h2";
+}) {
+  const phase = useV1Phase();
+  const released = phase !== "before";
   const H = heading;
   return (
     <section
@@ -28,20 +38,31 @@ export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?
         </a>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
-            {released ? 'Version 1.0 is live' : 'Version 1.0 · releases Friday'}
+            {phase === "before"
+              ? "Version 1.0 · releases Friday"
+              : phase === "during"
+                ? "Version 1.0 is live"
+                : "Version 1.0 · released November 13, 2026"}
           </p>
-          <H id="v1-book-heading" className="mt-2 text-3xl font-bold text-white sm:text-4xl">
+          <H
+            id="v1-book-heading"
+            className="mt-2 text-3xl font-bold text-white sm:text-4xl"
+          >
             The Desirable Properties of a Meta-Layer
           </H>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-200">
             {released ? (
               <>
-                Twenty-four properties for the layered web, written in the open over two years. Read it online, with a
-                discussion layer on every page, or download the PDF.
-                <V1PhaseText before={null} during=" The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom." after={null} />
+                Twenty-four properties for the layered web, written in the open
+                over two years. Read it online, with a discussion layer on every
+                page, or download the PDF.
+                {phase === "during"
+                  ? " The launch gathering is live on Zoom now, until 11 AM PT."
+                  : null}
               </>
-            )
-              : 'Twenty-four properties for the layered web, written in the open over two years. V1.0 releases Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'}
+            ) : (
+              "Twenty-four properties for the layered web, written in the open over two years. V1.0 releases Friday, November 13, 2026, 10–11 AM PT, live on Zoom."
+            )}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             {released ? (
@@ -76,8 +97,11 @@ export default function V1BookPanel({ now = new Date(), heading = 'h2' }: { now?
                 </a>
               </>
             )}
-            {heading === 'h2' ? (
-              <Link href="/v1" className="inline-flex items-center px-2 text-sm text-amber-200 hover:text-amber-100">
+            {heading === "h2" ? (
+              <Link
+                href="/v1"
+                className="inline-flex items-center px-2 text-sm text-amber-200 hover:text-amber-100"
+              >
                 About Version 1.0 and the videos
               </Link>
             ) : null}
