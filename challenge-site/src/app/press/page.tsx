@@ -23,7 +23,7 @@ const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean
     role: 'Founder, Meta-Layer Initiative; steering committee',
     text:
       'This book was written the way we want the next layer of the internet to work: in the open, with every proposal recorded, every decision explained, and every contributor named. Version 1.0 gives builders a shared reference for what a trustworthy Meta-Layer has to get right. Version 1.1 opens today, and anyone can propose the next change.',
-    approved: false,
+    approved: true, // approved by Daveed Benjamin, 13 Nov 2026
   },
   {
     who: 'Phahsa Ras',
