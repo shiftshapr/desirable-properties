@@ -12,7 +12,7 @@ type Proposal = {
   coEditor: string | null;
   createdAt: string | null;
   reviewedAt: string | null;
-  source: 'community' | 'repair' | 'agent';
+  source: 'community' | 'academy' | 'repair' | 'agent';
   /** Accepted with revisions: this is the revised wording; the original is folded into it. */
   revised: boolean;
   rationale: string;
@@ -27,7 +27,8 @@ type Proposal = {
 const SIZES = [10, 25, 50];
 const SOURCE_LABEL: Record<Proposal['source'], string> = {
   community: 'Community',
-  repair: 'Metaweb Academy repair',
+  academy: 'Metaweb Academy (open review)',
+  repair: 'Steering repair (after the freeze)',
   agent: 'Agent-assisted',
 };
 const STATUS_TONE: Record<string, string> = {
@@ -142,9 +143,10 @@ export default function ProposalsTab() {
       <div>
         <h2 className="text-xl font-semibold text-white">Proposals</h2>
         <p className="mt-1 max-w-3xl text-sm text-slate-300">
-          Every proposal on the 24 DPs and the front matter: community contributions, Metaweb Academy repairs and
-          agent-assisted ones, with the co-editor who decided each and the generated analysis where one exists. A
-          proposal accepted with revisions is listed once, as its revised wording.
+          Every proposal on the 24 DPs and the front matter: 355 made in the open review before the November 9
+          freeze (237 of them from 57 community contributors), and 1,280 editorial repairs the steering committee
+          made after it. Each shows the co-editor who decided it. A proposal accepted with revisions is listed once,
+          as its revised wording.
         </p>
       </div>
 

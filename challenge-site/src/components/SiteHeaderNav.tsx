@@ -279,7 +279,7 @@ export default function SiteHeaderNav({ links = SITE_NAV_LINKS }: { links?: Site
   return (
     <div ref={navRef} className="flex items-center">
       <nav
-        className="site-header-nav hidden min-w-0 items-center gap-6 text-sm text-slate-300 lg:flex"
+        className="site-header-nav hidden min-w-0 items-center gap-5 text-sm text-slate-300 lg:flex xl:gap-6"
         aria-label="Main"
       >
         {links.map((link) =>

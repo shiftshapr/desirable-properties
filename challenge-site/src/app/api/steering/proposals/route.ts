@@ -12,6 +12,8 @@ const DOCS: Array<[string, string]> = [
   ['DP21', 'ML-Draft-025'], ['DP22', 'ML-Draft-028'], ['DP23', 'ML-Draft-030'], ['DP24', 'ML-Draft-056'],
 ];
 const TTL = 60_000;
+/** Metaweb Academy's organization accounts on Gov Hub (open-review proposals, not steering repairs). */
+const ACADEMY_AUTHORS = new Set(['Bridgit', 'BridgeDAO']);
 
 type Raw = Record<string, unknown>;
 const s = (v: unknown) => (typeof v === 'string' ? v : '');
@@ -49,11 +51,13 @@ async function loadAnalyses(idToken: string): Promise<Record<string, Raw>> {
   return byId;
 }
 
-/** Every proposal on the 28 Version 1.0 documents, for the Proposals tab (anyone signed in). */
+/**
+ * Every proposal on the 28 Version 1.0 documents, for the Proposals tab. Public, like the proposals on Gov Hub;
+ * the generated analyses are added for steering members (Gov Hub checks the sign-in).
+ */
 export async function GET() {
   const session = await readSession();
-  if (!session?.userId) return Response.json({ error: 'Sign in required', code: 'sign_in' }, { status: 401 });
-  const [rows, analyses] = await Promise.all([loadProposals(), session.idToken ? loadAnalyses(session.idToken) : Promise.resolve({})]);
+  const [rows, analyses] = await Promise.all([loadProposals(), session?.idToken ? loadAnalyses(session.idToken) : Promise.resolve({})]);
   // A proposal accepted with revisions is filed again as a revised copy (revised_from_id) and the original
   // is marked considered: list the idea once, as the revised copy, with the original's author and source.
   const byId = new Map(rows.map((p) => [s(p.id), p]));
@@ -77,7 +81,14 @@ export async function GET() {
       coEditor: s(p.reviewed_by_name) || null,
       createdAt: s(p.created_at) || null,
       reviewedAt: s(p.reviewed_at) || null,
-      source: channel === 'steering-repair' ? 'repair' : origin.agent_assisted ? 'agent' : 'community',
+      source:
+        channel === 'steering-repair'
+          ? 'repair'
+          : ACADEMY_AUTHORS.has(s(origin.author_name))
+            ? 'academy'
+            : origin.agent_assisted
+              ? 'agent'
+              : 'community',
       revised: origin !== p,
       rationale: s(p.rationale),
       reviewNote: s(p.review_note) || null,

@@ -4,6 +4,103 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-report-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1 redesigned as a report launch page",
+      "summary": "/v1 now opens like a major report launch: the book large, Download the report, Read online and Share up front, and text on what the book is, where it fits in the DP-to-substrate circuit, and that it is a living book preserved on Bitcoin. Below: the numbers, the roadmap from properties to the Overweb, the living-book links, Ask Deepi and the videos.",
+      "changes": [
+        "/v1: report-launch hero with share menu",
+        "/v1: numbers, where it fits, a living book"
+      ]
+    },
+    {
+      "id": "pdf-v1-ack-roadmap",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt",
+      "summary": "The Version 1.0 PDF now carries Acknowledgements revision 04 and the corrected roadmap image (807 pages).",
+      "changes": [
+        "PDF: Acknowledgements rev 04, roadmap image"
+      ]
+    },
+    {
+      "id": "acknowledgements-rev04",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Acknowledgements revision 04 in the book",
+      "summary": "The book's Acknowledgements now follow the owner-approved order: Daveed Benjamin 2, the kickoff co-hosts, Phahsa Ras, Melinda Woods and Joshua Colbert at 5 to 7, both Calls for Input, Kevin Clark (who suggested the title), the Desirable Properties Challenge contributors and the co-editors.",
+      "changes": [
+        "Book: Acknowledgements synced from Gov Hub revision 04"
+      ]
+    },
+    {
+      "id": "proposals-tab-ui-public-luma",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals tab open to visitors; launch links go straight to Luma",
+      "summary": "The /steering Proposals tab no longer asks visitors to sign in. Launch registration links on this site and the estate launch panel use the Luma event page directly instead of the bit.ly short link.",
+      "changes": [
+        "/steering Proposals tab: no sign-in",
+        "Launch links: https://luma.com/uhb8828e"
+      ]
+    },
+    {
+      "id": "v1-deepi-steering-intro-split",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Ask Deepi on /v1; /steering opened to visitors; proposals split by who and when",
+      "summary": "/v1 gets 'Ask Deepi about the book' with question buttons that open Deepi with the question ready. /steering is retitled 'How Version 1.0 was decided', is indexable, and opens with a visitor intro; /adjudication, /decisions and /proposals redirect to it. The Proposals tab and press release separate the 355 open-review proposals (237 from 57 community contributors, 79 from Metaweb Academy accounts) from the 1,280 steering repairs after the freeze.",
+      "changes": [
+        "/v1: Ask Deepi panel",
+        "/steering: visitor intro, indexable, redirects",
+        "Proposals: Metaweb Academy (open review) and Steering repair sources",
+        "Press: open review vs repairs"
+      ]
+    },
+    {
+      "id": "nav-fit-laptop",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Menu fits at laptop widths",
+      "summary": "Between 1024 and 1279 px the header hides Badges and On-Chain (both in the footer) so the menu with Version 1.0 no longer runs into Sign in.",
+      "changes": [
+        "Header: fits at 1024–1279 px"
+      ]
+    },
+    {
+      "id": "roadmap-crisp-text",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "About roadmap image: sharp lettering",
+      "summary": "The 'We are here to define the next level of the internet' lettering and the arrow are redrawn at full resolution (image now 2048 px wide), replacing the blurry text from the original JPEG.",
+      "changes": [
+        "About roadmap image: text and arrow redrawn, 2048 px"
+      ]
+    },
+    {
+      "id": "nav-v1-press-steering",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0, Steering and Press in the menu and footer",
+      "summary": "A Version 1.0 menu (About Version 1.0, Read the book, Steering and proposals, Press release) and footer links to Version 1.0, Steering and Press, so those pages can be found from anywhere on the site.",
+      "changes": [
+        "Header: Version 1.0 menu",
+        "Footer: Version 1.0, Steering, Press"
+      ]
+    },
+    {
+      "id": "public-proposals-roadmap-box1",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals tab open to everyone; roadmap first box border",
+      "summary": "The /steering Proposals tab no longer needs a sign-in: anyone can browse and filter every Version 1.0 proposal (generated analyses still show for steering members). The About roadmap image gets the missing top border on the Desirable Properties Challenge box.",
+      "changes": [
+        "/api/steering/proposals: public",
+        "About roadmap image: first box top border"
+      ]
+    },
+    {
       "id": "about-roadmap-arrow",
       "date": "2026-11-13",
       "status": "open",

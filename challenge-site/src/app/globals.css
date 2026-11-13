@@ -120,3 +120,10 @@ html[data-canopi-embed-host="1"] #canopi-overlay-root .canopi-sidebar-frame {
     display: inline;
   }
 }
+
+/* Laptop widths: the full menu (with Version 1.0) doesn't fit beside Sign in; Badges and On-Chain stay in the footer. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-nav-optional {
+    display: none;
+  }
+}
