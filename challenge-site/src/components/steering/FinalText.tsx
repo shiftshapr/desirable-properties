@@ -40,6 +40,8 @@ const MD: Components = {
  */
 export default function FinalText({ ml, version }: { ml: string; version: string | null }) {
   const [open, setOpen] = useState(true);
+  const [source, setSource] = useState(false);
+  const [raw, setRaw] = useState<string | null>(null);
   const [text, setText] = useState<string | null>(null);
   const [error, setError] = useState('');
 
@@ -49,7 +51,10 @@ export default function FinalText({ ml, version }: { ml: string; version: string
       .then(async (res) => {
         const body = (await res.json().catch(() => ({}))) as { markdown?: string; error?: string };
         if (!res.ok || typeof body.markdown !== 'string') throw new Error(body.error || `Text unavailable (${res.status})`);
-        if (live) setText(body.markdown.replace(/<!--[\s\S]*?-->/g, '').trim());
+        if (live) {
+          setRaw(body.markdown);
+          setText(body.markdown.replace(/<!--[\s\S]*?-->/g, '').trim());
+        }
       })
       .catch((err) => live && setError(err instanceof Error ? err.message : 'Text unavailable'));
     return () => {
@@ -62,8 +67,27 @@ export default function FinalText({ ml, version }: { ml: string; version: string
       <header className="flex flex-wrap items-center gap-3 border-b border-slate-800 px-4 py-3">
         <h2 className="text-base font-semibold text-white">Final text</h2>
         <p className="min-w-0 flex-1 text-xs text-slate-400">
-          Exactly what you sign: every accepted change applied. Changes made in Stage 4 are listed under the Accepted tab below.
+          The working revision exactly as it stands: what you sign, what Publish turns into the next Gov Hub revision, and
+          what the BRC333 book and the Desirable Properties book copy from it (they add only a sync comment and local image
+          paths). Changes made in Stage 4 are listed under the Accepted tab below.
         </p>
+        <div className="flex gap-1 text-xs" role="tablist" aria-label="Text view">
+          {[
+            { k: false, label: 'Reading view' },
+            { k: true, label: 'Exact source' },
+          ].map((t) => (
+            <button
+              key={t.label}
+              type="button"
+              role="tab"
+              aria-selected={source === t.k}
+              onClick={() => setSource(t.k)}
+              className={`rounded px-2 py-1 ${source === t.k ? 'bg-slate-700 text-white' : 'text-slate-300 hover:text-white'}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
         <button type="button" onClick={() => setOpen((v) => !v)} className="text-xs text-cyan-300 underline hover:text-cyan-200">
           {open ? 'Hide' : 'Show'}
         </button>
@@ -72,7 +96,10 @@ export default function FinalText({ ml, version }: { ml: string; version: string
         <div className="max-h-[75vh] overflow-y-auto px-4 py-4 sm:px-6">
           {error ? <p className="text-sm text-rose-200">{error}</p> : null}
           {!text && !error ? <p className="text-sm text-slate-400">Loading the text…</p> : null}
-          {text ? (
+          {source && raw ? (
+            <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-6 text-slate-200">{raw}</pre>
+          ) : null}
+          {!source && text ? (
             <article className="max-w-3xl">
               <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD}>
                 {text}
