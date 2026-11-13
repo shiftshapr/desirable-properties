@@ -1,0 +1,510 @@
+{
+  "schema": "dp-book-chapter-archives/v1",
+  "description": "Frozen copies of each chapter as it read on the book just before Version 1.0 (13 November 2026). Served at /viewer/<key>/<rev>; Canopi discussion made on that text is moved there (specs/canopi-page-move.md).",
+  "current_label": "Version 1.0",
+  "archives": [
+    {
+      "key": "dp01",
+      "rev": "5",
+      "label": "Revision 5",
+      "title": "DP1 – Federated Authentication & Accountability",
+      "file": "/content/local/archive/dp01/5.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp1.md",
+      "text_since_commit": "74eba68",
+      "sha256": "885b71d3eb651453477270fc1f1dafaff8251f11006d8244c5b3278347e913f4",
+      "govhub": {
+        "ml_number": "ML-Draft-008",
+        "revision": "05",
+        "submission_id": "70abde82-e313-4e4a-a763-f9dbb2efc9d4",
+        "text_url": "https://interfacehub.net/doc/draft/70abde82-e313-4e4a-a763-f9dbb2efc9d4.txt",
+        "read_url": "https://interfacehub.net/doc/draft/70abde82-e313-4e4a-a763-f9dbb2efc9d4/read/"
+      },
+      "note": "Gov Hub revisions 04 and 05 have identical text; the book named revision 05 from 29 September 2026."
+    },
+    {
+      "key": "dp02",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP2 – Participant Agency and Empowerment",
+      "file": "/content/local/archive/dp02/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp2.md",
+      "text_since_commit": "74eba68",
+      "sha256": "cdc8e987f930b27ffc7c53092ebb40e4a405be820d25cbaf10b78ca575480c7c",
+      "govhub": {
+        "ml_number": "ML-Draft-009",
+        "revision": "03",
+        "submission_id": "62f7c1bb-a022-44fc-829e-a871d6d3bce5",
+        "text_url": "https://interfacehub.net/doc/draft/62f7c1bb-a022-44fc-829e-a871d6d3bce5.txt",
+        "read_url": "https://interfacehub.net/doc/draft/62f7c1bb-a022-44fc-829e-a871d6d3bce5/read/"
+      }
+    },
+    {
+      "key": "dp03",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP3 – Adaptive Governance Supporting an Exponentially Growing Community",
+      "file": "/content/local/archive/dp03/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp3.md",
+      "text_since_commit": "74eba68",
+      "sha256": "b927bf12a8c5e3be96faf909882d89e85a6e2b58b3b127e7de2e646a0b1b5781",
+      "govhub": {
+        "ml_number": "ML-Draft-010",
+        "revision": "03",
+        "submission_id": "d6741aee-0174-4258-875b-7360f67f1bf6",
+        "text_url": "https://interfacehub.net/doc/draft/d6741aee-0174-4258-875b-7360f67f1bf6.txt",
+        "read_url": "https://interfacehub.net/doc/draft/d6741aee-0174-4258-875b-7360f67f1bf6/read/"
+      }
+    },
+    {
+      "key": "dp04",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP4 – Data Sovereignty and Privacy",
+      "file": "/content/local/archive/dp04/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp4.md",
+      "text_since_commit": "74eba68",
+      "sha256": "4c1699e2944a65e31b00ee1f5092681d8dfc51d2c4b3da71878e5f28e6c43916",
+      "govhub": {
+        "ml_number": "ML-Draft-011",
+        "revision": "03",
+        "submission_id": "6f8fc748-a78f-4921-844c-19c4bf7baefd",
+        "text_url": "https://interfacehub.net/doc/draft/6f8fc748-a78f-4921-844c-19c4bf7baefd.txt",
+        "read_url": "https://interfacehub.net/doc/draft/6f8fc748-a78f-4921-844c-19c4bf7baefd/read/"
+      }
+    },
+    {
+      "key": "dp05",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP5 – Decentralized Namespace",
+      "file": "/content/local/archive/dp05/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp5.md",
+      "text_since_commit": "74eba68",
+      "sha256": "ec25af023960df747597d7ebbac7bc3b482f0a7d3a658c673ab2ad99ced5eb37",
+      "govhub": {
+        "ml_number": "ML-Draft-012",
+        "revision": "03",
+        "submission_id": "efd1d316-cb3e-43c9-bf14-e9395698edce",
+        "text_url": "https://interfacehub.net/doc/draft/efd1d316-cb3e-43c9-bf14-e9395698edce.txt",
+        "read_url": "https://interfacehub.net/doc/draft/efd1d316-cb3e-43c9-bf14-e9395698edce/read/"
+      }
+    },
+    {
+      "key": "dp06",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP6 – Commerce",
+      "file": "/content/local/archive/dp06/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp6.md",
+      "text_since_commit": "74eba68",
+      "sha256": "e18ce03c5a17aaa66fda2ac46b401647a613de0c977d21af030b2e72f20d1e88",
+      "govhub": {
+        "ml_number": "ML-Draft-013",
+        "revision": "03",
+        "submission_id": "11288927-b07c-4b99-839a-546ec53d77bc",
+        "text_url": "https://interfacehub.net/doc/draft/11288927-b07c-4b99-839a-546ec53d77bc.txt",
+        "read_url": "https://interfacehub.net/doc/draft/11288927-b07c-4b99-839a-546ec53d77bc/read/"
+      }
+    },
+    {
+      "key": "dp07",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP7 – Simplicity and Interoperability",
+      "file": "/content/local/archive/dp07/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp7.md",
+      "text_since_commit": "74eba68",
+      "sha256": "04e0ebbef026b072028e842fa8fc12576526db594abaf02299a2d7928242ed62",
+      "govhub": {
+        "ml_number": "ML-Draft-014",
+        "revision": "03",
+        "submission_id": "f9cf5d5a-2669-4874-9c0a-b1d7aa0ef225",
+        "text_url": "https://interfacehub.net/doc/draft/f9cf5d5a-2669-4874-9c0a-b1d7aa0ef225.txt",
+        "read_url": "https://interfacehub.net/doc/draft/f9cf5d5a-2669-4874-9c0a-b1d7aa0ef225/read/"
+      }
+    },
+    {
+      "key": "dp08",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP8 – Collaborative Environment and Meta-Communities",
+      "file": "/content/local/archive/dp08/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp8.md",
+      "text_since_commit": "74eba68",
+      "sha256": "2d750cf018fb54cae83efb39fcfd69659eafc343af95e956fe8c97118e33eaca",
+      "govhub": {
+        "ml_number": "ML-Draft-015",
+        "revision": "03",
+        "submission_id": "5a53cb39-ae20-497e-9076-b9a440d65250",
+        "text_url": "https://interfacehub.net/doc/draft/5a53cb39-ae20-497e-9076-b9a440d65250.txt",
+        "read_url": "https://interfacehub.net/doc/draft/5a53cb39-ae20-497e-9076-b9a440d65250/read/"
+      }
+    },
+    {
+      "key": "dp09",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP9 – Developer and Community Incentives",
+      "file": "/content/local/archive/dp09/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp9.md",
+      "text_since_commit": "74eba68",
+      "sha256": "9517d65b7797fb37e5fcf1885f50dc798a15411fdd9a37e537b08f6569817632",
+      "govhub": {
+        "ml_number": "ML-Draft-016",
+        "revision": "03",
+        "submission_id": "5e1a8e31-7d4a-4b85-9ee8-d9397ddf4b3f",
+        "text_url": "https://interfacehub.net/doc/draft/5e1a8e31-7d4a-4b85-9ee8-d9397ddf4b3f.txt",
+        "read_url": "https://interfacehub.net/doc/draft/5e1a8e31-7d4a-4b85-9ee8-d9397ddf4b3f/read/"
+      }
+    },
+    {
+      "key": "dp10",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP10 – Education",
+      "file": "/content/local/archive/dp10/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp10.md",
+      "text_since_commit": "74eba68",
+      "sha256": "2e5d84d10588329f596d5413f43c54b4f44befa50db99dbb0418f3c964befe4d",
+      "govhub": {
+        "ml_number": "ML-Draft-017",
+        "revision": "03",
+        "submission_id": "2b482260-8797-4385-b857-d4d6aeead9d6",
+        "text_url": "https://interfacehub.net/doc/draft/2b482260-8797-4385-b857-d4d6aeead9d6.txt",
+        "read_url": "https://interfacehub.net/doc/draft/2b482260-8797-4385-b857-d4d6aeead9d6/read/"
+      }
+    },
+    {
+      "key": "dp11",
+      "rev": "4",
+      "label": "Revision 4",
+      "title": "DP11 – Safe and Ethical AI",
+      "file": "/content/local/archive/dp11/4.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp11.md",
+      "text_since_commit": "74eba68",
+      "sha256": "950cc1ff40f5cd40531384d70fbb8ae39a3f9bc3b7a87945da94754a016980de",
+      "govhub": {
+        "ml_number": "ML-Draft-002",
+        "revision": "04",
+        "submission_id": "48492241-f49c-4fb3-befd-323fe7bb6141",
+        "text_url": "https://interfacehub.net/doc/draft/48492241-f49c-4fb3-befd-323fe7bb6141.txt",
+        "read_url": "https://interfacehub.net/doc/draft/48492241-f49c-4fb3-befd-323fe7bb6141/read/"
+      }
+    },
+    {
+      "key": "dp12",
+      "rev": "4",
+      "label": "Revision 4",
+      "title": "DP12 – Community-based AI Governance",
+      "file": "/content/local/archive/dp12/4.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp12.md",
+      "text_since_commit": "74eba68",
+      "sha256": "25c322eb7c15079e6195bd0a936a49fbdcdf114a7d9a4a249fc1bf2b498ab864",
+      "govhub": {
+        "ml_number": "ML-Draft-003",
+        "revision": "04",
+        "submission_id": "9e63e9fb-f10b-41f7-9fb6-d16f028727db",
+        "text_url": "https://interfacehub.net/doc/draft/9e63e9fb-f10b-41f7-9fb6-d16f028727db.txt",
+        "read_url": "https://interfacehub.net/doc/draft/9e63e9fb-f10b-41f7-9fb6-d16f028727db/read/"
+      }
+    },
+    {
+      "key": "dp13",
+      "rev": "4",
+      "label": "Revision 4",
+      "title": "DP13 – AI Containment",
+      "file": "/content/local/archive/dp13/4.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp13.md",
+      "text_since_commit": "74eba68",
+      "sha256": "d47988c6d4c26658421bd5f53b5bf0162d0215a6085198e8b8323649673f60ea",
+      "govhub": {
+        "ml_number": "ML-Draft-004",
+        "revision": "04",
+        "submission_id": "0d833de3-e4dd-4adc-bd8a-1712f932fc13",
+        "text_url": "https://interfacehub.net/doc/draft/0d833de3-e4dd-4adc-bd8a-1712f932fc13.txt",
+        "read_url": "https://interfacehub.net/doc/draft/0d833de3-e4dd-4adc-bd8a-1712f932fc13/read/"
+      }
+    },
+    {
+      "key": "dp14",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP14 – Trust and Transparency",
+      "file": "/content/local/archive/dp14/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp14.md",
+      "text_since_commit": "74eba68",
+      "sha256": "d2e66a6bcc1ea66a7c43cad3e1963b2352523f662f921b19e95501081df5ecdb",
+      "govhub": {
+        "ml_number": "ML-Draft-018",
+        "revision": "03",
+        "submission_id": "17325f92-b932-4b55-9192-27849c5af62c",
+        "text_url": "https://interfacehub.net/doc/draft/17325f92-b932-4b55-9192-27849c5af62c.txt",
+        "read_url": "https://interfacehub.net/doc/draft/17325f92-b932-4b55-9192-27849c5af62c/read/"
+      }
+    },
+    {
+      "key": "dp15",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP15 – Security and Provenance",
+      "file": "/content/local/archive/dp15/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "b608556",
+      "source_path": "desirableproperties-book/content/local/dp15.md",
+      "text_since_commit": "74eba68",
+      "sha256": "c1cb749bfab7978c8cbb48b10627d4287c46ff2e396fc3c95d32fb8332be4f1c",
+      "govhub": {
+        "ml_number": "ML-Draft-019",
+        "revision": "03",
+        "submission_id": "550a085a-982e-46e1-a910-c5121c40859e",
+        "text_url": "https://interfacehub.net/doc/draft/550a085a-982e-46e1-a910-c5121c40859e.txt",
+        "read_url": "https://interfacehub.net/doc/draft/550a085a-982e-46e1-a910-c5121c40859e/read/"
+      },
+      "note": "Revision 04 text was on the book briefly on 11–12 October 2026 (b7a5e1b, reverted by b608556); otherwise this text was live throughout."
+    },
+    {
+      "key": "dp16",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP16 – Roadmap and Milestones",
+      "file": "/content/local/archive/dp16/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp16.md",
+      "text_since_commit": "74eba68",
+      "sha256": "529a0ee7fcfa43a39183b81463b9ce481a350a99628e46ae21b4a1fe7e398ac6",
+      "govhub": {
+        "ml_number": "ML-Draft-020",
+        "revision": "03",
+        "submission_id": "9cd33c1b-83e2-4228-bd37-2c3dc38b0a7f",
+        "text_url": "https://interfacehub.net/doc/draft/9cd33c1b-83e2-4228-bd37-2c3dc38b0a7f.txt",
+        "read_url": "https://interfacehub.net/doc/draft/9cd33c1b-83e2-4228-bd37-2c3dc38b0a7f/read/"
+      }
+    },
+    {
+      "key": "dp17",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP17 – Financial Sustainability",
+      "file": "/content/local/archive/dp17/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp17.md",
+      "text_since_commit": "74eba68",
+      "sha256": "8eccd5708a563344ccd35f84c5ef73ad87483f088079b1191b45e817b672e647",
+      "govhub": {
+        "ml_number": "ML-Draft-021",
+        "revision": "03",
+        "submission_id": "67e63bc9-7999-44c8-8144-1c0e9b6826ef",
+        "text_url": "https://interfacehub.net/doc/draft/67e63bc9-7999-44c8-8144-1c0e9b6826ef.txt",
+        "read_url": "https://interfacehub.net/doc/draft/67e63bc9-7999-44c8-8144-1c0e9b6826ef/read/"
+      }
+    },
+    {
+      "key": "dp18",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP18 – Feedback Loops and Reputation",
+      "file": "/content/local/archive/dp18/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp18.md",
+      "text_since_commit": "74eba68",
+      "sha256": "abf68e90af61ebb6e2bcc745aeacd371889b8c5d034c00fea45db774fa3b5887",
+      "govhub": {
+        "ml_number": "ML-Draft-022",
+        "revision": "03",
+        "submission_id": "1f568654-aaca-4369-a991-ec513bfe7492",
+        "text_url": "https://interfacehub.net/doc/draft/1f568654-aaca-4369-a991-ec513bfe7492.txt",
+        "read_url": "https://interfacehub.net/doc/draft/1f568654-aaca-4369-a991-ec513bfe7492/read/"
+      }
+    },
+    {
+      "key": "dp19",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP19 – Amplifying Presence and Community Engagement",
+      "file": "/content/local/archive/dp19/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp19.md",
+      "text_since_commit": "74eba68",
+      "sha256": "51dfe0cc5ea119803a310d7fe8c1b200f35fdfa0f71a5f334934c69195ab3203",
+      "govhub": {
+        "ml_number": "ML-Draft-023",
+        "revision": "03",
+        "submission_id": "a393a283-9936-4ee6-8ed1-43c8ff43876a",
+        "text_url": "https://interfacehub.net/doc/draft/a393a283-9936-4ee6-8ed1-43c8ff43876a.txt",
+        "read_url": "https://interfacehub.net/doc/draft/a393a283-9936-4ee6-8ed1-43c8ff43876a/read/"
+      }
+    },
+    {
+      "key": "dp20",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP20 – Community Ownership",
+      "file": "/content/local/archive/dp20/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp20.md",
+      "text_since_commit": "74eba68",
+      "sha256": "9a558306d78bba20d03ccb69e853a8a5e59712fd6e659127a7f2a1ca168eb5ff",
+      "govhub": {
+        "ml_number": "ML-Draft-024",
+        "revision": "03",
+        "submission_id": "16c87877-b860-4f83-b9cb-39d54c8ca7d4",
+        "text_url": "https://interfacehub.net/doc/draft/16c87877-b860-4f83-b9cb-39d54c8ca7d4.txt",
+        "read_url": "https://interfacehub.net/doc/draft/16c87877-b860-4f83-b9cb-39d54c8ca7d4/read/"
+      }
+    },
+    {
+      "key": "dp21",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP21 – Multi-modal",
+      "file": "/content/local/archive/dp21/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp21.md",
+      "text_since_commit": "74eba68",
+      "sha256": "12f40549985f4903995910ef7cebe8c3cae35a2f8e58ec5e3b30ab412ea9bbb3",
+      "govhub": {
+        "ml_number": "ML-Draft-025",
+        "revision": "03",
+        "submission_id": "fb883425-70d6-4136-9e5e-bea572400bf4",
+        "text_url": "https://interfacehub.net/doc/draft/fb883425-70d6-4136-9e5e-bea572400bf4.txt",
+        "read_url": "https://interfacehub.net/doc/draft/fb883425-70d6-4136-9e5e-bea572400bf4/read/"
+      }
+    },
+    {
+      "key": "dp22",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP22 – Civic Memory & Epistemic Continuity",
+      "file": "/content/local/archive/dp22/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp22.md",
+      "text_since_commit": "74eba68",
+      "sha256": "f8ce469934f8b52ad4afed2430c37c69127def123a08ca57998b69193a3f8d45",
+      "govhub": {
+        "ml_number": "ML-Draft-028",
+        "revision": "03",
+        "submission_id": "b884d26d-663d-4e09-8f65-8403fae83bf9",
+        "text_url": "https://interfacehub.net/doc/draft/b884d26d-663d-4e09-8f65-8403fae83bf9.txt",
+        "read_url": "https://interfacehub.net/doc/draft/b884d26d-663d-4e09-8f65-8403fae83bf9/read/"
+      }
+    },
+    {
+      "key": "dp23",
+      "rev": "3",
+      "label": "Revision 3",
+      "title": "DP23 – Universal Participation & Linguistic Interoperability",
+      "file": "/content/local/archive/dp23/3.md",
+      "live_from": "2026-08-08",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/dp23.md",
+      "text_since_commit": "74eba68",
+      "sha256": "0a3080abf6e9d8219ce9c1a0fd0b5d1b5b1354c3d2862da01f234769b626a24d",
+      "govhub": {
+        "ml_number": "ML-Draft-030",
+        "revision": "03",
+        "submission_id": "8f33a7dc-7ba4-4df0-b00b-5ac1349282f3",
+        "text_url": "https://interfacehub.net/doc/draft/8f33a7dc-7ba4-4df0-b00b-5ac1349282f3.txt",
+        "read_url": "https://interfacehub.net/doc/draft/8f33a7dc-7ba4-4df0-b00b-5ac1349282f3/read/"
+      }
+    },
+    {
+      "key": "dp24",
+      "rev": "0",
+      "label": "Revision 0",
+      "title": "DP24 – Cross-Layer Resilience and Compromise Containment",
+      "file": "/content/local/archive/dp24/0.md",
+      "live_from": "2026-11-06",
+      "live_until": "2026-11-13",
+      "source_commit": "9c2a74f",
+      "source_path": "desirableproperties-book/content/local/dp24.md",
+      "text_since_commit": "182897d",
+      "sha256": "a29a84545876ee612d4542b96b9dedde85520535d5fd5573414ee858c7a290bf",
+      "govhub": {
+        "ml_number": "ML-Draft-056",
+        "revision": "00",
+        "submission_id": "31dbc0da-eafa-43f0-887d-9af6f2ef01e7",
+        "text_url": "https://interfacehub.net/doc/draft/31dbc0da-eafa-43f0-887d-9af6f2ef01e7.txt",
+        "read_url": "https://interfacehub.net/doc/draft/31dbc0da-eafa-43f0-887d-9af6f2ef01e7/read/"
+      }
+    },
+    {
+      "key": "acknowledgements",
+      "rev": "2",
+      "label": "Revision 2",
+      "title": "Acknowledgements",
+      "file": "/content/local/archive/acknowledgements/2.md",
+      "live_from": "2026-08-03",
+      "live_until": "2026-11-13",
+      "source_commit": "241e344",
+      "source_path": "desirableproperties-book/content/local/acknowledgements.md",
+      "text_since_commit": "732eaec",
+      "sha256": "279ed7dd12a2e1419ce41ceae7ceba6069273b102dcd1aff40995edce9c3eeb3",
+      "govhub": {
+        "ml_number": "ML-Draft-032",
+        "revision": "02",
+        "submission_id": "f3cbb8df-51dd-4127-b6e5-853c7a0bca95",
+        "text_url": "https://interfacehub.net/doc/draft/f3cbb8df-51dd-4127-b6e5-853c7a0bca95.txt",
+        "read_url": "https://interfacehub.net/doc/draft/f3cbb8df-51dd-4127-b6e5-853c7a0bca95/read/"
+      },
+      "note": "Gov Hub revision 03 was live on the book for part of 13 November 2026 (17eaa8b) before revision 04 (860e7a5)."
+    }
+  ]
+}
