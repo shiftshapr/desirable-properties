@@ -5,6 +5,10 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Components } from 'react-markdown';
 
+/** Chapter images use paths relative to the book site, where the files live (BRC333 book repo). */
+const BOOK_ORIGIN = 'https://book.desirableproperties.org';
+const bookAsset = (src: string) => (src.startsWith('/') && !src.startsWith('//') ? `${BOOK_ORIGIN}${src}` : src);
+
 const MD: Components = {
   h1: ({ children }) => <h1 className="mb-4 mt-2 text-2xl font-semibold text-white">{children}</h1>,
   h2: ({ children }) => <h2 className="mb-3 mt-8 text-xl font-semibold text-white">{children}</h2>,
@@ -31,7 +35,8 @@ const MD: Components = {
   th: ({ children }) => <th className="border border-slate-700 px-2 py-1 text-left font-semibold">{children}</th>,
   td: ({ children }) => <td className="border border-slate-700 px-2 py-1 align-top">{children}</td>,
   code: ({ children }) => <code className="rounded bg-slate-800 px-1 text-sm">{children}</code>,
-  img: ({ src, alt }) => (typeof src === 'string' ? <img src={src} alt={alt || ''} className="my-4 max-w-full rounded" /> : null),
+  img: ({ src, alt }) =>
+    typeof src === 'string' ? <img src={bookAsset(src)} alt={alt || ''} className="my-4 max-w-full rounded" /> : null,
 };
 
 /**
