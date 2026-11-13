@@ -54,9 +54,19 @@ export async function GET() {
   const session = await readSession();
   if (!session?.userId) return Response.json({ error: 'Sign in required', code: 'sign_in' }, { status: 401 });
   const [rows, analyses] = await Promise.all([loadProposals(), session.idToken ? loadAnalyses(session.idToken) : Promise.resolve({})]);
-  const proposals = rows.map((p) => {
+  // A proposal accepted with revisions is filed again as a revised copy (revised_from_id) and the original
+  // is marked considered: list the idea once, as the revised copy, with the original's author and source.
+  const byId = new Map(rows.map((p) => [s(p.id), p]));
+  const superseded = new Set(rows.map((p) => s(p.revised_from_id)).filter((id) => id && byId.has(id)));
+  const root = (p: Raw): Raw => {
+    let r = p;
+    for (let i = 0; i < 10 && byId.has(s(r.revised_from_id)); i += 1) r = byId.get(s(r.revised_from_id)) as Raw;
+    return r;
+  };
+  const proposals = rows.filter((p) => !superseded.has(s(p.id))).map((p) => {
     const a = (analyses as Record<string, Raw>)[s(p.id)];
-    const channel = s(p.source_channel);
+    const origin = root(p);
+    const channel = s(origin.source_channel);
     return {
       id: s(p.id),
       docKey: s(p.doc_key),
@@ -67,7 +77,8 @@ export async function GET() {
       coEditor: s(p.reviewed_by_name) || null,
       createdAt: s(p.created_at) || null,
       reviewedAt: s(p.reviewed_at) || null,
-      source: channel === 'steering-repair' ? 'repair' : p.agent_assisted ? 'agent' : 'community',
+      source: channel === 'steering-repair' ? 'repair' : origin.agent_assisted ? 'agent' : 'community',
+      revised: origin !== p,
       rationale: s(p.rationale),
       reviewNote: s(p.review_note) || null,
       section: s((p.context_anchor as Raw | null)?.section) || null,

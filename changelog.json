@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "proposals-no-double-count",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals: each idea counted once",
+      "summary": "When a proposal was accepted with revisions, Gov Hub filed the revised wording as a new proposal and marked the original considered, so 152 ideas were counted twice. The Proposals tab now lists each once, as its revised wording marked 'accepted with revisions': 1,635 proposals, 355 from the community. The press release figures are corrected to match.",
+      "changes": [
+        "Proposals tab folds superseded originals into their revised copy",
+        "Press release: 1,635 proposals, 355 from the community"
+      ]
+    },
+    {
       "id": "v1-launch-liveday-2026-11-13",
       "date": "2026-11-13",
       "status": "open",
