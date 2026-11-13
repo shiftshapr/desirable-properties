@@ -7,6 +7,7 @@ import WorkgroupActivityFeed from '@/components/workgroup/WorkgroupActivityFeed'
 import WorkgroupCanopiStrip from '@/components/workgroup/WorkgroupCanopiStrip';
 import { NOMINATE_CO_EDITOR_EVENT } from '@/components/workgroup/WorkgroupCoEditorsPanel';
 import { shortDate, STALE_PROPOSAL_DAYS } from '@/data/dp-process';
+import { useV1Phase } from '@/components/v1/V1PhaseText';
 import type { ActivityFeedItem } from '@/lib/activity-feed';
 import { bookDiscussHref, bookIntroDiscussHref, isDpDiscoveryWorkgroup } from '@/lib/govhub';
 import type { CoEditorSeatsResponse } from '@/lib/workgroup-collab-api';
@@ -79,6 +80,7 @@ export default function WorkgroupNextSteps({
   onSelectTab,
 }: Props) {
   const isDiscovery = isDpDiscoveryWorkgroup(workgroupSlug);
+  const v1Phase = useV1Phase();
   const hasSeats = Boolean(seats?.enabled) && !isDiscovery;
   const [review, setReview] = useState<ReviewQueueResponse | null>(null);
 
@@ -120,7 +122,9 @@ export default function WorkgroupNextSteps({
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-300">
           {isDiscovery
             ? 'DP Discovery looks for properties the current 23 may have missed. Propose one on the book, and discuss it with the group in Chat.'
-            : `This workgroup takes ${dp} from the Community Review Draft to Version 1.0. Anyone can propose a change; the two co-editors decide which go in.`}
+            : v1Phase === 'before'
+              ? `This workgroup takes ${dp} from the Community Review Draft to Version 1.0. Anyone can propose a change; the two co-editors decide which go in.`
+              : `Version 1.0 is finished. This workgroup now shapes ${dp} for Version 1.1. Anyone can propose a change; the co-editors decide which go in.`}
         </p>
       </div>
 

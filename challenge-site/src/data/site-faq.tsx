@@ -149,8 +149,11 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               they must be built.
             </p>
             <p>
-              The current working draft lists 24 canonical DPs. The set is not
-              assumed complete.{' '}
+              <V1PhaseText
+                before="The current working draft lists 24 canonical DPs."
+                during="Version 1.0 publishes 24 canonical DPs."
+              />{' '}
+              The set is not assumed complete.{' '}
               <Link href="/#dps">Browse the DPs</Link>.
             </p>
           </>
@@ -169,8 +172,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               Multiple implementations, governance models, and technical approaches can coexist while
               remaining aligned around shared outcomes. See{' '}
               <Link href="/start-here">Start Here</Link> and the{' '}
-              <Link href="/challenge">Challenge timeline</Link> for how Version 1.0 becomes the
-              foundation for substrate work.
+              <Link href="/challenge">Challenge timeline</Link> for how Version 1.0{' '}
+              <V1PhaseText before="becomes" during="is now" /> the foundation for substrate work.
             </p>
           </>
         ),
@@ -180,21 +183,32 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              <strong className="font-semibold text-white">Version 0.77</strong> is the open
-              working draft – developed through AI-assisted synthesis, two Calls for Input, and
-              community stewardship.
+              <strong className="font-semibold text-white">Version 0.77</strong>{' '}
+              <V1PhaseText before="is the open working draft" during="was the open working draft" /> –
+              developed through AI-assisted synthesis, two Calls for Input, and community
+              stewardship.
             </p>
             <p>
               <strong className="font-semibold text-white">Version 1.0</strong> is the
               community-synthesized foundation.{' '}
               <V1PhaseText
                 before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
-                during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
-                after="Version 1.0 is live."
+                during="Version 1.0 is live. The launch gathering is on now, 10–11 AM PT."
+                after="Version 1.0 is finished and was published on November 13, 2026, after 1,635 proposals were decided."
               />{' '}
               September 16, 2026 was the Community Review Draft milestone and governance
               feedback workflow demonstration.
             </p>
+            <V1PhaseText
+              before={null}
+              during={
+                <p>
+                  <strong className="font-semibold text-white">Version 1.1</strong> comes next: an
+                  open revision that picks up the MTPs, glossaries, and everything deferred from
+                  1.0. Version 1.2 adds images. <Link href="/participate">How to contribute →</Link>
+                </p>
+              }
+            />
           </>
         ),
       },
@@ -248,7 +262,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
                 <Link href="/#dps">homepage grid</Link>.
               </li>
               <li>
-                If you will help take that DP to Version 1.0, open its{' '}
+                If you will help <V1PhaseText before="take that DP to Version 1.0" during="shape that DP for Version 1.1" />, open its{' '}
                 <strong className="font-semibold text-white">Collaborate</strong> page from{' '}
                 <Link href={WORKGROUPS_LIST_HREF}>Workgroups</Link> (Astra, Review, Canopi). Groups
                 need at least three people.
@@ -285,8 +299,11 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
                 <strong className="font-semibold text-white">Collaborate page</strong> (ongoing) –
                 join a DP workgroup workspace. Astra, Review (promote, then publish), and Canopi
                 (post, comment, review, like). Propose passage changes on book Discuss
-                (PATCH/INSERT) or Gov Hub drafts. Target:
-                Version 1.0 on November 13, 2026.{' '}
+                (PATCH/INSERT) or Gov Hub drafts.{' '}
+                <V1PhaseText
+                  before="Target: Version 1.0 on November 13, 2026."
+                  during="Version 1.0 is finished; workgroups now shape Version 1.1."
+                />{' '}
                 <Link href={WORKGROUPS_LIST_HREF}>Browse Collaborate pages →</Link>
               </li>
               <li>
@@ -392,7 +409,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              Two coordinated Calls for Input shaped the current draft–first through People
+              Two coordinated Calls for Input shaped{' '}
+              <V1PhaseText before="the current draft" during="Version 1.0" />–first through People
               Centered Internet, Bridgit.io, and aligned partners; then through a broader public
               call whose submissions were preserved as Bitcoin Ordinal inscriptions.
             </p>
@@ -456,14 +474,17 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <em>{DESIRABLE_PROPERTIES_BOOK_TITLE}</em> is the formal title of the Desirable
-              Properties book–a working draft published as ML-Drafts and evolving through community
-              Discuss, Patch, Insert, and Gov Hub revisions.
+              Properties book–
+              <V1PhaseText
+                before="a working draft published as ML-Drafts and evolving through community Discuss, Patch, Insert, and Gov Hub revisions."
+                during="Version 1.0 is published as ML-Drafts, as a PDF, and online, and it keeps evolving toward Version 1.1 through community Discuss, Patch, Insert, and Gov Hub revisions."
+              />
             </p>
             <p>
               <V1PhaseText
                 before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with a permanent Ordinal edition as part of the Digital Monument."
-                during="Version 1.0 is live, with a permanent Ordinal edition as part of the Digital Monument. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
-                after="Version 1.0 is live, with a permanent Ordinal edition as part of the Digital Monument."
+                during="Version 1.0 is live, with a permanent Ordinal edition as part of the Digital Monument. The launch gathering is on now, 10–11 AM PT."
+                after="Version 1.0 is finished, with a permanent Ordinal edition as part of the Digital Monument. Version 1.1 is the next open revision."
               />{' '}
               September 16, 2026 was the Community Review Draft milestone. <Link href="/onchain">Browse on-chain →</Link>
             </p>
@@ -539,8 +560,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               the Community Review Draft milestone.{' '}
               <V1PhaseText
                 before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
-                during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
-                after="Version 1.0 is live."
+                during="Version 1.0 is live. The launch gathering is on now, 10–11 AM PT."
+                after="Version 1.0 is finished and published. Proposals toward Version 1.1 are open on the book and on Gov Hub."
               />
             </p>
           </>
@@ -553,8 +574,8 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               <V1PhaseText
                 before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with Digital Monument publication."
-                during="Version 1.0 is live, with Digital Monument publication. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
-                after="Version 1.0 is live, with Digital Monument publication. It was released on Friday, November 13, 2026."
+                during="Version 1.0 is live, with Digital Monument publication. The launch gathering is on now, 10–11 AM PT."
+                after="Version 1.0 is finished, with Digital Monument publication. It was released on Friday, November 13, 2026. Version 1.1, an open revision, comes next."
               />{' '}
               September 16, 2026 was the public Community Review Draft milestone and
               governance feedback workflow demonstration.
@@ -604,7 +625,7 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               A Desirable Properties workgroup is a focused team that stewards one DP (or DP
-              Discovery) toward Version 1.0. The live workspace is the{' '}
+              Discovery) <V1PhaseText before="toward Version 1.0" during="toward Version 1.1" />. The live workspace is the{' '}
               <strong className="font-semibold text-white">Collaborate</strong> page: Astra
               (editorial synthesis), Review (promote, then publish), and Canopi (post, comment, review,
               like). Passage changes go on book Discuss (PATCH/INSERT) or Gov Hub drafts. Groups
@@ -637,9 +658,11 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
           <>
             <p>
               <strong className="font-semibold text-white">Join</strong> when you want to contribute
-              as a member–reviewing, discussing, drafting, and proposing patches. Members can also
-              claim one of the DP&apos;s two co-editor seats; co-editors decide which proposals go
-              into V1, and both approve a change before it goes in.
+              as a member–reviewing, discussing, drafting, and proposing patches.{' '}
+              <V1PhaseText
+                before="Members can also claim one of the DP's two co-editor seats; co-editors decide which proposals go into V1, and both approve a change before it goes in."
+                during="Members can also claim one of the DP's co-editor seats. Each DP has up to three co-editors, and any two of them can approve a proposal."
+              />
             </p>
             <p>
               <strong className="font-semibold text-white">Nominate</strong> when you want to put

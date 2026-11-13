@@ -46,12 +46,28 @@ export default function ProcessPage() {
         <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">How Version 1.0 gets made</h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-300">
           <V1PhaseText
-            before="Every DP workgroup takes its chapter from the open working draft (Version 0.77) to Version 1.0. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
-            during="Every DP workgroup takes its chapter from the open working draft through Version 1.0. Version 1.0 is live."
-          />{' '}
-          The editorial freeze was Monday, November 9, at 1 p.m. PT. This page is the guide for the weeks in between: the principles
-          that decide close calls, the route a change takes, who decides, what members can do each
-          week, and the checklist every chapter is reviewed against.
+            before={
+              <>
+                Every DP workgroup takes its chapter from the open working draft (Version 0.77) to Version 1.0. V1.0
+                releases Friday, November 13, 2026, 10–11 AM PT. The editorial freeze was Monday, November 9, at 1 p.m.
+                PT. This page is the guide for the weeks in between: the principles that decide close calls, the route a
+                change takes, who decides, what members can do each week, and the checklist every chapter is reviewed
+                against.
+              </>
+            }
+            during={
+              <>
+                Version 1.0 is finished. Every DP workgroup took its chapter from the open working draft to Version 1.0,
+                with an editorial freeze on Monday, November 9. This page records how that worked: the principles that
+                decided close calls, the route a change took, who decided, and the checklist every chapter was reviewed
+                against. Version 1.1 is the next open revision; see{' '}
+                <Link href="/participate" className="text-cyan-300 hover:text-cyan-200">
+                  how to contribute
+                </Link>
+                .
+              </>
+            }
+          />
         </p>
         <p className="mt-4 max-w-3xl rounded-lg border border-cyan-900/60 bg-cyan-950/20 px-4 py-3 text-sm text-slate-300">
           <strong className="font-semibold text-cyan-200">Rules last updated {shortDate(RULES_UPDATED.date)}.</strong>{' '}
@@ -115,9 +131,22 @@ export default function ProcessPage() {
           ))}
         </ol>
         <p className="mt-4 text-sm text-slate-400">
-          Proposed cut-off for new proposals entering Version 1.0:{' '}
-          <strong className="text-slate-200">{shortDate(PROPOSAL_CUTOFF_DATE)}</strong> (Bring the Chapters
-          Together). Items marked <em>proposed</em> are confirmed at the next Monday session.
+          <V1PhaseText
+            before={
+              <>
+                Proposed cut-off for new proposals entering Version 1.0:{' '}
+                <strong className="text-slate-200">{shortDate(PROPOSAL_CUTOFF_DATE)}</strong> (Bring the Chapters
+                Together). Items marked <em>proposed</em> are confirmed at the next Monday session.
+              </>
+            }
+            during={
+              <>
+                The cut-off for new proposals entering Version 1.0 was{' '}
+                <strong className="text-slate-200">{shortDate(PROPOSAL_CUTOFF_DATE)}</strong>. Proposals made now
+                count toward Version 1.1.
+              </>
+            }
+          />
         </p>
         <div className="mt-5 flex flex-wrap gap-3 text-sm">
           <a

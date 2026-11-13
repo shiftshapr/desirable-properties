@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-finished-wording",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Site wording for a finished Version 1.0",
+      "summary": "After the launch, /participate and other pages say Version 1.0 is finished and point to Version 1.1: read and discuss, propose changes, join a workgroup or take a co-editor seat (up to three per DP; any two approve), or join the V1.1 steering committee. Pre-launch wording is unchanged until 10am PT.",
+      "changes": [
+        "/participate: rewritten for after the launch, four ways to contribute toward Version 1.1",
+        "FAQ, Start Here, Challenge, Workgroups, Process, Readiness, Roundups, Launch briefing, landing pads: in-progress V1 wording switches at launch and points to Version 1.1",
+        "Workgroup next steps and roster nudge: say Version 1.1 after the launch"
+      ]
+    },
+    {
       "id": "v1-report-page",
       "date": "2026-11-13",
       "status": "open",

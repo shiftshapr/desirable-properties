@@ -1,4 +1,5 @@
 import { CO_EDITORS_PER_DP } from '@/data/dp-process';
+import { v1Phase } from '@/lib/dp-v1-phase';
 
 /**
  * Co-editor line for a workgroup card. Only co-editor seats are shown; member counts are
@@ -20,7 +21,10 @@ export function workgroupStaffing({ coEditors }: { coEditors: number | null }): 
     return {
       kind: 'recruit',
       title: `Co-editors: ${coEditors} of ${CO_EDITORS_PER_DP} · ${open} open seat${open === 1 ? '' : 's'}`,
-      message: 'Co-editors decide which proposals go into Version 1.0; any member can step up.',
+      message:
+        v1Phase() === 'before'
+          ? 'Co-editors decide which proposals go into Version 1.0; any member can step up.'
+          : 'Co-editors decide which proposals go into Version 1.1; any member can step up.',
     };
   }
   return {
