@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "stages": {
     "stage-1": {
       "analysis": "run-002 and run-002-intro (Fable 5.2, verified)",
@@ -39,15 +39,19 @@
       ]
     },
     "final": {
-      "analysis": "Final read of each document's finished text, then re-checks of changed documents until a check finds nothing",
-      "itemsIn": "Each document's finished text",
-      "findings": "",
-      "fixes": "",
-      "decisions": "Fixes and choices two members each; two sign-offs per document",
+      "analysis": "8 rounds: run-005 final read (8 analysts, 4 verifiers), re-checks run-006 to run-010 (2 to 5 analysts each), steward checks of single changes",
+      "itemsIn": "Each document's finished text (28 documents)",
+      "findings": "Round 1: 77, including 54 Stage 2/3 decisions recorded but never drafted, 14 new problems and 11 new choices. Later rounds: 7.",
+      "fixes": "906 applied: 583 in round 1, 302 carrying out round 1 choices, 21 from re-checks",
+      "decisions": "11, settled with one vote (Stage 4 rule); 28 documents signed off",
       "notes": [
-        "Round 1 reads every document; clean documents go straight to sign-off.",
-        "Documents whose findings were fixed are re-checked in later rounds until a round finds nothing.",
-        "A sign-off is tied to the exact text; any later change voids it."
+        "Round 1 found that Stage 3 had recorded steering's 48 decisions without drafting the edits they called for; 542 such edits were applied at once, with no second vote.",
+        "One vote carries a fix or settles a choice in Stage 4; each document's sign-off still needs two members.",
+        "Two sets of Stage 3 choices contradicted each other (citation form, quote marks); steering re-decided them: 'Section N' everywhere, straight quotes except the Introduction.",
+        "Re-checks read only the documents that changed, until every document came back clean (round 6, 20 of 20).",
+        "Acknowledgements Contributors regenerated: 69 entries, real names, both Calls for Input.",
+        "Seven documents (DP1, DP8, DP12, DP14, DP23, DP24, Cover) closed on one sign-off under an exception Daveed Benjamin recorded: Phahsa Ras approved them, but the sign-offs did not register because the list re-sorted while signing (fixed).",
+        "Closed 13 Nov 2026, Version 1.0 final."
       ]
     }
   }
