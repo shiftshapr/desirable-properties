@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-stage4-final-read",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: Stage 4 is the Final read",
+      "summary": "The last stage now reads each document's finished text once more before sign-off. Clean documents go straight to sign-off; anything found is settled in bundles (two members per fix or choice), and changed documents are re-checked round after round until a check finds nothing. Each document is then signed off by two members on its exact text.",
+      "changes": [
+        "Stage 4 tab: the rounds so far, every document's status (findings to settle, needs a re-check, not read, ready to sign, signed off), a link to its full text and to sign off",
+        "Findings from every round appear in bundles, labelled by round",
+        "Sign-off is available only once a document's latest check matches its current text and nothing is open"
+      ]
+    },
+    {
       "id": "steering-decision-carries-fixes",
       "date": "2026-11-13",
       "status": "open",

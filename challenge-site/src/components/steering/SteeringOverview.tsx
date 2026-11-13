@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import FinalReadPanel from '@/components/steering/FinalReadPanel';
 import SteeringIssues from '@/components/steering/SteeringIssues';
 import StageLedger from '@/components/steering/StageLedger';
 import { useCallback, useEffect, useState } from 'react';
@@ -187,8 +188,10 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
   // A review stage is worked in bundles (its analysis's findings by kind of fix), not chapter by chapter:
   // open for steering members, read-only once closed for anyone signed in.
   const issuesTab = Boolean(
-    current?.kind === 'review' && (current.status === 'open' ? steering : current.status === 'closed' && signedIn),
+    (current?.kind === 'review' || current?.kind === 'signoff') &&
+      (current.status === 'open' ? steering : current.status === 'closed' && signedIn),
   );
+  const finalOpen = current?.kind === 'signoff' && current.status === 'open' && !closedKey;
   const refreshStages = async (key: string) => {
     const list = await loadStages();
     setLoadedKey(null);
@@ -283,7 +286,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
             </p>
           ) : null}
           {reviewOpen && !closedKey && !issuesTab ? <CarriedTotals rows={shownRows} stage={reviewOpen} /> : null}
-          {current?.status === 'open' && current.kind === 'signoff' ? (
+          {current?.status === 'open' && current.kind === 'signoff' && !finalOpen ? (
             <p className="text-sm text-slate-300">
               {shownRows.filter((r) => r.signoff?.signed).length} of {shownRows.filter((r) => r.listed).length} documents
               signed off by two steering members.
@@ -308,6 +311,8 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
           {issuesTab ? (
             <>
               <SteeringIssues embedded stageKey={current?.key} />
+              {finalOpen ? <FinalReadPanel rows={shownRows} rounds={meta?.finalRounds || null} steering={steering} /> : null}
+              {finalOpen ? null : (
               <p className="text-sm text-slate-400">
                 {current?.status === 'open'
                   ? `Accepted changes carried into ${current.title} need no vote unless a bundle flags them: any not reviewed are kept when it closes. `
@@ -316,6 +321,7 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
                   {byChapter ? 'Hide the chapters' : 'Show carried items by chapter'}
                 </button>
               </p>
+              )}
             </>
           ) : null}
           {!issuesTab || byChapter ? (
@@ -568,7 +574,7 @@ function CloseStage({
               onClick={() => void close()}
               className="rounded-lg bg-rose-700 px-4 py-2 font-medium text-white hover:bg-rose-600 disabled:opacity-50"
             >
-              {busy ? 'Closing…' : final ? 'Close Final' : nextIsOpen ? `Close ${stage.title}` : `Close ${stage.title} and open ${stage.nextTitle || 'the next stage'}`}
+              {busy ? 'Closing…' : final ? `Close ${stage.title}` : nextIsOpen ? `Close ${stage.title}` : `Close ${stage.title} and open ${stage.nextTitle || 'the next stage'}`}
             </button>
             <button type="button" disabled={busy} onClick={() => setConfirming(false)} className="px-3 py-2 text-slate-400 hover:text-slate-200">
               Cancel
