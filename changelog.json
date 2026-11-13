@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-report-page",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "/v1 redesigned as a report launch page",
+      "summary": "/v1 now opens like a major report launch: the book large, Download the report, Read online and Share up front, and text on what the book is, where it fits in the DP-to-substrate circuit, and that it is a living book preserved on Bitcoin. Below: the numbers, the roadmap from properties to the Overweb, the living-book links, Ask Deepi and the videos.",
+      "changes": [
+        "/v1: report-launch hero with share menu",
+        "/v1: numbers, where it fits, a living book"
+      ]
+    },
+    {
       "id": "pdf-v1-ack-roadmap",
       "date": "2026-11-13",
       "status": "open",
