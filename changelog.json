@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "roadmap-crisp-text",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "About roadmap image: sharp lettering",
+      "summary": "The 'We are here to define the next level of the internet' lettering and the arrow are redrawn at full resolution (image now 2048 px wide), replacing the blurry text from the original JPEG.",
+      "changes": [
+        "About roadmap image: text and arrow redrawn, 2048 px"
+      ]
+    },
+    {
       "id": "nav-v1-press-steering",
       "date": "2026-11-13",
       "status": "open",
