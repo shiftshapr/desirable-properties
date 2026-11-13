@@ -7,6 +7,7 @@ import LayerHero from '@/components/LayerHero';
 import StartHereHomePanel from '@/components/StartHereHomePanel';
 import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import V1BookPanel from '@/components/V1BookPanel';
+import NorthStarServicesPanel from '@/components/NorthStarServicesPanel';
 import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
@@ -63,6 +64,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <NorthStarServicesPanel />
 
         <StartHereHomePanel />
 
