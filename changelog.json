@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-import-upload",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: import an analysis run from the steering page",
+      "summary": "Steering members can now import an analysis run from the open stage's tab: choose the run.json, check it with a dry run that writes nothing, then press Apply. No more shell pastes on the production server.",
+      "changes": [
+        "Import box on open review stages and Stage 4",
+        "Dry-run report: fixes, analyses, batches, findings, documents checked, anything skipped",
+        "Bundles refresh after an import"
+      ]
+    },
+    {
       "id": "steering-stage4-final-read",
       "date": "2026-11-13",
       "status": "open",
