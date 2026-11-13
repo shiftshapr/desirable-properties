@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-proposals-tab",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: a Proposals tab to search every DP proposal",
+      "summary": "The steering page has a Proposals tab, next to Ledger, listing every proposal on the 24 DPs and the front matter. Search filters as you type (text, rationale, analysis, section, names). Filters cover document, contributor, status, co-editor, source (community, Metaweb Academy repair, agent-assisted) and the generated analysis. Results show 10, 25 or 50 at a time, 10 by default.",
+      "changes": [
+        "Proposals tab on /steering (?stage=proposals)",
+        "Search as you type plus six filters",
+        "10, 25 or 50 per page, with paging",
+        "Each proposal shows its change, co-editor and generated analysis (analysis visible to steering members)"
+      ]
+    },
+    {
       "id": "steering-stage4-stable-order",
       "date": "2026-11-13",
       "status": "open",
