@@ -24,6 +24,7 @@ import { fetchReadinessBoard } from '@/lib/v1-readiness.server';
 import { openProposalCountsByDp } from '@/lib/open-proposals.server';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import type { Metadata } from 'next';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const revalidate = 300;
 export const dynamic = 'force-dynamic';
@@ -31,7 +32,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Join a DP Workgroup · Desirable Properties Challenge',
   description:
-    'Browse the 24 Desirable Property workgroups plus DP Discovery. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. We want at least 3 people in every workgroup.',
+    'Browse the 24 Desirable Property workgroups plus DP Discovery. Version 1.0: Friday, November 13, 2026. We want at least 3 people in every workgroup.',
 };
 
 const DP_DISCOVERY_FALLBACK_DESCRIPTION =
@@ -177,8 +178,9 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">
             Each of the 24 Desirable Properties is stewarded by a dedicated workgroup, plus DP
             Discovery for gaps the current set may have missed. Help take the Community Review Draft
-            to Version 1.0. V1.0 releases Friday, November 13, 2026, 10–11 AM PT. Each DP needs two
-            co-editors, who decide which proposals go in. If a group has an open seat, join it and
+            to Version 1.0.{' '}
+            <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />{' '}
+            Each DP needs two co-editors, who decide which proposals go in. If a group has an open seat, join it and
             become a co-editor.
           </p>
           <p className="mt-6 rounded-lg border border-slate-700/80 bg-slate-950/40 px-4 py-3 text-sm text-slate-300">

@@ -14,6 +14,7 @@ import { resolveNamedTabTarget } from '@/lib/named-tab';
 import { WORKGROUPS_JOIN_HREF, WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 function PageLink({
   href,
@@ -165,9 +166,12 @@ const CONTRIBUTE_CARDS = [
           process.
         </p>
         <p className="mt-4">
-          Workgroup synthesis continues through the Version 1.0 release. V1.0 releases Friday,
-          November 13, 2026, 10–11 AM PT. If you&apos;d like to help architect the future
-          Meta-Layer, this is where you&apos;ll have the greatest impact.
+          <V1PhaseText
+            before="Workgroup synthesis continues through the Version 1.0 release. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+            during="Version 1.0 is live, and workgroup synthesis continues."
+          />{' '}
+          If you&apos;d like to help architect the future Meta-Layer, this is where you&apos;ll have
+          the greatest impact.
         </p>
       </>
     ),

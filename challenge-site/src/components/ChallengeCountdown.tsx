@@ -5,6 +5,7 @@ import {
 } from '@/lib/challengeTimeline';
 import { useChallengeCountdown } from '@/hooks/useChallengeCountdown';
 import { DP_V1_LAUNCH_START } from '@/lib/dp-roundups';
+import { useV1Phase } from '@/components/v1/V1PhaseText';
 
 type Props = {
   /** ISO string from server render so first paint matches */
@@ -14,15 +15,18 @@ type Props = {
 export default function ChallengeCountdown({ initialNow }: Props) {
   const parts = useChallengeCountdown(initialNow, 1000);
   const milestone = parts ? getCountdownMilestone(new Date()) : null;
+  const phase = useV1Phase();
 
   if (!parts || !milestone) {
     return (
       <div className="rounded-xl border border-violet-800/50 bg-violet-950/30 p-6 text-center">
         <p className="text-lg font-semibold text-violet-200">
-          Desirable Properties milestones are live
+          {phase === 'before' ? 'Desirable Properties milestones are live' : 'Version 1.0 is live.'}
         </p>
         <p className="mt-2 text-sm text-slate-400">
-          Explore the Community Review Draft and Version 1.0 release below.
+          {phase === 'during'
+            ? 'The launch gathering is Friday, November 13, 2026, 10–11 AM PT, live on Zoom.'
+            : 'Explore the Community Review Draft and Version 1.0 release below.'}
         </p>
       </div>
     );

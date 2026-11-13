@@ -20,11 +20,12 @@ import {
   govhubUrl,
 } from '@/lib/govhub';
 import { readSessionMemberWorkgroupIds } from '@/lib/workgroup-membership.server';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const metadata = {
   title: 'The Challenge – Desirable Properties',
   description:
-    'Timeline, milestones, and participation guide for the Desirable Properties Challenge. V1.0 releases Friday, November 13, 2026, 10–11 AM PT.',
+    'Timeline, milestones, and participation guide for the Desirable Properties Challenge. Version 1.0: Friday, November 13, 2026.',
 };
 
 export const revalidate = 300;
@@ -105,8 +106,12 @@ export default async function ChallengePage() {
         <section>
           <ChallengeCountdown initialNow={now.toISOString()} />
           <p className="mt-4 text-center text-sm text-slate-400">
-            September 16, 2026 was the Community Review Draft milestone and governance demo. V1.0
-            releases Friday, November 13, 2026, 10–11 AM PT.{' '}
+            September 16, 2026 was the Community Review Draft milestone and governance demo.{' '}
+            <V1PhaseText
+              before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+              during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
+              after="Version 1.0 is live."
+            />{' '}
             <Link
               href="/challenge#timeline"
               className="font-medium text-cyan-300 hover:text-cyan-200"

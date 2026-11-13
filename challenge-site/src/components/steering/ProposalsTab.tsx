@@ -13,6 +13,8 @@ type Proposal = {
   createdAt: string | null;
   reviewedAt: string | null;
   source: 'community' | 'repair' | 'agent';
+  /** Accepted with revisions: this is the revised wording; the original is folded into it. */
+  revised: boolean;
   rationale: string;
   reviewNote: string | null;
   section: string | null;
@@ -141,7 +143,8 @@ export default function ProposalsTab() {
         <h2 className="text-xl font-semibold text-white">Proposals</h2>
         <p className="mt-1 max-w-3xl text-sm text-slate-300">
           Every proposal on the 24 DPs and the front matter: community contributions, Metaweb Academy repairs and
-          agent-assisted ones, with the co-editor who decided each and the generated analysis where one exists.
+          agent-assisted ones, with the co-editor who decided each and the generated analysis where one exists. A
+          proposal accepted with revisions is listed once, as its revised wording.
         </p>
       </div>
 
@@ -232,6 +235,7 @@ export default function ProposalsTab() {
               <p className="mt-1 text-xs text-slate-400">
                 {p.author} · {SOURCE_LABEL[p.source]}
                 {p.coEditor ? ` · decided by ${p.coEditor}` : ''}
+                {p.revised ? ' · accepted with revisions' : ''}
               </p>
               {p.rationale ? <p className="mt-2 whitespace-pre-line text-slate-200">{expanded ? p.rationale : p.rationale.slice(0, 280) + (p.rationale.length > 280 ? '…' : '')}</p> : null}
               {p.analysis ? (

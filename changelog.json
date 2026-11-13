@@ -4,6 +4,61 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "about-roadmap-arrow",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "About: roadmap arrow points at the Desirable Properties Challenge",
+      "summary": "The 'We are here' arrow in the About roadmap image pointed between the first two boxes. It now points to the middle of the Desirable Properties Challenge box, and the broken top borders of the other three boxes are completed.",
+      "changes": [
+        "About roadmap image: arrow redrawn; box borders fixed"
+      ]
+    },
+    {
+      "id": "estate-v1-panel-north-star",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 panel for estate sites; collective north star panel",
+      "summary": "A shared Version 1.0 launch panel at /estate/v1-launch-panel.js that any estate site places with one tag; it switches before, during and after the launch on the clock. The home page gains a panel offering the Desirable Properties method and tooling to groups in any field.",
+      "changes": [
+        "/estate/v1-launch-panel.js: before, live and after launch panel for estate sites",
+        "Home: 'Find your group's collective north star' panel below Version 1.0"
+      ]
+    },
+    {
+      "id": "v1-hero-phase",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 panel follows the launch clock",
+      "summary": "The Version 1.0 panel on the home page and /v1 now switches on the clock without a reload, and follows the staging ?v1phase= preview. From 11am PT it reads 'released November 13, 2026' and no longer offers to join the launch.",
+      "changes": [
+        "Home and /v1 Version 1.0 panel: before, during and after wording",
+        "No launch registration after 10am PT"
+      ]
+    },
+    {
+      "id": "proposals-no-double-count",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Proposals: each idea counted once",
+      "summary": "When a proposal was accepted with revisions, Gov Hub filed the revised wording as a new proposal and marked the original considered, so 152 ideas were counted twice. The Proposals tab now lists each once, as its revised wording marked 'accepted with revisions': 1,635 proposals, 355 from the community. The press release figures are corrected to match.",
+      "changes": [
+        "Proposals tab folds superseded originals into their revised copy",
+        "Press release: 1,635 proposals, 355 from the community"
+      ]
+    },
+    {
+      "id": "v1-launch-liveday-2026-11-13",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 is live (wording switches itself)",
+      "summary": "BillD's launch-day wording (PR 169), reworked so it switches by itself: release wording until 10am PT, 'Version 1.0 is live' plus the launch gathering from 10 to 11am, and 'Version 1.0 is live' after 11am. The book panel keeps its links to read online and download the PDF. On staging, ?v1phase=before|during|after previews each state.",
+      "changes": [
+        "V1PhaseText switch and useV1Phase hook",
+        "Home, Challenge, Participate, Process, Workgroups, Start Here, Launch briefing, V1 readiness, Roundups, FAQ, onboarding pads, countdown and book front page",
+        "Page descriptions use neutral wording (Version 1.0: Friday, November 13, 2026)"
+      ]
+    },
+    {
       "id": "v1-pdf-final",
       "date": "2026-11-13",
       "status": "open",

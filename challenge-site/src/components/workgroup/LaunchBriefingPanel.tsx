@@ -3,6 +3,7 @@ import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { CHALLENGE_KEY_DATES } from '@/lib/dp-welcome-content.generated';
 import { challengeMeta } from '@/lib/challengeTimeline';
 import { bookDiscussHref } from '@/lib/govhub';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 type Props = {
   workgroupSlug?: string | null;
@@ -72,7 +73,7 @@ export default function LaunchBriefingPanel({ workgroupSlug, workgroupName }: Pr
             <strong className="font-semibold text-white">
               Not Desirable Properties Version {challengeMeta.target_version}
             </strong>{' '}
-            – V1.0 releases Friday, November 13, 2026, 10–11 AM PT.
+            – <V1PhaseText before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT." during="Version 1.0 is live." />
           </li>
           <li>
             <strong className="font-semibold text-white">Not every valid proposal integrated</strong>{' '}

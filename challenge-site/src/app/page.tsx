@@ -7,6 +7,7 @@ import LayerHero from '@/components/LayerHero';
 import StartHereHomePanel from '@/components/StartHereHomePanel';
 import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import V1BookPanel from '@/components/V1BookPanel';
+import NorthStarServicesPanel from '@/components/NorthStarServicesPanel';
 import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
@@ -18,6 +19,7 @@ import {
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import localData from '../data/desirable-properties.json';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const revalidate = 0;
 
@@ -48,7 +50,7 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        <V1BookPanel now={now} />
+        <V1BookPanel />
 
         {/* The Layered Web videos (src/data/layered-web-videos.ts) */}
         <section aria-labelledby="layered-web-videos-heading" className="border-b border-slate-800">
@@ -62,6 +64,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <NorthStarServicesPanel />
 
         <StartHereHomePanel />
 
@@ -94,8 +98,10 @@ export default async function Home() {
               <div>
                 <h2 className="text-3xl font-bold text-white">Current DP Challenge</h2>
                 <p className="mt-3 max-w-2xl text-slate-400">
-                  Version 0.77 remains the working draft through Thursday. V1.0 releases Friday,
-                  November 13, 2026, 10–11 AM PT.{' '}
+                  <V1PhaseText
+                    before="Version 0.77 remains the working draft through Thursday. V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+                    during="Version 1.0 is live. The 0.77 working draft is the record that led here."
+                  />{' '}
                   <Link href="/challenge#timeline" className="text-cyan-300 hover:text-cyan-200">
                     View full timeline →
                   </Link>
