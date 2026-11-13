@@ -33,9 +33,9 @@ const QUOTES: Array<{ who: string; role: string; text: string; approved: boolean
     approved: false,
   },
   {
-    who: 'A co-editor (to be named)',
-    role: 'Co-editor',
-    text: 'Quote to be supplied and approved by the co-editor.',
+    who: 'Renad Baomar',
+    role: 'Co-editor of DP10',
+    text: 'Quote requested from Renad Baomar (13 Nov); it appears here once received and approved.',
     approved: false,
   },
 ];
