@@ -10,6 +10,7 @@ import {
 } from '@/lib/govhub';
 import { WORKGROUPS_LIST_HREF } from '@/lib/routes';
 import { BRC333_BADGES_MINT_PREVIEW_BASE } from '@/lib/brc333Links';
+import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export type FaqSection = {
   id: string;
@@ -185,8 +186,13 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             </p>
             <p>
               <strong className="font-semibold text-white">Version 1.0</strong> is the
-              community-synthesized foundation. V1.0 releases Friday, November 13, 2026, 10–11 AM
-              PT. September 16, 2026 was the Community Review Draft milestone and governance
+              community-synthesized foundation.{' '}
+              <V1PhaseText
+                before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+                during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
+                after="Version 1.0 is live."
+              />{' '}
+              September 16, 2026 was the Community Review Draft milestone and governance
               feedback workflow demonstration.
             </p>
           </>
@@ -454,9 +460,12 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
               Discuss, Patch, Insert, and Gov Hub revisions.
             </p>
             <p>
-              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with a permanent Ordinal
-              edition as part of the Digital Monument. September 16, 2026 was the Community Review
-              Draft milestone. <Link href="/onchain">Browse on-chain →</Link>
+              <V1PhaseText
+                before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with a permanent Ordinal edition as part of the Digital Monument."
+                during="Version 1.0 is live, with a permanent Ordinal edition as part of the Digital Monument. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
+                after="Version 1.0 is live, with a permanent Ordinal edition as part of the Digital Monument."
+              />{' '}
+              September 16, 2026 was the Community Review Draft milestone. <Link href="/onchain">Browse on-chain →</Link>
             </p>
           </>
         ),
@@ -527,8 +536,12 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
             <p>
               See the live phase on the{' '}
               <Link href="/challenge#timeline">Challenge timeline</Link>. September 16, 2026 was
-              the Community Review Draft milestone. V1.0 releases Friday, November 13, 2026, 10–11
-              AM PT.
+              the Community Review Draft milestone.{' '}
+              <V1PhaseText
+                before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT."
+                during="Version 1.0 is live. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
+                after="Version 1.0 is live."
+              />
             </p>
           </>
         ),
@@ -538,8 +551,12 @@ export const SITE_FAQ_SECTIONS: FaqSection[] = [
         a: (
           <>
             <p>
-              V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with Digital Monument
-              publication. September 16, 2026 was the public Community Review Draft milestone and
+              <V1PhaseText
+                before="V1.0 releases Friday, November 13, 2026, 10–11 AM PT, with Digital Monument publication."
+                during="Version 1.0 is live, with Digital Monument publication. The launch gathering is Friday, November 13, 2026, 10–11 AM PT."
+                after="Version 1.0 is live, with Digital Monument publication. It was released on Friday, November 13, 2026."
+              />{' '}
+              September 16, 2026 was the public Community Review Draft milestone and
               governance feedback workflow demonstration.
             </p>
             <p>

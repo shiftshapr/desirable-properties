@@ -152,8 +152,12 @@
         <img class="cover-art" src="/assets/cover.png" srcset="/assets/cover.png 1x, /assets/cover@2x.png 2x" alt="The Layered Web book cover, with a foreword by Vint Cerf" />
       </picture>
     </div>
-    <p class="tagline">Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
+    <p class="tagline"><span id="v1Live" hidden>Version 1.0 is live. </span>Twenty-four Desirable Properties for the Meta-Layer – community-defined foundations for decentralized digital infrastructure. Tap the cover to begin reading.</p>
     <a class="start" id="startReader" href="/viewer/book_cover">Open reader →</a>
+    <script>
+      // Version 1.0 launch: 10am PT, Friday 13 November 2026 (18:00 UTC).
+      if (Date.now() >= Date.UTC(2026, 10, 13, 18, 0, 0)) document.getElementById('v1Live').hidden = false;
+    </script>
   </div>
 
   <script>

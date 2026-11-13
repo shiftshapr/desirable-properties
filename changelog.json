@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-launch-liveday-2026-11-13",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 is live (wording switches itself)",
+      "summary": "BillD's launch-day wording (PR 169), reworked so it switches by itself: release wording until 10am PT, 'Version 1.0 is live' plus the launch gathering from 10 to 11am, and 'Version 1.0 is live' after 11am. The book panel keeps its links to read online and download the PDF. On staging, ?v1phase=before|during|after previews each state.",
+      "changes": [
+        "V1PhaseText switch and useV1Phase hook",
+        "Home, Challenge, Participate, Process, Workgroups, Start Here, Launch briefing, V1 readiness, Roundups, FAQ, onboarding pads, countdown and book front page",
+        "Page descriptions use neutral wording (Version 1.0: Friday, November 13, 2026)"
+      ]
+    },
+    {
       "id": "v1-pdf-final",
       "date": "2026-11-13",
       "status": "open",
