@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "estate-v1-panel-north-star",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Version 1.0 panel for estate sites; collective north star panel",
+      "summary": "A shared Version 1.0 launch panel at /estate/v1-launch-panel.js that any estate site places with one tag; it switches before, during and after the launch on the clock. The home page gains a panel offering the Desirable Properties method and tooling to groups in any field.",
+      "changes": [
+        "/estate/v1-launch-panel.js: before, live and after launch panel for estate sites",
+        "Home: 'Find your group's collective north star' panel below Version 1.0"
+      ]
+    },
+    {
       "id": "v1-hero-phase",
       "date": "2026-11-13",
       "status": "open",
