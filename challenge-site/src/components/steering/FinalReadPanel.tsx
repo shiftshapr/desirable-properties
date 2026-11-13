@@ -3,8 +3,6 @@
 import Link from 'next/link';
 import type { SteeringFinalRound, SteeringFinalStatus, SteeringOverviewRow } from '@/lib/dp-steering';
 
-/** Gov Hub's public page for a document's current text (a fixed host: env vars differ server and client). */
-const CHAPTER_BASE = 'https://interfacehub.net';
 
 const STATUS_ORDER: SteeringFinalStatus[] = ['open', 'needs_recheck', 'not_read', 'clean', 'signed'];
 const STATUS: Record<SteeringFinalStatus, { label: string; tone: string }> = {
@@ -15,8 +13,6 @@ const STATUS: Record<SteeringFinalStatus, { label: string; tone: string }> = {
   signed: { label: 'Signed off', tone: 'border-emerald-700/70 text-emerald-200' },
 };
 
-/** The document's finished text, as it stands now (what a sign-off is tied to). */
-const chapterUrl = (ml: string) => `${CHAPTER_BASE}/doc/draft/${ml}/`;
 
 /**
  * Stage 4 (Final read): the rounds so far and where each document stands. A document with nothing found
@@ -109,9 +105,11 @@ export default function FinalReadPanel({
                     : ''}
                 {r.signoff && f?.status !== 'signed' && r.signoff.count ? ` · ${r.signoff.count} of 2 sign-offs` : ''}
               </span>
-              <a href={chapterUrl(r.mlNumber)} target="_blank" rel="noreferrer" className="text-xs text-cyan-300 underline hover:text-cyan-200">
-                Full text
-              </a>
+              {steering ? (
+                <Link href={`/steering/${r.mlNumber}#text`} className="text-xs text-cyan-300 underline hover:text-cyan-200">
+                  Final text
+                </Link>
+              ) : null}
               {steering ? (
                 <Link href={`/steering/${r.mlNumber}`} className="text-xs text-cyan-300 underline hover:text-cyan-200">
                   {f?.canSign && f.status !== 'signed' ? 'Sign off' : 'Open'}

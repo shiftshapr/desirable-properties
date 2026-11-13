@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ActivityPatchPreview from '@/components/workgroup/ActivityPatchPreview';
+import FinalText from '@/components/steering/FinalText';
 import SteeringAskDeepi from '@/components/steering/SteeringAskDeepi';
 import { useAuth } from '@/lib/auth-context';
 import {
@@ -30,8 +31,6 @@ import {
   type SteeringTab,
 } from '@/lib/dp-steering';
 
-/** Gov Hub's public page for a document's current text (a fixed host: env vars differ server and client). */
-const CHAPTER_BASE = 'https://interfacehub.net';
 
 export type Flash = { ok: boolean; text: string };
 
@@ -347,8 +346,10 @@ export default function SteeringSweep({ ml, stageKey = null }: { ml: string; sta
       ) : null}
 
       {doc?.signoff ? (
-        <SignoffPanel signoff={doc.signoff} final={doc.final} ml={ml} readOnly={readOnly} busy={busy === 'signoff'} flash={flash.signoff} onSign={signOff} />
+        <SignoffPanel signoff={doc.signoff} final={doc.final} readOnly={readOnly} busy={busy === 'signoff'} flash={flash.signoff} onSign={signOff} />
       ) : null}
+
+      {doc?.signoff ? <FinalText ml={ml} version={doc.final?.check?.runLabel || null} /> : null}
 
       {doc ? <StatusTabs tab={tab} counts={tabCounts} onSelect={setTab} /> : null}
 
@@ -1374,7 +1375,6 @@ export function CarriedCard({
 function SignoffPanel({
   signoff,
   final,
-  ml,
   readOnly,
   busy,
   flash,
@@ -1382,7 +1382,6 @@ function SignoffPanel({
 }: {
   signoff: SteeringSignoff;
   final: SteeringFinal | null;
-  ml: string;
   readOnly: boolean;
   busy: boolean;
   flash?: Flash;
@@ -1405,8 +1404,8 @@ function SignoffPanel({
               : final.status === 'not_read'
                 ? 'The final read has not reached it yet.'
                 : ''}{' '}
-          <a href={`${CHAPTER_BASE}/doc/draft/${ml}/`} target="_blank" rel="noreferrer" className="text-cyan-300 underline hover:text-cyan-200">
-            Read the full text
+          <a href="#text" className="text-cyan-300 underline hover:text-cyan-200">
+            Read the final text
           </a>
         </p>
       ) : null}
