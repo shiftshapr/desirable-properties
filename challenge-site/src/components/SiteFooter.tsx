@@ -15,6 +15,9 @@ export default function SiteFooter() {
           <Link href="/start-here" className="font-semibold text-cyan-200 hover:text-white">
             Start Here
           </Link>
+          <Link href="/v1" className="font-semibold text-amber-200 hover:text-amber-100">Version 1.0</Link>
+          <Link href="/steering" className="text-cyan-300 hover:text-cyan-200">Steering</Link>
+          <Link href="/press" className="text-slate-400 hover:text-slate-200">Press</Link>
           <Link href="/roundups" className="text-cyan-300 hover:text-cyan-200">DP Roundups</Link>
           <Link href={WORKGROUPS_LIST_HREF} className="text-cyan-300 hover:text-cyan-200">
             Workgroups
