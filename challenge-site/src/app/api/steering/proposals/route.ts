@@ -12,6 +12,8 @@ const DOCS: Array<[string, string]> = [
   ['DP21', 'ML-Draft-025'], ['DP22', 'ML-Draft-028'], ['DP23', 'ML-Draft-030'], ['DP24', 'ML-Draft-056'],
 ];
 const TTL = 60_000;
+/** Metaweb Academy's organization accounts on Gov Hub (open-review proposals, not steering repairs). */
+const ACADEMY_AUTHORS = new Set(['Bridgit', 'BridgeDAO']);
 
 type Raw = Record<string, unknown>;
 const s = (v: unknown) => (typeof v === 'string' ? v : '');
@@ -79,7 +81,14 @@ export async function GET() {
       coEditor: s(p.reviewed_by_name) || null,
       createdAt: s(p.created_at) || null,
       reviewedAt: s(p.reviewed_at) || null,
-      source: channel === 'steering-repair' ? 'repair' : origin.agent_assisted ? 'agent' : 'community',
+      source:
+        channel === 'steering-repair'
+          ? 'repair'
+          : ACADEMY_AUTHORS.has(s(origin.author_name))
+            ? 'academy'
+            : origin.agent_assisted
+              ? 'agent'
+              : 'community',
       revised: origin !== p,
       rationale: s(p.rationale),
       reviewNote: s(p.review_note) || null,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import LayeredWebVideoCarousel from "@/components/LayeredWebVideoCarousel";
 import V1BookPanel from "@/components/V1BookPanel";
+import AskDeepiPanel from "@/components/v1/AskDeepiPanel";
 import { layeredWebVideosAt } from "@/data/layered-web-videos";
 import V1GetBook from "@/components/v1/V1GetBook";
 
@@ -30,6 +31,8 @@ export default function V1Page() {
           </div>
         </div>
       </section>
+
+      <AskDeepiPanel />
 
       <V1GetBook />
     </main>
