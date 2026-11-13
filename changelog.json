@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-final-text",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: read each document's final text on its Stage 4 page",
+      "summary": "Each document's Stage 4 page now shows its final text, exactly as Gov Hub holds it with every accepted change applied: the text a sign-off is tied to. The \"Full text\" links used to open Gov Hub's last published version, which did not show the Stage 4 changes.",
+      "changes": [
+        "Final text section on each document's Stage 4 page",
+        "Final text links in the Stage 4 panel and sign-off box go to it"
+      ]
+    },
+    {
       "id": "steering-remove-import-box",
       "date": "2026-11-13",
       "status": "open",
