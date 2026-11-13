@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "about-roadmap-arrow",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "About: roadmap arrow points at the Desirable Properties Challenge",
+      "summary": "The 'We are here' arrow in the About roadmap image pointed between the first two boxes. It now points to the middle of the Desirable Properties Challenge box, and the broken top borders of the other three boxes are completed.",
+      "changes": [
+        "About roadmap image: arrow redrawn; box borders fixed"
+      ]
+    },
+    {
       "id": "estate-v1-panel-north-star",
       "date": "2026-11-13",
       "status": "open",
