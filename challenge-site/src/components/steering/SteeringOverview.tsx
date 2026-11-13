@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import FinalReadPanel from '@/components/steering/FinalReadPanel';
+import ProposalsTab from '@/components/steering/ProposalsTab';
 import SteeringIssues from '@/components/steering/SteeringIssues';
 import StageLedger from '@/components/steering/StageLedger';
 import { useCallback, useEffect, useState } from 'react';
@@ -73,6 +74,7 @@ function readStageParam(): string | null {
  */
 /** The tab after Final: every stage in one table. */
 const LEDGER_KEY = 'ledger';
+const PROPOSALS_KEY = 'proposals';
 
 export default function SteeringOverview({ signedIn, steering: steeringFromPage }: { signedIn: boolean; steering: boolean }) {
   const [stages, setStages] = useState<SteeringStage[] | null>(null);
@@ -105,8 +107,8 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
       const lastClosed = [...list].reverse().find((p) => p.status === 'closed');
       // Signed out, only closed stages can be read, so start on the latest one.
       setSelected(
-        wanted === LEDGER_KEY
-          ? LEDGER_KEY
+        wanted === LEDGER_KEY || wanted === PROPOSALS_KEY
+          ? wanted
           : list.find((p) => p.key === wanted)?.key || (signedIn ? open?.key : lastClosed?.key) || open?.key || null,
       );
     });
@@ -203,6 +205,18 @@ export default function SteeringOverview({ signedIn, steering: steeringFromPage 
     <div className="mt-8 space-y-8">
       {stages?.length ? <StageTabs stages={stages} selected={selected} onSelect={choose} /> : null}
       {selected === LEDGER_KEY && stages ? <StageLedger stages={stages} /> : null}
+      {selected === PROPOSALS_KEY ? (
+        signedIn ? (
+          <ProposalsTab />
+        ) : (
+          <p className="text-sm text-slate-300">
+            <Link href="/login?next=%2Fsteering" className="text-cyan-300 underline hover:text-cyan-200">
+              Sign in
+            </Link>{' '}
+            to browse the proposals.
+          </p>
+        )
+      ) : null}
 
       {current && !canRead ? (
         <p className="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
@@ -446,6 +460,20 @@ function StageTabs({
       >
         <span className="block font-semibold">Ledger</span>
         <span className="block text-xs text-slate-500">All stages</span>
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={selected === PROPOSALS_KEY}
+        onClick={() => onSelect(PROPOSALS_KEY)}
+        className={`rounded-lg border px-4 py-2 text-left text-sm ${
+          selected === PROPOSALS_KEY
+            ? 'border-violet-500 bg-violet-950/40 text-white'
+            : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
+        }`}
+      >
+        <span className="block font-semibold">Proposals</span>
+        <span className="block text-xs text-slate-500">Search and filter</span>
       </button>
     </div>
   );
