@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "steering-final-text-images",
+      "date": "2026-11-13",
+      "status": "open",
+      "title": "Steering: chapter images show in the Final text view",
+      "summary": "Chapter images are referenced by paths on the book site, where the files live, so they showed as broken in the Final text reading view. They now load from book.desirableproperties.org. The text itself is unchanged.",
+      "changes": [
+        "Final text reading view loads chapter images from the book site"
+      ]
+    },
+    {
       "id": "steering-stage4-one-vote",
       "date": "2026-11-13",
       "status": "open",
