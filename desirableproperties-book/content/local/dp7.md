@@ -1,11 +1,11 @@
 # DP7 – Simplicity and Interoperability
 
-*The Meta-Layer is designed to reduce friction, not add it — prioritizing clarity, composability, and seamless interaction across domains.*
+*The Meta-Layer is designed to reduce friction, not add it – prioritizing clarity, composability, and seamless interaction across domains.*
 
 ![Illustration for Desirable Property DP7: Simplicity and Interoperability](/content/local/assets/dp/DP7.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-014 revision=03 submission=f9cf5d5a-2669-4874-9c0a-b1d7aa0ef225 hash=830534d3fffb98a5 synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-014 revision=04 submission=b75a751f-dccd-4e2a-8793-51acd96731e5 hash=1be6d4180abc257c synced=2026-11-13T08:20:02Z -->
 
 ---
 
@@ -13,25 +13,25 @@
 
 This draft articulates Desirable Property 7 (DP7) as the condition under which participants, communities, and systems can move across tools, environments, and contexts without losing identity, history, value, or agency.
 
-Interoperability in the meta-layer is not a feature of APIs. It is the condition under which power cannot be quietly re-centralized through infrastructure, interfaces, or economic gravity.
+Interoperability in the Meta-Layer is not a feature of APIs. It is the condition under which power cannot be quietly re-centralized through infrastructure, interfaces, or economic gravity.
 
-This includes the ability for new tools, services, and technologies to plug into the meta-layer through shared interfaces without prior permission, provided they conform to governance rules, security constraints, and boundary conditions.
+This includes the ability for new tools, services, and technologies to plug into the Meta-Layer through shared interfaces without prior permission, provided they conform to governance rules, security constraints, and boundary conditions.
 
 DP7 ensures that governance (DP3), incentives (DP9), ownership (DP20), and commerce (DP6) remain continuous across boundaries rather than collapsing into platform-specific silos.
 
 If DP7 is weak, predictable failures are not accidental but structural: re-centralization through convenience, lock-in through partial openness, stranded value, degraded identity, and governance that cannot extend beyond a single interface.
 
-DP7 defines the minimum conditions under which the meta-layer functions as a shared system rather than a collection of connected but incompatible domains.
+DP7 defines the minimum conditions under which the Meta-Layer functions as a shared system rather than a collection of connected but incompatible domains.
 
 **Anchor Principle:** Open to participation, bounded by policy. Any system may join, but no system may bypass the rules that preserve safety, trust, and collective integrity.
 
-Interoperability is the primary boundary where power is contested in the meta-layer. Systems that appear interoperable locally but degrade meaning, enforceability, or usability across boundaries will systematically re-centralize control.
+Interoperability is the primary boundary where power is contested in the Meta-Layer. Systems that appear interoperable locally but degrade meaning, enforceability, or usability across boundaries will systematically re-centralize control.
 
 ---
 
 ## 2. Problem Statement
 
-In today’s web, systems are technically connected but structurally discontinuous.
+In today's web, systems are technically connected but structurally discontinuous.
 
 Participants encounter:
 
@@ -45,9 +45,9 @@ This produces recurring failures:
 - switching systems resets social and economic position
 - contributions lose meaning outside their original context
 - communities cannot extend norms or coordination across tools
-- “open” ecosystems still trap participants through semantic or economic loss
+- "open" ecosystems still trap participants through semantic or economic loss
 
-These failures are structural. Interoperability is treated as data transfer rather than continuity of meaning, enforceability, and legitimacy.
+These failures are structural. Interoperability is often reduced to data transfer rather than continuity of meaning, enforceability, legitimacy, and coordinated participation across systems.
 
 DP7 reframes interoperability as continuity under movement and participation. Not just that things move, but that they remain valid, trusted, and usable after they move, and that new systems can enter and participate without breaking that continuity.
 
@@ -58,7 +58,7 @@ DP7 reframes interoperability as continuity under movement and participation. No
 ### 3.1 Interoperability theater
 Systems simulate openness while preserving control.
 
-**Example:** Data export tools provide raw files without structure, signatures, or compatibility, making re-use impractical.
+**Example:** Data export tools provide raw files without structure, signatures, or compatibility, making reuse impractical.
 
 **Why this matters:** Nominal interoperability without usability reinforces lock-in.
 
@@ -100,7 +100,7 @@ Dominant actors influence interoperability standards.
 ### 3.7 Bridge and translation attack surfaces
 Cross-system connectors introduce risk.
 
-**Example:** Bridges become vectors for fraud, duplication, or corruption of assets and identity.
+**Example:** Cross-system bridges become vectors for fraud, duplication, or corruption of assets and identity.
 
 **Why this matters:** Interoperability expands the attack surface of the system.
 
@@ -116,7 +116,7 @@ Intermediaries regain control over open systems.
 
 **Example:** Wallets, indexes, or identity providers become gatekeepers of interoperability.
 
-**Why this matters:** Interoperability without anti-capture design recentralizes power.
+**Why this matters:** Interoperability without anti-capture design re-centralizes power.
 
 ### 3.10 Injection risk and extension ecosystem spam
 Pluggable systems introduce code injection, privilege abuse, and discovery flooding risks.
@@ -136,7 +136,7 @@ Systems restrict which technologies can integrate despite claiming openness.
 
 ## 4. Core Principle
 
-Interoperability in the meta-layer means that identity, data, value, governance, and participation can move across systems without losing integrity, meaning, enforceability, or legitimacy.
+Interoperability in the Meta-Layer means that identity, data, value, governance, and participation can move across systems without losing integrity, meaning, enforceability, or legitimacy.
 
 It is not sufficient for objects to move. They must remain:
 
@@ -148,6 +148,8 @@ It is not sufficient for objects to move. They must remain:
 **Example:** A participant moves to a new environment and retains not only identity and history, but the ability to exercise governance rights, receive recognition for contributions, and use their assets without degradation.
 
 **What this feels like:** Switching systems does not mean starting over, nor does it mean accepting a degraded version of prior participation.
+
+Interoperability has two goals that should not be confused. Portability lets identity, data, reputation, and value move from one system to another. Interaction lets systems work with one another directly while nothing moves: an agent keeps its own identity and still discovers and uses agents or services on other platforms. DP7 requires both.
 
 ---
 
@@ -161,13 +163,19 @@ DP7 requires schemas to be publicly defined, evolvable, and resistant to capture
 
 A failure mode is schema capture, where standards evolve to favor specific implementations, creating hidden lock-in despite nominal openness.
 
+A minimal interoperability baseline keeps simplicity in view. Shared interfaces build on HTTP, existing web infrastructure, and established standards, with core capabilities separated from optional extensions. A practical test of simplicity is how much additional work two independently built systems need before they can interoperate at the baseline: the less, the better.
+
+Standards-setting should include meaningful Global South participation in the decisions that create technical dependencies. Plural needs should shape the specification from the outset, rather than be treated only as localization after corporate defaults have been settled.
+
 ### 5.2 Version negotiation
 
 As systems evolve, differences in schema versions and capabilities are inevitable. Interoperability must account for this without breaking continuity.
 
-DP7 requires explicit version negotiation mechanisms that allow systems to detect compatibility, fallback gracefully, and signal limitations.
+DP7 requires explicit version negotiation mechanisms that allow systems to detect compatibility, fall back gracefully, and signal limitations.
 
 A failure mode is silent incompatibility, where objects appear valid but behave incorrectly due to version mismatch.
+
+Agents add a new form of negotiation. Two agents can exchange capability descriptions and agree, at the moment of interaction, which protocol, interface, data format, and security requirements to use, whether a structured API, message exchange, or another method both support, within the security and authorization boundaries each side sets. For example, a personal agent discovers a service run by another organization, reads its capability description, verifies its identity, obtains the authorization it needs, agrees how to communicate, and interacts with it directly, without a shared central platform.
 
 ### 5.3 Data minimization in portability
 
@@ -208,6 +216,8 @@ Identity is the anchor for all other portable objects. Without continuity, inter
 DP7 requires consistent, verifiable identity across systems, with protections against duplication and spoofing (DP1).
 
 A failure mode is identity fragmentation, where participants appear as different entities across systems, losing continuity of rights and responsibilities.
+
+Identity continuity is not trust, and trust is not authorization. Verifying that an agent is the same entity across services does not tell any of them what it may do. Each service decides authorization for itself, and permissions or governance policies granted in one system are never assumed to carry into another; they travel only as explicit, verifiable grants that the receiving system chooses to honor.
 
 ### 5.8 Anti-capture interop design
 
@@ -282,7 +292,7 @@ DP7 requires incentive legibility around interop:
 - **Rate-limited exit:** Export is throttled or degraded compared to import pathways.
 - **Semantic loss:** Reputation or credentials export without the trust graph or scoring model that gives them meaning.
 - **Bridge tolls:** Cross-system transfers incur hidden fees or spreads that discourage movement.
-- **Aggregator capture:** Indexing or wallet layers recentralize control over “open” ecosystems.
+- **Aggregator capture:** Indexing or wallet layers re-centralize control over "open" ecosystems.
 
 DP7 therefore expects:
 
@@ -300,10 +310,10 @@ When incentives favor staying, ecosystems centralize. When incentives favor hone
 
 Across ecosystems, recurring signals indicate interop failure at scale:
 
-- frustration with “export” tools that do not preserve meaning or usability
+- frustration with "export" tools that do not preserve meaning or usability
 - loss of reputation or trust when moving between platforms
 - inability to carry subscriptions, balances, or purchase history across tools
-- skepticism toward “open ecosystems” that still gate exit
+- skepticism toward "open ecosystems" that still gate exit
 - concern about data exposure and identity spoofing during transfers
 
 These are not UX issues. They are structural breaks in continuity.
@@ -334,7 +344,7 @@ The following criteria are diagnostic rather than exhaustive. Each is written so
 
 - Do governance rules continue to bind behavior in the receiving environment, or do they degrade to advisory text?
 - Are precedence rules declared when the origin and destination policies conflict?
-- Can a community refuse, quarantine, or probate an import under its own policy?
+- Can a community refuse or quarantine an import, or put it on probation, under its own policy?
 
 ### 9.4 Integrity and verifiability
 
@@ -390,6 +400,8 @@ Ship every mapping with a machine-readable statement of what is preserved, trans
 
 Emit a signed receipt for every import and export, linked to the policy version applied and the mediating party (DP15). Receipts are queryable by the participant, the origin community, and the destination community.
 
+Audit is proportional to risk. A receipt records what is needed to verify the transfer and no more, and access to it is limited to the parties named. Every transfer still produces a receipt, but for low-risk interactions the audit record may be aggregate or privacy-preserving, so that auditability does not become a way to correlate a participant's activity across platforms (DP4).
+
 ### 10.5 Probation tiers for new integrations
 
 Admit third-party tools at reduced privilege and visibility, with containment tiers and rate limits enforcing the reduction rather than a review promise (DP13). Increase capability as audits pass and non-abusive usage accumulates. Demote automatically on policy violation, with a public receipt explaining why.
@@ -413,6 +425,18 @@ Distribute indexing and discovery across multiple operators, weight surfacing by
 ### 10.10 Degradation-aware interfaces
 
 Standardize visual and textual signals for reduced guarantees, so participants encounter the same vocabulary of degradation across tools rather than per-platform euphemisms.
+
+### 10.11 Shared overlay trays and navigation panels
+
+An open tray interface can let assistants, wallets, chat tools, and other overlays coexist without competing for the same page space. Registration should declare a tool's name, role, permissions, and availability; claimed priority should not override the participant's choices about display, pinning, expansion, or ordering. Placement should remain adaptable across browsers, devices, and assistive technologies.
+
+Navigator User Interfaces provide a related pattern for shareable, remixable task and learning flows through a regular panel. Shared interface contracts should let plural tools and community-authored workflows coexist without imposing one navigation scheme. DP2 defines the participant's control over those choices.
+
+### 10.12 Familiar storage and privacy choices
+
+Familiar save and export interfaces should offer participant-selected storage destinations, including decentralized options such as IPFS. The interface should explain the chosen custody, retention, and retrieval arrangements; selecting a content-addressed destination does not by itself establish confidentiality or durable availability.
+
+Privacy transport should be similarly usable across supported protocols. An interoperable interface should let participants retain VPNs or anonymity layers they already trust, with minimal configuration and explicit compatibility limits. A native routing option should not make external alternatives second-class or imply that routing alone keeps all data local and untracked.
 
 ---
 
@@ -553,7 +577,7 @@ Memory should support querying for systemic patterns such as drift or repeated l
 
 ### 12.9 Composable participation via governed interfaces
 
-The meta-layer must allow third-party tools, services, and extensions (e.g., smart tags, overlays, sidebars, core services) to plug into shared interfaces **without prior permission**, provided they conform to declared interfaces and governance constraints.
+The Meta-Layer must allow third-party tools, services, and extensions (e.g., smart tags, overlays, sidebars, core services) to plug into shared interfaces **without prior permission**, provided they conform to declared interfaces and governance constraints.
 
 Conforming integrations must:
 
@@ -569,13 +593,19 @@ This enables openness to innovation while preventing unbounded execution and pla
 
 Interface contracts should be versioned and testable, with conformance suites available publicly. Discovery systems must incorporate reputation and probation to resist spam and gaming.
 
-**Example (Composable Integration):** A third-party sidebar app plugs into a community zone. At install, it declares permissions (read annotations, write highlights) and data scopes. The zone’s policy automatically constrains it: external network calls are limited, access to private threads is denied, and actions are rate-limited. The app runs in a sandbox and emits signed event logs. Initially, it appears in a probation tier with limited visibility. As it accumulates positive, non-abusive usage and passes audits, its privileges and discoverability increase. If it violates policy, it is throttled or quarantined with a public receipt explaining why.
+**Example (Composable Integration):** A third-party sidebar app plugs into a community zone. At install, it declares permissions (read annotations, write highlights) and data scopes. The zone's policy automatically constrains it: external network calls are limited, access to private threads is denied, and actions are rate-limited. The app runs in a sandbox and emits signed event logs. Initially, it appears in a probation tier with limited visibility. As it accumulates positive, non-abusive usage and passes audits, its privileges and discoverability increase. If it violates policy, it is throttled or quarantined with a public receipt explaining why.
+
+#### 12.9.1 Agent interaction contracts
+
+Interfaces should support visible, responsible, and semantically coherent interaction among independently operated agents, websites, and other services. A minimal interaction contract should specify exchange formats, observable traces, and distributed authentication, with the permissions and governance constraints already required here.
+
+The scope includes non-page media, agents without a shared central host, and systems in physical or hybrid settings. Interoperability does not certify a physical system's safety; identity, authority, and containment must remain legible across the boundary.
 
 ---
 
 ## 13. Relationship to Other Desirable Properties
 
-DP7 is the continuity layer across the meta-layer stack:
+DP7 is the continuity layer across the Meta-Layer stack:
 
 - DP3 ensures governance can evolve across systems rather than reset per platform
 - DP4 constrains data movement and enforces minimization during transfer
@@ -604,7 +634,7 @@ DP7 defines the conditions under which movement is legitimate, intelligible, and
 
 ---
 
-## 15. Minimum DP7 Alignment (Non-Normative)
+## 15. Minimum DP7 Alignment
 
 A DP7-aligned system should, at minimum:
 
@@ -650,18 +680,12 @@ Progress should be demonstrated through live interop scenarios, not only specifi
 
 ## 18. Closing Orientation
 
-DP7 is the condition under which the meta-layer remains a network rather than reverting to a set of silos.
+DP7 is the condition under which the Meta-Layer remains a network rather than reverting to a set of silos.
 
 When interoperability is real, participants can move without losing meaning, value, or rights.
 
-When it is simulated, ecosystems recentralize behind APIs, bridges, and aggregators that quietly control movement.
+When it is simulated, ecosystems re-centralize behind APIs, bridges, and aggregators that quietly control movement.
 
 Interoperability is not a feature. It is the boundary where power either remains distributed or collapses back into platforms.
-
-DP7 ensures the meta-layer is a network, not a set of islands.
-
-Without it, all other properties collapse into silos.
-
-With it, coordination becomes truly global and composable.
 
 ---

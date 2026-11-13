@@ -1,21 +1,21 @@
-<!-- govhub-sync: ml=ML-Draft-031 revision=03 submission=7a106e39-1bdd-4405-bb74-f38ac7c1bb33 hash=512aaef64eed8bc8 synced=2026-10-12T13:53:54Z -->
+<!-- govhub-sync: ml=ML-Draft-031 revision=04 submission=f79b02aa-b0b8-4366-a485-55f430c56f28 hash=638e8add9d867dc1 synced=2026-11-13T08:20:02Z -->
 # About This Digital Monument
 
-This edition of *The Layered Web: The Desirable Properties of a Meta-Layer* is not a conventional ebook. It is a digital monument – a civic record inscribed on Bitcoin and intended to be read by people who were not in the room when the work began, including generations not yet born.
+This edition of *The Layered Web: The Desirable Properties of a Meta-Layer*, Version 1.0, released on November 13, 2026, is not a conventional ebook. It is a digital monument – a civic record inscribed on Bitcoin and intended to be read by people who were not in the room when the work began, including generations not yet born.
 
 This book exists to help define the foundational properties of a trustworthy Meta-Layer for the Internet – a global collaboration to build a human-aligned, decentralized, AI-assisted coordination layer that supports trust, agency, accountability, and human flourishing.
 
-![The layered Web: Physical Infrastructure, Internet Infrastructure, Websites and Applications, and the Meta-Layer above – Trust, Context, Presence, Governance](/content/local/assets/dp/layered-web-coordination-layer.jpg)
+![The layered web: Physical Infrastructure, Internet Infrastructure, Websites and Applications, and the Meta-Layer above – Trust, Context, Presence, Governance](/content/local/assets/dp/layered-web-coordination-layer.jpg)
 
-*Figure: From today's Web to the Meta-Layer. Physical Infrastructure and Internet Infrastructure carry packets and protocols. Websites & Applications are what most people experience as "the Web." The Meta-Layer sits above that surface – a shared coordination layer for Trust · Context · Presence · Governance – where this book's Desirable Properties apply.*
+*Figure: From today's web to the Meta-Layer. Physical Infrastructure and Internet Infrastructure carry packets and protocols. Websites & Applications are what most people experience as "the web." The Meta-Layer sits above that surface – a shared coordination layer for Trust · Context · Presence · Governance – where this book's Desirable Properties apply.*
 
 Most of us experience the Internet as pages, platforms, and feeds – a flat surface of sites and apps. The Meta-Layer is the space above that surface: not another website, but a shared digital atmosphere where context, presence, memory, and governance can persist across platforms. *The Layered Web* names the conditions that layer must satisfy if it is to serve people rather than extract from them.
 
-That is how this monument will be used: as the open, inscribed edition of that inquiry – twenty-three Desirable Property chapters, front matter, and community patches – preserved onchain so the definitions, debates, and revisions remain visible long after any single site or sprint ends.
+That is how this monument will be used: as the open, inscribed edition of that inquiry – twenty-four Desirable Property chapters, front matter, and community patches – preserved onchain so the definitions, debates, and revisions remain visible long after any single site or sprint ends.
 
-We are here to define the next level of the internet. The properties refined in this challenge become the requirements and architectural decisions that guide how the Overweb – and the broader Meta-Layer – gets built.
+We are here to define the next level of the Internet. The properties refined in this challenge become the requirements and architectural decisions that guide how the Overweb – and the broader Meta-Layer – gets built.
 
-![We are here to define the next level of the internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/content/local/assets/dp/overweb-roadmap.jpg)
+![We are here to define the next level of the Internet: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb](/content/local/assets/dp/overweb-roadmap.jpg)
 
 *Figure: Desirable Properties Challenge → Requirements → Architecture Decision Records → Build Overweb. This inscribed edition captures Step 1: community-defined qualities a trustworthy Meta-Layer must possess before protocols are locked in.*
 
@@ -53,7 +53,7 @@ No storage system comes with absolute guarantees. Bitcoin's social layer must co
 
 We expect future generations to encounter this work – to judge what proved durable, improve what proved incomplete, and continue the inquiry into desirable properties before immutable protocols settle the shape of the Meta-Layer.
 
-Explore further
+## Explore further
 
 - Desirable Properties Challenge: [desirableproperties.org](https://desirableproperties.org)
 - Open collaboration: [interfacehub.net](https://interfacehub.net)

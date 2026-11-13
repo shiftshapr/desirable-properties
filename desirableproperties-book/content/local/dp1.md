@@ -1,17 +1,17 @@
 # DP1 – Federated Authentication & Accountability
 
-*The Conditions for Trust — strong, federated authentication and decentralized accountability are the foundations for real trust, safe interaction, and meaningful community.*
+*The Conditions for Trust – strong, federated authentication and decentralized accountability are the foundations for real trust, safe interaction, and meaningful community.*
 
 ![Illustration for Desirable Property DP1: Federated Authentication & Accountability](/content/local/assets/dp/DP1.webp)
 
 <!-- dp-local-version: 1.0 | standardized: 2026-07-27 -->
-<!-- govhub-sync: ml=ML-Draft-008 revision=05 submission=70abde82-e313-4e4a-a763-f9dbb2efc9d4 hash=bb00a3e048c6ac0e synced=2026-09-29T11:48:37Z -->
+<!-- govhub-sync: ml=ML-Draft-008 revision=06 submission=3ae53ed4-dd6c-40fc-be19-231ff1e5e43d hash=086131dd21864744 synced=2026-11-13T08:20:02Z -->
 
 ---
 
 ## 1. Purpose of This Draft
 
-This ML-Draft articulates **Desirable Property 1 (DP1)** as a foundational condition for trust in the Meta-Layer. It expands DP1 beyond federated authentication to encompass accountability, adaptive intelligence integration, and foresight-driven governance.
+This draft articulates **Desirable Property 1 (DP1)** as a foundational condition for trust in the Meta-Layer. It expands DP1 beyond federated authentication to encompass accountability, adaptive intelligence integration, and foresight-driven governance.
 
 DP1 responds to multiple, overlapping needs:
 
@@ -28,7 +28,7 @@ This draft is intended to guide implementation, governance design, and future ML
 
 *Why identity alone is not enough.*
 
-For most of the Web's history, trust has been treated as a byproduct of identity. If a participant could be authenticated, logged in, or verified, trust was assumed to follow. This assumption no longer holds.
+For most of the web's history, trust has been treated as a byproduct of identity. If a participant could be authenticated, logged in, or verified, trust was assumed to follow. This assumption no longer holds.
 
 At contemporary scale, identity has become cheap to generate, easy to discard, and increasingly decoupled from responsibility. As a result, systems optimized around login and verification routinely fail to protect participants, communities, and institutions from predictable harm.
 
@@ -74,7 +74,7 @@ Rather than asking only who someone is, DP1 asks under what conditions participa
 
 DP1 is not defined in opposition to any single class of actor. Instead, it responds to recurring failure modes that reliably emerge in large-scale, low-friction digital systems.
 
-Two surfaces are in scope. The first is **adversarial**: classes of actor whose behavior reliably degrades trust wherever identity is cheap and accountability is discontinuous. The second is **structural**: the pressures catalogued under *Other Drivers* below, which erode trust even where no actor intends harm. DP1 treats both as design inputs, because a trust system that defends only against deliberate attackers will still fail under ordinary growth logic.
+Two surfaces are in scope. The first is **adversarial**: classes of actor whose behavior reliably degrades trust wherever identity is cheap and accountability is discontinuous. The second is **structural**: the pressures catalogued under Section 3.4 below, which erode trust even where no actor intends harm. DP1 treats both as design inputs, because a trust system that defends only against deliberate attackers will still fail under ordinary growth logic.
 
 ### 3.1 Scammers
 
@@ -102,7 +102,7 @@ DP1 counters impersonation by binding content and actions to verifiable agents, 
 
 In addition to explicit abuse, DP1 responds to broader systemic pressures that erode trust even in the absence of malicious intent:
 
-- **Scalable agents operating without visible constraints.** As automation and AI agents scale, they can overwhelm human participation, distort consensus, and accumulate influence faster than human governance processes can respond. Without clear accountability, visibility, and rate limits, both human-operated and autonomous agents can unintentionally or deliberately reshape an ecosystem's trust dynamics. An agent refers to any accountable actor operating in the meta-layer, whether human or AI.
+- **Scalable agents operating without visible constraints.** As automation and AI agents scale, they can overwhelm human participation, distort consensus, and accumulate influence faster than human governance processes can respond. Without clear accountability, visibility, and rate limits, both human-operated and autonomous agents can unintentionally or deliberately reshape an ecosystem's trust dynamics.
 - **Governance capture and conflicts of interest.** Trust systems are vulnerable when those who set or enforce rules have misaligned incentives. Concentrated power, opaque decision-making, or financial dependencies can lead to selective enforcement, uneven accountability, or loss of legitimacy. Over time, this erodes community confidence even if formal rules remain unchanged.
 - **Economic models that reward engagement regardless of harm.** Many digital systems optimize for growth, virality, or attention without regard for downstream effects. When visibility, rewards, or influence are tied solely to engagement metrics, deceptive, polarizing, or manipulative behavior is systematically advantaged over constructive participation.
 
@@ -121,7 +121,7 @@ The mechanisms defined later in this draft each guard against a named failure mo
 - **Responsibility laundering**: automated outputs circulate without a traceable, contestable responsible entity
 - **Governance drift**: adaptive or automated systems reshape trust conditions without visible human ratification
 
-Each of these is addressed in the sections that follow, and each reappears as a testable condition under *Minimum DP1 Alignment*.
+Each of these is addressed in the sections that follow, and each reappears as a testable condition under Section 19.
 
 ---
 
@@ -131,7 +131,7 @@ Identity is not merely descriptive at the interface layer; it is the basis for e
 
 Identity is the enforcement boundary of the Meta-Layer. If identity cannot persist across context, delegation, and scale, trust collapses into simulation.
 
-DP1 establishes identity as an enforceable, continuous, and context-bound substrate for all higher-order trust, governance, and interaction within the meta-layer.
+DP1 establishes identity as an enforceable, continuous, and context-bound substrate for all higher-order trust, governance, and interaction within the Meta-Layer.
 
 **Trust in the Meta-Layer emerges when identity, accountability, learning, and foresight are bound together at the interface level.**
 
@@ -197,6 +197,8 @@ User-held credentials support:
 Authentication answers the question of *who may enter*. It does not determine *what that participant may do*, *what they may access*, or *how much trust they are afforded*.
 
 All authorization, trust thresholds, and participation rules are defined at the zone level. This separation prevents overloading identity systems with governance logic and keeps trust decisions contextual, transparent, and adaptable.
+
+Authentication and public identification are different acts. A person or device should be able to prove what an interaction requires without making unrelated identity attributes public or linking other personas. A SIM authenticating to a network illustrates the distinction, not anonymity from the network operator. Anonymous participation remains subject to the zone-specific boundaries in Sections 7 and 18.
 
 ---
 
@@ -314,6 +316,8 @@ Delegation is permitted, but must be:
 
 This ensures that actions taken by agents, tools, or collaborators remain traceable to accountable principals.
 
+Accountability can be transitive rather than global. When Alice works with Bob and Bob brings in Carol to help with Alice's task, Alice need not authenticate Carol: she authenticates Bob in whatever way she chooses and holds Bob responsible for Carol's use of her resources. Trust, identity, and accountability then flow along chains of delegated authorization, which scales to remote and open collaboration where requiring every party to authenticate every other does not.
+
 A failure mode is **identity laundering**, where responsibility is shifted across actors to evade accountability.
 
 ### 8.4 Resistance to Sybil and Coordinated Identity Attacks
@@ -322,7 +326,7 @@ Identity systems must make large-scale duplication, coordination, or synthetic a
 
 Mechanisms may include:
 
-- Proof-of-humanity where appropriate
+- Proof of humanity where appropriate
 - Behavioral analysis and rate limits
 - Reputation weighting and trust decay
 
@@ -387,6 +391,8 @@ Persistent pseudonymous identities allow participants to:
 - Participate across zones without exposing real-world identity
 
 Communities may permit multiple personas per participant, subject to local rules, provided that accountability requirements are met. This balances flexibility with responsibility, enabling participation without enabling evasion.
+
+Anonymity from other participants can coexist with extensive visibility to an operator or institution. Identity-system review should distinguish public disclosure, operator observation, and inferred linkage rather than treating a pseudonym as evidence that all three are controlled.
 
 ### 9.3 Sealed Memory and Editability Windows
 
@@ -484,7 +490,13 @@ AI agents do not operate independently of human or institutional responsibility.
 
 In high-trust or safety-critical zones, anonymous autonomous agents are not permitted. Responsibility must be traceable, contestable, and enforceable.
 
+These bindings also apply to advanced AI and complex systems managing critical infrastructure, including physical or hybrid systems. Greater capability does not remove the need for an identifiable responsible entity.
+
 By binding AI behavior to accountable entities, DP1 prevents responsibility laundering while enabling beneficial automation under governed conditions.
+
+### 11.4 Contextual Agent Registration
+
+Agents acting on behalf of people, services, or other agents should be identifiable in the context where they act. Registration can use mechanisms analogous to software identification to connect the acting agent, its mandate, and its responsible entity. It should not require a single central registry or indiscriminate public disclosure of the represented participant.
 
 ---
 
@@ -549,14 +561,14 @@ Participants must be able to:
 - inspect what is attributed to their own agent identifier, and within what editability window a contribution remains revisable before it is sealed
 - understand their current trust state in a zone, including any active restriction, its stated basis, its duration, and the recovery pathway
 - initiate an appeal against a decision affecting access, visibility, or reputation, and observe its status rather than waiting on an invisible queue
-- understand when identity continuity is about to degrade — on export, migration, fork, or persona separation — before the degradation occurs
+- understand when identity continuity is about to degrade – on export, migration, fork, or persona separation – before the degradation occurs
 
 Communities must be able to:
 
 - define, publish, and revise the zone conditions under which they operate, including proof requirements and escalation thresholds
 - see who currently holds enforcement authority in the zone, under what mandate, and for how long
 - audit whether enforcement actions were executed as ratified, and whether adaptive recommendations were adopted, modified, or rejected
-- review aggregate accountability outcomes — appeal volumes, reversal rates, escalation frequency — without exposing individual participants
+- review aggregate accountability outcomes – appeal volumes, reversal rates, escalation frequency – without exposing individual participants
 - preserve governance memory of why a trust rule exists, what incident prompted it, and what effect it produced
 - fork zone rules, or exit, when legitimacy breaks down, without stripping members of identity continuity
 
@@ -576,14 +588,14 @@ Several pressures recur:
 
 - **Verification as a rent.** Where a single provider becomes the de facto path to credible participation, verification becomes a tollgate. Federation is not merely a resilience property; it is an anti-rent property, ensuring that no issuer can price access to the Meta-Layer.
 - **Engagement-weighted visibility.** Where reach is allocated by engagement alone, synthetic scale is economically rational. Proof-of-humanity gating for rewards and amplification is therefore an incentive intervention, not only a security control.
-- **Enforcement asymmetry.** Those who set rules, enforce them, and benefit from their outcomes are frequently the same actors. DP1 requires that these relationships be visible (see *Conflict of Interest (COI) Visibility*), because conflicts of interest degrade legitimacy even absent bad intent.
+- **Enforcement asymmetry.** Those who set rules, enforce them, and benefit from their outcomes are frequently the same actors. DP1 requires that these relationships be visible (see Section 16.2), because conflicts of interest degrade legitimacy even absent bad intent.
 - **Reset economics.** When identity is cheap to abandon, sanctions become a cost of doing business rather than a deterrent. Persistent identity, lineage, and privilege loss on reset change the arithmetic of abuse.
 - **Data leverage from accountability.** Accountability infrastructure generates exactly the records that surveillance economies value. DP1's insistence on pseudonymity, zone-scoping, and non-propagation by default is an incentive constraint on the operators of trust systems themselves.
 - **Automation subsidy.** Automated agents can absorb friction that would deter humans. Asymmetric rate, scope, and amplification constraints prevent capital from purchasing disproportionate presence.
 
 **Example:** A platform requires proof of humanity for rewards but exempts partner integrations to protect a revenue relationship. No rule changed, yet the incentive to route abuse through partner surfaces was created.
 
-**Why this matters:** A trust system that does not act on incentives will be routed around by them. DP1 therefore expects that materially relevant incentives — who funds enforcement, who profits from visibility, who benefits from a given verification path — be legible to communities, and that zones retain the ability to constrain those incentives locally.
+**Why this matters:** A trust system that does not act on incentives will be routed around by them. DP1 therefore expects that materially relevant incentives – who funds enforcement, who profits from visibility, who benefits from a given verification path – be legible to communities, and that zones retain the ability to constrain those incentives locally.
 
 ---
 
@@ -669,7 +681,7 @@ Communities define:
 
 This containment prevents cascading harm while preserving the ability to respond proportionally to serious or systemic abuse.
 
-Failure is expected. Silent failure is not. A DP1-aligned system is one in which the degradation of trust conditions — a broken lineage, an unratified adaptation, an unresolved appeal backlog, a zone quietly loosening its proof requirements — is observable while it is still correctable.
+Failure is expected. Silent failure is not. A DP1-aligned system is one in which the degradation of trust conditions – a broken lineage, an unratified adaptation, an unresolved appeal backlog, a zone quietly loosening its proof requirements – is observable while it is still correctable.
 
 ---
 
@@ -702,7 +714,7 @@ Weakness or ambiguity in DP1 propagates upward, undermining the effectiveness of
 
 ## 18. Non-Goals and Explicit Boundaries
 
-DP1 deliberately defines the *conditions* for trust rather than attempting to solve all problems associated with identity, abuse, or governance on the internet. Explicitly stating non-goals is essential to prevent scope creep, misinterpretation, and inappropriate application of this property.
+DP1 deliberately defines the *conditions* for trust rather than attempting to solve all problems associated with identity, abuse, or governance on the Internet. Explicitly stating non-goals is essential to prevent scope creep, misinterpretation, and inappropriate application of this property.
 
 DP1 does **not** attempt to:
 
@@ -725,7 +737,7 @@ By naming these boundaries explicitly, DP1 remains adaptable across cultures, le
 
 ---
 
-## 19. Minimum DP1 Alignment (Non-Normative)
+## 19. Minimum DP1 Alignment
 
 Minimum alignment is not a feature checklist. It is the threshold at which an identity system can be considered **enforceable, portable, and resistant to trivial abuse**.
 
@@ -760,7 +772,7 @@ Failure mode: replay attacks that extract duplicate rewards, access, or influenc
 ### 19.4 Sybil Resistance Under Scale
 
 - Systems MUST impose friction or constraints that make large-scale identity duplication costly or ineffective
-- Mechanisms MAY include proof-of-humanity, rate limits, staking, or reputation weighting
+- Mechanisms MAY include proof of humanity, rate limits, staking, or reputation weighting
 - Systems MUST remain functional under coordinated identity attacks
 
 Failure mode: sybil saturation overwhelming incentives, governance, or visibility.
@@ -797,8 +809,6 @@ Failure mode: lineage loss enabling impersonation, laundering, or erasure of har
 
 Failure mode: unchallengeable systems that degrade into opaque or captured governance.
 
----
-
 These conditions define the **minimum viable enforcement layer for identity** in the Meta-Layer.
 
 Partial implementations that omit continuity, attribution, anti-replay guarantees, or sybil resistance SHOULD NOT be considered aligned with DP1, regardless of authentication strength or interface design.
@@ -811,9 +821,9 @@ DP1 establishes foundational conditions for trust, but it does not resolve all q
 
 - **Standardization of proof-of-humanity mechanisms.** While DP1 requires the availability of proof of unique humanity as a system capability, it does not prescribe specific mechanisms. Multiple decentralized approaches already exist, such as Fractal ID and other proof-of-humanity systems, each with different tradeoffs around privacy, accessibility, cost, and resistance to gaming. Communities may choose the mechanisms that best fit their norms and risk profiles. Over time, however, it is likely that one or a small number of widely trusted proof-of-humanity systems will emerge for use at the Meta-Layer or Overweb level, providing a common baseline that communities are encouraged, but not required, to adopt. Open questions include how such proofs can remain privacy-preserving, globally accessible, and adaptable over time, as well as how multiple proof systems might interoperate, be bridged, or be composed.
 - **Cross-zone reputation portability.** DP1 assumes that accountability and trust signals are zone-scoped by default. Further work is needed to determine when and how reputation, sanctions, or trust signals should move across zones without creating unjust spillover effects or de facto global scoring systems.
-- **Liability and responsibility models for autonomous agents.** As AI agents become more capable and autonomous, clearer models are needed for assigning responsibility across operators, deployers, tool providers, and communities. DP1 establishes binding to responsible entities, but does not yet resolve how liability should be apportioned in complex, multi-actor systems.
+- **Liability and responsibility models for autonomous agents.** As AI agents become more capable and autonomous, clearer models are needed for assigning responsibility across operators, deployers, tool providers, and communities. DP1 establishes binding to responsible entities, but does not yet resolve how liability should be apportioned in complex, multi-actor systems. Records should preserve a path to responsible human and organizational actors rather than treating the machine artifact as a substitute for responsibility; legal allocation remains subject to the applicable framework.
 - **Thresholds for escalation across zones.** Communities will need shared patterns for deciding when local failures warrant broader response. This includes defining proportional thresholds, evidentiary standards, and governance processes for cross-zone escalation without undermining local autonomy.
-- **Meta-Layer coordination mechanisms.** DP1 implies the need for shared coordination mechanisms capable of maintaining coherent context across human participants, AI agents, content objects, and communities. Such mechanisms would support converging profiles, scoped capabilities, and durable accountability without requiring centralized control. Emerging approaches to structured context exchange and agent coordination, such as Model Context Protocols (MCP), may offer useful design patterns for this layer when generalized beyond model runtime to sociotechnical actors. The design of any such Meta-Layer coordination protocol remains an open area of research and standardization.
+- **Meta-Layer coordination mechanisms.** DP1 implies the need for shared coordination mechanisms capable of maintaining coherent context across human participants, AI agents, content objects, and communities. Such mechanisms would support converging profiles, scoped capabilities, and durable accountability without requiring centralized control. Emerging approaches to structured context exchange and agent coordination, such as Model Context Protocols (MCP), may offer useful design patterns for this layer when generalized beyond model runtime to sociotechnical actors. The design of any such Meta-Layer coordination protocol remains an open area of research and standardization. A minimal protocol for personal and corporate agents should specify observable traces, exchange formats, and distributed authentication across websites, interfaces, and independently operated agents (DP7, Section 12.9.1, Agent interaction contracts).
 
 Further questions concern how a trust system is measured and how its guarantees behave under pressure:
 
@@ -841,7 +851,7 @@ Key steps toward ML-RFC status include:
 
 Graduation criteria SHOULD include demonstrable evidence, not description alone:
 
-- conformance tests for each condition under *Minimum DP1 Alignment*, including adversarial scenarios for replay, sybil saturation, and lineage loss
+- conformance tests for each condition under Section 19, including adversarial scenarios for replay, sybil saturation, and lineage loss
 - reference schemas for agent identifiers, attribution records, zone profiles, and enforcement receipts
 - evidence that identity continuity survives migration into at least one independent system, or that degradation is signaled where it does not
 - evidence that appeals resolve within stated timelines and that reversal outcomes are observable
@@ -861,6 +871,6 @@ When DP1 is strong, participation carries weight. Reputation accumulates because
 
 When DP1 is weak, everything above it becomes performance. Governance votes that anyone can flood. Agency controls over flows no one can attribute. Ethical AI commitments with no responsible entity behind an output. Commerce where the same identity collects twice.
 
-*DP1 defines the conditions under which trust can emerge. Without it, the meta-layer becomes another surface. With it, the meta-layer becomes a place.*
+*DP1 defines the conditions under which trust can emerge. Without it, the Meta-Layer becomes another surface. With it, the Meta-Layer becomes a place.*
 
 ---
