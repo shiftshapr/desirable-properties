@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-cover-inscription",
+      "date": "2026-11-14",
+      "status": "open",
+      "title": "Book: the Cover page shows the 2026 cover art from its Bitcoin inscription",
+      "summary": "The 2026 Layered Web cover (600×600 webp, with the Foreword by Vint Cerf seal) is now inscribed on Bitcoin as 3e7a8279…341ai0. The Cover page image, and the Gov Hub Version 1.0 cover text it will be inscribed from, now point at /content/<inscription id> instead of /assets/cover.png. The book's 'Book cover inscription' link (press i) and the manifests now name the new inscription; the earlier cover art (64a9550a…29i0) stays on chain. Gov Hub's cover text now also continues to the Edition and license page, matching the book.",
+      "changes": [
+        "content/local/cover.md: cover image → /content/3e7a8279…341ai0 (rail-synced from Gov Hub)",
+        "json/sources-sat.json bookCoverInscriptionId and json/desirableproperties-book-manifest.json inscriptions.cover → 3e7a8279…341ai0; README cover line",
+        "Gov Hub (production, 14 Nov): ML-Draft-033 rev 01 edited in place (cover image → /content/3e7a8279…341ai0; Continue → /viewer/edition); content_hash updated; backup in box1 ~/dp-runs/cover-inscription-20261114T071810Z"
+      ]
+    },
+    {
       "id": "v1-share-menu-fix",
       "date": "2026-11-14",
       "status": "open",

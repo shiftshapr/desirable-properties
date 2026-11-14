@@ -6,7 +6,7 @@
   "workId": "desirableproperties-book",
   "title": "The Layered Web: The Desirable Properties of a Meta-Layer",
   "summary": "Sources sat for The Layered Web. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
-  "bookCoverInscriptionId": "64a9550abc8cb51d9825caf111f1477676cb69cd8ffde1fcddff12fcf12b9829i0",
+  "bookCoverInscriptionId": "3e7a8279c045187d7db87bdf12db05315580d63334da3047cd7490e2eee3341ai0",
   "articleRails": [
     "book_cover",
     "edition",
