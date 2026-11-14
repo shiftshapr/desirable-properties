@@ -1,6 +1,6 @@
 name: Gov Hub rail sync
 
-# Pull approved Gov Hub revisions into content/local/dp*.md (see docs/GOVHUB-RAIL-SYNC.md).
+# Pull approved Gov Hub revisions into the book rails listed in json/sources-sat.json (see docs/GOVHUB-RAIL-SYNC.md).
 
 on:
   schedule:
@@ -80,14 +80,23 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
-          rails=(
-            desirableproperties-book/content/local/dp*.md
-            desirableproperties-book/content/local/about.md
-            desirableproperties-book/content/local/acknowledgements.md
-          )
-          asset_dir="desirableproperties-book/content/local/assets/dp"
+          # Every rail the sync script writes: each sources-sat.json source with an mlNumber
+          # (cover, foreword, about, acknowledgements, introduction, dp1-dp24; edition once it gets one).
           shopt -s nullglob
-          files=("${rails[@]}")
+          files=()
+          while IFS= read -r rail; do
+            [ -f "${rail}" ] && files+=("${rail}")
+          done < <(python3 - <<'PY'
+          import json
+          data = json.load(open('desirableproperties-book/json/sources-sat.json', encoding='utf-8'))
+          for src in data.get('sources', []):
+              local = (src.get('localOverride') or '').strip()
+              if src.get('mlNumber') and local.startswith('/content/local/'):
+                  print('desirableproperties-book' + local)
+          PY
+          )
+          files+=(desirableproperties-book/content/local/dp*.md)
+          asset_dir="desirableproperties-book/content/local/assets/dp"
           if [ -d "${asset_dir}" ]; then
             while IFS= read -r asset; do
               files+=("${asset}")
