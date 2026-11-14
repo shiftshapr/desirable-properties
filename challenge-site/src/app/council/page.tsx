@@ -157,8 +157,7 @@ export default async function CouncilPage() {
           <Link href="/steering" className="text-cyan-300 hover:text-cyan-200">
             steering committee
           </Link>
-          , which moves proposals through each release and signs off each version. The council stewards the living book
-          and the Desirable Properties over time.
+          , which moves proposals through each release and signs off each version.
         </p>
       </header>
 
