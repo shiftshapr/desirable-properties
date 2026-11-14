@@ -7,4 +7,4 @@
 
 This is the open-access Version 1.0 edition of *The Layered Web: The Desirable Properties of a Meta-Layer*, released on November 13, 2026. It contains the twenty-four Desirable Properties of a Meta-Layer – community-defined foundations for decentralized digital infrastructure. Most chapters are inscribed on Bitcoin; working drafts and community patches live on [Gov Hub](https://interfacehub.net/doc/all/?collection=desirable-properties) and the Canopi overlay.
 
-[Continue to the Introduction →](/viewer/intro)
+[Continue to the Edition and license →](/viewer/edition)
