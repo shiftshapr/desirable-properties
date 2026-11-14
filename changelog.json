@@ -4,6 +4,23 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "dp-council-pages",
+      "date": "2026-11-14",
+      "status": "open",
+      "title": "Council: /council and /council/<election> pages for the Desirable Properties Council, driven by the Gov Hub council election API",
+      "summary": "New public pages for the Desirable Properties Council, which stewards the living book and the Desirable Properties over time (a separate body from the Version 1.1 steering committee). /council shows the council's purpose and responsibilities, current members, the current election with its phase (announced, nominations, voting, results) and key dates in the visitor's time zone and Pacific, and past elections; with no public election it says the first election will be announced there and points to /improve and /participate. /council/<election> shows the announcement, a countdown to the next phase, the standing candidates (name, statement, nominator count) and, once published, the results (approvals, elected, turnout). Signed-in visitors can stand with a statement, nominate someone by email, accept or decline a nomination, withdraw, and cast, change or withdraw an approval ballot (confirm step; ballot order as Gov Hub returns it). During voting only the number of ballots cast is shown. 'Council' is added to the Version 1.0 menu and a short Council card to /participate.",
+      "changes": [
+        "challenge-site/src/app/council/page.tsx, src/app/council/[electionId]/page.tsx: new pages (server-rendered from Gov Hub /api/councils/dp/…)",
+        "challenge-site/src/components/council/*: ElectionStepper, KeyDates/LocalTime (visitor's zone + Pacific), PhaseCountdown, ElectionActions (apply, nominate, respond, withdraw, ballot), CouncilMarkdown",
+        "challenge-site/src/app/api/council/**: server routes via proxyGovHubJson; public GETs, signed-in writes with the visitor's Bearer token; Gov Hub status and error code passed through with a plain-language message",
+        "challenge-site/src/lib/council.ts, council.server.ts: types, phase helpers, error messages, Gov Hub fetch",
+        "challenge-site/src/lib/siteNav.ts: Version 1.0 menu → Council; src/app/participate/page.tsx: Council card after the contribution paths",
+        "Follow-up: key dates name the visitor's time zone once above the list; times inside sentences stay on one line; phase labels wrap on phones",
+        "Follow-up: a pending nominee sees only the accept/decline panel, not also 'Stand for the council'",
+        "Follow-up: result rows wrap long names on phones instead of truncating them"
+      ]
+    },
+    {
       "id": "book-cover-inscription",
       "date": "2026-11-14",
       "status": "open",
