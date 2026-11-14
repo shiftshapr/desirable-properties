@@ -4,6 +4,16 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-share-menu-fix",
+      "date": "2026-11-14",
+      "status": "open",
+      "title": "/v1 Share: menu no longer cut off; LinkedIn opens with the link and its book preview",
+      "summary": "The /v1 hero clips anything that overflows it, so the Share menu showed only Copy link and LinkedIn; X, Bluesky and Email were hidden below the fold of the section. The menu now opens upward. LinkedIn's share-offsite URL opened an empty composer with no preview card; the LinkedIn option now uses shareActive with the share text and link pre-filled, so LinkedIn builds the card (og:image is the book) from the link.",
+      "changes": [
+        "challenge-site/src/components/v1/V1ReportHero.tsx: menu bottom-full; LinkedIn → linkedin.com/feed/?shareActive=true&text=…"
+      ]
+    },
+    {
       "id": "book-inscribed-images",
       "date": "2026-11-14",
       "status": "open",
