@@ -63,6 +63,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
       { href: '/improve', label: 'Help shape Version 1.1' },
       { href: 'https://book.desirableproperties.org/', label: 'Read the book', external: true },
       { href: '/steering', label: 'Steering and proposals' },
+      { href: '/council', label: 'Council' },
       { href: '/press', label: 'Press release' },
     ],
   },

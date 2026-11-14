@@ -430,6 +430,27 @@ export default function ParticipatePage() {
               </li>
             ))}
           </ul>
+
+          <div className="mt-8 rounded-xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8">
+            <div className="flex flex-wrap items-start gap-3">
+              <span className="text-2xl" aria-hidden>
+                🏛️
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xl font-semibold text-white">The Desirable Properties Council</h3>
+                <p className="mt-3 text-base leading-relaxed text-slate-300">
+                  The council stewards the living book and the Desirable Properties over time. Its members are elected:
+                  you can stand, nominate someone, and vote when an election is open.
+                </p>
+                <Link
+                  href="/council"
+                  className="mt-5 inline-flex items-center rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-200 hover:border-slate-500"
+                >
+                  About the council and its elections →
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
