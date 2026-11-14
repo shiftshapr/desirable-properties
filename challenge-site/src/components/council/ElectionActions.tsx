@@ -195,7 +195,7 @@ export default function ElectionActions(props: Props) {
     sections.push(
       <Notice key="announced">
         Nominations open{' '}
-        {props.nominationsOpenAt ? <LocalTime iso={props.nominationsOpenAt} showPacific={false} /> : 'soon'}. You
+        {props.nominationsOpenAt ? <LocalTime iso={props.nominationsOpenAt} inline /> : 'soon'}. You
         will be able to stand yourself or nominate someone then.
         {me.eligible ? ' You are eligible to vote in this election.' : ''}
       </Notice>,
@@ -219,7 +219,7 @@ export default function ElectionActions(props: Props) {
     sections.push(
       <Notice key="review">
         Nominations have closed. Voting opens{' '}
-        {props.votingOpenAt ? <LocalTime iso={props.votingOpenAt} showPacific={false} /> : 'soon'}.
+        {props.votingOpenAt ? <LocalTime iso={props.votingOpenAt} inline /> : 'soon'}.
         {me.eligible ? ' You are eligible to vote.' : ''}
       </Notice>,
     );
@@ -560,7 +560,7 @@ function BallotPanel({
     } else setError(errorText(r));
   };
 
-  const closeText = votingCloseAt ? <LocalTime iso={votingCloseAt} showPacific={false} /> : 'voting closes';
+  const closeText = votingCloseAt ? <LocalTime iso={votingCloseAt} inline /> : 'voting closes';
 
   if (!candidates.length) {
     return <Notice>There are no candidates standing in this election.</Notice>;
@@ -578,7 +578,7 @@ function BallotPanel({
             </p>
             {castAt ? (
               <p className="mt-1 text-xs opacity-80">
-                Last saved <LocalTime iso={castAt} showPacific={false} />
+                Last saved <LocalTime iso={castAt} inline />
               </p>
             ) : null}
           </Notice>
