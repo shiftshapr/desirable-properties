@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-inscribed-images",
+      "date": "2026-11-14",
+      "status": "open",
+      "title": "Book: DP23, DP24 and About images load from their Bitcoin inscriptions",
+      "summary": "The DP23 and DP24 hero images and About's two figures are now inscribed on Bitcoin. Their image links in the book, and in the Gov Hub Version 1.0 texts these chapters will be inscribed from, point at /content/<inscription id> instead of local files. The Cover's Continue link now goes to the Edition and license page instead of skipping the front matter.",
+      "changes": [
+        "content/local/dp23.md: hero image → /content/e03ab40d…36e4i0",
+        "content/local/dp24.md: hero image → /content/b31e29bf…49ec1i0",
+        "content/local/about.md: layered web figure → /content/0535566b…10f4i0; roadmap figure → /content/21a600b6…b54ci0 (transparent)",
+        "content/local/cover.md: Continue → /viewer/edition",
+        "Gov Hub (production, 14 Nov): the same four links swapped in place in ML-Draft-030 rev 04, ML-Draft-056 rev 01 and ML-Draft-031 rev 04; content_hash updated; backups in box1 ~/dp-runs/inscription-images-20261114T031830Z"
+      ]
+    },
+    {
       "id": "book-chapter-archives",
       "date": "2026-11-13",
       "status": "open",
