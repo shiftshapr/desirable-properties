@@ -50,7 +50,9 @@ function ShareButton() {
   const u = encodeURIComponent(SHARE_URL);
   const t = encodeURIComponent(SHARE_TEXT);
   const links: Array<[string, string]> = [
-    ['LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${u}`],
+    // LinkedIn's share-offsite opens an empty composer; shareActive pre-fills the text with the link,
+    // and LinkedIn builds the preview card (og:image, the book) from that link.
+    ['LinkedIn', `https://www.linkedin.com/feed/?shareActive=true&text=${t}%20${u}`],
     ['X', `https://twitter.com/intent/tweet?url=${u}&text=${t}`],
     ['Bluesky', `https://bsky.app/intent/compose?text=${t}%20${u}`],
     ['Email', `mailto:?subject=${encodeURIComponent('The Layered Web, Version 1.0')}&body=${t}%0A%0A${u}`],
@@ -69,7 +71,7 @@ function ShareButton() {
         Share
       </button>
       {open ? (
-        <div className="absolute left-0 z-20 mt-2 w-56 rounded-xl border border-slate-700 bg-slate-900 p-2 shadow-2xl shadow-black/60">
+        <div className="absolute bottom-full left-0 z-20 mb-2 w-56 rounded-xl border border-slate-700 bg-slate-900 p-2 shadow-2xl shadow-black/60">
           <button type="button" onClick={copy} className="block w-full rounded-lg px-3 py-2 text-left text-sm text-slate-100 hover:bg-slate-800">
             {copied ? 'Link copied' : 'Copy link'}
           </button>
