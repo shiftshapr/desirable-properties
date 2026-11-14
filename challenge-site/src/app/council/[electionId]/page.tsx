@@ -57,14 +57,16 @@ function Results({ results }: { results: ElectionResults }) {
               row.elected ? 'border-emerald-800/70 bg-emerald-950/20' : 'border-slate-800 bg-slate-950/40'
             }`}
           >
-            <span className="flex min-w-0 items-center gap-3">
+            <span className="flex min-w-0 items-start gap-3">
               <span className="w-6 shrink-0 text-right text-sm tabular-nums text-slate-500">{row.rank}.</span>
-              <span className="truncate text-slate-100">{row.name}</span>
-              {row.elected ? (
-                <span className="shrink-0 rounded-full bg-emerald-900/60 px-2 py-0.5 text-xs font-medium text-emerald-200">
-                  Elected
-                </span>
-              ) : null}
+              <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="break-words text-slate-100">{row.name}</span>
+                {row.elected ? (
+                  <span className="shrink-0 rounded-full bg-emerald-900/60 px-2 py-0.5 text-xs font-medium text-emerald-200">
+                    Elected
+                  </span>
+                ) : null}
+              </span>
             </span>
             <span className="shrink-0 text-sm tabular-nums text-slate-300">
               {row.approvals.toLocaleString()} {row.approvals === 1 ? 'approval' : 'approvals'}

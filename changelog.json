@@ -16,7 +16,8 @@
         "challenge-site/src/lib/council.ts, council.server.ts: types, phase helpers, error messages, Gov Hub fetch",
         "challenge-site/src/lib/siteNav.ts: Version 1.0 menu → Council; src/app/participate/page.tsx: Council card after the contribution paths",
         "Follow-up: key dates name the visitor's time zone once above the list; times inside sentences stay on one line; phase labels wrap on phones",
-        "Follow-up: a pending nominee sees only the accept/decline panel, not also 'Stand for the council'"
+        "Follow-up: a pending nominee sees only the accept/decline panel, not also 'Stand for the council'",
+        "Follow-up: result rows wrap long names on phones instead of truncating them"
       ]
     },
     {
