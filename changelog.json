@@ -14,7 +14,8 @@
         "challenge-site/src/components/council/*: ElectionStepper, KeyDates/LocalTime (visitor's zone + Pacific), PhaseCountdown, ElectionActions (apply, nominate, respond, withdraw, ballot), CouncilMarkdown",
         "challenge-site/src/app/api/council/**: server routes via proxyGovHubJson; public GETs, signed-in writes with the visitor's Bearer token; Gov Hub status and error code passed through with a plain-language message",
         "challenge-site/src/lib/council.ts, council.server.ts: types, phase helpers, error messages, Gov Hub fetch",
-        "challenge-site/src/lib/siteNav.ts: Version 1.0 menu → Council; src/app/participate/page.tsx: Council card after the contribution paths"
+        "challenge-site/src/lib/siteNav.ts: Version 1.0 menu → Council; src/app/participate/page.tsx: Council card after the contribution paths",
+        "Follow-up: key dates name the visitor's time zone once above the list; times inside sentences stay on one line; phase labels wrap on phones"
       ]
     },
     {

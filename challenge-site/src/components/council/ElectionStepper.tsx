@@ -14,7 +14,7 @@ export default function ElectionStepper({ phase }: { phase: CouncilPhase }) {
         return (
           <li key={step.key} className="min-w-0" aria-current={state === 'current' ? 'step' : undefined}>
             <div className={`h-1.5 rounded-full ${bar}`} />
-            <p className={`mt-2 truncate text-xs font-medium sm:text-sm ${text}`}>
+            <p className={`mt-2 break-words text-[11px] font-medium leading-tight sm:text-sm ${text}`}>
               <span className="text-slate-500">{i + 1}.</span> {step.label}
             </p>
           </li>

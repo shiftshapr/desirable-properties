@@ -237,7 +237,7 @@ export default async function ElectionPage({ params }: Props) {
 
         {e.phase === 'announced' && e.nominations_open_at ? (
           <p className="text-sm text-slate-400">
-            Candidates will be listed here once nominations open on <LocalTime iso={e.nominations_open_at} showPacific={false} />.
+            Candidates will be listed here once nominations open on <LocalTime iso={e.nominations_open_at} inline />.
           </p>
         ) : null}
       </div>

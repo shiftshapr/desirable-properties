@@ -223,7 +223,7 @@ export default async function CouncilPage() {
                       'Cancelled'
                     ) : e.results_published_at ? (
                       <>
-                        Results published <LocalTime iso={e.results_published_at} showPacific={false} />
+                        Results published <LocalTime iso={e.results_published_at} inline />
                       </>
                     ) : (
                       PHASE_LABELS[e.phase]
