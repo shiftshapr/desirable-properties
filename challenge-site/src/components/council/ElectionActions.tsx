@@ -203,7 +203,8 @@ export default function ElectionActions(props: Props) {
   }
 
   if (phase === 'nominations') {
-    if (me.can_apply) sections.push(<ApplyPanel key="apply" base={base} onDone={afterChange} />);
+    // A pending nominee answers through the nomination panel above (accepting is standing).
+    if (me.can_apply && mine?.status !== 'pending_consent') sections.push(<ApplyPanel key="apply" base={base} onDone={afterChange} />);
     if (me.can_nominate) sections.push(<NominatePanel key="nominate" base={base} />);
     if (!me.eligible && !me.can_apply) {
       sections.push(
