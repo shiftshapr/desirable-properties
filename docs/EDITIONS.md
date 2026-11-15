@@ -57,9 +57,31 @@ python3 scripts/govhub_sync_rails_from_hub.py --editions-only \
   --editions-fixture scripts/fixtures/govhub-editions-desirableproperties-book.json   # recorded answer
 ```
 
-Commit with `[rail-sync]` in the message. The current manifest was generated from the recorded fixture
-(`source.kind: "fixture"`), built from Gov Hub's Submission rows and the inscribed bytes, because the
-endpoint was not live yet; the first run against the live endpoint replaces it.
+Commit with `[rail-sync]` in the message. The committed manifest is production's. Production Gov Hub has
+no editions endpoint until the owner releases it, so it was generated from the recorded fixture
+(`source.kind: "fixture"`): its 0.77 list is byte-identical to dev Gov Hub's live answer, and its 1.0 and
+1.1 lists are the revisions production serves. The first production run replaces it.
+
+Gov Hub resolves rails per database (dev: book_cover is ML-Draft-054, dp24 ML-Draft-057, no Foreword).
+The sync fetches each rail by the document the edition in progress names, skips a rail with no document
+there (the book repo fills it from `content/local`), and before writing anything checks that every rail,
+fetched or not, holds the revision the edition in progress lists. `manifestSha256` is verified by the
+contract's method (rails reduced to `railKey`, `mlNumber`, `revision`, `submissionId`, `sha256`; canonical
+JSON); a mismatch is a malformed answer.
+
+## Two environments, kept apart
+
+| | Production | Staging |
+| --- | --- | --- |
+| Gov Hub | interfacehub.net | dev.interfacehub.net |
+| Who generates the manifest | `.github/workflows/govhub-rail-sync.yml` (`--env main`) | `scripts/staging_rail_sync.sh` (`--env dev`) |
+| Where it is written | `desirableproperties-book/json/editions.json`, committed with `[rail-sync]` | the staging web root (`~/desirableproperties-book-staging/json/`), never committed |
+| Rails it must agree with | the committed `content/local` | the staging root's `content/local`, synced from dev |
+| Site API reads | the committed manifest | `BOOK_EDITIONS_MANIFEST` pointing at the staging root's manifest |
+
+Nothing from dev is committed: dev's lists only ever reach the staging root. A staging deploy copies the
+repo's book tree (production manifest and rails) into the staging root; the next staging rail sync replaces
+both with dev's. Until it has run, the staging root shows production's text and labels.
 
 ## What "agree" checks
 
@@ -88,14 +110,17 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
 
 ## Readers and API callers
 
+- **Label rule** (the same on Gov Hub, the viewer and the API): a served revision is labelled with the
+  newest released edition whose list holds it, else the edition in progress.
 - **Book viewer:** with the manifest present, under each chapter: "Version 1.0" while the live revision is
   the 1.0 one, "Version 1.1, in progress" once a later revision is live; in Onchain mode the inscribed text
   is labelled from the manifest ("Version 0.77"); archive pages say
   "a Version 1.0 draft". Without the manifest the viewer behaves as before.
 - **Site API** (`/api/steering/<ml>/text`, `/api/workgroups/<id>/review/passages`): with no edition named,
   the live text plus `edition`, `editionStatus`, `editionLabel`, `revision`, `revisionEdition`,
-  `submissionId`; `?edition=<id>` returns that edition's text (from Gov Hub `?edition=` when it is not the
-  live text, confirmed by Gov Hub, else 501, never mislabelled live text).
+  `submissionId`; `?edition=<id>` returns that edition's text: the live text when it is that
+  edition's revision, else Gov Hub `chapter-passages/?edition=<id>`, whose 404s (`EDITION_NOT_FOUND`,
+  `NOT_IN_A_BOOK`, `NOT_IN_EDITION`) are passed on; an answer naming another revision is refused (502).
 
 ## PDFs
 
@@ -104,4 +129,8 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
 - `scripts/v1-book-pdf/build.mjs` (the book PDF) takes the edition label and date from the manifest
   (`--edition`, default the latest released), stamps the PDF info with `pdf-stamp.mjs`, and refuses to build
   a released edition whose list differs from the live revisions (Gov Hub's chapter-passages serves live text).
-- The PDFs committed today predate editions and carry no stamp; they are rebuilt only when the owner asks.
+- `scripts/stamp_pdf_edition.py` stamps an existing PDF whose text is exactly a revision on an edition
+  list: Keywords only, as an incremental update (the original bytes stay a prefix; page text is checked
+  unchanged). Owner rule: stamp proven matches first; rebuild the rest from an edition's list only where
+  the builder can get that exact text (a released edition: from production Gov Hub's `?edition=` routes,
+  after release); leave the rest untouched.

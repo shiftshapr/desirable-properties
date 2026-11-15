@@ -352,11 +352,20 @@ class PdfInfoTests(unittest.TestCase):
             p.write_bytes(minimal_pdf('dp-edition=1.0; dp-rail=dp01'))
             self.assertEqual(ed.parse_pdf_stamp(ed.pdf_info(p)['Keywords']),
                              {'dp-edition': '1.0', 'dp-rail': 'dp01'})
-            body = zlib.compress(b'<</Title (T \\(Version 1.0\\))/Keywords (dp-edition=0.77)>>')
+            body = zlib.compress(b'<</Producer (WeasyPrint)/Title (T \\(Version 1.0\\))/Keywords (dp-edition=0.77)>>')
             p.write_bytes(b'%PDF-1.7\n1 0 obj\n<</Type /ObjStm>>\nstream\n' + body + b'\nendstream\nendobj\n')
             info = ed.pdf_info(p)
             self.assertEqual(info['Keywords'], 'dp-edition=0.77')
             self.assertEqual(info['Title'], 'T (Version 1.0)')
+
+    def test_incremental_update_wins_and_outline_titles_ignored(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / 'b.pdf'
+            p.write_bytes(b'%PDF-1.4\n1 0 obj\n<</Title (Book)>>\nendobj\n5 0 obj\n<</Title (Chapter 9)>>\nendobj\n'
+                          b'trailer\n<</Info 1 0 R>>\n%%EOF\n'
+                          b'6 0 obj\n<</Title (Book)/Keywords (dp-edition\\0751.0)>>\nendobj\n'
+                          b'trailer\n<</Info 6 0 R/Prev 0>>\n%%EOF\n')
+            self.assertEqual(ed.pdf_info(p), {'Keywords': 'dp-edition=1.0', 'Title': 'Book'})
 
 
 def minimal_pdf(keywords: str) -> bytes:

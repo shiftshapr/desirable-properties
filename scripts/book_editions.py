@@ -741,28 +741,60 @@ def _pdf_strings(data: bytes) -> Iterable[bytes]:
 
 def _decode_pdf_string(raw: bytes, hexstr: bool) -> str:
     if hexstr:
-        b = bytes.fromhex(re.sub(rb'\s', b'', raw).decode('ascii') + ('0' if len(raw) % 2 else ''))
+        h = re.sub(rb'\s', b'', raw).decode('ascii')
+        b = bytes.fromhex(h + ('0' if len(h) % 2 else ''))
     else:
-        b = re.sub(rb'\\([()\\])', rb'\1', raw)
+        out = bytearray()
+        i = 0
+        esc = {ord('n'): 10, ord('r'): 13, ord('t'): 9, ord('b'): 8, ord('f'): 12}
+        while i < len(raw):
+            c = raw[i]
+            if c == 0x5C and i + 1 < len(raw):  # backslash
+                n = raw[i + 1]
+                m = re.match(rb'[0-7]{1,3}', raw[i + 1:i + 4])
+                if m:
+                    out.append(int(m.group(0), 8) & 0xFF)
+                    i += 1 + len(m.group(0))
+                    continue
+                out.append(esc.get(n, n))
+                i += 2
+                continue
+            out.append(c)
+            i += 1
+        b = bytes(out)
     if b.startswith(b'\xfe\xff'):
         return b[2:].decode('utf-16-be', errors='replace')
     return b.decode('latin-1')
 
 
+def _info_dict_text(data: bytes) -> bytes:
+    """The bytes of the document info dictionary the last trailer (or xref stream) points at."""
+    refs = re.findall(rb'/Info\s+(\d+)\s+(\d+)\s+R', data)
+    if refs:
+        num, gen = refs[-1]
+        objs = list(re.finditer(rb'(?<![0-9])' + num + rb'\s+' + gen + rb'\s+obj\s*<<(.*?)>>\s*endobj', data, re.S))
+        if objs:
+            return objs[-1].group(1)
+    # In a compressed object stream (WeasyPrint): the dictionary that carries /Producer.
+    for chunk in list(_pdf_strings(data))[1:]:
+        i = chunk.find(b'/Producer')
+        if i >= 0:
+            a = chunk.rfind(b'<<', 0, i)
+            if a >= 0:
+                return chunk[a + 2:a + 8192]  # the tokens are matched from the start of this dictionary
+    return b''
+
+
 def pdf_info(path: Path) -> dict[str, str]:
-    """/Title and /Keywords of a PDF's document info (raw or inside compressed object streams)."""
-    data = Path(path).read_bytes()
+    """/Title and /Keywords of a PDF's document info (the dictionary the last trailer names, so an
+    incremental update's new info wins; outline /Title entries are not confused with it)."""
+    text = _info_dict_text(Path(path).read_bytes())
     found: dict[str, str] = {}
-    for chunk in _pdf_strings(data):
-        for key in ('Keywords', 'Title'):
-            if key in found:
-                continue
-            m = re.search(rb'/' + key.encode() + rb'\s*(\((?:\\.|[^\\)])*\)|<[0-9A-Fa-f\s]*>)', chunk)
-            if m:
-                tok = m.group(1)
-                found[key] = _decode_pdf_string(tok[1:-1], tok.startswith(b'<'))
-        if len(found) == 2:
-            break
+    for key in ('Keywords', 'Title'):
+        m = re.search(rb'/' + key.encode() + rb'\s*(\((?:\\.|[^\\)])*\)|<[0-9A-Fa-f\s]*>)', text)
+        if m:
+            tok = m.group(1)
+            found[key] = _decode_pdf_string(tok[1:-1], tok.startswith(b'<'))
     return found
 
 
