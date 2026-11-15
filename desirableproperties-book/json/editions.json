@@ -3,12 +3,12 @@
   "work": "desirableproperties-book",
   "description": "Edition record of The Layered Web, generated from Gov Hub by the rail sync. Do not edit: see docs/EDITIONS.md.",
   "generatedBy": "scripts/govhub_sync_rails_from_hub.py",
-  "generatedAt": "2026-11-15T20:29:28Z",
+  "generatedAt": "2026-11-15T20:35:09Z",
   "source": {
     "kind": "fixture",
     "path": "scripts/fixtures/govhub-editions-desirableproperties-book.json",
-    "fetchedAt": "2026-11-15T20:29:28Z",
-    "responseSha256": "f954b84f9b8e0c952ca27e21bcbb910dd1f7a2293c79d5765dc9da3fe527dc97"
+    "fetchedAt": "2026-11-15T20:35:09Z",
+    "responseSha256": "93f55ae0209499a6dac91c2d4a5669cc1200b2d4db329870b227e94f43f0b554"
   },
   "currentEdition": "1.1",
   "liveEdition": {
@@ -24,9 +24,23 @@
       "releasedAt": null,
       "predecessorEditionId": null,
       "decisionRef": "fixture:owner-ruling-2026-11-15-edition-0.77",
-      "manifestSha256": "70ef4445e3b9fa9d84bb6e6caab435c22d33ff8f2bb4c1d2c1137337b693aa5b",
+      "manifestSha256": "8f6d9ee60a23048956564e8378f40f4b287f987d8b4e014b9481ae069af03627",
       "coverImageInscriptionId": null,
       "rails": [
+        {
+          "railKey": "ml-draft-026",
+          "mlNumber": "ML-Draft-026",
+          "revision": null,
+          "submissionId": null,
+          "sha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
+          "revisionEdition": "0.77",
+          "source": "govhub",
+          "localPath": "/content/local/introduction.md",
+          "localSha256": null,
+          "archiveKey": null,
+          "archiveRev": null,
+          "inscriptionId": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0"
+        },
         {
           "railKey": "dp01",
           "mlNumber": "ML-Draft-008",

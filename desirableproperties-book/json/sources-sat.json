@@ -96,9 +96,8 @@
       "timestamp": 1779478064,
       "inscriptionSha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
       "inscribedRevision": null,
-      "inscriptionEdition": null,
-      "inscriptionOnEditionList": null,
-      "inscriptionEditionNote": "Edition undecided: the inscribed bytes match no text on any edition list and no Gov Hub revision; the owner has not ruled which edition this inscription belongs to. Inscribed in block 950007 on 22 May 2026.",
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "Introduction – Gov Hub synced local rail (Live); ordinal fallback (Onchain)"

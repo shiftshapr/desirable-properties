@@ -1,5 +1,5 @@
 {
-  "_fixture": "Recorded 2026-11-15 by the book repo from the Gov Hub production Submission rows (read-only copy in ~/dp-audits/inscriptions/work/govhub-submissions.json, 14 Nov) and the contract in edition-record-contract.md. Not a Gov Hub answer: replace it by the live GET /api/doc/editions/?work=desirableproperties-book. decisionRef is a placeholder; manifestSha256 is sha256 over the canonical JSON (sorted keys, no spaces) of rails, an assumption the contract does not pin. Edition 0.77 (owner ruling 15 Nov 2026): the DP1-DP22 text inscribed in May 2026; sha256 is the sha256 of the inscribed bytes; submissionId is the Gov Hub revision whose file is byte-identical to the inscription, null for DP22 (its base submission was created from the ordinal and has no file). releasedAt is left null.",
+  "_fixture": "Recorded 2026-11-15 by the book repo from the Gov Hub production Submission rows (read-only copy in ~/dp-audits/inscriptions/work/govhub-submissions.json, 14 Nov) and the contract in edition-record-contract.md. Not a Gov Hub answer: replace it by the live GET /api/doc/editions/?work=desirableproperties-book. decisionRef is a placeholder; manifestSha256 is sha256 over the canonical JSON (sorted keys, no spaces) of rails, an assumption the contract does not pin. Edition 0.77 (owner rulings 15 Nov 2026): the Introduction and DP1-DP22 text inscribed in May 2026; sha256 is the sha256 of the inscribed bytes; submissionId is the Gov Hub revision whose file is byte-identical to the inscription, null for the Introduction (no Gov Hub revision has its bytes) and DP22 (its base submission was created from the ordinal and has no file). releasedAt is left null.",
   "work": "desirableproperties-book",
   "currentEdition": "1.1",
   "editions": [
@@ -10,8 +10,16 @@
       "releasedAt": null,
       "predecessorEditionId": null,
       "decisionRef": "fixture:owner-ruling-2026-11-15-edition-0.77",
-      "manifestSha256": "70ef4445e3b9fa9d84bb6e6caab435c22d33ff8f2bb4c1d2c1137337b693aa5b",
+      "manifestSha256": "8f6d9ee60a23048956564e8378f40f4b287f987d8b4e014b9481ae069af03627",
       "rails": [
+        {
+          "railKey": "ml-draft-026",
+          "mlNumber": "ML-Draft-026",
+          "revision": null,
+          "submissionId": null,
+          "sha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
+          "revisionEdition": "0.77"
+        },
         {
           "railKey": "dp01",
           "mlNumber": "ML-Draft-008",
