@@ -83,7 +83,7 @@ const CONTRIBUTE_CARDS = [
             book.desirableproperties.org
           </a>{' '}
           or{' '}
-          <a href="/downloads/desirable-properties-v1.0.pdf" className="text-cyan-300 hover:text-cyan-200">
+          <a href="/downloads/1.0/book.pdf" className="text-cyan-300 hover:text-cyan-200">
             download the PDF
           </a>
           .

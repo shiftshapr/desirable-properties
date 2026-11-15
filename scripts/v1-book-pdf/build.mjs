@@ -155,6 +155,12 @@ export function fetchListedText(row, { hub, editionId, textsDir, fetcher = curl 
       if (String(e.message).startsWith('STOP')) throw e;  // a ?edition= answer that disagrees stops; a missing route falls back
     }
     buf = fetcher(`${hub}/doc/draft/${encodeURIComponent(row.submissionId)}.txt`, true);
+    if (sha256(buf) !== row.sha256 && row.inscriptionId) {
+      // A revision made from its inscription (0.77) has no stored upload: its text is the inscribed bytes.
+      for (const base of INSCRIPTION_MIRRORS) {
+        try { const b = fetcher(base + row.inscriptionId, true); if (sha256(b) === row.sha256) { buf = b; break; } } catch { /* next mirror */ }
+      }
+    }
     if (passages && JSON.stringify(passages) !== JSON.stringify(splitPassages(buf.toString('utf8')))) {
       throw new Error(`STOP: ${row.railKey}: chapter-passages/?edition=${editionId} differs from the stored text of ${row.submissionId}`);
     }
@@ -485,8 +491,8 @@ function chapterHtml(ch, validDps, first) {
     ${img ? `<figure class="illustration"><img src="${esc(resolveImage(img[2]))}" alt="${esc(img[1])}"></figure>` : ''}
     <p class="online">Read, annotate and discuss this chapter online:<br><a href="${online}">${online.replace(/^https:\/\//, '')}</a></p>
   </div>
-  <div class="chapter-body">${body}</div>
-  <p class="chapter-end"><a href="${online}">Continue the conversation on ${esc(name)} online →</a></p>
+  <div class="chapter-body">${body}
+  <p class="chapter-end"><a href="${online}">Continue the conversation on ${esc(name)} online →</a></p></div>
 </section>`;
 }
 
@@ -588,6 +594,8 @@ a.xref { color: #7a5b16; }
 strong { font-weight: 600; }
 .running { string-set: running content(text); height: 0; overflow: hidden; font-size: 0; line-height: 0; margin: 0; }
 
+/* A part never ends with its last block alone on a page (the edition gate stops a page holding only one line). */
+.matter > :last-child, .chapter-body > :last-child, .matter > p:nth-last-child(2) { break-before: avoid; }
 h2, h3, h4 { font-family: Inter, sans-serif; color: var(--ink); break-after: avoid; line-height: 1.25; text-align: left; hyphens: manual; }
 h2 { font-size: 12.6pt; font-weight: 700; margin: 1.6em 0 0.55em; }
 h3 { font-size: 10.6pt; font-weight: 600; margin: 1.3em 0 0.4em; }
@@ -931,8 +939,10 @@ function furniture(entry, kind) {
   if (kind === 'chapter') {
     const isDp = /^DP\d+$/.test(entry.dp || '');
     const name = isDp ? entry.dp : entry.title;
+    // The opener prints "DPn" before the title; when the title does not start with it, that is template text too.
+    const dpPrefix = isDp && !new RegExp(`^${entry.dp}\\b`).test(entry.title || '') ? [entry.dp] : [];
     return {
-      before: [isDp ? `Desirable Property ${Number(entry.dp.slice(2))}` : (entry.kicker || 'Chapter')],
+      before: [isDp ? `Desirable Property ${Number(entry.dp.slice(2))}` : (entry.kicker || 'Chapter'), ...dpPrefix],
       afterHead: ['Read, annotate and discuss this chapter online:', `${BOOK_URL.replace('https://', '')}/viewer/${entry.railKey}`],
       after: [`Continue the conversation on ${name} online →`],
     };
@@ -1026,7 +1036,8 @@ ${chapterHtml(ch, validDps, true).replace(/<\/section>\s*$/, `${colophon}\n</sec
   const report = {
     editionId: edition.editionId, label: edition.label, status: edition.status, preview, builtDate: built.toISOString().slice(0, 10),
     editionLine: REBUILT_LINE || PREVIEW_LINE, manifestSha256: edition.manifestSha256 || null,
-    book: { file: path.basename(bookFile), pages: layout.pages, folios: layout.folios, toc: layout.toc, sections },
+    book: { file: path.basename(bookFile), pages: layout.pages, folios: layout.folios, toc: layout.toc, sections,
+      sectionStarts: layout.sections },
     chapters: chapterReports, files: names,
   };
   fs.writeFileSync(path.join(outDir, 'build-report.json'), JSON.stringify(report, null, 2));

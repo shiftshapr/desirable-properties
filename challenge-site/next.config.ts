@@ -27,17 +27,23 @@ const WEB3AUTH_CSP = [
 ].join('; ');
 
 /**
- * Retired "0.77X" chapter composites (and their dpN.pdf aliases) → the Version 1.0 chapter PDFs
- * (docs/EDITIONS.md). Permanent: people and search engines hold the old links.
+ * Retired chapter and book PDF addresses → the stored Version 1.0 files (docs/EDITIONS.md, "Serving and caching").
+ * Permanent: people and search engines hold the old links. The "0.77X" composites and their dpN.pdf aliases, and
+ * the committed Version 1.0 files that the backend store replaced.
  */
-const RETIRED_CHAPTER_PDF_REDIRECTS = Array.from({ length: 24 }, (_, i) => {
-  const n = i + 1;
-  const destination = `/downloads/dp-v1.0/dp${String(n).padStart(2, '0')}-v1.0.pdf`;
-  return [
-    { source: `/downloads/dp/DP${n}-0.77X.pdf`, destination, permanent: true },
-    { source: `/downloads/dp/dp${n}.pdf`, destination, permanent: true },
-  ];
-}).flat();
+const RETIRED_CHAPTER_PDF_REDIRECTS = [
+  { source: '/downloads/desirable-properties-v1.0.pdf', destination: '/downloads/1.0/book.pdf', permanent: true },
+  ...Array.from({ length: 24 }, (_, i) => {
+    const n = i + 1;
+    const nn = String(n).padStart(2, '0');
+    const destination = `/downloads/1.0/dp${nn}.pdf`;
+    return [
+      { source: `/downloads/dp/DP${n}-0.77X.pdf`, destination, permanent: true },
+      { source: `/downloads/dp/dp${n}.pdf`, destination, permanent: true },
+      { source: `/downloads/dp-v1.0/dp${nn}-v1.0.pdf`, destination, permanent: true },
+    ];
+  }).flat(),
+];
 
 const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
