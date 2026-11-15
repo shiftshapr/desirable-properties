@@ -1,29 +1,46 @@
 import fs from 'fs';
 import path from 'path';
-import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { DP_BOOK_ORIGIN, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import type { EditionResolution, EditionsManifest } from '@/lib/book-editions';
 import { resolveEdition } from '@/lib/book-editions';
 import { fetchChapterPassages } from '@/lib/workgroup-review-govhub';
 
-// The edition record of the Gov Hub this site talks to. Production: the committed manifest, generated from
-// production Gov Hub by the production rail sync. Staging (dev Gov Hub): point BOOK_EDITIONS_MANIFEST at the
-// staging book's manifest, which the staging rail sync generates from dev (never committed).
-const MANIFEST =
+// The edition record of the book this site serves. Read from the repo checkout when the book tree sits beside
+// the site (BOOK_EDITIONS_MANIFEST overrides the path); otherwise from the site's own book host
+// (DP_BOOK_ORIGIN: staging.book… on staging, book… on production), so each environment reads its own record.
+const LOCAL_MANIFEST =
   process.env.BOOK_EDITIONS_MANIFEST || path.resolve(process.cwd(), '..', 'desirableproperties-book/json/editions.json');
+const REMOTE_TTL_MS = 5 * 60 * 1000;
 
-let cache: { mtimeMs: number; manifest: EditionsManifest | null } | null = null;
+let cache: { key: string; at: number; manifest: EditionsManifest | null } | null = null;
 
-/** The book's edition record, or null when it is not there (the site then answers as before). */
-export function readEditionsManifest(): EditionsManifest | null {
+function usable(data: unknown): EditionsManifest | null {
+  const m = data as EditionsManifest | null;
+  return m && Array.isArray(m.editions) && m.editions.length ? m : null;
+}
+
+/** The book's edition record, or null when it cannot be read (the site then answers as before). */
+export async function readEditionsManifest(): Promise<EditionsManifest | null> {
   try {
-    const { mtimeMs } = fs.statSync(MANIFEST);
-    if (cache && cache.mtimeMs === mtimeMs) return cache.manifest;
-    const data = JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) as EditionsManifest;
-    const manifest = Array.isArray(data?.editions) && data.editions.length ? data : null;
-    cache = { mtimeMs, manifest };
+    const { mtimeMs } = fs.statSync(LOCAL_MANIFEST);
+    const key = `file:${mtimeMs}`;
+    if (cache && cache.key === key) return cache.manifest;
+    const manifest = usable(JSON.parse(fs.readFileSync(LOCAL_MANIFEST, 'utf8')));
+    cache = { key, at: Date.now(), manifest };
     return manifest;
   } catch {
-    return null;
+    /* not beside the site: read the book host's copy */
+  }
+  if (cache && cache.key === 'remote' && Date.now() - cache.at < REMOTE_TTL_MS) return cache.manifest;
+  try {
+    const res = await fetch(`${DP_BOOK_ORIGIN}/json/editions.json`, {
+      cache: 'no-store', headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(8000),
+    });
+    const manifest = res.ok ? usable(await res.json()) : null;
+    cache = { key: 'remote', at: Date.now(), manifest };
+    return manifest;
+  } catch {
+    return cache?.manifest ?? null;
   }
 }
 
@@ -37,7 +54,7 @@ export async function chapterPassagesWithEdition(
   draftRef: string,
   edition: string | null,
 ): Promise<{ ok: true; passages: string[]; resolution: EditionResolution | null } | { ok: false; status: number; error: string }> {
-  const resolution = resolveEdition(readEditionsManifest(), draftRef, edition);
+  const resolution = resolveEdition(await readEditionsManifest(), draftRef, edition);
   if (resolution && !resolution.ok) return resolution;
   if (!resolution || resolution.isLive) {
     return { ok: true, passages: await fetchChapterPassages(draftRef), resolution };
