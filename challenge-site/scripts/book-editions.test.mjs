@@ -40,3 +40,15 @@ test('unknown edition, chapter outside an edition, and no manifest', () => {
   assert.equal(resolveEdition(null, 'ML-Draft-008', '1.0').status, 404);
   assert.equal(resolveEdition(MANIFEST, 'ML-Draft-999', null), null);
 });
+
+test('chapter PDF download follows the newest released edition, labelled from the manifest', async () => {
+  const { chapterPdfDownload } = await import('../src/lib/book-editions.ts');
+  assert.deepEqual(chapterPdfDownload(MANIFEST, 7), {
+    href: '/downloads/dp-v1.0/dp07-v1.0.pdf', filename: 'dp07-v1.0.pdf', label: 'Download PDF · Version 1.0',
+  });
+  // A chapter changed in 1.1 still offers its 1.0 PDF until 1.1 is released.
+  const m = clone();
+  Object.assign(m.editions.find((e) => e.status === 'in_progress').rails.find((r) => r.railKey === 'dp07'), { submissionId: 'new' });
+  assert.equal(chapterPdfDownload(m, 7).label, 'Download PDF · Version 1.0');
+  assert.equal(chapterPdfDownload(null, 7), null);
+});

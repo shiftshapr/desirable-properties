@@ -5,6 +5,8 @@ import {
   inscriptionUrl,
   submissionLink as submissionLinkFromMap,
 } from '@/lib/ordinalLinks';
+import { chapterPdfDownload } from '@/lib/book-editions';
+import { readEditionsManifest } from '@/lib/book-editions.server';
 
 export { inscriptionUrl, archiveSubmissionUrl };
 
@@ -108,24 +110,24 @@ export function dpGovHubDraftUrl(dpId: string | null | undefined): string | null
   return dpInscriptionData?.draft_only?.[normalized]?.govhub_url ?? null;
 }
 
-/** Composite working-draft version stamped into downloadable PDF filenames. */
-export const DP_COMPOSITE_PDF_VERSION = '0.77X';
-
-/** Public composite PDF download for a DP (served from /public/downloads/dp/). */
-export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
+function dpNumberOf(dpId: string | null | undefined): number | null {
   if (!dpId) return null;
-  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
-  if (!/^DP\d+$/.test(normalized)) return null;
-  // Versioned composite (ordinal + local updates), e.g. DP13-0.77X.pdf
-  return `/downloads/dp/${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
+  const m = /^(?:DP)?(\d+)$/i.exec(dpId.trim());
+  return m ? Number(m[1]) : null;
 }
 
-/** Suggested download filename for the composite DP PDF. */
+/** The chapter's Version-labelled PDF (newest released edition, from the edition manifest); null without one. */
+export function dpPdfDownload(dpId: string | null | undefined): { href: string; filename: string; label: string } | null {
+  const n = dpNumberOf(dpId);
+  return n == null ? null : chapterPdfDownload(readEditionsManifest(), n);
+}
+
+export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
+  return dpPdfDownload(dpId)?.href ?? null;
+}
+
 export function dpPdfDownloadFilename(dpId: string | null | undefined): string | null {
-  if (!dpId) return null;
-  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
-  if (!/^DP\d+$/.test(normalized)) return null;
-  return `${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
+  return dpPdfDownload(dpId)?.filename ?? null;
 }
 
 export function loadAllDpInscriptions(): Record<string, string> {

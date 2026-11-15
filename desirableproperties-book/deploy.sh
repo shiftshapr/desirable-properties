@@ -45,13 +45,8 @@ if [ -d "$PAGES_SRC/downloads" ]; then
   mkdir -p "$DEST/downloads"
   rsync -a "$PAGES_SRC/downloads/" "$DEST/downloads/"
 fi
-# Prefer freshly generated composites when the generator is available.
-if [ -x "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" ] || [ -f "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" ]; then
-  python3 "$PAGES_SRC/../scripts/generate-composite-dp-pdfs.py" || echo "NOTE: composite PDF generation skipped/failed"
-  if [ -d "$PAGES_SRC/downloads" ]; then
-    rsync -a "$PAGES_SRC/downloads/" "$DEST/downloads/"
-  fi
-fi
+# Chapter PDFs are the edition's builds (downloads/dp-v<edition>/, docs/EDITIONS.md). The retired
+# "0.77X" composites are no longer generated; nginx redirects their URLs (book.desirableproperties.org.conf).
 
 if command -v nginx >/dev/null; then
   if sudo -n true 2>/dev/null; then

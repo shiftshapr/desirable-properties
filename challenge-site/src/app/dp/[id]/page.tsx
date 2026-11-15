@@ -27,8 +27,7 @@ import {
   loadDpProvenance,
   dpInscriptionUrl,
   dpGovHubDraftUrl,
-  dpPdfDownloadUrl,
-  dpPdfDownloadFilename,
+  dpPdfDownload,
   loadPciProvenanceForDp,
 } from '@/lib/dpProvenance';
 import { resolveBackPath, sanitizeRelativePath } from '@/lib/dp-links';
@@ -91,6 +90,7 @@ function SpecView({
   govhubDraftHref,
   pdfDownloadHref,
   pdfDownloadName,
+  pdfDownloadLabel,
   provenance,
   pciLinks,
 }: {
@@ -107,6 +107,7 @@ function SpecView({
   govhubDraftHref: string | null;
   pdfDownloadHref: string | null;
   pdfDownloadName: string | null;
+  pdfDownloadLabel: string | null;
   provenance: ReturnType<typeof loadDpProvenance>;
   pciLinks: ReturnType<typeof loadPciProvenanceForDp>;
 }) {
@@ -211,7 +212,7 @@ function SpecView({
                     download={pdfDownloadName || undefined}
                     className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
                   >
-                    Download PDF ({pdfDownloadName || 'composite'}) →
+                    {pdfDownloadLabel} →
                   </a>
                 ) : null}
                 {onchainDraftHref ? (
@@ -344,8 +345,10 @@ export default async function DPPage({
   const isWorkgroupMember = Boolean(workgroup?.id && memberWorkgroupIds.has(workgroup.id));
   const onchainDraftHref = dpInscriptionUrl(dp.id);
   const govhubDraftHref = dpGovHubDraftUrl(dp.id);
-  const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
-  const pdfDownloadName = dpPdfDownloadFilename(dp.id);
+  const pdfDownload = dpPdfDownload(dp.id);
+  const pdfDownloadHref = pdfDownload?.href ?? null;
+  const pdfDownloadName = pdfDownload?.filename ?? null;
+  const pdfDownloadLabel = pdfDownload?.label ?? null;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -383,6 +386,7 @@ export default async function DPPage({
         readHref={readHref}
         pdfDownloadHref={pdfDownloadHref}
         pdfDownloadName={pdfDownloadName}
+        pdfDownloadLabel={pdfDownloadLabel}
         workgroupHref={workgroupHref}
         collabEnabled={collabEnabled}
       />
@@ -474,6 +478,7 @@ export default async function DPPage({
             govhubDraftHref={govhubDraftHref}
             pdfDownloadHref={pdfDownloadHref}
             pdfDownloadName={pdfDownloadName}
+            pdfDownloadLabel={pdfDownloadLabel}
             provenance={provenance}
             pciLinks={pciLinks}
           />

@@ -26,10 +26,24 @@ const WEB3AUTH_CSP = [
   "font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com https:",
 ].join('; ');
 
+/**
+ * Retired "0.77X" chapter composites (and their dpN.pdf aliases) → the Version 1.0 chapter PDFs
+ * (docs/EDITIONS.md). Permanent: people and search engines hold the old links.
+ */
+const RETIRED_CHAPTER_PDF_REDIRECTS = Array.from({ length: 24 }, (_, i) => {
+  const n = i + 1;
+  const destination = `/downloads/dp-v1.0/dp${String(n).padStart(2, '0')}-v1.0.pdf`;
+  return [
+    { source: `/downloads/dp/DP${n}-0.77X.pdf`, destination, permanent: true },
+    { source: `/downloads/dp/dp${n}.pdf`, destination, permanent: true },
+  ];
+}).flat();
+
 const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
   async redirects() {
     return [
+      ...RETIRED_CHAPTER_PDF_REDIRECTS,
       { source: '/v1/improve', destination: '/improve', permanent: false },
       { source: '/adjudication', destination: '/steering', permanent: false },
       { source: '/decisions', destination: '/steering', permanent: false },
