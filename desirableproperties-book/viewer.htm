@@ -1747,17 +1747,41 @@
       };
     }
 
-    /** The chapter PDF of the newest released edition in json/editions.json: label and file come from the
-        manifest (docs/EDITIONS.md). A chapter changed in the edition in progress still offers that PDF. */
+    /* Chapter PDFs: the latest published edition's files as Gov Hub records them, through the site's cached
+       API (docs/EDITIONS.md). Files live on the site (desirableproperties.org/downloads/...), built once per
+       edition by the backend job. Without an answer the stable /downloads/latest/<rail>.pdf address is offered. */
+    const SITE_ORIGIN = (function () {
+      const h = location.hostname;
+      if (h === 'staging.book.desirableproperties.org') return 'https://staging.desirableproperties.org';
+      if (h === 'book.desirableproperties.org' || h === 'book.themetalayer.org') return 'https://desirableproperties.org';
+      return '';  // the viewer under desirableproperties.org/viewer: same origin
+    })();
+    let EDITION_PDFS = null;
+
+    async function loadEditionPdfs() {
+      try {
+        const r = await fetch(SITE_ORIGIN + '/api/book/edition-pdfs', { cache: 'no-cache' });
+        if (r.ok) { const d = await r.json(); if (d && Array.isArray(d.editions)) EDITION_PDFS = d; }
+      } catch (e) { /* the stable latest address still works */ }
+      return EDITION_PDFS;
+    }
+
+    function pdfName(editionId, file) {
+      return file === 'book.pdf' ? 'desirable-properties-v' + editionId + '.pdf' : file.replace(/\.pdf$/, '-v' + editionId + '.pdf');
+    }
+
     function chapterPdfDownload(r) {
-      const dp = (r && r.dp) ? String(r.dp).toUpperCase() : '';
-      const m = /^DP(\d+)$/.exec(dp);
-      if (!m || !EDITIONS) return null;
-      const released = editionChain().filter(function (e) { return e.status === 'released'; });
-      const ed = released[released.length - 1];
-      if (!ed) return null;
-      const fname = 'dp' + String(parseInt(m[1], 10)).padStart(2, '0') + '-v' + ed.editionId + '.pdf';
-      return { href: '/downloads/dp-v' + ed.editionId + '/' + fname, fname: fname, label: ed.label };
+      const rail = r && r.railKey;
+      if (!rail || !/^dp\d{2}$|^[a-z][a-z0-9-]*$/.test(rail) || !r.dp) return null;
+      const latest = EDITION_PDFS && EDITION_PDFS.latest;
+      const f = latest && latest.chapters && latest.chapters[rail];
+      if (f) {
+        const earlier = (EDITION_PDFS.editions || []).filter(function (e) {
+          return e.editionId !== latest.editionId && !e.fixture && e.chapters && e.chapters[rail];
+        }).map(function (e) { return { href: SITE_ORIGIN + e.chapters[rail].url, label: e.label, fname: pdfName(e.editionId, e.chapters[rail].file) }; });
+        return { href: SITE_ORIGIN + f.url, fname: pdfName(latest.editionId, f.file), label: latest.label, earlier: earlier };
+      }
+      return { href: SITE_ORIGIN + '/downloads/latest/' + rail + '.pdf', fname: rail + '.pdf', label: '', earlier: [] };
     }
 
     function buildChapterDownloadHtml(rail) {
@@ -1766,14 +1790,21 @@
       const r = RAILS[idx];
       const pdf = chapterPdfDownload(r);
       if (!pdf) return '';
+      const title = pdf.label ? r.dp + ' · ' + pdf.label : r.dp;
+      const earlier = pdf.earlier.length
+        ? '<br><span class="dl-earlier">Earlier editions: ' + pdf.earlier.map(function (e) {
+            return '<a href="' + escapeHtml(e.href) + '" download="' + escapeHtml(e.fname) + '">' + escapeHtml(e.label) + '</a>';
+          }).join(', ') + '</span>'
+        : '';
       return (
         '<div class="chapter-downloads" data-rail="' + escapeHtml(r.railKey) + '">' +
           '<div class="dl-copy">' +
-            '<strong>' + escapeHtml(r.dp + ' · ' + pdf.label) + '</strong><br>' +
-            escapeHtml('The chapter as it reads in ' + pdf.label + ', as a PDF') +
+            '<strong>' + escapeHtml(title) + '</strong><br>' +
+            escapeHtml(pdf.label ? 'The chapter as it reads in ' + pdf.label + ', as a PDF' : 'The chapter as a PDF') +
+            earlier +
           '</div>' +
           '<a class="dl-btn" href="' + escapeHtml(pdf.href) + '" download="' + escapeHtml(pdf.fname) + '">' +
-            escapeHtml('Download PDF · ' + pdf.label) +
+            escapeHtml(pdf.label ? 'Download PDF · ' + pdf.label : 'Download PDF') +
           '</a>' +
         '</div>'
       );
@@ -2341,7 +2372,7 @@
       setSidebarOpen(readTocOpenPreference());
 
       // Archived revision: /viewer/<key>/<rev> keeps its URL and never falls back to the live chapter.
-      await Promise.all([loadArchiveManifest(), loadEditionsManifest()]);
+      await Promise.all([loadArchiveManifest(), loadEditionsManifest(), loadEditionPdfs()]);
       const archiveRoute = getArchiveRouteFromLocation();
       if (archiveRoute) {
         setMode(savedMode);

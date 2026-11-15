@@ -1,0 +1,14 @@
+# DP1 – Federated Authentication
+
+*The conditions for trust*
+
+## 1. Purpose
+
+Trust needs accountable identity. See DP2 for agency.
+
+- one
+- two
+
+```text
+<label>.example.com.meta
+```

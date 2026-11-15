@@ -56,7 +56,10 @@ PDF_GLOBS = (
     'challenge-site/public/downloads/*.pdf',
     'challenge-site/public/downloads/dp-v*/*.pdf',
     'desirableproperties-book/downloads/dp-v*/*.pdf',
+    'desirableproperties-book/downloads/editions/*/*.pdf',
 )
+# One archive copy of each released edition's published PDFs (written once by the archive workflow).
+EDITION_ARCHIVE = 'desirableproperties-book/downloads/editions'
 # Chapter PDFs: canonical set on the site, an identical copy for the book site (it serves its own files).
 CHAPTER_PDF_CANONICAL = 'challenge-site/public/downloads'
 CHAPTER_PDF_BOOK_COPY = 'desirableproperties-book/downloads'
@@ -1118,3 +1121,47 @@ def regenerate_from_snapshot(book_root: Path) -> tuple[Generated | None, list[st
     if canonical_sha256(snapshot) != (manifest.get('source') or {}).get('responseSha256'):
         diffs.append(f'{SNAPSHOT_NAME} does not match source.responseSha256 in {MANIFEST_NAME}')
     return gen, diffs
+
+
+def check_edition_archive(repo_root: Path, pdf_record: dict | None = None) -> Report:
+    """The archive copies: every file in SHA256SUMS present with that sha256, nothing else; with Gov Hub's PDF
+    record, each committed file's sha256 equals the published one."""
+    rep = Report()
+    root = Path(repo_root) / EDITION_ARCHIVE
+    if not root.is_dir():
+        return rep
+    sets = {e.get('editionId'): e for e in (pdf_record or {}).get('editions', [])}
+    for folder in sorted(p for p in root.iterdir() if p.is_dir()):
+        ed = folder.name
+        sums_file = folder / 'SHA256SUMS'
+        if not sums_file.is_file():
+            rep.errors.append(f'{EDITION_ARCHIVE}/{ed}: no SHA256SUMS')
+            continue
+        sums = {}
+        for line in sums_file.read_text(encoding='utf-8').splitlines():
+            if '  ' in line:
+                sha, name = line.split('  ', 1)
+                sums[name] = sha
+        pdfs = {p.name for p in folder.glob('*.pdf')}
+        for name in sorted(pdfs - set(sums)):
+            rep.errors.append(f'{EDITION_ARCHIVE}/{ed}/{name} is not in SHA256SUMS')
+        for name, sha in sums.items():
+            path = folder / name
+            if not path.is_file():
+                rep.errors.append(f'{EDITION_ARCHIVE}/{ed}/{name} is listed in SHA256SUMS but missing')
+            elif sha256_bytes(path.read_bytes()) != sha:
+                rep.errors.append(f'{EDITION_ARCHIVE}/{ed}/{name}: sha256 differs from SHA256SUMS')
+        if pdf_record is None:
+            continue
+        rec = sets.get(ed)
+        if not rec or rec.get('state') != 'published':
+            rep.gaps.append(f'{EDITION_ARCHIVE}/{ed}: Gov Hub records no published PDF set for {ed} yet')
+            continue
+        published = {rec['book']['file']: rec['book']['sha256'], **{v['file']: v['sha256'] for v in (rec.get('chapters') or {}).values()}}
+        if published != sums:
+            diff = sorted(set(published.items()) ^ set(sums.items()))
+            rep.errors.append(f'{EDITION_ARCHIVE}/{ed}: committed files differ from Gov Hub\'s published set '
+                              f'({", ".join(sorted({n for n, _ in diff}))[:200]})')
+        else:
+            rep.info.append(f'{EDITION_ARCHIVE}/{ed}: the archive copy equals Gov Hub\'s published set')
+    return rep

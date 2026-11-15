@@ -59,11 +59,48 @@ def rail_sync_rule(base: str) -> list[str]:
     return errs
 
 
+ARCHIVE = 'desirableproperties-book/downloads/editions'
+
+
+def archive_immutable_rule(base: str) -> list[str]:
+    """An edition's archive folder is written once: no change or removal of a file that existed at base."""
+    try:
+        out = subprocess.run(['git', '-C', str(REPO_ROOT), 'diff', '--name-status', f'{base}...HEAD', '--', ARCHIVE],
+                             check=True, capture_output=True, text=True).stdout
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        return [f'could not read git diff since {base}: {exc}']
+    errs = []
+    for line in out.splitlines():
+        parts = line.split('\t')
+        status, path = parts[0], parts[-1]
+        if status.startswith('A'):
+            folder = '/'.join(path.split('/')[:4])
+            existed = subprocess.run(['git', '-C', str(REPO_ROOT), 'cat-file', '-e', f'{base}:{folder}'],
+                                     capture_output=True).returncode == 0
+            if existed:
+                errs.append(f'{path}: a file added to the existing archive folder {folder} (written once)')
+        else:
+            errs.append(f'{path}: {status} in an edition archive folder (written once, never changed)')
+    return errs
+
+
+def govhub_pdf_record(url: str):
+    import json
+    import urllib.request
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (check_editions_agree)'})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read().decode('utf-8'))
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--base', default='', help='Git ref to check the [rail-sync] rule against (CI)')
     ap.add_argument('--strict', action='store_true', help='Gaps fail too')
     ap.add_argument('--book-root', default=str(REPO_ROOT / 'desirableproperties-book'))
+    ap.add_argument('--govhub', default='', help='Gov Hub base URL: compare archived PDFs with its PDF record')
     args = ap.parse_args()
 
     book_root = Path(args.book_root).resolve()
@@ -73,6 +110,16 @@ def main() -> int:
         report.errors.extend(diffs)
     if args.base:
         report.errors.extend(rail_sync_rule(args.base))
+        report.errors.extend(archive_immutable_rule(args.base))
+    record = None
+    if args.govhub:
+        record = govhub_pdf_record(f'{args.govhub.rstrip("/")}/api/doc/editions/pdfs/?work=desirableproperties-book')
+        if record is None:
+            report.gaps.append(f'{args.govhub} has no edition PDF record to compare the archive with (not live yet?)')
+    arch = editions.check_edition_archive(REPO_ROOT, record)
+    report.errors.extend(arch.errors)
+    report.gaps.extend(arch.gaps)
+    report.info.extend(arch.info)
 
     def show(title: str, rows: list[str]) -> None:
         if rows:

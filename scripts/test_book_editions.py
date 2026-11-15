@@ -401,6 +401,27 @@ class ChapterPdfCopyTests(EditionsTestCase):
         self.assertTrue(any('dp02-v1.0.pdf is missing' in e for e in errs), errs)
 
 
+class EditionArchiveTests(unittest.TestCase):
+    def test_archive_matches_sums_and_govhub_record(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            folder = root / ed.EDITION_ARCHIVE / '1.1'
+            folder.mkdir(parents=True)
+            (folder / 'book.pdf').write_bytes(b'%PDF book')
+            (folder / 'dp01.pdf').write_bytes(b'%PDF dp01')
+            sums = {n: hashlib.sha256((folder / n).read_bytes()).hexdigest() for n in ('book.pdf', 'dp01.pdf')}
+            (folder / 'SHA256SUMS').write_text(''.join(f'{v}  {k}\n' for k, v in sorted(sums.items())))
+            record = {'editions': [{'editionId': '1.1', 'state': 'published',
+                                    'book': {'file': 'book.pdf', 'sha256': sums['book.pdf']},
+                                    'chapters': {'dp01': {'file': 'dp01.pdf', 'sha256': sums['dp01.pdf']}}}]}
+            self.assertEqual(ed.check_edition_archive(root, record).errors, [])
+            record['editions'][0]['chapters']['dp01']['sha256'] = '0' * 64
+            self.assertTrue(any('differ from Gov Hub' in e for e in ed.check_edition_archive(root, record).errors))
+            (folder / 'dp01.pdf').write_bytes(b'%PDF changed')
+            self.assertTrue(any('differs from SHA256SUMS' in e for e in ed.check_edition_archive(root, None).errors))
+            self.assertTrue(any('no published PDF set' in g for g in ed.check_edition_archive(root, {'editions': []}).gaps))
+
+
 class RepoTests(unittest.TestCase):
     """The committed files agree today (same check CI runs)."""
 
