@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-pdfs-from-edition-list",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt from the Version 1.0 edition list; new per-chapter Version 1.0 PDFs",
+      "summary": "/downloads/desirable-properties-v1.0.pdf (linked from the home page, /v1 and /participate) is rebuilt from exactly the Version 1.0 edition list: every chapter's text is the listed Gov Hub revision, checked by sha256, and the file is stamped Version 1.0 with the list's hash. Chapter text, Foreword, Introduction and Acknowledgements read exactly as before. The edition page now carries the book's Edition and license text and a line 'Version 1.0 · rebuilt November 15, 2026 from the Version 1.0 edition list'; About's two figures and the DP23/DP24 illustrations are the inscribed images the 14 Nov edits point to; 805 pages instead of 807. New, not yet linked: one Version 1.0 PDF per chapter at /downloads/dp-v1.0/dpNN-v1.0.pdf.",
+      "changes": [
+        "challenge-site/public/downloads/desirable-properties-v1.0.pdf: rebuilt and stamped (dp-edition=1.0, dp-manifest-sha256, dp-edition-rails-sha256)",
+        "challenge-site/public/downloads/dp-v1.0/dp01-v1.0.pdf … dp24-v1.0.pdf: new",
+        "scripts/v1-book-pdf/build.mjs: edition builds from the list's exact texts; --chapters-out"
+      ]
+    },
+    {
       "id": "ack-adjustment-request",
       "date": "2026-11-15",
       "status": "open",
