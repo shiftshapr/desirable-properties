@@ -29,6 +29,14 @@
  *   --chrome <path>      Chrome/Chromium binary (or CHROME_PATH).
  *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
  *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
+ *   --edition <id>       Edition to build (default: the latest released edition in json/editions.json).
+ *
+ * Edition stamp (docs/EDITIONS.md): with desirableproperties-book/json/editions.json present, the title page,
+ * edition notice and PDF title name the edition from the manifest, and the PDF's Keywords carry
+ * `dp-edition=<id>; dp-edition-status=...; dp-edition-rails-sha256=<hash of the edition's rail list>`
+ * (scripts/check_editions_agree.py reads it back). Gov Hub's chapter-passages serves each rail's live
+ * revision, so building a released edition refuses when any rail's live revision is not on that edition's
+ * list. Without the manifest the build behaves as before (Version 1.0, no stamp).
  *
  * The Introduction (ML-Draft-026) comes from Gov Hub when Gov Hub serves it, otherwise from its Bitcoin
  * inscription (the copy the online book shows in Onchain mode).
@@ -43,6 +51,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { marked } from 'marked';
+import { editionKeywords, stampPdfInfo } from './pdf-stamp.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..', '..');
@@ -55,8 +64,10 @@ const BOOK_URL = 'https://book.desirableproperties.org';
 const SITE_URL = 'https://desirableproperties.org';
 const TITLE = 'The Layered Web';
 const SUBTITLE = 'The Desirable Properties of a Meta-Layer';
-const EDITION = 'Version 1.0';
-const EDITION_DATE = 'November 13, 2026';
+const EDITIONS_MANIFEST = path.join(BOOK_DIR, 'json', 'editions.json');
+// Set from json/editions.json in main() when it exists.
+let EDITION = 'Version 1.0';
+let EDITION_DATE = 'November 13, 2026';
 // Mirrors that serve an inscription's raw content (ordinals.com blocks scripted clients).
 const INSCRIPTION_MIRRORS = ['https://static.unisat.io/content/', 'https://cdn.ordiscan.com/inscriptions/', 'https://ordinals.com/content/'];
 
@@ -78,6 +89,7 @@ function parseArgs(argv) {
     else if (k === '--chrome') a.chrome = next();
     else if (k === '--preview') a.preview = next();
     else if (k === '--hub') a.hub = next().replace(/\/$/, '');
+    else if (k === '--edition') a.edition = next();
     else if (k === '-h' || k === '--help') { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('*/')[0]); process.exit(0); }
     else throw new Error(`Unknown option ${k}`);
   }
@@ -728,8 +740,33 @@ async function renderCoverPng(outPng, chromePath) {
 
 // ---------------------------------------------------------------- main
 
+/** The edition to build from json/editions.json, refusing a released edition whose list is not live. */
+function chooseEdition(wanted) {
+  if (!fs.existsSync(EDITIONS_MANIFEST)) {
+    console.warn('  ! No json/editions.json: building as Version 1.0 without an edition stamp');
+    return null;
+  }
+  const manifest = JSON.parse(fs.readFileSync(EDITIONS_MANIFEST, 'utf8'));
+  const eds = manifest.editions || [];
+  const released = eds.filter((e) => e.status === 'released');
+  const edition = wanted ? eds.find((e) => e.editionId === wanted) : released[released.length - 1];
+  if (!edition) throw new Error(`Edition ${wanted || '(latest released)'} is not in json/editions.json`);
+  const live = Object.fromEntries((eds.find((e) => e.status === 'in_progress')?.rails || []).map((r) => [r.railKey, r]));
+  const stale = (edition.rails || []).filter((r) => r.submissionId && live[r.railKey]?.submissionId !== r.submissionId);
+  if (stale.length) {
+    throw new Error(`Gov Hub serves the live revision, which is not ${edition.label}'s for: ${stale.map((r) => r.railKey).join(', ')}. ` +
+      'Build that edition once Gov Hub serves passages by ?edition=.');
+  }
+  EDITION = edition.status === 'released' ? edition.label : `${edition.label} (in progress)`;
+  if (edition.releasedAt) {
+    EDITION_DATE = new Date(edition.releasedAt).toLocaleDateString('en-US', { timeZone: 'UTC', dateStyle: 'long' });
+  }
+  return edition;
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  const bookEdition = chooseEdition(args.edition);
   const sat = JSON.parse(fs.readFileSync(SOURCES_SAT, 'utf8'));
   const byKey = Object.fromEntries(sat.sources.filter((s) => s.railKey).map((s) => [s.railKey, s]));
   const ml = (key) => { const m = byKey[key]?.mlNumber; if (!m) throw new Error(`No ML-Draft for rail ${key} in sources-sat.json`); return m; };
@@ -777,6 +814,10 @@ async function main() {
   if (args.htmlOnly) return;
 
   const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);
+  if (bookEdition) {
+    stampPdfInfo(args.out, { Title: `${TITLE}: ${SUBTITLE} (${EDITION})`, Keywords: editionKeywords(bookEdition) });
+    console.log(`Stamped ${EDITION} (${editionKeywords(bookEdition)})`);
+  }
   const mb = (fs.statSync(args.out).size / 1e6).toFixed(1);
   console.log(`Wrote ${args.out} (${pages} pages, ${mb} MB)`);
 }

@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-editions-record",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Book editions: chapter text answers say which edition they are, and accept ?edition=",
+      "summary": "The edition record (Version 0.77, 1.0, 1.1) is generated from Gov Hub into the book repo (desirableproperties-book/json/editions.json). The two site API routes that return book chapter text now add edition, editionStatus, editionLabel, revision, revisionEdition and submissionId: with no edition named they return the live text labelled with its edition (Version 1.0, released, while the live revision is the 1.0 one; Version 1.1, in progress once a later revision is live). ?edition=<id> returns that edition's text, from Gov Hub when it is not the live text, or an error rather than mislabelled text. Without the manifest the routes answer as before.",
+      "changes": [
+        "challenge-site/src/lib/book-editions.ts, book-editions.server.ts: read the edition record and label or resolve a chapter's text",
+        "challenge-site/src/app/api/steering/[ml]/text/route.ts, src/app/api/workgroups/[id]/review/passages/route.ts: edition fields and ?edition=",
+        "challenge-site/scripts/book-editions.test.mjs (npm run test:book-editions)",
+        "challenge-site/public/downloads/desirable-property-inscriptions.pdf: edition stamp (Keywords dp-edition=0.77, dp-rails=dp01..dp22) added as an incremental update; its text is exactly the 22 inscriptions of Version 0.77 and its pages are unchanged"
+      ]
+    },
+    {
       "id": "dp-meta-governance-event",
       "date": "2026-11-15",
       "status": "open",
