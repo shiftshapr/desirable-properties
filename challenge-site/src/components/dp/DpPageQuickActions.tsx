@@ -7,6 +7,8 @@ type Props = {
   readHref: string | null;
   pdfDownloadHref: string | null;
   pdfDownloadName: string | null;
+  /** e.g. "Download PDF · Version 1.0", from the edition manifest. */
+  pdfDownloadLabel: string | null;
   workgroupHref: string | null;
   collabEnabled: boolean;
 };
@@ -17,6 +19,7 @@ export default function DpPageQuickActions({
   readHref,
   pdfDownloadHref,
   pdfDownloadName,
+  pdfDownloadLabel,
   workgroupHref,
   collabEnabled,
 }: Props) {
@@ -44,7 +47,7 @@ export default function DpPageQuickActions({
           download={pdfDownloadName || undefined}
           className="inline-flex items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm text-slate-200 hover:border-slate-500"
         >
-          Download PDF
+          {pdfDownloadLabel || 'Download PDF'}
         </a>
       ) : null}
       {collabEnabled && workgroupHref ? (

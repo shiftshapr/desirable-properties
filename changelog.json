@@ -4,6 +4,74 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "edition-pdfs-backend",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Edition PDFs are served from the backend store; labels and links come from Gov Hub",
+      "summary": "Chapter and book PDFs are built once per edition by a backend job, checked by an automatic quality gate and published by one step in Gov Hub; the site serves them at /downloads/<edition>/<file> (immutable) and /downloads/latest/<file> (redirects to the newest published edition). The /dp/<n> Download button and the book viewer ask Gov Hub (through /api/book/edition-pdfs, cached, with the last good answer kept) for the label and link, list earlier editions, and fall back to /downloads/latest/… if nothing answers.",
+      "changes": [
+        "challenge-site/src/app/downloads/[edition]/[file]/route.ts, downloads/latest/[file]/route.ts: stored files with immutable/ETag headers; short-lived latest redirect",
+        "challenge-site/src/app/api/book/edition-pdfs/route.ts, src/lib/edition-pdfs.ts, edition-pdfs.server.ts: Gov Hub's PDF record, cached",
+        "challenge-site/src/lib/dpProvenance.ts, src/app/dp/[id]/page.tsx: Download PDF · <edition> from the record; earlier editions"
+      ]
+    },
+    {
+      "id": "chapter-pdf-downloads-v1",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Chapter downloads are the Version 1.0 chapter PDFs; old links redirect",
+      "summary": "Each /dp/<n> page now offers \"Download PDF · Version 1.0\", the chapter as it reads in Version 1.0 (/downloads/dp-v1.0/dpNN-v1.0.pdf), instead of the old \"0.77X\" composite draft. The label and file come from the edition record, so they move to the next edition when it is released. The old /downloads/dp/DPn-0.77X.pdf and /downloads/dp/dpN.pdf links redirect permanently to the matching Version 1.0 PDF; the old files are removed.",
+      "changes": [
+        "challenge-site/src/lib/dpProvenance.ts, src/lib/book-editions.ts: chapter PDF link and label from the newest released edition",
+        "challenge-site/src/app/dp/[id]/page.tsx: \"Download PDF · <edition>\"",
+        "challenge-site/next.config.ts: 48 permanent redirects from the retired URLs",
+        "challenge-site/public/downloads/dp/: removed (DPn-0.77X.pdf and dpN.pdf)",
+        "challenge-site/scripts/sync-dp-download-pdfs.sh: removed (composite tooling retired)",
+        "challenge-site/src/lib/book-editions.server.ts: the edition record is read from the site's own book host (/json/editions.json on staging.book… or book…) when the book tree is not beside the site, as on the deployed servers; the Download button now appears there"
+      ]
+    },
+    {
+      "id": "v1-pdfs-from-edition-list",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Version 1.0 PDF rebuilt from the Version 1.0 edition list; new per-chapter Version 1.0 PDFs",
+      "summary": "/downloads/desirable-properties-v1.0.pdf (linked from the home page, /v1 and /participate) is rebuilt from exactly the Version 1.0 edition list: every chapter's text is the listed Gov Hub revision, checked by sha256, and the file is stamped Version 1.0 with the list's hash. Chapter text, Foreword, Introduction and Acknowledgements read exactly as before. The edition page now carries the book's Edition and license text and a line 'Version 1.0 · rebuilt November 15, 2026 from the Version 1.0 edition list'; About's first figure and the DP23/DP24 illustrations print the site's high-resolution copies of the same pictures the 14 Nov edits point to (About's roadmap figure is the inscribed image: no matching high-resolution copy exists); 805 pages instead of 807. New, not yet linked: one Version 1.0 PDF per chapter at /downloads/dp-v1.0/dpNN-v1.0.pdf.",
+      "changes": [
+        "challenge-site/public/downloads/desirable-properties-v1.0.pdf: rebuilt and stamped (dp-edition=1.0, dp-manifest-sha256, dp-edition-rails-sha256)",
+        "challenge-site/public/downloads/dp-v1.0/dp01-v1.0.pdf … dp24-v1.0.pdf: new",
+        "scripts/v1-book-pdf/build.mjs: edition builds from the list's exact texts; --chapters-out",
+        "Chapter PDFs: the closing note sits on the chapter's last page (no blank page before it)"
+      ]
+    },
+    {
+      "id": "ack-adjustment-request",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Acknowledgements: a form to ask for a change (be added, fix a name, change an affiliation or list, be removed)",
+      "summary": "New page /acknowledgements/request where anyone, signed in or not, can ask for a change to the Acknowledgements of The Layered Web: be added, correct how their name appears, change or add an affiliation, move to a different list, be removed, or something else. It asks for the name as it should appear (a real name, not a handle), the name as it appears now, what they contributed and where (First or Second Call for Input, the 2026 Challenge, a proposal or patch link, a role), an email to reach them and an optional note. A removal needs only the current name and an email. Signed-in people get their name, email and current entry filled in from Gov Hub. Requests are stored privately in Gov Hub (they hold email addresses; never published, never used for search or AI) and the person sees an on-page reference code; no email is sent. The book's Acknowledgements page links to the form (a viewer link, not part of the book text), and steering members and super admins see the number of new requests on /steering, with a link to the Gov Hub review list.",
+      "changes": [
+        "challenge-site/src/app/acknowledgements/request/page.tsx, AckRequestForm.tsx: the form (kind-dependent fields, honeypot, fill time, on-page reference)",
+        "challenge-site/src/lib/ack-request.ts: choices, client checks, payload, client IP; scripts/ack-request.test.mjs (npm run test:ack-request)",
+        "challenge-site/src/app/api/acknowledgements/requests/route.ts (POST to Gov Hub with the browser's address and the server key, so Gov Hub rate-limits per sender), me/route.ts (prefill)",
+        "challenge-site/src/lib/ack-request.server.ts, src/app/steering/page.tsx: new-request count for reviewers",
+        "desirableproperties-book/viewer.htm: on the Acknowledgements page, links to the form and to ?kind=remove",
+        "Gov Hub (interface-gov-hub): dp_acknowledgement_request table, POST /api/dp/acknowledgements/requests/, review list /dp/acknowledgements/requests/ (steering and super admins), admin dashboard alert"
+      ]
+    },
+    {
+      "id": "book-editions-record",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Book editions: chapter text answers say which edition they are, and accept ?edition=",
+      "summary": "The edition record (Version 0.77, 1.0, 1.1) is generated from Gov Hub into the book repo (desirableproperties-book/json/editions.json). The two site API routes that return book chapter text now add edition, editionStatus, editionLabel, revision, revisionEdition and submissionId: with no edition named they return the live text labelled with its edition (Version 1.0, released, while the live revision is the 1.0 one; Version 1.1, in progress once a later revision is live). ?edition=<id> returns that edition's text, from Gov Hub when it is not the live text, or an error rather than mislabelled text. Without the manifest the routes answer as before.",
+      "changes": [
+        "challenge-site/src/lib/book-editions.ts, book-editions.server.ts: read the edition record and label or resolve a chapter's text",
+        "challenge-site/src/app/api/steering/[ml]/text/route.ts, src/app/api/workgroups/[id]/review/passages/route.ts: edition fields and ?edition=",
+        "challenge-site/scripts/book-editions.test.mjs (npm run test:book-editions)",
+        "challenge-site/public/downloads/desirable-property-inscriptions.pdf: edition stamp (Keywords dp-edition=0.77, dp-rails=dp01..dp22) added as an incremental update; its text is exactly the 22 inscriptions of Version 0.77 and its pages are unchanged"
+      ]
+    },
+    {
       "id": "dp-meta-governance-event",
       "date": "2026-11-15",
       "status": "open",

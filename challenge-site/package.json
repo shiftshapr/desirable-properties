@@ -22,6 +22,7 @@
     "test:encoded-insert": "node --experimental-strip-types --test scripts/encoded-insert.test.mjs",
     "test:review-split": "node --experimental-strip-types --test scripts/review-split.test.mjs",
     "test:dp-mtp": "node --experimental-strip-types --test scripts/dp-mtp.test.mjs",
+    "test:book-editions": "node --experimental-strip-types --test scripts/book-editions.test.mjs scripts/edition-pdfs.test.mjs",
     "test:workgroup-chat-unread": "node --experimental-strip-types --test scripts/workgroup-chat-unread.test.mjs",
     "test:llm-error-message": "node --experimental-strip-types --test scripts/llm-error-message.test.mjs",
     "test:canopi-comment-body": "node --experimental-strip-types --test scripts/canopi-comment-body.test.mjs",
@@ -32,6 +33,7 @@
     "test:web3auth-client-id": "node --experimental-strip-types --test scripts/web3auth-client-id.test.mjs",
     "test:pad-slug-typo": "node --test scripts/pad-slug-typo.test.mjs",
     "test:astra": "node --test scripts/astra-highlights.test.mjs",
+    "test:ack-request": "node --experimental-strip-types --test scripts/ack-request.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",
     "import:astra": "node scripts/import-astra-release.mjs",
     "generate:astra-pdf": "python3 ../scripts/generate-astra-book-pdf.py"

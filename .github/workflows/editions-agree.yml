@@ -1,0 +1,51 @@
+name: Editions agreement
+
+# The edition record (desirableproperties-book/json/editions.json, generated from Gov Hub by the rail sync)
+# must agree with the rails, the archive stamps, the inscription records and the PDF stamps; only a
+# [rail-sync] commit may change it. See docs/EDITIONS.md.
+
+on:
+  pull_request:
+  push:
+    branches: [main, staging]
+
+jobs:
+  agree:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Builder and gate dependencies
+        run: |
+          (cd scripts/v1-book-pdf && npm ci --no-audit --no-fund)
+          pip install -q pypdf pypdfium2 pillow
+
+      - name: Unit tests
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          python3 scripts/test_book_editions.py
+          python3 scripts/test_govhub_sync_rails.py
+          (cd scripts/v1-book-pdf && node --test build.test.mjs)
+          python3 scripts/test_edition_pdfs.py
+
+      - name: Editions agree
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -n "${BASE_SHA}" ]; then
+            python3 scripts/check_editions_agree.py --base "${BASE_SHA}" --govhub https://interfacehub.net
+          else
+            python3 scripts/check_editions_agree.py --govhub https://interfacehub.net
+          fi

@@ -1,40 +1,33 @@
 #!/usr/bin/env node
 /**
- * Build the Version 1.0 PDF of "The Layered Web: The Desirable Properties of a Meta-Layer".
+ * Build an edition's PDFs of "The Layered Web: The Desirable Properties of a Meta-Layer" from exactly its
+ * edition list (docs/EDITIONS.md, "Releasing an edition's PDFs"): the book and one PDF per chapter.
  *
- * Reads the published chapters (DP1–DP24) and front/back matter from Gov Hub
- * (https://interfacehub.net/api/doc/draft/<ML-Draft>/chapter-passages/), lays the
- * book out as HTML, paginates it with Paged.js in headless Chrome and prints one PDF:
+ *   node scripts/v1-book-pdf/build.mjs --edition <id> [--out-dir <dir>] [--build-date YYYY-MM-DD]
  *
- *   cover · title page · edition notice · contents · foreword · preface (About) · introduction
- *   · DP1–DP24 (opener page with the illustration, then the text) · acknowledgements
+ * Nothing here names an edition: titles, the edition page line, file names (…-v<id>.pdf) and the book's
+ * structure (Contents, page numbers, which chapters, in which order) all come from
+ * desirableproperties-book/json/editions.json (--manifest overrides it, for tests). Every rail's text is the
+ * listed revision: Gov Hub's chapter-passages/?edition=<id> (when served) cross-checked with the revision's
+ * stored text <hub>/doc/draft/<submissionId>.txt, whose sha256 must equal the list's (the build stops
+ * otherwise); a book-repo page (the Edition page) from its file, or from git history when it has changed
+ * since. Text is split into blocks at blank lines, as Gov Hub's chapter-passages does.
  *
- * with running heads, page numbers, a linked table of contents, in-book DP cross-references,
- * PDF bookmarks, and links back to each chapter in the online book.
+ * A released edition gets "<label> · built <date> from the <label> edition list" on its edition page. The
+ * edition in progress builds a preview: its title page and every page footer say "<label>, in progress,
+ * built <date>, not a released edition", into a preview folder no site links to.
  *
- * Usage (from the repo root):
- *   cd scripts/v1-book-pdf && npm install          # once
- *   node scripts/v1-book-pdf/build.mjs              # review copy -> scripts/v1-book-pdf/out/
- *   node scripts/v1-book-pdf/build.mjs --final \
- *        --out challenge-site/public/downloads/desirable-properties-v1.0.pdf
+ * Output (default scripts/v1-book-pdf/out/edition-<id>/, or out/preview-<id>/): desirable-properties-v<id>.pdf,
+ * chapters/<railKey>-v<id>.pdf, texts/ (the verified sources), build-report.json (what the gate checks:
+ * scripts/edition_pdfs.py). Publishing is scripts/edition_pdfs.py's job, after its gate passes.
  *
- * Options:
- *   --final              Final V1.0 edition (no "review copy" notice).
- *   --out <file>         Output PDF (default scripts/v1-book-pdf/out/desirable-properties-v1.0[-review].pdf).
- *   --offline            Reuse the passages cached by the last run instead of calling Gov Hub.
- *   --only DP1,DP2       Limit chapters (for quick layout checks).
- *   --html-only          Write the HTML and stop (open it in Chrome to debug the layout).
- *   --cover-image <file> Use a flat, full-bleed cover image instead of the typeset cover.
- *   --cover-png <file>   Where to save the cover as flat art (PNG, about 2570 x 3690 px; default out/cover.png).
- *   --chrome <path>      Chrome/Chromium binary (or CHROME_PATH).
- *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
- *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
- *
- * The Introduction (ML-Draft-026) comes from Gov Hub when Gov Hub serves it, otherwise from its Bitcoin
- * inscription (the copy the online book shows in Onchain mode).
+ * Options: --edition <id> (required) · --manifest <file> · --out-dir <dir> · --build-date YYYY-MM-DD (else
+ * SOURCE_DATE_EPOCH, else today, UTC) · --rebuilt (the edition page says "rebuilt") · --texts-dir <dir>
+ * (read <submissionId>.txt from here instead of Gov Hub: tests) · --no-chapters · --html-only ·
+ * --cover-png <file> · --chrome <path> (or CHROME_PATH) · --hub <url> (default https://interfacehub.net) ·
+ * --preview <pages> (PNGs of these pages, e.g. 1-8,end, into <out>/png/).
  *
  * Gov Hub's API is fetched with curl: it answers non-browser clients such as Python urllib with 403.
- * MTPs (Massive Transformational Purposes) are not part of V1.0 and are never pulled in.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -43,37 +36,48 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { marked } from 'marked';
+import { editionKeywords, stampPdfInfo } from './pdf-stamp.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const REPO = path.resolve(HERE, '..', '..');
-const BOOK_DIR = path.join(REPO, 'desirableproperties-book');
+// The backend job runs this from its own tool folder against the box's book tree: these can point elsewhere.
+const REPO = process.env.DP_REPO_DIR || path.resolve(HERE, '..', '..');
+const BOOK_DIR = process.env.DP_BOOK_DIR || path.join(REPO, 'desirableproperties-book');
+const SITE_PUBLIC = process.env.DP_SITE_PUBLIC || path.join(REPO, 'challenge-site', 'public');
 const SOURCES_SAT = path.join(BOOK_DIR, 'json', 'sources-sat.json');
-const FULL_ILLUSTRATIONS = path.join(REPO, 'challenge-site', 'public', 'images', 'dps', 'full');
+const FULL_ILLUSTRATIONS = path.join(SITE_PUBLIC, 'images', 'dps', 'full');
 const BOOK_ASSETS = path.join(BOOK_DIR, 'content', 'local', 'assets', 'dp');
-const CACHE_DIR = path.join(HERE, 'cache');
+const CACHE_DIR = process.env.DP_PDF_CACHE || path.join(HERE, 'cache');
 const BOOK_URL = 'https://book.desirableproperties.org';
 const SITE_URL = 'https://desirableproperties.org';
 const TITLE = 'The Layered Web';
 const SUBTITLE = 'The Desirable Properties of a Meta-Layer';
-const EDITION = 'Version 1.0';
-const EDITION_DATE = 'November 13, 2026';
+const EDITIONS_MANIFEST = path.join(BOOK_DIR, 'json', 'editions.json');
+// All set from the edition list in main(); nothing here names an edition.
+let EDITION = '';         // the edition label as printed (a preview's says it is not released)
+let EDITION_DATE = '';    // the release date, for a released edition
+let REBUILT_LINE = '';    // the edition page's "built … from the … edition list" line
+let PREVIEW_LINE = '';    // the in-progress preview's footer and title-page line
+let BOOK_PDF_URL = '';    // where the book PDF is published
+let IMAGE_LOG = null;     // images used by the section being rendered (for the gate)
 // Mirrors that serve an inscription's raw content (ordinals.com blocks scripted clients).
 const INSCRIPTION_MIRRORS = ['https://static.unisat.io/content/', 'https://cdn.ordiscan.com/inscriptions/', 'https://ordinals.com/content/'];
 
 // ---------------------------------------------------------------- CLI
 
 function parseArgs(argv) {
-  const a = { final: false, offline: false, htmlOnly: false, only: null, out: null, coverImage: null, coverPng: null,
-    chrome: process.env.CHROME_PATH || null, preview: null, hub: 'https://interfacehub.net' };
+  const a = { htmlOnly: false, chapters: true, rebuilt: false, outDir: null, coverPng: null, manifest: EDITIONS_MANIFEST,
+    chrome: process.env.CHROME_PATH || null, preview: null, hub: 'https://interfacehub.net', textsDir: null, buildDate: null };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
     const next = () => argv[++i];
-    if (k === '--final') a.final = true;
-    else if (k === '--offline') a.offline = true;
+    if (k === '--edition') a.edition = next();
+    else if (k === '--manifest') a.manifest = path.resolve(next());
+    else if (k === '--out-dir') a.outDir = path.resolve(next());
+    else if (k === '--build-date') a.buildDate = next();
+    else if (k === '--rebuilt') a.rebuilt = true;
+    else if (k === '--texts-dir') a.textsDir = path.resolve(next());
+    else if (k === '--no-chapters') a.chapters = false;
     else if (k === '--html-only') a.htmlOnly = true;
-    else if (k === '--only') a.only = next().split(',').map((s) => s.trim().toUpperCase());
-    else if (k === '--out') a.out = path.resolve(next());
-    else if (k === '--cover-image') a.coverImage = path.resolve(next());
     else if (k === '--cover-png') a.coverPng = path.resolve(next());
     else if (k === '--chrome') a.chrome = next();
     else if (k === '--preview') a.preview = next();
@@ -81,9 +85,18 @@ function parseArgs(argv) {
     else if (k === '-h' || k === '--help') { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('*/')[0]); process.exit(0); }
     else throw new Error(`Unknown option ${k}`);
   }
-  a.out ||= path.join(HERE, 'out', a.final ? 'desirable-properties-v1.0.pdf' : 'desirable-properties-v1.0-review.pdf');
+  if (!a.edition) throw new Error('--edition <id> is required (an edition in desirableproperties-book/json/editions.json)');
   return a;
 }
+
+/** The build date (UTC): --build-date, else SOURCE_DATE_EPOCH (reproducible rebuilds), else today. */
+function resolveBuildDate(explicit) {
+  if (explicit) return new Date(`${explicit}T00:00:00Z`);
+  if (process.env.SOURCE_DATE_EPOCH) return new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000);
+  return new Date();
+}
+
+const longDate = (d) => d.toLocaleDateString('en-US', { timeZone: 'UTC', dateStyle: 'long' });
 
 function findChrome(explicit) {
   const candidates = [explicit,
@@ -106,57 +119,91 @@ function globSync(dir, re) {
 
 // ---------------------------------------------------------------- Gov Hub
 
-function fetchPassages(hub, ml, offline) {
-  fs.mkdirSync(CACHE_DIR, { recursive: true });
-  const cache = path.join(CACHE_DIR, `${ml}.json`);
-  if (offline) {
-    if (!fs.existsSync(cache)) throw new Error(`--offline: no cached passages for ${ml}`);
-    return JSON.parse(fs.readFileSync(cache, 'utf8')).passages;
-  }
-  const url = `${hub}/api/doc/draft/${encodeURIComponent(ml)}/chapter-passages/`;
-  let body;
+/** Split Markdown into blocks at blank lines: the same blocks Gov Hub's chapter-passages returns. */
+export const splitPassages = (md) => md.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
+const sha256 = (buf) => createHash('sha256').update(buf).digest('hex');
+
+function curl(url, binary = true) {
   for (let attempt = 1; ; attempt++) {
     try {
-      body = execFileSync('curl', ['-sS', '--fail', '-m', '60', url], { maxBuffer: 64 << 20 }).toString('utf8');
-      break;
+      const out = execFileSync('curl', ['-sS', '--fail', '-L', '-m', '60', '-A', 'Mozilla/5.0', url], { maxBuffer: 64 << 20 });
+      return binary ? out : out.toString('utf8');
     } catch (e) {
-      if (attempt >= 3) throw new Error(`Gov Hub fetch failed for ${ml}: ${url}\n${e.message}`);
+      if (attempt >= 3) throw new Error(`download failed: ${url}\n${e.message}`);
     }
   }
-  const data = JSON.parse(body);
-  if (!Array.isArray(data.passages) || data.passages.length === 0) throw new Error(`No passages for ${ml}`);
-  fs.writeFileSync(cache, JSON.stringify(data, null, 1));
-  return data.passages;
 }
 
 /**
- * The rail's passages from Gov Hub, or, when Gov Hub cannot serve the draft, from the rail's inscription
- * (its markdown split into blocks). Returns { passages, source }.
+ * A listed revision's exact text, verified: Gov Hub's chapter-passages/?edition=<id> when served (it must name
+ * the listed submission), and the stored text <hub>/doc/draft/<submissionId>.txt, whose sha256 must equal the
+ * list's and whose blocks must equal the passages. Stops the build on any disagreement.
  */
-function fetchRail(hub, rail, offline) {
-  try {
-    return { passages: fetchPassages(hub, rail.mlNumber, offline), source: 'gov-hub' };
-  } catch (e) {
-    if (!rail.inscriptionId) throw e;
-    const cache = path.join(CACHE_DIR, `${rail.inscriptionId}.md`);
-    let md = null;
-    if (offline) {
-      if (!fs.existsSync(cache)) throw new Error(`--offline: no cached copy of ${rail.mlNumber} or its inscription`);
-      md = fs.readFileSync(cache, 'utf8');
-    } else {
-      for (const base of INSCRIPTION_MIRRORS) {
-        try {
-          md = execFileSync('curl', ['-sS', '--fail', '-L', '-m', '60', '-A', 'Mozilla/5.0', base + rail.inscriptionId], { maxBuffer: 64 << 20 }).toString('utf8');
-          if (/^#\s/m.test(md)) break;
-          md = null;
-        } catch { /* next mirror */ }
+export function fetchListedText(row, { hub, editionId, textsDir, fetcher = curl }) {
+  let buf;
+  if (textsDir) buf = fs.readFileSync(path.join(textsDir, `${row.submissionId}.txt`));
+  else {
+    let passages = null;
+    try {
+      const data = JSON.parse(fetcher(`${hub}/api/doc/draft/${encodeURIComponent(row.mlNumber)}/chapter-passages/?edition=${encodeURIComponent(editionId)}`, false));
+      if (data.submission_id && data.submission_id !== row.submissionId) {
+        throw new Error(`STOP: Gov Hub's ${editionId} text of ${row.railKey} is submission ${data.submission_id}, the list says ${row.submissionId}`);
       }
-      if (!md) throw new Error(`${rail.mlNumber}: Gov Hub failed and no mirror served inscription ${rail.inscriptionId}`);
-      fs.writeFileSync(cache, md);
+      if (Array.isArray(data.passages)) passages = data.passages;
+    } catch (e) {
+      if (String(e.message).startsWith('STOP')) throw e;  // a ?edition= answer that disagrees stops; a missing route falls back
     }
-    console.warn(`  ! ${rail.mlNumber}: Gov Hub could not serve it, using its inscription ${rail.inscriptionId.slice(0, 12)}…`);
-    return { passages: md.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean), source: `inscription ${rail.inscriptionId}` };
+    buf = fetcher(`${hub}/doc/draft/${encodeURIComponent(row.submissionId)}.txt`, true);
+    if (passages && JSON.stringify(passages) !== JSON.stringify(splitPassages(buf.toString('utf8')))) {
+      throw new Error(`STOP: ${row.railKey}: chapter-passages/?edition=${editionId} differs from the stored text of ${row.submissionId}`);
+    }
   }
+  const got = sha256(buf);
+  if (got !== row.sha256) {
+    throw new Error(`STOP: ${row.railKey} ${row.mlNumber} revision ${row.revision} (${row.submissionId}) has sha256 ${got}, ` +
+      `but the edition list says ${row.sha256}`);
+  }
+  return buf;
+}
+
+/** A book-repo page on the list (the Edition page): its file, or the version in git history with the listed sha256. */
+export function readListedLocal(row) {
+  const rel = row.localPath.replace(/^\//, '');
+  const file = path.join(BOOK_DIR, rel);
+  const want = row.localSha256 || row.sha256;
+  if (fs.existsSync(file) && sha256(fs.readFileSync(file)) === want) return fs.readFileSync(file);
+  const gitPath = path.relative(REPO, file);
+  const commits = execFileSync('git', ['-C', REPO, 'log', '--format=%H', '--', gitPath]).toString().split('\n').filter(Boolean);
+  for (const c of commits) {
+    try {
+      const buf = execFileSync('git', ['-C', REPO, 'show', `${c}:${gitPath}`], { maxBuffer: 64 << 20 });
+      if (sha256(buf) === want) return buf;
+    } catch { /* not in that commit */ }
+  }
+  throw new Error(`STOP: no version of ${row.localPath} with the listed sha256 ${want} (file or git history)`);
+}
+
+/** Pixel size of a PNG, JPEG or WebP file (for the gate's image check). */
+export function imageSize(file) {
+  const b = fs.readFileSync(file);
+  if (b.subarray(1, 4).toString('latin1') === 'PNG') return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+  if (b.subarray(8, 12).toString('latin1') === 'WEBP') {
+    const kind = b.subarray(12, 16).toString('latin1');
+    if (kind === 'VP8X') return { width: 1 + b.readUIntLE(24, 3), height: 1 + b.readUIntLE(27, 3) };
+    if (kind === 'VP8 ') return { width: b.readUInt16LE(26) & 0x3fff, height: b.readUInt16LE(28) & 0x3fff };
+    if (kind === 'VP8L') { const v = b.readUInt32LE(21); return { width: (v & 0x3fff) + 1, height: ((v >> 14) & 0x3fff) + 1 }; }
+  }
+  if (b[0] === 0xff && b[1] === 0xd8) {
+    let i = 2;
+    while (i < b.length) {
+      if (b[i] !== 0xff) { i++; continue; }
+      const m = b[i + 1];
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return { width: b.readUInt16BE(i + 7), height: b.readUInt16BE(i + 5) };
+      i += 2 + b.readUInt16BE(i + 2);
+    }
+  }
+  return { width: 0, height: 0 };
 }
 
 // ---------------------------------------------------------------- Markdown → HTML
@@ -186,7 +233,53 @@ function prepareRail(passages) {
   return { title, subtitle, image, body: ps.join('\n\n') };
 }
 
+/**
+ * Rendering choice, not text: for an image the text references by its inscription, print the site's
+ * higher-resolution copy of the same picture. Each pair was checked by downscaling the large copy to the
+ * inscribed image's size (15 Nov 2026): pixel correlation / mean absolute difference per channel.
+ * The roadmap figure in About (21a600b6…i0) has no matching copy (overweb-roadmap.jpg and v1/roadmap.webp
+ * are different drawings), so the inscribed image is printed.
+ */
+const SHARPER_COPIES = {
+  // About, figure 1: layered-web-coordination-layer.jpg (1650 x 953), corr 0.9921, diff 3.43/255
+  '0535566bf0363fafebaa4b87ebc2b917bf67eaba5544a7071bec535e3e9610f4i0': path.join(BOOK_ASSETS, 'layered-web-coordination-layer.jpg'),
+  // DP23 illustration: DP23.webp (1200 x 1200), corr 0.9926, diff 3.01/255
+  'e03ab40d8702bb54edfd941bbad013795df564d8570fa4e2ecac8679cb0a36e4i0': path.join(FULL_ILLUSTRATIONS, 'DP23.webp'),
+  // DP24 illustration: DP24.webp (1200 x 1200), corr 0.9973, diff 2.47/255
+  'b31e29bfa31319e51deb7b08c79dd487248cd068f51c0424965d5994d1449ec1i0': path.join(FULL_ILLUSTRATIONS, 'DP24.webp'),
+};
+
 function resolveImage(src) {
+  const href = resolveImageFile(src);
+  if (IMAGE_LOG) {
+    const file = fileURLToPath(href);
+    IMAGE_LOG.push({ src, file: path.relative(REPO, file), ...imageSize(file) });
+  }
+  return href;
+}
+
+function resolveImageFile(src) {
+  // An image referenced by its Bitcoin inscription (the 14 Nov in-place edits): a verified sharper copy of
+  // the same picture when there is one, else the inscribed bytes.
+  const ins = String(src).match(/^\/content\/([0-9a-f]{64}i\d+)$/);
+  if (ins && SHARPER_COPIES[ins[1]] && fs.existsSync(SHARPER_COPIES[ins[1]])) return pathToFileURL(SHARPER_COPIES[ins[1]]).href;
+  if (ins) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const file = path.join(CACHE_DIR, `${ins[1]}.webp`);
+    if (!fs.existsSync(file)) {
+      let buf = null;
+      for (const base of INSCRIPTION_MIRRORS) {
+        try {
+          buf = execFileSync('curl', ['-sS', '--fail', '-L', '-m', '60', '-A', 'Mozilla/5.0', base + ins[1]], { maxBuffer: 64 << 20 });
+          if (buf.subarray(8, 12).toString('latin1') === 'WEBP') break;
+          buf = null;
+        } catch { /* next mirror */ }
+      }
+      if (!buf) throw new Error(`No mirror served inscription image ${ins[1]}`);
+      fs.writeFileSync(file, buf);
+    }
+    return pathToFileURL(file).href;
+  }
   const base = path.basename(src.split('?')[0]);
   const dp = base.match(/^DP(\d{1,2})\.webp$/i);
   const tries = [];
@@ -230,7 +323,7 @@ function linkDpRefs(html, selfDp, validDps) {
     if (skip > 0 || !p) continue;
     parts[i] = p.replace(/\bDP(\d{1,2})\b/g, (all, n) => {
       const id = `DP${Number(n)}`;
-      return id !== selfDp && validDps.has(id) ? `<a class="xref" href="#${id.toLowerCase()}">${all}</a>` : all;
+      return id !== selfDp && validDps.has(id) ? `<a class="xref" href="#dp${String(Number(n)).padStart(2, '0')}">${all}</a>` : all;
     });
   }
   return parts.join('');
@@ -375,23 +468,25 @@ function coverHtml(coverImage) {
 // ---------------------------------------------------------------- Book HTML
 
 function chapterHtml(ch, validDps, first) {
-  const n = Number(ch.dp.slice(2));
-  const anchor = ch.dp.toLowerCase();
-  const shortTitle = ch.title.replace(/^DP\d+\s*[–\-:]\s*/, '');
+  const isDp = /^DP\d+$/.test(ch.dp || '');
+  const anchor = ch.railKey;
+  const shortTitle = isDp ? ch.title.replace(/^DP\d+\s*[–\-:]\s*/, '') : ch.title;
+  const kicker = isDp ? `Desirable Property ${Number(ch.dp.slice(2))}` : (ch.kicker || 'Chapter');
+  const name = isDp ? ch.dp : shortTitle;
   const online = `${BOOK_URL}/viewer/${ch.railKey}`;
   const img = ch.image ? ch.image.match(/^!\[([^\]]*)\]\(([^)]+)\)$/) : null;
   const body = polish(linkDpRefs(marked.parse(ch.body), ch.dp, validDps));
-  return `<section class="chapter${first ? ' first' : ''}" id="${anchor}" data-dp="${ch.dp}">
+  return `<section class="chapter${first ? ' first' : ''}" id="${anchor}" data-dp="${esc(ch.dp || ch.railKey)}">
   <div class="opener">
-    <div class="running">${esc(`${ch.dp} · ${shortTitle}`)}</div>
-    <div class="dp-label">Desirable Property ${n}</div>
-    <h1 class="chapter-title"><span class="dp-num">${ch.dp}</span>${esc(shortTitle)}</h1>
+    <div class="running">${esc(isDp ? `${ch.dp} · ${shortTitle}` : shortTitle)}</div>
+    <div class="dp-label">${esc(kicker)}</div>
+    <h1 class="chapter-title">${isDp ? `<span class="dp-num">${ch.dp}</span>` : ''}${esc(shortTitle)}</h1>
     ${ch.subtitle ? `<p class="chapter-sub">${marked.parseInline(ch.subtitle)}</p>` : ''}
     ${img ? `<figure class="illustration"><img src="${esc(resolveImage(img[2]))}" alt="${esc(img[1])}"></figure>` : ''}
     <p class="online">Read, annotate and discuss this chapter online:<br><a href="${online}">${online.replace(/^https:\/\//, '')}</a></p>
   </div>
   <div class="chapter-body">${body}</div>
-  <p class="chapter-end"><a href="${online}">Continue the conversation on ${ch.dp} online →</a></p>
+  <p class="chapter-end"><a href="${online}">Continue the conversation on ${esc(name)} online →</a></p>
 </section>`;
 }
 
@@ -417,19 +512,21 @@ function introHtml(rail, validDps) {
 </section>`;
 }
 
-function tocHtml(chapters) {
-  const row = (href, label, title, cls = '') => `<li class="${cls}"><a href="#${href}"><span class="toc-id">${label}</span><span class="toc-title">${esc(title)}</span><span class="toc-pg"></span></a></li>`;
+function tocHtml(plan) {
+  const row = (href, label, title, cls = '') => `<li class="${cls}"><a href="#${href}"><span class="toc-id">${esc(label)}</span><span class="toc-title">${esc(title)}</span><span class="toc-pg"></span></a></li>`;
+  const front = plan.front.map((m) => row(m.anchor, '', m.tocTitle, 'front'));
+  const intro = plan.intro ? [row('introduction', '', 'Introduction', 'front')] : [];
+  const chapters = plan.chapters.map((c) => row(c.railKey, c.dp || '', /^DP\d+$/.test(c.dp || '') ? c.title.replace(/^DP\d+\s*[–\-:]\s*/, '') : c.title));
+  const back = plan.back.map((m) => row(m.anchor, '', m.tocTitle, 'noid'));
   return `<section class="toc" id="contents">
   <div class="running">Contents</div>
   <h1 class="matter-title">Contents</h1>
   <ol>
-    ${row('foreword', '', 'Foreword by Vint Cerf', 'front')}
-    ${row('preface', '', 'About This Digital Monument', 'front')}
-    ${row('introduction', '', 'Introduction', 'front')}
+    ${[...front, ...intro].join('\n    ')}
     <li class="toc-part">The Desirable Properties</li>
-    ${chapters.map((c) => row(c.dp.toLowerCase(), c.dp, c.title.replace(/^DP\d+\s*[–\-:]\s*/, ''))).join('\n    ')}
+    ${chapters.join('\n    ')}
     <li class="toc-part"></li>
-    ${row('acknowledgements', '', 'Acknowledgements', 'noid')}
+    ${back.join('\n    ')}
   </ol>
   <p class="toc-online">Every chapter is also published online at <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a>, where it can be annotated and discussed.</p>
 </section>`;
@@ -440,6 +537,7 @@ function titlePagesHtml(final, builtAt, editionRail) {
     ? `<p>${EDITION} · ${EDITION_DATE}</p>`
     : `<p class="review">Review copy, built ${builtAt} from the Gov Hub text at that time.<br>This is not the final ${EDITION} text.</p>`;
   return `<section class="titlepage">
+  ${PREVIEW_LINE ? `<div class="tp-preview">${esc(PREVIEW_LINE)}</div>` : ''}
   <div class="tp-title">${TITLE}</div>
   <div class="tp-sub">${SUBTITLE}</div>
   <div class="tp-rule"></div>
@@ -447,8 +545,8 @@ function titlePagesHtml(final, builtAt, editionRail) {
   <div class="tp-edition">${EDITION}</div>
   <div class="tp-pub">Meta-Layer Initiative</div>
 </section>
-<section class="edition">
-  ${editionRail ? `${final ? '' : status}${editionRail.subtitle ? `<p><i>${esc(editionRail.subtitle)}</i></p>` : ''}${marked.parse(editionRail.body)}</section>` : `<p><i>${TITLE}: ${SUBTITLE}</i></p>
+<section class="edition${editionRail ? ' from-rail' : ''}">
+  ${editionRail ? `${final ? '' : status}${editionRail.subtitle ? `<p><i>${esc(editionRail.subtitle)}</i></p>` : ''}${marked.parse(editionRail.body)}${REBUILT_LINE ? `<p class="rebuilt">${esc(REBUILT_LINE)}</p>` : ''}</section>` : `<p><i>${TITLE}: ${SUBTITLE}</i></p>
   ${status}
   <p>Developed in the open by the Meta-Layer community through the Desirable Properties Challenge and its workgroups, and approved by the Desirable Properties steering committee.</p>
   <p>The online edition: <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a><br>
@@ -482,8 +580,8 @@ const CSS = String.raw`
 
 html { font-family: 'Source Serif 4', 'Bitstream Charter', Georgia, serif; font-size: 10.4pt; line-height: 1.5; color: var(--ink);
   font-optical-sizing: auto; font-variant-numeric: oldstyle-nums proportional-nums; }
-body { margin: 0; }
-p { margin: 0 0 0.62em; text-align: justify; hyphens: auto; orphans: 2; widows: 2; }
+body { margin: 0; font-variant-ligatures: no-common-ligatures; } /* Chrome writes some ligatures (fl) without their text, so copying or searching 'flag' found 'fag' (edition gate) */
+p { margin: 0 0 0.62em; text-align: justify; hyphens: manual; /* Paged.js loses text when a hyphenated word breaks across pages (the edition gate found lines missing in 1.0) */ orphans: 2; widows: 2; }
 a { color: inherit; text-decoration: none; }
 a.xref { color: #7a5b16; }
 .chapter-body a[href^="http"], .matter a[href^="http"], .edition a, .online a, .toc-online a { color: #7a5b16; }
@@ -553,6 +651,8 @@ img { max-width: 100%; }
 .edition h2 { font-size: 8.6pt; margin: 1.1em 0 0.3em; }
 .edition:has(h2) { padding-top: 1.6in; }
 .edition .review { color: #9b2c1f; font-weight: 600; }
+.edition .rebuilt { margin-top: 1.4em; font-size: 7.6pt; color: var(--muted); }
+.edition.from-rail { padding-top: 1.2in; }
 
 /* contents */
 .toc, .matter { page: front; break-before: right; }
@@ -588,30 +688,44 @@ img { max-width: 100%; }
 .chapter-end a { color: #7a5b16; }
 `;
 
-function buildHtml({ chapters, foreword, preface, intro, acknowledgements, edition, final, builtAt, coverImage }) {
-  const validDps = new Set(chapters.map((c) => c.dp));
-  const ackRail = { ...acknowledgements, body: linkDpRefs(acknowledgements.body, null, validDps) };
+function buildHtml(plan, { builtAt, coverImage }) {
+  const validDps = new Set(plan.chapters.map((c) => c.dp).filter(Boolean));
+  const matter = (m) => {
+    IMAGE_LOG = m.images = [];
+    const rail = m.kind === 'back' ? { ...m.rail, body: linkDpRefs(m.rail.body, null, validDps) } : m.rail;
+    return matterHtml(m.cls, rail).replace(`id="${m.cls}"`, `id="${m.anchor}"`);
+  };
+  const parts = [];
+  parts.push(coverHtml(coverImage));
+  IMAGE_LOG = plan.editionPage ? (plan.editionPage.images = []) : null;
+  parts.push(titlePagesHtml(true, builtAt, plan.editionPage ? plan.editionPage.rail : null));
+  parts.push(tocHtml(plan));
+  for (const m of plan.front) parts.push(matter(m));
+  if (plan.intro) { IMAGE_LOG = plan.intro.images = []; parts.push(introHtml(plan.intro.rail, validDps)); }
+  plan.chapters.forEach((c, i) => { IMAGE_LOG = c.images = []; parts.push(chapterHtml(c, validDps, i === 0 && !plan.intro)); });
+  for (const m of plan.back) parts.push(matter(m));
+  IMAGE_LOG = null;
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>${TITLE}: ${SUBTITLE} (${EDITION})</title>
+<title>${TITLE}: ${SUBTITLE} (${esc(EDITION)})</title>
 <meta name="author" content="Meta-Layer Initiative">
-<meta name="description" content="${EDITION} of ${TITLE}: ${SUBTITLE}, with a foreword by Vint Cerf.">
+<meta name="description" content="${esc(EDITION)} of ${TITLE}: ${SUBTITLE}.">
 <meta name="keywords" content="Meta-Layer, Desirable Properties, Layered Web, Overweb">
-<style>${CSS}</style>
+<style>${CSS}${previewCss()}</style>
 </head>
 <body>
-${coverHtml(coverImage)}
-${titlePagesHtml(final, builtAt, edition)}
-${tocHtml(chapters)}
-${matterHtml('foreword', foreword)}
-${matterHtml('preface', preface)}
-${introHtml(intro, validDps)}
-${chapters.map((c, i) => chapterHtml(c, validDps, i === 0)).join('\n')}
-${matterHtml('acknowledgements back', ackRail).replace('id="acknowledgements back"', 'id="acknowledgements"')}
+${parts.join('\n')}
 </body>
 </html>`;
+}
+
+/** The in-progress preview's footer on every page. */
+function previewCss() {
+  if (!PREVIEW_LINE) return '';
+  const box = `@bottom-center { content: ${JSON.stringify(PREVIEW_LINE)}; font-family: Inter, sans-serif; font-size: 6.5pt; color: #9b2c1f; }`;
+  return `\n@page { ${box} }\n@page :left { ${box} }\n@page :right { ${box} }\n@page :blank { ${box} }\n@page cover { ${box} }\n@page bare { ${box} }\n@page opener { ${box} }\n.tp-preview { margin-bottom: 0.4in; font: 600 8pt Inter, sans-serif; color: #9b2c1f; letter-spacing: 0.04em; }`;
 }
 
 /**
@@ -644,13 +758,12 @@ window.PagedConfig = { auto: true, after: () => {
 
 // ---------------------------------------------------------------- PDF
 
-async function savePreviews(page, spec, total) {
+async function savePreviews(page, spec, total, dir) {
   const want = new Set();
   for (const part of spec.split(',')) {
     const [a, b] = part.split('-').map((x) => (x === 'end' ? total : Number(x)));
     for (let i = a; i <= (b || a); i++) if (i >= 1 && i <= total) want.add(i);
   }
-  const dir = path.join(HERE, 'out', 'preview');
   fs.mkdirSync(dir, { recursive: true });
   for (const f of fs.readdirSync(dir)) if (/^page-\d+\.png$/.test(f)) fs.unlinkSync(path.join(dir, f));
   await page.setViewport({ width: 1400, height: 1000, deviceScaleFactor: 1.4 });
@@ -691,10 +804,20 @@ async function renderPdf(htmlFile, outFile, chromePath, preview) {
     await page.waitForFunction(() => document.querySelector('.pagedjs_pages') && window.__pagedDone === true, { timeout: 0, polling: 1000 });
     const pages = await page.evaluate(() => document.querySelectorAll('.pagedjs_page').length);
     console.log(`Paginated ${pages} pages in ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-    if (preview) await savePreviews(page, preview, pages);
+    if (preview) await savePreviews(page, preview, pages, path.join(path.dirname(outFile), 'png'));
+    const info = await page.evaluate(() => {
+      const all = Array.from(document.querySelectorAll('.pagedjs_page'));
+      const sections = {};
+      for (const el of document.querySelectorAll('section[id]')) {
+        if (!(el.id in sections)) sections[el.id] = all.indexOf(el.closest('.pagedjs_page')) + 1;
+      }
+      const toc = Array.from(document.querySelectorAll('.toc a[href^="#"]')).map((a) => ({
+        id: a.getAttribute('href').slice(1), shown: (a.querySelector('.toc-pg') || {}).textContent || '' }));
+      return { folios: window.__folios || [], sections, toc };
+    });
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
     await page.pdf({ path: outFile, preferCSSPageSize: true, printBackground: true, outline: true, tagged: process.env.PDF_TAGGED !== '0', timeout: 0 });
-    return pages;
+    return { pages, ...info };
   } finally {
     await browser.close();
   }
@@ -707,7 +830,8 @@ async function renderPdf(htmlFile, outFile, chromePath, preview) {
  */
 async function renderCoverPng(outPng, chromePath) {
   const { default: puppeteer } = await import('puppeteer-core');
-  const htmlFile = path.join(HERE, 'out', 'cover.html');
+  fs.mkdirSync(path.dirname(outPng), { recursive: true });
+  const htmlFile = path.join(path.dirname(outPng), 'cover.html');
   fs.writeFileSync(htmlFile, `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}\nhtml,body{margin:0;background:#0d1117}</style></head><body>${coverHtml(null)}</body></html>`);
   const browser = await puppeteer.launch({ executablePath: chromePath, headless: true, args: ['--no-sandbox', '--allow-file-access-from-files'] });
   try {
@@ -728,57 +852,191 @@ async function renderCoverPng(outPng, chromePath) {
 
 // ---------------------------------------------------------------- main
 
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const sat = JSON.parse(fs.readFileSync(SOURCES_SAT, 'utf8'));
-  const byKey = Object.fromEntries(sat.sources.filter((s) => s.railKey).map((s) => [s.railKey, s]));
-  const ml = (key) => { const m = byKey[key]?.mlNumber; if (!m) throw new Error(`No ML-Draft for rail ${key} in sources-sat.json`); return m; };
+/** The edition to build from json/editions.json, refusing a released edition whose list is not live. */
+// ---------------------------------------------------------------- plan (from the edition list)
 
-  const dpRails = sat.articleRails.filter((k) => /^dp\d{2}$/.test(k)).map((k) => byKey[k])
-    .filter((s) => s && (!args.only || args.only.includes(s.dp)));
-  const manifest = { builtAt: new Date().toISOString(), hub: args.hub, final: args.final, rails: {} };
-  const load = (key) => {
-    ml(key);
-    const { passages, source } = fetchRail(args.hub, byKey[key], args.offline);
-    manifest.rails[key] = { ml: byKey[key].mlNumber, source, passages: passages.length, sha256: createHash('sha256').update(JSON.stringify(passages)).digest('hex').slice(0, 16) };
-    return passages;
-  };
+const MATTER = {
+  foreword: { kind: 'front', cls: 'foreword', anchor: 'foreword' },
+  about: { kind: 'front', cls: 'preface', anchor: 'preface' },
+  acknowledgements: { kind: 'back', cls: 'acknowledgements back', anchor: 'acknowledgements' },
+};
+const INTRO_RAIL = 'ml-draft-026';
+const COVER_RAIL = 'book_cover';      // the cover art is drawn by the builder; its text is the online cover page
+const EDITION_RAIL = 'edition';
 
-  console.log(`${args.offline ? 'Reading cached' : 'Fetching'} ${dpRails.length} chapters + front/back matter from ${args.hub}`);
-  const foreword = prepareRail(load('foreword'));
-  const preface = prepareRail(load('about'));
-  const intro = prepareRail(load('ml-draft-026'));
-  // The edition and license page, once it is a Gov Hub draft with an `edition` rail; until then the built-in text.
-  const edition = byKey.edition?.mlNumber ? prepareRail(load('edition')) : null;
-  if (!edition) console.warn('  ! No `edition` rail in sources-sat.json yet: using the built-in edition and license text');
-  const acknowledgements = prepareRail(load('acknowledgements'));
-  const chapters = dpRails.map((s) => {
-    const r = prepareRail(load(s.railKey));
-    if (!r.title) throw new Error(`${s.dp}: chapter has no title passage`);
-    if (!r.image) console.warn(`  ! ${s.dp}: no illustration passage found`);
-    if (/massive transformati/i.test(r.body)) console.warn(`  ! ${s.dp}: mentions an MTP — MTPs are out of V1.0, check the text`);
-    return { ...r, dp: s.dp, railKey: s.railKey };
-  });
-
-  // The cover is rendered once as an image and placed in the PDF as that image (unless --cover-image is given).
-  let coverImage = args.coverImage;
-  if (!coverImage && !args.htmlOnly) coverImage = await renderCoverPng(args.coverPng || path.join(HERE, 'out', 'cover.png'), findChrome(args.chrome));
-  else if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
-  const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
-  const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, edition, final: args.final, builtAt, coverImage })
-    .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
-
-  const workDir = path.join(HERE, 'out');
-  fs.mkdirSync(workDir, { recursive: true });
-  const htmlFile = path.join(workDir, 'book.html');
-  fs.writeFileSync(htmlFile, html);
-  fs.writeFileSync(path.join(workDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
-  console.log(`Wrote ${path.relative(REPO, htmlFile)}`);
-  if (args.htmlOnly) return;
-
-  const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);
-  const mb = (fs.statSync(args.out).size / 1e6).toFixed(1);
-  console.log(`Wrote ${args.out} (${pages} pages, ${mb} MB)`);
+/** The book's structure for one edition, from its list (in list order) and the rails' labels. */
+export function planEdition(manifest, sat, editionId) {
+  const edition = (manifest.editions || []).find((e) => e.editionId === editionId);
+  if (!edition) throw new Error(`Edition ${editionId} is not in the edition record`);
+  const byKey = Object.fromEntries((sat.sources || []).filter((s) => s.railKey).map((s) => [s.railKey, s]));
+  const plan = { edition, front: [], intro: null, chapters: [], back: [], editionPage: null, rows: [] };
+  const seen = new Set();
+  for (const row of edition.rails || []) {
+    if (seen.has(row.railKey)) throw new Error(`STOP: ${row.railKey} is listed twice in edition ${editionId}`);
+    seen.add(row.railKey);
+    if (row.railKey === COVER_RAIL) continue;
+    const src = byKey[row.railKey] || {};
+    const entry = { railKey: row.railKey, row, src };
+    plan.rows.push(entry);
+    if (row.railKey === EDITION_RAIL) plan.editionPage = entry;
+    else if (row.railKey === INTRO_RAIL) plan.intro = entry;
+    else if (MATTER[row.railKey]) (MATTER[row.railKey].kind === 'front' ? plan.front : plan.back).push({ ...entry, ...MATTER[row.railKey] });
+    else plan.chapters.push({ ...entry, dp: src.dp || null, kicker: src.kicker || null });
+  }
+  return plan;
 }
 
-main().catch((e) => { console.error(e.stack || e.message); process.exit(1); });
+/**
+ * The files an edition's build writes, as stored and served at /downloads/<edition>/<file>: book.pdf and
+ * <rail>.pdf. The names people save them under carry the edition: desirable-properties-v<id>.pdf, <rail>-v<id>.pdf.
+ */
+export function editionFileNames(editionId, chapterKeys) {
+  return {
+    book: 'book.pdf',
+    bookDownloadName: `desirable-properties-v${editionId}.pdf`,
+    chapters: Object.fromEntries(chapterKeys.map((k) => [k, `${k}.pdf`])),
+    chapterDownloadNames: Object.fromEntries(chapterKeys.map((k) => [k, `${k}-v${editionId}.pdf`])),
+  };
+}
+
+/** Text of a rail, verified against the list, and the parsed rail (title, subtitle, image, body). */
+function loadRail(entry, opts) {
+  const { row } = entry;
+  let buf;
+  if (row.submissionId) buf = fetchListedText(row, opts);
+  else if (row.localPath && (row.localSha256 || row.sha256)) buf = readListedLocal(row);
+  else throw new Error(`STOP: ${row.railKey} has neither a Gov Hub revision nor a book-repo file on the list`);
+  const text = buf.toString('utf8');
+  fs.mkdirSync(opts.textsOut, { recursive: true });
+  entry.textFile = path.join(opts.textsOut, `${row.railKey}.txt`);
+  fs.writeFileSync(entry.textFile, buf);
+  let passages = splitPassages(text);
+  entry.dropped = [];
+  if (row.railKey === EDITION_RAIL) {
+    // The online page's navigation link is not part of the printed notice.
+    entry.dropped = passages.filter((p) => /^\[Continue to [^\]]*\]\(\/viewer\/[^)]*\)$/.test(p));
+    passages = passages.filter((p) => !entry.dropped.includes(p));
+  }
+  entry.rail = prepareRail(passages);
+  if (entry.kind) entry.tocTitle = entry.rail.title || entry.railKey;  // Contents shows each part's own title
+  if (entry.dp === undefined) return entry;
+  if (!entry.rail.title) throw new Error(`STOP: ${row.railKey}: the text has no title`);
+  entry.title = entry.rail.title;
+  Object.assign(entry, { subtitle: entry.rail.subtitle, image: entry.rail.image, body: entry.rail.body });
+  return entry;
+}
+
+/** Template text the builder adds around a section (the gate removes it before comparing with the source). */
+function furniture(entry, kind) {
+  if (kind === 'chapter') {
+    const isDp = /^DP\d+$/.test(entry.dp || '');
+    const name = isDp ? entry.dp : entry.title;
+    return {
+      before: [isDp ? `Desirable Property ${Number(entry.dp.slice(2))}` : (entry.kicker || 'Chapter')],
+      afterHead: ['Read, annotate and discuss this chapter online:', `${BOOK_URL.replace('https://', '')}/viewer/${entry.railKey}`],
+      after: [`Continue the conversation on ${name} online →`],
+    };
+  }
+  if (kind === 'intro') return { before: ['Introduction'], afterHead: [], after: ['Read the Introduction online →'] };
+  return { before: [], afterHead: [], after: [] };
+}
+
+// ---------------------------------------------------------------- main
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const manifest = JSON.parse(fs.readFileSync(args.manifest, 'utf8'));
+  const sat = JSON.parse(fs.readFileSync(SOURCES_SAT, 'utf8'));
+  const plan = planEdition(manifest, sat, args.edition);
+  const { edition } = plan;
+  const preview = edition.status !== 'released';
+  const built = resolveBuildDate(args.buildDate);
+  const builtDay = longDate(built);
+  EDITION = preview ? `${edition.label}, in progress` : edition.label;
+  EDITION_DATE = edition.releasedAt ? longDate(new Date(edition.releasedAt)) : '';
+  PREVIEW_LINE = preview ? `${edition.label}, in progress, built ${builtDay}, not a released edition` : '';
+  REBUILT_LINE = preview ? '' : `${edition.label} · ${args.rebuilt ? 'rebuilt' : 'built'} ${builtDay} from the ${edition.label} edition list`;
+  const names = editionFileNames(edition.editionId, plan.chapters.map((c) => c.railKey));
+  BOOK_PDF_URL = `${SITE_URL}/downloads/${edition.editionId}/${names.book}`;
+  const outDir = args.outDir || path.join(HERE, 'out', `${preview ? 'preview' : 'edition'}-${edition.editionId}`);
+  fs.rmSync(outDir, { recursive: true, force: true });
+  fs.mkdirSync(outDir, { recursive: true });
+  const opts = { hub: args.hub, editionId: edition.editionId, textsDir: args.textsDir, textsOut: path.join(outDir, 'texts') };
+
+  console.log(`${edition.label}${preview ? ' (in progress: preview)' : ''}: ${plan.rows.length} rails from the edition list`);
+  for (const e of plan.rows) {
+    const target = plan.chapters.find((c) => c.railKey === e.railKey) || plan.front.find((m) => m.railKey === e.railKey) ||
+      plan.back.find((m) => m.railKey === e.railKey) || e;
+    loadRail(target, opts);
+    if (target !== e) Object.assign(e, { textFile: target.textFile });
+  }
+  const coverImage = args.htmlOnly ? null : await renderCoverPng(args.coverPng || path.join(outDir, 'cover.png'), findChrome(args.chrome));
+  const html = buildHtml(plan, { builtAt: builtDay, coverImage }).replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
+  const htmlFile = path.join(outDir, 'book.html');
+  fs.writeFileSync(htmlFile, html);
+  if (args.htmlOnly) { console.log(`Wrote ${path.relative(REPO, htmlFile)}`); return; }
+
+  const bookFile = path.join(outDir, names.book);
+  const layout = await renderPdf(htmlFile, bookFile, findChrome(args.chrome), args.preview);
+  const bookKw = `${editionKeywords(edition)}; dp-manifest-sha256=${edition.manifestSha256 || ''}`;
+  stampPdfInfo(bookFile, { Title: `${TITLE}: ${SUBTITLE} (${EDITION})`, Keywords: bookKw });
+  console.log(`Wrote ${path.relative(REPO, bookFile)} (${layout.pages} pages)`);
+
+  const chapterReports = [];
+  if (args.chapters) {
+    const validDps = new Set(plan.chapters.map((c) => c.dp).filter(Boolean));
+    const chapterDir = path.join(outDir, 'chapters');
+    fs.mkdirSync(chapterDir, { recursive: true });
+    for (const ch of plan.chapters) {
+      const colophon = `<p class="chapter-colophon">${esc(`${TITLE}: ${SUBTITLE}. ${ch.dp || ch.title} from ${EDITION} ` +
+        `(${ch.row.mlNumber} revision ${ch.row.revision}), built ${builtDay} from the ${edition.label} edition list. ` +
+        `© the contributors; licensed under CC BY 4.0. The whole book: ${BOOK_PDF_URL.replace('https://', '')}`)}</p>`;
+      IMAGE_LOG = [];
+      const chHtml = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>${esc(ch.title)} (${esc(EDITION)})</title>
+<meta name="author" content="Meta-Layer Initiative">
+<style>${CSS}${previewCss()}\n.chapter-colophon { font-size: 7.6pt; color: var(--muted); margin-top: 2em; }</style>
+<script>${FOLIO_SCRIPT}</script></head><body>
+${chapterHtml(ch, validDps, true).replace(/<\/section>\s*$/, `${colophon}\n</section>`)}
+</body></html>`;
+      IMAGE_LOG = null;
+      const file = path.join(chapterDir, names.chapters[ch.railKey]);
+      fs.writeFileSync(path.join(outDir, `${ch.railKey}.html`), chHtml);
+      const lay = await renderPdf(path.join(outDir, `${ch.railKey}.html`), file, findChrome(args.chrome), null);
+      stampPdfInfo(file, { Title: `${ch.title} (${EDITION})`,
+        Keywords: `dp-edition=${ch.row.revisionEdition || edition.editionId}; dp-rail=${ch.railKey}; dp-submission=${ch.row.submissionId}` });
+      chapterReports.push({ railKey: ch.railKey, file: path.relative(outDir, file), pages: lay.pages, folios: lay.folios,
+        colophon: htmlUnescape(colophon.replace(/<[^>]+>/g, '')) });
+      console.log(`Wrote ${path.relative(REPO, file)} (${lay.pages} pages)`);
+    }
+  }
+
+  const section = (entry, kind, anchor) => ({
+    railKey: entry.railKey, kind, anchor, startPage: layout.sections[anchor] || null,
+    submissionId: entry.row.submissionId || null, sha256: entry.row.sha256 || entry.row.localSha256 || null,
+    revision: entry.row.revision || null, textFile: entry.textFile ? path.relative(outDir, entry.textFile) : null,
+    dropped: entry.dropped || [], furniture: furniture(entry, kind), images: entry.images || [],
+  });
+  const sections = [];
+  if (plan.editionPage) sections.push(section(plan.editionPage, 'edition', null));
+  for (const m of plan.front) sections.push(section(m, 'front', m.anchor));
+  if (plan.intro) sections.push(section(plan.intro, 'intro', 'introduction'));
+  for (const c of plan.chapters) sections.push(section(c, 'chapter', c.railKey));
+  for (const m of plan.back) sections.push(section(m, 'back', m.anchor));
+  const report = {
+    editionId: edition.editionId, label: edition.label, status: edition.status, preview, builtDate: built.toISOString().slice(0, 10),
+    editionLine: REBUILT_LINE || PREVIEW_LINE, manifestSha256: edition.manifestSha256 || null,
+    book: { file: path.basename(bookFile), pages: layout.pages, folios: layout.folios, toc: layout.toc, sections },
+    chapters: chapterReports, files: names,
+  };
+  fs.writeFileSync(path.join(outDir, 'build-report.json'), JSON.stringify(report, null, 2));
+  console.log(`Wrote ${path.relative(REPO, path.join(outDir, 'build-report.json'))}`);
+}
+
+function htmlUnescape(s) {
+  return s.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  main().catch((e) => { console.error(e.stack || e.message); process.exit(1); });
+}

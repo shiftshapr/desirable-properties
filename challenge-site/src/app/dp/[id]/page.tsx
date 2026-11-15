@@ -27,8 +27,7 @@ import {
   loadDpProvenance,
   dpInscriptionUrl,
   dpGovHubDraftUrl,
-  dpPdfDownloadUrl,
-  dpPdfDownloadFilename,
+  dpPdfDownload,
   loadPciProvenanceForDp,
 } from '@/lib/dpProvenance';
 import { resolveBackPath, sanitizeRelativePath } from '@/lib/dp-links';
@@ -91,6 +90,8 @@ function SpecView({
   govhubDraftHref,
   pdfDownloadHref,
   pdfDownloadName,
+  pdfDownloadLabel,
+  pdfEarlier,
   provenance,
   pciLinks,
 }: {
@@ -107,6 +108,8 @@ function SpecView({
   govhubDraftHref: string | null;
   pdfDownloadHref: string | null;
   pdfDownloadName: string | null;
+  pdfDownloadLabel: string | null;
+  pdfEarlier: { href: string; filename: string; label: string }[];
   provenance: ReturnType<typeof loadDpProvenance>;
   pciLinks: ReturnType<typeof loadPciProvenanceForDp>;
 }) {
@@ -211,8 +214,19 @@ function SpecView({
                     download={pdfDownloadName || undefined}
                     className="inline-flex items-center text-sm text-cyan-300 hover:text-cyan-200"
                   >
-                    Download PDF ({pdfDownloadName || 'composite'}) →
+                    {pdfDownloadLabel} →
                   </a>
+                ) : null}
+                {pdfEarlier.length ? (
+                  <span className="text-xs text-slate-400">
+                    Earlier editions:{' '}
+                    {pdfEarlier.map((e, i) => (
+                      <span key={e.href}>
+                        {i ? ', ' : ''}
+                        <a href={e.href} download={e.filename} className="text-cyan-300 hover:text-cyan-200">{e.label}</a>
+                      </span>
+                    ))}
+                  </span>
                 ) : null}
                 {onchainDraftHref ? (
                   <a
@@ -344,8 +358,11 @@ export default async function DPPage({
   const isWorkgroupMember = Boolean(workgroup?.id && memberWorkgroupIds.has(workgroup.id));
   const onchainDraftHref = dpInscriptionUrl(dp.id);
   const govhubDraftHref = dpGovHubDraftUrl(dp.id);
-  const pdfDownloadHref = dpPdfDownloadUrl(dp.id);
-  const pdfDownloadName = dpPdfDownloadFilename(dp.id);
+  const pdfDownload = await dpPdfDownload(dp.id);
+  const pdfDownloadHref = pdfDownload?.href ?? null;
+  const pdfDownloadName = pdfDownload?.filename ?? null;
+  const pdfDownloadLabel = pdfDownload?.label ?? null;
+  const pdfEarlier = pdfDownload?.earlier ?? [];
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -383,6 +400,7 @@ export default async function DPPage({
         readHref={readHref}
         pdfDownloadHref={pdfDownloadHref}
         pdfDownloadName={pdfDownloadName}
+        pdfDownloadLabel={pdfDownloadLabel}
         workgroupHref={workgroupHref}
         collabEnabled={collabEnabled}
       />
@@ -474,6 +492,8 @@ export default async function DPPage({
             govhubDraftHref={govhubDraftHref}
             pdfDownloadHref={pdfDownloadHref}
             pdfDownloadName={pdfDownloadName}
+            pdfDownloadLabel={pdfDownloadLabel}
+            pdfEarlier={pdfEarlier}
             provenance={provenance}
             pciLinks={pciLinks}
           />

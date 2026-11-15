@@ -5,6 +5,7 @@ import SteeringOverview from '@/components/steering/SteeringOverview';
 import Link from 'next/link';
 import { readSession } from '@/lib/auth-session';
 import { viewerIsSteering } from '@/lib/steering-notes.server';
+import { fetchAckRequestSummary } from '@/lib/ack-request.server';
 
 export const metadata: Metadata = {
   title: 'How Version 1.0 was decided – Desirable Properties',
@@ -22,7 +23,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function SteeringPage() {
   const session = await readSession();
-  const steering = session?.idToken ? await viewerIsSteering(session.idToken) : false;
+  const [steering, ackRequests] = session?.idToken
+    ? await Promise.all([viewerIsSteering(session.idToken), fetchAckRequestSummary(session.idToken)])
+    : [false, null];
   return (
     <main className="mx-auto w-full min-w-0 max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="border-b border-slate-800 pb-6">
@@ -49,6 +52,17 @@ export default async function SteeringPage() {
             <p className="mt-1 text-sm text-slate-400">Read Version 1.0 online, download the PDF, or ask Deepi about it.</p>
           </Link>
         </div>
+        {ackRequests ? (
+          <p className="mt-5 max-w-3xl rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3 text-sm text-slate-300">
+            <span className="font-semibold text-white">Acknowledgements requests:</span>{' '}
+            {ackRequests.newCount === 0
+              ? 'none new.'
+              : `${ackRequests.newCount} new ${ackRequests.newCount === 1 ? 'request' : 'requests'} to review.`}{' '}
+            <a href={ackRequests.reviewUrl} className="text-cyan-300 underline hover:text-cyan-200">
+              Review on Gov Hub →
+            </a>
+          </p>
+        ) : null}
         <details className="mt-5 max-w-3xl text-sm text-slate-400">
           <summary className="cursor-pointer text-slate-300 hover:text-white">How the steering committee worked</summary>
           <p className="mt-2">

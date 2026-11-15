@@ -5,6 +5,8 @@ import {
   inscriptionUrl,
   submissionLink as submissionLinkFromMap,
 } from '@/lib/ordinalLinks';
+import { chapterPdfLink, earlierChapterPdfs, type PdfLink } from '@/lib/edition-pdfs';
+import { getEditionPdfs } from '@/lib/edition-pdfs.server';
 
 export { inscriptionUrl, archiveSubmissionUrl };
 
@@ -108,24 +110,19 @@ export function dpGovHubDraftUrl(dpId: string | null | undefined): string | null
   return dpInscriptionData?.draft_only?.[normalized]?.govhub_url ?? null;
 }
 
-/** Composite working-draft version stamped into downloadable PDF filenames. */
-export const DP_COMPOSITE_PDF_VERSION = '0.77X';
-
-/** Public composite PDF download for a DP (served from /public/downloads/dp/). */
-export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
+function dpNumberOf(dpId: string | null | undefined): number | null {
   if (!dpId) return null;
-  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
-  if (!/^DP\d+$/.test(normalized)) return null;
-  // Versioned composite (ordinal + local updates), e.g. DP13-0.77X.pdf
-  return `/downloads/dp/${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
+  const m = /^(?:DP)?(\d+)$/i.exec(dpId.trim());
+  return m ? Number(m[1]) : null;
 }
 
-/** Suggested download filename for the composite DP PDF. */
-export function dpPdfDownloadFilename(dpId: string | null | undefined): string | null {
-  if (!dpId) return null;
-  const normalized = dpId.toUpperCase().startsWith('DP') ? dpId.toUpperCase() : `DP${dpId}`;
-  if (!/^DP\d+$/.test(normalized)) return null;
-  return `${normalized}-${DP_COMPOSITE_PDF_VERSION}.pdf`;
+/** The chapter's PDF download: the latest published edition's file, as Gov Hub records it (docs/EDITIONS.md). */
+export async function dpPdfDownload(dpId: string | null | undefined): Promise<(PdfLink & { earlier: PdfLink[] }) | null> {
+  const n = dpNumberOf(dpId);
+  if (n == null) return null;
+  const rail = `dp${String(n).padStart(2, '0')}`;
+  const state = await getEditionPdfs();
+  return { ...chapterPdfLink(state, rail), earlier: earlierChapterPdfs(state, rail) };
 }
 
 export function loadAllDpInscriptions(): Record<string, string> {
