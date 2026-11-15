@@ -122,35 +122,88 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
   edition's revision, else Gov Hub `chapter-passages/?edition=<id>`, whose 404s (`EDITION_NOT_FOUND`,
   `NOT_IN_A_BOOK`, `NOT_IN_EDITION`) are passed on; an answer naming another revision is refused (502).
 
-## PDFs
+## Releasing an edition's PDFs
 
-- `scripts/v1-book-pdf/build.mjs` (the book PDF, and with `--chapters-out` one PDF per chapter) builds an
-  edition from exactly its list: each revision's stored text from `<hub>/doc/draft/<submissionId>.txt`,
-  checked against the list's sha256 (any mismatch stops the build), split into blocks at blank lines as
-  Gov Hub's chapter-passages does; the Edition page from the list's book-repo file. Images referenced by an
-  inscription (`/content/<id>`) print the site's higher-resolution copy of the same picture where one was shown
-  to match (`SHARPER_COPIES` in build.mjs: About figure 1, DP23, DP24), else the inscribed bytes; the text and its
-  links stay exactly as listed. The edition page says "rebuilt <date> from the
-  <Edition> edition list"; the book PDF's Keywords carry `dp-edition`, `dp-edition-status`,
-  `dp-manifest-sha256` and `dp-edition-rails-sha256`, each chapter PDF `dp-edition`, `dp-rail`,
-  `dp-submission`. Version 1.0: `challenge-site/public/downloads/desirable-properties-v1.0.pdf` and
-  `challenge-site/public/downloads/dp-v1.0/dpNN-v1.0.pdf`.
-- **Chapter downloads follow the edition.** The site's `/dp/<n>` pages and the book viewer's Download button offer
-  the newest released edition's chapter PDF: file, URL (`/downloads/dp-v<id>/dpNN-v<id>.pdf`) and label
-  ("Download PDF · Version 1.0") all come from `editions.json`. The canonical set is
-  `challenge-site/public/downloads/dp-v<id>/`; the book site serves an identical copy in
-  `desirableproperties-book/downloads/dp-v<id>/` (the agreement check fails if they differ). When an edition is
-  released, its chapter PDFs are built with `build.mjs --edition <id> --chapters-out` into both folders, and the
-  links move to them with the manifest. Until then a chapter changed in the edition in progress still offers its
-  last released edition's PDF, labelled with that edition.
-- The retired "0.77X" composites (`/downloads/dp/DPn-0.77X.pdf` and `/downloads/dp/dpN.pdf`, removed 15 Nov
-  2026, kept in git history) redirect permanently to the Version 1.0 chapter PDFs: `challenge-site/next.config.ts`
-  for desirableproperties.org, and `desirableproperties-book/nginx/book.desirableproperties.org.conf` (staging:
-  `staging.book.desirableproperties.org.nginx.conf`) for the book host.
+**Everything is automatic.** When Gov Hub releases an edition, the backend job on the box that serves the site
+(`scripts/edition_pdfs.py run`, on a 15-minute timer) builds its PDFs, runs the gate, and publishes them by one
+atomic step in Gov Hub. No commit, no push, no person. The sites ask Gov Hub what is latest.
+
+1. **Build** (`scripts/v1-book-pdf/build.mjs --edition <id>`): the book and one PDF per chapter, exactly from the
+   edition list. Every rail's text is the listed revision (Gov Hub `chapter-passages/?edition=` cross-checked with
+   the stored `<hub>/doc/draft/<submissionId>.txt`, whose sha256 must equal the list's); the Edition page is the
+   list's book-repo file (or its version in git history). Nothing names an edition or assumes the rail set: the
+   chapters, their order, the Contents, page numbers, titles, the edition-page line ("<label> · built <date> from
+   the <label> edition list") and file names come from the list. Images referenced by an inscription print the
+   site's higher-resolution copy of the same picture where one was shown to match (`SHARPER_COPIES`), else the
+   inscribed bytes. The edition in progress builds a preview instead (`edition_pdfs.py preview`): its title page
+   and every page footer say "<label>, in progress, built <date>, not a released edition", written to
+   `<store>/previews/`, which nothing serves or links.
+2. **Gate** (all machine-checked; the first failure names its check):
+   - `sources`: every source text's sha256 equals the edition list's;
+   - `pdf`: each PDF opens and parses, fonts are embedded, every referenced image is present at a sane size and
+     placed;
+   - `text`: each part's text in the book, and each chapter PDF's, equals the listed revision word for word after
+     normalisation (lowercase letters and digits only; the builder's template lines such as "Read, annotate and
+     discuss this chapter online" removed), nothing missing, nothing extra;
+   - `structure`: every rail once, in list order; Contents numbers equal the real page numbers (as computed and as
+     printed); no blank page except before a part or after the edition page; no page holding only a heading or a
+     closing note; no text outside the printable area;
+   - `stamps`: the book's edition, rails hash and manifest hash; each chapter's edition, rail and submission;
+   - `sanity`: page count within 0.6–1.6× and file size within 0.4–2.5× of the previous edition's book, else the
+     reason is printed and nothing publishes;
+   - `links`: internal links resolve (stop); external links answer (warning only, listed in the record).
+3. **Store**: `<store>/<edition>/book.pdf` and `<rail>.pdf` with `SHA256SUMS`, read-only, never overwritten.
+   Store: production `~/dp-edition-pdfs/store` on box #1, staging `~/dp-edition-pdfs-staging/store` on box #2
+   (outside any checkout and outside the `rsync --delete` deploy targets `~/desirable-properties` and the book roots).
+4. **Publish**: `flask book-editions pdf-publish` in Gov Hub (the same host, no HTTP write, no secret) flips the set
+   to `published`: from that moment `GET /api/doc/editions/pdfs/` names it `latest`.
+5. **Check from outside**: every URL answers 200 with the recorded sha256 and the edition stamp; if not,
+   `pdf-unpublish` rolls back (the previous edition is latest again) and the reason is recorded.
+6. **Archive copy**: one copy of each released edition's published files goes into the repo at
+   `desirableproperties-book/downloads/editions/<edition>/` (`SHA256SUMS`, `record.json`), committed by the
+   `edition-pdf-archive` workflow through the rail sync's automated-commit route (its deploy key, a `[rail-sync]`
+   commit), dispatched by the job and retried hourly until it is there. It is never what is served, never blocks or
+   undoes a publish, and its state (`pending | committed | failed`) is in Gov Hub's record. CI refuses any change to
+   an existing edition's folder; the agreement check compares each committed file's sha256 with Gov Hub's record.
+   Size: about 38 MB per edition (book ~16 MB, 24 chapters ~22 MB), so the repository grows by that much per
+   release, forever (PDFs do not delta-compress). The repo uses neither Git LFS nor release assets today; either
+   would keep clones small, but the owner asked for a plain folder.
+
+**On failure** nothing flips: the previous edition stays latest and offered; Gov Hub's record shows
+`state: "failed"` and the reason, and its `status` lines read "<label> PDFs: not published, gate failed,
+<reason>" (the notifier reads them). The job exits non-zero. A re-run after a fix (the next timer tick, once the
+list or the builder changes, or `edition_pdfs.py run --retry-failed`) publishes with no further steps.
+
+**Serving and caching** (built once per edition, never generated on request):
+- `/downloads/<edition>/<file>`: the stored file, `Cache-Control: public, max-age=31536000, immutable`, a strong
+  `ETag` (its sha256), 304 on `If-None-Match`; the saved name carries the edition (`desirable-properties-v1.1.pdf`,
+  `dp07-v1.1.pdf`).
+- `/downloads/latest/book.pdf`, `/downloads/latest/<rail>.pdf`: 302 to the latest published file,
+  `Cache-Control: public, max-age=60`, so "latest" moves within minutes.
+- The site and the book viewer get labels and links from Gov Hub through the site (`/api/book/edition-pdfs`,
+  `max-age=120`), cached 3 minutes with the last good answer kept, then the job's local copy
+  (`<store>/latest.json`); with nothing at all they still offer `/downloads/latest/<rail>.pdf`.
+- Cloudflare is in front of both hosts. It caches `.pdf` responses by their headers: an edition file for a year
+  (it never changes, so no purge), a `latest` redirect for 60 s (it moves on its own, so no purge); the API answer
+  has no file extension and is not cached by Cloudflare. No purge is ever needed.
+- Old addresses redirect permanently: `/downloads/desirable-properties-v1.0.pdf` → `/downloads/1.0/book.pdf`,
+  `/downloads/dp-v1.0/dpNN-v1.0.pdf`, `/downloads/dp/DPn-0.77X.pdf` and `/downloads/dp/dpN.pdf` →
+  `/downloads/1.0/dpNN.pdf`.
+
+**What a person still does: nothing per release.** One-time setup on each box (production at the owner's next
+release of staging to main; staging is done):
+1. `python3 scripts/edition_pdfs.py --env production install` (the builder's node modules and a Python venv in
+   `~/dp-edition-pdfs/tool`, the store folder);
+2. the timer it prints: `*/15 * * * * ~/dp-edition-pdfs/tool/venv/bin/python ~/desirable-properties/scripts/edition_pdfs.py --env production run >> ~/dp-edition-pdfs/job.log 2>&1`;
+3. Gov Hub's release that carries `book_edition_pdf_set` (Gov Hub PRs #155, #157);
+4. `gh auth status` working on box #1 for the archive dispatch (Gov Hub already dispatches the rail sync this way);
+   the archive workflow uses the rail sync's existing `MAIN_PUSH_DEPLOY_KEY` and fails, naming it, without it.
+No nginx change: the site serves the store. No new secret.
+
+## Other PDFs
+
 - Astra's PDFs (`challenge-site/public/downloads/astra/`) are reference material outside editions: Astra's
   2026-09-05 editorial synthesis is not Gov Hub revision text, so no edition lists it.
-- `scripts/stamp_pdf_edition.py` stamps an existing PDF whose text is exactly a revision on an edition
-  list: Keywords only, as an incremental update (the original bytes stay a prefix; page text is checked
-  unchanged). Owner rule: stamp proven matches first; rebuild the rest from an edition's list only where
-  the builder can get that exact text (a released edition: from production Gov Hub's `?edition=` routes,
-  after release); leave the rest untouched.
+- The 0.77 inscription PDFs (`docs/dp-pdfs/dpN-<name>.pdf`, `desirable-property-inscriptions.pdf`) carry their
+  0.77 stamp, added by `scripts/stamp_pdf_edition.py` (Keywords only, as an incremental update: the original bytes
+  stay a prefix and every page's text is checked unchanged).

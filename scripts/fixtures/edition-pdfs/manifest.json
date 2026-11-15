@@ -1,0 +1,129 @@
+{
+ "schema": "dp-book-editions/v1",
+ "work": "desirableproperties-book",
+ "currentEdition": "10.0",
+ "editions": [
+  {
+   "editionId": "9.9",
+   "label": "Version 9.9 (test)",
+   "status": "released",
+   "releasedAt": "2026-12-01T00:00:00Z",
+   "predecessorEditionId": null,
+   "decisionRef": null,
+   "manifestSha256": "a74458b1e7a2979b3e72729f7d87d251fb298149dac80ccdd72a391a4b8596e5",
+   "rails": [
+    {
+     "railKey": "edition",
+     "mlNumber": null,
+     "revision": null,
+     "submissionId": null,
+     "sha256": "8e762425204f7151033700f7baa0bf428f9db93d54c77e6a5efece94ccb398b9",
+     "localPath": "/content/local/edition.md",
+     "localSha256": "8e762425204f7151033700f7baa0bf428f9db93d54c77e6a5efece94ccb398b9",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "ml-draft-026",
+     "mlNumber": "ML-Draft-026",
+     "revision": "01",
+     "submissionId": "sub-intro",
+     "sha256": "692cd91d14f585c5ca2b4a0ccf4cb6d4e99c43950c67799df157acdf359a5461",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "rights",
+     "mlNumber": "ML-Draft-099",
+     "revision": "01",
+     "submissionId": "sub-rights",
+     "sha256": "1bb5701ad48993c0d1a467f05ad59812a258f9e874bf0ca872c0f036c8f02777",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "dp01",
+     "mlNumber": "ML-Draft-008",
+     "revision": "01",
+     "submissionId": "sub-dp01",
+     "sha256": "c0fcb99bb48af1cc47eb618df12a952c020e81728d19b4ab9773ccf7c9a66d3e",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "dp02",
+     "mlNumber": "ML-Draft-009",
+     "revision": "01",
+     "submissionId": "sub-dp02",
+     "sha256": "9ce31d5b111365ffeb653cd7b4c08917d3b6c3cf42b1feba9925a7097150a298",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "acknowledgements",
+     "mlNumber": "ML-Draft-032",
+     "revision": "01",
+     "submissionId": "sub-ack",
+     "sha256": "914ce5bb9fb675f2270f5f457faa83ec00f0e3483da4ddea9ef4df9b99a85495",
+     "revisionEdition": "9.9"
+    }
+   ]
+  },
+  {
+   "editionId": "10.0",
+   "label": "Version 10.0 (test)",
+   "status": "in_progress",
+   "releasedAt": null,
+   "predecessorEditionId": "9.9",
+   "decisionRef": null,
+   "manifestSha256": null,
+   "rails": [
+    {
+     "railKey": "edition",
+     "mlNumber": null,
+     "revision": null,
+     "submissionId": null,
+     "sha256": "8e762425204f7151033700f7baa0bf428f9db93d54c77e6a5efece94ccb398b9",
+     "localPath": "/content/local/edition.md",
+     "localSha256": "8e762425204f7151033700f7baa0bf428f9db93d54c77e6a5efece94ccb398b9",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "ml-draft-026",
+     "mlNumber": "ML-Draft-026",
+     "revision": "01",
+     "submissionId": "sub-intro",
+     "sha256": "692cd91d14f585c5ca2b4a0ccf4cb6d4e99c43950c67799df157acdf359a5461",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "rights",
+     "mlNumber": "ML-Draft-099",
+     "revision": "01",
+     "submissionId": "sub-rights",
+     "sha256": "1bb5701ad48993c0d1a467f05ad59812a258f9e874bf0ca872c0f036c8f02777",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "dp01",
+     "mlNumber": "ML-Draft-008",
+     "revision": "01",
+     "submissionId": "sub-dp01",
+     "sha256": "c0fcb99bb48af1cc47eb618df12a952c020e81728d19b4ab9773ccf7c9a66d3e",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "dp02",
+     "mlNumber": "ML-Draft-009",
+     "revision": "01",
+     "submissionId": "sub-dp02",
+     "sha256": "9ce31d5b111365ffeb653cd7b4c08917d3b6c3cf42b1feba9925a7097150a298",
+     "revisionEdition": "9.9"
+    },
+    {
+     "railKey": "acknowledgements",
+     "mlNumber": "ML-Draft-032",
+     "revision": "01",
+     "submissionId": "sub-ack",
+     "sha256": "914ce5bb9fb675f2270f5f457faa83ec00f0e3483da4ddea9ef4df9b99a85495",
+     "revisionEdition": "9.9"
+    }
+   ]
+  }
+ ]
+}

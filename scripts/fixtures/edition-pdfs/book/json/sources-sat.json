@@ -1,0 +1,46 @@
+{
+ "workId": "desirableproperties-book",
+ "articleRails": [
+  "edition",
+  "ml-draft-026",
+  "rights",
+  "dp01",
+  "dp02",
+  "acknowledgements"
+ ],
+ "sources": [
+  {
+   "railKey": "edition",
+   "localOverride": "/content/local/edition.md"
+  },
+  {
+   "railKey": "ml-draft-026",
+   "mlNumber": "ML-Draft-026"
+  },
+  {
+   "railKey": "rights",
+   "mlNumber": "ML-Draft-099",
+   "label": "Rights",
+   "kicker": "Rights"
+  },
+  {
+   "railKey": "dp01",
+   "dp": "DP1",
+   "mlNumber": "ML-Draft-008"
+  },
+  {
+   "railKey": "dp02",
+   "dp": "DP2",
+   "mlNumber": "ML-Draft-009"
+  },
+  {
+   "railKey": "dp24",
+   "dp": "DP24",
+   "mlNumber": "ML-Draft-056"
+  },
+  {
+   "railKey": "acknowledgements",
+   "mlNumber": "ML-Draft-032"
+  }
+ ]
+}

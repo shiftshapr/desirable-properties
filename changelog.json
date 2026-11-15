@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "edition-pdfs-backend",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Edition PDFs are served from the backend store; labels and links come from Gov Hub",
+      "summary": "Chapter and book PDFs are built once per edition by a backend job, checked by an automatic quality gate and published by one step in Gov Hub; the site serves them at /downloads/<edition>/<file> (immutable) and /downloads/latest/<file> (redirects to the newest published edition). The /dp/<n> Download button and the book viewer ask Gov Hub (through /api/book/edition-pdfs, cached, with the last good answer kept) for the label and link, list earlier editions, and fall back to /downloads/latest/… if nothing answers.",
+      "changes": [
+        "challenge-site/src/app/downloads/[edition]/[file]/route.ts, downloads/latest/[file]/route.ts: stored files with immutable/ETag headers; short-lived latest redirect",
+        "challenge-site/src/app/api/book/edition-pdfs/route.ts, src/lib/edition-pdfs.ts, edition-pdfs.server.ts: Gov Hub's PDF record, cached",
+        "challenge-site/src/lib/dpProvenance.ts, src/app/dp/[id]/page.tsx: Download PDF · <edition> from the record; earlier editions"
+      ]
+    },
+    {
       "id": "chapter-pdf-downloads-v1",
       "date": "2026-11-15",
       "status": "open",

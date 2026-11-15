@@ -1,0 +1,92 @@
+name: Edition PDF archive
+
+# One archive copy of each released edition's published PDFs in the repo (docs/EDITIONS.md). Dispatched by the
+# backend job (scripts/edition_pdfs.py) after Gov Hub records the set as published; the files are what the site
+# already serves, verified against Gov Hub's sha256. Uses the rail sync's automated-commit route (the deploy key
+# that may push to main, a [rail-sync] commit), so no person pushes. Never touches what is served: a failed or
+# late archive never blocks or undoes a publish, and the job dispatches it again until the copy exists.
+
+on:
+  workflow_dispatch:
+    inputs:
+      edition:
+        description: Edition id (e.g. 1.1)
+        required: true
+      site:
+        description: Site that serves the PDFs
+        required: false
+        default: https://desirableproperties.org
+      hub:
+        description: Gov Hub with the PDF record
+        required: false
+        default: https://interfacehub.net
+
+concurrency:
+  group: edition-pdf-archive
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require the rail sync's deploy key
+        env:
+          HAS_KEY: ${{ secrets.MAIN_PUSH_DEPLOY_KEY != '' }}
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "::error::Missing secret MAIN_PUSH_DEPLOY_KEY (the rail sync's key that may push to main). Nothing archived."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.MAIN_PUSH_DEPLOY_KEY }}
+
+      - name: Fetch the published set and write it once
+        env:
+          EDITION: ${{ inputs.edition }}
+          SITE: ${{ inputs.site }}
+          HUB: ${{ inputs.hub }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, re, sys, urllib.request
+          ed, site, hub = os.environ['EDITION'], os.environ['SITE'].rstrip('/'), os.environ['HUB'].rstrip('/')
+          if not re.fullmatch(r'[0-9][0-9A-Za-z.-]{0,39}', ed):
+              sys.exit(f'bad edition id {ed!r}')
+          ua = {'User-Agent': 'Mozilla/5.0 (edition-pdf-archive)'}
+          rec = json.load(urllib.request.urlopen(urllib.request.Request(f'{hub}/api/doc/editions/pdfs/?work=desirableproperties-book', headers=ua), timeout=60))
+          s = next((e for e in rec['editions'] if e['editionId'] == ed), None)
+          if not s or s['state'] != 'published' or s.get('fixture'):
+              sys.exit(f'{ed} is not a published (non-fixture) PDF set on {hub}')
+          folder = pathlib.Path('desirableproperties-book/downloads/editions') / ed
+          if folder.exists():
+              print(f'{folder} already exists; an archive copy is written once'); sys.exit(0)
+          folder.mkdir(parents=True)
+          items = [s['book']] + [s['chapters'][k] for k in sorted(s['chapters'])]
+          sums = []
+          for it in items:
+              body = urllib.request.urlopen(urllib.request.Request(site + it['url'], headers=ua), timeout=300).read()
+              if hashlib.sha256(body).hexdigest() != it['sha256']:
+                  sys.exit(f'{it["url"]}: sha256 differs from Gov Hub record; nothing archived')
+              (folder / it['file']).write_bytes(body)
+              sums.append(f'{it["sha256"]}  {it["file"]}')
+          (folder / 'SHA256SUMS').write_text('\n'.join(sorted(sums, key=lambda l: l.split('  ')[1])) + '\n')
+          (folder / 'record.json').write_text(json.dumps(s, indent=1) + '\n')
+          print(f'archived {len(items)} files into {folder}')
+          PY
+
+      - name: Commit and push
+        env:
+          EDITION: ${{ inputs.edition }}
+        run: |
+          set -euo pipefail
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add "desirableproperties-book/downloads/editions/${EDITION}"
+          if git diff --staged --quiet; then echo "Nothing new to archive."; exit 0; fi
+          git commit -m "Archive the published PDFs of edition ${EDITION} [rail-sync]"
+          git push

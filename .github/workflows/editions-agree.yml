@@ -22,17 +22,30 @@ jobs:
         with:
           python-version: '3.12'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Builder and gate dependencies
+        run: |
+          (cd scripts/v1-book-pdf && npm ci --no-audit --no-fund)
+          pip install -q pypdf pypdfium2 pillow
+
       - name: Unit tests
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
         run: |
           python3 scripts/test_book_editions.py
           python3 scripts/test_govhub_sync_rails.py
+          (cd scripts/v1-book-pdf && node --test build.test.mjs)
+          python3 scripts/test_edition_pdfs.py
 
       - name: Editions agree
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           if [ -n "${BASE_SHA}" ]; then
-            python3 scripts/check_editions_agree.py --base "${BASE_SHA}"
+            python3 scripts/check_editions_agree.py --base "${BASE_SHA}" --govhub https://interfacehub.net
           else
-            python3 scripts/check_editions_agree.py
+            python3 scripts/check_editions_agree.py --govhub https://interfacehub.net
           fi

@@ -5,8 +5,8 @@ import {
   inscriptionUrl,
   submissionLink as submissionLinkFromMap,
 } from '@/lib/ordinalLinks';
-import { chapterPdfDownload } from '@/lib/book-editions';
-import { readEditionsManifest } from '@/lib/book-editions.server';
+import { chapterPdfLink, earlierChapterPdfs, type PdfLink } from '@/lib/edition-pdfs';
+import { getEditionPdfs } from '@/lib/edition-pdfs.server';
 
 export { inscriptionUrl, archiveSubmissionUrl };
 
@@ -116,10 +116,13 @@ function dpNumberOf(dpId: string | null | undefined): number | null {
   return m ? Number(m[1]) : null;
 }
 
-/** The chapter's Version-labelled PDF (newest released edition, from the edition manifest); null without one. */
-export async function dpPdfDownload(dpId: string | null | undefined): Promise<{ href: string; filename: string; label: string } | null> {
+/** The chapter's PDF download: the latest published edition's file, as Gov Hub records it (docs/EDITIONS.md). */
+export async function dpPdfDownload(dpId: string | null | undefined): Promise<(PdfLink & { earlier: PdfLink[] }) | null> {
   const n = dpNumberOf(dpId);
-  return n == null ? null : chapterPdfDownload(await readEditionsManifest(), n);
+  if (n == null) return null;
+  const rail = `dp${String(n).padStart(2, '0')}`;
+  const state = await getEditionPdfs();
+  return { ...chapterPdfLink(state, rail), earlier: earlierChapterPdfs(state, rail) };
 }
 
 export function loadAllDpInscriptions(): Record<string, string> {
