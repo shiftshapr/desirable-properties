@@ -229,9 +229,27 @@ function prepareRail(passages) {
   return { title, subtitle, image, body: ps.join('\n\n') };
 }
 
+/**
+ * Rendering choice, not text: for an image the text references by its inscription, print the site's
+ * higher-resolution copy of the same picture. Each pair was checked by downscaling the large copy to the
+ * inscribed image's size (15 Nov 2026): pixel correlation / mean absolute difference per channel.
+ * The roadmap figure in About (21a600b6…i0) has no matching copy (overweb-roadmap.jpg and v1/roadmap.webp
+ * are different drawings), so the inscribed image is printed.
+ */
+const SHARPER_COPIES = {
+  // About, figure 1: layered-web-coordination-layer.jpg (1650 x 953), corr 0.9921, diff 3.43/255
+  '0535566bf0363fafebaa4b87ebc2b917bf67eaba5544a7071bec535e3e9610f4i0': path.join(BOOK_ASSETS, 'layered-web-coordination-layer.jpg'),
+  // DP23 illustration: DP23.webp (1200 x 1200), corr 0.9926, diff 3.01/255
+  'e03ab40d8702bb54edfd941bbad013795df564d8570fa4e2ecac8679cb0a36e4i0': path.join(FULL_ILLUSTRATIONS, 'DP23.webp'),
+  // DP24 illustration: DP24.webp (1200 x 1200), corr 0.9973, diff 2.47/255
+  'b31e29bfa31319e51deb7b08c79dd487248cd068f51c0424965d5994d1449ec1i0': path.join(FULL_ILLUSTRATIONS, 'DP24.webp'),
+};
+
 function resolveImage(src) {
-  // An image referenced by its Bitcoin inscription (the 14 Nov in-place edits): use the inscribed bytes.
+  // An image referenced by its Bitcoin inscription (the 14 Nov in-place edits): a verified sharper copy of
+  // the same picture when there is one, else the inscribed bytes.
   const ins = String(src).match(/^\/content\/([0-9a-f]{64}i\d+)$/);
+  if (ins && SHARPER_COPIES[ins[1]] && fs.existsSync(SHARPER_COPIES[ins[1]])) return pathToFileURL(SHARPER_COPIES[ins[1]]).href;
   if (ins) {
     fs.mkdirSync(CACHE_DIR, { recursive: true });
     const file = path.join(CACHE_DIR, `${ins[1]}.webp`);
@@ -898,16 +916,15 @@ async function buildChapterPdfs(args, edition, chapters, chromePath) {
   fs.mkdirSync(args.chaptersOut, { recursive: true });
   for (const ch of chapters) {
     const row = edition.rails.find((r) => r.railKey === ch.railKey);
-    const colophon = `<section class="matter chapter-colophon"><p class="rebuilt">${esc(`${TITLE}: ${SUBTITLE}. ${ch.dp} from ${edition.label} ` +
+    const colophon = `<p class="chapter-colophon">${esc(`${TITLE}: ${SUBTITLE}. ${ch.dp} from ${edition.label} ` +
       `(${row.mlNumber} revision ${row.revision}), built ${day} from the ${edition.label} edition list. ` +
-      `© 2026 the contributors; licensed under CC BY 4.0. The whole book: ${SITE_URL.replace('https://', '')}/downloads/desirable-properties-v1.0.pdf`)}</p></section>`;
+      `© 2026 the contributors; licensed under CC BY 4.0. The whole book: ${SITE_URL.replace('https://', '')}/downloads/desirable-properties-v1.0.pdf`)}</p>`;
     const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>${esc(ch.title)} (${edition.label})</title>
 <meta name="author" content="Meta-Layer Initiative">
-<style>${CSS}\n.chapter-colophon .rebuilt { font-size: 7.6pt; color: var(--muted); margin-top: 2em; }</style>
+<style>${CSS}\n.chapter-colophon { font-size: 7.6pt; color: var(--muted); margin-top: 2em; }</style>
 <script>${FOLIO_SCRIPT}</script></head><body>
-${chapterHtml(ch, validDps, true)}
-${colophon}
+${chapterHtml(ch, validDps, true).replace(/<\/section>\s*$/, `${colophon}\n</section>`)}
 </body></html>`;
     const htmlFile = path.join(HERE, 'out', `${ch.railKey}.html`);
     fs.writeFileSync(htmlFile, html);

@@ -130,7 +130,9 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
   edition from exactly its list: each revision's stored text from `<hub>/doc/draft/<submissionId>.txt`,
   checked against the list's sha256 (any mismatch stops the build), split into blocks at blank lines as
   Gov Hub's chapter-passages does; the Edition page from the list's book-repo file. Images referenced by an
-  inscription (`/content/<id>`) are the inscribed bytes. The edition page says "rebuilt <date> from the
+  inscription (`/content/<id>`) print the site's higher-resolution copy of the same picture where one was shown
+  to match (`SHARPER_COPIES` in build.mjs: About figure 1, DP23, DP24), else the inscribed bytes; the text and its
+  links stay exactly as listed. The edition page says "rebuilt <date> from the
   <Edition> edition list"; the book PDF's Keywords carry `dp-edition`, `dp-edition-status`,
   `dp-manifest-sha256` and `dp-edition-rails-sha256`, each chapter PDF `dp-edition`, `dp-rail`,
   `dp-submission`. Version 1.0: `challenge-site/public/downloads/desirable-properties-v1.0.pdf` and
