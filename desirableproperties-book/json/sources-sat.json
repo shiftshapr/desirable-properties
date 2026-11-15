@@ -95,7 +95,11 @@
       "block": 950007,
       "timestamp": 1779478064,
       "inscriptionSha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
-      "inscribedRevision": null,
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-026",
+        "revision": "00",
+        "submissionId": "z41gtb59"
+      },
       "inscriptionEdition": "0.77",
       "inscriptionOnEditionList": true,
       "status": "active",

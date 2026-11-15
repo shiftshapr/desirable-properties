@@ -3,12 +3,12 @@
   "work": "desirableproperties-book",
   "description": "Edition record of The Layered Web, generated from Gov Hub by the rail sync. Do not edit: see docs/EDITIONS.md.",
   "generatedBy": "scripts/govhub_sync_rails_from_hub.py",
-  "generatedAt": "2026-11-15T20:35:09Z",
+  "generatedAt": "2026-11-15T20:42:40Z",
   "source": {
     "kind": "fixture",
     "path": "scripts/fixtures/govhub-editions-desirableproperties-book.json",
-    "fetchedAt": "2026-11-15T20:35:09Z",
-    "responseSha256": "93f55ae0209499a6dac91c2d4a5669cc1200b2d4db329870b227e94f43f0b554"
+    "fetchedAt": "2026-11-15T20:42:40Z",
+    "responseSha256": "200e0b004d39c3a6a941c8edc3014429827db59d3ee6f1e15fc0b4d559e6b05c"
   },
   "currentEdition": "1.1",
   "liveEdition": {
@@ -21,17 +21,17 @@
       "editionId": "0.77",
       "label": "Version 0.77",
       "status": "released",
-      "releasedAt": null,
+      "releasedAt": "2026-05-29T19:11:12Z",
       "predecessorEditionId": null,
-      "decisionRef": "fixture:owner-ruling-2026-11-15-edition-0.77",
-      "manifestSha256": "8f6d9ee60a23048956564e8378f40f4b287f987d8b4e014b9481ae069af03627",
+      "decisionRef": null,
+      "manifestSha256": "9689df04d3d88ff25b6eb7138b45fb1883fe5e1760e0341f5e13ab8cb00670d3",
       "coverImageInscriptionId": null,
       "rails": [
         {
           "railKey": "ml-draft-026",
           "mlNumber": "ML-Draft-026",
-          "revision": null,
-          "submissionId": null,
+          "revision": "00",
+          "submissionId": "z41gtb59",
           "sha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
           "revisionEdition": "0.77",
           "source": "govhub",
@@ -338,8 +338,8 @@
         {
           "railKey": "dp22",
           "mlNumber": "ML-Draft-028",
-          "revision": null,
-          "submissionId": null,
+          "revision": "00",
+          "submissionId": "6422afd8-2c21-40bb-9541-1c40b17977f3",
           "sha256": "3d4f15ee892eac259e5c97e447a08bb66bd3600049ef8fb16678630de5bb508c",
           "revisionEdition": "0.77",
           "source": "govhub",
@@ -357,8 +357,8 @@
       "status": "released",
       "releasedAt": "2026-11-13T00:00:00Z",
       "predecessorEditionId": "0.77",
-      "decisionRef": "fixture:dp-steering-v1-signoff",
-      "manifestSha256": "5eb1626ee158805b4cb2dc14ea9513d2ee89e842bf4e89d469dc828c0a5bb547",
+      "decisionRef": null,
+      "manifestSha256": "ba06b9b8dc0da7bf3dd402c868b08caddb3974a80d924e612ebe8a9c0a96cbb2",
       "coverImageInscriptionId": "3e7a8279c045187d7db87bdf12db05315580d63334da3047cd7490e2eee3341ai0",
       "rails": [
         {
