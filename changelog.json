@@ -14,7 +14,8 @@
         "challenge-site/src/app/dp/[id]/page.tsx: \"Download PDF · <edition>\"",
         "challenge-site/next.config.ts: 48 permanent redirects from the retired URLs",
         "challenge-site/public/downloads/dp/: removed (DPn-0.77X.pdf and dpN.pdf)",
-        "challenge-site/scripts/sync-dp-download-pdfs.sh: removed (composite tooling retired)"
+        "challenge-site/scripts/sync-dp-download-pdfs.sh: removed (composite tooling retired)",
+        "challenge-site/src/lib/book-editions.server.ts: the edition record is read from the site's own book host (/json/editions.json on staging.book… or book…) when the book tree is not beside the site, as on the deployed servers; the Download button now appears there"
       ]
     },
     {

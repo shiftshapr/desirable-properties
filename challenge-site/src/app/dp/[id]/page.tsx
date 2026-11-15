@@ -345,7 +345,7 @@ export default async function DPPage({
   const isWorkgroupMember = Boolean(workgroup?.id && memberWorkgroupIds.has(workgroup.id));
   const onchainDraftHref = dpInscriptionUrl(dp.id);
   const govhubDraftHref = dpGovHubDraftUrl(dp.id);
-  const pdfDownload = dpPdfDownload(dp.id);
+  const pdfDownload = await dpPdfDownload(dp.id);
   const pdfDownloadHref = pdfDownload?.href ?? null;
   const pdfDownloadName = pdfDownload?.filename ?? null;
   const pdfDownloadLabel = pdfDownload?.label ?? null;

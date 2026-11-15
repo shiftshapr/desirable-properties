@@ -117,17 +117,9 @@ function dpNumberOf(dpId: string | null | undefined): number | null {
 }
 
 /** The chapter's Version-labelled PDF (newest released edition, from the edition manifest); null without one. */
-export function dpPdfDownload(dpId: string | null | undefined): { href: string; filename: string; label: string } | null {
+export async function dpPdfDownload(dpId: string | null | undefined): Promise<{ href: string; filename: string; label: string } | null> {
   const n = dpNumberOf(dpId);
-  return n == null ? null : chapterPdfDownload(readEditionsManifest(), n);
-}
-
-export function dpPdfDownloadUrl(dpId: string | null | undefined): string | null {
-  return dpPdfDownload(dpId)?.href ?? null;
-}
-
-export function dpPdfDownloadFilename(dpId: string | null | undefined): string | null {
-  return dpPdfDownload(dpId)?.filename ?? null;
+  return n == null ? null : chapterPdfDownload(await readEditionsManifest(), n);
 }
 
 export function loadAllDpInscriptions(): Record<string, string> {
