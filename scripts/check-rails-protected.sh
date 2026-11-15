@@ -18,6 +18,8 @@ RAIL_PATHS=(
   'desirableproperties-book/content/local/foreword.md'
   'desirableproperties-book/content/local/about.md'
   'desirableproperties-book/content/local/acknowledgements.md'
+  'desirableproperties-book/content/local/cover.md'
+  'desirableproperties-book/content/local/introduction.md'
 )
 MODE="${1:-}"
 
