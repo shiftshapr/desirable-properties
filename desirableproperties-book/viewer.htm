@@ -2098,6 +2098,20 @@
       }
     }
 
+    /**
+     * Acknowledgements page only: where to ask for a change (be added, fix a name, be removed).
+     * The form lives on the DP site; book.* hosts link across to it. Not part of the book text.
+     */
+    function buildAckRequestLinkHtml(rail) {
+      if (rail !== 'acknowledgements') return '';
+      const host = location.hostname;
+      const book = /^(staging\.)?book\.desirableproperties\.org$/.test(host);
+      const base = book ? 'https://' + (host.indexOf('staging.') === 0 ? 'staging.' : '') + 'desirableproperties.org' : '';
+      return '<p class="dp-archive-links dp-ack-request-link">Missing, or is your name wrong? ' +
+        '<a href="' + base + '/acknowledgements/request">Ask for a change to the Acknowledgements</a>' +
+        ' or <a href="' + base + '/acknowledgements/request?kind=remove">ask to be removed</a>.</p>';
+    }
+
     async function loadChapter(rail, opts) {
       const o = opts || {};
       if (!(rail in RAIL_INDEX)) {
@@ -2120,7 +2134,7 @@
         } else {
           const wrapClass = result.wrapClass || '';
           bodyHtml = '<div class="book-content' + wrapClass + '" data-dp-content-root="1" data-canopi-content-root="1" data-canopi-content="1">' + result.html + '</div>' +
-            buildArchiveLinksHtml(rail);
+            buildArchiveLinksHtml(rail) + buildAckRequestLinkHtml(rail);
         }
         const navHtml = buildNavBarHtml(rail);
         const downloadHtml = result.source === 'not-onchain' ? '' : buildChapterDownloadHtml(rail);
