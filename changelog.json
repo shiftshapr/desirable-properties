@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "dp-meta-governance-event",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Events: 16 Nov \"DP Meta-Governance: Creating a Living Book Together\" listed with its own page and correct time",
+      "summary": "Tomorrow's Meta-Layer Monday session on governing the Desirable Properties process itself (Mon 16 Nov 2026, 10:00–11:30 a.m. Pacific, RSVP on Luma) was missing from /events. It now shows under Upcoming as an Event with \"10–11:30 AM PT\", has its own page at /roundups/2026-11-16 describing the session, and appears as the next gathering on /roundups. It is not a DP Roundup, so it carries no \"DP Roundup:\" prefix, roundup agenda, breakout text or weekly tasks. Past roundups (11:30 a.m.–1:00 p.m.) and the Friday V1 launch (10–11 AM PT) show as before.",
+      "changes": [
+        "challenge-site/src/lib/dp-roundups.ts: each event declares kind (roundup, launch, gathering), start, end and time labels instead of relying on its position in the list; non-roundups must give explicit times; new 16 Nov entry (https://luma.com/6bqcfew2)",
+        "challenge-site/src/app/roundups/[date]/page.tsx: page text follows the event kind; non-roundups show their own description and link back to /events",
+        "challenge-site/src/lib/dp-event-series-store.ts: non-roundups show as \"Event\" on /events",
+        "challenge-site/src/app/roundups/page.tsx, src/app/process/page.tsx: series calendar and Monday sessions list stay roundups + launch only"
+      ]
+    },
+    {
       "id": "dp-council-pages",
       "date": "2026-11-14",
       "status": "open",
