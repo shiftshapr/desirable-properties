@@ -1,5 +1,5 @@
 {
-  "_fixture": "Recorded 2026-11-15 by the book repo for PRODUCTION (production Gov Hub has no editions endpoint until the owner releases it). 0.77 is byte-identical in its rails to dev Gov Hub's live answer (dev.interfacehub.net, 15 Nov): releasedAt 2026-05-29T19:11:12Z, the Introduction and DP22 entries are their ordinal-sourced base submissions. 1.0 and 1.1 list the revisions production serves (production Submission rows copied read-only 14 Nov, and the govhub-sync markers in content/local); dev's 1.0/1.1 lists are older and are NOT used here. decisionRef null as Gov Hub answers; manifestSha256 by the contract method. Replace by the production endpoint's answer at release.",
+  "_fixture": "Production edition record as the Gov Hub edition setup produces it on a copy of production data (dry run, refreshed 2026-11-15 21:39 UTC with the owner's rulings: Acknowledgements r04 in 1.0; Cover, About, DP23, DP24 as they read now, each with a note). Copied verbatim from ~/handoff/specs/production-editions-dryrun.json. Replace by the production endpoint's answer at release.",
   "work": "desirableproperties-book",
   "currentEdition": "1.1",
   "editions": [
@@ -18,7 +18,8 @@
           "revision": "00",
           "submissionId": "z41gtb59",
           "sha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -26,7 +27,8 @@
           "revision": "01",
           "submissionId": "fmpzlexh",
           "sha256": "9583ef6c58caf976e917d7fb5c3248935c6035af2851109be5ce195808b5289c",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -34,7 +36,8 @@
           "revision": "00",
           "submissionId": "tdr7e0xe",
           "sha256": "2c868c4501089bd5542712f96a4210a929bcdb132bf9cf047ddb8ee1d71a9df6",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -42,7 +45,8 @@
           "revision": "00",
           "submissionId": "bptucnnk",
           "sha256": "71e1cb9b80c217bdf22c1e2bfc24ef99f04f1819f1a124d59ddbc0e0b6a74d94",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -50,7 +54,8 @@
           "revision": "00",
           "submissionId": "rzif7bim",
           "sha256": "6e660bf560209892fc587c236f6fccdc76aaa6e70cb25a713266d75403fa79e3",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -58,7 +63,8 @@
           "revision": "00",
           "submissionId": "kceeygnx",
           "sha256": "8b208e382a9c3284540c145ac92fa1fda339ce78700b55df721aac440ec8c7b5",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -66,7 +72,8 @@
           "revision": "00",
           "submissionId": "egl2wnnf",
           "sha256": "52bdfb30971a35ca6d2c77b0eb476f33db6db6cf9a2cb8b5e5c23b8e1083f562",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -74,7 +81,8 @@
           "revision": "00",
           "submissionId": "3kud2xmo",
           "sha256": "bf4c40ec17670c49ff7eb461765f5bc884a2bebfca617ae833a350f75cab3eb0",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -82,7 +90,8 @@
           "revision": "00",
           "submissionId": "blzqopyd",
           "sha256": "26bf95618cf133519849f98bfdcdb4dc1f2048d0d5d80ad87703a6d1d29f0568",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -90,7 +99,8 @@
           "revision": "00",
           "submissionId": "b18kbksn",
           "sha256": "2719c29d1ff3192645356c27e6f7151622aff2d94c9d024a3911c915fe2cc7b3",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -98,7 +108,8 @@
           "revision": "00",
           "submissionId": "q8q132sr",
           "sha256": "e8c0b37c6fe38485d9a9aa013f0cea1f1412d45a20f2918b3cb017ecad1ec28c",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -106,7 +117,8 @@
           "revision": "01",
           "submissionId": "n1sy3631",
           "sha256": "3213a2e9eed88bb315c45c46cfccbb5fef8835debb28b15efdbced4362473034",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -114,7 +126,8 @@
           "revision": "01",
           "submissionId": "8bye41qq",
           "sha256": "0ebf31bffcfcb9a110931895f093864df27bdc242350e1a55e6744d4a4a58c4e",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -122,7 +135,8 @@
           "revision": "01",
           "submissionId": "2069sg0n",
           "sha256": "547ac57f29b4ee8247397a206b8ffca98821deb6717568a8fd92e2c2886c9195",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -130,7 +144,8 @@
           "revision": "00",
           "submissionId": "qnbbe3ki",
           "sha256": "3900fc3b5ce2c992b516711b603a1314b2f9b3d0e6ee7f67f88f3ce00a3201de",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -138,7 +153,8 @@
           "revision": "00",
           "submissionId": "yu9ajp3x",
           "sha256": "fa3957b15bcb7b96cec962f01ee5381683ed1b45e0ac146d5f63cc63d1b19212",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -146,7 +162,8 @@
           "revision": "00",
           "submissionId": "1n34m2mg",
           "sha256": "6bec5e15d465e4ae7232f5e1ac46f36eb7832104b6ee066d77d6f6d874643557",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -154,7 +171,8 @@
           "revision": "00",
           "submissionId": "t4q8puic",
           "sha256": "d1228c7ac806eefe12c86f97f2da2bd501d921a0bd7dd4dbc66c24e4e595fc29",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -162,7 +180,8 @@
           "revision": "00",
           "submissionId": "xxf5ny7l",
           "sha256": "ae031b41e818812da112344920b1877ef29179b7e31d7d2c49450997cb22f8dc",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -170,7 +189,8 @@
           "revision": "00",
           "submissionId": "nn2shgy8",
           "sha256": "016e61b7b467c149baf51a19998f686f3146b5ef28b2f7a45049fddc6cc128f0",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -178,7 +198,8 @@
           "revision": "00",
           "submissionId": "fo686uq9",
           "sha256": "65db916c4a4f63a18f4632a5e9462f4c84b34802b63dbfc0662bc3c5d1422b81",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -186,7 +207,8 @@
           "revision": "00",
           "submissionId": "73088jr6",
           "sha256": "fa484742980bd224f79b42ea92d5c97ab4f0b002fdfcba5e12a847e989f6d739",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -194,7 +216,8 @@
           "revision": "00",
           "submissionId": "6422afd8-2c21-40bb-9541-1c40b17977f3",
           "sha256": "3d4f15ee892eac259e5c97e447a08bb66bd3600049ef8fb16678630de5bb508c",
-          "revisionEdition": "0.77"
+          "revisionEdition": "0.77",
+          "note": null
         }
       ]
     },
@@ -202,18 +225,19 @@
       "editionId": "1.0",
       "label": "Version 1.0",
       "status": "released",
-      "releasedAt": "2026-11-13T00:00:00Z",
+      "releasedAt": "2026-11-13T07:36:03Z",
       "predecessorEditionId": "0.77",
-      "decisionRef": null,
-      "manifestSha256": "ba06b9b8dc0da7bf3dd402c868b08caddb3974a80d924e612ebe8a9c0a96cbb2",
+      "decisionRef": "/api/doc/steering/stages/final/",
+      "manifestSha256": "0f857966096484948a02e6e7f5cda6a09169a2bec95bc119322d242b34ae55f1",
       "rails": [
         {
           "railKey": "book_cover",
           "mlNumber": "ML-Draft-033",
           "revision": "01",
           "submissionId": "9b7c875e-c3d2-436a-bccb-cfccdea42ad1",
-          "sha256": "1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b",
-          "revisionEdition": "1.0"
+          "sha256": "17772beae8b62c188ca700614461c0d92eee9edb361b3db69d8bfad7420a7538",
+          "revisionEdition": "1.0",
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub; it survives in the book repo (sha256 1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b)"
         },
         {
           "railKey": "edition",
@@ -221,7 +245,8 @@
           "revision": null,
           "submissionId": null,
           "sha256": null,
-          "revisionEdition": null
+          "revisionEdition": null,
+          "note": null
         },
         {
           "railKey": "foreword",
@@ -229,7 +254,8 @@
           "revision": "01",
           "submissionId": "5785291a-785f-489b-a6bd-7f7f0a1b9b43",
           "sha256": "60df5331c79c290811417e7d66f51e223553fb1bece8488b8a29b99ade6540fc",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "about",
@@ -237,7 +263,8 @@
           "revision": "04",
           "submissionId": "f79b02aa-b0b8-4366-a485-55f430c56f28",
           "sha256": "54c288eb0871050c900ab45e2b555964802ee9f54f641001daefa34fcfaa626c",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         },
         {
           "railKey": "acknowledgements",
@@ -245,7 +272,8 @@
           "revision": "04",
           "submissionId": "19a6f536-6c5a-4947-8c42-9ebb6acb6e11",
           "sha256": "8e0b3942ba1b25b267666745c60e5d011e779a2613dd6823c8cfcaaa0b4e4ab7",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": "approved 13 Nov 2026 16:44 UTC after the Stage 4 sign-off of r03; chosen by the owner on 15 Nov 2026"
         },
         {
           "railKey": "ml-draft-026",
@@ -253,7 +281,8 @@
           "revision": "01",
           "submissionId": "04eb3200-d77f-43f0-8c2a-c20b2c405601",
           "sha256": "88db08e0c1d05165c65380b733da162a6d89f2a50b61bf517e06f2158fb16a2a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -261,7 +290,8 @@
           "revision": "06",
           "submissionId": "3ae53ed4-dd6c-40fc-be19-231ff1e5e43d",
           "sha256": "510c91629ab3901df7743c04ad84247d416620cbbcb5dbe8995dd53fd4c51fac",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -269,7 +299,8 @@
           "revision": "04",
           "submissionId": "24d578ce-563e-4545-aa75-4263873d0214",
           "sha256": "10faf533138fe3d4706de7f6e4c93f9b4130a463a7fdc03fe4bdf6b27ecbf604",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -277,7 +308,8 @@
           "revision": "04",
           "submissionId": "9ac44fd5-6e2a-4b5a-b37a-fa2b12ff995f",
           "sha256": "3cd2d7d782b68aa548e99a1343e24f9998a67884e155e435729e5ec4c0fd8c68",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -285,7 +317,8 @@
           "revision": "04",
           "submissionId": "5196ef71-4247-4a82-9a90-a668152c9c5f",
           "sha256": "3148566109da86fdc92c1b94e76cbfd3b538d8affb1c01a59698c461707b9bf3",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -293,7 +326,8 @@
           "revision": "04",
           "submissionId": "e8efd799-3aab-43e8-b0c5-a0eed6dfeea6",
           "sha256": "3312cda6f470fcfbce07b5532332ab05255b5e7d87bdc04b83df403ecfb8e06a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -301,7 +335,8 @@
           "revision": "04",
           "submissionId": "70099277-1c7e-494b-8f63-98cf947a2877",
           "sha256": "c0b21a61ec5922e93c083c4b1bd39bdfd4febe7db4b2ec1315f4178d3a2bd610",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -309,7 +344,8 @@
           "revision": "04",
           "submissionId": "b75a751f-dccd-4e2a-8793-51acd96731e5",
           "sha256": "0659109d829ca4a4c3f9cd058d625c8fdeac5a8af7de30ed7852bc2f256b82ea",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -317,7 +353,8 @@
           "revision": "04",
           "submissionId": "15234a06-379f-4448-99ce-3e4976f6952b",
           "sha256": "3e9299afcfa8b44a949904968435bbe54983a96e99575fa79afce76c98024a1f",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -325,7 +362,8 @@
           "revision": "04",
           "submissionId": "c242b41d-ac52-4865-9770-490c1bb1a84a",
           "sha256": "c6edc6d7dc43cc9f34a287026a313993e48f7fefa5561980cbeba2462e7a70b5",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -333,7 +371,8 @@
           "revision": "04",
           "submissionId": "a928e3ed-bfb7-419f-8e2d-76017eb99eff",
           "sha256": "2dadb7b4b9c55e006085bea0ce068cc87e42d2f70edcc8e872bbb729eba14a98",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -341,7 +380,8 @@
           "revision": "05",
           "submissionId": "35aa1f30-6921-49e7-ad6a-586e098a5069",
           "sha256": "003a5835739b42f9fef6a83fc93b3224ac3d7599349b06231986e29f2b6bfe34",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -349,7 +389,8 @@
           "revision": "05",
           "submissionId": "e3f499ca-0a55-4627-9cce-16a6fab9327a",
           "sha256": "3c803c6911376aef1a5e22cf658e920b8ee1ce4bd58b08aef72fee15e8dfd0b2",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -357,7 +398,8 @@
           "revision": "05",
           "submissionId": "85d5ea20-2a88-4d0c-a438-8a769e039851",
           "sha256": "8d7b8d47f4683678be68c558f4f764bf2feebdbdb5972d775e918e62e2ad95ef",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -365,7 +407,8 @@
           "revision": "04",
           "submissionId": "ab45c5d9-6001-43e0-8d74-3a8f834887b0",
           "sha256": "20edd610f0e7e81d0011ca587641a6c0e4d4df412e0dc20c06ec250106a34a17",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -373,7 +416,8 @@
           "revision": "04",
           "submissionId": "d5d4ea07-2873-42f9-a6b8-9eca46072705",
           "sha256": "80e5f3ac9c2f6e25f72c317f6218d5d212116df5073b9e94d373727f5b707f58",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -381,7 +425,8 @@
           "revision": "04",
           "submissionId": "d91b8266-668e-4e0a-b91a-101998a68836",
           "sha256": "6af31094ca5b1d5485921bda555fb6012858b31d4b5ab630131dded4c5308a9a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -389,7 +434,8 @@
           "revision": "04",
           "submissionId": "93929bca-6aaf-4a28-a669-21860bbf47ac",
           "sha256": "5da66bb25e87f182aebd3267fd366f2266daa29c87c83c707ece13590aa662a2",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -397,7 +443,8 @@
           "revision": "04",
           "submissionId": "47b656ff-d0a1-4173-a07a-48f94f97d8b8",
           "sha256": "1255dacfdcfc1cae275ddc61eddd53a6964439d4bb7323efc47f0e3cb3ac5fa8",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -405,7 +452,8 @@
           "revision": "04",
           "submissionId": "9912b60c-a348-4e61-a291-92f8b0be2093",
           "sha256": "e2fe0c201a925b68a266d398f6a381580e7f1be7bdab61fb2342d66eae4adcb1",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -413,7 +461,8 @@
           "revision": "04",
           "submissionId": "57e315ed-8344-4abf-aee4-e90a7cfa2905",
           "sha256": "6efa94904ba3bdcf1f372aef11bff52b13cf75c325feb83c47daa8d19a25788c",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -421,7 +470,8 @@
           "revision": "04",
           "submissionId": "7424fca7-b62c-411e-8c35-e9e1a2475a78",
           "sha256": "83a73e4b68f5ff8e4dde5aa9e61fc788caad7d976f7699250bccd5dd302e82da",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -429,7 +479,8 @@
           "revision": "04",
           "submissionId": "6cb7add0-eba7-47fb-a3e8-d8559fe6fa60",
           "sha256": "174e92021c04e1134605fa90a1ec9119c4e2171b7fbb6888356a3340fd3f0714",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp23",
@@ -437,7 +488,8 @@
           "revision": "04",
           "submissionId": "1beb39a5-d1f7-4061-8bd7-109e8400cb93",
           "sha256": "4259180cc04c65e441d2345695c422f8c99c30a338525027043a656782d1a56d",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         },
         {
           "railKey": "dp24",
@@ -445,7 +497,8 @@
           "revision": "01",
           "submissionId": "f9395232-4c96-43f4-beb1-bd87229cecf8",
           "sha256": "b847b293b15bb7c7ee0c96674c9ca1cf3512b7b1a3b73f0a05e8f326a470bcff",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         }
       ]
     },
@@ -463,8 +516,9 @@
           "mlNumber": "ML-Draft-033",
           "revision": "01",
           "submissionId": "9b7c875e-c3d2-436a-bccb-cfccdea42ad1",
-          "sha256": "1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b",
-          "revisionEdition": "1.0"
+          "sha256": "17772beae8b62c188ca700614461c0d92eee9edb361b3db69d8bfad7420a7538",
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "edition",
@@ -472,7 +526,8 @@
           "revision": null,
           "submissionId": null,
           "sha256": null,
-          "revisionEdition": null
+          "revisionEdition": null,
+          "note": null
         },
         {
           "railKey": "foreword",
@@ -480,7 +535,8 @@
           "revision": "01",
           "submissionId": "5785291a-785f-489b-a6bd-7f7f0a1b9b43",
           "sha256": "60df5331c79c290811417e7d66f51e223553fb1bece8488b8a29b99ade6540fc",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "about",
@@ -488,7 +544,8 @@
           "revision": "04",
           "submissionId": "f79b02aa-b0b8-4366-a485-55f430c56f28",
           "sha256": "54c288eb0871050c900ab45e2b555964802ee9f54f641001daefa34fcfaa626c",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "acknowledgements",
@@ -496,7 +553,8 @@
           "revision": "04",
           "submissionId": "19a6f536-6c5a-4947-8c42-9ebb6acb6e11",
           "sha256": "8e0b3942ba1b25b267666745c60e5d011e779a2613dd6823c8cfcaaa0b4e4ab7",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "ml-draft-026",
@@ -504,7 +562,8 @@
           "revision": "01",
           "submissionId": "04eb3200-d77f-43f0-8c2a-c20b2c405601",
           "sha256": "88db08e0c1d05165c65380b733da162a6d89f2a50b61bf517e06f2158fb16a2a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -512,7 +571,8 @@
           "revision": "06",
           "submissionId": "3ae53ed4-dd6c-40fc-be19-231ff1e5e43d",
           "sha256": "510c91629ab3901df7743c04ad84247d416620cbbcb5dbe8995dd53fd4c51fac",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -520,7 +580,8 @@
           "revision": "04",
           "submissionId": "24d578ce-563e-4545-aa75-4263873d0214",
           "sha256": "10faf533138fe3d4706de7f6e4c93f9b4130a463a7fdc03fe4bdf6b27ecbf604",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -528,7 +589,8 @@
           "revision": "04",
           "submissionId": "9ac44fd5-6e2a-4b5a-b37a-fa2b12ff995f",
           "sha256": "3cd2d7d782b68aa548e99a1343e24f9998a67884e155e435729e5ec4c0fd8c68",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -536,7 +598,8 @@
           "revision": "04",
           "submissionId": "5196ef71-4247-4a82-9a90-a668152c9c5f",
           "sha256": "3148566109da86fdc92c1b94e76cbfd3b538d8affb1c01a59698c461707b9bf3",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -544,7 +607,8 @@
           "revision": "04",
           "submissionId": "e8efd799-3aab-43e8-b0c5-a0eed6dfeea6",
           "sha256": "3312cda6f470fcfbce07b5532332ab05255b5e7d87bdc04b83df403ecfb8e06a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -552,7 +616,8 @@
           "revision": "04",
           "submissionId": "70099277-1c7e-494b-8f63-98cf947a2877",
           "sha256": "c0b21a61ec5922e93c083c4b1bd39bdfd4febe7db4b2ec1315f4178d3a2bd610",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -560,7 +625,8 @@
           "revision": "04",
           "submissionId": "b75a751f-dccd-4e2a-8793-51acd96731e5",
           "sha256": "0659109d829ca4a4c3f9cd058d625c8fdeac5a8af7de30ed7852bc2f256b82ea",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -568,7 +634,8 @@
           "revision": "04",
           "submissionId": "15234a06-379f-4448-99ce-3e4976f6952b",
           "sha256": "3e9299afcfa8b44a949904968435bbe54983a96e99575fa79afce76c98024a1f",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -576,7 +643,8 @@
           "revision": "04",
           "submissionId": "c242b41d-ac52-4865-9770-490c1bb1a84a",
           "sha256": "c6edc6d7dc43cc9f34a287026a313993e48f7fefa5561980cbeba2462e7a70b5",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -584,7 +652,8 @@
           "revision": "04",
           "submissionId": "a928e3ed-bfb7-419f-8e2d-76017eb99eff",
           "sha256": "2dadb7b4b9c55e006085bea0ce068cc87e42d2f70edcc8e872bbb729eba14a98",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -592,7 +661,8 @@
           "revision": "05",
           "submissionId": "35aa1f30-6921-49e7-ad6a-586e098a5069",
           "sha256": "003a5835739b42f9fef6a83fc93b3224ac3d7599349b06231986e29f2b6bfe34",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -600,7 +670,8 @@
           "revision": "05",
           "submissionId": "e3f499ca-0a55-4627-9cce-16a6fab9327a",
           "sha256": "3c803c6911376aef1a5e22cf658e920b8ee1ce4bd58b08aef72fee15e8dfd0b2",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -608,7 +679,8 @@
           "revision": "05",
           "submissionId": "85d5ea20-2a88-4d0c-a438-8a769e039851",
           "sha256": "8d7b8d47f4683678be68c558f4f764bf2feebdbdb5972d775e918e62e2ad95ef",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -616,7 +688,8 @@
           "revision": "04",
           "submissionId": "ab45c5d9-6001-43e0-8d74-3a8f834887b0",
           "sha256": "20edd610f0e7e81d0011ca587641a6c0e4d4df412e0dc20c06ec250106a34a17",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -624,7 +697,8 @@
           "revision": "04",
           "submissionId": "d5d4ea07-2873-42f9-a6b8-9eca46072705",
           "sha256": "80e5f3ac9c2f6e25f72c317f6218d5d212116df5073b9e94d373727f5b707f58",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -632,7 +706,8 @@
           "revision": "04",
           "submissionId": "d91b8266-668e-4e0a-b91a-101998a68836",
           "sha256": "6af31094ca5b1d5485921bda555fb6012858b31d4b5ab630131dded4c5308a9a",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -640,7 +715,8 @@
           "revision": "04",
           "submissionId": "93929bca-6aaf-4a28-a669-21860bbf47ac",
           "sha256": "5da66bb25e87f182aebd3267fd366f2266daa29c87c83c707ece13590aa662a2",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -648,7 +724,8 @@
           "revision": "04",
           "submissionId": "47b656ff-d0a1-4173-a07a-48f94f97d8b8",
           "sha256": "1255dacfdcfc1cae275ddc61eddd53a6964439d4bb7323efc47f0e3cb3ac5fa8",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -656,7 +733,8 @@
           "revision": "04",
           "submissionId": "9912b60c-a348-4e61-a291-92f8b0be2093",
           "sha256": "e2fe0c201a925b68a266d398f6a381580e7f1be7bdab61fb2342d66eae4adcb1",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -664,7 +742,8 @@
           "revision": "04",
           "submissionId": "57e315ed-8344-4abf-aee4-e90a7cfa2905",
           "sha256": "6efa94904ba3bdcf1f372aef11bff52b13cf75c325feb83c47daa8d19a25788c",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -672,7 +751,8 @@
           "revision": "04",
           "submissionId": "7424fca7-b62c-411e-8c35-e9e1a2475a78",
           "sha256": "83a73e4b68f5ff8e4dde5aa9e61fc788caad7d976f7699250bccd5dd302e82da",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -680,7 +760,8 @@
           "revision": "04",
           "submissionId": "6cb7add0-eba7-47fb-a3e8-d8559fe6fa60",
           "sha256": "174e92021c04e1134605fa90a1ec9119c4e2171b7fbb6888356a3340fd3f0714",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp23",
@@ -688,7 +769,8 @@
           "revision": "04",
           "submissionId": "1beb39a5-d1f7-4061-8bd7-109e8400cb93",
           "sha256": "4259180cc04c65e441d2345695c422f8c99c30a338525027043a656782d1a56d",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         },
         {
           "railKey": "dp24",
@@ -696,7 +778,8 @@
           "revision": "01",
           "submissionId": "f9395232-4c96-43f4-beb1-bd87229cecf8",
           "sha256": "b847b293b15bb7c7ee0c96674c9ca1cf3512b7b1a3b73f0a05e8f326a470bcff",
-          "revisionEdition": "1.0"
+          "revisionEdition": "1.0",
+          "note": null
         }
       ]
     }

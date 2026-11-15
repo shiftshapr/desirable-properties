@@ -3,12 +3,12 @@
   "work": "desirableproperties-book",
   "description": "Edition record of The Layered Web, generated from Gov Hub by the rail sync. Do not edit: see docs/EDITIONS.md.",
   "generatedBy": "scripts/govhub_sync_rails_from_hub.py",
-  "generatedAt": "2026-11-15T20:42:40Z",
+  "generatedAt": "2026-11-15T21:40:41Z",
   "source": {
     "kind": "fixture",
     "path": "scripts/fixtures/govhub-editions-desirableproperties-book.json",
-    "fetchedAt": "2026-11-15T20:42:40Z",
-    "responseSha256": "200e0b004d39c3a6a941c8edc3014429827db59d3ee6f1e15fc0b4d559e6b05c"
+    "fetchedAt": "2026-11-15T21:40:41Z",
+    "responseSha256": "a4305f9942adebd56ad50adfbfd37514f5ba254b0112d3d5d79c5f2ff15aaae8"
   },
   "currentEdition": "1.1",
   "liveEdition": {
@@ -39,7 +39,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0"
+          "inscriptionId": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0",
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -53,7 +54,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "5d5a1f3edf39f2b3afc2c906f282853ff090eff6dfa1036e9d50d3275d1bb26ci0"
+          "inscriptionId": "5d5a1f3edf39f2b3afc2c906f282853ff090eff6dfa1036e9d50d3275d1bb26ci0",
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -67,7 +69,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "da09d16fcd1141acb402ceda6e2ca096fe827300fda916e62255cdca5bf6cc92i0"
+          "inscriptionId": "da09d16fcd1141acb402ceda6e2ca096fe827300fda916e62255cdca5bf6cc92i0",
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -81,7 +84,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "d4359711a1e0e8eb0cbafc2744b344886208e1667d4813d7904f1ad83d3f5fa0i0"
+          "inscriptionId": "d4359711a1e0e8eb0cbafc2744b344886208e1667d4813d7904f1ad83d3f5fa0i0",
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -95,7 +99,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "e70ce13751a422852c542df97254b9baf58f0bb0086577dba995984d2e9ab8e5i0"
+          "inscriptionId": "e70ce13751a422852c542df97254b9baf58f0bb0086577dba995984d2e9ab8e5i0",
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -109,7 +114,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "394e733026f82832e7cad6a32b52d50cc2bf91bcd98c392f7fcd3cb67e14b0edi0"
+          "inscriptionId": "394e733026f82832e7cad6a32b52d50cc2bf91bcd98c392f7fcd3cb67e14b0edi0",
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -123,7 +129,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "aedadfe464f78de3ffdae19ee556f34ae613dc01063c93c16626225927eb1162i0"
+          "inscriptionId": "aedadfe464f78de3ffdae19ee556f34ae613dc01063c93c16626225927eb1162i0",
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -137,7 +144,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "b3f88c58e299c287d2cddd230a070d6651cc09820b5b8eb060365b2aec1a7a87i0"
+          "inscriptionId": "b3f88c58e299c287d2cddd230a070d6651cc09820b5b8eb060365b2aec1a7a87i0",
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -151,7 +159,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "6d8824d7b5c5cbc5a9e0c17a601f0453bdc7f095c7006ee3d9b3791c4d354e43i0"
+          "inscriptionId": "6d8824d7b5c5cbc5a9e0c17a601f0453bdc7f095c7006ee3d9b3791c4d354e43i0",
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -165,7 +174,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "0cf5a634cd506f0541a57c1523577d68f27f1ab81c3e471ebbb5f7323cf564aci0"
+          "inscriptionId": "0cf5a634cd506f0541a57c1523577d68f27f1ab81c3e471ebbb5f7323cf564aci0",
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -179,7 +189,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "b24272bf7eaeb383037ececa1448c28700cbcc21c16e19471b592dd470f31ffci0"
+          "inscriptionId": "b24272bf7eaeb383037ececa1448c28700cbcc21c16e19471b592dd470f31ffci0",
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -193,7 +204,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "da4ec87fc5448c0ccb98243480233af60f484bc7b553c5254b0ab239b0bfc4cci0"
+          "inscriptionId": "da4ec87fc5448c0ccb98243480233af60f484bc7b553c5254b0ab239b0bfc4cci0",
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -207,7 +219,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "82d55f26eaabcfb16289a7fafc48b68286892718a6a2529ef92d2eb02576b361i0"
+          "inscriptionId": "82d55f26eaabcfb16289a7fafc48b68286892718a6a2529ef92d2eb02576b361i0",
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -221,7 +234,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "e8738f646bc22112ff7681ac8aba99cb5206f5d153286a8fa337b65c57cc4205i0"
+          "inscriptionId": "e8738f646bc22112ff7681ac8aba99cb5206f5d153286a8fa337b65c57cc4205i0",
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -235,7 +249,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "5002641bacb834131cde04a0182749f10ae7c8af37434f79e4b29aa775e38ef1i0"
+          "inscriptionId": "5002641bacb834131cde04a0182749f10ae7c8af37434f79e4b29aa775e38ef1i0",
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -249,7 +264,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "9ebc47bd65347f1a56344145fcf329b90da195341c652ec54fa6cb3aaddce12ei0"
+          "inscriptionId": "9ebc47bd65347f1a56344145fcf329b90da195341c652ec54fa6cb3aaddce12ei0",
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -263,7 +279,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "99e7276eb138d77992f757041bf2c9019eda2801971834239b24f2d25b53be83i0"
+          "inscriptionId": "99e7276eb138d77992f757041bf2c9019eda2801971834239b24f2d25b53be83i0",
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -277,7 +294,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "8674ea750cf0022d3678ac1d2fc13a52ac73c46022fd5585e7e9ec2c099c8fb6i0"
+          "inscriptionId": "8674ea750cf0022d3678ac1d2fc13a52ac73c46022fd5585e7e9ec2c099c8fb6i0",
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -291,7 +309,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "c3bace8a87d3281bc33920d606c56b7406d75d7d589901d8405eb913dd832e86i0"
+          "inscriptionId": "c3bace8a87d3281bc33920d606c56b7406d75d7d589901d8405eb913dd832e86i0",
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -305,7 +324,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "b7184d2145fbf9099e15948656fa36ac7b6d3e85469ba235018d1e09b8aef49ci0"
+          "inscriptionId": "b7184d2145fbf9099e15948656fa36ac7b6d3e85469ba235018d1e09b8aef49ci0",
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -319,7 +339,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "9daa9b44cf42b0bee0806a465109c3331551517a24e374f9c59e66b17af393c0i0"
+          "inscriptionId": "9daa9b44cf42b0bee0806a465109c3331551517a24e374f9c59e66b17af393c0i0",
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -333,7 +354,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "72b12b873c331237e89ba798d613e0c3d5230a5ba4d9426ae243c66c6a613fbci0"
+          "inscriptionId": "72b12b873c331237e89ba798d613e0c3d5230a5ba4d9426ae243c66c6a613fbci0",
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -347,7 +369,8 @@
           "localSha256": null,
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": "a802c08792193bf5bfc56ef20eaa57e706a830ebd55decb597f0b1ae5506f5b1i0"
+          "inscriptionId": "a802c08792193bf5bfc56ef20eaa57e706a830ebd55decb597f0b1ae5506f5b1i0",
+          "note": null
         }
       ]
     },
@@ -355,10 +378,10 @@
       "editionId": "1.0",
       "label": "Version 1.0",
       "status": "released",
-      "releasedAt": "2026-11-13T00:00:00Z",
+      "releasedAt": "2026-11-13T07:36:03Z",
       "predecessorEditionId": "0.77",
-      "decisionRef": null,
-      "manifestSha256": "ba06b9b8dc0da7bf3dd402c868b08caddb3974a80d924e612ebe8a9c0a96cbb2",
+      "decisionRef": "/api/doc/steering/stages/final/",
+      "manifestSha256": "0f857966096484948a02e6e7f5cda6a09169a2bec95bc119322d242b34ae55f1",
       "coverImageInscriptionId": "3e7a8279c045187d7db87bdf12db05315580d63334da3047cd7490e2eee3341ai0",
       "rails": [
         {
@@ -366,14 +389,15 @@
           "mlNumber": "ML-Draft-033",
           "revision": "01",
           "submissionId": "9b7c875e-c3d2-436a-bccb-cfccdea42ad1",
-          "sha256": "1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b",
+          "sha256": "17772beae8b62c188ca700614461c0d92eee9edb361b3db69d8bfad7420a7538",
           "revisionEdition": "1.0",
           "source": "govhub",
           "localPath": "/content/local/cover.md",
           "localSha256": "000beb44473b070e49e303ac68d6fdc4f8da0fed0cf3bcf2bfecda814bbfde18",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub; it survives in the book repo (sha256 1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b)"
         },
         {
           "railKey": "edition",
@@ -387,7 +411,8 @@
           "localSha256": "7cc9437ac6f204d40b16867c8bd90967f16ae02a46315b59bda053a8b260f001",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "foreword",
@@ -401,7 +426,8 @@
           "localSha256": "112aa36bdd7a3f428062bf976efd1bdbe41104f9837236c699a4450f2c028e3a",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "about",
@@ -415,7 +441,8 @@
           "localSha256": "71aea1026f565e6010aa3c98243b60ca88bb853c781de00bd115656862a3b5b0",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         },
         {
           "railKey": "acknowledgements",
@@ -429,7 +456,8 @@
           "localSha256": "8dd30eb2b33dc054e7310833d4d766b0490aa136bb15391c2c930b2c8f528cf7",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": "approved 13 Nov 2026 16:44 UTC after the Stage 4 sign-off of r03; chosen by the owner on 15 Nov 2026"
         },
         {
           "railKey": "ml-draft-026",
@@ -443,7 +471,8 @@
           "localSha256": "d36c7631a5f347d651b3dc611a03ba7d856196aa6f7e86d35ef5256df8dd0323",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -457,7 +486,8 @@
           "localSha256": "e436df6d6dea81bf226c7634884f2eb342cfb07dc3c2070949ab9fa16a85cd54",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -471,7 +501,8 @@
           "localSha256": "93317e2f7eae68e1eff82a77b4b5256c41722a481188c3e775feb2907e97b351",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -485,7 +516,8 @@
           "localSha256": "c489be5acbd3d3f20e52d1afa0899c48bf27c3e7efcb6bce5e24184055c71033",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -499,7 +531,8 @@
           "localSha256": "4eaee5dc542f779ecb2faa77a8222a9653ce62dc8caa599e34c87d592fc20e49",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -513,7 +546,8 @@
           "localSha256": "05a0564c38bf90a31964eb4888f261a4f6dfeb25c75b4da1f9f30a4785d59fb7",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -527,7 +561,8 @@
           "localSha256": "76be84c57548ce07d33244abf4a386d884a9a300df06285800fb1c1df0e0650a",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -541,7 +576,8 @@
           "localSha256": "93a342f90fbf873ac65fdfa4a87a2bb1dfc4f859583dde7c8fc0840ffc5925c2",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -555,7 +591,8 @@
           "localSha256": "7eaa8409ff4441dfccc6463c6abf5a7cb6f85e09c0b7c0d45e822abd2336e2c0",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -569,7 +606,8 @@
           "localSha256": "dfdec35c8373a77af265936dc925c51d66a4f66a663e67bf13cbf8018f6bf2bd",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -583,7 +621,8 @@
           "localSha256": "f72ab9d9a099f8ab41feb47a148934ea12b9d1f8077a2d85b5fb25dd8a167d86",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -597,7 +636,8 @@
           "localSha256": "035e516868c2a45926ef4bb8df70b3f32a8f011cbde57c8d242b9d4d9c808670",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -611,7 +651,8 @@
           "localSha256": "6fd8dac09ce24cbed9f6f42eb0c99ce91c644cbd2a3fca8182e6844478700389",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -625,7 +666,8 @@
           "localSha256": "8151a709188ce2a2d7fb41a722b366587992cc3ead4ea4f88a91717b5471f5a6",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -639,7 +681,8 @@
           "localSha256": "9d8f9d95c7ada3e2a4770400d325498f4cdf06dbeb30450a9a070c3b956fff69",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -653,7 +696,8 @@
           "localSha256": "85fab2faabdaf9bc792636107406460f085c4dfae6ac2f2ac79147c60b320789",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -667,7 +711,8 @@
           "localSha256": "60c60b14700b7f2348644182eb3017c358e95d2bb043e5ab94351ff0dc5e7bfb",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -681,7 +726,8 @@
           "localSha256": "0e62eb8f2c1f8e384701ec48f5ab50ce38f5ae621e27aafe920f2606324aae78",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -695,7 +741,8 @@
           "localSha256": "d770f18b860943ed67daa67c997b55cde8c1581a29f4c60704951329396ba055",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -709,7 +756,8 @@
           "localSha256": "bf35cc41df298cc1520c35f30983f6b38ef2a445444f35c42d89d042d21d9e79",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -723,7 +771,8 @@
           "localSha256": "27dde055d733304c7f419945b97ec5908d9f4afb2e41545dbf96c619b008e63e",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -737,7 +786,8 @@
           "localSha256": "5c46231f2992c91f3282e1984a492ac41c13b258b50ce626a5193c44dfd0aea5",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -751,7 +801,8 @@
           "localSha256": "01138240c088e06daa59edfb59eec5f04294bd688b6fe8d03a6abe7c54687257",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp23",
@@ -765,7 +816,8 @@
           "localSha256": "550d77d27beb16765187aa00b2788847d4a3da5b1f5f9791de695e7b7a410f7f",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         },
         {
           "railKey": "dp24",
@@ -779,7 +831,8 @@
           "localSha256": "4f9f4b12de1f18e2cc039f2d99477785429ac24e5352653563753250ef9f2882",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": "edited in place on 14 Nov 2026 after sign-off (image swap); the signed text is not kept in Gov Hub"
         }
       ]
     },
@@ -798,14 +851,15 @@
           "mlNumber": "ML-Draft-033",
           "revision": "01",
           "submissionId": "9b7c875e-c3d2-436a-bccb-cfccdea42ad1",
-          "sha256": "1aec6531af8a5751777822a716b7a573edb174ea21cc20c458ca4db97eadb62b",
+          "sha256": "17772beae8b62c188ca700614461c0d92eee9edb361b3db69d8bfad7420a7538",
           "revisionEdition": "1.0",
           "source": "govhub",
           "localPath": "/content/local/cover.md",
           "localSha256": "000beb44473b070e49e303ac68d6fdc4f8da0fed0cf3bcf2bfecda814bbfde18",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "edition",
@@ -819,7 +873,8 @@
           "localSha256": "7cc9437ac6f204d40b16867c8bd90967f16ae02a46315b59bda053a8b260f001",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "foreword",
@@ -833,7 +888,8 @@
           "localSha256": "112aa36bdd7a3f428062bf976efd1bdbe41104f9837236c699a4450f2c028e3a",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "about",
@@ -847,7 +903,8 @@
           "localSha256": "71aea1026f565e6010aa3c98243b60ca88bb853c781de00bd115656862a3b5b0",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "acknowledgements",
@@ -861,7 +918,8 @@
           "localSha256": "8dd30eb2b33dc054e7310833d4d766b0490aa136bb15391c2c930b2c8f528cf7",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "ml-draft-026",
@@ -875,7 +933,8 @@
           "localSha256": "d36c7631a5f347d651b3dc611a03ba7d856196aa6f7e86d35ef5256df8dd0323",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp01",
@@ -889,7 +948,8 @@
           "localSha256": "e436df6d6dea81bf226c7634884f2eb342cfb07dc3c2070949ab9fa16a85cd54",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp02",
@@ -903,7 +963,8 @@
           "localSha256": "93317e2f7eae68e1eff82a77b4b5256c41722a481188c3e775feb2907e97b351",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp03",
@@ -917,7 +978,8 @@
           "localSha256": "c489be5acbd3d3f20e52d1afa0899c48bf27c3e7efcb6bce5e24184055c71033",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp04",
@@ -931,7 +993,8 @@
           "localSha256": "4eaee5dc542f779ecb2faa77a8222a9653ce62dc8caa599e34c87d592fc20e49",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp05",
@@ -945,7 +1008,8 @@
           "localSha256": "05a0564c38bf90a31964eb4888f261a4f6dfeb25c75b4da1f9f30a4785d59fb7",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp06",
@@ -959,7 +1023,8 @@
           "localSha256": "76be84c57548ce07d33244abf4a386d884a9a300df06285800fb1c1df0e0650a",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp07",
@@ -973,7 +1038,8 @@
           "localSha256": "93a342f90fbf873ac65fdfa4a87a2bb1dfc4f859583dde7c8fc0840ffc5925c2",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp08",
@@ -987,7 +1053,8 @@
           "localSha256": "7eaa8409ff4441dfccc6463c6abf5a7cb6f85e09c0b7c0d45e822abd2336e2c0",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp09",
@@ -1001,7 +1068,8 @@
           "localSha256": "dfdec35c8373a77af265936dc925c51d66a4f66a663e67bf13cbf8018f6bf2bd",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp10",
@@ -1015,7 +1083,8 @@
           "localSha256": "f72ab9d9a099f8ab41feb47a148934ea12b9d1f8077a2d85b5fb25dd8a167d86",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp11",
@@ -1029,7 +1098,8 @@
           "localSha256": "035e516868c2a45926ef4bb8df70b3f32a8f011cbde57c8d242b9d4d9c808670",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp12",
@@ -1043,7 +1113,8 @@
           "localSha256": "6fd8dac09ce24cbed9f6f42eb0c99ce91c644cbd2a3fca8182e6844478700389",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp13",
@@ -1057,7 +1128,8 @@
           "localSha256": "8151a709188ce2a2d7fb41a722b366587992cc3ead4ea4f88a91717b5471f5a6",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp14",
@@ -1071,7 +1143,8 @@
           "localSha256": "9d8f9d95c7ada3e2a4770400d325498f4cdf06dbeb30450a9a070c3b956fff69",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp15",
@@ -1085,7 +1158,8 @@
           "localSha256": "85fab2faabdaf9bc792636107406460f085c4dfae6ac2f2ac79147c60b320789",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp16",
@@ -1099,7 +1173,8 @@
           "localSha256": "60c60b14700b7f2348644182eb3017c358e95d2bb043e5ab94351ff0dc5e7bfb",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp17",
@@ -1113,7 +1188,8 @@
           "localSha256": "0e62eb8f2c1f8e384701ec48f5ab50ce38f5ae621e27aafe920f2606324aae78",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp18",
@@ -1127,7 +1203,8 @@
           "localSha256": "d770f18b860943ed67daa67c997b55cde8c1581a29f4c60704951329396ba055",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp19",
@@ -1141,7 +1218,8 @@
           "localSha256": "bf35cc41df298cc1520c35f30983f6b38ef2a445444f35c42d89d042d21d9e79",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp20",
@@ -1155,7 +1233,8 @@
           "localSha256": "27dde055d733304c7f419945b97ec5908d9f4afb2e41545dbf96c619b008e63e",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp21",
@@ -1169,7 +1248,8 @@
           "localSha256": "5c46231f2992c91f3282e1984a492ac41c13b258b50ce626a5193c44dfd0aea5",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp22",
@@ -1183,7 +1263,8 @@
           "localSha256": "01138240c088e06daa59edfb59eec5f04294bd688b6fe8d03a6abe7c54687257",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp23",
@@ -1197,7 +1278,8 @@
           "localSha256": "550d77d27beb16765187aa00b2788847d4a3da5b1f5f9791de695e7b7a410f7f",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         },
         {
           "railKey": "dp24",
@@ -1211,7 +1293,8 @@
           "localSha256": "4f9f4b12de1f18e2cc039f2d99477785429ac24e5352653563753250ef9f2882",
           "archiveKey": null,
           "archiveRev": null,
-          "inscriptionId": null
+          "inscriptionId": null,
+          "note": null
         }
       ]
     }

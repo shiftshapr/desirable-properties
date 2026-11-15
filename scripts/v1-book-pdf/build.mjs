@@ -30,13 +30,16 @@
  *   --hub <url>          Gov Hub base URL (default https://interfacehub.net).
  *   --preview <pages>    Also save PNGs of these pages (e.g. 1-8,40,end) to out/preview/ for a layout check.
  *   --edition <id>       Edition to build (default: the latest released edition in json/editions.json).
+ *   --chapters-out <dir> Also build one PDF per chapter (dpNN-v<edition>.pdf) from the same edition list.
  *
- * Edition stamp (docs/EDITIONS.md): with desirableproperties-book/json/editions.json present, the title page,
- * edition notice and PDF title name the edition from the manifest, and the PDF's Keywords carry
- * `dp-edition=<id>; dp-edition-status=...; dp-edition-rails-sha256=<hash of the edition's rail list>`
- * (scripts/check_editions_agree.py reads it back). Gov Hub's chapter-passages serves each rail's live
- * revision, so building a released edition refuses when any rail's live revision is not on that edition's
- * list. Without the manifest the build behaves as before (Version 1.0, no stamp).
+ * Edition build (docs/EDITIONS.md): with desirableproperties-book/json/editions.json present, every rail's
+ * text is that edition's exact revision: <hub>/doc/draft/<submissionId>.txt, checked against the list's
+ * sha256 (the build stops on any mismatch), split into blocks at blank lines exactly as Gov Hub's
+ * chapter-passages does. The Edition page is the list's book-repo file, checked the same way. The edition
+ * page says "<Edition> · rebuilt <date> from the <Edition> edition list"; the PDF's Keywords carry
+ * `dp-edition=<id>; dp-edition-status=...; dp-manifest-sha256=<the list's manifestSha256>;
+ * dp-edition-rails-sha256=<hash of the rail list>` and each chapter PDF `dp-edition; dp-rail; dp-submission`
+ * (scripts/check_editions_agree.py reads them back). Without the manifest the build behaves as before.
  *
  * The Introduction (ML-Draft-026) comes from Gov Hub when Gov Hub serves it, otherwise from its Bitcoin
  * inscription (the copy the online book shows in Onchain mode).
@@ -68,6 +71,7 @@ const EDITIONS_MANIFEST = path.join(BOOK_DIR, 'json', 'editions.json');
 // Set from json/editions.json in main() when it exists.
 let EDITION = 'Version 1.0';
 let EDITION_DATE = 'November 13, 2026';
+let REBUILT_LINE = '';  // set for an edition build: shown on the edition page
 // Mirrors that serve an inscription's raw content (ordinals.com blocks scripted clients).
 const INSCRIPTION_MIRRORS = ['https://static.unisat.io/content/', 'https://cdn.ordiscan.com/inscriptions/', 'https://ordinals.com/content/'];
 
@@ -90,6 +94,7 @@ function parseArgs(argv) {
     else if (k === '--preview') a.preview = next();
     else if (k === '--hub') a.hub = next().replace(/\/$/, '');
     else if (k === '--edition') a.edition = next();
+    else if (k === '--chapters-out') a.chaptersOut = path.resolve(next());
     else if (k === '-h' || k === '--help') { console.log(fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').split('*/')[0]); process.exit(0); }
     else throw new Error(`Unknown option ${k}`);
   }
@@ -139,6 +144,32 @@ function fetchPassages(hub, ml, offline) {
   if (!Array.isArray(data.passages) || data.passages.length === 0) throw new Error(`No passages for ${ml}`);
   fs.writeFileSync(cache, JSON.stringify(data, null, 1));
   return data.passages;
+}
+
+/** Split Markdown into blocks at blank lines: the same blocks Gov Hub's chapter-passages returns. */
+const splitPassages = (md) => md.replace(/\r\n/g, '\n').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
+/** An edition list entry's exact text: Gov Hub's stored upload of that revision, verified by sha256. */
+function fetchEditionText(hub, row, offline) {
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  const cache = path.join(CACHE_DIR, `${row.submissionId}.txt`);
+  let buf = null;
+  if (fs.existsSync(cache)) buf = fs.readFileSync(cache);
+  else if (offline) throw new Error(`--offline: no cached text of ${row.railKey} (${row.submissionId})`);
+  else {
+    const url = `${hub}/doc/draft/${encodeURIComponent(row.submissionId)}.txt`;
+    for (let attempt = 1; ; attempt++) {
+      try { buf = execFileSync('curl', ['-sS', '--fail', '-m', '60', '-A', 'Mozilla/5.0', url], { maxBuffer: 64 << 20 }); break; }
+      catch (e) { if (attempt >= 3) throw new Error(`Gov Hub download failed for ${row.railKey}: ${url}\n${e.message}`); }
+    }
+  }
+  const sha = createHash('sha256').update(buf).digest('hex');
+  if (sha !== row.sha256) {
+    throw new Error(`STOP: ${row.railKey} ${row.mlNumber} revision ${row.revision} (${row.submissionId}) downloads with sha256 ` +
+      `${sha}, but the edition list says ${row.sha256}`);
+  }
+  fs.writeFileSync(cache, buf);
+  return buf.toString('utf8');
 }
 
 /**
@@ -198,7 +229,44 @@ function prepareRail(passages) {
   return { title, subtitle, image, body: ps.join('\n\n') };
 }
 
+/**
+ * Rendering choice, not text: for an image the text references by its inscription, print the site's
+ * higher-resolution copy of the same picture. Each pair was checked by downscaling the large copy to the
+ * inscribed image's size (15 Nov 2026): pixel correlation / mean absolute difference per channel.
+ * The roadmap figure in About (21a600b6…i0) has no matching copy (overweb-roadmap.jpg and v1/roadmap.webp
+ * are different drawings), so the inscribed image is printed.
+ */
+const SHARPER_COPIES = {
+  // About, figure 1: layered-web-coordination-layer.jpg (1650 x 953), corr 0.9921, diff 3.43/255
+  '0535566bf0363fafebaa4b87ebc2b917bf67eaba5544a7071bec535e3e9610f4i0': path.join(BOOK_ASSETS, 'layered-web-coordination-layer.jpg'),
+  // DP23 illustration: DP23.webp (1200 x 1200), corr 0.9926, diff 3.01/255
+  'e03ab40d8702bb54edfd941bbad013795df564d8570fa4e2ecac8679cb0a36e4i0': path.join(FULL_ILLUSTRATIONS, 'DP23.webp'),
+  // DP24 illustration: DP24.webp (1200 x 1200), corr 0.9973, diff 2.47/255
+  'b31e29bfa31319e51deb7b08c79dd487248cd068f51c0424965d5994d1449ec1i0': path.join(FULL_ILLUSTRATIONS, 'DP24.webp'),
+};
+
 function resolveImage(src) {
+  // An image referenced by its Bitcoin inscription (the 14 Nov in-place edits): a verified sharper copy of
+  // the same picture when there is one, else the inscribed bytes.
+  const ins = String(src).match(/^\/content\/([0-9a-f]{64}i\d+)$/);
+  if (ins && SHARPER_COPIES[ins[1]] && fs.existsSync(SHARPER_COPIES[ins[1]])) return pathToFileURL(SHARPER_COPIES[ins[1]]).href;
+  if (ins) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const file = path.join(CACHE_DIR, `${ins[1]}.webp`);
+    if (!fs.existsSync(file)) {
+      let buf = null;
+      for (const base of INSCRIPTION_MIRRORS) {
+        try {
+          buf = execFileSync('curl', ['-sS', '--fail', '-L', '-m', '60', '-A', 'Mozilla/5.0', base + ins[1]], { maxBuffer: 64 << 20 });
+          if (buf.subarray(8, 12).toString('latin1') === 'WEBP') break;
+          buf = null;
+        } catch { /* next mirror */ }
+      }
+      if (!buf) throw new Error(`No mirror served inscription image ${ins[1]}`);
+      fs.writeFileSync(file, buf);
+    }
+    return pathToFileURL(file).href;
+  }
   const base = path.basename(src.split('?')[0]);
   const dp = base.match(/^DP(\d{1,2})\.webp$/i);
   const tries = [];
@@ -459,8 +527,8 @@ function titlePagesHtml(final, builtAt, editionRail) {
   <div class="tp-edition">${EDITION}</div>
   <div class="tp-pub">Meta-Layer Initiative</div>
 </section>
-<section class="edition">
-  ${editionRail ? `${final ? '' : status}${editionRail.subtitle ? `<p><i>${esc(editionRail.subtitle)}</i></p>` : ''}${marked.parse(editionRail.body)}</section>` : `<p><i>${TITLE}: ${SUBTITLE}</i></p>
+<section class="edition${editionRail ? ' from-rail' : ''}">
+  ${editionRail ? `${final ? '' : status}${editionRail.subtitle ? `<p><i>${esc(editionRail.subtitle)}</i></p>` : ''}${marked.parse(editionRail.body)}${REBUILT_LINE ? `<p class="rebuilt">${esc(REBUILT_LINE)}</p>` : ''}</section>` : `<p><i>${TITLE}: ${SUBTITLE}</i></p>
   ${status}
   <p>Developed in the open by the Meta-Layer community through the Desirable Properties Challenge and its workgroups, and approved by the Desirable Properties steering committee.</p>
   <p>The online edition: <a href="${BOOK_URL}">${BOOK_URL.replace('https://', '')}</a><br>
@@ -565,6 +633,8 @@ img { max-width: 100%; }
 .edition h2 { font-size: 8.6pt; margin: 1.1em 0 0.3em; }
 .edition:has(h2) { padding-top: 1.6in; }
 .edition .review { color: #9b2c1f; font-weight: 600; }
+.edition .rebuilt { margin-top: 1.4em; font-size: 7.6pt; color: var(--muted); }
+.edition.from-rail { padding-top: 1.2in; }
 
 /* contents */
 .toc, .matter { page: front; break-before: right; }
@@ -751,12 +821,6 @@ function chooseEdition(wanted) {
   const released = eds.filter((e) => e.status === 'released');
   const edition = wanted ? eds.find((e) => e.editionId === wanted) : released[released.length - 1];
   if (!edition) throw new Error(`Edition ${wanted || '(latest released)'} is not in json/editions.json`);
-  const live = Object.fromEntries((eds.find((e) => e.status === 'in_progress')?.rails || []).map((r) => [r.railKey, r]));
-  const stale = (edition.rails || []).filter((r) => r.submissionId && live[r.railKey]?.submissionId !== r.submissionId);
-  if (stale.length) {
-    throw new Error(`Gov Hub serves the live revision, which is not ${edition.label}'s for: ${stale.map((r) => r.railKey).join(', ')}. ` +
-      'Build that edition once Gov Hub serves passages by ?edition=.');
-  }
   EDITION = edition.status === 'released' ? edition.label : `${edition.label} (in progress)`;
   if (edition.releasedAt) {
     EDITION_DATE = new Date(edition.releasedAt).toLocaleDateString('en-US', { timeZone: 'UTC', dateStyle: 'long' });
@@ -774,8 +838,16 @@ async function main() {
   const dpRails = sat.articleRails.filter((k) => /^dp\d{2}$/.test(k)).map((k) => byKey[k])
     .filter((s) => s && (!args.only || args.only.includes(s.dp)));
   const manifest = { builtAt: new Date().toISOString(), hub: args.hub, final: args.final, rails: {} };
+  const listed = bookEdition ? Object.fromEntries(bookEdition.rails.map((r) => [r.railKey, r])) : null;
   const load = (key) => {
     ml(key);
+    if (listed) {
+      const row = listed[key];
+      if (!row || !row.submissionId) throw new Error(`${key} has no Gov Hub revision on the ${bookEdition.label} list`);
+      const passages = splitPassages(fetchEditionText(args.hub, row, args.offline));
+      manifest.rails[key] = { ml: row.mlNumber, revision: row.revision, submissionId: row.submissionId, sha256: row.sha256, source: 'edition list', passages: passages.length };
+      return passages;
+    }
     const { passages, source } = fetchRail(args.hub, byKey[key], args.offline);
     manifest.rails[key] = { ml: byKey[key].mlNumber, source, passages: passages.length, sha256: createHash('sha256').update(JSON.stringify(passages)).digest('hex').slice(0, 16) };
     return passages;
@@ -785,9 +857,18 @@ async function main() {
   const foreword = prepareRail(load('foreword'));
   const preface = prepareRail(load('about'));
   const intro = prepareRail(load('ml-draft-026'));
-  // The edition and license page, once it is a Gov Hub draft with an `edition` rail; until then the built-in text.
-  const edition = byKey.edition?.mlNumber ? prepareRail(load('edition')) : null;
-  if (!edition) console.warn('  ! No `edition` rail in sources-sat.json yet: using the built-in edition and license text');
+  // The edition and license page: in an edition build, the list's book-repo file (checked by sha256), without
+  // its online "Continue to …" navigation link; otherwise a Gov Hub draft once it has one, else the built-in text.
+  let edition = null;
+  if (listed && listed.edition && listed.edition.localPath) {
+    const row = listed.edition;
+    const buf = fs.readFileSync(path.join(BOOK_DIR, row.localPath.replace(/^\//, '')));
+    const sha = createHash('sha256').update(buf).digest('hex');
+    if (sha !== row.sha256) throw new Error(`STOP: ${row.localPath} has sha256 ${sha}, but the ${bookEdition.label} list says ${row.sha256}`);
+    edition = prepareRail(splitPassages(buf.toString('utf8')).filter((p) => !/^\[Continue to [^\]]*\]\(\/viewer\/[^)]*\)$/.test(p)));
+    manifest.rails.edition = { source: 'edition list (book repo)', localPath: row.localPath, sha256: row.sha256 };
+  } else if (byKey.edition?.mlNumber) edition = prepareRail(load('edition'));
+  if (!edition) console.warn('  ! No `edition` rail: using the built-in edition and license text');
   const acknowledgements = prepareRail(load('acknowledgements'));
   const chapters = dpRails.map((s) => {
     const r = prepareRail(load(s.railKey));
@@ -802,6 +883,10 @@ async function main() {
   if (!coverImage && !args.htmlOnly) coverImage = await renderCoverPng(args.coverPng || path.join(HERE, 'out', 'cover.png'), findChrome(args.chrome));
   else if (args.coverPng) await renderCoverPng(args.coverPng, findChrome(args.chrome));
   const builtAt = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', dateStyle: 'long', timeStyle: 'short' }) + ' PT';
+  if (bookEdition) {
+    const day = new Date().toLocaleDateString('en-US', { timeZone: 'UTC', dateStyle: 'long' });
+    REBUILT_LINE = `${bookEdition.label} · rebuilt ${day} from the ${bookEdition.label} edition list`;
+  }
   const html = buildHtml({ chapters, foreword, preface, intro, acknowledgements, edition, final: args.final, builtAt, coverImage })
     .replace('</head>', `<script>${FOLIO_SCRIPT}</script>\n</head>`);
 
@@ -815,11 +900,40 @@ async function main() {
 
   const pages = await renderPdf(htmlFile, args.out, findChrome(args.chrome), args.preview);
   if (bookEdition) {
-    stampPdfInfo(args.out, { Title: `${TITLE}: ${SUBTITLE} (${EDITION})`, Keywords: editionKeywords(bookEdition) });
-    console.log(`Stamped ${EDITION} (${editionKeywords(bookEdition)})`);
+    const kw = `${editionKeywords(bookEdition)}; dp-manifest-sha256=${bookEdition.manifestSha256}`;
+    stampPdfInfo(args.out, { Title: `${TITLE}: ${SUBTITLE} (${EDITION})`, Keywords: kw });
+    console.log(`Stamped ${EDITION} (${kw})`);
   }
+  if (args.chaptersOut && bookEdition) await buildChapterPdfs(args, bookEdition, chapters, findChrome(args.chrome));
   const mb = (fs.statSync(args.out).size / 1e6).toFixed(1);
   console.log(`Wrote ${args.out} (${pages} pages, ${mb} MB)`);
+}
+
+/** One PDF per chapter, same design, from the same edition list: dpNN-v<edition>.pdf, stamped. */
+async function buildChapterPdfs(args, edition, chapters, chromePath) {
+  const validDps = new Set(chapters.map((c) => c.dp));
+  const day = new Date().toLocaleDateString('en-US', { timeZone: 'UTC', dateStyle: 'long' });
+  fs.mkdirSync(args.chaptersOut, { recursive: true });
+  for (const ch of chapters) {
+    const row = edition.rails.find((r) => r.railKey === ch.railKey);
+    const colophon = `<p class="chapter-colophon">${esc(`${TITLE}: ${SUBTITLE}. ${ch.dp} from ${edition.label} ` +
+      `(${row.mlNumber} revision ${row.revision}), built ${day} from the ${edition.label} edition list. ` +
+      `© 2026 the contributors; licensed under CC BY 4.0. The whole book: ${SITE_URL.replace('https://', '')}/downloads/desirable-properties-v1.0.pdf`)}</p>`;
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>${esc(ch.title)} (${edition.label})</title>
+<meta name="author" content="Meta-Layer Initiative">
+<style>${CSS}\n.chapter-colophon { font-size: 7.6pt; color: var(--muted); margin-top: 2em; }</style>
+<script>${FOLIO_SCRIPT}</script></head><body>
+${chapterHtml(ch, validDps, true).replace(/<\/section>\s*$/, `${colophon}\n</section>`)}
+</body></html>`;
+    const htmlFile = path.join(HERE, 'out', `${ch.railKey}.html`);
+    fs.writeFileSync(htmlFile, html);
+    const out = path.join(args.chaptersOut, `${ch.railKey}-v${edition.editionId}.pdf`);
+    const pages = await renderPdf(htmlFile, out, chromePath, null);
+    stampPdfInfo(out, { Title: `${ch.title} (${edition.label})`,
+      Keywords: `dp-edition=${row.revisionEdition || edition.editionId}; dp-rail=${ch.railKey}; dp-submission=${row.submissionId}` });
+    console.log(`Wrote ${path.relative(REPO, out)} (${pages} pages)`);
+  }
 }
 
 main().catch((e) => { console.error(e.stack || e.message); process.exit(1); });
