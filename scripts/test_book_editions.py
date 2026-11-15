@@ -161,6 +161,26 @@ class ValidationTests(EditionsTestCase):
         r['editions'][1]['rails'][2]['revisionEdition'] = '1.1'
         self.assertTrue(any('cannot be on the 1.0 list' in e for e in ed.validate_response(r, self.book.sat)))
 
+    def test_manifest_sha256_contract_method(self):
+        r = self.book.response()
+        r['editions'][1]['manifestSha256'] = ed.govhub_manifest_sha256(r['editions'][1]['rails'])
+        self.assertEqual(ed.validate_response(r, self.book.sat), [])
+        r['editions'][1]['manifestSha256'] = '0' * 64
+        self.assertTrue(any('manifestSha256' in e for e in ed.validate_response(r, self.book.sat)))
+
+    def test_rail_without_document_in_this_database(self):
+        # Dev Gov Hub has no Foreword and numbers some rails differently: the book repo fills the
+        # page, and a different mlNumber is only a note.
+        r = self.book.response()
+        for e in r['editions'][1:]:
+            e['rails'][1].update(mlNumber=None, revision=None, submissionId=None, sha256=None, revisionEdition=None)
+            e['rails'][2]['mlNumber'] = 'ML-Draft-099'
+        self.assertEqual(ed.validate_response(r, self.book.sat), [])
+        gen = self.book.generate(r)
+        intro = ed.live_rail(gen.manifest, 'ml-draft-026')
+        self.assertEqual((intro['source'], intro['localSha256']), ('book-repo', sha(self.book.texts['intro'])))
+        self.assertTrue(any('ML-Draft-099' in n for n in gen.notes), gen.notes)
+
     def test_not_an_object_and_empty(self):
         self.assertTrue(ed.validate_response([], self.book.sat))
         self.assertTrue(ed.validate_response({'work': 'desirableproperties-book', 'editions': []}, self.book.sat))

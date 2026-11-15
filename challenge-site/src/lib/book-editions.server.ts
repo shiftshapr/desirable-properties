@@ -5,7 +5,11 @@ import type { EditionResolution, EditionsManifest } from '@/lib/book-editions';
 import { resolveEdition } from '@/lib/book-editions';
 import { fetchChapterPassages } from '@/lib/workgroup-review-govhub';
 
-const MANIFEST = path.resolve(process.cwd(), '..', 'desirableproperties-book/json/editions.json');
+// The edition record of the Gov Hub this site talks to. Production: the committed manifest, generated from
+// production Gov Hub by the production rail sync. Staging (dev Gov Hub): point BOOK_EDITIONS_MANIFEST at the
+// staging book's manifest, which the staging rail sync generates from dev (never committed).
+const MANIFEST =
+  process.env.BOOK_EDITIONS_MANIFEST || path.resolve(process.cwd(), '..', 'desirableproperties-book/json/editions.json');
 
 let cache: { mtimeMs: number; manifest: EditionsManifest | null } | null = null;
 
@@ -25,8 +29,9 @@ export function readEditionsManifest(): EditionsManifest | null {
 
 /**
  * A chapter's passages for an API answer, with its edition. `edition` null = the live text.
- * A named edition whose revision is not live comes from Gov Hub `chapter-passages/?edition=`, and only
- * when Gov Hub confirms that edition; otherwise the answer is an error, never the live text mislabelled.
+ * A named edition whose revision is not live comes from Gov Hub `chapter-passages/?edition=<id>` (exact revision
+ * text); Gov Hub's 404s (EDITION_NOT_FOUND, NOT_IN_A_BOOK, NOT_IN_EDITION) are passed on, and an answer for a
+ * different revision is refused, never returned as the live text mislabelled.
  */
 export async function chapterPassagesWithEdition(
   draftRef: string,
@@ -41,10 +46,16 @@ export async function chapterPassagesWithEdition(
     `${GOVHUB_PUBLIC_BASE_URL}/api/doc/draft/${encodeURIComponent(draftRef)}/chapter-passages/?edition=${encodeURIComponent(edition || '')}`,
     { cache: 'no-store', headers: { Accept: 'application/json' } },
   );
-  const data = (await res.json().catch(() => ({}))) as { passages?: unknown; edition?: unknown; submission_id?: unknown };
-  const confirmed = data.edition === edition || (resolution.fields.submissionId && data.submission_id === resolution.fields.submissionId);
-  if (!res.ok || !confirmed || !Array.isArray(data.passages)) {
-    return { ok: false, status: 501, error: `The text of ${resolution.fields.editionLabel} is not served yet` };
+  const data = (await res.json().catch(() => ({}))) as {
+    passages?: unknown; edition?: unknown; submission_id?: unknown; error?: unknown; error_code?: unknown;
+  };
+  if (!res.ok) {
+    const code = typeof data.error_code === 'string' ? ` (${data.error_code})` : '';
+    return { ok: false, status: res.status, error: `${typeof data.error === 'string' ? data.error : `Gov Hub answered ${res.status}`}${code}` };
+  }
+  const expected = resolution.fields.submissionId;
+  if (data.edition !== edition || (expected && data.submission_id !== expected) || !Array.isArray(data.passages)) {
+    return { ok: false, status: 502, error: `Gov Hub's answer is not the ${resolution.fields.editionLabel} revision` };
   }
   return { ok: true, passages: data.passages.filter((p): p is string => typeof p === 'string'), resolution };
 }

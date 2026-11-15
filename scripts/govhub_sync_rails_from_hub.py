@@ -157,6 +157,23 @@ def main() -> int:
     rails = filter_rails_by_only(rails, args.only)
     if args.editions_only:
         rails = []
+    elif editions_response is not None:
+        # Gov Hub resolves rails per database (dev: book_cover is ML-Draft-054, dp24 ML-Draft-057, no
+        # Foreword). Fetch each rail by the document the edition in progress names for it.
+        current = next(e for e in editions_response['editions'] if e.get('status') == 'in_progress')
+        by_key = {r.get('railKey'): r for r in current.get('rails', [])}
+        kept = []
+        for rail in rails:
+            row = by_key.get(rail['railKey'])
+            if row is not None and editions.is_book_repo_entry(row):
+                print(f'{rail.get("display_key") or rail["railKey"]:<18} SKIP  no Gov Hub document for this rail here')
+                continue
+            if row is not None and row.get('mlNumber') and row['mlNumber'] != rail['ml_number']:
+                print(f'{rail.get("display_key") or rail["railKey"]:<18} NOTE  Gov Hub holds this rail as '
+                      f'{row["mlNumber"]} (sources-sat.json: {rail["ml_number"]})')
+                rail = dict(rail, ml_number=row['mlNumber'])
+            kept.append(rail)
+        rails = kept
 
     mode = 'local-db' if args.local_db else 'api'
     print(f'Content dir  : {content_dir}')
@@ -212,8 +229,8 @@ def main() -> int:
         revision = info.get('revision_number') or '00'
         submission_id = info.get('submission_id') or ''
         content_hash = info.get('content_hash') or ''
-        synced_submissions[rail['railKey']] = submission_id
 
+        synced_submissions[rail['railKey']] = submission_id
         image_summary = sync_images_from_markdown(
             body,
             book_root=book_root,
@@ -306,7 +323,20 @@ def main() -> int:
         try:
             book = editions.Book.load(book_root, overlay=overlay, sources_sat_path=sources_sat)
             gen = editions.generate(editions_response, book, source=editions_source, previous=previous)
-            mismatch = editions.check_live_matches_record(gen.manifest, synced_submissions)
+            held = dict(synced_submissions)
+            if held is not None:
+                # Rails not fetched in this run (--editions-only, --only, a fetch error) hold what their
+                # govhub-sync markers name; they must agree with the edition in progress too.
+                for key in json.loads(sources_sat.read_text(encoding='utf-8')).get('articleRails') or []:
+                    if key in held:
+                        continue
+                    row = editions.live_rail(gen.manifest, key) or {}
+                    local = row.get('localPath')
+                    data = book.read_local(local) if local else None
+                    sub = editions.sync_marker_submission(data.decode('utf-8', 'replace')) if data else None
+                    if sub and row.get('submissionId'):
+                        held[key] = sub
+            mismatch = editions.check_live_matches_record(gen.manifest, held)
             if mismatch:
                 raise editions.EditionsError(
                     'Gov Hub\'s edition in progress does not list the revisions it serves:\n  - '
@@ -331,8 +361,9 @@ def main() -> int:
             editions_summary['written'] = [str(p) for p in written]
             for p in written:
                 print(f'Editions     : wrote {p}')
-            if book_root == DEFAULT_BOOK_ROOT:
-                report = editions.check_agreement(REPO_ROOT, book_root=book_root)
+            if editions_response is not None:
+                repo_root = REPO_ROOT if book_root == DEFAULT_BOOK_ROOT else book_root.parent
+                report = editions.check_agreement(repo_root, book_root=book_root)
                 editions_summary['agreement_errors'] = report.errors
                 if report.errors:
                     print('ERROR: editions agreement check failed after writing:', file=sys.stderr)

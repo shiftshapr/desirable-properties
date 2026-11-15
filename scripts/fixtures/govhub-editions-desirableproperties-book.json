@@ -1,5 +1,5 @@
 {
-  "_fixture": "Recorded 2026-11-15 by the book repo from the Gov Hub production Submission rows (read-only copy in ~/dp-audits/inscriptions/work/govhub-submissions.json, 14 Nov) and the contract in edition-record-contract.md. Not a Gov Hub answer: replace it by the live GET /api/doc/editions/?work=desirableproperties-book. decisionRef is a placeholder; manifestSha256 is sha256 over the canonical JSON (sorted keys, no spaces) of rails, an assumption the contract does not pin. Edition 0.77 (owner rulings 15 Nov 2026): the Introduction and DP1-DP22 text inscribed in May 2026; sha256 is the sha256 of the inscribed bytes; submissionId is the Gov Hub revision whose file is byte-identical to the inscription, null for the Introduction (no Gov Hub revision has its bytes) and DP22 (its base submission was created from the ordinal and has no file). releasedAt is left null.",
+  "_fixture": "Recorded 2026-11-15 by the book repo for PRODUCTION (production Gov Hub has no editions endpoint until the owner releases it). 0.77 is byte-identical in its rails to dev Gov Hub's live answer (dev.interfacehub.net, 15 Nov): releasedAt 2026-05-29T19:11:12Z, the Introduction and DP22 entries are their ordinal-sourced base submissions. 1.0 and 1.1 list the revisions production serves (production Submission rows copied read-only 14 Nov, and the govhub-sync markers in content/local); dev's 1.0/1.1 lists are older and are NOT used here. decisionRef null as Gov Hub answers; manifestSha256 by the contract method. Replace by the production endpoint's answer at release.",
   "work": "desirableproperties-book",
   "currentEdition": "1.1",
   "editions": [
@@ -7,16 +7,16 @@
       "editionId": "0.77",
       "label": "Version 0.77",
       "status": "released",
-      "releasedAt": null,
+      "releasedAt": "2026-05-29T19:11:12Z",
       "predecessorEditionId": null,
-      "decisionRef": "fixture:owner-ruling-2026-11-15-edition-0.77",
-      "manifestSha256": "8f6d9ee60a23048956564e8378f40f4b287f987d8b4e014b9481ae069af03627",
+      "decisionRef": null,
+      "manifestSha256": "9689df04d3d88ff25b6eb7138b45fb1883fe5e1760e0341f5e13ab8cb00670d3",
       "rails": [
         {
           "railKey": "ml-draft-026",
           "mlNumber": "ML-Draft-026",
-          "revision": null,
-          "submissionId": null,
+          "revision": "00",
+          "submissionId": "z41gtb59",
           "sha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
           "revisionEdition": "0.77"
         },
@@ -191,8 +191,8 @@
         {
           "railKey": "dp22",
           "mlNumber": "ML-Draft-028",
-          "revision": null,
-          "submissionId": null,
+          "revision": "00",
+          "submissionId": "6422afd8-2c21-40bb-9541-1c40b17977f3",
           "sha256": "3d4f15ee892eac259e5c97e447a08bb66bd3600049ef8fb16678630de5bb508c",
           "revisionEdition": "0.77"
         }
@@ -204,8 +204,8 @@
       "status": "released",
       "releasedAt": "2026-11-13T00:00:00Z",
       "predecessorEditionId": "0.77",
-      "decisionRef": "fixture:dp-steering-v1-signoff",
-      "manifestSha256": "5eb1626ee158805b4cb2dc14ea9513d2ee89e842bf4e89d469dc828c0a5bb547",
+      "decisionRef": null,
+      "manifestSha256": "ba06b9b8dc0da7bf3dd402c868b08caddb3974a80d924e612ebe8a9c0a96cbb2",
       "rails": [
         {
           "railKey": "book_cover",

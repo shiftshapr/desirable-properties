@@ -161,6 +161,19 @@ def load_fixture(path: Path) -> dict:
 
 # --------------------------------------------------------------------------- validation
 
+MANIFEST_SHA_KEYS = ('railKey', 'mlNumber', 'revision', 'submissionId', 'sha256')
+
+
+def govhub_manifest_sha256(rails: list[dict]) -> str:
+    """The contract's manifestSha256: canonical JSON of the rails (book order), each reduced to
+    railKey, mlNumber, revision, submissionId, sha256."""
+    return canonical_sha256([{k: r.get(k) for k in MANIFEST_SHA_KEYS} for r in rails])
+
+
+def is_book_repo_entry(rail: dict) -> bool:
+    """A list entry Gov Hub cannot fill (no document in this database): the book repo fills it."""
+    return not (rail.get('submissionId') or rail.get('mlNumber') or rail.get('sha256'))
+
 def edition_chain(editions: list[dict]) -> list[dict]:
     """Editions ordered from the first (no predecessor) to the latest. Assumes a validated list."""
     by_pred = {e.get('predecessorEditionId'): e for e in editions}
@@ -265,14 +278,13 @@ def validate_response(data: Any, sources_sat: dict, *, work: str = WORK_ID) -> l
                 errs.append(f'{where}: revisionEdition {stamp!r} is not an edition')
             elif stamp and order[stamp] > order[eid]:
                 errs.append(f'{where}: revision stamped {stamp} cannot be on the {eid} list')
-            if not src.get('mlNumber'):
-                # A page with no Gov Hub document (the Edition page): the book repo fills it.
-                for fld in ('mlNumber', 'revision', 'submissionId'):
-                    if rail.get(fld):
-                        errs.append(f'{where}: {fld} set, but this page has no Gov Hub document')
+            if is_book_repo_entry(rail):
+                # No Gov Hub document for this page here (the Edition page; the Foreword on dev): the book
+                # repo fills it from content/local.
                 continue
-            if rail.get('mlNumber') and rail['mlNumber'] != src['mlNumber']:
-                errs.append(f'{where}: mlNumber {rail["mlNumber"]} but the book maps it to {src["mlNumber"]}')
+            # A different mlNumber is not an error: Gov Hub resolves rails per database (on dev, book_cover
+            # is ML-Draft-054 and dp24 ML-Draft-057). The rail sync's served-revision cross-check and the
+            # agreement check (sync marker = listed submission) catch a wrong document.
             if rail.get('submissionId'):
                 for fld in ('mlNumber', 'revision', 'sha256', 'revisionEdition'):
                     if not rail.get(fld):
@@ -282,6 +294,9 @@ def validate_response(data: Any, sources_sat: dict, *, work: str = WORK_ID) -> l
                             f'Gov Hub revision (the inscribed 0.77 drafts)')
             elif not sha:
                 errs.append(f'{where}: no submissionId and no sha256 (the text it lists must be hashed)')
+        if ed['status'] == 'released' and ed.get('manifestSha256'):
+            if govhub_manifest_sha256(ed['rails']) != ed['manifestSha256']:
+                errs.append(f'edition {eid}: manifestSha256 does not match its rails (contract method)')
         missing = [k for k in article_rails if k not in seen]
         if missing and ed['status'] == 'in_progress':
             # A released edition may predate a rail added later (the Rights chapter in 1.1).
@@ -511,7 +526,12 @@ def generate(response: dict, book: Book, *, source: dict, previous: dict | None 
             info = live[key]
             prev = _previous_rail(previous, eid, key)
             sub = gh.get('submissionId') or None
-            book_repo = not book.source(key).get('mlNumber')
+            book_repo = is_book_repo_entry(gh)
+            if gh.get('mlNumber') and book.source(key).get('mlNumber') and gh['mlNumber'] != book.source(key)['mlNumber']:
+                note = (f'{key}: Gov Hub lists {gh["mlNumber"]} here; sources-sat.json says '
+                        f'{book.source(key)["mlNumber"]}')
+                if note not in notes:
+                    notes.append(note)
             row = {
                 'railKey': key,
                 'mlNumber': gh.get('mlNumber') or None,
@@ -703,7 +723,7 @@ def check_live_matches_record(manifest: dict, synced: dict[str, str]) -> list[st
         if row is None or not row.get('submissionId'):
             continue
         if sub and row['submissionId'] != sub:
-            errs.append(f'{key}: Gov Hub serves submission {sub} but the edition in progress lists '
+            errs.append(f'{key}: the rail holds submission {sub} but the edition in progress lists '
                         f'{row["submissionId"]}')
     return errs
 
@@ -828,10 +848,9 @@ def check_agreement(repo_root: Path, *, book_root: Path | None = None) -> Report
             if snap.is_file():
                 gh = next((e for e in json.loads(snap.read_text(encoding='utf-8')).get('editions', [])
                            if e.get('editionId') == ed['editionId']), None)
-                if gh is not None and canonical_sha256(gh.get('rails')) != ed['manifestSha256']:
-                    rep.gaps.append(f'edition {ed["editionId"]}: Gov Hub manifestSha256 is not reproduced by '
-                                    f'sha256(canonical JSON of its rails) here; the contract does not pin the '
-                                    f'canonical form yet')
+                if gh is not None and govhub_manifest_sha256(gh.get('rails') or []) != ed['manifestSha256']:
+                    rep.errors.append(f'edition {ed["editionId"]}: manifestSha256 does not match Gov Hub\'s '
+                                      f'rails by the contract method')
 
     # 2. Rails against content/local.
     article = list(sat.get('articleRails') or [])
