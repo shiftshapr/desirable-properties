@@ -124,8 +124,6 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
 
 ## PDFs
 
-- `scripts/generate-composite-dp-pdfs.py` (chapter PDFs in `downloads/dp`, `challenge-site/public/downloads/dp`,
-  `docs/dp-pdfs`) stamps Keywords, the title and the visible meta line from the manifest.
 - `scripts/v1-book-pdf/build.mjs` (the book PDF, and with `--chapters-out` one PDF per chapter) builds an
   edition from exactly its list: each revision's stored text from `<hub>/doc/draft/<submissionId>.txt`,
   checked against the list's sha256 (any mismatch stops the build), split into blocks at blank lines as
@@ -137,6 +135,18 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
   `dp-manifest-sha256` and `dp-edition-rails-sha256`, each chapter PDF `dp-edition`, `dp-rail`,
   `dp-submission`. Version 1.0: `challenge-site/public/downloads/desirable-properties-v1.0.pdf` and
   `challenge-site/public/downloads/dp-v1.0/dpNN-v1.0.pdf`.
+- **Chapter downloads follow the edition.** The site's `/dp/<n>` pages and the book viewer's Download button offer
+  the newest released edition's chapter PDF: file, URL (`/downloads/dp-v<id>/dpNN-v<id>.pdf`) and label
+  ("Download PDF · Version 1.0") all come from `editions.json`. The canonical set is
+  `challenge-site/public/downloads/dp-v<id>/`; the book site serves an identical copy in
+  `desirableproperties-book/downloads/dp-v<id>/` (the agreement check fails if they differ). When an edition is
+  released, its chapter PDFs are built with `build.mjs --edition <id> --chapters-out` into both folders, and the
+  links move to them with the manifest. Until then a chapter changed in the edition in progress still offers its
+  last released edition's PDF, labelled with that edition.
+- The retired "0.77X" composites (`/downloads/dp/DPn-0.77X.pdf` and `/downloads/dp/dpN.pdf`, removed 15 Nov
+  2026, kept in git history) redirect permanently to the Version 1.0 chapter PDFs: `challenge-site/next.config.ts`
+  for desirableproperties.org, and `desirableproperties-book/nginx/book.desirableproperties.org.conf` (staging:
+  `staging.book.desirableproperties.org.nginx.conf`) for the book host.
 - Astra's PDFs (`challenge-site/public/downloads/astra/`) are reference material outside editions: Astra's
   2026-09-05 editorial synthesis is not Gov Hub revision text, so no edition lists it.
 - `scripts/stamp_pdf_edition.py` stamps an existing PDF whose text is exactly a revision on an edition

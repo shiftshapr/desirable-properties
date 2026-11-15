@@ -51,13 +51,15 @@ SYNC_REVISION_RE = re.compile(r'<!--\s*govhub-sync:[^>]*\brevision=([0-9A-Za-z]+
 
 # Where chapter and book PDFs live (repo-relative). Bridges are never stamped.
 PDF_GLOBS = (
-    'desirableproperties-book/downloads/dp/*.pdf',
     'docs/*.pdf',
     'docs/dp-pdfs/*.pdf',
     'challenge-site/public/downloads/*.pdf',
-    'challenge-site/public/downloads/dp/*.pdf',
-    'challenge-site/public/downloads/dp-v1.0/*.pdf',
+    'challenge-site/public/downloads/dp-v*/*.pdf',
+    'desirableproperties-book/downloads/dp-v*/*.pdf',
 )
+# Chapter PDFs: canonical set on the site, an identical copy for the book site (it serves its own files).
+CHAPTER_PDF_CANONICAL = 'challenge-site/public/downloads'
+CHAPTER_PDF_BOOK_COPY = 'desirableproperties-book/downloads'
 # Reference material outside editions (Astra's 2026-09-05 editorial synthesis is not Gov Hub revision
 # text, so no edition lists it): reported as such, never a gap, never stamped.
 NOT_EDITION_PDF_GLOBS = ('challenge-site/public/downloads/astra/*.pdf',)
@@ -1063,6 +1065,16 @@ def check_agreement(repo_root: Path, *, book_root: Path | None = None) -> Report
                     rep.errors.append(f'{rel}: dp-manifest-sha256 is not edition {ed["editionId"]}\'s manifestSha256')
                 if stamp['dp-edition-rails-sha256'] != edition_rails_sha256(ed):
                     rep.errors.append(f'{rel}: built from a rail list that is not edition {ed["editionId"]}\'s')
+    # The book site's chapter PDFs must be byte-identical copies of the canonical set.
+    canon = {p.relative_to(repo_root / CHAPTER_PDF_CANONICAL): p for p in (repo_root / CHAPTER_PDF_CANONICAL).glob('dp-v*/*.pdf')}
+    copy = {p.relative_to(repo_root / CHAPTER_PDF_BOOK_COPY): p for p in (repo_root / CHAPTER_PDF_BOOK_COPY).glob('dp-v*/*.pdf')}
+    for rel in sorted(set(canon) | set(copy)):
+        if rel not in copy:
+            rep.errors.append(f'{CHAPTER_PDF_BOOK_COPY}/{rel} is missing (copy of {CHAPTER_PDF_CANONICAL}/{rel})')
+        elif rel not in canon:
+            rep.errors.append(f'{CHAPTER_PDF_BOOK_COPY}/{rel} has no canonical file in {CHAPTER_PDF_CANONICAL}')
+        elif canon[rel].read_bytes() != copy[rel].read_bytes():
+            rep.errors.append(f'{CHAPTER_PDF_BOOK_COPY}/{rel} differs from {CHAPTER_PDF_CANONICAL}/{rel}')
     others = [p for g in NOT_EDITION_PDF_GLOBS for p in sorted(repo_root.glob(g))]
     if others:
         rep.info.append(f'{len(others)} PDF(s) are reference material outside editions '

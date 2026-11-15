@@ -320,7 +320,7 @@ class AgreementTests(EditionsTestCase):
 
     def test_pdf_stamps(self):
         gen = self.book.generate()
-        out = self.tmp / 'desirableproperties-book' / 'downloads' / 'dp'
+        out = self.tmp / 'docs' / 'dp-pdfs'
         out.mkdir(parents=True)
         good = ed.chapter_pdf_keywords(gen.manifest, 'dp01', 'sub-dp01-r06', None)
         (out / 'DP1.pdf').write_bytes(minimal_pdf(good))
@@ -381,6 +381,24 @@ class PdfInfoTests(unittest.TestCase):
 def minimal_pdf(keywords: str) -> bytes:
     info = f'<</Title (t)/Keywords ({keywords})>>' if keywords else '<</Title (t)>>'
     return f'%PDF-1.4\n1 0 obj\n{info}\nendobj\ntrailer\n<</Info 1 0 R>>\n%%EOF\n'.encode('latin-1')
+
+
+class ChapterPdfCopyTests(EditionsTestCase):
+    def test_book_copy_must_match_canonical(self):
+        self.book.generate()
+        canon = self.tmp / 'challenge-site/public/downloads/dp-v1.0'
+        copy = self.tmp / 'desirableproperties-book/downloads/dp-v1.0'
+        canon.mkdir(parents=True)
+        copy.mkdir(parents=True)
+        pdf = minimal_pdf('')
+        (canon / 'dp01-v1.0.pdf').write_bytes(pdf)
+        (copy / 'dp01-v1.0.pdf').write_bytes(pdf)
+        self.assertFalse([e for e in ed.check_agreement(self.tmp, book_root=self.book.root).errors if 'dp-v1.0' in e])
+        (copy / 'dp01-v1.0.pdf').write_bytes(pdf + b' ')
+        (canon / 'dp02-v1.0.pdf').write_bytes(pdf)
+        errs = ed.check_agreement(self.tmp, book_root=self.book.root).errors
+        self.assertTrue(any('dp01-v1.0.pdf differs' in e for e in errs), errs)
+        self.assertTrue(any('dp02-v1.0.pdf is missing' in e for e in errs), errs)
 
 
 class RepoTests(unittest.TestCase):

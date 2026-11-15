@@ -107,3 +107,24 @@ export function resolveEdition(manifest: EditionsManifest | null, ml: string, ed
   const isLive = !!live && (row.submissionId ? row.submissionId === live.submissionId : !!row.sha256 && row.sha256 === live.sha256);
   return { ok: true, fields: fields(edition, row), isLive };
 }
+
+/** The newest released edition: the one whose chapter PDFs are offered for download. */
+export function latestReleasedEdition(manifest: EditionsManifest | null): BookEdition | null {
+  if (!manifest) return null;
+  const released = editionChain(manifest).filter((e) => e.status === 'released');
+  return released.length ? released[released.length - 1] : null;
+}
+
+/**
+ * The chapter PDF download for DP n: the newest released edition's build (downloads/dp-v<id>/dpNN-v<id>.pdf).
+ * A chapter changed in the edition in progress still offers that released edition's PDF, labelled as such.
+ */
+export function chapterPdfDownload(
+  manifest: EditionsManifest | null,
+  dpNumber: number,
+): { href: string; filename: string; label: string } | null {
+  const edition = latestReleasedEdition(manifest);
+  if (!edition || !Number.isInteger(dpNumber) || dpNumber < 1) return null;
+  const filename = `dp${String(dpNumber).padStart(2, '0')}-v${edition.editionId}.pdf`;
+  return { href: `/downloads/dp-v${edition.editionId}/${filename}`, filename, label: `Download PDF · ${edition.label}` };
+}

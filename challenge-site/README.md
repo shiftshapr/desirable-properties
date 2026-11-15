@@ -6,7 +6,7 @@ Next.js application for **[desirableproperties.org](https://desirableproperties.
 
 - Challenge overview, timeline, and countdown (`/challenge`)
 - Browse all Desirable Properties (`/dp/[id]`)
-- ML-Draft PDF downloads per DP (`/downloads/dp/dp1.pdf` … `dp23.pdf`)
+- Chapter PDF downloads per DP, from the newest released edition (`/downloads/dp-v1.0/dp01-v1.0.pdf` … `dp24-v1.0.pdf`; the old `/downloads/dp/…` URLs redirect)
 - On-chain provenance and Call for Input archive (`/onchain`)
 - About / framing chapter summary (`/about`)
 - Live Gov Hub workgroup and activity integration

@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "chapter-pdf-downloads-v1",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Chapter downloads are the Version 1.0 chapter PDFs; old links redirect",
+      "summary": "Each /dp/<n> page now offers \"Download PDF · Version 1.0\", the chapter as it reads in Version 1.0 (/downloads/dp-v1.0/dpNN-v1.0.pdf), instead of the old \"0.77X\" composite draft. The label and file come from the edition record, so they move to the next edition when it is released. The old /downloads/dp/DPn-0.77X.pdf and /downloads/dp/dpN.pdf links redirect permanently to the matching Version 1.0 PDF; the old files are removed.",
+      "changes": [
+        "challenge-site/src/lib/dpProvenance.ts, src/lib/book-editions.ts: chapter PDF link and label from the newest released edition",
+        "challenge-site/src/app/dp/[id]/page.tsx: \"Download PDF · <edition>\"",
+        "challenge-site/next.config.ts: 48 permanent redirects from the retired URLs",
+        "challenge-site/public/downloads/dp/: removed (DPn-0.77X.pdf and dpN.pdf)",
+        "challenge-site/scripts/sync-dp-download-pdfs.sh: removed (composite tooling retired)"
+      ]
+    },
+    {
       "id": "v1-pdfs-from-edition-list",
       "date": "2026-11-15",
       "status": "open",

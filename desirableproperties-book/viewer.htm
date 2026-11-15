@@ -1747,33 +1747,33 @@
       };
     }
 
-    /** Working composite draft version used in download filenames (ordinal + local). */
-    const COMPOSITE_VERSION = '0.77X';
-
-    function compositePdfFilename(r) {
+    /** The chapter PDF of the newest released edition in json/editions.json: label and file come from the
+        manifest (docs/EDITIONS.md). A chapter changed in the edition in progress still offers that PDF. */
+    function chapterPdfDownload(r) {
       const dp = (r && r.dp) ? String(r.dp).toUpperCase() : '';
-      if (!/^DP\d+$/.test(dp)) return null;
-      return dp + '-' + COMPOSITE_VERSION + '.pdf';
+      const m = /^DP(\d+)$/.exec(dp);
+      if (!m || !EDITIONS) return null;
+      const released = editionChain().filter(function (e) { return e.status === 'released'; });
+      const ed = released[released.length - 1];
+      if (!ed) return null;
+      const fname = 'dp' + String(parseInt(m[1], 10)).padStart(2, '0') + '-v' + ed.editionId + '.pdf';
+      return { href: '/downloads/dp-v' + ed.editionId + '/' + fname, fname: fname, label: ed.label };
     }
 
     function buildChapterDownloadHtml(rail) {
       const idx = RAIL_INDEX[rail];
       if (idx == null) return '';
       const r = RAILS[idx];
-      const fname = compositePdfFilename(r);
-      if (!fname) return '';
-      const href = '/downloads/dp/' + fname;
-      const sourceNote = r.localOverride
-        ? 'Composite PDF (on-chain ordinal + local updates)'
-        : 'Chapter PDF (current working draft)';
+      const pdf = chapterPdfDownload(r);
+      if (!pdf) return '';
       return (
         '<div class="chapter-downloads" data-rail="' + escapeHtml(r.railKey) + '">' +
           '<div class="dl-copy">' +
-            '<strong>' + escapeHtml(fname) + '</strong><br>' +
-            escapeHtml(sourceNote) + ' · version ' + escapeHtml(COMPOSITE_VERSION) +
+            '<strong>' + escapeHtml(r.dp + ' · ' + pdf.label) + '</strong><br>' +
+            escapeHtml('The chapter as it reads in ' + pdf.label + ', as a PDF') +
           '</div>' +
-          '<a class="dl-btn" href="' + escapeHtml(href) + '" download="' + escapeHtml(fname) + '">' +
-            'Download PDF' +
+          '<a class="dl-btn" href="' + escapeHtml(pdf.href) + '" download="' + escapeHtml(pdf.fname) + '">' +
+            escapeHtml('Download PDF · ' + pdf.label) +
           '</a>' +
         '</div>'
       );
