@@ -126,9 +126,17 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
 
 - `scripts/generate-composite-dp-pdfs.py` (chapter PDFs in `downloads/dp`, `challenge-site/public/downloads/dp`,
   `docs/dp-pdfs`) stamps Keywords, the title and the visible meta line from the manifest.
-- `scripts/v1-book-pdf/build.mjs` (the book PDF) takes the edition label and date from the manifest
-  (`--edition`, default the latest released), stamps the PDF info with `pdf-stamp.mjs`, and refuses to build
-  a released edition whose list differs from the live revisions (Gov Hub's chapter-passages serves live text).
+- `scripts/v1-book-pdf/build.mjs` (the book PDF, and with `--chapters-out` one PDF per chapter) builds an
+  edition from exactly its list: each revision's stored text from `<hub>/doc/draft/<submissionId>.txt`,
+  checked against the list's sha256 (any mismatch stops the build), split into blocks at blank lines as
+  Gov Hub's chapter-passages does; the Edition page from the list's book-repo file. Images referenced by an
+  inscription (`/content/<id>`) are the inscribed bytes. The edition page says "rebuilt <date> from the
+  <Edition> edition list"; the book PDF's Keywords carry `dp-edition`, `dp-edition-status`,
+  `dp-manifest-sha256` and `dp-edition-rails-sha256`, each chapter PDF `dp-edition`, `dp-rail`,
+  `dp-submission`. Version 1.0: `challenge-site/public/downloads/desirable-properties-v1.0.pdf` and
+  `challenge-site/public/downloads/dp-v1.0/dpNN-v1.0.pdf`.
+- Astra's PDFs (`challenge-site/public/downloads/astra/`) are reference material outside editions: Astra's
+  2026-09-05 editorial synthesis is not Gov Hub revision text, so no edition lists it.
 - `scripts/stamp_pdf_edition.py` stamps an existing PDF whose text is exactly a revision on an edition
   list: Keywords only, as an incremental update (the original bytes stay a prefix; page text is checked
   unchanged). Owner rule: stamp proven matches first; rebuild the rest from an edition's list only where

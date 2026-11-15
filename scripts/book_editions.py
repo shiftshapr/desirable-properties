@@ -56,8 +56,10 @@ PDF_GLOBS = (
     'docs/dp-pdfs/*.pdf',
     'challenge-site/public/downloads/*.pdf',
     'challenge-site/public/downloads/dp/*.pdf',
+    'challenge-site/public/downloads/dp-v1.0/*.pdf',
 )
-# PDFs that are not edition text at all (Astra's editorial synthesis, 2026-09-05): listed, never stamped.
+# Reference material outside editions (Astra's 2026-09-05 editorial synthesis is not Gov Hub revision
+# text, so no edition lists it): reported as such, never a gap, never stamped.
 NOT_EDITION_PDF_GLOBS = ('challenge-site/public/downloads/astra/*.pdf',)
 
 
@@ -548,6 +550,7 @@ def generate(response: dict, book: Book, *, source: dict, previous: dict | None 
                 'archiveKey': None,
                 'archiveRev': None,
                 'inscriptionId': None,
+                'note': gh.get('note') or None,
             }
             is_live = bool(sub) and sub == info['submission']
             if book_repo:
@@ -1056,12 +1059,15 @@ def check_agreement(repo_root: Path, *, book_root: Path | None = None) -> Report
                         rep.errors.append(f'{rel}: {key} on the {ed["editionId"]} list is stamped '
                                           f'{row.get("revisionEdition")}, not {stamp["dp-edition"]}')
             elif stamp.get('dp-edition-rails-sha256'):
+                if stamp.get('dp-manifest-sha256') and stamp['dp-manifest-sha256'] != ed.get('manifestSha256'):
+                    rep.errors.append(f'{rel}: dp-manifest-sha256 is not edition {ed["editionId"]}\'s manifestSha256')
                 if stamp['dp-edition-rails-sha256'] != edition_rails_sha256(ed):
                     rep.errors.append(f'{rel}: built from a rail list that is not edition {ed["editionId"]}\'s')
     others = [p for g in NOT_EDITION_PDF_GLOBS for p in sorted(repo_root.glob(g))]
     if others:
-        rep.info.append(f'{len(others)} PDF(s) are not edition text and carry no edition '
-                        f'({", ".join(sorted({str(p.parent.relative_to(repo_root)) for p in others}))}: Astra synthesis)')
+        rep.info.append(f'{len(others)} PDF(s) are reference material outside editions '
+                        f'({", ".join(sorted({str(p.parent.relative_to(repo_root)) for p in others}))}): '
+                        f'Astra\'s 2026-09-05 editorial synthesis is not Gov Hub revision text, so no edition lists it')
     for folder, names in unstamped.items():
         rep.gaps.append(f'{folder}/: {len(names)} PDF(s) with no edition stamp in their metadata '
                         f'({", ".join(sorted(names)[:4])}{", …" if len(names) > 4 else ""})')
