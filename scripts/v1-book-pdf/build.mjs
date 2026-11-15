@@ -830,7 +830,8 @@ async function renderPdf(htmlFile, outFile, chromePath, preview) {
  */
 async function renderCoverPng(outPng, chromePath) {
   const { default: puppeteer } = await import('puppeteer-core');
-  const htmlFile = path.join(HERE, 'out', 'cover.html');
+  fs.mkdirSync(path.dirname(outPng), { recursive: true });
+  const htmlFile = path.join(path.dirname(outPng), 'cover.html');
   fs.writeFileSync(htmlFile, `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}\nhtml,body{margin:0;background:#0d1117}</style></head><body>${coverHtml(null)}</body></html>`);
   const browser = await puppeteer.launch({ executablePath: chromePath, headless: true, args: ['--no-sandbox', '--allow-file-access-from-files'] });
   try {
