@@ -1,6 +1,6 @@
 # The Layered Web: Living Book, Encyclopedia, and Governance
 
-Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. Nothing in this document has been built yet. It is a target design plus the decisions needed to start. The owner ruled on Tensions 1 to 8 on 15 Nov (section 2). Still open: the exact bases for the vote threshold and quorum, and who may change them (Tension 1, proposals written); how API answers report editions (Tension 3); Tension 9.
+Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. It is a target design plus the decisions needed to start. Almost none of it is built. The exception is the edition record (Tension 3), which is being built on staging now: Gov Hub branch `feat/book-editions` and book repo branch `feat/book-editions`, to the contract in `~/handoff/specs/edition-record-contract.md`. It is not finished. The owner ruled on Tensions 1 to 8 on 15 Nov (section 2). Still open: the exact bases for the vote threshold and quorum, and who may change them (Tension 1, proposals written); the edition of the Introduction's inscription (Tension 3); Tension 9.
 
 Status marks used throughout:
 
@@ -23,7 +23,7 @@ The mission, the three views (Read, Explore, Govern), the Rights chapter as the 
    - A Gov Hub proposal (`DpProposal`) is a patch on existing anchored text. It cannot propose a whole new chapter as it stands.
    - Gov Hub's lifecycle has no Draft, Deliberation or Decision state. It has pending, accepted, considered, declined, incorporated, orphaned, withdrawn.
    - Formal decisions are steering votes (`VOTES_NEEDED = 2`, hard-coded) or, without a freeze, approval by every co-editor seat (minimum two). Eligibility, quorum and thresholds are not configurable policy. The older `Vote`/`Ballot` engine has 0 rows in production, leaks voter choices and crashes on opening.
-2. **Version 1.0 is not on chain.** The original treats chapters as inscribed. On Bitcoin mainnet, DP1 to DP22 are early-May 2026 drafts; the Introduction is a near-1.0 draft; Cover text, Edition, Foreword, About, Acknowledgements, DP23 and DP24 were never inscribed. Inscriptions carry no metadata. The metadata the brief asks for (decision reference, predecessor, contributors) exists nowhere.
+2. **Version 1.0 is not on chain.** The original treats chapters as inscribed. On Bitcoin mainnet, DP1 to DP22 are early-May 2026 drafts; the Introduction is a near-1.0 draft; Cover text, Edition, Foreword, About, Acknowledgements, DP23 and DP24 were never inscribed. The owner has since ruled that the May inscriptions are edition 0.77 (Tension 3). Inscriptions carry no metadata. The metadata the brief asks for (decision reference, predecessor, contributors) exists nowhere.
 3. **The relationship list was reconciled with BRC222.** Of the 15 names, only `supports` and `contradicts` exist in the BRC222 vocabulary (v2.1.0). Structural and governance links (amends, supersedes, approved-by, inscribed-as) are record links, not bridges. `bridges-to` is a category error: every BRC222 relationship is a bridge. See Tension 10.
 4. **Living and historical bridges need anchor versions.** Canopi and BRC222 anchors are URL plus quote, with no version and no content hash. See Tension 7.
 5. **The governance gap was made explicit.** No rule or body covers adopting a new chapter. The V1 freeze is lifted in production, steering's mandate was per release, and the DP Council has no members. See Tension 1.
@@ -41,7 +41,7 @@ The owner ruled on Tensions 2 to 8, then on Tension 1 and the edition model (Ten
 |---|---|
 | 1 | Anyone can propose a new chapter. The DP Council is the gate that decides whether it goes to a community vote (this replaces the earlier "steering gates" ruling). The community accepts or rejects it. The community is anyone with an account on Gov Hub or Canopi for the DPs. Threshold 60%, quorum 25%, both changeable settings, never hard-coded. Until the DP Council is seated, steering holds the gate ("Steering now"); once the council has members the gate passes to it, and the handover is recorded. |
 | 2 | The Rights chapter goes on Gov Hub as a new ML-Draft document. |
-| 3 | It belongs to Version 1.1. Edition is all three options together: a Gov Hub edition record, a manifest generated from it, and an edition stamp. Every draft revision, every proposal incorporated into a revision, every inscription record and every PDF has an edition, and they must agree. Bridges do not have an edition. |
+| 3 | It belongs to Version 1.1. Edition is all three options together: a Gov Hub edition record, a manifest generated from it, and an edition stamp. Every draft revision, every proposal incorporated into a revision, every inscription record and every PDF has an edition, and they must agree. Bridges do not have an edition. API answers: "Live text, labelled". The chapters inscribed in May 2026 (DP1 to DP22 drafts) are edition 0.77, the predecessor of 1.0. |
 | 4 | No conflict. Document what the first book said (Chapter 12, verbatim, as history) and expand it in the DP book. Confirm the year before "2024" is used. |
 | 5 | Rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. Rights Impact Assessments stay optional until a rule is adopted. |
 | 6 | True today, and it has to evolve. Gov Hub stays the one formal channel; other votes are labelled signals. Roadmap: account linking, then proof of unique humanity, then community-wide votes. |
@@ -49,7 +49,7 @@ The owner ruled on Tensions 2 to 8, then on Tension 1 and the edition model (Ten
 | 8 | Version 1.0 may be inscribed soon. Prerequisites stay visible: inscribe from Gov Hub text, not Box 1 `~/BRC333`; include the pages never inscribed; create the edition record first, so the inscription record carries the edition. |
 | 15 | The DP Council is the standing body and holds the gate. Steering is responsible for a specific edition: what goes into it, signing it off, releasing it. |
 
-Still open: for Tension 1, what the 60% and 25% are measured against and who may change those settings (proposals written; not blocking); for Tension 3, how API answers report editions (the owner is still thinking); Tension 9 (the owner asked for an explanation, no ruling); the rule that would make Rights Impact Assessments required (minor); Tensions 10 to 15.
+Still open: for Tension 1, what the 60% and 25% are measured against and who may change those settings (proposals written; not blocking); for Tension 3, the edition of the Introduction's inscription (a near-1.0 draft); Tension 9 (the owner asked for an explanation, no ruling); the rule that would make Rights Impact Assessments required (minor); Tensions 10 to 15.
 
 ---
 
@@ -63,7 +63,7 @@ Summary:
 |---|---|---|---|
 | 1 | Who can adopt a new chapter, and who adopts that rule | No decision left; step 5 needs building | Decided: anyone proposes; steering gates now, the DP Council once seated; community accepts at 60% / 25%. Bases of the percentages proposed (owner) |
 | 2 | A whole chapter does not fit a patch-shaped proposal | No | Decided: new ML-Draft document |
-| 3 | Living book against a finished Version 1.0 | No decision left for the milestone; the edition record needs building | Decided: Version 1.1; record, manifest and stamp, which must agree; no edition on bridges. API answers open (owner) |
+| 3 | Living book against a finished Version 1.0 | No decision left for the milestone; the edition record is being built on staging | Decided: Version 1.1; record, manifest and stamp, which must agree; no edition on bridges. API answers: live text, labelled. May inscriptions = edition 0.77 |
 | 4 | Which Bill of Rights wording is the source | No | Decided: Chapter 12 verbatim as history, expanded in the DP book |
 | 5 | Rights as a foundation added after the DPs | No | Decided on framing. Assessment rule open (steering) |
 | 6 | Two voting channels plus likes, and no proof of one person one vote | No | Decided for now; roadmap to evolve |
@@ -139,7 +139,7 @@ Options that were considered (kept for the record): run the council election fir
 
 **Ruling (15 Nov):** option A. The Rights chapter goes on Gov Hub as a new ML-Draft document. The DP Council gates it and the community accepts it (Tension 1).
 
-### Tension 3. Living book against a finished Version 1.0 (Decided; API answers open)
+### Tension 3. Living book against a finished Version 1.0 (Decided)
 
 **Pulls one way:** "treat every chapter as living", "one canonical version per edition", Rights chapter placed after the Introduction. **Pulls the other:** Version 1.0 was released on 13 Nov after all 28 documents were signed off in four stages. Adding a chapter to 1.0 changes a signed-off book. V1.1 exists only as a carry-over bucket (deferred items, MTPs, DP5's BRC333 removal, the glossary); no V1.1 process is coded. The Edition page has no Gov Hub document, so "edition" is not a record anywhere.
 
@@ -167,7 +167,7 @@ Options that were considered (kept for the record): run the council election fir
     "label": "Version 1.0",
     "status": "released",
     "releasedAt": "2026-11-13",
-    "predecessorEditionId": null,
+    "predecessorEditionId": "0.77",
     "decisionRef": "govhub:dp_steering_outcome/<id>",
     "govhubEditionId": "<id, under option b>",
     "manifestSha256": "<sha256 of the canonical JSON of rails>",
@@ -186,7 +186,7 @@ Options that were considered (kept for the record): run the council election fir
   }
   ```
 
-  Pages with no Gov Hub document (Edition) carry `mlNumber: null` and the sha256 of the local file. `inscriptionId` stays null until the exact revision is inscribed; the May drafts on chain are not 1.0 and must not be listed as its inscriptions. Weakness: a JSON file is not a decision. Anyone with repo access can change it.
+  Pages with no Gov Hub document (Edition) carry `mlNumber: null` and the sha256 of the local file. `inscriptionId` stays null until the exact revision is inscribed. The May drafts on chain are not 1.0 and must not be listed as its inscriptions; they belong to edition 0.77 (ruling below). Weakness: a JSON file is not a decision. Anyone with repo access can change it.
 
 - **(b) Edition as a Gov Hub record, adopted by a recorded decision.** New additive models: `BookEdition` (`id`, `work_id` = `desirableproperties-book`, `edition_id`, `label`, `status` = draft / in_progress / released, `predecessor_id`, `decision_outcome_id` → `DpSteeringOutcome`, `released_at`) and `BookEditionEntry` (`edition_id`, `rail_key`, `ml_number`, `submission_id`, `content_hash`). Releasing an edition is a steering decision (or whatever body Tension 1 names). The rail sync (`scripts/govhub_sync_rails_from_hub.py`) reads the edition from the Gov Hub API and writes the (a) manifest. The Edition page needs a Gov Hub document to fit.
 
@@ -204,25 +204,33 @@ Options that were considered (kept for the record): run the council election fir
 
 **Ruling (15 Nov, later):** all three together, with bounds. Every draft revision, every approved proposal that goes into a revision, every inscription record and every PDF has an edition, and **they must agree**. **Bridges do not have an edition.** A bridge pinned to an archived revision can have that revision's edition looked up; it is never stored on the bridge.
 
-**Model (proposed; conductor's design):**
+**Model (conductor's design; now the contract being built on staging):**
 
-- **Stamp = origin.** A revision's edition is the edition it was made for. It is set once, when the revision is created, from the edition in progress, and never changes. Field: `Submission.edition_id` in Gov Hub.
+- **Stamp = origin.** A revision's edition is the edition it was made for. It is set once, when the revision is created, from the edition in progress, and never changes. Field: `Submission.edition` in Gov Hub (name per the edition-record contract).
 - **List = membership.** An edition record lists exact revisions (`BookEditionEntry`). An unchanged chapter is carried forward, so the 1.1 list can include a revision whose own stamp is 1.0.
-- **Proposals.** A pending proposal has no edition of its own; it shows the edition of the text it targets (`submission_id`). When it is incorporated, it takes the edition of the revision it went into (`DpProposal.edition_id`, set with `incorporated_submission_id`).
+- **Proposals.** A pending proposal has no edition of its own; it shows the edition of the text it targets (`submission_id`). When it is incorporated, it takes the edition of the revision it went into (`DpProposal.edition`, set with `incorporated_submission_id`).
 - **"Agree" is a check**, run in CI and before any inscription:
   - a proposal's edition equals the edition of the revision it was incorporated into;
   - an inscription record's edition and sha256 equal the revision's;
   - a chapter PDF's edition equals its revision's;
   - a whole-book PDF is built from one edition's list, and every revision in it is on that list.
 
-**API answers (open; the owner is still thinking).** Proposal:
-- The API never computes or hard-codes an edition.
-- An answer that returns or cites a revision reports that revision's edition, read from the edition record, with the edition's status (released or in progress).
+**API answers (Decided, 15 Nov: "Live text, labelled").**
+- The API never computes or hard-codes an edition; it is always read from the Gov Hub edition record.
+- With no edition named, an answer returns the live text, labelled with its edition and whether that edition is released or in progress. After 1.0, the live book is "1.1 in progress", and answers say so.
 - A request can name an edition (`?edition=1.0`) and gets exactly that edition's revision.
-- With none named, it gets the live text, labelled with its edition and status.
+- An answer that returns or cites a revision reports that revision's edition and status (contract: `edition`, `editionStatus`).
 - Answers not tied to a revision (lists of people, councils, bridges) carry no edition.
 
-Open question: after 1.0, any published revision is already live through the rail sync, so the live book is "1.1 in progress". Should the default answer be the live text or the last released edition? Note that `chapter-archives.json` hard-codes `current_label: "Version 1.0"` today, which is already wrong for any chapter revised since 13 Nov.
+`chapter-archives.json` hard-codes `current_label: "Version 1.0"` today, which is already wrong for any chapter revised since 13 Nov; it should be generated from the edition record.
+
+**Edition 0.77 (Decided, 15 Nov).** The chapters inscribed on Bitcoin in May 2026 (the DP1 to DP22 drafts) are edition 0.77: label "Version 0.77", status released, no predecessor. Version 1.0's predecessor is 0.77.
+- The 0.77 list holds the inscribed text. Where no Gov Hub revision matches the inscribed bytes, `submissionId` is null and `sha256` is the inscribed text's.
+- The inscription records for those chapters carry `edition: "0.77"` and agree with that edition's list, under the same agreement check.
+- Stamps: revisions up to and including the 0.77 one are "0.77"; later ones up to the 1.0 release are "1.0"; after that, "1.1".
+- The viewer's Onchain mode labels these chapters Version 0.77, instead of implying they are the current book.
+- **Undecided:** the Introduction's inscription (a near-1.0 draft). It is not yet assigned to 0.77 or 1.0.
+- Cover text, Edition, Foreword, About, Acknowledgements, DP23 and DP24 were never inscribed, so they are not in 0.77.
 
 ### Tension 4. Which Bill of Rights wording is the source (Decided)
 
@@ -331,7 +339,7 @@ Rules kept: bridges by @bridger-one, verified before entering a registry; same-b
 ### Tension 8. Inscription: permanence against living chapters, and sequence (Decided)
 
 **Pulls one way:** "treat every chapter as living, including inscribed chapters"; "a newly adopted revision may produce an inscription"; rich inscription metadata. **Pulls the other:**
-- 1.0 is not on chain. What is on chain is early drafts, so readers who trust the monument read old text.
+- 1.0 is not on chain. What is on chain is early drafts, so readers who trust the monument read old text. (Since ruled: those drafts are edition 0.77, Tension 3, and are labelled so.)
 - Inscriptions are raw markdown (`text/plain`) with no metadata. Off chain, `sources-sat.json` holds inscription id, block, timestamp and ML number; `chapter-archives.json` holds sha256 and Gov Hub revision. Decision reference, predecessor and contributors are nowhere.
 - Re-inscription (a new inscription on the same sat) is designed but the UniSat path does not document it. Box 1 `~/BRC333` holds August text, so inscribing from it would put old text on chain. The test network exists only as an unused `unisat_testnet` flag.
 - Inscribing is irreversible. "Optional inscription" of living chapters sits against a monument that means permanence.
@@ -343,14 +351,15 @@ Rules kept: bridges by @bridger-one, verified before entering a registry; same-b
 
 **Recommendation:** A, then B. The Rights chapter is not inscribed until it is adopted into an edition that is itself inscribed. Put the brief's metadata in an off-chain manifest record keyed by inscription id and sha256, and decide separately whether a small on-chain sidecar is worth it. For the milestone, step 11 is a manifest record written in staging, labelled simulated.
 
-**Ruling (15 Nov):** Version 1.0 is not on chain, and the owner says inscribing it may be soon. The prerequisites stay visible:
+**Ruling (15 Nov):** Version 1.0 is not on chain, and the owner says inscribing it may be soon. What is on chain is edition 0.77 (DP1 to DP22, May 2026), recorded as such; the Introduction's inscription is undecided. The prerequisites stay visible:
 
 1. **Edition record first** (Tension 3), so each inscription record carries `edition: "1.0"`, the rail, the Gov Hub revision, submission id and sha256.
 2. **Inscribe from Gov Hub text**, the exact 1.0 revisions in the edition record. Never from Box 1 `~/BRC333`, which holds August text.
 3. **Include the pages never inscribed:** Cover text, Edition, Foreword, About, Acknowledgements, DP23, DP24. The Edition page has no Gov Hub document; it needs one, or its sha256 from the book repo.
-4. **Off-chain inscription record** per rail: edition, rail, revision, submission id, sha256, inscription id, block, timestamp, the predecessor inscription (the May draft on the same sat, if re-inscribed), and the decision reference (the 1.0 sign-off stage records).
+4. **Off-chain inscription record** per rail: edition, rail, revision, submission id, sha256, inscription id, block, timestamp, the predecessor inscription (the edition 0.77 inscription on the same sat, if re-inscribed), and the decision reference (the 1.0 sign-off stage records).
 5. **Confirm re-inscription on the same sat** works on the UniSat path (not documented today).
 6. **Owner approval** for every inscription.
+7. **Record the existing inscriptions first:** the DP1 to DP22 inscriptions get records with `edition: "0.77"` that agree with the 0.77 list, so the 1.0 records can name them as predecessors.
 
 The Rights chapter is inscribed only as part of 1.1, after 1.1 is released.
 
@@ -569,8 +578,9 @@ Requirements, with status:
 ### Phase 5: Versioning and inscription [Partly]
 
 - Immutable historical versions [Implemented: Gov Hub revisions; archive routes; sha256 in `chapter-archives.json`].
-- One current canonical version per edition [New; decided (Tension 3): an edition record listing each rail's exact revision and sha256; a revision can sit in several editions; revisions after 1.0 belong to "1.1 in progress". Decided: a Gov Hub `BookEdition` record, a generated `editions` manifest, and an `edition` stamp set once on each revision; proposals, inscription records and PDFs must agree with it, checked in CI and before inscription; bridges carry no edition].
+- One current canonical version per edition [Being built on staging (`feat/book-editions` in Gov Hub and the book repo), not finished; decided (Tension 3): an edition record listing each rail's exact revision and sha256; a revision can sit in several editions; revisions after 1.0 belong to "1.1 in progress". Decided: a Gov Hub `BookEdition` record, a generated `editions` manifest, and an `edition` stamp set once on each revision; proposals, inscription records and PDFs must agree with it, checked in CI and before inscription; bridges carry no edition].
 - Inscription of adopted revisions [Partly; prerequisites decided (Tension 8)]. The edition record first. Inscribe from Gov Hub text, never from Box 1 `~/BRC333`. Version 1.0 first, including the pages never inscribed (Cover text, Edition, Foreword, About, Acknowledgements, DP23, DP24). The Rights chapter with 1.1.
+- Edition 0.77 [Decided; being built on staging]: the May 2026 DP1 to DP22 inscriptions are Version 0.77, the predecessor of 1.0; their records carry `edition: "0.77"` and agree with its list; the viewer's Onchain mode labels them Version 0.77. The Introduction's inscription is undecided.
 - Inscription metadata [New]. Off-chain record per inscription: artifact id, edition, version, content hash, decision reference, predecessor, contributors where authorized, inscription id, timestamp, provenance.
 - Never place private messages, sensitive personal data or unreleased information on chain [kept].
 - Living and historical bridges [New; decided (Tension 7)]:
@@ -638,7 +648,7 @@ Run on staging (dev.interfacehub.net and staging.desirableproperties.org, which 
 | 3 | A participant suggests a specific patch | `DpProposal` (replace / insert / insert_after) against r01 `anchor_hash` | Implemented |
 | 4 | Others endorse or challenge it | Artifact support/opposition, `CommentLike`, Canopi patch vote; challenge as opposition or comment | Partly (no objection record). Labelling decided (Tension 6): Canopi votes and likes shown as signals; needs building |
 | 5 | Eligible members take part in a formal vote | Two votes on staging, with test accounts. First the gate: steering passes the proposal (steering holds the gate until the DP Council is seated), recorded in `DpSteeringOutcome` with reasons. Then the community vote: a yes / no / abstain ballot on the council-election machinery; electorate = staging Gov Hub and Canopi accounts deduplicated on verifier id, agents excluded; passes at 60% yes of yes + no with 25% turnout, read from settings and recorded on the vote. "Simulated" means staging, not a special mode (none exists) | Needs building: council gate record, yes/no/abstain counting, cross-system electorate, threshold and quorum settings. Gate holder decided: steering now, the council once seated (Tension 1) |
-| 6 | The authorized process adopts a revision | After the community accepts, steering for 1.1 takes the chapter into the edition; publish r02 on staging Gov Hub (stamped `edition_id` 1.1); rail sync to staging; r02 listed in edition "1.1" (status in_progress); edition-agreement check passes | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, the edition record and the agreement check. Design decided (Tension 3) |
+| 6 | The authorized process adopts a revision | After the community accepts, steering for 1.1 takes the chapter into the edition; publish r02 on staging Gov Hub (stamped `edition` 1.1); rail sync to staging; r02 listed in edition "1.1" (status in_progress); edition-agreement check passes | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, the edition record and the agreement check. Design decided (Tension 3) |
 | 7 | The adopted version appears in Read | `/viewer/<new key>` between the Introduction and DP1 on staging | Needs building (rail, route, navigation) |
 | 8 | Its rights and relationships appear in Explore | Rights Register entries and entity pages from the derived index | Needs building. Blocked on Decisions 10 and 11 |
 | 9 | Its decision history appears in Govern | Gov Hub `StatusChange`, `DocumentHistory`, `DpSteeringOutcome`, linked from the book | Implemented in Gov Hub; link from the book needs building |
