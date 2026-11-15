@@ -1,6 +1,6 @@
 # The Layered Web: Living Book, Encyclopedia, and Governance
 
-Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. Nothing in this document has been built yet. It is a target design plus the decisions needed to start.
+Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. Nothing in this document has been built yet. It is a target design plus the decisions needed to start. The owner ruled on Tensions 2 to 8 on 15 Nov (section 2); Tension 1, Tension 9 and the form of the edition record are still open.
 
 Status marks used throughout:
 
@@ -8,6 +8,7 @@ Status marks used throughout:
 - **[Partly]**: something exists but does not do what the brief needs.
 - **[New]**: nothing exists; needs building.
 - **[Decision N]**: blocked until Tension N is settled.
+- **Decided**: the owner has ruled. The tension's analysis is kept for the record and the ruling follows it.
 
 ---
 
@@ -26,29 +27,47 @@ The mission, the three views (Read, Explore, Govern), the Rights chapter as the 
 3. **The relationship list was reconciled with BRC222.** Of the 15 names, only `supports` and `contradicts` exist in the BRC222 vocabulary (v2.1.0). Structural and governance links (amends, supersedes, approved-by, inscribed-as) are record links, not bridges. `bridges-to` is a category error: every BRC222 relationship is a bridge. See Tension 10.
 4. **Living and historical bridges need anchor versions.** Canopi and BRC222 anchors are URL plus quote, with no version and no content hash. See Tension 7.
 5. **The governance gap was made explicit.** No rule or body covers adopting a new chapter. The V1 freeze is lifted in production, steering's mandate was per release, and the DP Council has no members. See Tension 1.
-6. **The acceptance test was rewritten** so each step names the real mechanism or says what is missing (section 4).
+6. **The acceptance test was rewritten** so each step names the real mechanism or says what is missing (section 5).
 7. **Facts the original stated as given were softened where unconfirmed.** The year of the Overweb Bill of Rights ("2024") is not confirmed. It is a section of *The Metaweb*, Chapter 12 (`metaweb-book/ch12.htm`), with ten rights: Privacy, Security, Data Sovereignty, Cognitive Freedom, Context, Safety, Transparency, Free Speech, Expression, Presence.
 8. **One rule was already broken and is now named.** "Adopted changes never silently overwrite prior canonical versions": the Cover (ML-Draft-033 r01) was edited in place on production on 14 Nov (`changelog.json`). See Tension 13.
 
 ---
 
-## 2. Tensions
+## 2. Decisions (15 Nov 2026)
 
-A tension is a place where two things the owner wants, or the brief and reality, pull against each other and someone has to choose. Tensions 1 to 9 block the Rights-chapter milestone. Tensions 10 to 15 do not block it but shape the later phases.
+The owner ruled on Tensions 2 to 8.
+
+| # | Ruling |
+|---|---|
+| 2 | The Rights chapter goes on Gov Hub as a new ML-Draft document. |
+| 3 | It belongs to Version 1.1. "Edition" becomes a record, carried along so anything can say which edition it is part of. The form of the record is open; options in Tension 3. |
+| 4 | No conflict. Document what the first book said (Chapter 12, verbatim, as history) and expand it in the DP book. Confirm the year before "2024" is used. |
+| 5 | Rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. Rights Impact Assessments stay optional until a rule is adopted. |
+| 6 | True today, and it has to evolve. Gov Hub stays the one formal channel; other votes are labelled signals. Roadmap: account linking, then proof of unique humanity, then community-wide votes. |
+| 7 | New requirement: when a bridge breaks, the Overweb registry writes a bridge incident record, and broken bridges can be shifted to the Wayback Machine. |
+| 8 | Version 1.0 may be inscribed soon. Prerequisites stay visible: inscribe from Gov Hub text, not Box 1 `~/BRC333`; include the pages never inscribed; create the edition record first, so the inscription record carries the edition. |
+
+Still open: Tension 1 (who adopts a new chapter); the form of the edition record (Tension 3); Tension 9 (the owner asked for an explanation, no ruling); the rule that would make Rights Impact Assessments required (minor); Tensions 10 to 15.
+
+---
+
+## 3. Tensions
+
+A tension is a place where two things the owner wants, or the brief and reality, pull against each other and someone has to choose. Tensions 1 to 9 blocked the Rights-chapter milestone. After the 15 Nov rulings, Tension 1, Tension 9 and the form of the edition record still block it. Tensions 10 to 15 do not block it but shape the later phases.
 
 Summary:
 
-| # | Tension | Blocks milestone | Who decides |
+| # | Tension | Blocks milestone now | Status; who decides |
 |---|---|---|---|
-| 1 | Who can adopt a new chapter, and who adopts that rule | Yes | Owner sets the interim rule; steering ratifies |
-| 2 | A whole chapter does not fit a patch-shaped proposal | Yes | Owner |
-| 3 | Living book against a finished Version 1.0 | Yes | Owner, then steering |
-| 4 | Which Bill of Rights wording is the source | Yes | Owner (as author of both books) |
-| 5 | Rights as a foundation added after the DPs | Yes | Owner on title; steering on gates |
-| 6 | Two voting channels plus likes, and no proof of one person one vote | Yes | Owner |
-| 7 | Living against historical bridges with unversioned anchors | Yes (step 12) | Owner; bridges stay with @bridger-one |
-| 8 | Inscription: permanence against living chapters, and sequence | Yes (step 11) | Owner |
-| 9 | Nine phases against a small team: the smallest honest slice | Yes | Owner |
+| 1 | Who can adopt a new chapter, and who adopts that rule | Yes (steps 1, 5) | Open. Owner sets the interim rule; steering ratifies |
+| 2 | A whole chapter does not fit a patch-shaped proposal | No | Decided: new ML-Draft document |
+| 3 | Living book against a finished Version 1.0 | Yes (step 6), until the record form is picked | Decided: Version 1.1. Record form open (owner) |
+| 4 | Which Bill of Rights wording is the source | No | Decided: Chapter 12 verbatim as history, expanded in the DP book |
+| 5 | Rights as a foundation added after the DPs | No | Decided on framing. Assessment rule open (steering) |
+| 6 | Two voting channels plus likes, and no proof of one person one vote | No | Decided for now; roadmap to evolve |
+| 7 | Living against historical bridges with unversioned anchors | No decision left; step 12 needs building | Decided: versioned anchors plus bridge incident records |
+| 8 | Inscription: permanence against living chapters, and sequence | No decision left; step 11 needs the edition record | Decided: prerequisites kept |
+| 9 | Nine phases against a small team: the smallest honest slice | Yes | Open (owner) |
 | 10 | One relationship vocabulary or two layers | No | Owner |
 | 11 | Several stores of truth against "no encyclopedia database" | No | Owner |
 | 12 | Discussions across revisions | No | Owner; Canopi implements |
@@ -57,6 +76,8 @@ Summary:
 | 15 | Councils against steering as the long-term governing body | No | Owner; then the councils |
 
 ### Tension 1. Who can adopt a new chapter, and who adopts that rule
+
+**Status:** open.
 
 **Pulls one way:** the brief wants a community proposal, a formal vote and adoption. **Pulls the other:** no rule or body covers it.
 - The freeze is lifted in production (`dp_v1_freeze_at_utc = 2099-12-31T23:59:59`), so co-editors decide patches again. A new chapter has no co-editors.
@@ -75,7 +96,7 @@ Summary:
 
 **Who decides:** owner drafts; steering ratifies.
 
-### Tension 2. A whole chapter does not fit a patch-shaped proposal
+### Tension 2. A whole chapter does not fit a patch-shaped proposal (Decided)
 
 **Pulls one way:** the brief's first step is "a contributor creates a Rights chapter proposal". **Pulls the other:** `DpProposal` requires `anchor_hash` and `original_text` (both non-null in `models/dp_proposal.py`) and is pinned to a `submission_id`. There is no text to patch until a document exists.
 
@@ -86,9 +107,9 @@ Summary:
 
 **Recommendation:** A. It reuses the revision model, patches, steering votes and the rail sync unchanged. The new work is small: a "proposed, not in any edition" flag on the document, and a way for a non-admin contributor to submit r01 (or an admin does it on their behalf, with authorship recorded). Adoption then means: steering adopts a revision, a rail key is added to `sources-sat.json` and `viewer.htm`.
 
-**Who decides:** owner.
+**Ruling (15 Nov):** option A. The Rights chapter goes on Gov Hub as a new ML-Draft document. Who adopts it is still Tension 1.
 
-### Tension 3. Living book against a finished Version 1.0
+### Tension 3. Living book against a finished Version 1.0 (Decided: Version 1.1; record form open)
 
 **Pulls one way:** "treat every chapter as living", "one canonical version per edition", Rights chapter placed after the Introduction. **Pulls the other:** Version 1.0 was released on 13 Nov after all 28 documents were signed off in four stages. Adding a chapter to 1.0 changes a signed-off book. V1.1 exists only as a carry-over bucket (deferred items, MTPs, DP5's BRC333 removal, the glossary); no V1.1 process is coded. The Edition page has no Gov Hub document, so "edition" is not a record anywhere.
 
@@ -97,11 +118,62 @@ Summary:
 - B. Version 1.0 stays the canonical book; the Rights chapter lives beside it as "proposed" until a later edition.
 - C. Treat each chapter as its own living line and drop editions.
 
-**Recommendation:** A. Make "edition" a real record (a Gov Hub document or a manifest entry) listing the exact revision of each chapter. 1.0 is then a frozen list; 1.1 is the first living edition. Before any 1.1 change publishes, give 1.0 itself archive keys (today 1.0 has no archive key; archive numbers are pre-1.0 Gov Hub revisions).
+**Ruling (15 Nov):** option A. The Rights chapter belongs to Version 1.1. "Edition" must become a record, and it must be carried along so that anything (an archive copy, a bridge, an inscription, a PDF, an API answer) can say which edition it is part of. The owner asked for the options for that record; he has not picked one.
 
-**Who decides:** owner on the edition model; steering on what enters 1.1.
+**What exists today.**
+- `desirableproperties-book/json/sources-sat.json` (BRC333 `source_inventory`, camelCase): top level `protocol`, `operation`, `project`, `schemaVersion`, `workId`, `title`, `summary`, `bookCoverInscriptionId`, `articleRails` (30 keys in order); `sources[]` with `railKey`, `label`, `mlNumber` (29 of 30; the Edition page has none), `dp`, `localOverride`, `inscriptionId`, `block`, `timestamp` (23 of 30), `status`, `reinscribable`, `reason`. It says nothing about which revision a rail holds.
+- `desirableproperties-book/json/chapter-archives.json` (schema `dp-book-chapter-archives/v1`, snake_case): top level `current_label: "Version 1.0"` (a label only); `archives[]` with `key`, `rev`, `label`, `title`, `file`, `live_from`, `live_until`, `source_commit`, `source_path`, `text_since_commit`, `sha256`, `govhub { ml_number, revision, submission_id, text_url, read_url }`, `note`. These are the pre-1.0 copies; 1.0 itself has no entry.
+- Gov Hub `Submission` already has `content_hash`; sign-off records are `DpSteeringStage` and `DpSteeringOutcome`.
 
-### Tension 4. Which Bill of Rights wording is the source
+**Rule that shapes every option:** an edition lists revisions; it does not own them. One chapter revision can sit in several editions (a DP unchanged between 1.0 and 1.1 is the same revision in both). Revisions published after 1.0 and before 1.1 is released belong to "1.1 in progress": an edition record with status `in_progress` whose list moves with each approved revision, then freezes on release.
+
+**Options for the record:**
+
+- **(a) Edition manifest in the book repo.** Either a new top-level `editions` array in `sources-sat.json`, or a separate `desirableproperties-book/json/editions.json` (schema `dp-book-editions/v1`) with a pointer in `sources-sat.json` (`currentEdition`, `editionsManifest`). camelCase, to match `sources-sat.json`:
+
+  ```json
+  {
+    "editionId": "1.0",
+    "label": "Version 1.0",
+    "status": "released",
+    "releasedAt": "2026-11-13",
+    "predecessorEditionId": null,
+    "decisionRef": "govhub:dp_steering_outcome/<id>",
+    "govhubEditionId": "<id, under option b>",
+    "manifestSha256": "<sha256 of the canonical JSON of rails>",
+    "rails": [
+      {
+        "railKey": "dp01",
+        "mlNumber": "ML-Draft-008",
+        "revision": "<Gov Hub revision, e.g. 06>",
+        "submissionId": "<Gov Hub Submission id>",
+        "sha256": "<sha256 of the published markdown>",
+        "archiveKey": "dp01",
+        "archiveRev": "<rev served at /viewer/dp01/<rev>>",
+        "inscriptionId": null
+      }
+    ]
+  }
+  ```
+
+  Pages with no Gov Hub document (Edition) carry `mlNumber: null` and the sha256 of the local file. `inscriptionId` stays null until the exact revision is inscribed; the May drafts on chain are not 1.0 and must not be listed as its inscriptions. Weakness: a JSON file is not a decision. Anyone with repo access can change it.
+
+- **(b) Edition as a Gov Hub record, adopted by a recorded decision.** New additive models: `BookEdition` (`id`, `work_id` = `desirableproperties-book`, `edition_id`, `label`, `status` = draft / in_progress / released, `predecessor_id`, `decision_outcome_id` → `DpSteeringOutcome`, `released_at`) and `BookEditionEntry` (`edition_id`, `rail_key`, `ml_number`, `submission_id`, `content_hash`). Releasing an edition is a steering decision (or whatever body Tension 1 names). The rail sync (`scripts/govhub_sync_rails_from_hub.py`) reads the edition from the Gov Hub API and writes the (a) manifest. The Edition page needs a Gov Hub document to fit.
+
+- **(c) An edition stamp on travelling records.** Records that leave the book carry the edition with them:
+  - `chapter-archives.json` entries: `editions: ["1.0"]` (a list, because a revision can be in several), and top level `current_edition: "1.0"` beside `current_label`;
+  - bridge anchors: `source_edition` / `target_edition` beside `source_revision` and `source_sha256` (Tension 7);
+  - inscription records: `edition`, `rail_key`, `revision`, `sha256` (Tension 8);
+  - PDFs: the edition id and `manifestSha256` on the edition page and in the PDF metadata;
+  - API responses (book, Canopi, Hermes): `edition` and `revision` on every chapter or passage returned.
+
+  A record pinned at a moment (a bridge judged, an inscription made) carries one `edition` (the one current then) plus the revision and hash. The revision and hash are the identity; the edition is context.
+
+**Recommendation:** (b) as the source of truth, (a) generated from it by the rail sync, and (c) on every travelling record. Before any 1.1 change publishes, write the 1.0 edition record (with each rail's exact revision and sha256) and give 1.0 archive keys, since today 1.0 has neither.
+
+**Who decides:** owner on the record form; steering on what enters 1.1.
+
+### Tension 4. Which Bill of Rights wording is the source (Decided)
 
 **Pulls one way:** the brief says represent the Bill of Rights accurately as historical source and do not modify the 2024 *Metaweb* text. **Pulls the other:** the second-edition plan (`metaweb-book/docs/second-edition-plan.md`) revises the Chapter 12 Bill of Rights: it says the Bill overclaims ("you have no privacy" ignores GDPR, CCPA and the DSA), wants cornerstones merged with rights where they duplicate, and says each right should be marked as secured by interface design, by community governance, or as an aspiration. D1 says no new chapters in the second edition; D25 routes all its changes through Gov Hub revisions. So the "historical source" is about to have a revised twin, and the Rights chapter could derive from either.
 
@@ -112,9 +184,9 @@ Summary:
 
 **Recommendation:** A. The Rights Register records each right's origin as the first-edition Chapter 12 passage (pinned to its existing inscription), and links to the second-edition revision when it exists, with a historical bridge. The Rights chapter does not inherit the overclaims. The year should be confirmed before the word "2024" appears anywhere public.
 
-**Who decides:** owner, as author of both books.
+**Ruling (15 Nov):** there is no conflict. Document what the first book said (*The Metaweb*, Chapter 12, verbatim, as history) and expand it in the DP book. The second edition's revision of Chapter 12 is its own lineage and does not change what the first book said. Left open: confirm the year before "2024" appears anywhere public.
 
-### Tension 5. Rights as "the foundation of Desirable Properties", added after the DPs
+### Tension 5. Rights as "the foundation of Desirable Properties", added after the DPs (Decided on framing)
 
 **Pulls one way:** the chapter title says rights are the foundation; the brief adds Rights Impact Assessments for every substantive proposal. **Pulls the other:** 24 DPs were written and approved without them. The Introduction never uses the word "right"; DP4, DP14 and DP20 mention rights in passing. A foundation added afterwards is retroactive. A mandatory assessment is a new gate on every substantive proposal that no one has voted for. And when a right conflicts with an adopted DP, there is no rule for which wins.
 
@@ -125,9 +197,9 @@ Summary:
 
 **Recommendation:** B for the milestone, with C on the title. The title is part of what steering votes on (chapter-title changes already need steering). Assessments start as an optional template on proposals. A conflict is recorded as a `contradicts` link and resolved by an ordinary patch to the DP or the right. Making assessments mandatory is a later governance rule under Tension 1.
 
-**Who decides:** owner on the framing; steering on the title and on any mandatory gate.
+**Ruling (15 Nov):** rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. This is not a retroactive gate on the 24 DPs. Rights Impact Assessments stay optional until a rule is adopted. Still open (minor): who adopts that rule, and when; it follows Tension 1.
 
-### Tension 6. Two voting channels plus likes, and no proof of one person one vote
+### Tension 6. Two voting channels plus likes, and no proof of one person one vote (Decided for now)
 
 **Pulls one way:** "likes are not votes", "votes counted under the applicable rules", "eligible members vote", voting integrity. **Pulls the other:**
 - Formal votes: Gov Hub steering votes (`DpSteeringVote`, superseded never deleted) and co-editor approval.
@@ -141,9 +213,19 @@ Summary:
 
 **Recommendation:** A. In the product, rename Canopi patch "votes" to something that cannot be confused with a decision, or label them "signal, not a decision". The milestone's "eligible members" are the people the Tension 1 rule names (co-editors and steering), which needs no unique-humanity proof. Do not claim community-wide voting integrity until account linking and proof of unique humanity exist (connect accounts first, then unique humanity). Do not revive the `Vote`/`Ballot` engine without a privacy fix.
 
-**Who decides:** owner.
+**Ruling (15 Nov):** accepted as true today, "but we have to evolve this". Gov Hub stays the one formal channel now. Canopi patch votes, likes and support/opposition are labelled signals in the product.
 
-### Tension 7. Living against historical bridges with unversioned anchors
+**Roadmap:**
+
+| Step | What | Today |
+|---|---|---|
+| 1. Account linking | Link Gov Hub `User` and Canopi `AppUser`; multi-email login; signals counted per linked person | Open PR #130, unmerged |
+| 2. Proof of unique humanity | One person, one counted voice | Does not exist; method open |
+| 3. Community-wide votes | A ballot that counts people, keeps choices private, with eligibility set by an adopted rule | Old `Vote`/`Ballot` leaks choices and crashes; council electorates use `verified_account` |
+
+Each step needs the one before. Until step 3, no community-wide vote result is presented as a decision.
+
+### Tension 7. Living against historical bridges with unversioned anchors (Decided)
 
 **Pulls one way:** a living bridge resolves to the current canonical version; a historical bridge resolves to an exact version or hash. **Pulls the other:** bridge anchors are URL plus TextQuoteSelector, with no version and no hash. A bridge on `/viewer/dpNN` follows live text but breaks when the quote changes; one on `/viewer/dpNN/<rev>` is effectively pinned. BRC222's entry rule judges a relationship from the two passages and their dates. A living bridge whose quote changes may no longer be true, and the judgment was made on the old wording.
 
@@ -154,9 +236,42 @@ Summary:
 
 **Recommendation:** A. A living bridge is a historical bridge plus a pointer to "current", with re-verification when the text moves. Use the sha256 already in `chapter-archives.json`. Bridges stay authored by @bridger-one and verified before entering a registry; same-book pairs never corroborate or confirm; no Foreword anchors.
 
-**Who decides:** owner (BRC222 schema change).
+**Ruling (15 Nov):** option A, plus a new requirement: when a bridge breaks, the Overweb bridge registry writes a **bridge incident record**, and broken bridges can be shifted to the Wayback Machine.
 
-### Tension 8. Inscription: permanence against living chapters, and sequence
+**What exists today.**
+- The Overweb registry checks anchors once, at intake (`src/anchors/ends.py`: "quote not found in the rendered chapter text", "quote not found on the fetched page"). Unreadable ends go to `unverifiable` and are retried. A verified bridge is re-checked only when it is edited or re-published upstream. Nothing re-checks verified bridges later, so a break today goes unnoticed.
+- Every step is logged in `judgements`, an append-only public log. Statuses: pending, unverifiable, awaiting_judge, disputed, verified, rejected, withdrawn.
+- Canopi's `wayback-tab` (`presence/src/features/WaybackTabManager.ts`) runs in the extension only, because the Wayback CDX API sends no CORS header. It opens Save Page Now for the current page, lists snapshots through the CDX API, opens archived versions and compares present against archive through the Wayback diff. It records nothing for bridges.
+- Canopi also has a server-side capture queue (`services/waybackCaptureService.js`, migration 081, `wayback_captures`). It sends one Save Page Now request per new page version, dedups on `(page_key, content_hash)`, applies privacy guards (public discussion only, public hosts, no tokens, site opt-out, kill switch) and a daily cap per page. It is off unless `WAYBACK_CAPTURE=on`. Whether it is on in production is unknown.
+
+**Design.**
+
+1. **Versioned anchors** [New]. Each bridge end gains optional `revision`, `sha256` and `edition` (Tension 3), plus `judged_text_sha256`: the hash of the quote and its context as the judges saw it.
+2. **Snapshot at verification** [New]. When a bridge is verified, request a Wayback capture of each outside end and store `snapshot_url` and `snapshot_timestamp` in the verification record. Then a copy of the judged wording always exists. Reuse Canopi's capture queue, with "bridge verified" as a new trigger reason under the same guards. For book ends, the archive route `/viewer/dpNN/<rev>` and its sha256 are the primary record; whether a Wayback capture of the JavaScript-rendered viewer contains the chapter text is unknown. If Wayback refuses (robots, exclusion), record no snapshot and the reason.
+3. **Re-check** [New]. A worker in the Overweb registry re-checks verified bridges: book ends after each rail sync publishes a revision, outside pages on a schedule.
+4. **Bridge incident record** [New], append-only like `judgements`. Fields:
+
+   | Field | Meaning |
+   |---|---|
+   | `incident_id` | Stable id |
+   | `bridge_id` | The bridge |
+   | `end` | source or target |
+   | `kind` | quote_not_found, page_moved, page_gone |
+   | `detected_at`, `detected_by` | When; re-check worker, rail sync, or a person's report |
+   | `judged_text_sha256`, `judged_revision`, `judged_edition` | What the bridge was judged on |
+   | `observed` | HTTP status, final URL, sha256 of the live text |
+   | `cause` | If known (for example "r03 published"); otherwise unknown |
+   | `repair` | Written as a later row: kind (re_anchored_archive, re_anchored_wayback, retired), new anchor, by whom, when, and the id of the re-judgement |
+
+   A repair never edits the incident row; it appends one. The bridge moves to a new status `broken` while the incident is open, so the change feed tells mirrors such as Canopi.
+5. **Repairs.** Book passage: re-anchor to the archived revision it was judged on (`/viewer/dpNN/<rev>`). Outside page: re-anchor to the Wayback snapshot (`https://web.archive.org/web/<timestamp>/<url>`). Then re-judge through the normal pipeline (two judges, agreement rule), since the anchor changed. If the quote is in neither, retire the bridge with the incident as its reason.
+6. **Living bridges.** A living bridge follows the current revision while its quote is found. When a new revision removes or changes the quote, the re-check writes a `quote_not_found` incident with cause "new revision"; the bridge falls back to the archived revision and is flagged for a new judgement on the new wording.
+
+Rules kept: bridges by @bridger-one, verified before entering a registry; same-book pairs never corroborate or confirm; no Foreword anchors. Canopi's `wayback-tab` can later show a broken bridge's incident and snapshot.
+
+**Who builds:** Overweb registry (re-check worker, incident log, `broken` status); bridge registry and BRC222 schema (anchor fields); Canopi (capture trigger, mirror display).
+
+### Tension 8. Inscription: permanence against living chapters, and sequence (Decided)
 
 **Pulls one way:** "treat every chapter as living, including inscribed chapters"; "a newly adopted revision may produce an inscription"; rich inscription metadata. **Pulls the other:**
 - 1.0 is not on chain. What is on chain is early drafts, so readers who trust the monument read old text.
@@ -171,15 +286,26 @@ Summary:
 
 **Recommendation:** A, then B. The Rights chapter is not inscribed until it is adopted into an edition that is itself inscribed. Put the brief's metadata in an off-chain manifest record keyed by inscription id and sha256, and decide separately whether a small on-chain sidecar is worth it. For the milestone, step 11 is a manifest record written in staging, labelled simulated.
 
-**Who decides:** owner (every inscription needs his approval).
+**Ruling (15 Nov):** Version 1.0 is not on chain, and the owner says inscribing it may be soon. The prerequisites stay visible:
+
+1. **Edition record first** (Tension 3), so each inscription record carries `edition: "1.0"`, the rail, the Gov Hub revision, submission id and sha256.
+2. **Inscribe from Gov Hub text**, the exact 1.0 revisions in the edition record. Never from Box 1 `~/BRC333`, which holds August text.
+3. **Include the pages never inscribed:** Cover text, Edition, Foreword, About, Acknowledgements, DP23, DP24. The Edition page has no Gov Hub document; it needs one, or its sha256 from the book repo.
+4. **Off-chain inscription record** per rail: edition, rail, revision, submission id, sha256, inscription id, block, timestamp, the predecessor inscription (the May draft on the same sat, if re-inscribed), and the decision reference (the 1.0 sign-off stage records).
+5. **Confirm re-inscription on the same sat** works on the UniSat path (not documented today).
+6. **Owner approval** for every inscription.
+
+The Rights chapter is inscribed only as part of 1.1, after 1.1 is released.
 
 ### Tension 9. Nine phases against a small team: the smallest honest slice
 
-**Pulls one way:** ten phases, three views, a register, a shared content model, AI and a trust-signal challenge. **Pulls the other:** the team is small and launch was 13 Nov. Several acceptance steps cannot pass without new decisions: the vote (Tension 1, 6), the inscription (Tension 8) and the living bridge (Tension 7).
+**Status:** open. The owner asked for an explanation; no ruling yet.
+
+**Pulls one way:** ten phases, three views, a register, a shared content model, AI and a trust-signal challenge. **Pulls the other:** the team is small and launch was 13 Nov. Several acceptance steps still wait on a decision (who votes, Tension 1; the edition record form, Tension 3), and the 15 Nov rulings added work: the edition record, versioned anchors, a re-check worker and bridge incident records.
 
 **Options:**
 - A. Build the whole Phase 1 to 5 model, then run the test.
-- B. Run the 12 steps on staging with existing systems plus the minimum new pieces (section 4), and mark what is simulated.
+- B. Run the 12 steps on staging with existing systems plus the minimum new pieces (section 5), and mark what is simulated.
 
 **Recommendation:** B. The smallest slice that honestly passes: a proposed ML-Draft document on dev.interfacehub.net, patches and a steering vote there, a new rail on staging.desirableproperties.org, a minimal Rights Register generated from the adopted chapter, Gov Hub's existing history as the Govern view, a manifest record for step 11, and two bridges on staging with Tension 7's version field. Explore is a list and entity pages, not a graph.
 
@@ -221,7 +347,7 @@ Summary:
 | Bridge | bridge registry (production), Overweb registry (staging) |
 | Inscription | BRC333 / `sources-sat.json` |
 | Right | none [New] |
-| Edition | none [New] |
+| Edition | none [New]; decided to become a record (Tension 3) |
 
 **Who decides:** owner.
 
@@ -274,7 +400,7 @@ Summary:
 
 ---
 
-## 3. Revised phases
+## 4. Revised phases
 
 ### Operating rules (kept from the original)
 
@@ -307,11 +433,13 @@ Confirm the source of truth for each entity (table in Tension 11) before adding 
 
 ### Phase 1: Rights as a first-class content type [New]
 
-Start from: *The Metaweb* Chapter 12 Bill of Rights (ten rights); the second-edition plan's revision rules (Tension 4); DP4, DP14, DP20.
+Start from: *The Metaweb* Chapter 12 Bill of Rights (ten rights); DP4, DP14, DP20.
+
+Framing (decided, Tension 5): rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how.
 
 - **Rights Register** [New, Decision 11]. One record per right, attributes as in the original: stable id, title, description, historical origin, source and citation, status, scope and interpretation, related and conflicting rights, supporting DPs and specifications, governance status, current and prior versions, proposals and decisions, contributors. Start it as a structured block generated from the adopted Rights chapter (or a JSON file in the DP repo next to `sources-sat.json`), not a new database.
-- **Historical source** [Decision 4]. Cite the first-edition Chapter 12 wording verbatim, pinned to its inscription. Do not modify it.
-- **Proposed Rights chapter** [New, Decisions 1, 2]. A new ML-Draft document (next free number after 057) with an r01 marked proposed, on no rail. Placed after the Introduction (ML-Draft-026) and before DP1 when adopted. DP numbering does not change. Not canonical until adopted.
+- **Historical source** [Decided, Tension 4]. Document what the first book said: Chapter 12, verbatim, as history, pinned to its inscription. Do not modify it. Expand it in the DP book. Confirm the year before using "2024".
+- **Proposed Rights chapter** [New; form decided (Tension 2); adoption blocked on Decision 1]. A new ML-Draft document on Gov Hub (next free number after 057) with an r01 marked proposed, on no rail. Belongs to Version 1.1 (Tension 3). Placed after the Introduction (ML-Draft-026) and before DP1 when adopted. DP numbering does not change. Not canonical until adopted.
 
 ### Phase 2: Shared content model [Partly]
 
@@ -320,7 +448,7 @@ Use what exists; add only what is missing.
 | Brief's entity | Real system | Status |
 |---|---|---|
 | Book, Chapter | BRC333-BOOK; Gov Hub ML-Draft documents; rails in `sources-sat.json` | Implemented |
-| Edition | Edition page only; no record | New [Decision 3] |
+| Edition | Edition page only; `current_label` in `chapter-archives.json` | New; decided to become a record; form open (Tension 3) |
 | Passage | Canopi `Anchor` (URL + anchor hash) | Implemented, no version |
 | Claim | none (Gov Hub `Claim` is a role claim) | New |
 | Right | none | New |
@@ -342,11 +470,11 @@ Relationships: two layers (Tension 10). BRC222 bridges for meaning between passa
 
 ### Phase 3: Read, Explore, and Govern
 
-**Read** [Partly]. The viewer (`viewer.htm`) on desirableproperties.org already shows rails, archive routes `/viewer/dpNN/<rev>`, and Canopi discussion on passages. Needed: a rail and route for the Rights chapter (`viewer.htm` hard-codes rail keys), PDF and acknowledgements updates, an edition switcher, links to related rights and DPs.
+**Read** [Partly]. The viewer (`viewer.htm`) on desirableproperties.org already shows rails, archive routes `/viewer/dpNN/<rev>`, and Canopi discussion on passages. Needed: a rail and route for the Rights chapter (`viewer.htm` hard-codes rail keys), PDF and acknowledgements updates, an edition switcher (1.0 released, 1.1 in progress) driven by the edition record, the edition named on every chapter page and in the PDF, links to related rights and DPs.
 
 **Explore** [New, Decision 11]. Nearest existing surfaces: Canopi `/anchor/[hash]`, `/tag/[label]`, `/c/[slug]`, the registry browsing API. Build entity pages for rights, DPs and specifications from the derived index; typed navigation over record links and bridges; timelines from Gov Hub history. Graph view only where it helps.
 
-**Govern** [Partly]. Gov Hub already has proposals, patches and inserts, comments, steering votes, decision records and history. Needed: a way into it from the book for each passage; objections as a record; a clear split between signals and decisions (Tension 6).
+**Govern** [Partly]. Gov Hub already has proposals, patches and inserts, comments, steering votes, decision records and history. Needed: a way into it from the book for each passage; objections as a record; a clear split between signals and decisions (decided, Tension 6: Gov Hub is the one formal channel; everything else is labelled a signal).
 
 A contribution made in any view stays visible in the others. Today this works for Canopi patches mirrored into Gov Hub (`canopi_overlay_id`); it does not yet work for Explore.
 
@@ -362,28 +490,33 @@ The original lifecycle mapped to Gov Hub:
 | Decision | `accepted`, `declined`, `considered`; `DpSteeringOutcome` | Implemented |
 | Adopted | `accepted` then `incorporated` in the next approved revision | Implemented |
 | Canonical Version | approved revision, rail-synced | Implemented |
-| Optional Inscription | manual, irreversible | Partly [Decision 8] |
+| Optional Inscription | manual, irreversible | Partly; prerequisites decided (Tension 8) |
 | Subsequent Revision | next revision r(N+1) | Implemented |
 
 Requirements, with status:
-- Likes are not votes [Partly; needs labelling, Tension 6].
+- Likes are not votes [Partly; decided (Tension 6): Gov Hub is the one formal channel; Canopi patch votes, likes and support/opposition are labelled signals. Roadmap: account linking (PR #130), then proof of unique humanity, then community-wide votes].
 - A proposal links to the exact target version [Implemented: `submission_id`, `content_hash_at_create`].
 - Votes are counted under the applicable rules [Implemented for steering and co-editors].
 - Eligibility, quorum, thresholds, timing configurable [New: today `VOTES_NEEDED = 2` is hard-coded; only roster and freeze time are config]. Move them into `site_config` behind the Tension 1 rule.
 - Durable audit records [Implemented: `StatusChange`, `EventLog`, `DocumentHistory`, `DpSteeringVote`].
 - Rejections and dissent remain accessible [Partly: declined and considered stay listed; no dissent record].
 - No silent overwrite [Partly; Tension 13].
-- Rights Impact Assessments [New; optional at first, Tension 5].
+- Rights Impact Assessments [New; optional until a rule is adopted (Tension 5)].
 - Governance parameters stay configurable until formally adopted [Decision 1].
 
 ### Phase 5: Versioning and inscription [Partly]
 
 - Immutable historical versions [Implemented: Gov Hub revisions; archive routes; sha256 in `chapter-archives.json`].
-- One current canonical version per edition [New: needs the edition record, Tension 3].
-- Inscription of adopted revisions [Partly, Decision 8]. Inscribe from Gov Hub text, never from Box 1 `~/BRC333`. Version 1.0 first.
-- Inscription metadata [New]. Off-chain manifest record per inscription: artifact id, version, content hash, decision reference, predecessor, contributors where authorized, inscription id, timestamp, provenance.
+- One current canonical version per edition [New; decided (Tension 3): an edition record listing each rail's exact revision and sha256; a revision can sit in several editions; revisions after 1.0 belong to "1.1 in progress". Record form open: recommended a Gov Hub `BookEdition` record, a generated `editions` manifest, and an `edition` stamp on travelling records].
+- Inscription of adopted revisions [Partly; prerequisites decided (Tension 8)]. The edition record first. Inscribe from Gov Hub text, never from Box 1 `~/BRC333`. Version 1.0 first, including the pages never inscribed (Cover text, Edition, Foreword, About, Acknowledgements, DP23, DP24). The Rights chapter with 1.1.
+- Inscription metadata [New]. Off-chain record per inscription: artifact id, edition, version, content hash, decision reference, predecessor, contributors where authorized, inscription id, timestamp, provenance.
 - Never place private messages, sensitive personal data or unreleased information on chain [kept].
-- Living and historical bridges [New, Decision 7].
+- Living and historical bridges [New; decided (Tension 7)]:
+  - versioned anchors: `revision`, `sha256`, `edition`, `judged_text_sha256` on each bridge end;
+  - a Wayback snapshot of each outside end captured at verification, reusing Canopi's capture queue (`services/waybackCaptureService.js`);
+  - a re-check worker in the Overweb registry (book ends after each rail sync; outside pages on a schedule);
+  - an append-only **bridge incident record** when a bridge breaks (quote not found, page moved, page gone), with a `broken` status in the change feed;
+  - repair by re-anchoring to `/viewer/dpNN/<rev>` (book) or a Wayback snapshot (outside pages), then re-judging.
 
 ### Phase 6: Contextual discussion and the book as a commons [Partly]
 
@@ -432,30 +565,30 @@ Kept from the original, with what is known today:
 
 ---
 
-## 4. First milestone acceptance test
+## 5. First milestone acceptance test
 
 Run on staging (dev.interfacehub.net and staging.desirableproperties.org, which have their own database and can run a full proposal, vote and publish cycle). No production governance record changes.
 
 | # | Step | Real mechanism | Status |
 |---|---|---|---|
-| 1 | A contributor creates a Rights chapter proposal | New ML-Draft document on staging Gov Hub, r01 marked proposed, on no rail; contributor recorded as author | Needs building (proposed flag; contributor-submitted r01). Blocked on Decisions 1 and 2 |
+| 1 | A contributor creates a Rights chapter proposal | New ML-Draft document on staging Gov Hub, r01 marked proposed, on no rail; contributor recorded as author | Needs building (proposed flag; contributor-submitted r01). Form decided (Tension 2). Who may adopt: blocked on Decision 1 |
 | 2 | Another participant comments and gives evidence | Gov Hub comments on the document; Canopi discussion on the passage; evidence via `DpProposal.reference_url` or Canopi patch evidence | Implemented in Gov Hub. Canopi needs a viewer route for an unrailed document (needs building) |
 | 3 | A participant suggests a specific patch | `DpProposal` (replace / insert / insert_after) against r01 `anchor_hash` | Implemented |
-| 4 | Others endorse or challenge it | Artifact support/opposition, `CommentLike`, Canopi patch vote; challenge as opposition or comment | Partly (no objection record). Labelling blocked on Decision 6 |
+| 4 | Others endorse or challenge it | Artifact support/opposition, `CommentLike`, Canopi patch vote; challenge as opposition or comment | Partly (no objection record). Labelling decided (Tension 6): Canopi votes and likes shown as signals; needs building |
 | 5 | Eligible members take part in a formal vote | Real co-editor approval and `DpSteeringVote` flow, on staging data with test accounts. "Simulated" means staging, not a special mode (none exists) | Implemented mechanism. Who is eligible: blocked on Decision 1 |
-| 6 | The authorized process adopts a revision | Accept patches, publish r02 on staging Gov Hub; rail sync to staging | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, and an edition record. Blocked on Decision 3 |
+| 6 | The authorized process adopts a revision | Accept patches, publish r02 on staging Gov Hub; rail sync to staging; r02 listed in edition "1.1" (status in_progress) | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, and the edition record. Edition decided (1.1); record form blocked on Tension 3's open choice |
 | 7 | The adopted version appears in Read | `/viewer/<new key>` between the Introduction and DP1 on staging | Needs building (rail, route, navigation) |
 | 8 | Its rights and relationships appear in Explore | Rights Register entries and entity pages from the derived index | Needs building. Blocked on Decisions 10 and 11 |
 | 9 | Its decision history appears in Govern | Gov Hub `StatusChange`, `DocumentHistory`, `DpSteeringOutcome`, linked from the book | Implemented in Gov Hub; link from the book needs building |
 | 10 | An amendment makes a new version; the original stays | Second patch, r03; r02 kept as a `Submission`, archived at `/viewer/<key>/r02` with sha256 in `chapter-archives.json` | Partly (archive move is a manual step today) |
-| 11 | A simulated or test-network inscription records the version | Off-chain manifest record in staging with the Phase 5 metadata, labelled simulated. Test network: unused `unisat_testnet` flag only | Needs building. Blocked on Decision 8 |
-| 12 | Historical and living bridges | Two bridges by @bridger-one in the staging Overweb registry: one pinned to r02 with its hash, one living with "needs re-check" after r03 | Needs building (anchor version and hash). Blocked on Decision 7 |
+| 11 | A simulated or test-network inscription records the version | Off-chain inscription record in staging with the Phase 5 metadata and `edition: "1.1"`, labelled simulated. Test network: unused `unisat_testnet` flag only | Needs building. Prerequisites decided (Tension 8); needs the edition record first |
+| 12 | Historical and living bridges | Two bridges by @bridger-one in the staging Overweb registry, each with a Wayback snapshot or archive route recorded at verification: one pinned to r02 with its hash; one living, on a passage r03 changes, so the re-check writes a bridge incident record and the repair re-anchors it to `/viewer/<key>/r02` and re-judges | Needs building (anchor version and hash, re-check worker, incident record). Design decided (Tension 7) |
 
-Steps 3, 5 (mechanism) and 9 (in Gov Hub) pass today. Steps 1, 6, 7, 8, 11 and 12 need building. Steps 1, 4, 5, 6, 8, 11 and 12 also need a decision first.
+Steps 3, 5 (mechanism) and 9 (in Gov Hub) pass today. Steps 1, 4, 6, 7, 8, 11 and 12 need building. Still waiting on a decision: steps 1 and 5 (Tension 1), step 6 and through it step 11 (the edition record form, Tension 3), step 8 (Tensions 10 and 11).
 
 ---
 
-## 5. Required initial deliverables (kept)
+## 6. Required initial deliverables (kept)
 
 Before implementing major features:
 
