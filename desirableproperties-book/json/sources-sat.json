@@ -7,6 +7,8 @@
   "title": "The Layered Web: The Desirable Properties of a Meta-Layer",
   "summary": "Sources sat for The Layered Web. Chapters are markdown ordinals already ingested in the Desirable Properties satplication.",
   "bookCoverInscriptionId": "3e7a8279c045187d7db87bdf12db05315580d63334da3047cd7490e2eee3341ai0",
+  "currentEdition": "1.1",
+  "editionsManifest": "/json/editions.json",
   "articleRails": [
     "book_cover",
     "edition",
@@ -92,6 +94,11 @@
       "inscriptionId": "5d2d3082519f1b599c2c128072bbb25b15388c5dfdede1370286b395f085376ai0",
       "block": 950007,
       "timestamp": 1779478064,
+      "inscriptionSha256": "4926e66aa20b238b81cf0677722a51868b340c564fc8a3a297d88136d6a0d054",
+      "inscribedRevision": null,
+      "inscriptionEdition": null,
+      "inscriptionOnEditionList": null,
+      "inscriptionEditionNote": "Edition undecided: the inscribed bytes match no text on any edition list and no Gov Hub revision; the owner has not ruled which edition this inscription belongs to. Inscribed in block 950007 on 22 May 2026.",
       "status": "active",
       "reinscribable": true,
       "reason": "Introduction – Gov Hub synced local rail (Live); ordinal fallback (Onchain)"
@@ -104,6 +111,14 @@
       "inscriptionId": "5d5a1f3edf39f2b3afc2c906f282853ff090eff6dfa1036e9d50d3275d1bb26ci0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "9583ef6c58caf976e917d7fb5c3248935c6035af2851109be5ce195808b5289c",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-008",
+        "revision": "01",
+        "submissionId": "fmpzlexh"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -117,6 +132,14 @@
       "inscriptionId": "da09d16fcd1141acb402ceda6e2ca096fe827300fda916e62255cdca5bf6cc92i0",
       "block": 948016,
       "timestamp": 1777993090,
+      "inscriptionSha256": "2c868c4501089bd5542712f96a4210a929bcdb132bf9cf047ddb8ee1d71a9df6",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-009",
+        "revision": "00",
+        "submissionId": "tdr7e0xe"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -130,6 +153,14 @@
       "inscriptionId": "d4359711a1e0e8eb0cbafc2744b344886208e1667d4813d7904f1ad83d3f5fa0i0",
       "block": 948016,
       "timestamp": 1777993090,
+      "inscriptionSha256": "71e1cb9b80c217bdf22c1e2bfc24ef99f04f1819f1a124d59ddbc0e0b6a74d94",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-010",
+        "revision": "00",
+        "submissionId": "bptucnnk"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -143,6 +174,14 @@
       "inscriptionId": "e70ce13751a422852c542df97254b9baf58f0bb0086577dba995984d2e9ab8e5i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "6e660bf560209892fc587c236f6fccdc76aaa6e70cb25a713266d75403fa79e3",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-011",
+        "revision": "00",
+        "submissionId": "rzif7bim"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -156,6 +195,14 @@
       "inscriptionId": "394e733026f82832e7cad6a32b52d50cc2bf91bcd98c392f7fcd3cb67e14b0edi0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "8b208e382a9c3284540c145ac92fa1fda339ce78700b55df721aac440ec8c7b5",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-012",
+        "revision": "00",
+        "submissionId": "kceeygnx"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -169,6 +216,14 @@
       "inscriptionId": "aedadfe464f78de3ffdae19ee556f34ae613dc01063c93c16626225927eb1162i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "52bdfb30971a35ca6d2c77b0eb476f33db6db6cf9a2cb8b5e5c23b8e1083f562",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-013",
+        "revision": "00",
+        "submissionId": "egl2wnnf"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -182,6 +237,14 @@
       "inscriptionId": "b3f88c58e299c287d2cddd230a070d6651cc09820b5b8eb060365b2aec1a7a87i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "bf4c40ec17670c49ff7eb461765f5bc884a2bebfca617ae833a350f75cab3eb0",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-014",
+        "revision": "00",
+        "submissionId": "3kud2xmo"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -195,6 +258,14 @@
       "inscriptionId": "6d8824d7b5c5cbc5a9e0c17a601f0453bdc7f095c7006ee3d9b3791c4d354e43i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "26bf95618cf133519849f98bfdcdb4dc1f2048d0d5d80ad87703a6d1d29f0568",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-015",
+        "revision": "00",
+        "submissionId": "blzqopyd"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -208,6 +279,14 @@
       "inscriptionId": "0cf5a634cd506f0541a57c1523577d68f27f1ab81c3e471ebbb5f7323cf564aci0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "2719c29d1ff3192645356c27e6f7151622aff2d94c9d024a3911c915fe2cc7b3",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-016",
+        "revision": "00",
+        "submissionId": "b18kbksn"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -221,6 +300,14 @@
       "inscriptionId": "b24272bf7eaeb383037ececa1448c28700cbcc21c16e19471b592dd470f31ffci0",
       "block": 948016,
       "timestamp": 1777993090,
+      "inscriptionSha256": "e8c0b37c6fe38485d9a9aa013f0cea1f1412d45a20f2918b3cb017ecad1ec28c",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-017",
+        "revision": "00",
+        "submissionId": "q8q132sr"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -234,6 +321,14 @@
       "inscriptionId": "da4ec87fc5448c0ccb98243480233af60f484bc7b553c5254b0ab239b0bfc4cci0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "3213a2e9eed88bb315c45c46cfccbb5fef8835debb28b15efdbced4362473034",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-002",
+        "revision": "01",
+        "submissionId": "n1sy3631"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -247,6 +342,14 @@
       "inscriptionId": "82d55f26eaabcfb16289a7fafc48b68286892718a6a2529ef92d2eb02576b361i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "0ebf31bffcfcb9a110931895f093864df27bdc242350e1a55e6744d4a4a58c4e",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-003",
+        "revision": "01",
+        "submissionId": "8bye41qq"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -261,6 +364,14 @@
       "localOverride": "/content/local/dp13.md",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "547ac57f29b4ee8247397a206b8ffca98821deb6717568a8fd92e2c2886c9195",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-004",
+        "revision": "01",
+        "submissionId": "2069sg0n"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)"
@@ -273,6 +384,14 @@
       "inscriptionId": "5002641bacb834131cde04a0182749f10ae7c8af37434f79e4b29aa775e38ef1i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "3900fc3b5ce2c992b516711b603a1314b2f9b3d0e6ee7f67f88f3ce00a3201de",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-018",
+        "revision": "00",
+        "submissionId": "qnbbe3ki"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -286,6 +405,14 @@
       "inscriptionId": "9ebc47bd65347f1a56344145fcf329b90da195341c652ec54fa6cb3aaddce12ei0",
       "block": 948016,
       "timestamp": 1777993090,
+      "inscriptionSha256": "fa3957b15bcb7b96cec962f01ee5381683ed1b45e0ac146d5f63cc63d1b19212",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-019",
+        "revision": "00",
+        "submissionId": "yu9ajp3x"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -299,6 +426,14 @@
       "inscriptionId": "99e7276eb138d77992f757041bf2c9019eda2801971834239b24f2d25b53be83i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "6bec5e15d465e4ae7232f5e1ac46f36eb7832104b6ee066d77d6f6d874643557",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-020",
+        "revision": "00",
+        "submissionId": "1n34m2mg"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -312,6 +447,14 @@
       "inscriptionId": "8674ea750cf0022d3678ac1d2fc13a52ac73c46022fd5585e7e9ec2c099c8fb6i0",
       "block": 954019,
       "timestamp": 1780081453,
+      "inscriptionSha256": "d1228c7ac806eefe12c86f97f2da2bd501d921a0bd7dd4dbc66c24e4e595fc29",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-021",
+        "revision": "00",
+        "submissionId": "t4q8puic"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -325,6 +468,14 @@
       "inscriptionId": "c3bace8a87d3281bc33920d606c56b7406d75d7d589901d8405eb913dd832e86i0",
       "block": 954020,
       "timestamp": 1780081872,
+      "inscriptionSha256": "ae031b41e818812da112344920b1877ef29179b7e31d7d2c49450997cb22f8dc",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-022",
+        "revision": "00",
+        "submissionId": "xxf5ny7l"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -338,6 +489,14 @@
       "inscriptionId": "b7184d2145fbf9099e15948656fa36ac7b6d3e85469ba235018d1e09b8aef49ci0",
       "block": 954020,
       "timestamp": 1780081872,
+      "inscriptionSha256": "016e61b7b467c149baf51a19998f686f3146b5ef28b2f7a45049fddc6cc128f0",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-023",
+        "revision": "00",
+        "submissionId": "nn2shgy8"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -351,6 +510,14 @@
       "inscriptionId": "9daa9b44cf42b0bee0806a465109c3331551517a24e374f9c59e66b17af393c0i0",
       "block": 948016,
       "timestamp": 1777993090,
+      "inscriptionSha256": "65db916c4a4f63a18f4632a5e9462f4c84b34802b63dbfc0662bc3c5d1422b81",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-024",
+        "revision": "00",
+        "submissionId": "fo686uq9"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -364,6 +531,14 @@
       "inscriptionId": "72b12b873c331237e89ba798d613e0c3d5230a5ba4d9426ae243c66c6a613fbci0",
       "block": 954020,
       "timestamp": 1780081872,
+      "inscriptionSha256": "fa484742980bd224f79b42ea92d5c97ab4f0b002fdfcba5e12a847e989f6d739",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-025",
+        "revision": "00",
+        "submissionId": "73088jr6"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
@@ -377,6 +552,14 @@
       "inscriptionId": "a802c08792193bf5bfc56ef20eaa57e706a830ebd55decb597f0b1ae5506f5b1i0",
       "block": 951056,
       "timestamp": 1779123494,
+      "inscriptionSha256": "3d4f15ee892eac259e5c97e447a08bb66bd3600049ef8fb16678630de5bb508c",
+      "inscribedRevision": {
+        "mlNumber": "ML-Draft-028",
+        "revision": "00",
+        "submissionId": "6422afd8-2c21-40bb-9541-1c40b17977f3"
+      },
+      "inscriptionEdition": "0.77",
+      "inscriptionOnEditionList": true,
       "status": "active",
       "reinscribable": true,
       "reason": "DP chapter – local rail (Live); ordinal fallback (Onchain)",
