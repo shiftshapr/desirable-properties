@@ -37,7 +37,9 @@ export async function getEditionPdfs(): Promise<EditionPdfsState | null> {
     const res = await fetch(`${GOVHUB_PUBLIC_BASE_URL}/api/doc/editions/pdfs/?work=${WORK}`, {
       cache: 'no-store', headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(6000),
     });
-    const state = res.ok ? usable(await res.json()) : null;
+    let state = res.ok ? usable(await res.json()) : null;
+    // Gov Hub answers but nothing is published yet on this box's Gov Hub: the archived edition is still offered.
+    if (state && !state.latest) state = archiveState() || state;
     if (state) {
       cache = { at: Date.now(), state };
       return state;
@@ -52,7 +54,35 @@ export async function getEditionPdfs(): Promise<EditionPdfsState | null> {
   } catch {
     /* no local copy */
   }
-  return null;
+  return archiveState();
+}
+
+/**
+ * Last resort: the archive copies committed to the repo (desirableproperties-book/downloads/editions/<id>/), so a
+ * box whose job has not published yet, with Gov Hub unreachable, still offers the newest archived edition.
+ */
+function archiveState(): EditionPdfsState | null {
+  const root = path.resolve(process.cwd(), '..', 'desirableproperties-book', 'downloads', 'editions');
+  let sets: EditionPdfsState['editions'] = [];
+  try {
+    for (const id of fs.readdirSync(root)) {
+      const dir = path.join(root, id);
+      const meta = ['record.json', 'build-report.json'].map((f) => path.join(dir, f)).find((f) => fs.existsSync(f));
+      if (!meta || !fs.existsSync(path.join(dir, 'SHA256SUMS'))) continue;
+      const m = JSON.parse(fs.readFileSync(meta, 'utf8')) as { label?: string; editionReleasedAt?: string };
+      const sums = Object.fromEntries(fs.readFileSync(path.join(dir, 'SHA256SUMS'), 'utf8').split('\n')
+        .filter((l) => l.includes('  ')).map((l) => [l.split('  ')[1], l.split('  ')[0]]));
+      const entry = (file: string) => ({ url: `/downloads/${id}/${file}`, file, sha256: sums[file], pages: 0, bytes: fs.statSync(path.join(dir, file)).size });
+      const chapters = Object.fromEntries(Object.keys(sums).filter((f) => f !== 'book.pdf').map((f) => [f.replace(/\.pdf$/, ''), entry(f)]));
+      sets.push({ editionId: id, label: m.label || id, fixture: false, state: 'published', reason: null,
+        book: sums['book.pdf'] ? entry('book.pdf') : null, chapters, publishedAt: m.editionReleasedAt || null });
+    }
+  } catch {
+    return null;
+  }
+  if (!sets.length) return null;
+  sets = sets.sort((a, b) => a.editionId.localeCompare(b.editionId, 'en', { numeric: true })).reverse();
+  return { latest: sets[0], editions: sets };
 }
 
 /** The stored file for /downloads/<edition>/<file>, and its sha256 from SHA256SUMS. */

@@ -7,12 +7,13 @@ type Ctx = { params: Promise<{ file: string }> };
 
 /**
  * /downloads/latest/book.pdf and /downloads/latest/<rail>.pdf: a 302 to the newest published edition's file.
- * Cached one minute (browsers and Cloudflare), so "latest" moves within minutes and no purge is ever needed.
+ * Browsers keep it one minute and Cloudflare does not keep it (private), so "latest" moves within a minute; no purge.
  */
 export async function GET(_request: Request, { params }: Ctx) {
   const { file } = await params;
   if (!SAFE_FILE.test(file)) return new Response('Not found', { status: 404 });
   const url = latestUrlFor(await getEditionPdfs(), file);
-  if (!url) return new Response('No published edition has this file', { status: 404, headers: { 'Cache-Control': 'public, max-age=60' } });
-  return new Response(null, { status: 302, headers: { Location: url, 'Cache-Control': 'public, max-age=60, s-maxage=60' } });
+  if (!url) return new Response('No published edition has this file', { status: 404, headers: { 'Cache-Control': 'no-store' } });
+  // private: Cloudflare's Browser Cache TTL (4 h) overrides a short public max-age; it leaves private alone.
+  return new Response(null, { status: 302, headers: { Location: url, 'Cache-Control': 'private, max-age=60' } });
 }

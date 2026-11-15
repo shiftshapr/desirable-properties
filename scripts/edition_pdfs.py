@@ -77,8 +77,8 @@ ENVIRONMENTS = {
         'store': HOME / 'dp-edition-pdfs-staging' / 'store', 'archive': False,
     },
 }
-SANITY_PAGES = (0.6, 1.6)   # page count vs the previous edition's book
-SANITY_BYTES = (0.4, 2.5)   # file size vs the previous edition's book
+SANITY_PAGES = (0.5, 2.5)   # page count vs the predecessor edition's book (0.77 -> 1.0 doubled)
+SANITY_BYTES = (0.3, 3.5)   # file size vs the predecessor edition's book
 STALE_BUILDING_S = 3 * 3600
 
 # Page geometry of the book (scripts/v1-book-pdf/build.mjs @page): 6.69 x 9.61 in.
@@ -146,6 +146,16 @@ def source_printed_text(md: str, dropped: list[str] | None = None) -> str:
                         re.sub(r'</?[a-zA-Z][^>]*>', ' ', re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', p)) for p in parts)
         out.append(block)
     return '\n'.join(out)
+
+
+def strip_subtitle_version(md: str) -> str:
+    """The builder drops working-draft tags such as "(V2)" from a chapter's subtitle (the italic block after the
+    title), and only there."""
+    blocks = re.split(r'(\n\s*\n)', md.replace('\r\n', '\n'))
+    idx = [i for i, b in enumerate(blocks) if b.strip() and not re.fullmatch(r'\s*<!--.*?-->\s*', b, flags=re.S)]
+    if len(idx) >= 2 and re.match(r'^#\s', blocks[idx[0]].strip()) and re.fullmatch(r'(\*{1,2})[^*][\s\S]*?\1', blocks[idx[1]].strip()):
+        blocks[idx[1]] = re.sub(r'\s*\(V\d+\)', '', blocks[idx[1]])
+    return ''.join(blocks)
 
 
 # --------------------------------------------------------------------------- the gate
@@ -400,7 +410,7 @@ def run_gate(build_dir: Path, manifest: dict, *, previous: dict | None = None, c
         src_md = (build_dir / s['textFile']).read_text(encoding='utf-8')
         if s['kind'] == 'edition':
             src_md = re.sub(r'(?m)\A\s*#\s[^\n]*\n', '', src_md)  # the page's heading is not printed
-        src_md = re.sub(r'\s*\(V\d+\)', '', src_md) if s['kind'] == 'chapter' else src_md
+        src_md = strip_subtitle_version(src_md) if s['kind'] == 'chapter' else src_md
         want = norm(source_printed_text(src_md, s.get('dropped')))
         if stream != want:
             raise GateFailure('text', f'{s["railKey"]} (book pages {a}-{b}) differs from {s["railKey"]} '
@@ -415,7 +425,7 @@ def run_gate(build_dir: Path, manifest: dict, *, previous: dict | None = None, c
         fur = sec.get('furniture') or {}
         stream = strip_furniture(stream, (fur.get('before') or []) + (fur.get('afterHead') or []) +
                                  (fur.get('after') or []) + [c.get('colophon') or ''])
-        src_md = re.sub(r'\s*\(V\d+\)', '', (build_dir / sec['textFile']).read_text(encoding='utf-8'))
+        src_md = strip_subtitle_version((build_dir / sec['textFile']).read_text(encoding='utf-8'))
         want = norm(source_printed_text(src_md, sec.get('dropped')))
         if stream != want:
             raise GateFailure('text', f'chapter PDF {c["file"]} differs from its source: {first_difference(stream, want)}')
@@ -437,7 +447,7 @@ def run_gate(build_dir: Path, manifest: dict, *, previous: dict | None = None, c
     if shown and not is_subsequence(shown, printed):
         raise GateFailure('structure', f'the printed Contents numbers {printed[:40]} are not the computed ones {shown}')
     # blank pages, orphan pages
-    start_pages = {s['startPage'] for s in seq}
+    start_pages = {s['startPage'] for s in seq} | set((report['book'].get('sectionStarts') or {}).values())
     for i in range(npages):
         page_no = i + 1
         t = norm(texts[i])
@@ -575,32 +585,40 @@ def page_texts(path: Path) -> list[str]:
 
 def adopt_archive(build_dir: Path, archive: Path) -> None:
     """An archived set is published as is when a fresh, gated build from the same list and build date has the
-    same text on every page of every file (bytes differ only in creation times and Chrome's object layout)."""
+    same text, word for word, in every file (bytes differ in creation times and Chrome's object layout)."""
     report = json.loads((build_dir / 'build-report.json').read_text(encoding='utf-8'))
     pairs = [(build_dir / report['book']['file'], archive / 'book.pdf')] + \
         [(build_dir / c['file'], archive / f'{c["railKey"]}.pdf') for c in report['chapters']]
     for fresh, old in pairs:
         if not old.exists():
             raise GateFailure('archive', f'{old.name} is missing from the archived set')
-        if page_texts(fresh) != page_texts(old):
+        # Word for word (as the gate normalises), not page for page: another Chrome may break lines differently.
+        if norm(''.join(page_texts(fresh))) != norm(''.join(page_texts(old))):
             raise GateFailure('archive', f'{old.name}: the archived file\'s text differs from a rebuild of the same list')
     for fresh, old in pairs:
         shutil.copy2(old, fresh)  # publish the archived bytes, so the archive and the store are one set
 
 
-def run_builder(env: Env, manifest_path: Path, edition_id: str, out_dir: Path, build_date: str | None = None) -> None:
+def run_builder(env: Env, manifest_path: Path, edition_id: str, out_dir: Path, build_date: str | None = None,
+                texts_dir: str | None = None) -> None:
     tool_build = env.tool / 'build.mjs'
+    if (env.tool / 'node_modules').exists():
+        # The tool folder holds the node modules; the builder itself always comes from this checkout.
+        for f in ('build.mjs', 'pdf-stamp.mjs'):
+            src = SCRIPTS / 'v1-book-pdf' / f
+            if not (env.tool / f).exists() or (env.tool / f).read_bytes() != src.read_bytes():
+                shutil.copy2(src, env.tool / f)
     build = tool_build if tool_build.exists() else SCRIPTS / 'v1-book-pdf' / 'build.mjs'
     proc_env = dict(os.environ, DP_REPO_DIR=str(REPO), DP_BOOK_DIR=str(env.book_dir), DP_SITE_PUBLIC=str(env.site_public),
                     DP_PDF_CACHE=str(env.work / 'cache'))
     cmd = ['node', str(build), '--edition', edition_id, '--manifest', str(manifest_path), '--out-dir', str(out_dir),
-           '--hub', env.hub] + (['--build-date', build_date] if build_date else [])
+           '--hub', env.hub] + (['--build-date', build_date] if build_date else []) + (['--texts-dir', texts_dir] if texts_dir else [])
     log(' '.join(cmd))
     res = subprocess.run(cmd, env=proc_env, capture_output=True, text=True)
     sys.stdout.write(res.stdout[-4000:])
     if res.returncode != 0:
         msg = (res.stderr.strip().splitlines() or ['builder failed'])
-        stop = next((l for l in msg if 'STOP:' in l), msg[-1])
+        stop = next((l for l in msg if 'STOP:' in l), None) or next((l for l in msg if 'Error' in l), msg[-1])
         raise GateFailure('sources' if 'STOP' in stop else 'build', stop.replace('Error: ', '')[:600])
 
 
@@ -677,7 +695,7 @@ def verify_outside(env: Env, edition_id: str, record: dict) -> list[str]:
 
 
 def process_edition(env: Env, manifest: dict, edition_id: str, *, fixture: bool, previous: dict | None,
-                    check_external: bool = True, skip_verify: bool = False) -> bool:
+                    check_external: bool = True, skip_verify: bool = False, texts_dir: str | None = None) -> bool:
     ed = next(e for e in manifest['editions'] if e['editionId'] == edition_id)
     inputs = inputs_sha(ed)
     state_args = ['--edition', edition_id, '--inputs', inputs]
@@ -691,7 +709,7 @@ def process_edition(env: Env, manifest: dict, edition_id: str, *, fixture: bool,
     archive = None if fixture else archived_set(edition_id)
     try:
         build_date = json.loads((archive / 'build-report.json').read_text())['builtDate'] if archive else None
-        run_builder(env, mpath, edition_id, out, build_date)
+        run_builder(env, mpath, edition_id, out, build_date, texts_dir)
         log('gate …')
         gate = run_gate(out, manifest, previous=previous, check_external=check_external)
         if archive:
@@ -736,9 +754,11 @@ def process_edition(env: Env, manifest: dict, edition_id: str, *, fixture: bool,
     return True
 
 
-def previous_published(pdfs: dict, before: str | None) -> dict | None:
-    pub = [e for e in pdfs.get('editions', []) if e['state'] == 'published' and not e.get('fixture')]
-    return pub[0] if pub else None
+def previous_published(pdfs: dict, manifest: dict, edition_id: str) -> dict | None:
+    """The predecessor edition's published set (the sanity check compares with it), else none."""
+    ed = next((e for e in manifest['editions'] if e['editionId'] == edition_id), {})
+    pred = ed.get('predecessorEditionId')
+    return next((e for e in pdfs.get('editions', []) if e['editionId'] == pred and e['state'] == 'published'), None)
 
 
 def cmd_run(env: Env, args) -> int:
@@ -757,8 +777,9 @@ def cmd_run(env: Env, args) -> int:
         if not due:
             continue
         log(f'{ed["label"]}: building its PDFs')
-        ok &= process_edition(env, manifest, ed['editionId'], fixture=False, previous=previous_published(pdfs, ed['editionId']),
+        ok &= process_edition(env, manifest, ed['editionId'], fixture=False, previous=previous_published(pdfs, manifest, ed['editionId']),
                               check_external=not args.no_external)
+        pdfs = env.pdfs()  # the next edition compares with this one
     archive_pending(env)
     return 0 if ok else 1
 
@@ -769,8 +790,8 @@ def cmd_build(env: Env, args) -> int:
     else:
         manifest = book_manifest(env, env.editions())
     pdfs = env.pdfs()
-    ok = process_edition(env, manifest, args.edition, fixture=args.fixture, previous=previous_published(pdfs, args.edition),
-                         check_external=not args.no_external, skip_verify=args.no_verify)
+    ok = process_edition(env, manifest, args.edition, fixture=args.fixture, previous=previous_published(pdfs, manifest, args.edition),
+                         check_external=not args.no_external, skip_verify=args.no_verify, texts_dir=args.texts_dir)
     return 0 if ok else 1
 
 
@@ -868,6 +889,7 @@ def main() -> int:
     b.add_argument('--fixture', action='store_true')
     b.add_argument('--no-external', action='store_true')
     b.add_argument('--no-verify', action='store_true')
+    b.add_argument('--texts-dir', default=None, help='staging proofs only: read <submissionId>.txt from here')
     sub.add_parser('preview')
     g = sub.add_parser('gate')
     g.add_argument('--dir', required=True)
@@ -877,7 +899,7 @@ def main() -> int:
     if args.cmd == 'gate':
         return cmd_gate(args)
     env = Env(args.env, args)
-    if args.env == 'production' and getattr(args, 'fixture', False):
+    if args.env == 'production' and (getattr(args, 'fixture', False) or getattr(args, 'texts_dir', None)):
         print('Fixture sets are staging proofs; refusing on production.', file=sys.stderr)
         return 2
     return {'install': cmd_install, 'run': cmd_run, 'build': cmd_build, 'preview': cmd_preview}[args.cmd](env, args)

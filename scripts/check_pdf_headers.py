@@ -6,7 +6,8 @@
 - /downloads/<edition>/book.pdf (the latest edition from the site's API): 200 application/pdf,
   Cache-Control "public, max-age=31536000, immutable", a strong ETag equal to the file's sha256 in Gov Hub's
   record, and 304 for If-None-Match;
-- /downloads/latest/book.pdf and /downloads/latest/<rail>.pdf: 302 to that edition's file, max-age=60.
+- /downloads/latest/book.pdf and /downloads/latest/<rail>.pdf: 302 to that edition's file, private, max-age=60
+  (Cloudflare's 4-hour Browser Cache TTL overrides a short public max-age, not a private one).
 Exits 1 with the list of failures.
 """
 import http.client
@@ -54,8 +55,8 @@ def main() -> int:
         loc = urllib.parse.urlparse(h.get('location', '')).path
         if st != 302 or loc != want:
             fails.append(f'{path}: {st} -> {h.get("location")!r}, want 302 -> {want}')
-        if 'max-age=60' not in (h.get('cache-control') or ''):
-            fails.append(f'{path}: Cache-Control is {h.get("cache-control")!r}, want a 60-second cache')
+        if (h.get('cache-control') or '') != 'private, max-age=60':
+            fails.append(f'{path}: Cache-Control is {h.get("cache-control")!r}, want "private, max-age=60"')
     print(f'{latest["label"]}: {book["url"]}, {chap["url"]}')
     for f in fails:
         print(f'FAIL: {f}')
