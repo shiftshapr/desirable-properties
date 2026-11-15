@@ -52,10 +52,13 @@ SYNC_REVISION_RE = re.compile(r'<!--\s*govhub-sync:[^>]*\brevision=([0-9A-Za-z]+
 # Where chapter and book PDFs live (repo-relative). Bridges are never stamped.
 PDF_GLOBS = (
     'desirableproperties-book/downloads/dp/*.pdf',
+    'docs/*.pdf',
     'docs/dp-pdfs/*.pdf',
+    'challenge-site/public/downloads/*.pdf',
     'challenge-site/public/downloads/dp/*.pdf',
-    'challenge-site/public/downloads/desirable-properties-v*.pdf',
 )
+# PDFs that are not edition text at all (Astra's editorial synthesis, 2026-09-05): listed, never stamped.
+NOT_EDITION_PDF_GLOBS = ('challenge-site/public/downloads/astra/*.pdf',)
 
 
 class EditionsError(RuntimeError):
@@ -801,7 +804,7 @@ def pdf_info(path: Path) -> dict[str, str]:
 def parse_pdf_stamp(keywords: str) -> dict[str, str]:
     """``dp-edition=1.0; dp-rail=dp01; ...`` → {'dp-edition': '1.0', 'dp-rail': 'dp01', ...}."""
     out = {}
-    for part in re.split(r'[;,]', keywords or ''):
+    for part in (keywords or '').split(';'):
         if '=' in part:
             k, v = part.split('=', 1)
             if k.strip().startswith('dp-'):
@@ -1043,9 +1046,22 @@ def check_agreement(repo_root: Path, *, book_root: Path | None = None) -> Report
                 elif rows[0].get('revisionEdition') != stamp['dp-edition']:
                     rep.errors.append(f'{rel}: stamped {stamp["dp-edition"]} but its revision is stamped '
                                       f'{rows[0].get("revisionEdition")}')
+            elif stamp.get('dp-rails'):
+                # A compilation of several chapters of one edition (e.g. the 0.77 inscriptions).
+                for key in [k.strip() for k in stamp['dp-rails'].split(',') if k.strip()]:
+                    row = next((r for r in ed.get('rails', []) if r.get('railKey') == key), None)
+                    if row is None:
+                        rep.errors.append(f'{rel}: {key} is not on the {ed["editionId"]} list')
+                    elif (row.get('revisionEdition') or ed['editionId']) != stamp['dp-edition']:
+                        rep.errors.append(f'{rel}: {key} on the {ed["editionId"]} list is stamped '
+                                          f'{row.get("revisionEdition")}, not {stamp["dp-edition"]}')
             elif stamp.get('dp-edition-rails-sha256'):
                 if stamp['dp-edition-rails-sha256'] != edition_rails_sha256(ed):
                     rep.errors.append(f'{rel}: built from a rail list that is not edition {ed["editionId"]}\'s')
+    others = [p for g in NOT_EDITION_PDF_GLOBS for p in sorted(repo_root.glob(g))]
+    if others:
+        rep.info.append(f'{len(others)} PDF(s) are not edition text and carry no edition '
+                        f'({", ".join(sorted({str(p.parent.relative_to(repo_root)) for p in others}))}: Astra synthesis)')
     for folder, names in unstamped.items():
         rep.gaps.append(f'{folder}/: {len(names)} PDF(s) with no edition stamp in their metadata '
                         f'({", ".join(sorted(names)[:4])}{", …" if len(names) > 4 else ""})')

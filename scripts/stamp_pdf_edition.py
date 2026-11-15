@@ -12,6 +12,8 @@ Needs pypdf (``pip install pypdf``); the agreement check itself does not.
 
 Usage:
     python3 scripts/stamp_pdf_edition.py --edition 0.77 --rail dp01 --submission fmpzlexh docs/dp-pdfs/dp1-....pdf
+    # a compilation of several chapters of one edition (Keywords dp-edition, dp-rails):
+    python3 scripts/stamp_pdf_edition.py --edition 0.77 --rails dp01,dp02,... docs/desirable-property-inscriptions.pdf
 """
 from __future__ import annotations
 
@@ -31,19 +33,32 @@ REPO_ROOT = SCRIPTS_DIR.parent
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--edition', required=True)
-    ap.add_argument('--rail', required=True)
-    ap.add_argument('--submission', required=True)
+    ap.add_argument('--rail', default='')
+    ap.add_argument('--submission', default='')
+    ap.add_argument('--rails', default='', help='Comma-separated rails of a multi-chapter compilation')
     ap.add_argument('pdfs', nargs='+')
     args = ap.parse_args()
     from pypdf import PdfReader, PdfWriter  # noqa: PLC0415
 
     manifest = json.loads((REPO_ROOT / 'desirableproperties-book/json/editions.json').read_text(encoding='utf-8'))
     ed = next((e for e in manifest['editions'] if e['editionId'] == args.edition), None)
-    row = next((r for r in (ed or {}).get('rails', []) if r['railKey'] == args.rail), None)
-    if not row or row.get('submissionId') != args.submission:
-        print(f'ERROR: edition {args.edition} does not list submission {args.submission} for {args.rail}', file=sys.stderr)
+    if ed is None:
+        print(f'ERROR: no edition {args.edition} in editions.json', file=sys.stderr)
         return 2
-    keywords = f'dp-edition={row.get("revisionEdition") or args.edition}; dp-rail={args.rail}; dp-submission={args.submission}'
+    if args.rails:
+        keys = [k.strip() for k in args.rails.split(',') if k.strip()]
+        rows = {r['railKey']: r for r in ed['rails']}
+        bad = [k for k in keys if k not in rows or (rows[k].get('revisionEdition') or args.edition) != args.edition]
+        if bad:
+            print(f'ERROR: not {args.edition} revisions on its list: {", ".join(bad)}', file=sys.stderr)
+            return 2
+        keywords = f'dp-edition={args.edition}; dp-rails={",".join(keys)}'
+    else:
+        row = next((r for r in ed['rails'] if r['railKey'] == args.rail), None)
+        if not row or row.get('submissionId') != args.submission:
+            print(f'ERROR: edition {args.edition} does not list submission {args.submission} for {args.rail}', file=sys.stderr)
+            return 2
+        keywords = f'dp-edition={row.get("revisionEdition") or args.edition}; dp-rail={args.rail}; dp-submission={args.submission}'
     for name in args.pdfs:
         path = Path(name)
         before = path.read_bytes()

@@ -331,6 +331,16 @@ class AgreementTests(EditionsTestCase):
         self.assertTrue(any('DP1-bad.pdf' in e and 'stamped 1.1' in e for e in rep.errors), rep.errors)
         self.assertTrue(any('1 PDF(s) with no edition stamp' in g for g in rep.gaps), rep.gaps)
 
+    def test_compilation_pdf_stamp(self):
+        self.book.generate()
+        out = self.tmp / 'docs'
+        (out / 'dp-pdfs').mkdir(parents=True)
+        (out / 'dp-pdfs' / 'ok.pdf').write_bytes(minimal_pdf('dp-edition=0.77; dp-rails=dp01'))
+        (out / 'dp-pdfs' / 'bad.pdf').write_bytes(minimal_pdf('dp-edition=0.77; dp-rails=dp01,dp24'))
+        errs = ed.check_agreement(self.tmp, book_root=self.book.root).errors
+        self.assertFalse(any('ok.pdf' in e for e in errs), errs)
+        self.assertTrue(any('bad.pdf' in e and 'dp24' in e for e in errs), errs)
+
     def test_book_pdf_stamp(self):
         gen = self.book.generate()
         out = self.tmp / 'challenge-site' / 'public' / 'downloads'

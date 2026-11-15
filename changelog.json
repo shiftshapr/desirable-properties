@@ -12,7 +12,8 @@
       "changes": [
         "challenge-site/src/lib/book-editions.ts, book-editions.server.ts: read the edition record and label or resolve a chapter's text",
         "challenge-site/src/app/api/steering/[ml]/text/route.ts, src/app/api/workgroups/[id]/review/passages/route.ts: edition fields and ?edition=",
-        "challenge-site/scripts/book-editions.test.mjs (npm run test:book-editions)"
+        "challenge-site/scripts/book-editions.test.mjs (npm run test:book-editions)",
+        "challenge-site/public/downloads/desirable-property-inscriptions.pdf: edition stamp (Keywords dp-edition=0.77, dp-rails=dp01..dp22) added as an incremental update; its text is exactly the 22 inscriptions of Version 0.77 and its pages are unchanged"
       ]
     },
     {
