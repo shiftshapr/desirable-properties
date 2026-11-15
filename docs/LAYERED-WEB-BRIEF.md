@@ -1,6 +1,6 @@
 # The Layered Web: Living Book, Encyclopedia, and Governance
 
-Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. Nothing in this document has been built yet. It is a target design plus the decisions needed to start. The owner ruled on Tensions 2 to 8 on 15 Nov (section 2); Tension 1, Tension 9 and the form of the edition record are still open.
+Implementation brief for Claude Code. Revised 15 Nov 2026 from the owner's brief (kept verbatim in [LAYERED-WEB-BRIEF-ORIGINAL.md](LAYERED-WEB-BRIEF-ORIGINAL.md)) after three read-only surveys of what exists. Nothing in this document has been built yet. It is a target design plus the decisions needed to start. The owner ruled on Tensions 1 to 8 on 15 Nov (section 2). Still open: who counts as the community for a chapter vote and its threshold and quorum (Tension 1), how API answers report editions (Tension 3), and Tension 9.
 
 Status marks used throughout:
 
@@ -35,33 +35,34 @@ The mission, the three views (Read, Explore, Govern), the Rights chapter as the 
 
 ## 2. Decisions (15 Nov 2026)
 
-The owner ruled on Tensions 2 to 8.
+The owner ruled on Tensions 2 to 8, then on Tension 1 and the edition model (Tension 3).
 
 | # | Ruling |
 |---|---|
+| 1 | Anyone can propose a new chapter. Steering is the gate that decides whether it goes to a community vote. The community accepts or rejects it. |
 | 2 | The Rights chapter goes on Gov Hub as a new ML-Draft document. |
-| 3 | It belongs to Version 1.1. "Edition" becomes a record, carried along so anything can say which edition it is part of. The form of the record is open; options in Tension 3. |
+| 3 | It belongs to Version 1.1. Edition is all three options together: a Gov Hub edition record, a manifest generated from it, and an edition stamp. Every draft revision, every proposal incorporated into a revision, every inscription record and every PDF has an edition, and they must agree. Bridges do not have an edition. |
 | 4 | No conflict. Document what the first book said (Chapter 12, verbatim, as history) and expand it in the DP book. Confirm the year before "2024" is used. |
 | 5 | Rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. Rights Impact Assessments stay optional until a rule is adopted. |
 | 6 | True today, and it has to evolve. Gov Hub stays the one formal channel; other votes are labelled signals. Roadmap: account linking, then proof of unique humanity, then community-wide votes. |
 | 7 | New requirement: when a bridge breaks, the Overweb registry writes a bridge incident record, and broken bridges can be shifted to the Wayback Machine. |
 | 8 | Version 1.0 may be inscribed soon. Prerequisites stay visible: inscribe from Gov Hub text, not Box 1 `~/BRC333`; include the pages never inscribed; create the edition record first, so the inscription record carries the edition. |
 
-Still open: Tension 1 (who adopts a new chapter); the form of the edition record (Tension 3); Tension 9 (the owner asked for an explanation, no ruling); the rule that would make Rights Impact Assessments required (minor); Tensions 10 to 15.
+Still open: for Tension 1, who counts as the community for a chapter vote, its threshold and quorum, and which body holds the gate after V1.1; for Tension 3, how API answers report editions (the owner is still thinking); Tension 9 (the owner asked for an explanation, no ruling); the rule that would make Rights Impact Assessments required (minor); Tensions 10 to 15.
 
 ---
 
 ## 3. Tensions
 
-A tension is a place where two things the owner wants, or the brief and reality, pull against each other and someone has to choose. Tensions 1 to 9 blocked the Rights-chapter milestone. After the 15 Nov rulings, Tension 1, Tension 9 and the form of the edition record still block it. Tensions 10 to 15 do not block it but shape the later phases.
+A tension is a place where two things the owner wants, or the brief and reality, pull against each other and someone has to choose. Tensions 1 to 9 blocked the Rights-chapter milestone. After the 15 Nov rulings, the open parts of Tension 1 (electorate, threshold, quorum) and Tension 9 still block it. Tensions 10 to 15 do not block it but shape the later phases.
 
 Summary:
 
 | # | Tension | Blocks milestone now | Status; who decides |
 |---|---|---|---|
-| 1 | Who can adopt a new chapter, and who adopts that rule | Yes (steps 1, 5) | Open. Owner sets the interim rule; steering ratifies |
+| 1 | Who can adopt a new chapter, and who adopts that rule | Yes (step 5), until electorate, threshold and quorum are set | Decided: anyone proposes, steering gates, community accepts. Electorate, threshold, quorum open (owner, then steering) |
 | 2 | A whole chapter does not fit a patch-shaped proposal | No | Decided: new ML-Draft document |
-| 3 | Living book against a finished Version 1.0 | Yes (step 6), until the record form is picked | Decided: Version 1.1. Record form open (owner) |
+| 3 | Living book against a finished Version 1.0 | No decision left for the milestone; the edition record needs building | Decided: Version 1.1; record, manifest and stamp, which must agree; no edition on bridges. API answers open (owner) |
 | 4 | Which Bill of Rights wording is the source | No | Decided: Chapter 12 verbatim as history, expanded in the DP book |
 | 5 | Rights as a foundation added after the DPs | No | Decided on framing. Assessment rule open (steering) |
 | 6 | Two voting channels plus likes, and no proof of one person one vote | No | Decided for now; roadmap to evolve |
@@ -75,26 +76,44 @@ Summary:
 | 14 | AI that auto-posts against AI that must mark canon | No | Owner |
 | 15 | Councils against steering as the long-term governing body | No | Owner; then the councils |
 
-### Tension 1. Who can adopt a new chapter, and who adopts that rule
+### Tension 1. Who can adopt a new chapter, and who adopts that rule (Decided; vote details open)
 
-**Status:** open.
+**Ruling (15 Nov):** "anyone can propose a new chapter"; "the community should accept new chapters"; "steering may have to put the new chapter to vote by community. gate". The flow:
 
-**Pulls one way:** the brief wants a community proposal, a formal vote and adoption. **Pulls the other:** no rule or body covers it.
+1. **Anyone proposes** a new chapter: a new ML-Draft document on Gov Hub with an r01 marked proposed (Tension 2).
+2. **Steering gates it.** Steering decides whether the proposal goes to a community vote.
+3. **The community accepts or rejects it** by vote. If accepted, the chapter enters the edition in progress (Tension 3).
+
+**What was in the way (kept for the record).** No rule or body covered adopting a new chapter.
 - The freeze is lifted in production (`dp_v1_freeze_at_utc = 2099-12-31T23:59:59`), so co-editors decide patches again. A new chapter has no co-editors.
 - Steering (five members in production) was set up per release; V1.1 steering is volunteers with no selection rule. MTP lines and chapter-title changes still need steering.
 - The DP Council and the Overweb Council each have one draft election (5 seats, approval counting, `verified_account` electorate), no members and no admins.
 - Chapters are ML-Draft documents created by admins.
-- "Governance parameters remain configurable until the community formally adopts them" needs someone to adopt the first rule. There is no community body that can do that today.
 
-**Options:**
-- A. Owner writes an interim rule; current steering adopts the Rights chapter under it.
-- B. Wait for the DP Council election, then the council adopts.
-- C. Assign co-editors to the new document (as for any ML-Draft) and let the existing co-editor rule decide; steering signs off the chapter title as it already must.
-- D. Open a community-wide vote. Not possible honestly yet (Tension 6).
+**Steering's gate.** It replaces an endorsement threshold as the main guard against spam proposals. It checks three things:
+- **Well-formed:** a complete r01, a title, a stated place in the book, an author on record.
+- **In scope:** it belongs in *The Layered Web* (for the Rights chapter, the framing in Tension 5).
+- **Not a duplicate:** it does not repeat an existing chapter or another open proposal.
 
-**Recommendation:** A, with C's mechanics. The owner writes a one-page interim rule: a proposed chapter is a new ML-Draft document with named co-editors; co-editors decide patches as today; adopting the chapter into an edition needs a steering vote (two agreeing, as `VOTES_NEEDED`); the rule lapses when the DP Council is seated and the council confirms or replaces it. Steering votes to adopt the rule itself, recorded in `DpSteeringOutcome`. This is the first "formal adoption of a governance parameter", and it is honest about who adopted it.
+Endorsements (artifact support, `CommentLike`, Canopi signals) stay a signal steering can weigh, not a trigger. The gate decision is recorded as a `DpSteeringOutcome` with its reasons, using the existing steering vote (`DpSteeringVote`, two agreeing members, `VOTES_NEEDED`). A refusal stays publicly visible with its reasons, as declined proposals already do. The gate passes or refuses; it does not adopt.
 
-**Who decides:** owner drafts; steering ratifies.
+**The remaining tension is with Tension 6.** "The community accepts" needs a community-wide vote, and its integrity cannot be proven yet: account linking (PR #130) is unmerged, tallies count accounts not people, and proof of unique humanity does not exist.
+
+**Still open:**
+- Who counts as the community for this vote.
+- The threshold and quorum.
+- Which body holds the gate after V1.1: steering or the DP Council (Tension 15).
+
+**Options, from what exists.** Gov Hub staging has the council-election models (`models/council.py`: `CouncilElection` with `counting` and an `eligibility` JSON rule, `CouncilBallot` with one active ballot per voter and supersede, `CouncilEligibility`). The ballot is secret and emits no event. Its eligibility rules are `verified_account` (any Gov Hub account with an email created before the announcement), `contributors` (proposal authors, co-editors, approvers, steering members, submission authors) and `roll` (an admin-approved list). The old `Vote`/`Ballot` engine is not reused.
+
+- **A. Reuse the council ballot for a yes/no chapter vote**, with a `verified_account` electorate. Widest reach; weakest against duplicate accounts until account linking.
+- **B. Same ballot, `contributors` electorate.** The people who wrote and reviewed the book. Smaller and harder to flood; it leaves out readers.
+- **C. The DP Council votes** as the community's elected body, once seated. Easy to count and defend; one step removed from "the community".
+- **D. Community vote advises; the council or steering ratifies.**
+
+**Recommendation:** B now, on the council ballot machinery with a yes/no counting mode added beside `approval`. Publish the threshold and quorum with each vote: a simple majority of ballots cast, and a quorum stated as a share of the eligible count, which the results already report (`eligible_count`, `turnout`). Label every result with the duplicate-account caveat until account linking ships. Move to A once account linking is in, and revisit after proof of unique humanity (the Tension 6 roadmap). Steering holds the gate through V1.1; the DP Council decides whether it takes the gate once seated.
+
+**Who decides:** owner on the electorate, threshold and quorum, and the counting mode; steering adopts the rule as a recorded decision; the DP Council, once seated, on who holds the gate.
 
 ### Tension 2. A whole chapter does not fit a patch-shaped proposal (Decided)
 
@@ -107,9 +126,9 @@ Summary:
 
 **Recommendation:** A. It reuses the revision model, patches, steering votes and the rail sync unchanged. The new work is small: a "proposed, not in any edition" flag on the document, and a way for a non-admin contributor to submit r01 (or an admin does it on their behalf, with authorship recorded). Adoption then means: steering adopts a revision, a rail key is added to `sources-sat.json` and `viewer.htm`.
 
-**Ruling (15 Nov):** option A. The Rights chapter goes on Gov Hub as a new ML-Draft document. Who adopts it is still Tension 1.
+**Ruling (15 Nov):** option A. The Rights chapter goes on Gov Hub as a new ML-Draft document. Steering gates it and the community accepts it (Tension 1).
 
-### Tension 3. Living book against a finished Version 1.0 (Decided: Version 1.1; record form open)
+### Tension 3. Living book against a finished Version 1.0 (Decided; API answers open)
 
 **Pulls one way:** "treat every chapter as living", "one canonical version per edition", Rights chapter placed after the Introduction. **Pulls the other:** Version 1.0 was released on 13 Nov after all 28 documents were signed off in four stages. Adding a chapter to 1.0 changes a signed-off book. V1.1 exists only as a carry-over bucket (deferred items, MTPs, DP5's BRC333 removal, the glossary); no V1.1 process is coded. The Edition page has no Gov Hub document, so "edition" is not a record anywhere.
 
@@ -118,7 +137,7 @@ Summary:
 - B. Version 1.0 stays the canonical book; the Rights chapter lives beside it as "proposed" until a later edition.
 - C. Treat each chapter as its own living line and drop editions.
 
-**Ruling (15 Nov):** option A. The Rights chapter belongs to Version 1.1. "Edition" must become a record, and it must be carried along so that anything (an archive copy, a bridge, an inscription, a PDF, an API answer) can say which edition it is part of. The owner asked for the options for that record; he has not picked one.
+**Ruling (15 Nov):** option A. The Rights chapter belongs to Version 1.1. "Edition" must become a record, and it must be carried along so that anything (an archive copy, an inscription, a PDF, an API answer) can say which edition it is part of. The owner asked for the options for that record; his later ruling is below.
 
 **What exists today.**
 - `desirableproperties-book/json/sources-sat.json` (BRC333 `source_inventory`, camelCase): top level `protocol`, `operation`, `project`, `schemaVersion`, `workId`, `title`, `summary`, `bookCoverInscriptionId`, `articleRails` (30 keys in order); `sources[]` with `railKey`, `label`, `mlNumber` (29 of 30; the Edition page has none), `dp`, `localOverride`, `inscriptionId`, `block`, `timestamp` (23 of 30), `status`, `reinscribable`, `reason`. It says nothing about which revision a rail holds.
@@ -162,16 +181,37 @@ Summary:
 
 - **(c) An edition stamp on travelling records.** Records that leave the book carry the edition with them:
   - `chapter-archives.json` entries: `editions: ["1.0"]` (a list, because a revision can be in several), and top level `current_edition: "1.0"` beside `current_label`;
-  - bridge anchors: `source_edition` / `target_edition` beside `source_revision` and `source_sha256` (Tension 7);
   - inscription records: `edition`, `rail_key`, `revision`, `sha256` (Tension 8);
   - PDFs: the edition id and `manifestSha256` on the edition page and in the PDF metadata;
   - API responses (book, Canopi, Hermes): `edition` and `revision` on every chapter or passage returned.
 
-  A record pinned at a moment (a bridge judged, an inscription made) carries one `edition` (the one current then) plus the revision and hash. The revision and hash are the identity; the edition is context.
+  Bridges are not on this list (see the ruling below).
 
 **Recommendation:** (b) as the source of truth, (a) generated from it by the rail sync, and (c) on every travelling record. Before any 1.1 change publishes, write the 1.0 edition record (with each rail's exact revision and sha256) and give 1.0 archive keys, since today 1.0 has neither.
 
 **Who decides:** owner on the record form; steering on what enters 1.1.
+
+**Ruling (15 Nov, later):** all three together, with bounds. Every draft revision, every approved proposal that goes into a revision, every inscription record and every PDF has an edition, and **they must agree**. **Bridges do not have an edition.** A bridge pinned to an archived revision can have that revision's edition looked up; it is never stored on the bridge.
+
+**Model (proposed; conductor's design):**
+
+- **Stamp = origin.** A revision's edition is the edition it was made for. It is set once, when the revision is created, from the edition in progress, and never changes. Field: `Submission.edition_id` in Gov Hub.
+- **List = membership.** An edition record lists exact revisions (`BookEditionEntry`). An unchanged chapter is carried forward, so the 1.1 list can include a revision whose own stamp is 1.0.
+- **Proposals.** A pending proposal has no edition of its own; it shows the edition of the text it targets (`submission_id`). When it is incorporated, it takes the edition of the revision it went into (`DpProposal.edition_id`, set with `incorporated_submission_id`).
+- **"Agree" is a check**, run in CI and before any inscription:
+  - a proposal's edition equals the edition of the revision it was incorporated into;
+  - an inscription record's edition and sha256 equal the revision's;
+  - a chapter PDF's edition equals its revision's;
+  - a whole-book PDF is built from one edition's list, and every revision in it is on that list.
+
+**API answers (open; the owner is still thinking).** Proposal:
+- The API never computes or hard-codes an edition.
+- An answer that returns or cites a revision reports that revision's edition, read from the edition record, with the edition's status (released or in progress).
+- A request can name an edition (`?edition=1.0`) and gets exactly that edition's revision.
+- With none named, it gets the live text, labelled with its edition and status.
+- Answers not tied to a revision (lists of people, councils, bridges) carry no edition.
+
+Open question: after 1.0, any published revision is already live through the rail sync, so the live book is "1.1 in progress". Should the default answer be the live text or the last released edition? Note that `chapter-archives.json` hard-codes `current_label: "Version 1.0"` today, which is already wrong for any chapter revised since 13 Nov.
 
 ### Tension 4. Which Bill of Rights wording is the source (Decided)
 
@@ -197,7 +237,7 @@ Summary:
 
 **Recommendation:** B for the milestone, with C on the title. The title is part of what steering votes on (chapter-title changes already need steering). Assessments start as an optional template on proposals. A conflict is recorded as a `contradicts` link and resolved by an ordinary patch to the DP or the right. Making assessments mandatory is a later governance rule under Tension 1.
 
-**Ruling (15 Nov):** rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. This is not a retroactive gate on the 24 DPs. Rights Impact Assessments stay optional until a rule is adopted. Still open (minor): who adopts that rule, and when; it follows Tension 1.
+**Ruling (15 Nov):** rights are the foundation of what we collectively want for our digital life and experience. Rights are the why; the DPs are the how. This is not a retroactive gate on the 24 DPs. Rights Impact Assessments stay optional until a rule is adopted. Still open (minor): who adopts that rule, and when.
 
 ### Tension 6. Two voting channels plus likes, and no proof of one person one vote (Decided for now)
 
@@ -211,7 +251,7 @@ Summary:
 - B. Promote Canopi patch votes to formal votes.
 - C. Fix the old `Vote`/`Ballot` engine for community-wide votes.
 
-**Recommendation:** A. In the product, rename Canopi patch "votes" to something that cannot be confused with a decision, or label them "signal, not a decision". The milestone's "eligible members" are the people the Tension 1 rule names (co-editors and steering), which needs no unique-humanity proof. Do not claim community-wide voting integrity until account linking and proof of unique humanity exist (connect accounts first, then unique humanity). Do not revive the `Vote`/`Ballot` engine without a privacy fix.
+**Recommendation:** A. In the product, rename Canopi patch "votes" to something that cannot be confused with a decision, or label them "signal, not a decision". Under the Tension 1 ruling, the community vote on a new chapter is the first place this matters; until account linking ships, its results carry a duplicate-account caveat. Do not claim community-wide voting integrity until account linking and proof of unique humanity exist (connect accounts first, then unique humanity). Do not revive the `Vote`/`Ballot` engine without a privacy fix.
 
 **Ruling (15 Nov):** accepted as true today, "but we have to evolve this". Gov Hub stays the one formal channel now. Canopi patch votes, likes and support/opposition are labelled signals in the product.
 
@@ -246,7 +286,8 @@ Each step needs the one before. Until step 3, no community-wide vote result is p
 
 **Design.**
 
-1. **Versioned anchors** [New]. Each bridge end gains optional `revision`, `sha256` and `edition` (Tension 3), plus `judged_text_sha256`: the hash of the quote and its context as the judges saw it.
+1. **Versioned anchors** [New]. Each bridge end gains optional `revision` and `sha256`, plus `judged_text_sha256`: the hash of the quote and its context as the judges saw it.
+   Bridges carry no edition (Tension 3). The edition of a pinned revision is looked up from the edition record when needed.
 2. **Snapshot at verification** [New]. When a bridge is verified, request a Wayback capture of each outside end and store `snapshot_url` and `snapshot_timestamp` in the verification record. Then a copy of the judged wording always exists. Reuse Canopi's capture queue, with "bridge verified" as a new trigger reason under the same guards. For book ends, the archive route `/viewer/dpNN/<rev>` and its sha256 are the primary record; whether a Wayback capture of the JavaScript-rendered viewer contains the chapter text is unknown. If Wayback refuses (robots, exclusion), record no snapshot and the reason.
 3. **Re-check** [New]. A worker in the Overweb registry re-checks verified bridges: book ends after each rail sync publishes a revision, outside pages on a schedule.
 4. **Bridge incident record** [New], append-only like `judgements`. Fields:
@@ -258,7 +299,7 @@ Each step needs the one before. Until step 3, no community-wide vote result is p
    | `end` | source or target |
    | `kind` | quote_not_found, page_moved, page_gone |
    | `detected_at`, `detected_by` | When; re-check worker, rail sync, or a person's report |
-   | `judged_text_sha256`, `judged_revision`, `judged_edition` | What the bridge was judged on |
+   | `judged_text_sha256`, `judged_revision` | What the bridge was judged on (no edition; look it up from the revision) |
    | `observed` | HTTP status, final URL, sha256 of the live text |
    | `cause` | If known (for example "r03 published"); otherwise unknown |
    | `repair` | Written as a later row: kind (re_anchored_archive, re_anchored_wayback, retired), new anchor, by whom, when, and the id of the re-judgement |
@@ -301,7 +342,7 @@ The Rights chapter is inscribed only as part of 1.1, after 1.1 is released.
 
 **Status:** open. The owner asked for an explanation; no ruling yet.
 
-**Pulls one way:** ten phases, three views, a register, a shared content model, AI and a trust-signal challenge. **Pulls the other:** the team is small and launch was 13 Nov. Several acceptance steps still wait on a decision (who votes, Tension 1; the edition record form, Tension 3), and the 15 Nov rulings added work: the edition record, versioned anchors, a re-check worker and bridge incident records.
+**Pulls one way:** ten phases, three views, a register, a shared content model, AI and a trust-signal challenge. **Pulls the other:** the team is small and launch was 13 Nov. Several acceptance steps still wait on a decision (electorate, threshold and quorum for the community vote, Tension 1), and the 15 Nov rulings added work: the edition record and agreement check, steering's gate, a yes/no community ballot, versioned anchors, a re-check worker and bridge incident records.
 
 **Options:**
 - A. Build the whole Phase 1 to 5 model, then run the test.
@@ -392,9 +433,9 @@ The Rights chapter is inscribed only as part of 1.1, after 1.1 is released.
 
 ### Tension 15. Councils against steering as the long-term governing body
 
-**Pulls one way:** the brief wants explicit, community-adopted governance. **Pulls the other:** steering (V1.1, volunteers) and the DP Council (drafted, unseated) are separate, and how they relate is an open owner decision. The milestone can run on steering under Tension 1, but Phase 4's configurable policy needs a body that owns it.
+**Pulls one way:** the brief wants explicit, community-adopted governance. **Pulls the other:** steering (V1.1, volunteers) and the DP Council (drafted, unseated) are separate, and how they relate is an open owner decision. Under Tension 1, steering holds the gate on new chapters through V1.1; Phase 4's configurable policy needs a body that owns it after that.
 
-**Recommendation:** decide after the first DP Council election, with the interim rule from Tension 1 lapsing on that date.
+**Recommendation:** decide after the first DP Council election, including whether the council takes over steering's gate on new chapters.
 
 **Who decides:** owner; then the councils.
 
@@ -439,7 +480,7 @@ Framing (decided, Tension 5): rights are the foundation of what we collectively 
 
 - **Rights Register** [New, Decision 11]. One record per right, attributes as in the original: stable id, title, description, historical origin, source and citation, status, scope and interpretation, related and conflicting rights, supporting DPs and specifications, governance status, current and prior versions, proposals and decisions, contributors. Start it as a structured block generated from the adopted Rights chapter (or a JSON file in the DP repo next to `sources-sat.json`), not a new database.
 - **Historical source** [Decided, Tension 4]. Document what the first book said: Chapter 12, verbatim, as history, pinned to its inscription. Do not modify it. Expand it in the DP book. Confirm the year before using "2024".
-- **Proposed Rights chapter** [New; form decided (Tension 2); adoption blocked on Decision 1]. A new ML-Draft document on Gov Hub (next free number after 057) with an r01 marked proposed, on no rail. Belongs to Version 1.1 (Tension 3). Placed after the Introduction (ML-Draft-026) and before DP1 when adopted. DP numbering does not change. Not canonical until adopted.
+- **Proposed Rights chapter** [New; form decided (Tension 2); steering gate and community vote decided, electorate and threshold open (Tension 1)]. A new ML-Draft document on Gov Hub (next free number after 057) with an r01 marked proposed, on no rail. Belongs to Version 1.1 (Tension 3). Placed after the Introduction (ML-Draft-026) and before DP1 when adopted. DP numbering does not change. Not canonical until adopted.
 
 ### Phase 2: Shared content model [Partly]
 
@@ -497,22 +538,24 @@ Requirements, with status:
 - Likes are not votes [Partly; decided (Tension 6): Gov Hub is the one formal channel; Canopi patch votes, likes and support/opposition are labelled signals. Roadmap: account linking (PR #130), then proof of unique humanity, then community-wide votes].
 - A proposal links to the exact target version [Implemented: `submission_id`, `content_hash_at_create`].
 - Votes are counted under the applicable rules [Implemented for steering and co-editors].
-- Eligibility, quorum, thresholds, timing configurable [New: today `VOTES_NEEDED = 2` is hard-coded; only roster and freeze time are config]. Move them into `site_config` behind the Tension 1 rule.
+- Eligibility, quorum, thresholds, timing configurable [New: today `VOTES_NEEDED = 2` is hard-coded; only roster and freeze time are config]. Move them into `site_config`. The first rule to set: the electorate, threshold and quorum for community votes on new chapters (Tension 1).
 - Durable audit records [Implemented: `StatusChange`, `EventLog`, `DocumentHistory`, `DpSteeringVote`].
 - Rejections and dissent remain accessible [Partly: declined and considered stay listed; no dissent record].
 - No silent overwrite [Partly; Tension 13].
 - Rights Impact Assessments [New; optional until a rule is adopted (Tension 5)].
-- Governance parameters stay configurable until formally adopted [Decision 1].
+- Governance parameters stay configurable until formally adopted [Partly decided: anyone proposes a chapter, steering gates, the community accepts (Tension 1)].
+- Steering's gate on new chapters [New]: checks well-formed, in scope, not a duplicate; recorded as `DpSteeringOutcome` with reasons; refusals stay visible.
+- Community chapter vote [New]: reuse the council ballot (`CouncilElection`, `CouncilBallot`) with a yes/no counting mode.
 
 ### Phase 5: Versioning and inscription [Partly]
 
 - Immutable historical versions [Implemented: Gov Hub revisions; archive routes; sha256 in `chapter-archives.json`].
-- One current canonical version per edition [New; decided (Tension 3): an edition record listing each rail's exact revision and sha256; a revision can sit in several editions; revisions after 1.0 belong to "1.1 in progress". Record form open: recommended a Gov Hub `BookEdition` record, a generated `editions` manifest, and an `edition` stamp on travelling records].
+- One current canonical version per edition [New; decided (Tension 3): an edition record listing each rail's exact revision and sha256; a revision can sit in several editions; revisions after 1.0 belong to "1.1 in progress". Decided: a Gov Hub `BookEdition` record, a generated `editions` manifest, and an `edition` stamp set once on each revision; proposals, inscription records and PDFs must agree with it, checked in CI and before inscription; bridges carry no edition].
 - Inscription of adopted revisions [Partly; prerequisites decided (Tension 8)]. The edition record first. Inscribe from Gov Hub text, never from Box 1 `~/BRC333`. Version 1.0 first, including the pages never inscribed (Cover text, Edition, Foreword, About, Acknowledgements, DP23, DP24). The Rights chapter with 1.1.
 - Inscription metadata [New]. Off-chain record per inscription: artifact id, edition, version, content hash, decision reference, predecessor, contributors where authorized, inscription id, timestamp, provenance.
 - Never place private messages, sensitive personal data or unreleased information on chain [kept].
 - Living and historical bridges [New; decided (Tension 7)]:
-  - versioned anchors: `revision`, `sha256`, `edition`, `judged_text_sha256` on each bridge end;
+  - versioned anchors: `revision`, `sha256`, `judged_text_sha256` on each bridge end (no edition);
   - a Wayback snapshot of each outside end captured at verification, reusing Canopi's capture queue (`services/waybackCaptureService.js`);
   - a re-check worker in the Overweb registry (book ends after each rail sync; outside pages on a schedule);
   - an append-only **bridge incident record** when a bridge breaks (quote not found, page moved, page gone), with a `broken` status in the change feed;
@@ -571,12 +614,12 @@ Run on staging (dev.interfacehub.net and staging.desirableproperties.org, which 
 
 | # | Step | Real mechanism | Status |
 |---|---|---|---|
-| 1 | A contributor creates a Rights chapter proposal | New ML-Draft document on staging Gov Hub, r01 marked proposed, on no rail; contributor recorded as author | Needs building (proposed flag; contributor-submitted r01). Form decided (Tension 2). Who may adopt: blocked on Decision 1 |
+| 1 | A contributor creates a Rights chapter proposal | New ML-Draft document on staging Gov Hub, r01 marked proposed, on no rail; contributor recorded as author | Needs building (proposed flag; contributor-submitted r01). Decided: anyone may propose (Tensions 1, 2) |
 | 2 | Another participant comments and gives evidence | Gov Hub comments on the document; Canopi discussion on the passage; evidence via `DpProposal.reference_url` or Canopi patch evidence | Implemented in Gov Hub. Canopi needs a viewer route for an unrailed document (needs building) |
 | 3 | A participant suggests a specific patch | `DpProposal` (replace / insert / insert_after) against r01 `anchor_hash` | Implemented |
 | 4 | Others endorse or challenge it | Artifact support/opposition, `CommentLike`, Canopi patch vote; challenge as opposition or comment | Partly (no objection record). Labelling decided (Tension 6): Canopi votes and likes shown as signals; needs building |
-| 5 | Eligible members take part in a formal vote | Real co-editor approval and `DpSteeringVote` flow, on staging data with test accounts. "Simulated" means staging, not a special mode (none exists) | Implemented mechanism. Who is eligible: blocked on Decision 1 |
-| 6 | The authorized process adopts a revision | Accept patches, publish r02 on staging Gov Hub; rail sync to staging; r02 listed in edition "1.1" (status in_progress) | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, and the edition record. Edition decided (1.1); record form blocked on Tension 3's open choice |
+| 5 | Eligible members take part in a formal vote | Two votes on staging, with test accounts. First steering's gate: `DpSteeringVote`, recorded as `DpSteeringOutcome` with reasons. Then the community vote: a yes/no ballot on the council-election machinery. "Simulated" means staging, not a special mode (none exists) | Gate: implemented mechanism. Community vote: needs building (yes/no counting mode). Electorate, threshold and quorum: blocked on Decision 1 |
+| 6 | The authorized process adopts a revision | After the community accepts, publish r02 on staging Gov Hub (stamped `edition_id` 1.1); rail sync to staging; r02 listed in edition "1.1" (status in_progress); edition-agreement check passes | Partly: needs a rail key in `sources-sat.json` and `viewer.htm`, the edition record and the agreement check. Design decided (Tension 3) |
 | 7 | The adopted version appears in Read | `/viewer/<new key>` between the Introduction and DP1 on staging | Needs building (rail, route, navigation) |
 | 8 | Its rights and relationships appear in Explore | Rights Register entries and entity pages from the derived index | Needs building. Blocked on Decisions 10 and 11 |
 | 9 | Its decision history appears in Govern | Gov Hub `StatusChange`, `DocumentHistory`, `DpSteeringOutcome`, linked from the book | Implemented in Gov Hub; link from the book needs building |
@@ -584,7 +627,7 @@ Run on staging (dev.interfacehub.net and staging.desirableproperties.org, which 
 | 11 | A simulated or test-network inscription records the version | Off-chain inscription record in staging with the Phase 5 metadata and `edition: "1.1"`, labelled simulated. Test network: unused `unisat_testnet` flag only | Needs building. Prerequisites decided (Tension 8); needs the edition record first |
 | 12 | Historical and living bridges | Two bridges by @bridger-one in the staging Overweb registry, each with a Wayback snapshot or archive route recorded at verification: one pinned to r02 with its hash; one living, on a passage r03 changes, so the re-check writes a bridge incident record and the repair re-anchors it to `/viewer/<key>/r02` and re-judges | Needs building (anchor version and hash, re-check worker, incident record). Design decided (Tension 7) |
 
-Steps 3, 5 (mechanism) and 9 (in Gov Hub) pass today. Steps 1, 4, 6, 7, 8, 11 and 12 need building. Still waiting on a decision: steps 1 and 5 (Tension 1), step 6 and through it step 11 (the edition record form, Tension 3), step 8 (Tensions 10 and 11).
+Steps 3, 5 (mechanism) and 9 (in Gov Hub) pass today. Steps 1, 4, 6, 7, 8, 11 and 12 need building. Still waiting on a decision: step 5 (electorate, threshold and quorum, Tension 1) and step 8 (Tensions 10 and 11).
 
 ---
 
@@ -596,7 +639,7 @@ Before implementing major features:
 - Prioritized implementation backlog
 - Proposed database and API changes (additive)
 - UI wireframes for all three views
-- Governance workflow specification, including the interim rule (Tension 1)
+- Governance workflow specification, including steering's gate and the community chapter vote (Tension 1)
 - Versioning and inscription design (Tensions 3, 7, 8)
 - Risks and dependencies
 - Test plan
