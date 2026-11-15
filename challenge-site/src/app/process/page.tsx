@@ -34,7 +34,7 @@ function Section({ id, title, lead, children }: { id: string; title: string; lea
 }
 
 export default function ProcessPage() {
-  const sessions = DP_ROUNDUP_EVENTS.filter((e) => e.date >= '2026-10-05');
+  const sessions = DP_ROUNDUP_EVENTS.filter((e) => e.kind !== 'gathering' && e.date >= '2026-10-05');
 
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
