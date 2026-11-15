@@ -7,6 +7,12 @@ no local override exists. Writes:
   - desirableproperties-book/downloads/dp/
   - challenge-site/public/downloads/dp/  (versioned + dp{n}.pdf alias)
   - docs/dp-pdfs/                       (versioned copies)
+
+Edition stamp (docs/EDITIONS.md): when json/editions.json exists and the chapter comes from its live
+local rail, the PDF metadata carries ``dp-edition=<the revision's edition>; dp-rail=...;
+dp-submission=...; dp-local-sha256=...`` in Keywords, the title names the edition, and the visible
+meta line names the edition and the Gov Hub revision. scripts/check_editions_agree.py reads it back.
+A chapter taken from its inscription is not stamped (the inscribed May drafts are on no edition list).
 """
 from __future__ import annotations
 
@@ -14,6 +20,8 @@ import argparse
 import html
 import json
 import re
+import hashlib
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -21,6 +29,8 @@ from markdown import markdown as md_to_html
 from weasyprint import HTML
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import book_editions as editions  # noqa: E402
 BOOK = ROOT / "desirableproperties-book"
 BRC333 = Path("/home/ubuntu/BRC333/projects/desirableproperties-book-ordinal")
 COMPOSITE_VERSION = "0.77X"
@@ -161,7 +171,33 @@ def rewrite_image_src_in_html(html_body: str) -> str:
     return re.sub(r'src="([^"]+)"', repl, html_body)
 
 
-def render_pdf(md_text: str, title: str, meta_line: str, out_path: Path) -> None:
+def load_editions_manifest() -> dict | None:
+    path = BOOK / "json" / editions.MANIFEST_NAME
+    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+
+def edition_stamp(manifest: dict | None, source: dict) -> tuple[str, str] | None:
+    """(visible label, Keywords stamp) for a chapter built from its live local rail, else None."""
+    if not manifest:
+        return None
+    local = local_override_path(source.get("localOverride"))
+    if not (local and local.is_file()):
+        return None
+    data = local.read_bytes()
+    rk = source.get("railKey") or ""
+    sub = editions.sync_marker_submission(data.decode("utf-8", "replace"))
+    row = editions.live_rail(manifest, rk)
+    if row is None or (row.get("submissionId") and row["submissionId"] != sub):
+        raise SystemExit(f"{rk}: {local.name} is not the revision editions.json lists; run the rail sync first")
+    shown = editions.display_edition(manifest, rk, sub, hashlib.sha256(data).hexdigest()) or {}
+    keywords = editions.chapter_pdf_keywords(manifest, rk, sub, hashlib.sha256(data).hexdigest())
+    label = shown.get("label") or ""
+    if row.get("mlNumber") and row.get("revision"):
+        label += f" · {row['mlNumber']} revision {row['revision']}"
+    return label, keywords or ""
+
+
+def render_pdf(md_text: str, title: str, meta_line: str, out_path: Path, keywords: str = "") -> None:
     md_text = strip_sync_comments(md_text)
     body = md_to_html(
         md_text,
@@ -169,7 +205,8 @@ def render_pdf(md_text: str, title: str, meta_line: str, out_path: Path) -> None
     )
     body = rewrite_image_src_in_html(body)
     doc = f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"><style>{CSS}</style></head>
+<html><head><meta charset="utf-8"><title>{html.escape(title)}</title>
+<meta name="keywords" content="{html.escape(keywords)}"><style>{CSS}</style></head>
 <body>
 <div class="meta">{html.escape(meta_line)}</div>
 {body}
@@ -197,6 +234,7 @@ def main() -> int:
     challenge_out.mkdir(parents=True, exist_ok=True)
     docs_out.mkdir(parents=True, exist_ok=True)
 
+    manifest = load_editions_manifest()
     wrote = 0
     for source in sources:
         dp = (source.get("dp") or "").upper()
@@ -226,8 +264,15 @@ def main() -> int:
             docs_out / fname,
             challenge_out / f"{dp.lower()}.pdf",  # DP page alias
         ]
+        stamp = edition_stamp(manifest, source)
+        title = label
+        keywords = ""
+        if stamp:
+            shown, keywords = stamp
+            meta = f"{label} · {shown} · desirableproperties.org"
+            title = f"{label} ({shown.split(' · ')[0]})"
         primary = dests[0]
-        render_pdf(md_text, label, meta, primary)
+        render_pdf(md_text, title, meta, primary, keywords)
         data = primary.read_bytes()
         for d in dests[1:]:
             d.write_bytes(data)

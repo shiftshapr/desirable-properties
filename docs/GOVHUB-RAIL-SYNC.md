@@ -16,6 +16,9 @@ local rails are a synced copy the BRC333 book reads via `localOverride` in `sour
 | `scripts/govhub_dp_common.py` | Shared mapping + fetch helpers |
 | `scripts/check-rails-protected.sh` | Block unauthorized direct edits to `dp*.md` |
 | `scripts/test_govhub_sync_rails.py` | Unit tests (mapping, sync marker helpers) |
+| `scripts/book_editions.py` | Edition record: validate Gov Hub's answer, generate `json/editions.json`, stamps, agreement check ([EDITIONS.md](./EDITIONS.md)) |
+| `scripts/check_editions_agree.py` | Editions agreement check (CI and the sync) |
+| `scripts/test_book_editions.py` | Unit tests for the edition record |
 | `.github/workflows/govhub-rail-sync.yml` | Event-driven + scheduled auto-sync from production Gov Hub |
 
 ## Environments
@@ -78,6 +81,24 @@ python3 scripts/govhub_sync_rails_from_hub.py \
   --dry-run
 ```
 
+## Editions step
+
+Every run (except `--skip-editions`) first fetches the edition record,
+`GET /api/doc/editions/?work=desirableproperties-book`. When it is missing or malformed the run
+**exits 3 and writes nothing**, rails included. Otherwise, after syncing the rails, it generates
+`json/editions.json` and `json/editions.source.json`, stamps `chapter-archives.json` (`edition`,
+`current_label`) and the inscription records in `sources-sat.json`, checks that Gov Hub's edition in
+progress lists the revisions it serves, writes, and runs `scripts/check_editions_agree.py`.
+
+| Flag | Meaning |
+| --- | --- |
+| `--editions-only` | Do not fetch rails; regenerate the edition files from the rails on disk |
+| `--editions-fixture <file>` | Use a recorded Gov Hub answer (tests; until the endpoint is live) |
+| `--skip-editions` | Emergency only: sync rails without the edition step (CI's agreement check then fails) |
+
+The manifest only changes in a `[rail-sync]` commit; a hand edit fails the **Editions agreement**
+workflow. See [EDITIONS.md](./EDITIONS.md).
+
 ## Sync metadata stamp
 
 Each synced rail carries an HTML comment near the top:
@@ -133,6 +154,8 @@ chmod +x .git/hooks/pre-commit
 
 ```bash
 python3 scripts/test_govhub_sync_rails.py
+python3 scripts/test_book_editions.py
+python3 scripts/check_editions_agree.py
 python3 scripts/govhub_sync_rails_from_hub.py --dry-run
 ```
 
@@ -234,7 +257,8 @@ flowchart LR
 ```
 
 1. Edit and approve a DP revision on production Gov Hub (`https://interfacehub.net`).
-2. Gov Hub dispatches → workflow syncs rails → commits with `[rail-sync]` → deploys book if changed.
+2. Gov Hub dispatches → workflow fetches the edition record, syncs rails, regenerates `json/editions.json`
+   and the stamps, runs the editions agreement check → commits with `[rail-sync]` → deploys book if changed.
 3. Daily cron catches anything missed by the webhook.
 4. Book preview reads updated rails via `localOverride`.
 

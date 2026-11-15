@@ -70,7 +70,13 @@ jobs:
           if [ "${{ steps.cfg.outputs.dry_run }}" = "true" ]; then
             args+=(--dry-run)
           fi
+          # Also regenerates json/editions.json and the edition stamps from Gov Hub's edition record;
+          # stops before writing anything when that record is missing or malformed (docs/EDITIONS.md).
           python3 scripts/govhub_sync_rails_from_hub.py "${args[@]}"
+
+      - name: Editions agree
+        if: steps.cfg.outputs.dry_run != 'true'
+        run: python3 scripts/check_editions_agree.py
 
       - name: Commit and push rail updates
         id: commit
@@ -96,6 +102,10 @@ jobs:
           PY
           )
           files+=(desirableproperties-book/content/local/dp*.md)
+          # The edition record and the stamps the sync writes (docs/EDITIONS.md).
+          for f in editions.json editions.source.json sources-sat.json chapter-archives.json; do
+            [ -f "desirableproperties-book/json/${f}" ] && files+=("desirableproperties-book/json/${f}")
+          done
           asset_dir="desirableproperties-book/content/local/assets/dp"
           if [ -d "${asset_dir}" ]; then
             while IFS= read -r asset; do

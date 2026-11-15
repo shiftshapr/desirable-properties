@@ -13,7 +13,8 @@ python3 scripts/govhub_sync_rails_from_hub.py --dry-run   # preview
 python3 scripts/govhub_sync_rails_from_hub.py           # write rails
 ```
 
-3. Commit with `[rail-sync]` in the commit message.
+3. Commit with `[rail-sync]` in the commit message. The same run regenerates `json/editions.json` and the
+   edition stamps; see [docs/EDITIONS.md](../../docs/EDITIONS.md).
 
 See [docs/GOVHUB-RAIL-SYNC.md](../../docs/GOVHUB-RAIL-SYNC.md) for full workflow, environments, and CI rules.
 
