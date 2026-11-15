@@ -9,38 +9,97 @@ export const V1_LAUNCH_TIME_LABEL = '10:00 a.m.–11:00 a.m. Pacific Time';
 /** Friday V1 launch gathering, short form. */
 export const V1_LAUNCH_CLOCK_SHORT = '10–11 AM PT';
 
-const sessions = [
-  ['2026-09-28', 'Find Your Workgroup', 'Get direction, meet collaborators, and choose a first contribution.', 'https://luma.com/5fjbcp9l'],
-  ['2026-10-05', 'Turn Feedback into Proposals', 'Turn chapter comments into specific proposals with owners and reviewers.', 'https://luma.com/9zl8o8n8'],
-  ['2026-10-12', 'Resolve the Hard Questions', 'Address competing wording, missing evidence, and substantive objections.', 'https://luma.com/tsgcml9c'],
-  ['2026-10-19', 'Bring the Chapters Together', 'Integrate reviewed changes into coherent chapter drafts.', 'https://luma.com/8aiegsj7'],
-  ['2026-10-26', 'Review Across Workgroups', 'Check terminology, overlaps, conflicts, and omissions across chapters.', 'https://luma.com/rxqag23s'],
-  ['2026-11-02', 'V1 Readiness Review', 'Review chapters against the adopted checklist and identify release blockers.', 'https://luma.com/377f2m3g'],
-  ['2026-11-09', 'Final Review Before Launch', 'Verify final corrections and acknowledgments before the 1 p.m. editorial freeze.', 'https://luma.com/ztjmzdiq'],
-  ['2026-11-13', 'Desirable Properties V1 Launch', 'Present Version 1.0, recognize contributions, and discuss the next phase.', 'https://luma.com/uhb8828e'],
-] as const;
+/** Meta-Governance gathering after the V1 launch, long form. */
+export const META_GOVERNANCE_TIME_LABEL = '10:00–11:30 a.m. Pacific Time';
+/** Meta-Governance gathering after the V1 launch, short form. */
+export const META_GOVERNANCE_CLOCK_SHORT = '10–11:30 AM PT';
 
-export const DP_ROUNDUP_EVENTS = sessions.map(([date, focus, objective, lumaUrl], index) => {
-  const offset = date < '2026-11-01' ? '-07:00' : '-08:00';
-  const launch = index === 7;
+/**
+ * - `roundup`: a Monday DP Roundup (11:30–1:00, roundup agenda, "DP Roundup:" title prefix).
+ * - `launch`: the Friday V1 launch gathering.
+ * - `gathering`: any other community session; it carries its own title and times.
+ */
+export type GatheringKind = 'roundup' | 'launch' | 'gathering';
+
+type SessionInput = {
+  kind: GatheringKind;
+  date: string;
+  focus: string;
+  objective: string;
+  lumaUrl: string;
+  /** Required for `launch` and `gathering`; roundups default to 11:30–1:00 Pacific. */
+  startsAt?: string;
+  endsAt?: string;
+  timeLabel?: string;
+  clockShort?: string;
+  /** Longer description for the event's own page. */
+  details?: string;
+};
+
+const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
+  ({ kind: 'roundup', date, focus, objective, lumaUrl });
+
+const sessions: readonly SessionInput[] = [
+  roundup('2026-09-28', 'Find Your Workgroup', 'Get direction, meet collaborators, and choose a first contribution.', 'https://luma.com/5fjbcp9l'),
+  roundup('2026-10-05', 'Turn Feedback into Proposals', 'Turn chapter comments into specific proposals with owners and reviewers.', 'https://luma.com/9zl8o8n8'),
+  roundup('2026-10-12', 'Resolve the Hard Questions', 'Address competing wording, missing evidence, and substantive objections.', 'https://luma.com/tsgcml9c'),
+  roundup('2026-10-19', 'Bring the Chapters Together', 'Integrate reviewed changes into coherent chapter drafts.', 'https://luma.com/8aiegsj7'),
+  roundup('2026-10-26', 'Review Across Workgroups', 'Check terminology, overlaps, conflicts, and omissions across chapters.', 'https://luma.com/rxqag23s'),
+  roundup('2026-11-02', 'V1 Readiness Review', 'Review chapters against the adopted checklist and identify release blockers.', 'https://luma.com/377f2m3g'),
+  roundup('2026-11-09', 'Final Review Before Launch', 'Verify final corrections and acknowledgments before the 1 p.m. editorial freeze.', 'https://luma.com/ztjmzdiq'),
+  {
+    kind: 'launch', date: '2026-11-13', focus: 'Desirable Properties V1 Launch',
+    objective: 'Present Version 1.0, recognize contributions, and discuss the next phase.',
+    lumaUrl: 'https://luma.com/uhb8828e',
+    startsAt: DP_V1_LAUNCH_START, endsAt: DP_V1_LAUNCH_END,
+    timeLabel: V1_LAUNCH_TIME_LABEL, clockShort: V1_LAUNCH_CLOCK_SHORT,
+  },
+  {
+    kind: 'gathering', date: '2026-11-16', focus: 'DP Meta-Governance: Creating a Living Book Together',
+    objective: 'Look back on how V1 was made and shape a shared, ongoing process for the living book.',
+    lumaUrl: 'https://luma.com/6bqcfew2',
+    startsAt: '2026-11-16T10:00:00-08:00', endsAt: '2026-11-16T11:30:00-08:00',
+    timeLabel: META_GOVERNANCE_TIME_LABEL, clockShort: META_GOVERNANCE_CLOCK_SHORT,
+    details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
+  },
+];
+
+function pacificOffset(date: string) {
+  return date < '2026-11-01' ? '-07:00' : '-08:00';
+}
+
+export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
+  const isRoundup = s.kind === 'roundup';
+  if (!isRoundup && (!s.startsAt || !s.endsAt || !s.timeLabel)) {
+    throw new Error(`dp-roundups: ${s.date} (${s.kind}) needs explicit startsAt, endsAt and timeLabel`);
+  }
   return {
-    date, focus, objective, lumaUrl,
-    title: launch ? focus : `DP Roundup: ${focus}`,
-    startsAt: launch ? DP_V1_LAUNCH_START : `${date}T11:30:00${offset}`,
-    endsAt: launch ? DP_V1_LAUNCH_END : `${date}T13:00:00${offset}`,
-    href: `/roundups/${date}`,
-    launch,
+    kind: s.kind,
+    date: s.date,
+    focus: s.focus,
+    objective: s.objective,
+    lumaUrl: s.lumaUrl,
+    details: s.details ?? null,
+    title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
+    startsAt: s.startsAt ?? `${s.date}T11:30:00${pacificOffset(s.date)}`,
+    endsAt: s.endsAt ?? `${s.date}T13:00:00${pacificOffset(s.date)}`,
+    timeLabel: s.timeLabel ?? ROUNDUP_TIME_LABEL,
+    clockShort: s.clockShort ?? s.timeLabel ?? ROUNDUP_TIME_LABEL,
+    href: `/roundups/${s.date}`,
+    launch: s.kind === 'launch',
   };
 });
 
 export type RoundupEvent = (typeof DP_ROUNDUP_EVENTS)[number];
 
-/** Time-of-day label for a gathering. `short` is the Friday event-card / countdown form. */
-export function gatheringTimeLabel(event: { launch?: boolean }, style: 'long' | 'short' = 'long'): string {
-  if (event.launch) {
-    return style === 'short' ? V1_LAUNCH_CLOCK_SHORT : V1_LAUNCH_TIME_LABEL;
-  }
-  return ROUNDUP_TIME_LABEL;
+/** Time-of-day label for a gathering. `short` is the event-card form. */
+export function gatheringTimeLabel(event: Pick<RoundupEvent, 'timeLabel' | 'clockShort'>, style: 'long' | 'short' = 'long'): string {
+  return style === 'short' ? event.clockShort : event.timeLabel;
+}
+
+/** Eyebrow label for an event page or card. */
+export function gatheringKindLabel(event: Pick<RoundupEvent, 'kind'>): string {
+  return event.kind === 'launch' ? 'Version 1.0 launch' : 'Meta-Layer Monday';
 }
 
 export function roundupDateLabel(iso: string) {

@@ -929,7 +929,7 @@ function mapSessionEventEntry(
 function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
   return DP_ROUNDUP_EVENTS.filter(event => (new Date(event.endsAt) <= now) === past).map((event, index) => ({
     id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
-    title: event.title, seriesType: event.launch ? 'single' : 'series',
+    title: event.title, seriesType: event.kind === 'roundup' ? 'series' : 'single',
     href: event.lumaUrl, detailHref: event.href, external: true,
     startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
     seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
