@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "ack-adjustment-request",
+      "date": "2026-11-15",
+      "status": "open",
+      "title": "Acknowledgements: a form to ask for a change (be added, fix a name, change an affiliation or list, be removed)",
+      "summary": "New page /acknowledgements/request where anyone, signed in or not, can ask for a change to the Acknowledgements of The Layered Web: be added, correct how their name appears, change or add an affiliation, move to a different list, be removed, or something else. It asks for the name as it should appear (a real name, not a handle), the name as it appears now, what they contributed and where (First or Second Call for Input, the 2026 Challenge, a proposal or patch link, a role), an email to reach them and an optional note. A removal needs only the current name and an email. Signed-in people get their name, email and current entry filled in from Gov Hub. Requests are stored privately in Gov Hub (they hold email addresses; never published, never used for search or AI) and the person sees an on-page reference code; no email is sent. The book's Acknowledgements page links to the form (a viewer link, not part of the book text), and steering members and super admins see the number of new requests on /steering, with a link to the Gov Hub review list.",
+      "changes": [
+        "challenge-site/src/app/acknowledgements/request/page.tsx, AckRequestForm.tsx: the form (kind-dependent fields, honeypot, fill time, on-page reference)",
+        "challenge-site/src/lib/ack-request.ts: choices, client checks, payload, client IP; scripts/ack-request.test.mjs (npm run test:ack-request)",
+        "challenge-site/src/app/api/acknowledgements/requests/route.ts (POST to Gov Hub with the browser's address and the server key, so Gov Hub rate-limits per sender), me/route.ts (prefill)",
+        "challenge-site/src/lib/ack-request.server.ts, src/app/steering/page.tsx: new-request count for reviewers",
+        "desirableproperties-book/viewer.htm: on the Acknowledgements page, links to the form and to ?kind=remove",
+        "Gov Hub (interface-gov-hub): dp_acknowledgement_request table, POST /api/dp/acknowledgements/requests/, review list /dp/acknowledgements/requests/ (steering and super admins), admin dashboard alert"
+      ]
+    },
+    {
       "id": "book-editions-record",
       "date": "2026-11-15",
       "status": "open",
