@@ -92,7 +92,9 @@ class MiniBook:
             'editions': [
                 {'editionId': '0.77', 'label': 'Version 0.77', 'status': 'released', 'releasedAt': None,
                  'predecessorEditionId': None, 'decisionRef': 'x', 'manifestSha256': None,
-                 'rails': [{'railKey': 'dp01', 'mlNumber': 'ML-Draft-008', 'revision': '01',
+                 'rails': [{'railKey': 'ml-draft-026', 'mlNumber': 'ML-Draft-026', 'revision': None,
+                            'submissionId': None, 'sha256': sha('# near 1.0\n'), 'revisionEdition': '0.77'},
+                           {'railKey': 'dp01', 'mlNumber': 'ML-Draft-008', 'revision': '01',
                             'submissionId': 'sub-dp01-r01', 'sha256': sha(self.inscribed),
                             'revisionEdition': '0.77'}]},
                 {'editionId': '1.0', 'label': 'Version 1.0', 'status': 'released',
@@ -179,7 +181,7 @@ class GenerationTests(EditionsTestCase):
         live = ed.live_rail(m, 'dp01')
         self.assertEqual(live['localSha256'], sha(self.book.texts['dp01']))
         self.assertIsNone(live['inscriptionId'])  # 1.0 is not on chain
-        row077 = m['editions'][0]['rails'][0]
+        row077 = m['editions'][0]['rails'][1]
         self.assertEqual(row077['inscriptionId'], 'dp01i0')
         page = ed.live_rail(m, 'edition')
         self.assertEqual(page['source'], 'book-repo')
@@ -191,14 +193,28 @@ class GenerationTests(EditionsTestCase):
         self.assertEqual(gen.archives['current_label'], 'Version 1.0')
         srcs = {s['railKey']: s for s in gen.sources_sat['sources']}
         self.assertEqual((srcs['dp01']['inscriptionEdition'], srcs['dp01']['inscriptionOnEditionList']), ('0.77', True))
-        self.assertIsNone(srcs['ml-draft-026']['inscriptionEdition'])
-        self.assertIn('undecided', srcs['ml-draft-026']['inscriptionEditionNote'])
+        # The Introduction's inscription: no Gov Hub revision has its bytes, but the 0.77 list does
+        self.assertEqual((srcs['ml-draft-026']['inscriptionEdition'], srcs['ml-draft-026']['inscriptionOnEditionList']),
+                         ('0.77', True))
+        self.assertNotIn('inscriptionEditionNote', srcs['ml-draft-026'])
+        self.assertEqual(m['editions'][0]['rails'][0]['inscriptionId'], 'introi0')
         self.assertEqual(gen.sources_sat['currentEdition'], '1.1')
         self.assertEqual(gen.sources_sat['editionsManifest'], '/json/editions.json')
 
+    def test_inscription_matching_nothing_has_no_edition(self):
+        r = self.book.response()
+        r['editions'][0]['rails'] = r['editions'][0]['rails'][1:]  # drop the Introduction from 0.77
+        gen = self.book.generate(r)
+        s = next(x for x in gen.sources_sat['sources'] if x['railKey'] == 'ml-draft-026')
+        self.assertEqual((s['inscriptionEdition'], s['inscriptionOnEditionList']), (None, None))
+        self.assertIn('No edition', s['inscriptionEditionNote'])
+        rep = self.check()
+        self.assertTrue(rep.ok, rep.errors)
+        self.assertTrue(any('inscription ml-draft-026: no edition' in g for g in rep.gaps), rep.gaps)
+
     def test_inscription_mismatch_recorded_honestly(self):
         r = self.book.response()
-        r['editions'][0]['rails'][0]['sha256'] = 'c' * 64  # the 0.77 list names other bytes
+        r['editions'][0]['rails'][1]['sha256'] = 'c' * 64  # the 0.77 list names other bytes
         gen = self.book.generate(r)
         s = next(x for x in gen.sources_sat['sources'] if x['railKey'] == 'dp01')
         self.assertEqual((s['inscriptionEdition'], s['inscriptionOnEditionList']), ('0.77', False))

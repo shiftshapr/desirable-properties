@@ -7,7 +7,7 @@ that revision's edition looked up; it is never stored on the bridge).
 
 | Edition | Status | What it is |
 | --- | --- | --- |
-| 0.77 | released | The DP1–DP22 text inscribed on Bitcoin in May 2026 |
+| 0.77 | released | The Introduction and DP1–DP22 text inscribed on Bitcoin in May 2026 |
 | 1.0 | released 13 Nov 2026 | The book signed off in four steering stages |
 | 1.1 | in progress | Every change since 1.0 |
 
@@ -28,7 +28,7 @@ is `GET /api/doc/editions/?work=desirableproperties-book` (contract: `~/handoff/
 | --- | --- | --- |
 | `desirableproperties-book/json/editions.json` | rail sync (generated, never by hand) | Each edition: Gov Hub's fields (`editionId`, `label`, `status`, `releasedAt`, `predecessorEditionId`, `decisionRef`, `manifestSha256`) plus `coverImageInscriptionId`; per rail Gov Hub's `railKey`, `mlNumber`, `revision`, `submissionId`, `sha256`, `revisionEdition`, and what only the book repo knows: `localPath`/`localSha256` (the file in `content/local`), `archiveKey`/`archiveRev` (the copy at `/viewer/<key>/<rev>`), `inscriptionId` (only where those exact bytes are inscribed). Top level: `currentEdition` (in progress), `liveEdition` (the label of the live book), `source` (where it came from) |
 | `desirableproperties-book/json/editions.source.json` | rail sync | Gov Hub's answer the manifest was generated from (so CI can regenerate it) |
-| `json/sources-sat.json` | rail sync adds the stamps | `currentEdition`, `editionsManifest`; per inscription record the hand-recorded facts `inscriptionSha256` (sha256 of the inscribed bytes) and `inscribedRevision` (the Gov Hub revision with those bytes, if any), and the generated `inscriptionEdition`, `inscriptionOnEditionList` (and `inscriptionEditionNote` when undecided) |
+| `json/sources-sat.json` | rail sync adds the stamps | `currentEdition`, `editionsManifest`; per inscription record the hand-recorded facts `inscriptionSha256` (sha256 of the inscribed bytes) and `inscribedRevision` (the Gov Hub revision with those bytes, if any), and the generated `inscriptionEdition`, `inscriptionOnEditionList` (and `inscriptionEditionNote` when no edition can be named) |
 | `json/chapter-archives.json` | rail sync adds the stamps | Per archive entry `edition` (its revision's stamp); top level `current_label`, `current_edition`, `current_edition_status` derived from the manifest |
 
 The Edition page has no Gov Hub document: Gov Hub lists it with nulls and the book repo fills its `sha256`
@@ -37,8 +37,9 @@ from `content/local/edition.md`. A released edition's entry for it is frozen at 
 The cover image belongs to the edition whose cover it is: `bookCoverInscriptionId` (the 2026 *Layered Web*
 art inscribed on 14 Nov 2026) is recorded as Version 1.0's `coverImageInscriptionId`.
 
-The Introduction's inscription (block 950007, 22 May 2026, a near-1.0 draft) matches no list and no Gov Hub
-revision: its edition is left unset with an "undecided" note until the owner rules.
+The Introduction's inscription (block 950007, 22 May 2026, a near-1.0 draft) is part of 0.77 (owner ruling,
+15 Nov 2026). No Gov Hub revision has its bytes, so its 0.77 entry has a null `submissionId` and the
+sha256 of the inscribed bytes, like DP22's.
 
 ## How it is made
 
@@ -74,7 +75,7 @@ endpoint was not live yet; the first run against the live endpoint replaces it.
    its sha256, and `current_label` / `current_edition` match the manifest.
 4. **Inscription records:** each has `inscriptionSha256`; `inscriptionEdition` is the edition whose list
    holds those bytes (`inscriptionOnEditionList: true`), or the stamp of the Gov Hub revision with those
-   bytes (`false`: a real mismatch, recorded), or unset when undecided; the manifest names an
+   bytes (`false`: a real mismatch, recorded), or unset, listed as a gap, when neither exists; the manifest names an
    `inscriptionId` on exactly the rails whose text those bytes are.
 5. **PDFs:** a chapter PDF's Keywords stamp (`dp-edition`, `dp-rail`, `dp-submission`) names a revision on
    a list with that stamp; a book PDF's `dp-edition-rails-sha256` equals the hash of its edition's list.
@@ -89,7 +90,7 @@ Disagreements fail. Gaps are printed on every run and fail only with `--strict`.
 
 - **Book viewer:** with the manifest present, under each chapter: "Version 1.0" while the live revision is
   the 1.0 one, "Version 1.1, in progress" once a later revision is live; in Onchain mode the inscribed text
-  is labelled from the manifest ("Version 0.77"; the Introduction "Edition undecided"); archive pages say
+  is labelled from the manifest ("Version 0.77"); archive pages say
   "a Version 1.0 draft". Without the manifest the viewer behaves as before.
 - **Site API** (`/api/steering/<ml>/text`, `/api/workgroups/<id>/review/passages`): with no edition named,
   the live text plus `edition`, `editionStatus`, `editionLabel`, `revision`, `revisionEdition`,

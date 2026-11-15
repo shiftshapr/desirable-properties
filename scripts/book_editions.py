@@ -651,8 +651,8 @@ def generate(response: dict, book: Book, *, source: dict, previous: dict | None 
     return Generated(manifest=manifest, snapshot=response, archives=new_archives, sources_sat=new_sat, notes=notes)
 
 
-UNDECIDED_NOTE = ('Edition undecided: the inscribed bytes match no text on any edition list and no Gov Hub '
-                  'revision; the owner has not ruled which edition this inscription belongs to.')
+UNDECIDED_NOTE = ('No edition: the inscribed bytes match no text on any edition list and no Gov Hub '
+                  'revision. Add the text to an edition on Gov Hub, or record inscribedRevision.')
 
 
 def inscription_stamp(src: dict, manifest: dict) -> tuple[str | None, bool | None]:
@@ -660,7 +660,7 @@ def inscription_stamp(src: dict, manifest: dict) -> tuple[str | None, bool | Non
 
     The earliest edition whose list holds the inscribed sha256 → (it, True). Otherwise, when the bytes
     are a known Gov Hub revision, that revision's stamp → (stamp, False): a real mismatch, recorded.
-    Otherwise (None, None): undecided."""
+    Otherwise (None, None): no edition can be named (the check lists it)."""
     sha = src.get('inscriptionSha256')
     chain = edition_chain(manifest.get('editions') or [])
     key = src.get('railKey')
@@ -925,8 +925,9 @@ def check_agreement(repo_root: Path, *, book_root: Path | None = None) -> Report
             continue
         if want_ed is None and s['inscriptionEdition'] is None:
             when = parse_time(s.get('timestamp'))
-            rep.info.append(f'inscription {key}: edition undecided (block {s.get("block")}, '
-                            f'{when.strftime("%d %b %Y") if when else "date unknown"}); its bytes match no list')
+            rep.gaps.append(f'inscription {key}: no edition (block {s.get("block")}, '
+                            f'{when.strftime("%d %b %Y") if when else "date unknown"}); its bytes match no list '
+                            f'and no Gov Hub revision')
         if s['inscriptionEdition'] != want_ed:
             rep.errors.append(f'inscription {key}: stamped {s["inscriptionEdition"]!r}, but the inscribed text '
                               f'belongs to {want_ed!r}')

@@ -1933,7 +1933,7 @@
         const e = editionChain().find(function (x) { return x.editionId === r.inscriptionEdition; });
         return { id: r.inscriptionEdition, label: (e ? e.label : 'Version ' + r.inscriptionEdition) + ' draft', status: 'draft' };
       }
-      return { id: '', label: 'Edition undecided', status: 'undecided' };
+      return null;
     }
 
     function editionLabelById(id) {
