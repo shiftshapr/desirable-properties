@@ -4,6 +4,30 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-launch-event-page",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Version 1.0 launch event page: video, summary and transcript",
+      "summary": "A new page at /events/v1-launch has the recording of the 13 November launch (it loads from YouTube only when someone presses play), a summary of the meeting, and the full transcript matched to the edited video, with timestamps that jump to that point. /launch redirects there, the events list and the 13 November roundup link to it, and shared links show a preview card.",
+      "changes": [
+        "challenge-site/src/app/events/v1-launch/page.tsx, src/components/V1LaunchPlayer.tsx, src/lib/v1-launch-event.ts, src/data/v1-launch-transcript.json: the page, player and transcript",
+        "challenge-site/public/events/v1-launch/: thumbnail and WebVTT transcript",
+        "challenge-site/src/app/events/page.tsx, src/lib/dp-event-series-store.ts, src/lib/dp-roundups.ts, src/app/roundups/[date]/page.tsx: link the launch to the new page"
+      ]
+    },
+    {
+      "id": "home-motion-waitlist",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Home page: gentle scroll fade-ins, a launch banner and a Meta-Layer waitlist popup",
+      "summary": "Headings and cards on the home page fade in as they scroll into view (once each; nothing moves for people who turn on reduced motion, and everything stays visible without JavaScript). A banner under the hero links to the Version 1.0 launch page. After 13 seconds on a first visit, a small popup invites people to join the Meta-Layer waitlist on Gov Hub; it shows once per browser and only when that waitlist is open.",
+      "changes": [
+        "challenge-site/src/components/motion/RevealOnScroll.tsx, src/app/globals.css, src/components/DPCardGrid.tsx: fade-ins",
+        "challenge-site/src/app/page.tsx: launch banner and popup",
+        "challenge-site/src/components/MetaLayerWaitlistPopup.tsx, src/lib/govhub.ts: popup and Gov Hub waitlist lookup"
+      ]
+    },
+    {
       "id": "edition-pdfs-served-from-store",
       "date": "2026-11-16",
       "status": "open",
