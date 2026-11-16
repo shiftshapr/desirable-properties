@@ -156,7 +156,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       </div>
     </main>
     {/* Staging only (feature flag): the live meeting record for this occurrence. Renders nothing in production. */}
-    <ListeningWorkspaceMount slug="meta-governance-2026-11-16" pagePhaseTracker />
+    <ListeningWorkspaceMount slug="meta-governance-2026-11-16" pagePhaseTracker pageTranscriptAnchor="#transcript" />
     </>
   );
 }
