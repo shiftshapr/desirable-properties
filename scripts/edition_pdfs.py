@@ -714,7 +714,7 @@ def process_edition(env: Env, manifest: dict, edition_id: str, *, fixture: bool,
         gate = run_gate(out, manifest, previous=previous, check_external=check_external)
         if archive:
             adopt_archive(out, archive)
-            gate['checks']['archive'] = f'the archived set in {archive.relative_to(REPO)} matches a rebuild page for page'
+            gate['checks']['archive'] = f'the archived set in {archive.relative_to(REPO)} matches a rebuild word for word'
             log(f'  ok archive: publishing the archived files of {archive.relative_to(REPO)}')
         for name, msg in gate['checks'].items():
             log(f'  ok {name}: {msg}')
@@ -834,17 +834,25 @@ def archive_pending(env: Env) -> None:
         ed = s['editionId']
         folder = ARCHIVE_DIR / ed
         want = {s['book']['file']: s['book']['sha256'], **{v['file']: v['sha256'] for v in (s.get('chapters') or {}).values()}}
-        if (folder / 'SHA256SUMS').exists():
-            have = dict(reversed(l.split('  ', 1)) for l in (folder / 'SHA256SUMS').read_text().split('\n') if '  ' in l)
+        gh = str(HOME / 'bin' / 'gh') if (HOME / 'bin' / 'gh').exists() else (shutil.which('gh') or 'gh')
+        sums_text = (folder / 'SHA256SUMS').read_text() if (folder / 'SHA256SUMS').exists() else None
+        if sums_text is None:
+            # Not in this box's checkout yet: is it on main already (the archive commit lands there first)?
+            res = subprocess.run([gh, 'api', '-H', 'Accept: application/vnd.github.raw',
+                                  f'repos/shiftshapr/desirable-properties/contents/desirableproperties-book/downloads/editions/{ed}/SHA256SUMS?ref=main'],
+                                 capture_output=True, text=True)
+            sums_text = res.stdout if res.returncode == 0 and '  ' in res.stdout else None
+        if sums_text is not None:
+            have = dict(reversed(l.split('  ', 1)) for l in sums_text.split('\n') if '  ' in l)
             state = 'committed' if have == want else 'failed'
-            detail = 'in the repo' if state == 'committed' else 'the committed copy differs from the published set'
+            detail = 'on main' if state == 'committed' else 'the committed copy differs from the published set'
             if (s.get('archive') or {}).get('state') != state:
                 env.govhub('pdf-archive', '--edition', ed, '--state', state, '--detail', detail)
             continue
         marker = env.store.parent / f'.archive-dispatched-{ed}'
         if marker.exists() and time.time() - marker.stat().st_mtime < 3600:
             continue
-        gh = shutil.which('gh') or str(HOME / 'bin' / 'gh')
+        # ~/bin/gh is the boxes' authenticated wrapper (the plain /usr/bin/gh is not logged in on box #1).
         res = subprocess.run([gh, 'workflow', 'run', 'edition-pdf-archive.yml', '--repo', 'shiftshapr/desirable-properties',
                               '-f', f'edition={ed}', '-f', f'site={env.site}', '-f', f'hub={env.hub}'],
                              capture_output=True, text=True)

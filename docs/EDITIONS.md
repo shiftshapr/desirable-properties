@@ -197,12 +197,15 @@ list or the builder changes, or `edition_pdfs.py run --retry-failed`) publishes 
   `/downloads/1.0/dpNN.pdf`.
 
 **What a person still does: nothing per release.** One-time setup on each box. Staging (box #2) is set up:
-the tool folder, the store and the timer. Production (box #1), at the owner's next release of staging to main:
+the tool folder, the store and the timer. Production (box #1) was set up on 16 Nov 2026 (log and removal steps:
+`~/dp-runs/edition-pdfs-prod-20261116T000003Z/log.md` on box #1): 0.77 and 1.0 are published from its store. Its
+timer runs a copy of the staging code (`~/dp-edition-pdfs/code`) until this is on main; then the cron line points
+at `~/desirable-properties/scripts/edition_pdfs.py`. What was done there, for reference:
 1. `python3 scripts/edition_pdfs.py --env production install` (the builder's node modules and a Python venv in
    `~/dp-edition-pdfs/tool`, the store folder);
 2. the timer it prints: `*/15 * * * * ~/dp-edition-pdfs/tool/venv/bin/python ~/desirable-properties/scripts/edition_pdfs.py --env production run >> ~/dp-edition-pdfs/job.log 2>&1`;
 3. Gov Hub's release that carries `book_edition_pdf_set` (Gov Hub PRs #155, #157);
-4. `gh auth status` working on box #1 for the archive dispatch (Gov Hub already dispatches the rail sync this way);
+4. the archive dispatch uses `~/bin/gh` (box #1's authenticated wrapper; the plain `gh` is not logged in);
    the archive workflow uses the rail sync's existing `MAIN_PUSH_DEPLOY_KEY` and fails, naming it, without it.
 No nginx change: the site serves the store. No new secret.
 
