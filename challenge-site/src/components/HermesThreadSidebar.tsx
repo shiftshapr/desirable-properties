@@ -39,6 +39,8 @@ interface HermesThreadSidebarProps {
   onDelete?: (threadId: string) => Promise<void> | void;
   onSignIn?: () => void;
   onClose?: () => void;
+  /** Server-side landingPadsEnabled(); off hides the "Landing pad / Open briefing" chip. */
+  landingPads?: boolean;
 }
 
 function formatThreadDate(value?: string | null): string | null {
@@ -136,6 +138,7 @@ export default function HermesThreadSidebar({
   onDelete,
   onSignIn,
   onClose,
+  landingPads = false,
 }: HermesThreadSidebarProps) {
   const [query, setQuery] = useState('');
   const [menuThreadId, setMenuThreadId] = useState<string | null>(null);
@@ -308,7 +311,7 @@ export default function HermesThreadSidebar({
     const shared = opts?.shared;
     const sharedByMe = opts?.sharedByMe;
     const workgroupOrigin = parseWorkgroupOrigin(thread.surface);
-    const allianceOrigin = parsePadOrigin(thread.surface);
+    const allianceOrigin = landingPads ? parsePadOrigin(thread.surface) : null;
     const isCommunity = thread.threadKind === 'group';
     const displayTitle = isCommunity
       ? (thread.groupTitle || thread.title || 'Community Chat')

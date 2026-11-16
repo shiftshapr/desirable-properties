@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { landingPadsEnabled } from './src/lib/landing-pads/flag';
 
 /** Prod and staging PM2 share one checkout; separate dist dirs avoid build clobbering. */
 function resolveDistDir(): string {
@@ -45,6 +46,63 @@ const RETIRED_CHAPTER_PDF_REDIRECTS = [
   }).flat(),
 ];
 
+/**
+ * Landing pad aliases (/on, /onboard, /api/on, ...). Production builds (DP_ENV=prod) leave them out
+ * so the legacy paths 404 directly instead of redirecting into a hidden /pad (see landingPadsEnabled).
+ */
+const LANDING_PAD_REDIRECTS = [
+  {
+    source: '/onboard',
+    destination: '/pad',
+    permanent: false,
+  },
+  {
+    source: '/onboard/alliance/:slug',
+    destination: '/pad/:slug',
+    permanent: false,
+  },
+  {
+    source: '/on',
+    destination: '/pad',
+    permanent: false,
+  },
+  {
+    source: '/on/:slug',
+    destination: '/pad/:slug',
+    permanent: false,
+  },
+  {
+    source: '/api/onboard/alliance/:slug',
+    destination: '/api/pad/:slug',
+    permanent: false,
+  },
+  {
+    source: '/api/onboard/alliance',
+    destination: '/api/pad',
+    permanent: false,
+  },
+  {
+    source: '/api/on/:slug',
+    destination: '/api/pad/:slug',
+    permanent: false,
+  },
+  {
+    source: '/api/on',
+    destination: '/api/pad',
+    permanent: false,
+  },
+  {
+    source: '/api/admin/on-settings',
+    destination: '/api/admin/pad-settings',
+    permanent: false,
+  },
+  {
+    source: '/pad/americansecurityfund',
+    destination: '/pad/americansecurity',
+    permanent: true,
+  },
+];
+
 const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
   async redirects() {
@@ -61,60 +119,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: '/onboard',
-        destination: '/pad',
-        permanent: false,
-      },
-      {
-        source: '/onboard/alliance/:slug',
-        destination: '/pad/:slug',
-        permanent: false,
-      },
-      {
-        source: '/on',
-        destination: '/pad',
-        permanent: false,
-      },
-      {
-        source: '/on/:slug',
-        destination: '/pad/:slug',
-        permanent: false,
-      },
-      {
-        source: '/api/onboard/alliance/:slug',
-        destination: '/api/pad/:slug',
-        permanent: false,
-      },
-      {
-        source: '/api/onboard/alliance',
-        destination: '/api/pad',
-        permanent: false,
-      },
-      {
-        source: '/api/on/:slug',
-        destination: '/api/pad/:slug',
-        permanent: false,
-      },
-      {
-        source: '/api/on',
-        destination: '/api/pad',
-        permanent: false,
-      },
-      {
         source: '/deepi',
         destination: '/agent',
         permanent: false,
       },
-      {
-        source: '/api/admin/on-settings',
-        destination: '/api/admin/pad-settings',
-        permanent: false,
-      },
-      {
-        source: '/pad/americansecurityfund',
-        destination: '/pad/americansecurity',
-        permanent: true,
-      },
+      ...(landingPadsEnabled() ? LANDING_PAD_REDIRECTS : []),
     ];
   },
   async headers() {

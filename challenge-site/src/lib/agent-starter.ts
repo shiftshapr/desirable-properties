@@ -134,6 +134,8 @@ export function resolveAgentStarter(params: {
   /** When opening an existing thread, ignore campaign/pathway starter params. */
   thread?: string | null;
   create?: string | null;
+  /** landingPadsEnabled(); off ignores the landing-pad alliance_patch starter. Defaults to off. */
+  landingPads?: boolean;
 }): ResolvedAgentStarter {
   const threadParam = params.thread?.trim() || null;
   const createParam = params.create?.trim() || null;
@@ -173,7 +175,7 @@ export function resolveAgentStarter(params: {
     };
   }
 
-  if (intentParam === 'alliance_patch' && dpParam && slugParam) {
+  if (params.landingPads && intentParam === 'alliance_patch' && dpParam && slugParam) {
     const resolved = alliancePatchPrompt(slugParam, dpParam);
     if (resolved) {
       return {

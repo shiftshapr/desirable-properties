@@ -20,10 +20,12 @@ import { getOnSettings } from '@/lib/hermes-onboard/settings';
 import { parseOnboardTab } from '@/lib/hermes-onboard/tabs';
 import { readSession } from '@/lib/auth-session';
 import { stripTrailingAmpSlugTypo } from '@/lib/pad-slug-sanitize';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  if (!landingPadsEnabled()) return { title: 'Not found', robots: { index: false, follow: false } };
   const { slug } = await params;
   if (isPadIndexAliasSlug(slug)) {
     return {
@@ -76,6 +78,7 @@ export default async function AllianceBriefingPage({
   params: Params;
   searchParams: SearchParams;
 }) {
+  if (!landingPadsEnabled()) notFound();
   const { slug } = await params;
   const query = await searchParams;
 

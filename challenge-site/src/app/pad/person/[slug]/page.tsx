@@ -4,6 +4,7 @@ import PersonPadClient from '@/components/onboard/PersonPadClient';
 import PersonPadRequestClient from '@/components/onboard/PersonPadRequestClient';
 import { isPersonSlug } from '@/lib/hermes-onboard/person-pad-lookup';
 import { loadPersonPad } from '@/lib/hermes-onboard/person-pad-store';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
 function displayNameFromSlug(slug: string): string {
   return slug
@@ -16,6 +17,7 @@ function displayNameFromSlug(slug: string): string {
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  if (!landingPadsEnabled()) return { title: 'Not found', robots: { index: false, follow: false } };
   const { slug } = await params;
   const record = await loadPersonPad(slug);
   if (!record) return { title: 'Person landing pad' };
@@ -26,6 +28,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export default async function PersonPadPage({ params }: { params: Params }) {
+  if (!landingPadsEnabled()) notFound();
   const { slug } = await params;
   if (!isPersonSlug(slug)) notFound();
 

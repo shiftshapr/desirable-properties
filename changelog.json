@@ -4,6 +4,50 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "landing-pads-hidden-on-production",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Landing pads hidden on production",
+      "summary": "DP Studio landing pads (/pad, /pad/{slug}, /pad/person/{slug}) are hidden on production. One server-side switch, landingPadsEnabled(), is on unless DP_ENV is prod (non-production can also turn it off with DP_LANDING_PADS=off). When off, every pad page is a 404 and noindex, every /api/pad route and /api/admin/pad-settings returns 404 with no data and no writes, the legacy /on, /onboard and /api/on aliases are not registered, and nothing links to a pad: the About menu's Landing pads entry, the Landing pad chip on Deepi threads, the landing-pad starter on /agent and the /pad default tab section in Site admin are not rendered. Staging is unchanged. No pad code or stored pad data is removed.",
+      "changes": [
+        "challenge-site/src/lib/landing-pads/flag.ts: landingPadsEnabled()",
+        "challenge-site/src/app/pad/page.tsx, pad/[slug]/page.tsx, pad/person/[slug]/page.tsx: notFound() and noindex metadata when off",
+        "challenge-site/src/app/api/pad/**, api/admin/pad-settings: 404 before any read or write when off",
+        "challenge-site/src/lib/siteNav.ts, src/app/layout.tsx: Landing pads nav entry added only when on",
+        "challenge-site/src/app/agent/page.tsx, src/lib/agent-starter.ts, src/components/HermesChat.tsx, HermesThreadSidebar.tsx: no pad surface, chip or alliance_patch starter when off",
+        "challenge-site/src/app/admin/page.tsx, DpAdminClient.tsx, SiteAdminPanel.tsx: /pad default tab section and its fetch only when on",
+        "challenge-site/next.config.ts, src/middleware.ts: pad alias redirects and the /pad typo redirect only when on"
+      ]
+    },
+    {
+      "id": "listening-workspace-single-transcript",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Meeting workspace (staging): one transcript on the 16 November page",
+      "summary": "The 16 November session page showed the transcript twice on staging: the page's own Transcript section and the workspace's transcript drawer. The page's Transcript section stays the place to read it. On this page the workspace list becomes a compact 'Point at a transcript line' picker (one line per entry, with Comment and Request a correction, and any corrections), with a link to the Transcript section. Pages without their own transcript keep the full drawer. Production is unchanged (the workspace is off there).",
+      "changes": [
+        "challenge-site/src/components/listening/TranscriptDrawer.tsx, ListeningWorkspace.tsx, ListeningWorkspaceMount.tsx: compact line picker when the page has its own transcript",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: passes the page's #transcript anchor to the workspace"
+      ]
+    },
+    {
+      "id": "listening-workspace-phase1",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Meeting workspace, Phase 1 (staging only): the 16 November record you can comment on, question and correct",
+      "summary": "On staging, the 16 November session page now carries a meeting workspace below the notes: Zoom's transcript as a durable, append-only record, summary and option cards from the meeting digest that each link to the transcript moments they rest on (or are labelled Claude synthesis or Proposal added after the meeting), an option-comparison view, and a participation panel to ask Claude, comment, suggest an option or request a correction on the whole meeting, a topic, a card or a transcript line. Questions are shared and wait in a visible queue marked queued for Claude (Claude answers come in Phase 2); facilitators can prioritize, defer or combine them without deleting anything, revise cards (with history, refusing stale edits), accept or decline corrections (the original stays beside the correction) and record phase changes with who and when. Updates stream to every open page and resume after a reconnect without disturbing what people are typing, open threads or scroll position. Governance rules (eligibility, quorum, thresholds, council) are shown as not yet adopted. It is off in production: the flag is off there, production's environment forces it off, and its database tables refuse the production database.",
+      "changes": [
+        "challenge-site/src/lib/listening/: record schema (append-only dp_listen_* tables), writes, roles, rate limits, update-stream hub, feature flag",
+        "challenge-site/src/app/api/listening/[slug]/: snapshot, Server-Sent Events stream (cursor resume, 10 s heartbeat) and actions endpoints",
+        "challenge-site/src/components/listening/: the workspace (Meeting, Shared understanding, Participation, transcript drawer; tabs on small screens)",
+        "challenge-site/src/app/listening/[slug]/page.tsx: workspace for occurrences without their own page (replay demos); redirects to the occurrence page otherwise",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: mounts the workspace (renders nothing when the flag is off)",
+        "challenge-site/scripts/listening-import.ts, src/data/listening/2026-11-16-cards.json: import and time-ordered replay of the 16 November transcript and digest cards",
+        "challenge-site/scripts/listening-workspace.e2e.mjs: two-browser acceptance test",
+        "challenge-site/ecosystem.staging.config.js, ecosystem.config.js: DP_LISTENING_WORKSPACE on for staging, off for production"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-session-page",
       "date": "2026-11-16",
       "status": "open",

@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import PadIndexContent from '@/components/onboard/PadIndexContent';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
-export const metadata: Metadata = {
-  title: 'Landing pads – DP Studio',
-  description:
-    'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  if (!landingPadsEnabled()) return { title: 'Not found', robots: { index: false, follow: false } };
+  return {
+    title: 'Landing pads – DP Studio',
+    description:
+      'Welcome to our Pad: dialogue-first landing pads in Desirable Properties Studio (public beta).',
+  };
+}
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -14,6 +19,7 @@ export default async function PadIndexPage({
 }: {
   searchParams: SearchParams;
 }) {
+  if (!landingPadsEnabled()) notFound();
   const params = await searchParams;
   const modeParam = Array.isArray(params.mode) ? params.mode[0] : params.mode;
   const initialLookupMode = modeParam === 'person' ? 'person' : 'organization';

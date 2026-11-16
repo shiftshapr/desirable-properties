@@ -1,0 +1,264 @@
+{
+  "about": "Cards for the 16 Nov 2026 DP Meta-Governance listening session, curated from ~/repos/dp-meeting-digest/out/2026-11-16/digest.md (Summary, Decisions needed, Open questions). Wording follows the digest. `sources` are digest timestamps on the Zoom recording timeline: a time resolves to the transcript turn it falls in, a range 'A-B' to every turn from A to B; 'auto' takes every timestamp in the body. A card with no transcript source must be labelled claude_synthesis or added_after_meeting. Loaded by scripts/listening-import.ts.",
+  "meeting": {
+    "slug": "meta-governance-2026-11-16",
+    "title": "DP Meta-Governance: Creating a Living Book Together",
+    "startsAt": "2026-11-16T18:00:00Z",
+    "endsAt": "2026-11-16T19:30:00Z",
+    "sourceKey": "dp-roundup:2026-11-16",
+    "canonicalPath": "/events/meta-governance-2026-11-16",
+    "joinUrl": "https://luma.com/6bqcfew2",
+    "transcriptSource": "Zoom’s automatic transcript of the 16 November 2026 session, one entry per speaker turn, lightly cleaned (misheard participant names corrected; a few private remarks held back)."
+  },
+  "cards": [
+    {
+      "key": "sum-cycle",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "A weekly listen, draft, verify, screen and vote cycle, as a four-session pilot",
+      "body": "The host proposed a weekly cycle as a four-session pilot. Monday is a listening session; Claude drafts a ballot from the transcript; participants have 24 hours to correct it; the council screens it for readiness; the community votes over 48 or 72 hours; owners implement the result (00:06:37 to 00:09:51, 00:38:31 to 00:41:23). Benn Konsynski (“You need that cadence. I agree”), Leandra Preston and Stella Alvo spoke in support, and no objection was recorded (00:10:02, 00:46:02, 00:46:10). Stella Alvo asked that the process respect people’s time and time zones (00:46:31).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-coeditors",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Co-editors: 3 seats per DP, 2 approvals",
+      "body": "On co-editors, the host said the site now allows 3 co-editors per DP, with 2 approvals needed (00:49:36). Stella Alvo was concerned that 3 seats will be hard to fill, since 2 were already hard (00:41:37). Gael Van Weyenbergh suggested trying it: “practice will tell” (00:51:07). No vote was taken.",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-decline",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "One decline ending a proposal was opposed",
+      "body": "A single decline ending a proposal was opposed by Leandra Preston, Benn Konsynski and Lord M.E.G.A Zion (Zoom name) (01:17:26 to 01:18:36). The host summarized the room as wanting to keep two things: a decline must carry a rationale, and two approvals can overrule a decline (01:18:52). The published process text still says a single no declines a proposal.",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-threshold",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Approval threshold for community ballots",
+      "body": "Approval threshold for community ballots: the host put forward 50% (00:53:20). Lord M.E.G.A Zion suggested that 50% should keep an item alive for review, while 60% to 70% should signal it can move forward (00:53:35 to 00:55:48). Gael Van Weyenbergh suggested working by consent, falling back to consensus, with a route to revisit decisions (00:55:58). No one offered a view on quorum (00:56:50 to 00:57:33).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-title",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Chapter title changes",
+      "body": "Chapter title changes, using DP10 “Education” to “Learning and Adaptation” as the example (00:57:41): Benn Konsynski supported requiring clear approval (00:58:16). Stella Alvo suggested 75% of the chapter’s authors, then the steering committee at 50% (01:00:17). Leandra Preston suggested the steering committee plus the chapter’s co-editors and authors (01:00:05). The host was open to a full community vote (00:59:28).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-council",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "An elected council to screen ballots",
+      "body": "Council: participants discussed an elected council to screen ballots. Gael Van Weyenbergh suggested five members, citing the panchayat tradition (01:14:56). The host leaned toward a council for the Desirable Properties specifically. Several participants signalled support (01:13:47 to 01:16:32). Renad Baomar and Leandra Preston both volunteered to serve on the council (01:15:13).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-vetting",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Co-editor vetting",
+      "body": "Co-editor vetting: today, any account at least 7 days old can claim a seat, with no vetting (01:19:38). Lord M.E.G.A Zion favoured a questionnaire, voluntary statements and ongoing review (01:20:57, 01:22:18). The host suggested a co-editor agreement, and several participants signalled yes (01:22:45 to 01:23:50).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-debrief",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Debrief of Version 1.0",
+      "body": "Debrief of Version 1.0: Leandra Preston praised the AI review tools (00:18:15). Gael Van Weyenbergh asked for notifications when a contribution is accepted or declined, and for an overview of the whole book (00:20:52). Benn Konsynski suggested a taxonomy of common rejection reasons (00:23:44, 00:23:58). Lord M.E.G.A Zion shared a sketch of an interactive UI (00:25:30 to 00:31:43).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-growth",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Growth ideas",
+      "body": "Growth ideas: a case studies section or an online appendix (00:04:41, 00:11:33); university engagement (00:10:17); student hackathons or “bookathons” starting with 4 or 5 schools (00:14:26); a book club (Allison Gustavson, 01:01:09; formats discussed through 01:08:48).",
+      "sources": "auto"
+    },
+    {
+      "key": "sum-comms",
+      "type": "summary_point",
+      "label": "claude_synthesis",
+      "title": "Communication channels",
+      "body": "Communication: Signal does not work in Oman (Renad Baomar, 01:10:44). The host will open the existing WhatsApp group to everyone interested and share the Signal link (01:11:02 to 01:12:02). Joel Okomoli asked for an advance notice email before the 24-hour review window opens (01:25:50).",
+      "sources": "auto"
+    },
+
+    {
+      "key": "topic-pilot",
+      "type": "discussion_topic",
+      "title": "Should the weekly decision cycle run as a four-session pilot?",
+      "body": "Raised by Daveed Benjamin.",
+      "sources": ["00:06:37-00:09:51", "00:09:34"],
+      "children": [
+        {
+          "key": "opt-pilot-yes",
+          "type": "proposed_option",
+          "label": "participant_proposal",
+          "title": "Yes, pilot for four sessions, then evaluate",
+          "body": "The cycle gets tested quickly, but the voting group is still small.",
+          "sources": ["00:06:37-00:09:51", "00:38:31-00:41:23"],
+          "children": [
+            { "key": "rsn-pilot-benn", "type": "supporting_reason", "title": "Benn Konsynski: “You need that cadence. I agree.”", "sources": ["00:10:02"] },
+            { "key": "rsn-pilot-support", "type": "supporting_reason", "title": "Leandra Preston and Stella Alvo spoke in support; no objection was recorded", "body": "Support from individuals; this does not mean the room agreed.", "sources": ["00:46:02", "00:46:10"] },
+            { "key": "obj-pilot-time", "type": "objection", "title": "Stella Alvo: the process should respect people’s time and time zones", "sources": ["00:46:31"] }
+          ]
+        },
+        { "key": "opt-pilot-slower", "type": "proposed_option", "label": "claude_synthesis", "title": "Yes, but at a slower cadence (for example every two weeks)", "body": "Easier on people’s time but slower. Drafted for the digest; not proposed in the meeting." },
+        { "key": "opt-pilot-no", "type": "proposed_option", "label": "claude_synthesis", "title": "No, keep ad hoc decisions", "body": "Less overhead, but no regular way to make decisions. Drafted for the digest as the status-quo option; not proposed in the meeting." }
+      ]
+    },
+    {
+      "key": "topic-windows",
+      "type": "discussion_topic",
+      "title": "How long should the correction window and the voting period be?",
+      "body": "Raised by Daveed Benjamin. Advance notice raised by Joel Okomoli.",
+      "sources": ["00:47:08", "00:40:03", "01:25:50"],
+      "children": [
+        { "key": "opt-win-24", "type": "proposed_option", "label": "participant_proposal", "title": "24-hour correction window, with an advance notice email about 12 hours ahead", "body": "Fast, and the notice helps people who travel or have poor connectivity.", "sources": ["00:47:08", "01:25:50"] },
+        { "key": "opt-win-48", "type": "proposed_option", "label": "claude_synthesis", "title": "48-hour correction window", "body": "More people can respond, but each cycle runs longer. Drafted for the digest; not proposed in the meeting." },
+        { "key": "opt-vote-48", "type": "proposed_option", "label": "participant_proposal", "title": "Voting period of 48 hours", "body": "Faster implementation.", "sources": ["00:40:03"] },
+        { "key": "opt-vote-72", "type": "proposed_option", "label": "participant_proposal", "title": "Voting period of 72 hours", "body": "Reaches more time zones but slows implementation.", "sources": ["00:40:03"] }
+      ]
+    },
+    {
+      "key": "topic-threshold",
+      "type": "discussion_topic",
+      "title": "What approval threshold and quorum should community ballots use?",
+      "body": "Raised by Daveed Benjamin. No one offered a view on quorum.",
+      "sources": ["00:51:16", "00:56:47"],
+      "children": [
+        { "key": "opt-thr-50", "type": "proposed_option", "label": "participant_proposal", "title": "Simple majority (more than 50%)", "body": "The easiest to pass, but it may not show strong support. Put forward by the host.", "sources": ["00:53:20"] },
+        { "key": "opt-thr-super", "type": "proposed_option", "label": "participant_proposal", "title": "Supermajority (60% or 67%)", "body": "Shows stronger support but makes items harder to pass. Mentioned by the host.", "sources": ["00:51:16"] },
+        { "key": "opt-thr-tiers", "type": "proposed_option", "label": "participant_proposal", "title": "Two tiers: 50% keeps an item open for review, 60% to 70% moves it forward", "body": "Suggested by Lord M.E.G.A Zion (Zoom name). Preserves ideas but makes outcomes harder to read.", "sources": ["00:53:35-00:55:48"] },
+        { "key": "opt-thr-consent", "type": "proposed_option", "label": "participant_proposal", "title": "Consent-based, with consensus as the fallback and a route to revisit", "body": "Suggested by Gael Van Weyenbergh. Builds understanding but needs more conversation time.", "sources": ["00:55:58-00:56:33"] },
+        { "key": "opt-thr-quorum", "type": "proposed_option", "label": "participant_proposal", "title": "Quorum: none during the pilot, a fixed number (20 votes), or a percentage (10% or 25%)", "body": "Figures mentioned by the host; no one gave a view when asked.", "sources": ["00:51:16", "00:56:47"] }
+      ]
+    },
+    {
+      "key": "topic-coeditors",
+      "type": "discussion_topic",
+      "title": "How many co-editors per DP, and how many approvals?",
+      "body": "Raised by Daveed Benjamin. Concern raised by Stella Alvo.",
+      "sources": ["00:49:36", "00:50:23"],
+      "children": [
+        {
+          "key": "opt-coed-3",
+          "type": "proposed_option",
+          "label": "participant_proposal",
+          "title": "3 seats, 2 approvals (the current site setup, per the host)",
+          "body": "Lowers the risk of a stall, but seats are harder to fill.",
+          "sources": ["00:49:36"],
+          "children": [
+            { "key": "obj-coed-fill", "type": "objection", "title": "Stella Alvo: 3 seats will be hard to fill, since 2 were already hard", "sources": ["00:41:37"] },
+            { "key": "rsn-coed-try", "type": "supporting_reason", "title": "Gael Van Weyenbergh: try it, “practice will tell”", "sources": ["00:51:07"] }
+          ]
+        },
+        { "key": "opt-coed-2", "type": "proposed_option", "label": "claude_synthesis", "title": "2 seats, both must approve (the published Version 1.0 text)", "body": "Simpler, but either person can block a proposal. Taken from the published process text, not proposed in the meeting." }
+      ]
+    },
+    {
+      "key": "topic-decline",
+      "type": "discussion_topic",
+      "title": "What happens when a co-editor declines?",
+      "body": "Raised by Daveed Benjamin.",
+      "sources": ["01:17:01"],
+      "children": [
+        { "key": "opt-dec-keep", "type": "proposed_option", "label": "participant_proposal", "title": "Keep as is: a decline needs a rationale, and two approvals overrule a decline", "body": "Protects good proposals from one opinion. The host’s summary of what the room wanted to keep; no vote was taken.", "sources": ["01:18:52"] },
+        {
+          "key": "opt-dec-one",
+          "type": "proposed_option",
+          "title": "One decline ends the proposal",
+          "body": "A strong safeguard, but valuable proposals may be lost. This is what the published process text still says.",
+          "sources": ["01:17:01"],
+          "children": [
+            { "key": "obj-dec-one", "type": "objection", "title": "Opposed by Leandra Preston, Benn Konsynski and Lord M.E.G.A Zion (Zoom name)", "body": "Three individual views, recorded as such.", "sources": ["01:17:26-01:18:36"] }
+          ]
+        },
+        { "key": "opt-dec-review", "type": "proposed_option", "label": "participant_proposal", "title": "A decline sends the proposal to further review", "body": "Leandra Preston’s alternative. A middle path, but it adds a step.", "sources": ["01:17:26"] }
+      ]
+    },
+    {
+      "key": "topic-title",
+      "type": "discussion_topic",
+      "title": "Who approves a chapter title change?",
+      "body": "Raised by Daveed Benjamin, using DP10 “Education” to “Learning and Adaptation” as the example.",
+      "sources": ["00:57:35"],
+      "children": [
+        { "key": "rsn-title-clear", "type": "supporting_reason", "title": "Benn Konsynski supported requiring clear approval for title changes", "sources": ["00:58:16"] },
+        { "key": "opt-title-steer", "type": "proposed_option", "label": "claude_synthesis", "title": "Steering committee or council", "body": "Quick, but chapter authors may not be heard enough. Drafted for the digest." },
+        { "key": "opt-title-75", "type": "proposed_option", "label": "participant_proposal", "title": "75% of the chapter’s authors, then the steering committee at 50%", "body": "Suggested by Stella Alvo. Respects the people invested in the chapter, but has two stages.", "sources": ["01:00:17"] },
+        { "key": "opt-title-mixed", "type": "proposed_option", "label": "participant_proposal", "title": "The steering committee plus the chapter’s co-editors and authors", "body": "Suggested by Leandra Preston.", "sources": ["01:00:05"] },
+        {
+          "key": "opt-title-vote",
+          "type": "proposed_option",
+          "label": "participant_proposal",
+          "title": "Full community vote",
+          "body": "Broad legitimacy. The host was open to it.",
+          "sources": ["00:59:28"],
+          "children": [
+            { "key": "obj-title-read", "type": "objection", "title": "Leandra Preston: not everyone has read every chapter", "sources": ["00:59:57"] }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "topic-council",
+      "type": "discussion_topic",
+      "title": "Should there be an elected council, and what should it look like?",
+      "body": "Raised by Daveed Benjamin. Also open: how elections run, and what the current five-person steering committee does in the meantime.",
+      "sources": ["01:13:31", "01:13:47"],
+      "children": [
+        { "key": "rsn-council-support", "type": "supporting_reason", "title": "Several participants signalled support for an elected council", "body": "Signals from individuals, not a count of the room.", "sources": ["01:13:47-01:16:32"] },
+        { "key": "rsn-council-vol", "type": "supporting_reason", "title": "Renad Baomar and Leandra Preston volunteered to serve", "sources": ["01:15:13"] },
+        { "key": "opt-council-5", "type": "proposed_option", "label": "participant_proposal", "title": "Elected council of 5, for Desirable Properties only", "body": "Small and focused. Gael Van Weyenbergh suggested five members, citing the panchayat tradition; the host leaned toward a council for the Desirable Properties specifically.", "sources": ["01:14:56", "01:15:13"] },
+        { "key": "opt-council-79", "type": "proposed_option", "label": "participant_proposal", "title": "Elected council of 7 or 9", "body": "More diverse views, but harder to fill. The host asked whether it should be 5 or 7.", "sources": ["01:13:31"] },
+        { "key": "opt-council-ml", "type": "proposed_option", "label": "participant_proposal", "title": "A Meta-Layer council covering both Desirable Properties and the academy", "body": "One body, but a broader remit. Mentioned by the host as the alternative.", "sources": ["01:15:13"] },
+        { "key": "opt-council-interim", "type": "proposed_option", "label": "added_after_meeting", "title": "Interim council now: Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar, with elections to follow", "body": "Daveed Benjamin’s proposal after the meeting: the current steering committee minus Kyle Shulman, plus Renad Baomar, acting now and preparing council elections. It was made after the meeting, so it is not in the transcript. Open points: its remit and term, and how it relates to the steering committee. A proposal for review, not a decision." }
+      ]
+    },
+    {
+      "key": "topic-vetting",
+      "type": "discussion_topic",
+      "title": "Should co-editors be vetted, or sign an agreement?",
+      "body": "Raised by Daveed Benjamin. The questionnaire was suggested by Lord M.E.G.A Zion (Zoom name).",
+      "sources": ["01:19:38"],
+      "children": [
+        { "key": "opt-vet-none", "type": "proposed_option", "title": "No vetting beyond the 7-day account age", "body": "Open, but gives no assurance. This is how it works today.", "sources": ["01:19:38"] },
+        {
+          "key": "opt-vet-agreement",
+          "type": "proposed_option",
+          "label": "participant_proposal",
+          "title": "A co-editor agreement only",
+          "body": "Sets clear expectations with little friction. Suggested by the host.",
+          "sources": ["01:22:45"],
+          "children": [
+            { "key": "rsn-vet-yes", "type": "supporting_reason", "title": "Several participants signalled yes to an agreement", "body": "Signals from individuals, not a count of the room.", "sources": ["01:22:45-01:23:50"] }
+          ]
+        },
+        { "key": "opt-vet-quest", "type": "proposed_option", "label": "participant_proposal", "title": "An agreement plus a questionnaire, published but not used to screen people out", "body": "Gives context for decisions. Lord M.E.G.A Zion favoured a questionnaire, voluntary statements and ongoing review.", "sources": ["01:20:57", "01:22:18"] },
+        { "key": "opt-vet-screen", "type": "proposed_option", "label": "claude_synthesis", "title": "An agreement plus a questionnaire screened against published criteria", "body": "More assurance, but someone must do the screening, and the criteria need to be agreed. Drafted for the digest." }
+      ]
+    },
+
+    { "key": "open-voters", "type": "unresolved_issue", "label": "claude_synthesis", "title": "Who is in the voting body?", "body": "The host said everyone who has contributed or co-edited (00:48:25). How eligibility is checked was not discussed.", "sources": "auto" },
+    { "key": "open-elections", "type": "unresolved_issue", "label": "claude_synthesis", "title": "How would council elections run?", "body": "How would council elections run, and what does the current five-person steering committee do until then (01:14:06)?", "sources": "auto" },
+    { "key": "open-quorum", "type": "unresolved_issue", "label": "claude_synthesis", "title": "What quorum applies, if any?", "body": "No one gave a view (00:57:14).", "sources": "auto" },
+    { "key": "open-missed", "type": "unresolved_issue", "label": "claude_synthesis", "title": "What if someone misses the 24-hour window?", "body": "The host said the issue goes to a future meeting or ballot (00:47:45). Is that enough?", "sources": "auto" },
+    { "key": "open-timeslot", "type": "unresolved_issue", "label": "claude_synthesis", "title": "How can people outside the Monday time slot take part?", "body": "For example through other times or asynchronous input (Stella Alvo, 00:46:37).", "sources": "auto" },
+    { "key": "open-recruit", "type": "unresolved_issue", "label": "claude_synthesis", "title": "How can the project recruit enough co-editors?", "body": "Beyond the core group, especially if there are 3 seats (00:41:37, 00:42:53).", "sources": "auto" },
+    { "key": "open-bookclub", "type": "unresolved_issue", "label": "claude_synthesis", "title": "Book club format", "body": "20 or 30 minutes inside the Monday meeting, or a separate session; weekly or every two weeks; asynchronous comments in the margins (01:02:26 to 01:08:48). Only Lord M.E.G.A Zion answered when the host asked who would read a chapter in advance (01:05:05).", "sources": "auto" },
+    { "key": "open-cases", "type": "unresolved_issue", "label": "claude_synthesis", "title": "Case studies: official book or online appendix?", "body": "What is inscribed on chain and what stays online (00:04:41 to 00:05:58, 00:13:41)?", "sources": "auto" },
+    { "key": "open-impl", "type": "unresolved_issue", "label": "claude_synthesis", "title": "How can implementation work move from the host alone to a small group?", "body": "(00:40:40)", "sources": "auto" },
+    { "key": "open-pdf", "type": "unresolved_issue", "label": "claude_synthesis", "title": "No feedback yet on the Version 1.0 PDF", "body": "Feedback on the Version 1.0 PDF was requested but none was given (00:23:23).", "sources": "auto" },
+    { "key": "open-agreement", "type": "unresolved_issue", "label": "claude_synthesis", "title": "What should the questionnaire or co-editor agreement contain?", "body": "(01:22:18, 01:22:45)", "sources": "auto" }
+  ]
+}

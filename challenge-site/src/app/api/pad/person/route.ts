@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { uploadPersonPadDoc } from '@/lib/hermes-onboard/person-pad-docs';
 import { createPersonPad } from '@/lib/hermes-onboard/person-pad-store';
 import type { PersonPadCreateInput, PersonPadSelectedSource } from '@/lib/hermes-onboard/person-pad-lookup';
@@ -42,6 +43,7 @@ function buildCreateInput(body: Record<string, unknown>): PersonPadCreateInput {
 }
 
 export async function POST(request: Request) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const contentType = request.headers.get('content-type') || '';
 
   if (contentType.includes('multipart/form-data')) {

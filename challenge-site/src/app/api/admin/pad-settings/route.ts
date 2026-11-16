@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { requireDpAdmin } from '@/lib/dp-admin-api';
 import { getOnSettings, saveOnSettings } from '@/lib/hermes-onboard/settings';
 import { isOnboardTabId } from '@/lib/hermes-onboard/tabs';
 
 export async function GET() {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const auth = await requireDpAdmin();
   if (!auth.ok) return auth.response;
   const settings = await getOnSettings();
@@ -11,6 +13,7 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const auth = await requireDpAdmin();
   if (!auth.ok) return auth.response;
   const body = await request.json().catch(() => ({}));

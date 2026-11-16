@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { readSession } from '@/lib/auth-session';
 import { getAllianceOrg, isAllianceSlug, resolvePartnerOrgs } from '@/lib/hermes-onboard/directory';
 import { generateBriefing } from '@/lib/hermes-onboard/generate';
@@ -66,6 +67,7 @@ export async function GET(
   _request: Request,
   context: { params: Promise<{ slug: string }> },
 ) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const { slug } = await context.params;
   const auth = await readSession();
   const data = await payloadFor(slug, Boolean(auth));
@@ -77,6 +79,7 @@ export async function POST(
   request: Request,
   context: { params: Promise<{ slug: string }> },
 ) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const { slug } = await context.params;
   const org = requireOrg(slug);
   if (!org) return NextResponse.json({ error: 'Unknown Alliance org' }, { status: 404 });
