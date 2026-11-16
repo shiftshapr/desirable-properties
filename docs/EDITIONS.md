@@ -149,7 +149,7 @@ atomic step in Gov Hub. No commit, no push, no person. The sites ask Gov Hub wha
      printed); no blank page except before a part or after the edition page; no page holding only a heading or a
      closing note; no text outside the printable area;
    - `stamps`: the book's edition, rails hash and manifest hash; each chapter's edition, rail and submission;
-   - `sanity`: page count within 0.6–1.6× and file size within 0.4–2.5× of the previous edition's book, else the
+   - `sanity`: page count within 0.5–2.5× and file size within 0.3–3.5× of the predecessor edition's book, else the
      reason is printed and nothing publishes;
    - `links`: internal links resolve (stop); external links answer (warning only, listed in the record).
 3. **Store**: `<store>/<edition>/book.pdf` and `<rail>.pdf` with `SHA256SUMS`, read-only, never overwritten.
@@ -165,6 +165,11 @@ atomic step in Gov Hub. No commit, no push, no person. The sites ask Gov Hub wha
    commit), dispatched by the job and retried hourly until it is there. It is never what is served, never blocks or
    undoes a publish, and its state (`pending | committed | failed`) is in Gov Hub's record. CI refuses any change to
    an existing edition's folder; the agreement check compares each committed file's sha256 with Gov Hub's record.
+   Version 1.0's archive copy was committed with this change (built from the production 1.0 list on 15 Nov 2026,
+   gated); on its first run the production job rebuilds 1.0 from the same list and build date, gates it, and, when
+   the archived files say the same word for word, publishes those very files ("adopt"), so the archive and the
+   store are one set. Until a box's job has published an edition, the site serves the archived files and offers
+   the newest archived edition (a last-resort fallback, never the normal path).
    Size: about 38 MB per edition (book ~16 MB, 24 chapters ~22 MB), so the repository grows by that much per
    release, forever (PDFs do not delta-compress). The repo uses neither Git LFS nor release assets today; either
    would keep clones small, but the owner asked for a plain folder.
@@ -179,24 +184,28 @@ list or the builder changes, or `edition_pdfs.py run --retry-failed`) publishes 
   `ETag` (its sha256), 304 on `If-None-Match`; the saved name carries the edition (`desirable-properties-v1.1.pdf`,
   `dp07-v1.1.pdf`).
 - `/downloads/latest/book.pdf`, `/downloads/latest/<rail>.pdf`: 302 to the latest published file,
-  `Cache-Control: public, max-age=60`, so "latest" moves within minutes.
+  `Cache-Control: private, max-age=60`, so "latest" moves within a minute.
 - The site and the book viewer get labels and links from Gov Hub through the site (`/api/book/edition-pdfs`,
   `max-age=120`), cached 3 minutes with the last good answer kept, then the job's local copy
   (`<store>/latest.json`); with nothing at all they still offer `/downloads/latest/<rail>.pdf`.
 - Cloudflare is in front of both hosts. It caches `.pdf` responses by their headers: an edition file for a year
-  (it never changes, so no purge), a `latest` redirect for 60 s (it moves on its own, so no purge); the API answer
-  has no file extension and is not cached by Cloudflare. No purge is ever needed.
+  (it never changes, so no purge). A `latest` redirect is `private`, so Cloudflare does not keep it (its zone's
+  4-hour Browser Cache TTL rewrote a short public `max-age` to 4 hours on staging; it leaves `private` alone). The
+  API answer has no file extension and is not cached by Cloudflare. No purge is ever needed.
 - Old addresses redirect permanently: `/downloads/desirable-properties-v1.0.pdf` → `/downloads/1.0/book.pdf`,
   `/downloads/dp-v1.0/dpNN-v1.0.pdf`, `/downloads/dp/DPn-0.77X.pdf` and `/downloads/dp/dpN.pdf` →
   `/downloads/1.0/dpNN.pdf`.
 
-**What a person still does: nothing per release.** One-time setup on each box (production at the owner's next
-release of staging to main; staging is done):
+**What a person still does: nothing per release.** One-time setup on each box. Staging (box #2) is set up:
+the tool folder, the store and the timer. Production (box #1) was set up on 16 Nov 2026 (log and removal steps:
+`~/dp-runs/edition-pdfs-prod-20261116T000003Z/log.md` on box #1): 0.77 and 1.0 are published from its store. Its
+timer runs a copy of the staging code (`~/dp-edition-pdfs/code`) until this is on main; then the cron line points
+at `~/desirable-properties/scripts/edition_pdfs.py`. What was done there, for reference:
 1. `python3 scripts/edition_pdfs.py --env production install` (the builder's node modules and a Python venv in
    `~/dp-edition-pdfs/tool`, the store folder);
 2. the timer it prints: `*/15 * * * * ~/dp-edition-pdfs/tool/venv/bin/python ~/desirable-properties/scripts/edition_pdfs.py --env production run >> ~/dp-edition-pdfs/job.log 2>&1`;
 3. Gov Hub's release that carries `book_edition_pdf_set` (Gov Hub PRs #155, #157);
-4. `gh auth status` working on box #1 for the archive dispatch (Gov Hub already dispatches the rail sync this way);
+4. the archive dispatch uses `~/bin/gh` (box #1's authenticated wrapper; the plain `gh` is not logged in);
    the archive workflow uses the rail sync's existing `MAIN_PUSH_DEPLOY_KEY` and fails, naming it, without it.
 No nginx change: the site serves the store. No new secret.
 

@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "edition-pdfs-served-from-store",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Version 1.0 PDFs now come from the edition store; old PDF links redirect",
+      "summary": "The book PDF and the chapter PDFs are now served from the backend edition store at /downloads/1.0/book.pdf and /downloads/1.0/dpNN.pdf (rebuilt from the Version 1.0 edition list and checked word for word against it: the earlier file had lost a line of the Introduction and of DP7 and a few word fragments where hyphenated words broke across pages). The home page, /v1 and /participate link to /downloads/1.0/book.pdf. The old addresses (/downloads/desirable-properties-v1.0.pdf, /downloads/dp-v1.0/…, /downloads/dp/DPn-0.77X.pdf, /downloads/dp/dpN.pdf) redirect permanently. The committed copies are removed; one archive copy of each released edition is kept in the repo.",
+      "changes": [
+        "challenge-site/next.config.ts: permanent redirects of the old PDF addresses to /downloads/1.0/…",
+        "challenge-site/src/lib/dp-v1-release.ts, src/app/participate/page.tsx: /downloads/1.0/book.pdf",
+        "challenge-site/public/downloads/desirable-properties-v1.0.pdf, public/downloads/dp-v1.0/: removed (served from the store)",
+        "challenge-site/src/app/downloads/latest/[file]/route.ts: private, 60-second cache (Cloudflare's 4-hour browser TTL overrode the public one)",
+        "challenge-site/src/lib/edition-pdfs.server.ts: falls back to the archived edition if nothing is published yet on that box"
+      ]
+    },
+    {
       "id": "edition-pdfs-backend",
       "date": "2026-11-15",
       "status": "open",
