@@ -173,6 +173,9 @@ module.exports = {
           || 'Desirable Properties <noreply@desirableproperties.org>',
         DP_PUBLIC_BASE: localEnv.DP_PUBLIC_BASE || 'https://desirableproperties.org',
         DP_COLLAB_ENABLED: 'true',
+        // Listening workspace (meeting record, Phase 1): off in production; DP_ENV=prod also forces it off and its
+        // schema refuses the production database. Turning it on needs a reviewed change (src/lib/listening/flag.ts).
+        DP_LISTENING_WORKSPACE: 'off',
         DP_DATABASE_URL:
           localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',
         DATABASE_URL: localEnv.DATABASE_URL || localEnv.DP_DATABASE_URL || '',
