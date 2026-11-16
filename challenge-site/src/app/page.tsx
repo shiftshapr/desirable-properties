@@ -11,9 +11,12 @@ import V1BookPanel from '@/components/V1BookPanel';
 import NorthStarServicesPanel from '@/components/NorthStarServicesPanel';
 import { layeredWebVideosAt } from '@/data/layered-web-videos';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
+import RevealOnScroll from '@/components/motion/RevealOnScroll';
+import MetaLayerWaitlistPopup from '@/components/MetaLayerWaitlistPopup';
 import { fetchUnifiedActivity } from '@/lib/activity-feed';
 import {
   fetchChallengeWorkgroups,
+  fetchMetaLayerWaitlist,
   govhubUrl,
   bookDiscussHref,
   DESIRABLE_PROPERTIES_BOOK_HOST,
@@ -44,9 +47,10 @@ const MISSING_ITEMS = [
 
 export default async function Home() {
   const now = new Date();
-  const [activity, workgroups] = await Promise.all([
+  const [activity, workgroups, metaLayerWaitlist] = await Promise.all([
     fetchUnifiedActivity(12).catch(() => [] as Awaited<ReturnType<typeof fetchUnifiedActivity>>),
     fetchChallengeWorkgroups().catch(() => [] as Awaited<ReturnType<typeof fetchChallengeWorkgroups>>),
+    fetchMetaLayerWaitlist().catch(() => null),
   ]);
 
   const dps = localData.desirable_properties;
@@ -55,6 +59,8 @@ export default async function Home() {
   return (
     <main>
         <ActivityToastHost initialItems={activity} />
+        <RevealOnScroll />
+        {metaLayerWaitlist ? <MetaLayerWaitlistPopup joinUrl={metaLayerWaitlist.joinUrl} /> : null}
         {/* TODO: remove `hidden` and place overlay in hero or challenge section when ready */}
         <div className="hidden" aria-hidden="true">
           <WorkgroupCountdownOverlay initialNow={now.toISOString()} />
@@ -62,30 +68,60 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        <V1BookPanel />
+        {/* Launch event page (/events/v1-launch). A ~60 s launch short can sit in this banner later. */}
+        <section aria-label="Version 1.0 launch event" className="border-b border-slate-800 bg-slate-900/60">
+          <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6" data-reveal>
+            <Link
+              href="/events/v1-launch"
+              className="group flex flex-col gap-1 rounded-xl border border-amber-400/40 bg-amber-950/20 px-5 py-4 hover:border-amber-300/70 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+            >
+              <span>
+                <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
+                  Version 1.0 launch · 13 November 2026
+                </span>
+                <span className="mt-1 block text-base font-medium text-white">
+                  Watch the video, read the summary and transcript
+                </span>
+              </span>
+              <span className="text-sm font-medium text-amber-200 group-hover:text-amber-100">
+                Launch event →
+              </span>
+            </Link>
+          </div>
+        </section>
+
+        <div data-reveal>
+          <V1BookPanel />
+        </div>
 
         {/* The Layered Web videos (src/data/layered-web-videos.ts) */}
         <section aria-labelledby="layered-web-videos-heading" className="border-b border-slate-800">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-            <h2 id="layered-web-videos-heading" className="text-3xl font-bold text-white">The Layered Web</h2>
-            <p className="mt-3 max-w-2xl text-slate-400">
-              Short videos on why the web needs a layer above the page, and what the 24 properties are for.
-            </p>
-            <div className="mt-6">
+            <div data-reveal>
+              <h2 id="layered-web-videos-heading" className="text-3xl font-bold text-white">The Layered Web</h2>
+              <p className="mt-3 max-w-2xl text-slate-400">
+                Short videos on why the web needs a layer above the page, and what the 24 properties are for.
+              </p>
+            </div>
+            <div className="mt-6" data-reveal>
               <LayeredWebVideoCarousel videos={layeredWebVideosAt(now)} />
             </div>
           </div>
         </section>
 
-        <NorthStarServicesPanel />
+        <div data-reveal>
+          <NorthStarServicesPanel />
+        </div>
 
-        <StartHereHomePanel />
+        <div data-reveal>
+          <StartHereHomePanel />
+        </div>
 
         {/* What Are Desirable Properties? */}
         <section className="border-b border-slate-800 bg-slate-900/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">What Are Desirable Properties?</h2>
-            <div className="mt-6 max-w-3xl space-y-4 text-lg leading-relaxed text-slate-300">
+            <h2 data-reveal className="text-3xl font-bold text-white">What Are Desirable Properties?</h2>
+            <div data-reveal className="mt-6 max-w-3xl space-y-4 text-lg leading-relaxed text-slate-300">
               <p>
                 Desirable Properties provide the shared design criteria for a Meta-Layer that
                 supports trust, agency, safety, accountability, contextual integrity, collective
@@ -106,7 +142,7 @@ export default async function Home() {
         {/* Current DP Challenge */}
         <section id="challenge" className="border-b border-slate-800">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div data-reveal className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-3xl font-bold text-white">Current DP Challenge</h2>
                 <p className="mt-3 max-w-2xl text-slate-400">
@@ -130,7 +166,7 @@ export default async function Home() {
                 </p>
               </div>
             </div>
-            <div className="mt-10">
+            <div className="mt-10" data-reveal>
               <h3 className="text-lg font-semibold text-white">Recent activity</h3>
               <div className="mt-4">
                 <ChallengeActivity items={activity} />
@@ -147,7 +183,7 @@ export default async function Home() {
         {/* Browse the DPs */}
         <section id="dps" className="border-b border-slate-800 bg-slate-900/40">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">Browse the DPs</h2>
+            <h2 data-reveal className="text-3xl font-bold text-white">Browse the DPs</h2>
             <div className="mt-10">
               <DPCardGrid localDps={dps} workgroups={workgroups} />
             </div>
@@ -157,15 +193,17 @@ export default async function Home() {
         {/* Missing Something? */}
         <section id="missing" className="border-b border-slate-800">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">Missing Something?</h2>
-            <p className="mt-4 max-w-2xl text-lg text-slate-300">
-              The current DPs are not assumed to be complete.
-            </p>
-            <p className="mt-2 max-w-2xl text-lg font-medium text-white">
-              Have we missed a property?
-            </p>
-            <p className="mt-4 text-slate-400">Help identify:</p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div data-reveal>
+              <h2 className="text-3xl font-bold text-white">Missing Something?</h2>
+              <p className="mt-4 max-w-2xl text-lg text-slate-300">
+                The current DPs are not assumed to be complete.
+              </p>
+              <p className="mt-2 max-w-2xl text-lg font-medium text-white">
+                Have we missed a property?
+              </p>
+              <p className="mt-4 text-slate-400">Help identify:</p>
+            </div>
+            <ul data-reveal-stagger className="mt-4 grid gap-3 sm:grid-cols-2">
               {MISSING_ITEMS.map((item) => (
                 <li
                   key={item}
@@ -195,12 +233,14 @@ export default async function Home() {
         {/* Two primary journeys, plus optional AI assist */}
         <section>
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="text-3xl font-bold text-white">Two Ways to Get Involved</h2>
-            <p className="mt-3 max-w-2xl text-slate-400">
-              New? Start on <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link>.
-              Pick a path, or do both.
-            </p>
-            <ul className="mt-10 grid gap-5 sm:grid-cols-3">
+            <div data-reveal>
+              <h2 className="text-3xl font-bold text-white">Two Ways to Get Involved</h2>
+              <p className="mt-3 max-w-2xl text-slate-400">
+                New? Start on <Link href="/start-here" className="text-cyan-300 hover:text-cyan-200">Start Here</Link>.
+                Pick a path, or do both.
+              </p>
+            </div>
+            <ul data-reveal-stagger className="mt-10 grid gap-5 sm:grid-cols-3">
               <li className="flex h-full flex-col rounded-xl border-2 border-violet-500/70 bg-violet-950/30 p-6">
                 <span className="text-2xl" aria-hidden>
                   🤝

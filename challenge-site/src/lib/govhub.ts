@@ -587,3 +587,51 @@ export function formatActivityDate(iso: string): string {
     year: 'numeric',
   });
 }
+
+/** Gov Hub layer that holds the Meta-Layer waitlist (same slug on interfacehub.net and dev.interfacehub.net). */
+export const META_LAYER_WAITLIST_LAYER_SLUG = 'the-metaweb';
+/** Matched by name (lower case) because waitlist ids differ between Gov Hub dev and prod. */
+export const META_LAYER_WAITLIST_NAME = 'the meta-layer waitlist';
+
+export type MetaLayerWaitlist = {
+  id: string;
+  /** Public no-auth endpoint: POST {email, source, source_url}; Gov Hub emails a confirmation link. */
+  joinUrl: string;
+};
+
+type GovHubWaitlistSummary = {
+  id: string;
+  name?: string | null;
+  active?: boolean;
+  archived?: boolean;
+  closed?: boolean;
+  started?: boolean;
+  full?: boolean;
+};
+
+/**
+ * The open Meta-Layer waitlist on this environment's Gov Hub (GOVHUB_BASE_URL: interfacehub.net in
+ * production, dev.interfacehub.net on staging), or null when it is missing, closed or Gov Hub is down.
+ * DP_METALAYER_WAITLIST_ID overrides the lookup.
+ */
+export async function fetchMetaLayerWaitlist(): Promise<MetaLayerWaitlist | null> {
+  const joinUrl = (id: string) => `${GOVHUB_BASE}/api/waitlists/${encodeURIComponent(id)}/join-email/`;
+  const override = process.env.DP_METALAYER_WAITLIST_ID?.trim();
+  if (override) return { id: override, joinUrl: joinUrl(override) };
+
+  const layer = await fetchGovHub<{ id?: string }>(`/api/layers/${META_LAYER_WAITLIST_LAYER_SLUG}/`);
+  if (!layer?.id) return null;
+  const data = await fetchGovHub<{ waitlists?: GovHubWaitlistSummary[] }>(
+    `/api/layers/${encodeURIComponent(layer.id)}/waitlists/`,
+  );
+  const match = (data?.waitlists ?? []).find(
+    (w) =>
+      (w.name ?? '').trim().toLowerCase() === META_LAYER_WAITLIST_NAME &&
+      w.active !== false &&
+      !w.archived &&
+      !w.closed &&
+      w.started !== false &&
+      !w.full,
+  );
+  return match ? { id: match.id, joinUrl: joinUrl(match.id) } : null;
+}

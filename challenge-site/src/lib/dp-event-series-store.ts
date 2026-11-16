@@ -930,7 +930,8 @@ function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
   return DP_ROUNDUP_EVENTS.filter(event => (new Date(event.endsAt) <= now) === past).map((event, index) => ({
     id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
     title: event.title, seriesType: event.kind === 'roundup' ? 'series' : 'single',
-    href: event.lumaUrl, detailHref: event.href, external: true,
+    href: event.recordingHref ?? event.lumaUrl, detailHref: event.recordingHref ?? event.href, external: !event.recordingHref,
+    ...(event.recordingHref ? { recordingUrl: event.recordingHref } : {}),
     startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
     seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
     seriesTitle: event.launch ? 'Desirable Properties Version 1.0' : 'Meta-Layer Monday', seriesHref: '/roundups',
