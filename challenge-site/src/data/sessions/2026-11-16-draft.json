@@ -1,0 +1,366 @@
+{
+ "source": {
+  "file": "dp-meeting-digest/out/2026-11-16/digest.md",
+  "sha256": "3b31699e8754",
+  "note": "DRAFT. Generated automatically from the meeting record; not reviewed. Decides no policy and opens no vote."
+ },
+ "decisions": [
+  {
+   "n": 1,
+   "title": "Should the weekly decision cycle run as a four-session pilot?",
+   "options": [
+    {
+     "text": "Yes, pilot for four sessions, then evaluate: the cycle gets tested quickly, but the voting group is still small.",
+     "label": null
+    },
+    {
+     "text": "Yes, but at a slower cadence (for example every two weeks): this is easier on people's time but slower.",
+     "label": null
+    },
+    {
+     "text": "No, keep ad hoc decisions: less overhead, but no regular way to make decisions.",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (00:09:34). Related written proposals: none."
+  },
+  {
+   "n": 2,
+   "title": "How long should the correction window and the voting period be?",
+   "options": [
+    {
+     "text": "24-hour correction window with an advance notice email about 12 hours ahead: fast, and the notice helps people who travel or have poor connectivity.",
+     "label": null
+    },
+    {
+     "text": "48-hour correction window: more people can respond, but each cycle runs longer.",
+     "label": null
+    },
+    {
+     "text": "Voting period of 48 hours versus 72 hours: 72 hours reaches more time zones but slows implementation.",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (00:47:08, 00:40:03). Advance notice raised by Joel Okomoli (01:25:50). Related written proposals: none."
+  },
+  {
+   "n": 3,
+   "title": "What approval threshold and quorum should community ballots use?",
+   "options": [
+    {
+     "text": "Simple majority (more than 50%): the easiest to pass, but it may not show strong support.",
+     "label": null
+    },
+    {
+     "text": "Supermajority (60% or 67%): shows stronger support but makes items harder to pass.",
+     "label": null
+    },
+    {
+     "text": "Two tiers, as Lord M.E.G.A Zion suggested: 50% keeps an item open for review, and 60% to 70% moves it forward. This preserves ideas but makes outcomes harder to read.",
+     "label": "Participant proposal"
+    },
+    {
+     "text": "Consent-based, with consensus as the fallback and a route to revisit (Gael Van Weyenbergh): this builds understanding but needs more conversation time.",
+     "label": "Participant proposal"
+    },
+    {
+     "text": "Quorum: none during the pilot, a fixed number (the host mentioned 20 votes), or a percentage (the host mentioned 10% or 25%).",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (00:51:16). Related written proposals: none."
+  },
+  {
+   "n": 4,
+   "title": "How many co-editors per DP, and how many approvals?",
+   "options": [
+    {
+     "text": "3 seats, 2 approvals (the current site setup, per the host): lowers the risk of a stall, but seats are harder to fill.",
+     "label": null
+    },
+    {
+     "text": "2 seats, both must approve (the published Version 1.0 text): simpler, but either person can block a proposal.",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (00:50:23). Concern raised by Stella Alvo (00:41:37). Related written proposals: none."
+  },
+  {
+   "n": 5,
+   "title": "What happens when a co-editor declines?",
+   "options": [
+    {
+     "text": "Keep as is: a decline needs a rationale, and two approvals overrule a decline. This protects good proposals from one opinion.",
+     "label": null
+    },
+    {
+     "text": "One decline ends the proposal: a strong safeguard, but valuable proposals may be lost.",
+     "label": null
+    },
+    {
+     "text": "A decline sends the proposal to further review (Leandra Preston's alternative): a middle path, but it adds a step.",
+     "label": "Participant proposal"
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (01:17:01). Related written proposals: none."
+  },
+  {
+   "n": 6,
+   "title": "Who approves a chapter title change?",
+   "options": [
+    {
+     "text": "Steering committee or council: quick, but chapter authors may not be heard enough.",
+     "label": null
+    },
+    {
+     "text": "75% of the chapter's authors and co-editors, then the steering committee or council: respects the people invested in the chapter, but has two stages.",
+     "label": null
+    },
+    {
+     "text": "Full community vote: broad legitimacy, though not everyone has read every chapter (Leandra Preston, 00:59:57).",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (00:57:41). Related written proposals: none in the snapshot (the DP10 title idea came from an earlier meeting)."
+  },
+  {
+   "n": 7,
+   "title": "Should there be an elected council, and what should it look like?",
+   "options": [
+    {
+     "text": "Elected council of 5, for Desirable Properties only: small and focused.",
+     "label": null
+    },
+    {
+     "text": "Elected council of 7 or 9: more diverse views, but harder to fill.",
+     "label": null
+    },
+    {
+     "text": "A Meta-Layer council covering both Desirable Properties and the academy: one body, but a broader remit.",
+     "label": null
+    },
+    {
+     "text": "Interim council now (Daveed Benjamin's proposal: steering committee minus Kyle Shulman, plus Renad Baomar), elections to follow.",
+     "label": "Proposal added after the meeting"
+    },
+    {
+     "text": "Also open: how elections run, and what the current five-person steering committee does in the meantime.",
+     "label": null,
+     "note": true
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (01:13:47). Related written proposals: none."
+  },
+  {
+   "n": 8,
+   "title": "Should co-editors be vetted, or sign an agreement?",
+   "options": [
+    {
+     "text": "No vetting beyond the 7-day account age: open, but gives no assurance.",
+     "label": null
+    },
+    {
+     "text": "A co-editor agreement only: sets clear expectations with little friction.",
+     "label": null
+    },
+    {
+     "text": "An agreement plus a questionnaire, published but not used to screen people out: gives context for decisions.",
+     "label": null
+    },
+    {
+     "text": "An agreement plus a questionnaire screened against published criteria: more assurance, but someone must do the screening, and the criteria need to be agreed.",
+     "label": null
+    }
+   ],
+   "raisedBy": "Raised by: Daveed Benjamin (01:19:38). The questionnaire was suggested by Lord M.E.G.A Zion (01:20:57). Related written proposals: none."
+  }
+ ],
+ "ballot": {
+  "header": "DRAFT: not opened; requires council screening",
+  "questions": [
+   {
+    "n": 1,
+    "context": "the host proposed trying a weekly listen, draft, verify, screen and vote cycle.",
+    "question": "Should the community run this weekly decision cycle as a four-session pilot and evaluate it afterward?",
+    "options": [
+     "Yes",
+     "No",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 2,
+    "context": "participants are asked to check draft ballots before screening.",
+    "question": "How long should the correction window be?",
+    "options": [
+     "24 hours, with a notice email about 12 hours before it opens",
+     "48 hours",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 3,
+    "context": "the host suggested 48 or 72 hours for voting.",
+    "question": "How long should a voting period last?",
+    "options": [
+     "48 hours",
+     "72 hours",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 4,
+    "context": "four approaches came up for passing a community ballot.",
+    "question": "Which approval rule should community ballots use?",
+    "options": [
+     "More than 50%",
+     "60%",
+     "67%",
+     "Two tiers: 50% keeps the item open for review, 60% or more passes it",
+     "Consent-based, with consensus as fallback and a route to revisit",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 5,
+    "context": "no one knows yet how many people will vote.",
+    "question": "What quorum should apply during the pilot?",
+    "options": [
+     "No quorum",
+     "A fixed minimum of 20 votes",
+     "10% of the voting body",
+     "25% of the voting body",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 6,
+    "context": "the site now allows three co-editors per DP; the Version 1.0 text says two.",
+    "question": "Which co-editor arrangement should apply?",
+    "options": [
+     "3 seats, 2 approvals needed",
+     "2 seats, both approvals needed",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 7,
+    "context": "today a decline must carry a rationale.",
+    "question": "What should happen when one co-editor declines?",
+    "options": [
+     "Two approvals can overrule a decline",
+     "One decline ends the proposal",
+     "A decline sends the proposal to further review",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 8,
+    "context": "title changes affect how readers find and cite a chapter.",
+    "question": "Who should approve a chapter title change?",
+    "options": [
+     "The steering committee or council",
+     "75% of the chapter's authors and co-editors, then the steering committee or council",
+     "A full community vote",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 9,
+    "context": "the council would screen ballots for readiness, not decide them.",
+    "question": "Should the community elect a council to screen ballots?",
+    "options": [
+     "Yes",
+     "No",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 10,
+    "context": "Daveed Benjamin proposed an interim council after the meeting, to act now and prepare elections.",
+    "question": "Should an interim council of Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar serve until a council is elected?",
+    "options": [
+     "Yes",
+     "No",
+     "Abstain"
+    ],
+    "label": "Proposal added after the meeting"
+   },
+   {
+    "n": 11,
+    "context": "five, seven and nine members were mentioned.",
+    "question": "If a council is elected, how many members should it have?",
+    "options": [
+     "5",
+     "7",
+     "9",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 12,
+    "context": "the council could serve Desirable Properties alone or the wider Meta-Layer.",
+    "question": "What should the council's scope be?",
+    "options": [
+     "Desirable Properties only",
+     "Desirable Properties and the academy",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 13,
+    "context": "the host suggested publishing screening criteria and giving reasons when an item does not reach the ballot.",
+    "question": "Should council screening use published criteria, with written reasons for every item held back?",
+    "options": [
+     "Yes",
+     "No",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 14,
+    "context": "the host suggested an agreement that sets out co-editor commitments.",
+    "question": "Should new co-editors sign a co-editor agreement?",
+    "options": [
+     "Yes",
+     "No",
+     "Abstain"
+    ],
+    "label": null
+   },
+   {
+    "n": 15,
+    "context": "anyone with an account at least 7 days old can currently claim a seat.",
+    "question": "How should new co-editors be vetted?",
+    "options": [
+     "No vetting beyond account age",
+     "A questionnaire that is published but not screened",
+     "A questionnaire screened against published criteria",
+     "Abstain"
+    ],
+    "label": null
+   }
+  ]
+ },
+ "interimProposal": {
+  "title": "Interim council",
+  "by": "Daveed Benjamin",
+  "text": "Daveed Benjamin proposes appointing an interim council that acts now and prepares for council elections. Proposed members: the current steering committee minus Kyle Shulman, plus Renad Baomar, which gives Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar. This is a proposal for the community's review, not a decision; it was made after the meeting, so it is not in the transcript. Open points: its remit and term (until elections are held), and how it relates to the steering committee."
+ },
+ "processText": {
+  "intro": "This is the current process text from https://desirableproperties.org/process, with the corrections that were suggested or flagged in the 2026-11-16 meeting marked inline. No correction was explicitly agreed in the room. The main correction makes the text match the co-editor setup the host described as current: 3 seats per DP, 2 approvals needed, and two approvals can overrule a decline. Other passages are marked where the meeting raised changes that still need a decision. Nothing here is in force. It is a draft for council screening and community review only.",
+  "body": "## Header note\n\nRules last updated Oct 22. Co-editors: ~~both seats are~~ **[+ each seat is]** claimed or filled by an accepted nomination; anyone can nominate a member or someone new by email. Coordinators no longer hold a seat automatically. Every decline carries a note the author can read. Proposals are decided within 7 days.\n\nBasis: 00:49:36 to 00:50:13; status: suggested\n\n## How a change reaches the book\n\nA change reaches Version 1.0 only by one route: proposed on a passage, filed into Gov Hub, approved by ~~both co-editors~~ **[+ two of the DP's co-editors]**, then published in a numbered revision. ~~A single no from either co-editor declines it.~~ **[+ A decline must carry a note the author can read; two approvals overrule a single decline.]**\n\nBasis: 00:49:36 to 00:50:13, 01:17:01 to 01:19:28; status: suggested (the host summarized the room as wanting to keep the rule that two approvals overrule a decline; no vote was taken)\n\n### 4. Two co-editors decide\n\nA proposal is incorporated when ~~all of its DP's co-editors approve it (two on most DPs, three on DP4)~~ **[+ two of its DP's co-editors approve it (each DP can have up to three co-editors)]**. ~~Either co-editor can decline it or mark it considered~~ **[+ A co-editor can decline it or mark it considered; a decline stands unless two co-editors approve]**, and that decision cannot be posted without a note the author can read.\n\nBasis: 00:49:36 to 00:50:13, 01:17:01 to 01:19:28; status: suggested. The co-editor count is also listed under \"needs decision\" in the draft ballot (question 6), and the decline rule in question 7.\n\n## Roles\n\nEach DP has ~~two~~ **[+ up to three]** co-editors and one coordinator; members contribute. A proposal is incorporated only when ~~both co-editors approve~~ **[+ two co-editors approve]** it.\n\n| Role | How many | Decides | How you get it |\n|---|---|---|---|\n| Co-editor | ~~Exactly 2~~ **[+ Up to 3]** | Approves (~~both needed~~ **[+ two needed]**) or declines proposals with a note; publishes revisions | Claim an open seat, or accept a nomination |\n\nBasis: 00:49:36 to 00:50:13; status: suggested\n\n**Filling a co-editor seat.** An open seat is filled in two ways. Any signed-in person whose account is at least 7 days old can claim it with a short statement. **[+ Before taking a seat, a new co-editor accepts the co-editor agreement.]** **[+ Vetting of new co-editors: to be decided (none beyond account age / a published questionnaire / a questionnaire screened against published criteria).]** Or anyone signed in nominates a workgroup member, or someone new by email, who becomes a co-editor and joins the workgroup the moment they accept, with no admin approval. (Remainder unchanged.)\n\nBasis: 01:19:38 to 01:23:50; status: needs decision (support was signalled for an agreement; the vetting approach is open)\n\n## Monday sessions\n\nOne community session each Monday at 11:30 PT, each with a single job. **[+ Pilot for four sessions: Monday is a listening session; Claude drafts a ballot from the transcript; participants have 24 hours to correct it, with a notice email about 12 hours before the window opens; the council screens it for readiness against published criteria, giving reasons for anything held back; the community votes over 48 or 72 hours; owners implement the result. The pilot is evaluated after four sessions.]**\n\nBasis: 00:06:37 to 00:09:51, 00:38:31 to 00:41:23, 00:48:40 to 00:49:35, 01:25:50; status: needs decision (support voiced, no objection recorded; window lengths, threshold, quorum and the council are still open)\n\n**Passages flagged for review, unchanged.** Participants did not propose wording for these, but the meeting's topics bear on them:\n- The principle \"Two people agree before the book changes\": consistent with 2 approvals; no change suggested.\n- The principle \"Decisions carry reasons\": participants wanted to keep it (01:18:52); no change suggested.\n- No passage yet covers chapter title changes, community ballot thresholds, quorum, or the council. These need decisions before any text is drafted (00:51:16 to 01:00:34, 01:13:47 to 01:16:32)."
+ }
+}
