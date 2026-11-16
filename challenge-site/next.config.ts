@@ -125,6 +125,11 @@ const nextConfig: NextConfig = {
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
       {
+        // /share kit images (scripts/share-images.py). Content-hashed names; the /share page itself is not matched.
+        source: '/share/:file([^/]+\\.jpg)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
         source: '/embed/hermes/community',
         headers: [
           {

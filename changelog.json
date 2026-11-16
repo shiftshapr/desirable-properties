@@ -4,6 +4,32 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "share-kit",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Share kit: full-size image posts for the book, the launch and Version 1.1",
+      "summary": "A new page at /share has ready-made images (square and portrait) for the Version 1.0 book, the launch video and Version 1.1, each with a short post anyone can use. On a phone, Share image opens the share sheet with the picture and text (the text is also copied in case the app drops it). On a computer, Post on LinkedIn and Post image on X copy the picture and open the post box with the text and link filled in, then the page explains how to paste the picture; browsers that cannot copy images download it instead. Download image, Copy text, link-share buttons for X, Bluesky, Facebook and WhatsApp, and a download of the 57-second launch short are on the page too. /v1 and the launch event page link to it.",
+      "changes": [
+        "challenge-site/src/app/share/page.tsx, src/components/share/ShareKit.tsx, src/lib/share-kit.ts: the page, share buttons and post texts",
+        "challenge-site/scripts/share-images.py, public/share/, src/lib/share-kit-images.json: the six images (file names carry a content hash) and their manifest",
+        "challenge-site/next.config.ts: one-year cache for /share/*.jpg",
+        "challenge-site/src/components/v1/V1ReportHero.tsx, src/app/events/v1-launch/page.tsx: small Share links"
+      ]
+    },
+    {
+      "id": "share-kit",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Share kit: full-size image posts for the book, the launch and Version 1.1",
+      "summary": "A new page at /share has ready-made images (square and portrait) for the Version 1.0 book, the launch video and Version 1.1, each with a short post anyone can use. On a phone, Share image opens the share sheet with the picture and text (the text is also copied in case the app drops it). On a computer, Post on LinkedIn and Post image on X copy the picture and open the post box with the text and link filled in, then the page explains how to paste the picture; browsers that cannot copy images download it instead. Download image, Copy text, link-share buttons for X, Bluesky, Facebook and WhatsApp, and a download of the 57-second launch short are on the page too. /v1 and the launch event page link to it.",
+      "changes": [
+        "challenge-site/src/app/share/page.tsx, src/components/share/ShareKit.tsx, src/lib/share-kit.ts: the page, share buttons and post texts",
+        "challenge-site/scripts/share-images.py, public/share/, src/lib/share-kit-images.json: the six images (file names carry a content hash) and their manifest",
+        "challenge-site/next.config.ts: one-year cache for /share/*.jpg",
+        "challenge-site/src/components/v1/V1ReportHero.tsx, src/app/events/v1-launch/page.tsx: small Share links"
+      ]
+    },
+    {
       "id": "home-popup-layered-web-mailing-list",
       "date": "2026-11-16",
       "status": "open",
