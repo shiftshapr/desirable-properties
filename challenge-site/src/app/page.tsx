@@ -10,6 +10,7 @@ import LayeredWebVideoCarousel from '@/components/LayeredWebVideoCarousel';
 import V1BookPanel from '@/components/V1BookPanel';
 import NorthStarServicesPanel from '@/components/NorthStarServicesPanel';
 import { layeredWebVideosAt } from '@/data/layered-web-videos';
+import { V1_LAUNCH_EVENT_PATH, V1_LAUNCH_SHORT } from '@/lib/v1-launch-event';
 import WorkgroupCountdownOverlay from '@/components/WorkgroupCountdownOverlay';
 import RevealOnScroll from '@/components/motion/RevealOnScroll';
 import MetaLayerWaitlistPopup from '@/components/MetaLayerWaitlistPopup';
@@ -68,25 +69,39 @@ export default async function Home() {
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
 
-        {/* Launch event page (/events/v1-launch). A ~60 s launch short can sit in this banner later. */}
-        <section aria-label="Version 1.0 launch event" className="border-b border-slate-800 bg-slate-900/60">
-          <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6" data-reveal>
-            <Link
-              href="/events/v1-launch"
-              className="group flex flex-col gap-1 rounded-xl border border-amber-400/40 bg-amber-950/20 px-5 py-4 hover:border-amber-300/70 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
-            >
-              <span>
-                <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
+        {/* Version 1.0 launch: the 57-second short (click to play, captions burned in) and the launch event page. */}
+        <section aria-labelledby="v1-launch-short-heading" className="border-b border-slate-800 bg-slate-900/60">
+          <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6" data-reveal>
+            <div className="grid gap-5 rounded-xl border border-amber-400/40 bg-amber-950/20 p-4 sm:p-5 md:grid-cols-[3fr_2fr] md:items-center md:gap-8">
+              <video
+                className="aspect-video w-full rounded-lg border border-slate-800 bg-black"
+                controls
+                preload="none"
+                playsInline
+                poster={V1_LAUNCH_SHORT.poster}
+                aria-label={V1_LAUNCH_SHORT.title}
+              >
+                <source src={V1_LAUNCH_SHORT.src} type="video/mp4" />
+                <a href={V1_LAUNCH_SHORT.src}>Download the launch short (MP4)</a>
+              </video>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">
                   Version 1.0 launch · 13 November 2026
-                </span>
-                <span className="mt-1 block text-base font-medium text-white">
-                  Watch the video, read the summary and transcript
-                </span>
-              </span>
-              <span className="text-sm font-medium text-amber-200 group-hover:text-amber-100">
-                Launch event →
-              </span>
-            </Link>
+                </p>
+                <h2 id="v1-launch-short-heading" className="mt-2 text-xl font-semibold text-white sm:text-2xl">
+                  The launch in {V1_LAUNCH_SHORT.seconds} seconds
+                </h2>
+                <p className="mt-2 text-sm text-slate-300">
+                  Watch the full video, read the summary and transcript on the launch event page.
+                </p>
+                <Link
+                  href={V1_LAUNCH_EVENT_PATH}
+                  className="mt-4 inline-block rounded-lg border border-amber-400/50 px-4 py-2 text-sm font-medium text-amber-200 no-underline hover:border-amber-300/80 hover:text-amber-100"
+                >
+                  Launch event →
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
