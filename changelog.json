@@ -4,6 +4,23 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "listening-workspace-phase1",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Meeting workspace, Phase 1 (staging only): the 16 November record you can comment on, question and correct",
+      "summary": "On staging, the 16 November session page now carries a meeting workspace below the notes: Zoom's transcript as a durable, append-only record, summary and option cards from the meeting digest that each link to the transcript moments they rest on (or are labelled Claude synthesis or Proposal added after the meeting), an option-comparison view, and a participation panel to ask Claude, comment, suggest an option or request a correction on the whole meeting, a topic, a card or a transcript line. Questions are shared and wait in a visible queue marked queued for Claude (Claude answers come in Phase 2); facilitators can prioritize, defer or combine them without deleting anything, revise cards (with history, refusing stale edits), accept or decline corrections (the original stays beside the correction) and record phase changes with who and when. Updates stream to every open page and resume after a reconnect without disturbing what people are typing, open threads or scroll position. Governance rules (eligibility, quorum, thresholds, council) are shown as not yet adopted. It is off in production: the flag is off there, production's environment forces it off, and its database tables refuse the production database.",
+      "changes": [
+        "challenge-site/src/lib/listening/: record schema (append-only dp_listen_* tables), writes, roles, rate limits, update-stream hub, feature flag",
+        "challenge-site/src/app/api/listening/[slug]/: snapshot, Server-Sent Events stream (cursor resume, 10 s heartbeat) and actions endpoints",
+        "challenge-site/src/components/listening/: the workspace (Meeting, Shared understanding, Participation, transcript drawer; tabs on small screens)",
+        "challenge-site/src/app/listening/[slug]/page.tsx: workspace for occurrences without their own page (replay demos); redirects to the occurrence page otherwise",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: mounts the workspace (renders nothing when the flag is off)",
+        "challenge-site/scripts/listening-import.ts, src/data/listening/2026-11-16-cards.json: import and time-ordered replay of the 16 November transcript and digest cards",
+        "challenge-site/scripts/listening-workspace.e2e.mjs: two-browser acceptance test",
+        "challenge-site/ecosystem.staging.config.js, ecosystem.config.js: DP_LISTENING_WORKSPACE on for staging, off for production"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-session-page",
       "date": "2026-11-16",
       "status": "open",

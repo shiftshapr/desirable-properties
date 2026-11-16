@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
+import ListeningWorkspaceMount from '@/components/listening/ListeningWorkspaceMount';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
@@ -21,6 +22,7 @@ import {
   type MetaGovTurn,
 } from '@/lib/meta-governance-2026-11-16-event';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
+import { listeningWorkspaceEnabled } from '@/lib/listening/flag';
 import { isDraftVisible, pacificAndUtc, phaseRows, previewAllowed } from '@/lib/sessions/session-phases';
 import { SITE_NAME } from '@/lib/site-metadata';
 
@@ -65,6 +67,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
   const closes = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
 
   return (
+    <>
     <main className="mx-auto w-full min-w-0 max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
       {preview ? (
         <p className="mb-6 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
@@ -116,6 +119,9 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         <a href="#open-questions" className={linkClass}>Open questions</a>
         <a href="#still-to-decide" className={linkClass}>Still to be decided</a>
         <a href="#transcript" className={linkClass}>Transcript</a>
+        {listeningWorkspaceEnabled() ? (
+          <a href="#workspace" className={linkClass}>Meeting workspace (staging preview)</a>
+        ) : null}
       </nav>
 
       <div className="mt-12 space-y-14">
@@ -149,5 +155,8 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         </section>
       </div>
     </main>
+    {/* Staging only (feature flag): the live meeting record for this occurrence. Renders nothing in production. */}
+    <ListeningWorkspaceMount slug="meta-governance-2026-11-16" pagePhaseTracker />
+    </>
   );
 }

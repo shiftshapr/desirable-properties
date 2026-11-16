@@ -178,6 +178,8 @@ module.exports = {
           localEnv.DP_BOOK_BASE_URL_STAGING
           || 'https://staging.book.desirableproperties.org',
         DP_COLLAB_ENABLED: 'true',
+        // Listening workspace (meeting record, Phase 1): on for staging only. src/lib/listening/flag.ts.
+        DP_LISTENING_WORKSPACE: 'on',
         // Separate staging Postgres (snapshot of prod) so staging evals/events stay out of prod.
         DP_DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
         DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
