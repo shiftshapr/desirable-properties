@@ -127,3 +127,40 @@ html[data-canopi-embed-host="1"] #canopi-overlay-root .canopi-sidebar-frame {
     display: none;
   }
 }
+
+/* Scroll reveal (components/motion/RevealOnScroll). Only elements the script marks hidden are hidden,
+   so content is visible without JS. Opacity + transform only: no layout shift. */
+[data-reveal-state] {
+  transition:
+    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal-state='hidden'] {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-state] {
+    transition: none;
+  }
+  [data-reveal-state='hidden'] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Meta-Layer waitlist popup: short fade/rise on open. */
+@keyframes dp-waitlist-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dp-waitlist-rise {
+  from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.dp-waitlist-backdrop { animation: dp-waitlist-fade 220ms ease-out; }
+.dp-waitlist-card { animation: dp-waitlist-rise 320ms cubic-bezier(0.22, 1, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .dp-waitlist-backdrop,
+  .dp-waitlist-card { animation: none; }
+}
