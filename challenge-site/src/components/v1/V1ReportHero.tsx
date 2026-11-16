@@ -146,6 +146,11 @@ export default function V1ReportHero() {
           <p className="mt-5 text-sm text-slate-400">
             PDF · 807 pages · 16 MB · Foreword by Vint Cerf · CC BY 4.0
           </p>
+          <p className="mt-2 text-sm">
+            <a href="/share" className="text-slate-400 underline decoration-slate-600 underline-offset-2 hover:text-amber-200">
+              Share images and ready-made posts →
+            </a>
+          </p>
         </div>
         <div className="order-1 flex justify-center lg:order-2">
           <a href={V1_PDF_HREF} className="group relative block w-64 sm:w-80 lg:w-[26rem]" aria-label="The Layered Web, Version 1.0">

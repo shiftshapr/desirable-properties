@@ -1,0 +1,1440 @@
+{
+ "source": "Zoom automatic transcript, 16 November 2026 (recording timeline)",
+ "duration": 5274,
+ "sections": [
+  {
+   "t": 0,
+   "title": "Arrivals and opening"
+  },
+  {
+   "t": 125,
+   "title": "Where the book could go"
+  },
+  {
+   "t": 366,
+   "title": "A weekly listening and decision cycle"
+  },
+  {
+   "t": 1045,
+   "title": "Debrief of Version 1.0"
+  },
+  {
+   "t": 1475,
+   "title": "An interactive interface sketch"
+  },
+  {
+   "t": 2104,
+   "title": "The proposed process and co-editor capacity"
+  },
+  {
+   "t": 2732,
+   "title": "The 24-hour check and council screening"
+  },
+  {
+   "t": 2976,
+   "title": "Co-editor seats and approvals"
+  },
+  {
+   "t": 3076,
+   "title": "Approval threshold and quorum"
+  },
+  {
+   "t": 3455,
+   "title": "Chapter title changes"
+  },
+  {
+   "t": 3644,
+   "title": "A book club"
+  },
+  {
+   "t": 4131,
+   "title": "Signal or WhatsApp"
+  },
+  {
+   "t": 4411,
+   "title": "An elected council"
+  },
+  {
+   "t": 4612,
+   "title": "Can one decline end a proposal?"
+  },
+  {
+   "t": 4768,
+   "title": "Co-editor vetting and agreement"
+  },
+  {
+   "t": 5030,
+   "title": "Closing and next steps"
+  }
+ ],
+ "turns": [
+  {
+   "id": "t-15",
+   "t": 15,
+   "speaker": "Daveed Benjamin",
+   "text": "Hey, Benn. Hey, Markabadi."
+  },
+  {
+   "id": "t-19",
+   "t": 19,
+   "speaker": "Benn Konsynski",
+   "text": "Hello."
+  },
+  {
+   "id": "t-21",
+   "t": 21,
+   "speaker": "Daveed Benjamin",
+   "text": "How are you?"
+  },
+  {
+   "id": "t-24",
+   "t": 24,
+   "speaker": "Benn Konsynski",
+   "text": "I'm doing fine."
+  },
+  {
+   "id": "t-27",
+   "t": 27,
+   "speaker": "Daveed Benjamin",
+   "text": "Good. Good. Okay. More folks coming in. Happy Monday! Hey, Gael. Good to see you."
+  },
+  {
+   "id": "t-41",
+   "t": 41,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Good morning."
+  },
+  {
+   "id": "t-41b",
+   "t": 41,
+   "speaker": "Daveed Benjamin",
+   "text": "Hi, Allison."
+  },
+  {
+   "id": "t-44",
+   "t": 44,
+   "speaker": "Allison Gustavson",
+   "text": "Hello."
+  },
+  {
+   "id": "t-47",
+   "t": 47,
+   "speaker": "Daveed Benjamin",
+   "text": "Lela, Renad, good to see you all."
+  },
+  {
+   "id": "t-48",
+   "t": 48,
+   "speaker": "Leandra Preston",
+   "text": "Okay, okay."
+  },
+  {
+   "id": "t-49",
+   "t": 49,
+   "speaker": "Renad Baomar",
+   "text": "It's hot. Hello."
+  },
+  {
+   "id": "t-55",
+   "t": 55,
+   "speaker": "Daveed Benjamin",
+   "text": "So I hope everybody's Monday is starting out well. I can hardly believe we just had a meeting on Friday, and now we're doing it again. But I think this one is super important. Just because we we need to come up with a sustainable system for this to move forward. I think we have a really good. Beachhead right now, and we've got some good experiences through the process. And, uh, if we can now figure out. You know, step back and figure out… how to best run this, um, in a way that doesn't tax anybody, and also keeps the diversity of… of thought. in place. I think we'll we will have succeeded in creating something really special. uh… I think I'll give it a little bit more time for people to come in. you know, I… anyone…"
+  },
+  {
+   "id": "t-125",
+   "t": 125,
+   "speaker": "Daveed Benjamin",
+   "text": "Has anyone had any thoughts about, like, where this book could go? Because I had some really interesting thoughts along the way. Yes, I guess it was on Saturday, but yeah. Anyone have any thoughts they want to share? If I was possible. Yeah. Hey, Gael."
+  },
+  {
+   "id": "t-143",
+   "t": 143,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Yeah, thank you. Great initiative, I have to say. I found the process of writing very exciting. And, and to me, there's a special importance because. I think that this project could fulfill something. There is a gap, a lack between the institution and the network form of social organization. And we see that from the Middle Ages. When the laws are to adapt with the merchant networks, and they always have to find some kind of interface in between the two. And today we see that with the evolution of the web, web one was basically the institutional form, digital, a digital book. Then peer to peer, the native form of governance, but obviously away from the institutional oversight. So that was not sustainable. Then the market take in, and there was Web 2.0 with what we have today. And Web 3.0 was another answer against the institution with the market. And today with AI and agents, we enter this. That's yet another. take on this possible interface and I think it's a more mature one and I'm very excited about it."
+  },
+  {
+   "id": "t-224",
+   "t": 224,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Anyone else wanna… Throw a voice in. Comment, thought, collect, question? You know, when I was thinking on Saturday, I was realizing… so we have this notion right now of a living book, because… It can change over time. And there's another aspect of this really interesting is. Some of it can be on chain, some or all of it could be on chain. So, when I say on-chain, meaning it could go on blockchain. We've been inscribing the chapters and we did the first set of chapters and we inscribed them onto Bitcoin ordinals. So they'll be there as long as Bitcoin's around. So probably at least a hundred years, maybe more, maybe forever. Who knows? But so that there's a distinction there between what's part of the official book, and then, therefore, it gets inscribed. But we also we could have. online sections of this book as well. And. I think that there's this possibility of adding an appendix to it that may be just online, but it could add new chapters, it could add new sections, it could… It could turn into an encyclopedia, even. So, there's just a lot of possibilities, and… I I think, rather than trying to figure out what it will be in the future. We can. We can let that evolve over time, and I want. people to feel very empowered to suggest sections. Like, remember we were talking last week, I guess on Friday, about Laura Del Campo had put together a really interesting case study. It doesn't really fit. with. the DP chapter-by-chapter look, because it actually covers 4 or 5 chapters, like any case study would. And we… we talked about the… maybe the possibility of having a… a use case, or case… case studies section to this book. And so. As these things come up, we just need to have a process in place to adjudicate them."
+  },
+  {
+   "id": "t-366",
+   "t": 366,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. Anyone have any questions, thoughts, reflections before we jump into the presentation? Okay. Well, there's a couple folks we've invited to add in some things around their experience. Michelle was, I'm hoping, is going to come sometime soon. I guess I want to frame this. And maybe it's even, I guess it's even in the presentation but. I'm looking at a way for these Monday sessions to be more like a message… not a message, but a listening session for us. to come together, to kick around ideas, to put our voices into the room, and then the idea would be to have Claude then. Take a look at the entire transcript, the video, and come up with. a ballot, in a sense, that would… would reflect what… what we talked about, the different opinions that came up during the meetings, the… the different perspectives that could actually turn into a ballot choice. And… the… so it would be this new cycle, where on Monday we come, we talk, Claude creates a valid, we get a day or so to look over it, make sure that it actually fairly captured what we wanted it to capture, and. Has all the… the, um… the options that make sense for us to to vote on, and then we get a a 2 day voting period, and it gets implemented, and then we come into the next Monday meeting with new things that we want to adjudicate. So, that's… That was the premise of today, that maybe we could try out a process like that. And at the same time, we want to, through that process, develop the meta-governance. So… This today is about creating this living book together. How we might do it, and… That would entail us figuring out things like councils. Is there a desirable properties? Council? How we might do elections? What are the editorial rules? We've done some of that so far. But. I think it's time, you know, we've been through it once, we've had that experience, now it's time to really refine that. So, this proposed… Weekly pass would be we would listen together, have conversations. Hear disagreement, come up with options. People could also write things in the chat, so it's not only about voice, but. uh, you know, people just being able to express in however they want on Monday, then we would have a… a period, this… this screening period. And after that, we would go into having votes. on whatever came out of that screening period. And as I said, I think maybe we could do a four-session pilot. So the next four sessions, we try this out and see how it works. And then at the end of that period, we would evaluate how well it really fit. How does that sit for people? Does it make sense? Do you have any questions?"
+  },
+  {
+   "id": "t-602",
+   "t": 602,
+   "speaker": "Leandra Preston",
+   "text": "I think that sounds good. I mean, I definitely am… Interested in continuing to meet around. These, you know, the book, the ideas. how it can develop and grow. I think that sounds like a good plan. I didn't say it earlier, but, you know, I'm also interested in seeing how we can connect this to the universities and more. directly get it in front of students, and you know whether we create a center, get a grant, have somebody teach it in a class. I don't know, but there's so many possibilities, so I'd love to be able to explore those with others and get ideas from. Others."
+  },
+  {
+   "id": "t-649",
+   "t": 649,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, there's definitely some other folks that are interested in that educational-academic connection. I know Renad is. But there's been other people, a number of other people, and of course, Benn is as well. So let's start those conversations. Maybe, maybe we can even… have a section about that in the next meeting, just as a kickoff or jump-off point, and then we can have some private conversations. Well, among people that. that are interested in that particular area, which I think we absolutely need to do as much as we can there, because it has such a huge possibility."
+  },
+  {
+   "id": "t-693",
+   "t": 693,
+   "speaker": "Leandra Preston",
+   "text": "And you know what else? Uh, when you were talking about the case study, it was… it was making me think about how, like, whether as an appendix or something, it would be interesting to see how the…"
+  },
+  {
+   "id": "t-693b",
+   "t": 693,
+   "speaker": "Daveed Benjamin",
+   "text": "Any other… Mm-hmm."
+  },
+  {
+   "id": "t-706",
+   "t": 706,
+   "speaker": "Leandra Preston",
+   "text": "um… what's the word I'm thinking of? Well, how the overweb, basically, will work, and with different contexts, like, what does this look like? You know, for people to imagine and see it in action, like, what does this look like when we're talking about, um, on… or what kind of apparatus would… could be included? What kind of… Um, features would we see if we were interacting with the news versus, uh, you know, your… Um, electronic medical records or your, um… your class? Uh, you know, there's just so many, or whatever, anybody's industry, like, what would this look like? in your world? You know, if you had this in the types of pages that you go to, in the types of work that you do online, how would this benefit or, um, enhance what you're doing? You know, so that people could also. not just have to imagine, but see what it looks like implemented. Of course, we have it, you know, on the book or other… I don't know where else we can use the Canopi right now, the way that it is in the books, but I think that would be really neat to see. Or create case studies that demonstrate. different uses or implementations of it."
+  },
+  {
+   "id": "t-787",
+   "t": 787,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, it looks like Benn is saying, put the schools to work on creating these cases."
+  },
+  {
+   "id": "t-791",
+   "t": 791,
+   "speaker": "Leandra Preston",
+   "text": "Yeah. Yes, that's exactly what I was thinking, Benn. I was thinking, like, that would be a great assignment for somebody with the right… Um, you know, classes to, or students to do that. my students, I'm very interdisciplinary, so my classes specifically, but I love to be working with professors who have those students or classes, or… you know, to be able to get them to do that, I think it'd be really… Really cool for them, too."
+  },
+  {
+   "id": "t-821",
+   "t": 821,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, let's think about what might go in the book. And then there's there's other things that are related. That may not actually be part of the book, but could be still useful or maybe. needed to… To help us, um… actualized what you're talking about in terms of getting people engaged around the case studies and things like that. So there's the piece that goes in the book that we can deal with, and then there's the other piece. uh… I see Benn is saying… Benn, do you want to elaborate on, so, focus segments, clusters, or chapters with co-editors may be too segmented?"
+  },
+  {
+   "id": "t-866",
+   "t": 866,
+   "speaker": "Benn Konsynski",
+   "text": "Well, yeah, that may be too segmented. I was thinking more about engaging a broader community in the academic network. that it only needs to start with four or five schools or so. Full classes are a big commitment. I would not start with that. But student clubs and student activities, like, I put down bookathon, but if you had a sort of a hackathon, ideathon. around, um, where… student teams. Individual teams had to build a a case issue around a chapter or set set of chapters, so that you wind up at the in a weekend with. 5 or 6 or 7. augmentations, challenges, supplements to the book, or reflections that could inform the next iteration of the book might be a way to do. That kind of thing, too, and put students to work in student clubs or student hackathons."
+  },
+  {
+   "id": "t-951",
+   "t": 951,
+   "speaker": "Daveed Benjamin",
+   "text": "What do folks think about that? Yeah? Good. Okay."
+  },
+  {
+   "id": "t-956",
+   "t": 956,
+   "speaker": "Renad Baomar",
+   "text": "It's great."
+  },
+  {
+   "id": "t-959",
+   "t": 959,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. All right. Well, I think there's a direction in there for sure. For us to move on. Well, excellent. Let me jump back here into the presentation, and again, this is really about us getting our voices in the room and getting feedback that. can be used to… Oh. define… how we're going to do governance, how we're going to make this all work together. Why is this? No, let me slide show. What's going on? One second. Okay… All right. There we go. And so… Well, I guess today, we're… we're trying out this cycle. We've talked a little bit about what it is, and… We'll… we'll go a little bit more in depth than that, and then we'll go over some of the… the issues that, um, are open, and talk about maybe how we… we might want to… Think about some of these different meta governance issues. uh…"
+  },
+  {
+   "id": "t-1045",
+   "t": 1045,
+   "speaker": "Daveed Benjamin",
+   "text": "Before we do that, though, I think it would be really helpful. It would be better if everybody who contributed and was a co-editor was here right now and able to provide this feedback, and maybe because we have just a smaller group. Um… where we may not be able to capture the full spectrum of things that we would want to in a debrief, but I would love to open it up to hear from people. What do you think worked well? Uh, what created friction? What would we want to change in the process? So, does anyone have anything they think worked well? The things that… It seemed like it came together in the way that they would have liked."
+  },
+  {
+   "id": "t-1095",
+   "t": 1095,
+   "speaker": "Leandra Preston",
+   "text": "I think the AI…"
+  },
+  {
+   "id": "t-1096",
+   "t": 1096,
+   "speaker": "Daveed Benjamin",
+   "text": "One."
+  },
+  {
+   "id": "t-1099",
+   "t": 1099,
+   "speaker": "Leandra Preston",
+   "text": "was amazing. That was so great to, like, when I was working through the steering committee changes, you know, looking at. The proposal… And then reading the AI feedback, I was just like, wow, this is… this is making this much easier. Because it was… it was… usually it was right. I mean, it was usually a great addition. It usually gave… accurate and what I thought was effective feedback or made improvements that. maybe I wouldn't have thought of. I mean, I… I definitely wouldn't have thought of, but maybe somebody else wouldn't have thought of it. You know, it was just… It really… I was actually so impressed by how effective the AI tools were to the editing, so it was really cool. And I noticed sometimes I would have to stop, because by the end, I'd be just letting the… okay, I'm like, the AI's got this, you know? But then I'm like, no, I've got, you know, I've got to really make sure I work through it, because some of the things. And the proposals, um, and the changes in the book, you know, were out of my realm of expertise or knowledge, and so sometimes I would, you know, pass, but… Sometimes I was still able to assess. if it worked or didn't, through the AI explanation, it actually really helped me discern and understand more about what the proposal was doing. So it… that was… that was really excellent. Um, I don't… and there's… you know, I don't know if, like. How… you… if you built the DP, or how… what these were exactly, but I was like, this is amazing. I mean, this is just…"
+  },
+  {
+   "id": "t-1199",
+   "t": 1199,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-1200",
+   "t": 1200,
+   "speaker": "Leandra Preston",
+   "text": "I was deeply impressed by the AI tools that were implemented."
+  },
+  {
+   "id": "t-1205",
+   "t": 1205,
+   "speaker": "Daveed Benjamin",
+   "text": "So we're using Claude Opus 5.5, which is one of the best out right now, and. In addition. To that, we've created a knowledge graph. that has all the information about the book and the DPs. So it it's organized the information in a way that's makes it much easier for the the AI to. to understand and comprehend all the linkages between things, because it's in a knowledge graph. I think that that makes made all the difference with respect to the quality of the AI responses. Anything else that people wanna. Bring up that worked well. Yeah, Gael."
+  },
+  {
+   "id": "t-1252",
+   "t": 1252,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Yeah, as a contributor. it was a bit tricky to understand how to do it, but then I re-read the message you sent me, and obviously it was okay, and it worked really well. The thing I would say is that. After I gave my contributions, I didn't know what happened. I didn't receive any notification or is there like a second round of feedback or is it accepted for what or rejected for what? That would be helpful. And another thing is that I contributed onto my own specific chapter. But I've got no idea about the other chapters. So I am lacking the context and the knowledge graph you're talking about. It would be great if we could have some kind of NLM or whatever to get up to speed. with the larger project."
+  },
+  {
+   "id": "t-1306",
+   "t": 1306,
+   "speaker": "Daveed Benjamin",
+   "text": "Wait, you said… NLM?"
+  },
+  {
+   "id": "t-1309",
+   "t": 1309,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Yeah, NotebookLM."
+  },
+  {
+   "id": "t-1312",
+   "t": 1312,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, okay."
+  },
+  {
+   "id": "t-1314",
+   "t": 1314,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "You you know, that's that's the the the podcast type of, AI."
+  },
+  {
+   "id": "t-1318",
+   "t": 1318,
+   "speaker": "Daveed Benjamin",
+   "text": "Right. Okay, yeah. So just to help people get started with it, and…"
+  },
+  {
+   "id": "t-1320",
+   "t": 1320,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "um… Yeah, I'd just like to understand where the idea comes from, what are these, how many chapters, because I'm not going to read the 800 pages, but I nevertheless would like to understand better how all the different parts. articulate with one another, etc. I would love to, you know, to get a better understanding of the whole project."
+  },
+  {
+   "id": "t-1343",
+   "t": 1343,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome."
+  },
+  {
+   "id": "t-1348",
+   "t": 1348,
+   "speaker": "Leandra Preston",
+   "text": "Yeah, I saw somebody comment, but I thought it would be really cool to have, like, the notifications, uh, you know, that something was accepted or rejected, or…"
+  },
+  {
+   "id": "t-1348b",
+   "t": 1348,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, it…"
+  },
+  {
+   "id": "t-1358",
+   "t": 1358,
+   "speaker": "Leandra Preston",
+   "text": "because I was wondering if it did, but then I realized I wasn't getting them, unless I didn't sign up for them, you know? Maybe I didn't sign up for the notifications, but I was curious if anybody was getting notifications when we did accept. you know, your… somebody's edit or a patch, or, um… I think that would be… if not, that would be a useful addition."
+  },
+  {
+   "id": "t-1382",
+   "t": 1382,
+   "speaker": "Daveed Benjamin",
+   "text": "It does not exist now. That's why we're having this conversation. I see, yeah, Lord M.E.G.A Zion is saying live web alert upon request for immediate progress."
+  },
+  {
+   "id": "t-1395",
+   "t": 1395,
+   "speaker": "Leandra Preston",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-1396",
+   "t": 1396,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. So that kind of sounds like the same type of thing that that we're talking about here. So, yeah, let's let's get that in there. Anything else that either worked well, or did anyone take a look at the PDF? I mean, does it look good? Did it… Did it come out okay? What do you all think? Hey, Joel. up. Okay, so I see Benn says taxonomy of the rejections, characteristics of things that were rejected to help those submitting. Okay, yeah, that's a really good suggestion as well."
+  },
+  {
+   "id": "t-1438",
+   "t": 1438,
+   "speaker": "Benn Konsynski",
+   "text": "So, if there are any patterns to…"
+  },
+  {
+   "id": "t-1439",
+   "t": 1439,
+   "speaker": "Daveed Benjamin",
+   "text": "So that would…"
+  },
+  {
+   "id": "t-1442",
+   "t": 1442,
+   "speaker": "Benn Konsynski",
+   "text": "Uh, the pathologies of, uh, of people submitting, if people know what kind of things or behaviors or… are patterns that would avoid rejection, that might avoid it."
+  },
+  {
+   "id": "t-1455",
+   "t": 1455,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, I think that's a really good suggestion."
+  },
+  {
+   "id": "t-1458",
+   "t": 1458,
+   "speaker": "Benn Konsynski",
+   "text": "It's too dangerous on the acceptance side to say why something was accepted, but there might be patterns of rejection that would…"
+  },
+  {
+   "id": "t-1468",
+   "t": 1468,
+   "speaker": "Leandra Preston",
+   "text": "Mmhm."
+  },
+  {
+   "id": "t-1468b",
+   "t": 1468,
+   "speaker": "Benn Konsynski",
+   "text": "let people know what they should do in their submission to avoid any conditions."
+  },
+  {
+   "id": "t-1474",
+   "t": 1474,
+   "speaker": "Leandra Preston",
+   "text": "Thank you."
+  },
+  {
+   "id": "t-1475",
+   "t": 1475,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, I'm seeing here that, um… Lord M.E.G.A Zion is seeing… has designed a UI layout. I'd love to see it. Do you have my… send me an email, okay? I'm gonna just put my email in here, just… you probably have it, but, uh, send me an email, and I'd love to see what you have there. Perhaps we can model our own chat agent assistant. to aid in alerts and some… yeah, I'd love to see it. I'd love help with that as well. So, yeah. And if you have the… you want to share the UI layout and get feedback from the group right now, or… Is that for another meeting? Okay, maybe another meeting."
+  },
+  {
+   "id": "t-1527",
+   "t": 1527,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "I'm sorry, I'm on the phone."
+  },
+  {
+   "id": "t-1528",
+   "t": 1528,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh."
+  },
+  {
+   "id": "t-1545",
+   "t": 1545,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "as we were talking, I had, uh, just began to draw, and, and we have this futuristic feel as we begin and look into the ascension, and like, like you have there, the tone of, uh, the cosmos, so I, I, I… began to envision. Just to kind of give you guys a, uh… a verbal… well, I'm trying to look for this photo to see if I can share it, um… to give you guys a simple vision, it's just like a guy standing there, and as he's looking forward, you see two to three options to the left side, two to three options on the right, and then this UI is gonna be written like the Star Wars theme, how it first comes on, telling you about. giving you that information. And to the left, you'll see, like, guys standing there in a profile that is your comments for the group. Um, on the right, it would be the, uh… Uh, the various options that we would need, but it would give you more of an interactive feel, and as you go, and I kind of optimize it to be, uh, like as, like, an event, because we're all around the world, and we're customized, we're dealing with events, so you go into the next room as, like, a lecture or a presentation, and say, hey, yeah. I do agree with that, and it gives you that kind of, not a game feel, but kind of interactive movement, and where it's not just, um… I like movement and flow, because when it gets stagnant, you're sitting there, and then just so much reading, I believe in prompt reading, that's why, um, that Star Wars, uh. theme kind of hit for me, because as we read, and at this one projected trajectory, it also helps us… I love to read, but sometimes I get overwhelmed with reading, so the best ways that I can interact… have that interactive with me, that helps me to keep the flow."
+  },
+  {
+   "id": "t-1652",
+   "t": 1652,
+   "speaker": "Daveed Benjamin",
+   "text": "Cool. Well, yeah, well, we look forward to seeing it, for sure. Are you saying that you may be able to bring it up now, or it'll be the future?"
+  },
+  {
+   "id": "t-1660",
+   "t": 1660,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Um, I just have a design that I sketched, but I want to go ahead, and if you guys give me a little bit, I'll better present that so it can look a little bit more presentable, even as a draft. It's just a pencil sketch for now."
+  },
+  {
+   "id": "t-1674",
+   "t": 1674,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-1675",
+   "t": 1675,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "To, uh, more visual, yeah."
+  },
+  {
+   "id": "t-1678",
+   "t": 1678,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Well, whenever you're ready, we're happy to see it. And opening it up to other people as well. Yeah, if you have things that you just want to draft."
+  },
+  {
+   "id": "t-1685",
+   "t": 1685,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Um… It's good. Is there a way that I can… uh, okay, if I show my… I got a photo, so I'm just gonna go back to the, uh… Here we go."
+  },
+  {
+   "id": "t-1708",
+   "t": 1708,
+   "speaker": "Daveed Benjamin",
+   "text": "Are you sharing them?"
+  },
+  {
+   "id": "t-1711",
+   "t": 1711,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "See you, bye. Get my video to… I don't think you guys."
+  },
+  {
+   "id": "t-1738",
+   "t": 1738,
+   "speaker": "Daveed Benjamin",
+   "text": "You got it now, or you wanna… Jump in when it… when you got it up. Oh, there it is, okay."
+  },
+  {
+   "id": "t-1747",
+   "t": 1747,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Um, am I sure?"
+  },
+  {
+   "id": "t-1750",
+   "t": 1750,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, we can see your screen is very… do people see it as big or small? I see it as small right now."
+  },
+  {
+   "id": "t-1751",
+   "t": 1751,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Yeah, so…"
+  },
+  {
+   "id": "t-1757",
+   "t": 1757,
+   "speaker": "Leandra Preston",
+   "text": "It's small, but I pinned it and made it bigger."
+  },
+  {
+   "id": "t-1760",
+   "t": 1760,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-1760b",
+   "t": 1760,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Thank you so much. Um, so this would be your revised section. Approved."
+  },
+  {
+   "id": "t-1765",
+   "t": 1765,
+   "speaker": "Benn Konsynski",
+   "text": "You can spotlight it."
+  },
+  {
+   "id": "t-1769",
+   "t": 1769,
+   "speaker": "Daveed Benjamin",
+   "text": "Is anyone… can we spotlight it for the… okay, hold on, let's see."
+  },
+  {
+   "id": "t-1774",
+   "t": 1774,
+   "speaker": "Benn Konsynski",
+   "text": "You can. Host can."
+  },
+  {
+   "id": "t-1776",
+   "t": 1776,
+   "speaker": "Daveed Benjamin",
+   "text": "Otherwise. How do I do that?"
+  },
+  {
+   "id": "t-1780",
+   "t": 1780,
+   "speaker": "Benn Konsynski",
+   "text": "How, uh, Spotlight, uh, up on…"
+  },
+  {
+   "id": "t-1782",
+   "t": 1782,
+   "speaker": "Renad Baomar",
+   "text": "It's a muscle balance."
+  },
+  {
+   "id": "t-1783",
+   "t": 1783,
+   "speaker": "Benn Konsynski",
+   "text": "Put it over, put your cursor over his ellipse. And click it, and you'll get a different menu than we have. And it'll…"
+  },
+  {
+   "id": "t-1793",
+   "t": 1793,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, I have… so spotlight for everyone. Okay, there we go. All right, there you are."
+  },
+  {
+   "id": "t-1797",
+   "t": 1797,
+   "speaker": "Benn Konsynski",
+   "text": "There you go. That's better."
+  },
+  {
+   "id": "t-1803",
+   "t": 1803,
+   "speaker": "Daveed Benjamin",
+   "text": "You wanna go ahead and explain?"
+  },
+  {
+   "id": "t-1806",
+   "t": 1806,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Okay, yeah, so, um, again, this is just my thought… my thoughts within 4 to 5 seconds, guys, so I appreciate your, uh, courtesy and bearing with me. Um, but yeah, this is just a viewpoint, and I was thinking about, you know, the different layouts with the phone, because I'm always on the go. Uh, mobile and, and different layouts for, um, for the laptop use or, uh, desktops. Uh, your, your section here would be for help, and that, this was another point where I was looking into, uh, assisting everything crosses and have that mesh effect with nodes. So, here again, you will be doing your revise as your viewpoint here. The whole DP will be read out with the Star Wars theme, where you can kind of have the prompt reading here, and it come in, you know, uh, easily focused. Your comments group section is people here. Um… And there may be a few other sections that I missed, but um… I believe I was beginning to have that live feed section that I mentioned in the comment, um, and the help, if you need help, um, possible agent assistant, or if there's someone available that can be alerted, like with the, uh, notification system if someone wants to come in and assist. Uh, with, uh, active, uh, assistance. And then again, this will be our — I think our chat is . I have a TrustOS with the human approval gate with the runtime and the evidence registry ready to be utilized. But again, it'll be helped to assist with this and evaluating what's being approved with our system. chat agent, and then again, we just approve the revise, and then go into another section of the room, or to the event. That's just pretty much the draw of it, so we can kind of have, you know, the lights and the feel of a futuristic space command."
+  },
+  {
+   "id": "t-1922",
+   "t": 1922,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. Well, I look forward to seeing the evolution of this. And yeah, yeah, let's let's keep on iterating and. seeing where we can take it, because I've… certainly the… the interface as it is now is not necessarily ideal, I know that. So, let's let… let's keep it going. Absolutely. Okay."
+  },
+  {
+   "id": "t-1938",
+   "t": 1938,
+   "speaker": "Leandra Preston",
+   "text": "Mmhm."
+  },
+  {
+   "id": "t-1946",
+   "t": 1946,
+   "speaker": "Daveed Benjamin",
+   "text": "Um… While he's looking, I actually did an improv class in a very interactive online space designed for it to feel like you were inhabiting a building of rooms. It was quite cool. So, Allison, you're you want to speak a little bit to that?"
+  },
+  {
+   "id": "t-1963",
+   "t": 1963,
+   "speaker": "Allison Gustavson",
+   "text": "Well, it just made me think of it while he was looking… while he was describing what his vision was. It reminded me of this… it was amazing. This guy, he was… had a, you know, living improv theater in San Francisco, and then in COVID, he decided to try to rebuild it online. But I don't know, I randomly took this class, but it was a cool experience, because you… I won't go into it, but it seems like it was a very, it made something that was awkward into something that was more generatively social. So like you could go into a meeting room and collaborate with other people and you kind of felt like you were with other people and then you walk down the hall and then you're on a stage and so someone's giving a presentation."
+  },
+  {
+   "id": "t-2001",
+   "t": 2001,
+   "speaker": "Leandra Preston",
+   "text": "Mmhm."
+  },
+  {
+   "id": "t-2003",
+   "t": 2003,
+   "speaker": "Allison Gustavson",
+   "text": "it's really hard to describe. But anyway, it's just, I was trying to give a little bit of a vision to what I felt like he was articulating, um, with that drawing. And it's, I mean, just to show that it's possible to create, so you feel like you're inhabiting the space and collaborating, rather than, you know, the normal distance that we feel with, uh, architecture like that."
+  },
+  {
+   "id": "t-2020",
+   "t": 2020,
+   "speaker": "Daveed Benjamin",
+   "text": "You know… it… I think what you're talking about, and also what he was just talking about, it makes me think of a game, in a way. It's… Gamifying it, making you feel like you're you're part of something, some kind of. Yeah, I don't know. That's what came to my mind. Anyone else have any thoughts? Oh, go ahead."
+  },
+  {
+   "id": "t-2040",
+   "t": 2040,
+   "speaker": "Allison Gustavson",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-2043",
+   "t": 2043,
+   "speaker": "Leandra Preston",
+   "text": "Yeah, I was thinking even like, I mean, you know, down the line, not putting the cart before the horse, but, or wait, the horse before the cart, but. No, the card before, sorry. We could, you know, it could be like, oh, you don't, you're not into the Star Wars theme, right? So then you can, you know, you choose kind of like how you can do your Google homepage, like in different themes. There could be things like that to make it, you know, like, what do you want your interface to look like, right? Like, oh, I don't really, I don't really want the Star Wars, I want the, you know, Hello Kitty theme or whatever, you know, it could be really, make it fun like that too."
+  },
+  {
+   "id": "t-2058",
+   "t": 2058,
+   "speaker": "Daveed Benjamin",
+   "text": "The card before the horse."
+  },
+  {
+   "id": "t-2081",
+   "t": 2081,
+   "speaker": "Leandra Preston",
+   "text": "um… That just reminded me, but yeah, it's different skins. Yeah, that could be cool."
+  },
+  {
+   "id": "t-2085",
+   "t": 2085,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep. All right. Let's… Anyone else have anything else before we jump back? All right. Going back to this. Presentation."
+  },
+  {
+   "id": "t-2104",
+   "t": 2104,
+   "speaker": "Daveed Benjamin",
+   "text": "What I think we're we want to get to, and I'm not sure why this is. It's so hard for me to get back into the slideshow mode, it's weird. But where I think we want to get to next is there's some… some ideas about how we're organizing, and we're gonna maybe want to change some of those, so we'll go over a little bit about that. Um… What are we saying here? So… I had ChatGPT go through and develop a proposal based on all the information that I've been… I've been giving it information all along, and it's been kind of part of… so on this same thread, I said, okay, well. Given… given all that we've had, what… what's a straw… straw person, uh, proposal that we could put out that maybe could be the basis for us to… to move forward with a vote around the meta-governance? And, this is it did come up with something. It came up with something pretty good. And I guess the the thing is, we would love in this session to identify, well, what would you change? What would you keep? What would you replace? What? What alternatives would… deserve a place on the ballot, what information is missing, and later on, we'll end up, you know. Taking. We'll take the information from this session and generate a essentially a a ballot, and then we'll have that process where people have 24 h, or whatever we decide to. to make any updates, changes, suggestions, additions, etc, and then we would have it moved to the ballot at that point. So, here's the beginning of that, President. That that proposal. So Mondays would be really a listen session. We would have. like, 2-minute contributions. Uh, we enable… there would be clarifying… questions, we'd have some time bots discussions, so we essentially use this as a… as a time to get a lot of input from different people. And… we want to develop different options for any particular decision. Like, for example, there's a decision that we need to make. One is, that is, well, how many co-editors are there? Well, we would probably come in. I think at this point, uh… the… the… the proposal from ChatGPT is that there would be 3. Co-editors, and it takes 2 approvals to move something forward. And so during this session. We'd want to find out, okay, well, what do you all think about that? And then are there some other alternatives that you think that we should consider as well?"
+  },
+  {
+   "id": "t-2296",
+   "t": 2296,
+   "speaker": "Leandra Preston",
+   "text": "Sorry."
+  },
+  {
+   "id": "t-2298",
+   "t": 2298,
+   "speaker": "Daveed Benjamin",
+   "text": "Let me get. Get some… some, uh, some input on that, and, um, then… move on to the next thing. And… Let's see… So here's the proposed cycle. The community has input needs, and there's some proposals that. are coming into the session. And so we know in this case they're meta governance type things like, well, how many co-editors? How do we? How do we vet a co-editor? These types of things? And so they come, and we come into Monday, and. We together explore options. People will say what they think. They put options on the table. Then we have Claude take the transcript from the meeting and draft a more or less a ballot. That includes, you know, a fair spectrum of what was mentioned in the meeting. Once that is available as a Google Doc, there will be 24 hours for people to correct. any… anything in it. So, if they were misquoted, or their option was misquoted, they could… they could change that, or if something's missing, they had put out a dissent around something, and it isn't reflected in this summary that's created by Claude, then. they'd have this 24-hour period to… to correct that. Once that's done, the… the council, and we haven't really talked about the council, the council… a council is something that we need to… to add into this meta… meta… governance conversation, the council, I think, would screen and make sure that it's ready for… the ballot is ready, and if it is, then the community would vote over, say, 48 or 72 hour period. That's another decision. How much how much time for each of these different things. And then whoever whoever is the whatever gets passed. Oh. The people who are owners of that task, in terms of they are the ones that need to implement it, would be then empowered to make those changes. from a code standpoint, that's… I'm doing a lot of that now. I would love to see other people get involved with the coding aspect. It's not that hard, because we're using Claude, and. And, yeah, it makes it a lot easier to actualize any changes in the code. So, hopefully over time, we can move that from being something that I exclusively do to something that a small group of people. work on and take ownership of. And then the last step is what we'd review, and it feeds into the next cycle. Anyone have any comments on this? Does it make sense? Does it not make sense?"
+  },
+  {
+   "id": "t-2492",
+   "t": 2492,
+   "speaker": "Stella Alvo",
+   "text": "Well, it's a lot to take in, and um…"
+  },
+  {
+   "id": "t-2493",
+   "t": 2493,
+   "speaker": "Leandra Preston",
+   "text": "Okay."
+  },
+  {
+   "id": "t-2497",
+   "t": 2497,
+   "speaker": "Stella Alvo",
+   "text": "I'm kind of concerned about having 3 co-authors. We had trouble getting 2 co-authors, and. You know, I think it makes sense from a process point of view, but I'm just thinking about actually how we would. Carry this out and put it into reality in terms of the amount of time and. Um, energy, because it seems to me that people are, um, very into their own DP. And I, you know, I know with the ones that I worked on, there were. two or three people, and I'm not sure that they ever got around to, um… agreeing. So I'm just wondering about the actual implementation of this process. It's logical."
+  },
+  {
+   "id": "t-2551",
+   "t": 2551,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, I mean, I think you make a good point, and. What I'm seeing, I think… This this group would I had envisioned is that we would come up with a really strong meta governance. Of the entire process and then. Put this out to the world and engage people who are interested in the different DPs. Like you said, I mean, people, there are people that are not on this call that are very interested in different aspects of this. That is what we need to do is really well, we need to engage some more of those people so that they are involved in the process as either a contributor or a co-editor. You're you're totally right. We don't have. We can't take this group of people and expect them to be the co-editors of everything. And that just isn't isn't even realistic or or the best way to think about it. So yeah, you're you're totally right. This needs to be something that goes much wider than the 12 of us who are on this call. And, um… Yeah. I think we can. I think that there's going to be sufficient interest. I think we've got a really good beachhead and that we can draw people in if we have a clear process, Allison."
+  },
+  {
+   "id": "t-2643",
+   "t": 2643,
+   "speaker": "Allison Gustavson",
+   "text": "Yeah, I mean, I'm just kind of listening. I know I'm just a sort of a bystander here, but I just wanted to, um… I'm really intrigued, and I want to learn more and understand this better, but wanted… I think, Daveed, you're going to be meeting with that guy, Adam, that I kind of introduced you to, who has created this really elegant structure for governance that I think. might remove some of the friction of getting more people involved, and, like, so it doesn't have to be all these Google Docs and everything, and then we're gonna have this insular system. It seems like it's pretty modular and can grow and adapt, so I hope that you're… I think you're meeting with him soon, and I'll be really curious to hear what you think, because I think that could be."
+  },
+  {
+   "id": "t-2665",
+   "t": 2665,
+   "speaker": "Daveed Benjamin",
+   "text": "Mmhm."
+  },
+  {
+   "id": "t-2678",
+   "t": 2678,
+   "speaker": "Allison Gustavson",
+   "text": "sort of a… partial solution to, uh, where, you know, having people find their place, not being overwhelmed, and being able to expand and build out. So that's… I see that as a possible solution, but I don't know until maybe you meet, so I'll be curious to hear about that."
+  },
+  {
+   "id": "t-2691",
+   "t": 2691,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome, that's Adam Lake, right? Yeah, what's the name of his project mosaic.social and civic.social? I can't remember."
+  },
+  {
+   "id": "t-2698",
+   "t": 2698,
+   "speaker": "Allison Gustavson",
+   "text": "Yeah. Yeah, that's it. I'll put it in the chat, but I mean, I'm learning about all these things, like, a million different… but I do think there's overlap in, like, the goals and in the, uh, structures that can support all of those goals. I think it's… anyway, I think you'. Enough about that until you guys actually talk. But I wanted to put that out there as a solution."
+  },
+  {
+   "id": "t-2716",
+   "t": 2716,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Yeah, I'm looking forward to the conversation with him. I'm not sure if we have one scheduled, or if there's just the intention I need to… I think I'll reach back out to him today. Thanks for the reminder."
+  },
+  {
+   "id": "t-2732",
+   "t": 2732,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. So, overall, every… people… I think this idea of having a weekly decision cycle is something that we can at least try. It makes logical sense. We may not have as many people as we'd like in the process at the moment, but it does make sense. Is that the sense that I'm getting?"
+  },
+  {
+   "id": "t-2762",
+   "t": 2762,
+   "speaker": "Benn Konsynski",
+   "text": "You need that cadence. I I agree."
+  },
+  {
+   "id": "t-2768",
+   "t": 2768,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep. Alright."
+  },
+  {
+   "id": "t-2770",
+   "t": 2770,
+   "speaker": "Stella Alvo",
+   "text": "Yeah. And I think that you need your your core, which you have. Here are the people. I see familiar names on the call. each week that we've… we've been meeting, and so I think there is a core. And with that core, we'll be able to, um… advance out. But I think we really need to be reasonable and respectful of people's time. Because the people who cannot meet in the middle of the day might need to meet in the evenings, or on the weekends, or…"
+  },
+  {
+   "id": "t-2797",
+   "t": 2797,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes."
+  },
+  {
+   "id": "t-2805",
+   "t": 2805,
+   "speaker": "Stella Alvo",
+   "text": "You know, I think the Monday cadence is good for the group that can make it, and then other people can come on if there is a more. Um, agreeable time for them."
+  },
+  {
+   "id": "t-2819",
+   "t": 2819,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep, yep. Well, we've gone over this a couple times, but basically, the idea is, at least in this first round. is 24 h enough to, you know, verify the draft that comes out of Claude that enough time to give people to the opportunity to check, to make sure their ideas are represented correctly, to. Preserve disagreement. And, yeah, just give… does that feel okay, at least to try? 24 hours? Or do you want to…"
+  },
+  {
+   "id": "t-2852",
+   "t": 2852,
+   "speaker": "Leandra Preston",
+   "text": "So what happened?"
+  },
+  {
+   "id": "t-2853",
+   "t": 2853,
+   "speaker": "Stella Alvo",
+   "text": "I think it's a start."
+  },
+  {
+   "id": "t-2856",
+   "t": 2856,
+   "speaker": "Leandra Preston",
+   "text": "And then what happens if they don't… if they don't see it or address it in 24 hours, then…"
+  },
+  {
+   "id": "t-2865",
+   "t": 2865,
+   "speaker": "Daveed Benjamin",
+   "text": "It would probably have to be dealt in a future meeting, or in a future ballot, because the idea would be that after 24 hours, we…"
+  },
+  {
+   "id": "t-2871",
+   "t": 2871,
+   "speaker": "Leandra Preston",
+   "text": "Okay."
+  },
+  {
+   "id": "t-2877",
+   "t": 2877,
+   "speaker": "Daveed Benjamin",
+   "text": "a… a, um… a proposed… Uh, ballot… would go to the steering committee. They would just or council, whatever we're calling it. They would just do a once over to make sure it makes sense, and then put it out to the vote, and there'd be, say, 48 h or 72 h for people to vote, and it wouldn't just be us. It would be the entire community of people."
+  },
+  {
+   "id": "t-2887",
+   "t": 2887,
+   "speaker": "Leandra Preston",
+   "text": "Okay."
+  },
+  {
+   "id": "t-2905",
+   "t": 2905,
+   "speaker": "Daveed Benjamin",
+   "text": "who have contributed or co-edited."
+  },
+  {
+   "id": "t-2909",
+   "t": 2909,
+   "speaker": "Leandra Preston",
+   "text": "Yeah, I just want to make… it's not like if they don't reply to verify, does it, you know, go to die or something? Like, it just proceeds."
+  },
+  {
+   "id": "t-2909b",
+   "t": 2909,
+   "speaker": "Daveed Benjamin",
+   "text": "Pull. Yes."
+  },
+  {
+   "id": "t-2917",
+   "t": 2917,
+   "speaker": "Leandra Preston",
+   "text": "Okay."
+  },
+  {
+   "id": "t-2918",
+   "t": 2918,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. And then, like, so I was saying the council would screen it for readiness. Just checking the scope, clarity, feasibility, alignment with our charter, etc. We should probably have a published screening criteria if something does not make it. to the ballot, then we would want to give reasons, and. Um… Let's see. So protect verification material changes to the question. Yeah. So we'd want to basically. uh… keep… keep records of things that were changed and why, and just to be clear that the Council's screening is… is not… The vote, it's really just saying that something can go to vote. Uh…"
+  },
+  {
+   "id": "t-2976",
+   "t": 2976,
+   "speaker": "Daveed Benjamin",
+   "text": "chapter editing and governance. So the so right now I I went ahead, and because there had been a couple of cases where there wanted to be 3 editors. I went ahead and made that a possibility for all the DPs. I'm. I'm cognizant that we still don't have all of them filled yet, even for 2 co-editors, but at the same time, I think we can just keep on building and add them as they come. The way it's set up now is 3 co-editors and 2 approvals needed. this is just the proposal. This is what chat suggested. We can change this. So, does anyone have any other proposal for. How we would move forward, any specific. Desirable property proposal meaning. when someone does a patch or an insert, does this sound right? Three co-editors per DP with two approvals needed, or are there people who would prefer to stay with two co-editors and two approvals needed? Do we need… does that need to be on the ballot? What do people think? Anyone have any thoughts on it? Or do we just keep it at 3 co-editors per DP? with 2 approvals needed."
+  },
+  {
+   "id": "t-3062",
+   "t": 3062,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Practice will tell."
+  },
+  {
+   "id": "t-3066",
+   "t": 3066,
+   "speaker": "Daveed Benjamin",
+   "text": "I'm sorry, Gael, what'd you say?"
+  },
+  {
+   "id": "t-3067",
+   "t": 3067,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "I said, practice will tell. Let's try it out like this."
+  },
+  {
+   "id": "t-3070",
+   "t": 3070,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Okay. Sounds great. Um…"
+  },
+  {
+   "id": "t-3076",
+   "t": 3076,
+   "speaker": "Daveed Benjamin",
+   "text": "So, in terms of, um… the community, the community balance ballots. We're going to want to figure out like, what is the quorum for them? Like, do you need 50% pass? Well, actually, a quorum is different. So there's going to need to be a threshold. So a threshold, it could be 50% to pass something, it could be 60%, could be 67%. So we're going to want to decide that. And then also a quorum. A quorum is. Of the voting body, how many… what percentage of the voting body is needed to. Make the vote valid. And we could we could say percentage of the voting body or we could put a, a number. So we could say, well, we need 20 votes, or we could say we need 10% of the, the, the voting body or 25% of the voting body to make something valid. It's clear to me that we're not going to get 100% of people voting, so we couldn't. We don't want to make it contingent on that many people. So do people have any questions? Suggestions for the threshold? Should it be 50%? to make something… to approve something? Or do you want higher? What do? What do people think?"
+  },
+  {
+   "id": "t-3172",
+   "t": 3172,
+   "speaker": "Stella Alvo",
+   "text": "I'm sorry, I lost track of what the 50% is of. Is it the total steering committee, 50% of the people on the DP, 50% of… What is it 50% of?"
+  },
+  {
+   "id": "t-3185",
+   "t": 3185,
+   "speaker": "Daveed Benjamin",
+   "text": "So there's two things. One is the threshold for approval, so… 50%, do we want to say… if you get more than 50%, so you get a majority, then that threshold is met, or do we want to have it higher? Like 60% or something like that. So I just love to I'm going to throw out 50%. Is there an alternative, number that people think we should consider as well?"
+  },
+  {
+   "id": "t-3215",
+   "t": 3215,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Um, just the number 50% in itself, it would kind of, uh, substantiate half. I mean, and within that, I would say that it would justify a reason to be held. uh, capable for review, but if we looked at it in the… in the… in the methodology of… of review, uh, critical or, you know, uh. highly critical, or, you know, just to keep it without being disposed of with the 50%, but as far as, like, being totally approved, that would kind of undermine the, uh, the other registries and their markings of, uh… A vote, a vote number."
+  },
+  {
+   "id": "t-3259",
+   "t": 3259,
+   "speaker": "Daveed Benjamin",
+   "text": "So, are you suggesting… What do you, what do you, what would be the counter proposal to 50% in your mind in terms of a threshold for approval?"
+  },
+  {
+   "id": "t-3271",
+   "t": 3271,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "I mean, the 50% would be enough to nudge and say, okay, this is held in acknowledgment, okay? But as far as, I mean, something we can keep in our hindsight, but… Of course, it shouldn't be above the 60% mark or above the 70% voting mark, you know, because with that being said, there should be a format of what is to view based upon its."
+  },
+  {
+   "id": "t-3287",
+   "t": 3287,
+   "speaker": "Daveed Benjamin",
+   "text": "Indeed. We both are. Yes."
+  },
+  {
+   "id": "t-3302",
+   "t": 3302,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "its response, almost like… I don't want to make it sound like a social media thing, but if it has more likes, then that demands the immediate attention. So, um, with that being said, and the 50% would just keep it, like, not to be disposed, like, say, not being killed, or, you know, again, let's go back and revisit."
+  },
+  {
+   "id": "t-3324",
+   "t": 3324,
+   "speaker": "Daveed Benjamin",
+   "text": "And so, if there was, say, a higher threshold, so 60% of the people, or 70% of the people voted. Yes, or like this, then that… that would be… a better indication that this is something that we should move forward with immediately. Is that…"
+  },
+  {
+   "id": "t-3346",
+   "t": 3346,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Absolutely."
+  },
+  {
+   "id": "t-3346b",
+   "t": 3346,
+   "speaker": "Daveed Benjamin",
+   "text": "What I'm hearing? Okay."
+  },
+  {
+   "id": "t-3348",
+   "t": 3348,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-3349",
+   "t": 3349,
+   "speaker": "Daveed Benjamin",
+   "text": "And then, so that's one. Anyone else have any input on that particular one on thresholds?"
+  },
+  {
+   "id": "t-3358",
+   "t": 3358,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "Well, I think we should strive for consent. Uh, when it's not possible, consensus, and with a route to backtrack and, you know, and realize if we made a mistake, come back to the decision, and, uh, I don't know."
+  },
+  {
+   "id": "t-3373",
+   "t": 3373,
+   "speaker": "Daveed Benjamin",
+   "text": "And so that's a different… so that rather than voting to approve. Maybe we're sounds like you're saying as an option potentially to have people essentially consent. To this moving forward."
+  },
+  {
+   "id": "t-3391",
+   "t": 3391,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "I think so, yeah."
+  },
+  {
+   "id": "t-3392",
+   "t": 3392,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-3393",
+   "t": 3393,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "So it would require a conversation, and once everybody understood the point of view of everybody else, then we say, okay, I understand why you guys decide to go that way, and I therefore accept, you know."
+  },
+  {
+   "id": "t-3407",
+   "t": 3407,
+   "speaker": "Daveed Benjamin",
+   "text": "Great feedback. So the other one is the quorum. Does anyone have any thoughts on the quorum? it might be kind of difficult at this point, right? Because we… we really don't know. how many people are gonna gonna vote. So. Yeah. This first time is going to be experimental. Anyone have any thoughts on whether we should set a quorum? At this point. Okay."
+  },
+  {
+   "id": "t-3455",
+   "t": 3455,
+   "speaker": "Daveed Benjamin",
+   "text": "Uh, boundaries… what do you all think about with respect to… A title change to a chapter requires steering approval. And the reason why this came up, ChatGPT was recommending this because when you make a title change, so there's a couple that have been thought about, but one was DP10 education could be changed to learning and adaption. This was this came up in a previous meeting. It seemed like it got some different support. So wondering, what people think about that? If, is it, I, yep."
+  },
+  {
+   "id": "t-3496",
+   "t": 3496,
+   "speaker": "Benn Konsynski",
+   "text": "I, I think. I think it makes sense, because there are. many repercussions for sort of changing from what people had to what people want, and that you want some clear approval by the community. I've seen your community."
+  },
+  {
+   "id": "t-3520",
+   "t": 3520,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep. Okay."
+  },
+  {
+   "id": "t-3523",
+   "t": 3523,
+   "speaker": "Stella Alvo",
+   "text": "So what I'm hearing is that you're going to have, um, the steering committee. How many people from the steering committee, but does there also have to be people from the DP? a percentage of people from the DP that are part of that. So, the people who've worked on DP10, would they have… would there have to be a percentage of them that agreed?"
+  },
+  {
+   "id": "t-3546",
+   "t": 3546,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, I think that it would start from them like they would be the ones that would. Signal. that DP10 needed to have a change. So, it starts with them, and then it goes to the steering committee. For the actual… just to… to approve that change. But actually, it may be that it should actually go to the entire community as a vote. So, I'm totally open to that as well. What do you all think? Is that a steering committee decision or is that an entire community decision to change the title of a chapter?"
+  },
+  {
+   "id": "t-3593",
+   "t": 3593,
+   "speaker": "Leandra Preston",
+   "text": "Um, that's a good… I mean, I… it's not an… Maybe not necessarily everybody's read all the chapters. It could be too. So… Maybe the steering committee and. Co-editors of the chapter."
+  },
+  {
+   "id": "t-3614",
+   "t": 3614,
+   "speaker": "Daveed Benjamin",
+   "text": "Any other thoughts?"
+  },
+  {
+   "id": "t-3617",
+   "t": 3617,
+   "speaker": "Stella Alvo",
+   "text": "Yeah, I was thinking it should be at least 75% of the… Of the people who wrote the chapter who are invested in it."
+  },
+  {
+   "id": "t-3624",
+   "t": 3624,
+   "speaker": "Leandra Preston",
+   "text": "Oh, yeah. And authors. Yeah, yeah. Good point."
+  },
+  {
+   "id": "t-3627",
+   "t": 3627,
+   "speaker": "Stella Alvo",
+   "text": "And that then it would go to the steering committee for the 50%."
+  },
+  {
+   "id": "t-3634",
+   "t": 3634,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Yeah, that's, um… That's… Definitely something that we can work in."
+  },
+  {
+   "id": "t-3644",
+   "t": 3644,
+   "speaker": "Daveed Benjamin",
+   "text": "So, I wanna… I wanna… before we go on… There's a couple more slides that I have, but I would like to give the floor to Allison, because there was an idea that came up before, in the last meeting, for a book club around this, and I would love to hear. What came up for her and what might be possible?"
+  },
+  {
+   "id": "t-3669",
+   "t": 3669,
+   "speaker": "Allison Gustavson",
+   "text": "Yeah, I'll be really brief. I just, thank you. I just thought, again, that this is a pretty monumental project you guys have undertaken. And I think maybe there's just a way to organize that we can all take any, well, I mean, I could take in your work in a way that's sort of facilitated and supported because I don't know that I would be managing. that on my own, and I would imagine that others, you know, if we could kind of map that territory, it might be helpful for other people getting onboarded to this. Uh, you know, immense… undertaking. Um, and then the only other thing I mentioned was just because it was… there seemed like a lot of, like, LinkedIn profiles getting thrown around. I thought maybe a WhatsApp or Signal group to keep communication going, because we all have so many other projects, it might be worthwhile. But that's all. That was… that was my… But…"
+  },
+  {
+   "id": "t-3719",
+   "t": 3719,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, I'd be really interested to hear more about how. a book club might work. Would we focus on… all of us focus on the chapter, and… we'd have a maybe have a conversation, put 10 or 1520 min in the the weekly meeting to to go over what what people saw in the chapter, what they thought. What do you think?"
+  },
+  {
+   "id": "t-3746",
+   "t": 3746,
+   "speaker": "Allison Gustavson",
+   "text": "Well, I'm still trying to figure out, you know, you're going over all this governance stuff, which I think is very sort of primary, but yeah, I mean, I've been in many different types of book clubs from casual to really structured. There was a book that just came out that they had a weekly meeting where it was sort of facilitated discussion around the book by the author. Now this is obviously a bunch of authors, so maybe. perhaps, like, the DP that's being discussed, like, the people who worked on it could be the leaders and just kind of, you know, kind of help facilitate everybody's deeper understanding of what they were going for each time. Yeah, maybe 20 minutes. It doesn't have to be a long time, just, like, to keep people going. I think just to keep some momentum and to give a more holistic sense of things, I think it could be really valuable. But yeah, it doesn't have to be yet another huge project. I'm just thinking, you know, something that gives us… break it down into chunks, and… You know, that's it."
+  },
+  {
+   "id": "t-3801",
+   "t": 3801,
+   "speaker": "Leandra Preston",
+   "text": "It could also be a way to get more people in, you know, coming into the project if we… I mean, let's say separate from the Monday meetings, like, not that… not that we need a whole other thing, but it…"
+  },
+  {
+   "id": "t-3811",
+   "t": 3811,
+   "speaker": "Allison Gustavson",
+   "text": "Yes."
+  },
+  {
+   "id": "t-3816",
+   "t": 3816,
+   "speaker": "Leandra Preston",
+   "text": "It was like the book club, you know, the… met a… Whatever we want to call it. That it could be… you know, chapter per whatever, you know, however often, every two weeks, or every… I don't know how often people would want to do something like that, but, um… Because I know there's a lot to talk about with each chapter, you know, that could… I feel like 20 minutes would be limiting. I don't know if it would be…"
+  },
+  {
+   "id": "t-3847",
+   "t": 3847,
+   "speaker": "Allison Gustavson",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-3848",
+   "t": 3848,
+   "speaker": "Leandra Preston",
+   "text": "detracting to, you know, create another thing, but I think it could also be a great way to get people. you know, coming in, like, oh, what is this? Oh, I'm down, you know, people love book clubs, I'm gonna read this, it's open access, it's free, um… So it could be a promising… kind of promotional tool as well."
+  },
+  {
+   "id": "t-3869",
+   "t": 3869,
+   "speaker": "Allison Gustavson",
+   "text": "Yes."
+  },
+  {
+   "id": "t-3869b",
+   "t": 3869,
+   "speaker": "Daveed Benjamin",
+   "text": "So Joel just mentioned 30 minutes, just so… so he's saying, let's up the ante, we need a little bit more time to talk about the chapter. I mean, I'm sure he's right, but I guess my question would be."
+  },
+  {
+   "id": "t-3878",
+   "t": 3878,
+   "speaker": "Leandra Preston",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-3884",
+   "t": 3884,
+   "speaker": "Daveed Benjamin",
+   "text": "How many of you would be willing to read a chapter on either a weekly or biweekly basis and then come prepared to talk about what you read in this half an hour? Is this something that people would be excited about?"
+  },
+  {
+   "id": "t-3905",
+   "t": 3905,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "I personally, I personally like this idea and I can see the expansion of it. Um… I just feel, like, automated, because earlier it was said… forgive me for not, um, looking at the name, I was just listening in. It was said earlier that we have to be respectful of the time, so the best way that it's automated, I feel like the, uh, host or coordinator should have the. Itemized, uh, focus, whatever hasn't been focused should be the focus, so that… all of us can read in on that 30-minute segment of whatever chose reader it is, and a person can choose to read whatever, um, chapter. And we all be able to read in, listen in. I don't know the tools and skills assets that they have available for book club readings, but the way that I envision it is be able to come in whenever I'm available, listen in to that 30 minutes, be able to leave my comments and talk about or comment on someone else's comment. Within that section about that readable, and again, it'll be focused on the ones that need to be, um, getting better votes, too, because that would solidify and answer the part about the votes with the ones with 50% or below. And, uh, also, um… there was another section about, um, changing the titles. I believe that can also be given into the simulation, uh, project that I'm thinking about, because I want to visualize these DPs in action, um, so that people can have a better view. Animation works in so many ways. The first thing we hear. is from our, our audio, but our mind begins to make a occipital, um, display because of our, our lobe there that it functioned, and that helps us with our learning ability and our yield."
+  },
+  {
+   "id": "t-4011",
+   "t": 4011,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. Yes. So… That's interesting. You've… We've now… we're now talking about both a in-person session, but also some asynchronous, um… as well, which the book facilitates that, right? Because we can have the asynchronous conversation in the margins as you're reading using Canopi, and then we could have this 20- or 30-minute session in our weekly meetings. to go in depth. And I think what is very interesting to me when I first heard the book club idea. I think it can help us really… figure out how to best communicate these chapters because as a book club, everybody might will come in and we read federated authentication and accountability. A number of the people probably haven't thought much. about authentication at all, or strong authentication. And so it gives it a group of… it gives us some… what do you call it? The… the virgin eyes, or the… the… the… The first eyes, the first time looking at it, and… Through that process, maybe we'll identify, oh, well, here's some other things that we can add to these chapters. Well, for example, of course, images, right? That's already been brought up. But that type of thing that, you know, maybe each chapter needs. A new section at the beginning that explains. what it looks like as a use case or something, but we can learn that through this book club process, I think, is there's some power in there, um, for actually improving the book. Is my thought."
+  },
+  {
+   "id": "t-4131",
+   "t": 4131,
+   "speaker": "Daveed Benjamin",
+   "text": "All right, well, thank you so much, Allison. In terms of Signal versus WhatsApp, or WhatsApp. What I've… what I've noticed, we set up a… we've set up a WhatsApp group, and then a bunch of people said. You know, I'm not going to use WhatsApp because it's owned by meta. And you, you know, my my personal integrity does not allow me to do that. And then we set up another one in signal. and it just, you know, doesn't get a huge amount of activity. So, I'm not sure what the best solution is. We certainly can set up one or both of those. I guess it would be amazing if everybody was willing to do Signal. Just because I know we're gonna have the problem where some people are gonna say, I can't do WhatsApp. So, anyone have any thoughts on WhatsApp versus Signal versus Telegram?"
+  },
+  {
+   "id": "t-4197",
+   "t": 4197,
+   "speaker": "Allison Gustavson",
+   "text": "I'll just chime in. I… it could have been an idea that just is… has been tried. I know… I know those groups. I have a lot of signals that are kind of quiet, so we don't need to… if it's… if it's not desirable, or it's just another noise."
+  },
+  {
+   "id": "t-4197b",
+   "t": 4197,
+   "speaker": "Daveed Benjamin",
+   "text": "Who?"
+  },
+  {
+   "id": "t-4209",
+   "t": 4209,
+   "speaker": "Allison Gustavson",
+   "text": "you know, avenue, then maybe it's not even necessary. It was just kind of something I was thinking last week."
+  },
+  {
+   "id": "t-4211",
+   "t": 4211,
+   "speaker": "Daveed Benjamin",
+   "text": "Well. No, no, I think it's… I think it's necessary, I'm just wondering, uh, would… would people be able to… Participate, potentially, in a signal group. Are there people that wouldn't… definitely not needed, but unique? Um… Does anyone have an objection to Signal? Okay, I guess…"
+  },
+  {
+   "id": "t-4244",
+   "t": 4244,
+   "speaker": "Renad Baomar",
+   "text": "Yeah, um… For me, signal does not work, because it's not… doesn't work in Oman."
+  },
+  {
+   "id": "t-4246",
+   "t": 4246,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh. Oh, okay."
+  },
+  {
+   "id": "t-4253",
+   "t": 4253,
+   "speaker": "Leandra Preston",
+   "text": "Mmhm."
+  },
+  {
+   "id": "t-4253b",
+   "t": 4253,
+   "speaker": "Renad Baomar",
+   "text": "So it has specific restrictions for it?"
+  },
+  {
+   "id": "t-4257",
+   "t": 4257,
+   "speaker": "Daveed Benjamin",
+   "text": "Got it. Okay, well, we're… we'll go ahead and, um… Well, we do already have… we have a WhatsApp group. I will open that."
+  },
+  {
+   "id": "t-4267",
+   "t": 4267,
+   "speaker": "Renad Baomar",
+   "text": "Okay."
+  },
+  {
+   "id": "t-4268",
+   "t": 4268,
+   "speaker": "Daveed Benjamin",
+   "text": "open that. Um, I think it was for, for basically co-editors. So, we'll go ahead and open that up, and for everybody who's interested, because I think."
+  },
+  {
+   "id": "t-4274",
+   "t": 4274,
+   "speaker": "Renad Baomar",
+   "text": "Okay."
+  },
+  {
+   "id": "t-4280",
+   "t": 4280,
+   "speaker": "Daveed Benjamin",
+   "text": "you know, we're… we've moved beyond the point where a co-editor group is… is necessary in of itself, but I think one for this group to communicate is great. I will, um… I think we have a signal group that was created for the meta-layer as well. I will… get a link to that as well, so people want to carry on the conversation there who aren't able to do the WhatsApp. I will also look at the possibility of being able to have WhatsApp messages immediately or automatically go to Signal. I don't know if it's possible, I'm sure it is, but. we'll see. So anyway, that's the open question. I… Allison, you're totally right that it is helpful for us as a group to be able to have communication in this way in between meetings, so we will figure it out."
+  },
+  {
+   "id": "t-4324",
+   "t": 4324,
+   "speaker": "Renad Baomar",
+   "text": "Okay, sure."
+  },
+  {
+   "id": "t-4337",
+   "t": 4337,
+   "speaker": "Daveed Benjamin",
+   "text": "Um, let me… Get back into… we just have a little bit more of this presentation to get feedback on, or there's probably a fair amount more, but we will get through what we get through. Alright, I'm just… Reloading this and getting it into slideshow. Why are you not going into slideshow? Okay, hold on. Okay. Something… That's good. Okay. Here we go. Um…"
+  },
+  {
+   "id": "t-4411",
+   "t": 4411,
+   "speaker": "Daveed Benjamin",
+   "text": "I think, um, one other thing that we… want to decide is… Um… Who? Well, okay, let's talk about a council. What do… It's come up several times. People have have suggested that we we have a council that the Council, I think, is more or less what we have now with this a steering committee. There's five of us at the moment, but the thought was, well, we should probably have a council that. that, uh… is the one to screen things that go to community vote, and that that council should probably be elected. And so, I would love to get any feedback from people on that notion of us having an elected council. How many people should it be? Should it be 5? Should it be 7? Could it be any odd number? Uh, well… Not any odd number. There could be really large odd numbers, but yeah, like five, seven, nine. What what do people think? Of of a council that."
+  },
+  {
+   "id": "t-4496",
+   "t": 4496,
+   "speaker": "Gael Van Weyenbergh",
+   "text": "I think five is good. That's what they use in Southeast Asia and India. It's the Grand Panchayat. It's like some kind of autonomous council. At the level of the villages. And so there is a long tradition and apparently five is a good number."
+  },
+  {
+   "id": "t-4513",
+   "t": 4513,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, okay. Anyone, do you think we start with five and try that out? Is there anyone who would be interested in being on the council if we did? We move forward to have. Renad, okay, great. Well, in Lela. Awesome. Well, people don't have to decide now, but I guess the thought is that we would have either a Desirable Properties Council or it could be Metalayer Council. If it's Metalayer Council, it would be Desirable Properties and. the Metalayer Academy. I'm kind of leaning towards having a council that would be specifically on the desirable properties. How does that feel for people? That make sense? Okay, I see some some nods. Renad says yes. Okay. All right. And I Suzanne also says that she says starts with five. Sounds great. We're happy you're here as well. Joel says yes. Okay. Great. Um… What… Let me see if there's anything else that really needs to be gone over at the moment. Um, there's a couple things. So… Thank you."
+  },
+  {
+   "id": "t-4612",
+   "t": 4612,
+   "speaker": "Daveed Benjamin",
+   "text": "Claude has identified a couple things that… thought that maybe we should bring up and get some feedback on. So… Can one decline end a proposal? Right now, it's not set up that way. It's set up so that there's… Two yeses overrule a no. But we could make it so that people. Just one decline ends the proposal. So that's that's a question. Does anyone have any feedback on that?"
+  },
+  {
+   "id": "t-4646",
+   "t": 4646,
+   "speaker": "Leandra Preston",
+   "text": "I don't like just one being able to end a proposal, because I think… There couldn't be so many variables that, you know, maybe you just… It wouldn't… be just for… that to end a valuable proposal. I would think we would need… the way it is, either 2 can override 1. Oh. Or one could send it to a level to be looked at or something, but… One ending a proposal feels… Like you could be losing some good proposals based on one opinion."
+  },
+  {
+   "id": "t-4688",
+   "t": 4688,
+   "speaker": "Benn Konsynski",
+   "text": "That makes sense."
+  },
+  {
+   "id": "t-4690",
+   "t": 4690,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Um, I… I'm gonna… I'm gonna second them, too, Daveed, because, um, the one… only… only because, without justification, and I'm… I'm constantly questioning where is our standards, like."
+  },
+  {
+   "id": "t-4691",
+   "t": 4691,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-4704",
+   "t": 4704,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "as far as the hardcore foundation, if, say, for instance, a DP was denied, then my question would be under what standards, what violation of governance. Um… trajectory that it violated against, you know, the council or the open community in agreement. So that would easily identify directly, yeah, why it was denied."
+  },
+  {
+   "id": "t-4732",
+   "t": 4732,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, well, I think one thing that we've had in place is whenever there is a decline. that… There needs to be a rationale along with it, and it sounds like people… want to keep that in place, and not only having that in place, but also having the possibility that two yeses can overrule a no, which I believe is how it's set up now, so maybe that's not something that we need to vote on."
+  },
+  {
+   "id": "t-4768",
+   "t": 4768,
+   "speaker": "Daveed Benjamin",
+   "text": "Uh, we've already talked about title changes. Let's see, is there anything else? That we really need to. to talk about, um… What about co-editors? Okay, so with respect to co-editors, do we… do we need any vetting? Do we need any criteria for someone to become a co-editor? This time, we didn't at all, but… I felt pretty… I felt okay with not doing any vetting because we essentially were going out to a known group of people and asking people that we knew had expertise in these different areas. So it didn't feel like we needed to vet them. In fact, we had, in a way, vetted them already before we asked them. But now we have it set up on the site where anyone can come and claim. a co-editor's seat. It's set up at the moment that they need to wait 7 days before… they have to have an account. active for 7 days, so they can't just immediately get on the platform and start co-editing. But it does not have any vetting, so how do people feel about that? What are your thoughts?"
+  },
+  {
+   "id": "t-4857",
+   "t": 4857,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "I believe it's appropriate, um, if and when, because it would give a reason. To understand once we have these, uh, prerequisites or questionnaires or even voluntary statements, um, to offer an understanding on the grounds of betting, because when one begins to contest or deny. then we can almost begin to feel, uh, based on the approach or the longevity of research, where this comes from. With proper vetting, it gives us that kind of background to understand. So, um, and if and when, I think, personally, I'm working on, uh, continuance and vetting, because once vetted, it does not substantiate, uh, the longevity of, uh, you know, a questionnaire. We have to… we do often audits, so, I mean, it should be that way, too, where, like it was said, this is a monumental task, so… Um, in all ways that we can show our professionalism and our ethics within it, that is one way to say, hey, we did not leave that out, so… That's my stance."
+  },
+  {
+   "id": "t-4921",
+   "t": 4921,
+   "speaker": "Daveed Benjamin",
+   "text": "So, wait, are you saying that… we would have a criteria that we would vet them against? Or are you saying we self… self… allow them to self-vet and provide information, but not necessarily screen them out?"
+  },
+  {
+   "id": "t-4938",
+   "t": 4938,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Both. I believe the questionnaire requirements would be, what is your stance on governance at a global view? We're talking about enterprise level. We're not affecting one small app. We're talking about the middle layer. What is your view? What is your approach? You know, those kind of insights will give us reason, and then what you add on there voluntarily will almost back that."
+  },
+  {
+   "id": "t-4965",
+   "t": 4965,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, you know what's interesting is I was having a conversation the other day, and this came up, and there was the thought that there needs to be some kind of agreement as the co-editor, which could be part of it. I mean, you… you provide some basic information, and then there's an agreement that says, well, as a co-editor, I agree to this, that, and the other, and these are basically. You know, everything that I'm doing is to propel a safe and open and trustworthy web. I will, you know, only approve things that I fully read and stand by. I only decline things when I really have a strong reason, that type of thing. That that also could be part of it. What do you all think about having some kind of co-editor agreement? Allison is nodding her head. Anyone else? Renad says yes. Okay. Awesome. Um…"
+  },
+  {
+   "id": "t-5030",
+   "t": 5030,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, I think we're getting to the… Joel says yes as well. Okay. Great. I think we're getting to the end of the… Well, we are getting to the end of this session. I wanted to just open it up if there's anything that we haven't covered or… Or that we that we covered a little bit, but you want to add in a little bit more for for Claude to hear. This is your your opportunity. Could be on co-editing, it could be on quorum, it could be on the threshold for voting, it could be on the number of people in the council. Is there anything that we spoke upon that needs to be brought up? Okay. All right. Well, I think we've finished our first listening session. Uh, heh. What I'm going to do, I think I have it set up automated. for Claude to get the recording, it's gonna take the transcript, it's gonna evaluate it and figure out all the different. Oh, things that we discussed, and it's going to summarize it. Then it's going to come up with a ballot and put it in. Google Docs, I will send an email as soon as I get that, and from the point the email goes out, there'll be, uh, 24 hours for you to make sure that everything… verify that everything makes sense, and then we'll… we'll set up a… a… a page where we can vote, and we'll see how this goes. up. How's that sound? Is that okay? Okay. Awesome. Well, thank you all."
+  },
+  {
+   "id": "t-5145",
+   "t": 5145,
+   "speaker": "Joel Okomoli",
+   "text": "One minute."
+  },
+  {
+   "id": "t-5148",
+   "t": 5148,
+   "speaker": "Daveed Benjamin",
+   "text": "Hey, Joel."
+  },
+  {
+   "id": "t-5150",
+   "t": 5150,
+   "speaker": "Joel Okomoli",
+   "text": "Yeah, please, I will send a warning before you do the email that gives 24 hours. Because, uh, sometimes we are out of network, and, uh, then, uh, this goes out, and it's maybe a whole 30 hours before we come back. So, maybe a warning email first, then I'm sending this in the next… Maybe in the next 12 hours or so, so that we make a point to just check back."
+  },
+  {
+   "id": "t-5169",
+   "t": 5169,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Sounds good."
+  },
+  {
+   "id": "t-5178",
+   "t": 5178,
+   "speaker": "Joel Okomoli",
+   "text": "So when you're traveling, sometimes you just lose track of the hours and maybe the mails."
+  },
+  {
+   "id": "t-5192",
+   "t": 5192,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes. Okay, so you're saying, send out a couple emails, and…"
+  },
+  {
+   "id": "t-5197",
+   "t": 5197,
+   "speaker": "Joel Okomoli",
+   "text": "A warning, a warning mail, yeah, just to say, an alert, rather, to say this particular mail will be coming out. It's tomorrow, you know, the next 12 hours, so then at least you can note and make a point to check in. And do that again."
+  },
+  {
+   "id": "t-5211",
+   "t": 5211,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay."
+  },
+  {
+   "id": "t-5213",
+   "t": 5213,
+   "speaker": "Joel Okomoli",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-5213b",
+   "t": 5213,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep, sounds great."
+  },
+  {
+   "id": "t-5214",
+   "t": 5214,
+   "speaker": "Joel Okomoli",
+   "text": "That will improve the response on the 24-hour time span, yeah? It will improve the response rate."
+  },
+  {
+   "id": "t-5224",
+   "t": 5224,
+   "speaker": "Daveed Benjamin",
+   "text": "And anyone who I don't have your phone number, um, please… send me a private message, either through email… actually, send it to me in email. That way, I can put you… if you want to be in the WhatsApp group, or the Signal group, um… Go ahead and send me an email, let me know, okay? Yeah, I do have yours. Oh, do I have your? Do I have your phone number, Suzanne? Okay, okay, good. Okay."
+  },
+  {
+   "id": "t-5249",
+   "t": 5249,
+   "speaker": "Joel Okomoli",
+   "text": "I'll send my phone number, yeah."
+  },
+  {
+   "id": "t-5252",
+   "t": 5252,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, yeah, so anyone who wants to be in those, great. I will, um… Yep, perfect. Thank you all so much. Have a great rest of your week. And yeah, let's see how this experiment goes. Thanks so much. Alright, go Meta!"
+  },
+  {
+   "id": "t-5271",
+   "t": 5271,
+   "speaker": "Renad Baomar",
+   "text": "Thank you."
+  }
+ ]
+}

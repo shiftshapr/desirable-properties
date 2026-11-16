@@ -231,6 +231,11 @@ export default function V1LaunchEventPage() {
             );
           })}
         </ul>
+        <p className="mt-3 text-sm">
+          <Link href="/share" className="text-slate-400 underline decoration-slate-600 underline-offset-2 hover:text-cyan-200">
+            Share the launch: images and ready-made posts →
+          </Link>
+        </p>
       </nav>
 
       <details className="mt-8 rounded-xl border border-slate-800 bg-slate-900/40">
