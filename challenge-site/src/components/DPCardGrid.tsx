@@ -39,7 +39,7 @@ export default function DPCardGrid({ localDps, workgroups, fromPath = '/#dps' }:
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div data-reveal-stagger className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {localDps.map((dp) => {
         const wg = workgroupByDp.get(dp.id);
         const status = statusLabel(wg);
