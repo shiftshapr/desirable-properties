@@ -120,6 +120,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Home page launch short (src/lib/v1-launch-event.ts). File names carry a content hash, so cache for good.
+        source: '/video/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
         source: '/embed/hermes/community',
         headers: [
           {
