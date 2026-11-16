@@ -45,6 +45,8 @@ const USERS = {
   a: { userId: 'lw-test-a', username: 'test-a', displayName: 'Test Participant A', email: 'participant.a@example.org' },
   b: { userId: 'lw-test-b', username: 'test-b', displayName: 'Test Participant B', email: 'participant.b@example.org' },
   f: { userId: 'lw-test-f', username: 'test-f', displayName: 'Test Facilitator', email: FAC_EMAIL },
+  c: { userId: 'lw-test-c', username: 'test-c', displayName: 'Test Participant C', email: 'participant.c@example.org' },
+  d: { userId: 'lw-test-d', username: 'test-d', displayName: 'Test Participant D', email: 'participant.d@example.org' },
 };
 
 const results = [];
@@ -110,6 +112,7 @@ try {
   const A = await openAs(browser, 'a');
   const B = await openAs(browser, 'b');
   const F = await openAs(browser, 'f');
+  const C = await openAs(browser, 'c');
 
   await step('roles resolve on the server (participant, participant, administrator)', async () => {
     assert.equal((await snapshot(A.page)).viewer.role, 'participant');
@@ -139,6 +142,8 @@ try {
     assert.ok(t.includes('Phahsa'), 'Phahsa named exactly');
   });
 
+  await A.page.locator('[data-testid="listening-workspace"]').evaluate((el) => el.scrollIntoView({ block: 'start' }));
+  await A.page.evaluate(() => window.scrollBy(0, -70));
   await shot(A.page, '01-desktop-workspace', { fullPage: false });
 
   await step('A keeps draft, open thread, scroll and the meeting stage while B posts', async () => {
@@ -188,6 +193,8 @@ try {
     await item.waitFor({ timeout: 15000 });
     assert.match(await item.locator('[data-testid="queue-status"]').textContent(), /Queued for Claude/);
     assert.equal(await B.page.locator('[data-testid="composer-text"]').inputValue(), `B is still writing an option (${run})`);
+    await B.page.locator('[data-testid="listening-workspace"]').evaluate((el) => el.scrollIntoView({ block: 'start' }));
+    await item.scrollIntoViewIfNeeded();
     await shot(B.page, '03-b-sees-question-queued', { fullPage: false });
   });
 
@@ -217,18 +224,31 @@ try {
     const connects = async () => Number(await A.page.locator('[data-testid="stream-status"]').getAttribute('data-connects'));
     const n0 = await connects();
     const texts = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       const t = `Across reconnects ${i} (${run})`;
       texts.push(t);
-      await compose(B.page, 'comment', t);
-      await B.page.locator('[data-testid="feed-list"]', { hasText: t }).waitFor();
-      await B.page.waitForTimeout(1500);
+      await compose(C.page, 'comment', t);
+      await C.page.locator('[data-testid="feed-list"]', { hasText: t }).waitFor();
+      await C.page.waitForTimeout(1500);
     }
-    await A.page.locator('[data-testid="feed-list"]', { hasText: texts[5] }).waitFor({ timeout: 30000 });
+    await A.page.locator('[data-testid="feed-list"]', { hasText: texts[4] }).waitFor({ timeout: 30000 });
     for (const t of texts) assert.equal(await A.page.locator('[data-testid="contribution"]', { hasText: t }).count(), 1, t);
     const n1 = await connects();
     console.log(`    reconnects during this step: ${n1 - n0}`);
     assert.ok(n1 - n0 >= 2 || !process.env.LW_EXPECT_RECYCLE, `expected reconnects, saw ${n1 - n0}`);
+  });
+
+  await step('rate limit: a 7th contribution within a minute is refused with a clear message', async () => {
+    const D = await openAs(browser, 'd');
+    const statuses = [];
+    for (let i = 0; i < 7; i++) statuses.push((await api(D.page, 'contribution.add', { kind: 'comment', body: `Rate test ${i} (${run})` })).status);
+    assert.deepEqual(statuses, [201, 201, 201, 201, 201, 201, 429]);
+    await D.page.locator('[data-testid="compose-comment"]').click();
+    await D.page.locator('[data-testid="composer-text"]').fill(`Kept after a refusal (${run})`);
+    await D.page.locator('[data-testid="composer-submit"]').click();
+    await D.page.locator('[data-testid="composer-msg"]', { hasText: 'very quickly' }).waitFor();
+    assert.equal(await D.page.locator('[data-testid="composer-text"]').inputValue(), `Kept after a refusal (${run})`);
+    await D.context.close();
   });
 
   await step('stream resumes from Last-Event-ID with no duplicates', async () => {
@@ -309,6 +329,7 @@ try {
   });
 
   await step('option-comparison view renders with labels and sources', async () => {
+    await A.page.locator('[data-testid="toggle-transcript"]').click(); // close the drawer
     await A.page.locator('[data-testid="view-compare"]').click();
     const n = await A.page.locator('[data-testid="compare-topic"]').count();
     assert.equal(n, 8);
@@ -331,13 +352,16 @@ try {
 
   await step('small screen: tabs keep the draft across tab switches and incoming updates', async () => {
     const M = await openAs(browser, 'a', { width: 390, height: 844 });
+    await M.page.locator('[data-testid="listening-workspace"]').evaluate((el) => el.scrollIntoView({ block: 'start' }));
+    const overflow = await M.page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    assert.ok(overflow <= 1, `page scrolls sideways by ${overflow}px on a phone`);
     await M.page.locator('[data-testid="tab-participate"]').click();
     await M.page.locator('[data-testid="compose-comment"]').click();
     await M.page.locator('[data-testid="composer-text"]').fill(`Phone draft (${run})`);
     await M.page.locator('[data-testid="tab-understanding"]').click();
     await shot(M.page, '07-mobile-understanding-tab', { fullPage: false });
     const t = `Posted while the phone was on another tab (${run})`;
-    await compose(B.page, 'comment', t);
+    await compose(C.page, 'comment', t);
     await M.page.locator('[data-testid="tab-participate"]').click();
     await M.page.locator('[data-testid="feed-list"]', { hasText: t }).waitFor({ timeout: 15000 });
     assert.equal(await M.page.locator('[data-testid="composer-text"]').inputValue(), `Phone draft (${run})`);
@@ -351,6 +375,7 @@ try {
   await A.context.close();
   await B.context.close();
   await F.context.close();
+  await C.context.close();
 } finally {
   await browser.close();
 }

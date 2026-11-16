@@ -27,7 +27,7 @@ export const MeetingStage = memo(
   () => true,
 );
 
-export default function MeetingColumn() {
+export default function MeetingColumn({ pagePhaseTracker = false }: { pagePhaseTracker?: boolean }) {
   const { state } = useWorkspace();
   const { meeting, phaseHistory, viewer } = state;
   const facilitator = viewer.role === 'facilitator' || viewer.role === 'administrator';
@@ -35,7 +35,7 @@ export default function MeetingColumn() {
   return (
     <>
       <div className={`${panelClass} p-4`} data-testid="phase-panel">
-        <p className="text-xs uppercase tracking-wide text-slate-500">Phase</p>
+        <p className="text-xs uppercase tracking-wide text-slate-500">{pagePhaseTracker ? 'Workspace record phase' : 'Phase'}</p>
         <p className="mt-1 text-lg font-semibold text-white" data-testid="current-phase">
           {PHASE_TEXT[meeting.phase]}
         </p>
@@ -53,7 +53,14 @@ export default function MeetingColumn() {
             </li>
           ))}
         </ol>
-        {facilitator ? <PhaseControl current={meeting.phase} /> : null}
+        {pagePhaseTracker ? (
+          <p className="mt-3 text-[11px] text-amber-200/90" data-testid="phase-page-note">
+            On this page, “Where this session is” above is the phase record for now. The workspace’s own phase only marks
+            contributions as before, during or after the meeting; joining the two is a follow-up.
+          </p>
+        ) : facilitator ? (
+          <PhaseControl current={meeting.phase} />
+        ) : null}
       </div>
 
       <div className={`${panelClass} p-4 text-sm text-slate-300`}>

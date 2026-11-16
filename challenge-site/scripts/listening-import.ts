@@ -7,7 +7,7 @@
  *   npx tsx scripts/listening-import.ts --mode check                        # validate the inputs, write nothing
  *
  * Options: --db <url> (default postgresql:///desirable_properties_staging?host=/var/run/postgresql, the box2 staging DB over the local socket;
- * no password file is read), --slug, --demo-slug, --speed N, --max-gap-ms N, --until HH:MM:SS, --rebuild-check,
+ * no password file is read), --owner <role> (hand the tables to the app's database role, e.g. dp_staging on box2), --slug, --demo-slug, --speed N, --max-gap-ms N, --until HH:MM:SS, --rebuild-check,
  * --transcript <json>, --cards <json>.
  *
  * Transcript: the cleaned turns from ~/handoff/dp-2026-11-16-governance-review/build_transcript.py (held-back passages
@@ -171,6 +171,15 @@ async function connect(): Promise<pg.Pool> {
   const { rows } = await pool.query('SELECT current_database() AS db');
   if (rows[0].db === PRODUCTION_DB_NAME) die('refusing to write to the production database');
   await pool.query(LISTENING_SCHEMA_SQL);
+  const owner = arg('owner');
+  if (owner) {
+    if (!/^[a-z_][a-z0-9_]*$/.test(owner)) die('bad --owner');
+    // The site runs as its own role and re-runs the (idempotent) schema on start, so it must own these objects.
+    const t = await pool.query("SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename LIKE 'dp_listen_%'");
+    for (const r of t.rows) await pool.query(`ALTER TABLE ${r.tablename} OWNER TO ${owner}`);
+    await pool.query(`ALTER FUNCTION dp_listen_append_only() OWNER TO ${owner}`);
+    console.log(`tables owned by ${owner}`);
+  }
   console.log(`database ${rows[0].db}: listening schema ready`);
   return pool;
 }

@@ -37,7 +37,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'transcript', label: 'Transcript' },
 ];
 
-export default function ListeningWorkspace({ slug }: { slug: string }) {
+export default function ListeningWorkspace({ slug, pagePhaseTracker = false }: { slug: string; pagePhaseTracker?: boolean }) {
   const [state, dispatch] = useReducer(reducer, null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [status, setStatus] = useState<StreamStatus>('connecting');
@@ -150,12 +150,12 @@ export default function ListeningWorkspace({ slug }: { slug: string }) {
     [state, act, setTarget, showSegment, showCard, login],
   );
 
-  const panel = (id: Tab, extra = '') => `${tab === id ? 'block' : 'hidden'} lg:block ${extra}`;
+  const panel = (id: Tab, extra = '') => `${tab === id ? 'block' : 'hidden'} min-w-0 lg:block ${extra}`;
   // Side columns stay in view on desktop while the shared understanding scrolls (the Zoom slot too).
   const sticky = 'lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1';
 
   return (
-    <div data-testid="listening-workspace" className="mt-10">
+    <div data-testid="listening-workspace" className="mt-10 w-full min-w-0">
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800 pb-2">
         <h2 className="text-2xl font-bold text-white">Meeting workspace</h2>
         <p className="text-xs text-slate-500">Staging preview · Phase 1: replayed record, no live Zoom or Claude yet</p>
@@ -193,7 +193,7 @@ export default function ListeningWorkspace({ slug }: { slug: string }) {
           <MeetingStage />
           {api ? (
             <WorkspaceContext.Provider value={api}>
-              <MeetingColumn />
+              <MeetingColumn pagePhaseTracker={pagePhaseTracker} />
             </WorkspaceContext.Provider>
           ) : null}
         </section>

@@ -27,7 +27,7 @@ export default async function ListeningOccurrencePage({ params }: PageProps) {
   if (meeting.canonicalPath && MOUNTED_CANONICAL_PATHS.has(meeting.canonicalPath)) redirect(meeting.canonicalPath);
 
   return (
-    <main className="mx-auto max-w-[96rem] px-4 py-10 sm:px-6">
+    <main className="mx-auto w-full min-w-0 max-w-[96rem] px-4 py-10 sm:px-6">
       <p className="text-sm">
         <Link href="/events" className="text-cyan-300 hover:text-cyan-200">
           ← Events
