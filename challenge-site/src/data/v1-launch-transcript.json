@@ -1,0 +1,722 @@
+{
+ "video": {
+  "youtubeId": "07CxwGT49Rk",
+  "duration": 4328.9
+ },
+ "chapters": [
+  {
+   "t": 0.0,
+   "title": "Version 1.0: a shared achievement"
+  },
+  {
+   "t": 84.9,
+   "title": "How we got here: from a 2024 challenge to a living book"
+  },
+  {
+   "t": 286.0,
+   "title": "What we are delivering: reader, PDF and the evidence trail"
+  },
+  {
+   "t": 318.1,
+   "title": "Tour of the book: foreword, digital monument, 24 chapters"
+  },
+  {
+   "t": 604.0,
+   "title": "Why \"The Layered Web\"? Kevin Clark on the name"
+  },
+  {
+   "t": 807.4,
+   "title": "Q&A: a redo of the web? A requirements document"
+  },
+  {
+   "t": 1034.4,
+   "title": "The editorial effort in numbers"
+  },
+  {
+   "t": 1067.5,
+   "title": "Deferred proposals and Version 1.1 steering"
+  },
+  {
+   "t": 1204.6,
+   "title": "Nada El Mais on DP18 Feedback Loops and Reputation"
+  },
+  {
+   "t": 1516.2,
+   "title": "Q&A: a Layered Web browser?"
+  },
+  {
+   "t": 1703.2,
+   "title": "How to contribute, and the four groups of chapters"
+  },
+  {
+   "t": 1875.2,
+   "title": "Canopi demo: conversation in the book, patches and inserts"
+  },
+  {
+   "t": 2103.6,
+   "title": "Q&A: patching any website, visibility and privacy"
+  },
+  {
+   "t": 2240.6,
+   "title": "Victor Vorski: personal agents and the layered web"
+  },
+  {
+   "t": 2339.8,
+   "title": "Laura Sanchez: societal ROI and a case-studies chapter"
+  },
+  {
+   "t": 2535.0,
+   "title": "Community voices: Renad Baomar, co-editor of DP10 Education"
+  },
+  {
+   "t": 2832.6,
+   "title": "Leandra (Lela) Preston: steering and AI-assisted editing"
+  },
+  {
+   "t": 3097.6,
+   "title": "Phahsa: data sovereignty (DP4) and the attention economy"
+  },
+  {
+   "t": 3325.9,
+   "title": "Lord M.E.G.A Zion"
+  },
+  {
+   "t": 3472.4,
+   "title": "Darrell Duane"
+  },
+  {
+   "t": 3606.4,
+   "title": "Michelle Thuo: steering review and putting DPs into practice"
+  },
+  {
+   "t": 3842.7,
+   "title": "Micah Nyatindo: early warning as a meta-layer"
+  },
+  {
+   "t": 4115.0,
+   "title": "Open floor, salwa on DP10, next steps and close"
+  }
+ ],
+ "paragraphs": [
+  {
+   "t": 0.0,
+   "speaker": "Daveed Benjamin",
+   "text": "So we're at version 1.0 of The Layered Web, The Desirable Properties of a Meta Layer. It is an actual book. It'd probably be better to call it a tome, because it's almost 800 pages, last time I looked. There's a lot there, and in fact, it's very much a shared achievement. Over 70 people made contributions to the book, plus we had about 20 people who also helped edit it. It is truly a collective process that we've gone through. Anyone could submit a contribution to the book, and we had a number of different co-editors per chapter, and we needed two votes to move them on. We also had a steering committee. I would love to just shout out to Phahsa, Michelle, Layla. And who else was on the steering committee? I'm gonna remember in a second."
+  },
+  {
+   "t": 64.6,
+   "speaker": "Daveed Benjamin",
+   "text": "So today is the soft launch, November 13th. This is a initiative of the Meta Layer Initiative. My name is Daveed Benjamin. I'm the founder of Bridgit.io, as well as the Meta Layer Initiative. Let's get into it."
+  },
+  {
+   "t": 85.0,
+   "speaker": "Daveed Benjamin",
+   "text": "So, as I… alluded to earlier, this has been in process for over 2 years."
+  },
+  {
+   "t": 147.2,
+   "speaker": "Daveed Benjamin",
+   "text": "And so we're thinking of this as a North Star. It's really a community-authored North Star for what an open, trustworthy and safe, layered web would… would be like. And so we've, we've, essentially put together a lot of ideas, critiques, revisions, and they've come together into a living book. This is version 1.0, and it's just the beginning of this book. It's meant to be a living book. So how did we arrive here? Well, we started with an open inquiry. We're to create this new web. what do we want it to do? What should it do? How should it protect us? What should it enable us to do? And then we had, several different periods, 3 different periods where people could provide input. We called them calls for input. The last one, we actually kind of branded it the Desirable Properties Challenge, but it was just the third of our calls for input."
+  },
+  {
+   "t": 220.0,
+   "speaker": "Daveed Benjamin",
+   "text": "We had a collaborative editing process where two people For each chapter, had to agree that a specific proposal would move on forward. we, in the last week. We've done the finalization, we froze the book on Monday, we gave 4 more hours, just extended it for 4 hours to give people a last chance to get in things, but it ended at 7pm Pacific. I believe, on Monday, and since then, we've had our steering committee working very hard to move things forward. So, earlier, I forgot the fifth person of the steering committee, so the steering committee is me, it's Phahsa Ross. Michelle Tho, Layla Preston, and Kyle Schumann. Really appreciate all of you coming together, and we did a number of different sprints within this period to actually finalize the document."
+  },
+  {
+   "t": 286.0,
+   "speaker": "Daveed Benjamin",
+   "text": "So what are we delivering? There's an online reader, there's a launch PDF, and there's, pathways to see evidence of what actually happened, who submitted what, what got approved by who, what actually made the book, what didn't make the book, what will be held for next… the next revision, what was declined, so we've got all that for you at desirableproperties.org. I'm gonna go to the book. I mean, we wanna see what this thing looks like, right?"
+  },
+  {
+   "t": 325.6,
+   "speaker": "Daveed Benjamin",
+   "text": "This is at book.desirableproperties.org. It shows you a picture of… the cover, and you might have noticed that there's this little starburst here that says, foreword by Vint Cerf, and we are so happy to announce that Vint Cerf, a father of the internet, the one who put us on this challenge. He wrote a foreword for this book. And it also speaks to some of his priorities for desirable properties. I'm gonna click through, and so you see here, we've got a number of different, chapters, or front matter. This is the front matter up here, so we've got the cover, we've got Vint's foreword, we've got a… piece about this as a digital monument, because one of the things that's really interesting is that this is also on-chain. Haven't clicked this for a while. This particular… actually, this particular one is not on-chain, but most of it is, so…"
+  },
+  {
+   "t": 401.1,
+   "speaker": "Daveed Benjamin",
+   "text": "as you can see here, the older version of DP1, Federated Authentication and Accountability. It is on-chain, so this is on Bitcoin, on Bitcoin ordinals, and we also have a live version, so this is the live, updated version. All the live versions have images. They also have all the proposals that have been approved Integrated in, and they will be inscribed In other words, put on Bitcoin, put on chain very shortly. So we… and by putting things on chain, we think of them as digital monuments. They act as reality anchors. They become something that can't be ignored. It doesn't mean that you have to agree with it, but… You have to orient yourself around it, because it is something that is immutable, permanent."
+  },
+  {
+   "t": 464.5,
+   "speaker": "Daveed Benjamin",
+   "text": "and fully accessible with a link, and people within the space know that it exists, so it is a reality anchor that we can orient around. We've got the acknowledgements, so you've got a bunch of contributors, so… 72 contributors. Some of them are co-editors as well, and so, you know, a bunch of people who've worked on the editing. So there's a lot going on here. And then we have an introduction that, well, talks about, well, what are desirable properties of a meta layer or of a layered web? It talks about how this came into being. It mentions Douglas Engelbart, who I see as one of the pioneers for this type of thinking. We've got 24 chapters. So, they range from federated authentication and accountability to data sovereignty and privacy. We've got commerce, we've got developer and community incentives, education, safe and ethical AI, community-based AI governance, AI containment. These are the three AI-based ones."
+  },
+  {
+   "t": 533.9,
+   "speaker": "Daveed Benjamin",
+   "text": "Got trust and transparency, security and provenance. There's just so many of them. Here's… and here are the last two that got added. Universal participation and linguistic interoperability, and then this last one, cross-layer Resilience and compromised containment"
+  },
+  {
+   "t": 575.6,
+   "speaker": "Daveed Benjamin",
+   "text": "So, it really makes a lot of sense. And it's important, and it's something that this architecture is unique in using, in needing. Or at least, is one of the few types of architecture where you'd need to think about this. Alright, so I'm going to go back to the presentation, but does anyone have any questions before we move on? Or comments?"
+  },
+  {
+   "t": 604.1,
+   "speaker": "Daveed Benjamin",
+   "text": "This was not always called the layered web. the desirable properties of a meta-layer. In fact, it was called the desirable Properties of a meta-layer. That was just the title initially, and… it… it was working okay, I guess, but there was a lot of instances where people might say, oh, does this have something to do with meta, or what… what's a meta layer? I don't quite get it, right? And I had been talking with Kevin about branding on a number of different issues, including on the naming of the space, because I've been calling the space above the web page, the meta web, or the meta layer, Kevin, why don't you just jump in and tell me what you were thinking? And I'm gonna take it off screen."
+  },
+  {
+   "t": 652.3,
+   "speaker": "Kevin Clark",
+   "text": "Sure. Glad to jump in. And your backstory's exactly right. I just, you know, said, I'm not sure that the terminology that you've come up with is fully expressive enough for people to grasp. They would need a backgrounder first. So why don't we come up with something that you know, on first contact, you know, that would be understandable. And once you explained what you were trying to do, I said, it sounds like the layered web, right? Or layers of the… I said, just call it that. Well, you didn't want to give up MetaLayer, and you didn't want to give up MetaWeb, right? So… It exists… that they all exist together in kind of an architecture of meaning. Right, so I'm glad that you… picked up on our discussion, that you acted on it, and now the book, I think, is acceptable to a lot more people, or at least the invitation is. So that's good."
+  },
+  {
+   "t": 715.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, yeah, thank you so much, Kevin. I mean, that's."
+  },
+  {
+   "t": 718.4,
+   "speaker": "Kevin Clark",
+   "text": "I know that there are a lot of other people that made really big contributions to this. I'm glad I could just make an accessibility contribution."
+  },
+  {
+   "t": 729.3,
+   "speaker": "Daveed Benjamin",
+   "text": "And who knows, that one little accessibility contribution, that may open it up to a whole new set of people even paying attention to it. So we thank."
+  },
+  {
+   "t": 739.3,
+   "speaker": "Kevin Clark",
+   "text": "100%. Thanks for wanting to just share a moment with everybody. I'm delighted to help you folks. On with the show!"
+  },
+  {
+   "t": 749.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. And I want to say to folks how I reconcile the meta-web, the meta layer, the… the layered web. Well, the layered web is the whole thing. And it includes today's content layer, today's web, what we consider today's web. But it also… the layered web also includes all this other space that we can call the meta-web, we can call the meta layer. When we're talking about what we're gonna build together, we're talking about the overweb. See, the overweb would be the first full instantiation of this meta-layer, meta-web, desirable properties thinking. And, yeah, we're getting started about that. You'll hear a little bit more about the overweb in a minute. Let me get back to the presentation. But before I get back, are there any questions, any comments, any thoughts that people want to share at this moment?"
+  },
+  {
+   "t": 807.7,
+   "speaker": "Daveed Benjamin",
+   "text": "All right."
+  },
+  {
+   "t": 808.3,
+   "speaker": "Sandra Ponce de Leon",
+   "text": "Just wait one thing, so that all of the chapters… the book is essentially encapsulating, if we had to do it over again, start from the beginning, design the web from the very beginning, these are the characteristics we would like to have."
+  },
+  {
+   "t": 825.1,
+   "speaker": "Daveed Benjamin",
+   "text": "I mean, we're not going to be able to start again, so we have the opportunity for a new beginning now. So it's saying, well, if we… are now wanting to move towards a new paradigm where we're actually using the space above the web page, and that just means windows are layering on top of web page. It doesn't look anything different than what we have today, and it also uses today's browser extension and browser overlay technology. So, what we're saying is. given that we do want to occupy this space, what should this space enable? So, it's like a redo of the web, but we're actually… Unlike a lot of people, because a lot of people are working on projects, and they're saying, you know, this current web, it sucks, let's just move something over here. We may use the addressing system, but that's all we're going to do with the old web."
+  },
+  {
+   "t": 880.4,
+   "speaker": "Daveed Benjamin",
+   "text": "with the… the overweb, the meta-web, the meta layer, this thinking, the layered web thinking, we're not saying, throw away the old web. The old web, it's our address book. It's our way of defining where spaces are, it's… it's the start of the conversation. Right now, today's web is just… you've got the page, and the page is pretty much the start and the end of the conversation. Now, what we're saying is in the future, you'll be able to layer information over the decades, over the years, on top of web pages, and so the… today's web is simply the start of the conversation. It's the conversational footprint for worlds of information, interactions, transactions, and experiences that can emanate from pieces of content on the page."
+  },
+  {
+   "t": 934.7,
+   "speaker": "Kevin Clark",
+   "text": "So, Daveed, if I could just add. You know, if you were in a company, you would have said, well, we have this Offering that we've been putting out for a number of years, and it's just kind of evolved. Right? And… Now, you've decided That you're gonna take on a different level of development rigor, This is a requirements document. Right? If you were in a company, you have created the first requirements document for something that has just naturally evolved. Now, it will evolve intentionally if you follow the requirements."
+  },
+  {
+   "t": 975.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes, absolutely. That's a great way of putting it. And we actually do speak to requirements as well, so I kind of consider the desirable properties to be, like, meta, meta requirements. And some of them are maybe true requirements, but a lot of it is context around requirements."
+  },
+  {
+   "t": 996.3,
+   "speaker": "Kevin Clark",
+   "text": "Good. Well, I'm just saying, it… although it… it doesn't… if you go back and look at, you know, are you actually going to do something in the first place, you have to describe why is it going to exist, right? What is its purpose? And then you start to get down into, you know, attributes. This is a both-and."
+  },
+  {
+   "t": 1018.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Absolutely. Absolutely. Let's see… alright, let's just get back into this presentation, and again, please raise your hand if you… you have something you want to share, or you have a question, because I know I'm moving very quickly."
+  },
+  {
+   "t": 1034.4,
+   "speaker": "Daveed Benjamin",
+   "text": "so yeah, so the large numbers, 1,600, these are the total proposals, but the 355 are the human ones. They spread across 24 chapters. Each proposal was decided and open, and you are able to actually go onto the site and"
+  },
+  {
+   "t": 1053.5,
+   "speaker": "Daveed Benjamin",
+   "text": "track. the whole approval process. You can see who made the contributions, you can see the disposition of the different contributions. Some of them… very few of them were declined, not that many."
+  },
+  {
+   "t": 1068.4,
+   "speaker": "Daveed Benjamin",
+   "text": "But there were also some that were… that were, deferred. Like, I know, for example, there was this really amazing contribution by Laura Del Campo, and it was really more of a case study, and… It covered multiple desirable properties, so we didn't really have time in this period to adjudicate that. And try to figure out how it actually fits in, because it may be that we want to add a chapter on potential applications. I'm not sure. So, version 1.1, is coming up. We are gonna be looking for people who want to be on the steering committee for version 1-1. Those are the people who will help adjudicate, and, and bring, the proposal corpus for version 1.1 to a close. So that's with the steering club. They take it from this overall corpus to an actual version, and we do need steering committee people who want to work on version 1.1. I expect that will be coming up in the next"
+  },
+  {
+   "t": 1135.8,
+   "speaker": "Daveed Benjamin",
+   "text": "month, we'd probably like to finish it up. I want to mention that on Monday, we are having a meeting for anyone who is interested in the meta-governance of the desirable properties. We're going to probably be forming some type of council, and we're going to be… taking a look at all the processes, contribution, co-editors, etc, and trying to hone these in. Because once again, this is actually just the beginning. So at this point, there are no pending proposals, no unfiled contributions. We… as I said, we still do have a number of contributions that we defer to 1-1. As I was saying, we have 37 proposals deferred to version 1.1, we declined 39, and 28 proposals were withdrawn. So, inside the book, you know, I've actually just shown it to you. I decided to show it to you earlier, just because I wanted you to see it. So, if you… if anyone wants to find it, again, you can go to book.desirableproperties.org. Nada."
+  },
+  {
+   "t": 1205.0,
+   "speaker": "Nada El Mais",
+   "text": "Yeah, hello. Sorry, sorry to interrupt you. I just was, I was wondering if I may intervene with the desired property that I read and co-edited, because I'm afraid if I cannot proceed with attending the, session. So, I will watch the recording later, but for now, if any time, like, you find it the earliest for me to intervene… Thank you."
+  },
+  {
+   "t": 1233.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Please, please, tell us about your experience and what you worked on. Nada?"
+  },
+  {
+   "t": 1238.8,
+   "speaker": "Nada El Mais",
+   "text": "Yeah, yeah, yeah, okay. Yes, yes, thank you so much. Okay, I just, first of all, I'm so happy and honored to be part of this, tonight, it's nighttime, in my place, and, can you hear me well? Yes, I'm…"
+  },
+  {
+   "t": 1257.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Can you introduce yourself, tell us where you're from, and…"
+  },
+  {
+   "t": 1260.9,
+   "speaker": "Nada El Mais",
+   "text": "Yeah. Oh, okay. I'm Nada Mais, I'm from Lebanon. I'm a university lecturer. My PhD is about women in AI and, STEM, science, technology, engineering, mathematics. I'm doing this in Spain, and I got assigned as the research team member in the Ministry of Science, Innovation, and Universities in Spain. I'm also the president of a non-profit organization, a local one, that aims to empower women and youth and works on social stability. I'm also a certified trainer from the ILO, the International Labor Organization, on how to start and improve your business. So this is, very briefly about me. I'm also… I try as much as possible to be very active with UW Daveed, with the amazing initiative that I really believe in, especially studying all the…"
+  },
+  {
+   "t": 1315.1,
+   "speaker": "Nada El Mais",
+   "text": "let's say, I do not want to ignore the positive impacts of AI and technologies, but also I'm studying the negative ones and how we can face these challenges, and this is what I saw in the meta layer. This is why I believe in what you're doing, guys. It's very appreciated. It's amazing to talk about… here, I want to go through, to go deeper, like, for 2-3 minutes with, DP18 that I was, Focusing on, and that really means to me, especially, it focuses on the social things, it talks about reputation systems, and how people are permanently trapped into old contexts. It also, gathers feedback and, and, accountable learning. The trustworthy thing, you know, like, these are all terminologies that that touches humanity, it's not only about technology. And I see DP18, like, the Desirable Property 18, talks about, tackles the internet in a very new way, and very, I believe, brave way. Like, I didn't see anyone talking about these before, about reputations, loops on the internet."
+  },
+  {
+   "t": 1385.2,
+   "speaker": "Nada El Mais",
+   "text": "how we might get dragged with, let's see, we see the number of likes, or how much traffic a certain platform has. But we ignore the fact on what impact it's causing, or what are the changing behaviors and mindsets, or what's the thing changing after having this content online. And here comes the layered web to mention this. Which now, I believe it's more fair for people, for entities that are marginalized somehow, or for greater impact that might be caused online, using internet AI, or, you know, like, the meta layer. tackles things very differently, maintaining the human factor, it's like the socio-technical thing that I believe about, like, the technology with the keeping the social, the human thing there. So this is, like, very briefly how I perceived this, and this is why I'm here today. I really believe in what you're doing, David, and the whole team. Thank you so much for this."
+  },
+  {
+   "t": 1446.9,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, well."
+  },
+  {
+   "t": 1447.5,
+   "speaker": "Nada El Mais",
+   "text": "Oh, well."
+  },
+  {
+   "t": 1450.0,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, and I want to just say that Nada and her sister, salwa have been… Very consistent contributors to this project for a year. now. So, I'm just super happy. We're… we're gonna… we're gonna set up Metalayer Lebanon at some point. Yeah, we have to, right? I want to also say hello to Allison, and Victor, and Gael. Gabby, it's great to see you all here. Laura, I see you here, too. Great. Hey, Nya. Yeah, just really… Josh, as well, wow. Long time, Josh. Melanie… oh, so, thank you all for coming. Really appreciate you. There will be… another opportunity to hear from some more folks in a few minutes, and… and I want to open it up to people on the call, too. Is there anything coming through? Yeah, just… just, raise your hand, and we'll get to you, for sure. Markabadi."
+  },
+  {
+   "t": 1516.7,
+   "speaker": "Markabadi",
+   "text": "Yeah, I've got a quick one, Daveed. What, there was discussion that Victor talked about in the chat about, having our own web browser. How does the meta layer add in? Would it be a plug-on to everyone's browsers? Is that how you would… you would fish it?"
+  },
+  {
+   "t": 1535.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, well, right now, it's happening with an extension, and we also have the ability to… basically use a web embed, which I know is a technical term, but it's basically several lines of code that can be put in the head of a website so that the… when people come to the site, they can get the functionality they would get with an extension without having to actually install the extension. But I think the next step, like Victor is talking about, is a browser, and It simply would be taking the functionality that we have created in the browser extension and exposing that to a browser. And that… that's not hard. There are many open source browsers. Chromium is the most popular one, but I think that we're gonna… we're gonna wanna do that for sure on mobile early, right? And then…"
+  },
+  {
+   "t": 1587.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Perhaps? Perhaps for a desktop as well. Victor, you want to say anything about what you were speaking?"
+  },
+  {
+   "t": 1595.4,
+   "speaker": "Victor Vorski",
+   "text": "Yeah, I mean, I've been thinking, and I think this is the path forward, because I fully agree. I love the work, by the way. Thank you for everything that you do in bringing this into the world, and I love the name, Layered Web. And yeah, I think we need to build it in such a way that It doesn't require a hundred million or whatever it is websites on the web to do something in order to participate. I think this is a layer that we own, right? And just the same way Claude is showing now, you know, LinkedIn doesn't want me to do stuff, and I'm like, well, it's my account, it's my browser. it's my right to do with it what you want, you know? I mean, I don't have no intention to spam, and I think building the browser, which also has the capability for"
+  },
+  {
+   "t": 1645.2,
+   "speaker": "Victor Vorski",
+   "text": "other people, or many people, to build the apps that interact with this in a new way. I think it's an amazing, amazing opportunity, and like you said, thanks to the Chrome engine being open source. it's entirely feasible, plus AI coding, it's entirely feasible with a modest engineering budget, so… Yeah, really excited to see how we can bring this to life."
+  },
+  {
+   "t": 1669.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Let's do it! Awesome. And I see Aldo here, too. Good to see you, Aldo. Alright, let me… move back. 2… The presentation, and again, if you have any comments or thoughts, please please open up. Look, Markabadi, you know, he says something, and it triggers something, and… We all have a new understanding, so… Thank you."
+  },
+  {
+   "t": 1703.3,
+   "speaker": "Daveed Benjamin",
+   "text": "And so the invitation really is to read a chapter, test its assumptions, and join the conversation. If you think something's missing. Go ahead and create an insert. If you think something actually should be changed, then do a patch. We'd love to get your input, and things that come in in the next several weeks can go into version 1. Which, you know, version 1.1 is the one that I'm really excited about. Version 1, quite honestly, it… That last… this last week, it's been like a whirlwind. So, version 1.1, in case there's anything we miss, we'll be able to clean it up there, and we'll be able to add in other things, and we'll adjudicate those things that we put off, because we… just didn't have the time to deal with it."
+  },
+  {
+   "t": 1754.4,
+   "speaker": "Daveed Benjamin",
+   "text": "So, here's one way to think about this book. There are many different ways to slice and dice this, so one is The first 6 chapters are really about agency and foundation. Who's holding power? So we have federated authentication and accountability, participant agency and empowerment, adaptive governance. Data sovereignty and privacy, decentralized namespace, and commerce. Another way to group them. is to think about chapters 7 through 12, communities and AI. So, how do we work together? Simplicity and interoperability, collaborative environment and meta-communities, developer and community incentives, education, safe and ethical AI, and community-based AI governance. And chapters 13 through 18 are about how we trust over time. Well, what would make it dependable?"
+  },
+  {
+   "t": 1813.3,
+   "speaker": "Daveed Benjamin",
+   "text": "So, AI containment, trust and transparency, security and provenance, roadmap and milestones, financial sustainability, feedback loops and reputation, that's the one that Nada was just talking about. And then, chapters 19 through 24, participation and resilience, so amplifying presence and community engagement, community ownership, multimodal, civic memory and epistemic continuity. 23 is universal participation in linguistic interoperability, and then cross-layer resilience and compromised containment. And the reason I'm reading these to you, and maybe I should have said this ahead of time, but… you can see that this covers a wide spectrum of topics and, therefore, interests, and if you have an interest in any one of these areas, I invite you to… to dive into that chapter and see how you can help us make it better."
+  },
+  {
+   "t": 1875.4,
+   "speaker": "Daveed Benjamin",
+   "text": "So, the conversation… belongs in the book. We're using Canopi. Canopi… I'll show you really quickly. Scode Canopi. Well, Canopi actually shows up on the book. I mean, we said the conversation goes in the book. You click here to go meta. And it opens up Canopi. So Canopi is simply a sidebar that is available on every web page, and it changes… what's displayed in the sidebar changes based on what page you're on. So, we're able to have conversations, so you can… you can… you can like things, you can bookmark them, gotta be logged in first, so it… it tells me to log in when I try to like something. So let's go… You can like them, you can bookmark them, you can… you can reply to them, you can quote them."
+  },
+  {
+   "t": 1943.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Another aspect of Kanopy is… This… it says… You can select a paragraph, and then you can add a post to it. Or you can patch it. So you can do a… patch where you change the text, or you can do an insert above or below. That's really important for people who would like to make a contribution to the book. You would come to a piece… a passage in the text. and select the passage. It needs to be a full sentence, or multiple sentences, and then you'd select whether it's a patch, that's whether you're replacing the text, so it's gonna… go ahead and put the text in here, and I would make some change to it. So, maybe I would say something like the layered web. And then I would post it, and this would come out as a patch attached to this particular piece of information. I'm not going to make that change, because this is the production model, but I just wanted you to see that you can… you can do things both"
+  },
+  {
+   "t": 2012.8,
+   "speaker": "Daveed Benjamin",
+   "text": "In the sidebar, and also in… in the text. We're able to see who has been on the website, or is on the website currently. So you… these are 3… 3 people who went visible on this particular site. This is, DP5, Decentralized namespace. And, yeah, ranging from 4 days to 11 days ago. We can now go over one of them and say, oh, well, oh, well, let me see who this person is. And imagine if she put more information in her headline. then we might say, oh, wow, so Melinda is an expert with government procurement and funding, and she actually could be really helpful for me as I'm, you know. thinking about whatever I'm thinking about, you know, perhaps on this page, and I'm gonna just go ahead and add a friend so I can message her."
+  },
+  {
+   "t": 2074.8,
+   "speaker": "Daveed Benjamin",
+   "text": "There's also the concept of rooms, there's an AI assistant that's built in, and you can bring your own assistant in here. This particular assistant is one that's associated with this page. So this is kind of a really short version of Canopi, but I guess the main thing that I want to be clear is, this is what it looks like to have things over the web. It essentially looks very similar to today's web. Markabadi?"
+  },
+  {
+   "t": 2105.7,
+   "speaker": "Markabadi",
+   "text": "Thanks, David. So, obviously there's two things going on here. There's the book, and there's Canopi. Would Kanopy be able to, like, say on someone's website. would Kanopy still be able to enable you to select a paragraph and make a comment on it? Like, I don't think this is right, check out this research, blah blah blah, like, to be able to patch onto someone else's website with Canopi."
+  },
+  {
+   "t": 2130.5,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes, the extension… Works on any web page, and… Now, you can do a patch on anybody's website. Whether they're gonna pay any attention to it or not, that's a whole new thing, a whole nother thing, but you can certainly make suggestions, patches, inserts, on any website to just say, hey, this is information that I think should be here, and it would be up to the actual host whether they wanted to take you up on it. Alright."
+  },
+  {
+   "t": 2160.9,
+   "speaker": "Markabadi",
+   "text": "Great, and of course, you've got visibility, but people can hide their movement, right, through Canopi."
+  },
+  {
+   "t": 2168.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, if you are a site in the network, then you would be able to hide things that you didn't think were appropriate on your site. They wouldn't… Just because we believe in transparency, they would be hidden in the default view, but people would be able to find them and see what you hid."
+  },
+  {
+   "t": 2191.4,
+   "speaker": "Markabadi",
+   "text": "Oh, I'm sorry, what I meant is, if you are surfing in Canopi, like, you just went to the people who you had seen visited this page, are you able to hide your own movements through the web?"
+  },
+  {
+   "t": 2205.2,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, yeah. I'm only visible if I have visible… toggled on. If I turn this off. Now I'm trying to go to visibility, it says you're currently invisible. So at this point, no one would ever know that I came to this particular site. I mean, let's say, let's say I came into this site invisible, then no one would know that I actually came to this site. It only happens if I go, yes, go visible."
+  },
+  {
+   "t": 2236.5,
+   "speaker": "Markabadi",
+   "text": "Got it."
+  },
+  {
+   "t": 2237.8,
+   "speaker": "Daveed Benjamin",
+   "text": "That's a great question, by the way, thank you. Victor?"
+  },
+  {
+   "t": 2241.5,
+   "speaker": "Victor Vorski",
+   "text": "Yeah, I mean, there's so much I would love to jam on the ideas around the design, but I think One thing which is maybe, I would suggest, needs to be more strongly… thought through is, for me, what is clear is that going forward, each one of us is going to be hybrid, so everybody will have their own personal agent, right? I mean, I am working now on making all of my life agent in the loop, so an agent is always there tracking my commitments, promises, etc, etc. And I think this is going to be a really interesting opportunity And because it's a rupture. in how we work and how we interact with the web, every rupture creates an opportunity for a new way of inviting people into new tools and new ways of looking at it, so…"
+  },
+  {
+   "t": 2299.3,
+   "speaker": "Victor Vorski",
+   "text": "I think this idea that every human has also got an agent working with them, every team can have an agent, and really weaving that in powerfully, right? So, for example, I think very soon it's just going to be a natural expectation that every organization has an agent, so I can chat to it. And the layered web could actually be a powerful way of enabling that In a… in a good way."
+  },
+  {
+   "t": 2324.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. I think you're right on. The direction you're speaking to appears to be the way we're headed. I'm starting to see that happen all the time, so let's… let's continue that conversation, for sure. Hey, Laura!"
+  },
+  {
+   "t": 2340.0,
+   "speaker": "Laura Sanchez",
+   "text": "Yeah, sorry. I don't know why that always happens. I have trouble unmuting, but anyways, you know, I just wanted to go over really quick about, that insert that I made on community-governed AI, and it was about measuring societal ROI and giving us, you know, giving me hope for, my two projects, just really quickly, I just want to say it really quickly, just because I did do that insert, and I want, like, people to know what is it about. And first, it was, our RSN initiative, which is a citizen-led AI-enhanced civic broadcast. Where we can all come together to explore real challenges, share perspectives in the building understanding, and then that second part of that, my projects that I'm working on, is a vision for a fourth branch of government that would take those conversations beyond the digital realm and into our communities, where citizens could help"
+  },
+  {
+   "t": 2393.3,
+   "speaker": "Laura Sanchez",
+   "text": "Turn these desirable properties into practice. And, you know, I'm dreaming of it all coming true in California, and Depi has helped me, you know, start a ballot initiative for this. And so, And the layered web could really add the infrastructure that is needed to preserve shared knowledge, evidence, decisions, and even disagreements. Allowing us to, you know, not only discuss the future, but shape it, and so I will, in the notes, I will put my landing page, but you know what? This is very, very, very, very, you know, important and needed at this time, especially. We don't want to make the mistakes that we did before, you know, we want to learn from The internet, and learn from those you know, past things that we can go forward on. So, you know what, thank you so much for this opportunity, and I'm so grateful to be here, and to be contributing to this challenge, and, congratulations, and go Meta!"
+  },
+  {
+   "t": 2455.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Go Meta, yeah. I'm really excited about the insert that… Laura came up with, because it really speaks to a cogent application of this, and… as we were adjudicating things and realizing, well, we don't really have time to, like, really figure this one out, I actually had the thought that it may make sense to have a chapter that speaks to real-world applications, One reason is that any application isn't gonna just live in one desirable property. I mean, they don't. They cover multiple ones, so I am thinking that this next, steering committee for version 1-1 will probably want to Think about, well. Where can we locate some really interesting case studies that can, show how the layered web can really push"
+  },
+  {
+   "t": 2513.7,
+   "speaker": "Daveed Benjamin",
+   "text": "society and civilization forward. And I don't… I don't want to have little case studies that are, you know, maybe about dating or something like that. I want… but if there are some things that are… that are really profound and could really help us discern what's real and what's not, and… and be… do better sense-making, et cetera, that would be really exciting."
+  },
+  {
+   "t": 2535.0,
+   "speaker": "Daveed Benjamin",
+   "text": "Alright. We… we're kind of running towards the end of this, and I wanted to give people involved with this some time to speak. If people wanted to speak for one or two minutes, I know Lela, Renad, and Phahsa, are you all prepared? To move forward on that? Okay, who's first? All right, how about youngest first? Is that alright, Renad? So, Renad is our superstar 14-year-old. She's the youngest person who has ever studied the metaweb, meta layer, and she's becoming quite well-versed in it. So, Renad, the floor is yours."
+  },
+  {
+   "t": 2579.9,
+   "speaker": "Renad Baomar",
+   "text": "Hello, everyone, it's really amazing to be part of this meeting, and thank you so much for Daveed for inviting me. So, my name is Renad Baomar, and I'm a 14-year-old global youth advocate from Oman, founder and executive director of Brave Voices, and a co-editor of DP10. And my work focuses on youth leadership, children's rights, environmental advocacy, and inclusive education, and creating opportunities for young people to participate meaningful… meaningfully in shaping their communities and their futures. So my journey has also taken me to international spaces. Dedicated to education, sustainability, environmental protection, and global collaboration, from being a nominee… a 2026 nominee for the International Children's Peace Prize, and, an Airst Prize Fellow."
+  },
+  {
+   "t": 2633.8,
+   "speaker": "Renad Baomar",
+   "text": "serving as a UNSCAP SDG Hero, Girl Up Global Teen Advisor, and News for Ocean Advocate, I have had the opportunity to engage with different perspectives on the challenges and possibilities shaping our world, and I think that we live in a world where information travels across continents in seconds, and knowledge is only a search away, but yet access to information alone does not guarantee understanding, meaningful learning, or the ability to contribute something new. So, these experiences have taught me something important that meaningful change. Rarely happens when we work in isolation. It happens when knowledge, perspectives, and people come together. And this brings me to the metaweb and the desirable properties."
+  },
+  {
+   "t": 2684.6,
+   "speaker": "Renad Baomar",
+   "text": "So my experience with this work has expanded on how I understand the relationship between knowledge, education, and the internet, and we often, think of the internet as a place where we go to find information. But I believe, its greatest potential lies in what happens beyond finding it. So, can we connect ideas Rather than leave them isolated, can we understand the context behind information? Can we build upon what others have discovered, and can we create an environment Where every contribution has the potential to become part of something greater. Because information is not the same as knowledge, and knowledge is not the same as understanding. So the real opportunity lies in creating environments where people can question what they encounter, connect ideas across disciplines, contribute their perspectives, and participate in the creation of knowledge itself."
+  },
+  {
+   "t": 2748.4,
+   "speaker": "Renad Baomar",
+   "text": "So I believe this has profound implications for gen… for education. And for generations, education has often been structured around the transfer of knowledge. Someone teaches, someone learns, and information moves from one person to another. But this actually happens when we begin to see every learner as a potential contributor? What happens when a student is not simply asked to remember an idea, but it's empowered to challenge it, develop it, and connect it to another discipline and contribute something new. So, imagine a student in Oman exchanging ideas with the students in Uganda, a researcher in Europe, or an educator elsewhere in the world. Imagine those perspectives coming together to create knowledge that none of them should have developed in isolation. So, this is the kind of educational future that excites me."
+  },
+  {
+   "t": 2806.6,
+   "speaker": "Renad Baomar",
+   "text": "This is why I believe participation, must go beyond consultation, and young people need meaningful opportunities to contribute, collaborate, question. and help shape the systems that affect their lives, so as a co-editor of DP10 Education, I am proud to contribute to this wider conversation. Thank you."
+  },
+  {
+   "t": 2833.3,
+   "speaker": "Daveed Benjamin",
+   "text": "what she said. Oh my goodness. Well, thank you so much, Renad. Layla, you have the honor of following that."
+  },
+  {
+   "t": 2841.8,
+   "speaker": "Leandra (Lela) Preston",
+   "text": "Okay, great, thank you. Well, I actually was… I've worked… been working with Renad in some other capacities that I met her here, and I'm a professor of women's and gender studies, and so my girl studies class is working with her nonprofits right now, which has been a really cool, connection, and speaks to some of the, you know, unintended, maybe, possibilities of this type of group. That there are so many, ways to connect, and as someone who teaches an interdisciplinary program, it's… what led me to this project was my work in gender and technology and exploring gender and AI connections and the interdisciplinarity of the internet, really. And so, one of the workshops I did led me to this project, and I was so excited by it, and initially felt that, oh, this is probably too technological for me. Even though my doctorate's in text and technology, I am more on the theoretical side of"
+  },
+  {
+   "t": 2909.3,
+   "speaker": "Leandra (Lela) Preston",
+   "text": "the technology than the actual technology, but it was so fascinating how many ways you could, you know, I could fit in or find my, specialties, I could apply and, you know, benefit the larger project. So I became a co-editor on, three chapters, 2, 18, and 23, which I don't have it on my screen, or I would tell you the names. I also was on the steering committee, and discovered the absolute incredible role of AI in the editing process, and how the further I went, with reading through the AI recommendations and suggestions, and deciding whether to accept or not, I became more confident in, you know, the AI's suggestions and knowledge of the larger project, and was just so incredibly fascinated and grateful"
+  },
+  {
+   "t": 2967.5,
+   "speaker": "Leandra (Lela) Preston",
+   "text": "before. everything that has created this AI system that knows the meta-web and the desirable properties well enough that we could depend on it to help the editing process of, you know, all of these chapters in a short period of time and made it possible. And it was more possible, honestly, because David had done, really, the first pass, and it… it… it did make it a little more, palatable, because I was also able to see, let's see, what does Daveed think, you know, about this, and make my own assessment. So, I feel honored to have come onto this project within just the last year, and it was already pretty far along, but to be able to jump in in this way, and I am excited about how we will continue to work together as, we've had some conversations about my university, University of Central Florida, in the U.S, about how we can"
+  },
+  {
+   "t": 3028.2,
+   "speaker": "Leandra (Lela) Preston",
+   "text": "work with the meta layer and the Desirable Properties Project to provide more support, whether it's through students or grants and, or, you know, creating a center. I'm very excited about how we can Implement this even in a university setting, and then also use the university setting to elevate and, you know, promote the meta layer. I think it's gonna be, an invaluable resource. I've already, I mean, imagined something like this in the, you know, various experiences where you're thinking, oh, I wish we had this, or oh, I wish we had some way to, you know, counter this disinformation, or all of these things, and I've just imagined so many ways that the meta-layer is going to make those things a reality, so I am grateful,"
+  },
+  {
+   "t": 3079.6,
+   "speaker": "Leandra (Lela) Preston",
+   "text": "for all the work that everyone in this space has done to make this a reality, and I cannot wait to share it. So thank you for the opportunity, Daveed, and I look forward to making more connections with other people in this group, and just doing, you know, awesome interdisciplinary work. So, thank you."
+  },
+  {
+   "t": 3098.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, well, thank you. We're so happy that you're here. Oh my goodness. So, we have… we're gonna go a few minutes over, because we have 4 more people that are gonna speak for 2 minutes or less. So, it's Phahsa, Duane, if you're still up for it, Michelle and Micah are the four. Is there anyone else? who wants to get on the list, so I just want to essentially say, we're at time, so I understand if people have to leave, but if you're able to stay another 10 minutes, we'll hear from Phahsa next."
+  },
+  {
+   "t": 3130.5,
+   "speaker": "Phahsa Ras",
+   "text": "Hey everybody, again, congratulations, Daveed everybody that's been involved with this project. My name is Phahsa, this work has been something we've been a part of for years, and it's just exciting to see everything come into fruition. My main focus was on data sovereignty, DP4, and it's not just me, there's a team of people that have really cared about the… there's something that Daveed said at the very beginning of this project, or at the very beginning of today. And that's a lot of what's happening right now in the world, where we're seeing that innovation Is outpacing community, and outpacing humanity, and… The very things that we need to be able to have utility in the tools that we're using to survive."
+  },
+  {
+   "t": 3188.9,
+   "speaker": "Phahsa Ras",
+   "text": "the knowledge and information-based systems is a part of that, and the internet, which is the largest, digital landmass with public information in it, is one of those things. So it's a… this is one of the most vital and essential steps in being able to ensure that we build infrastructure that's It's not just gonna last, but it's gonna help us last as a people, as a community, in general. Like, humanity needs, a system that allows for it to be able to communicate with each other safely, and that's what the MetaLayer Initiative and the Layered Web bring to the table. My main focus has been around data sovereignty, as I was saying, and the attention economy work. I was a part of co-authoring a document with the, that was published by the UN on the attention economy, and about the impact of how misinformation and disinformation are gonna be one of the top 10 global threats"
+  },
+  {
+   "t": 3243.4,
+   "speaker": "Phahsa Ras",
+   "text": "to the world over the next 10 years when the… with AI really being in its infancy stages. And the MetaLayer helps to solve that with a lot of the different things that people have discussed on this call. So, really excited to be, talking about our work. Umi Economy is, we are one of those real-world applications that will be using this technology to bring to, nonprofit, well, excuse me, to public enterprises and public enterprises that are, yeah, private and public enterprises that want to see infrastructure that isn't, harming the community, but is helping the community. Excited to be doing that. Excited about the next steps of where this is going. Shout out to Sara, Melinda, Josh, and other members of the team that have contributed as it relates to data sovereignty and with DP4, and you're right, Daveed, there is no one"
+  },
+  {
+   "t": 3296.6,
+   "speaker": "Phahsa Ras",
+   "text": "DP, or a desirable property, that, is… that we should be focused on. There's, like, each one and each application and each tool that gets built will probably tap into many of them, and we need to make sure that we record and measure and, establish What feedback we can get from that so we can build something better. That's it. Thanks."
+  },
+  {
+   "t": 3317.4,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, man. Thank you, Phahsa. Thank you for being along this entire journey, and thank you for speaking up now. We really appreciate it."
+  },
+  {
+   "t": 3326.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, I see Lord Megazion… Did you wanna… Throw in your two cents now?"
+  },
+  {
+   "t": 3335.6,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Greetings, everyone. Greetings. I'm in a humble position right now, and I want to bring it home. to a very… It's a real point that we are here to focus on. We are not merely just talking about problems of the past. We are focusing on and implementing. Solutions of a future, not just a future of tomorrow, but a future and a legacy. Of, endless tomorrows. As we sit, As the Founding Fathers. at DID of America, at a table, convening upon laws. We are speaking about more than just the governments. But atoning with the digital realm that we have to face in our very near future. These digital laws that we are affecting and approaching and addressing is something that is a great task, a noble duty that is entrusted to not just any mere mind."
+  },
+  {
+   "t": 3403.0,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "That has the cognitive ability to conceptualize, build. and implement. We are more than builders. We are more than makers. We are more than just simple minds. We are the… Singularity. We are the quantum consciousness. And the quantum entanglement. So it's on my heart, because I am a priest of resonance, that as we sit here, taking on this challenging with no fear. Have I heard anyone speak? We must connect with each other, realize and understand who we are as persons, and connect with each other as we build a connection element of a future of endless, innumerable time. And with that, I yield. I thank you in this service. In the service of humanity, in the service of creation and the Creator."
+  },
+  {
+   "t": 3459.9,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you so much for being part of this, and I look forward to strengthening our connection. I think there's a lot that I could probably learn from you, so really appreciate you being here and bringing your voice to the room."
+  },
+  {
+   "t": 3473.1,
+   "speaker": "Daveed Benjamin",
+   "text": "So… Darrell, are you up for…"
+  },
+  {
+   "t": 3478.1,
+   "speaker": "Darrell Duane",
+   "text": "Hey, yeah, thanks, Daveed. Hey guys, sorry I wasn't here earlier, I had another event I need to be at, but I met Daveed at The Gathering recently, and really inspired by this work with Desirable Properties. Daveed… Well, I'll just name… I… I'm very interested in, kind of, coherence, and… Residents and bringing people together to work together, in, in, in, effective ways. I'm interested in psychotechnologies, for making that happen. A lot of that's coming through leading theme camps at Burning Man. But also through, a lot of community organizing, over the years. And I am a technologist, so… And, developer, and so forth. I've done a lot of work with D-Web, and, been to a number of events with it."
+  },
+  {
+   "t": 3530.9,
+   "speaker": "Darrell Duane",
+   "text": "And I… I'm also very much interested in metamodernity, and Game B, and finding new ways to do things, and so I… At first glance, this is Arrow Properties, I'm still wrapping my brain around it. It looks a lot like, the Sustainable Development Goals, or even better, the Inner Development Goals. for tech, and how… how tech should be working, and so I… I like… like those, and I like this framework as what it's been doing. Daveed seems to think that I might do well with the DPA team, the feedback loops, and reputation, and I would agree. I am fascinated by how to account for contributions to projects. And how to encourage people to To show up, as needed, when needed, how needed, in the easiest ways in that collaboration."
+  },
+  {
+   "t": 3580.1,
+   "speaker": "Darrell Duane",
+   "text": "So, yeah, glad to be here, still getting to know everybody and how this all works. See a couple of familiar faces, and I'll hand it off from there. Thanks, Daveed."
+  },
+  {
+   "t": 3588.7,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, thanks so much, Darrell. It's great to have the voice of someone who's just arriving in the last several weeks, but it's so cool that you can see the value, and I'm hoping we can make a bridge from this work to D-Web, or from D-Web to this work."
+  },
+  {
+   "t": 3604.5,
+   "speaker": "Darrell Duane",
+   "text": "Oh, they'd love it. They'll eat this up. Yep."
+  },
+  {
+   "t": 3606.8,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome, awesome. So we'll have further conversations about that. Michelle, our friend Michelle from Kenya."
+  },
+  {
+   "t": 3614.6,
+   "speaker": "Michelle Thuo",
+   "text": "Hi everyone, can you hear me?"
+  },
+  {
+   "t": 3617.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes."
+  },
+  {
+   "t": 3618.8,
+   "speaker": "Michelle Thuo",
+   "text": "Oh, yeah, so, my name is Michelle Du, I'm joining from Nairobi, Kenya. Personally, I'm a software engineer, internet governance advocate, and AI safety researcher, mainly working at the intersection of tech and policy. And first of all, thank you and congratulations to everyone who contributed to this work. And it's really exciting to see us reach this major milestone, especially having been involved in this work for I think close to an year now, so… Longer."
+  },
+  {
+   "t": 3652.1,
+   "speaker": "Daveed Benjamin",
+   "text": "Longer than a year."
+  },
+  {
+   "t": 3653.4,
+   "speaker": "Michelle Thuo",
+   "text": "Yeah, a little bit of an… of a year, yeah. So, yeah, one thing I'd like to share is a little about my experience being part of the review process. Personally, I had the opportunity to coordinate DP11, which is on safe and ethical AI, although I wasn't able to contribute as much to the chapter's development as I had hoped due to other commitments. And aside from that, I also took part in the steering committee review of specifically DP's, it, first of all, 12, which is on community governance of AI, DP13, which is on AI containment. DP14 on trust and transparency, DP15 on security and provenance. DP17 on financial sustainability. Dp18 on feedback loops and reputation, and DP21 on multimodal interactions and experiences."
+  },
+  {
+   "t": 3715.3,
+   "speaker": "Michelle Thuo",
+   "text": "So, for me, overall, one thing I found interesting was that the process, like, wasn't just a matter of just accepting, like, every suggestion as they came in. I mean, like, over the weeks, we had the opportunity to look at each, I mean, people had the opportunity to look at the suggestions and also discuss whether it actually added value, and consider how it would affect, like. the entire book. And some of, generally, some of the suggestions were accepted as they were. Others, like, needed a bit of reworking, while others, like, were set aside for now the 1.1 version. So, I think that was just as important as the additions themselves, because we wanted to make sure the final book was clear and made sense as a whole. So, across the chapters, I… I particularly enjoyed, like, seeing the attention given to accountability,"
+  },
+  {
+   "t": 3775.7,
+   "speaker": "Michelle Thuo",
+   "text": "Also, giving communities a real say in decisions, and also making AI more accessible, and ensuring that people's feedback doesn't just get collected, but actually leads to change. So, I also think, like, it's also important that we don't lose the sight of the fact that, We are talking about, real people and communities with a very… with very different needs. resources and also access to technology. So, going forward, I think the most interesting part will be seeing how we all take this idea… these wonderful ideas beyond the book itself and put them into practice, and how we can make sure they work in different environments, including where communities with limited resources and infrastructure. So, for me, like, the next phase, becomes particularly exciting, and I'm looking forward to be part of it, yes."
+  },
+  {
+   "t": 3836.5,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you, Michelle. It's been such a pleasure having you as part of this journey."
+  },
+  {
+   "t": 3842.8,
+   "speaker": "Daveed Benjamin",
+   "text": "Micah from Kenya as well."
+  },
+  {
+   "t": 3849.4,
+   "speaker": "Micah Nyatindo",
+   "text": "Hello, everyone. Topekani and me."
+  },
+  {
+   "t": 3852.5,
+   "speaker": "Daveed Benjamin",
+   "text": "Yep."
+  },
+  {
+   "t": 3853.2,
+   "speaker": "Micah Nyatindo",
+   "text": "My name is Micah Nyatindo. I'm also from Nairobi, Kenya. I'm a graphic designer. A web designer, digital builder, and the founder of Traffic Sync Design, which is a creative studio which focuses on branding, web development, and digital solutions. So later on, you can connect with me on LinkedIn, or explore my work through Traffic Sync Design. I will share both the links in the chat when I'm done. My journey with the DP… Majority ADP Initiative. Has been an exciting opportunity to learn, I'll say, contribute, and explore how you can make the web more trustworthy and human-centered. One of the things that has particularly inspired me is the idea that the web needs more than individual platforms and applications."
+  },
+  {
+   "t": 3911.4,
+   "speaker": "Micah Nyatindo",
+   "text": "We need a layer that helps information, trust, and context move across the systems people already use. Actually, this became… Meaningful to me, following the Nairobi floods, when I reflected on how emergency information is distributed, important warnings can be scattered across government websites, social media, news platforms. Or even communication channels. You find that people may struggle to establish which information is trustworthy. Where it came from, or where it originated, and whether it's… And whether still it's relevant. This experience inspired me to start developing early warning as a meta layer. I'm happy to share that this work has now progressed into a working demo within the Kanopy environment, thanks to David. It demonstrates how emergencies"
+  },
+  {
+   "t": 3975.9,
+   "speaker": "Micah Nyatindo",
+   "text": "Alerts can be presented through a sidebar while people browse the web. this source information. Trust indicators, alert status, and recommended actions. It is important to clarify that this is currently a demonstration using simulated alerts, not a live emergency warning service. In my next ambition. I'd like to continue developing it towards a real-world data integration. And, as the project progresses, make it accessible to others through Kanopy. So, back to the DP. My involvement in DP7, DP14, and DP15 has helped me approach this challenge from three important perspectives. First, in DP7, it helps us think about how information can move between different systems without losing its meaning. When you go to DP14, it reminds us that people need context and evidence to understand"
+  },
+  {
+   "t": 4041.0,
+   "speaker": "Micah Nyatindo",
+   "text": "And assess the information through? When you go to DP15, security and provenance highlights the importance of Knowing where information comes from, and preserving the… integrity and history. As I was saying earlier, I have also had the opportunity to serve as DP15 co-editor, which has given me a deeper appreciation of how responsibility involved in shaping these principles. It requires collaboration, constructive disagreements, and careful decisions. For me, the DP… The DPs are not simply ideas in the book. They are principles we can use to guide Practical work, and address real… world challenges. I'm really grateful for David and everyone involved for creating an opportunity for people from different backgrounds and part of the world to contribute to this shared vision. I'm looking forward to continuing the work and seeing what"
+  },
+  {
+   "t": 4108.5,
+   "speaker": "Micah Nyatindo",
+   "text": "We can build together. Go, Meta, and thank you, David, and thanks, everyone, for this opportunity. Have a great time."
+  },
+  {
+   "t": 4115.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Thanks, Micah. Go Meta, for sure. So, we've come to the end. Is there anyone who wants to say anything? Any comments, reflections, reactions? Anything new from today that you want to just bring forward?"
+  },
+  {
+   "t": 4132.8,
+   "speaker": "Lord M.E.G.A Zion",
+   "text": "Yeah, David, I just see that… that there's a real… energy and flow going here. There's been, suggestions to create a WhatsApp, a book club, and that's a… that's a current that we should all be gathered into. This place is a magnet, and I believe every bit of creative flow We are keeping record, and let's do it."
+  },
+  {
+   "t": 4161.6,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, thank you. There's gonna be a meeting on Monday at 10 a.m. Pacific. I will send the invitation to everyone who came to this meeting, or registered for this meeting. I'll be sending out the video. I will send out the notes as well, together with the video. So, Yeah, if… is there anyone else who just has something they want to throw into the space, into the field, before we leave?"
+  },
+  {
+   "t": 4191.8,
+   "speaker": "Markabadi",
+   "text": "Darwin had a hand up a few times. Yeah, there you go. salwa."
+  },
+  {
+   "t": 4197.0,
+   "speaker": "Salwa El Mais",
+   "text": "Yeah, hello, hello, yeah, hello, thank you, thanks. Yeah, I, I was about to tell you that, the, the noticeable thing in the DP is especially the DP10, It's the accessibility of the information for everyone, the inclusiveness. All people can, can have these, piece, these, these pieces of information, being relevant. The information is very relevant. The, the, the canop… sorry, the ZRA property itself is, is affordable for everyone. It's for free. And, it's, for a life, a lifetime. It, it lasts for, for, too much time."
+  },
+  {
+   "t": 4249.2,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah."
+  },
+  {
+   "t": 4249.9,
+   "speaker": "Salwa El Mais",
+   "text": "I just want to say that, yeah, thank you."
+  },
+  {
+   "t": 4253.2,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you, and I want to just mention that salwa is in Lebanon as well. She is the younger sister of Nada, and we've been blessed with her presence for most of this year as well. Is there anyone else who wants to voice anything at this moment? Okay, well, thank you all for coming, thank you for contributing, thank you for co-editing, thank you for your voice, thank you for your comments. I hope all of you will consider making more contributions to this next version, the V11, and there's openings for steering, we'll look into a book club. on Monday, we'll talk about the follow-up from this, so if anyone's able to make it, please join us. We'll talk about further governance things as well, and just move this project forward. Once again, it's really just a lot of great gratitude. Thank you so much for everything."
+  },
+  {
+   "t": 4317.6,
+   "speaker": "Daveed Benjamin",
+   "text": "All right, everyone, have a great weekend. Have a beautiful weekend! Alright."
+  },
+  {
+   "t": 4325.0,
+   "speaker": "Salwa El Mais",
+   "text": "Dometa!"
+  },
+  {
+   "t": 4326.3,
+   "speaker": "Daveed Benjamin",
+   "text": "Go Meta!"
+  }
+ ]
+}

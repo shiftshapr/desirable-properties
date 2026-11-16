@@ -60,7 +60,11 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
           {event.seriesTitle ? (
             <p className="mt-2 text-sm text-slate-400">{event.seriesTitle}</p>
           ) : null}
-          {event.recordingUrl ? (
+          {event.recordingUrl && event.recordingUrl.startsWith('/') ? (
+            <Link href={event.recordingUrl} className={actionLinkClass}>
+              Watch recording →
+            </Link>
+          ) : event.recordingUrl ? (
             <a
               href={event.recordingUrl}
               target="_blank"
