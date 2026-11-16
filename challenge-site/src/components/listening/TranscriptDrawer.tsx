@@ -9,10 +9,14 @@ import { buttonClass, panelClass, useWorkspace } from '@/components/listening/ui
 export default function TranscriptDrawer({
   focus,
   onClose,
+  pageTranscriptAnchor,
 }: {
   focus: { segmentId: string; n: number } | null;
   onClose: () => void;
+  /** Set when the page has its own reading transcript: this list is then compact and only for pointing at lines. */
+  pageTranscriptAnchor?: string;
 }) {
+  const compact = Boolean(pageTranscriptAnchor);
   const { state } = useWorkspace();
   const [query, setQuery] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
@@ -62,7 +66,7 @@ export default function TranscriptDrawer({
   return (
     <div className={`${panelClass} p-3 lg:mx-auto lg:max-w-[96rem] lg:bg-slate-950 lg:shadow-2xl lg:shadow-black/60`} data-testid="transcript-drawer">
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="mr-auto text-lg font-semibold text-white">Transcript</h3>
+        <h3 className="mr-auto text-lg font-semibold text-white">{compact ? 'Point at a transcript line' : 'Transcript'}</h3>
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -74,6 +78,15 @@ export default function TranscriptDrawer({
           Close
         </button>
       </div>
+      {compact ? (
+        <p className="mt-1 text-xs text-slate-400" data-testid="transcript-pointer-note">
+          To read the transcript, use the{' '}
+          <a href={pageTranscriptAnchor} className="text-cyan-300 hover:text-cyan-200">
+            Transcript section
+          </a>{' '}
+          on this page. This list is only for pointing a comment or a correction at a line, and for seeing corrections.
+        </p>
+      ) : null}
       <p className="mt-1 text-[11px] text-slate-500">
         {state.meeting.transcriptSource ?? 'Transcript source not recorded.'} Speaker names are Zoom display names; they
         are not linked to site accounts. Corrections are kept next to the original, never in place of it.
@@ -93,7 +106,7 @@ export default function TranscriptDrawer({
           return (
             <div key={s.id}>
               {header ? <p className="mt-4 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{header}</p> : null}
-              <SegmentRow segment={s} speaker={s.speakerId ? speakers.get(s.speakerId) : undefined} notes={notes.get(s.id)} decisions={decisions} />
+              <SegmentRow segment={s} speaker={s.speakerId ? speakers.get(s.speakerId) : undefined} notes={notes.get(s.id)} decisions={decisions} compact={compact} />
             </div>
           );
         })}
@@ -107,7 +120,9 @@ const SegmentRow = memo(function SegmentRow({
   speaker,
   notes,
   decisions,
+  compact,
 }: {
+  compact: boolean;
   segment: Segment;
   speaker: Speaker | undefined;
   notes: Contribution[] | undefined;
@@ -141,7 +156,7 @@ const SegmentRow = memo(function SegmentRow({
           </button>
         </span>
       </div>
-      <p className="mt-0.5 text-sm leading-relaxed text-slate-300" data-testid="segment-text">
+      <p className={`mt-0.5 leading-relaxed text-slate-300 ${compact ? 'line-clamp-1 text-xs' : 'text-sm'}`} data-testid="segment-text" title={compact ? rev.text : undefined}>
         {rev.text}
       </p>
       {showOriginal && original && original.rev !== rev.rev ? (

@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "listening-workspace-single-transcript",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Meeting workspace (staging): one transcript on the 16 November page",
+      "summary": "The 16 November session page showed the transcript twice on staging: the page's own Transcript section and the workspace's transcript drawer. The page's Transcript section stays the place to read it. On this page the workspace list becomes a compact 'Point at a transcript line' picker (one line per entry, with Comment and Request a correction, and any corrections), with a link to the Transcript section. Pages without their own transcript keep the full drawer. Production is unchanged (the workspace is off there).",
+      "changes": [
+        "challenge-site/src/components/listening/TranscriptDrawer.tsx, ListeningWorkspace.tsx, ListeningWorkspaceMount.tsx: compact line picker when the page has its own transcript",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: passes the page's #transcript anchor to the workspace"
+      ]
+    },
+    {
       "id": "listening-workspace-phase1",
       "date": "2026-11-16",
       "status": "open",

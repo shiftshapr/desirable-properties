@@ -37,7 +37,16 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'transcript', label: 'Transcript' },
 ];
 
-export default function ListeningWorkspace({ slug, pagePhaseTracker = false }: { slug: string; pagePhaseTracker?: boolean }) {
+export default function ListeningWorkspace({
+  slug,
+  pagePhaseTracker = false,
+  pageTranscriptAnchor,
+}: {
+  slug: string;
+  pagePhaseTracker?: boolean;
+  pageTranscriptAnchor?: string;
+}) {
+  const pointerOnly = Boolean(pageTranscriptAnchor);
   const [state, dispatch] = useReducer(reducer, null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [status, setStatus] = useState<StreamStatus>('connecting');
@@ -166,13 +175,14 @@ export default function ListeningWorkspace({ slug, pagePhaseTracker = false }: {
         status={status}
         connects={connects}
         drawerOpen={drawerOpen}
+        pointerOnly={pointerOnly}
         onToggleDrawer={() => setDrawerOpen((o) => !o)}
       />
 
       {loadError && !state ? <p className="mt-4 text-sm text-rose-300">{loadError}</p> : null}
 
       <nav aria-label="Workspace sections" className="mt-4 flex gap-1 overflow-x-auto lg:hidden" role="tablist">
-        {TABS.map((t) => (
+        {TABS.map((t) => ({ ...t, label: t.id === 'transcript' && pointerOnly ? 'Transcript lines' : t.label })).map((t) => (
           <button
             key={t.id}
             type="button"
@@ -224,7 +234,7 @@ export default function ListeningWorkspace({ slug, pagePhaseTracker = false }: {
       >
         {api ? (
           <WorkspaceContext.Provider value={api}>
-            <TranscriptDrawer focus={focus} onClose={() => setDrawerOpen(false)} />
+            <TranscriptDrawer focus={focus} onClose={() => setDrawerOpen(false)} pageTranscriptAnchor={pageTranscriptAnchor} />
           </WorkspaceContext.Provider>
         ) : null}
       </section>
@@ -237,8 +247,10 @@ function StatusStrip({
   status,
   connects,
   drawerOpen,
+  pointerOnly,
   onToggleDrawer,
 }: {
+  pointerOnly: boolean;
   state: WorkspaceState | null;
   status: StreamStatus;
   connects: number;
@@ -265,7 +277,7 @@ function StatusStrip({
       <span>Claude: not connected yet (Phase 2); questions wait in the queue</span>
       <span>Zoom: not connected in this preview</span>
       <button type="button" onClick={onToggleDrawer} className="ml-auto hidden rounded-lg border border-slate-700 px-2.5 py-1 text-xs text-slate-200 hover:border-cyan-600 lg:inline-block" data-testid="toggle-transcript">
-        {drawerOpen ? 'Hide transcript' : 'Show transcript'}
+        {pointerOnly ? (drawerOpen ? 'Hide transcript lines' : 'Point at a transcript line') : drawerOpen ? 'Hide transcript' : 'Show transcript'}
       </button>
     </div>
   );

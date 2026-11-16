@@ -9,10 +9,13 @@ import { getMeetingBySlug } from '@/lib/listening/store.server';
 export default async function ListeningWorkspaceMount({
   slug,
   pagePhaseTracker = false,
+  pageTranscriptAnchor,
 }: {
   slug: string;
   /** The page has its own phase tracker: the workspace then shows its record phase as secondary. */
   pagePhaseTracker?: boolean;
+  /** The page already shows the transcript for reading (e.g. "#transcript"): the workspace list is then only for pointing at lines. */
+  pageTranscriptAnchor?: string;
 }) {
   if (!listeningWorkspaceEnabled()) return null;
   try {
@@ -25,7 +28,7 @@ export default async function ListeningWorkspaceMount({
   // Wider than the notes column: three panels side by side on desktop.
   return (
     <div id="workspace" className="mx-auto w-full min-w-0 max-w-[96rem] scroll-mt-24 px-4 pb-14 sm:px-6">
-      <ListeningWorkspace slug={slug} pagePhaseTracker={pagePhaseTracker} />
+      <ListeningWorkspace slug={slug} pagePhaseTracker={pagePhaseTracker} pageTranscriptAnchor={pageTranscriptAnchor} />
     </div>
   );
 }
