@@ -4,6 +4,17 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "home-popup-layered-web-mailing-list",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Home page popup: join the Layered Web mailing list",
+      "summary": "The home page popup now invites visitors to join the Layered Web mailing list (the safe, open, and trustworthy digital world the Desirable Properties describe) instead of the Meta-Layer waitlist. Signups still go to the same list on Gov Hub layer The Metaweb, now named \"The Layered Web mailing list\" on interfacehub.net and dev.interfacehub.net.",
+      "changes": [
+        "challenge-site/src/components/MetaLayerWaitlistPopup.tsx: heading, body, button, confirmation and error text say mailing list",
+        "challenge-site/src/lib/govhub.ts: finds the list by its new name, with the old name as a fallback; DP_METALAYER_WAITLIST_ID still overrides"
+      ]
+    },
+    {
       "id": "home-launch-short",
       "date": "2026-11-16",
       "status": "open",

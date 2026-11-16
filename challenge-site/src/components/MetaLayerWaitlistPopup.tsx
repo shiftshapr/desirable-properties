@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
 /**
- * Meta-Layer waitlist popup, modelled on theoverweb.org's: opens 13 seconds after a visitor's first load,
+ * Layered Web mailing list popup, modelled on theoverweb.org's: opens 13 seconds after a visitor's first load,
  * once per browser (dp_waitlist_popup_v1 is set on close or on joining). Posts to Gov Hub's public
- * join-email endpoint for the Meta-Layer waitlist; Gov Hub emails a confirmation link.
+ * join-email endpoint for the Layered Web mailing list (a waitlist on Gov Hub layer the-metaweb); Gov Hub
+ * emails a confirmation link.
  * Waits while another modal is open and gives up quietly (without marking seen) if it stays open.
  * Preview on staging/localhost with ?waitlistpopup=1 (opens after 1.5 s, ignores the seen key).
  */
@@ -150,14 +151,14 @@ export default function MetaLayerWaitlistPopup({ joinUrl }: Props) {
       if (!res.ok) throw new Error(body.error || 'Something went wrong. Please try again.');
       setEmail('');
       markSeen();
-      setOk(body.info || 'Check your inbox and click the link to confirm your place.');
+      setOk(body.info || 'Check your email to confirm your place on the mailing list.');
     } catch (x) {
       // fetch() rejects with a TypeError when the network or CORS blocks the request.
       const network = x instanceof TypeError;
       setError(
         !network && x instanceof Error && x.message
           ? x.message
-          : 'Could not reach the waitlist just now. Please try again.',
+          : 'Could not reach the mailing list just now. Please try again.',
       );
     } finally {
       setSending(false);
@@ -190,11 +191,11 @@ export default function MetaLayerWaitlistPopup({ joinUrl }: Props) {
               &times;
             </button>
             <h2 id={titleId} className="pr-8 text-xl font-semibold text-white">
-              Join the Meta-Layer waitlist
+              Join the Layered Web mailing list
             </h2>
             <p id={descId} className="mt-2 text-sm leading-relaxed text-slate-300">
-              The Meta-Layer is the trustworthy layer above the web that these Desirable Properties describe; join
-              the waitlist for early access as it opens.
+              The Layered Web is the safe, open, and trustworthy digital world that these Desirable Properties
+              describe; join the mailing list for updates.
             </p>
             {ok ? (
               <p role="status" className="mt-4 rounded-lg border border-emerald-800/60 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">
@@ -222,7 +223,7 @@ export default function MetaLayerWaitlistPopup({ joinUrl }: Props) {
                   disabled={sending}
                   className="rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-60"
                 >
-                  {sending ? 'Sending…' : 'Join the waitlist'}
+                  {sending ? 'Sending…' : 'Join the mailing list'}
                 </button>
               </form>
             )}
