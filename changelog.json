@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "meta-governance-2026-11-16-notes",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Notes page for the 16 November DP Meta-Governance listening session",
+      "summary": "A new page at /events/meta-governance-2026-11-16 has the notes from today's listening session (not video recorded): what happens next (draft summary and ballot questions sent Tuesday 17 November, 7:00 a.m. Pacific; 24 hours to check them; screening before any vote), the draft summary and open questions from the meeting digest with timestamps that open the transcript at that point, the eight decision titles, and Zoom's automatic transcript by speaker turn, collapsible by section and searchable. A few private remarks are held back from the transcript and listed for the owner. The page is noindex and is not linked from navigation. The process page now says community sessions are on Mondays at 10:00 a.m. PT (the Version 1.0 sessions it lists ran at 11:30).",
+      "changes": [
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx, src/lib/meta-governance-2026-11-16-event.ts: the page, summary and open questions",
+        "challenge-site/src/components/SessionTranscript.tsx: collapsible, searchable transcript with linkable turns",
+        "challenge-site/src/data/meta-governance-2026-11-16-transcript.json: transcript turns and sections (built from the Zoom VTT)",
+        "challenge-site/src/app/process/page.tsx: Monday session time is now 10:00 a.m. PT"
+      ]
+    },
+    {
       "id": "share-kit",
       "date": "2026-11-16",
       "status": "open",
