@@ -11,7 +11,8 @@ type AdminUser = {
   source: 'env' | 'db';
 };
 
-export default function SiteAdminPanel() {
+/** `landingPads` is the server-side landingPadsEnabled(); off (production) skips the /pad settings fetch and section. */
+export default function SiteAdminPanel({ landingPads = false }: { landingPads?: boolean }) {
   const [admins, setAdmins] = useState<AdminUser[]>([]);
   const [databaseConfigured, setDatabaseConfigured] = useState(false);
   const [newEmail, setNewEmail] = useState('');
@@ -29,7 +30,7 @@ export default function SiteAdminPanel() {
       const [meRes, usersRes, onRes] = await Promise.all([
         fetch('/api/admin/me', { credentials: 'include' }),
         fetch('/api/admin/users', { credentials: 'include' }),
-        fetch('/api/admin/pad-settings', { credentials: 'include' }),
+        landingPads ? fetch('/api/admin/pad-settings', { credentials: 'include' }) : Promise.resolve(null),
       ]);
       const meData = await meRes.json();
       const usersData = await usersRes.json();
@@ -38,7 +39,7 @@ export default function SiteAdminPanel() {
       if (usersRes.ok && usersData.ok) {
         setAdmins(usersData.admins || []);
       }
-      if (onRes.ok) {
+      if (onRes?.ok) {
         const onData = await onRes.json();
         if (onData.settings?.defaultTab) setDefaultTab(onData.settings.defaultTab);
         if (onData.settings?.property) setOnProperty(onData.settings.property);
@@ -48,7 +49,7 @@ export default function SiteAdminPanel() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [landingPads]);
 
   useEffect(() => {
     void load();
@@ -142,36 +143,40 @@ export default function SiteAdminPanel() {
         <p className="mt-4 rounded-md border border-rose-700/50 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">{error}</p>
       ) : null}
 
-      <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">
-        /pad default tab
-      </h3>
-      <p className="mt-2 text-sm text-slate-400">
-        Property <code className="text-slate-300">{onProperty}</code>. Visitors who open{' '}
-        <code className="text-slate-300">/pad/{'{slug}'}</code> without <code className="text-slate-300">?tab=</code> land here.
-        Ops can also set <code className="text-slate-300">DP_ON_DEFAULT_TAB</code> (and{' '}
-        <code className="text-slate-300">hermes_on.default_tab</code> in meta-console registry) as the fallback before this save.
-      </p>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <select
-          value={defaultTab}
-          onChange={(e) => setDefaultTab(e.target.value as OnboardTabId)}
-          className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
-        >
-          {ONBOARD_TABS.map((tab) => (
-            <option key={tab.id} value={tab.id}>
-              {tab.label} ({tab.id})
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void saveDefaultTab()}
-          className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
-        >
-          Save default tab
-        </button>
-      </div>
+      {landingPads ? (
+        <>
+          <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">
+            /pad default tab
+          </h3>
+          <p className="mt-2 text-sm text-slate-400">
+            Property <code className="text-slate-300">{onProperty}</code>. Visitors who open{' '}
+            <code className="text-slate-300">/pad/{'{slug}'}</code> without <code className="text-slate-300">?tab=</code> land here.
+            Ops can also set <code className="text-slate-300">DP_ON_DEFAULT_TAB</code> (and{' '}
+            <code className="text-slate-300">hermes_on.default_tab</code> in meta-console registry) as the fallback before this save.
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <select
+              value={defaultTab}
+              onChange={(e) => setDefaultTab(e.target.value as OnboardTabId)}
+              className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+            >
+              {ONBOARD_TABS.map((tab) => (
+                <option key={tab.id} value={tab.id}>
+                  {tab.label} ({tab.id})
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void saveDefaultTab()}
+              className="rounded-md bg-cyan-700 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600 disabled:opacity-50"
+            >
+              Save default tab
+            </button>
+          </div>
+        </>
+      ) : null}
 
       <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">Admin users</h3>
       {loading ? (

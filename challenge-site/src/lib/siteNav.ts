@@ -29,8 +29,17 @@ export function upcomingEventNavLabel(_dateLabel: string, title: string): string
   return title;
 }
 
-/** Insert Events nav after About when upcoming entries exist. */
-export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): SiteNavLink[] {
+/** About-menu entry for DP Studio landing pads; added only when landingPadsEnabled() (never on production). */
+export const LANDING_PADS_NAV_LINK: SiteNavLink = { href: '/pad', label: 'Landing pads' };
+
+/**
+ * Insert Events nav after About when upcoming entries exist. `landingPads` (from the server-side
+ * landingPadsEnabled()) appends the Landing pads entry to the About menu; it is off by default.
+ */
+export function buildSiteNavLinks(
+  upcomingEvents: UpcomingEventNavItem[] = [],
+  options: { landingPads?: boolean } = {},
+): SiteNavLink[] {
   const eventsNav: SiteNavLink = upcomingEvents.length
     ? {
         label: 'Events',
@@ -43,7 +52,11 @@ export function buildSiteNavLinks(upcomingEvents: UpcomingEventNavItem[] = []): 
       }
     : { label: 'Events', href: EVENTS_INDEX_HREF };
 
-  const links = [...SITE_NAV_LINKS];
+  const links = SITE_NAV_LINKS.map((link) =>
+    options.landingPads && link.label === 'About' && link.children
+      ? { ...link, children: [...link.children, LANDING_PADS_NAV_LINK] }
+      : link,
+  );
   const aboutIndex = links.findIndex((link) => link.label === 'About');
   if (aboutIndex >= 0) {
     links.splice(aboutIndex + 1, 0, eventsNav);
@@ -78,7 +91,7 @@ export const SITE_NAV_LINKS: SiteNavLink[] = [
       { href: '/kickoff', label: 'Kickoff meeting' },
       { href: '/faq', label: 'FAQ' },
       { href: '/participate', label: 'More contribution paths' },
-      { href: '/pad', label: 'Landing pads' },
+      // Landing pads: appended by buildSiteNavLinks only when landingPadsEnabled() (hidden on production).
     ],
   },
   {

@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 import { hasSessionCookie } from '@/lib/auth-session-cookie';
 import { padSlugTypoRedirectPath } from '@/lib/pad-slug-sanitize';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
 /** Admin HTML routes are client-gated (Web3Auth popup on 401). APIs stay server-protected. */
 const PROTECTED_API_PREFIXES = [
@@ -37,7 +38,8 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  const padTypoPath = padSlugTypoRedirectPath(pathname);
+  // Landing pads are hidden on production (landingPadsEnabled): no /pad typo redirect there.
+  const padTypoPath = landingPadsEnabled() ? padSlugTypoRedirectPath(pathname) : null;
   if (padTypoPath) {
     const url = request.nextUrl.clone();
     url.pathname = padTypoPath;

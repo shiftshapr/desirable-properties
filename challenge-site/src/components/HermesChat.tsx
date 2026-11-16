@@ -160,6 +160,8 @@ interface HermesChatProps {
   starterPrompts?: string[] | null;
   /** Label shown above pathway starters. */
   starterLabel?: string | null;
+  /** Server-side landingPadsEnabled(); off hides pad origins and never tags threads with a pad surface. */
+  landingPads?: boolean;
 }
 
 const INTRO = DP_COMMUNITY_AI_INTRO;
@@ -552,6 +554,7 @@ export default function HermesChat({
   initialPrompt = null,
   starterPrompts = null,
   starterLabel = null,
+  landingPads = false,
 }: HermesChatProps) {
   const { user: authUser, checked, login, loginBusy } = useAuth();
   const searchParams = useSearchParams();
@@ -563,6 +566,7 @@ export default function HermesChat({
   const onSlugParam =
     searchParams.get('slug')?.trim() || searchParams.get('alliance')?.trim() || null;
   const fromOnParam =
+    landingPads &&
     (searchParams.get('from') === 'pad' ||
       searchParams.get('from') === 'on' ||
       searchParams.get('from') === 'alliance') &&
@@ -2817,6 +2821,7 @@ export default function HermesChat({
       onDelete={signedIn ? deleteThread : undefined}
       onSignIn={promptSignIn}
       onClose={() => setSidebarOpen(false)}
+      landingPads={landingPads}
     />
   );
 

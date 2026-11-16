@@ -9,6 +9,7 @@ import { readSession, sessionToAuthUser, setSessionCookies } from '@/lib/auth-se
 import { cookies } from 'next/headers';
 import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { SHARE_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/site-metadata';
 import './globals.css';
 
@@ -78,6 +79,7 @@ export default async function RootLayout({
       label: upcomingEventNavLabel(event.dateLabel, event.title),
       external: event.external,
     })),
+    { landingPads: landingPadsEnabled() },
   );
 
   return (

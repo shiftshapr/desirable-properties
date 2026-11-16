@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import DpAdminClient from './DpAdminClient';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
 export const metadata: Metadata = {
   title: 'Admin · Desirable Properties Challenge',
@@ -14,7 +15,7 @@ export default function DpAdminPage() {
         <div className="mx-auto max-w-7xl px-4 py-16 text-slate-400 sm:px-6">Loading admin…</div>
       }
     >
-      <DpAdminClient />
+      <DpAdminClient landingPads={landingPadsEnabled()} />
     </Suspense>
   );
 }
