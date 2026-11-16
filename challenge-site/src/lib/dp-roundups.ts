@@ -34,6 +34,8 @@ type SessionInput = {
   clockShort?: string;
   /** Longer description for the event's own page. */
   details?: string;
+  /** Site page with the recording, once there is one (replaces the Luma RSVP after the event). */
+  recordingHref?: string;
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
@@ -53,6 +55,7 @@ const sessions: readonly SessionInput[] = [
     lumaUrl: 'https://luma.com/uhb8828e',
     startsAt: DP_V1_LAUNCH_START, endsAt: DP_V1_LAUNCH_END,
     timeLabel: V1_LAUNCH_TIME_LABEL, clockShort: V1_LAUNCH_CLOCK_SHORT,
+    recordingHref: '/events/v1-launch',
   },
   {
     kind: 'gathering', date: '2026-11-16', focus: 'DP Meta-Governance: Creating a Living Book Together',
@@ -80,6 +83,7 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     objective: s.objective,
     lumaUrl: s.lumaUrl,
     details: s.details ?? null,
+    recordingHref: s.recordingHref ?? null,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
     startsAt: s.startsAt ?? `${s.date}T11:30:00${pacificOffset(s.date)}`,
     endsAt: s.endsAt ?? `${s.date}T13:00:00${pacificOffset(s.date)}`,
