@@ -1,0 +1,44 @@
+{
+  "book-square": {
+    "src": "/share/book-square-6616a977.jpg",
+    "file": "book-square-6616a977.jpg",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 107305
+  },
+  "book-portrait": {
+    "src": "/share/book-portrait-51122135.jpg",
+    "file": "book-portrait-51122135.jpg",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 127251
+  },
+  "launch-square": {
+    "src": "/share/launch-square-46c7235c.jpg",
+    "file": "launch-square-46c7235c.jpg",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 125583
+  },
+  "launch-portrait": {
+    "src": "/share/launch-portrait-4c211f5b.jpg",
+    "file": "launch-portrait-4c211f5b.jpg",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 144960
+  },
+  "v1-1-square": {
+    "src": "/share/v1-1-square-6c9a8b79.jpg",
+    "file": "v1-1-square-6c9a8b79.jpg",
+    "width": 1080,
+    "height": 1080,
+    "bytes": 98186
+  },
+  "v1-1-portrait": {
+    "src": "/share/v1-1-portrait-cbe63705.jpg",
+    "file": "v1-1-portrait-cbe63705.jpg",
+    "width": 1080,
+    "height": 1350,
+    "bytes": 129854
+  }
+}
