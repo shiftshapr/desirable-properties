@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "landing-pads-hidden-on-production",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Landing pads hidden on production",
+      "summary": "DP Studio landing pads (/pad, /pad/{slug}, /pad/person/{slug}) are hidden on production. One server-side switch, landingPadsEnabled(), is on unless DP_ENV is prod (non-production can also turn it off with DP_LANDING_PADS=off). When off, every pad page is a 404 and noindex, every /api/pad route and /api/admin/pad-settings returns 404 with no data and no writes, the legacy /on, /onboard and /api/on aliases are not registered, and nothing links to a pad: the About menu's Landing pads entry, the Landing pad chip on Deepi threads, the landing-pad starter on /agent and the /pad default tab section in Site admin are not rendered. Staging is unchanged. No pad code or stored pad data is removed.",
+      "changes": [
+        "challenge-site/src/lib/landing-pads/flag.ts: landingPadsEnabled()",
+        "challenge-site/src/app/pad/page.tsx, pad/[slug]/page.tsx, pad/person/[slug]/page.tsx: notFound() and noindex metadata when off",
+        "challenge-site/src/app/api/pad/**, api/admin/pad-settings: 404 before any read or write when off",
+        "challenge-site/src/lib/siteNav.ts, src/app/layout.tsx: Landing pads nav entry added only when on",
+        "challenge-site/src/app/agent/page.tsx, src/lib/agent-starter.ts, src/components/HermesChat.tsx, HermesThreadSidebar.tsx: no pad surface, chip or alliance_patch starter when off",
+        "challenge-site/src/app/admin/page.tsx, DpAdminClient.tsx, SiteAdminPanel.tsx: /pad default tab section and its fetch only when on",
+        "challenge-site/next.config.ts, src/middleware.ts: pad alias redirects and the /pad typo redirect only when on"
+      ]
+    },
+    {
       "id": "listening-workspace-single-transcript",
       "date": "2026-11-16",
       "status": "open",

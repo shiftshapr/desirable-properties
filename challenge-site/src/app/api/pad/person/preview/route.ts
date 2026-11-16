@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import {
   discoverPersonPadCandidates,
   type PersonPadDiscoveryInput,
@@ -22,6 +23,7 @@ function parseDiscoveryInput(body: Record<string, unknown>): PersonPadDiscoveryI
 }
 
 export async function POST(request: Request) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
   const input = parseDiscoveryInput(body);
 

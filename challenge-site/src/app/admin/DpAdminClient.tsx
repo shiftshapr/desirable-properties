@@ -52,7 +52,7 @@ function rememberGroupTab(tab: DpAdminTabKey) {
   }
 }
 
-export default function DpAdminClient() {
+export default function DpAdminClient({ landingPads = false }: { landingPads?: boolean }) {
   const searchParams = useSearchParams();
   const { authState, error, retry } = useAdminAuthGate();
   const [tab, setTab] = useState<DpAdminTabKey>(() =>
@@ -164,7 +164,7 @@ export default function DpAdminClient() {
           {tab === 'email-invites' ? <AdminInviteAiPanel /> : null}
           {tab === 'long-gap-send' ? <AdminLongGapSendPanel /> : null}
           {tab === 'event-series' ? <EventSeriesAdminPanel /> : null}
-          {tab === 'site' ? <SiteAdminPanel /> : null}
+          {tab === 'site' ? <SiteAdminPanel landingPads={landingPads} /> : null}
           {tab === 'loop-book' ? <LoopBookPanel /> : null}
           {tab === 'loop-reqs' ? <LoopReqsPanel /> : null}
           {tab === 'style-checks' ? <StyleChecksPanel /> : null}

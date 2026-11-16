@@ -3,6 +3,7 @@ import { pageOpenGraph } from '@/lib/site-metadata';
 import HermesChat from '@/components/HermesChat';
 import { resolveAgentStarter } from '@/lib/agent-starter';
 import { readSession, sessionToAuthUser } from '@/lib/auth-session';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 
 export const metadata: Metadata = {
   title: 'Deepi – Desirable Properties',
@@ -32,6 +33,7 @@ export default async function AgentPage({
   const session = await readSession();
   const initialUser = sessionToAuthUser(session);
   const params = await searchParams;
+  const landingPads = landingPadsEnabled();
   const resolved = resolveAgentStarter({
     prompt: firstParam(params.prompt),
     dp: firstParam(params.dp),
@@ -40,6 +42,7 @@ export default async function AgentPage({
     slug: firstParam(params.slug),
     thread: firstParam(params.thread),
     create: firstParam(params.create),
+    landingPads,
   });
 
   return (
@@ -51,6 +54,7 @@ export default async function AgentPage({
         initialPrompt={resolved.initialPrompt}
         starterPrompts={resolved.starterPrompts}
         starterLabel={resolved.starterLabel}
+        landingPads={landingPads}
       />
     </div>
   );

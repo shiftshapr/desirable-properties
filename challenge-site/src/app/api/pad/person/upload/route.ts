@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
+import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { uploadPersonPadDoc, personPadDocUploadMaxBytes } from '@/lib/hermes-onboard/person-pad-docs';
 
 export async function POST(request: Request) {
+  if (!landingPadsEnabled()) return NextResponse.json({ error: 'not_found' }, { status: 404 });
   const form = await request.formData();
   const file = form.get('file');
   if (!(file instanceof File) || file.size === 0) {
