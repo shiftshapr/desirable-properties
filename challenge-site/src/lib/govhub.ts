@@ -588,10 +588,13 @@ export function formatActivityDate(iso: string): string {
   });
 }
 
-/** Gov Hub layer that holds the Meta-Layer waitlist (same slug on interfacehub.net and dev.interfacehub.net). */
+/** Gov Hub layer that holds the Layered Web mailing list (same slug on interfacehub.net and dev.interfacehub.net). */
 export const META_LAYER_WAITLIST_LAYER_SLUG = 'the-metaweb';
-/** Matched by name (lower case) because waitlist ids differ between Gov Hub dev and prod. */
-export const META_LAYER_WAITLIST_NAME = 'the meta-layer waitlist';
+/**
+ * Matched by name (lower case) because waitlist ids differ between Gov Hub dev and prod. First name wins;
+ * the old "The Meta-Layer waitlist" name stays as a fallback (same list, renamed on 16 Nov 2026).
+ */
+export const META_LAYER_WAITLIST_NAMES = ['the layered web mailing list', 'the meta-layer waitlist'] as const;
 
 export type MetaLayerWaitlist = {
   id: string;
@@ -610,7 +613,7 @@ type GovHubWaitlistSummary = {
 };
 
 /**
- * The open Meta-Layer waitlist on this environment's Gov Hub (GOVHUB_BASE_URL: interfacehub.net in
+ * The open Layered Web mailing list on this environment's Gov Hub (GOVHUB_BASE_URL: interfacehub.net in
  * production, dev.interfacehub.net on staging), or null when it is missing, closed or Gov Hub is down.
  * DP_METALAYER_WAITLIST_ID overrides the lookup.
  */
@@ -624,14 +627,12 @@ export async function fetchMetaLayerWaitlist(): Promise<MetaLayerWaitlist | null
   const data = await fetchGovHub<{ waitlists?: GovHubWaitlistSummary[] }>(
     `/api/layers/${encodeURIComponent(layer.id)}/waitlists/`,
   );
-  const match = (data?.waitlists ?? []).find(
-    (w) =>
-      (w.name ?? '').trim().toLowerCase() === META_LAYER_WAITLIST_NAME &&
-      w.active !== false &&
-      !w.archived &&
-      !w.closed &&
-      w.started !== false &&
-      !w.full,
+  const open = (data?.waitlists ?? []).filter(
+    (w) => w.active !== false && !w.archived && !w.closed && w.started !== false && !w.full,
   );
-  return match ? { id: match.id, joinUrl: joinUrl(match.id) } : null;
+  for (const name of META_LAYER_WAITLIST_NAMES) {
+    const match = open.find((w) => (w.name ?? '').trim().toLowerCase() === name);
+    if (match) return { id: match.id, joinUrl: joinUrl(match.id) };
+  }
+  return null;
 }
