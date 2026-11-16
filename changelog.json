@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "meta-governance-2026-11-16-session-page",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "The 16 November session page now carries the draft, the review and the phases",
+      "summary": "/events/meta-governance-2026-11-16 is now the one durable page for the 16 November DP Meta-Governance session: the record, the draft ballot, the 24-hour review, council screening and the vote all live there. It opens with a short How this works box (Claude drafted, participants correct the record, the council decides what goes to a vote, eligible community members decide; nothing is decided yet) and a phase tracker of the eight post-meeting phases that shows who advanced each phase and when. Only the opening (Tuesday 17 November, 7:00 a.m. PT) and closing (24 hours later) of community verification follow the clock; every later phase needs a recorded change, and the end of the clock does not mean approval. The draft for review (the eight decisions with options, the 15 draft ballot questions marked as not opened, the interim council proposal labelled as added after the meeting, and the corrected process text with insertions and deletions marked) is withheld on the server until the review opens; comments go to the linked Google Doc or by email for now, and on-page commenting and voting are marked as proposed. A list of rules still to be decided by the community is shown as unresolved. Staging can preview the opened state with ?previewDraft=1. The page stays noindex and unlisted.",
+      "changes": [
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: per-request rendering, server-side gate on the draft, staging-only preview",
+        "challenge-site/src/components/sessions/: HowThisWorks, PhaseTracker, DraftForReview (DraftDecisions, DraftBallot, InterimProposal, ProcessTextDraft, ReviewActions), DraftText, SessionLabel, SessionSummary, StillToDecide, SessionTranscript (moved)",
+        "challenge-site/src/lib/sessions/session-phases.ts, session-draft.ts: phase list, phase history logic and the draft's shape",
+        "challenge-site/src/data/sessions/2026-11-16.ts, 2026-11-16-draft.json: the occurrence's phase history and the draft built from the meeting digest"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-notes",
       "date": "2026-11-16",
       "status": "open",

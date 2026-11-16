@@ -1,0 +1,18 @@
+/** Shape of src/data/sessions/<date>-draft.json (built from the meeting digest by build_draft.py in the owner's handoff). */
+export type DraftLabel = 'Participant proposal' | 'Proposal added after the meeting' | null;
+
+export type SessionDraft = {
+  source: { file: string; sha256: string; note: string };
+  decisions: Array<{
+    n: number;
+    title: string;
+    options: Array<{ text: string; label: DraftLabel; note?: boolean }>;
+    raisedBy: string | null;
+  }>;
+  ballot: {
+    header: string;
+    questions: Array<{ n: number; context: string; question: string; options: string[]; label: DraftLabel }>;
+  };
+  interimProposal: { title: string; by: string; text: string };
+  processText: { intro: string; body: string };
+};
