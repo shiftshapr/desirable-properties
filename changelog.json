@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "home-launch-short",
+      "date": "2026-11-16",
+      "status": "open",
+      "title": "Home page: the Version 1.0 launch in 57 seconds",
+      "summary": "The launch card under the home page hero now plays a 57-second short of the 13 November launch (click to play; nothing downloads until then), next to the link to the full launch event page.",
+      "changes": [
+        "challenge-site/src/app/page.tsx, src/lib/v1-launch-event.ts: video in the launch card",
+        "challenge-site/public/video/v1-launch/: the short and its poster (file names carry a content hash)",
+        "challenge-site/next.config.ts: one-year cache for /video/"
+      ]
+    },
+    {
       "id": "v1-launch-event-page",
       "date": "2026-11-16",
       "status": "open",
