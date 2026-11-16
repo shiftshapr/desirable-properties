@@ -267,7 +267,7 @@ export default function ProcessPage() {
         </p>
       </Section>
 
-      <Section id="sessions" title="Monday sessions" lead="One community session each Monday at 11:30 PT, each with a single job.">
+      <Section id="sessions" title="Monday sessions" lead="Community sessions are now each Monday at 10:00 a.m. PT. The Version 1.0 sessions below ran at 11:30 a.m. PT, each with a single job.">
         <ul className="divide-y divide-slate-800">
           {sessions.map((e) => (
             <li key={e.date} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-3">
