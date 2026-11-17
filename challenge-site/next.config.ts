@@ -109,6 +109,7 @@ const nextConfig: NextConfig = {
     return [
       ...RETIRED_CHAPTER_PDF_REDIRECTS,
       { source: '/v1/improve', destination: '/improve', permanent: false },
+      { source: '/acknowledgements', destination: '/acknowledgements/request', permanent: false },
       { source: '/launch', destination: '/events/v1-launch', permanent: false },
       { source: '/adjudication', destination: '/steering', permanent: false },
       { source: '/decisions', destination: '/steering', permanent: false },
