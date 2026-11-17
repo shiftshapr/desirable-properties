@@ -4,6 +4,23 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "acknowledgements-request-lookup-api",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "Groundwork for seeing your own Acknowledgements requests",
+      "summary": "Server routes so a person who sent an Acknowledgements change request can later see their requests, the status and the images they attached. Signed in, Gov Hub returns the requests sent from that account. Not signed in, \"look up a request\" takes the reference code (for example ACK-Q4R4ZZ) and the email used; nothing is shown on the code alone. If they match, Gov Hub emails a one-time link from no-reply@desirableproperties.org; the answer is the same text, status and timing whether or not they match. The link works once, within 24 hours; using it sets a private, httpOnly cookie for two hours that lists the requests sent with that email and opens their images. Reviewer notes are never shown. Lookups are rate-limited on Gov Hub. The page that uses these routes (a separate page or the Support area) is still to be decided, so nothing visible changes yet.",
+      "changes": [
+        "challenge-site/src/app/api/acknowledgements/requests/mine/route.ts: the viewer's own requests (session and/or view cookie)",
+        "challenge-site/src/app/api/acknowledgements/requests/lookup/route.ts: reference code + email, passed to Gov Hub with the sender's address for rate limits",
+        "challenge-site/src/app/api/acknowledgements/requests/lookup/redeem/route.ts: uses the emailed link once and sets the dp_ack_view httpOnly cookie",
+        "challenge-site/src/app/api/acknowledgements/requests/lookup/forget/route.ts: clears the cookie",
+        "challenge-site/src/app/api/acknowledgements/requests/[id]/attachments/[attachmentId]/route.ts: the viewer's own images (no-store, nosniff, sandboxed)",
+        "challenge-site/src/lib/ack-request-access.ts and src/lib/ack-request.ts: Gov Hub calls, cookie, token and reference helpers",
+        "challenge-site/scripts/ack-request.test.mjs: reference, token and id checks",
+        "Gov Hub (Bridgit-DAO/interface-gov-hub): mine, lookup and redeem routes, lookup email, submitter access to their own images, tests"
+      ]
+    },
+    {
       "id": "acknowledgements-request-images",
       "date": "2026-11-17",
       "status": "open",
