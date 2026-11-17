@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "session-2026-11-16-declines-pathology",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "Why proposals were declined or deferred in Version 1.0 (16 Nov session page)",
+      "summary": "Benn Konsynski asked in the 16 November listening session (00:23:44) for a taxonomy of rejection reasons to help people submitting. The session page now has a section \"Why proposals were declined or deferred in Version 1.0\": 64 proposals (30 declined, 34 deferred to Version 1.1) sorted into 13 reasons built from the co-editors' decision notes and the steering analysis, with counts, shares, a declined/deferred bar, a short definition, an example and what would have helped for each, six patterns for Version 1.1, a how-this-was-made note and an email link to flag a miscategorisation. Aggregate only: no names, proposal ids or quotes. Not time-gated. The full analysis with proposal ids is in the owner's handoff (specs/v1-declines-deferrals-pathology.md).",
+      "changes": [
+        "challenge-site/src/data/sessions/2026-11-16-declines.ts: aggregate counts, categories, patterns and data notes (as of 17 Nov 2026)",
+        "challenge-site/src/components/sessions/DeclineReasons.tsx: the section (category list with bars, patterns, method, flag link)",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: section after the summary and an On this page link"
+      ]
+    },
+    {
       "id": "community-groups-signed-in",
       "date": "2026-11-17",
       "status": "open",
