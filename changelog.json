@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "community-groups-signed-in",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "WhatsApp and Signal groups for signed-in members",
+      "summary": "The Desirable Properties WhatsApp group and the Meta-Layer Guild Signal group are now on the site for anyone signed in: a \"Stay in touch between sessions\" box on the 16 November session page, a \"Community chat\" box at the end of /improve and on each workgroup page, and a Community chat section in the account menu. Signed out, the boxes say \"Sign in to see the WhatsApp and Signal groups\" with a Sign in button. The invite links are not in the repo or in any public HTML or metadata: they come from the server-only env vars DP_GROUP_WHATSAPP_URL and DP_GROUP_SIGNAL_URL and are rendered only after a server-side session check. With neither set, nothing about the groups is shown.",
+      "changes": [
+        "challenge-site/src/lib/community-groups.server.ts: communityGroupsForViewer() reads the env vars after the session check",
+        "challenge-site/src/components/community/CommunityGroups.tsx: reusable server component (signed in: links; signed out: sign-in prompt)",
+        "challenge-site/src/app/api/me/community-groups/route.ts: links for a signed-in request only (account menu)",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx, src/app/improve/page.tsx, src/app/workgroups/[slug]/page.tsx: CommunityGroups",
+        "challenge-site/src/components/SiteAuthNav.tsx: Community chat items in the account menu"
+      ]
+    },
+    {
       "id": "acknowledgements-change-request-links",
       "date": "2026-11-17",
       "status": "open",
