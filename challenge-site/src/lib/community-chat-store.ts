@@ -42,6 +42,27 @@ export async function listCommunityChatMessages(
   return res.rows.map(rowToMessage);
 }
 
+/** The latest `limit` messages of a thread, oldest first (the list above returns the oldest 500). */
+export async function listLatestCommunityChatMessages(
+  communityThreadId: string,
+  limit: number,
+): Promise<CommunityChatMessage[]> {
+  const pool = await ensureDpSchema();
+  if (!pool) return [];
+
+  const res = await pool.query(
+    `SELECT * FROM (
+       SELECT * FROM dp_community_chat_message
+       WHERE community_thread_id = $1
+       ORDER BY created_at DESC, id DESC
+       LIMIT $2
+     ) latest
+     ORDER BY created_at ASC, id ASC`,
+    [communityThreadId, Math.max(1, Math.min(500, Math.floor(limit)))],
+  );
+  return res.rows.map(rowToMessage);
+}
+
 export async function createCommunityChatMessage(input: {
   communityThreadId: string;
   authorUserId: string;
