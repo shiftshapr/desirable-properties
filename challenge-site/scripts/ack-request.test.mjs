@@ -123,3 +123,25 @@ test('ids must be UUIDs before an upstream path is built', () => {
   assert.ok(!isUuid('../../admin'));
   assert.ok(!isUuid('3f2c1a9e-1b2c-4d5e-8f90-0123456789ab/../x'));
 });
+
+import { ackRequestSummary, ackStatusInfo } from '../src/lib/ack-request.ts';
+
+test('summaries say what was asked for', () => {
+  const base = { requested_name: null, current_name: null, affiliation: null, target_list_label: null, note: null };
+  assert.equal(ackRequestSummary({ ...base, kind: 'add', requested_name: 'Ada Lovelace' }), 'Add “Ada Lovelace” to the Acknowledgements');
+  assert.equal(ackRequestSummary({ ...base, kind: 'correct_name', current_name: 'Ada L', requested_name: 'Ada Lovelace' }), 'Change “Ada L” to “Ada Lovelace”');
+  assert.equal(ackRequestSummary({ ...base, kind: 'move', current_name: 'Ada', target_list_label: 'Editors' }), 'Move “Ada” to Editors');
+  assert.equal(ackRequestSummary({ ...base, kind: 'remove', current_name: 'Ada' }), 'Remove “Ada”');
+  assert.equal(ackRequestSummary({ ...base, kind: 'other', note: 'x'.repeat(200) }).length, 140);
+  for (const kind of ['add', 'correct_name', 'affiliation', 'move', 'remove', 'other']) {
+    assert.ok(!ackRequestSummary({ ...base, kind }).includes('\u2014'));
+  }
+});
+
+test('statuses are the review decisions, never ticket states', () => {
+  assert.deepEqual(['new', 'accepted', 'declined', 'done'].map((s) => ackStatusInfo(s).label), ['New', 'Accepted', 'Declined', 'Done']);
+  assert.equal(ackStatusInfo('weird', 'Weird').label, 'Weird');
+  for (const s of ['new', 'accepted', 'declined', 'done']) {
+    assert.ok(!/ticket|triaged|closed/i.test(ackStatusInfo(s).meaning));
+  }
+});

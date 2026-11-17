@@ -204,7 +204,12 @@ export default function AckRequestForm() {
           to ask you something we will write to the email you gave. Accepted changes appear in Version 1.1 of
           the book.
         </p>
-        <p className="mt-4 text-sm">
+        <p className="mt-3 text-sm text-slate-300">
+          You can follow it in Support: signed in, it is listed with your account; otherwise look it up there
+          with this reference and your email, and we email you a link.
+        </p>
+        <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+          <a href="/support/requests" className="font-semibold text-cyan-300 underline hover:text-cyan-200">See your requests in Support</a>
           <a href="/viewer/acknowledgements" className="text-cyan-300 underline hover:text-cyan-200">Back to the Acknowledgements</a>
         </p>
       </div>
