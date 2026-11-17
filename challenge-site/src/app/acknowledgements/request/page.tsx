@@ -34,6 +34,10 @@ export default function AckRequestPage() {
           We use your email only to reach you about this request. Requests are private: they are not published
           and are not used for search or AI.
         </p>
+        <p className="text-sm">
+          Already sent one?{' '}
+          <a href="/support/requests" className="text-cyan-300 underline hover:text-cyan-200">See your requests in Support</a>
+        </p>
       </div>
       <Suspense fallback={<p className="mt-8 text-slate-400">Loading the form…</p>}>
         <AckRequestForm />

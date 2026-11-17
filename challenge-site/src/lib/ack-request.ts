@@ -224,3 +224,71 @@ export function normalizeAckReference(value: string): string | null {
   }
   return null;
 }
+
+/** One of the viewer's own requests, as Gov Hub returns it (GET .../requests/mine). */
+export type AckRequestView = {
+  id: string;
+  reference: string;
+  kind: string;
+  kind_label: string;
+  requested_name: string | null;
+  current_name: string | null;
+  affiliation: string | null;
+  target_list: string | null;
+  target_list_label: string | null;
+  call_for_input_label: string | null;
+  role: string | null;
+  contribution: string | null;
+  contribution_url: string | null;
+  note: string | null;
+  status: string;
+  status_label: string;
+  created_at: string | null;
+  status_changed_at: string | null;
+  attachments: { id: string; width: number | null; height: number | null; size: number; has_thumb: boolean }[];
+};
+
+/**
+ * What each review status means, said plainly. These are the steering committee's decisions on an
+ * Acknowledgements request, not support ticket states.
+ */
+export const ACK_STATUS_INFO: Record<string, { label: string; meaning: string }> = {
+  new: { label: 'New', meaning: 'Not reviewed yet. The steering committee reads every request.' },
+  accepted: {
+    label: 'Accepted',
+    meaning: 'The steering committee agreed. The change is made in the next version of the book (Version 1.1).',
+  },
+  declined: {
+    label: 'Declined',
+    meaning: 'The steering committee did not make this change. If we need to explain, we write to the email you gave.',
+  },
+  done: { label: 'Done', meaning: 'The change is in the Acknowledgements for the next version of the book.' },
+};
+
+export function ackStatusInfo(status: string, fallbackLabel?: string) {
+  return ACK_STATUS_INFO[status] || { label: fallbackLabel || status, meaning: '' };
+}
+
+/** One line saying what the person asked for. */
+export function ackRequestSummary(r: Pick<AckRequestView, 'kind' | 'requested_name' | 'current_name' | 'affiliation' | 'target_list_label' | 'note'>): string {
+  const want = r.requested_name || r.current_name || 'your entry';
+  const q = (s: string) => `“${s}”`;
+  switch (r.kind) {
+    case 'add':
+      return `Add ${q(want)} to the Acknowledgements`;
+    case 'correct_name':
+      return r.current_name && r.requested_name
+        ? `Change ${q(r.current_name)} to ${q(r.requested_name)}`
+        : `Correct the name ${q(want)}`;
+    case 'affiliation':
+      return r.affiliation ? `Show ${q(want)} with the affiliation ${q(r.affiliation)}` : `Change the affiliation for ${q(want)}`;
+    case 'move':
+      return `Move ${q(r.current_name || want)} to ${r.target_list_label || 'a different list'}`;
+    case 'remove':
+      return `Remove ${q(r.current_name || want)}`;
+    default: {
+      const note = (r.note || '').replace(/\s+/g, ' ').trim();
+      return note ? (note.length > 140 ? `${note.slice(0, 139)}…` : note) : 'Something else';
+    }
+  }
+}

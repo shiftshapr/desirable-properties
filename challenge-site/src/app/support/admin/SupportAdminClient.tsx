@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import AckRequestsPanel from './AckRequestsPanel';
 
 type TicketRow = {
   id: string;
@@ -213,6 +214,8 @@ export default function SupportAdminClient() {
           ← Public support page
         </Link>
       </div>
+
+      <AckRequestsPanel />
 
       {flash ? (
         <p className="mt-4 rounded-lg border border-emerald-700/50 bg-emerald-950/40 px-4 py-2 text-sm text-emerald-200">
