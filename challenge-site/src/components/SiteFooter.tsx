@@ -17,6 +17,9 @@ export default function SiteFooter() {
           </Link>
           <Link href="/v1" className="font-semibold text-amber-200 hover:text-amber-100">Version 1.0</Link>
           <Link href="/improve" className="text-amber-200 hover:text-amber-100">Help shape Version 1.1</Link>
+          <Link href="/acknowledgements/request" className="text-slate-400 hover:text-slate-200">
+            Acknowledgements: ask for a change
+          </Link>
           <Link href="/steering" className="text-cyan-300 hover:text-cyan-200">Steering</Link>
           <Link href="/press" className="text-slate-400 hover:text-slate-200">Press</Link>
           <Link href="/roundups" className="text-cyan-300 hover:text-cyan-200">DP Roundups</Link>

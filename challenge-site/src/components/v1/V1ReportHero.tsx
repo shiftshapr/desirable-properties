@@ -151,6 +151,13 @@ export default function V1ReportHero() {
               Share images and ready-made posts →
             </a>
           </p>
+          <p className="mt-2 text-sm text-slate-400">
+            Missing from the Acknowledgements, or your name needs correcting?{' '}
+            <a href="/acknowledgements/request" className="underline decoration-slate-600 underline-offset-2 hover:text-amber-200">
+              Ask for a change
+            </a>
+            .
+          </p>
         </div>
         <div className="order-1 flex justify-center lg:order-2">
           <a href={V1_PDF_HREF} className="group relative block w-64 sm:w-80 lg:w-[26rem]" aria-label="The Layered Web, Version 1.0">

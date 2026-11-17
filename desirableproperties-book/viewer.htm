@@ -747,6 +747,8 @@
       font-size: 0.85rem;
     }
     .dp-archive-source a, .dp-archive-links a { color: var(--accent); }
+    .dp-ack-request-link { font-size: 0.95rem; color: var(--text); }
+    .dp-ack-request-link a { font-weight: 600; }
     .not-onchain-notice {
       max-width: 680px;
       margin: 48px auto;
@@ -2130,7 +2132,7 @@
     }
 
     /**
-     * Acknowledgements page only: where to ask for a change (be added, fix a name, be removed).
+     * Acknowledgements page only: where to ask for a change (be added, fix a name, change an affiliation or list, be removed).
      * The form lives on the DP site; book.* hosts link across to it. Not part of the book text.
      */
     function buildAckRequestLinkHtml(rail) {
@@ -2138,9 +2140,8 @@
       const host = location.hostname;
       const book = /^(staging\.)?book\.desirableproperties\.org$/.test(host);
       const base = book ? 'https://' + (host.indexOf('staging.') === 0 ? 'staging.' : '') + 'desirableproperties.org' : '';
-      return '<p class="dp-archive-links dp-ack-request-link">Missing, or is your name wrong? ' +
-        '<a href="' + base + '/acknowledgements/request">Ask for a change to the Acknowledgements</a>' +
-        ' or <a href="' + base + '/acknowledgements/request?kind=remove">ask to be removed</a>.</p>';
+      return '<p class="dp-archive-links dp-ack-request-link">Missing from the Acknowledgements, or your name needs correcting? ' +
+        '<a href="' + base + '/acknowledgements/request">Ask for a change</a>.</p>';
     }
 
     async function loadChapter(rail, opts) {

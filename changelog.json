@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "acknowledgements-change-request-links",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "Links to the Acknowledgements change request form",
+      "summary": "The form at /acknowledgements/request (be added, correct how a name appears, change an affiliation or list, or be removed) is now linked from the places people look for it. The online book's Acknowledgements page carries one line in the reader's frame, not in the chapter text: \"Missing from the Acknowledgements, or your name needs correcting? Ask for a change.\" The same line sits under the PDF and Read online buttons on /v1 and in the summary of /events/v1-launch, the site footer has an \"Acknowledgements: ask for a change\" link, and /acknowledgements, which was a 404, now redirects (307) to the form.",
+      "changes": [
+        "desirableproperties-book/viewer.htm: buildAckRequestLinkHtml() wording and style (Acknowledgements rail only; chapter markdown untouched)",
+        "challenge-site/src/components/v1/V1ReportHero.tsx: line under the PDF and online book links",
+        "challenge-site/src/components/SiteFooter.tsx: Acknowledgements: ask for a change",
+        "challenge-site/src/app/events/v1-launch/page.tsx: link in the In short summary",
+        "challenge-site/next.config.ts: /acknowledgements redirects (307) to /acknowledgements/request"
+      ]
+    },
+    {
       "id": "landing-pads-hidden-on-production",
       "date": "2026-11-16",
       "status": "open",
