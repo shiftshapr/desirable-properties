@@ -175,3 +175,52 @@ export function sniffAckImage(b: Uint8Array): string | null {
     && ['heic', 'heix', 'hevc', 'hevx', 'heim', 'heis', 'mif1', 'msf1', 'avif'].includes(ascii(8, 12))) return 'heic';
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// Seeing your own requests (owner, 2026-11-17): see ack-request-access.ts (server).
+
+/** A view token as Gov Hub issues it (URL-safe base64); anything else is ignored. */
+export function cleanViewToken(value: string | undefined | null): string | null {
+  const v = String(value || '').trim();
+  return /^[A-Za-z0-9_-]{20,200}$/.test(v) ? v : null;
+}
+
+/** Gov Hub ids are UUIDs; anything else is refused before an upstream path is built. */
+export function isUuid(value: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(value || ''));
+}
+
+/** The view token from a Cookie header, or null. */
+export function viewTokenFromCookieHeader(header: string | null | undefined, name: string): string | null {
+  for (const part of String(header || '').split(';')) {
+    const i = part.indexOf('=');
+    if (i > 0 && part.slice(0, i).trim() === name) {
+      try {
+        return cleanViewToken(decodeURIComponent(part.slice(i + 1).trim()));
+      } catch {
+        return null;
+      }
+    }
+  }
+  return null;
+}
+
+/** The one-time link token from the emailed link's #fragment ("#token=..."), or null. */
+export function linkTokenFromHash(hash: string | null | undefined): string | null {
+  const m = /(?:^#|&)token=([^&]+)/.exec(String(hash || ''));
+  if (!m) return null;
+  try {
+    return cleanViewToken(decodeURIComponent(m[1]));
+  } catch {
+    return null;
+  }
+}
+
+/** "ack-q4r4zz", "ACK Q4R4ZZ" or "Q4R4ZZ" -> "ACK-Q4R4ZZ"; null if it cannot be a code. */
+export function normalizeAckReference(value: string): string | null {
+  const raw = String(value || '').replace(/\s+/g, '').toUpperCase();
+  for (const t of [raw.replace(/^ACK-?/, ''), raw]) {
+    if (/^[2-9A-HJKMNP-TV-Z]{6}$/.test(t)) return `ACK-${t}`;
+  }
+  return null;
+}

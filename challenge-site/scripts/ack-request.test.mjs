@@ -85,3 +85,41 @@ test('images are recognised by their first bytes, not their names', () => {
   assert.equal(sniffAckImage(bytes('%PDF-1.7')), null);
   assert.equal(sniffAckImage(new Uint8Array()), null);
 });
+
+// Seeing your own requests (owner, 2026-11-17)
+import {
+  cleanViewToken,
+  isUuid,
+  linkTokenFromHash,
+  normalizeAckReference,
+  viewTokenFromCookieHeader,
+} from '../src/lib/ack-request.ts';
+
+const TOKEN = 'abcDEF123_-abcDEF123_-abcDEF123_-abcDEF12';
+
+test('reference codes are normalised and junk refused', () => {
+  assert.equal(normalizeAckReference('ack-q4r4zz'), 'ACK-Q4R4ZZ');
+  assert.equal(normalizeAckReference(' ACK Q4R4ZZ '), 'ACK-Q4R4ZZ');
+  assert.equal(normalizeAckReference('q4r4zz'), 'ACK-Q4R4ZZ');
+  for (const bad of ['', 'ACK-Q4R4Z', 'ACK-Q4R4ZZZ', 'ACK-O0I1LU', '<b>x</b>']) assert.equal(normalizeAckReference(bad), null, bad);
+});
+
+test('view and link tokens: only Gov Hub-shaped values are accepted', () => {
+  assert.equal(cleanViewToken(TOKEN), TOKEN);
+  assert.equal(cleanViewToken('short'), null);
+  assert.equal(cleanViewToken('has space in it and is long enough'), null);
+  assert.equal(cleanViewToken('a'.repeat(201)), null);
+  assert.equal(viewTokenFromCookieHeader(`x=1; dp_ack_view=${TOKEN}; y=2`, 'dp_ack_view'), TOKEN);
+  assert.equal(viewTokenFromCookieHeader('dp_ack_view=%E0%A4%A', 'dp_ack_view'), null);
+  assert.equal(viewTokenFromCookieHeader('other=1', 'dp_ack_view'), null);
+  assert.equal(linkTokenFromHash(`#token=${TOKEN}`), TOKEN);
+  assert.equal(linkTokenFromHash(`#a=1&token=${TOKEN}`), TOKEN);
+  assert.equal(linkTokenFromHash('#token=<script>'), null);
+  assert.equal(linkTokenFromHash(''), null);
+});
+
+test('ids must be UUIDs before an upstream path is built', () => {
+  assert.ok(isUuid('3f2c1a9e-1b2c-4d5e-8f90-0123456789ab'));
+  assert.ok(!isUuid('../../admin'));
+  assert.ok(!isUuid('3f2c1a9e-1b2c-4d5e-8f90-0123456789ab/../x'));
+});
