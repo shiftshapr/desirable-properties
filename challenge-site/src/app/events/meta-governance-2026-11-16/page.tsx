@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Link from 'next/link';
+import CommunityGroups from '@/components/community/CommunityGroups';
 import ListeningWorkspaceMount from '@/components/listening/ListeningWorkspaceMount';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
@@ -111,6 +112,8 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       <div className="mt-8">
         <HowThisWorks />
       </div>
+
+      <CommunityGroups returnTo={`${META_GOV_EVENT_PATH}#community-groups`} className="mt-8" />
 
       <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#phase" className={linkClass}>Where this session is</a>
