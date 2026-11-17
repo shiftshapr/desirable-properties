@@ -57,6 +57,8 @@ type UpstreamOptions = {
   /** Forward the signed-in member's idToken. */
   withSession?: boolean;
   viewToken?: string | null;
+  /** The Gov Hub server key alone (the Support admin count), with no user. */
+  serverKey?: string;
   /** Pass the browser's address (with the Gov Hub server key) so Gov Hub rate-limits the sender. */
   request?: Request;
   timeoutMs?: number;
@@ -71,6 +73,7 @@ export async function govhubAck(path: string, options: UpstreamOptions = {}): Pr
     if (session?.idToken) headers.Authorization = `Bearer ${session.idToken}`;
   }
   if (options.viewToken) headers['X-DP-Ack-View'] = options.viewToken;
+  if (options.serverKey) headers['X-DP-Hermes-Key'] = options.serverKey;
   if (options.request) {
     const ip = clientIpFromHeaders(options.request.headers);
     const key = govhubHermesSecrets()[0] || '';

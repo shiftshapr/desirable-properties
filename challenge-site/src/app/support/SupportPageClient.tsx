@@ -6,6 +6,9 @@ import { useSearchParams } from 'next/navigation';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
 import { bookDiscussHref, DESIRABLE_PROPERTIES_BOOK_HOST } from '@/lib/govhub';
 import { useAuth } from '@/lib/auth-context';
+import AckLookupBox from '@/components/acknowledgements/AckLookupBox';
+import AckRequestList from '@/components/acknowledgements/AckRequestList';
+import type { AckRequestView } from '@/lib/ack-request';
 
 type TicketSummary = {
   id: string;
@@ -22,7 +25,11 @@ const CATEGORIES = [
   { value: 'technical_support', label: 'Technical support' },
   { value: 'content_clarification', label: 'Content clarification' },
   { value: 'general', label: 'General' },
+  // Not a ticket category: Acknowledgements changes go through their own form (owner, 2026-11-17).
+  { value: 'acknowledgements', label: 'Acknowledgements (your name in the book)' },
 ];
+
+const ACK_FORM_PATH = '/acknowledgements/request';
 
 async function readFilesAsBase64(files: File[]) {
   const out: Array<{ filename: string; mimeType: string; dataBase64: string }> = [];
@@ -50,6 +57,7 @@ export default function SupportPageClient() {
   const formRef = useRef<HTMLFormElement>(null);
   const { user, checked, login, loginBusy, loginError } = useAuth();
   const [tickets, setTickets] = useState<TicketSummary[]>([]);
+  const [ackRequests, setAckRequests] = useState<AckRequestView[]>([]);
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -68,6 +76,7 @@ export default function SupportPageClient() {
   const [includeDiagnostics, setIncludeDiagnostics] = useState(true);
 
   const isTechnical = category === 'technical_support';
+  const isAcknowledgements = category === 'acknowledgements';
   const needsTechAck = isTechnical && screenshots.length === 0;
 
   const loadTickets = useCallback(async () => {
@@ -80,6 +89,20 @@ export default function SupportPageClient() {
   useEffect(() => {
     if (user) void loadTickets();
   }, [user, loadTickets]);
+
+  useEffect(() => {
+    if (!user) return;
+    let alive = true;
+    fetch('/api/acknowledgements/requests/mine', { credentials: 'include', cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (alive && data?.ok && Array.isArray(data.requests)) setAckRequests(data.requests as AckRequestView[]);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [user]);
 
   useEffect(() => {
     if (searchParams.get('feedback') !== '1') return;
@@ -125,6 +148,7 @@ export default function SupportPageClient() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isAcknowledgements) return;
     setError(null);
     setFlash(null);
     setSubmitting(true);
@@ -197,6 +221,11 @@ export default function SupportPageClient() {
           <p className="text-slate-300">
             Sign in to submit and track support requests.
           </p>
+          <p className="mt-2 text-sm text-slate-400">
+            Asking to be added to the Acknowledgements, or to change or remove your name? Use the{' '}
+            <a href={ACK_FORM_PATH} className="text-cyan-300 underline hover:text-cyan-200">Acknowledgements request form</a>
+            ; you do not need to sign in.
+          </p>
           {loginError ? (
             <p className="mt-4 rounded-lg border border-red-700/50 bg-red-950/40 px-4 py-3 text-sm text-red-200">
               {loginError}
@@ -215,7 +244,11 @@ export default function SupportPageClient() {
             {loginBusy ? 'Signing in…' : 'Sign in'}
           </button>
         </div>
-      ) : (
+      ) : null}
+
+      {checked && !user ? <AckLookupBox className="mt-6" /> : null}
+
+      {!checked || !user ? null : (
         <>
           {feedbackMode ? (
             <p className="mt-6 rounded-lg border border-violet-700/50 bg-violet-950/30 px-4 py-3 text-sm text-violet-100">
@@ -284,6 +317,18 @@ export default function SupportPageClient() {
                 </select>
               </div>
             </div>
+
+            {isAcknowledgements ? (
+              <div id="support-ack-note" role="status" className="rounded-lg border border-violet-700/60 bg-violet-950/30 px-4 py-3 text-sm text-violet-100">
+                Acknowledgements changes are not support tickets. Please use the{' '}
+                <a href={ACK_FORM_PATH} className="font-semibold text-cyan-300 underline hover:text-cyan-200">
+                  Acknowledgements request form
+                </a>{' '}
+                to be added, correct your name, change an affiliation or list, or be removed. The steering
+                committee reviews it, and you can follow it under{' '}
+                <Link href="/support/requests" className="text-cyan-300 underline hover:text-cyan-200">Your Acknowledgements requests</Link>.
+              </div>
+            ) : null}
 
             <div>
               <label htmlFor="support-body" className="mb-1 block text-sm text-slate-300">
@@ -451,33 +496,62 @@ export default function SupportPageClient() {
 
             <button
               type="submit"
-              disabled={submitting || (needsTechAck && !techAck)}
+              disabled={submitting || isAcknowledgements || (needsTechAck && !techAck)}
+              aria-describedby={isAcknowledgements ? 'support-ack-note' : undefined}
               className="rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-400 disabled:opacity-60"
             >
               {submitting ? 'Sending…' : 'Submit support request'}
             </button>
           </form>
 
-          {tickets.length > 0 ? (
-            <section className="mt-12">
-              <h2 className="text-lg font-semibold text-white">Your recent requests</h2>
-              <ul className="mt-4 space-y-3">
-                {tickets.map((t) => (
-                  <li
-                    key={t.id}
-                    className="rounded-lg border border-slate-800 bg-slate-900/50 px-4 py-3 text-sm"
-                  >
-                    <div className="font-medium text-white">{t.subject}</div>
-                    <div className="mt-1 text-slate-400">
-                      {t.status} · {t.category.replace(/_/g, ' ')} ·{' '}
-                      {new Date(t.createdAt).toLocaleString()}
-                    </div>
-                    <div className="mt-1 font-mono text-xs text-slate-500">{t.id}</div>
-                  </li>
-                ))}
-              </ul>
+          {tickets.length > 0 || ackRequests.length > 0 ? (
+            <section className="mt-12" aria-labelledby="support-yours-h">
+              <h2 id="support-yours-h" className="text-lg font-semibold text-white">Your recent requests</h2>
+              {tickets.length > 0 ? (
+                <>
+                  <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-400">Support tickets</h3>
+                  <ul className="mt-2 space-y-3">
+                    {tickets.map((t) => (
+                      <li
+                        key={t.id}
+                        className="rounded-lg border border-slate-800 bg-slate-900/50 px-4 py-3 text-sm"
+                      >
+                        <div className="font-medium text-white">{t.subject}</div>
+                        <div className="mt-1 text-slate-400">
+                          {t.status} · {t.category.replace(/_/g, ' ')} ·{' '}
+                          {new Date(t.createdAt).toLocaleString()}
+                        </div>
+                        <div className="mt-1 font-mono text-xs text-slate-500">{t.id}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
+              {ackRequests.length > 0 ? (
+                <>
+                  <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    Acknowledgements requests
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Reviewed by the steering committee, not the support team. Status is their decision on your request.
+                  </p>
+                  <div className="mt-2">
+                    <AckRequestList requests={ackRequests} headingLevel={4} />
+                  </div>
+                  <p className="mt-2 text-sm">
+                    <Link href="/support/requests" className="text-cyan-300 hover:text-cyan-200">All your Acknowledgements requests</Link>
+                  </p>
+                </>
+              ) : null}
             </section>
           ) : null}
+
+          <details className="mt-8 rounded-xl border border-slate-800 bg-slate-900/40 p-4">
+            <summary className="cursor-pointer text-sm text-cyan-300 hover:text-cyan-200">
+              Sent an Acknowledgements request without signing in?
+            </summary>
+            <AckLookupBox className="mt-4" />
+          </details>
         </>
       )}
 

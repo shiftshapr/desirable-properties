@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "acknowledgements-requests-in-support",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "See your Acknowledgements requests in Support",
+      "summary": "People who ask for a change to the Acknowledgements can now follow their requests in Support. Signed in, /support lists them beside support tickets under \"Acknowledgements requests\", each labelled \"Acknowledgements request\" with the reference code, what was asked for, the date, the steering committee's decision (New, Accepted, Declined or Done, each explained in a sentence and never shown as a ticket state) and thumbnails of the images they attached, which open full size. A new page, /support/requests, shows the same list. Signed out, /support has a \"Look up an Acknowledgements request\" box: the reference code and the email used. If they match, Gov Hub emails a one-time link to /support/requests; the page uses it only when the person presses \"Show my requests\", so mail scanners cannot use it up, and then shows that email's requests for two hours. The answer never says whether a code and email matched. The Support form has an \"Acknowledgements\" category that points to /acknowledgements/request instead of filing a ticket. The form's confirmation and the request page link to \"See your requests in Support\". The Support admin shows a read-only \"Acknowledgements requests\" panel with the number of new requests and a link to the Gov Hub review list; reviewing stays on Gov Hub. Reviewer notes are never shown to the person who sent the request.",
+      "changes": [
+        "challenge-site/src/app/support/SupportPageClient.tsx: Acknowledgements requests beside tickets, Acknowledgements category notice, lookup box (signed out; and a folded one signed in)",
+        "challenge-site/src/app/support/requests/: the Support view of your requests; opens the emailed link on click; stop-showing button",
+        "challenge-site/src/components/acknowledgements/AckRequestList.tsx and AckLookupBox.tsx: the list (labels, status meaning, details, thumbnails) and the lookup form",
+        "challenge-site/src/app/support/admin/AckRequestsPanel.tsx and src/app/api/support/admin/ack-requests/route.ts: read-only count and Gov Hub link",
+        "challenge-site/src/app/acknowledgements/request/: \"See your requests in Support\" on the confirmation and the page",
+        "challenge-site/src/lib/ack-request.ts: AckRequestView, ACK_STATUS_INFO, ackRequestSummary(); scripts/ack-request.test.mjs",
+        "Gov Hub (Bridgit-DAO/interface-gov-hub): lookup link now opens /support/requests; summary count for the DP server key"
+      ]
+    },
+    {
       "id": "acknowledgements-request-lookup-api",
       "date": "2026-11-17",
       "status": "open",
