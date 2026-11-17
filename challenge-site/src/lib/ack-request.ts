@@ -133,3 +133,45 @@ export function clientIpFromHeaders(h: { get(name: string): string | null }): st
   const hops = (h.get('x-forwarded-for') || '').split(',').map((s) => s.trim()).filter(Boolean);
   return (hops[hops.length - 1] || '').slice(0, 64);
 }
+
+// ---------------------------------------------------------------------------
+// Images (owner, 2026-11-17): up to three, JPEG, PNG or WebP, 5 MB each. Gov Hub checks the bytes
+// again, strips metadata (EXIF, GPS) and re-encodes; only reviewers can open them.
+
+export const ACK_IMAGE_MAX = 3;
+export const ACK_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+export const ACK_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+/** The file input's accept list. Naming these types makes iPhones hand over HEIC photos as JPEG. */
+export const ACK_IMAGE_ACCEPT = 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp';
+
+export const ACK_IMAGE_MESSAGES = {
+  type: 'Please attach a JPEG, PNG or WebP image.',
+  heic: 'This looks like an HEIC photo, which we cannot read. Please attach it as JPEG or PNG (on an iPhone, choose the photo from the library on this page and it is converted; or set Camera > Formats to Most Compatible).',
+  size: 'Each image must be 5 MB or smaller.',
+  count: `You can attach up to ${ACK_IMAGE_MAX} images.`,
+  empty: 'This file is empty.',
+};
+
+/** Why a chosen file cannot be attached (by its name, type and size), or null. The browser's check only. */
+export function checkAckImage(file: { name: string; type: string; size: number }): string | null {
+  const name = (file.name || '').toLowerCase();
+  const type = (file.type || '').toLowerCase();
+  if (/\.(heic|heif)$/.test(name) || type === 'image/heic' || type === 'image/heif') return ACK_IMAGE_MESSAGES.heic;
+  const okType = (ACK_IMAGE_TYPES as readonly string[]).includes(type) || (!type && /\.(jpe?g|png|webp)$/.test(name));
+  if (!okType) return ACK_IMAGE_MESSAGES.type;
+  if (!file.size) return ACK_IMAGE_MESSAGES.empty;
+  if (file.size > ACK_IMAGE_MAX_BYTES) return ACK_IMAGE_MESSAGES.size;
+  return null;
+}
+
+/** The image type from a file's first bytes: a content type, 'heic', or null. */
+export function sniffAckImage(b: Uint8Array): string | null {
+  if (b.length >= 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return 'image/jpeg';
+  const png = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+  if (b.length >= 8 && png.every((v, i) => b[i] === v)) return 'image/png';
+  const ascii = (from: number, to: number) => String.fromCharCode(...b.subarray(from, to));
+  if (b.length >= 12 && ascii(0, 4) === 'RIFF' && ascii(8, 12) === 'WEBP') return 'image/webp';
+  if (b.length >= 12 && ascii(4, 8) === 'ftyp'
+    && ['heic', 'heix', 'hevc', 'hevx', 'heim', 'heis', 'mif1', 'msf1', 'avif'].includes(ascii(8, 12))) return 'heic';
+  return null;
+}
