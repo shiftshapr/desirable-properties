@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import CommunityGroups from '@/components/community/CommunityGroups';
 import ListeningWorkspaceMount from '@/components/listening/ListeningWorkspaceMount';
+import DeclineReasons from '@/components/sessions/DeclineReasons';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
@@ -120,6 +121,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         <a href="#draft" className={linkClass}>Draft for review</a>
         <a href="#summary" className={linkClass}>Summary</a>
         <a href="#open-questions" className={linkClass}>Open questions</a>
+        <a href="#declines" className={linkClass}>Why proposals were declined</a>
         <a href="#still-to-decide" className={linkClass}>Still to be decided</a>
         <a href="#transcript" className={linkClass}>Transcript</a>
         {listeningWorkspaceEnabled() ? (
@@ -142,6 +144,9 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         )}
 
         <SessionSummary turns={turns} />
+
+        {/* Not part of the draft ballot, so shown at all times (not gated on SESSION.draftVisibleAt). */}
+        <DeclineReasons correctionsEmail={META_GOV_CORRECTIONS_EMAIL} />
 
         <StillToDecide />
 
