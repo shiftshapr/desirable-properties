@@ -2,11 +2,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  ACK_IMAGE_MAX_BYTES,
   EMPTY_ACK_REQUEST,
   ackFieldsFor,
   ackRequestPayload,
+  checkAckImage,
   checkAckRequest,
   clientIpFromHeaders,
+  sniffAckImage,
 } from '../src/lib/ack-request.ts';
 
 const form = (over) => ({ ...EMPTY_ACK_REQUEST, ...over });
@@ -53,4 +56,32 @@ test('client IP comes from X-Real-IP, else the last forwarded hop', () => {
   assert.equal(clientIpFromHeaders(h({ 'x-real-ip': '203.0.113.5', 'x-forwarded-for': '1.1.1.1' })), '203.0.113.5');
   assert.equal(clientIpFromHeaders(h({ 'x-forwarded-for': '6.6.6.6, 198.51.100.2' })), '198.51.100.2');
   assert.equal(clientIpFromHeaders(h({})), '');
+});
+
+
+test('images: JPEG, PNG or WebP up to 5 MB; HEIC gets its own message', () => {
+  const file = (name, type, size = 1000) => ({ name, type, size });
+  assert.equal(checkAckImage(file('a.jpg', 'image/jpeg')), null);
+  assert.equal(checkAckImage(file('a.png', 'image/png')), null);
+  assert.equal(checkAckImage(file('a.webp', 'image/webp')), null);
+  assert.equal(checkAckImage(file('a.jpg', '')), null); // some pickers give no type
+  assert.match(checkAckImage(file('a.jpg', 'image/jpeg', ACK_IMAGE_MAX_BYTES + 1)), /5 MB/);
+  assert.match(checkAckImage(file('a.jpg', 'image/jpeg', 0)), /empty/);
+  assert.match(checkAckImage(file('IMG_1.HEIC', 'image/heic')), /HEIC/);
+  assert.match(checkAckImage(file('IMG_1.heic', '')), /HEIC/);
+  assert.match(checkAckImage(file('a.gif', 'image/gif')), /JPEG, PNG or WebP/);
+  assert.match(checkAckImage(file('a.svg', 'image/svg+xml')), /JPEG, PNG or WebP/);
+  assert.match(checkAckImage(file('a.pdf', 'application/pdf')), /JPEG, PNG or WebP/);
+});
+
+test('images are recognised by their first bytes, not their names', () => {
+  const bytes = (...parts) => new Uint8Array(parts.flatMap((p) => (typeof p === 'string' ? [...p].map((c) => c.charCodeAt(0)) : p)));
+  assert.equal(sniffAckImage(bytes([0xff, 0xd8, 0xff, 0xe0])), 'image/jpeg');
+  assert.equal(sniffAckImage(bytes([0x89], 'PNG', [0x0d, 0x0a, 0x1a, 0x0a])), 'image/png');
+  assert.equal(sniffAckImage(bytes('RIFF', [0, 0, 0, 0], 'WEBPVP8 ')), 'image/webp');
+  assert.equal(sniffAckImage(bytes([0, 0, 0, 0x18], 'ftypheic', [0, 0, 0, 0])), 'heic');
+  assert.equal(sniffAckImage(bytes('GIF89a')), null);
+  assert.equal(sniffAckImage(bytes('<svg xmlns=')), null);
+  assert.equal(sniffAckImage(bytes('%PDF-1.7')), null);
+  assert.equal(sniffAckImage(new Uint8Array()), null);
 });

@@ -5,6 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import {
   ACK_CALLS,
+  ACK_IMAGE_ACCEPT,
+  ACK_IMAGE_MAX,
+  ACK_IMAGE_MESSAGES,
   ACK_LISTS,
   ACK_NAME_MAX,
   ACK_REQUEST_KINDS,
@@ -12,6 +15,7 @@ import {
   EMPTY_ACK_REQUEST,
   ackFieldsFor,
   ackRequestPayload,
+  checkAckImage,
   checkAckRequest,
   type AckRequestForm as Form,
   type AckRequestKind,
@@ -19,6 +23,8 @@ import {
 
 const inputClass = 'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white';
 const labelClass = 'mb-1 block text-sm text-slate-300';
+
+type Attached = { key: string; file: File; url: string };
 
 type Prefill = { name?: string; email?: string; listed_as?: { name: string; list: string; line: string } | null };
 
@@ -49,8 +55,59 @@ export default function AckRequestForm() {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
+  const [images, setImages] = useState<Attached[]>([]);
   const startedAt = useRef<number>(0);
   const prefilledFor = useRef<string | null>(null);
+  const imageInput = useRef<HTMLInputElement>(null);
+  const imageUrls = useRef<string[]>([]);
+
+  // Free the preview URLs when the form goes away.
+  useEffect(() => () => imageUrls.current.forEach((u) => URL.revokeObjectURL(u)), []);
+
+  const clearImageError = () => setErrors((e) => {
+    if (!e.images) return e;
+    const next = { ...e };
+    delete next.images;
+    return next;
+  });
+
+  function addImages(list: FileList | null) {
+    const chosen = Array.from(list || []);
+    if (imageInput.current) imageInput.current.value = ''; // the same file can be chosen again
+    if (!chosen.length) return;
+    const problems: string[] = [];
+    const added: Attached[] = [];
+    for (const file of chosen) {
+      if (images.length + added.length >= ACK_IMAGE_MAX) {
+        problems.push(ACK_IMAGE_MESSAGES.count);
+        break;
+      }
+      const problem = checkAckImage(file);
+      if (problem) {
+        problems.push(`${file.name}: ${problem}`);
+        continue;
+      }
+      const url = URL.createObjectURL(file);
+      imageUrls.current.push(url);
+      added.push({ key: `${file.name}-${file.size}-${file.lastModified}-${Math.random()}`, file, url });
+    }
+    if (added.length) setImages((prev) => [...prev, ...added].slice(0, ACK_IMAGE_MAX));
+    if (problems.length) setErrors((e) => ({ ...e, images: problems.join(' ') }));
+    else clearImageError();
+  }
+
+  function removeImage(key: string) {
+    setImages((prev) => {
+      const gone = prev.find((a) => a.key === key);
+      if (gone) {
+        URL.revokeObjectURL(gone.url);
+        imageUrls.current = imageUrls.current.filter((u) => u !== gone.url);
+      }
+      return prev.filter((a) => a.key !== key);
+    });
+    clearImageError();
+    setTimeout(() => imageInput.current?.focus(), 0); // the input comes back once below the limit
+  }
 
   useEffect(() => {
     startedAt.current = Date.now();
@@ -98,11 +155,18 @@ export default function AckRequestForm() {
     }
     setBusy(true);
     try {
-      const res = await fetch('/api/acknowledgements/requests', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ackRequestPayload(form, Date.now() - startedAt.current)),
-      });
+      const payload = ackRequestPayload(form, Date.now() - startedAt.current);
+      let init: RequestInit;
+      if (images.length) {
+        // With images: multipart, so the files go as they are (the browser sets the boundary).
+        const body = new FormData();
+        body.set('payload', JSON.stringify(payload));
+        for (const a of images) body.append('images', a.file, a.file.name);
+        init = { method: 'POST', body };
+      } else {
+        init = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) };
+      }
+      const res = await fetch('/api/acknowledgements/requests', init);
       const data = (await res.json().catch(() => null)) as
         | { ok?: boolean; reference?: string; message?: string; errors?: Record<string, string> }
         | null;
@@ -111,7 +175,15 @@ export default function AckRequestForm() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
-      setFailure(data?.message || 'We could not send your request just now. Please try again in a few minutes.');
+      if (data?.errors?.images) {
+        setErrors((e) => ({ ...e, images: data.errors!.images }));
+        imageInput.current?.focus();
+      } else if (data?.errors?.attachments) {
+        setErrors((e) => ({ ...e, images: data.errors!.attachments }));
+      }
+      setFailure(res.status === 413
+        ? ACK_IMAGE_MESSAGES.size
+        : data?.message || 'We could not send your request just now. Please try again in a few minutes.');
     } catch {
       setFailure('We could not send your request just now. Please check your connection and try again.');
     } finally {
@@ -261,6 +333,44 @@ export default function AckRequestForm() {
             <textarea id="ack-note" className={inputClass} rows={3} maxLength={ACK_TEXT_MAX}
               value={form.note} onChange={(e) => set('note', e.target.value)} />
           </Field>
+          <div>
+            <label htmlFor="ack-images" className={labelClass}>Attach an image (optional)</label>
+            <p id="ack-images-hint" className="mb-2 text-xs text-slate-500">
+              For example a screenshot of the problem, a photo, or proof of your contribution. Up to {ACK_IMAGE_MAX}{' '}
+              images, JPEG, PNG or WebP, 5 MB each. Only the steering committee sees them; we remove location and
+              camera details before storing them.
+            </p>
+            {images.length < ACK_IMAGE_MAX ? (
+              <input ref={imageInput} id="ack-images" type="file" accept={ACK_IMAGE_ACCEPT} multiple
+                aria-describedby={`ack-images-hint${errors.images ? ' ack-images-error' : ''}`}
+                aria-invalid={errors.images ? true : undefined}
+                onChange={(e) => addImages(e.target.files)}
+                className="block w-full text-sm text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700" />
+            ) : (
+              <p className="text-sm text-slate-400">You have attached {ACK_IMAGE_MAX} images, the most we take. Remove one to choose another.</p>
+            )}
+            {images.length ? (
+              <ul className="mt-3 flex flex-wrap gap-3" aria-label="Attached images">
+                {images.map((a, i) => (
+                  <li key={a.key} className="w-28">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- a local preview (blob: URL), not a site image */}
+                    <img src={a.url} alt={`Preview of image ${i + 1}: ${a.file.name}`}
+                      className="h-28 w-28 rounded-lg border border-slate-700 object-cover" />
+                    <p className="mt-1 truncate text-xs text-slate-400" title={a.file.name}>{a.file.name}</p>
+                    <button type="button" onClick={() => removeImage(a.key)}
+                      aria-label={`Remove image ${i + 1}: ${a.file.name}`}
+                      className="mt-1 text-xs text-red-300 underline hover:text-red-200">Remove</button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <p className="sr-only" aria-live="polite">
+              {images.length ? `${images.length} of ${ACK_IMAGE_MAX} images attached.` : ''}
+            </p>
+            {errors.images ? (
+              <p id="ack-images-error" className="mt-1 text-sm text-red-300" role="alert">{errors.images}</p>
+            ) : null}
+          </div>
           {/* Honeypot: hidden from people and screen readers; scripts fill it. */}
           <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
             <label htmlFor="ack-website">Website</label>
@@ -272,7 +382,7 @@ export default function AckRequestForm() {
           ) : null}
           <button type="submit" disabled={busy}
             className="rounded-lg bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500 disabled:opacity-60">
-            {busy ? 'Sending…' : form.kind === 'remove' ? 'Send removal request' : 'Send request'}
+            {busy ? (images.length ? 'Sending, with your images…' : 'Sending…') : form.kind === 'remove' ? 'Send removal request' : 'Send request'}
           </button>
         </>
       ) : null}

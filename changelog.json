@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "acknowledgements-request-images",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "Attach images to an Acknowledgements change request",
+      "summary": "The form at /acknowledgements/request has an optional \"Attach an image\" field: up to three images (a screenshot of the problem, a photo, or proof of a contribution), JPEG, PNG or WebP, 5 MB each, with previews and Remove buttons. On phones the picker offers the camera and the photo library; iPhones hand HEIC photos over as JPEG, and an HEIC file that still arrives is refused with a message saying how to send it as JPEG. Signing in stays optional. The site's server checks each file by its first bytes and uploads it to Gov Hub, which re-encodes it from its pixels (no EXIF, GPS, XMP or comments survive), stores it privately with the request and shows it only to the steering committee and super admins on the Gov Hub review page. Images never appear on public pages or in any other API response. Uploads are rate-limited on Gov Hub; a rejected image stops the request before anything is sent.",
+      "changes": [
+        "challenge-site/src/app/acknowledgements/request/AckRequestForm.tsx: Attach an image field (file input, previews, Remove buttons, live count, errors); multipart when images are attached",
+        "challenge-site/src/app/api/acknowledgements/requests/route.ts: multipart (payload + images); magic-byte and size checks; uploads each image to Gov Hub, then sends the request naming them",
+        "challenge-site/src/lib/ack-request.ts: ACK_IMAGE_* limits, checkAckImage(), sniffAckImage()",
+        "challenge-site/next.config.ts: experimental.proxyClientMaxBodySize 17mb (middleware buffered only 10 MB of upload bodies)",
+        "challenge-site/scripts/ack-request.test.mjs: image checks",
+        "Gov Hub (Bridgit-DAO/interface-gov-hub): attachments upload route, metadata stripping, private storage, reviewer thumbnails and image route"
+      ]
+    },
+    {
       "id": "session-2026-11-16-declines-pathology",
       "date": "2026-11-17",
       "status": "open",
