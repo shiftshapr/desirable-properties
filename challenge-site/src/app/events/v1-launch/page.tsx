@@ -266,6 +266,10 @@ export default function V1LaunchEventPage() {
             <Link href="/v1" className="text-cyan-300 hover:text-cyan-200">
               desirableproperties.org/v1
             </Link>
+            . Missing from the Acknowledgements, or your name needs correcting?{' '}
+            <Link href="/acknowledgements/request" className="text-cyan-300 hover:text-cyan-200">
+              Ask for a change
+            </Link>
             .
           </p>
           <p>

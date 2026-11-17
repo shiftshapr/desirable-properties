@@ -9,6 +9,7 @@ import { READINESS_ITEMS } from '@/data/dp-process';
 import { fetchDpReadiness } from '@/lib/v1-readiness.server';
 import { getRequestedWorkgroupSlug } from '@/lib/dp-welcome-workgroup';
 import { resolveAdminEmail } from '@/lib/dp-admin-auth';
+import CommunityGroups from '@/components/community/CommunityGroups';
 import { readSession } from '@/lib/auth-session';
 import { extractDpId, GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
 import { dpDetailHref } from '@/lib/dp-links';
@@ -155,6 +156,11 @@ export default async function WorkgroupCollabPage({ params, searchParams }: Page
             readiness={readiness}
           />
         </Suspense>
+        <CommunityGroups
+          returnTo={`/workgroups/${workgroup.slug}#community-groups`}
+          heading="Community chat"
+          className="mt-10"
+        />
       </div>
     </main>
   );

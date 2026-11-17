@@ -105,10 +105,17 @@ const LANDING_PAD_REDIRECTS = [
 
 const nextConfig: NextConfig = {
   distDir: resolveDistDir(),
+  experimental: {
+    // src/middleware.ts runs on API routes, and Next buffers only the first 10 MB of a body for it by
+    // default (the rest is cut off). Uploads need more: the Acknowledgements request form sends up to
+    // three 5 MB images, workgroup chat up to 15 MB of files. nginx allows 30 MB.
+    proxyClientMaxBodySize: '17mb',
+  },
   async redirects() {
     return [
       ...RETIRED_CHAPTER_PDF_REDIRECTS,
       { source: '/v1/improve', destination: '/improve', permanent: false },
+      { source: '/acknowledgements', destination: '/acknowledgements/request', permanent: false },
       { source: '/launch', destination: '/events/v1-launch', permanent: false },
       { source: '/adjudication', destination: '/steering', permanent: false },
       { source: '/decisions', destination: '/steering', permanent: false },

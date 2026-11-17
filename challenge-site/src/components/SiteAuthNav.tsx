@@ -14,6 +14,8 @@ type DpWelcomeLink = {
   is_default?: boolean;
 };
 
+type CommunityGroupLink = { key: string; label: string; name: string; url: string };
+
 type WelcomeState = {
   userId: string | null;
   links: DpWelcomeLink[];
@@ -29,6 +31,11 @@ export default function SiteAuthNav() {
     status: 'idle',
   });
   const [isSiteAdmin, setIsSiteAdmin] = useState(false);
+  // WhatsApp and Signal groups: links come only from the session-checked API, never from the page HTML.
+  const [communityGroups, setCommunityGroups] = useState<{ userId: string | null; groups: CommunityGroupLink[] }>({
+    userId: null,
+    groups: [],
+  });
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,6 +54,27 @@ export default function SiteAuthNav() {
         setIsSiteAdmin(res.ok);
       } catch {
         if (!controller.signal.aborted) setIsSiteAdmin(false);
+      }
+    })();
+    return () => controller.abort();
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const controller = new AbortController();
+    const userId = user.id;
+    (async () => {
+      try {
+        const res = await fetch('/api/me/community-groups', {
+          credentials: 'include',
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+        const data = (await res.json()) as { groups?: CommunityGroupLink[] };
+        const groups = res.ok && Array.isArray(data.groups) ? data.groups : [];
+        setCommunityGroups({ userId, groups });
+      } catch {
+        if (!controller.signal.aborted) setCommunityGroups({ userId, groups: [] });
       }
     })();
     return () => controller.abort();
@@ -145,6 +173,7 @@ export default function SiteAuthNav() {
   const initials = avatarInitials(user.displayName, user.username);
   const profileHref = govhubUrl(`/profile/${encodeURIComponent(user.username)}/`);
   const welcomeLinks = welcomeState.userId === user.id ? welcomeState.links : [];
+  const groupLinks = communityGroups.userId === user.id ? communityGroups.groups : [];
   const welcomeHref =
     welcomeLinks.find((welcome) => welcome.variant === 'coordinator' && !welcome.is_default)
       ?.link_url ??
@@ -214,6 +243,29 @@ export default function SiteAuthNav() {
               Profile
             </a>
           </li>
+          {groupLinks.length > 0 ? (
+            <>
+              <li role="none" className="border-t border-slate-800 px-4 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                Community chat
+              </li>
+              {groupLinks.map((g) => (
+                <li role="none" key={g.key}>
+                  <a
+                    role="menuitem"
+                    href={g.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    title={g.name}
+                    className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {g.label} group ↗
+                  </a>
+                </li>
+              ))}
+              <li role="none" className="border-b border-slate-800 pb-1" />
+            </>
+          ) : null}
           <li role="none">
             <a
               role="menuitem"

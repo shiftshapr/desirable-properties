@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { pageOpenGraph } from '@/lib/site-metadata';
 import Link from 'next/link';
 import localData from '@/data/desirable-properties.json';
+import CommunityGroups from '@/components/community/CommunityGroups';
 import ImproveExplorer from '@/components/improve/ImproveExplorer';
 import type { ImproveDp, SeatSummary } from '@/components/improve/improve-shared';
 import { IMPROVE_HERO, IMPROVE_STATS, LOOKING_TO_V2, PRIORITIES_V1_1, type ImprovePriority } from '@/data/improve-priorities';
@@ -199,6 +200,12 @@ export default async function ImprovePage({ searchParams }: PageProps) {
           <ImproveExplorer dps={dps} initialDp={initialDp} />
         </div>
       </section>
+
+      <div className="bg-slate-950">
+        <div className="mx-auto max-w-6xl px-4 pb-14 sm:px-6">
+          <CommunityGroups returnTo="/improve#community-groups" heading="Community chat" />
+        </div>
+      </div>
     </main>
   );
 }
