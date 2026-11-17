@@ -19,6 +19,13 @@ type Props = {
   adoptDraft?: { key: number; text: string } | null;
   onHermesReply?: (note: WorkgroupAskNote) => void;
   onOpenHermesInstructions?: () => void;
+  /** Show the Ask Deepi / AI assist controls (default true). The session chat turns them off. */
+  aiAssist?: boolean;
+  /** Textarea id, label and placeholder, for chats other than Community Chat. */
+  inputId?: string;
+  inputLabel?: string;
+  placeholder?: string;
+  signedOutNotice?: string;
 };
 
 export default function CommunityChatComposer({
@@ -34,6 +41,11 @@ export default function CommunityChatComposer({
   adoptDraft,
   onHermesReply,
   onOpenHermesInstructions,
+  aiAssist = true,
+  inputId = 'community-chat-body',
+  inputLabel = 'Message Community Chat',
+  placeholder = DP_COMMUNITY_AI_ERRORS.communityChatPlaceholder,
+  signedOutNotice = 'Sign in to post in this Community Chat.',
 }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [body, setBody] = useState('');
@@ -58,7 +70,7 @@ export default function CommunityChatComposer({
   if (!signedIn) {
     return (
       <div className="rounded-lg border border-slate-800 bg-slate-950/50 px-4 py-3 text-sm text-slate-400">
-        Sign in to post in this Community Chat.
+        {signedOutNotice}
       </div>
     );
   }
@@ -76,33 +88,35 @@ export default function CommunityChatComposer({
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="relative">
-        <label htmlFor="community-chat-body" className="sr-only">
-          Message Community Chat
+        <label htmlFor={inputId} className="sr-only">
+          {inputLabel}
         </label>
         <textarea
           ref={textareaRef}
-          id="community-chat-body"
+          id={inputId}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={3}
           maxLength={8000}
-          placeholder={DP_COMMUNITY_AI_ERRORS.communityChatPlaceholder}
-          className="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 pb-10 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none"
+          placeholder={placeholder}
+          className={`w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 ${aiAssist ? 'pb-10' : ''} text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-600 focus:outline-none`}
           disabled={busy}
         />
-        <WorkgroupChatAiAssist
-          textareaRef={textareaRef}
-          value={body}
-          onValueChange={setBody}
-          workgroupSlug="community"
-          workgroupName={communityTitle}
-          dpId={dpId}
-          recentMessages={recentMessages}
-          recentAskNotes={recentAskNotes}
-          disabled={busy}
-          onHermesReply={onHermesReply}
-          onOpenHermesInstructions={onOpenHermesInstructions}
-        />
+        {aiAssist ? (
+          <WorkgroupChatAiAssist
+            textareaRef={textareaRef}
+            value={body}
+            onValueChange={setBody}
+            workgroupSlug="community"
+            workgroupName={communityTitle}
+            dpId={dpId}
+            recentMessages={recentMessages}
+            recentAskNotes={recentAskNotes}
+            disabled={busy}
+            onHermesReply={onHermesReply}
+            onOpenHermesInstructions={onOpenHermesInstructions}
+          />
+        ) : null}
       </div>
       <div className="flex justify-end">
         <button
