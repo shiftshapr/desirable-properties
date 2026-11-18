@@ -7,6 +7,7 @@ import DeclineReasons from '@/components/sessions/DeclineReasons';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
+import SessionChat from '@/components/sessions/SessionChat';
 import SessionSummary from '@/components/sessions/SessionSummary';
 import SessionTranscript from '@/components/sessions/SessionTranscript';
 import StillToDecide from '@/components/sessions/StillToDecide';
@@ -119,6 +120,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#phase" className={linkClass}>Where this session is</a>
         <a href="#draft" className={linkClass}>Draft for review</a>
+        <a href="#session-chat" className={linkClass}>Session chat</a>
         <a href="#summary" className={linkClass}>Summary</a>
         <a href="#open-questions" className={linkClass}>Open questions</a>
         <a href="#declines" className={linkClass}>Why proposals were declined</a>
@@ -142,6 +144,9 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         ) : (
           <DraftForReview visible={false} opensLabel="Tuesday 17 November at 7:00 AM Pacific" />
         )}
+
+        {/* Signed-in only; not time-gated and not behind the listening-workspace flag. */}
+        <SessionChat slug={SESSION.slug} pagePath={META_GOV_EVENT_PATH} />
 
         <SessionSummary turns={turns} />
 

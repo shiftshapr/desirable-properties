@@ -181,6 +181,8 @@ export type UpcomingEventEntry = {
   seriesSlug?: string | null;
   seriesTitle?: string | null;
   seriesHref?: string | null;
+  /** Community sessions with their own page (notes, draft for review, chat). */
+  sessionPageUrl?: string | null;
 };
 
 function parseSeriesType(raw: unknown): EventSeriesType {
@@ -930,8 +932,11 @@ function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
   return DP_ROUNDUP_EVENTS.filter(event => (new Date(event.endsAt) <= now) === past).map((event, index) => ({
     id: `dp-roundup-${event.date}`, sessionNumber: index + 1, slug: event.date,
     title: event.title, seriesType: event.kind === 'roundup' ? 'series' : 'single',
-    href: event.recordingHref ?? event.lumaUrl, detailHref: event.recordingHref ?? event.href, external: !event.recordingHref,
+    href: event.recordingHref ?? event.pageHref ?? event.lumaUrl,
+    detailHref: event.recordingHref ?? event.pageHref ?? event.href,
+    external: !event.recordingHref && !event.pageHref,
     ...(event.recordingHref ? { recordingUrl: event.recordingHref } : {}),
+    ...(event.pageHref ? { sessionPageUrl: event.pageHref } : {}),
     startsAt: event.startsAt, dateLabel: `${roundupDateLabel(event.startsAt)} · ${gatheringTimeLabel(event, 'short')}`,
     seriesId: 'dp-roundups-2026', seriesSlug: 'dp-roundups',
     seriesTitle: event.launch ? 'Desirable Properties Version 1.0' : 'Meta-Layer Monday', seriesHref: '/roundups',
@@ -941,7 +946,7 @@ function roundupEventEntries(now: Date, past: boolean): UpcomingEventEntry[] {
 /** Past sessions, sorted by most recent session start. */
 export async function listPastEventEntries(now = new Date()): Promise<UpcomingEventEntry[]> {
   const pool = await ensureDpSchema();
-  if (!pool) return roundupEventEntries(now, true);
+  if (!pool) return roundupEventEntries(now, true).reverse();
   await ensureEventSeeds();
 
   const res = await pool.query(

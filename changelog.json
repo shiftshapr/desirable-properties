@@ -4,6 +4,39 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "current-session-link",
+      "date": "2026-11-18",
+      "status": "open",
+      "title": "Current session: one link in the menu and on the front page",
+      "summary": "The current community session is now easy to find. A new helper (src/lib/current-session.ts) picks the next community session that has not ended, otherwise the most recent one; today that is the 16 November DP Meta-Governance session page (/events/meta-governance-2026-11-16). The Events menu always starts with \"Current session\" (also shown in the mobile menu without expanding Events) and ends with \"All events\". The front page has a short panel under the hero with the session title, date, 10:00 a.m. Pacific, what is on the page (notes, the draft for review and the session chat), a \"Go to the session page\" button and a \"Session chat\" link. /events shows the current session at the top and marks its card. /roundups/2026-11-16 links to the session page and to /events instead of the DP Roundups pages. /roundups says Monday sessions now start at 10:00 a.m. Pacific, that the new cadence is being worked out, and links to the current session; \"The Monday meeting\" agenda is labelled as the V1 DP Roundup format (September 28–November 9, from 11:30 a.m.). To announce the next session, add one 'gathering' entry to src/lib/dp-roundups.ts.",
+      "changes": [
+        "challenge-site/src/lib/current-session.ts: currentSession(), the single source for the current session",
+        "challenge-site/src/lib/dp-roundups.ts: pageHref, chatAnchor and pageContents on community sessions; set for 16 November",
+        "challenge-site/src/lib/siteNav.ts, src/app/layout.tsx, src/components/SiteHeaderNav.tsx: Events menu always has \"Current session\" first and \"All events\" last; featured item visible in the collapsed mobile group",
+        "challenge-site/src/components/CurrentSessionHomePanel.tsx, src/app/page.tsx: front-page panel",
+        "challenge-site/src/app/events/page.tsx, src/lib/dp-event-series-store.ts: current-session callout and card marker; community sessions with a page link to it instead of Luma",
+        "challenge-site/src/app/roundups/[date]/page.tsx: community sessions link to their session page and /events; past sessions drop the RSVP and Zoom access text; roundup and launch dates unchanged",
+        "challenge-site/src/app/roundups/page.tsx: 10:00 a.m. note with the current-session link; agenda labelled as the V1 DP Roundup format"
+      ]
+    },
+    {
+      "id": "session-chat-meta-governance-2026-11-16",
+      "date": "2026-11-17",
+      "status": "open",
+      "title": "Session chat on the 16 November listening-session page",
+      "summary": "The DP Meta-Governance session page (/events/meta-governance-2026-11-16) has a \"Session chat\": one chat thread for this session occurrence, on the page itself, below the draft for review and linked from \"On this page\". Reading and posting both need sign-in: signed out, the page shows only \"Sign in to join the session chat\" with the usual sign-in link, and the chat API refuses the request (401) without returning any message. Any signed-in account can post; no workgroup membership is needed. Messages show the author's display name, never an email address, and authors can edit their own messages. New messages appear every few seconds. The chat stays open after the meeting. It has no Deepi/AI assist and no file attachments. It reuses the Community Chat message list, composer and message storage, in its own thread (session:meta-governance-2026-11-16), separate from workgroup chats and Community Chat threads; no new table. It is not part of the staging-only listening workspace and does not depend on its flag. Posts are limited to 6 a minute and 60 an hour per account, 8,000 characters each.",
+      "changes": [
+        "challenge-site/src/components/sessions/SessionChat.tsx: \"Session chat\" section; sign-in prompt when signed out, the chat when signed in",
+        "challenge-site/src/components/sessions/SessionChatPanel.tsx: messages, 5-second polling while the tab is visible, composer and own-message edits (reuses CommunityChatMessageItem and CommunityChatComposer)",
+        "challenge-site/src/components/community/CommunityChatComposer.tsx: optional props to turn off the AI assist and set the input id, label, placeholder and signed-out text (Community Chat unchanged)",
+        "challenge-site/src/app/api/sessions/[slug]/chat/route.ts and [messageId]/route.ts: read, post and edit; sign-in checked on the server",
+        "challenge-site/src/lib/sessions/session-chat-core.ts and session-chat.server.ts: thread key per session, sign-in, display names, same-origin, size and rate limits",
+        "challenge-site/src/lib/community-chat-store.ts: listLatestCommunityChatMessages() (latest page of a thread)",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: the chat on the page and in \"On this page\"",
+        "challenge-site/scripts/session-chat.test.mjs (npm run test:session-chat): signed-out 401 with no messages, signed-in read and post, thread isolation, no emails, limits"
+      ]
+    },
+    {
       "id": "acknowledgements-requests-in-support",
       "date": "2026-11-17",
       "status": "open",

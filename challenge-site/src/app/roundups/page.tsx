@@ -4,6 +4,7 @@ import { DP_ROUNDUP_EVENTS, ROUNDUP_AGENDA, ROUNDUP_TIME_LABEL, gatheringTimeLab
 import { coEditorStatus, SEATS_PER_DP } from '@/lib/co-editor-status.server';
 import { DP_WORKGROUP_SLUGS } from '@/lib/dp-workgroup-slugs';
 import V1PhaseText from '@/components/v1/V1PhaseText';
+import { currentSession } from '@/lib/current-session';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 
 export default async function RoundupsPage() {
   const next = nextRoundup();
+  const session = currentSession();
   const status = await coEditorStatus().catch(() => null);
   return <main className="mx-auto max-w-5xl px-4 py-12 text-slate-300 sm:px-6">
     <p className="text-sm font-medium uppercase tracking-widest text-cyan-400">Meta-Layer Monday</p>
@@ -22,6 +24,7 @@ export default async function RoundupsPage() {
       during={<>The DP Roundups helped bring the Desirable Properties to Version 1.0, which is now finished. Each week, the community filled co-editor seats, moved pending proposals to a decision, and worked on the chapters together. Version 1.1 comes next: <Link href="/participate" className="text-cyan-300 underline">see how to contribute</Link>.</>}
     /></p>
     <p className="mt-4">Mondays, September 28–November 9, 2026. {ROUNDUP_TIME_LABEL}. We meet on Zoom with workgroup breakouts. Daveed is the series producer.</p>
+    <p className="mt-6 rounded-xl border border-cyan-800 bg-cyan-950/30 px-5 py-4">Monday sessions now start at 10:00 a.m. Pacific. The new cadence is being worked out. The current session: <Link href={session.href} className="font-semibold text-cyan-300 underline">{session.title}</Link> ({session.dateLabel}).</p>
     {next ? <section className="mt-8 rounded-xl border border-cyan-800 bg-cyan-950/30 p-6">
       <h2 className="text-sm uppercase tracking-widest text-cyan-300">Next gathering</h2>
       <Link href={next.href} className="mt-2 block text-2xl font-semibold text-white underline decoration-cyan-600 underline-offset-4">{next.title}</Link>
@@ -52,7 +55,7 @@ export default async function RoundupsPage() {
       <div><dt className="font-semibold text-cyan-300">Join</dt><dd className="mt-2">Choose a workgroup and learn where your experience can help. No preparation or previous attendance is required.</dd></div>
       <div><dt className="font-semibold text-cyan-300">Host</dt><dd className="mt-2">Offer to facilitate one breakout. Tell Daveed the date, workgroup, and a one-sentence objective through the invitation or at the meeting.</dd></div>
     </dl></section>
-    <section className="mt-12"><h2 className="text-2xl font-bold text-white">The Monday meeting</h2><p className="mt-3">All times Pacific. The meeting lasts 90 minutes, including 75 minutes for the DP Roundup.</p><div className="mt-5 overflow-x-auto"><table className="w-full text-left"><caption className="sr-only">Weekly Monday agenda in Pacific Time</caption><thead><tr className="border-b border-slate-700 text-cyan-300"><th scope="col" className="p-3">Time</th><th scope="col" className="p-3">Activity</th></tr></thead><tbody>{ROUNDUP_AGENDA.map(([time, activity]) => <tr key={time} className="border-b border-slate-800"><td className="whitespace-nowrap p-3">{time}</td><td className="p-3">{activity}</td></tr>)}</tbody></table></div></section>
+    <section className="mt-12"><h2 className="text-2xl font-bold text-white">The Monday meeting (V1 DP Roundups)</h2><p className="mt-3">This was the format of the V1 DP Roundups, September 28–November 9, 2026, from 11:30 a.m. Pacific. All times Pacific. The meeting lasted 90 minutes, including 75 minutes for the DP Roundup.</p><div className="mt-5 overflow-x-auto"><table className="w-full text-left"><caption className="sr-only">V1 DP Roundup agenda in Pacific Time, September 28–November 9, 2026</caption><thead><tr className="border-b border-slate-700 text-cyan-300"><th scope="col" className="p-3">Time</th><th scope="col" className="p-3">Activity</th></tr></thead><tbody>{ROUNDUP_AGENDA.map(([time, activity]) => <tr key={time} className="border-b border-slate-800"><td className="whitespace-nowrap p-3">{time}</td><td className="p-3">{activity}</td></tr>)}</tbody></table></div></section>
     <section className="mt-12"><h2 className="text-2xl font-bold text-white">Breakouts help people get started and work together</h2>
       <p className="mt-3">Co-editors use breakouts to work through their DP&apos;s pending proposals on the Review tab, with members weighing in. The groups that meet depend on who attends. Choose a room when we announce the available hosts and topics. The main room stays available for orientation and help finding a first task.</p>
       <p className="mt-3">A 40-minute breakout can use five minutes for introductions, ten for direction and contribution tools, twenty for working together or organizing a task, and five for follow-through. New groups can spend more time establishing direction and working relationships.</p>
