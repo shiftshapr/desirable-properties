@@ -36,6 +36,12 @@ type SessionInput = {
   details?: string;
   /** Site page with the recording, once there is one (replaces the Luma RSVP after the event). */
   recordingHref?: string;
+  /** Community sessions: the session's own page (notes, draft for review, chat). See src/lib/current-session.ts. */
+  pageHref?: string;
+  /** Anchor on the session page for its chat, when the page has one. */
+  chatAnchor?: string;
+  /** One line on what the session page holds. */
+  pageContents?: string;
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
@@ -63,6 +69,8 @@ const sessions: readonly SessionInput[] = [
     lumaUrl: 'https://luma.com/6bqcfew2',
     startsAt: '2026-11-16T10:00:00-08:00', endsAt: '2026-11-16T11:30:00-08:00',
     timeLabel: META_GOVERNANCE_TIME_LABEL, clockShort: META_GOVERNANCE_CLOCK_SHORT,
+    pageHref: '/events/meta-governance-2026-11-16', chatAnchor: 'session-chat',
+    pageContents: 'Notes, the draft for review and the session chat.',
     details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
   },
 ];
@@ -84,6 +92,9 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     lumaUrl: s.lumaUrl,
     details: s.details ?? null,
     recordingHref: s.recordingHref ?? null,
+    pageHref: s.pageHref ?? null,
+    chatAnchor: s.chatAnchor ?? null,
+    pageContents: s.pageContents ?? null,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
     startsAt: s.startsAt ?? `${s.date}T11:30:00${pacificOffset(s.date)}`,
     endsAt: s.endsAt ?? `${s.date}T13:00:00${pacificOffset(s.date)}`,

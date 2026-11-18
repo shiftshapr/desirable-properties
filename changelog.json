@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "current-session-link",
+      "date": "2026-11-18",
+      "status": "open",
+      "title": "Current session: one link in the menu and on the front page",
+      "summary": "The current community session is now easy to find. A new helper (src/lib/current-session.ts) picks the next community session that has not ended, otherwise the most recent one; today that is the 16 November DP Meta-Governance session page (/events/meta-governance-2026-11-16). The Events menu always starts with \"Current session\" (also shown in the mobile menu without expanding Events) and ends with \"All events\". The front page has a short panel under the hero with the session title, date, 10:00 a.m. Pacific, what is on the page (notes, the draft for review and the session chat), a \"Go to the session page\" button and a \"Session chat\" link. /events shows the current session at the top and marks its card. /roundups/2026-11-16 links to the session page and to /events instead of the DP Roundups pages. /roundups says Monday sessions now start at 10:00 a.m. Pacific, that the new cadence is being worked out, and links to the current session; \"The Monday meeting\" agenda is labelled as the V1 DP Roundup format (September 28–November 9, from 11:30 a.m.). To announce the next session, add one 'gathering' entry to src/lib/dp-roundups.ts.",
+      "changes": [
+        "challenge-site/src/lib/current-session.ts: currentSession(), the single source for the current session",
+        "challenge-site/src/lib/dp-roundups.ts: pageHref, chatAnchor and pageContents on community sessions; set for 16 November",
+        "challenge-site/src/lib/siteNav.ts, src/app/layout.tsx, src/components/SiteHeaderNav.tsx: Events menu always has \"Current session\" first and \"All events\" last; featured item visible in the collapsed mobile group",
+        "challenge-site/src/components/CurrentSessionHomePanel.tsx, src/app/page.tsx: front-page panel",
+        "challenge-site/src/app/events/page.tsx, src/lib/dp-event-series-store.ts: current-session callout and card marker; community sessions with a page link to it instead of Luma",
+        "challenge-site/src/app/roundups/[date]/page.tsx: community sessions link to their session page and /events; past sessions drop the RSVP and Zoom access text; roundup and launch dates unchanged",
+        "challenge-site/src/app/roundups/page.tsx: 10:00 a.m. note with the current-session link; agenda labelled as the V1 DP Roundup format"
+      ]
+    },
+    {
       "id": "session-chat-meta-governance-2026-11-16",
       "date": "2026-11-17",
       "status": "open",
