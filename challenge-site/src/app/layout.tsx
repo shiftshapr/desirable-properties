@@ -8,6 +8,7 @@ import { refreshSessionFromCanopi } from '@/lib/auth-profile';
 import { readSession, sessionToAuthUser, setSessionCookies } from '@/lib/auth-session';
 import { cookies } from 'next/headers';
 import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
+import { currentSession } from '@/lib/current-session';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
 import { landingPadsEnabled } from '@/lib/landing-pads/flag';
 import { SHARE_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/site-metadata';
@@ -79,7 +80,7 @@ export default async function RootLayout({
       label: upcomingEventNavLabel(event.dateLabel, event.title),
       external: event.external,
     })),
-    { landingPads: landingPadsEnabled() },
+    { landingPads: landingPadsEnabled(), currentSessionHref: currentSession().href },
   );
 
   return (

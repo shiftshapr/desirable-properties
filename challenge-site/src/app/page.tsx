@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ActivityToastHost from '@/components/ActivityToastHost';
 import ChallengeActivity from '@/components/ChallengeActivity';
 import DiscussPatchLink from '@/components/DiscussPatchLink';
+import CurrentSessionHomePanel from '@/components/CurrentSessionHomePanel';
 import DPCardGrid from '@/components/DPCardGrid';
 import LayerHero from '@/components/LayerHero';
 import StartHereHomePanel from '@/components/StartHereHomePanel';
@@ -68,6 +69,9 @@ export default async function Home() {
         </div>
 
         <LayerHero workgroupHref={WORKGROUPS_LIST_HREF} />
+
+        {/* The current community session (src/lib/current-session.ts). */}
+        <CurrentSessionHomePanel now={now} />
 
         {/* Version 1.0 launch: the 57-second short (click to play, captions burned in) and the launch event page. */}
         <section aria-labelledby="v1-launch-short-heading" className="border-b border-slate-800 bg-slate-900/60">

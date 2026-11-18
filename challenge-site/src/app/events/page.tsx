@@ -6,6 +6,7 @@ import {
   listUpcomingEventEntries,
   type UpcomingEventEntry,
 } from '@/lib/dp-event-series-store';
+import { currentSession } from '@/lib/current-session';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,11 +20,13 @@ const cardLinkClass =
 const actionLinkClass =
   'mt-auto inline-block pt-4 text-sm text-cyan-300 no-underline transition-colors hover:text-cyan-200 focus-visible:text-cyan-200';
 
-function EventRow({ event }: { event: UpcomingEventEntry }) {
+function EventRow({ event, current = false }: { event: UpcomingEventEntry; current?: boolean }) {
   const kind = event.seriesType === 'single' ? 'Event' : 'Workshop';
   const detailHref = event.detailHref;
   const cardClassName =
-    'flex h-full flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 transition hover:border-cyan-800/50';
+    `flex h-full flex-col overflow-hidden rounded-xl border bg-slate-900/50 transition hover:border-cyan-800/50 ${
+      current ? 'border-cyan-500/70' : 'border-slate-800'
+    }`;
 
   return (
     <li className="flex">
@@ -42,6 +45,9 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
           </Link>
         ) : null}
         <div className="flex flex-1 flex-col p-6">
+          {current ? (
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Current session</p>
+          ) : null}
           <p className="text-sm font-medium">
             <Link href={detailHref} className={`text-cyan-400 ${cardLinkClass}`}>
               {event.dateLabel}
@@ -79,7 +85,12 @@ function EventRow({ event }: { event: UpcomingEventEntry }) {
               RSVP on Luma →
             </a>
           ) : null}
-          {!event.recordingUrl && !event.external && event.seriesHref ? (
+          {!event.recordingUrl && event.sessionPageUrl ? (
+            <Link href={event.sessionPageUrl} className={actionLinkClass}>
+              Go to the session page →
+            </Link>
+          ) : null}
+          {!event.recordingUrl && !event.sessionPageUrl && !event.external && event.seriesHref ? (
             <Link href={event.seriesHref} className={actionLinkClass}>
               View series →
             </Link>
@@ -95,6 +106,8 @@ export default async function EventsIndexPage() {
     listUpcomingEventEntries(),
     listPastEventEntries(),
   ]);
+  const session = currentSession();
+  const isCurrent = (event: UpcomingEventEntry) => event.detailHref === session.href;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -104,14 +117,32 @@ export default async function EventsIndexPage() {
         Individual sessions sorted by date. Open a session for its details and participation instructions.
       </p>
 
-      <p className="mt-4"><Link href="/roundups" className="text-cyan-300 underline">DP Roundups: weekly workgroups and the November 13 V1 launch</Link></p>
+      <section aria-labelledby="events-current-heading" className="mt-8 rounded-xl border border-cyan-500/50 bg-cyan-950/30 p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+          Current session · {session.dateLabel} · {session.startLabel}
+        </p>
+        <h2 id="events-current-heading" className="mt-2 text-xl font-semibold text-white">
+          <Link href={session.href} className="text-white no-underline hover:text-cyan-300">
+            {session.title}
+          </Link>
+        </h2>
+        {session.pageContents ? <p className="mt-2 text-sm text-slate-300">{session.pageContents}</p> : null}
+        <Link
+          href={session.href}
+          className="mt-4 inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 text-sm font-semibold text-slate-950 no-underline hover:bg-cyan-200"
+        >
+          Go to the session page →
+        </Link>
+      </section>
+
+      <p className="mt-6"><Link href="/roundups" className="text-cyan-300 underline">V1 DP Roundups (September 28–November 9) and the November 13 V1 launch</Link></p>
       <section className="mt-10" aria-labelledby="events-upcoming-heading">
         <h2 id="events-upcoming-heading" className="text-2xl font-semibold text-white">
           Upcoming <span className="text-slate-500">({upcoming.length})</span>
         </h2>
         <ul className="mt-6 grid gap-6 sm:grid-cols-2">
           {upcoming.map((event) => (
-            <EventRow key={event.id} event={event} />
+            <EventRow key={event.id} event={event} current={isCurrent(event)} />
           ))}
         </ul>
         {upcoming.length === 0 ? (
@@ -125,7 +156,7 @@ export default async function EventsIndexPage() {
         </h2>
         <ul className="mt-6 grid gap-6 sm:grid-cols-2">
           {past.map((event) => (
-            <EventRow key={event.id} event={event} />
+            <EventRow key={event.id} event={event} current={isCurrent(event)} />
           ))}
         </ul>
         {past.length === 0 ? (

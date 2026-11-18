@@ -218,9 +218,10 @@ function MobileNavGroup({
           </svg>
         </button>
       </div>
-      {expanded ? (
+      {/* Featured children (Current session) stay visible while the group is collapsed. */}
+      {expanded || item.children?.some((child) => child.featured) ? (
         <ul className="mb-2 ml-3 border-l border-slate-800 pl-3">
-          {(item.children ?? []).map((child) => (
+          {(item.children ?? []).filter((child) => expanded || child.featured).map((child) => (
             <li key={child.href ?? child.label}>
               <NavLink
                 href={child.href ?? '#'}

@@ -14,9 +14,12 @@ export type SiteNavLink = {
   discussPatchModal?: boolean;
   /** Leftmost onboarding item: border highlight in the header. */
   highlight?: boolean;
+  /** Dropdown child shown on mobile even while its group is collapsed (Current session). */
+  featured?: boolean;
 };
 
 export const EVENTS_INDEX_HREF = '/events';
+export const CURRENT_SESSION_NAV_LABEL = 'Current session';
 
 export type UpcomingEventNavItem = {
   href: string;
@@ -33,24 +36,27 @@ export function upcomingEventNavLabel(_dateLabel: string, title: string): string
 export const LANDING_PADS_NAV_LINK: SiteNavLink = { href: '/pad', label: 'Landing pads' };
 
 /**
- * Insert Events nav after About when upcoming entries exist. `landingPads` (from the server-side
- * landingPadsEnabled()) appends the Landing pads entry to the About menu; it is off by default.
+ * Insert Events nav after About. Its menu always starts with "Current session" (`currentSessionHref`, from
+ * currentSession() in src/lib/current-session.ts), then any upcoming entries, then "All events".
+ * `landingPads` (from the server-side landingPadsEnabled()) appends the Landing pads entry to the About
+ * menu; it is off by default.
  */
 export function buildSiteNavLinks(
   upcomingEvents: UpcomingEventNavItem[] = [],
-  options: { landingPads?: boolean } = {},
+  options: { landingPads?: boolean; currentSessionHref?: string } = {},
 ): SiteNavLink[] {
-  const eventsNav: SiteNavLink = upcomingEvents.length
-    ? {
-        label: 'Events',
-        href: EVENTS_INDEX_HREF,
-        children: upcomingEvents.map((event) => ({
-          href: event.href,
-          label: event.label,
-          external: event.external,
-        })),
-      }
-    : { label: 'Events', href: EVENTS_INDEX_HREF };
+  const current = options.currentSessionHref;
+  const eventsNav: SiteNavLink = {
+    label: 'Events',
+    href: EVENTS_INDEX_HREF,
+    children: [
+      ...(current ? [{ href: current, label: CURRENT_SESSION_NAV_LABEL, featured: true }] : []),
+      ...upcomingEvents
+        .filter((event) => event.href !== current)
+        .map((event) => ({ href: event.href, label: event.label, external: event.external })),
+      { href: EVENTS_INDEX_HREF, label: 'All events' },
+    ],
+  };
 
   const links = SITE_NAV_LINKS.map((link) =>
     options.landingPads && link.label === 'About' && link.children
