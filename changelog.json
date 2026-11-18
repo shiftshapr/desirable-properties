@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v1-launch-laura-del-campo",
+      "date": "2026-11-18",
+      "status": "open",
+      "title": "V1 launch page: Laura Del Campo named correctly",
+      "summary": "The V1 launch event page (/events/v1-launch) listed one speaker as \"Laura Sanchez\". She is Laura Del Campo, founder of Our Ascent Live and a DP co-editor. Her name is corrected in the speaker list, the voices section, the chat links, the recap transcript and the published transcript file. No other copy changed.",
+      "changes": [
+        "challenge-site/src/app/events/v1-launch/page.tsx: speaker list, voices and chat-link credit",
+        "challenge-site/src/data/v1-launch-transcript.json: section title and speaker labels",
+        "challenge-site/public/events/v1-launch/transcript.vtt: speaker labels"
+      ]
+    },
+    {
       "id": "current-session-link",
       "date": "2026-11-18",
       "status": "open",
