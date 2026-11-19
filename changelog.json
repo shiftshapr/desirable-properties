@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "meta-governance-2026-11-16-ballot",
+      "date": "2026-11-19",
+      "status": "open",
+      "title": "16 Nov listening session: the ballot opens on the session page",
+      "summary": "The 15-question ballot from the 16 November DP Meta-Governance listening session is on its session page (/events/meta-governance-2026-11-16#vote). Anyone signed in to desirableproperties.org can vote, one vote per question per account, and change their votes until Sunday 22 November, 8:00 PM PT (23 Nov 04:00 UTC). Plurality; Yes/No passes with more Yes than No; Abstain is counted but does not decide; no quorum. No one's choices are shown; totals are published on the page after the close.",
+      "changes": [
+        "challenge-site/src/data/sessions/2026-11-16-ballot.ts: questions, options, rules and voting window",
+        "challenge-site/src/lib/ballots/: ballot handlers, count rules and storage (dp_ballot_vote, dp_ballot)",
+        "challenge-site/src/app/api/ballots/[slug]/route.ts: read status and own votes, cast or change votes",
+        "challenge-site/src/components/sessions/SessionBallot.tsx, SessionBallotPanel.tsx: the Vote section",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: Vote section and link",
+        "challenge-site/scripts/ballot-admin.ts: status, results, publish, emergency stop"
+      ]
+    },
+    {
       "id": "v1-launch-laura-del-campo",
       "date": "2026-11-18",
       "status": "open",

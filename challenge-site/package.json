@@ -35,6 +35,7 @@
     "test:astra": "node --test scripts/astra-highlights.test.mjs",
     "test:ack-request": "node --experimental-strip-types --test scripts/ack-request.test.mjs",
     "test:session-chat": "node --experimental-strip-types --test scripts/session-chat.test.mjs",
+    "test:session-ballot": "node --experimental-strip-types --test scripts/session-ballot.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",
     "import:astra": "node scripts/import-astra-release.mjs",
     "generate:astra-pdf": "python3 ../scripts/generate-astra-book-pdf.py"
