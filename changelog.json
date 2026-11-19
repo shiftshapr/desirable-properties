@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "meta-governance-2026-11-16-no-screening",
+      "date": "2026-11-19",
+      "status": "open",
+      "title": "16 Nov listening session: no council screening this time",
+      "summary": "There is no council yet, so the 16 November ballot went straight to voting. The session page now records Council screening as skipped this time, with Ready for voting and Voting open on 19 November, and drops the \"requires council screening\" labels. Q4's consent option is reworded in plain words; its meaning is unchanged.",
+      "changes": [
+        "challenge-site/src/data/sessions/2026-11-16.ts: phase entries for council screening (skipped), ready for voting, voting open",
+        "challenge-site/src/data/sessions/2026-11-16-draft.json: draft header and process-text intro",
+        "challenge-site/src/components/sessions/ProcessTextDraft.tsx, DraftBallot.tsx: labels",
+        "challenge-site/src/data/sessions/2026-11-16-ballot.ts: Q4(e) wording"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-ballot",
       "date": "2026-11-19",
       "status": "open",
