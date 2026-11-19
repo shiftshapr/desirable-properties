@@ -1,5 +1,5 @@
 /**
- * Session ballot tables (DP Postgres). CREATE IF NOT EXISTS, run on the first vote (and by scripts/ballot-admin.ts),
+ * Session ballot tables (DP Postgres). CREATE IF NOT EXISTS, run on the first vote (and by scripts/ballot-admin.mjs),
  * the same way the site creates its other tables (dp-db.ts ensureDpSchema). Page reads never run DDL.
  *
  * dp_ballot       optional, one row per ballot, written only by ballot-admin: status 'closed' stops voting before

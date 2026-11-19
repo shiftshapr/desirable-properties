@@ -15,7 +15,7 @@
         "challenge-site/src/app/api/ballots/[slug]/route.ts: read status and own votes, cast or change votes",
         "challenge-site/src/components/sessions/SessionBallot.tsx, SessionBallotPanel.tsx: the Vote section",
         "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: Vote section and link",
-        "challenge-site/scripts/ballot-admin.ts: status, results, publish, emergency stop"
+        "challenge-site/scripts/ballot-admin.mjs: status, results, publish, emergency stop"
       ]
     },
     {
