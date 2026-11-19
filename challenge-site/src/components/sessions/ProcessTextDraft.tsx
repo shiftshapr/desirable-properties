@@ -8,7 +8,7 @@ export default function ProcessTextDraft({ text, turns }: { text: SessionDraft['
   return (
     <div id="draft-process-text" className="scroll-mt-24">
       <h3 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-white">
-        Corrected process text, for council screening <SessionLabel kind="Claude synthesis" />
+        Corrected process text, for community review <SessionLabel kind="Claude synthesis" />
       </h3>
       <p className="mt-3 text-base">
         <Inline text={text.intro} turns={turns} />
