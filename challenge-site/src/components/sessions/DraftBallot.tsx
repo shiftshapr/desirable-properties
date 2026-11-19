@@ -1,7 +1,7 @@
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import SessionLabel from './SessionLabel';
 
-/** Draft ballot questions. Not opened: council screening comes first. */
+/** Draft ballot questions as sent for review; the corrected ballot is in SessionBallot. */
 export default function DraftBallot({ ballot }: { ballot: SessionDraft['ballot'] }) {
   return (
     <div id="draft-ballot" className="scroll-mt-24">

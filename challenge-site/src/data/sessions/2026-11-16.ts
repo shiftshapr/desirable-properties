@@ -32,7 +32,25 @@ export const SESSION_2026_11_16: SessionOccurrence = {
       by: 'Clock (24 hours after opening)',
       at: '2026-11-18T15:00:00Z',
       scheduled: true,
-      note: 'Expiry of the clock does not mean approval. Corrections are reconciled before council screening.',
+      note: 'Expiry of the clock does not mean approval. Corrections were reconciled into the ballot.',
+    },
+    {
+      phase: 'Council screening',
+      by: 'Daveed Benjamin',
+      at: '2026-11-19T20:00:00Z',
+      note: 'Skipped this time: there is no council yet. Future ballots will be screened by the council.',
+    },
+    {
+      phase: 'Ready for voting',
+      by: 'Daveed Benjamin',
+      at: '2026-11-19T20:00:00Z',
+      note: 'Ballot corrected after the review window (15 questions).',
+    },
+    {
+      phase: 'Voting open',
+      by: 'Daveed Benjamin',
+      at: '2026-11-19T20:00:00Z',
+      note: 'Anyone signed in can vote, one vote per account. Closes Sunday 22 November, 8:00 PM PT (Monday 04:00 UTC).',
     },
   ],
 };

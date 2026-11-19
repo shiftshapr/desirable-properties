@@ -54,7 +54,7 @@ const QUESTIONS: BallotQuestion[] = [
       '60%',
       '67%',
       'Two tiers: 50% keeps the item open for review, 60% or more passes it',
-      'Consent-based, with consensus as the fallback and a route to revisit',
+      'Consent: an item passes unless someone raises a reasoned objection; if an objection cannot be resolved, seek full agreement; any decision can be reopened later',
     ]),
   },
   {

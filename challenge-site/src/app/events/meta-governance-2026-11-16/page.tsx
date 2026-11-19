@@ -12,6 +12,7 @@ import SessionChat from '@/components/sessions/SessionChat';
 import SessionSummary from '@/components/sessions/SessionSummary';
 import SessionTranscript from '@/components/sessions/SessionTranscript';
 import StillToDecide from '@/components/sessions/StillToDecide';
+import V1Promo from '@/components/v1/V1Promo';
 import { SESSION_2026_11_16 as SESSION } from '@/data/sessions/2026-11-16';
 import { BALLOT_2026_11_16 } from '@/data/sessions/2026-11-16-ballot';
 import draftData from '@/data/sessions/2026-11-16-draft.json';
@@ -128,6 +129,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#phase" className={linkClass}>Where this session is</a>
         {showBallot ? <a href="#vote" className={linkClass}>Vote</a> : null}
+        <a href="#watch-v1" className={linkClass}>Watch and share Version 1.0</a>
         <a href="#draft" className={linkClass}>Draft for review</a>
         <a href="#session-chat" className={linkClass}>Session chat</a>
         <a href="#summary" className={linkClass}>Summary</a>
@@ -144,6 +146,9 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} />
 
         <SessionBallot ballot={BALLOT_2026_11_16} staging={staging} />
+
+        {/* After the Vote on purpose: voting stays the page's main call to action. */}
+        <V1Promo />
 
         {visible ? (
           <DraftForReview
