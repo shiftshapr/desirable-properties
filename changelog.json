@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "dp-listening-experiment-2026-11-23-schedule",
+      "date": "2026-11-19",
+      "status": "open",
+      "title": "DP Listening Experiment: four Monday sessions on the schedule",
+      "summary": "The four DP Listening Experiment sessions (Mondays 23 Nov, 30 Nov, 7 Dec and 14 Dec 2026, 10:00 to 11:30 AM PT on Zoom) are on /events and each has a /roundups/<date> page with its \"This week\" focus, the shared description and an RSVP on Luma link (no Zoom link on the site). The current-session rule now keeps a session current while its ballot is open, so the menu and front-page Current session link stay on the 16 Nov session until voting closes on 23 Nov at 04:00 UTC (Sun 22 Nov, 8 PM PT); after that the next upcoming session, 23 Nov, becomes current.",
+      "changes": [
+        "challenge-site/src/lib/dp-roundups.ts: four listening-experiment gatherings with their Luma links and descriptions",
+        "challenge-site/src/lib/current-session.ts: a started session whose ballot (SESSION_BALLOTS closesAt) is still open stays current",
+        "challenge-site/scripts/current-session.test.mjs, scripts/ts-alias-hooks.mjs, package.json: test:current-session"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-watch-share-v1",
       "date": "2026-11-19",
       "status": "open",
