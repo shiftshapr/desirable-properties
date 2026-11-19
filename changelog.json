@@ -4,6 +4,19 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "meta-governance-2026-11-16-watch-share-v1",
+      "date": "2026-11-19",
+      "status": "open",
+      "title": "16 Nov listening session: watch and share Version 1.0",
+      "summary": "The session page now has a \"Watch and share Version 1.0\" section, placed after the Vote so voting stays the main call to action, with a link to it from the top. It plays the four-minute film and the teaser (click to play, from youtube-nocookie), links the full launch recording, links our LinkedIn, X, Instagram, TikTok and YouTube posts for resharing, and offers prefilled X, LinkedIn, WhatsApp and email links to https://desirableproperties.org/v1, plus Copy link and the phone's share sheet. No third-party scripts. A slot for the Voices video stays empty until it is public.",
+      "changes": [
+        "challenge-site/src/data/v1-promo.ts: videos, posts, share text and share-link builders",
+        "challenge-site/src/components/v1/V1Promo.tsx, V1PromoVideo.tsx, V1PromoShare.tsx: the reusable section",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx: section after the Vote and link in the page nav",
+        "challenge-site/scripts/v1-promo.test.mjs, package.json: test:v1-promo"
+      ]
+    },
+    {
       "id": "meta-governance-2026-11-16-no-screening",
       "date": "2026-11-19",
       "status": "open",
