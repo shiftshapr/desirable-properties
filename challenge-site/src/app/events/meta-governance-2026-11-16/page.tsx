@@ -7,11 +7,13 @@ import DeclineReasons from '@/components/sessions/DeclineReasons';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
+import SessionBallot from '@/components/sessions/SessionBallot';
 import SessionChat from '@/components/sessions/SessionChat';
 import SessionSummary from '@/components/sessions/SessionSummary';
 import SessionTranscript from '@/components/sessions/SessionTranscript';
 import StillToDecide from '@/components/sessions/StillToDecide';
 import { SESSION_2026_11_16 as SESSION } from '@/data/sessions/2026-11-16';
+import { BALLOT_2026_11_16 } from '@/data/sessions/2026-11-16-ballot';
 import draftData from '@/data/sessions/2026-11-16-draft.json';
 import transcript from '@/data/meta-governance-2026-11-16-transcript.json';
 import {
@@ -25,6 +27,8 @@ import {
   type MetaGovTurn,
 } from '@/lib/meta-governance-2026-11-16-event';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
+import { effectiveStatus } from '@/lib/ballots/ballot-core';
+import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { listeningWorkspaceEnabled } from '@/lib/listening/flag';
 import { isDraftVisible, pacificAndUtc, phaseRows, previewAllowed } from '@/lib/sessions/session-phases';
 import { SITE_NAME } from '@/lib/site-metadata';
@@ -68,6 +72,10 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
   const { rows } = phaseRows(SESSION, now);
   const visible = isDraftVisible(SESSION, now);
   const closes = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
+  // The Vote section shows from the ballot's opensAt (staging: always, as a review copy).
+  const staging = previewAllowed(host);
+  const ballotOverride = await getBallotOverride(BALLOT_2026_11_16.slug).catch(() => null);
+  const showBallot = staging || effectiveStatus(BALLOT_2026_11_16, ballotOverride, realNow) !== 'not_open';
 
   return (
     <>
@@ -119,6 +127,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
 
       <nav aria-label="On this page" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#phase" className={linkClass}>Where this session is</a>
+        {showBallot ? <a href="#vote" className={linkClass}>Vote</a> : null}
         <a href="#draft" className={linkClass}>Draft for review</a>
         <a href="#session-chat" className={linkClass}>Session chat</a>
         <a href="#summary" className={linkClass}>Summary</a>
@@ -133,6 +142,8 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
 
       <div className="mt-12 space-y-14">
         <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} />
+
+        <SessionBallot ballot={BALLOT_2026_11_16} staging={staging} />
 
         {visible ? (
           <DraftForReview
