@@ -228,6 +228,9 @@ export type GovHubDraftProposal = {
   steering_signoff?: boolean;
   review_note?: string | null;
   reviewed_by_name?: string | null;
+  /** Version 1.0 leftovers: reopened_v11 (pending again, co-editors decide) or carried_v11 (still closed). */
+  version_marker?: string | null;
+  version_marker_label?: string | null;
   /** A co-editor's revision of another proposal: the original's id and who revised it. */
   revised_from_id?: string | null;
   revised_by_name?: string | null;

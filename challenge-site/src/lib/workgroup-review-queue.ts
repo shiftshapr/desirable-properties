@@ -13,6 +13,7 @@ import { loadCanopiFilingReportWithTime } from '@/lib/canopi-filing-report';
 import { evalsForItem, listReviewEvals } from '@/lib/workgroup-review-store';
 import type { ReviewQueueItem, ReviewSource } from '@/lib/workgroup-review-types';
 import { encodedInsertOf } from '@/lib/encoded-insert';
+import { versionMarkerOf } from '@/lib/dp-v11';
 import { sectionLabelFor } from '@/lib/chapter-sections';
 import {
   cachedStyleChecks,
@@ -141,6 +142,7 @@ export async function buildWorkgroupReviewQueue(opts: {
       titleChange: Boolean(proposal.title_change),
       steeringSignoff: Boolean(proposal.steering_signoff),
       revisedBy: proposal.revised_from_id ? proposal.revised_by_name || 'A co-editor' : null,
+      versionMarker: versionMarkerOf(proposal),
       decision: pending ? null : { by: proposal.reviewed_by_name || null, note: proposal.review_note || null },
       styleCheckable: false,
       styleCheck: null,
