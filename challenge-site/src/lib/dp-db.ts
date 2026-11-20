@@ -139,6 +139,16 @@ CREATE TABLE IF NOT EXISTS dp_broadcast_unsubscribe (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Opt-outs for people with no account (Luma registrants, mailing-list signups): keyed by email.
+CREATE TABLE IF NOT EXISTS dp_broadcast_email_optout (
+  email TEXT PRIMARY KEY,
+  opted_out_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  source TEXT NOT NULL DEFAULT 'unsubscribe_link',
+  token TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dp_broadcast_unsubscribe_email ON dp_broadcast_unsubscribe (lower(email));
+
 CREATE TABLE IF NOT EXISTS dp_invite_global_event (
   id UUID PRIMARY KEY,
   title TEXT NOT NULL,

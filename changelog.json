@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "broadcast-email-only-optout-2026-11-20",
+      "date": "2026-11-20",
+      "status": "open",
+      "title": "Email unsubscribe links now work for people without an account",
+      "summary": "An unsubscribe link sent to someone with no account (a Luma registrant or a mailing-list signup) now opts that email out of Desirable Properties broadcasts; before, the page said \"Unsubscribed\" but nothing was recorded. The link works with a plain click (the confirmation page) and with one-click unsubscribe from the email client (POST). An invalid link now says it could not unsubscribe instead of claiming success. Email-only opt-outs are kept in a new table, dp_broadcast_email_optout, created automatically on first use, and the site's broadcaster skips those addresses too. A new script, scripts/broadcast-tokens.mjs, gives a stable unsubscribe token per email for emails sent outside the site (such as the ballot reminders).",
+      "changes": [
+        "challenge-site/src/lib/dp-broadcast-unsubscribe-plan.ts: what a token does (account opt-out, email opt-out, or nothing)",
+        "challenge-site/src/app/api/broadcast/unsubscribe/route.ts: GET page and one-click POST use the plan; success only when an opt-out is recorded",
+        "challenge-site/src/lib/dp-broadcast-preferences-store.ts: optOutEmail, isEmailOptedOut, ensureEmailUnsubscribeToken",
+        "challenge-site/src/lib/dp-db.ts: dp_broadcast_email_optout table and an email index on dp_broadcast_unsubscribe",
+        "challenge-site/src/lib/dp-broadcast-store.ts: skip opted-out emails; email-only recipients get a working token link",
+        "challenge-site/scripts/broadcast-tokens.mjs: stable token per email from stdin (reuses existing, links the account)",
+        "challenge-site/scripts/broadcast-unsubscribe.test.mjs, package.json: test:broadcast-unsubscribe"
+      ]
+    },
+    {
       "id": "dp-listening-experiment-2026-11-23-schedule",
       "date": "2026-11-19",
       "status": "open",
