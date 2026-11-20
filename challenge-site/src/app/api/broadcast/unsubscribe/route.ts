@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import {
   findByUnsubscribeToken,
-  lookupUnsubscribeToken,
+  optOutEmail,
   setDoNotSendBroadcast,
 } from '@/lib/dp-broadcast-preferences-store';
+import {
+  planUnsubscribe,
+  UNSUBSCRIBE_FLOW_HEADER,
+  UNSUBSCRIBE_FLOW_VERSION,
+} from '@/lib/dp-broadcast-unsubscribe-plan';
 
 function publicBase() {
   return (
@@ -36,44 +41,45 @@ function unsubscribeHtmlPage({ success, message }: { success: boolean; message: 
 </html>`;
 }
 
-async function applyUnsubscribe(token: string) {
-  let pref = await findByUnsubscribeToken(token);
-  if (!pref) {
-    const indexed = await lookupUnsubscribeToken(token);
-    if (indexed?.userId) {
-      await setDoNotSendBroadcast(indexed.userId, true, {
-        email: indexed.email,
-        viaUnsubscribe: true,
-      });
-      pref = await findByUnsubscribeToken(token);
-    }
-  } else if (pref.userId) {
-    await setDoNotSendBroadcast(pref.userId, true, {
-      email: pref.email,
-      viaUnsubscribe: true,
-    });
+/** Applies the token. Returns true only when an opt-out was actually recorded. */
+async function applyUnsubscribe(token: string): Promise<boolean> {
+  const plan = planUnsubscribe(await findByUnsubscribeToken(token));
+  if (plan.kind === 'user') {
+    const res = await setDoNotSendBroadcast(plan.userId, true, { email: plan.email, viaUnsubscribe: true });
+    return res.ok;
   }
-  return pref;
+  if (plan.kind === 'email') {
+    const res = await optOutEmail(plan.email, { token, source: 'unsubscribe_link' });
+    return res.ok;
+  }
+  return false;
+}
+
+const FLOW_HEADERS = { [UNSUBSCRIBE_FLOW_HEADER]: UNSUBSCRIBE_FLOW_VERSION };
+const HTML_HEADERS = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', ...FLOW_HEADERS };
+
+async function tokenFrom(request: Request) {
+  const { searchParams } = new URL(request.url);
+  return String(searchParams.get('token') || '').trim();
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token = String(searchParams.get('token') || '').trim();
+  const token = await tokenFrom(request);
   if (!token) {
     return new NextResponse(
       unsubscribeHtmlPage({ success: false, message: 'Missing unsubscribe token.' }),
-      { status: 400, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+      { status: 400, headers: HTML_HEADERS },
     );
   }
 
-  const pref = await applyUnsubscribe(token);
-  if (!pref) {
+  const applied = await applyUnsubscribe(token);
+  if (!applied) {
     return new NextResponse(
       unsubscribeHtmlPage({
         success: false,
         message: 'This unsubscribe link is invalid or expired.',
       }),
-      { status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+      { status: 404, headers: HTML_HEADERS },
     );
   }
 
@@ -82,17 +88,16 @@ export async function GET(request: Request) {
       success: true,
       message: 'You will no longer receive Desirable Properties challenge email updates.',
     }),
-    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+    { status: 200, headers: HTML_HEADERS },
   );
 }
 
-/** RFC 8058 one-click unsubscribe (POST from email client). */
+/** RFC 8058 one-click unsubscribe (POST from the email client, token in the query string). */
 export async function POST(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token = String(searchParams.get('token') || '').trim();
+  const token = await tokenFrom(request);
   if (!token) {
-    return new NextResponse(null, { status: 400 });
+    return new NextResponse(null, { status: 400, headers: FLOW_HEADERS });
   }
-  await applyUnsubscribe(token);
-  return new NextResponse(null, { status: 200 });
+  const applied = await applyUnsubscribe(token);
+  return new NextResponse(null, { status: applied ? 200 : 404, headers: FLOW_HEADERS });
 }

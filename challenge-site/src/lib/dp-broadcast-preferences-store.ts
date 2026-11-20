@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { ensureDpSchema } from '@/lib/dp-db';
 import { isCanopiUserId } from '@/lib/dp-canopi-user';
+import { normalizeOptOutEmail } from '@/lib/dp-broadcast-unsubscribe-plan';
 
 export type BroadcastPreference = {
   userId: string;
@@ -165,4 +166,67 @@ export async function isUserOptedOut(userId: string | null | undefined) {
     [userId],
   );
   return Boolean(res.rows[0]?.do_not_send);
+}
+
+/** Opt an email out of DP broadcasts when there is no account to attach it to. Idempotent: keeps the first opt-out. */
+export async function optOutEmail(email: string, opts: { token?: string | null; source?: string } = {}) {
+  const e = normalizeOptOutEmail(email);
+  if (!e) return { ok: false as const, error: 'invalid_email' };
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  await pool.query(
+    `INSERT INTO dp_broadcast_email_optout (email, opted_out_at, source, token)
+     VALUES ($1, now(), $2, $3)
+     ON CONFLICT (email) DO NOTHING`,
+    [e, opts.source || 'unsubscribe_link', opts.token || null],
+  );
+  return { ok: true as const, email: e };
+}
+
+export async function isEmailOptedOut(email: string | null | undefined) {
+  const e = normalizeOptOutEmail(email);
+  if (!e) return false;
+  const pool = await ensureDpSchema();
+  if (!pool) return false;
+  const res = await pool.query(
+    `SELECT 1 FROM dp_broadcast_email_optout WHERE email = $1
+     UNION ALL
+     SELECT 1 FROM dp_broadcast_preference WHERE do_not_send AND lower(trim(email)) = $1
+     LIMIT 1`,
+    [e],
+  );
+  return Boolean(res.rows[0]);
+}
+
+/**
+ * A stable unsubscribe token for an email (same rules as scripts/broadcast-tokens.mjs): reuse the account's token or
+ * an indexed one for that email, else create and index a new one. Links the account when userId is given.
+ */
+export async function ensureEmailUnsubscribeToken(email: string, userId?: string | null) {
+  const e = normalizeOptOutEmail(email);
+  if (!e) return { ok: false as const, error: 'invalid_email' };
+  const pool = await ensureDpSchema();
+  if (!pool) return { ok: false as const, error: 'database_unavailable' };
+  const uid = userId && isCanopiUserId(userId) ? userId : null;
+  const pref = await pool.query(
+    `SELECT unsubscribe_token FROM dp_broadcast_preference
+     WHERE lower(trim(email)) = $1 AND unsubscribe_token IS NOT NULL ORDER BY created_at LIMIT 1`,
+    [e],
+  );
+  if (pref.rows[0]) return { ok: true as const, token: String(pref.rows[0].unsubscribe_token) };
+  const idx = await pool.query(
+    `SELECT token, user_id FROM dp_broadcast_unsubscribe
+     WHERE lower(trim(email)) = $1 ORDER BY (user_id IS NOT NULL) DESC, created_at LIMIT 1`,
+    [e],
+  );
+  if (idx.rows[0]) {
+    const token = String(idx.rows[0].token);
+    if (uid && !idx.rows[0].user_id) {
+      await pool.query('UPDATE dp_broadcast_unsubscribe SET user_id = $2 WHERE token = $1', [token, uid]);
+    }
+    return { ok: true as const, token };
+  }
+  const token = crypto.randomBytes(24).toString('hex');
+  await indexUnsubscribeToken({ token, userId: uid, email: e });
+  return { ok: true as const, token };
 }

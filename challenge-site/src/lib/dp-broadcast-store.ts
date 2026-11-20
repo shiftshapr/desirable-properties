@@ -8,8 +8,10 @@ import {
   wrapBroadcastBodyHtml,
 } from '@/lib/dp-broadcast-send';
 import {
+  ensureEmailUnsubscribeToken,
   ensureUnsubscribeToken,
   indexUnsubscribeToken,
+  isEmailOptedOut,
   isUserOptedOut,
 } from '@/lib/dp-broadcast-preferences-store';
 import { resolveBroadcastRecipientRow } from '@/lib/dp-broadcast-cohort-recipients';
@@ -443,6 +445,9 @@ export async function sendBroadcast(input: {
       if (row.userId && isCanopiUserId(row.userId) && (await isUserOptedOut(row.userId))) {
         continue;
       }
+      if (await isEmailOptedOut(row.email)) {
+        continue;
+      }
       filtered.push(row);
     }
     targets = filtered;
@@ -498,6 +503,12 @@ export async function sendBroadcast(input: {
       const tokenResult = await ensureUnsubscribeToken(row.userId, to);
       if (tokenResult.ok && tokenResult.token) {
         await indexUnsubscribeToken({ token: tokenResult.token, userId: row.userId, email: to });
+        unsubscribeUrl = `${base}/api/broadcast/unsubscribe?token=${encodeURIComponent(tokenResult.token)}`;
+      }
+    } else if (!testMode) {
+      // No account: an email-only token, which opts this address out (dp_broadcast_email_optout).
+      const tokenResult = await ensureEmailUnsubscribeToken(to);
+      if (tokenResult.ok) {
         unsubscribeUrl = `${base}/api/broadcast/unsubscribe?token=${encodeURIComponent(tokenResult.token)}`;
       }
     }
