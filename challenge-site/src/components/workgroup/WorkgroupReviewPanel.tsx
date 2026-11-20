@@ -18,6 +18,7 @@ import type {
   ReviewVote,
 } from '@/lib/workgroup-review-types';
 import { STYLE_GUIDE, STYLE_GUIDE_VERSION } from '@/data/dp-style-guide';
+import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 
 type Props = {
   workgroupId: string;
@@ -496,7 +497,7 @@ export default function WorkgroupReviewPanel({
                 </span>
                 <span className="min-w-0 flex-1 text-sm">
                   <span className={isDeclined(item) ? 'text-rose-200' : 'text-slate-300'}>
-                    {CLOSED_LABEL[String(item.status).toLowerCase()] || item.status}
+                    {closedLabel(item)}
                   </span>
                   <span className="text-slate-400"> · {item.authorName} · {kindLabel(item)}</span>
                   {!open ? (
@@ -521,6 +522,14 @@ export default function WorkgroupReviewPanel({
               <span className="rounded border border-cyan-800/60 px-1.5 py-0.5 text-cyan-200">
                 {kindLabel(item)}
               </span>
+              {item.versionMarker === 'reopened_v11' ? (
+                <span
+                  className="rounded border border-sky-700/70 px-1.5 py-0.5 text-sky-200"
+                  title="Carried to Version 1.1 by the steering committee on 11 to 12 Nov 2026; co-editors decide it now."
+                >
+                  {VERSION_MARKER_LABEL.reopened_v11}
+                </span>
+              ) : null}
               {item.conflictCount > 1 ? (
                 <span className="rounded border border-amber-800/60 px-1.5 py-0.5 text-amber-200">
                   Conflict set · {item.conflictCount}
@@ -1249,6 +1258,15 @@ const CLOSED_LABEL: Record<string, string> = {
   withdrawn: 'Withdrawn by author',
 };
 
+/** A deferral still closed as considered reads as carried to Version 1.1, not as modified. */
+function closedLabel(item: ReviewQueueItem): string {
+  if (item.versionMarker === 'carried_v11') return VERSION_MARKER_LABEL.carried_v11;
+  return CLOSED_LABEL[String(item.status).toLowerCase()] || item.status;
+}
+
+const isCarried = (item: ReviewQueueItem) => item.versionMarker === 'carried_v11';
+const isReopened = (item: ReviewQueueItem) => item.versionMarker === 'reopened_v11';
+
 function snippet(text: string, max = 140): string {
   const flat = (text || '').replace(/\s+/g, ' ').trim();
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat;
@@ -1261,6 +1279,10 @@ type ReviewCounts = {
   actionable: number | null;
   declined: number;
   considered: number;
+  /** Open again: Version 1.0 deferrals reopened for co-editors (also counted in open). */
+  reopened: number;
+  /** Version 1.0 deferrals still closed as carried to Version 1.1 (not counted in considered). */
+  carried: number;
   orphaned: number;
   approved: number;
 };
@@ -1284,7 +1306,9 @@ function reviewCounts(items: ReviewQueueItem[], viewerGovhubUserId: string | nul
     open: items.filter((i) => ['pending', 'canopi_only'].includes(status(i))).length,
     actionable: viewerGovhubUserId === null ? null : items.filter((i) => isActionableFor(i, viewerGovhubUserId)).length,
     declined: items.filter(isDeclined).length,
-    considered: items.filter((i) => status(i) === 'considered').length,
+    considered: items.filter((i) => status(i) === 'considered' && !isCarried(i)).length,
+    reopened: items.filter((i) => status(i) === 'pending' && isReopened(i)).length,
+    carried: items.filter((i) => status(i) === 'considered' && isCarried(i)).length,
     orphaned: items.filter((i) => status(i) === 'orphaned').length,
     approved: items.filter((i) => ['accepted', 'incorporated'].includes(status(i))).length,
   };
@@ -1299,7 +1323,9 @@ function ReviewSummary({ counts }: { counts: ReviewCounts }) {
     cells.push({ label: 'Actionable', value: counts.actionable, tone: counts.actionable ? 'text-cyan-200' : 'text-white' });
   }
   cells.push({ label: 'Declined', value: counts.declined, tone: 'text-rose-200' });
+  if (counts.reopened) cells.push({ label: 'Reopened for 1.1', value: counts.reopened, tone: 'text-sky-200' });
   if (counts.considered) cells.push({ label: 'Modified', value: counts.considered, tone: 'text-slate-300' });
+  if (counts.carried) cells.push({ label: 'Carried to 1.1', value: counts.carried, tone: 'text-slate-300' });
   if (counts.orphaned) cells.push({ label: 'Text not found', value: counts.orphaned, tone: 'text-slate-300' });
   if (counts.approved) cells.push({ label: 'Approved', value: counts.approved, tone: 'text-emerald-200' });
   return (

@@ -1,3 +1,4 @@
+import type { VersionMarker } from '@/lib/dp-v11';
 export type ReviewVote = 'yes' | 'no';
 
 export type ReviewSource = 'govhub' | 'canopi';
@@ -87,6 +88,8 @@ export type ReviewQueueItem = {
   steeringSignoff?: boolean;
   /** Set when a co-editor revised another proposal into this one (text and/or placement). */
   revisedBy: string | null;
+  /** Version 1.0 leftover: reopened for co-editors in Version 1.1, or carried (still closed). */
+  versionMarker?: VersionMarker | null;
   /** Decline / considered note and who wrote it, once decided. */
   decision: { by: string | null; note: string | null } | null;
   /** Pending patch/insert that can be style-checked. */

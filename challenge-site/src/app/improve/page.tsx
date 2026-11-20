@@ -128,6 +128,9 @@ export default async function ImprovePage({ searchParams }: PageProps) {
             <a href={BOOK} className="inline-flex items-center rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15">
               Read the book →
             </a>
+            <Link href="/improve/open-items" className="inline-flex items-center rounded-lg border border-sky-600/70 px-5 py-3 text-sm font-semibold text-sky-100 hover:border-sky-400 hover:bg-white/5">
+              Version 1.1 open items
+            </Link>
             <Link href="/v1" className="inline-flex items-center rounded-lg border border-slate-600 px-5 py-3 text-sm font-semibold text-white hover:border-slate-400 hover:bg-white/5">
               About Version 1.0
             </Link>
@@ -195,7 +198,11 @@ export default async function ImprovePage({ searchParams }: PageProps) {
           </h2>
           <p className="mt-3 max-w-3xl text-slate-300">
             Search the 24 DPs and every proposal made on Version 1.0. Open a DP to see its open co-editor seats, propose a
-            change, or review what has been proposed.
+            change, or review what has been proposed. The proposals still open, by DP, are on{' '}
+            <Link href="/improve/open-items" className="text-cyan-300 underline hover:text-cyan-200">
+              Version 1.1 open items
+            </Link>
+            .
           </p>
           <ImproveExplorer dps={dps} initialDp={initialDp} />
         </div>

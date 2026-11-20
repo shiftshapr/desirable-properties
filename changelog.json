@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "v11-open-items-2026-11-20",
+      "date": "2026-11-20",
+      "status": "open",
+      "title": "Version 1.1 open items: the Version 1.0 deferrals are open again for co-editors",
+      "summary": "Following the owner's decision of 20 Nov 2026 (\"Yes, co-editors decide\"), the 34 proposals the steering committee carried to Version 1.1 on 11 to 12 Nov are open again, and co-editors decide them through the normal review. They show as open with a \"Reopened for Version 1.1\" marker instead of being folded into the closed items as \"Modified\". A new page, /improve/open-items, linked from /improve, lists every open proposal by DP, live from Gov Hub's public proposal API. With no steering stage open, /steering/<ML> now says that the DP's co-editors decide its proposals and links to the DP page and its review, instead of asking people to sign in as steering members.",
+      "changes": [
+        "challenge-site/src/lib/dp-v11.ts: versionMarkerOf (Gov Hub's version_marker, else status and review note) and labels",
+        "challenge-site/src/lib/dp-v11-open-items.server.ts, src/app/improve/open-items/page.tsx: Version 1.1 open items by DP",
+        "challenge-site/src/app/improve/page.tsx: links to the open items",
+        "challenge-site/src/components/workgroup/WorkgroupReviewPanel.tsx, src/lib/workgroup-review-queue.ts, src/lib/workgroup-review-types.ts, src/lib/govhub.ts: reopened items open with their marker; carried items read \"Carried to Version 1.1\", not \"Modified\"; counts",
+        "challenge-site/src/components/improve/ProposalRow.tsx: marker badge; no \"decided by\" on open items",
+        "challenge-site/src/app/steering/[ml]/page.tsx: no open stage means co-editors decide, with links",
+        "challenge-site/scripts/dp-v11-marker.test.mjs, package.json: test:dp-v11-marker"
+      ]
+    },
+    {
       "id": "broadcast-email-only-optout-2026-11-20",
       "date": "2026-11-20",
       "status": "open",
