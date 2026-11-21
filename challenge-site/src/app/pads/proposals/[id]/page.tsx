@@ -5,9 +5,12 @@ import { AnchorMissing, ChangeInContext } from '@/components/pads/PadChangeView'
 import { PadAdvisory, PadFollowButton } from '@/components/pads/PadCommunity';
 import PadCoEditorActions from '@/components/pads/PadCoEditorActions';
 import PadChat from '@/components/pads/PadChat';
+import PadInvite from '@/components/pads/PadInvite';
 import { dpDetailHref } from '@/lib/dp-links';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { DECISION_RULE_COPY, padDecisionRule } from '@/lib/pads/pad-settings';
+import { publicBase } from '@/lib/pads/pad-email.server';
+import { proposalInviteFromLoaded } from '@/lib/pads/pad-invite.server';
 import { GovHubUnavailableError, loadProposalPad, type LoadedPad } from '@/lib/pads/proposal-pad.server';
 import {
   approvalsLine,
@@ -200,8 +203,11 @@ export default async function ProposalPadPage({ params }: { params: Params }) {
               {pad.titleChange ? ' A steering member must also agree to the title change.' : ''}
             </p>
           </div>
-          <div className="sm:ml-auto">
+          <div className="flex flex-wrap items-center gap-3 sm:ml-auto">
             <PadFollowButton padId={pad.id} ml={pad.mlNumber} />
+            <a href="#invite" className="inline-flex items-center rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-cyan-500">
+              Invite others
+            </a>
           </div>
         </div>
       </header>
@@ -322,6 +328,10 @@ export default async function ProposalPadPage({ params }: { params: Params }) {
             <PadCoEditorActions workgroupId={workgroupId} workgroupSlug={workgroupSlug} proposalId={pad.id} dpId={pad.dpId} open={open} />
             <PadAdvisory padId={pad.id} ml={pad.mlNumber} ruleBadge={rule.badge} ruleLine={rule.line} />
           </div>
+        </Section>
+
+        <Section id="invite" title="Invite others">
+          <PadInvite content={proposalInviteFromLoaded(loaded)} base={publicBase()} />
         </Section>
 
         <Section id="chat" title="Ask about it">

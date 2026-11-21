@@ -11,6 +11,7 @@ import SessionBallot from '@/components/sessions/SessionBallot';
 import SessionChat from '@/components/sessions/SessionChat';
 import SessionSummary from '@/components/sessions/SessionSummary';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
+import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
 import SessionTranscript from '@/components/sessions/SessionTranscript';
 import StillToDecide from '@/components/sessions/StillToDecide';
@@ -133,6 +134,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       <nav aria-label="On this page" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#phase" className={linkClass}>Where this session is</a>
         {showBallot ? <a href="#vote" className={linkClass}>Vote</a> : null}
+        <a href="#invite" className={linkClass}>Invite others</a>
         <a href="#draft" className={linkClass}>Meeting draft</a>
         <a href="#summary" className={linkClass}>Meeting summary</a>
         <a href="#declines" className={linkClass}>Why proposals were declined</a>
@@ -150,6 +152,8 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} closesLabel={closesLabel} />
 
         <SessionBallot ballot={BALLOT_2026_11_16} staging={staging} heading={LABELS.vote} />
+
+        <SessionInvite path={META_GOV_EVENT_PATH} />
 
         {/* After the Vote on purpose: voting stays the page's main call to action. Separate panel: not this meeting. */}
         <V1Promo separate />
