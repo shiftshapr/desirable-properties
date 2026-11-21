@@ -1,16 +1,17 @@
 /**
  * Proposal pads: live data for /pads/proposals/<id>, read from Gov Hub's public APIs (no sign-in, nothing private):
  * the document's proposal list, its current chapter blocks, its co-editor seats, and the closed steering stages.
- * The pure shaping is in proposal-pad-core.ts. Plain-language summaries are stored, not generated here
- * (src/data/proposal-pad-summaries.json, written by scripts/generate-proposal-pad-summaries.mjs).
+ * The pure shaping is in proposal-pad-core.ts. Plain-language summaries are stored, not generated here: the runtime
+ * table dp_pad_summary first, then the bundled seed src/data/proposal-pad-summaries.json (pad-summary-store.server.ts;
+ * both written by scripts/generate-proposal-pad-summaries.mjs).
  */
 import 'server-only';
-import { createHash } from 'node:crypto';
 import dpMlDraftMap from '@/data/dp-ml-draft-map.json';
-import summaries from '@/data/proposal-pad-summaries.json';
 import { FRONT_MATTER } from '@/lib/dp-steering';
 import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { GOVHUB_PUBLIC_BASE_URL } from '@/lib/govhub';
+import { sourceHash } from '@/lib/pads/pad-summary-core';
+import { summaryLookup } from '@/lib/pads/pad-summary-store.server';
 import {
   buildProposalPad,
   normalizePadId,
@@ -130,10 +131,10 @@ async function fetchSteering(mlNumber: string, proposalId: string): Promise<RawS
 /** Which document a proposal id was last seen on (this process), so a pad reads one list, not all 28. */
 const seenOn = new Map<string, string>();
 
-function indexedMl(rawId: string): string | null {
+async function indexedMl(rawId: string): Promise<string | null> {
   const want = String(rawId || '').toLowerCase();
-  const items = (summaries as SummaryFile).items || {};
-  for (const [id, row] of Object.entries(items)) if (row.ml && padIdMatches(want, id)) return row.ml;
+  const lookup = await summaryLookup();
+  for (const [id, ml] of lookup.entries()) if (ml && padIdMatches(want, id)) return ml;
   for (const [id, ml] of seenOn) if (padIdMatches(want, id)) return ml;
   return null;
 }
@@ -150,7 +151,7 @@ export async function findPadProposal(
   mlHint?: string | null,
 ): Promise<{ doc: PadDoc; proposal: RawProposal; all: RawProposal[] } | null> {
   if (!normalizePadId(rawId)) return null;
-  const first = [mlHint, indexedMl(rawId)].filter((m): m is string => Boolean(m && PAD_DOCS.some((d) => d.mlNumber === m)));
+  const first = [mlHint, await indexedMl(rawId)].filter((m): m is string => Boolean(m && PAD_DOCS.some((d) => d.mlNumber === m)));
   const order = [
     ...first.map((m) => PAD_DOCS.find((d) => d.mlNumber === m) as PadDoc),
     ...PAD_DOCS.filter((d) => !first.includes(d.mlNumber)),
@@ -182,21 +183,14 @@ export async function findPadProposal(
 
 export type PadSummary = { title: string; summary: string; generatedAt: string; model: string };
 
-type SummaryFile = {
-  model: string;
-  items: Record<string, { title: string; summary: string; inputHash: string; generatedAt: string; ml?: string }>;
-};
-
 export function summaryHash(p: RawProposal, docLabel: string): string {
-  return createHash('sha256').update(summaryInput(p, docLabel)).digest('hex').slice(0, 16);
+  return sourceHash(summaryInput(p, docLabel));
 }
 
-/** The stored plain-language summary, only while the proposal's text is the one it was written from. */
-export function storedSummary(p: RawProposal, docLabel: string): PadSummary | null {
-  const file = summaries as SummaryFile;
-  const row = file.items?.[p.id];
-  if (!row || row.inputHash !== summaryHash(p, docLabel)) return null;
-  return { title: row.title, summary: row.summary, generatedAt: row.generatedAt, model: file.model };
+/** The stored plain-language summary (table, then seed), only while the proposal's text is the one it was written from. */
+export async function storedSummary(p: RawProposal, docLabel: string): Promise<PadSummary | null> {
+  const row = (await summaryLookup()).current(p.id, summaryHash(p, docLabel));
+  return row ? { title: row.title, summary: row.summary, generatedAt: row.generatedAt, model: row.model } : null;
 }
 
 export type LoadedPad = {
@@ -210,10 +204,11 @@ export async function loadProposalPad(rawId: string): Promise<LoadedPad | null> 
   const found = await findPadProposal(rawId);
   if (!found) return null;
   const { doc, proposal, all } = found;
-  const [passages, seats, steering] = await Promise.all([
+  const [passages, seats, steering, summary] = await Promise.all([
     fetchPassages(doc.mlNumber),
     fetchApprovalsNeeded(doc.dpId),
     fetchSteering(doc.mlNumber, proposal.id),
+    storedSummary(proposal, doc.label),
   ]);
   const pad = buildProposalPad({
     proposal,
@@ -228,7 +223,7 @@ export async function loadProposalPad(rawId: string): Promise<LoadedPad | null> 
   });
   return {
     pad,
-    summary: storedSummary(proposal, doc.label),
+    summary,
     workgroupId: seats.workgroupId,
     workgroupSlug: dpWorkgroupSlug(doc.dpId),
   };
@@ -250,7 +245,11 @@ export async function currentStatuses(mlNumber: string): Promise<Map<string, Raw
   }
 }
 
-/** The stored short title for a proposal (for lists; the pad itself checks the summary is current). */
-export function storedTitle(id: string): string | null {
-  return (summaries as SummaryFile).items?.[id]?.title || null;
+/**
+ * Stored short titles for lists (the pad itself checks the summary is current). Call once per render and use the
+ * returned function for every row; the table read behind it is memoised.
+ */
+export async function storedTitles(): Promise<(id: string) => string | null> {
+  const lookup = await summaryLookup();
+  return (id) => lookup.title(id);
 }

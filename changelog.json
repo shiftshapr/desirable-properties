@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pad-summaries-runtime-2026-11-21",
+      "date": "2026-11-21",
+      "status": "open",
+      "title": "Proposal pads: plain-language summaries for new or edited proposals appear on their own, with no deploy",
+      "summary": "Proposal pad summaries now live in a runtime table (dp_pad_summary) that pads read first, with the bundled JSON kept as the seed. A summary still shows only while it matches the proposal text it was written from, so an edited proposal shows no summary until it is re-written. A scheduled run on production every 6 hours (UTC, catching up after downtime) writes summaries only for new or changed pending proposals, at most 25 per run and stopping before an estimated $2, reading Gov Hub once per document, and logs one line with the count and cost. List pages read the table once a minute, not per pad. Approved by the owner on 21 Nov 2026.",
+      "changes": [
+        "challenge-site/src/lib/pads/pad-summary-core.ts, pad-summary-store.server.ts: dp_pad_summary (created by the generator on first write), table-then-seed lookup with the hash rule, cached reads",
+        "challenge-site/src/lib/pads/proposal-pad.server.ts, pad-follow-sweep.server.ts, src/app/pads/page.tsx, src/app/improve/open-items/page.tsx: summaries and titles from the lookup",
+        "challenge-site/scripts/generate-proposal-pad-summaries.mjs: --db mode with --max, --budget and --env-file (reads only the keys it needs)",
+        "challenge-site/ops/pad-summaries/: systemd user service, 6-hourly timer (Persistent=true) and install.sh for box1",
+        "challenge-site/scripts/pad-summaries.test.mjs, package.json: tests under test:proposal-pads"
+      ]
+    },
+    {
       "id": "proposal-pads-2026-11-21",
       "date": "2026-11-21",
       "status": "open",
