@@ -16,7 +16,7 @@ type Props = {
   starters: string[];
 };
 
-/** Deepi (the site's HermesChat), scoped to this proposal: the pad's text goes with each message as a document. */
+/** Deepi (the site's HermesChat), scoped to this proposal: the pad's text goes with each message as page context. */
 export default function PadChat({ padId, dpNumber, context, starters }: Props) {
   const [open, setOpen] = useState(false);
   if (!open) {
@@ -44,7 +44,7 @@ export default function PadChat({ padId, dpNumber, context, starters }: Props) {
           dpFocus={dpNumber}
           starterPrompts={starters}
           starterLabel="About this proposal"
-          contextDocument={{ name: `proposal-${padId}.md`, text: context }}
+          context={{ title: `Proposal pad ${padId}`, text: context }}
         />
       </Suspense>
     </div>

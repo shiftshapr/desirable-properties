@@ -25,6 +25,19 @@ export const META_GOV_SUMMARY: readonly string[] = [
   'Communication: Signal does not work in Oman (Renad Baomar, 01:10:44). The host will open the existing WhatsApp group to everyone interested and share the Signal link (01:11:02 to 01:12:02). Joel Okomoli asked for an advance notice email before the 24-hour review window opens (01:25:50).',
 ];
 
+/** Who spoke in the 16 November session, in order of first contribution. */
+export const META_GOV_SPEAKERS: readonly string[] = [
+  'Daveed Benjamin (host)',
+  'Leandra Preston',
+  'Lord M.E.G.A Zion (Zoom name)',
+  'Benn Konsynski',
+  'Gael Van Weyenbergh',
+  'Stella Alvo',
+  'Allison Gustavson',
+  'Joel Okomoli',
+  'Renad Baomar',
+];
+
 /** The eight decision titles from the digest ("Decisions needed"). The options and draft ballot questions go out on Tuesday. */
 export const META_GOV_DECISIONS: readonly string[] = [
   'Should the weekly decision cycle run as a four-session pilot?',
