@@ -4,6 +4,22 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pad-invite-2026-11-21",
+      "date": "2026-11-21",
+      "status": "open",
+      "title": "Pads: an Invite others panel on every proposal pad and session page",
+      "summary": "Every proposal pad and community session page now has an Invite others panel. It offers Copy link, the phone's share sheet, a QR code (made on the page, no outside service), an Email link with a prefilled subject and body, share links for WhatsApp, Telegram, LinkedIn, X and Bluesky, and a Copy message for Signal button. The text comes from the pad: its title, plain-language summary and current call to action (add your view, vote, join on Monday). Links carry ?ref=inv-<channel>, which names the channel and never a person, so arrivals can be counted per channel. Signed-in accounts can also send from the site: up to 5 addresses per send and 20 per account per day, with the sender's name and an optional short note with no links. An address is invited to the same pad at most once every 30 days and gets at most 3 invitations a day, and the site sends at most 300 a day. Opted-out addresses are skipped. Only a keyed hash of each address is stored, for these limits, and rows are deleted after 35 days. Nobody is added to a list. Every email says why it came and has an opt-out link. Requested by the owner on 21 Nov 2026.",
+      "changes": [
+        "challenge-site/src/lib/pads/pad-invite-core.ts: invite content for proposals and sessions, ref links, mailto and share links, recipient and note checks, the email, the send handler and its limits",
+        "challenge-site/src/lib/pads/pad-invite.server.ts, pad-invite-token.ts: dp_pad_invite_send (hashed recipients) and dp_pad_invite_ref (arrival counts), created on first write; encrypted opt-out tokens; PAD_INVITE_EMAILS=off switches site sending off",
+        "challenge-site/src/lib/pads/pad-email.server.ts: Resend send shared with the follow sweep (same from address and List-Unsubscribe headers)",
+        "challenge-site/src/app/api/pads/invite/: send, arrival count and opt-out routes",
+        "challenge-site/src/components/pads/PadInvite.tsx, src/components/sessions/SessionInvite.tsx: the panel, on /pads/proposals/[id], /events/meta-governance-2026-11-16 and community session pages under /roundups/[date]",
+        "challenge-site/package.json: qrcode-generator 2.0.4 (MIT, no dependencies), loaded only when someone opens the QR code",
+        "challenge-site/scripts/pad-invite.test.mjs, run by npm run test:proposal-pads"
+      ]
+    },
+    {
       "id": "pad-summaries-runtime-2026-11-21",
       "date": "2026-11-21",
       "status": "open",
