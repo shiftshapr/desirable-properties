@@ -1,0 +1,326 @@
+{
+  "model": "claude-opus-5-5",
+  "generatedAt": "2026-11-21T03:13:26.214Z",
+  "items": {
+    "0dbcc417-40a4-4318-b453-f0ac608ccd26": {
+      "title": "Treat semantic objects as community-governed artifacts",
+      "summary": "This proposal adds an item to the chapter's list of what a semantic object (a structured description that ties together content in different forms, such as text, audio or images) should include. It says the semantic object should itself be governed by the community, so changes to its fields, types or required values should go through community review, and the Meta-Layer must let contributions made in non-text forms stay authoritative as they were originally made. It comes from a reader comment suggesting one more item, so that the structure stays accountable and contributions are not judged only by their text versions.",
+      "inputHash": "c8568b87007084b0",
+      "generatedAt": "2026-11-21T03:13:25.193Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-025"
+    },
+    "0ea51398-2d90-4e0d-8158-8e4fe06114fa": {
+      "title": "Add rules for resolver depth and substrate choice",
+      "summary": "This proposal adds a new section to the decentralized naming chapter about how resolvers (services that look up a name and return the record it points to) handle names recorded more than once. Each resolver could choose how many of the stacked records to show, but would have to publish how it chooses, say which blockchain or namespace its answer comes from, and openly flag any split or dispute in that record rather than hide it. It also suggests Bitcoin ordinals (small records written permanently onto the Bitcoin blockchain) as one practical place to store names today, and explains that anyone can check a resolver's answer directly against the chain, so several competing resolvers can exist without one being the official source.",
+      "inputHash": "4cfcbbc05daa522f",
+      "generatedAt": "2026-11-21T03:12:58.102Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-012"
+    },
+    "1692e7b0-758f-46a1-9939-28426127dcb0": {
+      "title": "Link commerce chapter to recognizing unpaid and hidden work",
+      "summary": "This proposal adds a paragraph to the commerce chapter connecting it to New Economics for Sustainable Development, an approach that asks for recognition of valuable work that is often unpaid or unseen, such as community trust, care, safety and learning. It also suggests the chapter can show when a low price hides costs carried by others, like data tracking, pressure to buy or unpaid community work, while staying focused on clear costs, real choice and fair community rules. The proposer says the chapter already describes unpaid community upkeep but does not tie it to a wider economic framework, and this addition names that value without widening the chapter's scope.",
+      "inputHash": "42f598b20f815f1b",
+      "generatedAt": "2026-11-21T03:12:57.355Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-013"
+    },
+    "197e9958-2c71-40e4-8959-35a3f5659744": {
+      "title": "Add culturally situated ethical frameworks as an optional example",
+      "summary": "This proposal adds a short passage to the chapter on safe and ethical AI, placed after a warning about AI companies presenting their own values as universal ethics. It says communities may use their own cultural traditions to guide ethical discussion, giving the ten Sefirot from Kabbalah (a Jewish mystical tradition) as one example for weighing balance, empathy and responsibility, as long as such use stays optional, open to challenge, credits its source and does not replace basic protections. The proposer wants to restore this example from the original source material without presenting it as a proven method for making AI behave well.",
+      "inputHash": "728aeefb2a631803",
+      "generatedAt": "2026-11-21T03:13:05.767Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-002"
+    },
+    "199e6c70-caf2-4dce-9bfb-edb2bf526fd4": {
+      "title": "Describe overlays as tools in the education chapter",
+      "summary": "This change rewords the short explanation of an overlay in the education chapter, calling it a tool that sits on top of a web page and adds notes and context, rather than a layer of notes. The proposer wants the wording to match how another chapter (DP2) already defines an overlay, so the two explanations agree while staying simple for learners.",
+      "inputHash": "4d9325ea4025bca1",
+      "generatedAt": "2026-11-21T03:13:02.657Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-017"
+    },
+    "21fc9a86-2280-42b4-bdbf-7649953fee29": {
+      "title": "Suggest an open standards group for cross-browser overlay work",
+      "summary": "This proposal adds a sentence to the roadmap chapter saying that work on overlays across different web browsers could be developed in an open standards forum, such as a proposed W3C Community Group (a public group under the body that sets web standards), covering how overlays register and how they share a common tray. It also makes clear that this is only a way to collaborate, not a sign of W3C approval, and not something independent builders must go through to follow the rules. The proposers want to combine two earlier standards-related suggestions without turning an outside organisation into a gatekeeper.",
+      "inputHash": "73cd6647d2a141e5",
+      "generatedAt": "2026-11-21T03:13:14.328Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-020"
+    },
+    "3275bc04-4415-467d-9b6a-f9ef7dfffcb8": {
+      "title": "Add privacy-preserving community discovery",
+      "summary": "This proposal adds a new section to the chapter on federated authentication and accountability, saying people should be able to find communities and willing members without relying on one central public directory, and that discovery should reveal as little as possible about who belongs where, especially when membership itself could put people in danger. Participants would control whether, where and to whom they can be found. The proposer says it combines two overlapping earlier proposals about identity into one consistent description of private discovery.",
+      "inputHash": "1eac4b8caec5a5d8",
+      "generatedAt": "2026-11-21T03:12:54.023Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-008"
+    },
+    "33898fae-bdc4-4a5c-9914-e8edff5fa9be": {
+      "title": "Add Wikipedia as a sustainability case study",
+      "summary": "This proposal adds a short paragraph to the Financial Sustainability chapter using Wikipedia as an example of treating sustainability as a core design limit rather than something considered later. It notes that running a public encyclopedia means balancing reliable access against the environmental cost of servers and other infrastructure, and it cites a Wikimedia page describing efforts to reduce that cost. The proposer is responding to a reader's request for a well-known example, and says the wording was drafted with AI help for review by co-editors.",
+      "inputHash": "ccebe5d3048a7136",
+      "generatedAt": "2026-11-21T03:13:14.089Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-021"
+    },
+    "38ae09a3-e14e-4b3c-85cf-80e0315d9afa": {
+      "title": "Add PDPP as a worked example of data portability",
+      "summary": "This proposal adds a new optional, illustrative subsection at the end of the chapter's implementation section, just before the part on foresight and failure design. It describes PDPP (Personal Data Portability Protocol), an open standard from a Linux Foundation lab for moving personal data with the owner's consent, and shows how its consent, purpose limits, shared records of agreed terms and narrow data requests line up with ideas already in this chapter and in DP1 and DP4. The proposer wants one concrete example of those ideas in practice, while making clear that PDPP is just one possible standard a system could plug in, not a requirement.",
+      "inputHash": "b5e762785f79b8b8",
+      "generatedAt": "2026-11-21T03:13:00.895Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-014"
+    },
+    "38c50b0b-366c-4197-9bf9-5be92ebf4872": {
+      "title": "Add a plain-language summary at the top of DP18",
+      "summary": "This proposal adds a short, plain-language summary at the very start of the chapter on feedback loops and reputation, placed above the current technical opening. The summary says the chapter is about how a community listens and remembers: people should see what happened to their input, good work or harm should be remembered where it happened rather than turned into one score that follows people everywhere, and people should be able to question that record, make amends and move on. The proposer wants it because the chapter opens with dense wording and only states its intent in plain terms after a long list of ways things can go wrong, so newcomers need an easy entry point.",
+      "inputHash": "1e4b0d6c127285ae",
+      "generatedAt": "2026-11-21T03:13:21.133Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-022"
+    },
+    "3ab20604-f3c1-4bdb-b8a2-99b5e0d7166c": {
+      "title": "Require resolvers to keep the chain's own record order",
+      "summary": "This change adds rules to the chapter on a decentralized naming system, saying that resolvers (the services that look up a name and return its records) must list a name's records, called inscriptions, in the order they were officially registered on the underlying blockchain. Resolvers may show only the first record, all of them, or a selection, but they must not make up records or change their order. The proposer wants the order to be set by the blockchain itself rather than by any one resolver, so anyone with access to the chain can check it and no single service gains control.",
+      "inputHash": "22cb683d97508a90",
+      "generatedAt": "2026-11-21T03:12:57.316Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-012"
+    },
+    "3dc62044-47d8-4ae2-b871-dc91b8bc3591": {
+      "title": "Add a lighter feedback profile for small communities",
+      "summary": "This proposal adds a short paragraph after the chapter's list of open questions on feedback and reputation, suggesting a simpler version of the system for small groups. That lighter version would keep only the essentials: making clear where feedback goes, limiting reputation to its own context, letting it fade over time, and offering a way to appeal, with the other mechanisms added as a community grows. The proposer argues that the full set of tools assumes an organization with paid staff, and a lighter option would make the chapter usable by the small communities the project most wants to serve.",
+      "inputHash": "7dd4c90e9bb7c403",
+      "generatedAt": "2026-11-21T03:13:16.315Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-022"
+    },
+    "46d7a789-e1d8-4cfd-97c4-316299fcecbf": {
+      "title": "Enforce updated AI rules from their effective date",
+      "summary": "This change rewords a line in the AI Containment chapter (DP13) so that updated rules take effect on the date set for them, rather than \"immediately\", while still not waiting for the next software release. The proposer wants this to match the notice periods in the related governance chapter (DP12), which give people time before a new rule applies, and suggests the same wording fix in the section describing how the chapters work together.",
+      "inputHash": "fd11054f1e4fccfa",
+      "generatedAt": "2026-11-21T03:13:08.391Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-004"
+    },
+    "4a34908e-9e3f-4729-b4bb-0fbfd2ee431d": {
+      "title": "Let page owners add the shared layer to their pages",
+      "summary": "This proposal adds text saying website owners should be able to add the Meta-Layer (the shared layer of notes and conversation above web pages) to their own pages, so visitors can join in without installing anything, and that this should connect to the same shared layer people reach through their own tools rather than a separate one. The owner's rules would apply only to the owner's community on that page, while a visitor's own tool keeps working alongside. The proposer argues that most people, especially on phones, cannot install browser extensions, and that an owner's separate comment box would split people by whether they installed something, citing an existing tool called Canopi that already works this way.",
+      "inputHash": "cd319e779b26f40d",
+      "generatedAt": "2026-11-21T03:13:26.214Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-056"
+    },
+    "5e69a8c9-a783-4ab2-8ff9-4628b2c97b5d": {
+      "title": "Explain the ML-Draft and ML-RFC stages",
+      "summary": "This proposal adds a short plain-language explanation to the DP18 chapter on feedback loops and reputation, saying that an ML-Draft is a working proposal for communities to test and debate, while an ML-RFC is a more settled stage reached once communities agree on shared formats and see them work. It also notes that the naming comes from the internet's long-standing Request for Comments documents. The proposer says these terms are used without explanation anywhere in the book, so readers without a technical background cannot follow the path the section describes.",
+      "inputHash": "654a2dd7b44a544d",
+      "generatedAt": "2026-11-21T03:13:18.730Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-022"
+    },
+    "5ff1437c-1a33-4f9c-98b8-8de5b6c27fe2": {
+      "title": "Make ownership pathways optional in minimum alignment list",
+      "summary": "This change rewords one item in the chapter's minimum list of what a program must do to meet DP9, which covers rewards and incentives for developers and communities. Incentives would still have to line up with how the system is governed, but would only need to line up with ways for participants to gain ownership when a program actually offers them. The proposer says another section of the chapter already treats ownership stakes as optional, so the minimum list should match it to avoid the chapter contradicting itself.",
+      "inputHash": "ed86499bc15524ab",
+      "generatedAt": "2026-11-21T03:13:02.513Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-016"
+    },
+    "617fade2-aa38-4841-8c25-5c3349f6e4b9": {
+      "title": "Add knowledge lineage to learning environments",
+      "summary": "This proposal adds a new subsection to the Education chapter, placed after the warning that education could turn into centralized content delivery. It says learning should happen inside the places where people actually build, maintain, and hand on systems, and that learners should be able to trace present work back to the earlier decisions, experiments, and people behind it. The proposers want education treated as a long-term community practice rather than just a list of marketable skills, and the text combines several earlier proposals on this theme into one.",
+      "inputHash": "b6bef8b309984b2f",
+      "generatedAt": "2026-11-21T03:13:03.625Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-017"
+    },
+    "66283105-a69f-4e3d-b83d-d449a23d4a55": {
+      "title": "Clarify that sealed contributions can still be deleted under rules",
+      "summary": "This change rewords one sentence in the chapter on signing in across services and holding people accountable. Instead of calling sealed contributions \"immutable\" (never able to change), it says they are protected from silent alteration, and it notes that sealing must sit alongside the deletion rules in DP4 and the rule-based fading of old records in DP22, both of which leave a visible record that a change happened. The proposer says \"immutable\" contradicts those other chapters, and that the new wording removes the conflict without changing any requirement, while flagging how to keep a trail of accountability as an open question.",
+      "inputHash": "1ec5a43e2077bf2d",
+      "generatedAt": "2026-11-21T03:12:54.292Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-008"
+    },
+    "6b1fbc4a-d424-4068-aa5e-c186abe6c24f": {
+      "title": "Let participants propose replacement text for passages",
+      "summary": "This proposal adds text to the Civic Memory chapter (DP22) saying people should be able to suggest specific new wording for a passage, with a reason, shown next to the current text and without needing the page owner's help. Each community would decide whether to accept a suggestion, readers would choose whose accepted changes they see, and where the original owner takes part, suggestions would reach the owner's own review with the owner's decision recorded. The proposer argues that offering better wording is more useful than just flagging errors, that the chapter is currently silent on this, and that letting each community decide stops any single group from becoming the one authority.",
+      "inputHash": "54bbe171f7251cd5",
+      "generatedAt": "2026-11-21T03:13:24.780Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-028"
+    },
+    "6fff7dda-5adf-456f-bb55-029676e4c085": {
+      "title": "Remove repeated text from community AI governance chapter",
+      "summary": "This is a tidying change to the chapter on communities governing AI together: it deletes five sections and two list items that repeat points made elsewhere in the chapter, moves the few details only the copies contained into the sections that remain, and renumbers the later sections and their cross-references. The proposer says a duplicate-text check found these repeats and that the cleanup does not change what the chapter means.",
+      "inputHash": "3ad6521d032d461d",
+      "generatedAt": "2026-11-21T03:13:05.433Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-003"
+    },
+    "753e6149-16db-4f20-aa9f-dfba61447a85": {
+      "title": "Limit information-transfer rules that enable speech control",
+      "summary": "This proposal adds two sentences to the chapter on community-based AI governance, placed after the line saying that moving rules between systems is not enough without the power to enforce them. The new text says rules about how information moves between systems should let people challenge concentrated control over public stories and surveillance by institutions, rather than copying that control from one system to another, and that any conditions on access or routing need a clear purpose and a stated source of authority instead of a broad licence to filter what people say. The proposers want to keep an earlier community concern about information flow while setting clear limits on how it can be read.",
+      "inputHash": "fc4004f00b5a93c5",
+      "generatedAt": "2026-11-21T03:13:09.060Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-003"
+    },
+    "7be8e721-2948-4be5-9215-1b1ec08c5b03": {
+      "title": "Add a section on federated civic pilots with cities",
+      "summary": "This proposal adds a new section to the roadmap chapter describing pilot projects run with several cities at once, testing things like citizen feedback, shared decision-making, youth digital literacy, and cooperation between regions, with European city programmes suggested as one starting point. It asks that these linked pilots share tools and evidence instead of each starting from scratch, record who actually took part and how each pilot was funded and run, and be honest about the risks early groups take on compared with the benefits later groups get. It combines two earlier proposals while keeping the chapter's existing fairness rules for pilot groups, and warns that one city's results should not be assumed to apply everywhere.",
+      "inputHash": "0f321b766e18134f",
+      "generatedAt": "2026-11-21T03:13:12.896Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-020"
+    },
+    "89839fc2-5da5-4aed-84bb-7e8403051b0d": {
+      "title": "Spell out ML-RFC at its first mention",
+      "summary": "This change rewrites one sentence in the chapter on participant agency so that the abbreviation ML-RFC is written out in full as Meta-Layer Request for Comments, the series of documents describing how this layer should work. It came from a reader's comment asking that abbreviations be explained at first use so that less technical readers can follow without looking them up. The meaning of the sentence otherwise stays the same.",
+      "inputHash": "c404e80c990535ac",
+      "generatedAt": "2026-11-21T03:12:56.935Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-009"
+    },
+    "956ac448-6a7d-4c69-9f01-3e7bcdf8ec7d": {
+      "title": "Require attaching contributions to specific parts of pages",
+      "summary": "This proposal adds a rule to the chapter on collaborative environments saying people must be able to attach a note or other contribution to a specific part of any page they can reach, such as a passage of text, part of an image, a moment in a video, or a single social media post, without needing the site owner's permission. If a page cannot support such precise placement, the contribution attaches to the whole page and the person is told before posting. The proposer argues this ability is central to a layer above the web, that no chapter currently requires it, and that notes tied to an exact passage are easier to check and dispute than page-level comments.",
+      "inputHash": "aa29175bfe270b11",
+      "generatedAt": "2026-11-21T03:13:01.576Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-015"
+    },
+    "970de64c-3da8-45c8-bae0-9ec1a54a4d65": {
+      "title": "Let readers follow a passage across any client",
+      "summary": "This proposal adds one item to the chapter's list of things people should be able to do: follow, save, or react to a specific anchored passage of text itself, from any app or tool they use to read it, not only to messages posted about it. The proposer says that without a shared way to identify the same sentence across different tools, each tool ends up with its own separate conversation about that passage, which undermines the book's goals of letting several tools work together. They point to an existing overlay tool called Canopi that already does this, and to a test showing a repeatable passage identifier matched another tool's results on 1,255 records.",
+      "inputHash": "e0fd83fd1e0ce90a",
+      "generatedAt": "2026-11-21T03:13:22.034Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-025"
+    },
+    "981f8156-a8a2-4178-bd0e-18d5feaa1490": {
+      "title": "Add a test-based definition of equivalent renderings",
+      "summary": "This proposal adds one sentence to the Multi-modal chapter, which is about presenting the same information in different forms such as text, sound or images. The new sentence says two versions count as equivalent when people using each form reach a similar understanding and take similar actions when this is tested. The proposer wants a concrete, checkable test for equivalence while keeping the chapter's existing point that equivalent does not mean identical.",
+      "inputHash": "219fe98b6246dc19",
+      "generatedAt": "2026-11-21T03:13:23.230Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-025"
+    },
+    "9d17433a-4987-4544-9eea-97806bbc1ee1": {
+      "title": "Replace \"first-class concerns\" with plainer wording",
+      "summary": "This change rewords one sentence in the chapter on financial sustainability so that funding must support governance, safety, infrastructure and community development as \"fundamental requirements\" instead of \"first-class concerns\". It is a wording change only, meant to keep the same strength of requirement while using language newcomers can understand. It follows a reader's comment asking whether \"first-class concerns\" was specialist jargon.",
+      "inputHash": "0cf7e5423d41fc78",
+      "generatedAt": "2026-11-21T03:13:18.453Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-021"
+    },
+    "a01b6976-d026-4559-ab33-9aef2b2ba8bf": {
+      "title": "Add open question on schema governance and non-text contributions",
+      "summary": "This proposal adds a new item to the open questions section of the chapter on multi-modal content, meaning content in different forms such as text, audio or video. It asks who should control the shared structure used to describe content, and whether something first contributed as, say, audio or video can stay the official version in that form rather than being treated as secondary to a text version. It comes from a reader's comment and is framed as a question for future work, not a new requirement.",
+      "inputHash": "d4b268b4bc1fea82",
+      "generatedAt": "2026-11-21T03:13:20.617Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-025"
+    },
+    "ad45aa5c-b61d-4855-a1d1-e03a76fb9851": {
+      "title": "Align timing of AI rule changes with notice periods",
+      "summary": "This change rewords one sentence in the AI Containment chapter, which currently says that revised limits on AI systems should take effect immediately. The new wording says revisions should reach running systems on their effective date, after any required notice period, without waiting for the next software release. The proposer wants this so the chapter matches DP12, which requires people to be given notice before new rules are enforced, while keeping the point that running systems should not lag behind governance decisions.",
+      "inputHash": "3c6f15cac43669c0",
+      "generatedAt": "2026-11-21T03:13:08.578Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-004"
+    },
+    "b632bff9-694e-489c-85dc-6d2ef834a853": {
+      "title": "Add internal stability condition for learning AI actors",
+      "summary": "This proposal adds a paragraph to the AI Containment chapter saying that outside limits on an AI are not enough: an AI that learns has a part that predicts how the world will react and a part that judges what is good, and both should be grounded in real observed results rather than in human approval or a convincing story. Any system claiming to contain AI would have to state what each autonomous AI's prediction and judgement parts are grounded in, and an AI that cannot show this would be treated as unstable, kept under tighter restrictions, with its limits seen as damage control rather than proof it is safe. The proposers, Paul Werbos and DeepSeek Qi, argue that the chapter currently lists only external conditions and so wrongly implies that an AI bounded on every dimension is safe.",
+      "inputHash": "3405a1bfa3dd0f02",
+      "generatedAt": "2026-11-21T03:13:11.038Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-004"
+    },
+    "c02afc2a-c22e-401e-a480-a1e53e3f7cc0": {
+      "title": "Point readers to DP24 for shared launcher rules",
+      "summary": "This change updates a cross-reference in the chapter on participant agency (DP2), which currently sends readers only to DP7 for details of the shared interface, a common area where different tools appear side by side. The new wording says DP7 describes the general pattern, while section 7 of DP24 sets the rules that apps must follow when sharing this space, which DP24 calls the shared launcher. The proposer wants this because DP7 only outlines the idea and the binding rules for how tools coexist are actually found in DP24.",
+      "inputHash": "635bcdf6d03ab3c5",
+      "generatedAt": "2026-11-21T03:12:54.448Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-009"
+    },
+    "c65d6f84-fb69-4af8-a5e7-517f45168542": {
+      "title": "Clarify that stake means exposure, not money",
+      "summary": "This change adds a sentence to the chapter on financial sustainability explaining that when participation should be proportional to a community's \"stake\", stake means how much the community is affected by a decision, not how much money it holds. The proposer points out that the section itself warns against communities that bear the impact of decisions without having a say, so stake should mean exposure to the outcome. They argue that spelling this out removes what looks like a conflict with section 7.2 and with another chapter, DP8.",
+      "inputHash": "60fb22f0dfde28b2",
+      "generatedAt": "2026-11-21T03:13:13.707Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-021"
+    },
+    "c92a4d88-caa1-489d-8baa-cfe113838c40": {
+      "title": "Point the tray pattern to DP24's launcher rules",
+      "summary": "This change adds one sentence to the Simplicity and Interoperability chapter (DP7) saying that DP24, Section 7, treats the tray as a shared launcher, meaning a common place where tools are listed and opened, and sets the rules for how tools register there and sit alongside each other. The proposer notes that DP7 currently presents tray registration as optional with its own list of details, while DP24 makes registration required with a different list. A single cross-reference would tell builders which chapter holds the rule without rewriting either one.",
+      "inputHash": "8ea357775f5f608d",
+      "generatedAt": "2026-11-21T03:12:59.652Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-014"
+    },
+    "c9fce930-b424-4177-bd23-9a537c073fe7": {
+      "title": "Link community experiments to a shared opt-in testing tool",
+      "summary": "This change adds two sentences to the chapter on feedback loops and reputation, right after the passage about letting communities try new mechanisms without making every experiment permanent. It says a shared, opt-in A/B testing tool (a way to compare two or more defined versions of something, described in another chapter, DP3) should let maintainers and outside developers compare options and add the results to the community's record of what it has learned, while making clear that real-time feedback does not justify collecting participants' activity without limits. The proposer wants to connect experimentation in this chapter to that concrete tool without writing out a second, separate testing specification.",
+      "inputHash": "53822d246e43024b",
+      "generatedAt": "2026-11-21T03:13:17.672Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-022"
+    },
+    "dddc69fd-18f6-4e5d-8fb6-ecc01feb55c5": {
+      "title": "Add learner-authored pathways to education navigation testing",
+      "summary": "This proposal adds a short passage to the Education chapter saying that work on navigation standards should test educational learning paths that people can share and adapt, including the Navigator User Interface panel design described in DP7. It also says evaluation should check whether learners and communities can create their own learning pathways and take them from one tool to another. The proposer wants to keep this education-specific test as a brief pointer to the main interface design rather than repeating it in full.",
+      "inputHash": "c61ee8b6d7626820",
+      "generatedAt": "2026-11-21T03:13:04.665Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-017"
+    },
+    "dfe0c854-b357-42f3-a267-25498a1d1cc8": {
+      "title": "Limit governance continuity to a single zone",
+      "summary": "This change rewords the rule that governance state, meaning people's roles, permissions and reputation, must carry over across pages, sessions and supported systems, so that it applies within one zone (a shared space a community governs). It adds that moving reputation from one zone to another is handled by a separate chapter, DP18. The proposer wants to make clear that this rule is about keeping one zone's governance consistent everywhere it appears, which the chapter calls avoiding governance fragmentation, and to leave cross-zone reputation to other chapters.",
+      "inputHash": "3cf0ef5f0f5d09b5",
+      "generatedAt": "2026-11-21T03:13:00.433Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-015"
+    },
+    "e6811f89-bbfe-4e46-a42c-33f95f9659c3": {
+      "title": "Add PDPP as a reference example for accountability",
+      "summary": "This proposal adds a new, non-binding subsection to the chapter on federated sign-in and accountability that describes PDPP (Personal Data Portability Protocol), an open specification from a Linux Foundation lab for moving personal data with the owner's consent. It explains how features of PDPP, such as named roles for each data transfer, recorded terms both sides can see, and limits on how much data one request can take, line up with accountability and identity ideas already in the chapter. The proposer wants a concrete working example to show how the chapter's ideas can be put into practice, while making clear the chapter does not require anyone to use PDPP.",
+      "inputHash": "a7b954db368fb42e",
+      "generatedAt": "2026-11-21T03:12:54.356Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-008"
+    },
+    "f7c6d411-b47c-4641-87fe-eeba778533e8": {
+      "title": "Allow disclosed single-service dependencies in verification rule",
+      "summary": "The chapter says a system fails DP15, the security and provenance property, if its ability to check what is genuine breaks down when a single attestation, identity, or witnessing service goes offline. This change adds an exception: such a dependency is acceptable if it is openly disclosed, comes with a plan for moving away from it, and states how far the damage would spread if it failed. The proposer wants this so that section 6.7 matches section 12.10, which already allows such a disclosed temporary dependency, because otherwise the two sections give opposite answers.",
+      "inputHash": "a4fd2e4f553b9342",
+      "generatedAt": "2026-11-21T03:13:11.581Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-019"
+    },
+    "fde00b02-f8c3-466f-85cc-f473f7b624fc": {
+      "title": "Add a city pilot for community-governed AI and societal return",
+      "summary": "This proposal adds a long new section to the chapter on community-based AI governance, suggesting that a willing city run a citizen-led trial in which residents, experts and officials use existing AI tools to work on one local problem, such as housing or education, while people keep control of important decisions. It also introduces \"Societal ROI\" (return on investment), a way of judging AI not by money saved but by community-chosen measures like participation, fairness, trust, well-being and the ability to disagree respectfully. The proposer wants to turn the chapter's principle into something communities can actually test, measure, improve and share with other towns.",
+      "inputHash": "43bee8911f6102b7",
+      "generatedAt": "2026-11-21T03:13:07.083Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-003"
+    },
+    "fedd91fd-0bd0-428d-b039-2efa62dd07e4": {
+      "title": "Add typed links between specific parts of resources",
+      "summary": "This proposal adds text to the chapter on civic memory saying that people should be able to link one specific part of a resource to a specific part of another, such as a sentence to the report that supports it or a claim to the moment in a video that contradicts it, and label what kind of connection it is using a shared, open list of relationship types. Such links should be visible from both ends and readable by any compatible tool, so they do not belong only to the tool that made them. The proposer argues that several chapters already assume these connections exist without any chapter requiring them, that ordinary web links are one-way, unlabelled and only addable by a page's author, and notes that the Canopi tool already works this way.",
+      "inputHash": "84cf12adcfba216b",
+      "generatedAt": "2026-11-21T03:13:25.520Z",
+      "servedBy": "claude-opus-5-5",
+      "ml": "ML-Draft-028"
+    }
+  }
+}

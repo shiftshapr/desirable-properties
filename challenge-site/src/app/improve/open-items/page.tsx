@@ -5,6 +5,8 @@ import { dpDetailHref } from '@/lib/dp-links';
 import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { loadOpenItems, type OpenItem, type OpenItemsDoc } from '@/lib/dp-v11-open-items.server';
+import { padHref } from '@/lib/pads/proposal-pad-core';
+import { storedTitle } from '@/lib/pads/proposal-pad.server';
 
 export const revalidate = 120;
 
@@ -51,7 +53,9 @@ function reviewHref(doc: OpenItemsDoc, item?: OpenItem): string | null {
 }
 
 function ItemRow({ doc, item }: { doc: OpenItemsDoc; item: OpenItem }) {
-  const href = reviewHref(doc, item) || `/steering/${encodeURIComponent(doc.mlNumber)}`;
+  const href = padHref(item.id);
+  const review = reviewHref(doc, item);
+  const title = storedTitle(item.id);
   return (
     <li className="rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2.5">
       <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
@@ -66,11 +70,22 @@ function ItemRow({ doc, item }: { doc: OpenItemsDoc; item: OpenItem }) {
         <span className="ml-auto shrink-0 text-slate-500">{shortDate(item.createdAt)}</span>
       </span>
       <Link href={href} className="mt-1 block text-sm text-slate-200 hover:text-white">
+        {title ? <span className="font-medium text-white">{title}: </span> : null}
         {snippet(item.proposedText || item.rationale) || 'Proposal'}
       </Link>
-      <span className="mt-0.5 block text-xs text-slate-500">
-        {item.authorName}
-        {item.approvals ? ` · ${item.approvals} co-editor ${item.approvals === 1 ? 'approval' : 'approvals'} so far` : ''}
+      <span className="mt-0.5 flex flex-wrap gap-x-3 text-xs text-slate-500">
+        <span>
+          {item.authorName}
+          {item.approvals ? ` · ${item.approvals} co-editor ${item.approvals === 1 ? 'approval' : 'approvals'} so far` : ''}
+        </span>
+        <Link href={href} className="text-cyan-300 hover:text-cyan-200">
+          Open pad
+        </Link>
+        {review ? (
+          <Link href={review} className="text-cyan-300 hover:text-cyan-200">
+            Review tab
+          </Link>
+        ) : null}
       </span>
     </li>
   );
