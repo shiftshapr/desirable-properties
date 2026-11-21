@@ -162,7 +162,15 @@ interface HermesChatProps {
   starterLabel?: string | null;
   /** Server-side landingPadsEnabled(); off hides pad origins and never tags threads with a pad surface. */
   landingPads?: boolean;
+  /**
+   * Page context sent with every message (e.g. a session's summary, ballot and transcript), so Deepi answers about
+   * this page. Shared shape with the proposal pads: { title, text }.
+   */
+  context?: HermesChatContext | null;
 }
+
+/** Page context for Deepi: a title and plain text. Sent as `context` on /api/agent/chat. */
+export type HermesChatContext = { title: string; text: string };
 
 const INTRO = DP_COMMUNITY_AI_INTRO;
 
@@ -555,7 +563,13 @@ export default function HermesChat({
   starterPrompts = null,
   starterLabel = null,
   landingPads = false,
+  context = null,
 }: HermesChatProps) {
+  // Read at send time, so callbacks keep their dependencies.
+  const contextRef = useRef<HermesChatContext | null>(context);
+  useEffect(() => {
+    contextRef.current = context;
+  }, [context]);
   const { user: authUser, checked, login, loginBusy } = useAuth();
   const searchParams = useSearchParams();
   const archiveView = searchParams.get('archive') === '1';
@@ -1508,6 +1522,7 @@ export default function HermesChat({
           sessionId,
           threadId: threadIdToSend,
           dpFocus,
+          context: contextRef.current ?? undefined,
         }),
         signal: abortController.signal,
       });
@@ -1651,6 +1666,7 @@ export default function HermesChat({
           sessionId,
           threadId: activeThreadIdRef.current,
           dpFocus,
+          context: contextRef.current ?? undefined,
           skipMemoryRecord: true,
         }),
         signal: abortController.signal,
@@ -1744,6 +1760,7 @@ export default function HermesChat({
           sessionId,
           threadId,
           dpFocus,
+          context: contextRef.current ?? undefined,
         }),
         signal: abortController.signal,
       });
@@ -1861,6 +1878,7 @@ export default function HermesChat({
             sessionId,
             threadId: threadIdToSend,
             dpFocus,
+            context: contextRef.current ?? undefined,
           }),
           signal: abortController.signal,
         });
@@ -2827,12 +2845,14 @@ export default function HermesChat({
 
   return (
     <div className={shellClass}>
-      {/* Desktop sidebar – fixed to viewport left, full height below site header */}
-      <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
-        <div className="pointer-events-auto flex h-full flex-col">
-          {sidebar}
+      {/* Desktop sidebar – fixed to viewport left, full height below site header. Not when embedded (compact). */}
+      {compact ? null : (
+        <div className="pointer-events-none fixed inset-y-0 left-0 z-30 hidden w-[260px] md:block lg:w-[280px]">
+          <div className="pointer-events-auto flex h-full flex-col">
+            {sidebar}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile sidebar overlay */}
       {sidebarOpen ? (

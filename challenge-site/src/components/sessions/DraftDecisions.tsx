@@ -1,18 +1,23 @@
 import type { MetaGovTurn } from '@/lib/meta-governance-2026-11-16-event';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import { Inline } from './DraftText';
+import SessionCollapsible from './SessionCollapsible';
 import SessionLabel from './SessionLabel';
 
-/** The decisions the meeting raised, with the options developed for each. */
-export default function DraftDecisions({ decisions, turns }: { decisions: SessionDraft['decisions']; turns: MetaGovTurn[] }) {
+/** "Origins of the voting questions": the decisions the meeting raised, with the options developed for each. */
+export default function DraftDecisions({
+  decisions,
+  turns,
+  title = 'Origins of the voting questions',
+}: {
+  decisions: SessionDraft['decisions'];
+  turns: MetaGovTurn[];
+  title?: string;
+}) {
   return (
-    <div id="draft-decisions" className="scroll-mt-24">
-      <h3 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-white">
-        Decisions and options <SessionLabel kind="Claude synthesis" />
-      </h3>
-      <p className="mt-2 text-sm text-slate-400">
-        Options are labelled <em>Participant proposal</em> where the record attributes them to a participant.
-        Timestamps link to the transcript.
+    <SessionCollapsible id="draft-decisions" level={3} title={title} badge={<SessionLabel kind="Claude synthesis" />}>
+      <p className="text-sm text-slate-400">
+        The questions the meeting raised and the options for each. Timestamps link to the transcript.
       </p>
       <ol className="mt-4 space-y-5">
         {decisions.map((d) => (
@@ -36,6 +41,6 @@ export default function DraftDecisions({ decisions, turns }: { decisions: Sessio
           </li>
         ))}
       </ol>
-    </div>
+    </SessionCollapsible>
   );
 }

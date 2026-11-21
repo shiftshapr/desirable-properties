@@ -1,14 +1,19 @@
 import type { SessionDraft } from '@/lib/sessions/session-draft';
+import SessionCollapsible from './SessionCollapsible';
 import SessionLabel from './SessionLabel';
 
 /** Draft ballot questions as sent for review; the corrected ballot is in SessionBallot. */
-export default function DraftBallot({ ballot }: { ballot: SessionDraft['ballot'] }) {
+export default function DraftBallot({
+  ballot,
+  title = 'Draft ballot questions',
+}: {
+  ballot: SessionDraft['ballot'];
+  /** Meeting-specific: sessionSectionLabels(meeting).draftBallot. */
+  title?: string;
+}) {
   return (
-    <div id="draft-ballot" className="scroll-mt-24">
-      <h3 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-white">
-        Draft ballot questions <SessionLabel kind="Claude synthesis" />
-      </h3>
-      <p className="mt-3 rounded-lg border border-amber-700/50 bg-amber-950/30 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-amber-200">
+    <SessionCollapsible id="draft-ballot" level={3} title={title} badge={<SessionLabel kind="Claude synthesis" />}>
+      <p className="rounded-lg border border-amber-700/50 bg-amber-950/30 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-amber-200">
         {ballot.header}
       </p>
       <ol className="mt-4 space-y-4">
@@ -31,6 +36,6 @@ export default function DraftBallot({ ballot }: { ballot: SessionDraft['ballot']
           </li>
         ))}
       </ol>
-    </div>
+    </SessionCollapsible>
   );
 }

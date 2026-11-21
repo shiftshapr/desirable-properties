@@ -32,7 +32,12 @@ export type PhaseEntry = {
 
 export type SessionOccurrence = {
   slug: string;
+  /** Series name, e.g. "DP Meta-Governance: Creating a Living Book Together". */
   title: string;
+  /** What this meeting was about, e.g. "Meeting agreements: how we decide". Shown as the page title. */
+  meetingTitle: string;
+  /** Calendar date of the meeting, yyyy-mm-dd (Pacific). */
+  date: string;
   heldFrom: string;
   heldTo: string;
   /** When the draft for review becomes visible (the verification opening time). Enforced server-side. */
@@ -74,6 +79,71 @@ export function phaseRows(occurrence: SessionOccurrence, now: Date): { rows: Pha
     pending: pending.get(phase),
   }));
   return { rows, current: currentIndex >= 0 ? SESSION_PHASES[currentIndex] : null };
+}
+
+/**
+ * Where each phase step in the tracker links on a session page. Every session page uses these ids; a page can
+ * override one (for example when it has a results section). "Voting open" always jumps to the vote.
+ */
+export const DEFAULT_PHASE_ANCHORS: Record<SessionPhase, string> = {
+  'Preparing the draft': 'summary',
+  'Community verification open': 'draft',
+  'Community verification closed': 'draft',
+  'Council screening': 'draft-ballot',
+  'Ready for voting': 'vote',
+  'Voting open': 'vote',
+  'Decision recorded': 'vote',
+  'Implementation and follow-up': 'draft-process-text',
+};
+
+/** Phase colour: one accent per phase family, used by the tracker, the sticky header and the call to action. */
+export type PhaseTone = 'draft' | 'review' | 'screen' | 'vote' | 'decided';
+
+export function phaseTone(phase: SessionPhase | null): PhaseTone {
+  switch (phase) {
+    case 'Community verification open':
+    case 'Community verification closed':
+      return 'review';
+    case 'Council screening':
+      return 'screen';
+    case 'Ready for voting':
+    case 'Voting open':
+      return 'vote';
+    case 'Decision recorded':
+    case 'Implementation and follow-up':
+      return 'decided';
+    default:
+      return 'draft';
+  }
+}
+
+/** The current phase's call to action, shown open under the tracker. */
+export function phaseCallToAction(
+  phase: SessionPhase | null,
+  opts: { closesLabel?: string } = {},
+): { text: string; label: string; anchor: string } | null {
+  switch (phase) {
+    case 'Preparing the draft':
+      return { text: 'Claude is drafting the summary and ballot from the transcript.', label: 'Read the summary', anchor: 'summary' };
+    case 'Community verification open':
+      return { text: 'Check the meeting draft is fair and send corrections.', label: 'Review the draft', anchor: 'draft' };
+    case 'Community verification closed':
+    case 'Council screening':
+      return { text: 'Corrections are being reconciled into the ballot.', label: 'See the draft', anchor: 'draft' };
+    case 'Ready for voting':
+      return { text: 'The ballot is ready and opens soon.', label: 'See the ballot', anchor: 'vote' };
+    case 'Voting open':
+      return {
+        text: opts.closesLabel ? `Voting is open until ${opts.closesLabel}.` : 'Voting is open.',
+        label: 'Go to the vote',
+        anchor: 'vote',
+      };
+    case 'Decision recorded':
+    case 'Implementation and follow-up':
+      return { text: 'The vote has closed. Results are on the ballot.', label: 'See the results', anchor: 'vote' };
+    default:
+      return null;
+  }
 }
 
 export function isDraftVisible(occurrence: SessionOccurrence, now: Date): boolean {

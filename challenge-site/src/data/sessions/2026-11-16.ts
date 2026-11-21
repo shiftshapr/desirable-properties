@@ -10,6 +10,8 @@ import type { SessionOccurrence } from '@/lib/sessions/session-phases';
 export const SESSION_2026_11_16: SessionOccurrence = {
   slug: 'meta-governance-2026-11-16',
   title: 'DP Meta-Governance: Creating a Living Book Together',
+  meetingTitle: 'Meeting agreements: how we decide',
+  date: '2026-11-16',
   heldFrom: '2026-11-16T18:01:00Z',
   heldTo: '2026-11-16T19:29:00Z',
   draftVisibleAt: '2026-11-17T15:00:00Z',

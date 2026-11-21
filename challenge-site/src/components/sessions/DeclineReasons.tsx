@@ -7,6 +7,7 @@ import {
   DECLINES_ROUND,
   DECLINES_TOTALS as T,
 } from '@/data/sessions/2026-11-16-declines';
+import SessionCollapsible from './SessionCollapsible';
 import SessionLabel from './SessionLabel';
 
 const linkClass = 'text-cyan-300 hover:text-cyan-200';
@@ -24,15 +25,12 @@ export default function DeclineReasons({ correctionsEmail }: { correctionsEmail:
   )}`;
 
   return (
-    <section id="declines" aria-labelledby="declines-heading" className="scroll-mt-24">
-      <h2
-        id="declines-heading"
-        className="flex flex-wrap items-center gap-3 border-b border-slate-800 pb-2 text-2xl font-bold text-white"
-      >
-        Why proposals were declined or deferred in Version 1.0 <SessionLabel kind="Claude synthesis" />
-      </h2>
-
-      <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-300 sm:text-lg">
+    <SessionCollapsible
+      id="declines"
+      title="Why proposals were declined or deferred in Version 1.0"
+      badge={<SessionLabel kind="Claude synthesis" />}
+    >
+      <div className="space-y-4 text-base leading-relaxed text-slate-300">
         <p>
           Benn Konsynski asked for this in the session (
           <a href="#t-1396" className={linkClass}>
@@ -116,6 +114,6 @@ export default function DeclineReasons({ correctionsEmail }: { correctionsEmail:
           with the proposal and the category you would expect.
         </p>
       </div>
-    </section>
+    </SessionCollapsible>
   );
 }
