@@ -19,6 +19,7 @@ import type {
 } from '@/lib/workgroup-review-types';
 import { STYLE_GUIDE, STYLE_GUIDE_VERSION } from '@/data/dp-style-guide';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
+import { padHref } from '@/lib/pads/proposal-pad-core';
 
 type Props = {
   workgroupId: string;
@@ -613,6 +614,11 @@ export default function WorkgroupReviewPanel({
                 <DiscussPatchLink href={item.hrefs.book} className="text-cyan-300 hover:text-cyan-200">
                   Open on book Discuss
                 </DiscussPatchLink>
+              ) : null}
+              {item.govhubProposalId ? (
+                <a href={padHref(item.govhubProposalId)} className="text-cyan-300 hover:text-cyan-200">
+                  Open pad
+                </a>
               ) : null}
 {/* Gov Hub buttons hidden for now (owner, 2026-10-19: people find them confusing).
               {item.hrefs.govhub ? (

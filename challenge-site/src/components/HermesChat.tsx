@@ -99,6 +99,7 @@ import {
   HERMES_DOC_ACCEPT,
   HERMES_DOC_MAX_COUNT,
   HERMES_DOC_TYPES_LABEL,
+  type HermesDocumentPayload,
   type PendingHermesDocument,
   readHermesDocument,
   toDocumentPayload,
@@ -162,6 +163,29 @@ interface HermesChatProps {
   starterLabel?: string | null;
   /** Server-side landingPadsEnabled(); off hides pad origins and never tags threads with a pad surface. */
   landingPads?: boolean;
+  /**
+   * Scoped chat (a proposal pad): this Markdown is sent with every message as a document, so Deepi answers about
+   * it. A scoped chat starts on a new thread instead of reopening the last one.
+   */
+  contextDocument?: { name: string; text: string } | null;
+}
+
+function utf8ToBase64(text: string): string {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(binary);
+}
+
+/** The context document first, unless the person already attached the most documents a message takes. */
+function withContextDocument(
+  docs: HermesDocumentPayload[],
+  context: { name: string; text: string } | null | undefined,
+): HermesDocumentPayload[] {
+  if (!context?.text || docs.length >= HERMES_DOC_MAX_COUNT) return docs;
+  return [{ name: context.name, contentBase64: utf8ToBase64(context.text) }, ...docs];
 }
 
 const INTRO = DP_COMMUNITY_AI_INTRO;
@@ -555,8 +579,13 @@ export default function HermesChat({
   starterPrompts = null,
   starterLabel = null,
   landingPads = false,
+  contextDocument = null,
 }: HermesChatProps) {
   const { user: authUser, checked, login, loginBusy } = useAuth();
+  const contextDocumentRef = useRef(contextDocument);
+  useEffect(() => {
+    contextDocumentRef.current = contextDocument;
+  }, [contextDocument]);
   const searchParams = useSearchParams();
   const archiveView = searchParams.get('archive') === '1';
   const threadUrlParam = normalizeHermesThreadId(searchParams.get('thread')?.trim() || null);
@@ -1029,7 +1058,7 @@ export default function HermesChat({
   }, [signedIn, loadThreads]);
 
   useEffect(() => {
-    if (!signedIn || threadUrlParam || userPickedThreadRef.current) return;
+    if (!signedIn || threadUrlParam || userPickedThreadRef.current || contextDocumentRef.current) return;
     void (async () => {
       const saved = normalizeHermesThreadId(
         typeof sessionStorage !== 'undefined'
@@ -1501,7 +1530,7 @@ export default function HermesChat({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: trimmed,
-          documents: [],
+          documents: withContextDocument([], contextDocumentRef.current),
           history: historyFromMessages(priorMessages),
           realm: DP_COMMUNITY_AI_REALM,
           surface,
@@ -1645,7 +1674,7 @@ export default function HermesChat({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: CONTINUE_PROMPT,
-          documents: [],
+          documents: withContextDocument([], contextDocumentRef.current),
           history: historyFromMessages([...historyPrior, assistantMsg]),
           surface,
           sessionId,
@@ -1738,7 +1767,7 @@ export default function HermesChat({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMsg.text,
-          documents: [],
+          documents: withContextDocument([], contextDocumentRef.current),
           history: historyFromMessages(historyPrior),
           surface,
           sessionId,
@@ -1855,7 +1884,7 @@ export default function HermesChat({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: text,
-            documents: toDocumentPayload(docsToSend),
+            documents: withContextDocument(toDocumentPayload(docsToSend), contextDocumentRef.current),
             history: historyFromMessages(priorMessages),
             surface,
             sessionId,
