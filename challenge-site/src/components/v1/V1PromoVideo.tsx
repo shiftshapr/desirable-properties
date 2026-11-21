@@ -34,7 +34,7 @@ export default function V1PromoVideo({ video, className = '' }: { video: Video; 
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={youtubeThumbUrl(id)}
+              src={video.poster ?? youtubeThumbUrl(id)}
               alt=""
               loading="lazy"
               decoding="async"

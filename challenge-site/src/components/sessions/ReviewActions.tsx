@@ -21,12 +21,8 @@ export default function ReviewActions() {
         </a>
       </div>
       <p className="mt-3 text-sm text-slate-300">
-        For this first session, comments are made in the Google Doc and will be brought into this page. Flag a
-        misattribution, a missing objection, an incorrect fact, unfair wording or an omitted option. New proposals are
-        welcome too and are kept apart from corrections to the record.
-      </p>
-      <p className="mt-2 text-sm text-slate-400">
-        Commenting and voting on this page are being built (status: proposed). They are not available yet.
+        Flag a misattribution, a missing objection, a wrong fact, unfair wording or a missing option. New proposals
+        are kept apart from corrections.
       </p>
     </div>
   );

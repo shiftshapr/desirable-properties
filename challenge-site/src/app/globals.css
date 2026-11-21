@@ -164,3 +164,26 @@ html[data-canopi-embed-host="1"] #canopi-overlay-root .canopi-sidebar-frame {
   .dp-waitlist-backdrop,
   .dp-waitlist-card { animation: none; }
 }
+
+/*
+ * Session pages (components/sessions/SessionPageShell): larger body text, line height 1.6 and stronger contrast
+ * (usability walk-through, 20 Nov 2026). Scoped to `.session-page`, so other pages are unchanged. Colour overrides
+ * skip :hover and :focus-visible so hover colours still apply.
+ */
+.session-page { font-size: 1.0625rem; line-height: 1.6; }
+.session-page .text-base { font-size: 1.0625rem; line-height: 1.6; }
+.session-page .text-sm { font-size: 1rem; line-height: 1.55; }
+.session-page .text-xs { font-size: 0.875rem; line-height: 1.45; }
+@media (min-width: 640px) {
+  .session-page,
+  .session-page .text-base { font-size: 1.125rem; }
+}
+.session-page .text-slate-400:not(:hover):not(:focus-visible) { color: var(--color-slate-300); }
+.session-page .text-slate-500:not(:hover):not(:focus-visible) { color: var(--color-slate-400); }
+.session-page .text-slate-600:not(:hover):not(:focus-visible) { color: var(--color-slate-400); }
+.session-page .leading-relaxed { line-height: 1.6; }
+/* Room for the compact sticky header; sections add their own scroll-mt for the site header. */
+:root:has(.session-page) { scroll-padding-top: 3.75rem; }
+@media (prefers-reduced-motion: no-preference) {
+  :root:has(.session-page) { scroll-behavior: smooth; }
+}

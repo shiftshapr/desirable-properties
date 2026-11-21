@@ -3,12 +3,15 @@ import { readSession } from '@/lib/auth-session';
 import { effectiveStatus, type BallotDefinition } from '@/lib/ballots/ballot-core';
 import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { pacificAndUtc } from '@/lib/sessions/session-phases';
+import SessionCollapsible from './SessionCollapsible';
 
 type Props = {
   ballot: BallotDefinition;
   /** Staging or local host with a non-production DP_ENV (session-phases previewAllowed). */
   staging: boolean;
   id?: string;
+  /** Meeting-specific heading (sessionSectionLabels(meeting).vote). */
+  heading?: string;
 };
 
 /**
@@ -18,7 +21,7 @@ type Props = {
  * - Closed: votes are no longer accepted; results follow once published.
  * - Published: the counts per question.
  */
-export default async function SessionBallot({ ballot, staging, id = 'vote' }: Props) {
+export default async function SessionBallot({ ballot, staging, id = 'vote', heading = 'Vote' }: Props) {
   const override = await getBallotOverride(ballot.slug).catch(() => null);
   const status = effectiveStatus(ballot, override, new Date());
   if (status === 'not_open' && !staging) return null;
@@ -29,7 +32,7 @@ export default async function SessionBallot({ ballot, staging, id = 'vote' }: Pr
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-24">
       <h2 id={`${id}-heading`} className="border-b border-slate-800 pb-2 text-2xl font-bold text-white">
-        Vote
+        {heading}
       </h2>
       {staging ? (
         <p className="mt-4 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
@@ -47,14 +50,14 @@ export default async function SessionBallot({ ballot, staging, id = 'vote' }: Pr
               : 'Voting has closed. The results are below.'}{' '}
         {status === 'published' ? null : <>Closes {pacificAndUtc(closesAt)}.</>}
       </p>
-      <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3">
-        <h3 className="text-base font-semibold text-white">Rules for this ballot</h3>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-300">
+      {/* The same every time: closed by default, only the title shows. */}
+      <SessionCollapsible id={`${id}-rules`} title="Rules for this ballot" level={3} className="mt-4">
+        <ul className="list-disc space-y-1 pl-5 text-sm text-slate-300">
           {ballot.rules.map((r) => (
             <li key={r}>{r}</li>
           ))}
         </ul>
-      </div>
+      </SessionCollapsible>
       <SessionBallotPanel
         ballot={ballot}
         status={status}

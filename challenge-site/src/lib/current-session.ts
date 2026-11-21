@@ -15,7 +15,10 @@ import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
  * the menu, the front page and /events follow. V1 DP Roundups and the launch are never "current".
  */
 export type CurrentSession = {
+  /** Series title (unchanged: menus and emails use it). */
   title: string;
+  /** What this meeting is about, when set ("Meeting agreements: how we decide"). */
+  meetingTitle: string | null;
   date: string;
   /** "Monday, November 16, 2026" */
   dateLabel: string;
@@ -76,6 +79,7 @@ export function currentSession(
   const href = event.pageHref ?? event.href;
   return {
     title: event.title,
+    meetingTitle: event.meetingTitle,
     date: event.date,
     dateLabel: roundupDateLabel(event.startsAt),
     startLabel: pacificStartLabel(event.startsAt),

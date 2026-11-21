@@ -4,6 +4,24 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "session-page-ux-2026-11-21",
+      "date": "2026-11-21",
+      "status": "open",
+      "title": "Session pages: easier to read, collapsible sections, meeting titles, sticky header and Ask Deepi",
+      "summary": "Changes from the usability walk-through of 20 Nov 2026 (items 1 and 3 to 14), built into the shared session components so the 16 Nov page, /roundups/2026-11-23 and every later session page get them. Body text is 17 to 18px with line height 1.6 and stronger contrast. Each session now has a specific meeting title next to its series (16 Nov: \"Meeting agreements: how we decide\"), and section headings carry the meeting's date and title (\"Transcript: Monday 16 Nov 2026, Meeting agreements: how we decide\", \"Meeting draft: 16 Nov 2026, …, for review\"). Breadcrumbs (Sessions › date › title) sit at the top, and a compact header with the date, title and current phase appears on scroll. Every phase-tracker step links to its section with smooth scrolling; \"Voting open\" jumps to the vote, and the current phase's call to action stays open. The ballot rules, the origins of the voting questions (was \"Decisions and options\"), the draft ballot questions, how this meeting changed the process page (was \"Corrected process text\"), the meeting summary (with decisions coming up), the declines analysis and the transcript start closed; links to any anchor inside them open them. The V1 promo is now \"Share the platform\", marked as not specific to the meeting, in its own panel, with the videos side by side on desktop and a real poster for the teaser. Deepi (the site's AI chat) is on the session page, scoped to the meeting's summary, ballot and transcript; the signed-in session chat is unchanged. All existing anchors (#vote, #watch-v1, #summary, #decisions, #open-questions, #draft, #transcript, #t-…) still work.",
+      "changes": [
+        "challenge-site/src/components/sessions/SessionPageShell.tsx, SessionBreadcrumbs.tsx, SessionStickyHeader.tsx, SessionAnchors.tsx, SessionCollapsible.tsx, phase-tone.ts: shared session frame, collapsible sections and deep links",
+        "challenge-site/src/app/globals.css: .session-page type size, line height and contrast; scroll offset and smooth scrolling",
+        "challenge-site/src/lib/sessions/session-labels.ts: meeting-specific labels; src/lib/sessions/session-phases.ts: meetingTitle and date, phase anchors, phase colour, call to action",
+        "challenge-site/src/lib/dp-roundups.ts, src/lib/current-session.ts, src/data/sessions/2026-11-16.ts: meetingTitle, seriesTitle, thisWeek and seriesAbout",
+        "challenge-site/src/components/sessions/PhaseTracker.tsx, SessionBallot.tsx, DraftForReview.tsx, DraftDecisions.tsx, DraftBallot.tsx, ProcessTextDraft.tsx, SessionSummary.tsx, DeclineReasons.tsx, HowThisWorks.tsx, ReviewActions.tsx, SessionChat.tsx: links, labels, collapsed by default, shorter intros",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx, src/app/roundups/[date]/page.tsx: built on the shared frame",
+        "challenge-site/src/components/v1/V1Promo.tsx, V1PromoVideo.tsx, src/data/v1-promo.ts, public/video/v1-launch/layered-web-v1-teaser-poster.jpg: Share the platform, separate panel, video grid, teaser poster",
+        "challenge-site/src/components/sessions/SessionAskDeepi.tsx, SessionAskDeepiChat.tsx, src/lib/sessions/session-deepi-context.ts, src/components/HermesChat.tsx (context prop; no fixed sidebar when compact), src/app/api/agent/chat/route.ts (forwards context, also as a document): Deepi scoped to the session",
+        "challenge-site/scripts/current-session.test.mjs: meeting titles, labels, phase anchors, Deepi context"
+      ]
+    },
+    {
       "id": "v11-open-items-2026-11-20",
       "date": "2026-11-20",
       "status": "open",

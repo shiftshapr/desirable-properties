@@ -1,16 +1,22 @@
 import type { MetaGovTurn } from '@/lib/meta-governance-2026-11-16-event';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import { Blocks, Inline } from './DraftText';
+import SessionCollapsible from './SessionCollapsible';
 import SessionLabel from './SessionLabel';
 
 /** The process text with suggested insertions and deletions marked. Nothing in it is in force. */
-export default function ProcessTextDraft({ text, turns }: { text: SessionDraft['processText']; turns: MetaGovTurn[] }) {
+export default function ProcessTextDraft({
+  text,
+  turns,
+  title = 'How this meeting changed the process page',
+}: {
+  text: SessionDraft['processText'];
+  turns: MetaGovTurn[];
+  title?: string;
+}) {
   return (
-    <div id="draft-process-text" className="scroll-mt-24">
-      <h3 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-white">
-        Corrected process text, for community review <SessionLabel kind="Claude synthesis" />
-      </h3>
-      <p className="mt-3 text-base">
+    <SessionCollapsible id="draft-process-text" level={3} title={title} badge={<SessionLabel kind="Claude synthesis" />}>
+      <p className="text-base">
         <Inline text={text.intro} turns={turns} />
       </p>
       <p className="mt-3 flex flex-wrap gap-3 text-sm text-slate-400">
@@ -21,6 +27,6 @@ export default function ProcessTextDraft({ text, turns }: { text: SessionDraft['
       <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-4 text-base">
         <Blocks text={text.body} turns={turns} />
       </div>
-    </div>
+    </SessionCollapsible>
   );
 }
