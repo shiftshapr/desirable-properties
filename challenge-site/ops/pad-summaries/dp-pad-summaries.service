@@ -1,0 +1,14 @@
+# Write plain-language summaries for new or edited proposal pads into dp_pad_summary (production, box1).
+# Installed by install.sh as a systemd user unit; started by dp-pad-summaries.timer.
+# The key and database URL are read by the script from the app's .env.local (only those keys, never printed).
+[Unit]
+Description=DP proposal pad summaries (new or changed pending proposals)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/desirable-properties/challenge-site
+ExecStart=/usr/bin/env node --no-warnings --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs scripts/generate-proposal-pad-summaries.mjs --db --max 25 --budget 2 --env-file %h/desirable-properties/challenge-site/.env.local
+TimeoutStartSec=45min
+Nice=10

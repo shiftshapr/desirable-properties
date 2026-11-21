@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { loadOpenItems, type OpenItemsDoc } from '@/lib/dp-v11-open-items.server';
 import { padHref, shortId } from '@/lib/pads/proposal-pad-core';
-import { storedTitle } from '@/lib/pads/proposal-pad.server';
+import { storedTitles } from '@/lib/pads/proposal-pad.server';
 import { pageOpenGraph } from '@/lib/site-metadata';
 
 export const revalidate = 120;
@@ -23,7 +23,7 @@ function snippet(text: string, max = 110): string {
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat;
 }
 
-function ProposalPadsSection({ docs }: { docs: OpenItemsDoc[] }) {
+function ProposalPadsSection({ docs, storedTitle }: { docs: OpenItemsDoc[]; storedTitle: (id: string) => string | null }) {
   const withItems = docs.filter((d) => d.items.length);
   const total = withItems.reduce((n, d) => n + d.items.length, 0);
   const missing = docs.filter((d) => !d.loaded);
@@ -89,7 +89,7 @@ function ProposalPadsSection({ docs }: { docs: OpenItemsDoc[] }) {
  * component to this page in the same shape (an id for the #anchor, a heading, a list of links to their pads).
  */
 export default async function PadsIndexPage() {
-  const docs = await loadOpenItems();
+  const [docs, storedTitle] = await Promise.all([loadOpenItems(), storedTitles()]);
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="pb-8">
@@ -106,7 +106,7 @@ export default async function PadsIndexPage() {
         </nav>
       </header>
       <div className="space-y-12">
-        <ProposalPadsSection docs={docs} />
+        <ProposalPadsSection docs={docs} storedTitle={storedTitle} />
       </div>
     </main>
   );

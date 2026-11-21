@@ -21,9 +21,8 @@ import { isCanopiUserId } from '@/lib/dp-canopi-user';
 import { followEmail, statusChanges } from '@/lib/pads/pad-community-core';
 import { padFollowEmailsOn } from '@/lib/pads/pad-settings';
 import { allFollows, markNotified } from '@/lib/pads/pad-store.server';
-import { currentStatuses, PAD_DOCS } from '@/lib/pads/proposal-pad.server';
+import { currentStatuses, PAD_DOCS, storedTitles } from '@/lib/pads/proposal-pad.server';
 import { padHref, shortId } from '@/lib/pads/proposal-pad-core';
-import summaries from '@/data/proposal-pad-summaries.json';
 
 export const PAD_FOLLOW_SWEEP_INTERVAL_MS = 15 * 60_000;
 
@@ -77,6 +76,7 @@ export async function sweepPadFollows(): Promise<{ checked: number; sent: number
     for (const f of follows) byMl.set(f.ml_number, [...(byMl.get(f.ml_number) || []), f]);
     let sent = 0;
     let skipped = 0;
+    const storedTitle = await storedTitles();
     for (const [ml, rows] of byMl) {
       const current = await currentStatuses(ml);
       if (!current) continue;
@@ -89,12 +89,11 @@ export async function sweepPadFollows(): Promise<{ checked: number; sent: number
           await markNotified('proposal', follow.pad_id, follow.user_id, to);
           continue;
         }
-        const stored = (summaries as { items: Record<string, { title?: string }> }).items?.[follow.pad_id];
         const unsubscribeUrl = await unsubscribeUrlFor(follow.user_id, follow.email);
         const mail = followEmail({
           padUrl: `${publicBase()}${padHref(follow.pad_id)}`,
           unsubscribeUrl,
-          padTitle: stored?.title || `Proposal ${shortId(follow.pad_id)}`,
+          padTitle: storedTitle(follow.pad_id) || `Proposal ${shortId(follow.pad_id)}`,
           docLabel,
           to,
           name: follow.display_name,

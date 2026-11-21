@@ -1,0 +1,10 @@
+[Unit]
+Description=DP proposal pad summaries every 6 hours (UTC)
+
+[Timer]
+OnCalendar=*-*-* 00/6:17:00 UTC
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

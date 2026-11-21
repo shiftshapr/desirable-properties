@@ -6,7 +6,7 @@ import { dpWorkgroupSlug } from '@/lib/dp-workgroup-slugs';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { loadOpenItems, type OpenItem, type OpenItemsDoc } from '@/lib/dp-v11-open-items.server';
 import { padHref } from '@/lib/pads/proposal-pad-core';
-import { storedTitle } from '@/lib/pads/proposal-pad.server';
+import { storedTitles } from '@/lib/pads/proposal-pad.server';
 
 export const revalidate = 120;
 
@@ -52,10 +52,9 @@ function reviewHref(doc: OpenItemsDoc, item?: OpenItem): string | null {
   return `/workgroups/${slug}?tab=review${item ? `&proposal=${encodeURIComponent(item.id)}` : ''}`;
 }
 
-function ItemRow({ doc, item }: { doc: OpenItemsDoc; item: OpenItem }) {
+function ItemRow({ doc, item, title }: { doc: OpenItemsDoc; item: OpenItem; title: string | null }) {
   const href = padHref(item.id);
   const review = reviewHref(doc, item);
-  const title = storedTitle(item.id);
   return (
     <li className="rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2.5">
       <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
@@ -92,7 +91,7 @@ function ItemRow({ doc, item }: { doc: OpenItemsDoc; item: OpenItem }) {
 }
 
 export default async function OpenItemsPage() {
-  const docs = await loadOpenItems();
+  const [docs, storedTitle] = await Promise.all([loadOpenItems(), storedTitles()]);
   const withItems = docs.filter((d) => d.items.length);
   const total = withItems.reduce((n, d) => n + d.items.length, 0);
   const reopened = withItems.reduce((n, d) => n + d.items.filter((i) => i.marker === 'reopened_v11').length, 0);
@@ -140,7 +139,7 @@ export default async function OpenItemsPage() {
               </div>
               <ul className="mt-3 space-y-2">
                 {doc.items.map((item) => (
-                  <ItemRow key={item.id} doc={doc} item={item} />
+                  <ItemRow key={item.id} doc={doc} item={item} title={storedTitle(item.id)} />
                 ))}
               </ul>
             </section>
