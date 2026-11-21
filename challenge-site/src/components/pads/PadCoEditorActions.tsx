@@ -41,15 +41,19 @@ export default function PadCoEditorActions({ workgroupId, workgroupSlug, proposa
   useEffect(() => {
     if (!checked || !user || !open || !workgroupId) return;
     let cancelled = false;
-    fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review`, { cache: 'no-store' })
+    // Only co-editors load the Review queue (it is heavy); everyone else sees nothing here.
+    fetch(`/api/pads/proposals/${encodeURIComponent(proposalId)}/viewer?wg=${encodeURIComponent(workgroupId)}`, { cache: 'no-store' })
       .then(async (res) => {
-        if (res.ok && !cancelled) setQueue((await res.json()) as ReviewQueueResponse);
+        const viewer = (await res.json().catch(() => ({}))) as { isCoEditor?: boolean };
+        if (!viewer.isCoEditor || cancelled) return;
+        const q = await fetch(`/api/workgroups/${encodeURIComponent(workgroupId)}/review`, { cache: 'no-store' });
+        if (q.ok && !cancelled) setQueue((await q.json()) as ReviewQueueResponse);
       })
       .catch(() => undefined);
     return () => {
       cancelled = true;
     };
-  }, [checked, user, open, workgroupId]);
+  }, [checked, user, open, workgroupId, proposalId]);
 
   const reviewHref = workgroupSlug ? `/workgroups/${workgroupSlug}?tab=review&proposal=${encodeURIComponent(proposalId)}` : null;
   if (!open || !queue?.isCoEditor) return null;
