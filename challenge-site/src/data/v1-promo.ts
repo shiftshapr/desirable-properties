@@ -13,6 +13,8 @@ export type V1PromoVideo = {
   /** Public watch link (shown as "Watch on YouTube"). */
   watchUrl: string | null;
   aspect: '16:9' | '9:16';
+  /** Local poster image, used instead of YouTube's thumbnail (YouTube has none for some Shorts). */
+  poster?: string;
 };
 
 export type V1PromoPost = { network: string; label: string; url: string };
@@ -40,6 +42,8 @@ export const V1_PROMO_VIDEOS: V1PromoVideo[] = [
     youtubeId: 'AlkUHZ-HwPc',
     watchUrl: 'https://youtube.com/shorts/AlkUHZ-HwPc',
     aspect: '9:16',
+    // i.ytimg.com has no thumbnail for this Short (404, grey placeholder): frame at 0:06 of the final teaser.
+    poster: '/video/v1-launch/layered-web-v1-teaser-poster.jpg',
   },
   {
     // Going up Monday 23 November: fill in youtubeId and watchUrl then.

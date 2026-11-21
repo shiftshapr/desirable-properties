@@ -9,6 +9,8 @@ type Props = {
   /** This page's path, to come back to after signing in. */
   pagePath: string;
   id?: string;
+  /** Meeting-specific heading. */
+  heading?: string;
 };
 
 /**
@@ -16,7 +18,7 @@ type Props = {
  * signed-out request gets only a sign-in prompt and never loads messages (the API refuses it too, with 401). Same
  * posture as the WhatsApp and Signal links (CommunityGroups). Open before, during and after the meeting.
  */
-export default async function SessionChat({ slug, pagePath, id = 'session-chat' }: Props) {
+export default async function SessionChat({ slug, pagePath, id = 'session-chat', heading = 'Session chat' }: Props) {
   if (!sessionChatThreadKey(slug)) return null;
   const session = await readSession();
   const signInHref = `/login?next=${encodeURIComponent(`${pagePath}#${id}`)}`;
@@ -24,7 +26,7 @@ export default async function SessionChat({ slug, pagePath, id = 'session-chat' 
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-24">
       <h2 id={`${id}-heading`} className="border-b border-slate-800 pb-2 text-2xl font-bold text-white">
-        Session chat
+        {heading}
       </h2>
       <div className="mt-4">
         {session ? (

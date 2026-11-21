@@ -42,6 +42,12 @@ type SessionInput = {
   chatAnchor?: string;
   /** One line on what the session page holds. */
   pageContents?: string;
+  /** Community sessions: what this meeting is about ("Meeting agreements: how we decide"); `focus` is the series. */
+  meetingTitle?: string;
+  /** Community sessions: this meeting's own paragraph ("This week: …"), without the series description. */
+  thisWeek?: string;
+  /** Community sessions: the description shared by every session in the series. */
+  seriesAbout?: string;
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
@@ -51,12 +57,13 @@ const roundup = (date: string, focus: string, objective: string, lumaUrl: string
 const LISTENING_EXPERIMENT_SHARED = 'How do we keep improving a book that a whole community wrote? Version 1.0 of The Layered Web was written in the open by more than 70 contributors. In this four-week experiment we use Monday listening sessions to decide, together, how it grows. Everyone is welcome: contributors, co-editors, past DP Roundup participants and anyone curious. Bring an experience, a question or an option you think we should consider. Each session opens with a short update on last week\'s record and outcomes, then timed contributions, questions and options, and an open mic; we close by reading back the issues and the next steps. Afterwards Claude drafts a summary and a ballot from the transcript, you get 24 hours to correct it, and then the community votes. Register on Luma and the Zoom link comes to you.';
 
 /** DP Listening Experiment n/4: Monday listening session, 10:00–11:30 a.m. Pacific on Zoom. */
-const listeningExperiment = (n: number, date: string, lumaUrl: string, objective: string, thisWeek: string): SessionInput => ({
+const listeningExperiment = (n: number, date: string, lumaUrl: string, meetingTitle: string, objective: string, thisWeek: string): SessionInput => ({
   kind: 'gathering', date, focus: `DP Listening Experiment ${n}/4: Creating a Living Book Together`,
-  objective, lumaUrl,
+  meetingTitle, objective, lumaUrl,
   startsAt: `${date}T10:00:00-08:00`, endsAt: `${date}T11:30:00-08:00`,
   timeLabel: META_GOVERNANCE_TIME_LABEL, clockShort: META_GOVERNANCE_CLOCK_SHORT,
   details: `${thisWeek} ${LISTENING_EXPERIMENT_SHARED}`,
+  thisWeek, seriesAbout: LISTENING_EXPERIMENT_SHARED,
 });
 
 const sessions: readonly SessionInput[] = [
@@ -77,6 +84,8 @@ const sessions: readonly SessionInput[] = [
   },
   {
     kind: 'gathering', date: '2026-11-16', focus: 'DP Meta-Governance: Creating a Living Book Together',
+    // Same as SESSION_2026_11_16.meetingTitle (src/data/sessions/2026-11-16.ts); the test checks they match.
+    meetingTitle: 'Meeting agreements: how we decide',
     objective: 'Look back on how V1 was made and shape a shared, ongoing process for the living book.',
     lumaUrl: 'https://luma.com/6bqcfew2',
     startsAt: '2026-11-16T10:00:00-08:00', endsAt: '2026-11-16T11:30:00-08:00',
@@ -86,15 +95,19 @@ const sessions: readonly SessionInput[] = [
     details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
   },
   listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
+    'Ballot results and the first weekly cycle',
     'Results of the 16 November ballot and the first weekly cycle.',
     'This week: results and the first cycle. Voting on the ballot from our 16 November session is open until Sunday 22 November, 8:00 PM PT, and anyone with an account can vote on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
   listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
+    'Co-editors and the council',
     'Co-editors and the council: the co-editor agreement, vetting, and how council elections run.',
     'This week: co-editors and the council. What should a co-editor agreement say, and what should a vetting questionnaire ask? If the community voted for a council, we also work out how its elections will run. We open with the record and outcomes from 23 November.'),
   listeningExperiment(3, '2026-12-07', 'https://luma.com/ihn1dfw9',
+    'Growing the book',
     'Growing the book: chapter titles, a case studies appendix, a book club and bookathons.',
     'This week: growing the book. How a chapter can change its title, and how the book grows. We\'ll cover a case studies appendix, a book club, and university "bookathons". We open with the record and outcomes from 30 November.'),
   listeningExperiment(4, '2026-12-14', 'https://luma.com/pt5uhcqz',
+    'Did the experiment work?',
     'Did the experiment work? Keep, change or stop the weekly cycle.',
     'This week: did the experiment work? We look back at the four-session pilot: what worked, what didn\'t, and whether to keep the weekly cycle, change it or stop. We open with the record and outcomes from 7 December.'),
 ];
@@ -119,6 +132,12 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     pageHref: s.pageHref ?? null,
     chatAnchor: s.chatAnchor ?? null,
     pageContents: s.pageContents ?? null,
+    /** Specific meeting title for community sessions; null for roundups and the launch. */
+    meetingTitle: s.meetingTitle ?? null,
+    thisWeek: s.thisWeek ?? null,
+    seriesAbout: s.seriesAbout ?? null,
+    /** Series name (the focus line). */
+    seriesTitle: s.focus,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
     startsAt: s.startsAt ?? `${s.date}T11:30:00${pacificOffset(s.date)}`,
     endsAt: s.endsAt ?? `${s.date}T13:00:00${pacificOffset(s.date)}`,

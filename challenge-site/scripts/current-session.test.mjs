@@ -50,3 +50,49 @@ test('a ballot only holds a session that has started; the latest such session wi
   assert.equal(sessionWithOpenBallot(sessions, new Date('2026-11-15T00:00:00Z'), ballots), undefined);
   assert.equal(sessionWithOpenBallot(sessions, new Date('2026-12-20T00:00:00Z'), ballots)?.pageHref, NOV16);
 });
+
+test('community sessions carry a specific meeting title next to the series title', async () => {
+  const { SESSION_2026_11_16 } = await import('../src/data/sessions/2026-11-16.ts');
+  const nov16 = DP_ROUNDUP_EVENTS.find((e) => e.date === '2026-11-16');
+  assert.equal(nov16.meetingTitle, SESSION_2026_11_16.meetingTitle);
+  assert.equal(nov16.meetingTitle, 'Meeting agreements: how we decide');
+  assert.equal(nov16.seriesTitle, SESSION_2026_11_16.title);
+  assert.equal(SESSION_2026_11_16.date, '2026-11-16');
+  for (const e of DP_ROUNDUP_EVENTS.filter((x) => x.kind === 'gathering')) assert.ok(e.meetingTitle, e.date);
+  const after = currentSession(new Date('2026-11-23T04:00:00Z'));
+  assert.equal(after.meetingTitle, 'Ballot results and the first weekly cycle');
+});
+
+test('session labels name the meeting by date and title', async () => {
+  const { meetingLabel, meetingShortDate, sessionSectionLabels } = await import('../src/lib/sessions/session-labels.ts');
+  const m = { date: '2026-11-16', meetingTitle: 'Meeting agreements: how we decide', seriesTitle: 'DP Meta-Governance' };
+  assert.equal(meetingShortDate(m.date), '16 Nov 2026');
+  assert.equal(meetingLabel(m), 'Monday 16 Nov 2026, Meeting agreements: how we decide');
+  const l = sessionSectionLabels(m);
+  assert.equal(l.transcript, 'Transcript: Monday 16 Nov 2026, Meeting agreements: how we decide');
+  assert.equal(l.draft, 'Meeting draft: 16 Nov 2026, Meeting agreements: how we decide, for review');
+  assert.equal(l.origins, 'Origins of the voting questions');
+  assert.equal(l.processText, 'How this meeting changed the process page');
+});
+
+test('every phase step links to a section; "Voting open" jumps to the vote', async () => {
+  const { DEFAULT_PHASE_ANCHORS, SESSION_PHASES, phaseCallToAction } = await import('../src/lib/sessions/session-phases.ts');
+  for (const p of SESSION_PHASES) assert.ok(DEFAULT_PHASE_ANCHORS[p], p);
+  assert.equal(DEFAULT_PHASE_ANCHORS['Voting open'], 'vote');
+  assert.equal(phaseCallToAction('Voting open', { closesLabel: 'Sun 22 Nov, 8:00 PM PT' })?.anchor, 'vote');
+});
+
+test('Deepi context for a session carries the summary, the ballot and the transcript', async () => {
+  const { sessionDeepiContext } = await import('../src/lib/sessions/session-deepi-context.ts');
+  const c = sessionDeepiContext({
+    meeting: { date: '2026-11-16', meetingTitle: 'Meeting agreements: how we decide', seriesTitle: 'S' },
+    pagePath: NOV16,
+    summary: ['A summary line.'],
+    ballot: BALLOT_2026_11_16,
+    turns: [{ t: 3723, speaker: 'Host', text: 'Hello.' }],
+  });
+  assert.match(c.title, /Meeting agreements/);
+  assert.match(c.text, /A summary line\./);
+  assert.match(c.text, new RegExp(BALLOT_2026_11_16.questions[0].question.slice(0, 20).replace(/[?.()]/g, '\\$&')));
+  assert.match(c.text, /\[01:02:03\] Host: Hello\./);
+});

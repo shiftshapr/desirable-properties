@@ -12,6 +12,26 @@ function chatUpstreamSignal(clientSignal: AbortSignal): AbortSignal {
   return clientSignal;
 }
 
+/** Upper bound on page context (characters); a meeting transcript is about 90 000. */
+const CONTEXT_MAX_CHARS = 400_000;
+
+type PageContext = { title: string; text: string };
+
+function pageContext(raw: unknown): PageContext | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const { title, text } = raw as { title?: unknown; text?: unknown };
+  if (typeof title !== 'string' || typeof text !== 'string' || !text.trim()) return null;
+  return { title: title.slice(0, 200), text: text.slice(0, CONTEXT_MAX_CHARS) };
+}
+
+function contextDocument(c: PageContext): { name: string; contentBase64: string } {
+  const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'page';
+  return {
+    name: `page-context-${slug}.md`,
+    contentBase64: Buffer.from(`# ${c.title}\n\n${c.text}`, 'utf8').toString('base64'),
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const session = await readSession();
@@ -20,6 +40,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    const context = pageContext(body.context);
 
     const headers = hermesUpstreamHeaders();
     const upstream = await fetch(`${getHermesChatUrl()}/api/dp/chat`, {
@@ -36,7 +57,14 @@ export async function POST(request: Request) {
         verifierId: session.verifierId,
         displayName: session.displayName || null,
         govHubUserId: session.userId,
-        documents: body.documents || [],
+        // Page context (session pages, proposal pads): passed as `context` and as a Markdown document, which
+        // Hermes already reads, so it works whether or not the upstream knows the `context` field.
+        context,
+        // Hermes takes at most 3 documents per message (HERMES_DOC_MAX_COUNT); the viewer's own uploads come first.
+        documents:
+          context && (body.documents || []).length < 3
+            ? [...(body.documents || []), contextDocument(context)]
+            : body.documents || [],
         skipMemoryRecord: Boolean(body.skipMemoryRecord),
       }),
       signal: chatUpstreamSignal(request.signal),
