@@ -4,6 +4,34 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pads-render-on-request-2026-11-22",
+      "date": "2026-11-22",
+      "status": "open",
+      "title": "Pads and open items load on request, so slow Gov Hub answers no longer stop a deploy",
+      "summary": "Building /pads and /improve/open-items ahead of time could take longer than the 60-second limit when Gov Hub was slow, which stopped the 22 Nov production deploy. Both pages are now built when someone opens them. Gov Hub answers are still kept for two minutes, and the last good copy is shown if Gov Hub does not answer.",
+      "changes": [
+        "challenge-site/src/app/pads/page.tsx",
+        "challenge-site/src/app/improve/open-items/page.tsx"
+      ]
+    },
+    {
+      "id": "text-alerts-sms-terms-2026-11-22",
+      "date": "2026-11-22",
+      "status": "open",
+      "title": "Text alerts: Terms of Service, SMS Terms and a clearer opt-in page",
+      "summary": "The Terms of Use are renamed Terms of Service and section 9 is now SMS Terms. The Privacy Policy states that we do not sell or share SMS opt-in data or personal information with third parties for marketing. The /text-alerts page shows three separate unticked boxes (alerts, announcements, agreeing to the Terms and Privacy Policy), covers Desirable Properties and Canopi, and explains that replies are never texted one by one: texts are one-time codes, vote and session reminders, one weekly summary and announcements for those who ask, up to 4 a week. Needed for the text message registration with carriers.",
+      "changes": [
+        "challenge-site/src/app/text-alerts/page.tsx",
+        "challenge-site/src/data/legal/terms-body.html",
+        "challenge-site/src/data/legal/privacy-body.html",
+        "challenge-site/src/data/legal/oars-dp.html",
+        "challenge-site/src/app/terms/page.tsx",
+        "challenge-site/src/app/privacy/page.tsx",
+        "challenge-site/public/terms.html",
+        "challenge-site/public/privacy.html"
+      ]
+    },
+    {
       "id": "pads-sessions-govhub-2026-11-22",
       "date": "2026-11-22",
       "status": "open",
