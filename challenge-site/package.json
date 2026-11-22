@@ -43,6 +43,7 @@
     "test:current-session": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/current-session.test.mjs",
     "test:broadcast-unsubscribe": "node --experimental-strip-types --test scripts/broadcast-unsubscribe.test.mjs",
     "test:v1-promo": "node --experimental-strip-types --test scripts/v1-promo.test.mjs",
+    "test:meeting-pads": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/meeting-pads.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",
     "import:astra": "node scripts/import-astra-release.mjs",
     "generate:astra-pdf": "python3 ../scripts/generate-astra-book-pdf.py"

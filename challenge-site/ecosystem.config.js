@@ -176,6 +176,8 @@ module.exports = {
         // Listening workspace (meeting record, Phase 1): off in production; DP_ENV=prod also forces it off and its
         // schema refuses the production database. Turning it on needs a reviewed change (src/lib/listening/flag.ts).
         DP_LISTENING_WORKSPACE: 'off',
+        // Meeting pads preview: off in production (DP_ENV=prod also forces it off). src/lib/meeting-pads/flag.ts.
+        MEETING_PADS_PREVIEW: 'off',
         DP_DATABASE_URL:
           localEnv.DP_DATABASE_URL || localEnv.DATABASE_URL || '',
         DATABASE_URL: localEnv.DATABASE_URL || localEnv.DP_DATABASE_URL || '',
