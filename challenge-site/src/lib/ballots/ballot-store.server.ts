@@ -1,6 +1,8 @@
 import 'server-only';
 import type pg from 'pg';
+import { cookies } from 'next/headers';
 import { readSession } from '@/lib/auth-session';
+import { ARRIVAL_COOKIE, decodeArrival, voteAttribution } from '@/lib/attribution/attribution-core';
 import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
 import type { BallotDefinition, BallotDeps, BallotOverride, SaveResult, VoteRow } from '@/lib/ballots/ballot-core';
 import { BALLOT_SCHEMA_SQL } from '@/lib/ballots/ballot-schema';
@@ -65,6 +67,8 @@ async function saveVotes(def: BallotDefinition, userId: string, votes: Record<st
       await client.query('ROLLBACK');
       return { ok: false, code: 'not_open' };
     }
+    const first = await client.query('SELECT 1 FROM dp_ballot_vote WHERE ballot_slug = $1 AND user_id = $2 LIMIT 1', [def.slug, userId]);
+    const isFirstSubmission = first.rowCount === 0;
     for (const [question, option] of Object.entries(votes)) {
       await client.query(
         `INSERT INTO dp_ballot_vote (ballot_slug, question_key, user_id, option_key)
@@ -75,12 +79,32 @@ async function saveVotes(def: BallotDefinition, userId: string, votes: Record<st
       );
     }
     await client.query('COMMIT');
+    if (isFirstSubmission) await recordVoteAttribution(pool, def.slug, userId);
     return { ok: true, savedAt: iso(b.rows[0].now) || new Date().toISOString() };
   } catch (err) {
     await client.query('ROLLBACK').catch(() => undefined);
     throw err;
   } finally {
     client.release();
+  }
+}
+
+/**
+ * How the account arrived, stored once with its first submission (never on later edits). Best effort: the vote is
+ * already committed, and a failure here only loses the attribution.
+ */
+async function recordVoteAttribution(pool: pg.Pool, slug: string, userId: string): Promise<void> {
+  try {
+    const a = voteAttribution(decodeArrival((await cookies()).get(ARRIVAL_COOKIE)?.value));
+    await pool.query(
+      `INSERT INTO dp_ballot_vote_attribution
+         (ballot_slug, user_id, first_ref, last_ref, referral_code, referral_channel, utm_campaign, landed_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       ON CONFLICT (ballot_slug, user_id) DO NOTHING`,
+      [slug, userId, a.firstRef, a.lastRef, a.referralCode, a.referralChannel, a.utmCampaign, a.landedAt],
+    );
+  } catch (err) {
+    console.warn('[ballot] attribution not recorded:', err instanceof Error ? err.message : err);
   }
 }
 
