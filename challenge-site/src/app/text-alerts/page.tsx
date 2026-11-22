@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Text and WhatsApp alerts – Desirable Properties',
   description:
-    'Desirable Properties and Canopi alerts: optional text, WhatsApp and Signal messages about votes, sessions, things you follow and Canopi replies, plus announcements only if you opt in separately. How to opt in, opt out, and what messages look like.',
+    'Desirable Properties and Canopi alerts: optional text, WhatsApp and Signal messages about votes, sessions and a weekly summary of things you follow, plus announcements only if you opt in separately. How to opt in, opt out, and what messages look like.',
   robots: { index: true, follow: true },
   alternates: { canonical: '/text-alerts' },
 };
@@ -13,7 +13,7 @@ const CONTACT_EMAIL = 'info@bridgit.io';
 const ACCOUNT_SETTINGS_URL = 'https://app.canopi.live/profile';
 
 const CONSENT_ALERTS =
-  'Text me alerts and reminders: one-time codes, votes and listening sessions, activity on things I follow, and Canopi replies and mentions. Up to 4 msgs a week. Msg & data rates may apply. Reply HELP for help, STOP to opt out.';
+  'Text me alerts and reminders: one-time codes, reminders about votes and listening sessions, and a weekly summary of activity on things I follow, including Canopi replies. Up to 4 msgs a week. Msg & data rates may apply. Reply HELP for help, STOP to opt out.';
 const CONSENT_ANNOUNCEMENTS =
   'Also text me occasional announcements and invitations to new sessions and features. Msg & data rates may apply. Reply STOP to opt out.';
 
@@ -27,12 +27,12 @@ const SAMPLE_MESSAGES = [
     text: 'Desirable Properties: voting on the [session name] ballot closes tonight at [8 PM PT]. Vote: https://desirableproperties.org/events/[session]#vote Reply STOP to opt out.',
   },
   {
-    label: 'Followed proposal alert',
-    text: 'Desirable Properties: a proposal you follow on [DP7] has [3] new comments. Read: https://desirableproperties.org/pads/proposals/[id] Reply STOP to opt out.',
+    label: 'Session reminder',
+    text: 'Desirable Properties: the listening session "[session title]" starts at [10 AM PT] today. Join: https://desirableproperties.org/events/[session] Reply STOP to opt out.',
   },
   {
-    label: 'Canopi reply alert',
-    text: 'Canopi: [Name] replied to you on [page title]. See it: https://app.canopi.live/[link] Reply STOP to opt out.',
+    label: 'Weekly summary',
+    text: 'Desirable Properties: this week, [3] new comments on proposals you follow and [2] replies to you in Canopi. See them: https://desirableproperties.org/[link] Reply STOP to opt out.',
   },
   {
     label: 'Announcement (only with the separate opt-in)',
@@ -75,8 +75,8 @@ export default function TextAlertsPage() {
           <li>
             <strong className="text-white">What you get:</strong> one-time codes to confirm your
             number or sign in, reminders before votes close and before listening sessions, alerts
-            when a proposal or page you follow has new activity, and alerts when someone replies to
-            or mentions you in Canopi. Only if you tick a separate box, also occasional
+            and one weekly summary of activity on things you follow, including replies and mentions
+            in Canopi. Replies are never texted one by one. Only if you tick a separate box, also occasional
             announcements and invitations to new sessions and features.
           </li>
           <li>
