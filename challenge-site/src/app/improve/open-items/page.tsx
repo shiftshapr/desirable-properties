@@ -8,7 +8,10 @@ import { loadOpenItems, type OpenItem, type OpenItemsDoc } from '@/lib/dp-v11-op
 import { padHref } from '@/lib/pads/proposal-pad-core';
 import { storedTitles } from '@/lib/pads/proposal-pad.server';
 
-export const revalidate = 120;
+// Rendered on request, not at build time: the Gov Hub sweep (28 lists, 4 at a time, one retry) can pass Next's
+// 60-second static build limit when Gov Hub is slow, which failed the 22 Nov 2026 production deploy. The Gov Hub
+// fetches still cache for 120 s (next.revalidate) and the loader keeps the last good copy in memory.
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Version 1.1 open items | Desirable Properties',
