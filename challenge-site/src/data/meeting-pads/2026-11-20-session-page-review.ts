@@ -24,7 +24,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
   format: 'Zoom, screen share',
   visibility: 'private',
   visibilityNote:
-    'A private call. The reviewer is shown under a pseudonym until they agree to be named; there is no recording, transcript or quote on this pad.',
+    'This pad is on our staging site only and does not show the reviewer\'s name. Subject to their approval, we will add their name and bring the pad to the live site. It was a private call, so there is no recording, transcript or quote here.',
   participants: [
     { shownAs: 'Daveed Benjamin', role: 'host', consent: 'consented' },
     { shownAs: 'A participant', role: 'reviewer', consent: 'pending' },
@@ -231,7 +231,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           response: 'Recording tool evaluation, including whether it has an API; the owner decides.',
           status: 'to_decide',
           statusDate: RAISED,
-          note: 'Daveed is looking into pricing and the API.',
+          note: 'Looked into on 22 Nov 2026: a free plan exists and the API is on every plan; editing the transcript to cut the video is not documented. See the follow-ups below.',
         },
         {
           n: 21,
@@ -240,7 +240,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           response: 'A reminder channel next to email, skipping people who have already voted.',
           status: 'to_decide',
           statusDate: RAISED,
-          note: 'Daveed is looking into WhatsApp reminders.',
+          note: 'Looked into on 22 Nov 2026: possible through the WhatsApp Business Platform, at a few cents a message; it needs an opt-in phone number on DP accounts first. See the follow-ups below.',
         },
       ],
     },
@@ -251,11 +251,27 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
       {
         text: 'Whether Claude can post to Signal.',
         owner: 'Daveed Benjamin',
-        status: 'open',
-        note: 'Related plan: a daily digest from the WhatsApp group to the Signal group, not built yet.',
+        status: 'done',
+        note: 'Looked into on 22 Nov 2026. Yes, with a workaround: Signal has no official bot interface, but the open-source signal-cli can post to a group from its own Signal number. Plan: a separate "DP Digest" number, registered once with a code Daveed enters, that posts the daily WhatsApp digest to the Signal group. For the first week Daveed approves each post. Running it on Daveed\'s own number would work, but group members get no notification. Still needed: a number to register.',
+        links: [{ label: 'signal-cli', href: 'https://github.com/AsamK/signal-cli' }],
       },
-      { text: 'Fathom pricing and API.', owner: 'Daveed Benjamin', status: 'open', note: 'See item 20.' },
-      { text: 'WhatsApp reminders.', owner: 'Daveed Benjamin', status: 'open', note: 'See item 21.' },
+      {
+        text: 'Fathom pricing and API.',
+        owner: 'Daveed Benjamin',
+        status: 'done',
+        note: 'Looked into on 22 Nov 2026. The free plan records and transcribes without limit and writes summaries; paid plans are about $16 a month (Premium, billed yearly) or $15 a user a month (Team, minimum two). The API is on every plan, including free: meetings, transcripts, summaries, action items, a webhook when a meeting is ready, and a video download link. It joins Zoom on its own; its desktop app also records calls someone else hosts. We found no documented way to cut the video by editing the transcript. See item 20.',
+        links: [
+          { label: 'Fathom pricing', href: 'https://fathom.ai/pricing' },
+          { label: 'Fathom API', href: 'https://developers.fathom.ai/' },
+        ],
+      },
+      {
+        text: 'WhatsApp reminders.',
+        owner: 'Daveed Benjamin',
+        status: 'done',
+        note: 'Looked into on 22 Nov 2026. Personal reminders need the WhatsApp Business Platform (directly from Meta or through a provider such as Twilio): a business number, a reminder message Meta approves in advance, and each person\'s phone number with their agreement to be texted. Meta charges per message delivered, by country; reminder ("utility") messages cost roughly 1 to 3 US cents each in many countries. SMS works the same way through Twilio. The blocker: DP accounts do not hold phone numbers yet, so the first step is an opt-in "text me reminders" setting. See item 21.',
+        links: [{ label: 'WhatsApp pricing', href: 'https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing' }],
+      },
     ],
   },
   nextSteps: [
