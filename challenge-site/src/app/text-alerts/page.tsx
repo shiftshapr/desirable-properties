@@ -210,7 +210,7 @@ export default function TextAlertsPage() {
 
       <p className="mt-12 text-sm text-slate-500">
         Desirable Properties is operated by Bridgit To The Future LLC, doing business as Bridgit
-        DAO. Our <Link href="/terms">Terms of Use</Link> and{' '}
+        DAO. Our <Link href="/terms">Terms of Service</Link> and{' '}
         <Link href="/privacy">Privacy Policy</Link> are interim and were prepared without a licensed
         attorney.
       </p>

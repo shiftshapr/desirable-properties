@@ -3,7 +3,7 @@ import LegalArticle from '@/components/LegalArticle';
 import { oarsDpHtml, termsBodyHtml } from '@/lib/interim-legal';
 
 export const metadata = {
-  title: 'Terms of Use – Desirable Properties',
+  title: 'Terms of Service – Desirable Properties',
   description:
     'Interim terms of use for Desirable Properties and related Bridgit DAO sites. Not attorney-approved.',
 };
