@@ -54,7 +54,7 @@ export async function fetchCanopiUserProfile(userId: string): Promise<CanopiAuth
 /** Exchange Web3Auth idToken for Canopi AppUser (avatar, handle). Best-effort. */
 export async function fetchCanopiWeb3AuthUser(
   idToken: string,
-  /** Sign-in from the DP site: { canopiId, referralCode?, refToken? } (attribution-core.ts canopiSignupFields). */
+  /** Sign-in from the DP site: { canopiId, referralCode?, refToken?, ref? } (attribution-core.ts canopiSignupFields). */
   extra: Record<string, string> = {},
 ): Promise<CanopiAuthUser | null> {
   const token = String(idToken || '').trim();

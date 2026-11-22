@@ -12,6 +12,7 @@ import {
   encodeArrival,
   mergeArrival,
   parseReferralCode,
+  parseReferrer,
   parseRefToken,
   parseTag,
   referralLabel,
@@ -44,19 +45,64 @@ test('Canopi referral params: ref_token, legacy referralCode, ?ref=ref_... and a
   assert.equal(parseRefToken('not-a-token'), null);
   assert.equal(parseRefToken('a.b'), null);
   assert.equal(parseReferralCode('ref_7f3e9a2b1c4d'), 'ref_7f3e9a2b1c4d');
-  assert.equal(parseReferralCode('3275BC04-4415-467D-9B6A-F9EF7DFFFCB8'), '3275bc04-4415-467d-9b6a-f9ef7dfffcb8');
+  assert.equal(parseReferralCode('ref_dp_book_7f3e'), 'ref_dp_book_7f3e');
+  assert.equal(parseReferralCode('3275BC04-4415-467D-9B6A-F9EF7DFFFCB8'), null, 'a UUID is a person, never an embed code');
+  assert.equal(parseReferrer('3275BC04-4415-467D-9B6A-F9EF7DFFFCB8'), '3275bc04-4415-467d-9b6a-f9ef7dfffcb8');
+  assert.equal(parseReferrer('bitracer1'), null);
   assert.equal(parseReferralCode('<script>'), null);
 
   const t = touchFromParams(p(`ref_token=${TOKEN}&ch=email&utm_source=canopi&utm_medium=profile_referral&utm_campaign=get_canopi&utm_content=3275bc04-4415-467d-9b6a-f9ef7dfffcb8`));
-  assert.deepEqual(t, { tag: null, referralCode: null, refToken: TOKEN, channel: 'email', utmSource: 'canopi', utmMedium: 'profile_referral', utmCampaign: 'get_canopi' });
+  assert.deepEqual(t, { tag: null, referralCode: null, refToken: TOKEN, referrer: null, channel: 'email', utmSource: 'canopi', utmMedium: 'profile_referral', utmCampaign: 'get_canopi' });
   assert.equal(touchFromParams(p('referralCode=ref_7f3e9a2b1c4d')).referralCode, 'ref_7f3e9a2b1c4d');
   assert.equal(touchFromParams(p('ref=ref_7f3e9a2b1c4d')).referralCode, 'ref_7f3e9a2b1c4d');
   assert.equal(touchFromParams(p('ref=ref_7f3e9a2b1c4d')).tag, null);
   // A tag is never read as a referral code, and utm fields alone (no referral) are not kept.
-  assert.deepEqual(touchFromParams(p('ref=em-1122-closes&utm_campaign=x')), { tag: 'em-1122-closes', referralCode: null, refToken: null, channel: null, utmSource: null, utmMedium: null, utmCampaign: null });
+  assert.deepEqual(touchFromParams(p('ref=em-1122-closes&utm_campaign=x')), { tag: 'em-1122-closes', referralCode: null, refToken: null, referrer: null, channel: null, utmSource: null, utmMedium: null, utmCampaign: null });
   assert.equal(touchFromParams(p('utm_source=newsletter')), null);
   assert.equal(touchFromParams(p('ref=junk value')), null);
   assert.equal(touchFromParams(p('')), null);
+});
+
+test('?ref= is split: a slug is a message tag, a UUID is a Canopi referrer, ref_... an embed code', () => {
+  const UUID = '3275bc04-4415-467d-9b6a-f9ef7dfffcb8';
+  const asTag = touchFromParams(p('ref=em-1122-closes'));
+  assert.equal(asTag.tag, 'em-1122-closes');
+  assert.equal(asTag.referrer, null);
+  assert.equal(asTag.referralCode, null);
+
+  const asReferrer = touchFromParams(p(`ref=${UUID.toUpperCase()}`));
+  assert.equal(asReferrer.tag, null);
+  assert.equal(asReferrer.referrer, UUID);
+  assert.equal(asReferrer.referralCode, null);
+
+  assert.equal(touchFromParams(p(`canopi_ref=${UUID}`)).referrer, UUID);
+  assert.equal(touchFromParams(p('canopi_ref=not-a-uuid')), null);
+  assert.equal(touchFromParams(p(`canopi_ref_token=${TOKEN}`)).refToken, TOKEN);
+
+  // A tag and a referrer together: the tag from ?ref=, the referrer from canopi_ref.
+  const both = touchFromParams(p(`ref=wa-1122-lastcall&canopi_ref=${UUID}&canopi_ref_token=${TOKEN}`));
+  assert.equal(both.tag, 'wa-1122-lastcall');
+  assert.equal(both.referrer, UUID);
+  assert.equal(both.refToken, TOKEN);
+
+  const code = touchFromParams(p('ref=ref_dp_book_7f3e'));
+  assert.equal(code.referralCode, 'ref_dp_book_7f3e');
+  assert.equal(code.referrer, null);
+  assert.equal(code.tag, null);
+
+  // The cookie keeps them apart, and Canopi gets ref (UUID) and refToken (verbatim) next to the embed fields.
+  let a = mergeArrival(null, asTag, T0);
+  a = mergeArrival(a, asReferrer, T1);
+  a = mergeArrival(a, touchFromParams(p('ref=3275bc04-0000-4000-8000-000000000000')), T1);
+  assert.equal(a.ft, 'em-1122-closes');
+  assert.equal(a.lt, 'em-1122-closes', 'a referrer visit does not move the latest tag');
+  assert.equal(a.rr, UUID, 'first referrer wins');
+  assert.deepEqual(decodeArrival(encodeArrival(a)), a);
+  assert.deepEqual(canopiSignupFields(a, EMBED), { canopiId: EMBED, ref: UUID });
+  assert.equal(voteAttribution(a).referralCode, `referrer:${UUID}`);
+  assert.equal(voteAttribution(a).firstRef, 'em-1122-closes');
+  const forged = decodeArrival(encodeURIComponent(JSON.stringify({ v: 1, rr: 'dave@example.com', lt: 'em-1122-closes' })));
+  assert.equal(forged.rr, null);
 });
 
 test('first touch is kept, last touch replaced, the first referral kept; the cookie round-trips', () => {
@@ -101,13 +147,21 @@ test('what is stored with a vote: tags, a short referral label (never the token)
   assert.equal(v.referralChannel, 'email');
   assert.equal(v.utmCampaign, 'get_canopi');
   assert.equal(v.landedAt, T0.toISOString());
-  assert.equal(referralLabel({ rc: 'ref_aaaaaaaaaaaa', rt: TOKEN }), 'ref_aaaaaaaaaaaa');
+  assert.equal(referralLabel({ rc: 'ref_aaaaaaaaaaaa', rt: TOKEN, rr: null }), v.referralCode, 'the person (token) before the embed code');
+  assert.equal(referralLabel({ rc: 'ref_aaaaaaaaaaaa', rt: null, rr: null }), 'ref_aaaaaaaaaaaa');
 });
 
 test("Canopi sign-up gets the DP embed instance and the referral in web3auth.js's field names", () => {
   assert.deepEqual(canopiSignupFields(null, EMBED), { canopiId: EMBED });
   const a = mergeArrival(null, touchFromParams(p(`referralCode=ref_aaaaaaaaaaaa&ref_token=${TOKEN}`)), T0);
   assert.deepEqual(canopiSignupFields(a, EMBED), { canopiId: EMBED, referralCode: 'ref_aaaaaaaaaaaa', refToken: TOKEN });
+  const withRef = mergeArrival(a, touchFromParams(p('canopi_ref=3275bc04-4415-467d-9b6a-f9ef7dfffcb8')), T1);
+  assert.deepEqual(canopiSignupFields(withRef, EMBED), {
+    canopiId: EMBED,
+    referralCode: 'ref_aaaaaaaaaaaa',
+    refToken: TOKEN,
+    ref: '3275bc04-4415-467d-9b6a-f9ef7dfffcb8',
+  });
   // A message tag is ours: it is not sent to Canopi as a referral code.
   assert.deepEqual(canopiSignupFields(mergeArrival(null, touchFromParams(p('ref=em-1122-closes')), T0), EMBED), { canopiId: EMBED });
 });

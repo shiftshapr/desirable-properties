@@ -3,13 +3,14 @@
  * invites use ?ref=inv-<channel>) and any Canopi referral on the link. Pure (no runtime imports beyond the invite ref
  * parser), so scripts/attribution.test.mjs drives it directly and middleware.ts can run it on the edge.
  *
- * Canopi's referral links (canopi routes/share.js, utils/shareRefToken.js) carry:
- *   ref_token     signed share token "<base64url payload>.<base64url hmac>" (payload names the referrer and the share)
- *   ch            the share channel (copy, x, linkedin, email, profile, ...)
- *   utm_source / utm_medium / utm_campaign   (utm_content is the referrer's account id on profile links: not kept)
- * and embed links carry a legacy code: referralCode=ref_<12 hex> (canopi routes/embeds.js deriveReferralCode).
- * Canopi's sign-in (routes/web3auth.js) takes { canopiId, referralCode } and records them in
- * canopi_signup_attributions; the token is passed as refToken too, for when Canopi reads it there.
+ * Canopi's referral contract (canopi docs/referral-attribution/SIGNUP_PARAMS.md, routes/share.js) puts on links:
+ *   ref_token (or canopi_ref_token)  signed share token "<base64url payload>.<base64url hmac>", kept verbatim
+ *   canopi_ref, or ref=<uuid>        the referrer's Canopi user id (unsigned; a UUID only). A UUID in ?ref= is a
+ *                                    referrer; a slug in ?ref= is our message tag. They never mix.
+ *   ch, utm_source / utm_medium / utm_campaign   (utm_content is the referrer's account id on profile links: not kept)
+ * and embed links carry an embed instance code, referralCode=ref_<hex>: it names an embed, not a person.
+ * Canopi's sign-in (POST /api/auth/web3auth) takes { canopiId, referralCode, refToken, ref }: a valid refToken wins
+ * over ref, and only a brand-new account records either.
  *
  * The cookie (dp_arrival, first-party, 30 days, SameSite=Lax, HttpOnly) holds only these values and two timestamps:
  * nothing about the visitor. A tag names a message, never a person.
@@ -27,9 +28,10 @@ export type Arrival = {
   /** Latest message tag seen, and when. */
   lt: string | null;
   la: string | null;
-  /** Canopi referral: legacy code (ref_..., or a referrer account UUID) and/or signed share token. First seen wins. */
+  /** Canopi referral, each first seen wins: embed instance code (ref_...), signed share token, referrer user UUID. */
   rc: string | null;
   rt: string | null;
+  rr: string | null;
   /** Canopi share channel and utm fields that came with the referral. */
   ch: string | null;
   us: string | null;
@@ -43,6 +45,8 @@ export type Touch = {
   tag: string | null;
   referralCode: string | null;
   refToken: string | null;
+  /** Referrer's Canopi user UUID. */
+  referrer: string | null;
   channel: string | null;
   utmSource: string | null;
   utmMedium: string | null;
@@ -51,7 +55,7 @@ export type Touch = {
 
 const TAG_RE = /^([a-z]{1,6})-(\d{2})(\d{2})-([a-z0-9]+(?:-[a-z0-9]+)*)$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const LEGACY_CODE_RE = /^ref_[a-z0-9]{6,32}$/i;
+const LEGACY_CODE_RE = /^ref_[a-z0-9_]{4,40}$/i;
 const CODE_RE = /^[A-Za-z0-9_-]{3,64}$/;
 const TOKEN_RE = /^[A-Za-z0-9_-]{8,700}\.[A-Za-z0-9_-]{8,100}$/;
 const WORD_RE = /^[A-Za-z0-9_.-]{1,40}$/;
@@ -69,12 +73,17 @@ export function parseTag(raw: unknown): string | null {
   return s;
 }
 
-/** A Canopi legacy referral code (ref_<hex>, a referrer account UUID or another short code), or null. */
+/** A Canopi embed instance code (ref_<hex>, ref_dp_book_7f3e or another short code), or null. Never a UUID. */
 export function parseReferralCode(raw: unknown): string | null {
   const s = String(raw ?? '').trim();
-  if (!s) return null;
-  if (UUID_RE.test(s)) return s.toLowerCase();
+  if (!s || UUID_RE.test(s)) return null;
   return CODE_RE.test(s) ? s : null;
+}
+
+/** A referrer's Canopi user id (a UUID, any case; stored lower-cased), or null. */
+export function parseReferrer(raw: unknown): string | null {
+  const s = String(raw ?? '').trim();
+  return UUID_RE.test(s) ? s.toLowerCase() : null;
 }
 
 export function parseRefToken(raw: unknown): string | null {
@@ -91,18 +100,21 @@ type Params = { get(name: string): string | null };
 
 /** What a landing URL's query says, or null when it carries nothing we keep. */
 export function touchFromParams(params: Params): Touch | null {
+  // ?ref= is shared: a slug is our message tag, a UUID is a Canopi referrer, ref_... is an embed code.
   const rawRef = params.get('ref');
   const tag = parseTag(rawRef);
-  // Canopi also accepts its legacy code as ?ref=; ours are tags, so only a ref_... code or a UUID counts as one.
-  const refAsCode = !tag && rawRef && (LEGACY_CODE_RE.test(rawRef.trim()) || UUID_RE.test(rawRef.trim())) ? rawRef : null;
+  const refAsReferrer = tag ? null : parseReferrer(rawRef);
+  const refAsCode = !tag && rawRef && LEGACY_CODE_RE.test(rawRef.trim()) ? rawRef : null;
   const referralCode = parseReferralCode(params.get('referralCode') ?? params.get('referral_code') ?? refAsCode);
-  const refToken = parseRefToken(params.get('ref_token'));
-  if (!tag && !referralCode && !refToken) return null;
-  const fromCanopi = Boolean(referralCode || refToken);
+  const refToken = parseRefToken(params.get('canopi_ref_token') ?? params.get('ref_token'));
+  const referrer = parseReferrer(params.get('canopi_ref')) ?? refAsReferrer;
+  if (!tag && !referralCode && !refToken && !referrer) return null;
+  const fromCanopi = Boolean(referralCode || refToken || referrer);
   return {
     tag,
     referralCode,
     refToken,
+    referrer,
     channel: fromCanopi ? word(params.get('ch')) : null,
     utmSource: fromCanopi ? word(params.get('utm_source')) : null,
     utmMedium: fromCanopi ? word(params.get('utm_medium')) : null,
@@ -113,7 +125,7 @@ export function touchFromParams(params: Params): Touch | null {
 /** The cookie after a touch: first tag kept, last tag replaced, the first referral kept. */
 export function mergeArrival(prev: Arrival | null, touch: Touch, now: Date): Arrival {
   const at = now.toISOString();
-  const base: Arrival = prev ?? { v: 1, ft: null, fa: null, lt: null, la: null, rc: null, rt: null, ch: null, us: null, um: null, uc: null, at };
+  const base: Arrival = prev ?? { v: 1, ft: null, fa: null, lt: null, la: null, rc: null, rt: null, rr: null, ch: null, us: null, um: null, uc: null, at };
   const next: Arrival = { ...base };
   if (touch.tag) {
     if (!next.ft) {
@@ -123,9 +135,12 @@ export function mergeArrival(prev: Arrival | null, touch: Touch, now: Date): Arr
     next.lt = touch.tag;
     next.la = at;
   }
-  if ((touch.referralCode || touch.refToken) && !next.rc && !next.rt) {
-    next.rc = touch.referralCode;
-    next.rt = touch.refToken;
+  // Field by field, first seen wins; channel and utm come with the first referral.
+  const hadReferral = Boolean(next.rc || next.rt || next.rr);
+  if (touch.referralCode && !next.rc) next.rc = touch.referralCode;
+  if (touch.refToken && !next.rt) next.rt = touch.refToken;
+  if (touch.referrer && !next.rr) next.rr = touch.referrer;
+  if (!hadReferral && (touch.referralCode || touch.refToken || touch.referrer)) {
     next.ch = touch.channel;
     next.us = touch.utmSource;
     next.um = touch.utmMedium;
@@ -161,24 +176,27 @@ export function decodeArrival(raw: string | null | undefined): Arrival | null {
     la: isoOrNull(obj.la),
     rc: parseReferralCode(obj.rc),
     rt: parseRefToken(obj.rt),
+    rr: parseReferrer(obj.rr),
     ch: word(obj.ch),
     us: word(obj.us),
     um: word(obj.um),
     uc: word(obj.uc),
     at: isoOrNull(obj.at) || new Date(0).toISOString(),
   };
-  if (!a.ft && !a.lt && !a.rc && !a.rt) return null;
+  if (!a.ft && !a.lt && !a.rc && !a.rt && !a.rr) return null;
   return a;
 }
 
 /**
- * The referral as one short label for counting: the legacy code, else "token:<first 12 chars of the token's
- * signature>" (one label per share; the token itself stays out of the table and the readout).
+ * The referral as one short label for counting, the person first (as Canopi decides it): "token:<first 12 chars of
+ * the token's signature>" (one label per share; the token itself stays out of the table and the readout), else
+ * "referrer:<Canopi user UUID>", else the embed code.
  */
-export function referralLabel(a: Pick<Arrival, 'rc' | 'rt'> | null): string | null {
+export function referralLabel(a: Pick<Arrival, 'rc' | 'rt' | 'rr'> | null): string | null {
   if (!a) return null;
-  if (a.rc) return a.rc;
   if (a.rt) return `token:${a.rt.split('.')[1].slice(0, 12)}`;
+  if (a.rr) return `referrer:${a.rr}`;
+  if (a.rc) return a.rc;
   return null;
 }
 
@@ -203,10 +221,14 @@ export function voteAttribution(a: Arrival | null): VoteAttribution {
   };
 }
 
-/** Extra fields for Canopi's POST /api/auth/web3auth (routes/web3auth.js): the embed instance and the referral. */
+/**
+ * Extra fields for Canopi's POST /api/auth/web3auth (SIGNUP_PARAMS.md): the embed instance and its code, the signed
+ * token verbatim and the referrer UUID. Canopi prefers a valid token over ref, and records them for new accounts only.
+ */
 export function canopiSignupFields(a: Arrival | null, canopiId: string): Record<string, string> {
   const out: Record<string, string> = { canopiId };
   if (a?.rc) out.referralCode = a.rc;
   if (a?.rt) out.refToken = a.rt;
+  if (a?.rr) out.ref = a.rr;
   return out;
 }
