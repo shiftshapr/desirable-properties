@@ -23,37 +23,9 @@ import { padFollowEmailsOn } from '@/lib/pads/pad-settings';
 import { allFollows, markNotified } from '@/lib/pads/pad-store.server';
 import { currentStatuses, PAD_DOCS, storedTitles } from '@/lib/pads/proposal-pad.server';
 import { padHref, shortId } from '@/lib/pads/proposal-pad-core';
+import { publicBase, sendPadEmail } from '@/lib/pads/pad-email.server';
 
 export const PAD_FOLLOW_SWEEP_INTERVAL_MS = 15 * 60_000;
-
-function publicBase(): string {
-  return (process.env.DP_PUBLIC_BASE?.trim() || process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://desirableproperties.org').replace(/\/$/, '');
-}
-
-async function sendViaResend(p: { to: string; subject: string; html: string; text: string; unsubscribeUrl: string }) {
-  const apiKey = process.env.RESEND_API_KEY?.trim();
-  if (!apiKey) return { ok: false as const, error: 'resend_not_configured' };
-  const from =
-    process.env.DP_BROADCAST_FROM?.trim() ||
-    process.env.DP_SUPPORT_FROM?.trim() ||
-    process.env.RESEND_FROM?.trim() ||
-    'Desirable Properties <noreply@desirableproperties.org>';
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from,
-      to: [p.to],
-      subject: p.subject,
-      html: p.html,
-      text: p.text,
-      headers: { 'List-Unsubscribe': `<${p.unsubscribeUrl}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },
-      tags: [{ name: 'kind', value: 'pad_follow' }],
-    }),
-    signal: AbortSignal.timeout(20000),
-  });
-  return res.ok ? { ok: true as const } : { ok: false as const, error: `resend_${res.status}` };
-}
 
 async function unsubscribeUrlFor(userId: string, email: string): Promise<string> {
   const base = `${publicBase()}/api/broadcast/unsubscribe`;
@@ -98,7 +70,7 @@ export async function sweepPadFollows(): Promise<{ checked: number; sent: number
           to,
           name: follow.display_name,
         });
-        const result = await sendViaResend({ to: follow.email, ...mail, unsubscribeUrl });
+        const result = await sendPadEmail({ to: follow.email, ...mail, unsubscribeUrl, kind: 'pad_follow' });
         if (result.ok) {
           sent += 1;
           await markNotified('proposal', follow.pad_id, follow.user_id, to);

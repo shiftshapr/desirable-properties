@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { DP_ROUNDUP_EVENTS, gatheringKindLabel, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import { tasksForWeek } from '@/data/dp-process';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
+import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
 import { meetingLongDate, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
@@ -96,6 +97,8 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
         <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">What this meeting covers</h2>
         <p className="mt-3">{event.thisWeek ?? event.details ?? event.objective}</p>
       </section>
+
+      <SessionInvite path={event.pageHref ?? event.href} className="mt-8" />
 
       {event.seriesAbout ? (
         <SessionCollapsible id="series" title={`About the series: ${event.seriesTitle}`} className="mt-8">

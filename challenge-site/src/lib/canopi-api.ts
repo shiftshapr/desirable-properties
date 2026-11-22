@@ -54,6 +54,8 @@ export async function fetchCanopiUserProfile(userId: string): Promise<CanopiAuth
 /** Exchange Web3Auth idToken for Canopi AppUser (avatar, handle). Best-effort. */
 export async function fetchCanopiWeb3AuthUser(
   idToken: string,
+  /** Sign-in from the DP site: { canopiId, referralCode?, refToken?, ref? } (attribution-core.ts canopiSignupFields). */
+  extra: Record<string, string> = {},
 ): Promise<CanopiAuthUser | null> {
   const token = String(idToken || '').trim();
   if (!token) return null;
@@ -62,7 +64,7 @@ export async function fetchCanopiWeb3AuthUser(
     const res = await fetch(`${getCanopiApiBase()}/api/auth/web3auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ idToken: token }),
+      body: JSON.stringify({ ...extra, idToken: token }),
       signal: AbortSignal.timeout(20000),
     });
     const data = await res.json().catch(() => ({}));

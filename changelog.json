@@ -4,6 +4,37 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "arrival-attribution-2026-11-22",
+      "date": "2026-11-22",
+      "status": "open",
+      "title": "Votes and DP sign-ins record how the person arrived: the message tag and any Canopi referral",
+      "summary": "Any page opened with a message tag (?ref=em-1122-closes, wa-1122-lastcall, inv-email and so on) or a Canopi referral (ref_token or canopi_ref_token, a referrer's Canopi user id as canopi_ref or ?ref=<uuid>, ch, utm_source/medium/campaign, or an embed referralCode) now sets a first-party cookie, dp_arrival (30 days, SameSite=Lax, HttpOnly), holding the first and latest tag and the first referral. In ?ref= a slug is a message tag and a UUID is a referrer, never mixed. It holds nothing about the visitor; tags name a message, never a person. It is set on the server before the page renders, so pages that take ?ref off the address bar do not lose it. When an account first submits a ballot, the tags, a short referral label (never the token), channel and campaign are stored once in dp_ballot_vote_attribution; later edits do not change it, and it plays no part in counting. Sign-in from the DP site passes the DP embed instance and the referral to Canopi's sign-up (canopiId, referralCode, refToken verbatim, and ref when it is a UUID; Canopi records a referrer for new accounts only, a valid token winning over ref) and keeps the account's first arrival in dp_account_attribution. ballot-admin attribution prints counts per tag and per referral, never accounts. Requested by the owner on 22 Nov 2026.",
+      "changes": [
+        "challenge-site/src/lib/attribution/attribution-core.ts: tag and Canopi referral parsing, first/last touch merge, the cookie, the stored row and the Canopi sign-up fields",
+        "challenge-site/src/middleware.ts: sets dp_arrival on page loads that carry a tag or referral",
+        "challenge-site/src/lib/ballots/ballot-schema.ts, ballot-store.server.ts: dp_ballot_vote_attribution, written once on an account's first submission",
+        "challenge-site/src/app/api/auth/web3auth/route.ts, src/lib/canopi-api.ts, src/lib/attribution/attribution-store.server.ts: referral passed to Canopi sign-up; dp_account_attribution",
+        "challenge-site/scripts/ballot-admin.mjs: attribution [--signups] [--json], counts only; clear-test-votes also clears staging attribution rows",
+        "challenge-site/scripts/attribution.test.mjs, run by npm run test:attribution"
+      ]
+    },
+    {
+      "id": "pad-invite-2026-11-21",
+      "date": "2026-11-21",
+      "status": "open",
+      "title": "Pads: an Invite others panel on every proposal pad and session page",
+      "summary": "Every proposal pad and community session page now has an Invite others panel. It offers Copy link, the phone's share sheet, a QR code (made on the page, no outside service), an Email link with a prefilled subject and body, share links for WhatsApp, Telegram, LinkedIn, X and Bluesky, and a Copy message for Signal button. The text comes from the pad: its title, plain-language summary and current call to action (add your view, vote, join on Monday). Links carry ?ref=inv-<channel>, which names the channel and never a person, so arrivals can be counted per channel. Signed-in accounts can also send from the site: up to 5 addresses per send and 20 per account per day, with the sender's name and an optional short note with no links. An address is invited to the same pad at most once every 30 days and gets at most 3 invitations a day, and the site sends at most 300 a day. Opted-out addresses are skipped. Only a keyed hash of each address is stored, for these limits, and rows are deleted after 35 days. Nobody is added to a list. Every email says why it came and has an opt-out link. Requested by the owner on 21 Nov 2026.",
+      "changes": [
+        "challenge-site/src/lib/pads/pad-invite-core.ts: invite content for proposals and sessions, ref links, mailto and share links, recipient and note checks, the email, the send handler and its limits",
+        "challenge-site/src/lib/pads/pad-invite.server.ts, pad-invite-token.ts: dp_pad_invite_send (hashed recipients) and dp_pad_invite_ref (arrival counts), created on first write; encrypted opt-out tokens; PAD_INVITE_EMAILS=off switches site sending off",
+        "challenge-site/src/lib/pads/pad-email.server.ts: Resend send shared with the follow sweep (same from address and List-Unsubscribe headers)",
+        "challenge-site/src/app/api/pads/invite/: send, arrival count and opt-out routes",
+        "challenge-site/src/components/pads/PadInvite.tsx, src/components/sessions/SessionInvite.tsx: the panel, on /pads/proposals/[id], /events/meta-governance-2026-11-16 and community session pages under /roundups/[date]",
+        "challenge-site/package.json: qrcode-generator 2.0.4 (MIT, no dependencies), loaded only when someone opens the QR code",
+        "challenge-site/scripts/pad-invite.test.mjs, run by npm run test:proposal-pads"
+      ]
+    },
+    {
       "id": "pad-summaries-runtime-2026-11-21",
       "date": "2026-11-21",
       "status": "open",

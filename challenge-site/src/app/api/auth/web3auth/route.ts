@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
+import { ARRIVAL_COOKIE, canopiSignupFields, decodeArrival } from '@/lib/attribution/attribution-core';
+import { recordAccountArrival } from '@/lib/attribution/attribution-store.server';
+import { DP_CANOPI_EMBED_ID } from '@/lib/canopi-embed';
 import { setSessionCookies } from '@/lib/auth-session';
 import { pickProfileImage } from '@/lib/auth-profile';
 import { fetchCanopiWeb3AuthUser } from '@/lib/canopi-api';
@@ -19,6 +22,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'idToken required' }, { status: 400 });
     }
 
+    // How the visitor arrived (message tag, Canopi referral): passed to Canopi's sign-up, and kept for the account.
+    const cookieStore = await cookies();
+    const arrival = decodeArrival(cookieStore.get(ARRIVAL_COOKIE)?.value);
+
     const ghRes = await fetch(`${getGovHubProxyBaseUrl()}/api/auth/web3auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -32,7 +39,7 @@ export async function POST(request: Request) {
     });
     const [ghData, canopiUser] = await Promise.all([
       ghRes.json(),
-      fetchCanopiWeb3AuthUser(idToken),
+      fetchCanopiWeb3AuthUser(idToken, canopiSignupFields(arrival, DP_CANOPI_EMBED_ID)),
     ]);
     if (!ghRes.ok) {
       return NextResponse.json(
@@ -80,7 +87,8 @@ export async function POST(request: Request) {
         verifierId: identity.verifierId,
       },
     });
-    await setSessionCookies(response.cookies, sessionPayload, await cookies());
+    await setSessionCookies(response.cookies, sessionPayload, cookieStore);
+    await recordAccountArrival(sessionPayload.userId, arrival);
     return response;
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Authentication failed';
