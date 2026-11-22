@@ -70,6 +70,9 @@ export default function SiteFooter() {
           <Link href="/terms" className="text-slate-400 hover:text-slate-200">
             Terms
           </Link>
+          <Link href="/text-alerts" className="text-slate-400 hover:text-slate-200">
+            Text alerts
+          </Link>
           <Link href="/support" className="text-slate-400 hover:text-slate-200">
             Support
           </Link>
