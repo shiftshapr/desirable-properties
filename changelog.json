@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "arrival-attribution-2026-11-22",
+      "date": "2026-11-22",
+      "status": "open",
+      "title": "Votes and DP sign-ins record how the person arrived: the message tag and any Canopi referral",
+      "summary": "Any page opened with a message tag (?ref=em-1122-closes, wa-1122-lastcall, inv-email and so on) or a Canopi referral (ref_token, ch, utm_source/medium/campaign, or referralCode) now sets a first-party cookie, dp_arrival (30 days, SameSite=Lax, HttpOnly), holding the first and latest tag and the first referral. It holds nothing about the visitor; tags name a message, never a person. It is set on the server before the page renders, so pages that take ?ref off the address bar do not lose it. When an account first submits a ballot, the tags, a short referral label (never the token), channel and campaign are stored once in dp_ballot_vote_attribution; later edits do not change it, and it plays no part in counting. Sign-in from the DP site passes the DP embed instance and the referral to Canopi's sign-up (canopiId, referralCode, refToken) and keeps the account's first arrival in dp_account_attribution. ballot-admin attribution prints counts per tag and per referral, never accounts. Requested by the owner on 22 Nov 2026.",
+      "changes": [
+        "challenge-site/src/lib/attribution/attribution-core.ts: tag and Canopi referral parsing, first/last touch merge, the cookie, the stored row and the Canopi sign-up fields",
+        "challenge-site/src/middleware.ts: sets dp_arrival on page loads that carry a tag or referral",
+        "challenge-site/src/lib/ballots/ballot-schema.ts, ballot-store.server.ts: dp_ballot_vote_attribution, written once on an account's first submission",
+        "challenge-site/src/app/api/auth/web3auth/route.ts, src/lib/canopi-api.ts, src/lib/attribution/attribution-store.server.ts: referral passed to Canopi sign-up; dp_account_attribution",
+        "challenge-site/scripts/ballot-admin.mjs: attribution [--signups] [--json], counts only; clear-test-votes also clears staging attribution rows",
+        "challenge-site/scripts/attribution.test.mjs, run by npm run test:attribution"
+      ]
+    },
+    {
       "id": "pad-invite-2026-11-21",
       "date": "2026-11-21",
       "status": "open",

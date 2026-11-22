@@ -6,6 +6,10 @@
  *                 closesAt; 'published' shows the totals on the page. Without a row the definition's window applies.
  * dp_ballot_vote  one current vote per (ballot, question, account). A changed vote overwrites the row (no history of
  *                 an account's earlier choices is kept).
+ * dp_ballot_vote_attribution  how an account arrived, written once on its first submission of a ballot and never on
+ *                 later edits: message tags (first and last), Canopi referral label, channel and campaign, from the
+ *                 dp_arrival cookie (src/lib/attribution/attribution-core.ts). Null when the cookie had nothing.
+ *                 Read only as counts (ballot-admin attribution); it plays no part in the tally.
  */
 export const BALLOT_SCHEMA_SQL = `
 CREATE TABLE IF NOT EXISTS dp_ballot (
@@ -28,4 +32,17 @@ CREATE TABLE IF NOT EXISTS dp_ballot_vote (
 );
 
 CREATE INDEX IF NOT EXISTS dp_ballot_vote_user ON dp_ballot_vote (ballot_slug, user_id);
+
+CREATE TABLE IF NOT EXISTS dp_ballot_vote_attribution (
+  ballot_slug TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  first_ref TEXT,
+  last_ref TEXT,
+  referral_code TEXT,
+  referral_channel TEXT,
+  utm_campaign TEXT,
+  landed_at TIMESTAMPTZ,
+  recorded_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (ballot_slug, user_id)
+);
 `;

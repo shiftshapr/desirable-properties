@@ -4,6 +4,7 @@ import { ADMIN_COOKIE, parseAdminSession } from '@/lib/onchainAdminAuth';
 import { hasSessionCookie } from '@/lib/auth-session-cookie';
 import { padSlugTypoRedirectPath } from '@/lib/pad-slug-sanitize';
 import { landingPadsEnabled } from '@/lib/landing-pads/flag';
+import { ARRIVAL_COOKIE, ARRIVAL_MAX_AGE_S, decodeArrival, encodeArrival, mergeArrival, touchFromParams } from '@/lib/attribution/attribution-core';
 
 /** Admin HTML routes are client-gated (Web3Auth popup on 401). APIs stay server-protected. */
 const PROTECTED_API_PREFIXES = [
@@ -32,9 +33,37 @@ async function hasSiteAuth(request: NextRequest): Promise<boolean> {
   return hasSessionCookie(request.cookies);
 }
 
+/**
+ * First and last touch: a message tag (?ref=em-1122-closes) or a Canopi referral on any page goes into the dp_arrival
+ * cookie (attribution-core.ts) before the page renders, so it is kept even when the page then takes ?ref off the
+ * address bar (PadInvite). Page loads only, not API calls.
+ */
+function withArrival(request: NextRequest, response: NextResponse): NextResponse {
+  const { pathname } = request.nextUrl;
+  if (request.method !== 'GET' || pathname.startsWith('/api/') || pathname.startsWith('/_next/')) return response;
+  const touch = touchFromParams(request.nextUrl.searchParams);
+  if (!touch) return response;
+  const prev = decodeArrival(request.cookies.get(ARRIVAL_COOKIE)?.value);
+  const next = mergeArrival(prev, touch, new Date());
+  const proto = request.headers.get('x-forwarded-proto') || request.nextUrl.protocol.replace(':', '');
+  response.cookies.set(ARRIVAL_COOKIE, encodeArrival(next), {
+    maxAge: ARRIVAL_MAX_AGE_S,
+    path: '/',
+    sameSite: 'lax',
+    httpOnly: true,
+    secure: proto === 'https',
+  });
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
+  // www -> apex first: the cookie is set on the apex hop (the redirect keeps the query).
   const apex = apexRedirect(request);
   if (apex) return apex;
+  return withArrival(request, await route(request));
+}
+
+async function route(request: NextRequest): Promise<NextResponse> {
 
   const { pathname } = request.nextUrl;
 

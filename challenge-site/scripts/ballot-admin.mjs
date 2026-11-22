@@ -8,6 +8,8 @@
  *   node --experimental-strip-types scripts/ballot-admin.mjs close                                       # emergency stop before closesAt
  *   node --experimental-strip-types scripts/ballot-admin.mjs reopen                                      # undo close/publish (window still applies)
  *   node --experimental-strip-types scripts/ballot-admin.mjs clear-test-votes                            # staging only
+ *   node --experimental-strip-types scripts/ballot-admin.mjs attribution [--json]                        # voters per message tag / referral
+ *   node --experimental-strip-types scripts/ballot-admin.mjs attribution --signups [--since 2026-11-22]  # accounts per tag / referral
  *
  * Plain Node (no tsx needed; production has no dev dependencies). On box1, from ~/desirable-properties/challenge-site:
  *   node --experimental-strip-types --env-file=.env.local scripts/ballot-admin.mjs results --db env
@@ -17,7 +19,8 @@
  * environment, never printed), --by <name> (recorded as updated_by).
  * The production database (desirable_properties) needs --prod on every command that writes, and refuses
  * `results --preview` (totals before the close) and `clear-test-votes` outright.
- * No command prints how an account voted: totals only.
+ * No command prints how an account voted: totals only. `attribution` prints counts per tag and referral only, never
+ * an account next to a tag; it is read-only and safe on production while the ballot is open.
  */
 import { writeFileSync } from 'fs';
 import pg from 'pg';
@@ -157,7 +160,15 @@ async function main() {
       case 'clear-test-votes': {
         if (isProd) throw new Error('refused on the production database');
         const r = (await has('dp_ballot_vote')) ? await q('DELETE FROM dp_ballot_vote WHERE ballot_slug = $1', [slug]) : null;
+        if (await has('dp_ballot_vote_attribution')) await q('DELETE FROM dp_ballot_vote_attribution WHERE ballot_slug = $1', [slug]);
         console.log(`deleted ${r?.rowCount ?? 0} test votes`);
+        break;
+      }
+      case 'attribution': {
+        const report = opts.signups === true ? await signupAttribution(q, has, opts) : await voteAttribution(q, has, slug);
+        report.database = dbName(url);
+        if (opts.json === true) console.log(JSON.stringify(report, null, 2));
+        else console.log(attributionText(report).join('\n'));
         break;
       }
       default:
@@ -166,6 +177,62 @@ async function main() {
   } finally {
     await pool.end();
   }
+}
+
+/* ---------- attribution (counts only) ---------- */
+
+const groupSql = (table, col, where) =>
+  `SELECT ${col} AS key, count(*)::int AS n FROM ${table} WHERE ${where} GROUP BY ${col} ORDER BY n DESC, ${col} NULLS LAST`;
+const rowsOut = (rows) => rows.map((r) => ({ key: r.key ?? null, voters: Number(r.n) }));
+
+async function voteAttribution(q, has, slug) {
+  const voters = (await has('dp_ballot_vote'))
+    ? Number((await q('SELECT count(DISTINCT user_id)::int AS n FROM dp_ballot_vote WHERE ballot_slug = $1', [slug])).rows[0].n)
+    : 0;
+  const report = { kind: 'ballot', slug, voters, recorded: 0, first_ref: [], last_ref: [], referral_code: [] };
+  if (!(await has('dp_ballot_vote_attribution'))) return report;
+  // Only accounts that still have a vote on this ballot.
+  const where = `ballot_slug = $1 AND EXISTS (SELECT 1 FROM dp_ballot_vote v WHERE v.ballot_slug = a.ballot_slug AND v.user_id = a.user_id)`;
+  const t = 'dp_ballot_vote_attribution a';
+  report.recorded = Number((await q(`SELECT count(*)::int AS n FROM ${t} WHERE ${where}`, [slug])).rows[0].n);
+  for (const col of ['first_ref', 'last_ref', 'referral_code']) report[col] = rowsOut((await q(groupSql(t, col, where), [slug])).rows);
+  return report;
+}
+
+async function signupAttribution(q, has, opts) {
+  const since = typeof opts.since === 'string' ? opts.since : '1970-01-01';
+  if (Number.isNaN(Date.parse(since))) throw new Error('--since: a date, e.g. 2026-11-22');
+  const report = { kind: 'signups', since, recorded: 0, first_ref: [], last_ref: [], referral_code: [] };
+  if (!(await has('dp_account_attribution'))) return report;
+  const where = 'first_signin_at >= $1::timestamptz';
+  const t = 'dp_account_attribution';
+  report.recorded = Number((await q(`SELECT count(*)::int AS n FROM ${t} WHERE ${where}`, [since])).rows[0].n);
+  for (const col of ['first_ref', 'last_ref', 'referral_code']) report[col] = rowsOut((await q(groupSql(t, col, where), [since])).rows);
+  return report;
+}
+
+// "em-1122-closes: 4 voters". Counts only, never names.
+function countLines(title, rows, noun, empty = '(no tag)') {
+  const lines = [`${title}:`];
+  if (!rows.length) lines.push('  (none yet)');
+  for (const r of rows) lines.push(`  ${r.key ?? empty}: ${r.voters} ${r.voters === 1 ? noun.replace(/s$/, '') : noun}`);
+  return lines;
+}
+
+function attributionText(r) {
+  const noun = r.kind === 'ballot' ? 'voters' : 'accounts';
+  const lines =
+    r.kind === 'ballot'
+      ? [
+          `# ${r.slug}: how voters arrived (${r.database})`,
+          `${r.voters} accounts voted; ${r.recorded} first submitted after attribution started (the rest voted earlier, no record).`,
+        ]
+      : [`# DP sign-ins with an arrival record since ${r.since} (${r.database})`, `${r.recorded} accounts.`];
+  lines.push('');
+  lines.push(...countLines('By first message tag', r.first_ref, noun), '');
+  lines.push(...countLines('By latest message tag', r.last_ref, noun), '');
+  lines.push(...countLines('By Canopi referral', r.referral_code, noun, '(no referral)'));
+  return lines;
 }
 
 main().catch((err) => {
