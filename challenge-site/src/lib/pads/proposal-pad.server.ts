@@ -40,10 +40,12 @@ export const ML_TO_DP: Record<string, string> = Object.fromEntries(Object.entrie
 /**
  * In-process memo in front of Next's fetch cache: concurrent requests for one path share a single Gov Hub call, and a
  * failure is remembered for FAILURE_TTL_MS so a slow Gov Hub is not hit again on every pad view (the lists are large:
- * Gov Hub works out each proposal's applicability on every uncached call).
+ * Gov Hub works out each proposal's applicability on every uncached call). When a call fails, the last good answer
+ * for that path since process start is served instead, so a slow Gov Hub does not make a known pad unavailable.
  */
 const FAILURE_TTL_MS = 30_000;
 const memo = new Map<string, { at: number; ttl: number; value: Promise<unknown> }>();
+const lastGood = new Map<string, unknown>();
 
 async function getJson<T>(path: string, revalidate = PAD_REVALIDATE_SECONDS): Promise<T | null> {
   const hit = memo.get(path);
@@ -57,10 +59,12 @@ async function getJson<T>(path: string, revalidate = PAD_REVALIDATE_SECONDS): Pr
         signal: AbortSignal.timeout(20000),
       });
       if (!res.ok) throw new Error(String(res.status));
-      return (await res.json()) as T;
+      const json = (await res.json()) as T;
+      lastGood.set(path, json);
+      return json;
     } catch {
       entry.ttl = FAILURE_TTL_MS;
-      return null;
+      return (lastGood.get(path) as T | undefined) ?? null;
     }
   })();
   memo.set(path, entry);

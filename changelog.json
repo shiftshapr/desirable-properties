@@ -4,6 +4,21 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pads-sessions-govhub-2026-11-22",
+      "date": "2026-11-22",
+      "status": "open",
+      "title": "Pads: session pads listed first; open items no longer time out on Gov Hub",
+      "summary": "/pads now opens with a Session pads section (and a Sessions chip first in the pad-types nav): the listening sessions, the V1 launch, the community review and the DP Roundups, newest first, each with its date, title and a one-line status (the current phase, or the ballot's voting open/closed state). The list is derived from the session schedule, the occurrence phase histories and the session ballots; of the sessions still to come only the next one is listed. Open items (on /pads and /improve/open-items) are now fetched from Gov Hub four documents at a time instead of all at once, failed documents get one more try, and the last good list per document is kept in memory and served when a later fetch fails, so the 'Gov Hub did not answer' line shows only for documents that have never loaded since the server started. Proposal pads serve the last good Gov Hub answer the same way.",
+      "changes": [
+        "challenge-site/src/lib/dp-v11-open-items.server.ts: bounded concurrency (4), one retry pass (2 at a time, 30 s), last-good memory cache with stale flag, shared in-flight sweep",
+        "challenge-site/src/lib/pads/proposal-pad.server.ts: getJson falls back to the last good answer per path",
+        "challenge-site/src/lib/pads/session-pads-core.ts, session-pads.server.ts: session pad list from DP_ROUNDUP_EVENTS, SESSION_OCCURRENCES, SESSION_BALLOTS and the community review event",
+        "challenge-site/src/data/sessions/occurrences.ts: registry of listening-session occurrences",
+        "challenge-site/src/app/pads/page.tsx: Session pads section and Sessions chip",
+        "challenge-site/scripts/session-pads.test.mjs: ordering, next-upcoming rule and ballot status"
+      ]
+    },
+    {
       "id": "arrival-attribution-2026-11-22",
       "date": "2026-11-22",
       "status": "open",
