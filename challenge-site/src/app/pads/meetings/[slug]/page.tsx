@@ -124,7 +124,7 @@ export default async function MeetingPadPage({ params }: { params: Params }) {
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
       <p className="rounded-lg border border-amber-700/60 bg-amber-950/30 px-3 py-2 text-sm text-amber-100">
-        Preview, not published. {pad.visibilityNote}
+        Staging preview, not published. {pad.visibilityNote}
       </p>
 
       <nav aria-label="Breadcrumb" className="mt-5 text-sm text-slate-400">
@@ -224,6 +224,11 @@ export default async function MeetingPadPage({ params }: { params: Params }) {
                 <span className="rounded border border-slate-600 px-2 py-0.5 text-xs text-slate-300">{FOLLOW_UP_STATUS_LABEL[f.status]}</span>
                 <span className="text-slate-100">{f.text}</span>
                 {f.note ? <span className="text-xs text-slate-400">{f.note}</span> : null}
+                {f.links?.length ? (
+                  <span className="flex flex-wrap gap-x-3 text-xs">
+                    {f.links.map((l) => <LinkOut key={l.href} link={l} />)}
+                  </span>
+                ) : null}
               </li>
             ))}
           </ul>
