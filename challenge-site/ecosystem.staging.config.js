@@ -180,6 +180,8 @@ module.exports = {
         DP_COLLAB_ENABLED: 'true',
         // Listening workspace (meeting record, Phase 1): on for staging only. src/lib/listening/flag.ts.
         DP_LISTENING_WORKSPACE: 'on',
+        // Meeting pads (/pads/meetings/[slug]) preview: on for staging only. src/lib/meeting-pads/flag.ts.
+        MEETING_PADS_PREVIEW: 'on',
         // Separate staging Postgres (snapshot of prod) so staging evals/events stay out of prod.
         DP_DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',
         DATABASE_URL: localEnv.DP_DATABASE_URL_STAGING || '',

@@ -4,16 +4,18 @@ import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { loadOpenItems, type OpenItemsDoc } from '@/lib/dp-v11-open-items.server';
 import { padHref, shortId } from '@/lib/pads/proposal-pad-core';
 import { storedTitles } from '@/lib/pads/proposal-pad.server';
+import type { SessionPad } from '@/lib/pads/session-pads-core';
+import { loadSessionPads } from '@/lib/pads/session-pads.server';
 import { pageOpenGraph } from '@/lib/site-metadata';
 
 export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: 'Pads | Desirable Properties',
-  description: 'One page for each open proposal on The Layered Web: what it changes, in plain terms, the record behind it, and where to weigh in.',
+  description: 'One page for each session and each open proposal on The Layered Web: the record, what is being decided in plain terms, and where to weigh in.',
   openGraph: pageOpenGraph({
     title: 'Pads',
-    description: 'One page for each open proposal: what it changes, the record, and where to weigh in.',
+    description: 'One page for each session and each open proposal: the record, and where to weigh in.',
     path: '/pads',
   }),
 };
@@ -21,6 +23,54 @@ export const metadata: Metadata = {
 function snippet(text: string, max = 110): string {
   const flat = String(text || '').replace(/[#*_`>]/g, '').replace(/\s+/g, ' ').trim();
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat;
+}
+
+const TONE_CLASS: Record<SessionPad['tone'], string> = {
+  draft: 'border-slate-600 text-slate-200',
+  review: 'border-amber-700/70 text-amber-200',
+  screen: 'border-violet-700/70 text-violet-200',
+  vote: 'border-emerald-600/80 text-emerald-200',
+  decided: 'border-sky-700/70 text-sky-200',
+  upcoming: 'border-cyan-700/70 text-cyan-200',
+  held: 'border-slate-700 text-slate-400',
+};
+
+function SessionPadsSection({ pads }: { pads: SessionPad[] }) {
+  return (
+    <section id="sessions" aria-labelledby="sessions-heading" className="scroll-mt-24">
+      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800 pb-2">
+        <h2 id="sessions-heading" className="text-2xl font-bold text-white">
+          Session pads
+          <span className="ml-2 text-base font-normal text-slate-400">{pads.length}</span>
+        </h2>
+        <Link href="/events" className="text-sm text-cyan-300 hover:text-cyan-200">
+          All events →
+        </Link>
+      </div>
+      <p className="mt-3 max-w-3xl text-sm text-slate-400">
+        One page for each session: the record of what was said, and, for listening sessions, the draft, the review and
+        the vote. Most recent first.
+      </p>
+      <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+        {pads.map((pad) => (
+          <li key={pad.href}>
+            <Link
+              href={pad.href}
+              className="block h-full rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2.5 hover:border-cyan-700"
+            >
+              <span className="flex flex-wrap items-center gap-1.5 text-xs">
+                <time dateTime={pad.date} className="text-slate-400">{pad.dateLabel}</time>
+                <span className="text-slate-500">· {pad.kind}</span>
+              </span>
+              <span className="mt-1 block text-sm font-medium text-slate-100">{pad.title}</span>
+              <span className={`mt-1.5 inline-block rounded border px-1.5 text-xs ${TONE_CLASS[pad.tone]}`}>{pad.status}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {!pads.length ? <p className="mt-4 text-slate-300">No session pads yet.</p> : null}
+    </section>
+  );
 }
 
 function ProposalPadsSection({ docs, storedTitle }: { docs: OpenItemsDoc[]; storedTitle: (id: string) => string | null }) {
@@ -85,11 +135,11 @@ function ProposalPadsSection({ docs, storedTitle }: { docs: OpenItemsDoc[]; stor
 }
 
 /**
- * /pads: one section per pad type. Proposal pads come first; other pad types (meeting pads) add their own section
+ * /pads: one section per pad type. Session pads come first, then proposal pads; other pad types add their own section
  * component to this page in the same shape (an id for the #anchor, a heading, a list of links to their pads).
  */
 export default async function PadsIndexPage() {
-  const [docs, storedTitle] = await Promise.all([loadOpenItems(), storedTitles()]);
+  const [sessions, docs, storedTitle] = await Promise.all([loadSessionPads(), loadOpenItems(), storedTitles()]);
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="pb-8">
@@ -100,12 +150,16 @@ export default async function PadsIndexPage() {
           the way to have your say.
         </p>
         <nav aria-label="Pad types" className="mt-4 flex flex-wrap gap-2 text-sm">
+          <a href="#sessions" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
+            Sessions
+          </a>
           <a href="#proposals" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
             Proposals
           </a>
         </nav>
       </header>
       <div className="space-y-12">
+        <SessionPadsSection pads={sessions} />
         <ProposalPadsSection docs={docs} storedTitle={storedTitle} />
       </div>
     </main>
