@@ -169,6 +169,20 @@ export function sessionInvite(input: {
   };
 }
 
+/** A meeting pad's invite (/pads/meetings/<slug>): its date and title, the pad's own short summary. */
+export function meetingInvite(input: { path: string; dateLabel: string; title: string; summary: string }): InviteContent {
+  const title = shorten(`${input.dateLabel} · ${input.title}`, 120);
+  return {
+    kind: 'meeting',
+    key: input.path,
+    path: input.path,
+    title,
+    summary: shorten(input.summary, 240),
+    action: 'See what was raised and what changed',
+    subject: shorten(`Meeting pad: ${title}`, 140),
+  };
+}
+
 /* ---------- messages and links ---------- */
 
 /** The message people send: title, short summary, the action and the link. Plain, a few lines. */

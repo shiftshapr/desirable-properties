@@ -1,0 +1,273 @@
+import type { MeetingPad, MeetingPadLink } from '@/lib/meeting-pads/types';
+
+/**
+ * Private walk-through call, Friday 20 November 2026: Daveed and one reviewer went through the 16 Nov session page
+ * during its voting phase. The reviewer has not consented to being named, so the pad uses a pseudonym and
+ * paraphrases; no transcript, video or quotes are kept here. Preview only (MEETING_PADS_PREVIEW, staging).
+ */
+
+const PR_334: MeetingPadLink = {
+  label: 'PR #334: session page fixes',
+  href: 'https://github.com/shiftshapr/desirable-properties/pull/334',
+};
+const SESSION_PAGE = '/events/meta-governance-2026-11-16';
+const BUILT = '2026-11-21';
+const RAISED = '2026-11-20';
+
+export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
+  slug: '2026-11-20-session-page-review',
+  date: '2026-11-20',
+  dateLabel: '20 Nov 2026',
+  title: 'Session page walk-through',
+  heldLabel: 'Fri 20 Nov 2026, 2:02 PM PT',
+  durationMinutes: 46,
+  format: 'Zoom, screen share',
+  visibility: 'private',
+  visibilityNote:
+    'A private call. The reviewer is shown under a pseudonym until they agree to be named; there is no recording, transcript or quote on this pad.',
+  participants: [
+    { shownAs: 'Daveed Benjamin', role: 'host', consent: 'consented' },
+    { shownAs: 'A participant', role: 'reviewer', consent: 'pending' },
+  ],
+  reviewed: {
+    label: '16 Nov 2026 session page: Meeting agreements: how we decide',
+    href: SESSION_PAGE,
+    note: 'Reviewed during the voting phase.',
+  },
+  synthesis: [
+    'A reviewer walked through the 16 Nov session page with Daveed while the vote was open, reading it as a newcomer would.',
+    'The ballot worked. The page around it was hard going: small type, a lot of text, sections that repeat on every session, and labels that did not say which meeting they belonged to.',
+    'Fourteen page changes came out of the call and thirteen were built the next day into the shared session components, so every session page gets them. The reviewer also suggested seven changes to how meetings and votes are run; those are open for a decision.',
+  ],
+  keyPoints: [
+    'Keep the ballot as it is.',
+    'Less to read: short intros, colour for phases, and repeated or reference sections collapsed by default.',
+    'Always say which meeting you are on: its date and specific title in every heading, breadcrumbs and a compact sticky header.',
+    'Separate what is about the meeting from what is about the platform.',
+    'For the process: ideas move forward when someone seconds them, a tighter meeting structure, and reminders by text as well as email.',
+  ],
+  groups: [
+    {
+      id: 'page',
+      title: 'On the session page',
+      intro: 'What the reviewer noticed while reading the page, and what changed.',
+      items: [
+        {
+          n: 1,
+          at: '20:13',
+          raised: 'The type was small and hard to read; the reviewer had to zoom in.',
+          response: 'Larger body text and line height on session pages, and more contrast.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 2,
+          at: '22:22',
+          raised: 'The ballot was clear and easy to use, and the labelled additions from after the meeting helped.',
+          response: 'No change to the ballot.',
+          status: 'kept',
+          statusDate: RAISED,
+        },
+        {
+          n: 3,
+          at: '32:30',
+          raised: 'The page felt wordy and monochrome, with a lot to read.',
+          response: 'One-line intros, a four-step "How this works" strip, more visual hierarchy and a colour per phase.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 4,
+          at: '33:14',
+          raised: 'Clicking "Voting open" in the phase tracker did nothing.',
+          response: 'Every phase step links to its section; "Voting open" goes to the vote.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 5,
+          at: '33:30–34:32',
+          raised: 'The ballot rules are the same every time and were overwhelming at the top of the vote.',
+          response: 'Static and repeated sections start collapsed, so only their titles show.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 6,
+          at: '35:43–37:09',
+          raised: 'It was not clear that the transcript and the page belonged to the same meeting, and the series name alone was too generic.',
+          response: 'Every section is labelled with the meeting date and its specific title, e.g. "Transcript: Monday 16 Nov 2026, Meeting agreements: how we decide".',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 7,
+          at: '37:20–39:27',
+          raised: 'With no breadcrumbs it was easy to lose track of which page and meeting you were on.',
+          response: 'Breadcrumbs (Sessions › 16 Nov 2026 › title) and a compact sticky header with the date, title and phase.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 8,
+          at: '39:44–41:01',
+          raised: 'The Version 1.0 film and share section read as if it were part of the meeting.',
+          response: 'Retitled "Share the platform", marked "Not specific to this meeting", in its own panel.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 9,
+          at: '40:45–41:23',
+          raised: '"Draft for review" did not say what the draft was of.',
+          response: 'Now "Meeting draft: 16 Nov 2026, <meeting title>, for review".',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 10,
+          at: '41:23–42:48',
+          raised: '"Decisions and options" did not say decisions about what.',
+          response: 'Renamed "Origins of the voting questions", collapsed by default.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 11,
+          at: '42:49–43:11',
+          raised: '"Draft ballot questions" needed its meeting.',
+          response: '"Draft ballot questions from the 16 Nov 2026 meeting", collapsed by default.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 12,
+          at: '43:19–44:21',
+          raised: '"Corrected process text" was unclear.',
+          response: 'Renamed "How this meeting changed the process page", collapsed by default.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 13,
+          at: '44:38–44:55',
+          raised: 'The summary should be labelled and collapsed.',
+          response: '"Meeting summary", collapsed, with "Decisions coming up" and "Open questions" inside it.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+        {
+          n: 14,
+          at: '25:46',
+          raised: 'Daveed noticed the videos block rendered oddly.',
+          response: 'New video grid (film and vertical teaser side by side on desktop) and a local poster for the teaser, which had no thumbnail.',
+          status: 'built',
+          statusDate: BUILT,
+          links: [PR_334],
+        },
+      ],
+    },
+    {
+      id: 'process',
+      title: 'For the process',
+      intro: 'Suggestions about how meetings and votes are run, not about the page. Each needs a decision before it is planned.',
+      items: [
+        {
+          n: 15,
+          at: '06:49–07:45',
+          raised: 'Seconding: an idea moves forward only when someone seconds it. The assistant listens for seconds, and seconded ideas become vote items.',
+          response: 'A ballot drafting rule and a live-assistant feature; could itself be a ballot question.',
+          status: 'to_decide',
+          statusDate: RAISED,
+        },
+        {
+          n: 16,
+          at: '07:55–08:31',
+          raised: 'Upvoting works when you need one winner; questions where several answers can pass need a different method.',
+          response: 'Ballot design: a choice type per question (single winner, approve several, ranked).',
+          status: 'to_decide',
+          statusDate: RAISED,
+        },
+        {
+          n: 17,
+          at: '08:36–10:22',
+          raised: 'Give meetings more structure: a timed check-in of about 30 seconds each, tight limits that help people focus, one dedicated inquiry per session (for example one DP), and plain English before complex wording.',
+          response: 'Session agenda template, run sheet and the Luma "This week" block.',
+          status: 'to_decide',
+          statusDate: RAISED,
+        },
+        {
+          n: 18,
+          at: '10:27–11:15',
+          raised: 'The AI could flag, like raising a hand, when it notices tension, a connection nobody has made, or a dropped thread.',
+          response: 'A live-assistant feature for the listening workspace.',
+          status: 'to_decide',
+          statusDate: RAISED,
+        },
+        {
+          n: 19,
+          at: '05:51–06:17',
+          raised: 'A live shared document the assistant writes during the meeting, with the link posted at the start and shown on screen.',
+          response: 'Live notes on the session pad.',
+          status: 'to_decide',
+          statusDate: RAISED,
+        },
+        {
+          n: 20,
+          at: '22:47–25:38',
+          raised: 'Fathom as a recording tool: it joins every Zoom, links the transcript to the video, and editing the transcript cuts the video. Roughly $15 a month.',
+          response: 'Recording tool evaluation, including whether it has an API; the owner decides.',
+          status: 'to_decide',
+          statusDate: RAISED,
+          note: 'Daveed is looking into pricing and the API.',
+        },
+        {
+          n: 21,
+          at: '30:47–32:22',
+          raised: 'Personal WhatsApp or SMS reminders, since people answer texts more than email.',
+          response: 'A reminder channel next to email, skipping people who have already voted.',
+          status: 'to_decide',
+          statusDate: RAISED,
+          note: 'Daveed is looking into WhatsApp reminders.',
+        },
+      ],
+    },
+  ],
+  followUps: {
+    title: 'Things Daveed said he would look into',
+    items: [
+      {
+        text: 'Whether Claude can post to Signal.',
+        owner: 'Daveed Benjamin',
+        status: 'open',
+        note: 'Related plan: a daily digest from the WhatsApp group to the Signal group, not built yet.',
+      },
+      { text: 'Fathom pricing and API.', owner: 'Daveed Benjamin', status: 'open', note: 'See item 20.' },
+      { text: 'WhatsApp reminders.', owner: 'Daveed Benjamin', status: 'open', note: 'See item 21.' },
+    ],
+  },
+  nextSteps: [
+    'Ask the reviewer whether they are happy to be named on this pad; keep the pseudonym if not.',
+    'Decide items 15 to 21: which become ballot questions, which go into the session template, and which wait.',
+    'Check the built changes on the next session page (23 Nov) with someone new to it.',
+  ],
+  inviteSummary:
+    'A walk-through of the 16 Nov session page with a first-time reader: what was hard to follow, what changed the next day, and seven ideas for how meetings and votes are run.',
+  chatStarters: [
+    'What changed on the session page after this walk-through?',
+    'Which process suggestions still need a decision?',
+    'How would seconding work in our ballots?',
+  ],
+};
