@@ -20,7 +20,7 @@ export default function PrivacyPage() {
           <LegalArticle html={oarsDpHtml()} />
         </div>
         <p className="mt-8 text-sm text-slate-500">
-          Also see our <Link href="/terms">Terms of Use</Link>.
+          Also see our <Link href="/terms">Terms of Service</Link>.
         </p>
       </article>
     </main>
