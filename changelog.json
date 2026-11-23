@@ -4,6 +4,27 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "session-1123-ballot-results-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Today's session page shows last week's ballot results",
+      "summary": "The 23 November session page now reads out the results of the 16 November ballot: the outcome of each question, the 24 voters, and the quorum tie, with a link to the full counts on the 16 November page. Its text now says voting has closed."
+    },
+    {
+      "id": "session-pages-also-open-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Listening session pages list what else is open",
+      "summary": "Listening session pages gain an \"Also open\" section: the open proposals for Version 1.1, each with its own pad, and the ideas for Version 1.1, so the agenda is not only the items raised between sessions."
+    },
+    {
+      "id": "session-1116-decision-recorded-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "16 November session moves to Decision recorded",
+      "summary": "The 16 November session page now shows the Decision recorded step: voting closed and the results are published, with question 5 (quorum) tied and taken to the 23 November session."
+    },
+    {
       "id": "nginx-recall-hooks-2026-11-23",
       "date": "2026-11-23",
       "status": "open",

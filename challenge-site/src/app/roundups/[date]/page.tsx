@@ -8,6 +8,7 @@ import { isMeetingPadPublic, MEETING_PAD_STATUS_LABEL, meetingPadHref, type Meet
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
 import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
+import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
 import { meetingLongDate, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 
@@ -140,7 +141,28 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
         <p className="mt-3">{event.thisWeek ?? event.details ?? event.objective}</p>
       </section>
 
+      {event.ballotResults ? <BallotResultsSummary {...event.ballotResults} /> : null}
+
       <RaisedBetweenSessions slugs={event.raisedBetweenSessions} />
+
+      {event.focus.startsWith('DP Listening Experiment') ? (
+        <section id="also-open" className="mt-8 scroll-mt-24">
+          <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">Also open</h2>
+          <ul className="mt-3 list-disc space-y-2 pl-6">
+            <li>
+              <Link href="/improve/open-items" className="text-cyan-300 underline hover:text-cyan-200">Open proposals for Version 1.1</Link>: every
+              open proposal on the book, each with its own{' '}
+              <Link href="/pads" className="text-cyan-300 underline hover:text-cyan-200">pad</Link> explaining the change in plain terms. The
+              DP&apos;s co-editors decide; some need only one more co-editor approval, and anyone signed in can say whether they support one.
+            </li>
+            <li>
+              <Link href="/improve" className="text-cyan-300 underline hover:text-cyan-200">Ideas for Version 1.1</Link>: the MTPs held back
+              from 1.0, chapter glossaries and purpose statements, the open questions in every chapter, testable requirements, and the
+              co-editor seats still open.
+            </li>
+          </ul>
+        </section>
+      ) : null}
 
       <SessionInvite path={event.pageHref ?? event.href} className="mt-8" />
 
