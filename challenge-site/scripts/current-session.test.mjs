@@ -34,7 +34,12 @@ test('16 Nov stays current while its ballot is open, then 23 Nov takes over', ()
   assert.equal(after.href, '/roundups/2026-11-23');
   assert.equal(after.title, 'DP Listening Experiment 1/4: Creating a Living Book Together');
   assert.equal(after.upcoming, true);
-  assert.equal(currentSession(new Date('2026-11-23T19:31:00Z')).href, '/roundups/2026-11-30');
+  // A session stays current for 24 hours after it ends (the correction window), then the next one takes over.
+  const sameDay = currentSession(new Date('2026-11-23T22:00:00Z'));
+  assert.equal(sameDay.href, '/roundups/2026-11-23');
+  assert.equal(sameDay.upcoming, false);
+  assert.equal(currentSession(new Date('2026-11-24T19:29:59Z')).href, '/roundups/2026-11-23');
+  assert.equal(currentSession(new Date('2026-11-24T19:30:00Z')).href, '/roundups/2026-11-30');
   const end = currentSession(new Date('2027-01-01T00:00:00Z'));
   assert.equal(end.href, '/roundups/2026-12-14');
   assert.equal(end.upcoming, false);
@@ -95,4 +100,10 @@ test('Deepi context for a session carries the summary, the ballot and the transc
   assert.match(c.text, /A summary line\./);
   assert.match(c.text, new RegExp(BALLOT_2026_11_16.questions[0].question.slice(0, 20).replace(/[?.()]/g, '\\$&')));
   assert.match(c.text, /\[01:02:03\] Host: Hello\./);
+});
+
+test('the Events menu links to the pads index', async () => {
+  const { buildSiteNavLinks, PADS_INDEX_HREF } = await import('../src/lib/siteNav.ts');
+  const events = buildSiteNavLinks([], { currentSessionHref: '/roundups/2026-11-23' }).find((l) => l.label === 'Events');
+  assert.deepEqual(events.children.map((c) => c.href), ['/roundups/2026-11-23', '/events', PADS_INDEX_HREF]);
 });
