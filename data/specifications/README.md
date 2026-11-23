@@ -16,6 +16,13 @@ This directory contains the official specifications and protocols for the Meta-L
    - Defines compliance enforcement rules for submissions
    - Includes migration guide from v1.4 to v1.5
 
+### Layered Web Specifications
+
+3. **[META-LENS-v0.1](./META-LENS-v0.1.md)** (Draft)
+   - Lens Specification: a portable, shareable configuration of the smart filter
+   - Defines the lens format (rules, preferences, examples, embeddings, privacy, provenance)
+   - Covers stacking across person, community, org and enterprise layers, the screened-out view, and the lens package / SDK split
+
 ## Protocol Hierarchy
 
 ```
