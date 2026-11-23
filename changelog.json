@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "nav-pads-current-session-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Pads in the menu; today's session stays current",
+      "summary": "The Events menu now links to Pads, the index of session, meeting and proposal pads. \"Current session\" keeps pointing at a session for 24 hours after it ends, so on the day of a session the menu still leads to that session's page instead of next week's."
+    },
+    {
       "id": "session-1123-ballot-results-2026-11-23",
       "date": "2026-11-23",
       "status": "open",
