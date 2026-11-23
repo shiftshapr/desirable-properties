@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "nginx-recall-hooks-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Web server config records the meeting-assistant webhook",
+      "summary": "The repo copy of the desirableproperties.org web server config now includes the /hooks/recall/ location that box1 already runs, which passes Recall.ai live transcript updates to the Deepi meeting assistant. No change to any page."
+    },
+    {
       "id": "markabadi-meeting-pad-public-2026-11-23",
       "date": "2026-11-23",
       "status": "open",
