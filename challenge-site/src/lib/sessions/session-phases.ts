@@ -43,6 +43,11 @@ export type SessionOccurrence = {
   /** When the draft for review becomes visible (the verification opening time). Enforced server-side. */
   draftVisibleAt: string;
   phaseHistory: readonly PhaseEntry[];
+  /**
+   * Later pages about this meeting (e.g. a meeting pad from a walk-through of this page), shown as short lines near
+   * the top. A link to a meeting pad shows only while that pad is public (isMeetingPadPublic).
+   */
+  related?: readonly { label: string; href: string }[];
 };
 
 const CLOCK_PHASES: readonly SessionPhase[] = ['Community verification open', 'Community verification closed'];
