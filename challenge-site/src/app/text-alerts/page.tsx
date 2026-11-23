@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Text and WhatsApp alerts – Desirable Properties',
   description:
-    'Desirable Properties alerts: optional text, WhatsApp and Signal reminders about votes, listening sessions and proposals you follow. How to opt in, opt out, and what messages look like.',
+    'Desirable Properties and Canopi alerts: optional text, WhatsApp and Signal messages about votes, sessions and a weekly summary of things you follow, plus announcements only if you opt in separately. How to opt in, opt out, and what messages look like.',
   robots: { index: true, follow: true },
   alternates: { canonical: '/text-alerts' },
 };
@@ -12,17 +12,31 @@ export const metadata: Metadata = {
 const CONTACT_EMAIL = 'info@bridgit.io';
 const ACCOUNT_SETTINGS_URL = 'https://app.canopi.live/profile';
 
-const CONSENT_TEXT =
-  'Text me reminders and alerts about things I follow. Message rates may apply. Reply STOP to stop. You can remove your number any time.';
+const CONSENT_ALERTS =
+  'Text me alerts and reminders: one-time codes, reminders about votes and listening sessions, and a weekly summary of activity on things I follow, including Canopi replies. Up to 4 msgs a week. Msg & data rates may apply. Reply HELP for help, STOP to opt out.';
+const CONSENT_ANNOUNCEMENTS =
+  'Also text me occasional announcements and invitations to new sessions and features. Msg & data rates may apply. Reply STOP to opt out.';
 
 const SAMPLE_MESSAGES = [
   {
-    label: 'Voting reminder',
-    text: 'Desirable Properties: voting on the 16 Nov session closes tonight at 8 PM PT. Vote: https://desirableproperties.org/events/meta-governance-2026-11-16#vote Reply STOP to stop.',
+    label: 'Confirmation code',
+    text: 'Desirable Properties: your confirmation code is [123456]. It expires in 10 minutes. Do not share it. Reply HELP for help, STOP to opt out.',
   },
   {
-    label: 'Followed proposal alert',
-    text: 'Desirable Properties: a proposal you follow, "Consent receipts for overlays", has a new revision open for comment until 25 Nov. Read: https://desirableproperties.org/improve Reply STOP to stop.',
+    label: 'Voting reminder',
+    text: 'Desirable Properties: voting on the [session name] ballot closes tonight at [8 PM PT]. Vote: https://desirableproperties.org/events/[session]#vote Reply STOP to opt out.',
+  },
+  {
+    label: 'Session reminder',
+    text: 'Desirable Properties: the listening session "[session title]" starts at [10 AM PT] today. Join: https://desirableproperties.org/events/[session] Reply STOP to opt out.',
+  },
+  {
+    label: 'Weekly summary',
+    text: 'Desirable Properties: this week, [3] new comments on proposals you follow and [2] replies to you in Canopi. See them: https://desirableproperties.org/[link] Reply STOP to opt out.',
+  },
+  {
+    label: 'Announcement (only with the separate opt-in)',
+    text: 'Desirable Properties: new this month, [feature]. Join the first session on [date]: https://desirableproperties.org/[page] Reply STOP to opt out.',
   },
 ];
 
@@ -44,9 +58,9 @@ export default function TextAlertsPage() {
 
       <h1 className="mt-8 text-4xl font-bold text-white">Text and WhatsApp alerts</h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-300">
-        <strong className="text-white">Desirable Properties alerts</strong> are optional reminders
-        and alerts, by text message (SMS), WhatsApp or Signal, about votes, listening sessions and
-        proposals you follow on desirableproperties.org.
+        <strong className="text-white">Desirable Properties and Canopi alerts</strong> are optional
+        messages by text (SMS), WhatsApp or Signal from Bridgit To The Future LLC, doing business as
+        Bridgit DAO, which runs desirableproperties.org and Canopi.
       </p>
       <p className="mt-4 rounded-lg border border-slate-800 bg-slate-900/60 p-4 text-sm leading-relaxed text-slate-300">
         Adding a phone number is optional. You do not need to give a number or agree to alerts to
@@ -56,12 +70,14 @@ export default function TextAlertsPage() {
       <Section id="program" title="About the program">
         <ul className="list-disc space-y-2 pl-5">
           <li>
-            <strong className="text-white">Program name:</strong> Desirable Properties alerts.
+            <strong className="text-white">Program name:</strong> Desirable Properties and Canopi alerts.
           </li>
           <li>
-            <strong className="text-white">What you get:</strong> reminders before votes close,
-            notices when a listening session you signed up for is about to start, and alerts when a
-            proposal you follow changes. No advertising or promotional messages.
+            <strong className="text-white">What you get:</strong> one-time codes to confirm your
+            number or sign in, reminders before votes close and before listening sessions, alerts
+            and one weekly summary of activity on things you follow, including replies and mentions
+            in Canopi. Replies are never texted one by one. Only if you tick a separate box, also occasional
+            announcements and invitations to new sessions and features.
           </li>
           <li>
             <strong className="text-white">How often:</strong> message frequency varies. Usually
@@ -100,7 +116,9 @@ export default function TextAlertsPage() {
           </li>
           <li>Add your phone number.</li>
           <li>
-            Tick which alerts you want: text message, WhatsApp, Signal. Every box starts unticked.
+            Tick the box for alerts and reminders, and separately the box for announcements if you
+            want them. Choose text message, WhatsApp or Signal. Tick the box agreeing to the Terms
+            of Service and Privacy Policy. Every box starts unticked.
           </li>
           <li>
             Confirm your number with the one-time code we text you. Alerts start only after the
@@ -144,7 +162,20 @@ export default function TextAlertsPage() {
           </fieldset>
           <label className="mt-4 flex items-start gap-3 text-sm text-slate-200">
             <input type="checkbox" disabled className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>{CONSENT_TEXT}</span>
+            <span>{CONSENT_ALERTS}</span>
+          </label>
+          <label className="mt-3 flex items-start gap-3 text-sm text-slate-200">
+            <input type="checkbox" disabled className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{CONSENT_ANNOUNCEMENTS}</span>
+          </label>
+          <label className="mt-3 flex items-start gap-3 text-sm text-slate-200">
+            <input type="checkbox" disabled className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              I agree to the{' '}
+              <Link href="/terms" className="text-cyan-300 hover:text-cyan-200">Terms of Service</Link>{' '}
+              and{' '}
+              <Link href="/privacy" className="text-cyan-300 hover:text-cyan-200">Privacy Policy</Link>.
+            </span>
           </label>
           <button
             type="button"
@@ -210,7 +241,7 @@ export default function TextAlertsPage() {
 
       <p className="mt-12 text-sm text-slate-500">
         Desirable Properties is operated by Bridgit To The Future LLC, doing business as Bridgit
-        DAO. Our <Link href="/terms">Terms of Use</Link> and{' '}
+        DAO. Our <Link href="/terms">Terms of Service</Link> and{' '}
         <Link href="/privacy">Privacy Policy</Link> are interim and were prepared without a licensed
         attorney.
       </p>
