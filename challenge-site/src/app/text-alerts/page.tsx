@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { PHONE_SETTING_HREF, phoneOptinEnabled } from '@/lib/phone-optin/flag';
+import { CONSENT_ALERTS, CONSENT_ANNOUNCEMENTS, TextAlertsAgreeLabel } from '@/lib/text-alerts-consent';
 
 export const metadata: Metadata = {
   title: 'Text and WhatsApp alerts – Desirable Properties',
@@ -9,13 +11,11 @@ export const metadata: Metadata = {
   alternates: { canonical: '/text-alerts' },
 };
 
+/** PHONE_OPTIN is read per request; the page loads no data, so rendering per request stays cheap. */
+export const dynamic = 'force-dynamic';
+
 const CONTACT_EMAIL = 'info@bridgit.io';
 const ACCOUNT_SETTINGS_URL = 'https://app.canopi.live/profile';
-
-const CONSENT_ALERTS =
-  'Text me alerts and reminders: one-time codes, reminders about votes and listening sessions, and a weekly summary of activity on things I follow, including Canopi replies. Up to 4 msgs a week. Msg & data rates may apply. Reply HELP for help, STOP to opt out.';
-const CONSENT_ANNOUNCEMENTS =
-  'Also text me occasional announcements and invitations to new sessions and features. Msg & data rates may apply. Reply STOP to opt out.';
 
 const SAMPLE_MESSAGES = [
   {
@@ -50,6 +50,7 @@ function Section({ id, title, children }: { id: string; title: string; children:
 }
 
 export default function TextAlertsPage() {
+  const phoneSetting = phoneOptinEnabled();
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <Link href="/" className="text-sm text-cyan-300 hover:text-cyan-200">
@@ -66,6 +67,16 @@ export default function TextAlertsPage() {
         Adding a phone number is optional. You do not need to give a number or agree to alerts to
         use this site, take part, comment or vote.
       </p>
+      {phoneSetting ? (
+        <p className="mt-4">
+          <Link
+            href={PHONE_SETTING_HREF}
+            className="inline-block rounded-md bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-500"
+          >
+            Turn on text alerts
+          </Link>
+        </p>
+      ) : null}
 
       <Section id="program" title="About the program">
         <ul className="list-disc space-y-2 pl-5">
@@ -170,12 +181,7 @@ export default function TextAlertsPage() {
           </label>
           <label className="mt-3 flex items-start gap-3 text-sm text-slate-200">
             <input type="checkbox" disabled className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>
-              I agree to the{' '}
-              <Link href="/terms" className="text-cyan-300 hover:text-cyan-200">Terms of Service</Link>{' '}
-              and{' '}
-              <Link href="/privacy" className="text-cyan-300 hover:text-cyan-200">Privacy Policy</Link>.
-            </span>
+            <TextAlertsAgreeLabel />
           </label>
           <button
             type="button"
