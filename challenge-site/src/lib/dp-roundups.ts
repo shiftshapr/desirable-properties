@@ -48,6 +48,11 @@ type SessionInput = {
   thisWeek?: string;
   /** Community sessions: the description shared by every session in the series. */
   seriesAbout?: string;
+  /**
+   * Community sessions: meeting pads (slugs, src/data/meeting-pads) whose "For the process" suggestions go on this
+   * meeting's agenda, shown as "Raised between sessions". Only public pads are shown.
+   */
+  raisedBetweenSessions?: readonly string[];
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
@@ -94,10 +99,14 @@ const sessions: readonly SessionInput[] = [
     pageContents: 'Notes, the draft for review and the session chat.',
     details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
   },
-  listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
-    'Ballot results and the first weekly cycle',
-    'Results of the 16 November ballot and the first weekly cycle.',
-    'This week: results and the first cycle. Voting on the ballot from our 16 November session is open until Sunday 22 November, 8:00 PM PT, and anyone with an account can vote on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
+  {
+    ...listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
+      'Ballot results and the first weekly cycle',
+      'Results of the 16 November ballot and the first weekly cycle.',
+      'This week: results and the first cycle. Voting on the ballot from our 16 November session is open until Sunday 22 November, 8:00 PM PT, and anyone with an account can vote on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
+    // Markabadi's process suggestions from his 20 Nov walk-through of the 16 Nov session page.
+    raisedBetweenSessions: ['2026-11-20-session-page-review'],
+  },
   listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
     'Co-editors and the council',
     'Co-editors and the council: the co-editor agreement, vetting, and how council elections run.',
@@ -136,6 +145,7 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     meetingTitle: s.meetingTitle ?? null,
     thisWeek: s.thisWeek ?? null,
     seriesAbout: s.seriesAbout ?? null,
+    raisedBetweenSessions: s.raisedBetweenSessions ?? [],
     /** Series name (the focus line). */
     seriesTitle: s.focus,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,

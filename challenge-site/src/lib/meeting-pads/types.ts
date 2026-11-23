@@ -4,7 +4,9 @@
  * src/data/meeting-pads/, registered in src/data/meeting-pads/index.ts, and rendered by /pads/meetings/[slug].
  *
  * Consent: a private call is published only with the participants' consent. Until then a pad names them by a
- * pseudonym (Participant.pseudonym), carries no transcript, video or quotes, and paraphrases what was said.
+ * pseudonym, carries no transcript, video or quotes, and paraphrases what was said. Once a participant consents to
+ * it, the pad may carry their name, short verbatim quotes (MeetingPadItem.quote) and a transcript (registered in
+ * src/data/meeting-pads/transcripts.ts); a participant who has not consented is still never named or quoted.
  * Pure types (no runtime imports), so tests can load the data files with node --experimental-strip-types.
  */
 
@@ -13,6 +15,14 @@ export type MeetingPadItemStatus = 'built' | 'planned' | 'to_decide' | 'kept';
 
 export type MeetingPadLink = { label: string; href: string };
 
+/** A verbatim line from the call: what was said, who said it (as shown on the pad) and where, "mm:ss". */
+export type MeetingPadQuote = { text: string; by: string; at: string };
+
+/** One speaker turn of a pad's transcript; "at" is "mm:ss" into the call. */
+export type MeetingPadTranscriptTurn = { at: string; speaker: string; text: string };
+
+export type MeetingPadTranscript = { note: string; turns: MeetingPadTranscriptTurn[] };
+
 export type MeetingPadItem = {
   /** Stable number within the pad (matches the meeting's findings list). */
   n: number;
@@ -20,6 +30,13 @@ export type MeetingPadItem = {
   at: string;
   /** What was raised, paraphrased. Never a quote from a participant who has not consented. */
   raised: string;
+  /**
+   * A short verbatim line from the call, only from a participant who consented to being quoted. Profanity and
+   * crude examples are never quoted.
+   */
+  quote?: MeetingPadQuote;
+  /** One short line for an agenda (e.g. "Raised between sessions" on a session page); defaults to `raised`. */
+  agendaLine?: string;
   /** What we do about it: the change, or where the idea goes next. */
   response: string;
   status: MeetingPadItemStatus;
@@ -90,6 +107,17 @@ export const FOLLOW_UP_STATUS_LABEL: Record<MeetingPadFollowUp['status'], string
   done: 'Done',
 };
 
+/**
+ * The public rule, in one place: a pad is public when its visibility is 'public' AND every participant other than the
+ * host (role "host") has consented to being named. A public pad is served everywhere, production included, whatever
+ * MEETING_PADS_PREVIEW says; it is indexable, listed on /pads and its invite panel works. Every other pad is a staging
+ * preview (src/lib/meeting-pads/flag.ts).
+ */
+export function isMeetingPadPublic(pad: MeetingPad): boolean {
+  if (pad.visibility !== 'public') return false;
+  return pad.participants.filter((p) => p.role !== 'host').every((p) => p.consent === 'consented');
+}
+
 export function meetingPadHref(slug: string): string {
   return `/pads/meetings/${slug}`;
 }
@@ -115,7 +143,8 @@ export function meetingPadChatContext(pad: MeetingPad): string {
   for (const g of pad.groups) {
     lines.push('', `## ${g.title}`, g.intro);
     for (const i of g.items) {
-      lines.push(`- ${i.n}. [${MEETING_PAD_STATUS_LABEL[i.status]}] ${i.raised} Response: ${i.response}${i.note ? ` (${i.note})` : ''}`);
+      const quote = i.quote ? ` Quote (${i.quote.by}, ${i.quote.at}): "${i.quote.text}"` : '';
+      lines.push(`- ${i.n}. [${MEETING_PAD_STATUS_LABEL[i.status]}] ${i.raised}${quote} Response: ${i.response}${i.note ? ` (${i.note})` : ''}`);
     }
   }
   lines.push('', `## ${pad.followUps.title}`);
