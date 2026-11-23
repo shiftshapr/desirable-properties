@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { publicMeetingPads } from '@/data/meeting-pads';
 import { VERSION_MARKER_LABEL } from '@/lib/dp-v11';
 import { loadOpenItems, type OpenItemsDoc } from '@/lib/dp-v11-open-items.server';
+import { MEETING_PAD_STATUS_LABEL, meetingPadCounts, meetingPadHref, type MeetingPad } from '@/lib/meeting-pads/types';
 import { padHref, shortId } from '@/lib/pads/proposal-pad-core';
 import { storedTitles } from '@/lib/pads/proposal-pad.server';
 import type { SessionPad } from '@/lib/pads/session-pads-core';
@@ -15,7 +17,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Pads | Desirable Properties',
-  description: 'One page for each session and each open proposal on The Layered Web: the record, what is being decided in plain terms, and where to weigh in.',
+  description: 'One page for each session, each published meeting and each open proposal on The Layered Web: the record, what is being decided in plain terms, and where to weigh in.',
   openGraph: pageOpenGraph({
     title: 'Pads',
     description: 'One page for each session and each open proposal: the record, and where to weigh in.',
@@ -72,6 +74,47 @@ function SessionPadsSection({ pads }: { pads: SessionPad[] }) {
         ))}
       </ul>
       {!pads.length ? <p className="mt-4 text-slate-300">No session pads yet.</p> : null}
+    </section>
+  );
+}
+
+function MeetingPadsSection({ pads }: { pads: MeetingPad[] }) {
+  return (
+    <section id="meetings" aria-labelledby="meetings-heading" className="scroll-mt-24">
+      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-800 pb-2">
+        <h2 id="meetings-heading" className="text-2xl font-bold text-white">
+          Meeting pads
+          <span className="ml-2 text-base font-normal text-slate-400">{pads.length}</span>
+        </h2>
+      </div>
+      <p className="mt-3 max-w-3xl text-sm text-slate-400">
+        One page for each smaller meeting (a call, a walk-through, a review), published with the participants&apos;
+        consent: what was raised, paraphrased, and what became of it. Most recent first.
+      </p>
+      <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+        {pads.map((pad) => (
+          <li key={pad.slug}>
+            <Link
+              href={meetingPadHref(pad.slug)}
+              className="block h-full rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2.5 hover:border-cyan-700"
+            >
+              <span className="flex flex-wrap items-center gap-1.5 text-xs">
+                <time dateTime={pad.date} className="text-slate-400">{pad.dateLabel}</time>
+                <span className="text-slate-500">· {pad.format}</span>
+              </span>
+              <span className="mt-1 block text-sm font-medium text-slate-100">{pad.title}</span>
+              <span className="mt-0.5 block text-xs text-slate-400">With {pad.participants.map((p) => p.shownAs).join(', ')}</span>
+              <span className="mt-1.5 flex flex-wrap gap-1.5 text-xs">
+                {meetingPadCounts(pad).map((c) => (
+                  <span key={c.status} className="rounded border border-slate-700 px-1.5 text-slate-300">
+                    {MEETING_PAD_STATUS_LABEL[c.status]} {c.count}
+                  </span>
+                ))}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -138,11 +181,13 @@ function ProposalPadsSection({ docs, storedTitle }: { docs: OpenItemsDoc[]; stor
 }
 
 /**
- * /pads: one section per pad type. Session pads come first, then proposal pads; other pad types add their own section
+ * /pads: one section per pad type. Session pads come first, then meeting pads (public ones only, from static data, so
+ * nothing extra to fetch), then proposal pads; other pad types add their own section
  * component to this page in the same shape (an id for the #anchor, a heading, a list of links to their pads).
  */
 export default async function PadsIndexPage() {
   const [sessions, docs, storedTitle] = await Promise.all([loadSessionPads(), loadOpenItems(), storedTitles()]);
+  const meetings = publicMeetingPads();
   return (
     <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <header className="pb-8">
@@ -156,6 +201,11 @@ export default async function PadsIndexPage() {
           <a href="#sessions" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
             Sessions
           </a>
+          {meetings.length ? (
+            <a href="#meetings" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
+              Meetings
+            </a>
+          ) : null}
           <a href="#proposals" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
             Proposals
           </a>
@@ -163,6 +213,7 @@ export default async function PadsIndexPage() {
       </header>
       <div className="space-y-12">
         <SessionPadsSection pads={sessions} />
+        {meetings.length ? <MeetingPadsSection pads={meetings} /> : null}
         <ProposalPadsSection docs={docs} storedTitle={storedTitle} />
       </div>
     </main>

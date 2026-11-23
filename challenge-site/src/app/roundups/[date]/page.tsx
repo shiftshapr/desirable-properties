@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { DP_ROUNDUP_EVENTS, gatheringKindLabel, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import { tasksForWeek } from '@/data/dp-process';
+import { getMeetingPad } from '@/data/meeting-pads';
+import { isMeetingPadPublic, MEETING_PAD_STATUS_LABEL, meetingPadHref, type MeetingPad } from '@/lib/meeting-pads/types';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
 import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
@@ -48,6 +50,46 @@ export default async function RoundupEventPage({ params }: Props) {
 }
 
 type SessionEvent = (typeof DP_ROUNDUP_EVENTS)[number];
+
+/**
+ * "Raised between sessions": the "For the process" suggestions from the public meeting pads this session lists
+ * (event.raisedBetweenSessions), one line each with its status, so they are on this meeting's agenda.
+ */
+function RaisedBetweenSessions({ slugs }: { slugs: readonly string[] }) {
+  const pads = slugs.map(getMeetingPad).filter((p): p is MeetingPad => !!p && isMeetingPadPublic(p));
+  const blocks = pads
+    .map((pad) => ({ pad, items: pad.groups.find((g) => g.id === 'process')?.items ?? [] }))
+    .filter((b) => b.items.length);
+  if (!blocks.length) return null;
+  const link = 'text-cyan-300 underline hover:text-cyan-200';
+  return (
+    <section id="raised-between-sessions" className="mt-8 scroll-mt-24">
+      <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">Raised between sessions</h2>
+      {blocks.map(({ pad, items }) => {
+        const href = meetingPadHref(pad.slug);
+        const guests = pad.participants.filter((p) => p.role !== 'host').map((p) => p.shownAs).join(', ');
+        return (
+          <div key={pad.slug} className="mt-3">
+            <p>
+              From <Link href={href} className={link}>{pad.title.toLowerCase()} with {guests} ({pad.dateLabel})</Link>: suggestions for how
+              meetings and votes are run, on this week&apos;s agenda.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {items.map((item) => (
+                <li key={item.n} className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">
+                  <span className="rounded border border-amber-600/80 px-1.5 text-xs text-amber-200">{MEETING_PAD_STATUS_LABEL[item.status]}</span>
+                  <Link href={`${href}#item-${item.n}`} className="text-slate-100 hover:text-cyan-200">
+                    {item.agendaLine ?? item.raised}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </section>
+  );
+}
 
 /**
  * A community session's page before it has an occurrence page of its own (and its /roundups/<date> page after):
@@ -97,6 +139,8 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
         <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">What this meeting covers</h2>
         <p className="mt-3">{event.thisWeek ?? event.details ?? event.objective}</p>
       </section>
+
+      <RaisedBetweenSessions slugs={event.raisedBetweenSessions} />
 
       <SessionInvite path={event.pageHref ?? event.href} className="mt-8" />
 

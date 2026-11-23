@@ -55,4 +55,10 @@ export const SESSION_2026_11_16: SessionOccurrence = {
       note: 'Anyone signed in can vote, one vote per account. Closes Sunday 22 November, 8:00 PM PT (Monday 04:00 UTC).',
     },
   ],
+  related: [
+    {
+      label: 'Reviewed with Markabadi on 20 Nov 2026: what came of it',
+      href: '/pads/meetings/2026-11-20-session-page-review',
+    },
+  ],
 };

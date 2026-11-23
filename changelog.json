@@ -4,6 +4,30 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "markabadi-meeting-pad-public-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Markabadi's meeting pad is public, with his consent",
+      "summary": "Markabadi, co-editor of DP19, agreed on 23 Nov 2026 to be named, to the pad from his 20 Nov walk-through of the 16 Nov session page being public, and to its transcript and quotes being published. The pad now names him, is served on the live site and can be found by search engines, shows a short quote on the tracker items where a clean one exists, and has a collapsed, timestamped transcript (profanity and one crude example left out; there is no video). It is listed in a new Meetings section on /pads, linked from the 16 Nov session page, and its seven process suggestions are on the 23 Nov session page under \"Raised between sessions\". Meeting pads without everyone's consent stay a staging preview, as before.",
+      "changes": [
+        "challenge-site/src/data/meeting-pads/2026-11-20-session-page-review.ts",
+        "challenge-site/src/lib/meeting-pads/types.ts",
+        "challenge-site/src/lib/meeting-pads/flag.ts",
+        "challenge-site/src/data/meeting-pads/index.ts",
+        "challenge-site/src/app/pads/meetings/[slug]/page.tsx",
+        "challenge-site/src/lib/pads/pad-invite.server.ts",
+        "challenge-site/src/app/pads/page.tsx",
+        "challenge-site/src/data/sessions/2026-11-16.ts",
+        "challenge-site/src/lib/sessions/session-phases.ts",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx",
+        "challenge-site/scripts/meeting-pads.test.mjs",
+        "challenge-site/src/data/meeting-pads/2026-11-20-session-page-review.transcript.json",
+        "challenge-site/src/data/meeting-pads/transcripts.ts",
+        "challenge-site/src/lib/dp-roundups.ts",
+        "challenge-site/src/app/roundups/[date]/page.tsx"
+      ]
+    },
+    {
       "id": "pads-render-on-request-2026-11-22",
       "date": "2026-11-22",
       "status": "open",

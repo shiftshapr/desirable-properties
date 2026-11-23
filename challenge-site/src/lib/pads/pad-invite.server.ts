@@ -34,7 +34,7 @@ import {
 } from '@/lib/pads/pad-invite-core';
 import { encodeOptOutToken, hashInviteEmail } from '@/lib/pads/pad-invite-token';
 import { getMeetingPad } from '@/data/meeting-pads';
-import { meetingPadsPreviewEnabled } from '@/lib/meeting-pads/flag';
+import { meetingPadServable } from '@/lib/meeting-pads/flag';
 import { meetingPadHref } from '@/lib/meeting-pads/types';
 import { GovHubUnavailableError, loadProposalPad, type LoadedPad } from '@/lib/pads/proposal-pad.server';
 import { fallbackTitle, padHref } from '@/lib/pads/proposal-pad-core';
@@ -117,13 +117,15 @@ export async function sessionInviteFor(path: string, now = new Date()): Promise<
   return sessionInvite({ event, path, now, ballot });
 }
 
-/** A meeting pad's invite, or null for an unknown path or while meeting pads are off (src/lib/meeting-pads/flag.ts). */
+/**
+ * A meeting pad's invite, or null for an unknown path or a pad not served here: public pads always have one, other
+ * pads only while the preview is on (meetingPadServable, src/lib/meeting-pads/flag.ts).
+ */
 export function meetingInviteFor(path: string): InviteContent | null {
-  if (!meetingPadsPreviewEnabled()) return null;
   const prefix = meetingPadHref('');
   if (!path.startsWith(prefix)) return null;
   const pad = getMeetingPad(path.slice(prefix.length));
-  if (!pad) return null;
+  if (!pad || !meetingPadServable(pad)) return null;
   return meetingInvite({ path: meetingPadHref(pad.slug), dateLabel: pad.dateLabel, title: pad.title, summary: pad.inviteSummary });
 }
 
