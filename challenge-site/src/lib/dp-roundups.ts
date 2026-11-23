@@ -53,6 +53,8 @@ type SessionInput = {
    * meeting's agenda, shown as "Raised between sessions". Only public pads are shown.
    */
   raisedBetweenSessions?: readonly string[];
+  /** Community sessions: a published session ballot to read out on this page (the previous session's vote). */
+  ballotResults?: { slug: string; pageHref: string; heading: string };
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
@@ -103,9 +105,10 @@ const sessions: readonly SessionInput[] = [
     ...listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
       'Ballot results and the first weekly cycle',
       'Results of the 16 November ballot and the first weekly cycle.',
-      'This week: results and the first cycle. Voting on the ballot from our 16 November session is open until Sunday 22 November, 8:00 PM PT, and anyone with an account can vote on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
+      'This week: results and the first cycle. Voting on the ballot from our 16 November session closed Sunday 22 November, 8:00 PM PT; 24 people voted, and the results are below and on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
     // Markabadi's process suggestions from his 20 Nov walk-through of the 16 Nov session page.
     raisedBetweenSessions: ['2026-11-20-session-page-review'],
+    ballotResults: { slug: 'meta-governance-2026-11-16', pageHref: '/events/meta-governance-2026-11-16', heading: 'Results of the 16 November ballot' },
   },
   listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
     'Co-editors and the council',
@@ -146,6 +149,7 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     thisWeek: s.thisWeek ?? null,
     seriesAbout: s.seriesAbout ?? null,
     raisedBetweenSessions: s.raisedBetweenSessions ?? [],
+    ballotResults: s.ballotResults ?? null,
     /** Series name (the focus line). */
     seriesTitle: s.focus,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
