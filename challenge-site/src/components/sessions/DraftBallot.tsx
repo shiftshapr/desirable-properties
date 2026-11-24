@@ -1,4 +1,6 @@
+import type { ScreeningView } from '@/lib/screening/screening-core';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
+import ScreeningQuestionPanel from './ScreeningQuestionPanel';
 import SessionCollapsible from './SessionCollapsible';
 import SessionLabel from './SessionLabel';
 
@@ -6,10 +8,13 @@ import SessionLabel from './SessionLabel';
 export default function DraftBallot({
   ballot,
   title = 'Draft ballot questions',
+  screening,
 }: {
   ballot: SessionDraft['ballot'];
   /** Meeting-specific: sessionSectionLabels(meeting).draftBallot. */
   title?: string;
+  /** Council screening per question (sessions from 23 Nov on). Without it the list renders as before. */
+  screening?: { slug: string; view: ScreeningView };
 }) {
   return (
     <SessionCollapsible id="draft-ballot" level={3} title={title} badge={<SessionLabel kind="Claude synthesis" />}>
@@ -33,6 +38,19 @@ export default function DraftBallot({
                 </li>
               ))}
             </ul>
+            {screening
+              ? (() => {
+                  const sq = screening.view.questions.find((x) => x.n === q.n);
+                  return sq ? (
+                    <ScreeningQuestionPanel
+                      slug={screening.slug}
+                      initial={sq}
+                      status={screening.view.screening.status}
+                      member={screening.view.viewer.member}
+                    />
+                  ) : null;
+                })()
+              : null}
           </li>
         ))}
       </ol>

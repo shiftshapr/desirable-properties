@@ -1,6 +1,8 @@
 import { REVIEW_WINDOW_HOURS } from '@/lib/sessions/session-rules';
 import type { MetaGovTurn } from '@/lib/meta-governance-2026-11-16-event';
+import type { ScreeningView } from '@/lib/screening/screening-core';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
+import CouncilScreeningNote from './CouncilScreeningNote';
 import DraftBallot from './DraftBallot';
 import DraftDecisions from './DraftDecisions';
 import { Inline } from './DraftText';
@@ -35,6 +37,8 @@ export default function DraftForReview(
         reviewClosed?: boolean;
         /** Staging preview of a draft still pending host approval: no review clock, host notes shown. */
         pendingApproval?: boolean;
+        /** Council screening, per question (sessions from 23 Nov on). */
+        screening?: { slug: string; view: ScreeningView; signInHref: string } | null;
       }
   ),
 ) {
@@ -81,7 +85,12 @@ export default function DraftForReview(
             <ReviewActions />
           )}
           <DraftDecisions decisions={props.draft.decisions} turns={props.turns} title={labels.origins} />
-          <DraftBallot ballot={props.draft.ballot} title={labels.draftBallot} />
+          {props.screening ? <CouncilScreeningNote view={props.screening.view} signInHref={props.screening.signInHref} /> : null}
+          <DraftBallot
+            ballot={props.draft.ballot}
+            title={labels.draftBallot}
+            screening={props.screening ? { slug: props.screening.slug, view: props.screening.view } : undefined}
+          />
           {props.draft.interimProposal ? <InterimProposal proposal={props.draft.interimProposal} turns={props.turns} /> : null}
           {props.draft.processText ? (
             <ProcessTextDraft text={props.draft.processText} turns={props.turns} title={labels.processText} />

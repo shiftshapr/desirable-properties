@@ -4,6 +4,34 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "screening-after-review-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council objections open only after the review closes",
+      "summary": "Interim council members can object to a draft ballot question only once the 48-hour community review has closed, during the following 24 hours. During the review the questions are open to the community's corrections only."
+    },
+    {
+      "id": "council-screening-per-question-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council screening, question by question, on the session page",
+      "summary": "On the 23 November session page, each draft ballot question now shows its council screening status. Interim council members, signed in, can object to a question on the page with a written reason, and withdraw their own objection, from the start of the review until Friday 27 November, 04:00 UTC (24 hours after the review closes). Objections are public, next to the question, with the member's name and reason. A question with no standing objection at the close goes to the ballot; a question with one is held back, with the reasons listed."
+    },
+    {
+      "id": "roundup-1123-button-in-results-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November page: session button moved under the results",
+      "summary": "On the 23 November meeting page, the one-line intro and the \"Go to the session page\" button no longer sit at the top; the button now follows the results of the 16 November ballot."
+    },
+    {
+      "id": "council-no-objection-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council screening works by no objection",
+      "summary": "During the pilot, the interim council screens each draft ballot within a day of the review closing. A question goes to the ballot unless a council member objects in writing with a reason; anything held back is published with that reason. If the council does not act in time, the question goes forward as drafted."
+    },
+    {
       "id": "review-open-1123-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

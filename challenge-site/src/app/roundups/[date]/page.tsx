@@ -106,25 +106,28 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
       ? { label: 'RSVP on Luma', href: event.lumaUrl }
       : null;
   const link = 'text-cyan-300 underline hover:text-cyan-200';
+  // Once a held session's page carries ballot results, the session-page button sits in that results section
+  // instead of at the top, and the one-line intro is dropped (owner, 24 Nov 2026).
+  const resultsCarryCta = Boolean(ended && event.ballotResults && primary);
   return (
     <SessionPageShell
       meeting={meeting}
       dateHref={null}
       whenLine={<>{gatheringTimeLabel(event)} · Zoom</>}
-      intro={event.objective}
+      intro={resultsCarryCta ? undefined : event.objective}
       phaseLabel={phaseLabel}
       tone={tone}
       stickyCta={primary ? { label: primary.label.replace('Go to the session page', 'Session page'), href: primary.href } : null}
       className="max-w-3xl"
     >
-      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+      {resultsCarryCta ? null : <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
         {primary ? (
           <a href={primary.href} className="inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
             {primary.label} →
           </a>
         ) : null}
         {event.pageHref && !ended ? <a href={event.lumaUrl} className={link}>RSVP on Luma</a> : null}
-      </div>
+      </div>}
 
       {ended ? null : (
         <section id="access" className="mt-8 scroll-mt-24 rounded-xl border border-slate-700 p-5 sm:p-6">
@@ -141,7 +144,7 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
         <p className="mt-3">{event.thisWeek ?? event.details ?? event.objective}</p>
       </section>
 
-      {event.ballotResults ? <BallotResultsSummary {...event.ballotResults} /> : null}
+      {event.ballotResults ? <BallotResultsSummary {...event.ballotResults} cta={resultsCarryCta && primary ? primary : undefined} /> : null}
 
       <RaisedBetweenSessions slugs={event.raisedBetweenSessions} />
 
