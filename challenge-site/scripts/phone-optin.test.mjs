@@ -121,11 +121,12 @@ test('upcoming feed: next 14 days only, ISO times, absolute urls, one entry per 
   const dates = feed.sessions.map((s) => s.starts_at.slice(0, 10));
   assert.deepEqual(dates, ['2026-11-23', '2026-11-30']);
   const first = feed.sessions[0];
-  assert.equal(first.starts_at, '2026-11-23T18:00:00.000Z');
+  // 23 Nov now has its own occurrence page, which replaces the schedule entry (times as held).
+  assert.equal(first.starts_at, '2026-11-23T18:02:00.000Z');
   assert.equal(first.title, 'Ballot results and the first weekly cycle');
   assert.equal(first.kind, 'listening');
   assert.equal(first.slug, 'listening-2026-11-23');
-  assert.equal(first.url, `${ORIGIN}/roundups/2026-11-23`);
+  assert.equal(first.url, `${ORIGIN}/events/listening-2026-11-23`);
   for (const s of feed.sessions) {
     assert.ok(s.url.startsWith(ORIGIN));
     assert.equal(new Date(s.starts_at).toISOString(), s.starts_at);
