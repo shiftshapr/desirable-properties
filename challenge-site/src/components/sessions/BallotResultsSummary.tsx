@@ -8,7 +8,7 @@ import { outcomeText, type BallotResults } from '@/lib/ballots/ballot-core';
  * A short read-out of a published session ballot, for the next session's page, so last week's results open this
  * week's meeting. Reads the same public endpoint as the ballot panel; shows nothing until results are published.
  */
-export default function BallotResultsSummary({ slug, pageHref, heading }: { slug: string; pageHref: string; heading: string }) {
+export default function BallotResultsSummary({ slug, pageHref, heading, cta }: { slug: string; pageHref: string; heading: string; cta?: { label: string; href: string } }) {
   const [results, setResults] = useState<BallotResults | null>(null);
   useEffect(() => {
     let live = true;
@@ -18,7 +18,12 @@ export default function BallotResultsSummary({ slug, pageHref, heading }: { slug
       .catch(() => {});
     return () => { live = false; };
   }, [slug]);
-  if (!results) return null;
+  // Without results (still loading, or the fetch failed) keep the session-page button so the page never loses it.
+  if (!results) return cta ? (
+    <a href={cta.href} className="mt-8 inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
+      {cta.label} →
+    </a>
+  ) : null;
   const link = 'text-cyan-300 underline hover:text-cyan-200';
   return (
     <section id="ballot-results" className="mt-8 scroll-mt-24">
@@ -38,6 +43,11 @@ export default function BallotResultsSummary({ slug, pageHref, heading }: { slug
           </li>
         ))}
       </ol>
+      {cta ? (
+        <a href={cta.href} className="mt-5 inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
+          {cta.label} →
+        </a>
+      ) : null}
     </section>
   );
 }
