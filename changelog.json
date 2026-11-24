@@ -4,6 +4,41 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "agenda-1130-v11-nautilus-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "30 November agenda: Version 1.1 by December, Nautilus entry, and book revenue",
+      "summary": "Session pages can now list proposals put forward for the session. The 30 November session lists two: publish Version 1.1 by 31 December, put it on sale and enter it for the 2027 Nautilus Book Awards (categories 31 and 26) by 8 February; and, separately, where any revenue from the book should go."
+    },
+    {
+      "id": "session-review-docs-ahead-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Each listening session has its own review doc, made ahead of time",
+      "summary": "The 30 November, 7 December and 14 December sessions now each have their own review Google Doc, created ahead of time and recorded with the session, so every session page links its own doc for comments."
+    },
+    {
+      "id": "review-doc-1123-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November session has its own review Google Doc",
+      "summary": "The 23 November draft is now in its own Google Doc, open for comments by anyone with the link, and the session page's review box links to it, with the session chat and email as alternatives. Each session has its own review doc; none links an earlier session's."
+    },
+    {
+      "id": "review-default-session-chat-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Review boxes default to the session's own chat",
+      "summary": "Every new session page now sends corrections to its own session chat by default; only the 16 November page links its Google Doc. This stops a new page from pointing at an earlier session's review document."
+    },
+    {
+      "id": "review-actions-per-session-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November review: corrections go to the session chat, not last week's Google Doc",
+      "summary": "The review box on the 23 November session page pointed at the 16 November Google Doc and email subject. It now says \"Post a correction in the session chat\", and the email link names the 23 November session. The 16 November page is unchanged."
+    },
+    {
       "id": "book-club-top-quorum-context-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
