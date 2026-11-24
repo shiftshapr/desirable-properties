@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import CommunityGroups from '@/components/community/CommunityGroups';
 import ListeningWorkspaceMount from '@/components/listening/ListeningWorkspaceMount';
 import DeclineReasons from '@/components/sessions/DeclineReasons';
@@ -16,6 +17,7 @@ import SessionPageShell from '@/components/sessions/SessionPageShell';
 import SessionTranscript from '@/components/sessions/SessionTranscript';
 import StillToDecide from '@/components/sessions/StillToDecide';
 import V1Promo from '@/components/v1/V1Promo';
+import { getMeetingPad } from '@/data/meeting-pads';
 import { SESSION_2026_11_16 as SESSION } from '@/data/sessions/2026-11-16';
 import { BALLOT_2026_11_16 } from '@/data/sessions/2026-11-16-ballot';
 import draftData from '@/data/sessions/2026-11-16-draft.json';
@@ -40,6 +42,7 @@ import type { SessionDraft } from '@/lib/sessions/session-draft';
 import { effectiveStatus } from '@/lib/ballots/ballot-core';
 import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { listeningWorkspaceEnabled } from '@/lib/listening/flag';
+import { isMeetingPadPublic, meetingPadHref } from '@/lib/meeting-pads/types';
 import { isDraftVisible, pacificAndUtc, phaseCallToAction, phaseRows, phaseTone, previewAllowed } from '@/lib/sessions/session-phases';
 import { SITE_NAME } from '@/lib/site-metadata';
 
@@ -70,6 +73,16 @@ export const metadata: Metadata = {
 
 const linkClass = 'text-cyan-300 hover:text-cyan-200';
 
+/** SESSION.related, without links to meeting pads that are not public. */
+function relatedLinks() {
+  const prefix = meetingPadHref('');
+  return (SESSION.related ?? []).filter((r) => {
+    if (!r.href.startsWith(prefix)) return true;
+    const pad = getMeetingPad(r.href.slice(prefix.length));
+    return pad ? isMeetingPadPublic(pad) : false;
+  });
+}
+
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export default async function MetaGovernanceSessionPage({ searchParams }: Props) {
@@ -78,7 +91,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
   // Staging-only preview of the state once the review has opened (?previewDraft=1). Ignored on production.
   const preview = params.previewDraft === '1' && previewAllowed(host);
   const realNow = new Date();
-  const opensAt = new Date(SESSION.draftVisibleAt);
+  const opensAt = new Date(SESSION.draftVisibleAt ?? 0);
   const now = preview && realNow < opensAt ? new Date(opensAt.getTime() + 60_000) : realNow;
 
   const { sections, turns } = transcript as { sections: MetaGovSection[]; turns: MetaGovTurn[] };
@@ -113,22 +126,35 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       banner={
         preview ? (
           <p className="mb-6 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
-            Staging preview: this page as it will look once the review opens ({pacificAndUtc(SESSION.draftVisibleAt)}).
+            Staging preview: this page as it will look once the review opens ({SESSION.draftVisibleAt ? pacificAndUtc(SESSION.draftVisibleAt) : 'not scheduled'}).
           </p>
         ) : null
       }
       headerExtra={
-        <p className="mt-3 text-sm text-slate-300">
-          Not video recorded; the transcript is Zoom’s, lightly cleaned. Corrections:{' '}
-          <a href={`mailto:${META_GOV_CORRECTIONS_EMAIL}`} className={linkClass}>
-            {META_GOV_CORRECTIONS_EMAIL}
-          </a>
-          .
-        </p>
+        <>
+          <p className="mt-3 text-sm text-slate-300">
+            Not video recorded; the transcript is Zoom’s, lightly cleaned. Corrections:{' '}
+            <a href={`mailto:${META_GOV_CORRECTIONS_EMAIL}`} className={linkClass}>
+              {META_GOV_CORRECTIONS_EMAIL}
+            </a>
+            .
+          </p>
+          {relatedLinks().map((r) => (
+            <p key={r.href} className="mt-1 text-sm">
+              <Link href={r.href} className={linkClass}>
+                {r.label}
+              </Link>
+            </p>
+          ))}
+        </>
       }
     >
       <div className="mt-8">
-        <HowThisWorks />
+        {/* Kept as this page showed it (before per-question screening on the session page, 24 Nov). */}
+        <HowThisWorks
+          reviewHours={24}
+          screeningStep="what goes to a vote: a question goes forward unless a council member objects in writing within a day."
+        />
       </div>
 
       <nav aria-label="On this page" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">

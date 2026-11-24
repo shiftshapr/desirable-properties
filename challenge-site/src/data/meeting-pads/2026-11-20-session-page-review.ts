@@ -1,9 +1,12 @@
 import type { MeetingPad, MeetingPadLink } from '@/lib/meeting-pads/types';
 
 /**
- * Private walk-through call, Friday 20 November 2026: Daveed and one reviewer went through the 16 Nov session page
- * during its voting phase. The reviewer has not consented to being named, so the pad uses a pseudonym and
- * paraphrases; no transcript, video or quotes are kept here. Preview only (MEETING_PADS_PREVIEW, staging).
+ * Private walk-through call, Friday 20 November 2026: Daveed and Markabadi (co-editor of DP19) went through the
+ * 16 Nov session page during its voting phase. Markabadi consented on 23 Nov 2026 (recorded by the owner) to being
+ * named, to this pad being public, and to its transcript and quotes being published, so it is served on the live
+ * site (isMeetingPadPublic). The tracker paraphrases, with a short verbatim quote where a clean one exists; the
+ * transcript is ./2026-11-20-session-page-review.transcript.json. Profanity and one crude example are left out of
+ * both. There is no video.
  */
 
 const PR_334: MeetingPadLink = {
@@ -22,12 +25,12 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
   heldLabel: 'Fri 20 Nov 2026, 2:02 PM PT',
   durationMinutes: 46,
   format: 'Zoom, screen share',
-  visibility: 'private',
+  visibility: 'public',
   visibilityNote:
-    'This pad is on our staging site only and does not show the reviewer\'s name. Subject to their approval, we will add their name and bring the pad to the live site. It was a private call, so there is no recording, transcript or quote here.',
+    'Markabadi agreed to be named, to this pad being public, and to the transcript and quotes being published (23 Nov 2026). There is no video. Profanity and one crude example are left out of the transcript.',
   participants: [
     { shownAs: 'Daveed Benjamin', role: 'host', consent: 'consented' },
-    { shownAs: 'A participant', role: 'reviewer', consent: 'pending' },
+    { shownAs: 'Markabadi', role: 'reviewer, co-editor of DP19', consent: 'consented' },
   ],
   reviewed: {
     label: '16 Nov 2026 session page: Meeting agreements: how we decide',
@@ -35,9 +38,9 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
     note: 'Reviewed during the voting phase.',
   },
   synthesis: [
-    'A reviewer walked through the 16 Nov session page with Daveed while the vote was open, reading it as a newcomer would.',
+    'Markabadi, co-editor of DP19, walked through the 16 Nov session page with Daveed while the vote was open, reading it as a newcomer would.',
     'The ballot worked. The page around it was hard going: small type, a lot of text, sections that repeat on every session, and labels that did not say which meeting they belonged to.',
-    'Fourteen page changes came out of the call and thirteen were built the next day into the shared session components, so every session page gets them. The reviewer also suggested seven changes to how meetings and votes are run; those are open for a decision.',
+    'Fourteen page changes came out of the call and thirteen were built the next day into the shared session components, so every session page gets them. Markabadi also suggested seven changes to how meetings and votes are run; those are open for a decision.',
   ],
   keyPoints: [
     'Keep the ballot as it is.',
@@ -50,12 +53,13 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
     {
       id: 'page',
       title: 'On the session page',
-      intro: 'What the reviewer noticed while reading the page, and what changed.',
+      intro: 'What Markabadi noticed while reading the page, and what changed.',
       items: [
         {
           n: 1,
           at: '20:13',
-          raised: 'The type was small and hard to read; the reviewer had to zoom in.',
+          raised: 'The type was small and hard to read; Markabadi had to zoom in.',
+          quote: { text: 'I find, I\'m finding that font very hard to read.', by: 'Markabadi', at: '20:13' },
           response: 'Larger body text and line height on session pages, and more contrast.',
           status: 'built',
           statusDate: BUILT,
@@ -65,6 +69,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 2,
           at: '22:22',
           raised: 'The ballot was clear and easy to use, and the labelled additions from after the meeting helped.',
+          quote: { text: 'This is very clear. This is nice.', by: 'Markabadi', at: '22:22' },
           response: 'No change to the ballot.',
           status: 'kept',
           statusDate: RAISED,
@@ -73,6 +78,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 3,
           at: '32:30',
           raised: 'The page felt wordy and monochrome, with a lot to read.',
+          quote: { text: 'Very wordy, very black and white… There\'s a lot of reading to do.', by: 'Markabadi', at: '32:36' },
           response: 'One-line intros, a four-step "How this works" strip, more visual hierarchy and a colour per phase.',
           status: 'built',
           statusDate: BUILT,
@@ -82,6 +88,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 4,
           at: '33:14',
           raised: 'Clicking "Voting open" in the phase tracker did nothing.',
+          quote: { text: 'And if you click voting open, it\'s nothing right now.', by: 'Markabadi', at: '33:08' },
           response: 'Every phase step links to its section; "Voting open" goes to the vote.',
           status: 'built',
           statusDate: BUILT,
@@ -91,6 +98,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 5,
           at: '33:30–34:32',
           raised: 'The ballot rules are the same every time and were overwhelming at the top of the vote.',
+          quote: { text: 'Those are all closed until you open them… so that someone doesn\'t come to this and feel overwhelmed.', by: 'Markabadi', at: '34:06' },
           response: 'Static and repeated sections start collapsed, so only their titles show.',
           status: 'built',
           statusDate: BUILT,
@@ -100,6 +108,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 6,
           at: '35:43–37:09',
           raised: 'It was not clear that the transcript and the page belonged to the same meeting, and the series name alone was too generic.',
+          quote: { text: 'I think the meeting should be labeled… either the date or the date and title.', by: 'Markabadi', at: '35:43' },
           response: 'Every section is labelled with the meeting date and its specific title, e.g. "Transcript: Monday 16 Nov 2026, Meeting agreements: how we decide".',
           status: 'built',
           statusDate: BUILT,
@@ -109,6 +118,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 7,
           at: '37:20–39:27',
           raised: 'With no breadcrumbs it was easy to lose track of which page and meeting you were on.',
+          quote: { text: 'Usually you have some sort of breadcrumbs on a website that helps you know where you\'ve gone on the website.', by: 'Markabadi', at: '37:57' },
           response: 'Breadcrumbs (Sessions › 16 Nov 2026 › title) and a compact sticky header with the date, title and phase.',
           status: 'built',
           statusDate: BUILT,
@@ -118,6 +128,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 8,
           at: '39:44–41:01',
           raised: 'The Version 1.0 film and share section read as if it were part of the meeting.',
+          quote: { text: 'I think it should just be clear that we\'ve finished the meeting point and that this is about sharing the platform.', by: 'Markabadi', at: '39:48' },
           response: 'Retitled "Share the platform", marked "Not specific to this meeting", in its own panel.',
           status: 'built',
           statusDate: BUILT,
@@ -127,6 +138,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 9,
           at: '40:45–41:23',
           raised: '"Draft for review" did not say what the draft was of.',
+          quote: { text: 'You need to say that on the title where it says draft for review.', by: 'Markabadi', at: '40:45' },
           response: 'Now "Meeting draft: 16 Nov 2026, <meeting title>, for review".',
           status: 'built',
           statusDate: BUILT,
@@ -136,6 +148,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 10,
           at: '41:23–42:48',
           raised: '"Decisions and options" did not say decisions about what.',
+          quote: { text: 'Decisions and options, and I\'m like, of what?', by: 'Markabadi', at: '42:28' },
           response: 'Renamed "Origins of the voting questions", collapsed by default.',
           status: 'built',
           statusDate: BUILT,
@@ -154,6 +167,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 12,
           at: '43:19–44:21',
           raised: '"Corrected process text" was unclear.',
+          quote: { text: 'And then we have the corrected process text. What does that mean?', by: 'Markabadi', at: '43:19' },
           response: 'Renamed "How this meeting changed the process page", collapsed by default.',
           status: 'built',
           statusDate: BUILT,
@@ -163,6 +177,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 13,
           at: '44:38–44:55',
           raised: 'The summary should be labelled and collapsed.',
+          quote: { text: 'This is once again probably one that should be collapsed initially.', by: 'Markabadi', at: '44:38' },
           response: '"Meeting summary", collapsed, with "Decisions coming up" and "Open questions" inside it.',
           status: 'built',
           statusDate: BUILT,
@@ -172,6 +187,7 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 14,
           at: '25:46',
           raised: 'Daveed noticed the videos block rendered oddly.',
+          quote: { text: 'This is odd. It shouldn\'t look like that.', by: 'Daveed Benjamin', at: '25:46' },
           response: 'New video grid (film and vertical teaser side by side on desktop) and a local poster for the teaser, which had no thumbnail.',
           status: 'built',
           statusDate: BUILT,
@@ -182,12 +198,14 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
     {
       id: 'process',
       title: 'For the process',
-      intro: 'Suggestions about how meetings and votes are run, not about the page. Each needs a decision before it is planned.',
+      intro: 'Markabadi\'s suggestions about how meetings and votes are run, not about the page. Each needs a decision before it is planned.',
       items: [
         {
           n: 15,
           at: '06:49–07:45',
           raised: 'Seconding: an idea moves forward only when someone seconds it. The assistant listens for seconds, and seconded ideas become vote items.',
+          agendaLine: 'Seconding: an idea goes forward to a vote only when someone seconds it.',
+          quote: { text: 'It\'s like being seconded. It needs to be seconded.', by: 'Markabadi', at: '06:54' },
           response: 'A ballot drafting rule and a live-assistant feature; could itself be a ballot question.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -196,6 +214,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 16,
           at: '07:55–08:31',
           raised: 'Upvoting works when you need one winner; questions where several answers can pass need a different method.',
+          agendaLine: 'A choice type per ballot question: one winner, approve several, or ranked.',
+          quote: { text: 'Up-voting only works when you need to select one winner.', by: 'Markabadi', at: '08:11' },
           response: 'Ballot design: a choice type per question (single winner, approve several, ranked).',
           status: 'to_decide',
           statusDate: RAISED,
@@ -204,6 +224,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 17,
           at: '08:36–10:22',
           raised: 'Give meetings more structure: a timed check-in of about 30 seconds each, tight limits that help people focus, one dedicated inquiry per session (for example one DP), and plain English before complex wording.',
+          agendaLine: 'More structure in meetings: a timed check-in, one focused inquiry, plain English first.',
+          quote: { text: 'So having those constrictions in your call, I think would be great.', by: 'Markabadi', at: '09:38' },
           response: 'Session agenda template, run sheet and the Luma "This week" block.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -212,6 +234,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 18,
           at: '10:27–11:15',
           raised: 'The AI could flag, like raising a hand, when it notices tension, a connection nobody has made, or a dropped thread.',
+          agendaLine: 'The AI raises its hand when it notices tension, a missed connection or a dropped thread.',
+          quote: { text: 'We could have the AI raise its hand.', by: 'Markabadi', at: '10:45' },
           response: 'A live-assistant feature for the listening workspace.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -220,6 +244,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 19,
           at: '05:51–06:17',
           raised: 'A live shared document the assistant writes during the meeting, with the link posted at the start and shown on screen.',
+          agendaLine: 'A live shared document the assistant writes during the meeting.',
+          quote: { text: 'You could absolutely have a working document everyone\'s part of during the meeting, a Google Doc that Claude is writing to.', by: 'Markabadi', at: '05:51' },
           response: 'Live notes on the session pad.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -228,6 +254,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 20,
           at: '22:47–25:38',
           raised: 'Fathom as a recording tool: it joins every Zoom, links the transcript to the video, and editing the transcript cuts the video. Roughly $15 a month.',
+          agendaLine: 'Fathom for recording, with transcripts linked to the video.',
+          quote: { text: 'And when you edit the transcript it removes that from the video.', by: 'Markabadi', at: '23:24' },
           response: 'Recording tool evaluation, including whether it has an API; the owner decides.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -237,6 +265,8 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
           n: 21,
           at: '30:47–32:22',
           raised: 'Personal WhatsApp or SMS reminders, since people answer texts more than email.',
+          agendaLine: 'Text (WhatsApp or SMS) vote reminders as well as email.',
+          quote: { text: 'Just a simple text reminder, because people get thousands of emails a day… but they don\'t get thousands of text messages a day.', by: 'Markabadi', at: '31:52' },
           response: 'A reminder channel next to email, skipping people who have already voted.',
           status: 'to_decide',
           statusDate: RAISED,
@@ -275,15 +305,14 @@ export const MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW: MeetingPad = {
     ],
   },
   nextSteps: [
-    'Ask the reviewer whether they are happy to be named on this pad; keep the pseudonym if not.',
     'Decide items 15 to 21: which become ballot questions, which go into the session template, and which wait.',
     'Check the built changes on the next session page (23 Nov) with someone new to it.',
   ],
   inviteSummary:
-    'A walk-through of the 16 Nov session page with a first-time reader: what was hard to follow, what changed the next day, and seven ideas for how meetings and votes are run.',
+    'Markabadi, co-editor of DP19, walked through the 16 Nov session page as a first-time reader: what was hard to follow, what changed the next day, and his seven ideas for how meetings and votes are run.',
   chatStarters: [
     'What changed on the session page after this walk-through?',
-    'Which process suggestions still need a decision?',
+    'Which of Markabadi\'s process suggestions still need a decision?',
     'How would seconding work in our ballots?',
   ],
 };

@@ -54,5 +54,17 @@ export const SESSION_2026_11_16: SessionOccurrence = {
       at: '2026-11-19T20:00:00Z',
       note: 'Anyone signed in can vote, one vote per account. Closes Sunday 22 November, 8:00 PM PT (Monday 04:00 UTC).',
     },
+    {
+      phase: 'Decision recorded',
+      by: 'Daveed Benjamin',
+      at: '2026-11-23T17:29:49Z',
+      note: 'Voting closed Sunday 22 November, 8:00 PM PT. Results published: 24 voters, 14 of 15 questions decided. Question 5 (quorum) is a tie, 6 to 6, between a minimum of 20 votes and 25% of the voting body; it goes to the 23 November session.',
+    },
+  ],
+  related: [
+    {
+      label: 'Reviewed with Markabadi on 20 Nov 2026: what came of it',
+      href: '/pads/meetings/2026-11-20-session-page-review',
+    },
   ],
 };

@@ -37,6 +37,7 @@
     "test:ack-request": "node --experimental-strip-types --test scripts/ack-request.test.mjs",
     "test:session-chat": "node --experimental-strip-types --test scripts/session-chat.test.mjs",
     "test:session-ballot": "node --experimental-strip-types --test scripts/session-ballot.test.mjs",
+    "test:council-screening": "node --experimental-strip-types --test scripts/council-screening.test.mjs",
     "test:proposal-pads": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/proposal-pads.test.mjs scripts/pad-summaries.test.mjs scripts/pad-invite.test.mjs",
     "generate:proposal-pad-summaries": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs scripts/generate-proposal-pad-summaries.mjs",
     "test:attribution": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/attribution.test.mjs",

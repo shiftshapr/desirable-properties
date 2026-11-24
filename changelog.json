@@ -22,6 +22,114 @@
       ]
     },
     {
+      "id": "screening-after-review-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council objections open only after the review closes",
+      "summary": "Interim council members can object to a draft ballot question only once the 48-hour community review has closed, during the following 24 hours. During the review the questions are open to the community's corrections only."
+    },
+    {
+      "id": "council-screening-per-question-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council screening, question by question, on the session page",
+      "summary": "On the 23 November session page, each draft ballot question now shows its council screening status. Interim council members, signed in, can object to a question on the page with a written reason, and withdraw their own objection, from the start of the review until Friday 27 November, 04:00 UTC (24 hours after the review closes). Objections are public, next to the question, with the member's name and reason. A question with no standing objection at the close goes to the ballot; a question with one is held back, with the reasons listed."
+    },
+    {
+      "id": "roundup-1123-button-in-results-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November page: session button moved under the results",
+      "summary": "On the 23 November meeting page, the one-line intro and the \"Go to the session page\" button no longer sit at the top; the button now follows the results of the 16 November ballot."
+    },
+    {
+      "id": "council-no-objection-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council screening works by no objection",
+      "summary": "During the pilot, the interim council screens each draft ballot within a day of the review closing. A question goes to the ballot unless a council member objects in writing with a reason; anything held back is published with that reason. If the council does not act in time, the question goes forward as drafted."
+    },
+    {
+      "id": "review-open-1123-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November draft ballot open for review for 48 hours",
+      "summary": "The draft summary and ballot from the 23 November session are open for review on the session page from Monday 23 November, 8:00 PM PT until Wednesday 25 November, 8:00 PM PT. Then the interim council screens the ballot and voting runs 72 hours."
+    },
+    {
+      "id": "review-window-48h-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Session pages follow the voted rules: 48-hour review, 72-hour vote",
+      "summary": "The 16 November ballot set a 48-hour correction window and a 72-hour voting period. Listening session pages, the series description and the 23 November draft now say 48 hours to correct and 72 hours to vote, and \"Current session\" keeps pointing at a session for the 48-hour window. The 16 November page still shows the 24-hour review it actually ran."
+    },
+    {
+      "id": "session-1123-page-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "The 23 November session has its own page",
+      "summary": "The 23 November listening session now has its own page, like the 16 November one: the summary, what was decided in the room (the interim council and next week's book club), the open questions and the full transcript with speakers and timestamps. The draft ballot is prepared but stays hidden until the host opens the 24-hour review. The 16 November results stay on the page, and the menu's Current session link and the Pads list now go to it."
+    },
+    {
+      "id": "nav-pads-current-session-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Pads in the menu; today's session stays current",
+      "summary": "The Events menu now links to Pads, the index of session, meeting and proposal pads. \"Current session\" keeps pointing at a session for 24 hours after it ends, so on the day of a session the menu still leads to that session's page instead of next week's."
+    },
+    {
+      "id": "session-1123-ballot-results-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Today's session page shows last week's ballot results",
+      "summary": "The 23 November session page now reads out the results of the 16 November ballot: the outcome of each question, the 24 voters, and the quorum tie, with a link to the full counts on the 16 November page. Its text now says voting has closed."
+    },
+    {
+      "id": "session-pages-also-open-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Listening session pages list what else is open",
+      "summary": "Listening session pages gain an \"Also open\" section: the open proposals for Version 1.1, each with its own pad, and the ideas for Version 1.1, so the agenda is not only the items raised between sessions."
+    },
+    {
+      "id": "session-1116-decision-recorded-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "16 November session moves to Decision recorded",
+      "summary": "The 16 November session page now shows the Decision recorded step: voting closed and the results are published, with question 5 (quorum) tied and taken to the 23 November session."
+    },
+    {
+      "id": "nginx-recall-hooks-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Web server config records the meeting-assistant webhook",
+      "summary": "The repo copy of the desirableproperties.org web server config now includes the /hooks/recall/ location that box1 already runs, which passes Recall.ai live transcript updates to the Deepi meeting assistant. No change to any page."
+    },
+    {
+      "id": "markabadi-meeting-pad-public-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Markabadi's meeting pad is public, with his consent",
+      "summary": "Markabadi, co-editor of DP19, agreed on 23 Nov 2026 to be named, to the pad from his 20 Nov walk-through of the 16 Nov session page being public, and to its transcript and quotes being published. The pad now names him, is served on the live site and can be found by search engines, shows a short quote on the tracker items where a clean one exists, and has a collapsed, timestamped transcript (profanity and one crude example left out; there is no video). It is listed in a new Meetings section on /pads, linked from the 16 Nov session page, and its seven process suggestions are on the 23 Nov session page under \"Raised between sessions\". Meeting pads without everyone's consent stay a staging preview, as before.",
+      "changes": [
+        "challenge-site/src/data/meeting-pads/2026-11-20-session-page-review.ts",
+        "challenge-site/src/lib/meeting-pads/types.ts",
+        "challenge-site/src/lib/meeting-pads/flag.ts",
+        "challenge-site/src/data/meeting-pads/index.ts",
+        "challenge-site/src/app/pads/meetings/[slug]/page.tsx",
+        "challenge-site/src/lib/pads/pad-invite.server.ts",
+        "challenge-site/src/app/pads/page.tsx",
+        "challenge-site/src/data/sessions/2026-11-16.ts",
+        "challenge-site/src/lib/sessions/session-phases.ts",
+        "challenge-site/src/app/events/meta-governance-2026-11-16/page.tsx",
+        "challenge-site/scripts/meeting-pads.test.mjs",
+        "challenge-site/src/data/meeting-pads/2026-11-20-session-page-review.transcript.json",
+        "challenge-site/src/data/meeting-pads/transcripts.ts",
+        "challenge-site/src/lib/dp-roundups.ts",
+        "challenge-site/src/app/roundups/[date]/page.tsx"
+      ]
+    },
+    {
       "id": "pads-render-on-request-2026-11-22",
       "date": "2026-11-22",
       "status": "open",

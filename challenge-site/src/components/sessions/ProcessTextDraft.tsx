@@ -10,7 +10,7 @@ export default function ProcessTextDraft({
   turns,
   title = 'How this meeting changed the process page',
 }: {
-  text: SessionDraft['processText'];
+  text: NonNullable<SessionDraft['processText']>;
   turns: MetaGovTurn[];
   title?: string;
 }) {

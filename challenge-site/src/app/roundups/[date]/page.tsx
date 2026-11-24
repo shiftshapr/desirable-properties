@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { DP_ROUNDUP_EVENTS, gatheringKindLabel, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import { tasksForWeek } from '@/data/dp-process';
+import { getMeetingPad } from '@/data/meeting-pads';
+import { isMeetingPadPublic, MEETING_PAD_STATUS_LABEL, meetingPadHref, type MeetingPad } from '@/lib/meeting-pads/types';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
 import SessionInvite from '@/components/sessions/SessionInvite';
 import SessionPageShell from '@/components/sessions/SessionPageShell';
+import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
 import { meetingLongDate, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 
@@ -50,6 +53,46 @@ export default async function RoundupEventPage({ params }: Props) {
 type SessionEvent = (typeof DP_ROUNDUP_EVENTS)[number];
 
 /**
+ * "Raised between sessions": the "For the process" suggestions from the public meeting pads this session lists
+ * (event.raisedBetweenSessions), one line each with its status, so they are on this meeting's agenda.
+ */
+function RaisedBetweenSessions({ slugs }: { slugs: readonly string[] }) {
+  const pads = slugs.map(getMeetingPad).filter((p): p is MeetingPad => !!p && isMeetingPadPublic(p));
+  const blocks = pads
+    .map((pad) => ({ pad, items: pad.groups.find((g) => g.id === 'process')?.items ?? [] }))
+    .filter((b) => b.items.length);
+  if (!blocks.length) return null;
+  const link = 'text-cyan-300 underline hover:text-cyan-200';
+  return (
+    <section id="raised-between-sessions" className="mt-8 scroll-mt-24">
+      <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">Raised between sessions</h2>
+      {blocks.map(({ pad, items }) => {
+        const href = meetingPadHref(pad.slug);
+        const guests = pad.participants.filter((p) => p.role !== 'host').map((p) => p.shownAs).join(', ');
+        return (
+          <div key={pad.slug} className="mt-3">
+            <p>
+              From <Link href={href} className={link}>{pad.title.toLowerCase()} with {guests} ({pad.dateLabel})</Link>: suggestions for how
+              meetings and votes are run, on this week&apos;s agenda.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {items.map((item) => (
+                <li key={item.n} className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">
+                  <span className="rounded border border-amber-600/80 px-1.5 text-xs text-amber-200">{MEETING_PAD_STATUS_LABEL[item.status]}</span>
+                  <Link href={`${href}#item-${item.n}`} className="text-slate-100 hover:text-cyan-200">
+                    {item.agendaLine ?? item.raised}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </section>
+  );
+}
+
+/**
  * A community session's page before it has an occurrence page of its own (and its /roundups/<date> page after):
  * the shared session frame (SessionPageShell) with breadcrumbs, the meeting's own title and series, a sticky
  * header and readable type, so every session page looks and reads the same.
@@ -63,25 +106,28 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
       ? { label: 'RSVP on Luma', href: event.lumaUrl }
       : null;
   const link = 'text-cyan-300 underline hover:text-cyan-200';
+  // Once a held session's page carries ballot results, the session-page button sits in that results section
+  // instead of at the top, and the one-line intro is dropped (owner, 24 Nov 2026).
+  const resultsCarryCta = Boolean(ended && event.ballotResults && primary);
   return (
     <SessionPageShell
       meeting={meeting}
       dateHref={null}
       whenLine={<>{gatheringTimeLabel(event)} · Zoom</>}
-      intro={event.objective}
+      intro={resultsCarryCta ? undefined : event.objective}
       phaseLabel={phaseLabel}
       tone={tone}
       stickyCta={primary ? { label: primary.label.replace('Go to the session page', 'Session page'), href: primary.href } : null}
       className="max-w-3xl"
     >
-      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+      {resultsCarryCta ? null : <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
         {primary ? (
           <a href={primary.href} className="inline-flex rounded-lg bg-cyan-300 px-6 py-3 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
             {primary.label} →
           </a>
         ) : null}
         {event.pageHref && !ended ? <a href={event.lumaUrl} className={link}>RSVP on Luma</a> : null}
-      </div>
+      </div>}
 
       {ended ? null : (
         <section id="access" className="mt-8 scroll-mt-24 rounded-xl border border-slate-700 p-5 sm:p-6">
@@ -97,6 +143,29 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
         <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">What this meeting covers</h2>
         <p className="mt-3">{event.thisWeek ?? event.details ?? event.objective}</p>
       </section>
+
+      {event.ballotResults ? <BallotResultsSummary {...event.ballotResults} cta={resultsCarryCta && primary ? primary : undefined} /> : null}
+
+      <RaisedBetweenSessions slugs={event.raisedBetweenSessions} />
+
+      {event.focus.startsWith('DP Listening Experiment') ? (
+        <section id="also-open" className="mt-8 scroll-mt-24">
+          <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">Also open</h2>
+          <ul className="mt-3 list-disc space-y-2 pl-6">
+            <li>
+              <Link href="/improve/open-items" className="text-cyan-300 underline hover:text-cyan-200">Open proposals for Version 1.1</Link>: every
+              open proposal on the book, each with its own{' '}
+              <Link href="/pads" className="text-cyan-300 underline hover:text-cyan-200">pad</Link> explaining the change in plain terms. The
+              DP&apos;s co-editors decide; some need only one more co-editor approval, and anyone signed in can say whether they support one.
+            </li>
+            <li>
+              <Link href="/improve" className="text-cyan-300 underline hover:text-cyan-200">Ideas for Version 1.1</Link>: the MTPs held back
+              from 1.0, chapter glossaries and purpose statements, the open questions in every chapter, testable requirements, and the
+              co-editor seats still open.
+            </li>
+          </ul>
+        </section>
+      ) : null}
 
       <SessionInvite path={event.pageHref ?? event.href} className="mt-8" />
 

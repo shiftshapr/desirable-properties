@@ -1,0 +1,1000 @@
+{
+ "note": "Speakers assigned from context; machine transcript (faster-whisper) with transcription noise cleaned. Starts at 01:23, after setting up the recording. Profanity and one crude example are left out.",
+ "turns": [
+  {
+   "at": "01:23",
+   "speaker": "Daveed Benjamin",
+   "text": "All right, oh, okay, so I was faced with we got this Version 1 out and we had a pretty good process with the co-editors and you know recognizing contributors and everything but there were a number of different things that didn't get done so we kind of just kicked the can down the road to to version 1.1 and then in addition to that there were some things that we definitely want to do in this next version 1.1 as well and so I wanted to come up with a way that would enable people to in the community to basically make the decisions about what happens so that that meant some kind of a voting system it meant having some set of like a look a a period where people get to input on the the different things and then a chance to review to make sure that that's what they wanted to say and then some kind of steering committee to say yes this can go to the ballot then then there would be a ballot and so the idea was okay we have weekly meetings let's build the cadence a weekly cadence around that where the first the meeting is a community listen session we bring some vote at some some issues like we already know there's a bunch of open issues and we already know that we want to add certain things like a glossary, etc. And so it would be about now enabling people to talk about it and say well I think the quorum should be 50% or it should be 60% or it should be consensus or whatever but get a lot of input from each one have Claude. Go ahead"
+  },
+  {
+   "at": "03:21",
+   "speaker": "Markabadi",
+   "text": "No, yes, I was just saying yes"
+  },
+  {
+   "at": "03:24",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, so then Claude processes that into basically a summary that also speaks to the different ballot potential ballot items and in in identifies the different options and what people brought up is that Markabadi said that you know, it would be nice to have a ballot option that said this and and basically have a Google Doc will have a web page and a Google Doc that they can change that speaks to what was said and what the what the different options are and then so they get a like a what? Right now 24 hours to review that then we have Claude come back and create the actual ballot and they get three days to to to vote on it and then and Sunday night Claude would take a look at the votes see what we did we make make the the the slide deck and it would include what happened in the votes but then also it would lay out the the issues that we want to tackle in the next week so that's that's and then the next thing that I want to do with it I'm not sure how well it's going to work would be to actually have Claude listening into the Zoom meeting and available like okay fact-check this or can you tell me how many people are in deep in DP 22? Tell me how many people and do we have co-editors enough for them, but basically available on call to to to basically clarify anything oh, what did you mean by that you put this in as a potential ballot topic someone's asking something very specific? They could say Oh"
+  },
+  {
+   "at": "05:23",
+   "speaker": "Markabadi",
+   "text": "Where would they put this feedback in in Canopi or in the Google Doc?"
+  },
+  {
+   "at": "05:27",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, I I think that there's an opportunity in the meeting to give feedback. Yeah, and for Claude real time to provide provide that feedback either by voice or in the chat or it could go into a document as well but that's probably less real time because I don't know that they would be in the document. So probably chat or voice"
+  },
+  {
+   "at": "05:51",
+   "speaker": "Markabadi",
+   "text": "Well, I mean you could absolutely have a working document everyone's part of during the meeting a Google Doc that Claude is writing to"
+  },
+  {
+   "at": "05:59",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, that's true, too. Yeah. Yeah, absolutely."
+  },
+  {
+   "at": "05:59",
+   "speaker": "Markabadi",
+   "text": "I mean, it's just shared notes basically, isn't it?"
+  },
+  {
+   "at": "06:05",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah"
+  },
+  {
+   "at": "06:06",
+   "speaker": "Markabadi",
+   "text": "And that and that you could post the link at the beginning of the meeting. Here's the link to the Google Doc you know and then you can share screen on the Google Doc while Claude is populating it how how quickly can Claude listen to the call and be inputting notes into a Google Doc live"
+  },
+  {
+   "at": "06:27",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, that's yeah, and it could also if we wanted it to it could speak as"
+  },
+  {
+   "at": "06:34",
+   "speaker": "Markabadi",
+   "text": "Well, yeah well, I mean, you know setting that up so that Claude would speak when asked like, okay Claude could you now sum up? What's the five points that have just been made and maybe there are set of rules that you need to say to Claude like you know if someone mentions an idea and nobody else says yeah to it that's a good idea. Then maybe it's not prioritized like, you know, it's like being seconded. It needs to be seconded it's like I I propose this if everyone just stays quiet, then it's clearly not got much legs. But someone else says yeah, I second that then that can be a gate to to to moving it into the next phase of all right. These are these are proposals being made let's vote on them or whatever."
+  },
+  {
+   "at": "07:21",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, that I like that. I like that. That's that's super cool because it adds in another dimension. Well, I mean, I mean it first of all is great information but just from a meeting standpoint, that'd be super cool to say. Oh, okay I'm gonna second that and then Claude could be listening for that yeah, seconding and prioritize the ones that got seconded"
+  },
+  {
+   "at": "07:45",
+   "speaker": "Markabadi",
+   "text": "100% turn them into turn them into vote tabs even in the Google Doc you could have drop-down menus where you where people vote for them or like, you know click dots or up vote. I have always liked the up-voting technique if one has to be picked out of you know, however many but if they all could be voted for then that's up voting doesn't work because up-voting only works when you need to select one winner"
+  },
+  {
+   "at": "08:14",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, I see what you're saying. Yeah"
+  },
+  {
+   "at": "08:16",
+   "speaker": "Markabadi",
+   "text": "What's the most popular date? We're all gonna meet, everyone up votes the day they want, you know,"
+  },
+  {
+   "at": "08:16",
+   "speaker": "Daveed Benjamin",
+   "text": "Right, right."
+  },
+  {
+   "at": "08:23",
+   "speaker": "Markabadi",
+   "text": "But if it's like, you know, what are the points that need to be added into the document? It could be multiple yeah, absolutely, but I love the idea of your groups being working groups and and I just think you need to sort your structure out so that people are clear that this is what they're coming to that that the first 10 minutes are checking and I think new going on whatever whatever everyone gets a minute to check in or 30 seconds. There was a little timer on it you know really make really having the structures to help people be productive by resist by by having constrictions. This is one of my new realizations it's new for me because I've always rebelled against constriction. I've always felt constriction is constricting but naturally you can have constriction. That's very freeing because if you're saying okay, tell me tell me how your day's going and you've got 30 seconds whereas if you say tell me how your day's going you've got an hour. [a passage is left out here] It's like it's much easier to tell you how my day's going in 30 seconds and it is an hour so that's where an example of where a constriction actually frees me to be able to express something more clearly so having those constrictions in your call, I think would be great and and and rather than just opening it and just letting everyone speak freely a bit more like dedicated inquiry and and if you're leading the way with the inquiry, okay, so this week we're going to talk about you know DP 27 or whatever. I know DPs are just chapters are they?"
+  },
+  {
+   "at": "10:03",
+   "speaker": "Daveed Benjamin",
+   "text": "They're there. Yeah, just chapters."
+  },
+  {
+   "at": "10:03",
+   "speaker": "Markabadi",
+   "text": "Yeah, exactly. Yeah, so we're going to talk about DP 7 or whatever and here are the questions that are coming up that are that are in that are curious yeah, I'm putting that in simple English first before you go into the complex wording of something"
+  },
+  {
+   "at": "10:22",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. Yep."
+  },
+  {
+   "at": "10:22",
+   "speaker": "Markabadi",
+   "text": "The other thing around the AI is that we can have it listening and have it if it if it sees like something interesting whether it could be some tension or some conflict or maybe it's just just another idea that has been brought up by two people talking about two things and there's something in the middle of they're not noticing we could have the AI raise its hand and then choose to it. We okay. The AI has its hand raised. Well, yeah, I have something to say amazing amazing or the you know, the AI has noticed something that was mentioned, but then doesn't seem to have been mentioned again yeah, you know and yeah curious if it if it needs to let go of this or if it needs to be returned to"
+  },
+  {
+   "at": "11:15",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, yeah, I think that there's a lot of possibility there in terms of"
+  },
+  {
+   "at": "11:21",
+   "speaker": "Markabadi",
+   "text": "And are you building, are you into building your AI agents? Are you doing that yet?"
+  },
+  {
+   "at": "11:21",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. Yeah, it's um, I mean it's not not that hard. It's kind of just basically natural language with Claude. We're really at that inflection page where you know, all this stuff is is relatively simple compared to what it was three years ago."
+  },
+  {
+   "at": "11:43",
+   "speaker": "Markabadi",
+   "text": "Yeah, amazing. But the agents, I mean, how do you actually create an agent in Claude? You just it's just a chat line, is it?"
+  },
+  {
+   "at": "11:54",
+   "speaker": "Daveed Benjamin",
+   "text": "Well in in um in Code and I don't know about the other ones but in code your the chat can spin off agents to work on things. So it'll say you know the first section one we're gonna you have agent a do then agent B is doing another and you can even it can even say well with this other agent. We're gonna do an Opus 5.5 agent but on this other one Sonnet is better you know, you don't need to use the higher, you know so it can spin off whatever it needs calibrated to the task and that's in code though but that that that one is more in the chat, but you can then tell it well I want you to use Hermes agent, for example let's we set up we set up Hermes and then it can set up processes for that agent and they're usually organized by a skill so you you create a skill that the agent has in the skill it doesn't have all the details of how everything is done or it's more just telling it the steps of what you want it to do so you could tell it to you know post on X but you could also have a skill that says well post on X don't ever put the any URLs in the in the main post always create a reply put any link that we need to go in the reply I want you to watch this and see if anybody were a lot replies to it if they were applied to a reply to it"
+  },
+  {
+   "at": "13:32",
+   "speaker": "Markabadi",
+   "text": "In five minutes, so it's you can set up it to reply to your social media threads"
+  },
+  {
+   "at": "13:38",
+   "speaker": "Daveed Benjamin",
+   "text": "Absolutely dude, I'm telling you we're at an inflection now where this thing can do everything you need it to do it's it's really wild I mean, I think it's I consider like once in a civilization because it's we can do everything but not everybody realizes it. That's the thing ten years ago. Everybody's gonna I mean ten years from now. Everyone's gonna know right?"
+  },
+  {
+   "at": "14:05",
+   "speaker": "Markabadi",
+   "text": "Yeah Todd not toddlers, but you know people yeah, kids teenagers are gonna be creating social networks or eight-year-olds it's gonna be nuts what's [name left out] gonna be doing who knows exactly but I mean it's like pretty soon you're not gonna know whether you're talking to a human or an AI"
+  },
+  {
+   "at": "14:24",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, except in the Meta-Layer you will, but yeah, on the web you won't. On the Meta-Layer you'll always know."
+  },
+  {
+   "at": "14:24",
+   "speaker": "Markabadi",
+   "text": "Will you? Why?"
+  },
+  {
+   "at": "14:32",
+   "speaker": "Daveed Benjamin",
+   "text": "Because we're gonna have a gate that you have to go through the gates gonna be based on strong authentication"
+  },
+  {
+   "at": "14:38",
+   "speaker": "Markabadi",
+   "text": "Why can't your Claudes go through your gate?"
+  },
+  {
+   "at": "14:41",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, it could go through the gate, but it's it we're gonna also have the communities will be able to configure their layer so that they require proof of unique humanity well, there's a number of different ones we wouldn't I'm technology agnostic so we would use whichever ones are"
+  },
+  {
+   "at": "15:07",
+   "speaker": "Markabadi",
+   "text": "My camera on let me see your face that sort of thing"
+  },
+  {
+   "at": "15:12",
+   "speaker": "Daveed Benjamin",
+   "text": "That's one but you could also use the biometrics that are in your phone or or you know"
+  },
+  {
+   "at": "15:18",
+   "speaker": "Markabadi",
+   "text": "My computer has been it has passkeys fingerprint and stuff"
+  },
+  {
+   "at": "15:22",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, and we could also use there's a the Orb, the World coin Orb"
+  },
+  {
+   "at": "15:29",
+   "speaker": "Markabadi",
+   "text": "Yeah"
+  },
+  {
+   "at": "15:30",
+   "speaker": "Daveed Benjamin",
+   "text": "And and there's some other ways. I mean there's the the poor man's version is basically requiring them to have a mobile phone in you know a real mobile phone account"
+  },
+  {
+   "at": "15:43",
+   "speaker": "Markabadi",
+   "text": "Again, how'd you know? It's a real mobile phone account?"
+  },
+  {
+   "at": "15:46",
+   "speaker": "Daveed Benjamin",
+   "text": "Because there's there's APIs that can tell that basically can tell where there's a real phone and that's not perfect because people can have two phones but today they would have to have two phones and different names to beat it and I'm sure there's people that have that but I'm not really worried about people with two phones I'm worried about people setting up a million bots."
+  },
+  {
+   "at": "16:04",
+   "speaker": "Markabadi",
+   "text": "Yeah."
+  },
+  {
+   "at": "16:10",
+   "speaker": "Daveed Benjamin",
+   "text": "So uh yeah, so um, yeah, it's time to do it. We can do it all though."
+  },
+  {
+   "at": "16:14",
+   "speaker": "Markabadi",
+   "text": "Yeah, it's amazing. Tell me how else can I..."
+  },
+  {
+   "at": "16:22",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay let me show you the screen that I'm..."
+  },
+  {
+   "at": "16:26",
+   "speaker": "Markabadi",
+   "text": "Yeah, because I think you were going to talk me through a screen, weren't you?"
+  },
+  {
+   "at": "16:26",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. Yeah, but this is not the one that I was going to do because this is the one that is really present right now"
+  },
+  {
+   "at": "16:36",
+   "speaker": "Markabadi",
+   "text": "Exactly. Whatever's present is fine."
+  },
+  {
+   "at": "16:36",
+   "speaker": "Daveed Benjamin",
+   "text": "So let me, let me show you this so this this is the each each meeting or session will have will last a week right each session lasts a week it starts with the meeting and there'll be one web page for each one. So this is the session for Monday 16th November so that was this monday and it it has the the title of the the event and it talks about how this works so Claude drafted it we we have 24 hours after the draft ballot to give input then the council determined decides what goes to a vote and anyone in the community gets to gets to vote so we decide there's it it notes that there's a WhatsApp group and a Signal group that people can have conversations with and I'll post some reminders there. It's not it's gonna be very lightweight and I don't"
+  },
+  {
+   "at": "17:51",
+   "speaker": "Markabadi",
+   "text": "Maybe you can have Claude post into those the reviews the summaries"
+  },
+  {
+   "at": "17:56",
+   "speaker": "Daveed Benjamin",
+   "text": "It can't do Signal, but it could..."
+  },
+  {
+   "at": "17:56",
+   "speaker": "Markabadi",
+   "text": "Yeah, no, it could do that."
+  },
+  {
+   "at": "17:56",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, it can't do Signal. It cannot do Signal. Yeah, I I don't know if it I don't know if it cannot period it may be that there's some setup that I would need to do use. I should look into that I will look into that um right now I'm only able to post in WhatsApp"
+  },
+  {
+   "at": "18:16",
+   "speaker": "Markabadi",
+   "text": "Okay, um"
+  },
+  {
+   "at": "18:18",
+   "speaker": "Daveed Benjamin",
+   "text": "And so then it has it has the different things so where this session is vote draft for review we we click it will just go to a different part of this page"
+  },
+  {
+   "at": "18:28",
+   "speaker": "Markabadi",
+   "text": "And this is Claude making these website pages for you based on the meeting"
+  },
+  {
+   "at": "18:34",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, and I've created a skill that's going to do this automatically so it knows exactly it will do this for each meeting like in it I'm going to have it go to Zoom at a certain time check to see if the meeting's in place. Check check check okay, it's there grab the transcript then create this entire page update and so each session so you've got all these like I was saying earlier. You have all these different links of the different sections on the page this is the part that tells you where we're at right now so in this particular one, I said, let me refresh it to see if it's if it is actually still in that state I would think that it might be further along. Okay. Yeah, so it's further along so it goes from community verification. That's when you can make notes in the Google Doc to say oh we missed something or that wasn't what I said then it closes then the council screening this time there there is no council yet. So this was skipped then it went ready to to voting the ballot was corrected after the review so Claude went through it and there were not that many comments, but it grabbed a couple comments."
+  },
+  {
+   "at": "19:52",
+   "speaker": "Markabadi",
+   "text": "What does the ballot look like?"
+  },
+  {
+   "at": "20:00",
+   "speaker": "Daveed Benjamin",
+   "text": "Um here so here's well, here's the yeah, here's the vote right here you sign in um to who votes anyone so black now passing opinion"
+  },
+  {
+   "at": "20:13",
+   "speaker": "Markabadi",
+   "text": "I find, I'm finding that font very hard to read."
+  },
+  {
+   "at": "20:13",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Okay, would it be, is it too small?"
+  },
+  {
+   "at": "20:19",
+   "speaker": "Markabadi",
+   "text": "Yeah, I mean I'm zooming in so it's better. It's definitely better. Um, zoomed in."
+  },
+  {
+   "at": "20:19",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. Yeah. Yeah. Okay. uh so passing multiple okay yeah, okay. All right then I can sign I would just sign in and you have all these different options to sign in so Google, Facebook and all these other ones."
+  },
+  {
+   "at": "20:39",
+   "speaker": "Markabadi",
+   "text": "Is Discord still a thing, is it?"
+  },
+  {
+   "at": "20:44",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, Discord is still a thing. I I don't think many people are signing in with it, but"
+  },
+  {
+   "at": "20:52",
+   "speaker": "Markabadi",
+   "text": "I mean are people using Discord these days?"
+  },
+  {
+   "at": "20:55",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, I mean for certain things especially stuff around agents and I don't know about you know crypto is kind of not really happening these days, but um, I'm imagining there's some I don't know crypto may have died but AI has not and there are people using it for AI and other things um, and so here's the vote we've got like should the community run a weekly listen draft verify screen and vote cycle as a four session pilot so this is we're kind of in it. I'm showing it right now and I'm asking them to vote on whether we're going to do it four sessions in a row just as an experiment to see what happens uh, how long should the correction window be so is it right now? We just gave 24 and gave a notice by email."
+  },
+  {
+   "at": "21:39",
+   "speaker": "Markabadi",
+   "text": "What is the correction window? This is you changing your mind"
+  },
+  {
+   "at": "21:47",
+   "speaker": "Daveed Benjamin",
+   "text": "This is um Claude reviews the transcript puts the information in a word document and then people have a review period this correction window to say oh well Claude misquoted me or I actually meant this or I had another idea that another option for this should be"
+  },
+  {
+   "at": "22:12",
+   "speaker": "Markabadi",
+   "text": "Okay"
+  },
+  {
+   "at": "22:13",
+   "speaker": "Daveed Benjamin",
+   "text": "And so we just wanted to see well, what do you think 48 hours? The voting same thing. I we did it for 72 this time and so just got a bunch of different things that they can vote on."
+  },
+  {
+   "at": "22:22",
+   "speaker": "Markabadi",
+   "text": "This is very clear. This is nice."
+  },
+  {
+   "at": "22:29",
+   "speaker": "Daveed Benjamin",
+   "text": "And let's see and so and it makes it clear that this proposal was added after the meeting. So and and also at the top is gonna it's gonna have a video this video wasn't recorded because you know, I'm bad at that but I'm endeavoring to do the rest of them but it will..."
+  },
+  {
+   "at": "22:47",
+   "speaker": "Markabadi",
+   "text": "Are you using Fathom for the recording?"
+  },
+  {
+   "at": "22:52",
+   "speaker": "Daveed Benjamin",
+   "text": "I'm using I'm using um Zoom to do the transcripts right now and uh I just manually have Zoom record."
+  },
+  {
+   "at": "23:04",
+   "speaker": "Markabadi",
+   "text": "So the Fathom, Fathom is really good."
+  },
+  {
+   "at": "23:08",
+   "speaker": "Daveed Benjamin",
+   "text": "Can it it can do video too does video?"
+  },
+  {
+   "at": "23:10",
+   "speaker": "Markabadi",
+   "text": "It does it does the text and it gives you an output and it gives you an AI conclusion on it and then it also you can go anywhere in a transcript and it will zoom you automatically to the that section of the video and when you edit the transcript it removes that from the video like it's it's brilliant"
+  },
+  {
+   "at": "23:30",
+   "speaker": "Daveed Benjamin",
+   "text": "Wait, say that last part again."
+  },
+  {
+   "at": "23:30",
+   "speaker": "Markabadi",
+   "text": "So for example, if you had a meeting and then someone went for a wee and you pause the meeting for five minutes you could go to that in the transcript of Fathom delete it from the transcript delete that area and it would putt the video. So"
+  },
+  {
+   "at": "23:50",
+   "speaker": "Daveed Benjamin",
+   "text": "I see. Okay. Yeah. Oh, that is cool"
+  },
+  {
+   "at": "23:52",
+   "speaker": "Markabadi",
+   "text": "Yeah, or if or if basically someone said something like that they shouldn't have [a passage is left out here] Then you could go back into the transcript delete that from the transcript and it would delete it from the recording of the video as well"
+  },
+  {
+   "at": "24:08",
+   "speaker": "Daveed Benjamin",
+   "text": "Oh cool. Okay, so I should check on Fathom. How much does it cost?"
+  },
+  {
+   "at": "24:13",
+   "speaker": "Markabadi",
+   "text": "uh not expensive. Oh cool. Maybe maybe uh maybe 15 bucks a month"
+  },
+  {
+   "at": "24:22",
+   "speaker": "Daveed Benjamin",
+   "text": "And I wonder do they do they have an API you think I should probably check that"
+  },
+  {
+   "at": "24:26",
+   "speaker": "Markabadi",
+   "text": "What's an API?"
+  },
+  {
+   "at": "24:26",
+   "speaker": "Daveed Benjamin",
+   "text": "So an API is an application program interface and practically it's a it's a it's a place it's got an address you send information in a certain format and it then sends that information back to you so it's a it's a way it's a way to get information out of an application so an agent uses APIs to communicate"
+  },
+  {
+   "at": "24:57",
+   "speaker": "Markabadi",
+   "text": "I mean, I would imagine that it absolutely does it's it's it's one of the it's probably the top audio and video recording meeting recording system out there okay, I would say it definitely does"
+  },
+  {
+   "at": "25:11",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, cool. I will definitely check into that. Thank you"
+  },
+  {
+   "at": "25:14",
+   "speaker": "Markabadi",
+   "text": "Because then all you have to you have your desktop app and the Fathom can just automatically join every Zoom meeting you can set it up so in which case you don't have to remember to start the video, where I think it's just always doing it."
+  },
+  {
+   "at": "25:24",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, that, that would be helpful for someone like me because I sometimes forget and I've done it in times when it was really not good that I did it too yeah, so I'll definitely check that out. Thank you um, so then we just have a section here where it this is odd. It shouldn't look like that but okay, I need to check on that but it basically has the videos so here's here's the the film of this a short film that was made from that last meeting so we'll have that each time and we'll have, Claude did that today."
+  },
+  {
+   "at": "26:07",
+   "speaker": "Markabadi",
+   "text": "Yeah, that's great"
+  },
+  {
+   "at": "26:08",
+   "speaker": "Daveed Benjamin",
+   "text": "And I made a skill out of it so that it can kind of do it in a you know there's some that uploads it to YouTube by itself."
+  },
+  {
+   "at": "26:13",
+   "speaker": "Markabadi",
+   "text": "Yep. Amazing"
+  },
+  {
+   "at": "26:18",
+   "speaker": "Daveed Benjamin",
+   "text": "Yep, I have I have it connected to YouTube TikTok uh Instagram, X LinkedIn and it can it can act on behalf of me for all those wow it's pretty crazy. Yeah, and so yeah, yeah here it is. It's on all these and essentially I've given people I'm giving people the the link to these different posts so that they can share share. Yeah and and I also asked them to to put put the people who are associated with it that I'm connected to on on LinkedIn to put links to them as well it's it's crazy. I mean I'm like I'm kind of flabbergasted now just because it's it's so so powerful for and so helpful for what I need um and so so we have this stuff for sharing and then here's the stuff around the Google Doc. So this is a more obsolete, but it's still here carried on this part is is more of the historical archive at this point because the vote is the most important thing which has been pulled to the top this stuff was at the top before we switched into the vote period"
+  },
+  {
+   "at": "27:39",
+   "speaker": "Markabadi",
+   "text": "Right"
+  },
+  {
+   "at": "27:40",
+   "speaker": "Daveed Benjamin",
+   "text": "And so this is more just the notes of what happened. So this that's pretty much it. Uh, oh and this was the first set of draft ballot questions that it it created to show people what it would look like before this Claude came up with the questions that they uh Claude looked at the at the transcript and so so and it actually says it should say um often who even brought things up so like here raised by Daveed Benjamin related written proposals none, but in some other these other ones like here's a participant proposal so Leandra Preston uh had this idea and so it it it basically goes through and anything that that we as a group said hey that this should be something that we we need to decide this I mean, we don't even have to say this need to be on the ballot. It's just more. Hey, let's talk about this we we we need to figure this out. How many co-editors should we have and it and Claude just brings it in"
+  },
+  {
+   "at": "28:48",
+   "speaker": "Markabadi",
+   "text": "Right"
+  },
+  {
+   "at": "28:50",
+   "speaker": "Daveed Benjamin",
+   "text": "So that that's this this one, um, which which I'm working on now and yeah, any any I guess down here is it's showing um some of the the the changes in in in text that it made from the process based on so this this is on the website somewhere and we had a conversation about how to change this this process and so now it's showing basically the results so, you know, what did we actually? Want to change in that conversation? So it's just documenting that"
+  },
+  {
+   "at": "29:33",
+   "speaker": "Markabadi",
+   "text": "So it's meeting notes or"
+  },
+  {
+   "at": "29:36",
+   "speaker": "Daveed Benjamin",
+   "text": "They're kind of like meeting notes right here, but it's a little bit. It's a little bit different in that it's it's showing the based on the conversation that we had how would we change the the process? Web page. Yeah, so it's showing. Oh, well, we're changing it to up to three."
+  },
+  {
+   "at": "29:51",
+   "speaker": "Markabadi",
+   "text": "Yeah. Yeah. Yeah."
+  },
+  {
+   "at": "29:58",
+   "speaker": "Daveed Benjamin",
+   "text": "And so it's really good in this what I didn't have to tell it to do this actually it I I basically said, you know, I want you to summarize the meeting I want you to pull out the interesting aspects of it I want you to create tools that make this, uh more, you know useful like I want you to create a balloting tool and and it and it it it came up with this as the template we I think I I told it I wanted a couple more things but this is more or less"
+  },
+  {
+   "at": "30:32",
+   "speaker": "Markabadi",
+   "text": "What what we came up with through the process it's great"
+  },
+  {
+   "at": "30:37",
+   "speaker": "Daveed Benjamin",
+   "text": "And then so the voting is going to be open for three days and then it's there'll be a decision recorded now, uh"
+  },
+  {
+   "at": "30:47",
+   "speaker": "Markabadi",
+   "text": "Has it got the ability to send individual messages? To the people who were in the meetings like a text message or a watch that message saying uh, the vote is now open. Please register your voting before the deadline of blah blah blah"
+  },
+  {
+   "at": "31:03",
+   "speaker": "Daveed Benjamin",
+   "text": "I'm doing it very via email now but I think that you would you what you just said would be even better because people are more responsive to text"
+  },
+  {
+   "at": "31:11",
+   "speaker": "Markabadi",
+   "text": "Absolutely a WhatsApp text or a Signal text whatever they're on to their individual thing and um my mate has a has an SMS or WhatsApp, uh texting system from his AI I don't know if you've got that yet, but can your, can the AI WhatsApp?"
+  },
+  {
+   "at": "31:24",
+   "speaker": "Daveed Benjamin",
+   "text": "It can. It can WhatsApp. I don't know about Signal though"
+  },
+  {
+   "at": "31:32",
+   "speaker": "Markabadi",
+   "text": "Before just keep it on WhatsApp for now, but the point is it can identify who was in the meeting, right?"
+  },
+  {
+   "at": "31:38",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, and it can also identify like with the eye with the email I have multiple reminders and if you've already voted it doesn't go out"
+  },
+  {
+   "at": "31:48",
+   "speaker": "Markabadi",
+   "text": "Right. That's great. That's great. Well, I mean I think that again just a simple text reminder because people get thousands of emails a day and um, but they don't get thousands of text messages a day right. Yeah, so it might and it's just just to say, you know voting's now open please follow this link or vote by x amount of time um might be a good uh stimulator"
+  },
+  {
+   "at": "32:14",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. Yeah. No, I think you're totally right. That's that's a that's a really good suggestion I will I'll work on that get at least getting the the WhatsApp done that that would be smooth um"
+  },
+  {
+   "at": "32:27",
+   "speaker": "Markabadi",
+   "text": "What about are you? Is the design of it is it I mean, it's very wordy"
+  },
+  {
+   "at": "32:34",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah"
+  },
+  {
+   "at": "32:36",
+   "speaker": "Markabadi",
+   "text": "Very wordy very black and white very um there's a lot of reading to do still yeah, you know, like I get that. This is a very heady experience. Um just scroll down through it"
+  },
+  {
+   "at": "32:51",
+   "speaker": "Daveed Benjamin",
+   "text": "How it works it's pretty simple stay in touch between sessions."
+  },
+  {
+   "at": "32:54",
+   "speaker": "Markabadi",
+   "text": "Okay, go on, keep going down."
+  },
+  {
+   "at": "32:57",
+   "speaker": "Daveed Benjamin",
+   "text": "uh, all right so where this session is so this session"
+  },
+  {
+   "at": "33:04",
+   "speaker": "Markabadi",
+   "text": "Okay, so where where we're at with this session is what you're saying, right?"
+  },
+  {
+   "at": "33:08",
+   "speaker": "Daveed Benjamin",
+   "text": "Well, so voting is open."
+  },
+  {
+   "at": "33:08",
+   "speaker": "Markabadi",
+   "text": "Okay, so voting. Okay, great. And if you click voting open it's nothing right now so this should go to the vote right should go to the anchor point inside the document which is just there for that"
+  },
+  {
+   "at": "33:22",
+   "speaker": "Daveed Benjamin",
+   "text": "You know, right, but still that, totally, you should be able to, yeah. Yeah. Yeah. Um, okay, so rules for this ballot"
+  },
+  {
+   "at": "33:30",
+   "speaker": "Markabadi",
+   "text": "I mean are they always the same the rules?"
+  },
+  {
+   "at": "33:35",
+   "speaker": "Daveed Benjamin",
+   "text": "um I would say well, I mean they're open to being changed but I mean but I mean it's the same each time"
+  },
+  {
+   "at": "33:46",
+   "speaker": "Markabadi",
+   "text": "So if someone comes to this page again they would they would just get all that that same thing again"
+  },
+  {
+   "at": "33:55",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, I think that a lot of this would be the same."
+  },
+  {
+   "at": "33:55",
+   "speaker": "Markabadi",
+   "text": "Yep. Is there a way to compress that with a little drop-down arrow"
+  },
+  {
+   "at": "34:05",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, yeah"
+  },
+  {
+   "at": "34:06",
+   "speaker": "Markabadi",
+   "text": "So that you can just see the title that's rules for this ballot and you can see the title for where it's at and and those are all closed until you open them. Yep, so that someone doesn't come to this and feel overwhelmed by right so they they can just see the the the the you know, the bullet points the the titles and if they want to know the rules for the vote they click the open button and it opens"
+  },
+  {
+   "at": "34:32",
+   "speaker": "Daveed Benjamin",
+   "text": "Yep. Okay. Totally. And then, um so this shows how an account voted the site never reveals that right? Okay fine, uh context okay. Yeah, and then and then this is pretty easy and then watch and share Version 1. So what are we talking about now? This is just the whole"
+  },
+  {
+   "at": "35:01",
+   "speaker": "Markabadi",
+   "text": "What what is the film"
+  },
+  {
+   "at": "35:03",
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, yeah this is the film for actually this is the first film for Version 1 just from taking snippets from the meeting and having some a story put around it's three minutes, but it won't change the next meeting yeah, that's a good yeah initially I I had thought that um I think so this will change at the meeting. So you're going to have a video up the top up here of this specific meeting and then there'll be the transcript is at the bottom too. So that will be also available I think it's yeah, here's the transcript. So the the transcript is available"
+  },
+  {
+   "at": "35:43",
+   "speaker": "Markabadi",
+   "text": "And you but the transcript of what the specific meeting this this past meeting and so I think the meeting should be labeled so transcript of the of yeah, the meeting should be labeled. Yeah, either the date or the date and title"
+  },
+  {
+   "at": "36:02",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah"
+  },
+  {
+   "at": "36:03",
+   "speaker": "Markabadi",
+   "text": "And if you can title each meeting like this might be a logistical meeting agreements or something you know, yeah, I mean it depends on whatever the meeting's called, but but just having because otherwise it's not clear whether this is an entire thing or specific to the meeting is this whole page specific to this one meeting"
+  },
+  {
+   "at": "36:27",
+   "speaker": "Daveed Benjamin",
+   "text": "Yes."
+  },
+  {
+   "at": "36:27",
+   "speaker": "Markabadi",
+   "text": "Okay. Yeah. Okay, so maybe uh, maybe having a because it's not clear where we're at at the moment like right now it's not clear where we're at. We're at the bottom of the page. I mean, it's not clear what page we're on"
+  },
+  {
+   "at": "36:43",
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, yeah. No, we need that. You're right. So you're you you're on a what a page that is meeting summary and uh and community votes is that is that right? Let's see what it says at the top that's not exactly what it's it's uh Meta-Governance"
+  },
+  {
+   "at": "37:03",
+   "speaker": "Markabadi",
+   "text": "Isn't that a general title that could be applied to anything?"
+  },
+  {
+   "at": "37:09",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, it is well the next one here's the next one so we have"
+  },
+  {
+   "at": "37:15",
+   "speaker": "Markabadi",
+   "text": "And and it doesn't matter whatever the title is. I think if you can have it uh shrink and then stay as a little banner at the top like a frozen banner"
+  },
+  {
+   "at": "37:27",
+   "speaker": "Daveed Benjamin",
+   "text": "Oh okay, so obviously just go back to where we were"
+  },
+  {
+   "at": "37:32",
+   "speaker": "Markabadi",
+   "text": "Yeah, so, okay, so I see that right. Yeah, so if you can have both the date and the title shrink up to the top as you scroll down okay, so that like because there's nothing on the top, uh menu bar that shows that you're inside a meeting summary right. So if you're on that page, you might be a bit like [a passage is left out here] Because usually you have some sort of breadcrumbs on a website that helps you know where you've gone on the website"
+  },
+  {
+   "at": "38:03",
+   "speaker": "Daveed Benjamin",
+   "text": "Right"
+  },
+  {
+   "at": "38:05",
+   "speaker": "Markabadi",
+   "text": "Hold on one second. Um, I'm having there's someone at my door. Okay. Go for going crazy one second I'm I'm here"
+  },
+  {
+   "at": "38:49",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay"
+  },
+  {
+   "at": "38:50",
+   "speaker": "Markabadi",
+   "text": "So, and I've got six more minutes."
+  },
+  {
+   "at": "38:50",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Okay. So um where you were"
+  },
+  {
+   "at": "39:00",
+   "speaker": "Markabadi",
+   "text": "I'm just sort of saying that the whole breadcrumbs of a of a webpage need to be where you are just so people remember what meeting they're in and what because there might be four meetings that they're reviewing or voting on or whatever"
+  },
+  {
+   "at": "39:13",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah yeah"
+  },
+  {
+   "at": "39:15",
+   "speaker": "Markabadi",
+   "text": "And just just just have a little frozen line at the top yeah or you know, just some some way to know that that that took those top three lines some way to to record that"
+  },
+  {
+   "at": "39:30",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah and yeah, no, I love it. That's great"
+  },
+  {
+   "at": "39:32",
+   "speaker": "Markabadi",
+   "text": "That's really okay. So now we know where we are. We're in a voting thing here the votes. We've done the votes okay. Now what's the media this video is what just sharing the whole concept? Yeah, so it maybe it doesn't even need to be here in it's fine if it's there but I mean, I think it should just be clear that we've finished the meeting point and that this is about sharing the platform"
+  },
+  {
+   "at": "39:56",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Okay, so it should say something like share the platform. Remember to share the platform"
+  },
+  {
+   "at": "40:02",
+   "speaker": "Markabadi",
+   "text": "Right, but just to clarify that it's nothing to do specifically with the above meeting and the votes"
+  },
+  {
+   "at": "40:09",
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Yeah, that makes sense. All right."
+  },
+  {
+   "at": "40:09",
+   "speaker": "Markabadi",
+   "text": "So keep going. Okay, and then you've got all the shared shared shared. Okay, and what's this draft for for review?"
+  },
+  {
+   "at": "40:20",
+   "speaker": "Daveed Benjamin",
+   "text": "So this is this is the remember I was saying yeah Claude goes through it creates the draft and in okay"
+  },
+  {
+   "at": "40:28",
+   "speaker": "Markabadi",
+   "text": "So this is the draft of the meeting?"
+  },
+  {
+   "at": "40:28",
+   "speaker": "Daveed Benjamin",
+   "text": "The draft. Yeah, the draft, well, the draft of what what it thinks the key decisions that we were talking about the key"
+  },
+  {
+   "at": "40:40",
+   "speaker": "Markabadi",
+   "text": "Only including one meeting, or does it include all the meetings?"
+  },
+  {
+   "at": "40:40",
+   "speaker": "Daveed Benjamin",
+   "text": "Just this meeting."
+  },
+  {
+   "at": "40:45",
+   "speaker": "Markabadi",
+   "text": "Okay, so you need to say that on the title where it says draft for review. It's draft of current meeting you know draft of meeting blah blah blah with the title you've got back again because in the middle remember you put a share thing you write you had a platform share it's like what are they sharing? Are they sharing the meeting or are they sharing the platform?"
+  },
+  {
+   "at": "41:09",
+   "speaker": "Daveed Benjamin",
+   "text": "Right right."
+  },
+  {
+   "at": "41:10",
+   "speaker": "Markabadi",
+   "text": "So yeah, I suppose that needs to be clear, and again, so the draft for review, so it's the meeting draft meeting draft with the title whatever whatever for review all right, so keep going decisions and options. What's that?"
+  },
+  {
+   "at": "41:27",
+   "speaker": "Daveed Benjamin",
+   "text": "So these are the Claude thought the key decisions that we may want to vote on would be and the different different options for them."
+  },
+  {
+   "at": "41:36",
+   "speaker": "Markabadi",
+   "text": "Oh, hold on, is this, is this what forms the voting questions"
+  },
+  {
+   "at": "41:43",
+   "speaker": "Daveed Benjamin",
+   "text": "Exactly. This is this is the the version before the actual ballot where the this is showing kind of the the provenance of where the ballot information came from"
+  },
+  {
+   "at": "41:54",
+   "speaker": "Markabadi",
+   "text": "And why do you need this here?"
+  },
+  {
+   "at": "41:57",
+   "speaker": "Daveed Benjamin",
+   "text": "um, it's it it it's it's more of a record at this point like it could it could be a record in the document at the Google Doc it it is it is yeah, it's a record in the Google document for sure"
+  },
+  {
+   "at": "42:13",
+   "speaker": "Markabadi",
+   "text": "And again, if you're gonna put it here, I would put it with a drop-down menu so it's not overloading people and label it properly like um um origins of voting questions okay. Yeah, so so it's clear [a passage is left out here]. I mean decisions and options and I'm like of what? Okay, so it's the it's the origins of where the voting questions came from. I can either drop down that menu or not yep, so it's not gonna overload me because you want to, so it's closed initially."
+  },
+  {
+   "at": "42:42",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, closed initially. Okay"
+  },
+  {
+   "at": "42:49",
+   "speaker": "Markabadi",
+   "text": "Title and then what's this draft ballot questions, but again, this is the same thing"
+  },
+  {
+   "at": "42:54",
+   "speaker": "Daveed Benjamin",
+   "text": "But taking them and turning them into to actual questions. Like what would what would it actually look like?"
+  },
+  {
+   "at": "43:01",
+   "speaker": "Markabadi",
+   "text": "Fine again same same principle same principle. Yeah, but what's the title of this?"
+  },
+  {
+   "at": "43:06",
+   "speaker": "Daveed Benjamin",
+   "text": "This title is draft ballot questions"
+  },
+  {
+   "at": "43:11",
+   "speaker": "Markabadi",
+   "text": "Resulting from the meeting blah blah blah. Yeah. Yeah good. Okay and then we have the corrected process text. What does that mean?"
+  },
+  {
+   "at": "43:26",
+   "speaker": "Daveed Benjamin",
+   "text": "Um it it basically"
+  },
+  {
+   "at": "43:29",
+   "speaker": "Markabadi",
+   "text": "Is this correcting the book?"
+  },
+  {
+   "at": "43:29",
+   "speaker": "Daveed Benjamin",
+   "text": "There's a web... No, there's a web page. So it's correcting the process that's outlined on a web page for process. So the process of meetings how everything, how we, how we work things like how many..."
+  },
+  {
+   "at": "43:43",
+   "speaker": "Markabadi",
+   "text": "Right, but that's what you're voting on, right?"
+  },
+  {
+   "at": "43:43",
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, exactly."
+  },
+  {
+   "at": "43:49",
+   "speaker": "Markabadi",
+   "text": "Okay, so so so how how the votes have in have have edited and informed the process"
+  },
+  {
+   "at": "43:58",
+   "speaker": "Daveed Benjamin",
+   "text": "I think at this point it's it's we had we had made a couple of decisions beforehand right right right in this particular document needed to be updated. We talked about it in the meeting and now Claude went back and said oh well"
+  },
+  {
+   "at": "44:15",
+   "speaker": "Markabadi",
+   "text": "Yeah, fine. I would do again another squish down make sure the title's nice and just do a collapse down okay, and so people can find this if they want. Otherwise they don't need to."
+  },
+  {
+   "at": "44:26",
+   "speaker": "Daveed Benjamin",
+   "text": "Session chat. So you can you can come in anyone who signed in can come in and leave a chat message"
+  },
+  {
+   "at": "44:35",
+   "speaker": "Markabadi",
+   "text": "Okay to everybody. All right"
+  },
+  {
+   "at": "44:38",
+   "speaker": "Daveed Benjamin",
+   "text": "And then here's the summary."
+  },
+  {
+   "at": "44:38",
+   "speaker": "Markabadi",
+   "text": "This is once again probably one that should be collapsed initially summary of what the meeting the summary of the meeting. Okay, so again meeting summary. Yeah"
+  },
+  {
+   "at": "44:51",
+   "speaker": "Daveed Benjamin",
+   "text": "And then decisions coming up this is part of the meeting summary actually and then we someone asked for a analysis of why proposals were declined or deferred that's all they just asked for and I say hey, that's a great idea. And then Claude did this so they they went through it and did an analysis of why things were"
+  },
+  {
+   "at": "45:19",
+   "speaker": "Markabadi",
+   "text": "This is, this is good. Daveed, I've got to go, I've got a three o'clock."
+  },
+  {
+   "at": "45:23",
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, man, well, hey, that was that was great. Thank you, brother. I really appreciate you"
+  },
+  {
+   "at": "45:28",
+   "speaker": "Markabadi",
+   "text": "Absolutely. I'm happy to to engage like this with you. It feels good to to help the system roll. And if this is a helpful process, then great"
+  },
+  {
+   "at": "45:38",
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Well, thank you so much. And we can keep we can keep going just find another another time that works"
+  },
+  {
+   "at": "45:46",
+   "speaker": "Markabadi",
+   "text": "Perfect. All right, my man. Talk to you later. Thanks"
+  },
+  {
+   "at": "45:49",
+   "speaker": "Daveed Benjamin",
+   "text": "Bye"
+  }
+ ]
+}

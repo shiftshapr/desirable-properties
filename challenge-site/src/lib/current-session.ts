@@ -1,11 +1,13 @@
 import { DP_ROUNDUP_EVENTS, roundupDateLabel, type RoundupEvent } from '@/lib/dp-roundups';
+import { REVIEW_WINDOW_HOURS } from '@/lib/sessions/session-rules';
 import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
 
 /**
  * The current community session:
  * 1. a session that has started and whose ballot is still open (now before its closesAt) stays current, so the
  *    menu and front page keep sending people to vote; the latest such session wins;
- * 2. otherwise the next session that has not ended yet;
+ * 2. otherwise the earliest session that has not ended, or ended less than SESSION_GRACE_MS ago (48 hours: the
+ *    correction window decided in the 16 Nov ballot), so on a session's own day the menu still points at that session's page;
  * 3. otherwise the most recent one.
  * Ballots come from SESSION_BALLOTS, matched to a session by pagePath === pageHref. An early stop recorded in the
  * dp_ballot table is not consulted here; the switch happens at the definition's closesAt.
@@ -67,6 +69,9 @@ export function sessionWithOpenBallot(
     && ballots.some((b) => b.pagePath === event.pageHref && t < Date.parse(b.closesAt)));
 }
 
+/** How long a session stays current after it ends: the correction window (REVIEW_WINDOW_HOURS). */
+export const SESSION_GRACE_MS = REVIEW_WINDOW_HOURS * 60 * 60 * 1000;
+
 export function currentSession(
   now = new Date(),
   options: { sessions?: readonly RoundupEvent[]; ballots?: readonly BallotWindow[] } = {},
@@ -74,7 +79,7 @@ export function currentSession(
   const sessions = options.sessions ?? communitySessions();
   if (!sessions.length) throw new Error('current-session: no community session in DP_ROUNDUP_EVENTS');
   const voting = sessionWithOpenBallot(sessions, now, options.ballots);
-  const next = sessions.find((event) => Date.parse(event.endsAt) > now.getTime());
+  const next = sessions.find((event) => Date.parse(event.endsAt) + SESSION_GRACE_MS > now.getTime());
   const event = voting ?? next ?? sessions[sessions.length - 1];
   const href = event.pageHref ?? event.href;
   return {

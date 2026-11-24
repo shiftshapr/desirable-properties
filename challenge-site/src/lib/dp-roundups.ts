@@ -48,13 +48,20 @@ type SessionInput = {
   thisWeek?: string;
   /** Community sessions: the description shared by every session in the series. */
   seriesAbout?: string;
+  /**
+   * Community sessions: meeting pads (slugs, src/data/meeting-pads) whose "For the process" suggestions go on this
+   * meeting's agenda, shown as "Raised between sessions". Only public pads are shown.
+   */
+  raisedBetweenSessions?: readonly string[];
+  /** Community sessions: a published session ballot to read out on this page (the previous session's vote). */
+  ballotResults?: { slug: string; pageHref: string; heading: string };
 };
 
 const roundup = (date: string, focus: string, objective: string, lumaUrl: string): SessionInput =>
   ({ kind: 'roundup', date, focus, objective, lumaUrl });
 
 /** Shared description of the four DP Listening Experiment sessions (Luma copy, without the Zoom link). */
-const LISTENING_EXPERIMENT_SHARED = 'How do we keep improving a book that a whole community wrote? Version 1.0 of The Layered Web was written in the open by more than 70 contributors. In this four-week experiment we use Monday listening sessions to decide, together, how it grows. Everyone is welcome: contributors, co-editors, past DP Roundup participants and anyone curious. Bring an experience, a question or an option you think we should consider. Each session opens with a short update on last week\'s record and outcomes, then timed contributions, questions and options, and an open mic; we close by reading back the issues and the next steps. Afterwards Claude drafts a summary and a ballot from the transcript, you get 24 hours to correct it, and then the community votes. Register on Luma and the Zoom link comes to you.';
+const LISTENING_EXPERIMENT_SHARED = 'How do we keep improving a book that a whole community wrote? Version 1.0 of The Layered Web was written in the open by more than 70 contributors. In this four-week experiment we use Monday listening sessions to decide, together, how it grows. Everyone is welcome: contributors, co-editors, past DP Roundup participants and anyone curious. Bring an experience, a question or an option you think we should consider. Each session opens with a short update on last week\'s record and outcomes, then timed contributions, questions and options, and an open mic; we close by reading back the issues and the next steps. Afterwards Claude drafts a summary and a ballot from the transcript, you get 48 hours to correct it, the interim council screens it, and then the community votes for 72 hours. Register on Luma and the Zoom link comes to you.';
 
 /** DP Listening Experiment n/4: Monday listening session, 10:00–11:30 a.m. Pacific on Zoom. */
 const listeningExperiment = (n: number, date: string, lumaUrl: string, meetingTitle: string, objective: string, thisWeek: string): SessionInput => ({
@@ -94,10 +101,18 @@ const sessions: readonly SessionInput[] = [
     pageContents: 'Notes, the draft for review and the session chat.',
     details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
   },
-  listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
-    'Ballot results and the first weekly cycle',
-    'Results of the 16 November ballot and the first weekly cycle.',
-    'This week: results and the first cycle. Voting on the ballot from our 16 November session is open until Sunday 22 November, 8:00 PM PT, and anyone with an account can vote on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
+  {
+    ...listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
+      'Ballot results and the first weekly cycle',
+      'Results of the 16 November ballot and the first weekly cycle.',
+      'This week: results and the first cycle. Voting on the ballot from our 16 November session closed Sunday 22 November, 8:00 PM PT; 24 people voted, and the results are below and on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
+    // Markabadi's process suggestions from his 20 Nov walk-through of the 16 Nov session page.
+    raisedBetweenSessions: ['2026-11-20-session-page-review'],
+    // Same as SESSION_2026_11_23 (src/data/sessions/2026-11-23.ts); the test checks they match.
+    pageHref: '/events/listening-2026-11-23', chatAnchor: 'session-chat',
+    pageContents: 'The record, the draft for review and the session chat.',
+    ballotResults: { slug: 'meta-governance-2026-11-16', pageHref: '/events/meta-governance-2026-11-16', heading: 'Results of the 16 November ballot' },
+  },
   listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
     'Co-editors and the council',
     'Co-editors and the council: the co-editor agreement, vetting, and how council elections run.',
@@ -136,6 +151,8 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     meetingTitle: s.meetingTitle ?? null,
     thisWeek: s.thisWeek ?? null,
     seriesAbout: s.seriesAbout ?? null,
+    raisedBetweenSessions: s.raisedBetweenSessions ?? [],
+    ballotResults: s.ballotResults ?? null,
     /** Series name (the focus line). */
     seriesTitle: s.focus,
     title: isRoundup ? `DP Roundup: ${s.focus}` : s.focus,
