@@ -5,6 +5,7 @@ import CommunityGroups from '@/components/community/CommunityGroups';
 import ListeningWorkspaceMount from '@/components/listening/ListeningWorkspaceMount';
 import DeclineReasons from '@/components/sessions/DeclineReasons';
 import DraftForReview from '@/components/sessions/DraftForReview';
+import { NOV16_REVIEW_CHANNELS } from '@/components/sessions/ReviewActions';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
@@ -187,6 +188,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         {visible ? (
           <DraftForReview
             visible
+            reviewChannels={NOV16_REVIEW_CHANNELS}
             labels={LABELS}
             draft={draftData as SessionDraft}
             turns={turns}
