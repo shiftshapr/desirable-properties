@@ -62,7 +62,8 @@ export function screeningStatus(def: Pick<ScreeningDefinition, 'opensAt' | 'wind
   return 'review';
 }
 
-export const acceptsObjections = (s: ScreeningStatus) => s === 'review' || s === 'screening';
+/** Objections only once the community review has closed (owner, 24 Nov 2026), until the screening window ends. */
+export const acceptsObjections = (s: ScreeningStatus) => s === 'screening';
 
 /** Window: from review close for `hours`. Draft questions are keyed "q<n>" (n never renumbered once visible). */
 export function screeningDefinition(input: {
@@ -233,7 +234,7 @@ export async function handleScreeningPost(request: Request, slug: string, deps: 
   const status = screeningStatus(def, now);
   if (!acceptsObjections(status)) {
     return json(
-      { ok: false, code: 'closed', error: status === 'not_open' ? 'The draft is not open yet.' : 'Screening has closed.' },
+      { ok: false, code: 'closed', error: status === 'closed' ? 'Screening has closed.' : 'The council can object once the community review has closed.' },
       409,
     );
   }

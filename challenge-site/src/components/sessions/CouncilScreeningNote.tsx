@@ -13,8 +13,8 @@ export default function CouncilScreeningNote({ view, signInHref }: { view: Scree
         <strong className="text-white">Council screening.</strong> Each draft question goes to the ballot unless a member of
         the interim council objects to it here, with a reason. Objections are public, next to the question. The window
         runs {SCREENING_HOURS} hours from the review closing: <strong className="text-white">{pacificAndUtc(s.windowStartsAt)}</strong> to{' '}
-        <strong className="text-white">{pacificAndUtc(s.closesAt)}</strong>. Members can object from the start of the
-        review, and withdraw their own objection until the window closes.
+        <strong className="text-white">{pacificAndUtc(s.closesAt)}</strong>. Members can object only once the review
+        has closed, and can withdraw their own objection until the window closes.
       </p>
       <p className="mt-1.5">
         {s.status === 'closed'

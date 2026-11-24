@@ -140,8 +140,8 @@ test('a reason is required by the API, and refusals for bad input', async () => 
   assert.equal((await handleScreeningPost(post({ action: 'object', question: 'q1', reason: 'a good reason' }, 'text/plain'), SLUG, deps)).status, 415);
 });
 
-test('window: objections from the review opening; locked before the draft is visible and after the close', async () => {
-  assert.equal((await handleScreeningPost(object('q1'), SLUG, fakeDeps({ now: REVIEW }).deps)).status, 200);
+test('window: objections only after the review closes; locked during the review and after the close', async () => {
+  assert.equal((await handleScreeningPost(object('q1'), SLUG, fakeDeps({ now: REVIEW }).deps)).status, 409);
   assert.equal((await handleScreeningPost(object('q1'), SLUG, fakeDeps({ now: WINDOW }).deps)).status, 200);
   const early = await handleScreeningPost(object('q1'), SLUG, fakeDeps({ now: () => new Date('2026-11-24T03:00:00Z') }).deps);
   assert.equal(early.status, 409);

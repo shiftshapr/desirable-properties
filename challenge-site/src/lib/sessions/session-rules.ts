@@ -9,8 +9,8 @@ export const VOTING_PERIOD_HOURS = 72;
 /**
  * Council screening (host's rule for the pilot, 24 Nov 2026, inside the 16 Nov ballot's "published screening criteria,
  * and written reasons for anything held back"): no objection, per question. Each draft ballot question goes to the
- * ballot unless a member of the interim council objects to that question on the session page, with a reason, by
- * SCREENING_HOURS after the review closes. Objections are public, next to the question, with the member's name and
+ * ballot unless a member of the interim council objects to that question on the session page, with a reason, in the
+ * SCREENING_HOURS after the review closes (not during the review). Objections are public, next to the question, with the member's name and
  * reason; never by email. A member may withdraw their own objection before the close (the record is kept). A question
  * with a standing objection at the close is held back, with the reasons listed. If the council does not act, every
  * question goes to the ballot as drafted. Mechanism: src/lib/screening/screening-core.ts.
