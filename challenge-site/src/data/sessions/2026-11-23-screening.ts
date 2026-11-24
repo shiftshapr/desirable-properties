@@ -4,8 +4,7 @@ import { screeningDefinition, type ScreeningDefinition } from '@/lib/screening/s
 import { SCREENING_HOURS } from '@/lib/sessions/session-rules';
 
 /**
- * Council screening of the 23 Nov draft ballot: objections from the draft going visible (review open, 24 Nov 04:00
- * UTC); the window runs from review close (26 Nov 04:00 UTC) for SCREENING_HOURS, to 27 Nov 04:00 UTC.
+ * Council screening of the 23 Nov draft ballot: objections only after the review closes; the window runs from review close (26 Nov 04:00 UTC) for SCREENING_HOURS, to 27 Nov 04:00 UTC.
  */
 const reviewClose = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
 if (!SESSION.draftVisibleAt || !reviewClose) throw new Error('23 Nov session: draftVisibleAt and review close are required');
