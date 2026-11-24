@@ -4,7 +4,7 @@ import { REVIEW_WINDOW_HOURS } from '@/lib/sessions/session-rules';
 const steps = (reviewHours: number): Array<[string, string]> => [
   ['Claude drafts', 'the summary and ballot from the transcript.'],
   ['Participants correct', `the record in a ${reviewHours}-hour review.`],
-  ['The council screens', 'what goes to a vote.'],
+  ['The council screens', 'what goes to a vote: a question goes forward unless a council member objects in writing within a day.'],
   ['The community decides', 'by voting.'],
 ];
 
