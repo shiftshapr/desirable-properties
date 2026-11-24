@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "council-screening-per-question-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Council screening, question by question, on the session page",
+      "summary": "On the 23 November session page, each draft ballot question now shows its council screening status. Interim council members, signed in, can object to a question on the page with a written reason, and withdraw their own objection, from the start of the review until Friday 27 November, 04:00 UTC (24 hours after the review closes). Objections are public, next to the question, with the member's name and reason. A question with no standing objection at the close goes to the ballot; a question with one is held back, with the reasons listed."
+    },
+    {
       "id": "roundup-1123-button-in-results-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
