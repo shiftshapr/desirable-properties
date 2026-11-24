@@ -2,12 +2,15 @@ export const REVIEW_DOC_URL = 'https://docs.google.com/document/d/1iqZQpaBt-RmnK
 export const REVIEW_EMAIL = 'daveed@bridgit.io';
 
 /**
- * How to send a correction during the review. Default (every session from 23 November on): the page's own session
- * chat, and an email naming the meeting. Only the 16 November page passes NOV16_REVIEW_CHANNELS (its Google Doc).
+ * How to send a correction during the review. Every session has its OWN Google Doc for comments (the spec's review
+ * surface); each page passes `reviewDocChannels(<its doc>, <meeting name>)`. The default (no doc yet) is the page's
+ * session chat, so a page can never link another session's doc.
  */
 export type ReviewChannels = {
   /** Primary button: the Google Doc for the 16 Nov session, the session chat anchor for later ones. */
   primary: { label: string; href: string };
+  /** Optional extra link (the session chat when the primary is the doc). */
+  secondary?: { label: string; href: string };
   /** Subject line of the "Email a correction" link, naming the meeting. */
   emailSubject: string;
 };
@@ -16,6 +19,12 @@ export const NOV16_REVIEW_CHANNELS: ReviewChannels = {
   primary: { label: 'Comment in the Google Doc', href: REVIEW_DOC_URL },
   emailSubject: 'Correction: DP Meta-Governance, 16 November',
 };
+
+export const reviewDocChannels = (docUrl: string, meetingName: string): ReviewChannels => ({
+  primary: { label: 'Comment in the Google Doc', href: docUrl },
+  secondary: { label: 'Post in the session chat', href: '#session-chat' },
+  emailSubject: `Correction: ${meetingName}`,
+});
 
 export const sessionChatReviewChannels = (meetingName: string): ReviewChannels => ({
   primary: { label: 'Post a correction in the session chat', href: '#session-chat' },
@@ -34,6 +43,14 @@ export default function ReviewActions({ channels = sessionChatReviewChannels('DP
         >
           {channels.primary.label}
         </a>
+        {channels.secondary ? (
+          <a
+            href={channels.secondary.href}
+            className="inline-flex justify-center rounded-lg border border-slate-600 px-5 py-2.5 font-semibold text-slate-100 no-underline hover:border-cyan-600"
+          >
+            {channels.secondary.label}
+          </a>
+        ) : null}
         <a
           href={`mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent(channels.emailSubject)}`}
           className="inline-flex justify-center rounded-lg border border-slate-600 px-5 py-2.5 font-semibold text-slate-100 no-underline hover:border-cyan-600"
