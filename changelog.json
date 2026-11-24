@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-doc-1123-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November session has its own review Google Doc",
+      "summary": "The 23 November draft is now in its own Google Doc, open for comments by anyone with the link, and the session page's review box links to it, with the session chat and email as alternatives. Each session has its own review doc; none links an earlier session's."
+    },
+    {
       "id": "review-default-session-chat-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

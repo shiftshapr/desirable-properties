@@ -4,6 +4,10 @@ import Link from 'next/link';
 import CommunityGroups from '@/components/community/CommunityGroups';
 import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
 import DraftForReview from '@/components/sessions/DraftForReview';
+import { reviewDocChannels } from '@/components/sessions/ReviewActions';
+
+/** This session's own review doc (anyone with the link can comment), created 24 Nov 2026. */
+const REVIEW_DOC_1123 = 'https://docs.google.com/document/d/1r4QFJB36xAZqB3fBFydSIefwIm51bt5aeEgcCJVp30A/edit';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
@@ -200,10 +204,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             reviewClosed={reviewClosed}
             pendingApproval={!visible}
             screening={screening}
-            reviewChannels={{
-              primary: { label: 'Post a correction in the session chat', href: '#session-chat' },
-              emailSubject: 'Correction: DP listening session, 23 November',
-            }}
+            reviewChannels={reviewDocChannels(REVIEW_DOC_1123, 'DP listening session, 23 November')}
           />
         ) : (
           <DraftForReview
