@@ -1,3 +1,4 @@
+import { REVIEW_WINDOW_HOURS } from '@/lib/sessions/session-rules';
 import type { MetaGovTurn } from '@/lib/meta-governance-2026-11-16-event';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
 import DraftBallot from './DraftBallot';
@@ -51,7 +52,7 @@ export default function DraftForReview(
         <div className="mt-4 space-y-4 text-base leading-relaxed text-slate-200">
           {props.pendingApproval ? (
             <p>
-              <strong className="text-white">Pending host approval.</strong> The 24-hour review has not opened; this
+              <strong className="text-white">Pending host approval.</strong> The {REVIEW_WINDOW_HOURS}-hour review has not opened; this
               preview shows the draft as Claude prepared it.
             </p>
           ) : (

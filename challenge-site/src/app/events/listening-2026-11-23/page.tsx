@@ -80,7 +80,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   const { sections, turns } = transcript as { sections: ListeningSection[]; turns: ListeningTurn[] };
   const { rows, current } = phaseRows(SESSION, now);
   const closes = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
-  const closesLabel = closes ? pacificAndUtc(closes.at) : '24 hours after opening';
+  const closesLabel = closes ? pacificAndUtc(closes.at) : '48 hours after opening';
   const cta = phaseCallToAction(current, { closesLabel });
   const reviewClosed = closes ? now >= new Date(closes.at) : false;
   const draft = draftData as SessionDraft;
@@ -171,7 +171,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             visible={false}
             labels={LABELS}
             opensLabel=""
-            pendingText="Draft pending host approval. The draft ballot appears here when the host opens the 24-hour review."
+            pendingText="Draft pending host approval. The draft ballot appears here when the host opens the 48-hour review."
           />
         )}
 
