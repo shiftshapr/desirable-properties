@@ -53,6 +53,11 @@ type SessionInput = {
    * meeting's agenda, shown as "Raised between sessions". Only public pads are shown.
    */
   raisedBetweenSessions?: readonly string[];
+  /**
+   * This session's own review Google Doc (anyone with the link can comment), created ahead of time when the session
+   * is added here (owner rule, 24 Nov 2026). The session page's review box links it; never another session's doc.
+   */
+  reviewDocUrl?: string;
   /** Community sessions: a published session ballot to read out on this page (the previous session's vote). */
   ballotResults?: { slug: string; pageHref: string; heading: string };
 };
@@ -102,6 +107,7 @@ const sessions: readonly SessionInput[] = [
     details: 'With Version 1.0 launched, this Meta-Layer Monday turns to the governance of the Desirable Properties process itself. We will review what we learned from contributing, filling co-editor seats, reviewing proposals, and preparing revisions, and work toward a shared process for keeping the book alive. Contributors, co-editors, coordinators, steering committee members, and anyone interested are welcome.',
   },
   {
+    reviewDocUrl: 'https://docs.google.com/document/d/1r4QFJB36xAZqB3fBFydSIefwIm51bt5aeEgcCJVp30A/edit',
     ...listeningExperiment(1, '2026-11-23', 'https://luma.com/nqyu7j5r',
       'Ballot results and the first weekly cycle',
       'Results of the 16 November ballot and the first weekly cycle.',
@@ -113,18 +119,27 @@ const sessions: readonly SessionInput[] = [
     pageContents: 'The record, the draft for review and the session chat.',
     ballotResults: { slug: 'meta-governance-2026-11-16', pageHref: '/events/meta-governance-2026-11-16', heading: 'Results of the 16 November ballot' },
   },
-  listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
+  {
+    reviewDocUrl: 'https://docs.google.com/document/d/1uHRcjIFJsGIlzrNrJDRtFL6IoTV4-m1droApj2jHF1Q/edit',
+    ...listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
     'Co-editors and the council',
     'The book club starts, then co-editors and the council: the co-editor agreement, vetting, and how council elections run.',
     'This week: the book club starts. We open with 30 minutes on the front matter of The Layered Web (About this digital monument, the Foreword, the Introduction and the Acknowledgements); read them first if you can and bring one passage that stayed with you. Then co-editors and the council: what should a co-editor agreement say, and what should a vetting questionnaire ask? If the community voted for a council, we also work out how its elections will run. A short update on the record and outcomes from 23 November comes first.'),
-  listeningExperiment(3, '2026-12-07', 'https://luma.com/ihn1dfw9',
+  },
+  {
+    reviewDocUrl: 'https://docs.google.com/document/d/1mmESPEyXDAE7dey-P9uSbiBx-f1GMAnS_0hmuENzcoU/edit',
+    ...listeningExperiment(3, '2026-12-07', 'https://luma.com/ihn1dfw9',
     'Growing the book',
     'Growing the book: chapter titles, a case studies appendix, a book club and bookathons.',
     'This week: growing the book. How a chapter can change its title, and how the book grows. We\'ll cover a case studies appendix, a book club, and university "bookathons". We open with the record and outcomes from 30 November.'),
-  listeningExperiment(4, '2026-12-14', 'https://luma.com/pt5uhcqz',
+  },
+  {
+    reviewDocUrl: 'https://docs.google.com/document/d/1Zv8WjINlQ1UxgU1HZIOBMeS0OiJ80bRKQxVcpaO0ajo/edit',
+    ...listeningExperiment(4, '2026-12-14', 'https://luma.com/pt5uhcqz',
     'Did the experiment work?',
     'Did the experiment work? Keep, change or stop the weekly cycle.',
     'This week: did the experiment work? We look back at the four-session pilot: what worked, what didn\'t, and whether to keep the weekly cycle, change it or stop. We open with the record and outcomes from 7 December.'),
+  },
 ];
 
 function pacificOffset(date: string) {
@@ -152,6 +167,7 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     thisWeek: s.thisWeek ?? null,
     seriesAbout: s.seriesAbout ?? null,
     raisedBetweenSessions: s.raisedBetweenSessions ?? [],
+    reviewDocUrl: s.reviewDocUrl,
     ballotResults: s.ballotResults ?? null,
     /** Series name (the focus line). */
     seriesTitle: s.focus,
