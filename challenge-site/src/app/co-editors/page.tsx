@@ -36,7 +36,7 @@ export default function CoEditorGuidePage() {
         <p>
           Roles and the full process are on{' '}
           <Link href="/process#roles" className="text-cyan-300 hover:text-cyan-200">
-            How Version 1.0 gets made
+            How Version 1.0 was made
           </Link>
           .
         </p>

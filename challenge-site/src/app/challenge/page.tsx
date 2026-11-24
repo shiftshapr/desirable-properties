@@ -87,7 +87,7 @@ export default async function ChallengePage() {
                 <>
                   Working toward Version 1.0?{' '}
                   <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
-                    How V1 gets made
+                    How V1 was made
                   </Link>{' '}
                   and the{' '}
                   <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">

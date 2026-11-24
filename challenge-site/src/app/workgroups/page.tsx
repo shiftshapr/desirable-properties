@@ -301,7 +301,7 @@ export default async function JoinWorkgroupPage({ searchParams }: PageProps) {
             forward as a co-editor. To take a co-editor seat yourself, use Become a co-editor on
             the workgroup page. The full process, roles and weekly tasks are on{' '}
             <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
-              How V1 gets made
+              How V1 was made
             </Link>
             ; progress per DP is on the{' '}
             <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">

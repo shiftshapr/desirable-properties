@@ -227,7 +227,7 @@ export default function WorkgroupNextSteps({
       <p className="text-sm text-slate-400">
         The full process, roles and weekly tasks are on{' '}
         <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
-          How V1 gets made
+          How V1 was made
         </Link>
         {dpDetailHref ? (
           <>

@@ -106,7 +106,7 @@ export default function DiscussPatchHelpModal({ open, discussHref, onClose }: Pr
             incorporated into the next revision only when both of the DP&apos;s two co-editors
             approve it; either can decline it with a review note.{' '}
             <a href="/process" className="text-cyan-300 hover:text-cyan-200">
-              How Version 1.0 gets made →
+              How Version 1.0 was made →
             </a>
           </p>
         </div>
