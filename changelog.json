@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-actions-per-session-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November review: corrections go to the session chat, not last week's Google Doc",
+      "summary": "The review box on the 23 November session page pointed at the 16 November Google Doc and email subject. It now says \"Post a correction in the session chat\", and the email link names the 23 November session. The 16 November page is unchanged."
+    },
+    {
       "id": "book-club-top-quorum-context-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

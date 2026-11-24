@@ -1,20 +1,36 @@
 export const REVIEW_DOC_URL = 'https://docs.google.com/document/d/1iqZQpaBt-RmnKdzd5oDFqULx5bihJtQXKXh4QeGRBLM/edit';
 export const REVIEW_EMAIL = 'daveed@bridgit.io';
 
-/** How to comment during the review. On-page commenting and voting are proposed, not built. */
-export default function ReviewActions() {
+/**
+ * How to send a correction during the review. Each session passes its own channels: the 16 November session used a
+ * Google Doc (its default here, so that page is unchanged); later sessions take corrections in their session chat.
+ */
+export type ReviewChannels = {
+  /** Primary button: the Google Doc for the 16 Nov session, the session chat anchor for later ones. */
+  primary: { label: string; href: string };
+  /** Subject line of the "Email a correction" link, naming the meeting. */
+  emailSubject: string;
+};
+
+export const NOV16_REVIEW_CHANNELS: ReviewChannels = {
+  primary: { label: 'Comment in the Google Doc', href: REVIEW_DOC_URL },
+  emailSubject: 'Correction: DP Meta-Governance, 16 November',
+};
+
+export default function ReviewActions({ channels = NOV16_REVIEW_CHANNELS }: { channels?: ReviewChannels }) {
+  const external = /^https?:/.test(channels.primary.href);
   return (
     <div id="review-actions" className="scroll-mt-24 rounded-xl border border-cyan-900/60 bg-cyan-950/20 px-4 py-4">
       <div className="flex flex-col gap-3 sm:flex-row">
         <a
-          href={REVIEW_DOC_URL}
-          rel="noopener noreferrer"
+          href={channels.primary.href}
+          rel={external ? 'noopener noreferrer' : undefined}
           className="inline-flex justify-center rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200"
         >
-          Comment in the Google Doc
+          {channels.primary.label}
         </a>
         <a
-          href={`mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent('Correction: DP Meta-Governance, 16 November')}`}
+          href={`mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent(channels.emailSubject)}`}
           className="inline-flex justify-center rounded-lg border border-slate-600 px-5 py-2.5 font-semibold text-slate-100 no-underline hover:border-cyan-600"
         >
           Email a correction
