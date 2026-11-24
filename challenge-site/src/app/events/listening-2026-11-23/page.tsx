@@ -34,6 +34,7 @@ import {
   type ListeningSection,
   type ListeningTurn,
 } from '@/lib/listening-2026-11-23-event';
+import { readScreeningView } from '@/lib/screening/screening-store.server';
 import { sessionDeepiContext } from '@/lib/sessions/session-deepi-context';
 import { meetingShortDate, sessionSectionLabels, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
@@ -84,6 +85,15 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   const cta = phaseCallToAction(current, { closesLabel });
   const reviewClosed = closes ? now >= new Date(closes.at) : false;
   const draft = draftData as SessionDraft;
+  // Council screening per question: objections from the draft going visible until the window closes.
+  const screeningView = visible || preview ? await readScreeningView(SESSION.slug).catch(() => null) : null;
+  const screening = screeningView
+    ? {
+        slug: SESSION.slug,
+        view: screeningView,
+        signInHref: `/login?next=${encodeURIComponent(`${LISTENING_1123_EVENT_PATH}#council-screening`)}`,
+      }
+    : null;
 
   return (
     <SessionPageShell
@@ -165,6 +175,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             closesLabel={closesLabel}
             reviewClosed={reviewClosed}
             pendingApproval={!visible}
+            screening={screening}
           />
         ) : (
           <DraftForReview

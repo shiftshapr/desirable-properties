@@ -150,7 +150,11 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       }
     >
       <div className="mt-8">
-        <HowThisWorks reviewHours={24} />
+        {/* Kept as this page showed it (before per-question screening on the session page, 24 Nov). */}
+        <HowThisWorks
+          reviewHours={24}
+          screeningStep="what goes to a vote: a question goes forward unless a council member objects in writing within a day."
+        />
       </div>
 
       <nav aria-label="On this page" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
