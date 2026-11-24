@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-club-top-quorum-context-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Book club leads the 23 November page; quorum context on the ballot; \"How V1 was made\"",
+      "summary": "The 23 November session page now opens with the book club that starts on 30 November, with what to read and how to register, and the 30 November session description leads with it. Ballot question 1 on quorum now says the active voting body is the 76 people the session emails go to, so 25% is 19 votes and the 16 November ballot (24 voters) would have cleared it. The process page and its menu entry are renamed \"How V1 was made\"."
+    },
+    {
       "id": "phone-setting-upcoming-feed-2026-11-23",
       "date": "2026-11-23",
       "status": "open",

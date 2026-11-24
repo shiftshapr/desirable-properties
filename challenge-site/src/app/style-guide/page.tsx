@@ -13,7 +13,7 @@ export default function StyleGuidePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <Link href="/process" className="text-sm text-cyan-300 hover:text-cyan-200">
-        ← How Version 1.0 gets made
+        ← How Version 1.0 was made
       </Link>
       <header className="mt-6 border-b border-slate-800 pb-8">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">

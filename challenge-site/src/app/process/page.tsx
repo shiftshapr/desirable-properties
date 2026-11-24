@@ -16,7 +16,7 @@ import { bookDiscussHref, GOVHUB_DP_PATCHES_URL } from '@/lib/govhub';
 import V1PhaseText from '@/components/v1/V1PhaseText';
 
 export const metadata: Metadata = {
-  title: 'How Version 1.0 gets made – Desirable Properties',
+  title: 'How Version 1.0 was made – Desirable Properties',
   description:
     'Principles, protocols, roles and practices for the DP workgroups through Version 1.0. Version 1.0: Friday, November 13, 2026. How a change reaches the book, who decides, and what members can do each week.',
 };
@@ -43,7 +43,7 @@ export default function ProcessPage() {
       </Link>
       <header className="mt-6 pb-4">
         <p className="text-sm font-medium uppercase tracking-[0.15em] text-cyan-400">Desirable Properties · Version 1.0</p>
-        <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">How Version 1.0 gets made</h1>
+        <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">How Version 1.0 was made</h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-300">
           <V1PhaseText
             before={
