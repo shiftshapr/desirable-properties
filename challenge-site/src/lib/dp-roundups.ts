@@ -58,6 +58,8 @@ type SessionInput = {
    * is added here (owner rule, 24 Nov 2026). The session page's review box links it; never another session's doc.
    */
   reviewDocUrl?: string;
+  /** Community sessions: proposals put forward for this session's agenda (discussed there, then on its ballot). */
+  proposals?: readonly { title: string; by: string; body: string }[];
   /** Community sessions: a published session ballot to read out on this page (the previous session's vote). */
   ballotResults?: { slug: string; pageHref: string; heading: string };
 };
@@ -121,10 +123,22 @@ const sessions: readonly SessionInput[] = [
   },
   {
     reviewDocUrl: 'https://docs.google.com/document/d/1uHRcjIFJsGIlzrNrJDRtFL6IoTV4-m1droApj2jHF1Q/edit',
+    proposals: [
+      {
+        title: 'Publish Version 1.1 by the end of December, put it on sale, and enter it for the Nautilus Book Awards',
+        by: 'Daveed Benjamin',
+        body: 'Target: Version 1.1 of The Layered Web published by 31 December 2026, available for purchase (a print-on-demand paperback alongside the free online edition and PDF), and entered for the 2027 Nautilus Book Awards by the 8 February deadline in category 31, Global Transformation & Emerging Futures, and category 26, Science, Consciousness, Technology & Cosmology. Bridgit covers the entry fees and the ISBNs. The steering committee adds the ISBN and a short "How this book was made" section to the Edition page. Nautilus requires a 2025 or 2026 publication date, so the end-of-December date matters.',
+      },
+      {
+        title: 'Where should any revenue from the book go?',
+        by: 'Daveed Benjamin',
+        body: 'Separate from the proposal above: if the book earns money (sales, and any prize money), who decides how it is used, and for what? Options to be gathered in the session for the ballot.',
+      },
+    ],
     ...listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',
     'Co-editors and the council',
     'The book club starts, then co-editors and the council: the co-editor agreement, vetting, and how council elections run.',
-    'This week: the book club starts. We open with 30 minutes on the front matter of The Layered Web (About this digital monument, the Foreword, the Introduction and the Acknowledgements); read them first if you can and bring one passage that stayed with you. Then co-editors and the council: what should a co-editor agreement say, and what should a vetting questionnaire ask? If the community voted for a council, we also work out how its elections will run. A short update on the record and outcomes from 23 November comes first.'),
+    'This week: the book club starts. We open with 30 minutes on the front matter of The Layered Web (About this digital monument, the Foreword, the Introduction and the Acknowledgements); read them first if you can and bring one passage that stayed with you. Then co-editors and the council: what should a co-editor agreement say, and what should a vetting questionnaire ask? If the community voted for a council, we also work out how its elections will run. We also take two proposals: publishing Version 1.1 by the end of December and entering it for the Nautilus Book Awards, and where any revenue from the book should go. A short update on the record and outcomes from 23 November comes first.'),
   },
   {
     reviewDocUrl: 'https://docs.google.com/document/d/1mmESPEyXDAE7dey-P9uSbiBx-f1GMAnS_0hmuENzcoU/edit',
@@ -168,6 +182,7 @@ export const DP_ROUNDUP_EVENTS = sessions.map((s) => {
     seriesAbout: s.seriesAbout ?? null,
     raisedBetweenSessions: s.raisedBetweenSessions ?? [],
     reviewDocUrl: s.reviewDocUrl,
+    proposals: s.proposals ?? [],
     ballotResults: s.ballotResults ?? null,
     /** Series name (the focus line). */
     seriesTitle: s.focus,
