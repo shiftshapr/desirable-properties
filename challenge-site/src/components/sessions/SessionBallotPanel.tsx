@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import OptionProvenanceLine from '@/components/sessions/OptionProvenanceLine';
 import SessionLabel from '@/components/sessions/SessionLabel';
+import { provenanceFor } from '@/lib/sessions/option-provenance';
 import {
   outcomeText,
   type BallotDefinition,
@@ -127,6 +129,7 @@ export default function SessionBallotPanel({ ballot, status, signedIn, signInHre
                 <div className="mt-2 space-y-1.5">
                   {q.options.map((o) => {
                     const count = result?.options.find((x) => x.key === o.key)?.votes;
+                    const prov = provenanceFor(ballot.slug, q.key, o.key);
                     return (
                       <label
                         key={o.key}
@@ -143,6 +146,7 @@ export default function SessionBallotPanel({ ballot, status, signedIn, signInHre
                         <span>
                           {o.label}
                           {count !== undefined ? <span className="ml-2 text-slate-400">({count})</span> : null}
+                          {prov ? <OptionProvenanceLine rec={prov} className="mt-0.5" /> : null}
                         </span>
                       </label>
                     );

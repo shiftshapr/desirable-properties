@@ -145,7 +145,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         <p className="mt-3 text-base leading-relaxed text-slate-100">
           The next session opens with a 30-minute book club on <em>The Layered Web</em>. We start with the front matter:
           About this digital monument, the Foreword, the Introduction and the Acknowledgements. Read them before the
-          session if you can, and bring one passage that stayed with you. Everyone is welcome, whether or not you
+          session if you can, and bring a question or insight. Everyone is welcome, whether or not you
           contributed to the book.
         </p>
         <p className="mt-2 text-sm text-slate-300">
@@ -197,6 +197,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         {visible || preview ? (
           <DraftForReview
             visible
+            provenanceSession={SESSION.slug}
             labels={LABELS}
             draft={draft}
             turns={turns}

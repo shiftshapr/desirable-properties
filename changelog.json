@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "ballot-option-provenance-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Who proposed each ballot option, and who has been voting",
+      "summary": "Every option on the 16 November ballot and the 23 November draft ballot now shows, in small text under it, who proposed it, who seconded or supported it, and whether it was approved, with links to the moment in the transcript. A new page, Ballot options (under Pads and in the Events menu), lists every option, decisions taken in the meeting and the 30 November proposals, filterable by status and searchable by name. It also lists who has voted: ballots voted, non-abstain votes and weekly streak, never how anyone voted. Anyone can hide their name from that list on their account page."
+    },
+    {
+      "id": "bookclub-question-insight-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Book club: bring a question or insight",
+      "summary": "The book club invitation on the 23 November page and the 30 November session description now ask people to bring a question or insight, instead of a passage."
+    },
+    {
       "id": "agenda-1130-v11-nautilus-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
