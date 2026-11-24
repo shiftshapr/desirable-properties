@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-default-session-chat-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Review boxes default to the session's own chat",
+      "summary": "Every new session page now sends corrections to its own session chat by default; only the 16 November page links its Google Doc. This stops a new page from pointing at an earlier session's review document."
+    },
+    {
       "id": "review-actions-per-session-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

@@ -2,8 +2,8 @@ export const REVIEW_DOC_URL = 'https://docs.google.com/document/d/1iqZQpaBt-RmnK
 export const REVIEW_EMAIL = 'daveed@bridgit.io';
 
 /**
- * How to send a correction during the review. Each session passes its own channels: the 16 November session used a
- * Google Doc (its default here, so that page is unchanged); later sessions take corrections in their session chat.
+ * How to send a correction during the review. Default (every session from 23 November on): the page's own session
+ * chat, and an email naming the meeting. Only the 16 November page passes NOV16_REVIEW_CHANNELS (its Google Doc).
  */
 export type ReviewChannels = {
   /** Primary button: the Google Doc for the 16 Nov session, the session chat anchor for later ones. */
@@ -17,7 +17,12 @@ export const NOV16_REVIEW_CHANNELS: ReviewChannels = {
   emailSubject: 'Correction: DP Meta-Governance, 16 November',
 };
 
-export default function ReviewActions({ channels = NOV16_REVIEW_CHANNELS }: { channels?: ReviewChannels }) {
+export const sessionChatReviewChannels = (meetingName: string): ReviewChannels => ({
+  primary: { label: 'Post a correction in the session chat', href: '#session-chat' },
+  emailSubject: `Correction: ${meetingName}`,
+});
+
+export default function ReviewActions({ channels = sessionChatReviewChannels('DP listening session') }: { channels?: ReviewChannels }) {
   const external = /^https?:/.test(channels.primary.href);
   return (
     <div id="review-actions" className="scroll-mt-24 rounded-xl border border-cyan-900/60 bg-cyan-950/20 px-4 py-4">
