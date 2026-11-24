@@ -11,6 +11,7 @@ import { listUpcomingEventEntries } from '@/lib/dp-event-series-store';
 import { currentSession } from '@/lib/current-session';
 import { buildSiteNavLinks, upcomingEventNavLabel } from '@/lib/siteNav';
 import { landingPadsEnabled } from '@/lib/landing-pads/flag';
+import { phoneOptinEnabled } from '@/lib/phone-optin/flag';
 import { SHARE_IMAGE, SITE_NAME, SITE_ORIGIN } from '@/lib/site-metadata';
 import './globals.css';
 
@@ -91,7 +92,7 @@ export default async function RootLayout({
         <Web3AuthConfigScript />
       </head>
       <body className="flex min-h-dvh flex-col bg-slate-950 text-slate-100 antialiased">
-        <SiteShell initialUser={initialUser} initialChecked navLinks={navLinks}>
+        <SiteShell initialUser={initialUser} initialChecked navLinks={navLinks} accountSettings={phoneOptinEnabled()}>
           {children}
         </SiteShell>
       </body>
