@@ -200,6 +200,10 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             reviewClosed={reviewClosed}
             pendingApproval={!visible}
             screening={screening}
+            reviewChannels={{
+              primary: { label: 'Post a correction in the session chat', href: '#session-chat' },
+              emailSubject: 'Correction: DP listening session, 23 November',
+            }}
           />
         ) : (
           <DraftForReview

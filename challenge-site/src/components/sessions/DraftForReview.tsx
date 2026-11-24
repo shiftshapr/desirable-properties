@@ -8,7 +8,7 @@ import DraftDecisions from './DraftDecisions';
 import { Inline } from './DraftText';
 import InterimProposal from './InterimProposal';
 import ProcessTextDraft from './ProcessTextDraft';
-import ReviewActions from './ReviewActions';
+import ReviewActions, { type ReviewChannels } from './ReviewActions';
 import SessionCollapsible from './SessionCollapsible';
 
 /** Meeting-specific headings, from sessionSectionLabels(meeting). */
@@ -35,6 +35,8 @@ export default function DraftForReview(
         turns: MetaGovTurn[];
         closesLabel: string;
         reviewClosed?: boolean;
+        /** Where corrections go; defaults to the 16 Nov Google Doc. */
+        reviewChannels?: ReviewChannels;
         /** Staging preview of a draft still pending host approval: no review clock, host notes shown. */
         pendingApproval?: boolean;
         /** Council screening, per question (sessions from 23 Nov on). */
@@ -79,10 +81,10 @@ export default function DraftForReview(
           ) : null}
           {props.pendingApproval ? null : props.reviewClosed ? (
             <SessionCollapsible id="draft-review-how" level={3} title="How corrections were collected">
-              <ReviewActions />
+              <ReviewActions channels={props.reviewChannels} />
             </SessionCollapsible>
           ) : (
-            <ReviewActions />
+            <ReviewActions channels={props.reviewChannels} />
           )}
           <DraftDecisions decisions={props.draft.decisions} turns={props.turns} title={labels.origins} />
           {props.screening ? <CouncilScreeningNote view={props.screening.view} signInHref={props.screening.signInHref} /> : null}
