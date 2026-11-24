@@ -91,7 +91,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
   // Staging-only preview of the state once the review has opened (?previewDraft=1). Ignored on production.
   const preview = params.previewDraft === '1' && previewAllowed(host);
   const realNow = new Date();
-  const opensAt = new Date(SESSION.draftVisibleAt);
+  const opensAt = new Date(SESSION.draftVisibleAt ?? 0);
   const now = preview && realNow < opensAt ? new Date(opensAt.getTime() + 60_000) : realNow;
 
   const { sections, turns } = transcript as { sections: MetaGovSection[]; turns: MetaGovTurn[] };
@@ -126,7 +126,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       banner={
         preview ? (
           <p className="mb-6 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
-            Staging preview: this page as it will look once the review opens ({pacificAndUtc(SESSION.draftVisibleAt)}).
+            Staging preview: this page as it will look once the review opens ({SESSION.draftVisibleAt ? pacificAndUtc(SESSION.draftVisibleAt) : 'not scheduled'}).
           </p>
         ) : null
       }
