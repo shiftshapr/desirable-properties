@@ -1,0 +1,906 @@
+{
+ "source": "Recording of 23 November 2026 (84.5 minutes): word-level speech recognition, with speakers from Deepi’s live transcript; recording timeline",
+ "duration": 5074,
+ "sections": [
+  {
+   "t": 0,
+   "title": "Arrivals"
+  },
+  {
+   "t": 231,
+   "title": "Opening statement: gates"
+  },
+  {
+   "t": 729,
+   "title": "Reactions to the gates statement"
+  },
+  {
+   "t": 1621,
+   "title": "Deepi in the meeting, and children and the DPs"
+  },
+  {
+   "t": 1885,
+   "title": "Results of the 16 November ballot"
+  },
+  {
+   "t": 2092,
+   "title": "The quorum tie"
+  },
+  {
+   "t": 2320,
+   "title": "More results and the interim council"
+  },
+  {
+   "t": 2586,
+   "title": "How the first cycle went"
+  },
+  {
+   "t": 2799,
+   "title": "Next questions: one person, one vote, and the transcript"
+  },
+  {
+   "t": 2970,
+   "title": "Daily sprints; the interim council confirmed"
+  },
+  {
+   "t": 3095,
+   "title": "Suggestions from the walk-through with Markabadi"
+  },
+  {
+   "t": 3553,
+   "title": "Proposal pads and meeting pads"
+  },
+  {
+   "t": 3949,
+   "title": "A book club"
+  },
+  {
+   "t": 4437,
+   "title": "Book club cadence and open mic"
+  },
+  {
+   "t": 4738,
+   "title": "A brief for the Scholars Strategy Network"
+  },
+  {
+   "t": 4984,
+   "title": "Closing"
+  }
+ ],
+ "turns": [
+  {
+   "id": "t-2",
+   "t": 2,
+   "speaker": "Leandra Preston",
+   "text": "Hello."
+  },
+  {
+   "id": "t-3",
+   "t": 3,
+   "speaker": "Daveed Benjamin",
+   "text": "Hey, Lela, how are you?"
+  },
+  {
+   "id": "t-5",
+   "t": 5,
+   "speaker": "Leandra Preston",
+   "text": "Good. How are you?"
+  },
+  {
+   "id": "t-7",
+   "t": 7,
+   "speaker": "Daveed Benjamin",
+   "text": "Good. We had a great response on the voting. I think 24 people voted or something."
+  },
+  {
+   "id": "t-19",
+   "t": 19,
+   "speaker": "Leandra Preston",
+   "text": "Oh, that's awesome. Excellent."
+  },
+  {
+   "id": "t-38",
+   "t": 38,
+   "speaker": "Leandra Preston",
+   "text": "I sent you something this morning, no urgency. I saw something that reminded me of something that would connect to the meta-layer, and I put it into Claude to see how it overlapped and connected. I thought it was really interesting. I'll talk later about something I'm working on that will elevate the meta-layer to a different audience. I'm writing a little piece on it as part of a group I'm involved in, and I'll tell you about it when the time is right."
+  },
+  {
+   "id": "t-98",
+   "t": 98,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome, sounds really good. I look forward to hearing more. Hey, Phahsa. Hey, Rick."
+  },
+  {
+   "id": "t-104",
+   "t": 104,
+   "speaker": "Phahsa",
+   "text": "Hey, everybody. All good, getting some work done. How's everybody's day going?"
+  },
+  {
+   "id": "t-231",
+   "t": 231,
+   "speaker": "Daveed Benjamin",
+   "text": "[Personal check-ins left out.] Well, greetings everybody, it's good to see you all here. I was going to start out today a little differently: I wanted to read an opening statement. Partly because I want to get some content, but I think it is very relevant to what we're talking about, so it would be really awesome to get your feedback on it. It's three, maybe five minutes, and it's about gates. So I'm going to ask people to keep your mics off for the next little bit. I'm going to read this, and at the end it would be great to get your feedback. If you're comfortable with your comments potentially being put into a video about what we're doing, let me know that, and then we can move forward. I'm going to share my screen. And by the way, if you look in the participants, you'll notice a participant named DP: that's our assistant."
+  },
+  {
+   "id": "t-344",
+   "t": 344,
+   "speaker": "Daveed Benjamin",
+   "text": "DP, are you here? Could you let us know in the chat?"
+  },
+  {
+   "id": "t-351",
+   "t": 351,
+   "speaker": "Speaker unclear",
+   "text": "It's not in the chat."
+  },
+  {
+   "id": "t-359",
+   "t": 359,
+   "speaker": "Daveed Benjamin",
+   "text": "It should be. I saw it earlier telling us to mute our mics. Oh, it's sending me a message. Okay. Well, let's go forward, and I'd love to get your feedback at the end. This is the first of the four DP listening experiments; last week's was the first session, so this is the second. We have four proposed sessions where we're doing an experiment to understand how we can better govern the DPs through a process of voting, which many of you, maybe all of you, took part in this time. Like I said, we'll do a short recording and would love to get your feedback, so let's jump directly into that."
+  },
+  {
+   "id": "t-447",
+   "t": 447,
+   "speaker": "Daveed Benjamin",
+   "text": "I'd like to talk a little bit about gates and where they began. For most of history, a gate was a physical thing: a gap in a wall and someone deciding who passes. The great gates of Babylon, a farm gate, a border crossing. A gate is a decision point: yes or no. In 1937, a young engineer named Claude Shannon showed that electrical switches could make those yes-or-no decisions as logic. A decade later came the transistor. Today, billions of tiny gates open and close every second inside every device you own. Everything digital rests on gates. Video games made gates visible. A door stays locked until you find the key. A level stays closed until you've earned it. In code, gates are everywhere: a login, a permission, a paywall, the filter that decides what lands in your feed. In this series, when I say gates, I mean these digital gates, the ones that decide who or what comes into or goes out of your digital life. And most of them were built by someone else, for their purposes, not yours."
+  },
+  {
+   "id": "t-527",
+   "t": 527,
+   "speaker": "Daveed Benjamin",
+   "text": "There are four types of gates we're going to think about. Gates for who can come in: who can join. Gates for what can come in: what content reaches you. Gates for who can leave: can you leave with your identity and history? And the fourth is a what gate: what data can leave."
+  },
+  {
+   "id": "t-568",
+   "t": 568,
+   "speaker": "Daveed Benjamin",
+   "text": "Who comes in? That's the entrance. Who gets to join the space, a group, a conversation? Who goes out? That's exit. Can you leave and take your identity and your history with you? Most of us only discover this gate when we're trapped behind it. What comes in: everything that reaches you, your feed, your inbox, the comments, and much, much more content made by AI. What goes out: your data, your words, your images. This is the gate where surveillance happens. Once you're through the entrance, there are more gates inside, for what you can do with others and what you can exchange. But it all starts with these four."
+  },
+  {
+   "id": "t-618",
+   "t": 618,
+   "speaker": "Daveed Benjamin",
+   "text": "Gates give us control. They let us prevent entrances, interactions and transactions we don't want. And the first control we need is self-control: the gates we set for ourselves on what reaches us and what leaves us. Right now, most of those gates are set by platforms and their algorithms. But gates have a dark side. A gate that checks who you are can also watch who you are. That's the tension between safety and surveillance, between control and privacy. The question is whether gates are built to watch us or to protect us. Here's the way through. A good gate checks a claim, not a person. Are you a member? Are you over 18? Are you a real human? The aim is to answer yes without revealing your name, your history or your location. A bad gate demands your identity because that's easier to build. If we get gating right, we get control without surveillance. In the Desirable Properties, gates touch authentication and accountability, participant agency, and data sovereignty and privacy. Did we get gates right? Is something missing? Does gating deserve its own property?"
+  },
+  {
+   "id": "t-695",
+   "t": 695,
+   "speaker": "Daveed Benjamin",
+   "text": "Tell us: add your perspective, and sign in so the idea stays yours. And one more thing: if you're building something good, now is the time to build. It is really go time. I can't say that enough. Carve out a few hours every week to build. Prepare now, build good, do it now. That's super important from my perspective at this moment."
+  },
+  {
+   "id": "t-729",
+   "t": 729,
+   "speaker": "Daveed Benjamin",
+   "text": "So, I would love to hear your questions and reactions. Is there anyone who would like to jump in? What's your experience with gates? What do you think about our treatment of gates in the book? And let me know if you're okay with your thoughts being put on video. Anyone? Hey, Rick. Do you all see the connection between gates and what we're doing with the Desirable Properties?"
+  },
+  {
+   "id": "t-781",
+   "t": 781,
+   "speaker": "Speaker unclear (participant A)",
+   "text": "Absolutely. The biggest thing seems to be agency. Do people even know that they're walking through a gate? What I really liked was the very beginning, how you're using it as a metaphor so people understand that they're entering a different environment the moment they start engaging with technology. I think that's extremely important: how we engage with information systems with our data, data sovereignty again, something we are constantly thinking about. And what you're able to leave with, what stays and what goes, even the record that you went through a gate in the first place, is all extremely important for the collective. I think the Desirable Properties cover what's happening on one side of the gate and how you can get to the other side, and there are some aspects about what you can take with you once you've crossed through. So at least in this first version, the Desirable Properties are addressing some of what gates can be established with respect to the internet, to information, and to how people engage technology."
+  },
+  {
+   "id": "t-872",
+   "t": 872,
+   "speaker": "Speaker unclear (participant A)",
+   "text": "At a high level, some of these things are being addressed without selecting a specific DP or a specific attribute within a DP. And how we're coming together as a community to establish what those gates are and how they can function, even posing the question, is very healthy for a group to be doing. So yes, I see the connection, and I think it's a great topic and concept to be walking with."
+  },
+  {
+   "id": "t-913",
+   "t": 913,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Thank you for that commentary. Are you comfortable with that potentially being used?"
+  },
+  {
+   "id": "t-922",
+   "t": 922,
+   "speaker": "Speaker unclear (participant A)",
+   "text": "Yeah, yeah, we can say that."
+  },
+  {
+   "id": "t-925",
+   "t": 925,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Awesome."
+  },
+  {
+   "id": "t-927",
+   "t": 927,
+   "speaker": "Speaker unclear (participant B)",
+   "text": "What I think about is when I'm trying to enter certain spaces, personal or related to work, a pop-up window comes in and you have to type in your email address, and then I know I'm going to start getting all of these emails. To me, that's the kind of gate I come up against quite a bit, and I've found my own workaround: a fake email address. It's my email address and it literally says fake, so my real email isn't inundated with the aftermath. I'm putting it in to enter the space, but the space takes my email address for much broader purposes, often marketing or sharing my information. Or we have to select and unselect certain cookies, on every single page. What I liked about the possibility of the meta-layer is that we have control of that before we enter a space, without having to address it on every single site."
+  },
+  {
+   "id": "t-1013",
+   "t": 1013,
+   "speaker": "Speaker unclear (participant B)",
+   "text": "I like the idea of what the metaweb makes possible: I'm in control, I decide, it's portable, it goes with me. It's not that on every page I enter I have to re-establish this; it's already with me. I don't know if that varies by state, country or website, but where I am, every time I go to a website I have to either adjust the cookies or enter my email address. So that's what I think about when you talk about gates: how the metaweb can mitigate those issues without us having to create a fake email. Those are our workarounds, but it can be possible without them."
+  },
+  {
+   "id": "t-1063",
+   "t": 1063,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Thank you. Are you okay with us using that?"
+  },
+  {
+   "id": "t-1066",
+   "t": 1066,
+   "speaker": "Speaker unclear (participant B)",
+   "text": "Yes."
+  },
+  {
+   "id": "t-1067",
+   "t": 1067,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. Thank you. Rick, and then Salwa."
+  },
+  {
+   "id": "t-1072",
+   "t": 1072,
+   "speaker": "Rick Botelho",
+   "text": "I really enjoyed the description you provided. The other issue is how aware people are of all of these gates, and I think most people are not very aware of them. As you were speaking, I was thinking of a four-column table about gates: your personal gate, encrypted; professional; the commons; and the corporate space. The reason I think it might be worthwhile, maybe asking AI to create a table to make those distinctions, is that most people aren't aware of how much they're giving away to the corporate space."
+  },
+  {
+   "id": "t-1131",
+   "t": 1131,
+   "speaker": "Rick Botelho",
+   "text": "The expression is, there's no free lunch. People don't realize that when they're accessing these platforms, they're giving a lot away, and they're not even aware of how they're compromising their sovereignty. And lastly, I couldn't help but say this, Daveed, you might enjoy this one: you need to make a song about gates."
+  },
+  {
+   "id": "t-1156",
+   "t": 1156,
+   "speaker": "Daveed Benjamin",
+   "text": "Of course. And a video as well."
+  },
+  {
+   "id": "t-1162",
+   "t": 1162,
+   "speaker": "Rick Botelho",
+   "text": "And a video, yeah, to educate people about why gates are so important. Over, and you can use what I said."
+  },
+  {
+   "id": "t-1173",
+   "t": 1173,
+   "speaker": "Daveed Benjamin",
+   "text": "Oh, thank you. Salwa had her hand up earlier. Are you still there?"
+  },
+  {
+   "id": "t-1180",
+   "t": 1180,
+   "speaker": "Salwa El Mais",
+   "text": "Yes. Thank you so much for the insights you have mentioned about the gates, and thanks to my colleagues. I think that gates are a very good idea, but I think there shouldn't be restrictions, or some restrictions shouldn't be imposed, so that most people who may use the metaweb won't be banned from something or have restrictions on something. Thank you."
+  },
+  {
+   "id": "t-1218",
+   "t": 1218,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you. Can we use your comment in a video?"
+  },
+  {
+   "id": "t-1226",
+   "t": 1226,
+   "speaker": "Salwa El Mais",
+   "text": "Yes."
+  },
+  {
+   "id": "t-1227",
+   "t": 1227,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you. Laura?"
+  },
+  {
+   "id": "t-1231",
+   "t": 1231,
+   "speaker": "Laura Del Campo",
+   "text": "Hi, Daveed. When you brought up gates, I don't know why, I instantly thought of gatekeepers. That's what came to mind. So I would like to emphasize that we're not gatekeepers in any way. Gates here mean, like you said, a doorway that we can pass through without discrimination, without divisions holding us back. That's all I wanted to emphasize."
+  },
+  {
+   "id": "t-1264",
+   "t": 1264,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you. Can we use your comment?"
+  },
+  {
+   "id": "t-1267",
+   "t": 1267,
+   "speaker": "Laura Del Campo",
+   "text": "Of course."
+  },
+  {
+   "id": "t-1268",
+   "t": 1268,
+   "speaker": "Daveed Benjamin",
+   "text": "Anyone else? Or Lela, is your hand back up?"
+  },
+  {
+   "id": "t-1276",
+   "t": 1276,
+   "speaker": "Leandra Preston",
+   "text": "Rick said something that made me think about my daughter, who is 13 now. Of course she's already got her email address, she's already interacting with a lot of spaces, she's very much online. If we don't understand the implications of sharing our information, it's hard to teach our kids to understand the implications of sharing theirs. And somebody who's not even an adult yet is already being manipulated with the information that companies and corporations have, or on social media. What does it mean to input your information? Now that she just turned 13, she has access to different sites and can make decisions about her own email address. What does that mean for somebody who's still a child? I feel like it must be adjusting the algorithm to target her, and how do I mitigate that? I think that's a really important topic for the next generation to understand."
+  },
+  {
+   "id": "t-1364",
+   "t": 1364,
+   "speaker": "Salwa El Mais",
+   "text": "I totally agree with you."
+  },
+  {
+   "id": "t-1371",
+   "t": 1371,
+   "speaker": "Daveed Benjamin",
+   "text": "Rick, you have your hand up?"
+  },
+  {
+   "id": "t-1372",
+   "t": 1372,
+   "speaker": "Rick Botelho",
+   "text": "Yeah, I'd like to build on that, because I think it's so critically important. In Australia, as you know, there are rules on kids' access up to the age of 16 [partly unclear]. The early tween and teen years are incredibly vulnerable, particularly for girls; see Jonathan Haidt's work on The Anxious Generation and all he's doing to protect children from these abuses. I think this is where parental supervision is needed. I work with a couple of young youth leaders [partly unclear], and I tell them, you need to get consent from your parents for what you're doing. Parental gates to protect children are incredibly important. And it's not easy, because I have a 12-year-old grandson, and boy, is it difficult even to understand the world he's getting exposed to in gaming. It's like abdicating parental responsibility, which is a real challenge: what rights do parents have over their children's development with social media? That's a huge area. Over and done."
+  },
+  {
+   "id": "t-1468",
+   "t": 1468,
+   "speaker": "Leandra Preston",
+   "text": "And then there's the balance: she has friends who aren't allowed on social media at all, and what does that mean for their social interactions? There are so many issues that come into play when we're trying to protect children. Is the only solution forbidding them from it? We go through the algorithm together; we watch her social media together to see what her algorithm is doing and talk about it. But a lot of parents don't do that, or the answer is just not to allow the children on social media. I'm very pro-technology, like many of us, and I think about it as helping prepare her for the world she's growing into by being a critical viewer. But the limitation is my own knowledge: what do I not understand, what do I not know is happening? The implications are bigger than what I'm aware of. So it's a really important challenge to talk about and try to figure out."
+  },
+  {
+   "id": "t-1542",
+   "t": 1542,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, the internet and children is a huge topic, and a lot more needs to be done than has been done already. Michelle?"
+  },
+  {
+   "id": "t-1558",
+   "t": 1558,
+   "speaker": "Michelle Thuo",
+   "text": "When you mentioned gates, I was thinking about how we experience them in the physical world. A gate might be open, but if, for instance, there's no ramp, not everyone can get through it, even though it's open. I think the same applies to digital gates: even if a space is technically accessible, requirements around devices, connectivity or verification still create barriers for certain people. Perhaps the metaweb should also consider how to make these entry points accessible to people in different circumstances."
+  },
+  {
+   "id": "t-1613",
+   "t": 1613,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you. Can we use that comment, by the way?"
+  },
+  {
+   "id": "t-1620",
+   "t": 1620,
+   "speaker": "Michelle Thuo",
+   "text": "Yes, sure."
+  },
+  {
+   "id": "t-1621",
+   "t": 1621,
+   "speaker": "Daveed Benjamin",
+   "text": "Great. So you might have noticed that we've got another participant called DP. We're just experimenting with this. It's a Claude agent, our DP agent. DP, can you speak to what you've heard? I can't hear anything, but there's something happening in chat, so you can see how it would summarize."
+  },
+  {
+   "id": "t-1659",
+   "t": 1659,
+   "speaker": "Rick Botelho",
+   "text": "I have a question for your agent, which ties in nicely: what are the desirable properties that parents need to assure that children benefit from the good of AI? How do you create a gated system so parents can feel confident that, when their children access different platforms or games, it's actually for the benefit of the child, as opposed to manipulating their attention for a commercial purpose? I don't know whether that's in your book, by the way. In your book, do you have something about the desirable properties for children?"
+  },
+  {
+   "id": "t-1715",
+   "t": 1715,
+   "speaker": "Daveed Benjamin",
+   "text": "Well, the book didn't even have the concept of desirable properties at that point. But I believe it touches a little on it; there may be a section about how we might have a layer for young people, but I'm not totally sure."
+  },
+  {
+   "id": "t-1739",
+   "t": 1739,
+   "speaker": "Rick Botelho",
+   "text": "There's something written about it. Well, you can use your AI to find out what there is. I may have to scoot; I'm getting a call. I'll come back if I can."
+  },
+  {
+   "id": "t-1758",
+   "t": 1758,
+   "speaker": "Daveed Benjamin",
+   "text": "Sounds good. So DP said, answering Rick's question: “Rick, good question. I'm drawing on today's discussion here, not on a settled DP position. Properties that seem relevant for parents: verified, privacy-preserving age and guardian consent. That matches DP1 on authentication and DP4 on data sovereignty. Transparency about how algorithms treat children's attention: that is DP14 on trust and transparency.” Rick, are you seeing this in chat? I guess he stepped out."
+  },
+  {
+   "id": "t-1799",
+   "t": 1799,
+   "speaker": "Daveed Benjamin",
+   "text": "“Parents get visibility and control, which is DP2 on agency. Platforms are accountable to the children's benefit, not engagement. Gates should include: protect without excluding, as Michelle and Laura said.” And one other thing I wanted to bring up: gates is a concept that touches multiple DPs, and I'm wondering how we might incorporate it in the book, maybe as an unofficial part of the book, sections or specific chapters on things like gates, or sub-chapters. I'm not totally sure, but I wanted to throw that out to you all. We have a main book, the chapters of the DPs. Wouldn't it also be worthwhile to have another section of the book, unofficial or not, that allows for a chapter on gates, a chapter on some other thing, like a bridge or a smart tag? What do you all think?"
+  },
+  {
+   "id": "t-1885",
+   "t": 1885,
+   "speaker": "Daveed Benjamin",
+   "text": "If anyone has thoughts about that, you can bring them up at any point. I'm going to go back to the presentation, and we'll go through the results from last time. Thank you for all that input; that was amazing. We're going to talk about the vote and the process. What happened? What's the published record and the tally? What did we learn? Where did the process clarify choices, where did it create friction, and what would we want to change? We'll separate the outcome of this vote from proposals for the next one. The first ballot results: voting ended November 22nd at 8 p.m. Pacific. 24 people voted. I am so happy about that. 14 of the 15 questions are decided, published on the 16 November session page and also on the new session page we're building for today and the next week. To decide today: question 5, quorum, is a tie. A minimum of 20 votes and 25% of the voting body each got six votes."
+  },
+  {
+   "id": "t-1991",
+   "t": 1991,
+   "speaker": "Daveed Benjamin",
+   "text": "We'll talk more about that later. What rules governed this vote? You had to be signed in, one vote per account, and votes could change until closing. Most votes wins; a yes-or-no question needs more yeses than noes. Abstentions did not count at all. We didn't have any quorum rule; we're in bootstrap mode, so we may have a quorum in the future. That's something we need to decide. The results: on the pilot, 20 to 1 said yes for the next four weeks, so let's pilot this voting process and see how far it gets us. The approval rule: 50% keeps an item open, 60% or more passes it. That won with 11 votes; consent-based got six, more than 50% got three, 60% got three. Quorum: there was a tie, like we said, six votes for 25% of the voting body and six for no quorum [the published tally: a minimum of 20 votes 6, 25% of the voting body 6, no quorum 5]. Does anyone want to speak to their thoughts on this?"
+  },
+  {
+   "id": "t-2092",
+   "t": 2092,
+   "speaker": "Daveed Benjamin",
+   "text": "With 25% of the voting body: I don't know exactly how many people, but I think there are probably a hundred and something people who were either a contributor or a co-editor. We had 24 votes, so we're very close to 25% of the voting body. Do we want to make that a hard-and-fast rule? Anyone have thoughts about that? We're at a tie, so let's get some more input."
+  },
+  {
+   "id": "t-2128",
+   "t": 2128,
+   "speaker": "Daveed Benjamin",
+   "text": "Would people be willing to consent to no quorum for the next four weeks? Or is there someone who would like to veto that? So it sounds like people are okay with no quorum, that they would consent to that. Is there anyone who wants to speak in favor of either no quorum or 25% of the voting body? Joel, hi Joel."
+  },
+  {
+   "id": "t-2169",
+   "t": 2169,
+   "speaker": "Joel Okomoli",
+   "text": "Hi Daveed. I think 25% is fair. When it comes to quorum, it's about people's expressions, about feelings, about how people look at it. I hope you can hear me well."
+  },
+  {
+   "id": "t-2194",
+   "t": 2194,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes."
+  },
+  {
+   "id": "t-2195",
+   "t": 2195,
+   "speaker": "Joel Okomoli",
+   "text": "The vote gives direction on the way we need to move forward. If we do not set a threshold on this, then we are moving in the wilderness. I would like to stand by 25%, because that gives, not clear consensus, but considerable consensus, a good above-average."
+  },
+  {
+   "id": "t-2224",
+   "t": 2224,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you for that input. Maybe we could think about it as 25% of the active voting body, because there are people who have contributed but are not really active: not coming to meetings or paying attention to what's happening with the project. They made a contribution a while back; maybe I sent them an email and translated their response into a proposal. So let me look into that and get a sense of what the active voting body is, and I'll bring that back. I'll have it on the session page. The session page is the page we use for a given session; today's runs through the next week. We put the potential ballot items on it, refine them there, make comments, and then we do the vote there. I'll make sure this ends up on the session page for this week."
+  },
+  {
+   "id": "t-2320",
+   "t": 2320,
+   "speaker": "Daveed Benjamin",
+   "text": "More results. Co-editors: up to three seats, two approvals needed, 20 to 2. People are agreeing quite a bit on these. Review decisions: a decline keeps the current rule, so a decline will not kill a proposal, but you need two approvals to push it forward. Title changes: 75% of authors and co-editors, then the steering committee or council. I believe this is across the board: if someone wants to change a title, 75% of all the chapter's co-editors and authors would need to agree. That's a high threshold, but that's what 16 people said, so we're going to go with it. Joining the role: a co-editor agreement, yes, most people thought so. Vetting: a questionnaire screened against published criteria; more than half the people want that as well."
+  },
+  {
+   "id": "t-2411",
+   "t": 2411,
+   "speaker": "Daveed Benjamin",
+   "text": "Should we elect a council to screen ballot readiness? Most people said yes. An interim council of five: yes. I think we just need to confirm: Lela and Renad said they were in, and Phahsa said he was in. There was one other person, Michelle. Michelle, are you okay with being on an interim council that would determine whether proposals can move forward, and at the same time, over the next several months, prepare us for voting in a non-interim council? Michelle, are you still there? Can someone look in participants and see if Michelle is here?"
+  },
+  {
+   "id": "t-2478",
+   "t": 2478,
+   "speaker": "Saramiris",
+   "text": "It says she's still here."
+  },
+  {
+   "id": "t-2485",
+   "t": 2485,
+   "speaker": "Leandra Preston",
+   "text": "It looked like she unmuted. Maybe we just can't hear her for some reason."
+  },
+  {
+   "id": "t-2491",
+   "t": 2491,
+   "speaker": "Daveed Benjamin",
+   "text": "Michelle, could you put a note in chat and let us know if you're trying to speak and we're not hearing you?"
+  },
+  {
+   "id": "t-2499",
+   "t": 2499,
+   "speaker": "Renad Baomar",
+   "text": "Maybe her internet connection."
+  },
+  {
+   "id": "t-2503",
+   "t": 2503,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah, probably. So anyway, everybody said yes to an interim council. The scope: people liked it being the Meta-Layer Initiative, so the DPs plus the wider Meta-Layer Initiative, which would include the Metaweb Academy. That's great."
+  },
+  {
+   "id": "t-2532",
+   "t": 2532,
+   "speaker": "Phahsa",
+   "text": "I just want to say, with the Meta-Layer Initiative and the Metaweb Academy, I don't think there was a clear roadmap as to what would be entailed in that piece."
+  },
+  {
+   "id": "t-2549",
+   "t": 2549,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, I'll speak to it. In the near to medium term the Meta-Layer Initiative will be mainly focused on the DPs, and the Metaweb Academy is the other focus, around the certification program. Those will be the two main focuses of the Meta-Layer Initiative, unless the council decides it wants another focus."
+  },
+  {
+   "id": "t-2584",
+   "t": 2584,
+   "speaker": "Phahsa",
+   "text": "That would be amazing to see."
+  },
+  {
+   "id": "t-2586",
+   "t": 2586,
+   "speaker": "Daveed Benjamin",
+   "text": "Thanks for the question. Accountability: we need published screening criteria, and written reasons for holding items back. That was 21 to 2. We're getting a lot of agreement on these. The first cycle, going over what happened: we did the meeting, then a draft and a 24-hour review window, November 17 through 18, with a 12-hour notice that it was opening."
+  },
+  {
+   "id": "t-2631",
+   "t": 2631,
+   "speaker": "Daveed Benjamin",
+   "text": "Something's missing, though; I remember something else we decided that we haven't spoken about. Oh, I said that because a 48-hour review period was chosen in the voting, and 72 hours for voting: people would love to have 72 hours for voting. Then we did the voting period. We didn't have council screening, because we didn't have a council yet. Today is November 23rd; we tallied the votes and published the ballot results. We still need to determine what to do with the quorum tie; maybe we'll put that into this week's record. So what should we improve? What do you all think? Did the draft faithfully capture the options, objections and unresolved questions? Did people know when to review and vote? Could they participate easily? How was the process? Was it easy for you?"
+  },
+  {
+   "id": "t-2749",
+   "t": 2749,
+   "speaker": "Leandra Preston",
+   "text": "I thought it was very easy and explainable, and the heads-up and reminder were helpful."
+  },
+  {
+   "id": "t-2758",
+   "t": 2758,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. The header still says voting: how do we keep status, outcomes and applied decisions in sync? I'll look into that; we can take care of it with code. Anyone else have anything about the process before we move on? Or should I assume it went pretty well? Let's move into the next week and continue evaluating it. Is that where you all are?"
+  },
+  {
+   "id": "t-2799",
+   "t": 2799,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Reviewing the next vote: which questions are settled, and which need clarification or new proposals? The main one is the quorum. We'll define the choices: state the problem, distinct options, consequences, any reasonable alternatives. And we can check readiness: what evidence or correction is needed before a question is ready for the ballot."
+  },
+  {
+   "id": "t-2837",
+   "t": 2837,
+   "speaker": "Daveed Benjamin",
+   "text": "Next questions. Participation: who may vote, how eligibility is checked and how access barriers are handled. The thing I know we need to deal with at some point is making sure people don't have multiple accounts; at this point that is not in place, but it probably should be done soon. I don't think it's an issue; I don't think anyone voted multiple times, and even if they had, it probably wouldn't have made much difference, except for the quorum vote, perhaps. But that's something I think we should deal with. The record: transcript, access and retention. Do people have any issues with the transcripts being put on the session page and retained? Is that a good thing? How do you all feel about that?"
+  },
+  {
+   "id": "t-2904",
+   "t": 2904,
+   "speaker": "Daveed Benjamin",
+   "text": "Right now we're saving the transcript, and there will be a 48-hour period for people to give material corrections before any review or ballot begins. Then: ties, conflicting outcomes, implementation owners and reopening a decision. Once something has been decided, there are things we need to do to bring it into operation."
+  },
+  {
+   "id": "t-2947",
+   "t": 2947,
+   "speaker": "Joel Okomoli",
+   "text": "I think there was a hand up, in the previous section."
+  },
+  {
+   "id": "t-2955",
+   "t": 2955,
+   "speaker": "Laura Del Campo",
+   "text": "Oh, I raised my hand. I was just going to agree with that, because we don't want to repeat something we already went over, and archiving all of that, being able to see the transcript, would be great. I agree with it."
+  },
+  {
+   "id": "t-2970",
+   "t": 2970,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Okay. Mike McGuire suggested daily sprints as a review cadence: more time overall, but each step is easier to take on. I'm not sure, because he's not here to fully explain it, and I would love for Mike to explain it. So if we can put a note in here to get his input, that would be great, and hopefully we can get that through this next session cycle. Screening was skipped on this ballot, but now, assuming Michelle is okay, we have an interim council that will make that decision this week."
+  },
+  {
+   "id": "t-3045",
+   "t": 3045,
+   "speaker": "Joel Okomoli",
+   "text": "There's a comment in the chat; I think she's in. Apparently her mic is off; I think she has a problem with the mic. If you scroll up a bit in the chat, you'll see her response."
+  },
+  {
+   "id": "t-3063",
+   "t": 3063,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Michelle, when you say you're in, are you speaking about being in Zoom, or about being in the interim council?"
+  },
+  {
+   "id": "t-3080",
+   "t": 3080,
+   "speaker": "Joel Okomoli",
+   "text": "I think the interim council. When we were discussing the interim council, you asked whether she's in or not, and she answered in the chat."
+  },
+  {
+   "id": "t-3095",
+   "t": 3095,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay, great, perfect. So we have an interim council now. Awesome. I had a session with Markabadi, who's come to the last several meetings, and this is open to you all as well. He felt the process was a little challenging to jump right into. We had a session, I recorded the whole thing, and then we worked with DP to implement a number of things you may have seen, mostly around the look and format of the session page. I think they were really helpful; in my mind, the page improved a lot from the first iteration to this one. We have a record of that call in what I'm calling a landing pad. I think of the session pages as landing pads too: like a landing page, but it allows interaction and may have some personalization; it's something you want to interact with. So I created a landing pad for my conversation with Markabadi, which you can all review. There were some things he brought up that I'd love your quick feedback on, to see if they're something we might bring into the vote next week."
+  },
+  {
+   "id": "t-3209",
+   "t": 3209,
+   "speaker": "Daveed Benjamin",
+   "text": "Markabadi suggested that an idea only goes onto the ballot if someone seconds it. When someone comes up with an idea as an option for a ballot item, someone else must second it for it to be treated as something that would potentially be integrated into that ballot item. Anyone have thoughts about that? Is it a good idea? Do you like the idea of someone coming up with something, and someone else saying, nice, I second that, and that second brings it to being something that could be put into a ballot? How do you feel about that?"
+  },
+  {
+   "id": "t-3284",
+   "t": 3284,
+   "speaker": "Laura Del Campo",
+   "text": "Versus the person giving their idea and it just automatically being transferred to the ballot?"
+  },
+  {
+   "id": "t-3293",
+   "t": 3293,
+   "speaker": "Daveed Benjamin",
+   "text": "Today it could be automatically transferred to the draft ballot. If we require seconding, then for the item to be considered for the draft ballot, it would need to be seconded."
+  },
+  {
+   "id": "t-3320",
+   "t": 3320,
+   "speaker": "Laura Del Campo",
+   "text": "I don't have a problem with that. I think that is good."
+  },
+  {
+   "id": "t-3327",
+   "t": 3327,
+   "speaker": "Daveed Benjamin",
+   "text": "Anyone else have thoughts? Anyone think there should be some other way we should think about it?"
+  },
+  {
+   "id": "t-3339",
+   "t": 3339,
+   "speaker": "Leandra Preston",
+   "text": "I think seconding before sending it to the draft seems like a good strategy."
+  },
+  {
+   "id": "t-3348",
+   "t": 3348,
+   "speaker": "Daveed Benjamin",
+   "text": "Okay. Awesome."
+  },
+  {
+   "id": "t-3357",
+   "t": 3357,
+   "speaker": "Leandra Preston",
+   "text": "Yes."
+  },
+  {
+   "id": "t-3358",
+   "t": 3358,
+   "speaker": "Daveed Benjamin",
+   "text": "He also noted that picking one winner suits single choice, but picking several items for the book may need multi-select voting. We can handle that; that's not a problem. He'd like to see a check-in; when we were speaking he said 30 seconds. So near the beginning of our session we would open it up for anybody who'd like a 30-second check-in on what's going on for them at the moment. He also suggested one major inquiry per session, and we can get more clarification on this. And plain English before formal wording: in the drafting stage, very plain English for what the ballot options are before we land on any formal wording. Then another one: he suggests it would be great if the AI could raise its hand when it has something to say. If it's noticing patterns or things the conversation is bringing up, it would be excellent, in his perspective, if DP raised its hand to tell us what's on its mind."
+  },
+  {
+   "id": "t-3497",
+   "t": 3497,
+   "speaker": "Daveed Benjamin",
+   "text": "Text reminders: opt-in texts that skip people who have already voted. This is something we can absolutely implement. I think it's useful for the whole meta-layer estate, so I'm already building it, but we can vote on whether we want to apply it to the Desirable Properties. It would be an additional opt-in reminder of the key moments: the review period is starting, the review period is ending, the vote is starting, the vote is ending. So you might get three or four a week if you opted in."
+  },
+  {
+   "id": "t-3553",
+   "t": 3553,
+   "speaker": "Daveed Benjamin",
+   "text": "Clear pages: a date and title on every session, breadcrumbs. I think we've already done a lot of that, but if there are still remnants of the old design that are confusing or hard to navigate, I would love to hear it. I also want to bring up that there are 40 open DP proposals, the ones that were deferred to version 1.1, and we've created proposal pads, which I'll show you. If you go to the Desirable Properties site and then /pads [it is not yet in the navigation]: a pad is a page that allows interaction and may evolve over time. Here's the one for 16 November. You can see we've already recorded the decision; if anybody wants to review it, it's all here."
+  },
+  {
+   "id": "t-3672",
+   "t": 3672,
+   "speaker": "Daveed Benjamin",
+   "text": "Everything that happened with this last vote is available from here, from the drafting process to the ballot to the results. We also have one for today, which just started: what's being covered, what's been raised between the sessions, and an invite-others area, so you can invite people to vote, to take part or to come to the meeting by sharing, copying the link or sending an email with a short note from the site. We're making it really easy. Today's is at an early stage, since it's happening right now. Now the proposal pads: for DP1 there are three. Here is one I put together, to add the PDPP protocol as a reference example for accountability. It didn't make it in, but the proposal pad shows the specific change being suggested,"
+  },
+  {
+   "id": "t-3766",
+   "t": 3766,
+   "speaker": "Daveed Benjamin",
+   "text": "and it has the rationale, the history, and anything the steering committee flagged when it went through it. If you are a co-editor, you can decide on it, approve or not. If you're a reader, you can support it. I'm going to save my support: now it has one support. And as a co-editor I can also approve it: it has one of two co-editor approvals so far, and it needs one more. You can also now follow pads and invite others to pads. We have 40 of these, one for each deferred proposal, and the thought is that these pads will be the place where you go to deliberate on them, and you can invite other people to get their perspective as well."
+  },
+  {
+   "id": "t-3856",
+   "t": 3856,
+   "speaker": "Daveed Benjamin",
+   "text": "The other pad type is a meeting pad. I did one for the meeting with Markabadi. If you want to see what happened in that meeting, you can open the transcript and see the whole thing. You can also see in the tracker what was done, because a lot of these were things like larger body text and line height,"
+  },
+  {
+   "id": "t-3889",
+   "t": 3889,
+   "speaker": "Daveed Benjamin",
+   "text": "how can we make this clear, the voting-open status wasn't showing correctly before, breadcrumbs. Those were obvious improvements, so we went ahead and built them. Here are some of the others, including the seconding one we talked about. Going forward, if you want to have a meeting about improving the Desirable Properties process, I'll probably set it up the same way, and we'll track your ideas here as well."
+  },
+  {
+   "id": "t-3949",
+   "t": 3949,
+   "speaker": "Daveed Benjamin",
+   "text": "Any questions on any of this so far? Is it all making sense? Okay. Let's talk about a book club. This was suggested by Allison. I want to see if there's enthusiasm for the idea. Would people be willing to read a chapter or a section of a chapter and have a conversation about it in our weekly meetings? Does that still sound like a good idea? Okay. Tell me more: you like the idea of reading one chapter at a time? How would you structure it?"
+  },
+  {
+   "id": "t-4031",
+   "t": 4031,
+   "speaker": "Renad Baomar",
+   "text": "Yeah, I like the idea of reading one chapter at a time, and I also like the idea of a book club. I think it's easier."
+  },
+  {
+   "id": "t-4047",
+   "t": 4047,
+   "speaker": "Daveed Benjamin",
+   "text": "One other thing we might add: reading one chapter plus any of its open proposals. You like that? Okay. Anyone else have thoughts on the book club?"
+  },
+  {
+   "id": "t-4066",
+   "t": 4066,
+   "speaker": "Leandra Preston",
+   "text": "I think it's also a great way, like how your gates presentation opened things up, to explore the issues each chapter brings up and connect them to other chapters or circumstances. It would be a cool way to work through the many, many issues each chapter raises, by focusing on the chapters."
+  },
+  {
+   "id": "t-4105",
+   "t": 4105,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Are there any prompts or shared activities that you think would make a book club session useful? One I just suggested is looking at the open proposals associated with that chapter. Any other things? Salwa?"
+  },
+  {
+   "id": "t-4131",
+   "t": 4131,
+   "speaker": "Salwa El Mais",
+   "text": "Yes: the diversity of ideas and ways of thinking, people's mindsets. I can read a chapter and someone else can read the same chapter and have different ideas from mine. So this would be fruitful and helpful."
+  },
+  {
+   "id": "t-4161",
+   "t": 4161,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. And there's the possibility of connections to the book, and some insights may actually become new DP proposals that come up through the book club. That could be exciting as well, and that diversity of perspectives is what allows it to happen. What would be a good start? Would you want to start on DP1, or on the introduction? We could start at the beginning of the book, with the front matter: About this digital monument, the introduction and the acknowledgements. Would that be a good place to start? Or do you want to do DP1?"
+  },
+  {
+   "id": "t-4240",
+   "t": 4240,
+   "speaker": "Leandra Preston",
+   "text": "I think it's smart to start with the intro. I don't remember how long it was, but the intro and acknowledgements are a great place to start. I'd say we could do the intro and chapter one, but there's so much in each chapter that each should get its own attention. So it makes sense to start with the intro. And also the foreword, right? We have one from Vint Cerf. We could do the intro and foreword together."
+  },
+  {
+   "id": "t-4281",
+   "t": 4281,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah. The foreword is probably two or three pages, the intro maybe four or five pages, so it's not extensive."
+  },
+  {
+   "id": "t-4292",
+   "t": 4292,
+   "speaker": "Leandra Preston",
+   "text": "Yeah, I felt each chapter was a very manageable amount of reading."
+  },
+  {
+   "id": "t-4299",
+   "t": 4299,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. So do we need to put this to a vote? Should we just do an experiment next week, or do you all want to make this something we vote on, in which case it wouldn't start for two weeks? What do you all think? Should we just go ahead and say that next week we'll have a book club section of 30 minutes? We'll discuss the foreword, the introduction and the acknowledgements, and maybe also About this digital monument, which is just one or two pages; I think we should include that. Does it sound okay to put that 30 minutes in? We'll try it this next week, and I'll make sure we get the word out to anyone who didn't make it to this meeting that we'll be reading the front matter. Does that sound good for everyone? Or is there someone who says no?"
+  },
+  {
+   "id": "t-4368a",
+   "t": 4368,
+   "speaker": "Salwa El Mais",
+   "text": "Yes, I think we should go ahead and start with the first part. It's a good choice so far. And I think most of us here agree with you, so let's go ahead, and the next session will start the book club with the first part."
+  },
+  {
+   "id": "t-4400",
+   "t": 4400,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Let me get a second. Who's going to second that?"
+  },
+  {
+   "id": "t-4405",
+   "t": 4405,
+   "speaker": "Leandra Preston",
+   "text": "I'll second."
+  },
+  {
+   "id": "t-4406",
+   "t": 4406,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Well, we just made a decision on the fly. We've been talking about the book club for the last couple of weeks. That sounds really good. Anything people want to bring up? We have a few more minutes, and I'd love to just open the mic."
+  },
+  {
+   "id": "t-4437",
+   "t": 4437,
+   "speaker": "Joel Okomoli",
+   "text": "Can I go first?"
+  },
+  {
+   "id": "t-4438",
+   "t": 4438,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes."
+  },
+  {
+   "id": "t-4441",
+   "t": 4441,
+   "speaker": "Joel Okomoli",
+   "text": "Our motivation is the pilot: we think four weeks is manageable, for the first four weeks, starting with the front of the book. After that, I think we have to look at chapters that are of interest to us, or where we have some good background, so we have a chance to do a bit of research and specialize."
+  },
+  {
+   "id": "t-4478",
+   "t": 4478,
+   "speaker": "Daveed Benjamin",
+   "text": "So maybe that's the decision we'd want to put in for next week: the cadence of the book club."
+  },
+  {
+   "id": "t-4485",
+   "t": 4485,
+   "speaker": "Joel Okomoli",
+   "text": "Yes. I second that."
+  },
+  {
+   "id": "t-4491",
+   "t": 4491,
+   "speaker": "Daveed Benjamin",
+   "text": "Thank you. The mic is yours, whoever would like to pick it up. Actually, DP, are you there? Can you give us a summary of this conversation? We're still working on getting our assistant to have a presence here and to respond. It's in the chat, but it's supposed to be talking. [A short exchange about Deepi's voice not reaching the room left out.] All right, I guess we're not going to have Deepi as a voice today, but we're working on it. Anything people want to bring up? How was this process?"
+  },
+  {
+   "id": "t-4617",
+   "t": 4617,
+   "speaker": "Leandra Preston",
+   "text": "So the outstanding ones that we deferred to 1.1: we can go in there and work on them now?"
+  },
+  {
+   "id": "t-4626",
+   "t": 4626,
+   "speaker": "Daveed Benjamin",
+   "text": "Yeah."
+  },
+  {
+   "id": "t-4655",
+   "t": 4655,
+   "speaker": "Daveed Benjamin",
+   "text": "[A short exchange about AI news left out.] It's really hard even to get my head around everything that's going on with respect to AI."
+  },
+  {
+   "id": "t-4738",
+   "t": 4738,
+   "speaker": "Leandra Preston",
+   "text": "I do have a quick question. I'm part of something called the Scholars Strategy Network, and I was writing a brief about something else, but I'm trying now to shift it to something I can relate to the metaweb, as another way to promote the work we've been doing. I'm hoping to send it to a few people for feedback before I submit it, because I'd like feedback from people involved with this project to make sure I'm representing it properly. I was definitely going to send it to you, Daveed, but if anybody else is willing to look over a two-page brief and give me some input before I submit it, that would be awesome. I can also send an email, in case somebody who isn't in this space right now but is in our group is willing to look at it."
+  },
+  {
+   "id": "t-4810",
+   "t": 4810,
+   "speaker": "Daveed Benjamin",
+   "text": "Yes, I'm happy to take a look at it. And the session pages now have a chat, so you could put a note about it in the chat, even a link, a Google Doc or something."
+  },
+  {
+   "id": "t-4831",
+   "t": 4831,
+   "speaker": "Leandra Preston",
+   "text": "When you publish something with this group, it's really to connect journalists, scholars and people in the media to the work you're doing. So I think it could be a really good opportunity to disseminate our work and get it in front of a lot more people."
+  },
+  {
+   "id": "t-4853",
+   "t": 4853,
+   "speaker": "Daveed Benjamin",
+   "text": "Awesome. Getting journalists on board is really key. It looks like people are putting their contact details in the chat. Lela."
+  },
+  {
+   "id": "t-4868",
+   "t": 4868,
+   "speaker": "Phahsa",
+   "text": "I would actually be interested in that, Leandra, as well, so please copy me on anything you send over. Should I put my email in the chat?"
+  },
+  {
+   "id": "t-4877",
+   "t": 4877,
+   "speaker": "Leandra Preston",
+   "text": "Yes, that'd be great. I'll write them all down and make sure I send it. Thank you all very much; it will be so helpful. It's not going to be long. They want about two pages and not too much scholar-speak, not too academic: they want us speaking to a mainstream audience."
+  },
+  {
+   "id": "t-4903",
+   "t": 4903,
+   "speaker": "Phahsa",
+   "text": "And what is this network called?"
+  },
+  {
+   "id": "t-4906",
+   "t": 4906,
+   "speaker": "Leandra Preston",
+   "text": "It's called the Scholars Strategy Network, if you want to look it up. You go through a membership interview, and then you publish something in one of their categories to officially become a member. It's not a paid membership; you pay with your labor and your scholarship. This is the piece I'm doing to make my membership official. They publish it on their website and send it out to their scholars, and a lot of people in the network are media and journalists. The function is to get our work out to the public, and also to let people who are working on things identify scholars they can reach out to. So it's a two-way, mutually beneficial network. When I send you all an email, I'll share the link so you can see what I'm writing for."
+  },
+  {
+   "id": "t-4984",
+   "t": 4984,
+   "speaker": "Daveed Benjamin",
+   "text": "Amazing. DP says: “Thank you all, this was a rich session. We reviewed the first ballot: 24 voters, the pilot approved 20 to 1, and the quorum vote tied. We now have an interim council of five. Next week we try a 30-minute book club on the front matter, and the book club cadence goes on the agenda. Daveed will also look into who counts as the active voting body. Leandra's brief is open for feedback. See you next Monday.” Well, I guess it did okay."
+  },
+  {
+   "id": "t-5023",
+   "t": 5023,
+   "speaker": "Daveed Benjamin",
+   "text": "Thanks so much, everybody. It's great seeing you all and hearing your voices in this. We'll have the session page updated with the draft in the next four to eight hours, and we'll go from there. Looking forward to seeing you all next week. Have a great one. Go meta."
+  },
+  {
+   "id": "t-5066a",
+   "t": 5066,
+   "speaker": "Leandra Preston",
+   "text": "I wanted to make sure I got everything before you closed it, but I'm good. Thank you."
+  },
+  {
+   "id": "t-5070",
+   "t": 5070,
+   "speaker": "Daveed Benjamin",
+   "text": "All right. Take care. Go meta."
+  }
+ ]
+}

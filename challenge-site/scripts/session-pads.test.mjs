@@ -26,3 +26,12 @@ test('16 Nov session shows its ballot status', () => {
   assert.match(find(sessionPads(at('2026-11-23T07:00:00Z'), published)).status, /results published/);
   assert.equal(find(sessionPads(at('2026-11-18T00:00:00Z'))).status, 'Community verification open');
 });
+
+test('23 Nov session pad links to its own page and shows its phase', () => {
+  const find = (pads) => pads.find((p) => p.date === '2026-11-23');
+  const pad = find(sessionPads(at('2026-11-24T02:00:00Z')));
+  assert.equal(pad.href, '/events/listening-2026-11-23');
+  assert.equal(pad.title, 'Ballot results and the first weekly cycle');
+  assert.equal(pad.status, 'Preparing the draft');
+  assert.equal(find(sessionPads(at('2026-11-23T18:30:00Z'))).status, 'Happening now');
+});
