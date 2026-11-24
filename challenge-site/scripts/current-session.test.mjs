@@ -147,3 +147,11 @@ test('the Events menu links to the pads index', async () => {
   const events = buildSiteNavLinks([], { currentSessionHref: '/roundups/2026-11-23' }).find((l) => l.label === 'Events');
   assert.deepEqual(events.children.map((c) => c.href), ['/roundups/2026-11-23', '/events', PADS_INDEX_HREF]);
 });
+
+test('every listening session from 23 Nov on has its own review Google Doc (never shared between sessions)', () => {
+  const le = DP_ROUNDUP_EVENTS.filter((e) => e.kind === 'gathering' && e.date >= '2026-11-23');
+  assert.ok(le.length >= 4);
+  for (const e of le) assert.match(e.reviewDocUrl ?? '', /^https:\/\/docs\.google\.com\/document\/d\/[\w-]+\/edit$/, e.date);
+  assert.equal(new Set(le.map((e) => e.reviewDocUrl)).size, le.length);
+  assert.ok(!le.some((e) => e.reviewDocUrl.includes('1iqZQpaBt')), 'the 16 Nov doc belongs to 16 Nov only');
+});
