@@ -41,6 +41,8 @@ export default function DraftForReview(
         pendingApproval?: boolean;
         /** Council screening, per question (sessions from 23 Nov on). */
         screening?: { slug: string; view: ScreeningView; signInHref: string } | null;
+        /** Session slug for the per-option "Proposed by · Seconded by" lines on the draft ballot. */
+        provenanceSession?: string;
       }
   ),
 ) {
@@ -92,6 +94,7 @@ export default function DraftForReview(
             ballot={props.draft.ballot}
             title={labels.draftBallot}
             screening={props.screening ? { slug: props.screening.slug, view: props.screening.view } : undefined}
+            session={props.provenanceSession}
           />
           {props.draft.interimProposal ? <InterimProposal proposal={props.draft.interimProposal} turns={props.turns} /> : null}
           {props.draft.processText ? (

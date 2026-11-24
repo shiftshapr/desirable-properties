@@ -143,9 +143,9 @@ test('Deepi context for a session carries the summary, the ballot and the transc
 });
 
 test('the Events menu links to the pads index', async () => {
-  const { buildSiteNavLinks, PADS_INDEX_HREF } = await import('../src/lib/siteNav.ts');
+  const { buildSiteNavLinks, PADS_INDEX_HREF, BALLOT_OPTIONS_HREF } = await import('../src/lib/siteNav.ts');
   const events = buildSiteNavLinks([], { currentSessionHref: '/roundups/2026-11-23' }).find((l) => l.label === 'Events');
-  assert.deepEqual(events.children.map((c) => c.href), ['/roundups/2026-11-23', '/events', PADS_INDEX_HREF]);
+  assert.deepEqual(events.children.map((c) => c.href), ['/roundups/2026-11-23', '/events', PADS_INDEX_HREF, BALLOT_OPTIONS_HREF]);
 });
 
 test('every listening session from 23 Nov on has its own review Google Doc (never shared between sessions)', () => {

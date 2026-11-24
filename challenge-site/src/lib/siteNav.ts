@@ -23,6 +23,9 @@ export const CURRENT_SESSION_NAV_LABEL = 'Current session';
 /** Public index of session, meeting and proposal pads (src/app/pads/page.tsx). */
 export const PADS_INDEX_HREF = '/pads';
 export const PADS_NAV_LABEL = 'Pads: sessions, meetings, proposals';
+/** Every ballot option with who proposed and seconded it (src/app/pads/ballot-options/page.tsx). */
+export const BALLOT_OPTIONS_HREF = '/pads/ballot-options';
+export const BALLOT_OPTIONS_NAV_LABEL = 'Ballot options: who proposed what';
 
 export type UpcomingEventNavItem = {
   href: string;
@@ -40,7 +43,7 @@ export const LANDING_PADS_NAV_LINK: SiteNavLink = { href: '/pad', label: 'Landin
 
 /**
  * Insert Events nav after About. Its menu always starts with "Current session" (`currentSessionHref`, from
- * currentSession() in src/lib/current-session.ts), then any upcoming entries, then "All events" and "Pads".
+ * currentSession() in src/lib/current-session.ts), then any upcoming entries, then "All events", "Pads" and "Ballot options".
  * `landingPads` (from the server-side landingPadsEnabled()) appends the Landing pads entry to the About
  * menu; it is off by default.
  */
@@ -59,6 +62,7 @@ export function buildSiteNavLinks(
         .map((event) => ({ href: event.href, label: event.label, external: event.external })),
       { href: EVENTS_INDEX_HREF, label: 'All events' },
       { href: PADS_INDEX_HREF, label: PADS_NAV_LABEL },
+      { href: BALLOT_OPTIONS_HREF, label: BALLOT_OPTIONS_NAV_LABEL },
     ],
   };
 

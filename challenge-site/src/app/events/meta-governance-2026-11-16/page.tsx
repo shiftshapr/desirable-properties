@@ -188,6 +188,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
         {visible ? (
           <DraftForReview
             visible
+            provenanceSession={SESSION.slug}
             reviewChannels={NOV16_REVIEW_CHANNELS}
             labels={LABELS}
             draft={draftData as SessionDraft}

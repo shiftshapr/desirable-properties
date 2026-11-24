@@ -197,6 +197,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         {visible || preview ? (
           <DraftForReview
             visible
+            provenanceSession={SESSION.slug}
             labels={LABELS}
             draft={draft}
             turns={turns}
