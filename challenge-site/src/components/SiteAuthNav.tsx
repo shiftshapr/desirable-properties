@@ -22,7 +22,8 @@ type WelcomeState = {
   status: 'idle' | 'ready' | 'unavailable';
 };
 
-export default function SiteAuthNav() {
+/** `accountSettings`: server-side phoneOptinEnabled(); adds Account (/account) to the menu. */
+export default function SiteAuthNav({ accountSettings = false }: { accountSettings?: boolean } = {}) {
   const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [welcomeState, setWelcomeState] = useState<WelcomeState>({
@@ -243,6 +244,18 @@ export default function SiteAuthNav() {
               Profile
             </a>
           </li>
+          {accountSettings ? (
+            <li role="none">
+              <a
+                role="menuitem"
+                href="/account"
+                className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+                onClick={() => setMenuOpen(false)}
+              >
+                Account
+              </a>
+            </li>
+          ) : null}
           {groupLinks.length > 0 ? (
             <>
               <li role="none" className="border-t border-slate-800 px-4 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">

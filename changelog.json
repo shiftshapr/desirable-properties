@@ -4,6 +4,24 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "phone-setting-upcoming-feed-2026-11-23",
+      "date": "2026-11-23",
+      "status": "open",
+      "title": "Phone setting on the account page, and a feed of upcoming sessions",
+      "summary": "Signed-in people can add a phone number on /account: they get a code by text, confirm it, and then see their number with only the last 4 digits, what the phone check found, their alert choices and a Remove number button. The three boxes use the same wording as /text-alerts and start unticked; the agree box is required for any texts. The number is kept by Gov Hub, not this site. Hidden until PHONE_OPTIN is on (after Twilio approves the campaign). A public /api/sessions/upcoming lists sessions in the next 14 days and open ballots, for the reminder texts.",
+      "changes": [
+        "challenge-site/src/app/account/page.tsx",
+        "challenge-site/src/components/account/AccountPhoneSettings.tsx",
+        "challenge-site/src/app/api/me/phone",
+        "challenge-site/src/lib/phone-optin",
+        "challenge-site/src/lib/text-alerts-consent.tsx",
+        "challenge-site/src/app/text-alerts/page.tsx",
+        "challenge-site/src/app/api/sessions/upcoming/route.ts",
+        "challenge-site/src/lib/sessions/upcoming-feed.ts",
+        "challenge-site/src/components/SiteAuthNav.tsx"
+      ]
+    },
+    {
       "id": "screening-after-review-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
