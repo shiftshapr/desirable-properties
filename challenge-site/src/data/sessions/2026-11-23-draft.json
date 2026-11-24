@@ -170,7 +170,7 @@
   }
  ],
  "ballot": {
-  "header": "Draft, pending host approval. Not yet open for review. After the 24-hour review the interim council screens it before any vote.",
+  "header": "Draft, pending host approval. Not yet open for review. After the 48-hour review the interim council screens it; then the community votes for 72 hours.",
   "questions": [
    {
     "n": 1,

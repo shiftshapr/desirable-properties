@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "review-window-48h-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "Session pages follow the voted rules: 48-hour review, 72-hour vote",
+      "summary": "The 16 November ballot set a 48-hour correction window and a 72-hour voting period. Listening session pages, the series description and the 23 November draft now say 48 hours to correct and 72 hours to vote, and \"Current session\" keeps pointing at a session for the 48-hour window. The 16 November page still shows the 24-hour review it actually ran."
+    },
+    {
       "id": "session-1123-page-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

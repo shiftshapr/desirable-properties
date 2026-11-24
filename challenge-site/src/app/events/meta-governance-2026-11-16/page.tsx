@@ -150,7 +150,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
       }
     >
       <div className="mt-8">
-        <HowThisWorks />
+        <HowThisWorks reviewHours={24} />
       </div>
 
       <nav aria-label="On this page" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
