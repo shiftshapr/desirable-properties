@@ -22,7 +22,7 @@ type WelcomeState = {
   status: 'idle' | 'ready' | 'unavailable';
 };
 
-/** `accountSettings`: server-side phoneOptinEnabled(); adds Account (/account) to the menu. */
+/** `accountSettings`: adds Account (/account: ballot participation, and the phone setting while PHONE_OPTIN is on) to the menu. */
 export default function SiteAuthNav({ accountSettings = false }: { accountSettings?: boolean } = {}) {
   const { user, checked, login, loginBusy, loginError, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);

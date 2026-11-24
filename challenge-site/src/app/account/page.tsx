@@ -1,23 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import AccountParticipation from '@/components/account/AccountParticipation';
 import AccountPhoneSettings from '@/components/account/AccountPhoneSettings';
 import { phoneOptinEnabled } from '@/lib/phone-optin/flag';
 import { govhubUrl } from '@/lib/govhub';
 
-/** Account settings. Today it holds only the phone setting, so the page is a 404 while PHONE_OPTIN is off. */
+/** Account settings: ballot participation (always), and the phone setting while PHONE_OPTIN is on. */
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(): Promise<Metadata> {
-  if (!phoneOptinEnabled()) return { title: 'Not found', robots: { index: false, follow: false } };
-  return {
-    title: 'Account – Desirable Properties',
-    robots: { index: false, follow: false },
-  };
-}
+export const metadata: Metadata = {
+  title: 'Account – Desirable Properties',
+  robots: { index: false, follow: false },
+};
 
 export default function AccountPage() {
-  if (!phoneOptinEnabled()) notFound();
+  const phone = phoneOptinEnabled();
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <h1 className="text-3xl font-bold text-white">Account</h1>
@@ -26,10 +23,16 @@ export default function AccountPage() {
         <a href={govhubUrl('/profile/edit/')} className="text-cyan-300 hover:text-cyan-200" target="_blank" rel="noopener noreferrer">
           profile
         </a>
-        . How text alerts work: <Link href="/text-alerts" className="text-cyan-300 hover:text-cyan-200">text alerts</Link>.
+        .
+        {phone ? (
+          <>
+            {' '}How text alerts work: <Link href="/text-alerts" className="text-cyan-300 hover:text-cyan-200">text alerts</Link>.
+          </>
+        ) : null}
       </p>
-      <div className="mt-8">
-        <AccountPhoneSettings />
+      <div className="mt-8 space-y-8">
+        <AccountParticipation />
+        {phone ? <AccountPhoneSettings /> : null}
       </div>
     </main>
   );

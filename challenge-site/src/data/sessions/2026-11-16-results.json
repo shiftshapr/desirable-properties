@@ -1,0 +1,515 @@
+{
+  "source": {
+    "url": "https://desirableproperties.org/api/ballots/meta-governance-2026-11-16",
+    "fetchedAt": "2026-11-24",
+    "publishedAt": "2026-11-23T17:29:49.950Z",
+    "note": "Snapshot of the published results (dp_ballot / dp_ballot_vote, read through the ballot API). Matches ~/handoff/dp-2026-11-23-session/tally/results.md. Used to backfill and test src/data/sessions/option-provenance.ts."
+  },
+  "results": {
+    "slug": "meta-governance-2026-11-16",
+    "voters": 24,
+    "questions": [
+      {
+        "key": "q1",
+        "n": 1,
+        "question": "Should the community run the weekly listen, draft, verify, screen and vote cycle as a four-session pilot and evaluate it afterward?",
+        "kind": "yes_no",
+        "ballots": 24,
+        "abstain": 3,
+        "options": [
+          {
+            "key": "yes",
+            "label": "Yes",
+            "votes": 20
+          },
+          {
+            "key": "no",
+            "label": "No",
+            "votes": 1
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 3
+          }
+        ],
+        "outcome": {
+          "result": "passed",
+          "yes": 20,
+          "no": 1
+        }
+      },
+      {
+        "key": "q2",
+        "n": 2,
+        "question": "How long should the correction window be?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 1,
+        "options": [
+          {
+            "key": "a",
+            "label": "24 hours, with a notice email about 12 hours before it opens",
+            "votes": 5
+          },
+          {
+            "key": "b",
+            "label": "48 hours",
+            "votes": 18
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 1
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "b",
+          "label": "48 hours"
+        }
+      },
+      {
+        "key": "q3",
+        "n": 3,
+        "question": "How long should a voting period last?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 0,
+        "options": [
+          {
+            "key": "a",
+            "label": "48 hours",
+            "votes": 3
+          },
+          {
+            "key": "b",
+            "label": "72 hours",
+            "votes": 21
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 0
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "b",
+          "label": "72 hours"
+        }
+      },
+      {
+        "key": "q4",
+        "n": 4,
+        "question": "Which approval rule should community ballots use?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 0,
+        "options": [
+          {
+            "key": "a",
+            "label": "More than 50%",
+            "votes": 3
+          },
+          {
+            "key": "b",
+            "label": "60%",
+            "votes": 3
+          },
+          {
+            "key": "c",
+            "label": "67%",
+            "votes": 1
+          },
+          {
+            "key": "d",
+            "label": "Two tiers: 50% keeps the item open for review, 60% or more passes it",
+            "votes": 11
+          },
+          {
+            "key": "e",
+            "label": "Consent: an item passes unless someone raises a reasoned objection; if an objection cannot be resolved, seek full agreement; any decision can be reopened later",
+            "votes": 6
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 0
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "d",
+          "label": "Two tiers: 50% keeps the item open for review, 60% or more passes it"
+        }
+      },
+      {
+        "key": "q5",
+        "n": 5,
+        "question": "What quorum should apply during the pilot?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 5,
+        "options": [
+          {
+            "key": "a",
+            "label": "No quorum",
+            "votes": 5
+          },
+          {
+            "key": "b",
+            "label": "A fixed minimum of 20 votes",
+            "votes": 6
+          },
+          {
+            "key": "c",
+            "label": "10% of the voting body",
+            "votes": 2
+          },
+          {
+            "key": "d",
+            "label": "25% of the voting body",
+            "votes": 6
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 5
+          }
+        ],
+        "outcome": {
+          "result": "tie",
+          "options": [
+            "b",
+            "d"
+          ],
+          "labels": [
+            "A fixed minimum of 20 votes",
+            "25% of the voting body"
+          ]
+        }
+      },
+      {
+        "key": "q6",
+        "n": 6,
+        "question": "Which co-editor arrangement should apply?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 2,
+        "options": [
+          {
+            "key": "a",
+            "label": "Up to 3 seats, 2 approvals needed (the current site setup)",
+            "votes": 20
+          },
+          {
+            "key": "b",
+            "label": "2 seats, both approvals needed (the Version 1.0 text)",
+            "votes": 2
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 2
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "a",
+          "label": "Up to 3 seats, 2 approvals needed (the current site setup)"
+        }
+      },
+      {
+        "key": "q7",
+        "n": 7,
+        "question": "What should happen when one co-editor declines?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 1,
+        "options": [
+          {
+            "key": "a",
+            "label": "Keep the current rule: the decline carries a note, and two approvals can overrule it",
+            "votes": 16
+          },
+          {
+            "key": "b",
+            "label": "One decline ends the proposal",
+            "votes": 0
+          },
+          {
+            "key": "c",
+            "label": "A decline sends the proposal to further review",
+            "votes": 7
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 1
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "a",
+          "label": "Keep the current rule: the decline carries a note, and two approvals can overrule it"
+        }
+      },
+      {
+        "key": "q8",
+        "n": 8,
+        "question": "Who should approve a chapter title change?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 0,
+        "options": [
+          {
+            "key": "a",
+            "label": "The steering committee, or the council once one exists",
+            "votes": 8
+          },
+          {
+            "key": "b",
+            "label": "75% of the chapter's authors and co-editors, then the steering committee or council",
+            "votes": 16
+          },
+          {
+            "key": "c",
+            "label": "A full community vote",
+            "votes": 0
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 0
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "b",
+          "label": "75% of the chapter's authors and co-editors, then the steering committee or council"
+        }
+      },
+      {
+        "key": "q9",
+        "n": 9,
+        "question": "Should the community elect a council to screen ballots for readiness (not to decide them)?",
+        "kind": "yes_no",
+        "ballots": 24,
+        "abstain": 4,
+        "options": [
+          {
+            "key": "yes",
+            "label": "Yes",
+            "votes": 17
+          },
+          {
+            "key": "no",
+            "label": "No",
+            "votes": 3
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 4
+          }
+        ],
+        "outcome": {
+          "result": "passed",
+          "yes": 17,
+          "no": 3
+        }
+      },
+      {
+        "key": "q10",
+        "n": 10,
+        "question": "Should an interim council of Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar serve until a council is elected, and prepare the elections?",
+        "kind": "yes_no",
+        "ballots": 24,
+        "abstain": 3,
+        "options": [
+          {
+            "key": "yes",
+            "label": "Yes",
+            "votes": 21
+          },
+          {
+            "key": "no",
+            "label": "No",
+            "votes": 0
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 3
+          }
+        ],
+        "outcome": {
+          "result": "passed",
+          "yes": 21,
+          "no": 0
+        }
+      },
+      {
+        "key": "q11",
+        "n": 11,
+        "question": "If a council is elected, how many members should it have?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 2,
+        "options": [
+          {
+            "key": "a",
+            "label": "5",
+            "votes": 7
+          },
+          {
+            "key": "b",
+            "label": "7",
+            "votes": 11
+          },
+          {
+            "key": "c",
+            "label": "9",
+            "votes": 4
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 2
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "b",
+          "label": "7"
+        }
+      },
+      {
+        "key": "q12",
+        "n": 12,
+        "question": "If a council is elected, what should its scope be?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 0,
+        "options": [
+          {
+            "key": "a",
+            "label": "The Desirable Properties only",
+            "votes": 9
+          },
+          {
+            "key": "b",
+            "label": "The Desirable Properties and the wider Meta-Layer Initiative, including Metaweb Academy",
+            "votes": 15
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 0
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "b",
+          "label": "The Desirable Properties and the wider Meta-Layer Initiative, including Metaweb Academy"
+        }
+      },
+      {
+        "key": "q13",
+        "n": 13,
+        "question": "Should council screening use published criteria, with written reasons for every item held back?",
+        "kind": "yes_no",
+        "ballots": 24,
+        "abstain": 1,
+        "options": [
+          {
+            "key": "yes",
+            "label": "Yes",
+            "votes": 21
+          },
+          {
+            "key": "no",
+            "label": "No",
+            "votes": 2
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 1
+          }
+        ],
+        "outcome": {
+          "result": "passed",
+          "yes": 21,
+          "no": 2
+        }
+      },
+      {
+        "key": "q14",
+        "n": 14,
+        "question": "Should new co-editors sign a co-editor agreement?",
+        "kind": "yes_no",
+        "ballots": 23,
+        "abstain": 2,
+        "options": [
+          {
+            "key": "yes",
+            "label": "Yes",
+            "votes": 17
+          },
+          {
+            "key": "no",
+            "label": "No",
+            "votes": 4
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 2
+          }
+        ],
+        "outcome": {
+          "result": "passed",
+          "yes": 17,
+          "no": 4
+        }
+      },
+      {
+        "key": "q15",
+        "n": 15,
+        "question": "How should new co-editors be vetted?",
+        "kind": "choice",
+        "ballots": 24,
+        "abstain": 2,
+        "options": [
+          {
+            "key": "a",
+            "label": "No vetting beyond account age",
+            "votes": 4
+          },
+          {
+            "key": "b",
+            "label": "A questionnaire that is published but not screened",
+            "votes": 4
+          },
+          {
+            "key": "c",
+            "label": "A questionnaire screened against published criteria",
+            "votes": 14
+          },
+          {
+            "key": "abstain",
+            "label": "Abstain",
+            "votes": 2
+          }
+        ],
+        "outcome": {
+          "result": "winner",
+          "option": "c",
+          "label": "A questionnaire screened against published criteria"
+        }
+      }
+    ]
+  }
+}
