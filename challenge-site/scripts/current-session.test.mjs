@@ -76,13 +76,18 @@ test('community sessions carry a specific meeting title next to the series title
   assert.equal(SESSION_2026_11_23.date, '2026-11-23');
 });
 
-test('23 Nov draft stays hidden until the host opens the review (draftVisibleAt unset)', async () => {
+test('23 Nov review opens 24 Nov 04:00 UTC for 48 hours, as voted on 16 Nov', async () => {
   const { SESSION_2026_11_23 } = await import('../src/data/sessions/2026-11-23.ts');
   const { isDraftVisible, phaseRows } = await import('../src/lib/sessions/session-phases.ts');
-  assert.equal(SESSION_2026_11_23.draftVisibleAt, undefined);
-  assert.equal(isDraftVisible(SESSION_2026_11_23, new Date('2030-01-01T00:00:00Z')), false);
+  assert.equal(SESSION_2026_11_23.draftVisibleAt, '2026-11-24T04:00:00Z');
+  assert.equal(isDraftVisible(SESSION_2026_11_23, new Date('2026-11-24T03:59:59Z')), false);
+  assert.equal(isDraftVisible(SESSION_2026_11_23, new Date('2026-11-24T04:00:00Z')), true);
   assert.equal(phaseRows(SESSION_2026_11_23, new Date('2026-11-24T02:00:00Z')).current, 'Preparing the draft');
-  assert.ok(!SESSION_2026_11_23.phaseHistory.some((e) => e.phase !== 'Preparing the draft'));
+  assert.equal(phaseRows(SESSION_2026_11_23, new Date('2026-11-25T00:00:00Z')).current, 'Community verification open');
+  assert.equal(phaseRows(SESSION_2026_11_23, new Date('2026-11-26T04:00:00Z')).current, 'Community verification closed');
+  const open = SESSION_2026_11_23.phaseHistory.find((e) => e.phase === 'Community verification open');
+  const closed = SESSION_2026_11_23.phaseHistory.find((e) => e.phase === 'Community verification closed');
+  assert.equal(Date.parse(closed.at) - Date.parse(open.at), 48 * 3600 * 1000);
 });
 
 test('23 Nov transcript and draft: real names only, no Zoom links, emails or Zoom display names', async () => {
