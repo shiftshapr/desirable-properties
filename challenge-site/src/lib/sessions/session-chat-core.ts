@@ -15,7 +15,7 @@
  */
 
 /** Session occurrences that have a chat. Add a slug when a new occurrence page gets one. */
-export const SESSION_CHAT_SLUGS: readonly string[] = ['meta-governance-2026-11-16'];
+export const SESSION_CHAT_SLUGS: readonly string[] = ['meta-governance-2026-11-16', 'listening-2026-11-23'];
 
 /** Same body limit as Community Chat and workgroup chat (8,000 characters). */
 export const SESSION_CHAT_MAX_BODY = 8000;

@@ -13,6 +13,10 @@ export type SessionDraft = {
     header: string;
     questions: Array<{ n: number; context: string; question: string; options: string[]; label: DraftLabel }>;
   };
-  interimProposal: { title: string; by: string; text: string };
-  processText: { intro: string; body: string };
+  /** A proposal made after the meeting (16 Nov: the interim council). Optional. */
+  interimProposal?: { title: string; by: string; text: string };
+  /** The process text with suggested changes marked. Optional. */
+  processText?: { intro: string; body: string };
+  /** Notes for the host while the draft is pending approval. Shown only in the staging preview. */
+  hostNotes?: string[];
 };

@@ -108,6 +108,9 @@ const sessions: readonly SessionInput[] = [
       'This week: results and the first cycle. Voting on the ballot from our 16 November session closed Sunday 22 November, 8:00 PM PT; 24 people voted, and the results are below and on the 16 November session page. We open with the results. Then we settle any ties, talk about one person, one vote (linking accounts so nobody can vote twice) and hear a new idea for a daily review sprint. If the pilot passes, this session also starts the first full weekly cycle.'),
     // Markabadi's process suggestions from his 20 Nov walk-through of the 16 Nov session page.
     raisedBetweenSessions: ['2026-11-20-session-page-review'],
+    // Same as SESSION_2026_11_23 (src/data/sessions/2026-11-23.ts); the test checks they match.
+    pageHref: '/events/listening-2026-11-23', chatAnchor: 'session-chat',
+    pageContents: 'The record, the draft for review and the session chat.',
     ballotResults: { slug: 'meta-governance-2026-11-16', pageHref: '/events/meta-governance-2026-11-16', heading: 'Results of the 16 November ballot' },
   },
   listeningExperiment(2, '2026-11-30', 'https://luma.com/gra1xda9',

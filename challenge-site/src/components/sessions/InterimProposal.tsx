@@ -4,7 +4,7 @@ import { Inline } from './DraftText';
 import SessionLabel from './SessionLabel';
 
 /** A proposal made after the meeting: not from the transcript, kept visibly separate from the meeting record. */
-export default function InterimProposal({ proposal, turns }: { proposal: SessionDraft['interimProposal']; turns: MetaGovTurn[] }) {
+export default function InterimProposal({ proposal, turns }: { proposal: NonNullable<SessionDraft['interimProposal']>; turns: MetaGovTurn[] }) {
   return (
     <div id="draft-interim-council" className="scroll-mt-24 rounded-xl border border-amber-800/50 bg-amber-950/20 px-4 py-4">
       <h3 className="flex flex-wrap items-center gap-2 text-xl font-semibold text-white">
