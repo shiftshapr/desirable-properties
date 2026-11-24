@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "roundup-1123-button-in-results-2026-11-24",
+      "date": "2026-11-24",
+      "status": "open",
+      "title": "23 November page: session button moved under the results",
+      "summary": "On the 23 November meeting page, the one-line intro and the \"Go to the session page\" button no longer sit at the top; the button now follows the results of the 16 November ballot."
+    },
+    {
       "id": "council-no-objection-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
