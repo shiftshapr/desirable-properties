@@ -627,7 +627,7 @@ export default async function StartHerePage() {
                   filling every DP&apos;s co-editor seats.
                   Each DP needs two co-editors, who both approve a change before it is incorporated.{' '}
                   <Link href="/process" className="text-cyan-300 hover:text-cyan-200">
-                    How V1 gets made
+                    How V1 was made
                   </Link>{' '}
                   ·{' '}
                   <Link href="/v1-readiness" className="text-cyan-300 hover:text-cyan-200">

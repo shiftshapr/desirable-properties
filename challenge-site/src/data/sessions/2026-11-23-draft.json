@@ -174,7 +174,7 @@
   "questions": [
    {
     "n": 1,
-    "context": "question 5 of the 16 November ballot tied 6 to 6 between a minimum of 20 votes and 25% of the voting body.",
+    "context": "question 5 of the 16 November ballot tied 6 to 6 between a minimum of 20 votes and 25% of the voting body. Added by the host on 24 November, as asked in the meeting: the active voting body today is the 76 people the session emails go to (contributors, co-editors and people who signed up). 25% of 76 is 19 votes; the 16 November ballot had 24 voters (32%), so it would have cleared a 25% quorum.",
     "question": "What quorum should apply to ballots during the four-session pilot?",
     "options": [
      "No quorum",
