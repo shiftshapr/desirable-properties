@@ -195,7 +195,7 @@ export default function NextSessionProposals({ date, initial, signInHref, varian
               className="mt-4 space-y-3 rounded-xl border border-slate-700 bg-slate-900/40 px-4 py-4"
               onSubmit={async (e) => {
                 e.preventDefault();
-                if (await send({ action: 'propose', name, title, body }, `Added to the ${sessionLabel} agenda.`)) {
+                if (await send({ action: 'propose', name, title, body }, `Added to the agenda of ${sessionLabel}.`)) {
                   setTitle('');
                   setBody('');
                   setFormOpen(false);
@@ -222,7 +222,7 @@ export default function NextSessionProposals({ date, initial, signInHref, varian
                   className={`${btn} bg-cyan-400 text-slate-950 hover:bg-cyan-300`}
                   disabled={busy || !nameOk || title.trim().length < LIMITS.titleMin || body.trim().length < LIMITS.bodyMin}
                 >
-                  Add to the {sessionLabel} agenda
+                  Add to the agenda of {sessionLabel}
                 </button>
                 <button type="button" className={`${btn} border border-slate-700 text-slate-300`} onClick={() => setFormOpen(false)} disabled={busy}>
                   Cancel
