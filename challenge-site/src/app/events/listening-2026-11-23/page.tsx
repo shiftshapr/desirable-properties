@@ -10,6 +10,7 @@ import { reviewDocChannels } from '@/components/sessions/ReviewActions';
 const REVIEW_DOC_1123 = 'https://docs.google.com/document/d/1r4QFJB36xAZqB3fBFydSIefwIm51bt5aeEgcCJVp30A/edit';
 import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
+import ProposeForNextSession from '@/components/sessions/ProposeForNextSession';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
 import SessionChat from '@/components/sessions/SessionChat';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
@@ -161,12 +162,15 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         </div>
       </section>
 
+      <ProposeForNextSession pagePath={LISTENING_1123_EVENT_PATH} />
+
       <div className="mt-8">
         <HowThisWorks />
       </div>
 
       <nav aria-label="On this page" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <a href="#book-club" className={linkClass}>Book club</a>
+        <a href="#propose-next" className={linkClass}>Propose for next session</a>
         <a href="#phase" className={linkClass}>Where this session is</a>
         <a href="#ballot-results" className={linkClass}>16 November results</a>
         <a href="#invite" className={linkClass}>Invite others</a>

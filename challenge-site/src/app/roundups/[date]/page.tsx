@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import NextSessionProposals from '@/components/sessions/NextSessionProposals';
+import { sessionDayLabel } from '@/components/sessions/ProposeForNextSession';
 import { notFound } from 'next/navigation';
 import { DP_ROUNDUP_EVENTS, gatheringKindLabel, gatheringTimeLabel, roundupDateLabel } from '@/lib/dp-roundups';
 import { tasksForWeek } from '@/data/dp-process';
@@ -146,19 +148,28 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
 
       {event.ballotResults ? <BallotResultsSummary {...event.ballotResults} cta={resultsCarryCta && primary ? primary : undefined} /> : null}
 
-      {event.proposals.length ? (
+      {event.kind === 'gathering' ? (
         <section id="proposals" className="mt-8 scroll-mt-24">
           <h2 className="border-b border-slate-700 pb-2 text-2xl font-semibold text-white">Proposals for this session</h2>
           <p className="mt-3 text-sm text-slate-400">Discussed in the session, then put on its ballot for the community to decide.</p>
-          <ol className="mt-4 space-y-4">
-            {event.proposals.map((pr, i) => (
-              <li key={pr.title} className="rounded-xl border border-slate-700 bg-slate-900/40 px-4 py-3">
-                <p className="font-semibold text-white"><span className="mr-1 text-cyan-300">{i + 1}.</span>{pr.title}</p>
-                <p className="mt-1 text-sm text-slate-400">Proposed by {pr.by}</p>
-                <p className="mt-2">{pr.body}</p>
-              </li>
-            ))}
-          </ol>
+          {event.proposals.length ? (
+            <ol className="mt-4 space-y-4">
+              {event.proposals.map((pr, i) => (
+                <li key={pr.title} className="rounded-xl border border-slate-700 bg-slate-900/40 px-4 py-3">
+                  <p className="font-semibold text-white"><span className="mr-1 text-cyan-300">{i + 1}.</span>{pr.title}</p>
+                  <p className="mt-1 text-sm text-slate-400">Proposed by {pr.by}</p>
+                  <p className="mt-2">{pr.body}</p>
+                </li>
+              ))}
+            </ol>
+          ) : null}
+          <h3 className="mt-6 text-lg font-semibold text-white">From participants</h3>
+          <NextSessionProposals
+            date={event.date}
+            variant="list"
+            sessionLabel={`the ${sessionDayLabel(event.date)} session`}
+            signInHref={`/login?next=${encodeURIComponent(`/roundups/${event.date}#proposals`)}`}
+          />
         </section>
       ) : null}
 

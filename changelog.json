@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "next-session-proposals-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Propose something for the next session",
+      "summary": "Every session page now has a box to put a proposal on the next session's agenda. Sign in, give your real name, a one-line proposal and a few sentences on why. It shows at once on the next session's page under \"Proposals for this session\", labelled \"Participant proposal\", and on the Ballot options pad. Others can support it with one click; the proposer can withdraw it; an interim council member can hide spam or an off-topic proposal, with a public reason. Proposals close when the session starts."
+    },
+    {
       "id": "ballot-option-provenance-2026-11-24",
       "date": "2026-11-24",
       "status": "open",
