@@ -1,5 +1,5 @@
 import { handleScreeningGet, handleScreeningPost } from '@/lib/screening/screening-core';
-import { screeningDeps } from '@/lib/screening/screening-store.server';
+import { activeScreeningDeps } from '@/lib/screening/screening-store.server';
 
 /**
  * Council screening of a session's draft ballot (see screening-core.ts). GET: public objections per question and the
@@ -11,10 +11,10 @@ type Ctx = { params: Promise<{ slug: string }> };
 
 export async function GET(_request: Request, ctx: Ctx) {
   const { slug } = await ctx.params;
-  return handleScreeningGet(slug, screeningDeps);
+  return handleScreeningGet(slug, await activeScreeningDeps());
 }
 
 export async function POST(request: Request, ctx: Ctx) {
   const { slug } = await ctx.params;
-  return handleScreeningPost(request, slug, screeningDeps);
+  return handleScreeningPost(request, slug, await activeScreeningDeps());
 }

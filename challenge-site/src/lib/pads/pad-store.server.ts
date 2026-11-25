@@ -13,6 +13,7 @@ import { getDpPool } from '@/lib/dp-db';
 import { allowHit } from '@/lib/listening/rate-limit.server';
 import type { AdvisoryRow, CommunityDeps, FollowRow, PadKind, PadSession, Stance } from '@/lib/pads/pad-community-core';
 import { findPadProposal } from '@/lib/pads/proposal-pad.server';
+import { padVotesBackend, signalRows, writeSignal } from '@/lib/pad-votes/govhub.server';
 
 export const PAD_SCHEMA_SQL = `
 CREATE TABLE IF NOT EXISTS dp_pad_advisory (
@@ -177,7 +178,7 @@ export async function markNotified(kind: PadKind, padId: string, userId: string,
   );
 }
 
-export const padCommunityDeps: CommunityDeps = {
+const padCommunityDepsDp: CommunityDeps = {
   readSession: async () => {
     const s = await readSession();
     return s ? { userId: s.userId, displayName: s.displayName, username: s.username, email: s.email ?? null } : null;
@@ -188,9 +189,41 @@ export const padCommunityDeps: CommunityDeps = {
       ? { id: found.proposal.id, status: String(found.proposal.status || ''), mlNumber: found.doc.mlNumber, dpId: found.doc.dpId }
       : null;
   },
-  advisoryRows,
-  saveAdvisory,
+  advisoryRows: (kind: PadKind, padId: string) =>
+    padVotesBackend() === 'govhub' ? govhubAdvisoryRows(kind, padId) : advisoryRows(kind, padId),
+  saveAdvisory: (kind: PadKind, padId: string, session: PadSession, v: { stance: Stance; reason: string | null; showName: boolean } | null) =>
+    padVotesBackend() === 'govhub' ? govhubSaveAdvisory(kind, padId, v) : saveAdvisory(kind, padId, session, v),
   isFollowing,
   setFollow,
   allowHit: (key, max, windowMs) => allowHit(key, max, windowMs),
 };
+
+export const padCommunityDeps: CommunityDeps = padCommunityDepsDp;
+
+/* ---------------- Gov Hub as the store of record (PAD_VOTES_BACKEND=govhub) ---------------- */
+
+/** Standing advisory stances on one pad, read from Gov Hub (pad_kind proposal_pad) in the shape the core expects. */
+async function govhubAdvisoryRows(_kind: PadKind, padId: string): Promise<AdvisoryRow[]> {
+  const rows = await signalRows('proposal_pad', [padId]);
+  return rows
+    .filter((r) => !r.superseded_at)
+    .map((r) => ({
+      user_id: r.user_id,
+      stance: r.kind as Stance,
+      reason: r.reason,
+      show_name: r.show_name,
+      display_name: r.name,
+      updated_at: r.updated_at,
+    }));
+}
+
+async function govhubSaveAdvisory(
+  _kind: PadKind,
+  padId: string,
+  v: { stance: Stance; reason: string | null; showName: boolean } | null,
+): Promise<void> {
+  const r = v
+    ? await writeSignal('proposal_pad', padId, { kind: v.stance, reason: v.reason || '', show_name: v.showName })
+    : await writeSignal('proposal_pad', padId, {}, 'DELETE');
+  if (!r.ok) throw new Error(`Gov Hub advisory: ${r.status} ${String(r.data.code || '')}`);
+}
