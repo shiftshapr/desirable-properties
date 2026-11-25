@@ -4,6 +4,20 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "book-club-pad-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Overweb Book Club pad",
+      "summary": "A new pad, /pads/book-club, holds every book club meeting: pick the chapter at the top. Before a meeting the featured reading, prompts and extra credit are on top, with a way to join and to propose something for the meeting. During the meeting the chat moves to the top for questions and insights. After it, the meeting summary, the review draft, proposals and votes come first and the reading moves down. Each meeting has its own chat, an Ask Deepi about the reading, and Invite others."
+    },
+    {
+      "id": "next-session-proposals-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Propose something for the next session",
+      "summary": "Every session page now has a box to put a proposal on the next session's agenda. Sign in, give your real name, a one-line proposal and a few sentences on why. It shows at once on the next session's page under \"Proposals for this session\", labelled \"Participant proposal\", and on the Ballot options pad. Others can support it with one click; the proposer can withdraw it; an interim council member can hide spam or an off-topic proposal, with a public reason. Proposals close when the session starts."
+    },
+    {
       "id": "ballot-option-provenance-2026-11-24",
       "date": "2026-11-24",
       "status": "open",

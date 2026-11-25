@@ -5,6 +5,9 @@ import { SESSION_SCREENINGS } from '@/data/sessions/2026-11-23-screening';
 import { readPublicParticipation } from '@/lib/ballots/participation.server';
 import { participationLine } from '@/lib/ballots/participation-core';
 import { readScreeningView } from '@/lib/screening/screening-store.server';
+import { readAllProposals } from '@/lib/next-proposals/store.server';
+import { sessionDayLabel } from '@/components/sessions/ProposeForNextSession';
+import { pacificAndUtc } from '@/lib/sessions/session-phases';
 import { allProvenance } from '@/lib/sessions/option-provenance';
 import {
   namesOn,
@@ -49,7 +52,7 @@ export default async function BallotOptionsPage({ searchParams }: Props) {
   const params = await searchParams;
   const status = one(params.status) as ProvenanceStatus | '';
   const person = one(params.person).trim().slice(0, 80);
-  const [records, voters] = await Promise.all([screenedRecords(), readPublicParticipation()]);
+  const [records, voters, siteProposals] = await Promise.all([screenedRecords(), readPublicParticipation(), readAllProposals().catch(() => [])]);
 
   const statuses = (Object.keys(PROVENANCE_STATUS_LABEL) as ProvenanceStatus[]).filter((s) => records.some((r) => r.status === s));
   const needle = person.toLowerCase();
@@ -79,6 +82,7 @@ export default async function BallotOptionsPage({ searchParams }: Props) {
         </p>
         <nav aria-label="On this page" className="mt-4 flex flex-wrap gap-2 text-sm">
           <a href="#options" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">Options</a>
+          <a href="#site-proposals" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">Proposed on the site</a>
           <a href="#voters" className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">Voters</a>
         </nav>
       </header>
@@ -157,6 +161,45 @@ export default async function BallotOptionsPage({ searchParams }: Props) {
           })}
           {!shown.length ? <p className="text-slate-300">No options match.</p> : null}
         </div>
+      </section>
+
+      <section id="site-proposals" aria-labelledby="site-proposals-heading" className="mt-14 scroll-mt-24">
+        <h2 id="site-proposals-heading" className="border-b border-slate-800 pb-2 text-2xl font-bold text-white">
+          Proposed on the site for a session
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm text-slate-400">
+          Proposals people added from a session page for the next session&apos;s agenda, with who supported them. When one
+          becomes a draft ballot option, it joins the list above with the same proposer and supporters.
+        </p>
+        {siteProposals.length ? (
+          siteProposals.map(({ session, proposals }) => (
+            <div key={session.date} className="mt-5">
+              <h3 className="text-lg font-semibold text-white">
+                <Link href={`${session.href}#proposals`} className="hover:text-cyan-200">{sessionDayLabel(session.date)} session</Link>
+              </h3>
+              <ul className="mt-2 space-y-2">
+                {proposals.map((p) => (
+                  <li key={p.id} className="rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-2 text-sm text-slate-200">
+                    {p.status === 'hidden' ? (
+                      <span className="text-slate-400">Hidden by {p.hidden?.by}: {p.hidden?.reason}</span>
+                    ) : (
+                      <>
+                        <strong className="text-white">{p.title}</strong>
+                        <span className="text-slate-400">
+                          {' '}· Proposed by {p.name} ({pacificAndUtc(p.createdAt)})
+                          {p.supporters.length ? ` · Supported by ${p.supporters.map((x) => x.name).join(', ')}` : ''}
+                          {p.status === 'withdrawn' ? ' · Withdrawn' : ''}
+                        </span>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        ) : (
+          <p className="mt-3 text-slate-300">None yet.</p>
+        )}
       </section>
 
       <section id="voters" aria-labelledby="voters-heading" className="mt-14 scroll-mt-24">

@@ -15,7 +15,13 @@
  */
 
 /** Session occurrences that have a chat. Add a slug when a new occurrence page gets one. */
-export const SESSION_CHAT_SLUGS: readonly string[] = ['meta-governance-2026-11-16', 'listening-2026-11-23'];
+export const SESSION_CHAT_SLUGS: readonly string[] = [
+  'meta-governance-2026-11-16',
+  'listening-2026-11-23',
+];
+
+/** Overweb Book Club: one thread per meeting, book-club-<YYYY-MM-DD> (src/data/book-club.ts, /pads/book-club). */
+const BOOK_CLUB_CHAT_RE = /^book-club-20\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
 /** Same body limit as Community Chat and workgroup chat (8,000 characters). */
 export const SESSION_CHAT_MAX_BODY = 8000;
@@ -28,7 +34,7 @@ export const SESSION_CHAT_POLL_MS = 5000;
 
 export function sessionChatThreadKey(slug: string | null | undefined): string | null {
   const s = String(slug || '').trim();
-  return SESSION_CHAT_SLUGS.includes(s) ? `session:${s}` : null;
+  return SESSION_CHAT_SLUGS.includes(s) || BOOK_CLUB_CHAT_RE.test(s) ? `session:${s}` : null;
 }
 
 export type SessionChatViewer = {

@@ -766,6 +766,26 @@ CREATE TABLE IF NOT EXISTS dp_prepublish_check (
 );
 
 CREATE INDEX IF NOT EXISTS dp_prepublish_check_wg ON dp_prepublish_check (workgroup_id, created_at DESC);
+
+-- Proposed edits to a listing on themetalayer.org/participants/<slug>/ (src/lib/participant-edits.ts). The static page
+-- posts the listing as shown and as proposed; a site admin reviews them. address_key is a hash, never the address.
+CREATE TABLE IF NOT EXISTS mli_participant_edit (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  slug TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  current_listing JSONB NOT NULL,
+  proposed_listing JSONB NOT NULL,
+  photo_note TEXT NOT NULL DEFAULT '',
+  note TEXT NOT NULL DEFAULT '',
+  origin TEXT,
+  address_key TEXT,
+  status TEXT NOT NULL DEFAULT 'new',
+  reviewed_by TEXT,
+  reviewed_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS mli_participant_edit_recent ON mli_participant_edit (created_at DESC);
 `;
 
 let pool: pg.Pool | null = null;

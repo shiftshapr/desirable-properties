@@ -11,6 +11,7 @@
  * PAD_INVITE_EMAILS=off switches "Send from the site" off (everything else in the panel keeps working). It is also
  * off when Resend, the DP database or a server secret (PAD_INVITE_SECRET, else AUTH_SESSION_SECRET) is missing.
  */
+import { BOOK_CLUB, BOOK_CLUB_PATH, bookClubPhase, currentBookClubMeeting } from '@/data/book-club';
 import 'server-only';
 import type pg from 'pg';
 import { readSession } from '@/lib/auth-session';
@@ -24,6 +25,7 @@ import { allowHit } from '@/lib/listening/rate-limit.server';
 import { publicBase, resendConfigured, sendPadEmail } from '@/lib/pads/pad-email.server';
 import {
   INVITE_LIMITS,
+  bookClubInvite,
   meetingInvite,
   proposalInvite,
   sessionInvite,
@@ -103,6 +105,15 @@ export function proposalInviteFromLoaded(loaded: LoadedPad): InviteContent {
   });
 }
 
+/** The book club pad's invite (one pad for every meeting), or null for any other path. */
+export function bookClubInviteFor(path: string, now = new Date()): InviteContent | null {
+  if (path !== BOOK_CLUB_PATH) return null;
+  const m = currentBookClubMeeting(BOOK_CLUB.meetings, now);
+  if (!m) return null;
+  const dateLabel = new Date(m.startsAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'America/Los_Angeles' });
+  return bookClubInvite({ path, title: BOOK_CLUB.title, chapter: m.chapter, dateLabel, past: bookClubPhase(m, now) === 'after' });
+}
+
 /** A session page's invite: its meeting, date and phase, and its ballot when it has one. Null for unknown paths. */
 export async function sessionInviteFor(path: string, now = new Date()): Promise<InviteContent | null> {
   const event = DP_ROUNDUP_EVENTS.find((e) => e.pageHref === path || e.href === path);
@@ -141,6 +152,7 @@ async function resolveContent(kind: PadInviteKind, key: string): Promise<InviteC
   }
   if (kind === 'session') return sessionInviteFor(key);
   if (kind === 'meeting') return meetingInviteFor(key);
+  if (kind === 'bookclub') return bookClubInviteFor(key);
   return null;
 }
 

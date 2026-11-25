@@ -10,6 +10,7 @@ import type { SessionPad } from '@/lib/pads/session-pads-core';
 import { loadSessionPads } from '@/lib/pads/session-pads.server';
 import { pageOpenGraph } from '@/lib/site-metadata';
 import { BALLOT_OPTIONS_HREF } from '@/lib/siteNav';
+import { BOOK_CLUB, BOOK_CLUB_PATH } from '@/data/book-club';
 
 // Rendered on request, not at build time: the Gov Hub sweep (28 lists, 4 at a time, one retry) can pass Next's
 // 60-second static build limit when Gov Hub is slow, which failed the 22 Nov 2026 production deploy. The Gov Hub
@@ -212,6 +213,9 @@ export default async function PadsIndexPage() {
           </a>
           <Link href={BALLOT_OPTIONS_HREF} className="rounded-full border border-slate-700 px-3 py-1 text-slate-200 hover:border-cyan-500">
             Ballot options: who proposed what
+          </Link>
+          <Link href={BOOK_CLUB_PATH} className="rounded-full border border-cyan-600 px-3 py-1 text-slate-100 hover:border-cyan-400">
+            {BOOK_CLUB.title}
           </Link>
         </nav>
       </header>

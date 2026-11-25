@@ -10,18 +10,20 @@ type Props = {
   context: HermesChatContext;
   starterPrompts?: string[];
   id?: string;
+  /** Replaces the default line about what Deepi has (meeting summary, ballot, transcript). */
+  blurb?: string;
 };
 
 /**
  * "Ask Deepi about the <date> meeting": the site's AI chat with this meeting's summary, ballot and transcript as
  * context (sessionDeepiContext). Collapsed by default; the signed-in "Session chat" stays separate.
  */
-export default async function SessionAskDeepi({ slug, title, context, starterPrompts, id = 'ask-deepi' }: Props) {
+export default async function SessionAskDeepi({ slug, title, context, starterPrompts, id = 'ask-deepi', blurb }: Props) {
   const session = await readSession().catch(() => null);
   return (
     <SessionCollapsible id={id} title={title}>
       <p className="mb-3 text-sm text-slate-300">
-        Deepi has this meeting’s summary, ballot and transcript. Answers can be wrong: check the timestamps.
+        {blurb ?? 'Deepi has this meeting’s summary, ballot and transcript. Answers can be wrong: check the timestamps.'}
       </p>
       <SessionAskDeepiChat
         surface={`desirableproperties.org/session/${slug}`}

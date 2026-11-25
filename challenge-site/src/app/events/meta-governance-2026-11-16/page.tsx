@@ -10,6 +10,7 @@ import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
 import SessionBallot from '@/components/sessions/SessionBallot';
+import ProposeForNextSession from '@/components/sessions/ProposeForNextSession';
 import SessionChat from '@/components/sessions/SessionChat';
 import SessionSummary from '@/components/sessions/SessionSummary';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
@@ -229,6 +230,7 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
 
         {/* Signed-in only; not time-gated and not behind the listening-workspace flag. */}
         <SessionChat slug={SESSION.slug} pagePath={META_GOV_EVENT_PATH} heading={LABELS.chat} />
+        <ProposeForNextSession pagePath={META_GOV_EVENT_PATH} />
 
         <SessionAskDeepi
           slug={SESSION.slug}
