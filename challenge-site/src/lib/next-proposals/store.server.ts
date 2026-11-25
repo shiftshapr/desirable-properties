@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 import type pg from 'pg';
 import { readSession } from '@/lib/auth-session';
 import { DP_ROUNDUP_EVENTS } from '@/lib/dp-roundups';
+import { BOOK_CLUB, bookClubHref, bookClubProposalKey } from '@/data/book-club';
 import { getDpPool } from '@/lib/dp-db';
 import { allowHit } from '@/lib/listening/rate-limit.server';
 import { interimCouncil } from '@/lib/screening/council-members.server';
@@ -30,6 +31,18 @@ export function communityTargets(): TargetSession[] {
     href: `/roundups/${e.date}`,
   }));
 }
+
+/** Book club meetings take proposals too, keyed book-club-<date>; they close when the meeting starts. */
+export function bookClubTargets(): TargetSession[] {
+  return BOOK_CLUB.meetings.map((m) => ({
+    date: bookClubProposalKey(m.id),
+    title: `${BOOK_CLUB.title}: ${m.chapter}`,
+    startsAt: m.startsAt,
+    href: bookClubHref(m.id, 'proposals'),
+  }));
+}
+
+const allTargets = () => [...communityTargets(), ...bookClubTargets()];
 
 let schemaReady: Promise<void> | null = null;
 async function ensureSchema(pool: pg.Pool) {
@@ -168,7 +181,7 @@ export const proposalDeps: ProposalDeps = {
     const s = await readSession();
     return s && s.userId ? { userId: s.userId, displayName: s.displayName } : null;
   },
-  sessions: communityTargets,
+  sessions: allTargets,
   members: interimCouncil,
   rows,
   add,
@@ -185,7 +198,7 @@ export function upcomingTarget(now = new Date()): TargetSession | null {
 
 /** For server pages: the view for one session date, or null. Database errors show an empty list. */
 export async function readProposalsView(date: string): Promise<ProposalsView | null> {
-  const session = communityTargets().find((s) => s.date === date);
+  const session = allTargets().find((s) => s.date === date);
   if (!session) return null;
   const viewer = await proposalDeps.readSession().catch(() => null);
   return proposalsView(session, { ...proposalDeps, rows: (d) => rows(d).catch(() => ({ proposals: [], supports: [] })) }, viewer);

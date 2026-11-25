@@ -18,7 +18,7 @@
  *   list. Every email names the sender, says why it came and carries an opt-out link.
  */
 
-export type PadInviteKind = 'proposal' | 'session' | 'meeting';
+export type PadInviteKind = 'proposal' | 'session' | 'meeting' | 'bookclub';
 
 export type InviteContent = {
   kind: PadInviteKind;
@@ -183,6 +183,25 @@ export function meetingInvite(input: { path: string; dateLabel: string; title: s
   };
 }
 
+/** The book club pad's invite: the meeting being read next (or last), and the call to join. */
+export function bookClubInvite(input: { path: string; title: string; chapter: string; dateLabel: string; past: boolean }): InviteContent {
+  const title = shorten(`${input.title}: ${input.chapter}, ${input.dateLabel}`, 120);
+  return {
+    kind: 'bookclub',
+    key: input.path,
+    path: input.path,
+    title,
+    summary: shorten(
+      input.past
+        ? `We read ${input.chapter} of The Layered Web together. The summary, proposals and chat are on the pad.`
+        : `We're reading ${input.chapter} of The Layered Web together. Everyone is welcome; bring a question or an insight.`,
+      240,
+    ),
+    action: input.past ? 'See what the book club discussed' : 'Get the reading and join',
+    subject: shorten(`Book club: ${title}`, 140),
+  };
+}
+
 /* ---------- messages and links ---------- */
 
 /** The message people send: title, short summary, the action and the link. Plain, a few lines. */
@@ -327,7 +346,7 @@ const DAY = 24 * 3600_000;
 export function parsePadRef(body: Record<string, unknown>): { kind: PadInviteKind; key: string } | null {
   const kind = String(body.kind ?? '');
   const key = String(body.key ?? '').trim();
-  if (kind !== 'proposal' && kind !== 'session' && kind !== 'meeting') return null;
+  if (kind !== 'proposal' && kind !== 'session' && kind !== 'meeting' && kind !== 'bookclub') return null;
   if (!key || key.length > 200) return null;
   if (kind === 'proposal' && !/^[0-9a-f-]{8,36}$/i.test(key)) return null;
   if (kind !== 'proposal' && !/^\/[a-z0-9/_-]+$/i.test(key)) return null;
