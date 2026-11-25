@@ -42,7 +42,7 @@ const publicCache = new Map<string, { at: number; data: unknown }>();
 function adminEmail(): string {
   const explicit = (process.env.PAD_VOTES_GOVHUB_ADMIN_EMAIL || '').trim().toLowerCase();
   if (explicit) return explicit;
-  return (process.env.DP_ADMIN_EMAILS || process.env.ADMIN_EMAILS || '').split(',')[0]?.trim().toLowerCase() || '';
+  return (process.env.DP_ADMIN_EMAILS || process.env.ONCHAIN_ADMIN_EMAILS || '').split(',')[0]?.trim().toLowerCase() || '';
 }
 
 async function once(url: string, init: RequestInit): Promise<Response> {

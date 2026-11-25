@@ -100,7 +100,7 @@ async function main() {
   if (prod && opts.apply && !opts.prod) throw new Error('production database: add --prod to apply');
   const base = String(opts.govhub || process.env.GOVHUB_INTERNAL_BASE_URL || '').replace(/\/$/, '');
   if (!base) throw new Error('--govhub <base url> or GOVHUB_INTERNAL_BASE_URL is required');
-  const email = String(opts['admin-email'] || process.env.PAD_VOTES_GOVHUB_ADMIN_EMAIL || (process.env.DP_ADMIN_EMAILS || '').split(',')[0] || '')
+  const email = String(opts['admin-email'] || process.env.PAD_VOTES_GOVHUB_ADMIN_EMAIL || (process.env.DP_ADMIN_EMAILS || process.env.ONCHAIN_ADMIN_EMAILS || '').split(',')[0] || '')
     .trim()
     .toLowerCase();
   if (!secret() || !email) throw new Error('the Gov Hub internal secret and an admin email must be set in the environment');
