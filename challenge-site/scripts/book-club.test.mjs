@@ -38,7 +38,8 @@ test('meetings are well formed', () => {
     assert.match(x.id, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(!Number.isNaN(new Date(x.startsAt).getTime()));
     assert.ok(x.featured.length > 0);
-    for (const l of [...x.featured, ...x.extraCredit]) assert.ok(!/zoom\.us/i.test(l.href), 'no Zoom links on the pad');
+    for (const l of [...x.featured, ...x.badgeActivities]) assert.ok(!/zoom\.us/i.test(l.href ?? ''), 'no Zoom links on the pad');
+    assert.ok(x.badgeActivities.every((a) => a.label), 'every badge activity has a label');
   }
 });
 

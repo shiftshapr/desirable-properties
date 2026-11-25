@@ -132,3 +132,32 @@ test('GET: signed out sees status only; published shows totals', async () => {
   assert.equal(pub.results.voters, 1);
   assert.equal(pub.results.questions[0].outcome.result, 'passed');
 });
+
+// Gov Hub as the store of record (PAD_VOTES_BACKEND=govhub; handoff/specs/pad-votes-govhub-api.md).
+
+test('Gov Hub: an outage extension moves the close later; the status follows it', () => {
+  const extended = { status: 'open', publishedAt: null, closesAt: '2026-11-23T06:00:00.000Z' };
+  assert.equal(effectiveStatus(DEF, extended, new Date('2026-11-23T05:00:00Z')), 'open');
+  assert.equal(effectiveStatus(DEF, extended, new Date('2026-11-23T06:00:00Z')), 'closed');
+});
+
+test('Gov Hub: an unreachable store fails closed with 503 and the plain message', async () => {
+  const { deps } = fakeDeps();
+  deps.saveVotes = async () => ({ ok: false, code: 'unavailable' });
+  const res = await handleBallotPost(post({ votes: { q1: 'yes' } }), SLUG, deps);
+  assert.equal(res.status, 503);
+  const body = await res.json();
+  assert.equal(body.code, 'unavailable');
+  assert.match(body.error, /Your vote was not recorded/);
+});
+
+test('Gov Hub: published results come from the store count, not from vote rows', async () => {
+  const counted = { slug: SLUG, voters: 24, questions: [] };
+  const { deps } = fakeDeps({ override: { status: 'published', publishedAt: '2026-11-24T00:00:00Z' }, now: () => new Date('2026-11-25T00:00:00Z') });
+  deps.resultRows = async () => {
+    throw new Error('must not read vote rows');
+  };
+  deps.results = async () => counted;
+  const body = await (await handleBallotGet(SLUG, deps)).json();
+  assert.deepEqual(body.results, counted);
+});

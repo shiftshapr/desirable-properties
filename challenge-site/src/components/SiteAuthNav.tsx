@@ -282,6 +282,16 @@ export default function SiteAuthNav({ accountSettings = false }: { accountSettin
           <li role="none">
             <a
               role="menuitem"
+              href={govhubUrl('/account/sign-ins/')}
+              className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Connected sign-ins
+            </a>
+          </li>
+          <li role="none">
+            <a
+              role="menuitem"
               href="/support"
               className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white"
               onClick={() => setMenuOpen(false)}

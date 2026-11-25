@@ -19,6 +19,7 @@ import {
   type BookClubPhase,
 } from '@/data/book-club';
 import { publicBase } from '@/lib/pads/pad-email.server';
+import { fetchBookClubBadge } from '@/lib/pads/book-club-badge.server';
 import { bookClubInviteFor } from '@/lib/pads/pad-invite.server';
 import { readProposalsView } from '@/lib/next-proposals/store.server';
 import { SITE_NAME } from '@/lib/site-metadata';
@@ -111,7 +112,10 @@ export default async function BookClubPadPage({ searchParams }: Props) {
   const phase = bookClubPhase(meeting, now);
   const pagePath = bookClubHref(meeting.id);
   const proposalKey = bookClubProposalKey(meeting.id);
-  const proposals = await readProposalsView(proposalKey).catch(() => null);
+  const [proposals, liveBadge] = await Promise.all([
+    readProposalsView(proposalKey).catch(() => null),
+    fetchBookClubBadge(BOOK_CLUB.badge.govHubLayer, BOOK_CLUB.badge.govHubPad, meeting.id),
+  ]);
   const invite = bookClubInviteFor(BOOK_CLUB_PATH, now);
   const signInHref = `/login?next=${encodeURIComponent(`${pagePath}#proposals`)}`;
   const next = meetings.find((m) => m.startsAt > meeting.startsAt && bookClubPhase(m, now) !== 'after');
@@ -136,14 +140,74 @@ export default async function BookClubPadPage({ searchParams }: Props) {
           </ul>
         </>
       ) : null}
-      {meeting.extraCredit.length ? (
-        <>
-          <h3 className="mt-5 text-lg font-semibold text-white">Extra credit</h3>
-          <Links items={meeting.extraCredit} />
-        </>
-      ) : null}
     </Section>
   );
+
+  // "Earn a badge" (owner, 25 Nov 2026; was "Extra credit"): activities live on the Gov Hub pad, where members
+  // sign in, save their answers and see their own book club page. Without the Gov Hub pad, the local list shows.
+  const activities = liveBadge?.activities.length
+    ? liveBadge.activities
+    : meeting.badgeActivities.map((a, i) => ({ id: `a${i}`, label: a.label, href: a.href ?? null, note: a.note ?? null, prompt: a.prompt ?? null }));
+  const badgeName = liveBadge?.badgeName ?? BOOK_CLUB.badge.name;
+  const badge = activities.length ? (
+    <Section id="badge" title="Earn a badge">
+      <p className="text-base leading-relaxed text-slate-200">
+        {liveBadge?.intro ??
+          `Complete this week’s activities to earn the ${badgeName}. Each week you complete is added to your badge.`}
+      </p>
+      <p className="mt-2 text-base text-slate-300">
+        <span className="font-semibold text-white">{badgeName}</span> · {liveBadge?.feeNote ?? BOOK_CLUB.badge.feeNote}
+      </p>
+      <ol className="mt-4 list-decimal space-y-3 pl-5 text-base leading-relaxed text-slate-200">
+        {activities.map((a) => (
+          <li key={a.id}>
+            {a.href ? (
+              <a href={a.href} className={linkClass}>
+                {a.label}
+              </a>
+            ) : (
+              <span className="font-semibold text-white">{a.label}</span>
+            )}
+            {a.note ? <span className="text-slate-400"> · {a.note}</span> : null}
+            {a.prompt ? <div className="text-sm text-slate-400">{a.prompt}</div> : null}
+            {(liveBadge?.shared[a.id] ?? []).map((e) => (
+              <blockquote key={`${e.name}-${e.body.slice(0, 20)}`} className="mt-2 border-l-2 border-slate-600 pl-3 text-sm text-slate-300">
+                <span className="font-semibold text-slate-200">{e.name}:</span> {e.body}
+                {e.linkUrl ? (
+                  <>
+                    {' '}
+                    <a href={e.linkUrl} className={linkClass} rel="noopener noreferrer">
+                      link
+                    </a>
+                  </>
+                ) : null}
+              </blockquote>
+            ))}
+          </li>
+        ))}
+      </ol>
+      {liveBadge ? (
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <a href={liveBadge.saveUrl} className="inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
+            Save your answers on Gov Hub →
+          </a>
+          <a href={liveBadge.myPageUrl} className={linkClass}>
+            My book club page
+          </a>
+          {liveBadge.payUrl ? (
+            <a href={liveBadge.payUrl} className={linkClass} rel="noopener noreferrer">
+              {liveBadge.payLabel ?? 'Pay on Zeffy'}
+            </a>
+          ) : null}
+        </div>
+      ) : (
+        <p className="mt-4 text-sm text-slate-400">Saving your answers opens on Gov Hub soon.</p>
+      )}
+      <p className="mt-3 text-sm text-slate-400">
+        Your answers are private to you and the book club’s hosts unless you choose to show them on the pad.
+      </p>
+    </Section>
+  ) : null;
 
   const join = (
     <Section id="join" title="Join the book club">
@@ -315,12 +379,13 @@ export default async function BookClubPadPage({ searchParams }: Props) {
   );
 
   // Order by phase (owner, 25 Nov 2026): reading on top before; chat on top during; summary on top after, reading lower.
+  // "Earn a badge" follows the reading before and during, and the review after.
   const order: (ReactNode | null)[] =
     phase === 'before'
-      ? [reading, join, proposalBox, askDeepi, chat, votes, inviteBox]
+      ? [reading, badge, join, proposalBox, askDeepi, chat, votes, inviteBox]
       : phase === 'during'
-        ? [chat, reading, askDeepi, proposalBox, join]
-        : [summary, review, proposalBox, votes, reading, inviteBox, chat, askDeepi, join];
+        ? [chat, reading, badge, askDeepi, proposalBox, join]
+        : [summary, review, badge, proposalBox, votes, reading, inviteBox, chat, askDeepi, join];
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 text-slate-200 sm:py-12">
