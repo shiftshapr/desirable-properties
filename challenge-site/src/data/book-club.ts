@@ -9,6 +9,9 @@ export type BookClubLink = { label: string; href: string; note?: string };
 
 export type BookClubVote = { question: string; outcome?: string; href?: string };
 
+/** One "Earn a badge" activity: what to do and what to enter (members save their answers on Gov Hub). */
+export type BookClubActivity = { label: string; href?: string; note?: string; prompt?: string };
+
 export type BookClubMeeting = {
   /** YYYY-MM-DD, Pacific date of the meeting. Also the ?m= value on the pad. */
   id: string;
@@ -22,7 +25,11 @@ export type BookClubMeeting = {
   sessionLabel?: string;
   lumaUrl?: string;
   featured: BookClubLink[];
-  extraCredit: BookClubLink[];
+  /**
+   * "Earn a badge" (owner, 25 Nov 2026; was "Extra credit"). The live list comes from the Gov Hub pad
+   * (the-overweb/book-club, section "badge"); this copy shows only when Gov Hub has no such pad yet.
+   */
+  badgeActivities: BookClubActivity[];
   /** Prompts to think about while reading. */
   prompts: string[];
   /** After the meeting: Claude synthesis, participants can correct it. */
@@ -43,6 +50,13 @@ export const BOOK_CLUB = {
   /** Gov Hub waitlist for the club (the owner creates it in the Overweb layer). Null until it exists. */
   waitlistUrl: null as string | null,
   cadence: 'Weekly to start, then every two weeks or less.',
+  /** "Earn a badge": answers are saved on the Gov Hub pad (layer the-overweb, pad book-club). */
+  badge: {
+    name: 'PEARL Book Club badge',
+    feeNote: '$20 covers the inscription and every reinscription, payable via Zeffy.',
+    govHubLayer: 'the-overweb',
+    govHubPad: 'book-club',
+  },
   meetings: [
     {
       id: '2026-11-30',
@@ -58,16 +72,20 @@ export const BOOK_CLUB = {
         { label: 'Introduction', href: `${BOOK}/intro` },
         { label: 'Acknowledgements', href: `${BOOK}/acknowledgements` },
       ],
-      extraCredit: [
+      badgeActivities: [
+        { label: 'Read the front matter', href: `${BOOK}/book_cover`, prompt: 'One thing that stood out to you' },
         {
           label: 'The 23 November session, where the book club was decided',
           href: '/events/listening-2026-11-23#book-club',
+          prompt: 'What did you take from it?',
         },
         {
           label: 'Proposals reopened for Version 1.1',
           href: '/pads#proposals',
-          note: 'Changes people want in the next edition. Pick one you agree or disagree with.',
+          note: 'Changes people want in the next edition.',
+          prompt: 'Pick one you agree or disagree with: link to it and say why',
         },
+        { label: 'Your question or insight for the group', prompt: 'What would you bring to the meeting?' },
       ],
       prompts: [
         'What is this book trying to be, and who is it for?',
