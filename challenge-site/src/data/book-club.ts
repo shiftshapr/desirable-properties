@@ -53,7 +53,7 @@ export const BOOK_CLUB = {
   /** "Earn a badge": answers are saved on the Gov Hub pad (layer the-overweb, pad book-club). */
   badge: {
     name: 'PEARL Book Club badge',
-    feeNote: '$20 covers the inscription and every reinscription, payable via Zeffy.',
+    feeNote: 'Note there is a $20 service fee to inscribe the badge.',
     govHubLayer: 'the-overweb',
     govHubPad: 'book-club',
   },
