@@ -1,5 +1,6 @@
 export const DP_ADMIN_TAB_LABELS = {
   blueberries: 'Blueberries',
+  'participant-edits': 'Participant edits',
   support: 'Support',
   broadcast: 'Broadcast',
   messages: 'Site messages',
@@ -20,7 +21,7 @@ export const DP_ADMIN_GROUPS = [
   {
     key: 'community',
     label: 'Community',
-    tabs: ['blueberries'] as const satisfies readonly DpAdminTabKey[],
+    tabs: ['blueberries', 'participant-edits'] as const satisfies readonly DpAdminTabKey[],
   },
   {
     key: 'outreach',

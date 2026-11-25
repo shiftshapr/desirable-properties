@@ -50,6 +50,7 @@
     "test:v1-promo": "node --experimental-strip-types --test scripts/v1-promo.test.mjs",
     "test:phone-optin": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/phone-optin.test.mjs",
     "test:meeting-pads": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/meeting-pads.test.mjs",
+    "test:participant-edits": "node --experimental-strip-types --test scripts/participant-edits.test.mjs",
     "verify:astra": "node scripts/verify-astra-release.mjs",
     "import:astra": "node scripts/import-astra-release.mjs",
     "generate:astra-pdf": "python3 ../scripts/generate-astra-book-pdf.py"
