@@ -58,7 +58,9 @@ export async function padVotesFetch<T>(
   const url = `${getGovHubProxyBaseUrl()}/api/pad-votes${path.startsWith('/') ? path : `/${path}`}`;
   const headers: Record<string, string> = { Accept: 'application/json' };
   if (opts.as === 'admin') {
-    const secret = govhubInternalApiSecret();
+    // Gov Hub's proxy check (services/support_auth.hermes_api_secret) uses GOVHUB_HERMES_API_KEY first; on production
+    // the site's other internal secrets differ from it (25 Nov 2026), so send that one when it is set.
+    const secret = (process.env.GOVHUB_HERMES_API_KEY || '').trim() || govhubInternalApiSecret();
     const email = adminEmail();
     if (!secret || !email) return { ok: false, status: 500, data: { error: 'Gov Hub admin proxy is not configured', code: 'proxy_not_configured' }, unavailable: true };
     headers.Authorization = `Bearer ${secret}`;

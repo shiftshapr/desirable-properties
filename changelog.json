@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pad-votes-proxy-key-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Pad votes: the site's server signs in to Gov Hub with the right key",
+      "summary": "When the site reads pad votes from Gov Hub as its own server (council seats, support and objection lists, moving the existing votes), it now uses the key production Gov Hub expects. Nothing changes for visitors."
+    },
+    {
       "id": "pad-votes-staging-on-2026-11-25",
       "date": "2026-11-25",
       "status": "open",
