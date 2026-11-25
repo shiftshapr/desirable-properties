@@ -149,6 +149,9 @@ module.exports = {
         GOVHUB_INTERNAL_BASE_URL: localEnv.GOVHUB_INTERNAL_BASE_URL_STAGING || 'http://127.0.0.1:8001',
         GOVHUB_METAWEB_LAYER_ID: '22d90c89-2783-4726-a8b6-220dca505402',
         ONCHAIN_ADMIN_EMAILS: 'bridgitdao@gmail.com,daveed@bridgit.io',
+        // Pad votes on Gov Hub (handoff/specs/pad-votes-govhub-api.md): on for staging since 25 Nov 2026.
+        PAD_VOTES_BACKEND: localEnv.PAD_VOTES_BACKEND || 'govhub',
+        PAD_VOTES_GOVHUB_ADMIN_EMAIL: localEnv.PAD_VOTES_GOVHUB_ADMIN_EMAIL || '',
         HERMES_CHAT_URL: 'http://127.0.0.1:8790',
         CANOPI_API_BASE:
           localEnv.CANOPI_API_BASE_STAGING || localEnv.CANOPI_API_BASE || 'http://127.0.0.1:3003',

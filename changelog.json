@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pad-votes-staging-on-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Staging keeps pad votes on Gov Hub",
+      "summary": "On the staging site, session ballots, pad support and concern, supports, screening objections and the voter list now read and write Gov Hub. The existing staging votes were moved there first, and the counts and voter list matched. Production is unchanged until its own move."
+    },
+    {
       "id": "pad-votes-govhub-2026-11-25",
       "date": "2026-11-25",
       "status": "open",
