@@ -59,11 +59,13 @@ function dbName(url) {
 const iso = (v) => (v == null ? null : v instanceof Date ? v.toISOString() : String(v));
 
 function secret() {
+  // Gov Hub checks GOVHUB_HERMES_API_KEY first (services/support_auth.hermes_api_secret); on production it is the
+  // only one that matches.
   return (
+    process.env.GOVHUB_HERMES_API_KEY ||
     process.env.METAWEB_GOVHUB_INTERNAL_SECRET ||
     process.env.DP_AUTH_HANDOFF_SECRET ||
     process.env.METAWEB_OPS_SECRET ||
-    process.env.GOVHUB_HERMES_API_KEY ||
     process.env.DP_HERMES_API_KEY ||
     process.env.DP_SUPPORT_OPS_SECRET ||
     ''
