@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "account-linking-signin-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Linked accounts sign in as one person",
+      "summary": "When someone has linked two Gov Hub accounts, signing in with either one now opens the site as their main account. A session opened before the link is moved to the main account, so steering seats, co-editor seats and votes belong to one person."
+    },
+    {
       "id": "book-club-pad-2026-11-25",
       "date": "2026-11-25",
       "status": "open",
