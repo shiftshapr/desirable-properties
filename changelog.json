@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "pad-votes-govhub-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Pad votes can be kept on Gov Hub",
+      "summary": "Session ballots, proposal pad support and concern, next-session supports and council screening objections can now be stored on Gov Hub instead of this site, behind a switch that stays off until the existing votes are moved. Gov Hub keeps who voted apart from how they voted. If Gov Hub can't be reached, voting pauses with a clear message, and an outage of more than an hour moves the close later. The public voter list no longer shows non-abstain counts, which hinted at how someone voted; streaks now count the ballots someone voted on. Council screening uses the council's seats on Gov Hub."
+    },
+    {
       "id": "account-linking-signin-2026-11-25",
       "date": "2026-11-25",
       "status": "open",

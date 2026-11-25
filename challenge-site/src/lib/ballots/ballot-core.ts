@@ -48,8 +48,15 @@ export type BallotDefinition = {
 
 export type BallotStatus = 'not_open' | 'open' | 'closed' | 'published';
 
-/** The optional dp_ballot row: an early stop or published results. null = no row. */
-export type BallotOverride = { status: 'closed' | 'published'; publishedAt: string | null } | null;
+/**
+ * The optional dp_ballot row: an early stop or published results. null = no row. With Gov Hub as the store
+ * (PAD_VOTES_BACKEND=govhub) it is Gov Hub's view: status 'open' with a later closesAt when an outage extended the
+ * vote, or 'unavailable' when Gov Hub did not answer.
+ */
+export type BallotOverride =
+  | { status: 'closed' | 'published' | 'open' | 'scheduled'; publishedAt: string | null; closesAt?: string }
+  | { status: 'unavailable'; publishedAt: null; closesAt?: string }
+  | null;
 
 export type VoteRow = { question_key: string; option_key: string; user_id: string };
 
@@ -83,7 +90,8 @@ export function effectiveStatus(def: Pick<BallotDefinition, 'opensAt' | 'closesA
   if (override?.status === 'published') return 'published';
   const t = now.getTime();
   if (t < new Date(def.opensAt).getTime()) return 'not_open';
-  if (override?.status === 'closed' || t >= new Date(def.closesAt).getTime()) return 'closed';
+  const closesAt = override?.closesAt || def.closesAt;
+  if (override?.status === 'closed' || t >= new Date(closesAt).getTime()) return 'closed';
   return 'open';
 }
 
@@ -181,7 +189,7 @@ export function outcomeText(r: QuestionResult): string {
 
 export type BallotViewer = { userId: string; username: string; displayName: string | null };
 
-export type SaveResult = { ok: true; savedAt: string } | { ok: false; code: 'not_open' };
+export type SaveResult = { ok: true; savedAt: string } | { ok: false; code: 'not_open' | 'unavailable' | 'not_eligible' };
 
 export type BallotDeps = {
   readSession: () => Promise<BallotViewer | null>;
@@ -191,6 +199,8 @@ export type BallotDeps = {
   /** Re-checks the window and any early stop inside the write transaction, on the database clock. */
   saveVotes: (def: BallotDefinition, userId: string, votes: Record<string, string>) => Promise<SaveResult>;
   resultRows: (slug: string) => Promise<VoteRow[]>;
+  /** Published totals counted by the store itself (Gov Hub); when set, resultRows is not used. */
+  results?: (def: BallotDefinition) => Promise<BallotResults | null>;
   allowHit: (key: string, max: number, windowMs: number) => boolean;
   now?: () => Date;
 };
@@ -217,10 +227,17 @@ export async function handleBallotGet(slug: string, deps: BallotDeps): Promise<R
   const viewerOut = viewer
     ? { signedIn: true, votes: await deps.myVotes(slug, viewer.userId) }
     : { signedIn: false, votes: {} };
-  const results = status === 'published' ? tallyBallot(def, await deps.resultRows(slug)) : null;
+  const results =
+    status === 'published' ? (deps.results ? await deps.results(def) : tallyBallot(def, await deps.resultRows(slug))) : null;
   return json({
     ok: true,
-    ballot: { status, opensAt: def.opensAt, closesAt: def.closesAt, publishedAt: override?.publishedAt ?? null },
+    ballot: {
+      status,
+      opensAt: def.opensAt,
+      closesAt: override?.closesAt || def.closesAt,
+      publishedAt: override?.publishedAt ?? null,
+      ...(override?.status === 'unavailable' ? { unavailable: true } : {}),
+    },
     viewer: viewerOut,
     results,
   });
@@ -246,6 +263,15 @@ export async function handleBallotPost(request: Request, slug: string, deps: Bal
   const parsed = parseVotes(def, body);
   if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
   const saved = await deps.saveVotes(def, viewer.userId, parsed.votes);
+  if (!saved.ok && saved.code === 'unavailable') {
+    return json(
+      { ok: false, code: 'unavailable', error: "Voting is paused: we can't reach the vote store. Your vote was not recorded; please try again shortly." },
+      503,
+    );
+  }
+  if (!saved.ok && saved.code === 'not_eligible') {
+    return json({ ok: false, code: 'not_eligible', error: 'You are not eligible to vote on this ballot.' }, 403);
+  }
   if (!saved.ok) return json({ ok: false, code: 'not_open', error: 'Voting is not open.' }, 409);
   return json({ ok: true, savedAt: saved.savedAt, votes: await deps.myVotes(slug, viewer.userId) });
 }

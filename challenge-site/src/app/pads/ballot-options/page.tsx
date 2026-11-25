@@ -208,10 +208,11 @@ export default async function BallotOptionsPage({ searchParams }: Props) {
           <span className="ml-2 text-base font-normal text-slate-400">{voters.voters}</span>
         </h2>
         <p className="mt-3 max-w-3xl text-sm text-slate-400">
-          Who has been voting on the weekly session ballots: participation only, never how anyone voted. Non-abstain
-          votes are answers other than Abstain. The weekly streak counts the session ballots in a row, up to the most
-          recent closed one, with at least one non-abstain vote; a week without a ballot does not break it. Hide your
-          name on your <Link href="/account#participation" className={linkClass}>account page</Link>.
+          Who has been voting on the weekly session ballots: participation only, never how anyone voted. The weekly
+          streak counts the session ballots in a row that someone voted on, up to the most recent closed one; a week
+          without a ballot does not break it. Hide your name on your{' '}
+          <Link href="/account#participation" className={linkClass}>account page</Link>.
+          {voters.stale ? ' (The vote store is not answering right now; this is the last list we had.)' : null}
         </p>
         {voters.listed.length ? (
           <ol className="mt-4 grid gap-2 sm:grid-cols-2">

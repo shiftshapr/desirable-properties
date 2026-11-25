@@ -7,6 +7,7 @@ import { BOOK_CLUB, bookClubHref, bookClubProposalKey } from '@/data/book-club';
 import { getDpPool } from '@/lib/dp-db';
 import { allowHit } from '@/lib/listening/rate-limit.server';
 import { interimCouncil } from '@/lib/screening/council-members.server';
+import { councilSeats, padVotesBackend, primeCouncilSeats, signalRows, writeSignal } from '@/lib/pad-votes/govhub.server';
 import {
   LIMITS,
   nextSession,
@@ -200,8 +201,9 @@ export function upcomingTarget(now = new Date()): TargetSession | null {
 export async function readProposalsView(date: string): Promise<ProposalsView | null> {
   const session = allTargets().find((s) => s.date === date);
   if (!session) return null;
-  const viewer = await proposalDeps.readSession().catch(() => null);
-  return proposalsView(session, { ...proposalDeps, rows: (d) => rows(d).catch(() => ({ proposals: [], supports: [] })) }, viewer);
+  const deps = await activeProposalDeps();
+  const viewer = await deps.readSession().catch(() => null);
+  return proposalsView(session, { ...deps, rows: (d) => deps.rows(d).catch(() => ({ proposals: [], supports: [] })) }, viewer);
 }
 
 /** Every session's proposals, for the ballot options pad. */
@@ -212,4 +214,45 @@ export async function readAllProposals(): Promise<{ session: TargetSession; prop
     if (v && v.proposals.length) out.push({ session: s, proposals: v.proposals });
   }
   return out;
+}
+
+/* ---------------- Gov Hub as the store of record for supports (PAD_VOTES_BACKEND=govhub) ---------------- */
+// The proposals themselves stay here (they are content, not votes); each support is a Gov Hub signal
+// (pad_kind session_proposal, pad_ref = proposal id), named by design.
+
+async function govhubRowsFor(date: string): Promise<{ proposals: ProposalRow[]; supports: SupportRow[] }> {
+  const { proposals } = await rows(date);
+  const signals = await signalRows('session_proposal', proposals.map((p) => p.id));
+  return {
+    proposals,
+    supports: signals
+      .filter((r) => !r.superseded_at)
+      .map((r) => ({ proposal_id: r.pad_ref, user_id: r.user_id, name: r.name, created_at: r.created_at })),
+  };
+}
+
+const govhubSupport: ProposalDeps['support'] = async (s, v, id, _name, on): Promise<WriteResult> => {
+  const db = await pool();
+  const row = await target(db, s, id);
+  if (!row) return { ok: false, code: 'not_found' };
+  if (row.withdrawn_at || row.hidden_at) return { ok: false, code: 'gone' };
+  if (String(row.user_id) === v.userId) return { ok: false, code: 'own' };
+  if (Date.now() >= new Date(s.startsAt).getTime()) return { ok: false, code: 'closed' };
+  const r = await writeSignal('session_proposal', id, {}, on ? 'POST' : 'DELETE');
+  if (r.ok) return { ok: true };
+  throw new Error(`Gov Hub support: ${r.status} ${String(r.data.code || '')}`);
+};
+
+const govhubProposalDeps: ProposalDeps = {
+  ...proposalDeps,
+  members: councilSeats,
+  rows: govhubRowsFor,
+  support: govhubSupport,
+};
+
+/** The deps for this request: Gov Hub supports and council seats when PAD_VOTES_BACKEND=govhub. */
+export async function activeProposalDeps(): Promise<ProposalDeps> {
+  if (padVotesBackend() !== 'govhub') return proposalDeps;
+  await primeCouncilSeats();
+  return govhubProposalDeps;
 }

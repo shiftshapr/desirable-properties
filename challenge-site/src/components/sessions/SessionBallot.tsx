@@ -26,7 +26,8 @@ export default async function SessionBallot({ ballot, staging, id = 'vote', head
   const status = effectiveStatus(ballot, override, new Date());
   if (status === 'not_open' && !staging) return null;
   const session = await readSession().catch(() => null);
-  const closesAt = ballot.closesAt;
+  const closesAt = override?.closesAt || ballot.closesAt;
+  const extended = new Date(closesAt).getTime() !== new Date(ballot.closesAt).getTime();
   const signInHref = `/login?next=${encodeURIComponent(`${ballot.pagePath}#${id}`)}`;
 
   return (
@@ -49,7 +50,16 @@ export default async function SessionBallot({ ballot, staging, id = 'vote', head
               ? 'Voting has closed. Results will be published here.'
               : 'Voting has closed. The results are below.'}{' '}
         {status === 'published' ? null : <>Closes {pacificAndUtc(closesAt)}.</>}
+        {extended && status !== 'published' ? (
+          <> The close moved later because the vote store was unreachable for more than an hour while voting was open.</>
+        ) : null}
       </p>
+      {override?.status === 'unavailable' ? (
+        <p className="mt-3 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
+          Voting is paused: we can&apos;t reach the vote store right now. Votes can&apos;t be recorded until it is back;
+          please try again shortly.
+        </p>
+      ) : null}
       {/* The same every time: closed by default, only the title shows. */}
       <SessionCollapsible id={`${id}-rules`} title="Rules for this ballot" level={3} className="mt-4">
         <ul className="list-disc space-y-1 pl-5 text-sm text-slate-300">

@@ -75,9 +75,8 @@ export default function AccountParticipation() {
             {state.stats ? participationLine({ ...state.stats, ballots: state.stats.ballots.length }) : 'You have not voted on a session ballot yet.'}
           </p>
           <p className="mt-1 text-xs text-slate-400">
-            Counts only: the site never shows how you voted. Non-abstain votes are the answers you gave other than
-            Abstain. The weekly streak counts the session ballots in a row, up to the latest one, on which you cast at
-            least one.
+            Counts only: the site never shows how you voted. The weekly streak counts the session ballots in a row,
+            up to the latest one, that you voted on.
           </p>
           <label className="mt-4 flex items-start gap-3 text-sm text-slate-200" htmlFor="participation-show-name">
             <input

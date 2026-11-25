@@ -4,6 +4,7 @@ import type pg from 'pg';
 import { readSession } from '@/lib/auth-session';
 import { SESSION_SCREENINGS } from '@/data/sessions/2026-11-23-screening';
 import { interimCouncil } from '@/lib/screening/council-members.server';
+import { councilSeats, padVotesBackend, primeCouncilSeats, signalRows, writeSignal } from '@/lib/pad-votes/govhub.server';
 import {
   screeningView,
   type CouncilMember,
@@ -118,6 +119,63 @@ export const screeningDeps: ScreeningDeps = {
 export async function readScreeningView(slug: string): Promise<ScreeningView | null> {
   const def = SESSION_SCREENINGS[slug];
   if (!def) return null;
-  const viewer = await screeningDeps.readSession().catch(() => null);
-  return screeningView(def, { ...screeningDeps, rows: (s) => rows(s).catch(() => []) }, viewer);
+  const deps = await activeScreeningDeps();
+  const viewer = await deps.readSession().catch(() => null);
+  return screeningView(def, { ...deps, rows: (s) => deps.rows(s).catch(() => []) }, viewer);
+}
+
+/* ---------------- Gov Hub as the store of record (PAD_VOTES_BACKEND=govhub) ---------------- */
+
+/** Objections on one session's draft, from Gov Hub (pad_kind screening, pad_ref = ballot slug). */
+async function govhubRows(slug: string): Promise<ObjectionRow[]> {
+  const rows = await signalRows('screening', [slug]);
+  return rows
+    .filter((r) => !r.superseded_at || r.end_reason === 'withdrawn')
+    .map((r) => ({
+      id: r.id,
+      question_key: r.question_key,
+      member_user_id: r.user_id,
+      member_name: r.name,
+      reason: r.reason || '',
+      created_at: r.created_at,
+      withdrawn_at: r.end_reason === 'withdrawn' ? r.superseded_at : null,
+    }));
+}
+
+function inWindow(def: ScreeningDefinition, now = new Date()): boolean {
+  return now.getTime() >= new Date(def.opensAt).getTime() && now.getTime() < new Date(def.closesAt).getTime();
+}
+
+async function govhubAddObjection(def: ScreeningDefinition, _member: CouncilMember, questionKey: string, reason: string): Promise<WriteResult> {
+  if (!inWindow(def)) return { ok: false, code: 'closed' };
+  const r = await writeSignal('screening', def.slug, { question_key: questionKey, reason });
+  if (r.ok) return { ok: true };
+  if (r.status === 409) return { ok: false, code: 'already' };
+  throw new Error(`Gov Hub objection: ${r.status} ${String(r.data.code || '')}`);
+}
+
+async function govhubWithdrawObjection(def: ScreeningDefinition, member: CouncilMember, id: string): Promise<WriteResult> {
+  const row = (await govhubRows(def.slug)).find((r) => r.id === id);
+  if (!row) return { ok: false, code: 'not_found' };
+  if (row.member_user_id !== member.userId) return { ok: false, code: 'not_yours' };
+  if (row.withdrawn_at) return { ok: false, code: 'already_withdrawn' };
+  if (!inWindow(def)) return { ok: false, code: 'closed' };
+  const r = await writeSignal('screening', def.slug, { question_key: row.question_key }, 'DELETE');
+  if (r.ok) return { ok: true };
+  throw new Error(`Gov Hub objection withdrawal: ${r.status} ${String(r.data.code || '')}`);
+}
+
+const govhubScreeningDeps: ScreeningDeps = {
+  ...screeningDeps,
+  members: councilSeats,
+  rows: govhubRows,
+  addObjection: govhubAddObjection,
+  withdrawObjection: govhubWithdrawObjection,
+};
+
+/** The deps for this request: Gov Hub (council seats loaded first) when PAD_VOTES_BACKEND=govhub. */
+export async function activeScreeningDeps(): Promise<ScreeningDeps> {
+  if (padVotesBackend() !== 'govhub') return screeningDeps;
+  await primeCouncilSeats();
+  return govhubScreeningDeps;
 }

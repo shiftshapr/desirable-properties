@@ -8,6 +8,8 @@ import type { BallotDefinition, BallotDeps, BallotOverride, SaveResult, VoteRow 
 import { BALLOT_SCHEMA_SQL } from '@/lib/ballots/ballot-schema';
 import { getDpPool } from '@/lib/dp-db';
 import { allowHit } from '@/lib/listening/rate-limit.server';
+import { forgetPublic, PAD_VOTES_SCOPE, padVotesBackend, padVotesFetch, padVotesPublic } from '@/lib/pad-votes/govhub.server';
+import type { BallotResults } from '@/lib/ballots/ballot-core';
 
 /** Real dependencies for the ballot handlers (ballot-core.ts). Reads never create tables. */
 
@@ -31,6 +33,7 @@ async function tableExists(pool: pg.Pool, table: 'dp_ballot' | 'dp_ballot_vote')
 }
 
 export async function getBallotOverride(slug: string): Promise<BallotOverride> {
+  if (padVotesBackend() === 'govhub') return govhubOverride(slug);
   const pool = getDpPool();
   if (!pool || !(await tableExists(pool, 'dp_ballot'))) return null;
   const r = await pool.query('SELECT status, published_at FROM dp_ballot WHERE slug = $1', [slug]);
@@ -118,6 +121,10 @@ export async function ballotVoteRows(pool: pg.Pool, slug: string): Promise<VoteR
   }));
 }
 
+function ballotDepsDp(): BallotDeps {
+  return ballotDeps;
+}
+
 export const ballotDeps: BallotDeps = {
   readSession: async () => {
     const s = await readSession();
@@ -133,3 +140,97 @@ export const ballotDeps: BallotDeps = {
   },
   allowHit: (key, max, windowMs) => allowHit(key, max, windowMs),
 };
+
+/* ---------------- Gov Hub as the store of record (PAD_VOTES_BACKEND=govhub) ---------------- */
+
+type GhBallot = {
+  slug: string;
+  status: 'scheduled' | 'open' | 'closed' | 'counted' | 'published' | 'cancelled';
+  closes_at: string;
+  published_at: string | null;
+  definition_sha256: string;
+  results: BallotResults | null;
+};
+
+const registered = new Map<string, number>();
+const REGISTER_MS = 10 * 60_000;
+
+/** Register (or confirm) the definition in code with Gov Hub. Gov Hub refuses a change once the ballot has opened. */
+async function ensureRegistered(slug: string): Promise<void> {
+  const def = SESSION_BALLOTS[slug];
+  if (!def) return;
+  const at = registered.get(slug);
+  if (at && Date.now() - at < REGISTER_MS) return;
+  const r = await padVotesFetch(`/admin/${PAD_VOTES_SCOPE}/ballots`, {
+    as: 'admin',
+    method: 'POST',
+    body: { ...def, eligibility: { rule: 'signed_in' } },
+  });
+  if (r.ok) {
+    registered.set(slug, Date.now());
+    forgetPublic(`/ballots/${PAD_VOTES_SCOPE}/${slug}`);
+  } else if (!r.unavailable) {
+    // ballot_frozen: the definition in code differs from the one people voted on. Gov Hub keeps its own.
+    console.error('[pad-votes] ballot registration refused:', slug, r.status, String(r.data.code || ''));
+    registered.set(slug, Date.now());
+  }
+}
+
+async function ghBallot(slug: string): Promise<GhBallot | 'unavailable' | null> {
+  await ensureRegistered(slug);
+  const r = await padVotesPublic<GhBallot>(`/ballots/${PAD_VOTES_SCOPE}/${encodeURIComponent(slug)}`);
+  if (r.ok) return r.data;
+  return r.unavailable ? 'unavailable' : null;
+}
+
+async function govhubOverride(slug: string): Promise<BallotOverride> {
+  const b = await ghBallot(slug);
+  if (b === 'unavailable') return { status: 'unavailable', publishedAt: null };
+  if (!b) return null;
+  const status =
+    b.status === 'published' ? 'published' : b.status === 'open' ? 'open' : b.status === 'scheduled' ? 'scheduled' : 'closed';
+  return { status, publishedAt: b.published_at, closesAt: b.closes_at };
+}
+
+async function govhubMyVotes(slug: string): Promise<Record<string, string>> {
+  const r = await padVotesFetch<{ my_choices: Record<string, string> }>(`/ballots/${PAD_VOTES_SCOPE}/${encodeURIComponent(slug)}/me`, {
+    as: 'user',
+  });
+  return r.ok ? r.data.my_choices || {} : {};
+}
+
+async function govhubSaveVotes(def: BallotDefinition, _userId: string, votes: Record<string, string>): Promise<SaveResult> {
+  await ensureRegistered(def.slug);
+  const r = await padVotesFetch<{ cast_at: string }>(`/ballots/${PAD_VOTES_SCOPE}/${encodeURIComponent(def.slug)}/vote`, {
+    as: 'user',
+    method: 'POST',
+    body: { votes },
+  });
+  if (r.ok) {
+    forgetPublic(`/ballots/${PAD_VOTES_SCOPE}/${def.slug}`);
+    return { ok: true, savedAt: r.data.cast_at || new Date().toISOString() };
+  }
+  if (r.unavailable) return { ok: false, code: 'unavailable' };
+  if (r.status === 403 && r.data.code === 'not_eligible') return { ok: false, code: 'not_eligible' };
+  if (r.status === 409) return { ok: false, code: 'not_open' };
+  throw new Error(`Gov Hub refused the vote: ${r.status} ${String(r.data.code || '')}`);
+}
+
+async function govhubResults(def: BallotDefinition): Promise<BallotResults | null> {
+  const b = await ghBallot(def.slug);
+  return b && b !== 'unavailable' ? b.results : null;
+}
+
+const govhubBallotDeps: BallotDeps = {
+  ...ballotDepsDp(),
+  getOverride: (slug) => govhubOverride(slug).catch(() => ({ status: 'unavailable', publishedAt: null }) as BallotOverride),
+  myVotes: govhubMyVotes,
+  saveVotes: govhubSaveVotes,
+  resultRows: async () => [],
+  results: govhubResults,
+};
+
+/** The deps the ballot route uses: Gov Hub when PAD_VOTES_BACKEND=govhub, else the DP site's Postgres. */
+export function activeBallotDeps(): BallotDeps {
+  return padVotesBackend() === 'govhub' ? govhubBallotDeps : ballotDeps;
+}
