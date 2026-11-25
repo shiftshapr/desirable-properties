@@ -38,6 +38,7 @@
     "test:session-chat": "node --experimental-strip-types --test scripts/session-chat.test.mjs",
     "test:session-ballot": "node --experimental-strip-types --test scripts/session-ballot.test.mjs",
     "test:council-screening": "node --experimental-strip-types --test scripts/council-screening.test.mjs",
+    "test:next-session-proposals": "node --experimental-strip-types --test scripts/next-session-proposals.test.mjs",
     "test:option-provenance": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/option-provenance.test.mjs",
     "test:ballot-participation": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/ballot-participation.test.mjs",
     "test:proposal-pads": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/proposal-pads.test.mjs scripts/pad-summaries.test.mjs scripts/pad-invite.test.mjs",
