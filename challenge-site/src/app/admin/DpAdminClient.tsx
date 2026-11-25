@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SupportAdminClient from '@/app/support/admin/SupportAdminClient';
 import BlueberriesAdminPanel from '@/app/admin/BlueberriesAdminPanel';
+import ParticipantEditsPanel from '@/app/admin/ParticipantEditsPanel';
 import BroadcastAdminPanel from '@/app/admin/BroadcastAdminPanel';
 import SiteMessagesAdminPanel from '@/app/admin/SiteMessagesAdminPanel';
 import InviteContentAdminPanel from '@/app/admin/InviteContentAdminPanel';
@@ -153,6 +154,7 @@ export default function DpAdminClient({ landingPads = false }: { landingPads?: b
           )}
 
           {tab === 'blueberries' ? <BlueberriesAdminPanel /> : null}
+          {tab === 'participant-edits' ? <ParticipantEditsPanel /> : null}
           {tab === 'support' ? (
             <div className="-mx-4 sm:mx-0">
               <SupportAdminClient />
