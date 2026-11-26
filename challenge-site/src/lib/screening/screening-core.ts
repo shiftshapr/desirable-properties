@@ -154,11 +154,12 @@ export function outcomeLabel(q: Pick<QuestionScreening, 'outcome' | 'standing'>)
 
 /* ---------------- API handlers ---------------- */
 
-export type ScreeningViewer = { userId: string };
+/** The signed-in visitor. `name` is their account's display name, shown back to them only ("Signed in as …"). */
+export type ScreeningViewer = { userId: string; name?: string | null };
 
 export type WriteResult =
   | { ok: true }
-  | { ok: false; code: 'closed' | 'already' | 'not_found' | 'not_yours' | 'already_withdrawn' };
+  | { ok: false; code: 'closed' | 'already' | 'not_found' | 'not_yours' | 'already_withdrawn' | 'sign_in' | 'not_member' };
 
 export type ScreeningDeps = {
   readSession: () => Promise<ScreeningViewer | null>;
@@ -183,20 +184,33 @@ function json(body: unknown, status = 200): Response {
 export type ScreeningView = {
   ok: true;
   screening: { status: ScreeningStatus; opensAt: string; windowStartsAt: string; closesAt: string };
-  viewer: { signedIn: boolean; member: boolean; name: string | null };
+  /**
+   * name: the council seat's name when the viewer is a member. signedInAs: the viewer's own account name, so a
+   * signed-in person who is not on the council is told so rather than seeing no button and no reason.
+   */
+  viewer: { signedIn: boolean; member: boolean; name: string | null; signedInAs: string | null };
+  /** False when the council list came back empty (e.g. no seats on Gov Hub): nobody can object, and the page says so. */
+  councilAvailable: boolean;
   questions: QuestionScreening[];
 };
 
 /** The public state of the screening plus the viewer's role. Shared by the page (server) and GET. */
 export async function screeningView(def: ScreeningDefinition, deps: ScreeningDeps, viewer: ScreeningViewer | null): Promise<ScreeningView> {
   const now = deps.now ? deps.now() : new Date();
-  const member = memberFor(deps.members(), viewer?.userId);
+  const members = deps.members();
+  const member = memberFor(members, viewer?.userId);
   const status = screeningStatus(def, now);
   const rows = status === 'not_open' ? [] : await deps.rows(def.slug);
   return {
     ok: true,
     screening: { status, opensAt: def.opensAt, windowStartsAt: def.windowStartsAt, closesAt: def.closesAt },
-    viewer: { signedIn: Boolean(viewer?.userId), member: Boolean(member), name: member?.name ?? null },
+    viewer: {
+      signedIn: Boolean(viewer?.userId),
+      member: Boolean(member),
+      name: member?.name ?? null,
+      signedInAs: viewer?.userId ? (viewer.name || '').trim() || null : null,
+    },
+    councilAvailable: members.length > 0,
     questions: screenQuestions(def, rows, now, member ? member.userId : null),
   };
 }
@@ -261,6 +275,8 @@ export async function handleScreeningPost(request: Request, slug: string, deps: 
       not_found: [404, 'Objection not found.'],
       not_yours: [403, 'You can only withdraw your own objection.'],
       already_withdrawn: [409, 'That objection was already withdrawn.'],
+      sign_in: [401, 'Your sign-in has expired. Sign in again, then object.'],
+      not_member: [403, 'The vote store does not list you as a council member, so the objection was not recorded.'],
     };
     const [st, error] = map[result.code];
     return json({ ok: false, code: result.code, error }, st);

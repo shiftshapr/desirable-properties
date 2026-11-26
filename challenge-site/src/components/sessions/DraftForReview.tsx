@@ -43,6 +43,8 @@ export default function DraftForReview(
         screening?: { slug: string; view: ScreeningView; signInHref: string } | null;
         /** Session slug for the per-option "Proposed by · Seconded by" lines on the draft ballot. */
         provenanceSession?: string;
+        /** The draft ballot's banner for the current phase (draftBallotBanner); else the draft file's header. */
+        ballotBanner?: string | null;
       }
   ),
 ) {
@@ -95,6 +97,7 @@ export default function DraftForReview(
             title={labels.draftBallot}
             screening={props.screening ? { slug: props.screening.slug, view: props.screening.view } : undefined}
             session={props.provenanceSession}
+            header={props.ballotBanner}
           />
           {props.draft.interimProposal ? <InterimProposal proposal={props.draft.interimProposal} turns={props.turns} /> : null}
           {props.draft.processText ? (

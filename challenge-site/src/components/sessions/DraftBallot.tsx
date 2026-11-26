@@ -16,6 +16,7 @@ export default function DraftBallot({
   title = "Draft ballot questions",
   screening,
   session,
+  header,
 }: {
   ballot: SessionDraft["ballot"];
   /** Meeting-specific: sessionSectionLabels(meeting).draftBallot. */
@@ -24,6 +25,8 @@ export default function DraftBallot({
   screening?: { slug: string; view: ScreeningView };
   /** Session slug: shows who proposed and seconded each option (src/data/sessions/option-provenance.ts). */
   session?: string;
+  /** Banner derived from the session's phase (draftBallotBanner); falls back to the draft file's header. */
+  header?: string | null;
 }) {
   return (
     <SessionCollapsible
@@ -33,7 +36,7 @@ export default function DraftBallot({
       badge={<SessionLabel kind="Claude synthesis" />}
     >
       <p className="rounded-lg border border-amber-700/50 bg-amber-950/30 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-amber-200">
-        {ballot.header}
+        {header || ballot.header}
       </p>
       <ol className="mt-4 space-y-4">
         {ballot.questions.map((q) => {

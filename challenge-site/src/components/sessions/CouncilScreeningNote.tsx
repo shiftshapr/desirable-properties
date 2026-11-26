@@ -24,7 +24,7 @@ export default function CouncilScreeningNote({ view, signInHref }: { view: Scree
           : view.viewer.member
             ? `You are signed in as a council member (${view.viewer.name}). Open the draft ballot questions to object to a question.`
             : view.viewer.signedIn
-              ? 'Interim council: Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar.'
+              ? `${view.viewer.signedInAs ? `Signed in as ${view.viewer.signedInAs}. ` : ''}Only interim council members can object: Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar.`
               : (
                 <>
                   Interim council: Daveed Benjamin, Leandra Preston, Michelle Thuo, Phahsa and Renad Baomar. Council
@@ -32,6 +32,12 @@ export default function CouncilScreeningNote({ view, signInHref }: { view: Scree
                 </>
               )}
       </p>
+      {s.status !== 'closed' && !view.councilAvailable ? (
+        <p className="mt-1.5 font-semibold text-amber-200">
+          The council list is not available right now, so objections cannot be recorded. Please tell the host in the
+          session chat.
+        </p>
+      ) : null}
     </div>
   );
 }
