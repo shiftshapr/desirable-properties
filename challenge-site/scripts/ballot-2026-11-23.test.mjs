@@ -63,7 +63,7 @@ test('the 9 draft questions, verbatim: text, options with Abstain, context notes
     assert.equal(q.label, d.label ?? undefined);
   });
   assert.match(DEF.questions[0].correction, /^Corrected by the host on 25 November, after the review closed/);
-  assert.match(DEF.questions[0].context, /25% of the active voting body is 7 votes/);
+  assert.match(DEF.questions[0].context, /75% of the active voting body is 21 votes/);
   // Multiple choice for questions 1 and 9 (one option, as on 16 Nov); Yes/No for 2 to 8.
   assert.deepEqual(DEF.questions.map((q) => q.kind), ['choice', ...Array(7).fill('yes_no'), 'choice']);
   assert.deepEqual(DEF.questions[0].options.map((o) => o.key), ['a', 'b', 'c', 'd', 'abstain']);
@@ -232,7 +232,7 @@ test('published results: two-tier for Yes/No, most votes for multiple choice, dr
   assert.equal(by.q3.outcome.result, 'open_for_review');
   assert.equal(outcomeText(by.q3), 'Kept open for review (11 Yes, 9 No)');
   assert.equal(by.q4.outcome.result, 'not_passed');
-  assert.deepEqual(by.q1.outcome, { result: 'winner', option: 'd', label: '25% of the active voting body' });
+  assert.deepEqual(by.q1.outcome, { result: 'winner', option: 'd', label: '75% of the active voting body' });
   assert.equal(by.q9.outcome.result, 'tie');
 });
 
