@@ -176,11 +176,11 @@ export default async function Home() {
               </div>
               <div className="flex gap-6 text-sm text-slate-400">
                 <p>
-                  <span className="block text-2xl font-semibold text-white">{dps.length}</span>
+                  <span className="block text-2xl font-semibold text-white">{dps.length}</span>{' '}
                   canonical DPs
                 </p>
                 <p>
-                  <span className="block text-2xl font-semibold text-white">{activeWorkgroups}</span>
+                  <span className="block text-2xl font-semibold text-white">{activeWorkgroups}</span>{' '}
                   active workgroups
                 </p>
               </div>
