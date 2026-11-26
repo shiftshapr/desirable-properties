@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { test } from 'node:test';
 import { BALLOT_2026_11_16 } from '../src/data/sessions/2026-11-16-ballot.ts';
+import { BALLOT_2026_11_23 } from '../src/data/sessions/2026-11-23-ballot.ts';
 import { OPTION_PROVENANCE as R } from '../src/data/sessions/option-provenance.ts';
 import { draftOptionKey, namesOn, outcomeText, seconds, withScreening } from '../src/lib/sessions/option-provenance-core.ts';
 
@@ -124,4 +125,15 @@ test('ids are unique, and council screening moves a draft option on or off the b
   assert.equal(withScreening(r, 'held_back').status, 'screened_out');
   const approved = R.find((x) => x.id === 'meta-governance-2026-11-16/q1/yes');
   assert.equal(withScreening(approved, 'held_back').status, 'approved');
+});
+
+test('every 23 Nov ballot option has its record: same key, same label, same question (the page shows it beside the option)', () => {
+  for (const q of BALLOT_2026_11_23.questions)
+    for (const o of q.options.filter((x) => x.key !== 'abstain')) {
+      const r = R.find((x) => x.id === `${BALLOT_2026_11_23.slug}/${q.key}/${o.key}`);
+      assert.ok(r, `${q.key}/${o.key} missing`);
+      assert.equal(r.optionLabel, o.label, r.id);
+      assert.equal(r.questionN, q.n, r.id);
+      assert.equal(r.status, 'on_draft_ballot', `${r.id}: until the screening outcome moves it on or off the ballot`);
+    }
 });
