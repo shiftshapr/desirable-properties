@@ -1254,7 +1254,7 @@ export const OPTION_PROVENANCE: readonly OptionProvenance[] = [
       "at": "00:37:04",
       "quote": "Maybe we could think about it as 25% of the active voting body"
     },
-    "notes": "\"Active voting body\" needs a definition before the vote.",
+    "notes": "Defined by the host on 25 November: the people who have voted in a ballot or taken part in a session during the pilot (28 people as of 25 November).",
     "status": "on_draft_ballot",
     "seconders": [],
     "outcome": null

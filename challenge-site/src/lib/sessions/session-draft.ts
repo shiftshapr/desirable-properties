@@ -11,7 +11,15 @@ export type SessionDraft = {
   }>;
   ballot: {
     header: string;
-    questions: Array<{ n: number; context: string; question: string; options: string[]; label: DraftLabel }>;
+    questions: Array<{
+      n: number;
+      context: string;
+      question: string;
+      options: string[];
+      label: DraftLabel;
+      /** A dated note, shown under the context, when the host corrected the context after the review. Optional. */
+      correction?: string;
+    }>;
   };
   /** A proposal made after the meeting (16 Nov: the interim council). Optional. */
   interimProposal?: { title: string; by: string; text: string };
