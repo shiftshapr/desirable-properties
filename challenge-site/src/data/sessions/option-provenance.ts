@@ -1245,7 +1245,7 @@ export const OPTION_PROVENANCE: readonly OptionProvenance[] = [
     "questionN": 1,
     "questionText": "What quorum should apply to ballots during the four-session pilot?",
     "option": "d",
-    "optionLabel": "25% of the active voting body",
+    "optionLabel": "75% of the active voting body",
     "origin": "host",
     "proposer": "Daveed Benjamin",
     "proposerEvidence": {
@@ -1254,7 +1254,7 @@ export const OPTION_PROVENANCE: readonly OptionProvenance[] = [
       "at": "00:37:04",
       "quote": "Maybe we could think about it as 25% of the active voting body"
     },
-    "notes": "Defined by the host on 25 November: the people who have voted in a ballot or taken part in a session during the pilot (28 people as of 25 November).",
+    "notes": "Defined by the host on 25 November: the people who have voted in a ballot or taken part in a session during the pilot (about 28 people as of 25 November). Changed by the host on 26 November, during council screening, from 25% to 75% of the active voting body (21 votes), since 25% would be only 7 votes.",
     "status": "on_draft_ballot",
     "seconders": [],
     "outcome": null

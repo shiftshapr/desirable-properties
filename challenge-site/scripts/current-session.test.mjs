@@ -111,14 +111,16 @@ test('23 Nov transcript and draft: real names only, no Zoom links, emails or Zoo
   assert.equal(draft.ballot.questions.length, draft.decisions.length);
   for (const q of draft.ballot.questions) assert.ok(q.options.includes('Abstain'), q.question);
   // Question 1 (host ruling, 25 Nov): the voting body (76, 19 votes) and the active voting body (28, 7 votes) are
-  // counted separately, and the correction is dated and shown. The options themselves do not change.
+  // counted separately, and the correction is dated and shown. 26 Nov: the last option changed from 25% to 75% of the
+  // active voting body (host, during screening); its key (d) is unchanged.
   const q1 = draft.ballot.questions.find((q) => q.n === 1);
-  assert.deepEqual(q1.options, ['No quorum', 'A minimum of 20 votes', '25% of the voting body', '25% of the active voting body', 'Abstain']);
+  assert.deepEqual(q1.options, ['No quorum', 'A minimum of 20 votes', '25% of the voting body', '75% of the active voting body', 'Abstain']);
   assert.match(q1.context, /the voting body is the 76 people/);
-  assert.match(q1.context, /As of 25 November that is 28 people/);
-  assert.match(q1.context, /25% of the active voting body is 7 votes/);
+  assert.match(q1.context, /As of 25 November that is about 28 people/);
+  assert.match(q1.context, /75% of the active voting body is 21 votes/);
   assert.doesNotMatch(q1.context, /active voting body today is the 76/);
   assert.match(q1.correction, /^Corrected by the host on 25 November, after the review closed/);
+  assert.match(q1.correction, /Changed by the host on 26 November, during council screening/);
 });
 
 test('session labels name the meeting by date and title', async () => {
