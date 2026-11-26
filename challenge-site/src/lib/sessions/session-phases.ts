@@ -149,6 +149,12 @@ const votingOver = (clock: PhaseClock) =>
 
 const shortPt = (iso: string) => pacificAndUtc(iso).replace(/ \(.*\)$/, '');
 
+/** The phase named after "Now:" in the tracker: "Voting closed" once the vote's clock has run out (until a decision entry). */
+export function phaseNowLabel(phase: SessionPhase | null, clock: PhaseClock = {}): string | null {
+  if (phase === 'Voting open' && votingOver(clock)) return 'Voting closed';
+  return phase;
+}
+
 /** The phase pill in the sticky header: the phase, plus "until …" while the council screens or the vote runs. */
 export function phasePillLabel(phase: SessionPhase | null, clock: PhaseClock = {}): string | null {
   if (phase === 'Council screening' && clock.screeningClosesAt) {
@@ -239,7 +245,7 @@ export function phaseCallToAction(
     case 'Ready for voting':
       return { text: 'The ballot is ready and opens soon.', label: 'See the ballot', anchor: 'vote' };
     case 'Voting open':
-      if (votingOver(opts)) return { text: 'Voting has closed. Results will be published on the ballot.', label: 'See the ballot', anchor: 'vote' };
+      if (votingOver(opts)) return { text: 'Results to follow.', label: 'See the ballot', anchor: 'vote' };
       return {
         text: opts.closesLabel ? `Voting is open until ${opts.closesLabel}.` : 'Voting is open.',
         label: 'Go to the vote',
