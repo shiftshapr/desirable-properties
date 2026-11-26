@@ -4,30 +4,6 @@
   "site": "desirableproperties.org",
   "entries": [
     {
-      "id": "victor-meeting-pad-public-2026-11-26",
-      "date": "2026-11-26",
-      "status": "open",
-      "title": "Victor Vorski's meeting pad is public, with consent",
-      "summary": "Victor Vorski agreed on 26 Nov 2026 to be named, to the pad from the 25 Nov call with Daveed being public, and to its transcript and quotes being published. The pad covers bringing agents onto Canopi, paid work with networks of small and mid-sized businesses, and running a story workstream next to the code. It now names Victor, is served on the live site and listed on /pads, shows a short verbatim quote on each of its 13 tracker items, and has a timestamped transcript (profanity left out; there is no video).",
-      "changes": [
-        "challenge-site/src/data/meeting-pads/2026-11-25-agents-and-stories.ts",
-        "challenge-site/src/data/meeting-pads/2026-11-25-agents-and-stories.transcript.json",
-        "challenge-site/src/data/meeting-pads/transcripts.ts",
-        "challenge-site/scripts/meeting-pads.test.mjs"
-      ]
-    },
-    {
-      "id": "meeting-pad-2026-11-25-preview-2026-11-26",
-      "date": "2026-11-26",
-      "status": "open",
-      "title": "A meeting pad for the 25 Nov call on agents and stories (staging preview)",
-      "summary": "A new meeting pad covers a 25 Nov 2026 call about bringing agents onto Canopi, paid work with business ecosystems, and running a story workstream next to the code. It has the same shape as the 20 Nov pad: synthesis, key points, a tracker of 13 items, follow-ups and next steps. The participant has not yet agreed to be named, so the pad uses a pseudonym, paraphrases, and has no transcript, video or quotes. It is a staging preview only: not listed on /pads, not indexed, and not served on the live site.",
-      "changes": [
-        "challenge-site/src/data/meeting-pads/2026-11-25-agents-and-stories.ts",
-        "challenge-site/src/data/meeting-pads/index.ts"
-      ]
-    },
-    {
       "id": "ballot-2026-11-23-ready-2026-11-26",
       "date": "2026-11-26",
       "status": "open",
