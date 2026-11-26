@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import FaqList from '@/components/FaqList';
 import { SITE_FAQ_COUNT, SITE_FAQ_SECTIONS } from '@/data/site-faq';
-import { getCurrentMilestones } from '@/lib/challengeTimeline';
+import { getCurrentMilestones, loadChallengeMilestones } from '@/lib/challengeTimeline';
 import type { Metadata } from 'next';
 import V1PhaseText from '@/components/v1/V1PhaseText';
 
@@ -11,9 +11,12 @@ export const metadata: Metadata = {
     'Frequently asked questions about the Desirable Properties Challenge, Meta-Layer, workgroups, Discuss / Patch / Insert on the book, and the Interface Governance Hub.',
 };
 
-export default function FaqPage() {
+// Timeline read live from meta-console every 5 minutes (lib/challengeTimeline.ts).
+export const revalidate = 300;
+
+export default async function FaqPage() {
   const now = new Date();
-  const currentMilestones = getCurrentMilestones(now);
+  const currentMilestones = getCurrentMilestones(now, await loadChallengeMilestones());
 
   const sections = SITE_FAQ_SECTIONS.map((section) => {
     if (section.id !== 'timeline') return section;

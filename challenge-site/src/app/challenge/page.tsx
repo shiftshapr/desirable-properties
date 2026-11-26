@@ -8,6 +8,7 @@ import {
   getActiveAndUpcoming,
   getCurrentMilestones,
   getPastMilestones,
+  loadChallengeMilestones,
   isBeforeWorkgroupFormation,
   isWorkgroupFormationPhase,
 } from '@/lib/challengeTimeline';
@@ -32,14 +33,15 @@ export const revalidate = 300;
 
 export default async function ChallengePage() {
   const now = new Date();
-  const [workgroups, memberWorkgroupIds] = await Promise.all([
+  const [workgroups, memberWorkgroupIds, timeline] = await Promise.all([
     fetchChallengeWorkgroups(),
     readSessionMemberWorkgroupIds(),
+    loadChallengeMilestones(),
   ]);
 
-  const currentMilestones = getCurrentMilestones(now);
-  const activeAndUpcoming = getActiveAndUpcoming(now);
-  const past = getPastMilestones(now);
+  const currentMilestones = getCurrentMilestones(now, timeline);
+  const activeAndUpcoming = getActiveAndUpcoming(now, timeline);
+  const past = getPastMilestones(now, timeline);
   const showWorkgroupPanel =
     isWorkgroupFormationPhase(now) || isBeforeWorkgroupFormation(now);
 
