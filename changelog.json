@@ -4,6 +4,18 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "homepage-stats-spacing-status-case-2026-11-26",
+      "date": "2026-11-26",
+      "status": "open",
+      "title": "Homepage stats and DP status labels read correctly in page text",
+      "summary": "The homepage stats now read \"24 canonical DPs\" and \"25 active workgroups\" in the page text, and the workgroup formation counter has the same missing space added. Every DP card's status now reads the same way (\"Active\"); DP22 to DP24 had come through from Gov Hub in lowercase. Nothing changes on screen; screen readers, copied text and link previews now get the right words.",
+      "changes": [
+        "challenge-site/src/app/page.tsx",
+        "challenge-site/src/components/DPCardGrid.tsx",
+        "challenge-site/src/components/WorkgroupFormationStatus.tsx"
+      ]
+    },
+    {
       "id": "ballot-2026-11-23-ready-2026-11-26",
       "date": "2026-11-26",
       "status": "open",
