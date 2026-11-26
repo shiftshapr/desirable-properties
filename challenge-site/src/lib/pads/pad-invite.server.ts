@@ -17,7 +17,7 @@ import type pg from 'pg';
 import { readSession } from '@/lib/auth-session';
 import { effectiveStatus } from '@/lib/ballots/ballot-core';
 import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 import { isEmailOptedOut } from '@/lib/dp-broadcast-preferences-store';
 import { getDpPool } from '@/lib/dp-db';
 import { DP_ROUNDUP_EVENTS } from '@/lib/dp-roundups';

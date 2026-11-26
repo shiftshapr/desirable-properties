@@ -55,15 +55,23 @@ test('during screening: the council is screening until Thursday 26 November, 8:0
   assert.doesNotMatch(s.banner, /pending host approval|not yet open/i);
 });
 
-test('after the screening close (no release needed): screening closed, ballot being prepared', () => {
-  const s = at('2026-11-27T04:00:00Z');
-  assert.equal(s.current, 'Council screening');
-  assert.equal(s.pill, 'Council screening closed: ballot being prepared');
-  assert.match(s.cta.text, /has closed/);
-  assert.match(s.banner, /^Council screening closed Thursday 26 November, 8:00 PM Pacific\. Questions with no standing objection go to the ballot/);
+test('screening closed without the vote on the clock: "ballot being prepared" (labels kept for such a session)', () => {
+  const now = new Date('2026-11-27T04:00:00Z');
+  const clock = { now, screeningClosesAt };
+  assert.equal(phasePillLabel('Council screening', clock), 'Council screening closed: ballot being prepared');
+  assert.match(phaseCallToAction('Council screening', clock).text, /has closed/);
+  assert.match(
+    draftBallotBanner('Council screening', { ...clock, reviewClosesAt }, RULES),
+    /^Council screening closed Thursday 26 November, 8:00 PM Pacific\. Questions with no standing objection go to the ballot/,
+  );
 });
 
-test('only clock phases may be scheduled: council screening now may, voting may not', () => {
-  const bad = { ...SESSION, phaseHistory: [{ phase: 'Voting open', by: 'x', at: '2026-11-27T04:00:00Z', scheduled: true }] };
+test('at the screening close the 23 Nov vote opens on the clock (no release needed)', () => {
+  const s = at('2026-11-27T04:00:00Z');
+  assert.equal(s.current, 'Voting open');
+});
+
+test('only clock phases may be scheduled: the vote opening may, a decision may not', () => {
+  const bad = { ...SESSION, phaseHistory: [{ phase: 'Decision recorded', by: 'x', at: '2026-11-30T04:00:00Z', scheduled: true }] };
   assert.throws(() => phaseRows(bad, new Date()), /may be scheduled/);
 });

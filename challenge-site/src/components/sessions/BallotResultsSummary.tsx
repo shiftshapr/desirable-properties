@@ -37,7 +37,7 @@ export default function BallotResultsSummary({ slug, pageHref, heading, cta }: {
           <li key={q.key} className="text-base">
             <span className="text-slate-400">{q.n}. </span>
             <span className="text-slate-100">{q.question}</span>
-            <span className={`ml-2 rounded border px-1.5 text-xs ${q.outcome.result === 'tie' ? 'border-amber-600/80 text-amber-200' : 'border-emerald-600/80 text-emerald-200'}`}>
+            <span className={`ml-2 rounded border px-1.5 text-xs ${q.outcome.result === 'tie' || q.outcome.result === 'open_for_review' ? 'border-amber-600/80 text-amber-200' : 'border-emerald-600/80 text-emerald-200'}`}>
               {outcomeText(q)}
             </span>
           </li>

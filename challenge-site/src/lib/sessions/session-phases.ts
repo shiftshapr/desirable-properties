@@ -3,9 +3,11 @@
  * One durable page per occurrence shows the current phase and who advanced each phase and when.
  *
  * Rule: only the clock-driven phases are computed from the clock (entries with `scheduled: true` take effect once
- * their time has passed): the opening and closing of community verification, and the start of council screening
- * (the voted rule: the interim council screens for SCREENING_HOURS from the review closing). Every other phase
- * advances only when someone adds an entry to the occurrence's data file. Expiry of a clock does not mean approval.
+ * their time has passed): the opening and closing of community verification, the start of council screening
+ * (the voted rule: the interim council screens for SCREENING_HOURS from the review closing), and, for a ballot that
+ * follows screening (screenedBy), "Ready for voting" and "Voting open" at the screening close, when the questions
+ * with no standing objection go to the vote. Every other phase ("Decision recorded" and after) advances only when
+ * someone adds an entry to the occurrence's data file. Expiry of a clock does not mean approval.
  */
 export const SESSION_PHASES = [
   'Preparing the draft',
@@ -54,7 +56,13 @@ export type SessionOccurrence = {
   related?: readonly { label: string; href: string }[];
 };
 
-const CLOCK_PHASES: readonly SessionPhase[] = ['Community verification open', 'Community verification closed', 'Council screening'];
+const CLOCK_PHASES: readonly SessionPhase[] = [
+  'Community verification open',
+  'Community verification closed',
+  'Council screening',
+  'Ready for voting',
+  'Voting open',
+];
 
 export type PhaseRow = {
   phase: SessionPhase;
@@ -68,7 +76,7 @@ export type PhaseRow = {
 export function phaseRows(occurrence: SessionOccurrence, now: Date): { rows: PhaseRow[]; current: SessionPhase | null } {
   for (const e of occurrence.phaseHistory) {
     if (e.scheduled && !CLOCK_PHASES.includes(e.phase)) {
-      throw new Error(`session ${occurrence.slug}: only verification open/closed and council screening may be scheduled (${e.phase})`);
+      throw new Error(`session ${occurrence.slug}: only verification, council screening and the vote opening may be scheduled (${e.phase})`);
     }
   }
   const reached = new Map<SessionPhase, PhaseEntry>();
@@ -129,18 +137,33 @@ export function phaseTone(phase: SessionPhase | null): PhaseTone {
 /**
  * Clock facts the labels need beyond the phase itself. screeningClosesAt: end of the council's window; with `now`
  * it tells "screening under way" from "screening closed, ballot being prepared" without another release.
+ * votingClosesAt: the ballot's close; with `now` it tells "voting open until …" from "voting closed".
  */
-export type PhaseClock = { now?: Date; screeningClosesAt?: string };
+export type PhaseClock = { now?: Date; screeningClosesAt?: string; votingClosesAt?: string };
 
 const screeningOver = (clock: PhaseClock) =>
   Boolean(clock.screeningClosesAt && clock.now && clock.now.getTime() >= new Date(clock.screeningClosesAt).getTime());
 
-/** The phase pill in the sticky header: the phase, plus "until …" while the council screens. */
+const votingOver = (clock: PhaseClock) =>
+  Boolean(clock.votingClosesAt && clock.now && clock.now.getTime() >= new Date(clock.votingClosesAt).getTime());
+
+const shortPt = (iso: string) => pacificAndUtc(iso).replace(/ \(.*\)$/, '');
+
+/** The phase named after "Now:" in the tracker: "Voting closed" once the vote's clock has run out (until a decision entry). */
+export function phaseNowLabel(phase: SessionPhase | null, clock: PhaseClock = {}): string | null {
+  if (phase === 'Voting open' && votingOver(clock)) return 'Voting closed';
+  return phase;
+}
+
+/** The phase pill in the sticky header: the phase, plus "until …" while the council screens or the vote runs. */
 export function phasePillLabel(phase: SessionPhase | null, clock: PhaseClock = {}): string | null {
   if (phase === 'Council screening' && clock.screeningClosesAt) {
     return screeningOver(clock)
       ? 'Council screening closed: ballot being prepared'
-      : `Council screening until ${pacificAndUtc(clock.screeningClosesAt).replace(/ \(.*\)$/, '')}`;
+      : `Council screening until ${shortPt(clock.screeningClosesAt)}`;
+  }
+  if (phase === 'Voting open' && clock.votingClosesAt) {
+    return votingOver(clock) ? 'Voting closed: results to follow' : `Voting open until ${shortPt(clock.votingClosesAt)}`;
   }
   return phase;
 }
@@ -182,6 +205,11 @@ export function draftBallotBanner(
     case 'Ready for voting':
       return `Screening is done. The ballot opens for a ${rules.votingHours}-hour community vote soon.`;
     case 'Voting open':
+      if (clock.votingClosesAt) {
+        return votingOver(clock)
+          ? `Voting closed ${pacificLong(clock.votingClosesAt)}. Results will be published on the ballot.`
+          : `Voting is open until ${pacificLong(clock.votingClosesAt)}. The questions with no standing objection when council screening closed are on the ballot.`;
+      }
       return `Voting is open for ${rules.votingHours} hours. The vote is below.`;
     case 'Decision recorded':
     case 'Implementation and follow-up':
@@ -217,6 +245,7 @@ export function phaseCallToAction(
     case 'Ready for voting':
       return { text: 'The ballot is ready and opens soon.', label: 'See the ballot', anchor: 'vote' };
     case 'Voting open':
+      if (votingOver(opts)) return { text: 'Results to follow.', label: 'See the ballot', anchor: 'vote' };
       return {
         text: opts.closesLabel ? `Voting is open until ${opts.closesLabel}.` : 'Voting is open.',
         label: 'Go to the vote',

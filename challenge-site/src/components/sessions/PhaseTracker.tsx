@@ -2,6 +2,7 @@ import {
   DEFAULT_PHASE_ANCHORS,
   pacificAndUtc,
   phaseCallToAction,
+  phaseNowLabel,
   phaseTone,
   type PhaseClock,
   type PhaseRow,
@@ -46,7 +47,7 @@ export default function PhaseTracker({ rows, heldFrom, heldTo, anchors, closesLa
       {cta ? (
         <div className={`mt-4 flex flex-col gap-3 rounded-xl border px-4 py-4 sm:flex-row sm:items-center ${tone.panel}`}>
           <p className="flex-1 text-lg font-semibold text-white">
-            <span className={`mr-2 text-sm font-semibold uppercase tracking-wider ${tone.text}`}>Now: {current}.</span>
+            <span className={`mr-2 text-sm font-semibold uppercase tracking-wider ${tone.text}`}>Now: {phaseNowLabel(current, clock)}.</span>
             <span className="block sm:inline">{cta.text}</span>
           </p>
           <a

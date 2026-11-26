@@ -26,7 +26,9 @@
  */
 import { readFileSync } from 'fs';
 import pg from 'pg';
-import { SESSION_BALLOTS } from '../src/data/sessions/2026-11-16-ballot.ts';
+import { BALLOT_2026_11_16 } from '../src/data/sessions/2026-11-16-ballot.ts';
+// The one-off move (25 Nov) covered the ballots that existed then; later ballots start on Gov Hub.
+const SESSION_BALLOTS = { [BALLOT_2026_11_16.slug]: BALLOT_2026_11_16 };
 import { tallyBallot } from '../src/lib/ballots/ballot-core.ts';
 import { participation, publicParticipation } from '../src/lib/ballots/participation-core.ts';
 

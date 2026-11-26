@@ -4,7 +4,7 @@
  * occurrence phase histories (SESSION_OCCURRENCES) and the session ballots, so a new session appears on its own.
  * Of the sessions still to come, only the next one is listed.
  */
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 import { SESSION_OCCURRENCES } from '@/data/sessions/occurrences';
 import { effectiveStatus, type BallotOverride } from '@/lib/ballots/ballot-core';
 import { COMMUNITY_REVIEW_EVENT } from '@/lib/community-review-event';

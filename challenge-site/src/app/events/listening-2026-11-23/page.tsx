@@ -12,6 +12,7 @@ import HowThisWorks from '@/components/sessions/HowThisWorks';
 import PhaseTracker from '@/components/sessions/PhaseTracker';
 import ProposeForNextSession from '@/components/sessions/ProposeForNextSession';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
+import SessionBallot from '@/components/sessions/SessionBallot';
 import SessionChat from '@/components/sessions/SessionChat';
 import SessionCollapsible from '@/components/sessions/SessionCollapsible';
 import SessionInvite from '@/components/sessions/SessionInvite';
@@ -40,6 +41,9 @@ import {
   type ListeningTurn,
 } from '@/lib/listening-2026-11-23-event';
 import { SCREENING_2026_11_23 } from '@/data/sessions/2026-11-23-screening';
+import { BALLOT_2026_11_23 as BALLOT } from '@/data/sessions/2026-11-23-ballot';
+import { effectiveStatus } from '@/lib/ballots/ballot-core';
+import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { readScreeningView } from '@/lib/screening/screening-store.server';
 import { REVIEW_WINDOW_HOURS, VOTING_PERIOD_HOURS } from '@/lib/sessions/session-rules';
 import { sessionDeepiContext } from '@/lib/sessions/session-deepi-context';
@@ -87,10 +91,24 @@ const linkClass = 'text-cyan-300 hover:text-cyan-200';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
+/**
+ * Staging only: ?asOf=<ISO time> renders the page as of a later time (phase, banner, ballot), to check the opening
+ * and closing without waiting. Display only: no vote can be cast and nothing is registered with the vote store
+ * (both use the real clock). Ignored on production (previewAllowed).
+ */
+function previewTime(host: string, raw: string | string[] | undefined): Date | null {
+  if (!previewAllowed(host) || typeof raw !== 'string') return null;
+  const t = new Date(raw);
+  return Number.isNaN(t.getTime()) ? null : t;
+}
+
 export default async function Listening20261123Page({ searchParams }: Props) {
   const host = (await headers()).get('host') || '';
   const params = await searchParams;
-  const now = new Date();
+  const staging = previewAllowed(host);
+  const asOf = previewTime(host, params.asOf);
+  const realNow = new Date();
+  const now = asOf ?? realNow;
   const visible = isDraftVisible(SESSION, now);
   // Staging-only preview of the draft while it is pending host approval (?previewDraft=1). Ignored on production.
   const preview = !visible && params.previewDraft === '1' && previewAllowed(host);
@@ -98,10 +116,18 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   const { sections, turns } = transcript as { sections: ListeningSection[]; turns: ListeningTurn[] };
   const { rows, current } = phaseRows(SESSION, now);
   const closes = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
-  const closesLabel = closes ? pacificAndUtc(closes.at) : '48 hours after opening';
-  // Time-driven labels: the screening window's close comes from the screening definition (voted SCREENING_HOURS).
-  const clock: PhaseClock = { now, screeningClosesAt: SCREENING_2026_11_23.closesAt };
+  // "Open until …" in the call to action: the review's close, then the vote's once voting is open.
+  const closesLabel =
+    current === 'Voting open' ? pacificAndUtc(BALLOT.closesAt) : closes ? pacificAndUtc(closes.at) : '48 hours after opening';
+  const reviewClosesLabel = closes ? pacificAndUtc(closes.at) : '48 hours after opening';
+  // Time-driven labels: the screening window's close comes from the screening definition (voted SCREENING_HOURS),
+  // the vote's from the ballot (opens at the screening close, VOTING_PERIOD_HOURS).
+  const clock: PhaseClock = { now, screeningClosesAt: SCREENING_2026_11_23.closesAt, votingClosesAt: BALLOT.closesAt };
   const cta = phaseCallToAction(current, { closesLabel, ...clock });
+  // The Vote section shows from the ballot's opening (staging: always, as a review copy).
+  const ballotOverride = asOf ? null : await getBallotOverride(BALLOT.slug).catch(() => null);
+  const showBallot = staging || effectiveStatus(BALLOT, ballotOverride, now) !== 'not_open';
+  const votingNow = showBallot && current === 'Voting open' && effectiveStatus(BALLOT, ballotOverride, now) === 'open';
   const reviewClosed = closes ? now >= new Date(closes.at) : false;
   const draft = draftData as SessionDraft;
   const ballotBanner = preview
@@ -138,11 +164,15 @@ export default async function Listening20261123Page({ searchParams }: Props) {
       intro="The record, the meeting draft, the review and the vote for this meeting, on one page."
       phaseLabel={phasePillLabel(current, clock)}
       tone={phaseTone(current)}
-      stickyCta={cta ? { label: cta.label, href: `#${cta.anchor}` } : null}
+      stickyCta={votingNow ? { label: 'Vote', href: '#vote' } : cta ? { label: cta.label, href: `#${cta.anchor}` } : null}
       banner={
         preview ? (
           <p className="mb-6 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
             Staging preview: the draft below is pending host approval and is not shown on the public page.
+          </p>
+        ) : asOf ? (
+          <p className="mb-6 rounded-lg border border-amber-600/60 bg-amber-950/40 px-4 py-2 text-sm text-amber-100">
+            Staging preview: this page as of {pacificAndUtc(asOf.toISOString())}. Read-only; no vote can be cast from this view.
           </p>
         ) : null
       }
@@ -195,6 +225,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         <a href="#book-club" className={linkClass}>Book club</a>
         <a href="#propose-next" className={linkClass}>Propose for next session</a>
         <a href="#phase" className={linkClass}>Where this session is</a>
+        {showBallot ? <a href="#vote" className={linkClass}>Vote</a> : null}
         <a href="#ballot-results" className={linkClass}>16 November results</a>
         <a href="#invite" className={linkClass}>Invite others</a>
         <a href="#draft" className={linkClass}>Meeting draft</a>
@@ -209,6 +240,9 @@ export default async function Listening20261123Page({ searchParams }: Props) {
 
       <div className="mt-10 space-y-12">
         <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} closesLabel={closesLabel} clock={clock} />
+
+        {/* Opens on the clock at the screening close, with the questions the council did not hold back. */}
+        <SessionBallot ballot={BALLOT} staging={staging} heading={LABELS.vote} previewAt={asOf} />
 
         {/* The previous session's results, read out at the start of this meeting (shows once they are published). */}
         <BallotResultsSummary
@@ -228,7 +262,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             labels={LABELS}
             draft={draft}
             turns={turns}
-            closesLabel={closesLabel}
+            closesLabel={reviewClosesLabel}
             reviewClosed={reviewClosed}
             pendingApproval={!visible}
             screening={screening}

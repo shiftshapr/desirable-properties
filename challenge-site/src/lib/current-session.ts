@@ -1,11 +1,12 @@
 import { DP_ROUNDUP_EVENTS, roundupDateLabel, type RoundupEvent } from '@/lib/dp-roundups';
 import { REVIEW_WINDOW_HOURS } from '@/lib/sessions/session-rules';
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 
 /**
  * The current community session:
- * 1. a session that has started and whose ballot is still open (now before its closesAt) stays current, so the
- *    menu and front page keep sending people to vote; the latest such session wins;
+ * 1. a session that has started and whose ballot is open (from its opensAt, when set, until its closesAt) stays
+ *    current, so the menu and front page keep sending people to vote; the latest such session wins. A ballot that
+ *    has not opened yet (one waiting on council screening) does not hold the menu back from the next session;
  * 2. otherwise the earliest session that has not ended, or ended less than SESSION_GRACE_MS ago (48 hours: the
  *    correction window decided in the 16 Nov ballot), so on a session's own day the menu still points at that session's page;
  * 3. otherwise the most recent one.
@@ -54,7 +55,7 @@ export function pacificStartLabel(iso: string): string {
   return `${hour}:${minute} ${pm ? 'p.m.' : 'a.m.'} Pacific`;
 }
 
-type BallotWindow = { pagePath: string; closesAt: string };
+type BallotWindow = { pagePath: string; opensAt?: string; closesAt: string };
 
 /** The latest started session whose ballot has not closed yet, if any. */
 export function sessionWithOpenBallot(
@@ -66,7 +67,9 @@ export function sessionWithOpenBallot(
   return [...sessions].reverse().find((event) =>
     event.pageHref
     && Date.parse(event.startsAt) <= t
-    && ballots.some((b) => b.pagePath === event.pageHref && t < Date.parse(b.closesAt)));
+    && ballots.some(
+      (b) => b.pagePath === event.pageHref && (!b.opensAt || Date.parse(b.opensAt) <= t) && t < Date.parse(b.closesAt),
+    ));
 }
 
 /** How long a session stays current after it ends: the correction window (REVIEW_WINDOW_HOURS). */

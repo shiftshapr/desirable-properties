@@ -27,6 +27,8 @@ export type BallotQuestion = {
   n: number;
   question: string;
   context: string;
+  /** A dated correction of the context note, shown under it (as on the draft ballot). */
+  correction?: string;
   /** Provenance label shown beside the context (owner spec §5), when one applies. */
   label?: 'Proposal added after the meeting';
   /** yes_no: passes with more Yes than No. choice: the option with the most votes wins. Abstain never decides. */
@@ -44,6 +46,19 @@ export type BallotDefinition = {
   voterBody: string;
   rules: readonly string[];
   questions: readonly BallotQuestion[];
+  /**
+   * How a Yes/No question passes. 'plurality' (the default, the 16 Nov bootstrap rule): more Yes than No.
+   * 'two_tier' (the approval rule voted on 16 Nov, question 4): of the Yes and No votes, 60% or more Yes passes it,
+   * 50% to under 60% keeps it open for review, under 50% does not pass. Multiple-choice questions always take the
+   * option with the most votes. Abstain never decides.
+   */
+  approval?: 'plurality' | 'two_tier';
+  /**
+   * The council screening (by session slug, SESSION_SCREENINGS) that decides which questions reach this ballot.
+   * Set: the ballot opens at the screening close (opensAt must equal it) with only the questions that had no
+   * standing objection then (ballot-screening-core.ts); held-back questions are shown and never votable.
+   */
+  screenedBy?: string;
 };
 
 export type BallotStatus = 'not_open' | 'open' | 'closed' | 'published';
@@ -72,7 +87,7 @@ export type QuestionResult = {
   abstain: number;
   options: OptionCount[];
   outcome:
-    | { result: 'passed' | 'not_passed'; yes: number; no: number }
+    | { result: 'passed' | 'not_passed' | 'open_for_review'; yes: number; no: number }
     | { result: 'winner'; option: string; label: string }
     | { result: 'tie'; options: string[]; labels: string[] }
     | { result: 'no_votes' };
@@ -134,7 +149,36 @@ export function parseVotes(
   return { ok: true, votes };
 }
 
-/** Plurality count (bootstrap rules of the 16 Nov ballot). Abstain is counted but does not decide. */
+/** Two-tier rule (16 Nov ballot, question 4): Yes share of the Yes and No votes; 60% passes, 50% keeps it open. */
+export const TWO_TIER = { passPercent: 60, openPercent: 50 } as const;
+
+export function twoTierResult(yes: number, no: number): 'passed' | 'open_for_review' | 'not_passed' {
+  const deciding = yes + no;
+  if (deciding === 0) return 'not_passed';
+  // Integer arithmetic: 100 * yes >= 60 * (yes + no), so 3 of 5 is exactly 60% and passes.
+  if (100 * yes >= TWO_TIER.passPercent * deciding) return 'passed';
+  if (100 * yes >= TWO_TIER.openPercent * deciding) return 'open_for_review';
+  return 'not_passed';
+}
+
+/**
+ * The ballot's approval rule applied to counted results. Counts are never changed; only the outcome of a Yes/No
+ * question is re-read under 'two_tier'. A store that counts with the plurality rule (Gov Hub) is re-read here.
+ */
+export function applyApproval(def: Pick<BallotDefinition, 'approval'>, results: BallotResults): BallotResults {
+  if (def.approval !== 'two_tier') return results;
+  return {
+    ...results,
+    questions: results.questions.map((q) => {
+      if (q.kind !== 'yes_no' || q.outcome.result === 'no_votes') return q;
+      const yes = q.options.find((o) => o.key === 'yes')?.votes ?? 0;
+      const no = q.options.find((o) => o.key === 'no')?.votes ?? 0;
+      return { ...q, outcome: { result: twoTierResult(yes, no), yes, no } };
+    }),
+  };
+}
+
+/** Count of the votes: plurality, then the ballot's approval rule. Abstain is counted but does not decide. */
 export function tallyBallot(def: BallotDefinition, rows: readonly VoteRow[]): BallotResults {
   const voters = new Set<string>();
   const questions = def.questions.map<QuestionResult>((q) => {
@@ -166,7 +210,7 @@ export function tallyBallot(def: BallotDefinition, rows: readonly VoteRow[]): Ba
     }
     return { key: q.key, n: q.n, question: q.question, kind: q.kind, ballots: seen.size, abstain, options, outcome };
   });
-  return { slug: def.slug, voters: voters.size, questions };
+  return applyApproval(def, { slug: def.slug, voters: voters.size, questions });
 }
 
 export function outcomeText(r: QuestionResult): string {
@@ -176,6 +220,8 @@ export function outcomeText(r: QuestionResult): string {
       return `Passed (${o.yes} Yes, ${o.no} No)`;
     case 'not_passed':
       return `Not passed (${o.yes} Yes, ${o.no} No)`;
+    case 'open_for_review':
+      return `Kept open for review (${o.yes} Yes, ${o.no} No)`;
     case 'winner':
       return `Most votes: ${o.label}`;
     case 'tie':
@@ -183,6 +229,33 @@ export function outcomeText(r: QuestionResult): string {
     default:
       return 'No votes';
   }
+}
+
+/* ---------------- Screened ballots ---------------- */
+
+export type HeldBackQuestion = {
+  key: string;
+  /** The draft ballot's number, as the screening showed it. */
+  n: number;
+  question: string;
+  objections: { name: string; reason: string; createdAt: string }[];
+};
+
+/**
+ * What can be voted on. A ballot with `screenedBy` is 'pending' until its screening closes; then 'ready' with the
+ * questions that went to the ballot (renumbered 1..k for the store, keys unchanged) and the held-back ones.
+ * A ballot without screening is always 'ready' with itself.
+ */
+export type ResolvedBallot =
+  | { state: 'pending' }
+  | { state: 'ready'; votable: BallotDefinition; heldBack: HeldBackQuestion[] };
+
+/** Draft numbers back on results counted against the renumbered votable definition (matched by key). */
+export function withDraftNumbers(def: BallotDefinition, results: BallotResults): BallotResults {
+  return {
+    ...results,
+    questions: results.questions.map((r) => ({ ...r, n: def.questions.find((q) => q.key === r.key)?.n ?? r.n })),
+  };
 }
 
 /* ---------------- API handlers ---------------- */
@@ -201,6 +274,11 @@ export type BallotDeps = {
   resultRows: (slug: string) => Promise<VoteRow[]>;
   /** Published totals counted by the store itself (Gov Hub); when set, resultRows is not used. */
   results?: (def: BallotDefinition) => Promise<BallotResults | null>;
+  /**
+   * The questions that can be voted on (screened ballots). Absent: the definition as it is. 'unavailable': the
+   * screening outcome could not be read, so nothing is votable (fail closed).
+   */
+  resolve?: (def: BallotDefinition, now: Date) => Promise<ResolvedBallot | 'unavailable'>;
   allowHit: (key: string, max: number, windowMs: number) => boolean;
   now?: () => Date;
 };
@@ -224,11 +302,18 @@ export async function handleBallotGet(slug: string, deps: BallotDeps): Promise<R
   }
   const override = await deps.getOverride(slug);
   const status = effectiveStatus(def, override, now);
+  const resolved = status === 'not_open' ? null : await resolveFor(def, deps, now);
+  const ready = resolved && resolved !== 'unavailable' && resolved.state === 'ready' ? resolved : null;
   const viewerOut = viewer
     ? { signedIn: true, votes: await deps.myVotes(slug, viewer.userId) }
     : { signedIn: false, votes: {} };
-  const results =
-    status === 'published' ? (deps.results ? await deps.results(def) : tallyBallot(def, await deps.resultRows(slug))) : null;
+  const counted =
+    status === 'published' && ready
+      ? deps.results
+        ? await deps.results(ready.votable)
+        : tallyBallot(ready.votable, await deps.resultRows(slug))
+      : null;
+  const results = counted ? withDraftNumbers(def, applyApproval(def, counted)) : null;
   return json({
     ok: true,
     ballot: {
@@ -236,11 +321,19 @@ export async function handleBallotGet(slug: string, deps: BallotDeps): Promise<R
       opensAt: def.opensAt,
       closesAt: override?.closesAt || def.closesAt,
       publishedAt: override?.publishedAt ?? null,
-      ...(override?.status === 'unavailable' ? { unavailable: true } : {}),
+      ...(override?.status === 'unavailable' || resolved === 'unavailable' ? { unavailable: true } : {}),
+      ...(def.screenedBy
+        ? { questions: ready ? ready.votable.questions.map((q) => q.key) : [], heldBack: ready ? ready.heldBack : [] }
+        : {}),
     },
     viewer: viewerOut,
     results,
   });
+}
+
+async function resolveFor(def: BallotDefinition, deps: BallotDeps, now: Date): Promise<ResolvedBallot | 'unavailable'> {
+  if (!deps.resolve) return { state: 'ready', votable: def, heldBack: [] };
+  return deps.resolve(def, now).catch(() => 'unavailable' as const);
 }
 
 /** POST { votes: { q1: "yes", ... } }: any signed-in account, while open. Re-posting a question replaces the vote. */
@@ -259,10 +352,19 @@ export async function handleBallotPost(request: Request, slug: string, deps: Bal
   if (effectiveStatus(def, await deps.getOverride(slug), now) !== 'open') {
     return json({ ok: false, code: 'not_open', error: 'Voting is not open.' }, 409);
   }
+  // Only the questions that reached the ballot: a held-back question is refused like an unknown one.
+  const resolved = await resolveFor(def, deps, now);
+  if (resolved === 'unavailable') {
+    return json(
+      { ok: false, code: 'unavailable', error: "Voting is paused: we can't reach the vote store. Your vote was not recorded; please try again shortly." },
+      503,
+    );
+  }
+  if (resolved.state !== 'ready') return json({ ok: false, code: 'not_open', error: 'Voting is not open.' }, 409);
   const body = await request.json().catch(() => null);
-  const parsed = parseVotes(def, body);
+  const parsed = parseVotes(resolved.votable, body);
   if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
-  const saved = await deps.saveVotes(def, viewer.userId, parsed.votes);
+  const saved = await deps.saveVotes(resolved.votable, viewer.userId, parsed.votes);
   if (!saved.ok && saved.code === 'unavailable') {
     return json(
       { ok: false, code: 'unavailable', error: "Voting is paused: we can't reach the vote store. Your vote was not recorded; please try again shortly." },
