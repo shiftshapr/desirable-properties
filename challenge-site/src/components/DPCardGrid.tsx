@@ -20,8 +20,10 @@ type Props = {
 };
 
 function statusLabel(wg: GovHubWorkgroup | undefined): string {
-  if (!wg) return 'Draft';
-  return wg.state || wg.status || 'Draft';
+  const raw = (wg?.state || wg?.status || '').trim();
+  if (!raw) return 'Draft';
+  // Gov Hub returns some states in lowercase ("active"); show them all the same way.
+  return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
 }
 
 function cardBlurb(dp: LocalDp): string {

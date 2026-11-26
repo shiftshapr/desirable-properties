@@ -128,7 +128,8 @@ export default async function WorkgroupFormationStatus({
         <p className="shrink-0 text-sm text-slate-400">
           <span className="text-2xl font-semibold text-white">{activeCount}</span>
           <span className="text-slate-500"> / {total}</span>
-          <span className="ml-1">active workgroups</span>
+          {' '}
+          <span>active workgroups</span>
         </p>
       </div>
 
