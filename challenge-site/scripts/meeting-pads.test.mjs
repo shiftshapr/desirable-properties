@@ -172,3 +172,17 @@ test('invite: meeting pads share their date, title and own summary; the ref pars
   assert.equal(c.title, '20 Nov 2026 · Session page walk-through');
   assert.deepEqual(parsePadRef({ kind: 'meeting', key: c.key }), { kind: 'meeting', key: c.key });
 });
+
+test('25 Nov agents call: private, pseudonymous, 13 items numbered 1-13, no quotes, stealth layer unnamed', () => {
+  const pad = getMeetingPad('2026-11-25-agents-and-stories');
+  assert.ok(pad);
+  assert.equal(pad.visibility, 'private');
+  assert.equal(isMeetingPadPublic(pad), false);
+  const items = pad.groups.flatMap((g) => g.items);
+  assert.deepEqual(items.map((i) => i.n), Array.from({ length: 13 }, (_, k) => k + 1));
+  assert.ok(items.every((i) => !i.quote), 'no quotes before consent');
+  assert.ok(items.every((i) => MEETING_PAD_STATUS_LABEL[i.status]));
+  const text = `${JSON.stringify(pad)}\n${meetingPadChatContext(pad)}`;
+  assert.doesNotMatch(text, /molt\s?layer/i);
+  assert.ok(!publicMeetingPads().some((p) => p.slug === pad.slug));
+});
