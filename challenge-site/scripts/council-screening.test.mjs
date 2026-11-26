@@ -65,7 +65,7 @@ test('a reason is required', () => {
 });
 
 /** In-memory store with the same rules as screening-store.server.ts (window, one standing per member per question). */
-function fakeDeps({ viewer = () => LEANDRA, now = WINDOW } = {}) {
+function fakeDeps({ viewer = () => LEANDRA, now = WINDOW, members = () => MEMBERS } = {}) {
   const rows = [];
   let seq = 0;
   const inWindow = () => {
@@ -75,10 +75,10 @@ function fakeDeps({ viewer = () => LEANDRA, now = WINDOW } = {}) {
   const deps = {
     readSession: async () => {
       const v = viewer();
-      return v ? { userId: v.userId } : null;
+      return v ? { userId: v.userId, name: v.account ?? null } : null;
     },
     getDefinition: (slug) => (slug === SLUG ? DEF : null),
-    members: () => MEMBERS,
+    members,
     rows: async () => rows.map((r) => ({ ...r })),
     addObjection: async (_def, member, question_key, reason) => {
       if (!inWindow()) return { ok: false, code: 'closed' };
@@ -209,12 +209,56 @@ test('GET: public objections with names and reasons, never account ids; viewer r
   const { deps } = fakeDeps();
   await handleScreeningPost(object('q3'), SLUG, deps);
   const anon = await (await handleScreeningGet(SLUG, fakeDeps({ viewer: () => null }).deps)).json();
-  assert.deepEqual(anon.viewer, { signedIn: false, member: false, name: null });
+  assert.deepEqual(anon.viewer, { signedIn: false, member: false, name: null, signedInAs: null });
   const pub = await (await handleScreeningGet(SLUG, { ...deps, readSession: async () => null })).json();
   assert.equal(pub.questions[2].standing[0].name, 'Leandra Preston');
   assert.equal(pub.questions[2].standing[0].mine, false);
   assert.ok(!JSON.stringify(pub).includes('gh-leandra'));
   const me = await (await handleScreeningGet(SLUG, deps)).json();
-  assert.deepEqual(me.viewer, { signedIn: true, member: true, name: 'Leandra Preston' });
+  assert.deepEqual(me.viewer, { signedIn: true, member: true, name: 'Leandra Preston', signedInAs: null });
   assert.equal(me.questions[2].standing[0].mine, true);
+});
+
+/* ---- 26 Nov 2026: no council member saw the button on production ---- */
+
+test('an empty council list (no seats on Gov Hub) is reported, not silent: councilAvailable is false', async () => {
+  // Production, 26 Nov: Gov Hub's dp council had no seats, so members() was [] and every member saw no button.
+  const { deps } = fakeDeps({ members: () => [] });
+  const view = await (await handleScreeningGet(SLUG, deps)).json();
+  assert.equal(view.screening.status, 'screening');
+  assert.equal(view.viewer.member, false);
+  assert.equal(view.councilAvailable, false);
+  const seated = await (await handleScreeningGet(SLUG, fakeDeps().deps)).json();
+  assert.equal(seated.councilAvailable, true);
+  assert.equal(seated.viewer.member, true);
+});
+
+test('a signed-in non-member is told who they are signed in as; a member gets their seat name', async () => {
+  const stranger = { userId: 'gh-someone', name: 'ignored', account: 'Sam Example' };
+  const view = await (await handleScreeningGet(SLUG, fakeDeps({ viewer: () => stranger }).deps)).json();
+  assert.deepEqual(view.viewer, { signedIn: true, member: false, name: null, signedInAs: 'Sam Example' });
+  const phahsa = { ...PHAHSA, account: 'Phahsa Ras' };
+  const me = await (await handleScreeningGet(SLUG, fakeDeps({ viewer: () => phahsa }).deps)).json();
+  assert.equal(me.viewer.member, true);
+  assert.equal(me.viewer.name, 'Phahsa');
+});
+
+test('every mapped member can object during the window, and the POST records it under their seat name', async () => {
+  for (const m of MEMBERS) {
+    const { deps, rows } = fakeDeps({ viewer: () => m });
+    const res = await handleScreeningPost(object('q2'), SLUG, deps);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.viewer.member, true);
+    assert.equal(rows[0].member_name, m.name);
+  }
+});
+
+test('a store refusal for an expired sign-in or an unseated account is a clear 401/403, not a server error', async () => {
+  for (const [code, status] of [['sign_in', 401], ['not_member', 403]]) {
+    const { deps } = fakeDeps();
+    const res = await handleScreeningPost(object('q1'), SLUG, { ...deps, addObjection: async () => ({ ok: false, code }) });
+    assert.equal(res.status, status);
+    assert.equal((await res.json()).code, code);
+  }
 });

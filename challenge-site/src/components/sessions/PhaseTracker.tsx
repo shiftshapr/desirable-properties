@@ -3,6 +3,7 @@ import {
   pacificAndUtc,
   phaseCallToAction,
   phaseTone,
+  type PhaseClock,
   type PhaseRow,
   type SessionPhase,
 } from '@/lib/sessions/session-phases';
@@ -16,17 +17,19 @@ type Props = {
   anchors?: Partial<Record<SessionPhase, string>>;
   /** For the current phase's call to action ("Voting is open until …"). */
   closesLabel?: string;
+  /** Clock facts for time-driven labels (e.g. the council screening window). */
+  clock?: PhaseClock;
 };
 
 /**
  * Where this occurrence is in the post-meeting process. Every step links to its section (smooth scroll, offset for
  * the sticky headers); the current step is coloured by phase and its call to action stays open under the list.
  */
-export default function PhaseTracker({ rows, heldFrom, heldTo, anchors, closesLabel }: Props) {
+export default function PhaseTracker({ rows, heldFrom, heldTo, anchors, closesLabel, clock }: Props) {
   const links = { ...DEFAULT_PHASE_ANCHORS, ...anchors };
   const current = rows.find((r) => r.state === 'current')?.phase ?? null;
   const tone = PHASE_TONE[phaseTone(current)];
-  const cta = phaseCallToAction(current, { closesLabel });
+  const cta = phaseCallToAction(current, { closesLabel, ...clock });
   const end = new Date(heldTo);
 
   return (

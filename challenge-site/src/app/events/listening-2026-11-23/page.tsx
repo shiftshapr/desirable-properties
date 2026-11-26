@@ -39,11 +39,23 @@ import {
   type ListeningSection,
   type ListeningTurn,
 } from '@/lib/listening-2026-11-23-event';
+import { SCREENING_2026_11_23 } from '@/data/sessions/2026-11-23-screening';
 import { readScreeningView } from '@/lib/screening/screening-store.server';
+import { REVIEW_WINDOW_HOURS, VOTING_PERIOD_HOURS } from '@/lib/sessions/session-rules';
 import { sessionDeepiContext } from '@/lib/sessions/session-deepi-context';
 import { meetingShortDate, sessionSectionLabels, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { SessionDraft } from '@/lib/sessions/session-draft';
-import { isDraftVisible, pacificAndUtc, phaseCallToAction, phaseRows, phaseTone, previewAllowed } from '@/lib/sessions/session-phases';
+import {
+  draftBallotBanner,
+  isDraftVisible,
+  pacificAndUtc,
+  phaseCallToAction,
+  phasePillLabel,
+  phaseRows,
+  phaseTone,
+  previewAllowed,
+  type PhaseClock,
+} from '@/lib/sessions/session-phases';
 import { SITE_NAME } from '@/lib/site-metadata';
 
 /** Rendered per request: the draft for review is gated on the server clock (SESSION.draftVisibleAt, unset for now). */
@@ -87,11 +99,22 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   const { rows, current } = phaseRows(SESSION, now);
   const closes = SESSION.phaseHistory.find((e) => e.phase === 'Community verification closed');
   const closesLabel = closes ? pacificAndUtc(closes.at) : '48 hours after opening';
-  const cta = phaseCallToAction(current, { closesLabel });
+  // Time-driven labels: the screening window's close comes from the screening definition (voted SCREENING_HOURS).
+  const clock: PhaseClock = { now, screeningClosesAt: SCREENING_2026_11_23.closesAt };
+  const cta = phaseCallToAction(current, { closesLabel, ...clock });
   const reviewClosed = closes ? now >= new Date(closes.at) : false;
   const draft = draftData as SessionDraft;
-  // Council screening per question: objections from the draft going visible until the window closes.
-  const screeningView = visible || preview ? await readScreeningView(SESSION.slug).catch(() => null) : null;
+  const ballotBanner = preview
+    ? null
+    : draftBallotBanner(current, { ...clock, reviewClosesAt: closes?.at }, { reviewHours: REVIEW_WINDOW_HOURS, votingHours: VOTING_PERIOD_HOURS });
+  // Council screening per question: objections from the review closing until the window closes.
+  const screeningView =
+    visible || preview
+      ? await readScreeningView(SESSION.slug).catch((err) => {
+          console.error('[screening] session page could not load the screening view:', err instanceof Error ? err.message : err);
+          return null;
+        })
+      : null;
   const screening = screeningView
     ? {
         slug: SESSION.slug,
@@ -113,7 +136,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
         </>
       }
       intro="The record, the meeting draft, the review and the vote for this meeting, on one page."
-      phaseLabel={current}
+      phaseLabel={phasePillLabel(current, clock)}
       tone={phaseTone(current)}
       stickyCta={cta ? { label: cta.label, href: `#${cta.anchor}` } : null}
       banner={
@@ -185,7 +208,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
       </nav>
 
       <div className="mt-10 space-y-12">
-        <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} closesLabel={closesLabel} />
+        <PhaseTracker rows={rows} heldFrom={SESSION.heldFrom} heldTo={SESSION.heldTo} closesLabel={closesLabel} clock={clock} />
 
         {/* The previous session's results, read out at the start of this meeting (shows once they are published). */}
         <BallotResultsSummary
@@ -209,6 +232,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
             reviewClosed={reviewClosed}
             pendingApproval={!visible}
             screening={screening}
+            ballotBanner={ballotBanner}
             reviewChannels={reviewDocChannels(REVIEW_DOC_1123, 'DP listening session, 23 November')}
           />
         ) : (

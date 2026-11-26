@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "council-objection-button-2026-11-26",
+      "date": "2026-11-26",
+      "status": "open",
+      "title": "Council screening: clearer page, and a clear message when you cannot object",
+      "summary": "On the 23 November session page, the banner over the draft ballot and the phase label now follow the clock. While the interim council screens, they say that the community review has closed and that the council is screening until Thursday 26 November, 8:00 PM Pacific, before the 72-hour community vote. When the window closes they say so without another update. A signed-in visitor who is not on the interim council is now told who they are signed in as and that only council members can object. If the council list cannot be loaded, the page says so instead of hiding the button without a word. No ballot question or option changed."
+    },
+    {
       "id": "q1-active-voting-body-note-2026-11-25",
       "date": "2026-11-25",
       "status": "open",
