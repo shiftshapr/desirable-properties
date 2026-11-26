@@ -201,7 +201,7 @@ const A23 = {
       seconders: [support('Joel Okomoli', T23('00:36:09', 'I think 25% is fair.'))],
       notes: 'Carried from the 16 Nov ballot, where it tied 6 to 6 with a minimum of 20 votes.',
     },
-    d: { ...host(T23('00:37:04', 'Maybe we could think about it as 25% of the active voting body')), notes: 'Defined by the host on 25 November: the people who have voted in a ballot or taken part in a session during the pilot (28 people as of 25 November).' },
+    d: { ...host(T23('00:37:04', 'Maybe we could think about it as 25% of the active voting body')), notes: 'Defined by the host on 25 November: the people who have voted in a ballot or taken part in a session during the pilot (about 28 people as of 25 November). Changed by the host on 26 November, during council screening, from 25% to 75% of the active voting body (21 votes), since 25% would be only 7 votes.' },
   },
   2: {
     yes: {

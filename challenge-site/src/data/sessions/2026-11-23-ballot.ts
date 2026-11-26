@@ -3,7 +3,7 @@ import type { BallotDefinition, BallotQuestion } from '@/lib/ballots/ballot-core
 /**
  * Ballot of the 23 Nov 2026 listening session (page /events/listening-2026-11-23). Questions, options and context
  * notes are the draft ballot's, verbatim (src/data/sessions/2026-11-23-draft.json, `ballot.questions`, including the
- * host's 25 Nov correction of the question 1 note); scripts/ballot-2026-11-23.test.mjs checks they match.
+ * host's 25 Nov correction of the question 1 note and 26 Nov change of its option d to 75%); scripts/ballot-2026-11-23.test.mjs checks they match.
  * Question and option keys are stored with each vote: never change a key once the ballot has opened.
  *
  * Opening follows the voted process with no release at the close: voting opens when council screening closes
@@ -31,10 +31,10 @@ const QUESTIONS: BallotQuestion[] = [
     key: 'q1',
     n: 1,
     kind: 'choice',
-    context: "question 5 of the 16 November ballot tied 6 to 6 between a minimum of 20 votes and 25% of the voting body. Added by the host on 24 November, as asked in the meeting, and corrected on 25 November: the voting body is the 76 people the session emails go to (contributors, co-editors and people who signed up), so 25% of the voting body is 19 votes. The active voting body is smaller: the people who have voted in a ballot or taken part in a session during the pilot. As of 25 November that is 28 people (the 24 who voted on the 16 November ballot, and 4 more who spoke in the 23 November session), so 25% of the active voting body is 7 votes. Both numbers grow as more people join. The 16 November ballot had 24 voters, so it would have cleared either 25% quorum.",
-    correction: "Corrected by the host on 25 November, after the review closed: the earlier note gave the size of the voting body (76 people, 19 votes) as the size of the active voting body. The active voting body has now been counted separately.",
+    context: "question 5 of the 16 November ballot tied 6 to 6 between a minimum of 20 votes and 25% of the voting body. Added by the host on 24 November, as asked in the meeting, and corrected on 25 and 26 November: the voting body is the 76 people the session emails go to (contributors, co-editors and people who signed up), so 25% of the voting body is 19 votes. The active voting body is smaller: the people who have voted in a ballot or taken part in a session during the pilot. As of 25 November that is about 28 people (the 24 who voted on the 16 November ballot, and 4 more who spoke in the 23 November session), so 75% of the active voting body is 21 votes. Both numbers grow as more people join. The 16 November ballot had 24 voters, so it would have cleared either of the percentage quorums.",
+    correction: "Corrected by the host on 25 November, after the review closed: the earlier note gave the size of the voting body (76 people, 19 votes) as the size of the active voting body. The active voting body has now been counted separately. Changed by the host on 26 November, during council screening: the last option was 25% of the active voting body. The active voting body is only about 28 people, so 25% would be 7 votes, too few to stand for the group; the option is now 75% of the active voting body (21 votes).",
     question: "What quorum should apply to ballots during the four-session pilot?",
-    options: choice(["No quorum", "A minimum of 20 votes", "25% of the voting body", "25% of the active voting body"]),
+    options: choice(["No quorum", "A minimum of 20 votes", "25% of the voting body", "75% of the active voting body"]),
   },
   {
     key: 'q2',
