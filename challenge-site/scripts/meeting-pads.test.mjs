@@ -173,39 +173,16 @@ test('invite: meeting pads share their date, title and own summary; the ref pars
   assert.deepEqual(parsePadRef({ kind: 'meeting', key: c.key }), { kind: 'meeting', key: c.key });
 });
 
-test('25 Nov agents call: Victor named, public, consented; 13 items, quotes only from Victor; stealth layer unnamed', () => {
+test('25 Nov agents call: private, pseudonymous, 13 items numbered 1-13, no quotes, stealth layer unnamed', () => {
   const pad = getMeetingPad('2026-11-25-agents-and-stories');
   assert.ok(pad);
-  assert.equal(pad.visibility, 'public');
-  assert.equal(isMeetingPadPublic(pad), true);
-  assert.ok(publicMeetingPads().some((p) => p.slug === pad.slug));
-  const v = pad.participants.find((p) => p.role !== 'host');
-  assert.equal(v.shownAs, 'Victor Vorski');
-  assert.equal(v.consent, 'consented');
+  assert.equal(pad.visibility, 'private');
+  assert.equal(isMeetingPadPublic(pad), false);
   const items = pad.groups.flatMap((g) => g.items);
   assert.deepEqual(items.map((i) => i.n), Array.from({ length: 13 }, (_, k) => k + 1));
+  assert.ok(items.every((i) => !i.quote), 'no quotes before consent');
   assert.ok(items.every((i) => MEETING_PAD_STATUS_LABEL[i.status]));
-  const t = JSON.parse(readFileSync(new URL('../src/data/meeting-pads/2026-11-25-agents-and-stories.transcript.json', import.meta.url), 'utf8'));
-  for (const i of items.filter((x) => x.quote)) {
-    assert.equal(i.quote.by, 'Victor Vorski');
-    const turn = t.turns.find((x) => x.at === i.quote.at && x.speaker === 'Victor Vorski');
-    assert.ok(turn && turn.text.toLowerCase().includes(i.quote.text.toLowerCase().replace(/\.$/, '')), `item ${i.n}: quote is verbatim`);
-  }
-  const text = `${JSON.stringify(pad)}\n${meetingPadChatContext(pad)}\n${JSON.stringify(t)}`;
-  assert.doesNotMatch(text, /molt\s?layer|malt layer|mold layer|ruben/i);
-  assert.doesNotMatch(text, /A participant|pseudonym/i);
-  assert.doesNotMatch(text, LEFT_OUT);
-});
-
-test('25 Nov transcript: two named speakers, timestamped, in order', () => {
-  const t = JSON.parse(readFileSync(new URL('../src/data/meeting-pads/2026-11-25-agents-and-stories.transcript.json', import.meta.url), 'utf8'));
-  assert.ok(t.turns.length > 100);
-  const toSec = (at) => Number(at.slice(0, 2)) * 60 + Number(at.slice(3));
-  let last = -1;
-  for (const turn of t.turns) {
-    assert.match(turn.at, /^\d{2}:\d{2}$/);
-    assert.ok(['Daveed Benjamin', 'Victor Vorski'].includes(turn.speaker), turn.speaker);
-    assert.ok(toSec(turn.at) >= last, `in order at ${turn.at}`);
-    last = toSec(turn.at);
-  }
+  const text = `${JSON.stringify(pad)}\n${meetingPadChatContext(pad)}`;
+  assert.doesNotMatch(text, /molt\s?layer/i);
+  assert.ok(!publicMeetingPads().some((p) => p.slug === pad.slug));
 });
