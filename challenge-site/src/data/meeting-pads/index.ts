@@ -1,12 +1,13 @@
 import { isMeetingPadPublic, type MeetingPad } from '@/lib/meeting-pads/types';
 import { MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW } from '@/data/meeting-pads/2026-11-20-session-page-review';
+import { MEETING_PAD_2026_11_25_AGENTS_AND_STORIES } from '@/data/meeting-pads/2026-11-25-agents-and-stories';
 
 /**
  * Every meeting pad, newest first. Add a pad: one data file in this folder (same shape, MeetingPad) and one line
  * here. Only public pads (isMeetingPadPublic: visibility 'public' and every non-host participant consented) are listed
  * anywhere; the rest are a staging preview (src/lib/meeting-pads/flag.ts).
  */
-export const MEETING_PADS: MeetingPad[] = [MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW];
+export const MEETING_PADS: MeetingPad[] = [MEETING_PAD_2026_11_25_AGENTS_AND_STORIES, MEETING_PAD_2026_11_20_SESSION_PAGE_REVIEW];
 
 export function getMeetingPad(slug: string): MeetingPad | null {
   return MEETING_PADS.find((p) => p.slug === slug) ?? null;
