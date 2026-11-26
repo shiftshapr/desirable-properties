@@ -3,11 +3,11 @@
   "work": "desirableproperties-book",
   "description": "Edition record of The Layered Web, generated from Gov Hub by the rail sync. Do not edit: see docs/EDITIONS.md.",
   "generatedBy": "scripts/govhub_sync_rails_from_hub.py",
-  "generatedAt": "2026-11-25T16:28:05Z",
+  "generatedAt": "2026-11-26T16:01:28Z",
   "source": {
     "kind": "govhub-api",
     "url": "https://interfacehub.net/api/doc/editions/?work=desirableproperties-book",
-    "fetchedAt": "2026-11-25T16:28:05Z",
+    "fetchedAt": "2026-11-26T16:01:28Z",
     "responseSha256": "8a421a0ad108b66acc03e42a1851edcd35482217a5cb5bdb305364b71f657f19"
   },
   "currentEdition": "1.1",
