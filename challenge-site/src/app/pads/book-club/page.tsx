@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import BookClubWaitlist from '@/components/pads/BookClubWaitlist';
 import PadInvite from '@/components/pads/PadInvite';
 import NextSessionProposals from '@/components/sessions/NextSessionProposals';
 import SessionAskDeepi from '@/components/sessions/SessionAskDeepi';
@@ -20,6 +21,7 @@ import {
 } from '@/data/book-club';
 import { publicBase } from '@/lib/pads/pad-email.server';
 import { fetchBookClubBadge } from '@/lib/pads/book-club-badge.server';
+import { fetchBookClubWaitlist } from '@/lib/pads/book-club-waitlist.server';
 import { bookClubInviteFor } from '@/lib/pads/pad-invite.server';
 import { readProposalsView } from '@/lib/next-proposals/store.server';
 import { SITE_NAME } from '@/lib/site-metadata';
@@ -112,9 +114,10 @@ export default async function BookClubPadPage({ searchParams }: Props) {
   const phase = bookClubPhase(meeting, now);
   const pagePath = bookClubHref(meeting.id);
   const proposalKey = bookClubProposalKey(meeting.id);
-  const [proposals, liveBadge] = await Promise.all([
+  const [proposals, liveBadge, waitlist] = await Promise.all([
     readProposalsView(proposalKey).catch(() => null),
     fetchBookClubBadge(BOOK_CLUB.badge.govHubLayer, BOOK_CLUB.badge.govHubPad, meeting.id),
+    fetchBookClubWaitlist(BOOK_CLUB.badge.govHubLayer, BOOK_CLUB.badge.govHubPad),
   ]);
   const invite = bookClubInviteFor(BOOK_CLUB_PATH, now);
   const signInHref = `/login?next=${encodeURIComponent(`${pagePath}#proposals`)}`;
@@ -214,6 +217,7 @@ export default async function BookClubPadPage({ searchParams }: Props) {
       <p className="text-base leading-relaxed text-slate-200">
         {BOOK_CLUB.cadence} Join to get each reading before the meeting.
       </p>
+      {waitlist ? <BookClubWaitlist waitlist={waitlist} /> : null}
       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
         {BOOK_CLUB.waitlistUrl ? (
           <a href={BOOK_CLUB.waitlistUrl} className="inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
@@ -221,7 +225,7 @@ export default async function BookClubPadPage({ searchParams }: Props) {
           </a>
         ) : null}
         {meeting.lumaUrl && phase !== 'after' ? (
-          <a href={meeting.lumaUrl} className={BOOK_CLUB.waitlistUrl ? linkClass : 'inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200'} rel="noopener noreferrer">
+          <a href={meeting.lumaUrl} className={BOOK_CLUB.waitlistUrl || waitlist?.open ? linkClass : 'inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200'} rel="noopener noreferrer">
             Register for this meeting on Luma
           </a>
         ) : null}
