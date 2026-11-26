@@ -119,6 +119,8 @@ export async function primeCouncilSeats(): Promise<Seat[]> {
   const r = await padVotesFetch<{ seats: { user_id: string; name: string }[] }>(`/admin/${PAD_VOTES_SCOPE}/council-seats`, { as: 'admin' });
   if (r.ok) {
     seats = { at: Date.now(), list: (r.data.seats || []).map((s) => ({ userId: String(s.user_id), name: String(s.name) })) };
+    // No seats means no one can screen or hide proposals: say so in the logs rather than fail silently.
+    if (!seats.list.length) console.warn(`[pad-votes] Gov Hub lists no council seats for ${PAD_VOTES_SCOPE}: nobody can object or hide`);
     return seats.list;
   }
   // Gov Hub did not answer: keep the last good list for a while, else nobody can act (deny rather than guess).

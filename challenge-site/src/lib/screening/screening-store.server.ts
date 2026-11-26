@@ -105,7 +105,7 @@ async function withdrawObjection(def: ScreeningDefinition, member: CouncilMember
 export const screeningDeps: ScreeningDeps = {
   readSession: async () => {
     const s = await readSession();
-    return s && s.userId ? { userId: s.userId } : null;
+    return s && s.userId ? { userId: s.userId, name: s.displayName || s.username || null } : null;
   },
   getDefinition: (slug) => SESSION_SCREENINGS[slug] ?? null,
   members: interimCouncil,
@@ -151,6 +151,9 @@ async function govhubAddObjection(def: ScreeningDefinition, _member: CouncilMemb
   const r = await writeSignal('screening', def.slug, { question_key: questionKey, reason });
   if (r.ok) return { ok: true };
   if (r.status === 409) return { ok: false, code: 'already' };
+  // An expired sign-in, or Gov Hub not seating this account: say so instead of a bare server error.
+  if (r.status === 401) return { ok: false, code: 'sign_in' };
+  if (r.status === 403) return { ok: false, code: 'not_member' };
   throw new Error(`Gov Hub objection: ${r.status} ${String(r.data.code || '')}`);
 }
 
