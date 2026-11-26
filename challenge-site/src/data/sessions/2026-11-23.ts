@@ -8,7 +8,9 @@ import type { SessionOccurrence } from '@/lib/sessions/session-phases';
  * 8:00 PM PT. Schedule: review closes Wed 25 Nov 8:00 PM PT; the interim council screens within a day (by Thu 26
  * Nov 8:00 PM PT); voting then runs 72 hours, to Sun 29 Nov 8:00 PM PT; results before the 30 Nov session.
  * Council screening starts on the clock at review close (the voted rule: the interim council screens for 24 hours);
- * the page shows its close from the screening definition. Ready for voting and voting need explicit entries.
+ * the page shows its close from the screening definition. Ready for voting and voting open follow the clock at the
+ * screening close (the ballot, src/data/sessions/2026-11-23-ballot.ts, opens then with the questions that had no
+ * standing objection). "Decision recorded" needs an explicit entry once the results are published.
  */
 export const SESSION_2026_11_23: SessionOccurrence = {
   slug: 'listening-2026-11-23',
@@ -45,6 +47,20 @@ export const SESSION_2026_11_23: SessionOccurrence = {
       at: '2026-11-26T04:00:00Z',
       scheduled: true,
       note: 'The interim council screens each draft question until Thursday 26 November, 8:00 PM PT (Friday 04:00 UTC). A question goes to the ballot unless a member objects to it, with a reason. Then the community votes for 72 hours.',
+    },
+    {
+      phase: 'Ready for voting',
+      by: 'Clock (council screening closed)',
+      at: '2026-11-27T04:00:00Z',
+      scheduled: true,
+      note: 'Every draft question with no standing objection at the close goes to the ballot as drafted. A question the council held back is shown on the ballot with the objections and reasons.',
+    },
+    {
+      phase: 'Voting open',
+      by: 'Clock (72 hours from the screening close)',
+      at: '2026-11-27T04:00:00Z',
+      scheduled: true,
+      note: 'Voting runs 72 hours, until Sunday 29 November, 8:00 PM PT (Monday 04:00 UTC). Anyone signed in can vote, one vote per account.',
     },
   ],
   related: [

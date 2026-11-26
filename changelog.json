@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "ballot-2026-11-23-ready-2026-11-26",
+      "date": "2026-11-26",
+      "status": "open",
+      "title": "The 23 November ballot opens on its own when council screening closes",
+      "summary": "The 23 November session page now holds the ballot. Voting opens by itself on Thursday 26 November at 8:00 PM Pacific, when the interim council's screening closes, and runs 72 hours, to Sunday 29 November at 8:00 PM Pacific. Every draft question with no standing objection at the close goes to the ballot as drafted. A question the council held back is shown with the objections and reasons, and cannot be voted on. Anyone signed in can vote, one vote per account, as on 16 November. Yes/No questions use the two-tier rule chosen on 16 November: 60% or more Yes passes, 50% to under 60% stays open for review. The two multiple-choice questions take the option with the most votes. The phase label, banner and call to action follow the clock. Results are published on the page after the close. No question or option changed."
+    },
+    {
       "id": "council-objection-button-2026-11-26",
       "date": "2026-11-26",
       "status": "open",

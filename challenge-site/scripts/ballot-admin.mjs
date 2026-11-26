@@ -11,8 +11,18 @@
  *   node --experimental-strip-types scripts/ballot-admin.mjs attribution [--json]                        # voters per message tag / referral
  *   node --experimental-strip-types scripts/ballot-admin.mjs attribution --signups [--since 2026-11-22]  # accounts per tag / referral
  *
- * Plain Node (no tsx needed; production has no dev dependencies). On box1, from ~/desirable-properties/challenge-site:
- *   node --experimental-strip-types --env-file=.env.local scripts/ballot-admin.mjs results --db env
+ * Plain Node with the alias hook (no tsx needed; production has no dev dependencies). On box1, from
+ * ~/desirable-properties/challenge-site:
+ *   node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --env-file=.env.local scripts/ballot-admin.mjs results --db env
+ *
+ * Gov Hub as the store (PAD_VOTES_BACKEND=govhub, production and staging since 25 Nov): add --store govhub. Then
+ * status, results and publish go to Gov Hub's /api/pad-votes admin API with the site's admin proxy (the key and admin
+ * email from .env.local, never printed); results and publish only after the close. Gov Hub URL: --govhub-url
+ * (default http://127.0.0.1:8000, production Gov Hub on box1; staging Gov Hub on box2 is http://127.0.0.1:8001).
+ * The production Gov Hub (the default URL) needs --prod to publish.
+ *   node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --env-file=.env.local scripts/ballot-admin.mjs status --store govhub --slug listening-2026-11-23
+ *   node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --env-file=.env.local scripts/ballot-admin.mjs results --store govhub --slug listening-2026-11-23
+ *   node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --env-file=.env.local scripts/ballot-admin.mjs publish --store govhub --slug listening-2026-11-23 --prod
  *
  * Options: --slug (default meta-governance-2026-11-16), --db <url> | env (default the box2 staging DB over the local
  * socket, postgresql:///desirable_properties_staging?host=/var/run/postgresql; `env` = DP_DATABASE_URL from the
@@ -24,8 +34,8 @@
  */
 import { writeFileSync } from 'fs';
 import pg from 'pg';
-import { SESSION_BALLOTS } from '../src/data/sessions/2026-11-16-ballot.ts';
-import { checkDefinition, effectiveStatus, outcomeText, tallyBallot } from '../src/lib/ballots/ballot-core.ts';
+import { SESSION_BALLOTS } from '../src/data/sessions/ballots.ts';
+import { applyApproval, checkDefinition, effectiveStatus, outcomeText, tallyBallot, withDraftNumbers } from '../src/lib/ballots/ballot-core.ts';
 import { BALLOT_SCHEMA_SQL } from '../src/lib/ballots/ballot-schema.ts';
 
 const PRODUCTION_DB_NAME = 'desirable_properties';
@@ -62,6 +72,7 @@ async function main() {
   if (!def) throw new Error(`unknown ballot ${slug}`);
   const problems = checkDefinition(def);
   if (problems.length) throw new Error(`ballot definition: ${problems.join('; ')}`);
+  if (opts.store === 'govhub') return govhub(cmd, opts, def);
   const url = opts.db === 'env' ? process.env.DP_DATABASE_URL || process.env.DATABASE_URL || '' : String(opts.db || DEFAULT_DB);
   if (!url) throw new Error('--db env: DP_DATABASE_URL is not set (run with node --env-file=.env.local)');
   const isProd = dbName(url) === PRODUCTION_DB_NAME;
@@ -176,6 +187,86 @@ async function main() {
     }
   } finally {
     await pool.end();
+  }
+}
+
+/* ---------- Gov Hub as the store (counts only) ---------- */
+
+const GOVHUB_PROD_URL = 'http://127.0.0.1:8000';
+
+async function govhub(cmd, opts, def) {
+  const base = String(opts['govhub-url'] || GOVHUB_PROD_URL).replace(/\/$/, '');
+  const isProd = base === GOVHUB_PROD_URL;
+  const secret = (process.env.GOVHUB_HERMES_API_KEY || '').trim()
+    || (process.env.METAWEB_GOVHUB_INTERNAL_SECRET || process.env.DP_AUTH_HANDOFF_SECRET || process.env.METAWEB_OPS_SECRET || '').trim();
+  const email = (process.env.PAD_VOTES_GOVHUB_ADMIN_EMAIL || '').trim().toLowerCase()
+    || (process.env.DP_ADMIN_EMAILS || process.env.ONCHAIN_ADMIN_EMAILS || '').split(',')[0].trim().toLowerCase();
+  const call = async (path, method = 'GET', admin = false) => {
+    const headers = { Accept: 'application/json' };
+    if (admin) {
+      if (!secret || !email) throw new Error('admin proxy not configured: run with --env-file=.env.local');
+      headers.Authorization = `Bearer ${secret}`;
+      headers['X-DP-Admin-Email'] = email;
+    }
+    const res = await fetch(`${base}/api/pad-votes${path}`, { method, headers, signal: AbortSignal.timeout(15_000) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(`Gov Hub ${method} ${path.split('?')[0]}: ${res.status} ${data.code || data.error || ''}`);
+    return data;
+  };
+  const slug = encodeURIComponent(def.slug);
+  const view = await call(`/ballots/dp/${slug}`).catch((err) => {
+    if (/: 404/.test(err.message)) return null;
+    throw err;
+  });
+  const status = view?.status ?? 'not registered';
+  const report = (results) => {
+    const r = withDraftNumbers(def, applyApproval(def, results));
+    const lines = [`# ${def.title}: results`, '', `From Gov Hub ${isProd ? '(production)' : base}, status ${status}. ${r.voters} accounts voted.`, ''];
+    const held = def.questions.filter((q) => !r.questions.some((x) => x.key === q.key));
+    for (const q of r.questions) {
+      lines.push(`## ${q.n}. ${q.question}`, '');
+      for (const o of q.options) lines.push(`- ${o.label}: ${o.votes}`);
+      lines.push('', `Outcome: ${outcomeText(q)} (${q.ballots} answered)`, '');
+    }
+    for (const q of held) lines.push(`## ${q.n}. ${q.question}`, '', 'Held back by the council: not on the ballot.', '');
+    return lines.join('\n');
+  };
+  switch (cmd) {
+    case 'status':
+      console.log(JSON.stringify({
+        slug: def.slug,
+        govhub: isProd ? 'production' : base,
+        status,
+        opens_at: view?.opens_at ?? def.opensAt,
+        closes_at: view?.closes_at ?? def.closesAt,
+        published_at: view?.published_at ?? null,
+        voters: view?.voters ?? 0,
+        questions_on_ballot: (view?.questions || []).map((q) => q.key),
+        definition_sha256: view?.definition_sha256 ?? null,
+      }, null, 2));
+      return;
+    case 'results': {
+      if (!view) throw new Error('Gov Hub does not hold this ballot (it registers on the first page view after it opens)');
+      if (!['closed', 'counted', 'published'].includes(status)) throw new Error(`ballot is ${status}: results after the close`);
+      const rep = await call(`/admin/dp/ballots/${slug}/report`, 'GET', true);
+      if (!rep.results_preview) throw new Error('Gov Hub returned no count');
+      const text = opts.json === true ? JSON.stringify({ ...rep.results_preview, status }, null, 2) : report(rep.results_preview);
+      if (typeof opts.out === 'string') {
+        writeFileSync(opts.out, text + '\n');
+        console.log(`written ${opts.out}`);
+      } else console.log(text);
+      return;
+    }
+    case 'publish': {
+      if (!view) throw new Error('Gov Hub does not hold this ballot');
+      if (!['closed', 'counted'].includes(status)) throw new Error(`ballot is ${status}: publish after the close`);
+      if (isProd && opts.prod !== true) throw new Error('publish writes to production Gov Hub: add --prod');
+      const out = await call(`/admin/dp/ballots/${slug}/publish`, 'POST', true);
+      console.log(`${def.slug} published ${out.ballot?.published_at}: totals now show on ${def.pagePath}#vote`);
+      return;
+    }
+    default:
+      throw new Error(`${cmd} is not available with --store govhub (status, results, publish)`);
   }
 }
 

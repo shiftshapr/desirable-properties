@@ -3,8 +3,12 @@ import type pg from 'pg';
 import { cookies } from 'next/headers';
 import { readSession } from '@/lib/auth-session';
 import { ARRIVAL_COOKIE, decodeArrival, voteAttribution } from '@/lib/attribution/attribution-core';
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
-import type { BallotDefinition, BallotDeps, BallotOverride, SaveResult, VoteRow } from '@/lib/ballots/ballot-core';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
+import type { BallotDefinition, BallotDeps, BallotOverride, ResolvedBallot, SaveResult, VoteRow } from '@/lib/ballots/ballot-core';
+import { applyScreening } from '@/lib/ballots/ballot-screening-core';
+import { SESSION_SCREENINGS } from '@/data/sessions/2026-11-23-screening';
+import { activeScreeningDeps } from '@/lib/screening/screening-store.server';
+import { screenQuestions } from '@/lib/screening/screening-core';
 import { BALLOT_SCHEMA_SQL } from '@/lib/ballots/ballot-schema';
 import { getDpPool } from '@/lib/dp-db';
 import { allowHit } from '@/lib/listening/rate-limit.server';
@@ -30,6 +34,33 @@ async function ensureSchema(pool: pg.Pool): Promise<void> {
 async function tableExists(pool: pg.Pool, table: 'dp_ballot' | 'dp_ballot_vote'): Promise<boolean> {
   const r = await pool.query(`SELECT to_regclass($1) IS NOT NULL AS ok`, [`public.${table}`]);
   return Boolean(r.rows[0]?.ok);
+}
+
+/* ---------------- Screened ballots: what can be voted on ---------------- */
+
+/** Final outcomes never change after the screening close (screenQuestions ignores later rows), so keep them. */
+const resolvedCache = new Map<string, ResolvedBallot>();
+
+/**
+ * The questions open to a vote. A ballot without screening: itself. A screened ballot: nothing before the screening
+ * close; after it, the questions with no standing objection at the close (and the held-back ones with reasons).
+ * Throws when the screening record cannot be read: callers treat that as unavailable (fail closed), never as
+ * "no objections".
+ */
+export async function resolveBallot(def: BallotDefinition, now = new Date()): Promise<ResolvedBallot> {
+  if (!def.screenedBy) return { state: 'ready', votable: def, heldBack: [] };
+  if (now.getTime() < new Date(def.opensAt).getTime()) return { state: 'pending' };
+  const hit = resolvedCache.get(def.slug);
+  if (hit && Date.now() >= new Date(def.opensAt).getTime()) return hit;
+  const sdef = SESSION_SCREENINGS[def.screenedBy];
+  if (!sdef) throw new Error(`${def.slug}: unknown screening ${def.screenedBy}`);
+  if (sdef.closesAt !== new Date(def.opensAt).toISOString()) throw new Error(`${def.slug}: opensAt must be the screening close`);
+  const deps = await activeScreeningDeps();
+  const rows = await deps.rows(sdef.slug); // no catch: an unreadable record must not read as "no objections"
+  const resolved = applyScreening(def, screenQuestions(sdef, rows, now), now);
+  // Only a real-clock outcome is kept: a staging preview of a later time (asOf) must never fix the ballot early.
+  if (Date.now() >= new Date(def.opensAt).getTime()) resolvedCache.set(def.slug, resolved);
+  return resolved;
 }
 
 export async function getBallotOverride(slug: string): Promise<BallotOverride> {
@@ -132,6 +163,7 @@ export const ballotDeps: BallotDeps = {
   },
   getDefinition: (slug) => SESSION_BALLOTS[slug] ?? null,
   getOverride: (slug) => getBallotOverride(slug).catch(() => null),
+  resolve: (def, now) => resolveBallot(def, now),
   myVotes,
   saveVotes,
   resultRows: async (slug) => {
@@ -155,16 +187,31 @@ type GhBallot = {
 const registered = new Map<string, number>();
 const REGISTER_MS = 10 * 60_000;
 
-/** Register (or confirm) the definition in code with Gov Hub. Gov Hub refuses a change once the ballot has opened. */
-async function ensureRegistered(slug: string): Promise<void> {
+/**
+ * Register (or confirm) the definition in code with Gov Hub. Gov Hub refuses a change once the ballot has opened.
+ * A screened ballot is registered only after its screening has closed, with the questions that went to the ballot:
+ * it is created already open, so Gov Hub never holds a question that the council held back. Returns false when a
+ * screened ballot could not be registered (not yet, or the screening record could not be read).
+ */
+async function ensureRegistered(slug: string): Promise<boolean> {
   const def = SESSION_BALLOTS[slug];
-  if (!def) return;
+  if (!def) return true;
   const at = registered.get(slug);
-  if (at && Date.now() - at < REGISTER_MS) return;
+  if (at && Date.now() - at < REGISTER_MS) return true;
+  let body: BallotDefinition = def;
+  if (def.screenedBy) {
+    const resolved = await resolveBallot(def).catch((err) => {
+      console.error('[pad-votes] screening outcome unreadable; ballot not registered:', slug, err instanceof Error ? err.message : err);
+      return null;
+    });
+    if (!resolved || resolved.state !== 'ready') return false;
+    if (!resolved.votable.questions.length) return false; // the council held back every question: nothing to vote on
+    body = resolved.votable;
+  }
   const r = await padVotesFetch(`/admin/${PAD_VOTES_SCOPE}/ballots`, {
     as: 'admin',
     method: 'POST',
-    body: { ...def, eligibility: { rule: 'signed_in' } },
+    body: { ...body, eligibility: { rule: 'signed_in' } },
   });
   if (r.ok) {
     registered.set(slug, Date.now());
@@ -174,6 +221,7 @@ async function ensureRegistered(slug: string): Promise<void> {
     console.error('[pad-votes] ballot registration refused:', slug, r.status, String(r.data.code || ''));
     registered.set(slug, Date.now());
   }
+  return true;
 }
 
 async function ghBallot(slug: string): Promise<GhBallot | 'unavailable' | null> {
@@ -186,7 +234,12 @@ async function ghBallot(slug: string): Promise<GhBallot | 'unavailable' | null> 
 async function govhubOverride(slug: string): Promise<BallotOverride> {
   const b = await ghBallot(slug);
   if (b === 'unavailable') return { status: 'unavailable', publishedAt: null };
-  if (!b) return null;
+  if (!b) {
+    // A screened ballot past its opening that Gov Hub does not hold yet: voting cannot be recorded, so say so.
+    const def = SESSION_BALLOTS[slug];
+    if (def?.screenedBy && Date.now() >= new Date(def.opensAt).getTime()) return { status: 'unavailable', publishedAt: null };
+    return null;
+  }
   const status =
     b.status === 'published' ? 'published' : b.status === 'open' ? 'open' : b.status === 'scheduled' ? 'scheduled' : 'closed';
   return { status, publishedAt: b.published_at, closesAt: b.closes_at };
@@ -200,7 +253,7 @@ async function govhubMyVotes(slug: string): Promise<Record<string, string>> {
 }
 
 async function govhubSaveVotes(def: BallotDefinition, _userId: string, votes: Record<string, string>): Promise<SaveResult> {
-  await ensureRegistered(def.slug);
+  if (!(await ensureRegistered(def.slug))) return { ok: false, code: 'unavailable' };
   const r = await padVotesFetch<{ cast_at: string }>(`/ballots/${PAD_VOTES_SCOPE}/${encodeURIComponent(def.slug)}/vote`, {
     as: 'user',
     method: 'POST',

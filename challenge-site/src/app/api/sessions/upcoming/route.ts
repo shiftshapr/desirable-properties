@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 import { effectiveStatus, type BallotOverride } from '@/lib/ballots/ballot-core';
 import { getBallotOverride } from '@/lib/ballots/ballot-store.server';
 import { siteOrigin, upcomingFeed } from '@/lib/sessions/upcoming-feed';

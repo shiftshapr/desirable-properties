@@ -115,7 +115,11 @@ export type QuestionScreening = {
   outcome: 'pending' | 'goes_to_ballot' | 'held_back';
 };
 
-/** Per-question screening state. A row withdrawn after the close (should not happen) still counts as standing. */
+/**
+ * Per-question screening state. The outcome is fixed at the close: a row withdrawn after the close (should not
+ * happen) still counts as standing, and a row made at or after the close is ignored (the site refuses them, but the
+ * store does not check the window), so the questions that reach the ballot can never change after it opens.
+ */
 export function screenQuestions(
   def: ScreeningDefinition,
   rows: readonly ObjectionRow[],
@@ -125,7 +129,7 @@ export function screenQuestions(
   const closed = now.getTime() >= at(def.closesAt);
   return def.questions.map((q) => {
     const items = rows
-      .filter((r) => r.question_key === q.key)
+      .filter((r) => r.question_key === q.key && !(at(r.created_at) >= at(def.closesAt)))
       .sort((a, b) => at(a.created_at) - at(b.created_at))
       .map((r) => ({
         counts: !r.withdrawn_at || at(r.withdrawn_at) >= at(def.closesAt),

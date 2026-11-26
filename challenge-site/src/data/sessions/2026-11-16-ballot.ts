@@ -188,8 +188,3 @@ export const BALLOT_2026_11_16: BallotDefinition = {
   ],
   questions: QUESTIONS,
 };
-
-/** Ballots by occurrence slug. Add one when a new occurrence page gets a ballot. */
-export const SESSION_BALLOTS: Readonly<Record<string, BallotDefinition>> = {
-  [BALLOT_2026_11_16.slug]: BALLOT_2026_11_16,
-};

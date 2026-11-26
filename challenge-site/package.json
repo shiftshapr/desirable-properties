@@ -37,7 +37,7 @@
     "test:astra": "node --test scripts/astra-highlights.test.mjs",
     "test:ack-request": "node --experimental-strip-types --test scripts/ack-request.test.mjs",
     "test:session-chat": "node --experimental-strip-types --test scripts/session-chat.test.mjs",
-    "test:session-ballot": "node --experimental-strip-types --test scripts/session-ballot.test.mjs",
+    "test:session-ballot": "node --experimental-strip-types --import ./scripts/ts-alias-hooks.mjs --test scripts/session-ballot.test.mjs scripts/ballot-2026-11-23.test.mjs",
     "test:council-screening": "node --experimental-strip-types --test scripts/council-screening.test.mjs",
     "test:book-club": "node --experimental-strip-types --test scripts/book-club.test.mjs",
     "test:next-session-proposals": "node --experimental-strip-types --test scripts/next-session-proposals.test.mjs",

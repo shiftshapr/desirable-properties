@@ -1,6 +1,6 @@
 import 'server-only';
 import type pg from 'pg';
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 import {
   participation,
   publicParticipation,

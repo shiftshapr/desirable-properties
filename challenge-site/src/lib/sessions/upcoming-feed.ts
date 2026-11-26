@@ -7,7 +7,7 @@
  * a scheduled session whose page is an occurrence page is listed once. Ballots: every session ballot open now.
  * Public data only; no account data.
  */
-import { SESSION_BALLOTS } from '@/data/sessions/2026-11-16-ballot';
+import { SESSION_BALLOTS } from '@/data/sessions/ballots';
 import { SESSION_OCCURRENCES } from '@/data/sessions/occurrences';
 import { effectiveStatus, type BallotDefinition, type BallotOverride } from '@/lib/ballots/ballot-core';
 import { DP_ROUNDUP_EVENTS } from '@/lib/dp-roundups';
