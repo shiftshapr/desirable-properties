@@ -4,6 +4,13 @@
   "site": "desirableproperties.org",
   "entries": [
     {
+      "id": "q1-active-voting-body-note-2026-11-25",
+      "date": "2026-11-25",
+      "status": "open",
+      "title": "Corrected quorum note on the 23 November ballot",
+      "summary": "The note under question 1 of the 23 November draft ballot said the active voting body was the 76 people the session emails go to. The host corrected it on 25 November, after the review closed: those 76 people are the voting body (25% is 19 votes), and the active voting body is the people who have voted in a ballot or taken part in a session during the pilot, 28 people as of 25 November (25% is 7 votes). A dated line under the note says what changed. The question and its options are unchanged."
+    },
+    {
       "id": "pad-votes-proxy-key-2026-11-25",
       "date": "2026-11-25",
       "status": "open",

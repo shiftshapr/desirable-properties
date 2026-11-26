@@ -63,6 +63,9 @@ export default function DraftBallot({
                   </>
                 ) : null}
               </p>
+              {q.correction ? (
+                <p className="mt-1 text-sm text-amber-200">{q.correction}</p>
+              ) : null}
               <p className="mt-1 font-semibold text-white">
                 {q.n}. {q.question}
               </p>
