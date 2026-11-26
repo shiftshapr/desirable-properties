@@ -21,7 +21,7 @@ import {
 import { applyScreening } from '../src/lib/ballots/ballot-screening-core.ts';
 import { screenQuestions, screeningDefinition } from '../src/lib/screening/screening-core.ts';
 import { SCREENING_HOURS, VOTING_PERIOD_HOURS } from '../src/lib/sessions/session-rules.ts';
-import { phaseCallToAction, phasePillLabel, phaseRows, draftBallotBanner } from '../src/lib/sessions/session-phases.ts';
+import { phaseCallToAction, phaseNowLabel, phasePillLabel, phaseRows, draftBallotBanner } from '../src/lib/sessions/session-phases.ts';
 import { currentSession } from '../src/lib/current-session.ts';
 
 const draft = JSON.parse(readFileSync(new URL('../src/data/sessions/2026-11-23-draft.json', import.meta.url), 'utf8'));
@@ -256,6 +256,7 @@ const clockAt = (iso) => {
   return {
     current,
     pill: phasePillLabel(current, clock),
+    now: phaseNowLabel(current, clock),
     cta: phaseCallToAction(current, { closesLabel: 'Sun 29 Nov', ...clock }),
     banner: draftBallotBanner(current, clock, { reviewHours: 48, votingHours: 72 }),
   };
@@ -272,7 +273,10 @@ test('phases: screening until the close, then voting open until Sun 29 Nov 8:00 
   const closed = clockAt('2026-11-30T04:00:00Z');
   assert.equal(closed.current, 'Voting open', '"Decision recorded" needs an entry when the results are published');
   assert.equal(closed.pill, 'Voting closed: results to follow');
-  assert.match(closed.cta.text, /Voting has closed/);
+  // The tracker's "Now:" line reads "Now: Voting closed. Results to follow.", never "Voting open. Voting has closed."
+  assert.equal(`Now: ${closed.now}. ${closed.cta.text}`, 'Now: Voting closed. Results to follow.');
+  assert.equal(`Now: ${open.now}.`, 'Now: Voting open.');
+  assert.equal(phaseNowLabel('Council screening', { now: CLOSE, votingClosesAt: DEF.closesAt }), 'Council screening');
   assert.match(closed.banner, /^Voting closed Sunday 29 November, 8:00 PM Pacific/);
   const entries = SESSION.phaseHistory.filter((e) => ['Ready for voting', 'Voting open'].includes(e.phase));
   assert.deepEqual(entries.map((e) => [e.phase, new Date(e.at).toISOString(), e.scheduled]), [
