@@ -156,7 +156,6 @@ export default async function Listening20261123Page({ searchParams }: Props) {
   return (
     <SessionPageShell
       meeting={MEETING}
-      sessionWeek
       dateHref="/roundups/2026-11-23"
       whenLine={
         <>

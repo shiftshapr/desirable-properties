@@ -13,7 +13,7 @@ import SessionPageShell from '@/components/sessions/SessionPageShell';
 import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
 import BookClubStartsBlock from '@/components/sessions/BookClubStartsBlock';
 import { BOOK_CLUB } from '@/data/book-club';
-import { meetingLongDate, type MeetingRef } from '@/lib/sessions/session-labels';
+import { meetingLongDate, sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 
 type Props = { params: Promise<{ date: string }> };
@@ -24,7 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { date } = await params;
   const event = DP_ROUNDUP_EVENTS.find(e => e.date === date);
   if (!event) return { title: 'Event not found' };
-  const title = event.meetingTitle ? `${event.meetingTitle} (${event.seriesTitle})` : event.title;
+  // Community sessions name their week ("November 30 – December 6, 2026"), like their session pages.
+  const week = event.kind !== 'roundup' && !event.launch ? `, ${sessionWeekLabel(event.date, { year: true })}` : '';
+  const title = event.meetingTitle ? `${event.meetingTitle}${week} (${event.seriesTitle})` : event.title;
   return { title: `${title} | Desirable Properties`, description: event.objective };
 }
 export default async function RoundupEventPage({ params }: Props) {
@@ -120,7 +122,7 @@ function CommunitySessionPage({ event, ended, live }: { event: SessionEvent; end
     <SessionPageShell
       meeting={meeting}
       dateHref={null}
-      whenLine={<>{gatheringTimeLabel(event)} · Zoom</>}
+      whenLine={<>{ended ? 'Meeting held' : 'Meeting'} {meetingLongDate(event.date)}, {gatheringTimeLabel(event)} · Zoom</>}
       intro={resultsCarryCta ? undefined : event.objective}
       phaseLabel={phaseLabel}
       tone={tone}

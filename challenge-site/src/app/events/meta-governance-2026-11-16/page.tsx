@@ -112,7 +112,6 @@ export default async function MetaGovernanceSessionPage({ searchParams }: Props)
     <>
     <SessionPageShell
       meeting={MEETING}
-      sessionWeek
       dateHref="/roundups/2026-11-16"
       whenLine={
         <>
