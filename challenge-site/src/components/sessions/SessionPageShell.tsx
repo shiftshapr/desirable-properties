@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { meetingLongDate, meetingShortDate, sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
+import { sessionWeekLabel, type MeetingRef } from '@/lib/sessions/session-labels';
 import type { PhaseTone } from '@/lib/sessions/session-phases';
 import SessionAnchors from './SessionAnchors';
 import SessionBreadcrumbs from './SessionBreadcrumbs';
@@ -8,11 +8,6 @@ import { PHASE_TONE } from './phase-tone';
 
 type Props = {
   meeting: MeetingRef;
-  /**
-   * A session's own page (/events/<slug>) shows the session's week ("November 23–29"), not the meeting's date: the
-   * session runs all week. The meeting page (/roundups/<date>) leaves this off and shows the day to join.
-   */
-  sessionWeek?: boolean;
   /** Link for the date crumb (the event's /roundups/<date> page). */
   dateHref?: string | null;
   /** "10:00–11:30 a.m. Pacific Time · Zoom" */
@@ -38,7 +33,6 @@ type Props = {
  */
 export default function SessionPageShell({
   meeting,
-  sessionWeek = false,
   dateHref,
   whenLine,
   intro,
@@ -51,8 +45,11 @@ export default function SessionPageShell({
   children,
 }: Props) {
   const t = PHASE_TONE[tone];
-  const shortLabel = sessionWeek ? sessionWeekLabel(meeting.date) : meetingShortDate(meeting.date);
-  const longLabel = sessionWeek ? sessionWeekLabel(meeting.date, { year: true }) : meetingLongDate(meeting.date);
+  // Every session page shows the session's week ("November 23–29"), never the meeting's date alone: the meeting is
+  // one day, the session (review, screening, vote) is the week (owner, 27 Nov 2026). Pages say the meeting day in
+  // their whenLine.
+  const shortLabel = sessionWeekLabel(meeting.date);
+  const longLabel = sessionWeekLabel(meeting.date, { year: true });
   return (
     <main id="top" className={`session-page mx-auto w-full min-w-0 px-4 py-8 text-slate-200 sm:px-6 sm:py-12 ${className}`}>
       <SessionAnchors />
