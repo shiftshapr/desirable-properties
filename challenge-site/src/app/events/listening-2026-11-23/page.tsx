@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import CommunityGroups from '@/components/community/CommunityGroups';
 import BallotResultsSummary from '@/components/sessions/BallotResultsSummary';
+import BookClubStartsBlock from '@/components/sessions/BookClubStartsBlock';
 import DraftForReview from '@/components/sessions/DraftForReview';
 import { reviewDocChannels } from '@/components/sessions/ReviewActions';
 
@@ -193,27 +194,7 @@ export default async function Listening20261123Page({ searchParams }: Props) {
       }
     >
       {/* Book club first (owner, 24 Nov 2026): decided in this meeting, starts at the next session. */}
-      <section id="book-club" aria-labelledby="book-club-heading" className="mt-8 scroll-mt-24 rounded-2xl border border-cyan-500/60 bg-cyan-950/30 px-5 py-5 sm:px-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Decided in this meeting</p>
-        <h2 id="book-club-heading" className="mt-2 text-2xl font-bold text-white sm:text-3xl">Book club starts Monday 30 November</h2>
-        <p className="mt-3 text-base leading-relaxed text-slate-100">
-          The next session opens with a 30-minute book club on <em>The Layered Web</em>. We start with the front matter:
-          About this digital monument, the Foreword, the Introduction and the Acknowledgements. Read them before the
-          session if you can, and bring a question or insight. Everyone is welcome, whether or not you
-          contributed to the book.
-        </p>
-        <p className="mt-2 text-sm text-slate-300">
-          Monday 30 November, 10:00 a.m. Pacific (6:00 p.m. UTC). Salwa El Mais moved it and Leandra Preston seconded.
-          How the club picks what to read next is on that session&apos;s agenda.
-        </p>
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
-          <a href="https://book.desirableproperties.org/viewer/book_cover?ref=pad-1124-bookclub" className="inline-flex rounded-lg bg-cyan-300 px-5 py-2.5 font-semibold text-slate-950 no-underline hover:bg-cyan-200">
-            Read the front matter →
-          </a>
-          <a href="https://luma.com/gra1xda9" className={linkClass} rel="noopener noreferrer">Register on Luma</a>
-          <Link href="/roundups/2026-11-30" className={linkClass}>The 30 November session</Link>
-        </div>
-      </section>
+      <BookClubStartsBlock on="decided" />
 
       <ProposeForNextSession pagePath={LISTENING_1123_EVENT_PATH} />
 
